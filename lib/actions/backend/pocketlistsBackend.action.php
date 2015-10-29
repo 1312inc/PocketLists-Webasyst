@@ -4,7 +4,7 @@ class pocketlistsBackendAction extends waViewAction
     public function execute()
     {
         
-        $message = 'Hello world!';
-        $this->view->assign('message', $message);
+        $listname = 'Groceries';
+        $this->view->assign('listname', $listname);
     }
 }

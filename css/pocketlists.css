@@ -1,1 +1,38 @@
-pl-sidebar-cling
+/* Pocket Lists for Webasyst
+============================ */
+
+/* Sidebar
+--------- */
+
+.pl-sidebar-core { margin-top: 20px; }
+.pl-sidebar-cling {
+	background: rgba(220, 220, 220, 0.5) none repeat scroll 0 0;
+    box-shadow: -4px 0 4px -2px rgba(0, 0, 0, 0.1) inset, 0 2px 3px rgba(0, 0, 0, 0.2);
+    margin: 0 -15px 0 10px;
+    padding-bottom: 13px;
+}
+
+/* List items
+------------- */
+
+.pl-list-title { border-bottom: 1px solid rgba(0,0,0,0.1); padding: 25px 20px; }
+.pl-list-title h1 input[type="checkbox"] {
+  position: relative; top: -0.15em; margin-right: 6px;
+  -ms-transform: scale(1.4); /* IE */
+  -moz-transform: scale(1.4); /* FF */
+  -webkit-transform: scale(1.4); /* Safari and Chrome */
+  -o-transform: scale(1.4); /* Opera */
+}
+
+.pl-list-items ul.menu-v { margin: 0; padding: 0; }
+.pl-list-items ul.menu-v li { padding: 0; }
+.pl-list-items ul.menu-v li input[type="checkbox"] { margin-right: 10px; }
+.pl-list-items ul.menu-v li label { padding: 13px 20px; display: block; border-bottom: 1px solid 
+rgba(0,0,0,0.1); }
+.pl-list-items ul.menu-v li label:hover { border-bottom: 1px solid rgba(0,0,0,0.5); }
+.pl-list-items ul.menu-v li ul { padding-left: 0; margin: 0; }
+.pl-list-items ul.menu-v li ul li label { padding-left: 46px; }
+.pl-list-items ul.menu-v li ul li ul li label { padding-left: 72px; }
+
+.pl-favorite i.icon16 { float: right; display: none; }
+.pl-list-items ul.menu-v li label:hover .pl-favorite i.icon16 { display: inline-block; }

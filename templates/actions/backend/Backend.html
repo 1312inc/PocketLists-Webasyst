@@ -14,38 +14,52 @@
     <div id="wa">
         {$wa->header()}
         <div id="wa-app">
+        
             <div class="sidebar left200px">
-                <div class="block">
+                <div class="block double-padded pl-sidebar-core">
                     <ul class="menu-v with-icons">
                          <li class="selected">
-                             <a href="#"><i class="icon16 cheatsheet"></i>[`Lists`]</a>
+                             <a href="#"><i class="icon16 car"></i>1312</a>
                          </li>
                          <li>
-                             <a href="#"><i class="icon16 yes-bw"></i>[`Reminders`]</a>
+                             <span class="count indicator red">1</span>
+                             <a href="#">
+                             	<i class="icon16 split"></i>Errands
+                             </a>
                          </li>
                          <li>
-                             <a href="#"><i class="icon16 contact"></i>[`Team`]</a>
+                             <a href="#"><i class="icon16 lock-bw"></i>Personal</a>
                          </li>
                     </ul>
                 </div>
                 <div class="block pl-sidebar-cling">
-                    <h5 class="heading top-padded">1312 <i class="icon10 darr"></i></h5>
-                    <ul class="menu-v with-icons collapsible">
+                    
+                    <ul class="menu-v with-icons">
+                         <li class="selected">
+                             <span class="count">3</span>
+                             <a href="#"><i class="icon16 cheatsheet"></i>[`Lists`]</a>
+                         </li>
+                         
                          <li>
-                             <a href="#"><i class="icon16 folder"></i>List 1</a>
+                             <span class="count">5</span>
+                             <a href="#"><i class="icon16 yes-bw"></i>[`Reminders`]</a>
                          </li>
                          <li>
-                             <a href="#"><i class="icon16 folder"></i>List 2</a>
+                             <span class="count">0</span>
+                             <a href="#"><i class="icon16 star"></i>[`Favorites`]</a>
                          </li>
                          <li>
-                             <a href="#"><i class="icon16 folder"></i>List 3</a>
+                             <span class="count">2</span>
+                             <a href="#"><i class="icon16 tags"></i>[`Tags`]</a>
                          </li>
+                         
                          <li>
-                             <a href="#" class="small"><i class="icon10 add"></i>[`New list`]</a>
+                             <span class="count">4</span>
+                             <a href="#"><i class="icon16 contact"></i>[`Team`]</a>
                          </li>
                     </ul>
                 </div>
-                <div class="block">
+                <div class="block double-padded">
                     <ul class="menu-v with-icons">
                          <li>
                              <a href="#"><i class="icon16 archive"></i>[`Archive`]</a>
@@ -53,37 +67,145 @@
                          <li>
                              <a href="#"><i class="icon16 settings"></i>[`Settings`]</a>
                          </li>
+                         <li class="small top-padded">
+                             <a href="#"><i class="icon10 add"></i>[`New pocket`]</a>
+                         </li>
                     </ul>
                 </div>
             </div>
+            
             <div class="content left200px">
                 <div id="content">
-                    <div class="shadowed block">
-                        <h1>
-                            <label>
-                                <input type="checkbox" class="large">
-                                {$message|escape}
-                            </label>
-                        </h1>
-                        <ul>
-                            {$items = [ 'Oranges', 'Apples', 'Potatoes' ]}
-                            {foreach $items as $item}
-                                <li>
-                                    <label>
-                                        <input type="checkbox">
-                                        {$item|escape}
-                                    </label>
-                                    <ul>
-                                        <li>
-                                            <label>
-                                                <input type="checkbox">
-                                                subitem
-                                            </label>
-                                        </li>
-                                    </ul>
-                                </li>
-                            {/foreach}
-                        </ul>
+                    <div class="shadowed">
+                    	<nav class="sidebar left250px">
+                    		<h5 class="heading block">
+                    			<a href="#" class="count" title="[`New list`]">
+                    				<i class="icon16 add"></i>
+                    			</a>
+		                    	1312
+		                    </h5>
+                    		<ul class="menu-v with-icons stack">
+                    			<li>
+                    				<a href="#">
+                    					<span class="count">14</span>
+                    					<i class="icon16 clapperboard"></i> Movies to watch
+                    				</a>
+                    			</li>
+                    			<li class="selected">
+                    				<a href="#">
+                    					<span class="count">5</span>
+                    					<i class="icon16 cart"></i> Groceries
+                    				</a>
+                    			</li>
+                    			<li>
+                    				<a href="#">
+                    					<span class="count indicator red">2</span>
+                    					<i class="icon16 books"></i> Books to read
+                    				</a>
+                    			</li>
+                    		</ul>
+                    	</nav>
+                    	<main class="content left250px blank bordered-left">
+	                    	<header class="pl-list-title">
+	                    		<div class="float-right block half-padded">
+	                    			<ul class="menu-h">
+	                    				<li>
+	                    					<a href="#"><i class="icon16 link"></i> [`Share`]</a>
+	                    				</li>
+	                    				<li>
+	                    					<a href="#"><i class="icon16 add"></i> [`Add to-do`]</a>
+	                    				</li>
+	                    			</ul>
+	                    		</div>
+		                        <h1>
+		                            <label>
+		                                <input type="checkbox" class="large">
+		                                {$listname|escape}
+		                            </label>
+		                        </h1>
+		                    </header>
+		                    <div class="pl-list-items">
+		                        <ul class="menu-v">
+		                            <li>
+		                                <label>
+		                                	<a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
+		                                    <input type="checkbox">
+		                                    Food
+		                                </label>
+		                                <ul class="">
+		                                    <li>
+		                                        <label>
+		                                        	<a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
+		                                            <input type="checkbox">
+		                                            <i class="icon16 exclamation-red"></i> Roastbeef
+		                                        </label>
+		                                    </li>
+		                                    <li>
+		                                        <label class="gray">
+		                                        	<a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
+		                                            <input type="checkbox" checked="checked">
+		                                            Rib eye
+		                                        </label>
+		                                    </li>
+		                                </ul>
+		                            </li>
+		                            
+		                            <li>
+		                                <label>
+		                                	<a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
+		                                    <input type="checkbox">
+		                                    Drinks
+		                                </label>
+		                                <ul class="">
+		                                    <li>
+		                                        <label class="gray">
+		                                        	<a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
+		                                            <input type="checkbox" checked="checked">
+		                                            Beer
+		                                        </label>
+		                                    </li>
+		                                    <li>
+		                                        <label class="gray">
+		                                        	<a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
+		                                            <input type="checkbox" checked="checked">
+		                                            Wine
+		                                        </label>
+		                                    </li>
+		                                    <li>
+		                                        <label>
+		                                        	<a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
+		                                            <input type="checkbox">
+		                                            Water
+		                                        </label>
+		                                        <ul class="">
+				                                    <li>
+				                                        <label>
+				                                        	<a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
+				                                            <input type="checkbox">
+				                                            A water "Visoko-visoko v gorakh jila-bila khoroshaya voda jila sebe pojivala da dobra najivala poka ne kupil ee dobri molodec da ni vipil"
+				                                        </label>
+				                                    </li>
+				                                    <li>
+				                                        <label>
+				                                        	<a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
+				                                            <input type="checkbox" checked="checked">
+				                                            Borjomi
+				                                        </label>
+				                                    </li>
+				                                </ul>
+		                                    </li>
+		                                </ul>
+		                            </li>
+									<li>
+										<label>
+											<a href="#" class="inline-link gray"><b><i>[`Show all 11 completed items`]</i></b></a>
+										</label>
+									</li>
+		                        </ul>
+	                        </div>
+	                       	<div class="clear-both"></div>
+	                    </main>
+                        
                     </div>
                 </div>
             </div>
