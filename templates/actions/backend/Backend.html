@@ -18,30 +18,72 @@
                 <div class="block">
                     <ul class="menu-v with-icons">
                          <li class="selected">
-                             <a href="#" class="bold"><i class="icon16 smiley"></i>[`Hello world`]</a>
+                             <a href="#"><i class="icon16 cheatsheet"></i>[`Lists`]</a>
+                         </li>
+                         <li>
+                             <a href="#"><i class="icon16 yes-bw"></i>[`Reminders`]</a>
+                         </li>
+                         <li>
+                             <a href="#"><i class="icon16 contact"></i>[`Team`]</a>
+                         </li>
+                    </ul>
+                </div>
+                <div class="block pl-sidebar-cling">
+                    <h5 class="heading top-padded">1312 <i class="icon10 darr"></i></h5>
+                    <ul class="menu-v with-icons collapsible">
+                         <li>
+                             <a href="#"><i class="icon16 folder"></i>List 1</a>
+                         </li>
+                         <li>
+                             <a href="#"><i class="icon16 folder"></i>List 2</a>
+                         </li>
+                         <li>
+                             <a href="#"><i class="icon16 folder"></i>List 3</a>
+                         </li>
+                         <li>
+                             <a href="#" class="small"><i class="icon10 add"></i>[`New list`]</a>
                          </li>
                     </ul>
                 </div>
                 <div class="block">
-                    <h5 class="heading top-padded"><b>[`Navigation`]</b></h5>
-                    <ul class="menu-v with-icons collapsible">
+                    <ul class="menu-v with-icons">
                          <li>
-                             <a href="#"><i class="icon16 folder"></i>[`Menu item 1`]</a>
+                             <a href="#"><i class="icon16 archive"></i>[`Archive`]</a>
                          </li>
                          <li>
-                             <a href="#"><i class="icon16 folder"></i>[`Menu item 2`]</a>
-                         </li>
-                         <li>
-                             <a href="#"><i class="icon16 folder"></i>[`Menu item 3`]</a>
+                             <a href="#"><i class="icon16 settings"></i>[`Settings`]</a>
                          </li>
                     </ul>
                 </div>
             </div>
             <div class="content left200px">
                 <div id="content">
-                    <div class="block">
-                        <h1>{$message|escape}</h1>
-                        <p>[`Woohoo, Webasyst app is ready!`]</p>
+                    <div class="shadowed block">
+                        <h1>
+                            <label>
+                                <input type="checkbox" class="large">
+                                {$message|escape}
+                            </label>
+                        </h1>
+                        <ul>
+                            {$items = [ 'Oranges', 'Apples', 'Potatoes' ]}
+                            {foreach $items as $item}
+                                <li>
+                                    <label>
+                                        <input type="checkbox">
+                                        {$item|escape}
+                                    </label>
+                                    <ul>
+                                        <li>
+                                            <label>
+                                                <input type="checkbox">
+                                                subitem
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </li>
+                            {/foreach}
+                        </ul>
                     </div>
                 </div>
             </div>
