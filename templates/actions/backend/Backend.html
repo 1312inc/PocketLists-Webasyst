@@ -19,16 +19,19 @@
                 <div class="block double-padded pl-sidebar-core">
                     <ul class="menu-v with-icons">
                          <li class="selected">
-                             <a href="#"><i class="icon16 car"></i>1312</a>
+                             <a href="#"><i class="icon16 status-blue-tiny" onClick="alert('с полным рефрешем страницы');"></i>Personal</a>
                          </li>
                          <li>
                              <span class="count indicator red">1</span>
-                             <a href="#">
-                             	<i class="icon16 split"></i>Errands
+                             <a href="#" onClick="alert('с полным рефрешем страницы');">
+                             	<i class="icon16 status-green-tiny"></i>Errands
                              </a>
                          </li>
                          <li>
-                             <a href="#"><i class="icon16 lock-bw"></i>Personal</a>
+                             <a href="#" onClick="alert('с полным рефрешем страницы');"><i class="icon16 status-red-tiny"></i>Msk</a>
+                         </li>
+                         <li>
+                             <a href="#" onClick="alert('с полным рефрешем страницы');"><i class="icon16 status-yellow-tiny"></i>Krasnodar</a>
                          </li>
                     </ul>
                 </div>
@@ -37,38 +40,42 @@
                     <ul class="menu-v with-icons">
                          <li class="selected">
                              <span class="count">3</span>
-                             <a href="#"><i class="icon16 cheatsheet"></i>[`Lists`]</a>
+                             <a href="#" onClick="alert('ajax-обновление контента');"><i class="icon16 cheatsheet"></i>[`Lists`]</a>
                          </li>
                          
                          <li>
+                             <span class="count">0</span>
+                             <a href="#" onClick="alert('ajax-обновление контента');"><i class="icon16 userpic20"></i>[`Assigned to me`]</a>
+                         </li>
+                         <li>
                              <span class="count">5</span>
-                             <a href="#"><i class="icon16 yes-bw"></i>[`Reminders`]</a>
+                             <a href="#" onClick="alert('ajax-обновление контента');"><i class="icon16 yes-bw"></i>[`Reminders`]</a>
                          </li>
                          <li>
                              <span class="count">0</span>
-                             <a href="#"><i class="icon16 star"></i>[`Favorites`]</a>
+                             <a href="#" onClick="alert('ajax-обновление контента');"><i class="icon16 star"></i>[`Favorites`]</a>
                          </li>
                          <li>
                              <span class="count">2</span>
-                             <a href="#"><i class="icon16 tags"></i>[`Tags`]</a>
+                             <a href="#" onClick="alert('ajax-обновление контента');"><i class="icon16 tags"></i>[`Tags`]</a>
                          </li>
                          
                          <li>
                              <span class="count">4</span>
-                             <a href="#"><i class="icon16 contact"></i>[`Team`]</a>
+                             <a href="#" onClick="alert('ajax-обновление контента');"><i class="icon16 contact"></i>[`Team`]</a>
                          </li>
                     </ul>
                 </div>
                 <div class="block double-padded">
                     <ul class="menu-v with-icons">
                          <li>
-                             <a href="#"><i class="icon16 archive"></i>[`Archive`]</a>
+                             <a href="#" onClick="alert('с полным рефрешем страницы');"><i class="icon16 archive"></i>[`Archive`]</a>
                          </li>
                          <li>
-                             <a href="#"><i class="icon16 settings"></i>[`Settings`]</a>
+                             <a href="#" onClick="alert('с полным рефрешем страницы');"><i class="icon16 settings"></i>[`Settings`]</a>
                          </li>
                          <li class="small top-padded">
-                             <a href="#"><i class="icon10 add"></i>[`New pocket`]</a>
+                             <a href="#" onClick="alert('диалог, как в приложении Сайт');"><i class="icon10 add"></i>[`New pocket`]</a>
                          </li>
                     </ul>
                 </div>
@@ -126,71 +133,115 @@
 		                    </header>
 		                    <div class="pl-list-items">
 		                        <ul class="menu-v">
-		                            <li>
-		                                <label>
+		                        
+		                        	<li>
+		                                <div class="pl-item">
 		                                	<a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
-		                                    <input type="checkbox">
-		                                    Food
-		                                </label>
+		                                	<label>
+			                                    <input type="checkbox">
+			                                    <input type="text" placeholder="[`Add to-do`]" class="long">
+			                                </label>
+		                                </div>
+		                            </li>
+		                            
+		                            <li>
+		                                <div class="pl-item">
+		                                	<a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
+		                                	<label>
+			                                    <input type="checkbox">
+			                                    Food
+			                                    <a href="#" class="pl-item-details"><i class="icon16 info"></i></a>
+			                                </label>
+		                                </div>
 		                                <ul class="">
 		                                    <li>
-		                                        <label>
+		                                        <div class="pl-item">
 		                                        	<a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
-		                                            <input type="checkbox">
-		                                            <i class="icon16 exclamation-red"></i> Roastbeef
-		                                        </label>
+		                                        	<label>
+			                                            <input type="checkbox">
+			                                            Roastbeef
+			                                            <a href="#" class="pl-item-details"><i class="icon16 info"></i></a>
+			                                            <br>
+		    	                                        <span class="small red">&minus; 3 days</span>
+		    	                                    </label>
+		                                        </div>
 		                                    </li>
 		                                    <li>
-		                                        <label class="gray">
+		                                        <div class="pl-item">
 		                                        	<a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
-		                                            <input type="checkbox" checked="checked">
-		                                            Rib eye
-		                                        </label>
+		                                        	<label>
+			                                            <input type="checkbox">
+			                                            Rib eye
+			                                            <a href="#" class="pl-item-details"><i class="icon16 info"></i></a>
+			                                            <br>
+		    	                                        <span class="small" style="color: green">Tomorrow</span>
+		    	                                    </label>
+		                                        </div>
 		                                    </li>
 		                                </ul>
 		                            </li>
 		                            
 		                            <li>
-		                                <label>
+		                                <div class="pl-item">
 		                                	<a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
-		                                    <input type="checkbox">
-		                                    Drinks
-		                                </label>
+		                                	<label>
+			                                    <input type="checkbox">
+			                                    Drinks
+			                                    <a href="#" class="pl-item-details"><i class="icon16 info"></i></a>
+			                                </label>
+		                                </div>
 		                                <ul class="">
 		                                    <li>
-		                                        <label class="gray">
+		                                        <div class="pl-item">
 		                                        	<a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
-		                                            <input type="checkbox" checked="checked">
-		                                            Beer
-		                                        </label>
+		                                        	<label>
+			                                            <input type="checkbox" checked="checked">
+			                                            Beer
+			                                            <a href="#" class="pl-item-details"><i class="icon16 info"></i></a>
+		    	                                    </label>
+		                                        </div>
 		                                    </li>
 		                                    <li>
-		                                        <label class="gray">
+		                                        <div class="pl-item">
 		                                        	<a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
-		                                            <input type="checkbox" checked="checked">
-		                                            Wine
-		                                        </label>
+		                                        	<label>
+			                                            <input type="checkbox" checked="checked">
+			                                            Wine
+			                                            <a href="#" class="pl-item-details"><i class="icon16 info"></i></a>
+		    	                                    </label>
+		                                        </div>
 		                                    </li>
 		                                    <li>
-		                                        <label>
+		                                        <div class="pl-item">
 		                                        	<a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
-		                                            <input type="checkbox">
-		                                            Water
-		                                        </label>
+		                                        	<label>
+			                                            <input type="checkbox">
+			                                            Water
+			                                            <a href="#" class="pl-item-details"><i class="icon16 info"></i></a>
+		    	                                    </label>
+		                                        </div>
 		                                        <ul class="">
 				                                    <li>
-				                                        <label>
+				                                        <div class="pl-item">
 				                                        	<a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
-				                                            <input type="checkbox">
-				                                            A water "Visoko-visoko v gorakh jila-bila khoroshaya voda jila sebe pojivala da dobra najivala poka ne kupil ee dobri molodec da ni vipil"
-				                                        </label>
+				                                        	<label>
+					                                            <input type="checkbox">
+					                                            A water "Visoko-visoko v gorakh jila-bila khoroshaya voda jila sebe pojivala da dobra najivala poka ne kupil ee dobri molodec da ni vipil"
+					                                            <a href="#" class="pl-item-details"><i class="icon16 info"></i></a>
+					                                            <br>
+		    	      		                                  <span class="small" style="color: #ca0;">Tomorrow</span>
+					                                        </label>
+				                                        </div>
 				                                    </li>
 				                                    <li>
-				                                        <label>
+				                                        <div class="pl-item">
 				                                        	<a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
-				                                            <input type="checkbox" checked="checked">
-				                                            Borjomi
-				                                        </label>
+				                                        	<label>
+					                                            <input type="checkbox" checked="checked">
+					                                            Borjomi
+					                                            <a href="#" class="pl-item-details"><i class="icon16 info"></i></a>
+					                                        </label>
+				                                        </div>
 				                                    </li>
 				                                </ul>
 		                                    </li>

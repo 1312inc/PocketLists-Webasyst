@@ -25,14 +25,18 @@
 }
 
 .pl-list-items ul.menu-v { margin: 0; padding: 0; }
-.pl-list-items ul.menu-v li { padding: 0; }
-.pl-list-items ul.menu-v li input[type="checkbox"] { margin-right: 10px; }
-.pl-list-items ul.menu-v li label { padding: 13px 20px; display: block; border-bottom: 1px solid 
+.pl-list-items ul.menu-v li { padding: 0; margin: 0; }
+.pl-list-items ul.menu-v li .pl-item { padding: 13px 20px; display: block; border-bottom: 1px solid 
 rgba(0,0,0,0.1); }
-.pl-list-items ul.menu-v li label:hover { border-bottom: 1px solid rgba(0,0,0,0.5); }
+.pl-list-items ul.menu-v li .pl-item:hover { background: rgba(0,0,0,0.02); }
+.pl-list-items ul.menu-v li label { position: relative; padding-left: 25px; display: block; line-height: 1.3em; cursor: pointer; }
+.pl-list-items ul.menu-v li input[type="checkbox"] { margin-right: 10px; position: absolute; left: 0px; top: 0.2em; }
 .pl-list-items ul.menu-v li ul { padding-left: 0; margin: 0; }
-.pl-list-items ul.menu-v li ul li label { padding-left: 46px; }
-.pl-list-items ul.menu-v li ul li ul li label { padding-left: 72px; }
+.pl-list-items ul.menu-v li ul li .pl-item { padding-left: 46px; }
+.pl-list-items ul.menu-v li ul li ul li .pl-item { padding-left: 72px; }
 
 .pl-favorite i.icon16 { float: right; display: none; }
-.pl-list-items ul.menu-v li label:hover .pl-favorite i.icon16 { display: inline-block; }
+.pl-list-items ul.menu-v li .pl-item:hover .pl-favorite i.icon16 { display: inline-block; }
+
+.pl-list-items ul.menu-v li .pl-item .pl-item-details { display: none; }
+.pl-list-items ul.menu-v li .pl-item:hover .pl-item-details { display: inline; }
