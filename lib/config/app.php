@@ -1,7 +1,7 @@
 <?php
 return array (
-  'name' => 'Pocket Lists',
-  'icon' => 
+  'name' => 'Lists',
+  'icon' =>
   array (
     48 => 'img/pocketlists48.png',
     96 => 'img/pocketlists96.png',

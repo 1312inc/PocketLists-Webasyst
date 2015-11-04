@@ -1,19 +1,75 @@
 /* Pocket Lists for Webasyst
 ============================ */
 
-/* Sidebar
---------- */
+.CLICKME { border: 1px dashed #c77; }
 
+/* Sidebars
+----------- */
+
+.shadowed { background: #fff; }
 .pl-sidebar-core { margin-top: 20px; }
-.pl-sidebar-cling {
+.pl-inner-sidebar {  }
+/*.pl-sidebar-cling {
 	background: rgba(220, 220, 220, 0.5) none repeat scroll 0 0;
     box-shadow: -4px 0 4px -2px rgba(0, 0, 0, 0.1) inset, 0 2px 3px rgba(0, 0, 0, 0.2);
     margin: 0 -15px 0 10px;
     padding-bottom: 13px;
-}
+}*/
 
-/* List items
-------------- */
+.pl-white { background: #fff; }
+.pl-gray { background: #f7f7f7; }
+.pl-green { background: #f3ffe3; }
+.pl-blue { background: #eeffff; }
+.pl-purple { background: #fcf3ff; }
+.pl-red { background: #fff1f1; }
+.pl-yellow { background: #ffffe3; }
+
+.pl-dark-gray { background: #888 !important; }
+.pl-dark-green { background: #7ac33c !important; }
+.pl-dark-blue { background: #5da5f5 !important; }
+.pl-dark-purple { background: #bc7cf5 !important; }
+.pl-dark-red { background: #f7696d !important; }
+.pl-dark-yellow { background: #f5cf24 !important; }
+
+.icon16.color { border: none; }
+
+.indicator.yellow { background-color: #da3; color: #fff; }
+.indicator.green { background-color: green; color: #fff; }
+
+/* Pocket
+--------- */
+
+.pl-pocket { background: #5da5f5; text-align: center; padding: 0; position: relative; }
+.pl-pocket a.count { padding: 15px; position: absolute; right: 0; }
+.pl-pocket ul.menu-h { margin: 0;  }
+.pl-pocket ul.menu-h li { margin: 0; display: inline-block; position: static; }
+.pl-pocket ul.menu-h li h5 a { color: #fff; text-align: center; font-size: 1.3em; padding: 15px;  }
+.pl-pocket ul.menu-h li ul.menu-v { border: none; box-shadow: 0 4px 12px -8px rgba(0,0,0,0.2); top: 90%; margin-left: 0; left: 0; max-height: 0; overflow: hidden; transition: max-height 0.15s ease-out; display: block; }
+.pl-pocket ul.menu-h li ul.menu-v li { padding-right: 4px; padding-top: 6px; }
+.pl-pocket ul.menu-h li ul.menu-v li a { padding-top: 10px; padding-bottom: 10px; }
+.pl-pocket ul.menu-h li:hover { background: transparent; }
+.pl-pocket ul.menu-h li:hover ul.menu-v { max-height: 500px; transition: max-height 0.25s ease-in; }
+
+/* Lists
+-------- */
+
+ul.pl-lists { background: #fff; padding: 0; margin: 0; }
+ul.pl-lists li { list-style: none; }
+ul.pl-lists li a { border-bottom: 1px solid rgba(0,0,0,0.1); padding: 20px 15px 5px; font-size: 1.15em; display: block; }
+ul.pl-lists li a .count { font-size: 0.9em; }
+ul.pl-lists li a .indicator { padding: 3px 7px 4px; margin-top: -3px; }
+ul.pl-lists li a i.listicon48 { position: relative; top: -7px; margin-right: 10px; }
+ul.pl-lists li a:hover { color: inherit !important; background: rgba(0,0,0,0.025); }
+ul.pl-lists li.selected a { color: #000 !important; }
+
+
+/* Items
+-------- */
+
+#pl-item-add-link { }
+#pl-item-add { display: none; }
+
+.pl-items { position: relative; min-height: 500px; }
 
 .pl-list-title { border-bottom: 1px solid rgba(0,0,0,0.1); padding: 25px 20px; }
 .pl-list-title h1 input[type="checkbox"] {
@@ -26,17 +82,34 @@
 
 .pl-list-items ul.menu-v { margin: 0; padding: 0; }
 .pl-list-items ul.menu-v li { padding: 0; margin: 0; }
-.pl-list-items ul.menu-v li .pl-item { padding: 13px 20px; display: block; border-bottom: 1px solid 
+.pl-list-items ul.menu-v li .pl-item { display: block; border-bottom: 1px solid
 rgba(0,0,0,0.1); }
-.pl-list-items ul.menu-v li .pl-item:hover { background: rgba(0,0,0,0.02); }
-.pl-list-items ul.menu-v li label { position: relative; padding-left: 25px; display: block; line-height: 1.3em; cursor: pointer; }
-.pl-list-items ul.menu-v li input[type="checkbox"] { margin-right: 10px; position: absolute; left: 0px; top: 0.2em; }
+.pl-list-items ul.menu-v li .pl-item:hover { background: rgba(0,0,0,0.025); }
+.pl-list-items ul.menu-v li .pl-item:after { border-top: 1px solid red; }
+.pl-list-items ul.menu-v li label { padding: 13px 25px 13px 45px; display: block; line-height: 1.3em; cursor: pointer; }
+.pl-list-items ul.menu-v li input.pl-done { margin-left: 20px; margin-right: 10px; position: relative; left: 0px; top: 16px; float: left; }
 .pl-list-items ul.menu-v li ul { padding-left: 0; margin: 0; }
-.pl-list-items ul.menu-v li ul li .pl-item { padding-left: 46px; }
-.pl-list-items ul.menu-v li ul li ul li .pl-item { padding-left: 72px; }
+.pl-list-items ul.menu-v li ul li .pl-item { padding-left: 26px; }
+.pl-list-items ul.menu-v li ul li ul li .pl-item { padding-left: 52px; }
 
-.pl-favorite i.icon16 { float: right; display: none; }
+.pl-list-items ul.menu-v li .pl-item .pl-favorite { display: inline-block; float: right; }
+.pl-list-items ul.menu-v li .pl-item .pl-favorite i.icon16 { display: none; }
 .pl-list-items ul.menu-v li .pl-item:hover .pl-favorite i.icon16 { display: inline-block; }
 
-.pl-list-items ul.menu-v li .pl-item .pl-item-details { display: none; }
-.pl-list-items ul.menu-v li .pl-item:hover .pl-item-details { display: inline; }
+.pl-is-selected { display: none; }
+
+#pl-complete-log { display: none; color: #aaa; }
+#pl-complete-log h5 { margin: 30px 20px 0; }
+#pl-complete-log-link { padding: 13px 20px; display: block; }
+
+#pl-item-details { display: none; position: absolute; top: 0; bottom: 0; right: 0; width: 550px; background: #fff; box-shadow: -10px 0 20px -10px rgba(0,0,0,0.1); }
+
+/* List icons
+------------- */
+
+i.listicon48 { background-repeat:no-repeat; height: 32px; width: 32px; background-size: 32px 32px; display:inline-block; text-indent:-9999px; text-decoration:none!important; }
+* i.listicon48 { text-decoration:none!important; vertical-align:top; margin: -0.1em 0.25em 0 0; }
+i.listicon48.achtung { background-image: url(../img/listicons/achtung.png); }
+i.listicon48.award { background-image: url(../img/listicons/award.png); }
+i.listicon48.bag { background-image: url(../img/listicons/bag.png); }
+i.listicon48.books { background-image: url(../img/listicons/books.png); }
