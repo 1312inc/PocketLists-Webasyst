@@ -145,6 +145,9 @@
         defaultAction: function () {
             this.pocketAction();
         },
+        listsAction: function() {
+            this.pocketAction();
+        },
         pocketAction: function (id) {
             var list = decodeURIComponent(this.getHash().substr(('#/pocket/' + id + '/list/').length).replace('/', '')) || '';
             if (list) {
