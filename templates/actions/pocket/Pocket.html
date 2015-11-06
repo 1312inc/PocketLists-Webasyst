@@ -1,0 +1,50 @@
+<div class="shadowed">
+    <nav class="sidebar left300px">
+
+        <!-- POCKET -->
+        <div class="pl-pocket">
+            <a href="#/list/new" class="count" title="[`New list`]">
+                <i class="icon16 add"></i>
+            </a>
+            <ul class="menu-h dropdown">
+                <li>
+                    <h5><a href="#/pocket/{$pocket.id}/">{$pocket.name} <i class="icon10 darr"></i></a></h5>
+                    <ul class="menu-v with-icons">
+                        {foreach $pockets as $p}
+                        <li class="{if $pocket.id == $p.id}selected{/if}">
+                            {if $p.indicator.count}<span class="count indicator {$p.indicator.color}">{$p.indicator.count}</span>{/if}
+                            <a href="#/pocket/{$p.id}/"><i class="icon16 color {$p.class}"></i>{$p.name}</a>
+                        </li>
+                        {/foreach}
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <!-- LISTS -->
+        <div class="pl-inner-sidebar" id="pl-lists">
+            <ul class="pl-lists">
+                {foreach $lists as $l}
+                <li class="{$l.class}">
+                    <a href="#/pocket/{$pocket.id}/list/{$l.id}/">
+                        {if $l.indicator.count || $l.amount}<span class="count {if $l.indicator.color}indicator {$l.indicator.color}{/if}">{if !empty($l.amount)}{$l.amount} <span class="ruble">Р</span>{else}{$l.indicator.count}{if !empty($l.indicator.lock)} <i class="icon16 lock-bw"></i>{/if}{/if}</span>{/if}
+                        <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l.icon});"></i> {$l.name}
+                    </a>
+                </li>
+                {/foreach}
+            </ul>
+        </div>
+
+    </nav>
+
+    <!-- ITEMS -->
+    <main class="content left300px blank bordered-left pl-items pl-blue">
+
+    </main>
+
+</div>
+
+<script type="text/javascript" src="{$wa_app_static_url}js/pocketlists.js"></script>
+<script text="text/javascript">
+
+</script>
