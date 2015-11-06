@@ -168,6 +168,11 @@
                 $('#content').html(result);
             });
         },
+        teamAction: function () {
+            this.load('?module=team', function (result) {
+                $('#content').html(result);
+            });
+        },
         /** Helper to load data into main content area. */
         load: function (url, options, fn) {
             if (typeof options === 'function') {
