@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>{$wa->appName()} &mdash; {$wa->accountName()}</title>
+    {$wa->css()}
+    <link type="text/css" rel="stylesheet" href="{$wa_app_static_url}css/pocketlists.css">
+    <script type="text/javascript" src="{$wa_url}wa-content/js/jquery/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="{$wa_url}wa-content/js/jquery-wa/wa.core.js"></script>
+    <script type="text/javascript" src="{$wa_url}wa-content/js/jquery-plugins/jquery.history.js"></script>
+    <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-routing.js"></script>
+    <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists.js"></script>
+
+</head>
+<body>
+    <div id="wa">
+        {$wa->header()}
+        <div id="wa-app">
+
+            <div class="sidebar left200px">
+                <div class="block pl-sidebar-core">
+
+                    <!-- CORE FILTERS -->
+                    <ul class="menu-v with-icons">
+                         <li class="selected">
+                             <span class="count">8</span>
+                             <a href="#lists"><i class="icon16 cheatsheet"></i>[`Lists`]</a>
+                         </li>
+
+                         <li>
+                             <span class="count indicator yellow">3</span>
+                             <a href="#my" onClick="alert('ajax-обновление контента');"><i class="icon16 userpic20"></i>[`Assigned to me`]</a>
+                         </li>
+                         <li>
+                             <span class="count">5</span>
+                             <a href="#reminders" onClick="alert('ajax-обновление контента');"><i class="icon16 yes-bw"></i>[`Reminders`]</a>
+                         </li>
+                         <li>
+                             <span class="count">0</span>
+                             <a href="#favs" onClick="alert('ajax-обновление контента');"><i class="icon16 star"></i>[`Favorites`]</a>
+                         </li>
+                         <li>
+                             <span class="count">2</span>
+                             <a href="#tags" onClick="alert('ajax-обновление контента');"><i class="icon16 tags"></i>[`Tags`]</a>
+                         </li>
+                         <li>
+                             <span class="count">5</span>
+                             <a href="#notes" onClick="alert('ajax-обновление контента');"><i class="icon16 edit"></i>[`Notes`]</a>
+                         </li>
+
+                         <li>
+                             <span class="count">4</span>
+                             <a href="#team" onClick="alert('ajax-обновление контента');"><i class="icon16 contact"></i>[`Team`]</a>
+                         </li>
+                    </ul>
+
+                  </div>
+
+
+                  {*
+                  <div class="block">
+                    <h5 class="heading"><i class="icon16 darr"></i>[`Pockets`]</h5>
+                      <div class="hierarchical">
+                          <ul class="menu-v with-icons">
+                               <li class="selected">
+                                   <a href="#"><i class="icon16 color pl-dark-blue" onClick="alert('с полным рефрешем страницы');"></i>Personal</a>
+                               </li>
+                               <li>
+                                   <span class="count indicator red">1</span>
+                                   <a href="#" onClick="alert('с полным рефрешем страницы');">
+                                    <i class="icon16 color pl-dark-green"></i>Errands
+                                   </a>
+                               </li>
+                               <li>
+                                   <a href="#" onClick="alert('с полным рефрешем страницы');"><i class="icon16 color pl-dark-red"></i>Msk</a>
+                               </li>
+                               <li>
+                                   <a href="#" onClick="alert('с полным рефрешем страницы');"><i class="icon16 color pl-dark-yellow"></i>Krasnodar</a>
+                               </li>
+                          </ul>
+                        </div>
+                </div>
+                *}
+
+
+                <div class="hr"></div>
+                <div class="block">
+                    <ul class="menu-v with-icons">
+                         <li>
+                             <span class="count">0</span>
+                             <a href="#" onClick="alert('с полным рефрешем страницы');"><i class="icon16 archive"></i>[`Archive`]</a>
+                         </li>
+                         <li>
+                             <a href="#" onClick="alert('с полным рефрешем страницы');"><i class="icon16 settings"></i>[`Settings`]</a>
+                         </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="content left200px">
+                <div id="content">
+
+                </div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript">
+    $.pocketlists_routing.init();
+</script>
+</body>
+</html>

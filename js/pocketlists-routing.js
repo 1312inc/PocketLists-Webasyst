@@ -3,7 +3,7 @@
 
     $.pocketlists_routing = {
         options: {},
-        init: function () {
+        init: function (options) {
             var that = this;
             that.options = options;
             if (typeof($.History) != "undefined") {
@@ -78,10 +78,10 @@
                     var attr = hash.slice(attrMarker);
                     this.preExecute(actionName);
                     if (typeof(this[actionName + 'Action']) == 'function') {
-                        $.shop.trace('$.orders.dispatch',[actionName + 'Action',attr]);
+                        console.info('dispatch',[actionName + 'Action',attr]);
                         this[actionName + 'Action'].apply(this, attr);
                     } else {
-                        $.shop.error('Invalid action name:', actionName+'Action');
+                        console.info('Invalid action name:', actionName+'Action');
                     }
                     this.postExecute(actionName);
                 } else {
@@ -100,6 +100,38 @@
         },
         postExecute: function () {
 
+        },
+        
+        // actions
+        defaultAction: function() {
+
+        },
+        listsAction: function () {
+            this.load('?module=lists', function(result) {
+                $('#content').html(result);
+            });
+        },
+
+        /** Helper to load data into main content area. */
+        load: function (url, options, fn) {
+            if (typeof options === 'function') {
+                fn = options;
+                options = {};
+            } else {
+                options = options || {};
+            }
+            var r = Math.random();
+            this.random = r;
+            var self = this;
+            return  $.get(url, function(result) {
+                if ((typeof options.check === 'undefined' || options.check) && self.random != r) {
+                    // too late: user clicked something else.
+                    return;
+                }
+                if (typeof fn === 'function') {
+                    fn.call(this, result);
+                }
+            });
         }
     }
 }(jQuery));
