@@ -4,6 +4,13 @@ class pocketlistsPocketAction extends waViewAction
 {
     public function execute()
     {
+        // get selected list items
+        $list = waRequest::get('list', false, waRequest::TYPE_INT);
+        if ($list) {
+            $list_content = wao(new pocketlistsListAction(array('list_id' => $list)))->display();
+            $this->view->assign('list_content', $list_content);
+        }
+
         $this->view->assign('pocket',array('id' => 1, 'name' => 'Personal', 'class' => 'pl-dark-blue', 'indicator' => array('count' => 1, 'color' => '')));
 
         $this->view->assign('pockets', array(
@@ -25,9 +32,5 @@ class pocketlistsPocketAction extends waViewAction
             array('id' => 7, 'name' => 'Gift list', 'class' => '', 'indicator' => array('count' => 2, 'color' => '', 'lock' => true), 'icon' => 'li-gift@2x.png'),
         ));
 
-        // get selected list items
-        $list = waRequest::get('list', false, waRequest::TYPE_INT);
-        if ($list) {
-        }
     }
 }
