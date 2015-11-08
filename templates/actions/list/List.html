@@ -1,5 +1,6 @@
 <header class="pl-list-title">
     <div class="float-right block half-padded">
+        {if $list.id}
         <ul class="menu-h">
             <li>
                 <a href="#" onClick="alert('waDialog с получением ссылки на список /list/...');"><i class="icon16 link"></i> [`Share link`]</a>
@@ -8,9 +9,10 @@
                 <a href="#" id="pl-item-add-link" class="CLICKME"><i class="icon16 add"></i> [`Add to-do`]</a>
             </li>
         </ul>
+        {/if}
     </div>
     <h1>
-        <input type="hidden" value="{$list.id}" id="pl-list-id">
+        <input type="hidden" value="{$list.id|default:-1}" id="pl-list-id">
         {if $new}
         <input type="text" placeholder="[`New list`]" id="pl-new-list-input"/>
         {else}
@@ -37,14 +39,7 @@
 
         {foreach $items as $i}
         <li>
-            <div class="pl-item">
-                <a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
-                <input type="checkbox" class="pl-done">
-                <label>
-                    <input type="checkbox" class="pl-is-selected">
-                    {$i.name}
-                </label>
-            </div>
+            {include '../item/Item.html' item=$i inline}
         </li>
         {/foreach}
 
@@ -252,7 +247,9 @@
     (function(){
         var list_id = $('#pl-list-id').val(),
             pocket_id = $('#pl-pocket-id').val(),
-            $loading = $('<i class="icon16 loading">');
+            $loading = $('<i class="icon16 loading">'),
+            $new_list_inpit = $('#pl-new-list-input'),
+            $new_item_wrapper = $('#pl-item-add');
 
         var update_list = function(id) {
             var data = {
@@ -281,13 +278,57 @@
                 );
             }
         };
-
-        $('#pl-new-list-input').on('blur', function(){
-            update_list.call(this, list_id);
-        }).on('keydown', function (e) {
-            if (e.which === 13) {
-                update_list.call(this, list_id);
+        var add_item = function(id) {
+            var data = {
+                name: $(this).val().trim(),
+                list_id: list_id
+            };
+            var $this = $(this);
+            if (data.name) {
+                $this.append($loading);
+                $.post(
+                        '?module=item&id=' + id,
+                        {
+                            data: data
+                        },
+                        function (html) {
+                            // reload items or construct html?
+                            $this.closest('li').after('<li>' + html + '</li>');
+                            $new_item_wrapper.slideToggle(200).find('input[type="text"]').val('');
+                        }
+                );
             }
+        };
+
+        if ($new_list_inpit.length) {
+            $new_list_inpit.focus();
+            $new_list_inpit.on('blur', function(){
+                update_list.call(this, list_id);
+            }).on('keydown', function (e) {
+                if (e.which === 13) {
+                    update_list.call(this, list_id);
+                }
+            });
+        }
+        $('#pl-item-add-link').click(function(){
+            $new_item_wrapper.slideToggle(200);
+            $new_item_wrapper.find('input[type="text"]').focus();
+            return false;
+        });
+        $new_item_wrapper.find('input[type="text"]').on('keydown', function (e) {
+            if (e.which === 13) {
+                add_item.call(this, 0);
+            }
+        });
+
+        $('.pl-done').click(function(){
+            $(this).closest('li').slideToggle(200);
+        });
+
+        $('#pl-complete-log-link').click(function(){
+            $('#pl-complete-log').slideToggle(200);
+            $(this).hide(200);
+            return false;
         });
     }());
 </script>
