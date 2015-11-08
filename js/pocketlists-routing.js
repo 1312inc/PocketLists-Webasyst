@@ -169,6 +169,11 @@
                 self.listAction(list_id);
             });
         },
+        archiveAction: function () {
+            this.load('?module=archive', function (result) {
+                $('#content').html(result);
+            });
+        },
         settingsAction: function () {
             this.load('?module=settings', function (result) {
                 $('#content').html(result);
