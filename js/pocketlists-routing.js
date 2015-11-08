@@ -148,14 +148,25 @@
         listsAction: function() {
             this.pocketAction();
         },
+        listAction: function(id) {
+            this.load('?module=list&id=' + id, function (result) {
+                $('#pl-list-content').html(result);
+            });
+        },
         pocketAction: function (id) {
-            var list = decodeURIComponent(this.getHash().substr(('#/pocket/' + id + '/list/').length).replace('/', '')) || '';
-            if (list) {
-                list = '&list=' + list;
+            var self = this;
+            var list_id = decodeURIComponent(this.getHash().substr(('#/pocket/' + id + '/list/').length).replace('/', '')) || 0;
+            if (list_id) {
+                if (list_id === 'new') {
+                    list_id = -1;
+                }
             }
             var id = id || false;
-            this.load('?module=pocket&id=' + id + list, function (result) {
+            this.load('?module=pocket&id=' + id, function (result) {
+                // show pockets
                 $('#content').html(result);
+                // and load selected list
+                self.listAction(list_id);
             });
         },
         settingsAction: function () {

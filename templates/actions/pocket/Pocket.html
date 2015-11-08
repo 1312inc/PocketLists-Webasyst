@@ -3,11 +3,12 @@
 
         <!-- POCKET -->
         <div class="pl-pocket">
-            <a href="#/list/new" class="count" title="[`New list`]">
+            <a href="#/pocket/{$pocket.id}/list/new" class="count" title="[`New list`]">
                 <i class="icon16 add"></i>
             </a>
             <ul class="menu-h dropdown">
                 <li>
+                    <input type="hidden" id="pl-pocket-id" value="{$pocket.id}"/>
                     <h5><a href="#/pocket/{$pocket.id}/">{$pocket.name} <i class="icon10 darr"></i></a></h5>
                     <ul class="menu-v with-icons">
                         {foreach $pockets as $p}
@@ -38,8 +39,8 @@
     </nav>
 
     <!-- ITEMS -->
-    <main class="content left300px blank bordered-left pl-items pl-blue">
-    {$list_content}
+    <main class="content left300px blank bordered-left pl-items pl-blue" id="pl-list-content">
+        <i class="icon16 loading"></i>
     </main>
 
 </div>

@@ -5,11 +5,11 @@ class pocketlistsPocketAction extends waViewAction
     public function execute()
     {
         // get selected list items
-        $list = waRequest::get('list', false, waRequest::TYPE_INT);
-        if ($list) {
-            $list_content = wao(new pocketlistsListAction(array('list_id' => $list)))->display();
-            $this->view->assign('list_content', $list_content);
-        }
+//        $list = waRequest::get('list', false, waRequest::TYPE_INT);
+//        if ($list) {
+//            $list_content = wao(new pocketlistsListAction(array('list_id' => $list)))->display();
+//            $this->view->assign('list_content', $list_content);
+//        }
 
         $this->view->assign('pocket',array('id' => 1, 'name' => 'Personal', 'class' => 'pl-dark-blue', 'indicator' => array('count' => 1, 'color' => '')));
 
