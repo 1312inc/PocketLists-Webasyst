@@ -245,8 +245,8 @@
 <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists.js"></script>
 <script>
     (function(){
-        var list_id = $('#pl-list-id').val(),
-            pocket_id = $('#pl-pocket-id').val(),
+        var list_id = parseInt($('#pl-list-id').val()),
+            pocket_id = parseInt($('#pl-pocket-id').val()),
             $loading = $('<i class="icon16 loading">'),
             $new_list_inpit = $('#pl-new-list-input'),
             $new_item_wrapper = $('#pl-item-add');
@@ -267,7 +267,7 @@
                         },
                         function (r) {
                             if (r.status === 'ok') {
-                                if (!list_id) {
+                                if (list_id === -1) {
                                     $.wa.setHash('#/pocket/' + pocket_id + '/list/' + r.data.id + '/');
                                 }
                             } else {
@@ -302,9 +302,7 @@
 
         if ($new_list_inpit.length) {
             $new_list_inpit.focus();
-            $new_list_inpit.on('blur', function(){
-                update_list.call(this, list_id);
-            }).on('keydown', function (e) {
+            $new_list_inpit.on('keydown', function (e) {
                 if (e.which === 13) {
                     update_list.call(this, list_id);
                 }

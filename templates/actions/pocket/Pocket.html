@@ -29,12 +29,65 @@
                 <li class="{$l.class}">
                     <a href="#/pocket/{$pocket.id}/list/{$l.id}/">
                         {if $l.indicator.count || $l.amount}<span class="count {if $l.indicator.color}indicator {$l.indicator.color}{/if}">{if !empty($l.amount)}{$l.amount} <span class="ruble">Р</span>{else}{$l.indicator.count}{if !empty($l.indicator.lock)} <i class="icon16 lock-bw"></i>{/if}{/if}</span>{/if}
-                        <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l.icon});"></i> {$l.name}
+                        <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l.icon|default:'li-list@2x.png'});"></i> {$l.name}
                     </a>
                 </li>
                 {/foreach}
             </ul>
         </div>
+
+        {*<div class="pl-inner-sidebar">
+            <ul class="pl-lists">
+                <li class="pl-red">
+                    <a href="#">
+                        <span class="count">14</span>
+                        <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/li-award@2x.png);"></i> Goals
+                    </a>
+                </li>
+                <li class="selected pl-blue">
+                    <a href="#">
+                        <span class="count indicator red">5130 <span class="ruble">Р</span></span>
+                        <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/li-grocery@2x.png);"></i> Groceries
+                    </a>
+                </li>
+                <li class="pl-green">
+                    <a href="#">
+                        <span class="count indicator red">2</span>
+                        <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/li-books@2x.png);"></i> Books to read
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="count indicator yellow">10</span>
+                        <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/li-travel@2x.png);"></i> Places to visit
+                    </a>
+                </li>
+                <li class="pl-yellow">
+                    <a href="#">
+                        <span class="count indicator green">2</span>
+                        <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/li-flag-eu@2x.png);"></i> Europe trip
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="count">2</span>
+                        <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/li-video@2x.png);"></i> Movies to watch
+                    </a>
+                </li>
+                <li class="pl-purple">
+                    <a href="#">
+                        <span class="count indicator yellow">5</span>
+                        <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/li-lock@2x.png);"></i> Party secret list
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="count">2 <i class="icon16 lock-bw"></i></span>
+                        <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/li-gift@2x.png);"></i> Gift list
+                    </a>
+                </li>
+            </ul>
+        </div>*}
 
     </nav>
 

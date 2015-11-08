@@ -8,7 +8,7 @@ class pocketlistsListUpdateController extends waJsonController
         $data = waRequest::post('data', false, waRequest::TYPE_ARRAY);
 
         $lm = new pocketlistsListModel();
-        if ($list_id) {
+        if ($list_id > 0) {
             $data['id'] = $list_id;
         } else {
             $data['create_datetime'] = date("Y-m-d H:i:s");
