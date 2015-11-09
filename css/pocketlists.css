@@ -69,6 +69,14 @@ ul.pl-lists li.selected a { color: #000 !important; }
 #pl-item-add-link { }
 #pl-item-add { display: none; }
 
+#pl-item-add-wrapper-hover {
+    display: block;
+    height: 20px;
+    border: 1px dashed red;
+    margin: 0 0 10px 0;
+    cursor: pointer;
+    }
+
 .pl-items { position: relative; min-height: 500px; }
 
 .pl-list-title { border-bottom: 1px solid rgba(0,0,0,0.1); padding: 25px 20px; }

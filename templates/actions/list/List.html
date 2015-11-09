@@ -38,7 +38,7 @@
         </li>
 
         {foreach $items as $i}
-        <li>
+        <li class="pl-item-wrapper">
             {include '../item/Item.html' item=$i inline}
         </li>
         {/foreach}
@@ -249,7 +249,8 @@
             pocket_id = parseInt($('#pl-pocket-id').val()),
             $loading = $('<i class="icon16 loading">'),
             $new_list_inpit = $('#pl-new-list-input'),
-            $new_item_wrapper = $('#pl-item-add');
+            $new_item_wrapper = $('#pl-item-add'),
+            $new_item_wrapper_hover = $('<div id="pl-item-add-wrapper-hover" style="display: none;">');
 
         var update_list = function(id) {
             var data = {
@@ -293,7 +294,7 @@
                         },
                         function (html) {
                             // reload items or construct html?
-                            $this.closest('li').after('<li>' + html + '</li>');
+                            $this.closest('li').after('<li class="pl-item-wrapper">' + html + '</li>');
                             $new_item_wrapper.slideToggle(200).find('input[type="text"]').val('');
                         }
                 );
@@ -308,15 +309,29 @@
                 }
             });
         }
-        $('#pl-item-add-link').click(function(){
-            $new_item_wrapper.slideToggle(200);
+        $('#pl-item-add-link').click(function(e){
+            e.preventDefault();
+            $new_item_wrapper.prependTo('.pl-list-items ul.menu-v').slideToggle(200);
             $new_item_wrapper.find('input[type="text"]').focus();
-            return false;
         });
         $new_item_wrapper.find('input[type="text"]').on('keydown', function (e) {
             if (e.which === 13) {
                 add_item.call(this, 0);
             }
+        });
+
+        $('.pl-list-items ul.menu-v')
+            .on('mouseenter', '.pl-item-wrapper', function (e) {
+                $(this).append($new_item_wrapper_hover.show());
+            })
+            .on('mouseleave', '.pl-item-wrapper', function (e) {
+                $new_item_wrapper_hover.detach();
+            });
+        $new_item_wrapper_hover.on('click', function(e) {
+            $(this).closest('.pl-item-wrapper').after($new_item_wrapper);
+            $(this).detach();
+            $new_item_wrapper.slideDown(200);
+            $new_item_wrapper.find('input[type="text"]').focus();
         });
 
         $('.pl-done').click(function(){
