@@ -32,15 +32,13 @@
                 <input type="checkbox" disabled="disabled" class="pl-done">
                 <label>
                     <input type="checkbox" class="pl-is-selected">
-                    <input type="text" placeholder="[`Add to-do`]" class="long">
+                    <textarea rows="1" placeholder="[`Add to-do`]"></textarea>
                 </label>
             </div>
         </li>
 
         {foreach $items as $i}
-        <li class="pl-item-wrapper">
-            {include '../item/Item.html' item=$i inline}
-        </li>
+            {include '../item/ItemCreate.html' item=array($i) inline}
         {/foreach}
 
         {*<li>
@@ -250,6 +248,7 @@
             $loading = $('<i class="icon16 loading">'),
             $new_list_inpit = $('#pl-new-list-input'),
             $new_item_wrapper = $('#pl-item-add'),
+            $new_item_input = $new_item_wrapper.find('textarea'),
             $new_item_wrapper_hover = $('<div id="pl-item-add-wrapper-hover" style="display: none;">');
 
         var update_list = function(id) {
@@ -279,22 +278,21 @@
                 );
             }
         };
-        var add_item = function(id, data) {
+        var add_items = function(data) {
             var $this = $(this);
-            if (data.name) {
-                $this.after($loading);
-                $.post(
-                        '?module=item&id=' + id,
-                        {
-                            data: data
-                        },
-                        function (html) {
-                            $this.closest('li').before('<li class="pl-item-wrapper">' + html + '</li>');
-                            $loading.remove();
-                            $new_item_wrapper.find('input[type="text"]').val('');
-                        }
-                );
-            }
+            $this.after($loading);
+            $.post(
+                    '?module=item&action=create',
+                    {
+                        list_id: list_id,
+                        data: data
+                    },
+                    function (html) {
+                        $this.closest('li').before('<li class="pl-item-wrapper">' + html + '</li>');
+                        $loading.remove();
+                        $new_item_input.val('');
+                    }
+            );
         };
 
         if ($new_list_inpit.length) {
@@ -308,20 +306,37 @@
         $('#pl-item-add-link').click(function(e){
             e.preventDefault();
             $new_item_wrapper.prependTo('.pl-list-items ul.menu-v').slideToggle(200);
-            $new_item_wrapper.find('input[type="text"]').focus();
+            $new_item_input.focus();
         });
-        $new_item_wrapper.find('input[type="text"]').on('keydown', function (e) {
-            var $this = $(this);
-            if (e.which === 13) {
-                add_item.call(this, 0, {
-                    name: $this.val().trim(),
-                    list_id: list_id
+        $new_item_input
+                .on('keyup', function (e) {
+                    var $this = $(this);
+                    if (e.which === 13) {
+                        add_items.call(this, [{
+                            name: $this.val().trim()
+                        }]);
+                    }
+                    if (e.which === 27) {
+                        $new_item_wrapper.slideUp(200);
+                        $new_item_input.val('');
+                    }
+                })
+                .on('paste', function(e) {
+                    var self = this;
+                    setTimeout( function() {
+                        var items = $new_item_input.val().trim().split(/\n/);
+                        var data = [];
+                        for(var i = 0; i < items.length; i++) {
+                            var name = $.trim(items[i]);
+                            if (name) {
+                                data.push({
+                                    name: name
+                                });
+                            }
+                        }
+                        add_items.call(self, data);
+                    }, 100);
                 });
-            }
-            if (e.which === 27) {
-                $new_item_wrapper.slideUp(200).find('input[type="text"]').val('');
-            }
-        });
 
         $('.pl-list-items ul.menu-v')
             .on('mouseenter', '.pl-item-wrapper', function (e) {
@@ -334,7 +349,7 @@
             $(this).closest('.pl-item-wrapper').after($new_item_wrapper);
             $(this).detach();
             $new_item_wrapper.slideDown(200);
-            $new_item_wrapper.find('input[type="text"]').focus();
+            $new_item_input.focus();
         });
 
         $('.pl-done').click(function(){

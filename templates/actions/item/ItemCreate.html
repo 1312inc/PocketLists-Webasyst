@@ -1,0 +1,12 @@
+{foreach $item as $i}
+<li class="pl-item-wrapper">
+    <div class="pl-item">
+        <a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
+        <input type="checkbox" class="pl-done">
+        <label>
+            <input type="checkbox" class="pl-is-selected">
+            {$i.name|escape}
+        </label>
+    </div>
+</li>
+{/foreach}

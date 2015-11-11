@@ -75,8 +75,18 @@ ul.pl-lists li.selected a { color: #000 !important; }
     border: 1px dashed red;
     margin: 0 0 10px 0;
     cursor: pointer;
-    }
+}
 
+#pl-item-add textarea {
+    min-width: 350px;
+    width: 350px;
+    white-space: nowrap;
+    height: 1.3em;
+    line-height: 1.3em;
+    resize: none;
+    word-wrap: normal;
+    overflow-x: hidden;
+}
 .pl-items { position: relative; min-height: 500px; }
 
 .pl-list-title { border-bottom: 1px solid rgba(0,0,0,0.1); padding: 25px 20px; }
