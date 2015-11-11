@@ -279,23 +279,19 @@
                 );
             }
         };
-        var add_item = function(id) {
-            var data = {
-                name: $(this).val().trim(),
-                list_id: list_id
-            };
+        var add_item = function(id, data) {
             var $this = $(this);
             if (data.name) {
-                $this.append($loading);
+                $this.after($loading);
                 $.post(
                         '?module=item&id=' + id,
                         {
                             data: data
                         },
                         function (html) {
-                            // reload items or construct html?
-                            $this.closest('li').after('<li class="pl-item-wrapper">' + html + '</li>');
-                            $new_item_wrapper.slideToggle(200).find('input[type="text"]').val('');
+                            $this.closest('li').before('<li class="pl-item-wrapper">' + html + '</li>');
+                            $loading.remove();
+                            $new_item_wrapper.find('input[type="text"]').val('');
                         }
                 );
             }
@@ -315,12 +311,16 @@
             $new_item_wrapper.find('input[type="text"]').focus();
         });
         $new_item_wrapper.find('input[type="text"]').on('keydown', function (e) {
+            var $this = $(this);
             if (e.which === 13) {
-                add_item.call(this, 0);
+                add_item.call(this, 0, {
+                    name: $this.val().trim(),
+                    list_id: list_id
+                });
             }
-        }).on('input', function(e){
-            debugger;
-            var items = $(this).val().split(/\n/);
+            if (e.which === 27) {
+                $new_item_wrapper.slideUp(200).find('input[type="text"]').val('');
+            }
         });
 
         $('.pl-list-items ul.menu-v')
