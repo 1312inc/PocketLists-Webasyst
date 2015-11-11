@@ -6,9 +6,7 @@ class pocketlistsListAction extends waViewAction
     {
         $list_id = waRequest::get('id', false, waRequest::TYPE_INT);
 
-        if ($list_id === -1) { // new list
-            $this->view->assign('new', true);
-        } else { // existing list
+        if ($list_id > 0) { // existing list
             $lm = new pocketlistsListModel();
             $this->view->assign('list', $lm->getList($list_id));
 
@@ -105,5 +103,6 @@ class pocketlistsListAction extends waViewAction
 //                )
 //            );
         }
+        $this->view->assign('new', $list_id === -1 ? true : false);
     }
 }

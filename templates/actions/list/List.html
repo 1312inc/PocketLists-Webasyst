@@ -18,7 +18,7 @@
         {else}
         <label>
             <input type="checkbox" class="large" onClick="alert('waDialog с предложением либо зачекать все айтемы как выполненные с дополнительным чекбоксом “отправить этот список в архив”');">
-            {$list.name|escape}
+            {$list.name|escape|default:''}
         </label>
         {/if}
     </h1>
@@ -318,6 +318,9 @@
             if (e.which === 13) {
                 add_item.call(this, 0);
             }
+        }).on('input', function(e){
+            debugger;
+            var items = $(this).val().split(/\n/);
         });
 
         $('.pl-list-items ul.menu-v')
