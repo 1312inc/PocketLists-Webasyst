@@ -1,6 +1,6 @@
 <header class="pl-list-title">
     <div class="float-right block half-padded">
-        {if $list.id}
+        {if isset($list.id)}
         <ul class="menu-h">
             <li>
                 <a href="#" onClick="alert('waDialog с получением ссылки на список /list/...');"><i class="icon16 link"></i> [`Share link`]</a>
@@ -37,9 +37,11 @@
             </div>
         </li>
 
+        {if !empty($items)}
         {foreach $items as $i}
             {include '../item/ItemCreate.html' item=array($i) inline}
         {/foreach}
+        {/if}
 
         {*<li>
             <div class="pl-item">
