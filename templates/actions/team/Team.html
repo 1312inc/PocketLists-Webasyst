@@ -1,1 +1,99 @@
-<h1>[`Team`]</h1>
+<div class="shadowed">
+    <nav class="sidebar left300px">
+
+        <!-- TEAM -->
+        <div class="pl-inner-sidebar">
+
+            <ul class="zebra pl-team">
+
+                <li class="selected">
+                    <a href="#">
+                        <div class="profile image50px">
+                            <div class="image">
+                                <img class="userpic" src="http://maramygin.ru/kmwa-logo-small.png">
+                            </div>
+                            <div class="details">
+                                <span class="count indicator red">3</span>
+
+                                <span class="large nowrap">Kirill Maramygin</span>
+                                <div class="pl-active-items small black">Setup Pocket Lists database structure, UI aplha version, Deploy to some test environment</div>
+
+                                <span class="hint">Today 10:20</span>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <div class="profile image50px">
+                            <div class="image">
+                                <img class="userpic" src="http://www.vofka.ru/wa-data/public/site/img/userpic/vofkatuporshin.jpg">
+                            </div>
+                            <div class="details">
+                                <span class="count">5</span>
+                                <span class="large nowrap">Vladimir V. Tuporshin</span>
+
+                                <div class="pl-active-items small black">Finalize Webasyst app design, iOS app concept, Mac app concept, Public Pocket Lists Cloud frontend task draft</div>
+
+                                <span class="hint">Nov 5, 13:03</span>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <div class="profile image50px">
+                            <div class="image">
+                                <img class="userpic" src="/wa-content/img/userpic50@2x.jpg">
+                            </div>
+                            <div class="details">
+                                <span class="count"># of items</span>
+                                <span class="large nowrap">username</span>
+
+                                <div class="pl-active-items small black">List, Of, Active, Items|default:[`All done`]</div>
+
+                                <span class="hint">Last activity |wa_humandatetime</span>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+
+            </ul>
+
+            (тут показываются все пользователи из pocketlists_user, у которых есть доступ хотя бы к одном карману; order by last_activity_datetime)
+
+        </div>
+
+    </nav>
+
+    <!-- ITEMS -->
+    <main class="content left300px blank bordered-left pl-items pl-blue" id="pl-list-content">
+
+        <header class="pl-list-title">
+            <div class="float-right block half-padded">
+                <ul class="menu-h">
+                    <li>
+                        <a href="#"><i class="icon16 add"></i> [`Add to-do`]</a>
+                    </li>
+                </ul>
+            </div>
+            <h1>
+                Kirill Maramygin
+            </h1>
+        </header>
+
+        в этом списке показываются:<br>
+        — сначала все активные айтемы, назначенные на данного пользователя (assigned_contact_id == CONTACT_ID)<br>
+        — ниже серым (как в списке) все выполненные данным пользователем айтемы (тут уже без требования назначенности; просто все, что данный пользователь зачекал complete_contact_id == CONTACT_ID — надо добавить такое поле в таблицу айтемов, если его там еще нет)
+        <br><br>
+        все айтемы сортированы, как в потоке: по приоритету + дате.<br>
+        создание нового айтема в этом списке автоматически назначает его на этого пользователя
+    </main>
+
+</div>
+
+<script text="text/javascript">
+
+</script>
