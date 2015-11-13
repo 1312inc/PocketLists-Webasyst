@@ -62,6 +62,27 @@ ul.pl-lists li a i.listicon48 { position: relative; top: -7px; margin-right: 10p
 ul.pl-lists li a:hover { color: inherit !important; background: rgba(0,0,0,0.025); }
 ul.pl-lists li.selected a { color: #000 !important; }
 
+/* Calendar
+----------- */
+
+table.pl-calendar { width: 100%; }
+table.pl-calendar th { color: #ccc; font-weight: normal; padding-bottom: 5px; }
+table.pl-calendar td { border: 1px solid #ddd; background: #fff; padding: 5px 7px; width: 14.28%; height: 20px; vertical-align: top; line-height: 1em; text-align: center; }
+table.pl-calendar td:hover { background: #ffffee; cursor: pointer; }
+table.pl-calendar td.pl-today { /* background-image: url('images/b-today.png'); */ border: 4px solid #FDDA3B; -moz-border-radius: 4px; margin: 0; }
+table.pl-calendar td.pl-today:hover { background: #ecf7ff; }
+table.pl-calendar td.pl-not-this-month { background: #eee; }
+table.pl-calendar td.pl-not-this-month:hover { background: #e2e2e2; }
+table.pl-calendar td i.icon10 { margin-top: 0.2em; margin-right: 0.2em; }
+table.pl-calendar td .pl-date { color: #aaa; font-size: 0.8em; }
+table.pl-calendar td .pl-dots { font-size: 0.7em; }
+
+/* Team
+------- */
+
+ul.pl-team li .count { font-size: 1em; padding: 3px 7px 4px; margin-top: -1px; }
+ul.pl-team li .indicator {  }
+ul.pl-team li .pl-active-items { max-height: 2.4em; overflow: hidden; margin: 5px 25px 0 0; line-height: 1.2em; }
 
 /* Items
 -------- */
@@ -127,7 +148,3 @@ rgba(0,0,0,0.1); }
 
 i.listicon48 { background-repeat:no-repeat; height: 32px; width: 32px; background-size: 32px 32px; display:inline-block; text-indent:-9999px; text-decoration:none!important; }
 * i.listicon48 { text-decoration:none!important; vertical-align:top; margin: -0.1em 0.25em 0 0; }
-i.listicon48.achtung { background-image: url(../img/listicons/achtung.png); }
-i.listicon48.award { background-image: url(../img/listicons/award.png); }
-i.listicon48.bag { background-image: url(../img/listicons/bag.png); }
-i.listicon48.books { background-image: url(../img/listicons/books.png); }

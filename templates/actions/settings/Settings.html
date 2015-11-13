@@ -2,28 +2,99 @@
 
     <main class="block double-padded">
 
-        <h1>[`Settings`]</h1>
+        <div class="fields form">
+            <h6 class="heading"><i class="icon16 userpic20" style="background-image: url({$wa->user()->getPhoto(20)});"></i> [`My personal settings`]</h6>
+            <br>
+            <div class="field-group">
+              <div class="field">
+                <div class="name nowrap">
+                  [`App icon counter`]
+                  <span class="indicator red">1</span>
+                </div>
+                <div class="value no-shift">
+                    <select>
+                        <option>[`Overdue`]</option>
+                        <option selected="selected">[`Overdue + Today`]</option>
+                        <option>[`Overdue + Today + Tomorrow`]</option>
+                        <option>[`None`]</option>
+                    </select>
+                    <p class="hint">[`App icon counter will also alert you about new to-do items and lists assigned to you by other users.`]</p>
+                </div>
+              </div>
+              <div class="field">
+                <div class="name">
+                  [`Email me when`]
+                </div>
+                <div class="value no-shift">
+                    <label>
+                        <input type="checkbox" checked="checked" disabled="disabled"> [`Someone assigns me a to-do`]
+                    </label>
+                </div>
+                {*
+                <div class="value no-shift">
+                    <label>
+                        <input type="checkbox" checked="checked"> [`Someone shares a list with me`]
+                    </label>
+                </div>
+                *}
+                <div class="value no-shift">
+                    <label>
+                        <input type="checkbox"> [`New lists are created by other users`]
+                    </label>
+                </div>
+                <div class="value no-shift">
+                    <label>
+                        <input type="checkbox"> [`New to-do items are created`]
+                    </label>
+                    <select>
+                        <option>[`in any list`]</option>
+                        <option selected="selected">[`in any list I marked as favorite`]</option>
+                    </select>
+                </div>
 
-        stream
+              </div>
+              <div class="field">
+                <div class="value no-shift submit">
+                    <input type="submit" value="[`Save`]" class="button green" />
+                </div>
 
-        natural input
-          - on / off
+              </div>
+            </div>
 
-        badge count
-          - none
-          - overdue
-          - overdue + today
-          - overdue + today + tomorrow
+            <h6 class="heading">[`Access rights`]</h6>
+            <div class="field-group">
+                <div class="field">
+                    <div class="name">
+                        [`Pockets`]
+                    </div>
+                    <div class="value">
+                        <ul class="menu-v with-icons" style="max-width: 250px;">
+                            <li>
+                                <span class="count">7 users</span>
+                                <a href="#"><i class="icon16 color pl-dark-blue"></i>Personal</a>
+                            </li>
+                            <li>
+                                <span class="count">3 users</span>
+                                <a href="#"><i class="icon16 color pl-dark-green"></i>Errands</a>
+                            </li>
+                            <li>
+                                <span class="count">12 users</span>
+                                <a href="#"><i class="icon16 color pl-dark-red"></i>Msk</a>
+                            </li>
+                            <li>
+                                <span class="count ">11 users</span>
+                                <a href="#"><i class="icon16 color pl-dark-yellow"></i>Krasnodar</a>
+                            </li>
+                            <li class="top-padded">
+                                <a href="#" class="small"><i class="icon10 add"></i>[`New pocket`]</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        notifications
-          - new lists
-          - new items
-          - updated lists
-          - updates items
-          - new assigned to menu
-
-        user rights
-          - link to contact app
+        <div class="clear-both"></div>
 
     </main>
 

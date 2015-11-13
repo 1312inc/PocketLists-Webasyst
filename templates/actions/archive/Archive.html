@@ -1,34 +1,43 @@
 <div class="shadowed">
-    <nav class="sidebar left300px">
+    <nav class="sidebar left200px">
 
-        <!-- LISTS -->
-
-        <ul class="menu-v with-icons">
-          <li class="selected">
-            <a href="#">[`Completion log`]</a>
+        <ul class="menu-v with-icons stack">
+          <li class="selected top-padded">
+            <a href="#"><i class="icon16 yes-bw"></i>[`Completion log`]</a>
           </li>
         </ul>
 
-        <h5 class="heading">[`Archived lists`]</h5>
-        <ul class="menu-v with-icons">
+        <div class="block half-padded">
+            <h5 class="heading">[`Archived lists`]</h5>
+        </div>
+        <ul class="menu-v with-icons stack">
           <li>
-            <a href="#">List #1</a>
+            <a href="#"><i class="icon16" style="background-image: url(/wa-apps/pocketlists/img/listicons/li-list@2x.png); background-size: 16px 16px;"></i>List #1</a>
           </li>
           <li>
-            <a href="#">List #2</a>
+            <a href="#"><i class="icon16" style="background-image: url(/wa-apps/pocketlists/img/listicons/li-money@2x.png); background-size: 16px 16px;"></i>List #2</a>
           </li>
           <li>
-            <a href="#">List #3</a>
+            <a href="#"><i class="icon16" style="background-image: url(/wa-apps/pocketlists/img/listicons/li-travel@2x.png); background-size: 16px 16px;"></i>List #3</a>
           </li>
         </ul>
+        <div class="block double-padded align-center hr">
+            <p class="hint">[`To archive an active list, tap on it’s checkmark.`]</p>
+        </div>
 
 
     </nav>
 
-    <!-- ITEMS -->
-    <main class="content left300px blank bordered-left pl-items pl-blue" id="pl-list-content">
-        completion log: completed item list sorted by complete_datetime<br><br>
-        for lists: a common list view with [Unarchive list] button in the top right corner
+    <main class="content left200px blank bordered-left pl-items pl-blue" id="pl-list-content">
+
+        LOG: список всех зачеканных айтемов всех пользователей, всех списков, всех карманов в хронологическом порядке (order by complete_datetime). рядом с галочкой показывать юзерпик пользователя который выполнил задание.
+
+        <br><br>
+
+        LIST: если выбрать список из архива, то он покажется, как есть (как на основном экране Lists), только в режиме read-only: все чекбоксы задизеблены, кнопки Add to-do нет.<br>
+
+        справа вместо Add to-do — кнопка [`Unarchive`] и подсказка серым цветом [`Acrhived on %s`], где %s = wa_humandate архивирования списка
+
     </main>
 
 </div>
