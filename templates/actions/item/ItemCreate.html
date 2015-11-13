@@ -1,3 +1,4 @@
+{if !empty($items)}
 {foreach $items as $i}
     <li class="pl-item-wrapper" data-parent-id="{$i.parent_id}">
     <div class="pl-item">
@@ -15,3 +16,4 @@
     {/if}
     </li>
 {/foreach}
+{/if}

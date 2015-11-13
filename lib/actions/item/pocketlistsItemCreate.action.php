@@ -21,6 +21,6 @@ class pocketlistsItemCreateAction extends waViewAction
                 $items[] = array('id' => $inserted) + $data[$i];
             }
         }
-        $this->view->assign('item', $items);
+        $this->view->assign('items', $items);
     }
 }
