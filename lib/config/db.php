@@ -21,10 +21,9 @@ return array(
         'id' => array('int', 11, 'null' => 0, 'autoincrement' => 1),
         'list_id' => array('int', 11),
         'contact_id' => array('int', 11),
-        'parent_id' => array('int', 11),
-        'left_key_id' => array('int', 11),
-        'right_key_id' => array('int', 11),
-        'status' => array('tinyint', 1, 'default' => '0'),
+        'parent_id' => array('int', 11, 'null' => 0, 'default' => '0'),
+        'has_children' => array('tinyint', 1, 'null' => 0, 'default' => '0'),
+        'status' => array('tinyint', 1, 'null' => 0, 'default' => '0'),
         'create_datetime' => array('datetime'),
         'update_datetime' => array('datetime'),
         'complete_datetime' => array('datetime'),
@@ -39,8 +38,8 @@ return array(
         'repeat' => array('int', 11),
         ':keys' => array(
             'PRIMARY' => 'id',
-            'ns_keys' => array('left_key_id', 'right_key_id'),
             'parent' => 'parent_id',
+            'list_id' => 'list_id',
         ),
     ),
     'pocketlists_item_sort' => array(
