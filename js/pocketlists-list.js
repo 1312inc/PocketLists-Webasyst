@@ -56,7 +56,23 @@
             }
         );
     };
-
+    var update_item_parent = function (data, callback) {
+        $.post(
+            '?module=item&action=updateParent',
+            {
+                data: data
+            },
+            function (r) {
+                debugger;
+                if (r.status === 'ok') {
+                    $.isFunction(callback) && callback.call();
+                } else {
+                    alert(r.errors);
+                }
+            },
+            'json'
+        );
+    };
     if ($new_list_inpit.length) {
         $new_list_inpit.focus();
         $new_list_inpit.on('keydown', function (e) {
@@ -70,11 +86,11 @@
         e.preventDefault();
         if ($new_item_wrapper.is(':visible')) {
             $new_item_wrapper.slideUp(200, function () {
-                debugger;
-                $new_item_wrapper.detach().closest('.pl-new-item-wrapper').remove();
+                $new_item_wrapper.detach();
+                $('.pl-new-item-wrapper').remove();
             });
         } else {
-            $new_item_wrapper.wrap('<li class="pl-new-item-wrapper">').prependTo('.pl-list-items ul.menu-v:first').slideDown(200);
+            $new_item_wrapper.prependTo('.pl-list-items ul.menu-v:first').slideDown(200).wrap('<li class="pl-new-item-wrapper">');
         }
         $new_item_input.focus();
     });
@@ -88,10 +104,10 @@
                     name: $this.val().trim(),
                     parent_id: parent_id
                 }]);
-            }
-            if (e.which === 27) {
+            } else if (e.which === 27) {
                 $new_item_wrapper.slideUp(200, function () {
                     $new_item_wrapper.detach();
+                    $('.pl-new-item-wrapper').remove();
                 });
                 $new_item_input.val('');
             }
@@ -132,13 +148,82 @@
             $new_item_wrapper_hover.detach();
         });
 
-    $new_item_wrapper_hover
-        .on('click', function (e) {
-            $new_item_wrapper_hover.after($new_item_wrapper);
-            $new_item_wrapper_hover.detach();
-            $new_item_wrapper.slideDown(200);
-            $new_item_input.focus();
-        });
+    $new_item_wrapper_hover.on('click', function (e) {
+        $new_item_wrapper_hover.after($new_item_wrapper);
+        $new_item_wrapper_hover.detach();
+        $new_item_wrapper.slideDown(200);
+        $new_item_input.focus();
+    });
+
+    $('.pl-is-selected').change(function () {
+        $('#pl-item-details').toggle();
+        $(this).closest('.pl-list-items').find('.pl-item').removeClass('pl-item-selected');
+        $(this).closest('.pl-item').toggleClass('pl-item-selected')
+    });
+
+    $(document).on('keydown', function (e) {
+        if (e.which === 39) { // -->
+            var $items = $('.pl-list-items').find('.pl-item-selected').closest('.pl-item-wrapper');
+            debugger;
+            if ($items.length) {
+                $items.each(function () {
+                    debugger;
+                    var $item = $(this),
+                        $prev = $item.prev('.pl-item-wrapper');
+                    if ($prev.length) { // not first
+                        var parent_id = parseInt($prev.data('id')),
+                            item_id = parseInt($item.data('id'));
+                        $item.data('parent-id', parent_id); // update parent id
+
+                        update_item_parent([{id: item_id, parent_id: parent_id}], function () {
+                            var $nested = $prev.find('ul').first();
+                            if ($nested.length) {
+                                $nested.append($item);
+                            } else {
+                                $prev.append($('<ul class="menu-v">').html($item));
+                            }
+                        });
+                    }
+                });
+            }
+        } else if (e.which === 37) { // <--
+            var $items = $('.pl-list-items').find('.pl-item-selected').closest('.pl-item-wrapper');
+            debugger;
+            if ($items.length) {
+                $items.each(function () {
+                    debugger;
+                    var $item = $(this),
+                        $prev = $item.parents('.pl-item-wrapper').first();
+                    if ($prev.length) { // not first level
+                        var parent_id = parseInt($prev.data('parent-id')),
+                            item_id = parseInt($item.data('id')),
+                            data = [{id: item_id, parent_id: parent_id}];
+                        $item.data('parent-id', parent_id); // update parent id
+
+                        var $items_same_level = $item.nextAll(), // all next items on same level
+                            $item_children_wrapper = $item.find('ul.menu-v'); // item children wrapper
+
+                        $items_same_level.each(function () {
+                            data.push({
+                                id: $(this).data('id'),
+                                parent_id: item_id
+                            });
+                        });
+
+                        update_item_parent(data, function () {
+                            if (!$item_children_wrapper.length) { // create if not exist
+                                $item_children_wrapper = $('<ul class="menu-v">');
+                                $item.append($item_children_wrapper);
+                            }
+                            $item_children_wrapper.append($items_same_level.data('parent-id', item_id)); // now will be children of current
+
+                            $prev.after($item);
+                        });
+                    }
+                });
+            }
+        }
+    });
 
     $('.pl-done').click(function () {
         $(this).closest('li').slideToggle(200);

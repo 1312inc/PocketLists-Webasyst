@@ -5,10 +5,6 @@ $(function(){
         return false;
     });
 
-    $('.pl-is-selected').change(function(){
-        $('#pl-item-details').toggle();
-        return false;
-    });
 
 
 });

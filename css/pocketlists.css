@@ -123,14 +123,15 @@ ul.pl-team li .pl-active-items { max-height: 2.4em; overflow: hidden; margin: 5p
 .pl-list-items ul.menu-v li { padding: 0; margin: 0; }
 .pl-list-items ul.menu-v li .pl-item { display: block; border-bottom: 1px solid
 rgba(0,0,0,0.1); }
-.pl-list-items ul.menu-v li .pl-item:hover { background: rgba(0,0,0,0.025); }
-.pl-list-items ul.menu-v li .pl-item:after { border-top: 1px solid red; }
+.pl-list-items ul.menu-v li .pl-item:hover, .pl-list-items ul.menu-v li .pl-item.pl-item-selected { background: rgba(0,0,0,0.025); }
+/* .pl-list-items ul.menu-v li .pl-item:after { border-top: 1px solid red; } */
 .pl-list-items ul.menu-v li label { padding: 13px 25px 13px 45px; display: block; line-height: 1.3em; cursor: pointer; }
 .pl-list-items ul.menu-v li input.pl-done { margin-left: 20px; margin-right: 10px; position: relative; left: 0px; top: 16px; float: left; }
 .pl-list-items ul.menu-v li ul { padding-left: 0; margin: 0; }
 .pl-list-items ul.menu-v li ul li .pl-item { padding-left: 26px; }
 .pl-list-items ul.menu-v li ul li ul li .pl-item { padding-left: 52px; }
 .pl-list-items ul.menu-v li ul li ul li ul li .pl-item { padding-left: 78px; }
+.pl-list-items ul.menu-v li ul li ul li ul li ul li .pl-item { padding-left: 104px; }
 
 .pl-list-items ul.menu-v li .pl-item .pl-favorite { display: inline-block; float: right; }
 .pl-list-items ul.menu-v li .pl-item .pl-favorite i.icon16 { display: none; }
