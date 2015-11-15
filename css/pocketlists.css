@@ -94,7 +94,7 @@ ul.pl-team li .pl-active-items { max-height: 2.4em; overflow: hidden; margin: 5p
     display: block;
     height: 20px;
     border: 1px dashed red;
-    margin: 0 0 10px 0;
+    margin: 0 0 10px 20px;
     cursor: pointer;
 }
 
@@ -130,6 +130,7 @@ rgba(0,0,0,0.1); }
 .pl-list-items ul.menu-v li ul { padding-left: 0; margin: 0; }
 .pl-list-items ul.menu-v li ul li .pl-item { padding-left: 26px; }
 .pl-list-items ul.menu-v li ul li ul li .pl-item { padding-left: 52px; }
+.pl-list-items ul.menu-v li ul li ul li ul li .pl-item { padding-left: 78px; }
 
 .pl-list-items ul.menu-v li .pl-item .pl-favorite { display: inline-block; float: right; }
 .pl-list-items ul.menu-v li .pl-item .pl-favorite i.icon16 { display: none; }
