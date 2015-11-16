@@ -68,7 +68,7 @@
                         [`Pockets`]
                     </div>
                     <div class="value">
-                        <ul class="menu-v with-icons" style="max-width: 250px;">
+                        <ul class="zebra menu-v with-icons pl-pocket-settings" style="max-width: 250px;">
                             <li>
                                 <span class="count">7 users</span>
                                 <a href="#"><i class="icon16 color pl-dark-blue"></i>Personal</a>
@@ -99,3 +99,99 @@
     </main>
 
 </div>
+
+<div id="pl-pocket-dialog" style="display: none;">
+    <h1>New pocket</h1>
+
+    <div class="fields form">
+        <div class="field-group">
+          <div class="field">
+            <div class="name nowrap">
+              [`Pocket name`]
+            </div>
+            <div class="value">
+                <input type="text" class="large bold" />
+            </div>
+          </div>
+          <div class="field">
+            <div class="name">
+              [`Access rights`]
+            </div>
+            <div class="value no-shift">
+                <label>
+                    <input type="radio" checked="checked"> [`Everyone`]
+                </label>
+                <span class="hint">[`Every user who can access Pocket Lists app will see lists and to-dos in this pocket.`]</span>
+            </div>
+            <div class="value no-shift">
+                <label>
+                    <input type="radio"> [`Limited`]
+                </label>
+                <span class="hint">[`Once selected users will be able to access lists and to-dos in this pocket.`]</span>
+
+                <div class="pl-pocket-access">
+
+
+                    (права могут быть ли true, либо false; промежуточных прав доступа в первой версии нет)
+
+
+                    <label>
+                        <input type="checkbox"> admins
+                    </label>
+                    <br>
+                    <label>
+                        <input type="checkbox"> support team
+                    </label>
+                    <br>
+                    <label>
+                        <input type="checkbox"> [`Selected users`]
+                    </label>
+
+                    <table class="zebra">
+                        <tr>
+                            <td class="min-width"><i class="icon16 userpic20"></i></td>
+                            <td>Kirill Maramygin</td>
+                            <td><a href="#"><i class="icon16 delete"></i></a></td>
+                        </tr>
+                        <tr>
+                            <td class="min-width"><i class="icon16 userpic20"></i></td>
+                            <td>Vladimir V. Tuporshin</td>
+                            <td><a href="#"><i class="icon16 delete"></i></a></td>
+                        </tr>
+                        <tr>
+                            <td class="min-width"><i class="icon16 add"></i></td>
+                            <td><input type="text" placeholder="[`Start typing name...`]"></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                    (таблица с автокомплитом ведет себя также, как в приложении "Хаб" в настройках конкретного хаба — см. код на Гитхабе)
+
+                </div>
+
+            </div>
+          </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+<script type="text/javascript">
+$('.pl-pocket-settings a').click(function(){
+
+    $('#pl-pocket-dialog').waDialog({
+      'buttons': '<input type="submit" value="[`Save`]" class="button green" /> [`or`] <a href="#">[`cancel`]</a>',
+      'height': '400px',
+      'width': '600px',
+      onSubmit: function (d) {
+           d.trigger('close');
+           return false;
+      }
+    });
+
+    return false;
+});
+
+</script>

@@ -31,6 +31,7 @@
 .pl-dark-red { background: #f7696d !important; }
 .pl-dark-yellow { background: #f5cf24 !important; }
 
+.icon10.color { border: none; border-radius: 50%; width: 5px; height: 5px; }
 .icon16.color { border: none; }
 
 .indicator.yellow { background-color: #da3; color: #fff; }
@@ -83,6 +84,12 @@ table.pl-calendar td .pl-dots { font-size: 0.7em; }
 ul.pl-team li .count { font-size: 1em; padding: 3px 7px 4px; margin-top: -1px; }
 ul.pl-team li .indicator {  }
 ul.pl-team li .pl-active-items { max-height: 2.4em; overflow: hidden; margin: 5px 25px 0 0; line-height: 1.2em; }
+
+/* Settings
+----------- */
+
+.pl-pocket-access { line-height: 1.5em; padding: 10px; }
+.pl-pocket-access table { margin: 10px 15px; }
 
 /* Items
 -------- */
