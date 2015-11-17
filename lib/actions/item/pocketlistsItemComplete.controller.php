@@ -10,12 +10,30 @@ class pocketlistsItemCompleteController extends waJsonController
 
         if ($list_id && $id) {
             $im = new pocketlistsItemModel();
-            if (!$im->updateById(
-                $id,
-                array('status' => $status, 'complete_date' => date("Y-m-d H:i:s"), 'parent_id' => 0)
-            )) {
-                $this->errors[] = 'error while updating parent id: ' . $id;
+            $item = $im->getByField(array(
+                'list_id' => $list_id,
+                'id' => $id
+            ));
+            if ($item['has_children']) {
+                $tree = $im->getAllByList($list_id, $id);
+                $this->changeComplete($item['id'], $tree[$item['id']], $status, $im);
             }
+        }
+
+    }
+
+    /**
+     * @param $item array
+     * @param $status int
+     * @param $im pocketlistsItemModel
+     */
+    private function changeComplete($item_id, $item, $status, $im)
+    {
+        if (!$im->updateById($item['id'], array('status' => $status, 'complete_date' => date("Y-m-d H:i:s"), 'parent_id' => ($item['id'] == $item_id ? 0 : $item['parent_id'])))) {
+            $this->errors[] = 'error while updating parent id: ' . $item['id'];
+        };
+        foreach ($item['childs'] as $i) {
+            $this->changeComplete($item_id, $i, $status, $im);
         }
     }
 }

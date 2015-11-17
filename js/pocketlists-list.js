@@ -216,20 +216,20 @@
 
     $list_items_wrapper.on('change', '.pl-is-selected', function () {
         $('#pl-item-details').toggle();
-        $undone_items_wrapper.find('.pl-item').removeClass('pl-item-selected');
+        $list_items_wrapper.find('.pl-item').removeClass('pl-item-selected');
         $(this).closest('.pl-item').toggleClass('pl-item-selected')
     });
 
     // action: complete item
-    $list_items_wrapper.on('change', '.pl-done', function () {
+    $list_items_wrapper.on('change', '.pl-done', function (e) {
         var $this = $(this),
             $item = $this.closest(item_selector),
             id = parseInt($item.data('id')),
             status = $this.is(':checked') ? 1 : 0;
 
+        $item.find('ul.menu-v .pl-done').prop('checked', status);
         complete_item.call($item, id, status, function () {
             $item.slideToggle(200, function () {
-                debugger;
                 $item.show();
                 if (status) {
                     $done_items_wrapper.append($item);
@@ -240,7 +240,6 @@
             });
 
         });
-
     });
 
     $(document).on('keydown', function (e) {
