@@ -22,7 +22,7 @@ return array(
         'list_id' => array('int', 11),
         'contact_id' => array('int', 11),
         'parent_id' => array('int', 11, 'null' => 0, 'default' => '0'),
-        'sort' => array('int', 11),
+        'sort' => array('int', 11, 'null' => 0, 'default' => '0'),
         'has_children' => array('tinyint', 1, 'null' => 0, 'default' => '0'),
         'status' => array('tinyint', 1, 'null' => 0, 'default' => '0'),
         'create_datetime' => array('datetime'),
