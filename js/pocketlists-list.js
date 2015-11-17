@@ -83,6 +83,7 @@
         return data;
     };
     var update_sort = function (callback) {
+        this.find('label').first().append($loading);
         $.post(
             '?module=item&action=sort',
             {
@@ -91,10 +92,12 @@
             },
             function (r) {
                 if (r.status === 'ok') {
-                    $.isFunction(callback) && callback.call();
+                    init_sortable();
+                    callback && $.isFunction(callback) && callback.call();
                 } else {
                     alert(r.errors);
                 }
+                $loading.remove();
             },
             'json'
         );
@@ -210,7 +213,7 @@
                         //        $prev.append($('<ul class="menu-v">').html($item));
                         //    }
                         //});
-                        update_sort(function () {
+                        update_sort.call($item, function () {
                             var $nested = $prev.find('ul').first();
                             if ($nested.length) {
                                 $nested.append($item);
@@ -255,7 +258,7 @@
                         //
                         //    $prev.after($item);
                         //});
-                        update_sort(function () {
+                        update_sort.call($item, function () {
                             if (!$item_children_wrapper.length) { // create if not exist
                                 $item_children_wrapper = $('<ul class="menu-v">');
                                 $item.append($item_children_wrapper);
@@ -269,6 +272,24 @@
             }
         }
     });
+
+
+    var init_sortable = function() {
+        $('.pl-list-items ul.menu-v').sortable({
+            connectWith: "ul.menu-v",
+            placeholder: 'pl-item-placeholder',
+            stop: function( event, ui ) {
+                debugger;
+                var $prev = ui.item.parents('.pl-item-wrapper').first(),
+                    parent_id = $prev.length ? parseInt($prev.data('id')) : 0;
+
+                ui.item.data('parent-id', parent_id);
+                update_sort.call(ui.item);
+            }
+        });
+    };
+
+    init_sortable();
 
     $('.pl-done').click(function () {
         $(this).closest('li').slideToggle(200);

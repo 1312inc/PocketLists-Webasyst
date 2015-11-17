@@ -146,6 +146,11 @@ rgba(0,0,0,0.1); }
 
 .pl-is-selected { display: none; }
 
+.pl-list-items .pl-item-placeholder {
+    border: 1px solid green;
+    min-height: 20px;
+}
+
 #pl-complete-log { display: none; color: #aaa; }
 #pl-complete-log h5 { margin: 30px 20px 0; }
 #pl-complete-log-link { padding: 13px 20px; display: block; }
