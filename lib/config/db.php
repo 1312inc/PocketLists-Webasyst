@@ -22,6 +22,7 @@ return array(
         'list_id' => array('int', 11),
         'contact_id' => array('int', 11),
         'parent_id' => array('int', 11, 'null' => 0, 'default' => '0'),
+        'sort' => array('int', 11),
         'has_children' => array('tinyint', 1, 'null' => 0, 'default' => '0'),
         'status' => array('tinyint', 1, 'null' => 0, 'default' => '0'),
         'create_datetime' => array('datetime'),
@@ -40,6 +41,7 @@ return array(
             'PRIMARY' => 'id',
             'parent' => 'parent_id',
             'list_id' => 'list_id',
+            'sort' => array('parent_id', 'sort'),
         ),
     ),
     'pocketlists_item_sort' => array(

@@ -56,14 +56,40 @@
             }
         );
     };
-    var update_item_parent = function (data, callback) {
+    var move_item = function (data, callback) {
         $.post(
-            '?module=item&action=updateParent',
+            '?module=item&action=move',
             {
+                list_id: list_id,
                 data: data
             },
             function (r) {
                 debugger;
+                if (r.status === 'ok') {
+                    $.isFunction(callback) && callback.call();
+                } else {
+                    alert(r.errors);
+                }
+            },
+            'json'
+        );
+    };
+    var get_items = function () {
+        var data = [];
+        $('.pl-item-wrapper').each(function (i) {
+            var $this = $(this);
+            data.push({id: $this.data('id'), parent_id: $this.data('parent-id'), sort: i});
+        });
+        return data;
+    };
+    var update_sort = function (callback) {
+        $.post(
+            '?module=item&action=sort',
+            {
+                list_id: list_id,
+                data: get_items()
+            },
+            function (r) {
                 if (r.status === 'ok') {
                     $.isFunction(callback) && callback.call();
                 } else {
@@ -164,18 +190,27 @@
     $(document).on('keydown', function (e) {
         if (e.which === 39) { // -->
             var $items = $('.pl-list-items').find('.pl-item-selected').closest('.pl-item-wrapper');
-            debugger;
             if ($items.length) {
                 $items.each(function () {
-                    debugger;
                     var $item = $(this),
-                        $prev = $item.prev('.pl-item-wrapper');
+                        $prev = $item.prev('.pl-item-wrapper'),
+                        $next = $prev.next('.pl-item-wrapper');
                     if ($prev.length) { // not first
                         var parent_id = parseInt($prev.data('id')),
-                            item_id = parseInt($item.data('id'));
+                            item_id = parseInt($item.data('id')),
+                            before_id = $next.length ? parseInt($next.data('id')) : 0,
+                            data = [{id: item_id, parent_id: parent_id, before_id: before_id}];
                         $item.data('parent-id', parent_id); // update parent id
 
-                        update_item_parent([{id: item_id, parent_id: parent_id}], function () {
+                        //move_item([{id: item_id, parent_id: parent_id}], function () {
+                        //    var $nested = $prev.find('ul').first();
+                        //    if ($nested.length) {
+                        //        $nested.append($item);
+                        //    } else {
+                        //        $prev.append($('<ul class="menu-v">').html($item));
+                        //    }
+                        //});
+                        update_sort(function () {
                             var $nested = $prev.find('ul').first();
                             if ($nested.length) {
                                 $nested.append($item);
@@ -188,34 +223,44 @@
             }
         } else if (e.which === 37) { // <--
             var $items = $('.pl-list-items').find('.pl-item-selected').closest('.pl-item-wrapper');
-            debugger;
             if ($items.length) {
                 $items.each(function () {
-                    debugger;
                     var $item = $(this),
-                        $prev = $item.parents('.pl-item-wrapper').first();
+                        $prev = $item.parents('.pl-item-wrapper').first(),
+                        $next = $prev.next('.pl-item-wrapper');
                     if ($prev.length) { // not first level
                         var parent_id = parseInt($prev.data('parent-id')),
                             item_id = parseInt($item.data('id')),
-                            data = [{id: item_id, parent_id: parent_id}];
+                            before_id = $next.length ? parseInt($next.data('id')) : 0,
+                            data = [{id: item_id, parent_id: parent_id, before_id: before_id}];
                         $item.data('parent-id', parent_id); // update parent id
 
                         var $items_same_level = $item.nextAll(), // all next items on same level
                             $item_children_wrapper = $item.find('ul.menu-v'); // item children wrapper
 
                         $items_same_level.each(function () {
+                            $items_same_level.data('parent-id', item_id);
                             data.push({
                                 id: $(this).data('id'),
                                 parent_id: item_id
                             });
                         });
 
-                        update_item_parent(data, function () {
+                        //move_item(data, function () {
+                        //    if (!$item_children_wrapper.length) { // create if not exist
+                        //        $item_children_wrapper = $('<ul class="menu-v">');
+                        //        $item.append($item_children_wrapper);
+                        //    }
+                        //    $item_children_wrapper.append($items_same_level); // now will be children of current
+                        //
+                        //    $prev.after($item);
+                        //});
+                        update_sort(function () {
                             if (!$item_children_wrapper.length) { // create if not exist
                                 $item_children_wrapper = $('<ul class="menu-v">');
                                 $item.append($item_children_wrapper);
                             }
-                            $item_children_wrapper.append($items_same_level.data('parent-id', item_id)); // now will be children of current
+                            $item_children_wrapper.append($items_same_level); // now will be children of current
 
                             $prev.after($item);
                         });
