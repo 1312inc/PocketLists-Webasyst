@@ -25,6 +25,7 @@ return array(
         'sort' => array('int', 11, 'null' => 0, 'default' => '0'),
         'has_children' => array('tinyint', 1, 'null' => 0, 'default' => '0'),
         'status' => array('tinyint', 1, 'null' => 0, 'default' => '0'),
+        'priority' => array('tinyint', 1, 'null' => 0, 'default' => '0'),
         'create_datetime' => array('datetime'),
         'update_datetime' => array('datetime'),
         'complete_datetime' => array('datetime'),
