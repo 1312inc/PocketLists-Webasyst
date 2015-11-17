@@ -1,7 +1,7 @@
 <?php
 // add priority field
 
-$m = new waModel();
+$model = new waModel();
 
 try {
     $model->query("SELECT `priority` FROM pocketlists_item");
