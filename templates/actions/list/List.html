@@ -183,36 +183,55 @@
 
     <div class="fields form width100px">
 
+        <!-- core -->
         <div class="field-group">
             <div class="field">
                 <div class="name">[`Name`]</div>
-                <div class="value"><input type="text" class="bold large" value="Roast beef" /></div>
+                <div class="value"><input type="text" class="bold large long" value="Roast beef" /></div>
             </div>
             <div class="field">
                 <div class="name">[`Note`]</div>
-                <div class="value"><textarea placeholder="[`Add text note`]"></textarea></div>
+                <div class="value"><textarea placeholder="[`Optional text note`]"></textarea></div>
             </div>
-        </div>
-
-        <div class="field-group">
             <div class="field">
-                <div class="name">Priority</div>
-                <div class="value">
+                <div class="name">[`Attachment`]</div>
+                <div class="value no-shift"><input type="file" /></div>
 
-                    <i class="icon16 color pl-white"></i>
-                    <i class="icon16 color pl-dark-green"></i>
-                    <i class="icon16 color pl-dark-yellow"></i>
-                    <i class="icon16 color pl-dark-red"></i>
+            </div>
+            <div class="field">
+                <div class="name">[`Priority`]</div>
+                <div class="value no-shift">
+
+                    <a href="#" class="selected"><i class="icon16 color pl-white"></i></a>
+                    <a href="#"><i class="icon16 color pl-dark-green"></i></a>
+                    <a href="#"><i class="icon16 color pl-dark-yellow"></i></a>
+                    <a href="#"><i class="icon16 color pl-dark-red"></i></a>
 
                 </div>
             </div>
+        </div>
+
+        <!-- notifications -->
+        <div class="field-group">
+
             <div class="field">
-                <div class="name">Due</div>
-                <div class="value"><input type="text" value="" /></div>
+                <div class="name">[`Due`]</div>
+                <div class="value">
+                    <input type="text" value="" />
+                    <a href="#"><i class="icon16 calendar"></i></a>
+                </div>
             </div>
+
+        </div>
+
+
+        <div class="field-group">
             <div class="field">
-                <div class="name">[`Assignment`]</div>
-                <div class="value"><select><option>[`None`]</option><option>...current pocket user list here...</option></select></div>
+                <div class="name">[`Assigned to`]</div>
+                <div class="value no-shift">
+                    <i class="icon16 userpic20"></i>
+                    <select><option>[`None`]</option><option>...pocket user list here...</option></select>
+                </div>
             </div>
         </div>
 
@@ -220,6 +239,8 @@
             <div class="field">
                 <div class="value">
                     <input type="button" class="button green" value="Save" />
+                    [`or`]
+                    <a href="#">[`cancel`]</a>
                 </div>
             </div>
         </div>

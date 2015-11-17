@@ -23,11 +23,20 @@
               </div>
               <div class="field">
                 <div class="name">
-                  [`Email me when`]
+                  [`Email me`]
                 </div>
                 <div class="value no-shift">
                     <label>
-                        <input type="checkbox" checked="checked" disabled="disabled"> [`Someone assigns me a to-do`]
+                        <input type="checkbox" checked="checked"> [`Daily recap on what’s up next (when there are to-dos planned for today)`]
+                    </label>
+
+                    {if 111}
+                        <p class="small"><br><em><i class="icon10 exclamation"></i> [`Daily recap notifications require CRON to be configured, which is not the case for your Pocket Lists app. See <a href="#" target="_blank">how to setup CRON for Pocket Lists</a>`]</em></p>
+                    {/if}
+                </div>
+                <div class="value no-shift">
+                    <label>
+                        <input type="checkbox" checked="checked"> [`When someone assigns me a to-do`]
                     </label>
                 </div>
                 {*
@@ -39,16 +48,16 @@
                 *}
                 <div class="value no-shift">
                     <label>
-                        <input type="checkbox"> [`New lists are created by other users`]
+                        <input type="checkbox"> [`When a new list was created by someone`]
                     </label>
                 </div>
                 <div class="value no-shift">
                     <label>
-                        <input type="checkbox"> [`New to-do items are created`]
+                        <input type="checkbox"> [`When new to-do items were added`]
                     </label>
                     <select>
-                        <option>[`in any list`]</option>
-                        <option selected="selected">[`in any list I marked as favorite`]</option>
+                        <option>[`to any list`]</option>
+                        <option selected="selected">[`to a list I previously marked as favorite`]</option>
                     </select>
                 </div>
 

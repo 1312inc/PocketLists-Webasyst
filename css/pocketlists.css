@@ -33,6 +33,8 @@
 
 .icon10.color { border: none; border-radius: 50%; width: 5px; height: 5px; }
 .icon16.color { border: none; }
+.icon16.color.white { border: 1px solid rgba(0,0,0,0.2); }
+.field .value a.selected .icon16.color { border: 3px solid rgba(0,0,0,0.8); }
 
 .indicator.yellow { background-color: #da3; color: #fff; }
 .indicator.green { background-color: green; color: #fff; }
@@ -41,15 +43,20 @@
 --------- */
 
 .pl-pocket { background: #5da5f5; text-align: center; padding: 0; position: relative; }
-.pl-pocket a.count { padding: 15px; position: absolute; right: 0; }
+.pl-pocket a.count { padding: 19px; position: absolute; right: 0; }
 .pl-pocket ul.menu-h { margin: 0;  }
 .pl-pocket ul.menu-h li { margin: 0; display: inline-block; position: static; }
-.pl-pocket ul.menu-h li h5 a { color: #fff; text-align: center; font-size: 1.3em; padding: 15px;  }
-.pl-pocket ul.menu-h li ul.menu-v { border: none; box-shadow: 0 4px 12px -8px rgba(0,0,0,0.2); top: 90%; margin-left: 0; left: 0; max-height: 0; overflow: hidden; transition: max-height 0.15s ease-out; display: block; }
+.pl-pocket ul.menu-h li h5 { margin: 0; }
+.pl-pocket ul.menu-h li h5 a { color: #fff; text-align: center; font-size: 1.3em; padding: 18px;  }
+.pl-pocket ul.menu-h li h5 a i.icon16 { margin-top: 0em; }
+.pl-pocket ul.menu-h li h5 a:hover { color: #ff3 !important; }
+.pl-pocket ul.menu-h li ul.menu-v { border: none; box-shadow: 0 4px 15px -8px rgba(0,0,0,0.4); top: 90%; margin-left: 0; left: 0; max-height: 0; overflow: hidden; display: block; }
 .pl-pocket ul.menu-h li ul.menu-v li { padding-right: 4px; padding-top: 6px; }
-.pl-pocket ul.menu-h li ul.menu-v li a { padding-top: 10px; padding-bottom: 10px; }
+.pl-pocket ul.menu-h li ul.menu-v li a { padding-top: 10px; padding-bottom: 10px; padding-left: 30px; }
+.pl-pocket ul.menu-h li ul.menu-v li a i.icon16.color { margin-right: 8px; margin-top: 0; }
+.pl-pocket ul.menu-h li ul.menu-v li .count { margin-top: 4px; margin-right: 6px; }
 .pl-pocket ul.menu-h li:hover { background: transparent; }
-.pl-pocket ul.menu-h li:hover ul.menu-v { max-height: 500px; transition: max-height 0.25s ease-in; }
+.pl-pocket ul.menu-h li:hover ul.menu-v { max-height: 500px; transition: max-height 0.25s ease-in; transition-delay: 0.4s; }
 
 /* Lists
 -------- */
@@ -60,7 +67,7 @@ ul.pl-lists li a { border-bottom: 1px solid rgba(0,0,0,0.1); padding: 20px 15px 
 ul.pl-lists li a .count { font-size: 0.9em; }
 ul.pl-lists li a .indicator { padding: 3px 7px 4px; margin-top: -3px; }
 ul.pl-lists li a i.listicon48 { position: relative; top: -7px; margin-right: 10px; }
-ul.pl-lists li a:hover { color: inherit !important; background: rgba(0,0,0,0.025); }
+ul.pl-lists li a:hover { color: red !important; background: rgba(0,0,0,0.025); }
 ul.pl-lists li.selected a { color: #000 !important; }
 
 /* Calendar
@@ -99,21 +106,34 @@ ul.pl-team li .pl-active-items { max-height: 2.4em; overflow: hidden; margin: 5p
 
 #pl-item-add-wrapper-hover {
     display: block;
-    height: 20px;
-    border: 1px dashed red;
-    margin: 0 0 10px 20px;
+    max-height: 0;
+    height: 10px;
+    background: red;
+    margin: 0;
     cursor: pointer;
+
+}
+.pl-item-wrapper:hover #pl-item-add-wrapper-hover {
+    max-height: 99px;
+    transition: max-height 0.25s ease-in;
+    transition-delay: 0.4s;
 }
 
 #pl-item-add textarea {
     min-width: 350px;
-    width: 350px;
+    width: 90%;
     white-space: nowrap;
     height: 1.3em;
     line-height: 1.3em;
     resize: none;
     word-wrap: normal;
     overflow-x: hidden;
+    border: none;
+    background: rgba(0,0,0,0.05);
+    padding: 5px;
+    margin: -5px 0 -7px -5px;
+    position: relative;
+    top: -1px;
 }
 .pl-items { position: relative; min-height: 500px; }
 
@@ -139,10 +159,13 @@ rgba(0,0,0,0.1); }
 .pl-list-items ul.menu-v li ul li ul li .pl-item { padding-left: 52px; }
 .pl-list-items ul.menu-v li ul li ul li ul li .pl-item { padding-left: 78px; }
 .pl-list-items ul.menu-v li ul li ul li ul li ul li .pl-item { padding-left: 104px; }
+.pl-list-items ul.menu-v li ul li ul li ul li ul li ul li .pl-item { padding-left: 130px; }
+.pl-list-items ul.menu-v li ul li ul li ul li ul li ul li ul li .pl-item { padding-left: 156px; }
+.pl-list-items ul.menu-v li ul li ul li ul li ul li ul li ul li ul li .pl-item { padding-left: 182px; }
 
-.pl-list-items ul.menu-v li .pl-item .pl-favorite { display: inline-block; float: right; }
-.pl-list-items ul.menu-v li .pl-item .pl-favorite i.icon16 { display: none; }
-.pl-list-items ul.menu-v li .pl-item:hover .pl-favorite i.icon16 { display: inline-block; }
+.pl-list-items ul.menu-v li .pl-item .pl-favorite { display: inline-block; float: right; padding: 18px; }
+/*.pl-list-items ul.menu-v li .pl-item .pl-favorite i.icon16 { display: none; }
+.pl-list-items ul.menu-v li .pl-item:hover .pl-favorite i.icon16 { display: inline-block; }*/
 
 .pl-is-selected { display: none; }
 
@@ -162,3 +185,24 @@ rgba(0,0,0,0.1); }
 
 i.listicon48 { background-repeat:no-repeat; height: 32px; width: 32px; background-size: 32px 32px; display:inline-block; text-indent:-9999px; text-decoration:none!important; }
 * i.listicon48 { text-decoration:none!important; vertical-align:top; margin: -0.1em 0.25em 0 0; }
+
+/* Custom 16x16 icons
+--------------------- */
+
+.icon16.pl { background-image: url('../img/pl-backend-ui-icons-16.png?1511'); }
+.icon16.pl.lists { background-position:-16px 0; }
+.icon16.pl.todo { background-position:-32px 0; }
+.icon16.pl.archive { background-position:-48px 0; }
+.icon16.pl.todo-bw { background-position:-64px 0; }
+.icon16.pl.add { background-position:0 -16px; }
+.icon16.pl.darr { background-position:-16px -16px; }
+
+a:hover .icon16.pl.add { background-position:0 -32px; }
+a:hover .icon16.pl.darr { background-position:-16px -32px; }
+
+
+@media
+(-webkit-min-device-pixel-ratio: 2),
+(min-resolution: 192dpi) {
+    i.icon16.pl { background-image: url('../img/pl-backend-ui-icons-16@2x.png?1511'); background-size: 346px 179px; }
+}
