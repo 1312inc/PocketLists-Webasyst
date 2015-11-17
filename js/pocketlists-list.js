@@ -11,6 +11,19 @@
         $new_item_wrapper_hover = $('<div id="pl-item-add-wrapper-hover" style="display: none;">'),
         item_selector = '[data-parent-id]';
 
+    var init_sortable = function () {
+        $undone_items_wrapper.sortable({
+            connectWith: "ul.menu-v",
+            placeholder: 'pl-item-placeholder',
+            stop: function (event, ui) {
+                var $prev = ui.item.parents(item_selector).first(),
+                    parent_id = $prev.length ? parseInt($prev.data('id')) : 0;
+
+                ui.item.data('parent-id', parent_id);
+                update_sort.call(ui.item, parseInt(ui.item.data('id')));
+            }
+        });
+    };
     var update_list = function (id) {
         var data = {
             name: $(this).val().trim(),
@@ -85,22 +98,27 @@
         var data = [];
         $undone_items_wrapper.find(item_selector).each(function (i) {
             var $this = $(this);
-            data.push({id: $this.data('id'), parent_id: $this.data('parent-id'), sort: i});
+            data.push({
+                id: $this.data('id'),
+                parent_id: $this.data('parent-id'),
+                sort: i,
+                has_children: $this.find(item_selector).length ? 1 : 0
+            });
         });
         return data;
     };
-    var update_sort = function (callback) {
+    var update_sort = function (id) {
         this.find('label').first().append($loading);
         $.post(
             '?module=item&action=sort',
             {
                 list_id: list_id,
+                item_id: id ? id : 0,
                 data: get_items()
             },
             function (r) {
                 if (r.status === 'ok') {
                     init_sortable();
-                    callback && $.isFunction(callback) && callback.call();
                 } else {
                     alert(r.errors);
                 }
@@ -130,6 +148,56 @@
             'json'
         );
     };
+    var increase_item = function() {
+        var $items = $undone_items_wrapper.find('.pl-item-selected').closest(item_selector);
+        if ($items.length) {
+            $items.each(function () {
+                var $item = $(this),
+                    $prev = $item.prev(item_selector);
+                if ($prev.length) { // not first
+                    var parent_id = parseInt($prev.data('id'));
+                    $item.data('parent-id', parent_id); // update parent id
+
+                    var $nested = $prev.find('ul.menu-v').first();
+                    if ($nested.length) {
+                        $nested.append($item);
+                    } else {
+                        $prev.append($('<ul class="menu-v">').html($item));
+                    }
+
+                    update_sort.call($item, parseInt($item.data('id')));
+                }
+            });
+        }
+    };
+    var decrease_item = function() {
+        var $items = $undone_items_wrapper.find('.pl-item-selected').closest(item_selector);
+        if ($items.length) {
+            $items.each(function () {
+                var $item = $(this),
+                    $prev = $item.parents(item_selector).first();
+                if ($prev.length) { // not first level
+                    var parent_id = parseInt($prev.data('parent-id'));
+
+                    $item.data('parent-id', parent_id); // update parent id
+
+                    var $items_same_level = $item.nextAll(), // all next items on same level
+                        $item_children_wrapper = $item.find('ul.menu-v'); // item children wrapper
+
+                    if (!$item_children_wrapper.length) { // create if not exist
+                        $item_children_wrapper = $('<ul class="menu-v">');
+                        $item.append($item_children_wrapper);
+                    }
+                    $item_children_wrapper.append($items_same_level); // now will be children of current
+
+                    $prev.after($item);
+
+                    update_sort.call($item, parseInt($item.data('id')));
+                }
+            });
+        }
+    };
+
     if ($new_list_inpit.length) {
         $new_list_inpit.focus();
         $new_list_inpit.on('keydown', function (e) {
@@ -243,101 +311,22 @@
     });
 
     $(document).on('keydown', function (e) {
-        var $items = $undone_items_wrapper.find('.pl-item-selected').closest(item_selector);
-        if (e.which === 39) { // -->
-            if ($items.length) {
-                $items.each(function () {
-                    var $item = $(this),
-                        $prev = $item.prev(item_selector),
-                        $next = $prev.next(item_selector);
-                    if ($prev.length) { // not first
-                        var parent_id = parseInt($prev.data('id')),
-                            item_id = parseInt($item.data('id')),
-                            before_id = $next.length ? parseInt($next.data('id')) : 0,
-                            data = [{id: item_id, parent_id: parent_id, before_id: before_id}];
-                        $item.data('parent-id', parent_id); // update parent id
-
-                        //move_item([{id: item_id, parent_id: parent_id}], function () {
-                        //    var $nested = $prev.find('ul').first();
-                        //    if ($nested.length) {
-                        //        $nested.append($item);
-                        //    } else {
-                        //        $prev.append($('<ul class="menu-v">').html($item));
-                        //    }
-                        //});
-                        update_sort.call($item, function () {
-                            var $nested = $prev.find('ul').first();
-                            if ($nested.length) {
-                                $nested.append($item);
-                            } else {
-                                $prev.append($('<ul class="menu-v">').html($item));
-                            }
-                        });
-                    }
-                });
-            }
-        } else if (e.which === 37) { // <--
-            if ($items.length) {
-                $items.each(function () {
-                    var $item = $(this),
-                        $prev = $item.parents(item_selector).first(),
-                        $next = $prev.next(item_selector);
-                    if ($prev.length) { // not first level
-                        var parent_id = parseInt($prev.data('parent-id')),
-                            item_id = parseInt($item.data('id')),
-                            before_id = $next.length ? parseInt($next.data('id')) : 0,
-                            data = [{id: item_id, parent_id: parent_id, before_id: before_id}];
-                        $item.data('parent-id', parent_id); // update parent id
-
-                        var $items_same_level = $item.nextAll(), // all next items on same level
-                            $item_children_wrapper = $item.find('ul.menu-v'); // item children wrapper
-
-                        $items_same_level.each(function () {
-                            $items_same_level.data('parent-id', item_id);
-                            data.push({
-                                id: $(this).data('id'),
-                                parent_id: item_id
-                            });
-                        });
-
-                        //move_item(data, function () {
-                        //    if (!$item_children_wrapper.length) { // create if not exist
-                        //        $item_children_wrapper = $('<ul class="menu-v">');
-                        //        $item.append($item_children_wrapper);
-                        //    }
-                        //    $item_children_wrapper.append($items_same_level); // now will be children of current
-                        //
-                        //    $prev.after($item);
-                        //});
-                        update_sort.call($item, function () {
-                            if (!$item_children_wrapper.length) { // create if not exist
-                                $item_children_wrapper = $('<ul class="menu-v">');
-                                $item.append($item_children_wrapper);
-                            }
-                            $item_children_wrapper.append($items_same_level); // now will be children of current
-
-                            $prev.after($item);
-                        });
-                    }
-                });
-            }
+        switch (e.which) {
+            case 39: // -->
+                increase_item.call(this);
+                break;
+            case 9: // tab
+                if (e.shiftKey) {
+                    decrease_item.call(this);
+                } else {
+                    increase_item.call(this);
+                }
+                break;
+            case 37: // <--
+                decrease_item.call(this);
+                break;
         }
     });
-
-
-    var init_sortable = function () {
-        $undone_items_wrapper.sortable({
-            connectWith: "ul.menu-v",
-            placeholder: 'pl-item-placeholder',
-            stop: function (event, ui) {
-                var $prev = ui.item.parents(item_selector).first(),
-                    parent_id = $prev.length ? parseInt($prev.data('id')) : 0;
-
-                ui.item.data('parent-id', parent_id);
-                update_sort.call(ui.item);
-            }
-        });
-    };
 
     init_sortable();
 

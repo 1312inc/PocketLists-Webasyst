@@ -97,6 +97,6 @@ class pocketlistsItemModel extends waModel
                     )
                 )->fetchField('sort') + 1;
         }
-        return $this->updateById($id, array('sort' => $sort));
+        return $this->updateById($id, array('sort' => $sort, 'update_datetime' => date("Y-m-d H:i:s")));
     }
 }
