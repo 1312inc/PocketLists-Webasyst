@@ -1,6 +1,7 @@
 (function () {
     var list_id = parseInt($('#pl-list-id').val()),
         pocket_id = parseInt($('#pl-pocket-id').val()),
+        $list_items_wrapper = $('.pl-list-items'),
         $loading = $('<i class="icon16 loading">'),
         $new_list_inpit = $('#pl-new-list-input'),
         $new_item_wrapper = $('#pl-item-add').detach(),
@@ -35,7 +36,6 @@
         }
     };
     var add_items = function (data) {
-        debugger;
         var $this = $(this);
         $this.after($loading);
         $.post(
@@ -45,14 +45,19 @@
                 data: data
             },
             function (html) {
-                debugger;
                 var $li = $this.closest('.pl-item-wrapper');
                 var $html = $('' + html + '');
                 $html.filter('.pl-item-wrapper').last()
                     .find('.pl-item').first().after($new_item_wrapper);
+                if ($li.length) {
+                    $li.after($html);
+                } else {
+                    $list_items_wrapper.find('ul.menu-v').first().prepend($html);
+                }
                 $loading.remove();
-                $li.after($html);
                 $new_item_input.val('').trigger('focus');
+
+                update_sort.call($html);
             }
         );
     };
@@ -64,7 +69,6 @@
                 data: data
             },
             function (r) {
-                debugger;
                 if (r.status === 'ok') {
                     $.isFunction(callback) && callback.call();
                 } else {
@@ -142,21 +146,23 @@
             }
         })
         .on('paste', function (e) {
+            var parent_id = $(this).closest('.menu-v').find('.pl-item-wrapper').first().data('parent-id');
             var self = this;
-            var parent_id = $this.closest('.menu-v').find('.pl-item-wrapper').first().data('parent-id');
             setTimeout(function () {
-                var items = $new_item_input.val().trim().split(/\n/);
+                var items = $new_item_input.val().split(/\n/);
                 var data = [];
-                for (var i = 0; i < items.length; i++) {
-                    var name = $.trim(items[i]);
-                    if (name) {
-                        data.push({
-                            name: name,
-                            parent_id: parent_id
-                        });
+                if (items.length > 1) {
+                    for (var i = 0; i < items.length; i++) {
+                        var name = $.trim(items[i]);
+                        if (name) {
+                            data.push({
+                                name: name,
+                                parent_id: parent_id
+                            });
+                        }
                     }
+                    add_items.call(self, data);
                 }
-                add_items.call(self, data);
             }, 100);
         });
 
@@ -184,15 +190,15 @@
         $new_item_input.focus();
     });
 
-    $('.pl-is-selected').change(function () {
+    $list_items_wrapper.on('change', '.pl-is-selected', function () {
         $('#pl-item-details').toggle();
         $(this).closest('.pl-list-items').find('.pl-item').removeClass('pl-item-selected');
         $(this).closest('.pl-item').toggleClass('pl-item-selected')
     });
 
     $(document).on('keydown', function (e) {
+        var $items = $list_items_wrapper.find('.pl-item-selected').closest('.pl-item-wrapper');
         if (e.which === 39) { // -->
-            var $items = $('.pl-list-items').find('.pl-item-selected').closest('.pl-item-wrapper');
             if ($items.length) {
                 $items.each(function () {
                     var $item = $(this),
@@ -225,7 +231,6 @@
                 });
             }
         } else if (e.which === 37) { // <--
-            var $items = $('.pl-list-items').find('.pl-item-selected').closest('.pl-item-wrapper');
             if ($items.length) {
                 $items.each(function () {
                     var $item = $(this),
@@ -279,7 +284,6 @@
             connectWith: "ul.menu-v",
             placeholder: 'pl-item-placeholder',
             stop: function( event, ui ) {
-                debugger;
                 var $prev = ui.item.parents('.pl-item-wrapper').first(),
                     parent_id = $prev.length ? parseInt($prev.data('id')) : 0;
 

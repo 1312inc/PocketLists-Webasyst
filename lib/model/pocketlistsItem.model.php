@@ -25,7 +25,7 @@ class pocketlistsItemModel extends waModel
         foreach ($result as $id => $item) {
             $result[$item['parent_id']]['childs'][$id] =& $result[$id];
         }
-        return $result[$root_item]['childs'];
+        return isset($result[$root_item]) ? $result[$root_item]['childs'] : array();
     }
 
     public function move($list_id, $id, $before_id)
