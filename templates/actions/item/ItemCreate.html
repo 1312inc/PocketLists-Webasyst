@@ -3,7 +3,7 @@
     <li class="pl-item-wrapper" data-id="{$i.id}" data-parent-id="{$i.parent_id}">
     <div class="pl-item">
         <a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
-        <input type="checkbox" class="pl-done">
+        <input type="checkbox" class="pl-done" {if $i.status == 1}checked="checked"{/if}>
         <label>
             <input type="checkbox" class="pl-is-selected">
             <span>{$i.name|escape}</span>
@@ -11,7 +11,7 @@
     </div>
     {if !empty($i.childs)}
         <ul class="menu-v">
-        {include '../item/ItemCreate.html' parent_id=$i.parent_id items=$i.childs inline}
+        {include '../item/ItemCreate.html' items=$i.childs inline}
             </ul>
     {/if}
     </li>

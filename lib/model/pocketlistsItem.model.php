@@ -4,17 +4,53 @@ class pocketlistsItemModel extends waModel
 {
     protected $table = 'pocketlists_item';
 
-    public function getByList($list_id, $tree = true, $root = 0)
+    public function getAllByList($list_id, $tree = true)
     {
         $sql = "SELECT *
                 FROM {$this->table}
                 WHERE list_id = i:lid
                 ORDER BY parent_id, sort ASC";
-        $items = $this->exec($sql, array('lid' => $list_id));
-        return $tree ? $this->getTree($items, $root) : $items;
+
+        return $this->getItems($sql, $list_id, $tree);
     }
 
-    private function getTree($items, $root_item)
+    public function getUndoneByList($list_id, $tree = true)
+    {
+        $sql = "SELECT *
+                FROM {$this->table}
+                WHERE list_id = i:lid AND status = 0
+                ORDER BY parent_id, sort ASC";
+
+        return $this->getItems($sql, $list_id, $tree);
+    }
+
+    public function getDoneByList($list_id, $tree = true)
+    {
+        $sql = "SELECT *
+                FROM {$this->table}
+                WHERE list_id = i:lid AND status > 0
+                ORDER BY parent_id, sort ASC";
+
+        return $this->getItems($sql, $list_id, $tree);
+    }
+
+    public function getArchiveByList($list_id, $tree = true)
+    {
+        $sql = "SELECT *
+                FROM {$this->table}
+                WHERE list_id = i:lid AND status < 0
+                ORDER BY parent_id, sort ASC";
+
+        return $this->getItems($sql, $list_id, $tree);
+    }
+
+    private function getItems($sql, $list_id, $tree)
+    {
+        $items = $this->query($sql, array('lid' => $list_id))->fetchAll();
+        return $tree ? $this->getTree($items, $tree) : $items;
+    }
+
+    private function getTree($items, $tree)
     {
         $result = array();
         foreach ($items as $id => $item) {
@@ -25,7 +61,12 @@ class pocketlistsItemModel extends waModel
         foreach ($result as $id => $item) {
             $result[$item['parent_id']]['childs'][$id] =& $result[$id];
         }
-        return isset($result[$root_item]) ? $result[$root_item]['childs'] : array();
+        if ($tree === true) {
+            $result = isset($result[0]) ? $result[0]['childs'] : array();
+        } elseif (is_numeric($tree)) {
+            $result = isset($result[$tree]) ? array($tree => $result[$tree]) : array();
+        }
+        return $result;
     }
 
     public function move($list_id, $id, $before_id)

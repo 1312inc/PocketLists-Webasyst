@@ -23,58 +23,22 @@
         {/if}
     </h1>
 </header>
-<div class="pl-list-items">
+<div class="pl-list-items" id="pl-list-items">
 
-    {if !empty($items)}
-    <ul class="menu-v">
-        {include '../item/ItemCreate.html' parent_id=0 items=$items}
-    </ul>
-    {/if}
+    <section id="pl-undone-items">
+        <ul class="menu-v">
+        {if !empty($items)}
+            {include '../item/ItemCreate.html' parent_id=0 items=$items}
+        {/if}
+        </ul>
 
-    {*<li>
-    <div class="pl-item">
-        <a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
-        <input type="checkbox" class="pl-done">
-        <label>
-            <input type="checkbox" class="pl-is-selected">
-            Food
-        </label>
-    </div>
-    <ul class="">
-        <li>
-            <div class="pl-item">
-                <a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
-                <input type="checkbox" class="pl-done">
-                <label>
-                    <input type="checkbox" class="pl-is-selected">
-                    <span class="CLICKME">Roast beef</span>
-                    <br>
-                    <span class="small red bold">&minus;3 days</span>
-                </label>
-            </div>
-        </li>
-        <li>
-            <div class="pl-item">
-                <a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
-                <input type="checkbox" class="pl-done">
-                <label>
-                    <input type="checkbox" class="pl-is-selected">
-                    Rib eye
-                    <br>
-                    <span class="small" style="color: green">Tomorrow</span>
-                </label>
-            </div>
-        </li>
-    </ul>
-</li>
-
-    <li>
+        {*<li>
         <div class="pl-item">
             <a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
             <input type="checkbox" class="pl-done">
             <label>
                 <input type="checkbox" class="pl-is-selected">
-                Drinks
+                Food
             </label>
         </div>
         <ul class="">
@@ -84,7 +48,9 @@
                     <input type="checkbox" class="pl-done">
                     <label>
                         <input type="checkbox" class="pl-is-selected">
-                        Beer
+                        <span class="CLICKME">Roast beef</span>
+                        <br>
+                        <span class="small red bold">&minus;3 days</span>
                     </label>
                 </div>
             </li>
@@ -94,85 +60,124 @@
                     <input type="checkbox" class="pl-done">
                     <label>
                         <input type="checkbox" class="pl-is-selected">
-                        Wine
+                        Rib eye
+                        <br>
+                        <span class="small" style="color: green">Tomorrow</span>
                     </label>
                 </div>
-            </li>
-            <li>
-                <div class="pl-item">
-                    <a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
-                    <input type="checkbox" class="pl-done">
-                    <label>
-                        <input type="checkbox" class="pl-is-selected">
-                        Water
-                    </label>
-                </div>
-                <ul class="">
-                    <li>
-                        <div class="pl-item">
-                            <a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
-                            <input type="checkbox" class="pl-done">
-                            <label>
-                                <input type="checkbox" class="pl-is-selected">
-                                A water "Visoko-visoko v gorakh jila-bila khoroshaya voda jila sebe pojivala da dobra najivala poka ne kupil ee dobri molodec da ni vipil"
-                                <br>
-                                <span class="small" style="color: #ca0;">Tomorrow</span>
-                            </label>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="pl-item">
-                            <a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
-                            <input type="checkbox" class="pl-done">
-                            <label>
-                                <input type="checkbox" class="pl-is-selected">
-                                Borjomi
-                            </label>
-                        </div>
-                    </li>
-                </ul>
             </li>
         </ul>
-    </li>*}
+    </li>
+
+        <li>
+            <div class="pl-item">
+                <a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
+                <input type="checkbox" class="pl-done">
+                <label>
+                    <input type="checkbox" class="pl-is-selected">
+                    Drinks
+                </label>
+            </div>
+            <ul class="">
+                <li>
+                    <div class="pl-item">
+                        <a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
+                        <input type="checkbox" class="pl-done">
+                        <label>
+                            <input type="checkbox" class="pl-is-selected">
+                            Beer
+                        </label>
+                    </div>
+                </li>
+                <li>
+                    <div class="pl-item">
+                        <a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
+                        <input type="checkbox" class="pl-done">
+                        <label>
+                            <input type="checkbox" class="pl-is-selected">
+                            Wine
+                        </label>
+                    </div>
+                </li>
+                <li>
+                    <div class="pl-item">
+                        <a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
+                        <input type="checkbox" class="pl-done">
+                        <label>
+                            <input type="checkbox" class="pl-is-selected">
+                            Water
+                        </label>
+                    </div>
+                    <ul class="">
+                        <li>
+                            <div class="pl-item">
+                                <a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
+                                <input type="checkbox" class="pl-done">
+                                <label>
+                                    <input type="checkbox" class="pl-is-selected">
+                                    A water "Visoko-visoko v gorakh jila-bila khoroshaya voda jila sebe pojivala da dobra najivala poka ne kupil ee dobri molodec da ni vipil"
+                                    <br>
+                                    <span class="small" style="color: #ca0;">Tomorrow</span>
+                                </label>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="pl-item">
+                                <a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
+                                <input type="checkbox" class="pl-done">
+                                <label>
+                                    <input type="checkbox" class="pl-is-selected">
+                                    Borjomi
+                                </label>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>*}
+    </section>
     <!-- completed to-dos log -->
     <section id="pl-complete-log">
         <h5 class="heading">[`Complete log`]</h5>
-        <ul class="menu-v">
 
-            <li>
-                <div class="pl-item">
-                    <a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
-                    <input type="checkbox" class="pl-done" checked="checked">
-                    <label>
-                        <input type="checkbox" class="pl-is-selected">
-                        Olive oil
-                        <span class="hint">Today 13:00 (|wa_humandatetime)</span>
-                    </label>
-                </div>
-            </li>
-            <li>
-                <div class="pl-item">
-                    <a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
-                    <input type="checkbox" class="pl-done" checked="checked">
-                    <label>
-                        <input type="checkbox" class="pl-is-selected">
-                        Carrot
-                        <span class="hint">Yesterday 14:00</span>
-                    </label>
-                </div>
-            </li>
-            <li>
-                <div class="pl-item">
-                    <a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
-                    <input type="checkbox" class="pl-done" checked="checked">
-                    <label>
-                        <input type="checkbox" class="pl-is-selected">
-                        Apples
-                        <span class="hint">Nov 1, 2015</span>
-                    </label>
-                </div>
-            </li>
+        <ul class="menu-v">
+        {if !empty($items_done)}
+            {include '../item/ItemCreate.html' items=$items_done}
+        {/if}
         </ul>
+        {*<li>
+            <div class="pl-item">
+                <a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
+                <input type="checkbox" class="pl-done" checked="checked">
+                <label>
+                    <input type="checkbox" class="pl-is-selected">
+                    Olive oil
+                    <span class="hint">Today 13:00 (|wa_humandatetime)</span>
+                </label>
+            </div>
+        </li>
+        <li>
+            <div class="pl-item">
+                <a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
+                <input type="checkbox" class="pl-done" checked="checked">
+                <label>
+                    <input type="checkbox" class="pl-is-selected">
+                    Carrot
+                    <span class="hint">Yesterday 14:00</span>
+                </label>
+            </div>
+        </li>
+        <li>
+            <div class="pl-item">
+                <a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
+                <input type="checkbox" class="pl-done" checked="checked">
+                <label>
+                    <input type="checkbox" class="pl-is-selected">
+                    Apples
+                    <span class="hint">Nov 1, 2015</span>
+                </label>
+            </div>
+        </li>*}
     </section>
 
     <a href="#" id="pl-complete-log-link" class="inline-link gray CLICKME"><b><i>[`Show all %d completed to-dos`]</i></b></a>

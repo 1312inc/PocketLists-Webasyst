@@ -11,7 +11,8 @@ class pocketlistsListAction extends waViewAction
             $this->view->assign('list', $lm->getList($list_id));
 
             $im = new pocketlistsItemModel();
-            $this->view->assign('items', $im->getByList($list_id));
+            $this->view->assign('items', $im->getUndoneByList($list_id));
+            $this->view->assign('items_done', $im->getDoneByList($list_id));
 
 //            $this->view->assign(
 //                'items',

@@ -1,12 +1,15 @@
 (function () {
     var list_id = parseInt($('#pl-list-id').val()),
         pocket_id = parseInt($('#pl-pocket-id').val()),
-        $list_items_wrapper = $('.pl-list-items'),
+        $list_items_wrapper = $('#pl-list-items'),
+        $undone_items_wrapper = $('#pl-undone-items > ul.menu-v'),
+        $done_items_wrapper = $('#pl-complete-log > ul.menu-v'),
         $loading = $('<i class="icon16 loading">'),
         $new_list_inpit = $('#pl-new-list-input'),
         $new_item_wrapper = $('#pl-item-add').detach(),
         $new_item_input = $new_item_wrapper.find('textarea'),
-        $new_item_wrapper_hover = $('<div id="pl-item-add-wrapper-hover" style="display: none;">');
+        $new_item_wrapper_hover = $('<div id="pl-item-add-wrapper-hover" style="display: none;">'),
+        item_selector = '[data-parent-id]';
 
     var update_list = function (id) {
         var data = {
@@ -45,14 +48,14 @@
                 data: data
             },
             function (html) {
-                var $li = $this.closest('.pl-item-wrapper');
+                var $li = $this.closest(item_selector);
                 var $html = $('' + html + '');
-                $html.filter('.pl-item-wrapper').last()
+                $html.filter(item_selector).last()
                     .find('.pl-item').first().after($new_item_wrapper);
                 if ($li.length) {
                     $li.after($html);
                 } else {
-                    $list_items_wrapper.find('ul.menu-v').first().prepend($html);
+                    $undone_items_wrapper.prepend($html);
                 }
                 $loading.remove();
                 $new_item_input.val('').trigger('focus');
@@ -80,7 +83,7 @@
     };
     var get_items = function () {
         var data = [];
-        $('.pl-item-wrapper').each(function (i) {
+        $undone_items_wrapper.find(item_selector).each(function (i) {
             var $this = $(this);
             data.push({id: $this.data('id'), parent_id: $this.data('parent-id'), sort: i});
         });
@@ -97,6 +100,27 @@
             function (r) {
                 if (r.status === 'ok') {
                     init_sortable();
+                    callback && $.isFunction(callback) && callback.call();
+                } else {
+                    alert(r.errors);
+                }
+                $loading.remove();
+            },
+            'json'
+        );
+    };
+    var complete_item = function (id, status, callback) {
+        this.find('label').first().append($loading);
+        $.post(
+            '?module=item&action=complete',
+            {
+                list_id: list_id,
+                id: id,
+                status: status
+            },
+            function (r) {
+                if (r.status === 'ok') {
+                    // remove from
                     callback && $.isFunction(callback) && callback.call();
                 } else {
                     alert(r.errors);
@@ -123,7 +147,7 @@
                 $('.pl-new-item-wrapper').remove();
             });
         } else {
-            $new_item_wrapper.prependTo('.pl-list-items ul.menu-v:first').slideDown(200).wrap('<li class="pl-new-item-wrapper">');
+            $new_item_wrapper.prependTo($undone_items_wrapper).slideDown(200).wrap('<li class="pl-new-item-wrapper">');
         }
         $new_item_input.focus();
     });
@@ -132,7 +156,7 @@
             var $this = $(this);
             if (e.which === 13) {
                 e.preventDefault();
-                var parent_id = $this.closest('.menu-v').find('.pl-item-wrapper').first().data('parent-id');
+                var parent_id = $this.closest('.menu-v').find(item_selector).first().data('parent-id');
                 add_items.call(this, [{
                     name: $this.val().trim(),
                     parent_id: parent_id
@@ -146,7 +170,7 @@
             }
         })
         .on('paste', function (e) {
-            var parent_id = $(this).closest('.menu-v').find('.pl-item-wrapper').first().data('parent-id');
+            var parent_id = $(this).closest('.menu-v').find(item_selector).first().data('parent-id');
             var self = this;
             setTimeout(function () {
                 var items = $new_item_input.val().split(/\n/);
@@ -166,12 +190,12 @@
             }, 100);
         });
 
-    $('.pl-list-items > .menu-v')
-        .on('mouseenter', '.pl-item-wrapper > .pl-item', function (e) {
+    $undone_items_wrapper
+        .on('mouseenter', item_selector + ' > .pl-item', function (e) {
             e.stopPropagation();
             var $item = $(this);
             if (!$item.find($new_item_wrapper).length) { // if no placeholder here
-                var $has_children = $item.closest('.pl-item-wrapper').find('.menu-v');
+                var $has_children = $item.closest(item_selector).find('.menu-v');
                 if ($has_children.length) { // if item has children - indent
                     $has_children.find('.pl-item').first().before($new_item_wrapper_hover.show())
                 } else { // else on same level
@@ -192,18 +216,41 @@
 
     $list_items_wrapper.on('change', '.pl-is-selected', function () {
         $('#pl-item-details').toggle();
-        $(this).closest('.pl-list-items').find('.pl-item').removeClass('pl-item-selected');
+        $undone_items_wrapper.find('.pl-item').removeClass('pl-item-selected');
         $(this).closest('.pl-item').toggleClass('pl-item-selected')
     });
 
+    // action: complete item
+    $list_items_wrapper.on('change', '.pl-done', function () {
+        var $this = $(this),
+            $item = $this.closest(item_selector),
+            id = parseInt($item.data('id')),
+            status = $this.is(':checked') ? 1 : 0;
+
+        complete_item.call($item, id, status, function () {
+            $item.slideToggle(200, function () {
+                debugger;
+                $item.show();
+                if (status) {
+                    $done_items_wrapper.append($item);
+                } else {
+                    $undone_items_wrapper.append($item);
+                    update_sort.call($item);
+                }
+            });
+
+        });
+
+    });
+
     $(document).on('keydown', function (e) {
-        var $items = $list_items_wrapper.find('.pl-item-selected').closest('.pl-item-wrapper');
+        var $items = $undone_items_wrapper.find('.pl-item-selected').closest(item_selector);
         if (e.which === 39) { // -->
             if ($items.length) {
                 $items.each(function () {
                     var $item = $(this),
-                        $prev = $item.prev('.pl-item-wrapper'),
-                        $next = $prev.next('.pl-item-wrapper');
+                        $prev = $item.prev(item_selector),
+                        $next = $prev.next(item_selector);
                     if ($prev.length) { // not first
                         var parent_id = parseInt($prev.data('id')),
                             item_id = parseInt($item.data('id')),
@@ -234,8 +281,8 @@
             if ($items.length) {
                 $items.each(function () {
                     var $item = $(this),
-                        $prev = $item.parents('.pl-item-wrapper').first(),
-                        $next = $prev.next('.pl-item-wrapper');
+                        $prev = $item.parents(item_selector).first(),
+                        $next = $prev.next(item_selector);
                     if ($prev.length) { // not first level
                         var parent_id = parseInt($prev.data('parent-id')),
                             item_id = parseInt($item.data('id')),
@@ -279,12 +326,12 @@
     });
 
 
-    var init_sortable = function() {
-        $('.pl-list-items ul.menu-v').sortable({
+    var init_sortable = function () {
+        $undone_items_wrapper.sortable({
             connectWith: "ul.menu-v",
             placeholder: 'pl-item-placeholder',
-            stop: function( event, ui ) {
-                var $prev = ui.item.parents('.pl-item-wrapper').first(),
+            stop: function (event, ui) {
+                var $prev = ui.item.parents(item_selector).first(),
                     parent_id = $prev.length ? parseInt($prev.data('id')) : 0;
 
                 ui.item.data('parent-id', parent_id);
@@ -294,10 +341,6 @@
     };
 
     init_sortable();
-
-    $('.pl-done').click(function () {
-        $(this).closest('li').slideToggle(200);
-    });
 
     $('#pl-complete-log-link').click(function () {
         $('#pl-complete-log').slideToggle(200);
