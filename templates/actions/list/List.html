@@ -258,6 +258,16 @@
                     <select><option>[`Nobody`]</option><option>...pocket user list here...</option></select>
                 </div>
             </div>
+            {if 1 || ITEM_WAS_CREATED_BY_SOMEONE_OTHER_THAN_ME}
+            <div class="field">
+                <div class="name">[`Created`]</div>
+                <div class="value no-shift">
+                    <i class="icon16 userpic20"></i>
+                    Vladimir V. Tuporshin
+                    <span class="hint">Yesterday 09:52 |wa_humandatetime</span>
+                </div>
+            </div>
+            {/if}
         </div>
 
         <div class="field-group">
