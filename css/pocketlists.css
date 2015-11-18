@@ -137,7 +137,9 @@ ul.pl-team li .pl-active-items { max-height: 2.4em; overflow: hidden; margin: 5p
 }
 .pl-items { position: relative; min-height: 500px; }
 
-.pl-list-title { border-bottom: 1px solid rgba(0,0,0,0.1); padding: 25px 20px; }
+.pl-list-title { border-bottom: 1px solid rgba(0,0,0,0.1); padding: 25px 5px 25px 20px;  }
+.pl-list-title:hover { background: rgba(0,0,0,0.04); cursor: pointer; }
+.pl-list-favorite { margin-right: 0 !important; }
 .pl-list-title h1 input[type="checkbox"] {
   position: relative; top: -0.15em; margin-right: 6px;
   -ms-transform: scale(1.4); /* IE */
