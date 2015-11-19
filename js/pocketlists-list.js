@@ -15,6 +15,7 @@
         $undone_items_wrapper.sortable({
             connectWith: "ul.menu-v",
             placeholder: 'pl-item-placeholder',
+            tolerance: 'pointer',
             stop: function (event, ui) {
                 var $prev = ui.item.parents(item_selector).first(),
                     parent_id = $prev.length ? parseInt($prev.data('id')) : 0;
@@ -282,10 +283,27 @@
         $new_item_input.focus();
     });
 
-    $list_items_wrapper.on('change', '.pl-is-selected', function () {
-        $('#pl-item-details').toggle();
-        $list_items_wrapper.find('.pl-item').removeClass('pl-item-selected');
-        $(this).closest('.pl-item').toggleClass('pl-item-selected')
+    $list_items_wrapper.on('change', '.pl-is-selected', function (e) {
+        var $this = $(this),
+            $details = $('#pl-item-details'),
+            details_shown = $details.is(':visible'),
+            $item_content_wrapper = $this.closest('.pl-item'),
+            is_selected = $item_content_wrapper.hasClass('pl-item-selected');
+
+        e.preventDefault();
+        if(!details_shown && !is_selected) { // on first click - select
+            $details.hide();
+            $list_items_wrapper.find('.pl-item').removeClass('pl-item-selected');
+            $item_content_wrapper.addClass('pl-item-selected');
+            $this.prop('checked', true);
+        } else if(!details_shown) { // on second - show details
+            $details.show();
+            $this.prop('checked', true);
+        } else { // on third
+            $details.hide();
+            $list_items_wrapper.find('.pl-item').removeClass('pl-item-selected');
+            $this.prop('checked', false);
+        }
     });
 
     // action: complete item
