@@ -29,7 +29,7 @@ return array(
         'create_datetime' => array('datetime'),
         'update_datetime' => array('datetime'),
         'complete_datetime' => array('datetime'),
-        'name' => array('varchar', 255),
+        'name' => array('mediumtext'),
         'note' => array('text'),
         'due_date' => array('date'),
         'due_datetime' => array('timestamp'),
