@@ -27,38 +27,57 @@
                 </div>
                 <div class="value no-shift">
                     <label>
-                        <input type="checkbox" checked="checked"> [`Daily recap on what’s up next (when there are to-dos planned for today)`]
-                    </label>
-
-                    {if 111}
-                        <p class="small"><br><em><i class="icon10 exclamation"></i> [`Daily recap notifications require CRON to be configured, which is not the case for your Pocket Lists app. See <a href="#" target="_blank">how to setup CRON for Pocket Lists</a>`]</em></p>
-                    {/if}
-                </div>
-                <div class="value no-shift">
-                    <label>
                         <input type="checkbox" checked="checked"> [`When someone assigns me a to-do`]
                     </label>
                 </div>
-                {*
                 <div class="value no-shift">
                     <label>
-                        <input type="checkbox" checked="checked"> [`Someone shares a list with me`]
-                    </label>
-                </div>
-                *}
-                <div class="value no-shift">
-                    <label>
-                        <input type="checkbox"> [`When a new list was created by someone`]
+                        <input type="checkbox" checked="checked"> [`When someone creates a new to-do list`]
                     </label>
                 </div>
                 <div class="value no-shift">
                     <label>
-                        <input type="checkbox"> [`When new to-do items were added`]
+                        <input type="checkbox" checked="checked"> [`When someone completes a to-do item`]
                     </label>
                     <select>
-                        <option>[`to any list`]</option>
+                        <option>[`in just any list`]</option>
+                        <option selected="selected">[`which I previously marked as favorite`]</option>
+                        <option>[`which I’ve created`]</option>
+                    </select>
+                </div>
+                <div class="value no-shift">
+                    <label>
+                        <input type="checkbox" checked="checked"> [`When someone adds a new to-do item`]
+                    </label>
+                    <select>
+                        <option>[`to just any list`]</option>
                         <option selected="selected">[`to a list I previously marked as favorite`]</option>
                     </select>
+
+                    <br>
+                    <br>
+
+                </div>
+              </div>
+              <div class="field">
+                <div class="name">
+                  [`Daily recap`]
+                </div>
+                <div class="value no-shift">
+                    <label>
+                        <input type="checkbox" checked="checked"> [`Daily recap on what’s up next`]
+                    </label>
+                    <select>
+                        <option>[`for today`]</option>
+                        <option selected="selected">[`for today and tomorrow`]</option>
+                        <option>[`for next 7 days`]</option>
+                    </select>
+
+                    {if 00}
+                        <p class="small"><br><em><i class="icon10 exclamation"></i> [`Daily recap notifications require CRON to be configured, which is not the case for your Pocket Lists app. See <a href="#" target="_blank">how to setup CRON for Pocket Lists</a>`]</em></p>
+                    {else}
+                        <p class="small"><br><em><i class="icon10 yes"></i> [`You will be notified! And when there is nothing planned to the upcoming period, no alerts will be sent.`]</em></p>
+                    {/if}
                 </div>
 
               </div>

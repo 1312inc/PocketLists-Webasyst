@@ -3,10 +3,13 @@
         {if isset($list.id)}
         <ul class="menu-h">
             <li>
-                <a href="#" onClick="alert('waDialog с получением ссылки на список /list/...');"><i class="icon16 link"></i> [`Share link`]</a>
+                <a href="#" onClick="alert('waDialog с получением ссылки на список /list/...');"><i class="icon16 link"></i> [`Get public link`]</a>
             </li>
             <li>
-                <a href="#" id="pl-item-add-link" class="CLICKME"><i class="icon16 add"></i> [`Add to-do`]</a>
+                <a href="#" id="pl-item-add-link" class="bold"><i class="icon16 add"></i> [`Add to-do`]</a>
+            </li>
+            <li class="pl-list-favorite">
+                <a href="#"><i class="icon16 star-empty"></i></a>
             </li>
         </ul>
         {/if}
@@ -14,12 +17,12 @@
     <h1>
         <input type="hidden" value="{$list.id|default:-1}" id="pl-list-id">
         {if $new}
-        <input type="text" placeholder="[`New list`]" id="pl-new-list-input"/>
+            <input type="text" placeholder="[`New list`]" id="pl-new-list-input"/>
         {else}
-        <label>
+
             <input type="checkbox" class="large" onClick="alert('waDialog с предложением либо зачекать все айтемы как выполненные с дополнительным чекбоксом “отправить этот список в архив”');">
             {$list.name|escape|default:''}
-        </label>
+
         {/if}
     </h1>
 </header>
@@ -258,6 +261,16 @@
                     <select><option>[`Nobody`]</option><option>...pocket user list here...</option></select>
                 </div>
             </div>
+            {if 1 || ITEM_WAS_CREATED_BY_SOMEONE_OTHER_THAN_ME}
+            <div class="field">
+                <div class="name">[`Created`]</div>
+                <div class="value no-shift">
+                    <i class="icon16 userpic20"></i>
+                    Vladimir V. Tuporshin
+                    <span class="hint">Yesterday 09:52 |wa_humandatetime</span>
+                </div>
+            </div>
+            {/if}
         </div>
 
         <div class="field-group">

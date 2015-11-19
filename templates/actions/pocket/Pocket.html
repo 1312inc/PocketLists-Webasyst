@@ -9,7 +9,7 @@
             <ul class="menu-h dropdown">
                 <li>
                     <input type="hidden" id="pl-pocket-id" value="{$pocket.id}"/>
-                    <h5><a href="#/pocket/{$pocket.id}/">{$pocket.name}{if count($pockets)} <i class="icon16 pl darr"></i>{/if}</a></h5>
+                    <h5><a href="#/pocket/{$pocket.id}/">{$pocket.name}{if count($pockets)}{if 111}<span class="indicator red">2</span>{/if} <i class="icon16 pl darr"></i>{/if}</a></h5>
                     {if count($pockets)}
                     <ul class="menu-v with-icons">
                         {foreach $pockets as $p}
