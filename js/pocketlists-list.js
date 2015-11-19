@@ -289,6 +289,7 @@
             $details = $('#pl-item-details'),
             details_shown = $details.is(':visible'),
             $item_content_wrapper = $this.closest('.pl-item'),
+            $item_wrapper = $item_content_wrapper.closest(item_selector),
             is_selected = $item_content_wrapper.hasClass('pl-item-selected');
 
         e.preventDefault();
@@ -298,7 +299,16 @@
             $item_content_wrapper.addClass('pl-item-selected');
             $this.prop('checked', true);
         } else if(!details_shown) { // on second - show details
-            $details.show();
+            $details.html($loading).show();
+            $.post(
+                '?module=item&action=details',
+                {
+                    id: parseInt($item_wrapper.data('id'))
+                },
+                function (html) {
+                    $details.html(html);
+                }
+            );
             $this.prop('checked', true);
         } else { // on third
             $details.hide();

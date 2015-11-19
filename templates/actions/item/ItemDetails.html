@@ -1,0 +1,125 @@
+<div class="fields form width100px">
+
+    <!-- core -->
+    <div class="field-group">
+        <div class="field">
+            <div class="name">[`Title`]</div>
+            <div class="value"><input type="text" class="bold large long" value="{$item.name|escape}" /></div>
+        </div>
+        <div class="field">
+            <div class="name">[`Note`]</div>
+            <div class="value"><textarea placeholder="[`Optional text note`]">{$item.note|escape}</textarea></div>
+        </div>
+        <div class="field">
+            <div class="name">[`Attachment`]</div>
+            <div class="value no-shift"><input type="file" /></div>
+
+        </div>
+        <div class="field">
+            <div class="name">[`Priority`]</div>
+            <div class="value no-shift">
+
+                <a href="#" {if $item.priority == 0}class="selected"{/if}><i class="icon16 color pl-white"></i></a>
+                <a href="#" {if $item.priority == 1}class="selected"{/if}><i class="icon16 color pl-dark-green"></i></a>
+                <a href="#" {if $item.priority == 2}class="selected"{/if}><i class="icon16 color pl-dark-yellow"></i></a>
+                <a href="#" {if $item.priority == 3}class="selected"{/if}><i class="icon16 color pl-dark-red"></i></a>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- notifications -->
+    <div class="field-group">
+
+        <div class="field">
+            <div class="name">[`Due`]</div>
+            <div class="value">
+                <input type="text" id="pl-item-due-datetime" value="{$item.due_datetime|default:''}" />
+                <a href="#"><i class="icon16 calendar"></i></a>
+            </div>
+        </div>
+        <div class="field">
+            <div class="name">[`Repeat`]</div>
+            <div class="value no-shift">
+                <select>
+                    <option>[`None`]</option>
+                    <option>[`Every Day`]</option>
+                    <option>[`Every Week`]</option>
+                    <option>[`Every 2 Weeks`]</option>
+                    <option>[`Every Month`]</option>
+                    <option>[`Every Year`]</option>
+                    <option>[`Custom...`]</option>
+                </select>
+            </div>
+        </div>
+        <div class="field">
+            <div class="name">[`Location`]</div>
+            <div class="value no-shift">
+                @ Lumberjack
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="field-group">
+        <div class="field">
+            <div class="name">[`Assigned to`]</div>
+            <div class="value no-shift">
+                <i class="icon16 userpic20"></i>
+                <select><option>[`Nobody`]</option><option>...pocket user list here...</option></select>
+            </div>
+        </div>
+        {if 1 || ITEM_WAS_CREATED_BY_SOMEONE_OTHER_THAN_ME}
+        <div class="field">
+            <div class="name">[`Created`]</div>
+            <div class="value no-shift">
+                <i class="icon16 userpic20"></i>
+                Vladimir V. Tuporshin
+                <span class="hint">Yesterday 09:52 |wa_humandatetime</span>
+            </div>
+        </div>
+        {/if}
+    </div>
+
+    <div class="field-group">
+        <div class="field">
+            <div class="value">
+                <input type="button" class="button green" value="Save" />
+                [`or`]
+                <a href="#">[`cancel`]</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+(function () {
+    var datepicker_options = {
+        changeMonth: true,
+        changeYear: true,
+        shortYearCutoff: 2,
+        dateShowWeek: false,
+        showOtherMonths: true,
+        selectOtherMonths: true,
+        stepMonths: 1,
+        numberOfMonths: 1,
+        gotoCurrent: true,
+        constrainInput: false,
+        minDate: new Date()
+
+//        beforeShow: function () {
+//            // hack! It's needed after-show-callback for changing z-index, but it doesn't exist
+//            setTimeout(function () {
+//                // make min z-index 10
+//                var zIndex = $('#ui-datepicker-div').css('z-index');
+//                if (zIndex < 10) {
+//                    $('#ui-datepicker-div').css('z-index', 10);
+//                }
+//            }, 0);
+//        }
+    };
+
+    $('#pl-item-due-datetime').datepicker(datepicker_options);
+}());
+</script>
