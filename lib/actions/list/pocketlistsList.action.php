@@ -8,101 +8,21 @@ class pocketlistsListAction extends waViewAction
 
         if ($list_id > 0) { // existing list
             $lm = new pocketlistsListModel();
-            $this->view->assign('list', $lm->getList($list_id));
+            $list = $lm->getList($list_id);
+
+            $cs = new waContactSettingsModel();
+            $cs->set(
+                wa()->getUser()->getId(),
+                wa()->getApp(),
+                'last_pocket_list_id',
+                json_encode(array('pocket_id' => $list['pocket_id'], 'list_id' => $list['id']))
+            );
+
+            $this->view->assign('list', $list);
 
             $im = new pocketlistsItemModel();
             $this->view->assign('items', $im->getUndoneByList($list_id));
             $this->view->assign('items_done', $im->getDoneByList($list_id));
-
-//            $this->view->assign(
-//                'items',
-//                array(
-//                    array(
-//                        'id' => 1,
-//                        'list_id' => $list_id,
-//                        'left_key_id' => 2,
-//                        'right_key_id' => 4,
-//                        'status' => 2,
-//                        'create_datetime' => date("Y-m-d H:i:s"),
-//                        'update_datetime' => date("Y-m-d H:i:s"),
-//                        'name' => 'Food',
-//                        'note' => 'HJkb kylubnkyvb lbk',
-//                        'due_date' => date("Y-m-d"),
-//                        'due_datetime' => date("Y-m-d H:i:s"),
-//                        'amount' => 0,
-//                    ),
-//                    array(
-//                        'id' => 2,
-//                        'list_id' => $list_id,
-//                        'left_key_id' => 2,
-//                        'right_key_id' => 4,
-//                        'status' => 2,
-//                        'create_datetime' => date("Y-m-d H:i:s"),
-//                        'update_datetime' => date("Y-m-d H:i:s"),
-//                        'name' => 'Roast beef',
-//                        'note' => 'HJkb kylubnkyvb lbk',
-//                        'due_date' => date("Y-m-d"),
-//                        'due_datetime' => date("Y-m-d H:i:s"),
-//                        'amount' => 0,
-//                    ),
-//                    array(
-//                        'id' => 3,
-//                        'list_id' => $list_id,
-//                        'left_key_id' => 2,
-//                        'right_key_id' => 4,
-//                        'status' => 2,
-//                        'create_datetime' => date("Y-m-d H:i:s"),
-//                        'update_datetime' => date("Y-m-d H:i:s"),
-//                        'name' => 'Rib eye',
-//                        'note' => 'HJkb kylubnkyvb lbk',
-//                        'due_date' => date("Y-m-d"),
-//                        'due_datetime' => date("Y-m-d H:i:s"),
-//                        'amount' => 0,
-//                    ),
-//                    array(
-//                        'id' => 4,
-//                        'list_id' => $list_id,
-//                        'left_key_id' => 2,
-//                        'right_key_id' => 4,
-//                        'status' => 2,
-//                        'create_datetime' => date("Y-m-d H:i:s"),
-//                        'update_datetime' => date("Y-m-d H:i:s"),
-//                        'name' => 'Drinks',
-//                        'note' => 'HJkb kylubnkyvb lbk',
-//                        'due_date' => date("Y-m-d"),
-//                        'due_datetime' => date("Y-m-d H:i:s"),
-//                        'amount' => 0,
-//                    ),
-//                    array(
-//                        'id' => 5,
-//                        'list_id' => $list_id,
-//                        'left_key_id' => 2,
-//                        'right_key_id' => 4,
-//                        'status' => 2,
-//                        'create_datetime' => date("Y-m-d H:i:s"),
-//                        'update_datetime' => date("Y-m-d H:i:s"),
-//                        'name' => 'Beer',
-//                        'note' => 'HJkb kylubnkyvb lbk',
-//                        'due_date' => date("Y-m-d"),
-//                        'due_datetime' => date("Y-m-d H:i:s"),
-//                        'amount' => 0,
-//                    ),
-//                    array(
-//                        'id' => 6,
-//                        'list_id' => $list_id,
-//                        'left_key_id' => 2,
-//                        'right_key_id' => 4,
-//                        'status' => 2,
-//                        'create_datetime' => date("Y-m-d H:i:s"),
-//                        'update_datetime' => date("Y-m-d H:i:s"),
-//                        'name' => 'Wine',
-//                        'note' => 'HJkb kylubnkyvb lbk',
-//                        'due_date' => date("Y-m-d"),
-//                        'due_datetime' => date("Y-m-d H:i:s"),
-//                        'amount' => 0,
-//                    ),
-//                )
-//            );
         }
         $this->view->assign('new', $list_id === -1 ? true : false);
     }

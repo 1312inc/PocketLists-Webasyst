@@ -17,4 +17,5 @@ class pocketlistsListModel extends waModel
             return $this->getByField('pocket_id', $pocket_id);
         }
     }
+
 }

@@ -161,8 +161,8 @@
                     list_id = -1;
                 }
             }
-            var id = id || false;
-            this.load('?module=pocket&id=' + id, function (result) {
+            var id = id || 1;
+            this.load('?module=pocket&id=' + id + '&list_id=' + list_id, function (result) {
                 // show pockets
                 $('#content').html(result);
                 // and load selected list

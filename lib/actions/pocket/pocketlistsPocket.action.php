@@ -4,12 +4,35 @@ class pocketlistsPocketAction extends waViewAction
 {
     public function execute()
     {
-        // get selected list items
-//        $list = waRequest::get('list', false, waRequest::TYPE_INT);
-//        if ($list) {
-//            $list_content = wao(new pocketlistsListAction(array('list_id' => $list)))->display();
-//            $this->view->assign('list_content', $list_content);
-//        }
+        $id = waRequest::get('id', 1, waRequest::TYPE_INT);
+        $list_id = waRequest::get('list_id', false, waRequest::TYPE_INT);
+
+        $cs = new waContactSettingsModel();
+        $lm = new pocketlistsListModel();
+        $lists = $lm->getLists($id);
+        // get all lists for this pocket
+        $this->view->assign('lists', $lists);
+
+        $last_pocket_list_id = $cs->getOne(wa()->getUser()->getId(), wa()->getApp(), 'last_pocket_list_id');
+        if (!$list_id) {
+            if ($last_pocket_list_id) {
+                $this->view->assign('last_pocket_list_id', $last_pocket_list_id);
+            } else {
+                if ($lists) {
+                    $this->view->assign(
+                        'last_pocket_list_id',
+                        json_encode(array("pocket_id" => $id, "list_id" => $lists[0]['id']))
+                    );
+                } else {
+                    $this->view->assign(
+                        'last_pocket_list_id',
+                        json_encode(array("pocket_id" => $id, "list_id" => "new"))
+                    );
+                }
+            }
+        } else {
+            $this->view->assign('last_pocket_list_id', 0);
+        }
 
         $this->view->assign('pocket',array('id' => 1, 'name' => 'Personal', 'class' => 'pl-dark-blue', 'indicator' => array('count' => 1, 'color' => '')));
 
@@ -20,20 +43,6 @@ class pocketlistsPocketAction extends waViewAction
             array('id' => 4, 'name' => 'Krasnodar', 'class' => 'pl-dark-yellow', 'indicator' => array('count' => 0, 'color' => '')),
         ));
 
-        $lm = new pocketlistsListModel();
-        // get all lists for this pocket
-        $this->view->assign('lists', $lm->getLists(1));
-
-/*        $this->view->assign('lists', array(
-            array('id' => 1, 'name' => 'Goals', 'class' => 'pl-red', 'indicator' => array('count' => 14, 'color' => ''), 'icon' => 'li-award@2x.png'),
-            array('id' => 2, 'name' => 'Groceries', 'class' => 'pl-blue', 'indicator' => array('count' => 0, 'color' => 'red'), 'amount' => 5130, 'icon' => 'li-grocery@2x.png'),
-            array('id' => 3, 'name' => 'Books to read', 'class' => 'pl-green', 'indicator' => array('count' => 2, 'color' => 'red'), 'icon' => 'li-books@2x.png'),
-            array('id' => 4, 'name' => 'Places to visit', 'class' => '', 'indicator' => array('count' => 13, 'color' => 'yellow'), 'icon' => 'li-travel@2x.png'),
-            array('id' => 5, 'name' => 'Europe trip', 'class' => 'pl-yellow', 'indicator' => array('count' => 2, 'color' => 'green'), 'icon' => 'li-flag-eu@2x.png'),
-            array('id' => 5, 'name' => 'Movies to watch', 'class' => '', 'indicator' => array('count' => 1, 'color' => ''), 'icon' => 'li-video@2x.png'),
-            array('id' => 6, 'name' => 'Party secret list', 'class' => 'pl-purple', 'indicator' => array('count' => 5, 'color' => 'yellow'), 'icon' => 'li-lock@2x.png'),
-            array('id' => 7, 'name' => 'Gift list', 'class' => '', 'indicator' => array('count' => 2, 'color' => '', 'lock' => true), 'icon' => 'li-gift@2x.png'),
-        ));*/
 
     }
 }

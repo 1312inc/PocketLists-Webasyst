@@ -101,5 +101,10 @@
 </div>
 
 <script text="text/javascript">
-
+    (function () {
+        var last_pocket_list_id = {$last_pocket_list_id};
+        if (last_pocket_list_id) {
+            $.wa.setHash('#/pocket/' + last_pocket_list_id.pocket_id + '/list/' + last_pocket_list_id.list_id + '/');
+        }
+    }());
 </script>
