@@ -12,7 +12,8 @@
         item_selector = '[data-parent-id]';
 
     var init_sortable = function () {
-        $undone_items_wrapper.sortable({
+        $('#pl-undone-items ul.menu-v').sortable({
+            item: item_selector,
             connectWith: "ul.menu-v",
             placeholder: 'pl-item-placeholder',
             tolerance: 'pointer',
