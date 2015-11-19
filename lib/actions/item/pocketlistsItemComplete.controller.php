@@ -10,13 +10,17 @@ class pocketlistsItemCompleteController extends waJsonController
 
         if ($list_id && $id) {
             $im = new pocketlistsItemModel();
-            $item = $im->getByField(array(
-                'list_id' => $list_id,
-                'id' => $id
-            ));
+            $item = $im->getByField(
+                array(
+                    'list_id' => $list_id,
+                    'id' => $id
+                )
+            );
             if ($item['has_children']) {
                 $tree = $im->getAllByList($list_id, $id);
                 $this->changeComplete($item['id'], $tree[$item['id']], $status, $im);
+            } else {
+                $this->changeComplete($item['id'], array('id' => $item['id'], 'childs' => array()), $status, $im);
             }
         }
 

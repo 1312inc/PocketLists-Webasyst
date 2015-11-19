@@ -131,6 +131,7 @@
     };
     var complete_item = function (id, status, callback) {
         this.find('label').first().append($loading);
+        this.prop('disabled', true);
         $.post(
             '?module=item&action=complete',
             {
@@ -326,6 +327,7 @@
 
         $item.find('ul.menu-v .pl-done').prop('checked', status);
         complete_item.call($item, id, status, function () {
+            $this.prop('disabled', false);
             $item.slideToggle(200, function () {
                 $item.show();
                 if (status) {
