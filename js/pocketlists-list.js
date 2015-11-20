@@ -478,7 +478,8 @@
         };
         var update_list_list = function() {
             $('#pl-list-name').text($wrapper.find('input[name="list\[name\]"]').val());
-            // todo: update color
+            // update color
+            $('#pl-lists').find('[data-pl-list-id="' + parseInt($wrapper.find('input[name="list\[id\]"]').val()) + '"]').removeClass().addClass('pl-' + $wrapper.find('[data-pl-list-color].selected').data('pl-list-color'));
         };
 
         init();
