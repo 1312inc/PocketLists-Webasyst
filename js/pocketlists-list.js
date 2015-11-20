@@ -445,8 +445,10 @@
     });
 
     var list_details = function ($wrapper) {
+        var list_id = 0;
         var init = function () {
             handlers();
+            list_id = parseInt($wrapper.find('input[name="list\[id\]"]').val());
         };
         var handlers = function () {
             // save
@@ -477,9 +479,13 @@
             });
         };
         var update_list_list = function() {
-            $('#pl-list-name').text($wrapper.find('input[name="list\[name\]"]').val());
+            // update name
+            var name = $wrapper.find('input[name="list\[name\]"]').val();
+            $('#pl-list-name').text(name);
             // update color
-            $('#pl-lists').find('[data-pl-list-id="' + parseInt($wrapper.find('input[name="list\[id\]"]').val()) + '"]').removeClass().addClass('pl-' + $wrapper.find('[data-pl-list-color].selected').data('pl-list-color'));
+            $('#pl-lists')
+                .find('[data-pl-list-id="' + list_id + '"]').removeClass().addClass('pl-' + $wrapper.find('[data-pl-list-color].selected').data('pl-list-color'))
+                .find('.pl-list-name').text(name);
         };
 
         init();
