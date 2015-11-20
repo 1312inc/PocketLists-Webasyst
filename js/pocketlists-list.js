@@ -402,6 +402,7 @@
                 $.post('?module=item&action=save', $this.closest('form').serialize(), function (r) {
                     $loading.remove();
                     if (r.status === 'ok') {
+                        update_list_item();
                         $wrapper.find('.success').show().delay(3000).hide();
                     } else {
                         $wrapper.find('.error').show().delay(3000).hide();
@@ -419,6 +420,9 @@
                 $(this).addClass('selected')
                     .siblings().removeClass('selected')
             });
+        };
+        var update_list_item = function() {
+            $list_items_wrapper.find('[data-id="' + $wrapper.find('input[name="item\[id\]"]').val() + '"]').find('.pl-item span').text($wrapper.find('input[name="item\[name\]"]').val());
         };
 
         init();
