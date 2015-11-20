@@ -212,6 +212,7 @@
     }
     $('#pl-item-add-link').click(function (e) {
         e.preventDefault();
+        e.stopPropagation();
         if ($new_item_wrapper.is(':visible')) {
             $new_item_wrapper.slideUp(200, function () {
                 $new_item_wrapper.detach();
@@ -482,6 +483,15 @@
 
         init();
     };
+
+    $('#pl-list-complete').on('click', function (e) {
+        e.stopPropagation();
+        alert('waDialog с предложением либо зачекать все айтемы как выполненные с дополнительным чекбоксом “отправить этот список в архив”');
+    });
+    $('#pl-list-link').on('click', function (e) {
+        e.stopPropagation();
+        alert('waDialog с получением ссылки на список /list/...');
+    });
 
     $('#pl-complete-log-link').click(function () {
         $('#pl-complete-log').slideToggle(200);
