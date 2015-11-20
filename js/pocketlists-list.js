@@ -489,10 +489,6 @@
         e.stopPropagation();
         alert('waDialog с предложением либо зачекать все айтемы как выполненные с дополнительным чекбоксом “отправить этот список в архив”');
     });
-    $('#pl-list-link').on('click', function (e) {
-        e.stopPropagation();
-        alert('waDialog с получением ссылки на список /list/...');
-    });
 
     $('#pl-complete-log-link').click(function () {
         $('#pl-complete-log').slideToggle(200);
