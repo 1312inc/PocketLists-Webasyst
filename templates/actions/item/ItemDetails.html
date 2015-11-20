@@ -76,8 +76,8 @@
             <div class="name">[`Created`]</div>
             <div class="value no-shift">
                 <i class="icon16 userpic20"></i>
-                Vladimir V. Tuporshin
-                <span class="hint">Yesterday 09:52 |wa_humandatetime</span>
+                {$item.contact_name}
+                <span class="hint">{$item.create_datetime|wa_datetime:'humandatetime'}</span>
             </div>
         </div>
         {/if}

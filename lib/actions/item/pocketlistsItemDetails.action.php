@@ -7,7 +7,10 @@ class pocketlistsItemDetailsAction extends waViewAction
         $id = waRequest::post('id', false, waRequest::TYPE_INT);
         $im = new pocketlistsItemModel();
         if ($id) {
-            $this->view->assign('item', $im->getById($id));
+            $item = $im->getById($id);
+            $user_name  = new waContact($item['contact_id']);
+            $item['contact_name'] = $user_name->getName();
+            $this->view->assign('item', $item);
         }
     }
 }
