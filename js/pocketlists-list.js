@@ -422,7 +422,7 @@
             });
         };
         var update_list_item = function() {
-            $list_items_wrapper.find('[data-id="' + $wrapper.find('input[name="item\[id\]"]').val() + '"]').find('.pl-item span').text($wrapper.find('input[name="item\[name\]"]').val());
+            $list_items_wrapper.find('[data-id="' + $wrapper.find('input[name="item\[id\]"]').val() + '"]').find('.pl-item span').first().text($wrapper.find('input[name="item\[name\]"]').val());
         };
 
         init();
