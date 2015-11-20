@@ -107,8 +107,10 @@ ul.pl-team li .pl-active-items { max-height: 2.4em; overflow: hidden; margin: 5p
 #pl-item-add-wrapper-hover {
     display: block;
     max-height: 0;
-    height: 10px;
-    background: red;
+    height: 4px;
+    position: absolute;
+    left: 0; right: 0; bottom: -1px;
+    background: #fdda3b;
     margin: 0;
     cursor: pointer;
 
@@ -151,10 +153,8 @@ ul.pl-team li .pl-active-items { max-height: 2.4em; overflow: hidden; margin: 5p
 .pl-list-items ul.menu-v { margin: 0; padding: 0; }
 .pl-list-items ul.menu-v li { padding: 0; margin: 0; }
 .pl-list-items ul.menu-v li .pl-item { display: block; border-bottom: 1px solid rgba(0,0,0,0.1); }
-.pl-list-items ul.menu-v li .pl-item:hover,
-.pl-list-items ul.menu-v li .pl-item.pl-item-selected { background: rgba(0,0,0,0.04); }
-.pl-list-items ul.menu-v li .pl-item:after { background: #fdda3b; max-height: 0; overflow: hidden; content:'Add subtask'; padding-left: 10px; margin-left: 40px; display: block; transition: max-height 0.5s ease-in; transition-delay: 0s; }
-.pl-list-items ul.menu-v li .pl-item:hover:after { max-height: 500px; transition: max-height 0.5s ease-in; transition-delay: 0.5s; cursor: pointer; }
+.pl-list-items ul.menu-v li .pl-item:hover { background: rgba(0,0,0,0.04); }
+.pl-list-items ul.menu-v li .pl-item.pl-item-selected { background: rgba(0,0,0,0.06); }
 .pl-list-items ul.menu-v li label { padding: 13px 25px 13px 45px; display: block; line-height: 1.3em; cursor: pointer; }
 .pl-list-items ul.menu-v li input.pl-done { margin-left: 20px; margin-right: 10px; position: relative; left: 0px; top: 16px; float: left; }
 .pl-list-items ul.menu-v li ul { padding-left: 0; margin: 0; }
@@ -167,8 +167,8 @@ ul.pl-team li .pl-active-items { max-height: 2.4em; overflow: hidden; margin: 5p
 .pl-list-items ul.menu-v li ul li ul li ul li ul li ul li ul li ul li .pl-item { padding-left: 182px; }
 
 .pl-list-items ul.menu-v li .pl-item .pl-favorite { display: inline-block; float: right; padding: 18px; }
-/*.pl-list-items ul.menu-v li .pl-item .pl-favorite i.icon16 { display: none; }
-.pl-list-items ul.menu-v li .pl-item:hover .pl-favorite i.icon16 { display: inline-block; }*/
+.pl-list-items ul.menu-v li .pl-item .pl-author { display: inline-block; float: right; padding: 15px 0; }
+.pl-list-items ul.menu-v li .pl-item p { margin-bottom: 0; line-height: 1.2em; }
 
 .pl-is-selected { display: none; }
 
