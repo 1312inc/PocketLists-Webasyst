@@ -429,7 +429,6 @@
     };
 
     $('.pl-list-title').on('click', function(e) {
-        debugger;
         var $details = $('#pl-list-details');
         $details.html($loading).toggle();
         $.post(
@@ -469,15 +468,16 @@
                 e.preventDefault();
                 $wrapper.hide();
             });
-            $wrapper.on('click', '#pl-list-priority a', function (e) {
+            $wrapper.on('click', '#pl-list-color a', function (e) {
                 e.preventDefault();
-                $('#pl-list-priority').find('input').val($(this).data('pl-list-priority'));
+                $('#pl-list-color').find('input').val($(this).data('pl-list-color'));
                 $(this).addClass('selected')
                     .siblings().removeClass('selected')
             });
         };
         var update_list_list = function() {
             $('#pl-list-name').text($wrapper.find('input[name="list\[name\]"]').val());
+            // todo: update color
         };
 
         init();
