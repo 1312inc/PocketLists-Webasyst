@@ -308,6 +308,7 @@
                 },
                 function (html) {
                     $details.html(html);
+                    item_details($details);
                 }
             );
             $this.prop('checked', true);
@@ -360,6 +361,69 @@
     });
 
     init_sortable();
+
+    var item_details = function ($wrapper) {
+        var init = function () {
+            var datepicker_options = {
+                changeMonth: true,
+                changeYear: true,
+                shortYearCutoff: 2,
+                dateShowWeek: false,
+                showOtherMonths: true,
+                selectOtherMonths: true,
+                stepMonths: 1,
+                numberOfMonths: 1,
+                gotoCurrent: true,
+                constrainInput: false,
+                minDate: new Date()
+
+//        beforeShow: function () {
+//            // hack! It's needed after-show-callback for changing z-index, but it doesn't exist
+//            setTimeout(function () {
+//                // make min z-index 10
+//                var zIndex = $('#ui-datepicker-div').css('z-index');
+//                if (zIndex < 10) {
+//                    $('#ui-datepicker-div').css('z-index', 10);
+//                }
+//            }, 0);
+//        }
+            };
+
+            $wrapper.find('#pl-item-due-datetime').datepicker(datepicker_options);
+
+            handlers();
+        };
+        var handlers = function () {
+            // save
+            $wrapper.on('click', '#pl-item-details-save', function (e) {
+                e.preventDefault();
+                var $this = $(this);
+                $this.after($loading);
+                $.post('?module=item&action=save', $this.closest('form').serialize(), function (r) {
+                    $loading.remove();
+                    if (r.status === 'ok') {
+                        $wrapper.find('.success').show().delay(3000).hide();
+                    } else {
+                        $wrapper.find('.error').show().delay(3000).hide();
+                    }
+                }, 'json');
+            });
+            // cancel
+            $wrapper.on('click', '#pl-item-details-cancel', function (e) {
+                e.preventDefault();
+                $wrapper.hide();
+            });
+            $wrapper.on('click', '#pl-item-priority a', function (e) {
+                e.preventDefault();
+                $('#pl-item-priority').find('input').val($(this).data('pl-item-priority'));
+                $(this).addClass('selected')
+                    .siblings().removeClass('selected')
+            });
+        };
+
+        init();
+    };
+
 
     $('#pl-complete-log-link').click(function () {
         $('#pl-complete-log').slideToggle(200);
