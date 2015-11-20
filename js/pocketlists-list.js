@@ -364,6 +364,7 @@
     init_sortable();
 
     var item_details = function ($wrapper) {
+        var id = 0;
         var init = function () {
             var datepicker_options = {
                 changeMonth: true,
@@ -393,6 +394,7 @@
             $wrapper.find('#pl-item-due-datetime').datepicker(datepicker_options);
 
             handlers();
+            id = parseInt($wrapper.find('input[name="item\[id\]"]').val());
         };
         var handlers = function () {
             // save
@@ -423,7 +425,27 @@
             });
         };
         var update_list_item = function() {
-            $list_items_wrapper.find('[data-id="' + $wrapper.find('input[name="item\[id\]"]').val() + '"]').find('.pl-item span').first().text($wrapper.find('input[name="item\[name\]"]').val());
+            var name = $wrapper.find('input[name="item\[name\]"]').val(),
+                priority = $wrapper.find('[data-pl-item-priority].selected').data('pl-item-priority'),
+                color = '';
+            switch (priority) {
+                case 1:
+                    color = 'pl-green';
+                    break;
+                case 2:
+                    color = 'pl-yellow';
+                    break;
+                case 3:
+                    color = 'pl-red';
+                    break;
+            }
+            // update priority color
+            $list_items_wrapper
+                .find('[data-id="' + id + '"]')
+                    .find('.pl-item .pl-item-name').first().text(name);
+            $list_items_wrapper
+                .find('[data-id="' + id + '"] .pl-done').first().removeClass('pl-green pl-yellow pl-red').addClass(color);
+
         };
 
         init();
@@ -480,11 +502,12 @@
         };
         var update_list_list = function() {
             // update name
-            var name = $wrapper.find('input[name="list\[name\]"]').val();
+            var name = $wrapper.find('input[name="list\[name\]"]').val(),
+                color = $wrapper.find('[data-pl-list-color].selected').data('pl-list-color');
             $('#pl-list-name').text(name);
             // update color
             $('#pl-lists')
-                .find('[data-pl-list-id="' + list_id + '"]').removeClass().addClass('pl-' + $wrapper.find('[data-pl-list-color].selected').data('pl-list-color'))
+                .find('[data-pl-list-id="' + list_id + '"]').removeClass().addClass('pl-' + color)
                 .find('.pl-list-name').text(name);
         };
 

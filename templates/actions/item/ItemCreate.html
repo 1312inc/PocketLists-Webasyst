@@ -7,7 +7,7 @@
         <input type="checkbox" class="pl-done{if $i.priority == 1} pl-green{elseif $i.priority == 2} pl-yellow{elseif $i.priority == 3} pl-red{/if}" {if $i.status == 1}checked="checked"{/if}>
         <label>
             <input type="checkbox" class="pl-is-selected">
-            <span>{$i.name|escape}</span>
+            <span class="pl-item-name">{$i.name|escape}</span>
             {if $i.status == 1}
                 {* completed by username *}
                 <span class="hint">{sprintf('%s by %s', 'COMPLETED_WAHUMANDATETIME', 'COMPLETE_USERNAME')}</span>
