@@ -98,6 +98,13 @@ ul.pl-team li .pl-active-items { max-height: 2.4em; overflow: hidden; margin: 5p
 .pl-pocket-access { line-height: 1.5em; padding: 10px; }
 .pl-pocket-access table { margin: 10px 15px; }
 
+/* Checkboxes
+------------- */
+
+.pl-done.pl-green { outline: 3px solid #7ac33c; }
+.pl-done.pl-yellow { outline: 3px solid #f5cf24; }
+.pl-done.pl-red { outline: 3px solid #f7696d; }
+
 /* Items
 -------- */
 
@@ -141,14 +148,15 @@ ul.pl-team li .pl-active-items { max-height: 2.4em; overflow: hidden; margin: 5p
 
 .pl-list-title { border-bottom: 1px solid rgba(0,0,0,0.1); padding: 25px 5px 25px 20px;  }
 .pl-list-title:hover { background: rgba(0,0,0,0.04); cursor: pointer; }
-.pl-list-favorite { margin-right: 0 !important; }
-.pl-list-title h1 input[type="checkbox"] {
+.pl-list-title h1 input.pl-done {
   position: relative; top: -0.15em; margin-right: 6px;
   -ms-transform: scale(1.4); /* IE */
   -moz-transform: scale(1.4); /* FF */
   -webkit-transform: scale(1.4); /* Safari and Chrome */
   -o-transform: scale(1.4); /* Opera */
 }
+
+.pl-list-favorite { margin-right: 0 !important; }
 
 .pl-list-items ul.menu-v { margin: 0; padding: 0; }
 .pl-list-items ul.menu-v li { padding: 0; margin: 0; }
@@ -168,7 +176,7 @@ ul.pl-team li .pl-active-items { max-height: 2.4em; overflow: hidden; margin: 5p
 
 .pl-list-items ul.menu-v li .pl-item .pl-favorite { display: inline-block; float: right; padding: 18px; }
 .pl-list-items ul.menu-v li .pl-item .pl-author { display: inline-block; float: right; padding: 15px 0 15px 15px ; }
-.pl-list-items ul.menu-v li .pl-item p { margin-bottom: 0; line-height: 1.2em; }
+.pl-list-items ul.menu-v li .pl-item p { margin-bottom: 0; margin-top: 4px; line-height: 1.2em; }
 
 .pl-is-selected { display: none; }
 

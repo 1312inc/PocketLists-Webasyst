@@ -37,7 +37,7 @@
             <input type="text" placeholder="[`New list`]" id="pl-new-list-input"/>
         {else}
 
-            <input type="checkbox" class="large" onClick="alert('waDialog с предложением либо зачекать все айтемы как выполненные с дополнительным чекбоксом “отправить этот список в архив”');">
+            <input type="checkbox" class="pl-done" onClick="alert('waDialog с предложением либо зачекать все айтемы как выполненные с дополнительным чекбоксом “отправить этот список в архив”');">
             {$list.name|escape|default:''}
 
         {/if}
