@@ -181,7 +181,7 @@ ul.pl-team li .pl-active-items { max-height: 2.4em; overflow: hidden; margin: 5p
 #pl-complete-log h5 { margin: 30px 20px 0; }
 #pl-complete-log-link { padding: 13px 20px; display: block; }
 
-#pl-item-details { display: none; position: absolute; top: 0; bottom: 0; right: 0; width: 550px; background: #fff; box-shadow: -10px 0 20px -10px rgba(0,0,0,0.1); }
+#pl-item-details, #pl-list-details { display: none; position: absolute; top: 0; bottom: 0; right: 0; width: 550px; background: #fff; box-shadow: -10px 0 20px -10px rgba(0,0,0,0.1); }
 
 /* List icons
 ------------- */

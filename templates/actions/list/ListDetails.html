@@ -1,0 +1,59 @@
+<div class="fields form width100px">
+<form method="post">
+    <input type="hidden" name="list[id]" value="{$list.id}"/>
+    <!-- core -->
+    <div class="field-group">
+        <div class="field">
+            <div class="name">[`Title`]</div>
+            <div class="value"><input type="text" class="bold large long" name="list[name]" value="{$list.name|escape}" /></div>
+        </div>
+        <div class="field">
+            <div class="name">[`Icon`]</div>
+            <div class="value"></div>
+        </div>
+        <div class="field">
+            <div class="name">[`Color`]</div>
+            <div class="value no-shift" id="pl-list-priority">
+                <input type="hidden" name="list[priority]"/>
+                <a href="#" {if $list.color == 'none'}class="selected"{/if} data-pl-list-color="none"><i class="icon16 color pl-white"></i></a>
+                <a href="#" {if $list.color == 'red'}class="selected"{/if} data-pl-list-color="red"><i class="icon16 color pl-dark-green"></i></a>
+                <a href="#" {if $list.color == 'green'}class="selected"{/if} data-pl-list-color="yellow"><i class="icon16 color pl-dark-yellow"></i></a>
+                <a href="#" {if $list.color == 'blue'}class="selected"{/if} data-pl-list-color="blue"><i class="icon16 color pl-dark-red"></i></a>
+                <a href="#" {if $list.color == 'yellow'}class="selected"{/if} data-pl-list-color="yellow"><i class="icon16 color pl-dark-red"></i></a>
+                <a href="#" {if $list.color == 'purpule'}class="selected"{/if} data-pl-list-color="purpule"><i class="icon16 color pl-dark-red"></i></a>
+
+            </div>
+        </div>
+        <div class="field">
+            <div class="name">[`Archive`]</div>
+            <div class="value"><input name="list[archived]" type="checkbox" {if $list.archived}checked="checked"{/if}/></div>
+        </div>
+    </div>
+
+    <div class="field-group">
+        {if 1 || ITEM_WAS_CREATED_BY_SOMEONE_OTHER_THAN_ME}
+        <div class="field">
+            <div class="name">[`Created`]</div>
+            <div class="value no-shift">
+                <i class="icon16 userpic20"></i>
+                {$list.contact_name}
+                <span class="hint">{$list.create_datetime|wa_datetime:'humandatetime'}</span>
+            </div>
+        </div>
+        {/if}
+    </div>
+
+    <div class="field-group">
+        <div class="field">
+            <div class="value">
+                <input type="button" class="button green" value="[`Save`]"  id="pl-list-details-save"/>
+                [`or`]
+                <a href="#" id="pl-list-details-cancel">[`cancel`]</a>
+
+                <span class="error" style="display: none;">[`error`]</span>
+                <span class="success" style="display: none;">[`saved`]</span>
+            </div>
+        </div>
+    </div>
+</form>
+</div>

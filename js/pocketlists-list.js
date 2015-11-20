@@ -428,6 +428,60 @@
         init();
     };
 
+    $('.pl-list-title').on('click', function(e) {
+        debugger;
+        var $details = $('#pl-list-details');
+        $details.html($loading).toggle();
+        $.post(
+            '?module=list&action=details',
+            {
+                id: parseInt($('#pl-list-id').val())
+            },
+            function (html) {
+                $details.html(html);
+                list_details($details);
+            }
+        );
+    });
+
+    var list_details = function ($wrapper) {
+        var init = function () {
+            handlers();
+        };
+        var handlers = function () {
+            // save
+            $wrapper.on('click', '#pl-list-details-save', function (e) {
+                e.preventDefault();
+                var $this = $(this);
+                $this.after($loading);
+                $.post('?module=list&action=save', $this.closest('form').serialize(), function (r) {
+                    $loading.remove();
+                    if (r.status === 'ok') {
+                        update_list_list();
+                        $wrapper.find('.success').show().delay(3000).hide();
+                    } else {
+                        $wrapper.find('.error').show().delay(3000).hide();
+                    }
+                }, 'json');
+            });
+            // cancel
+            $wrapper.on('click', '#pl-list-details-cancel', function (e) {
+                e.preventDefault();
+                $wrapper.hide();
+            });
+            $wrapper.on('click', '#pl-list-priority a', function (e) {
+                e.preventDefault();
+                $('#pl-list-priority').find('input').val($(this).data('pl-list-priority'));
+                $(this).addClass('selected')
+                    .siblings().removeClass('selected')
+            });
+        };
+        var update_list_list = function() {
+            $('#pl-list-name').text($wrapper.find('input[name="list\[name\]"]').val());
+        };
+
+        init();
+    };
 
     $('#pl-complete-log-link').click(function () {
         $('#pl-complete-log').slideToggle(200);

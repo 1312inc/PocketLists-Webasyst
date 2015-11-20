@@ -69,7 +69,7 @@ return array(
         'icon' => array('varchar', 32),
         'archived' => array('tinyint', 1, 'default' => '0'),
         'hash' => array('varchar', 32),
-        'color' => array('enum', "'NONE','red','green','blue','yellow','purple'", 'default' => 'NONE'),
+        'color' => array('enum', "'none','red','green','blue','yellow','purple'", 'default' => 'none'),
         'passcode' => array('varchar', 32),
         'create_datetime' => array('datetime'),
         'update_datetime' => array('datetime'),
