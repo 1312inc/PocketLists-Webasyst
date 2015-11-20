@@ -1,12 +1,26 @@
 <header class="pl-list-title">
     <div class="float-right block half-padded">
         {if isset($list.id)}
-        <ul class="menu-h">
+        <ul class="menu-h dropdown">
             <li>
-                <a href="#" id="pl-list-link"><i class="icon16 link"></i> [`Get public link`]</a>
+                <a href="#" onClick="alert('waDialog с получением ссылки на список /list/...');"><i class="icon16 link"></i> [`More`]</a>
+                <ul class="menu-v with-icons">
+                    <li>
+                        <a href="#" onClick="alert('waDialog с получением ссылки на список /list/...');"><i class="icon16 link"></i> [`Get public link`]</a>
+                    </li>
+                    <li>
+                        <a href="#" onClick="alert('waDialog для ввода email-адреса, куда отправлять список');"><i class="icon16 email"></i> [`Email list`]</a>
+                    </li>
+                    <li>
+                        <a href="#" onClick="alert('список добавляется в архив без вопросов и пользователя редиректит туда же в архив.');"><i class="icon16 pl archive"></i> [`Archive list`]</a>
+                    </li>
+                    <li>
+                        <a href="#" onClick="alert('waDialog с подтверждением желания удаления списка');"><i class="icon16 delete"></i> [`Delete list`]</a>
+                    </li>
+                </ul>
             </li>
             <li>
-                <a href="#" id="pl-item-add-link" class="bold"><i class="icon16 add"></i> [`Add to-do`]</a>
+                <a href="#" id="pl-item-add-link" class="bold"><i class="icon16 add"></i> [`New to-do`]</a>
             </li>
             <li class="pl-list-favorite">
                 <a href="#"><i class="icon16 star-empty"></i></a>
@@ -20,7 +34,7 @@
             <input type="text" placeholder="[`New list`]" id="pl-new-list-input"/>
         {else}
 
-            <input type="checkbox" class="large" id="pl-list-complete">
+            <input type="checkbox" class="pl-done" id="pl-list-complete">
             <span id="pl-list-name">{$list.name|escape|default:''}</span>
 
         {/if}
@@ -188,7 +202,6 @@
 <div class="clear-both"></div>
 
 <div id="pl-item-details" class="block double-padded"><i class="icon16 loading"></i></div>
-<div id="pl-list-details" class="block double-padded"><i class="icon16 loading"></i></div>
 
 <div id="pl-item-add">
     <div class="pl-item">

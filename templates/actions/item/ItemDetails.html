@@ -71,7 +71,6 @@
                 <select><option>[`Nobody`]</option><option>...pocket user list here...</option></select>
             </div>
         </div>
-        {if 1 || ITEM_WAS_CREATED_BY_SOMEONE_OTHER_THAN_ME}
         <div class="field">
             <div class="name">[`Created`]</div>
             <div class="value no-shift">
@@ -80,12 +79,30 @@
                 <span class="hint">{$item.create_datetime|wa_datetime:'humandatetime'}</span>
             </div>
         </div>
+        {if $item.complete_datetime}
+            <div class="field">
+                <div class="name">[`Completed`]</div>
+                <div class="value no-shift">
+                    <i class="icon16 userpic20"></i>
+                    USERNAMEWHOCOMPLETEDTHISTODO
+                    <span class="hint">{$item.complete_datetime|wa_datetime:'humandatetime'}</span>
+                </div>
+            </div>
         {/if}
     </div>
 
     <div class="field-group">
         <div class="field">
             <div class="value">
+
+                <div class="float-right block half-padded">
+                    <ul class="menu-h ">
+                        <li>
+                            <a href="#"><i class="icon16 delete"></i> [`Delete`]</a>
+                        </li>
+                    </ul>
+                </div>
+
                 <input type="button" class="button green" value="[`Save`]"  id="pl-item-details-save"/>
                 [`or`]
                 <a href="#" id="pl-item-details-cancel">[`cancel`]</a>

@@ -1,12 +1,22 @@
 {if !empty($items)}
 {foreach $items as $i}
     <li class="pl-item-wrapper" data-id="{$i.id}" data-parent-id="{$i.parent_id}">
-    <div class="pl-item {if $i.priority == 1}pl-green{elseif $i.priority == 2}pl-yellow{elseif $i.priority == 3}pl-red{/if}">
+    <div class="pl-item">
         <a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
-        <input type="checkbox" class="pl-done" {if $i.status == 1}checked="checked"{/if}>
+        {if 1111 || ASSIGNED_TO}<span class="pl-author" title="{sprintf('Assigned to %s', 'USERNAME')}"><i class="icon16 userpic20"></i></span>{/if}
+        <input type="checkbox" class="pl-done{if $i.priority == 1} pl-green{elseif $i.priority == 2} pl-yellow{elseif $i.priority == 3} pl-red{/if}" {if $i.status == 1}checked="checked"{/if}>
         <label>
             <input type="checkbox" class="pl-is-selected">
             <span>{$i.name|escape}</span>
+            {if $i.status == 1}
+                {* completed by username *}
+                <span class="hint">{sprintf('%s by %s', 'COMPLETED_WAHUMANDATETIME', 'COMPLETE_USERNAME')}</span>
+            {else}
+                {if 111 || CREATED_NOT_BY_ME}
+                    <span class="hint">{sprintf('%s by %s', 'CREATE_WAHUMANDATETIME', 'CREATE_USERNAME')}</span>
+                {/if}
+                {if !empty($i.note|escape)}<p class="hint">{$i.note|escape|nl2br}</p>{/if}
+            {/if}
         </label>
     </div>
     {if !empty($i.childs)}

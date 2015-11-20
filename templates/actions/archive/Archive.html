@@ -2,15 +2,6 @@
     <nav class="sidebar left200px">
 
         <ul class="menu-v with-icons stack">
-          <li class="selected top-padded">
-            <a href="#"><i class="icon16 pl todo-bw"></i>[`Completion log`]</a>
-          </li>
-        </ul>
-
-        <div class="block half-padded">
-            <h5 class="heading">[`Archived lists`]</h5>
-        </div>
-        <ul class="menu-v with-icons stack">
           <li>
             <a href="#"><i class="icon16" style="background-image: url(/wa-apps/pocketlists/img/listicons/li-list@2x.png); background-size: 16px 16px;"></i>List #1</a>
           </li>
@@ -30,13 +21,11 @@
 
     <main class="content left200px blank bordered-left pl-items pl-blue" id="pl-list-content">
 
-        LOG: список всех зачеканных айтемов всех пользователей, всех списков, всех карманов в хронологическом порядке (order by complete_datetime). рядом с галочкой показывать юзерпик пользователя который выполнил задание.
+        ARCHIVED LIST: если выбрать список из архива, то он покажется, как есть (как на основном экране Lists), только в режиме read-only: все чекбоксы задизеблены, кнопки Add to-do нет.<br><br>
 
-        <br><br>
+        справа вместо Add to-do — кнопка [`Unarchive`] и подсказка серым цветом [`Acrhived on %s`], где %s = wa_humandate архивирования списка.<br><br>
 
-        LIST: если выбрать список из архива, то он покажется, как есть (как на основном экране Lists), только в режиме read-only: все чекбоксы задизеблены, кнопки Add to-do нет.<br>
-
-        справа вместо Add to-do — кнопка [`Unarchive`] и подсказка серым цветом [`Acrhived on %s`], где %s = wa_humandate архивирования списка
+        по умолчанию при входе в раздел выбирать первый список.
 
     </main>
 
