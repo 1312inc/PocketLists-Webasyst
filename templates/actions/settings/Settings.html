@@ -12,11 +12,11 @@
                   <span class="indicator red">1</span>
                 </div>
                 <div class="value no-shift">
-                    <select>
-                        <option>[`Overdue`]</option>
-                        <option selected="selected">[`Overdue + Today`]</option>
-                        <option>[`Overdue + Today + Tomorrow`]</option>
-                        <option>[`None`]</option>
+                    <select name="app_icon">
+                        <option {if $app_icon == 0}selected="selected"{/if}>[`Overdue`]</option>
+                        <option {if $app_icon == 1}selected="selected"{/if}>[`Overdue + Today`]</option>
+                        <option {if $app_icon == 2}selected="selected"{/if}>[`Overdue + Today + Tomorrow`]</option>
+                        <option {if $app_icon == 3}selected="selected"{/if}>[`None`]</option>
                     </select>
                     <p class="hint">[`App icon counter will also alert you about new to-do items and lists assigned to you by other users.`]</p>
                 </div>
@@ -27,41 +27,41 @@
                 </div>
                 <div class="value no-shift">
                     <label>
-                        <input type="checkbox" checked="checked"> [`When someone assigns me a to-do`]
+                        <input type="checkbox" name="email_me['assigns_me_item']['enable']" {if !empty($email_me['assigns_me_item']['enable'])}checked="checked"{/if}> [`When someone assigns me a to-do`]
                     </label>
                 </div>
                 <div class="value no-shift">
                     <label>
-                        <input type="checkbox" checked="checked"> [`When someone creates a new to-do list`]
+                        <input type="checkbox" name="email_me['creates_new_list']['enable']" {if !empty($email_me['creates_new_list']['enable'])}checked="checked"{/if}> [`When someone creates a new to-do list`]
                     </label>
                 </div>
                 <div class="value no-shift">
                     <label>
-                        <input type="checkbox" checked="checked"> [`When someone completes a to-do item`]
+                        <input type="checkbox" name="email_me['completes_item']['enable']" {if !empty($email_me['completes_item']['enable'])}checked="checked"{/if}> [`When someone completes a to-do item`]
                     </label>
-                    <select>
-                        <option>[`in just any list`]</option>
-                        <option selected="selected">[`which I previously marked as favorite`]</option>
-                        <option>[`which I’ve created`]</option>
+                    <select name="email_me['completes_item']['which']">
+                        <option {if $email_me['completes_item']['which'] == 'any'}checked="checked"{/if}>[`in just any list`]</option>
+                        <option {if $email_me['completes_item']['which'] == 'favorite'}checked="checked"{/if}>[`which I previously marked as favorite`]</option>
+                        <option {if $email_me['completes_item']['which'] == 'created'}checked="checked"{/if}>[`which I’ve created`]</option>
                     </select>
                 </div>
                 <div class="value no-shift">
                     <label>
-                        <input type="checkbox" checked="checked"> [`When someone comments a to-do item`]
+                        <input type="checkbox" name="email_me['comments_item']['enable']" {if !empty($email_me['comments_item']['enable'])}checked="checked"{/if}> [`When someone comments a to-do item`]
                     </label>
-                    <select>
-                        <option selected="selected">[`which I’ve created`]</option>
-                        <option>[`which I previously marked as favorite`]</option>
-                        <option>[`in just any list`]</option>
+                    <select name="email_me['comments_item']['which']">
+                        <option {if $email_me['comments_item']['which'] == 'created'}checked="checked"{/if}>[`which I’ve created`]</option>
+                        <option {if $email_me['comments_item']['which'] == 'favorite'}checked="checked"{/if}>[`which I previously marked as favorite`]</option>
+                        <option {if $email_me['comments_item']['which'] == 'any'}checked="checked"{/if}>[`in just any list`]</option>
                     </select>
                 </div>
                 <div class="value no-shift">
                     <label>
-                        <input type="checkbox" checked="checked"> [`When someone adds a new to-do item`]
+                        <input type="checkbox" name="email_me['adds_item']['enable']" {if !empty($email_me['adds_item']['enable'])}checked="checked"{/if}> [`When someone adds a new to-do item`]
                     </label>
-                    <select>
-                        <option>[`to just any list`]</option>
-                        <option selected="selected">[`to a list I previously marked as favorite`]</option>
+                    <select name="email_me['adds_item']['which']">
+                        <option {if $email_me['adds_item']['which'] == 'any'}checked="checked"{/if}>[`to just any list`]</option>
+                        <option {if $email_me['adds_item']['which'] == 'favorite'}checked="checked"{/if}>[`to a list I previously marked as favorite`]</option>
                     </select>
 
                     <br>
@@ -75,12 +75,12 @@
                 </div>
                 <div class="value no-shift">
                     <label>
-                        <input type="checkbox" checked="checked"> [`Daily recap on what’s up next`]
+                        <input type="checkbox" name="daily_recap['next']['enable']" {if !empty($daily_recap['next']['enable'])}checked="checked"{/if}> [`Daily recap on what’s up next`]
                     </label>
-                    <select>
-                        <option>[`for today`]</option>
-                        <option selected="selected">[`for today and tomorrow`]</option>
-                        <option>[`for next 7 days`]</option>
+                    <select name="daily_recap['next']['which']">
+                        <option {if $daily_recap['next']['which'] == 'today'}checked="checked"{/if}>[`for today`]</option>
+                        <option {if $daily_recap['next']['which'] == 'today tomorrow'}checked="checked"{/if}>[`for today and tomorrow`]</option>
+                        <option {if $daily_recap['next']['which'] == 'next 7'}checked="checked"{/if}>[`for next 7 days`]</option>
                     </select>
 
                     {if 00}
@@ -107,7 +107,12 @@
                     </div>
                     <div class="value">
                         <ul class="zebra menu-v with-icons pl-pocket-settings" style="max-width: 250px;">
+                            {foreach $pockets as $p}
                             <li>
+                                <a href="#"><i class="icon16 color pl-dark-{$p.color|default:'white'}"></i>{$p.name|escape}</a>
+                            </li>
+                            {/foreach}
+                            {*<li>
                                 <span class="count">7 users</span>
                                 <a href="#"><i class="icon16 color pl-dark-blue"></i>Personal</a>
                             </li>
@@ -122,7 +127,7 @@
                             <li>
                                 <span class="count ">11 users</span>
                                 <a href="#"><i class="icon16 color pl-dark-yellow"></i>Krasnodar</a>
-                            </li>
+                            </li>*}
                             <li class="top-padded">
                                 <a href="#" class="small"><i class="icon10 add"></i>[`New pocket`]</a>
                             </li>
