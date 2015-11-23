@@ -6,10 +6,10 @@ class pocketlistsSettingsAction extends  waViewAction
 
     public function execute()
     {
-        $sm = new waAppSettingsModel();
+        $cs = new waContactSettingsModel();
         $app_name = wa()->getApp();
 //        $settings = $sm->get($app_name);
-        $settings = wa()->getSetting(null);
+        $settings = $cs->get(wa()->getUser()->getId(), $app_name);
 
         $this->view->assign('app_icon', $settings['app_icon']);
         $this->view->assign('email_me', json_decode($settings['email_me'], true));
