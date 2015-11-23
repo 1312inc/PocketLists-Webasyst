@@ -37,7 +37,10 @@
             <input type="text" placeholder="[`New list`]" id="pl-new-list-input"/>
         {else}
 
-            <input type="checkbox" class="pl-done" id="pl-list-complete">
+            <label class="pl-done-label">
+                <input type="checkbox" class="pl-done" id="pl-list-complete">
+                <span></span>
+            </label>
             <span id="pl-list-name">{$list.name|escape|default:''}</span>
 
         {/if}

@@ -101,9 +101,17 @@ ul.pl-team li .pl-active-items { max-height: 2.4em; overflow: hidden; margin: 5p
 /* Checkboxes
 ------------- */
 
-.pl-done.pl-green { outline: 3px solid #7ac33c; }
-.pl-done.pl-yellow { outline: 3px solid #f5cf24; }
-.pl-done.pl-red { outline: 3px solid #f7696d; }
+label.pl-done-label { cursor: pointer; }
+
+.pl-done { display: none; }
+.pl-done + span { display: block; float:left; width:16px; height:16px; background: rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.2); border-radius: 50%; position: relative; top: 13px; left: 15px; }
+.pl-done.pl-green + span { background: #7ac33c; }
+.pl-done.pl-yellow + span { background: #f5cf24; }
+.pl-done.pl-red + span { background: #f7696d; }
+
+.pl-done:checked + span { background: transparent url('img/pl-done-checkmark.png') !important; border: none; }
+
+.pl-list-title h1 .pl-done + span { left: -8px; top: 5px; width: 22px; height: 22px; }
 
 /* Items
 -------- */
@@ -148,13 +156,6 @@ ul.pl-team li .pl-active-items { max-height: 2.4em; overflow: hidden; margin: 5p
 
 .pl-list-title { border-bottom: 1px solid rgba(0,0,0,0.1); padding: 25px 5px 25px 20px;  }
 .pl-list-title:hover { background: rgba(0,0,0,0.04); cursor: pointer; }
-.pl-list-title h1 input.pl-done {
-  position: relative; top: -0.15em; margin-right: 6px;
-  -ms-transform: scale(1.4); /* IE */
-  -moz-transform: scale(1.4); /* FF */
-  -webkit-transform: scale(1.4); /* Safari and Chrome */
-  -o-transform: scale(1.4); /* Opera */
-}
 
 .pl-list-favorite { margin-right: 0 !important; }
 
@@ -163,8 +164,8 @@ ul.pl-team li .pl-active-items { max-height: 2.4em; overflow: hidden; margin: 5p
 .pl-list-items ul.menu-v li .pl-item { display: block; border-bottom: 1px solid rgba(0,0,0,0.1); }
 .pl-list-items ul.menu-v li .pl-item:hover { background: rgba(0,0,0,0.04); }
 .pl-list-items ul.menu-v li .pl-item.pl-item-selected { background: rgba(0,0,0,0.06); }
-.pl-list-items ul.menu-v li label { padding: 13px 25px 13px 45px; display: block; line-height: 1.3em; cursor: pointer; }
-.pl-list-items ul.menu-v li input.pl-done { margin-left: 20px; margin-right: 10px; position: relative; left: 0px; top: 16px; float: left; }
+.pl-list-items ul.menu-v li label.pl-select-label { padding: 13px 25px 13px 45px; display: block; line-height: 1.3em; }
+/*.pl-list-items ul.menu-v li input.pl-done { margin-left: 20px; margin-right: 10px; position: relative; left: 0px; top: 16px; float: left; }*/
 .pl-list-items ul.menu-v li ul { padding-left: 0; margin: 0; }
 .pl-list-items ul.menu-v li ul li .pl-item { padding-left: 26px; }
 .pl-list-items ul.menu-v li ul li ul li .pl-item { padding-left: 52px; }
