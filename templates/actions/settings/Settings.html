@@ -3,6 +3,8 @@
     <main class="block double-padded">
 
         <div class="fields form">
+            <form method="post" id="pl-settings-form">
+
             <h6 class="heading"><i class="icon16 userpic20" style="background-image: url({$wa->user()->getPhoto(20)});"></i> [`My personal settings`]</h6>
             <br>
             <div class="field-group">
@@ -13,10 +15,10 @@
                 </div>
                 <div class="value no-shift">
                     <select name="app_icon">
-                        <option {if $app_icon == 0}selected="selected"{/if}>[`Overdue`]</option>
-                        <option {if $app_icon == 1}selected="selected"{/if}>[`Overdue + Today`]</option>
-                        <option {if $app_icon == 2}selected="selected"{/if}>[`Overdue + Today + Tomorrow`]</option>
-                        <option {if $app_icon == 3}selected="selected"{/if}>[`None`]</option>
+                        <option value="0" {if $app_icon == 0}selected="selected"{/if}>[`Overdue`]</option>
+                        <option value="1" {if $app_icon == 1}selected="selected"{/if}>[`Overdue + Today`]</option>
+                        <option value="2" {if $app_icon == 2}selected="selected"{/if}>[`Overdue + Today + Tomorrow`]</option>
+                        <option value="3" {if $app_icon == 3}selected="selected"{/if}>[`None`]</option>
                     </select>
                     <p class="hint">[`App icon counter will also alert you about new to-do items and lists assigned to you by other users.`]</p>
                 </div>
@@ -27,41 +29,41 @@
                 </div>
                 <div class="value no-shift">
                     <label>
-                        <input type="checkbox" name="email_me['assigns_me_item']['enable']" {if !empty($email_me['assigns_me_item']['enable'])}checked="checked"{/if}> [`When someone assigns me a to-do`]
+                        <input value="1" type="checkbox" name="email_me[assigns_me_item][enable]" {if !empty($email_me['assigns_me_item']['enable'])}checked="checked"{/if}> [`When someone assigns me a to-do`]
                     </label>
                 </div>
                 <div class="value no-shift">
                     <label>
-                        <input type="checkbox" name="email_me['creates_new_list']['enable']" {if !empty($email_me['creates_new_list']['enable'])}checked="checked"{/if}> [`When someone creates a new to-do list`]
+                        <input value="1" type="checkbox" name="email_me[creates_new_list][enable]" {if !empty($email_me['creates_new_list']['enable'])}checked="checked"{/if}> [`When someone creates a new to-do list`]
                     </label>
                 </div>
                 <div class="value no-shift">
                     <label>
-                        <input type="checkbox" name="email_me['completes_item']['enable']" {if !empty($email_me['completes_item']['enable'])}checked="checked"{/if}> [`When someone completes a to-do item`]
+                        <input value="1" type="checkbox" name="email_me[completes_item][enable]" {if !empty($email_me['completes_item']['enable'])}checked="checked"{/if}> [`When someone completes a to-do item`]
                     </label>
-                    <select name="email_me['completes_item']['which']">
-                        <option {if $email_me['completes_item']['which'] == 'any'}checked="checked"{/if}>[`in just any list`]</option>
-                        <option {if $email_me['completes_item']['which'] == 'favorite'}checked="checked"{/if}>[`which I previously marked as favorite`]</option>
-                        <option {if $email_me['completes_item']['which'] == 'created'}checked="checked"{/if}>[`which I’ve created`]</option>
+                    <select name="email_me[completes_item][which]">
+                        <option value="any" {if isset($email_me['completes_item']['which']) && $email_me['completes_item']['which'] == 'any'}selected="selected"{/if}>[`in just any list`]</option>
+                        <option value="favorite" {if isset($email_me['completes_item']['which']) && $email_me['completes_item']['which'] == 'favorite'}selected="selected"{/if}>[`which I previously marked as favorite`]</option>
+                        <option value="created" {if isset($email_me['completes_item']['which']) && $email_me['completes_item']['which'] == 'created'}selected="selected"{/if}>[`which I’ve created`]</option>
                     </select>
                 </div>
                 <div class="value no-shift">
                     <label>
-                        <input type="checkbox" name="email_me['comments_item']['enable']" {if !empty($email_me['comments_item']['enable'])}checked="checked"{/if}> [`When someone comments a to-do item`]
+                        <input value="1" type="checkbox" name="email_me[comments_item][enable]" {if !empty($email_me['comments_item']['enable'])}checked="checked"{/if}> [`When someone comments a to-do item`]
                     </label>
-                    <select name="email_me['comments_item']['which']">
-                        <option {if $email_me['comments_item']['which'] == 'created'}checked="checked"{/if}>[`which I’ve created`]</option>
-                        <option {if $email_me['comments_item']['which'] == 'favorite'}checked="checked"{/if}>[`which I previously marked as favorite`]</option>
-                        <option {if $email_me['comments_item']['which'] == 'any'}checked="checked"{/if}>[`in just any list`]</option>
+                    <select name="email_me[comments_item][which]">
+                        <option value="created" {if isset($email_me['comments_item']['which']) && $email_me['comments_item']['which'] == 'created'}selected="selected"{/if}>[`which I’ve created`]</option>
+                        <option value="favorite" {if isset($email_me['comments_item']['which']) && $email_me['comments_item']['which'] == 'favorite'}selected="selected"{/if}>[`which I previously marked as favorite`]</option>
+                        <option value="any" {if isset($email_me['comments_item']['which']) && $email_me['comments_item']['which'] == 'any'}selected="selected"{/if}>[`in just any list`]</option>
                     </select>
                 </div>
                 <div class="value no-shift">
                     <label>
-                        <input type="checkbox" name="email_me['adds_item']['enable']" {if !empty($email_me['adds_item']['enable'])}checked="checked"{/if}> [`When someone adds a new to-do item`]
+                        <input value="1" type="checkbox" name="email_me[adds_item][enable]" {if !empty($email_me['adds_item']['enable'])}checked="checked"{/if}> [`When someone adds a new to-do item`]
                     </label>
-                    <select name="email_me['adds_item']['which']">
-                        <option {if $email_me['adds_item']['which'] == 'any'}checked="checked"{/if}>[`to just any list`]</option>
-                        <option {if $email_me['adds_item']['which'] == 'favorite'}checked="checked"{/if}>[`to a list I previously marked as favorite`]</option>
+                    <select name="email_me[adds_item][which]">
+                        <option value="any" {if isset($email_me['adds_item']['which']) && $email_me['adds_item']['which'] == 'any'}selected="selected"{/if}>[`to just any list`]</option>
+                        <option value="favorite" {if isset($email_me['adds_item']['which']) && $email_me['adds_item']['which'] == 'favorite'}selected="selected"{/if}>[`to a list I previously marked as favorite`]</option>
                     </select>
 
                     <br>
@@ -75,12 +77,12 @@
                 </div>
                 <div class="value no-shift">
                     <label>
-                        <input type="checkbox" name="daily_recap['next']['enable']" {if !empty($daily_recap['next']['enable'])}checked="checked"{/if}> [`Daily recap on what’s up next`]
+                        <input value="1" type="checkbox" name="daily_recap[next][enable]" {if !empty($daily_recap['next']['enable'])}checked="checked"{/if}> [`Daily recap on what’s up next`]
                     </label>
-                    <select name="daily_recap['next']['which']">
-                        <option {if $daily_recap['next']['which'] == 'today'}checked="checked"{/if}>[`for today`]</option>
-                        <option {if $daily_recap['next']['which'] == 'today tomorrow'}checked="checked"{/if}>[`for today and tomorrow`]</option>
-                        <option {if $daily_recap['next']['which'] == 'next 7'}checked="checked"{/if}>[`for next 7 days`]</option>
+                    <select name="daily_recap[next][which]">
+                        <option value="today" {if $daily_recap['next']['which'] == 'today'}selected="selected"{/if}>[`for today`]</option>
+                        <option value="today tomorrow" {if $daily_recap['next']['which'] == 'today tomorrow'}selected="selected"{/if}>[`for today and tomorrow`]</option>
+                        <option value="next 7" {if $daily_recap['next']['which'] == 'next 7'}selected="selected"{/if}>[`for next 7 days`]</option>
                     </select>
 
                     {if 00}
@@ -93,11 +95,13 @@
               </div>
               <div class="field">
                 <div class="value no-shift submit">
-                    <input type="submit" value="[`Save`]" class="button green" />
+                    <input type="submit" value="[`Save`]" id="pl-save-settings" class="button green" />
                 </div>
 
               </div>
             </div>
+
+            </form>
 
             <h6 class="heading">[`Access rights`]</h6>
             <div class="field-group">
@@ -222,19 +226,36 @@
 </div>
 
 <script type="text/javascript">
-$('.pl-pocket-settings a').click(function(){
+    (function(){
+        var $loading = $('<i class="icon16 loading">');
+        $('#pl-save-settings').on('click', function(e) {
+            e.preventDefault();
+            $('#pl-save-settings').after($loading);
+            $.post('?module=settings&action=save', $('#pl-settings-form').serialize(), function(r){
+                $loading.remove();
+                if (r.status==='ok') {
+                    var $saved = $('<span>Saved</span>');
+                    $('#pl-save-settings').after($saved.delay(3000).remove());
+                } else {
+                    alert('error while saving');
+                }
+            }, 'json')
+        });
 
-    $('#pl-pocket-dialog').waDialog({
-      'buttons': '<input type="submit" value="[`Save`]" class="button green" /> [`or`] <a href="#">[`cancel`]</a>',
-      'height': '400px',
-      'width': '600px',
-      onSubmit: function (d) {
-           d.trigger('close');
-           return false;
-      }
-    });
+        $('.pl-pocket-settings a').click(function(){
 
-    return false;
-});
+            $('#pl-pocket-dialog').waDialog({
+                'buttons': '<input type="submit" value="[`Save`]" class="button green" /> [`or`] <a href="#">[`cancel`]</a>',
+                'height': '400px',
+                'width': '600px',
+                onSubmit: function (d) {
+                    d.trigger('close');
+                    return false;
+                }
+            });
 
+            return false;
+        });
+
+    }());
 </script>
