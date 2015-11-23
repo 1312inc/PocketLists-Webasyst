@@ -3,8 +3,8 @@
         {if isset($list.id)}
         <ul class="menu-h dropdown">
             <li>
-                <a href="#" onClick="alert('waDialog с получением ссылки на список /list/...');"><i class="icon16 link"></i> [`More`]</a>
-                <ul class="menu-v with-icons">
+                <a href="#" class="inline-link gray" onClick="alert('waDialog с получением ссылки на список /list/...');"><b><i>[`More`]</i></b></a>
+                <ul class="menu-v with-icons" style="width: 230px;">
                     <li>
                         <a href="#" onClick="alert('waDialog с получением ссылки на список /list/...');"><i class="icon16 link"></i> [`Get public link`]</a>
                     </li>
@@ -213,8 +213,11 @@
 <div id="pl-item-add">
     <div class="pl-item">
         <a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
-        <input type="checkbox" disabled="disabled" class="pl-done">
-        <label>
+        <label class="pl-done-label">
+            <input type="checkbox" disabled="disabled" class="pl-done">
+            <span></span>
+        </label>
+        <label class="pl-select-label">
             <input type="checkbox" class="pl-is-selected">
             <textarea rows="1" placeholder="[`Add to-do`]"></textarea>
         </label>

@@ -98,18 +98,18 @@ ul.pl-team li .pl-active-items { max-height: 2.4em; overflow: hidden; margin: 5p
 .pl-pocket-access { line-height: 1.5em; padding: 10px; }
 .pl-pocket-access table { margin: 10px 15px; }
 
-/* Checkboxes
-------------- */
+/* Done checkbox
+---------------- */
 
 label.pl-done-label { cursor: pointer; }
 
 .pl-done { display: none; }
-.pl-done + span { display: block; float:left; width:16px; height:16px; background: rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.2); border-radius: 50%; position: relative; top: 13px; left: 15px; }
+.pl-done + span { display: block; float:left; width:16px; height:16px; background: rgba(255,255,255,0.2); border: 1px solid rgba(0,0,0,0.2); border-radius: 50%; position: relative; top: 13px; left: 15px; }
 .pl-done.pl-green + span { background: #7ac33c; }
 .pl-done.pl-yellow + span { background: #f5cf24; }
 .pl-done.pl-red + span { background: #f7696d; }
 
-.pl-done:checked + span { background: transparent url('img/pl-done-checkmark.png') !important; border: none; }
+.pl-done:checked + span { background: transparent url('../img/pl-done-checkbox.png') no-repeat !important; background-size: 16px 16px !important; border: none; border-radius: 0; opacity: 0.3; }
 
 .pl-list-title h1 .pl-done + span { left: -8px; top: 5px; width: 22px; height: 22px; }
 
