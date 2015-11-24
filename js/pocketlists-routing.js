@@ -156,9 +156,10 @@
         pocketAction: function (id) {
             var self = this;
             var list_id = decodeURIComponent(this.getHash().substr(('#/pocket/' + id + '/list/').length).replace('/', '')) || 0;
+            var load_list = this.getHash().indexOf('list') > 0 ? true : false;
             if (list_id) {
                 if (list_id === 'new') {
-                    list_id = -1;
+                    list_id = 0;
                 }
             }
             var id = id || 1;
@@ -166,7 +167,7 @@
                 // show pockets
                 $('#content').html(result);
                 // and load selected list
-                self.listAction(list_id);
+                //load_list && self.listAction(list_id);
             });
         },
         archiveAction: function () {

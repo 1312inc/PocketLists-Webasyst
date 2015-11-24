@@ -15,7 +15,7 @@
                         {foreach $pockets as $p}
                         <li class="{if $pocket.id == $p.id}selected{/if}">
                             {if isset($p.indicator) && $p.indicator.count}<span class="count indicator {$p.indicator.color}">{$p.indicator.count}</span>{/if}
-                            <a href="#/pocket/{$p.id}/"><i class="icon16 color {$p.class|default:''}"></i>{$p.name|escape|default:''}</a>
+                            <a href="#/pocket/{$p.id}/"><i class="icon16 color pl-dark-{$p.color|default:'none'}"></i>{$p.name|escape|default:''}</a>
                         </li>
                         {/foreach}
                     </ul>
@@ -95,16 +95,12 @@
 
     <!-- ITEMS -->
     <main class="content left300px blank bordered-left pl-items pl-blue" id="pl-list-content">
-        <i class="icon16 loading"></i>
+        {$lists_html|default:""}
     </main>
 
 </div>
 
 <script text="text/javascript">
     (function () {
-        var last_pocket_list_id = {$last_pocket_list_id};
-        if (last_pocket_list_id) {
-            $.wa.setHash('#/pocket/' + last_pocket_list_id.pocket_id + '/list/' + last_pocket_list_id.list_id + '/');
-        }
     }());
 </script>

@@ -4,44 +4,57 @@ class pocketlistsPocketAction extends waViewAction
 {
     public function execute()
     {
-        $id = waRequest::get('id', 1, waRequest::TYPE_INT);
+        $id = waRequest::get('id', 0, waRequest::TYPE_INT);
         $list_id = waRequest::get('list_id', false, waRequest::TYPE_INT);
 
         $cs = new waContactSettingsModel();
+        $pm = new pocketlistsPocketModel();
         $lm = new pocketlistsListModel();
-        $lists = $lm->getLists($id);
-        // get all lists for this pocket
-        $this->view->assign('lists', $lists);
 
-        $last_pocket_list_id = $cs->getOne(wa()->getUser()->getId(), wa()->getApp(), 'last_pocket_list_id');
-        if (!$list_id) {
-            if ($last_pocket_list_id) {
-                $this->view->assign('last_pocket_list_id', $last_pocket_list_id);
+        $last_pocket_list_id = json_decode(
+            $cs->getOne(wa()->getUser()->getId(), wa()->getApp(), 'last_pocket_list_id'),
+            true
+        );
+
+        if (!$id) {
+            if (isset($last_pocket_list_id['pocket_id'])) {
+                $id = $last_pocket_list_id['pocket_id'];
             } else {
-                if ($lists) {
-                    $this->view->assign(
-                        'last_pocket_list_id',
-                        json_encode(array("pocket_id" => $id, "list_id" => $lists[0]['id']))
-                    );
-                } else {
-                    $this->view->assign(
-                        'last_pocket_list_id',
-                        json_encode(array("pocket_id" => $id, "list_id" => "new"))
-                    );
-                }
+                $id = 1;
             }
-        } else {
-            $this->view->assign('last_pocket_list_id', 0);
         }
 
-        $this->view->assign('pocket',array('id' => 1, 'name' => 'Personal', 'class' => 'pl-dark-blue', 'indicator' => array('count' => 1, 'color' => '')));
+        $pocket = $pm->getById($id);
+        // get all lists for this pocket
+        $lists = $lm->getLists($pocket['id']);
 
-        $this->view->assign('pockets', array(
-            array('id' => 1, 'name' => 'Personal', 'class' => 'pl-dark-blue', 'indicator' => array('count' => 1, 'color' => '')),
-            array('id' => 2, 'name' => 'Errands', 'class' => 'pl-dark-green', 'indicator' => array('count' => 2, 'color' => 'red')),
-            array('id' => 3, 'name' => 'Msk', 'class' => 'pl-dark-red', 'indicator' => array('count' => 0, 'color' => '')),
-            array('id' => 4, 'name' => 'Krasnodar', 'class' => 'pl-dark-yellow', 'indicator' => array('count' => 0, 'color' => '')),
-        ));
+        if (!$list_id) {
+            if (isset($last_pocket_list_id['list_id']) && $last_pocket_list_id['pocket_id'] == $pocket['id']) {
+                $list_id = $last_pocket_list_id['list_id'];
+            } else {
+                if ($lists) {
+                    $list_id = $lists[0]['id'];
+                    $last_pocket_list_id = array("pocket_id" => $id, "list_id" => $list_id);
+                } else {
+                    $last_pocket_list_id = array("pocket_id" => $id);
+                }
+            }
+        }
+
+        $cs->set(
+            wa()->getUser()->getId(),
+            wa()->getApp(),
+            'last_pocket_list_id',
+            json_encode($last_pocket_list_id)
+        );
+
+        $lists_html = wao(new pocketlistsListAction(array('list_id' => $list_id)))->display();
+        $this->view->assign('lists_html', $lists_html);
+
+        $this->view->assign('lists', $lists);
+        $this->view->assign('pocket', $pocket);
+        // todo: get only sgfn
+        $this->view->assign('pockets', $pm->getAll());
 
 
     }
