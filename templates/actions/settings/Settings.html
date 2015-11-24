@@ -4,7 +4,6 @@
 
         <div class="fields form">
             <form method="post" id="pl-settings-form">
-
             <h6 class="heading"><i class="icon16 userpic20" style="background-image: url({$wa->user()->getPhoto(20)});"></i> [`My personal settings`]</h6>
             <br>
             <div class="field-group">
@@ -107,7 +106,7 @@
                         <ul class="zebra menu-v with-icons pl-pocket-settings" style="max-width: 250px;">
                             {foreach $pockets as $p}
                             <li>
-                                <a href="#"><i class="icon16 color pl-dark-{$p.color|default:'white'}"></i>{$p.name|escape}</a>
+                                <a href="#" data-pl-pocket-id="{$p.id}"><i class="icon16 color pl-dark-{$p.color|default:'none'}"></i><span>{$p.name|escape}</span></a>
                             </li>
                             {/foreach}
                             <li class="top-padded" style="background: #fff;">
@@ -126,88 +125,7 @@
 </div>
 
 <div id="pl-pocket-dialog" style="display: none;">
-    <h1>New pocket</h1>
 
-    <div class="fields form">
-        <div class="field-group">
-          <div class="field">
-            <div class="name nowrap">
-              [`Pocket name`]
-            </div>
-            <div class="value">
-                <input type="text" class="large bold" />
-            </div>
-          </div>
-          <div class="field">
-            <div class="name nowrap">
-              [`Color`]
-            </div>
-            <div class="value no-shift">
-                ...здесь список цветов покетов... контрол выбора такой же, как цвет списка (pl-dark-* цвета)
-            </div>
-          </div>
-          <div class="field">
-            <div class="name">
-              [`Access rights`]
-            </div>
-            <div class="value no-shift">
-                <label>
-                    <input type="radio" checked="checked"> [`Everyone`]
-                </label>
-                <span class="hint">[`Every user who can access Pocket Lists app will see lists and to-dos in this pocket.`]</span>
-            </div>
-            <div class="value no-shift">
-                <label>
-                    <input type="radio"> [`Limited`]
-                </label>
-                <span class="hint">[`Once selected users will be able to access lists and to-dos in this pocket.`]</span>
-
-                <div class="pl-pocket-access">
-
-
-                    (права могут быть ли true, либо false; промежуточных прав доступа в первой версии нет)
-
-
-                    <label>
-                        <input type="checkbox"> admins
-                    </label>
-                    <br>
-                    <label>
-                        <input type="checkbox"> support team
-                    </label>
-                    <br>
-                    <label>
-                        <input type="checkbox"> [`Selected users`]
-                    </label>
-
-                    <table class="zebra">
-                        <tr>
-                            <td class="min-width"><i class="icon16 userpic20"></i></td>
-                            <td>Kirill Maramygin</td>
-                            <td><a href="#"><i class="icon16 delete"></i></a></td>
-                        </tr>
-                        <tr>
-                            <td class="min-width"><i class="icon16 userpic20"></i></td>
-                            <td>Vladimir V. Tuporshin</td>
-                            <td><a href="#"><i class="icon16 delete"></i></a></td>
-                        </tr>
-                        <tr>
-                            <td class="min-width"><i class="icon16 add"></i></td>
-                            <td><input type="text" placeholder="[`Start typing name...`]"></td>
-                            <td></td>
-                        </tr>
-                    </table>
-                    (таблица с автокомплитом ведет себя также, как в приложении "Хаб" в настройках конкретного хаба — см. код на Гитхабе)
-
-                </div>
-
-            </div>
-          </div>
-
-        </div>
-
-
-    </div>
 
 </div>
 
@@ -228,14 +146,84 @@
             }, 'json')
         });
 
-        $('.pl-pocket-settings a').click(function(){
-
+        $('.pl-pocket-settings').on('click', 'a', function() {
+            var $this = $(this);
             $('#pl-pocket-dialog').waDialog({
-                'buttons': '<input type="submit" value="[`Save`]" class="button green" /> [`or`] <a href="#">[`cancel`]</a>',
+                'buttons': '<input type="submit" value="[`Save`]" class="button green" /> [`or`] <a class="cancel" href="#">[`cancel`]</a>',
                 'height': '400px',
                 'width': '600px',
+                'url': '?module=pocket&action=settingsDialog&pocket_id=' + $this.data('pl-pocket-id'),
+                onLoad: function () {
+                    var $this = $(this);
+
+                    $('#pl-pocket-color').on('click', 'a', function (e) {
+                        e.preventDefault();
+                        $('#pl-pocket-color').find('input').val($(this).data('pl-pocket-color'));
+                        $(this).addClass('selected')
+                                .siblings().removeClass('selected')
+                    });
+
+                    var $autocomplete = $this.find(':input[name="new_user"]').autocomplete({
+                        source: backend_url + 'contacts/?action=autocomplete&type=person',
+                        minLength: 2,
+                        appendTo: '#pl-pocket-dialog',
+                        delay: 300,
+                        select: function (event, ui) {
+                            debugger;
+                            this.value = '';
+                            var $table = $(this).closest('table');
+                            var exist = $table.find('[data-pl-selected-user="' +  ui.item.value + '"]').length;
+
+                            if (exist) {
+                                $autocomplete.autocomplete('close');
+                            } else {
+                                var $row = $table.find('tr').first().clone();
+                                $row.data('pl-selected-user', ui.item.value);
+                                $row.find(':input').val(ui.item.value);
+                                $row.find('.pl-selected-users-name').text(ui.item.name);
+                                $(this).closest('tr').before($row);
+                                $autocomplete.autocomplete('close');
+                            }
+
+                            return false;
+                        },
+                        focus: function (event, ui) {
+                            this.value = ui.item.name;
+                            return false;
+                        }
+                    }).autocomplete('instance')._renderItem = function( ul, item ) {
+                        return $("<li>")
+                                .html( item.label )
+                                .appendTo( ul );
+                    };
+                    $this.find('[data-pl-selected-user]').on('click', 'a', function (e) {
+                        e.preventDefault();
+                        $(this).closest('[data-pl-selected-user]').remove();
+                    });
+                },
                 onSubmit: function (d) {
-                    d.trigger('close');
+                    d.find('.dialog-buttons input[type="button"]').after($loading);
+                    $.post('?module=pocket&action=save', d.find('form').serialize(), function(r) {
+                        $loading.remove();
+                        if (r.status === 'ok') {
+                            var $new_pocket = null;
+                            if (r.data.new) {
+                                $new_pocket = $('.pl-pocket-settings li').first().clone();
+                            } else {
+                                $new_pocket = $('.pl-pocket-settings a[data-pl-pocket-id="' + r.data.id + '"]').closest('li');
+                            }
+                            $new_pocket
+                                    .find('a').data('pl-pocket-id', r.data.id)
+                                    .find('.color').removeClass().addClass('icon16 color pl-dark-' + $('#pl-pocket-color').find('input').val())
+                                    .end()
+                                    .find('span').text(d.find('input[name="pocket\[name\]"]').val());
+
+                            r.data.new && $('.pl-pocket-settings li').last().before($new_pocket);
+                            d.trigger('close');
+                        } else {
+
+                        }
+                    }, 'json');
                     return false;
                 }
             });
