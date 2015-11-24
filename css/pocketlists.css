@@ -22,12 +22,13 @@
 .pl-red { background: #fff1f1; }
 .pl-yellow { background: #ffffe3; }
 
-.pl-dark-gray { background: #888 !important; }
+.pl-dark-gray { background: #aaa !important; }
 .pl-dark-green { background: #7ac33c !important; }
 .pl-dark-blue { background: #5da5f5 !important; }
 .pl-dark-purple { background: #bc7cf5 !important; }
 .pl-dark-red { background: #f7696d !important; }
 .pl-dark-yellow { background: #f5cf24 !important; }
+.pl-dark-none { background: #eee !important; }
 
 .icon10.color { border: none; border-radius: 50%; width: 5px; height: 5px; }
 .icon16.color { border: none; }
@@ -96,6 +97,7 @@ ul.pl-team li .pl-active-items { max-height: 2.4em; overflow: hidden; margin: 5p
 
 #pl-settings-form { overflow: visible; }
 #pl-settings-form .heading i.icon16 { margin-left: -0.2em; }
+#pl-save-settings { margin-right: 10px; }
 
 .pl-pocket-access { line-height: 1.5em; padding: 10px; }
 .pl-pocket-access table { margin: 10px 15px; }
@@ -111,7 +113,7 @@ label.pl-done-label { cursor: pointer; }
 .pl-done.pl-yellow + span { background: #f5cf24; }
 .pl-done.pl-red + span { background: #f7696d; }
 
-.pl-done:checked + span { background: transparent url('../img/pl-done-checkbox.png') no-repeat !important; background-size: 16px 16px !important; border: none; border-radius: 0; opacity: 0.3; }
+.pl-done:checked + span { background: transparent url('../img/pl-done-checkbox.png') no-repeat !important; background-size: 14px 14px !important; border: none; border-radius: 0; opacity: 0.3; }
 
 /* Items
 -------- */
@@ -158,10 +160,14 @@ label.pl-done-label { cursor: pointer; }
 .pl-list-title:hover { background: rgba(0,0,0,0.04); }
 
 .pl-list-title h1 { padding-left: 24px; position: relative; }
-.pl-list-title h1 .pl-done + span { left: -10px; top: 5px; width: 22px; height: 22px; position: absolute; }
+.pl-list-title h1 .pl-done + span { left: -10px; top: 5px; width: 22px; height: 22px; position: absolute; z-index: 1; }
+.pl-list-title ul.menu-h { position: relative; z-index: 2; }
+.pl-list-title ul.menu-h li:hover { background: transparent; }
+.pl-list-title ul.menu-h li ul.menu-v { top: 75%; }
+.pl-list-title ul.menu-h li ul.menu-v li:hover { background: rgba(0,0,0,0.07); }
 
 
-.pl-list-favorite { margin-right: 0 !important; }
+.pl-list-favorite { margin-right: 0 !important; padding-right: 3px !important; }
 
 .pl-list-items ul.menu-v { margin: 0; padding: 0; }
 .pl-list-items ul.menu-v li { padding: 0; margin: 0; }
@@ -169,7 +175,6 @@ label.pl-done-label { cursor: pointer; }
 .pl-list-items ul.menu-v li .pl-item:hover { background: rgba(0,0,0,0.04); }
 .pl-list-items ul.menu-v li .pl-item.pl-item-selected { background: rgba(0,0,0,0.06); }
 .pl-list-items ul.menu-v li label.pl-select-label { padding: 13px 25px 13px 45px; display: block; line-height: 1.3em; }
-/*.pl-list-items ul.menu-v li input.pl-done { margin-left: 20px; margin-right: 10px; position: relative; left: 0px; top: 16px; float: left; }*/
 .pl-list-items ul.menu-v li ul { padding-left: 0; margin: 0; }
 .pl-list-items ul.menu-v li ul li .pl-item { padding-left: 26px; }
 .pl-list-items ul.menu-v li ul li ul li .pl-item { padding-left: 52px; }
@@ -192,9 +197,9 @@ label.pl-done-label { cursor: pointer; }
 
 #pl-complete-log { display: none; color: #aaa; }
 #pl-complete-log h5 { margin: 30px 15px 5px; }
-#pl-complete-log-link { padding: 13px 45px; display: block; }
+#pl-complete-log-link { padding: 13px 15px; display: block; }
 
-#pl-item-details, #pl-list-details { display: none; position: absolute; top: 0; bottom: 0; right: 0; width: 550px; background: #fff; box-shadow: -10px 0 20px -10px rgba(0,0,0,0.1); }
+#pl-item-details, #pl-list-details { display: none; position: absolute; top: 0; bottom: 0; right: 0; width: 550px; background: #fff; box-shadow: -10px 0 20px -10px rgba(0,0,0,0.1); z-index: 3; }
 
 /* List icons
 ------------- */

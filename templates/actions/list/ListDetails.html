@@ -15,17 +15,13 @@
             <div class="name">[`Color`]</div>
             <div class="value no-shift" id="pl-list-priority">
                 <input type="hidden" name="list[color]" value="{$list.color|default:'none'}"/>
-                <a href="#" {if $list.color == 'none'}class="selected"{/if} data-pl-list-color="none"><i class="icon16 color pl-white"></i></a>
+                <a href="#" {if $list.color == 'none'}class="selected"{/if} data-pl-list-color="none"><i class="icon16 color white"></i></a>
                 <a href="#" {if $list.color == 'red'}class="selected"{/if} data-pl-list-color="red"><i class="icon16 color pl-dark-red"></i></a>
                 <a href="#" {if $list.color == 'green'}class="selected"{/if} data-pl-list-color="green"><i class="icon16 color pl-dark-green"></i></a>
                 <a href="#" {if $list.color == 'blue'}class="selected"{/if} data-pl-list-color="blue"><i class="icon16 color pl-dark-blue"></i></a>
                 <a href="#" {if $list.color == 'yellow'}class="selected"{/if} data-pl-list-color="yellow"><i class="icon16 color pl-dark-yellow"></i></a>
                 <a href="#" {if $list.color == 'purple'}class="selected"{/if} data-pl-list-color="purple"><i class="icon16 color pl-dark-purple"></i></a>
             </div>
-        </div>
-        <div class="field">
-            <div class="name">[`Archive`]</div>
-            <div class="value"><input name="list[archived]" type="checkbox" {if $list.archived}checked="checked"{/if}/></div>
         </div>
     </div>
 
