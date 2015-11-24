@@ -11,10 +11,12 @@
             <div class="name">[`Note`]</div>
             <div class="value"><textarea name="item[note]" placeholder="[`Optional text note`]">{$item.note|escape}</textarea></div>
         </div>
+        {*
         <div class="field">
             <div class="name">[`Attachment`]</div>
             <div class="value no-shift"><input name="item[attachment]" type="file" /></div>
         </div>
+        *}
         <div class="field">
             <div class="name">[`Priority`]</div>
             <div class="value no-shift" id="pl-item-priority">
@@ -34,10 +36,11 @@
         <div class="field">
             <div class="name">[`Due`]</div>
             <div class="value">
-                <input name="item[due_date]" type="text" id="pl-item-due-datetime" value="{$item.due_date|default:''|wa_date}" />
+                <input name="item[due_date]" class="pl-due-date-input" type="text" id="pl-item-due-datetime" value="{$item.due_date|default:''|wa_date}" />
                 <a href="#"><i class="icon16 calendar"></i></a>
             </div>
         </div>
+        {*
         <div class="field">
             <div class="name">[`Repeat`]</div>
             <div class="value no-shift">
@@ -59,7 +62,7 @@
                 <input type="hidden" name="item[location_id]"/>
             </div>
         </div>
-
+        *}
     </div>
 
 
@@ -98,7 +101,7 @@
                 <div class="float-right block half-padded">
                     <ul class="menu-h ">
                         <li>
-                            <a href="#"><i class="icon16 delete"></i> [`Delete`]</a>
+                            <a href="#"><i class="icon16 delete"></i>[`Delete to-do`]</a>
                         </li>
                     </ul>
                 </div>

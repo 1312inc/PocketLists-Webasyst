@@ -20,6 +20,13 @@
                 {/if}
                 {if !empty($i.note|escape)}<p class="hint">{$i.note|escape|nl2br}</p>{/if}
             {/if}
+            {if !empty($i.due_datetime)}
+                <br>
+                <span class="small bold pl-due-overdue">{$i.due_date|wa_datetime:'humandatetime'}</span>
+            {else if !empty($i.due_date)}
+                <br>
+                <span class="small bold pl-due-overdue">{$i.due_date|wa_date:'humandate'}</span>
+            {/if}
         </label>
     </div>
     {if !empty($i.childs)}

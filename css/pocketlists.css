@@ -158,7 +158,6 @@ label.pl-done-label { cursor: pointer; }
 
 .pl-list-title { border-bottom: 1px solid rgba(0,0,0,0.1); padding: 25px 5px 25px 20px;  }
 .pl-list-title:hover { background: rgba(0,0,0,0.04); }
-
 .pl-list-title h1 { padding-left: 24px; position: relative; }
 .pl-list-title h1 .pl-done + span { left: -10px; top: 5px; width: 22px; height: 22px; position: absolute; z-index: 1; }
 .pl-list-title ul.menu-h { position: relative; z-index: 2; }
@@ -166,8 +165,12 @@ label.pl-done-label { cursor: pointer; }
 .pl-list-title ul.menu-h li ul.menu-v { top: 75%; }
 .pl-list-title ul.menu-h li ul.menu-v li:hover { background: rgba(0,0,0,0.07); }
 
-
 .pl-list-favorite { margin-right: 0 !important; padding-right: 3px !important; }
+
+.pl-due-overdue { color: red; }
+.pl-due-today { color: #ca0; }
+.pl-due-tomorrow { color: green; }
+.pl-due-someday { color: #aaa; }
 
 .pl-list-items ul.menu-v { margin: 0; padding: 0; }
 .pl-list-items ul.menu-v li { padding: 0; margin: 0; }
@@ -199,7 +202,13 @@ label.pl-done-label { cursor: pointer; }
 #pl-complete-log h5 { margin: 30px 15px 5px; }
 #pl-complete-log-link { padding: 13px 15px; display: block; }
 
-#pl-item-details, #pl-list-details { display: none; position: absolute; top: 0; bottom: 0; right: 0; width: 550px; background: #fff; box-shadow: -10px 0 20px -10px rgba(0,0,0,0.1); z-index: 3; }
+/* Item details
+--------------- */
+
+#pl-item-details,
+#pl-list-details { display: none; position: absolute; top: 0; bottom: 0; right: 0; width: 550px; background: #fff; box-shadow: -10px 0 20px -10px rgba(0,0,0,0.1); z-index: 3; }
+
+input.pl-due-date-input { width: 130px; min-width: 130px; }
 
 /* List icons
 ------------- */
