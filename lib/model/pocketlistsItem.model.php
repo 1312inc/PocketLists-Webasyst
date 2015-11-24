@@ -47,6 +47,27 @@ class pocketlistsItemModel extends waModel
     private function getItems($sql, $list_id, $tree)
     {
         $items = $this->query($sql, array('lid' => $list_id))->fetchAll();
+
+        foreach ($items as $id => $item) {
+            $date = strtotime($item['due_date']);
+            $now = time();
+
+            if ($item['due_date'] || $item['due_datetime']) {
+                if ($now > ($item['due_datetime'] ? $item['due_datetime'] : $date)) { // overdue
+                    $items[$id]['due_status'] = 3;
+                } elseif ($item['due_date'] == date("Y-m-d")) { // today
+                    $items[$id]['due_status'] = 2;
+                } elseif ($item['due_date'] == date("Y-m-d", $now + 60 * 60 * 24)) { // tomorrow
+                    $items[$id]['due_status'] = 1;
+                } else {
+                    $items[$id]['due_status'] = 0;
+                }
+
+                $items[$id]['priority'] = max($items[$id]['due_status'], $item['priority']);
+            }
+        }
+
+
         return $tree ? $this->getTree($items, $tree) : $items;
     }
 

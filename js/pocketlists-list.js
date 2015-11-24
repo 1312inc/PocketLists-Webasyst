@@ -226,7 +226,7 @@
     $new_item_input
         .on('keydown', function (e) {
             var $this = $(this);
-            if (e.which === 13) {
+            if (!e.shiftKey && e.which === 13) {
                 e.preventDefault();
                 var parent_id = $this.closest('.menu-v').find(item_selector).first().data('parent-id');
                 add_items.call(this, [{

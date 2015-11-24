@@ -22,10 +22,10 @@
             {/if}
             {if !empty($i.due_datetime)}
                 <br>
-                <span class="small bold pl-due-overdue">{$i.due_date|wa_datetime:'humandatetime'}</span>
+                <span class="small bold {if $i.due_status == 0}pl-due-someday{elseif $i.due_status == 1}pl-due-tomorrow{elseif $i.due_status == 2}pl-due-today{elseif $i.due_status == 3}pl-due-overdue{/if}">{$i.due_date|wa_datetime:'humandatetime'}</span>
             {else if !empty($i.due_date)}
                 <br>
-                <span class="small bold pl-due-overdue">{$i.due_date|wa_date:'humandate'}</span>
+                <span class="small bold small bold {if $i.due_status == 0}pl-due-someday{elseif $i.due_status == 1}pl-due-tomorrow{elseif $i.due_status == 2}pl-due-today{elseif $i.due_status == 3}pl-due-overdue{/if}">{$i.due_date|wa_date:'humandate'}</span>
             {/if}
         </label>
     </div>
