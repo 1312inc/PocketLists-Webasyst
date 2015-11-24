@@ -12,6 +12,9 @@
                         <a href="#" onClick="alert('waDialog для ввода email-адреса, куда отправлять список');"><i class="icon16 email"></i> [`Email list`]</a>
                     </li>
                     <li>
+                        <a href="#" onClick="alert('открывается новое окно с содержимым данного списка и кнопкой Print. см. как в ШС сделана печать информации о заказе.');"><i class="icon16 print"></i> [`Print list`]</a>
+                    </li>
+                    <li>
                         <a href="#" onClick="alert('список добавляется в архив без вопросов и пользователя редиректит туда же в архив.');"><i class="icon16 pl archive"></i> [`Archive list`]</a>
                     </li>
                     <li>
@@ -36,13 +39,11 @@
         {if $new}
             <input type="text" placeholder="[`New list`]" id="pl-new-list-input"/>
         {else}
-
             <label class="pl-done-label">
                 <input type="checkbox" class="pl-done" id="pl-list-complete">
                 <span></span>
             </label>
             <span id="pl-list-name">{$list.name|escape|default:''}</span>
-
         {/if}
     </h1>
 </header>
@@ -161,7 +162,7 @@
     </section>
     <!-- completed to-dos log -->
     <section id="pl-complete-log">
-        <h5 class="heading">[`Complete log`]</h5>
+        <h5 class="heading">[`Logbook`]</h5>
 
         <ul class="menu-v">
         {if !empty($items_done)}
@@ -203,7 +204,7 @@
         </li>*}
     </section>
 
-    <a href="#" id="pl-complete-log-link" class="inline-link gray CLICKME"><b><i>[`Show all %d completed to-dos`]</i></b></a>
+    <a href="#" id="pl-complete-log-link" class="inline-link gray"><b><i>[`Show all %d completed to-dos`]</i></b></a>
 </div>
 <div class="clear-both"></div>
 

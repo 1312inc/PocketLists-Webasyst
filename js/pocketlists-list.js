@@ -520,8 +520,8 @@
     });
 
     $('#pl-complete-log-link').click(function () {
-        $('#pl-complete-log').slideToggle(200);
-        $(this).hide(200);
+        $('#pl-complete-log').slideDown(200);
+        $(this).slideUp(200);
         return false;
     });
 }());
