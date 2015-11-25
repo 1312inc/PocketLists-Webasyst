@@ -53,6 +53,7 @@ class pocketlistsPocketAction extends waViewAction
         $this->view->assign('lists_html', $lists_html);
 
         $this->view->assign('lists', $lists);
+        $this->view->assign('list_id', $list_id);
         $this->view->assign('pocket', $pocket);
         // todo: get only sgfn
         $this->view->assign('pockets', $pm->getAll());
