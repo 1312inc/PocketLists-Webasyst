@@ -427,17 +427,28 @@
                     .siblings().removeClass('selected')
             });
             $wrapper.on('click', '[data-pl-action="item-delete"]', function(e) {
-                if (!confirm("[s`Are you sure?`]")) {
-                    return false;
-                }
                 e.preventDefault();
-                $.post('?module=item&action=delete', { id: id, list_id: list_id }, function(r) {
-                     if (r.status === 'ok') {
-                         $list_items_wrapper.find('[data-id="' + r.data.id + '"]').remove();
-                     } else {
 
-                     }
-                }, 'json');
+                $('#pl-dialog-delete-confirm').waDialog({
+                    'height': '60px',
+                    'min-height': '60px',
+                    'width': '250px',
+                    onLoad: function() {
+                        var $this = $(this);
+                    },
+                    onSubmit: function (d) {
+                        $.post('?module=item&action=delete', { id: id, list_id: list_id }, function(r) {
+                            if (r.status === 'ok') {
+                                $list_items_wrapper.find('[data-id="' + r.data.id + '"]').remove();
+                                $wrapper.find('#pl-item-details-cancel').trigger('click');
+                                d.trigger('close');
+                            } else {
+
+                            }
+                        }, 'json');
+                        return false;
+                    }
+                });
             });
         };
 
@@ -520,6 +531,30 @@
 
         init();
     };
+
+    $('.pl-items').on('click', '[data-pl-action="list-delete"]', function(e) {
+        e.preventDefault();
+
+        $('#pl-dialog-delete-confirm').waDialog({
+            'height': '60px',
+            'min-height': '60px',
+            'width': '250px',
+            onLoad: function() {
+                var $this = $(this);
+            },
+            onSubmit: function (d) {
+                $.post('?module=list&action=delete', { list_id: list_id }, function(r) {
+                    if (r.status === 'ok') {
+                        d.trigger('close');
+                        $.wa.setHash('#/pocket/1/');
+                    } else {
+
+                    }
+                }, 'json');
+                return false;
+            }
+        });
+    });
 
     $('#pl-list-complete').on('click', function (e) {
         e.stopPropagation();

@@ -21,7 +21,7 @@
                             <a href="#" onClick="alert('список добавляется в архив без вопросов и пользователя редиректит туда же в архив.');"><i class="icon16 pl archive"></i> [`Archive list`]</a>
                         </li>
                         <li>
-                            <a href="#" onClick="alert('waDialog с подтверждением желания удаления списка');"><i class="icon16 delete"></i> [`Delete list`]</a>
+                            <a href="#" data-pl-action="list-delete"><i class="icon16 delete"></i> [`Delete list`]</a>
                         </li>
                     </ul>
                 </li>
@@ -78,6 +78,17 @@
 
     <div id="pl-item-details" class="block double-padded"><i class="icon16 loading"></i></div>
     <div id="pl-list-details" class="block double-padded"><i class="icon16 loading"></i></div>
+
+    <div id="pl-dialog-delete-confirm" style="display: none;">
+        <form action="post">
+            <div class="dialog-content">
+                <h1>Are you sure?</h1>
+            </div>
+            <div class="dialog-buttons">
+                <input type="submit" value="[`Delete`]" class="button red" /> [`or`] <a class="cancel" href="#">[`cancel`]</a>
+            </div>
+        </form>
+    </div>
 
     <div id="pl-item-add">
         <div class="pl-item">
