@@ -20,7 +20,7 @@
         <div class="field">
             <div class="name">[`Priority`]</div>
             <div class="value no-shift" id="pl-item-priority">
-                <input type="hidden" name="item[priority]"/>
+                <input type="hidden" name="item[priority]" value="{$item.priority|default:0}"/>
                 <a href="#" {if $item.priority == 0}class="selected"{/if} data-pl-item-priority="0"><i class="icon16 color pl-white"></i></a>
                 <a href="#" {if $item.priority == 1}class="selected"{/if} data-pl-item-priority="1"><i class="icon16 color pl-dark-green"></i></a>
                 <a href="#" {if $item.priority == 2}class="selected"{/if} data-pl-item-priority="2"><i class="icon16 color pl-dark-yellow"></i></a>
@@ -106,7 +106,7 @@
                     </ul>
                 </div>
 
-                <input type="button" class="button green" value="[`Save`]"  id="pl-item-details-save"/>
+                <input type="submit" class="button green" value="[`Save`]"  id="pl-item-details-save"/>
                 [`or`]
                 <a href="#" id="pl-item-details-cancel">[`cancel`]</a>
 

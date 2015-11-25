@@ -414,14 +414,15 @@
         };
         var handlers = function () {
             // save
-            $wrapper.on('click', '#pl-item-details-save', function (e) {
+            $wrapper.on('submit', 'form', function (e) {
                 e.preventDefault();
                 var $this = $(this);
-                $this.after($loading);
-                $.post('?module=item&action=data', $this.closest('form').serialize(), function (html) {
+                $this.find('#pl-item-details-save').after($loading);
+                $.post('?module=item&action=data', $this.serialize(), function (html) {
                     $loading.remove();
                     $list_items_wrapper.find('[data-id="' + id + '"] .pl-item').first().replaceWith($(html).addClass('pl-item-selected'));
                 });
+                return false;
             });
             // cancel
             $wrapper.on('click', '#pl-item-details-cancel', function (e) {
@@ -462,11 +463,11 @@
         };
         var handlers = function () {
             // save
-            $wrapper.on('click', '#pl-list-details-save', function (e) {
+            $wrapper.on('submit', 'form', function (e) {
                 e.preventDefault();
                 var $this = $(this);
-                $this.after($loading);
-                $.post('?module=list&action=save', $this.closest('form').serialize(), function (r) {
+                $this.find('#pl-list-details-save').after($loading);
+                $.post('?module=list&action=save', $this.serialize(), function (r) {
                     $loading.remove();
                     if (r.status === 'ok') {
                         update_list_list();
@@ -475,6 +476,7 @@
                         $wrapper.find('.error').show().delay(3000).hide();
                     }
                 }, 'json');
+                return false;
             });
             // cancel
             $wrapper.on('click', '#pl-list-details-cancel', function (e) {
