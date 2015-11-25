@@ -1,10 +1,11 @@
 <input type="hidden" name="pocket[id]" value="{$pocket.id|default:0}"/>
 
 {if isset($pocket.id)}
-<h1>Edit pocket</h1>
+    <h1>{$pocket.name|default:'[`(unnamed pocket)`]'}</h1>
 {else}
-<h1>New pocket</h1>
+    <h1>[`New pocket`]</h1>
 {/if}
+
 <div class="fields form">
     <div class="field-group">
         <div class="field">
@@ -20,8 +21,7 @@
                 [`Color`]
             </div>
             <div class="value no-shift" id="pl-pocket-color">
-                <input type="hidden" name="pocket[color]" value="{$pocket.color|default:'none'}"/>
-                <a href="#" {if $pocket.color == 'none'}class="selected"{/if} data-pl-pocket-color="none"><i class="icon16 color white"></i></a>
+                <input type="hidden" name="pocket[color]" value="{$pocket.color|default:'blue'}"/>
                 <a href="#" {if $pocket.color == 'red'}class="selected"{/if} data-pl-pocket-color="red"><i class="icon16 color pl-dark-red"></i></a>
                 <a href="#" {if $pocket.color == 'green'}class="selected"{/if} data-pl-pocket-color="green"><i class="icon16 color pl-dark-green"></i></a>
                 <a href="#" {if $pocket.color == 'blue'}class="selected"{/if} data-pl-pocket-color="blue"><i class="icon16 color pl-dark-blue"></i></a>
@@ -33,6 +33,10 @@
             <div class="name">
                 [`Access rights`]
             </div>
+            <div class="value no-shift">
+                <span style="font-size: 0.9em;">[`Use Contacts app to customize access rights for pockets.`]</span>
+            </div>
+            {*
             <div class="value no-shift">
                 <label>
                     <input type="radio" checked="checked"> [`Everyone`]
@@ -93,6 +97,7 @@
                 </div>
 
             </div>
+            *}
         </div>
 
     </div>
