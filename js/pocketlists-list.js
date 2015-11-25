@@ -358,6 +358,16 @@
             case 37: // <--
                 decrease_item.call(this);
                 break;
+            case 27: // esc
+                if ($('#pl-list-details').is(':visible')) {
+                    $('#pl-list-details').hide();
+                }
+                if ($('#pl-item-details').is(':visible')) {
+                    $('#pl-item-details').hide();
+                    var $selected = $list_items_wrapper.find('.pl-item-selected');
+                    $selected.removeClass('pl-item-selected').prop('checked', false);;
+                }
+                break;
         }
     });
 
@@ -402,15 +412,10 @@
                 e.preventDefault();
                 var $this = $(this);
                 $this.after($loading);
-                $.post('?module=item&action=save', $this.closest('form').serialize(), function (r) {
+                $.post('?module=item&action=data', $this.closest('form').serialize(), function (html) {
                     $loading.remove();
-                    if (r.status === 'ok') {
-                        update_list_item();
-                        $wrapper.find('.success').show().delay(3000).hide();
-                    } else {
-                        $wrapper.find('.error').show().delay(3000).hide();
-                    }
-                }, 'json');
+                    $list_items_wrapper.find('[data-id="' + id + '"] .pl-item').first().replaceWith($(html).addClass('pl-item-selected'));
+                });
             });
             // cancel
             $wrapper.on('click', '#pl-item-details-cancel', function (e) {
@@ -423,29 +428,6 @@
                 $(this).addClass('selected')
                     .siblings().removeClass('selected')
             });
-        };
-        var update_list_item = function() {
-            var name = $wrapper.find('input[name="item\[name\]"]').val(),
-                priority = $wrapper.find('[data-pl-item-priority].selected').data('pl-item-priority'),
-                color = '';
-            switch (priority) {
-                case 1:
-                    color = 'pl-green';
-                    break;
-                case 2:
-                    color = 'pl-yellow';
-                    break;
-                case 3:
-                    color = 'pl-red';
-                    break;
-            }
-            // update priority color
-            $list_items_wrapper
-                .find('[data-id="' + id + '"]')
-                    .find('.pl-item .pl-item-name').first().text(name);
-            $list_items_wrapper
-                .find('[data-id="' + id + '"] .pl-done').first().removeClass('pl-green pl-yellow pl-red').addClass(color);
-
         };
 
         init();

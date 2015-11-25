@@ -1,0 +1,28 @@
+<div class="pl-item">
+    <a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
+    {if 1111 || ASSIGNED_TO}<span class="pl-author" title="{sprintf('Assigned to %s', 'USERNAME')}"><i class="icon16 userpic20"></i></span>{/if}
+    <label class="pl-done-label">
+        <input type="checkbox" class="pl-done{if $item.priority == 1} pl-green{elseif $item.priority == 2} pl-yellow{elseif $item.priority == 3} pl-red{/if}" {if $item.status == 1}checked="checked"{/if}>
+        <span></span>
+    </label>
+    <label class="pl-select-label">
+        <input type="checkbox" class="pl-is-selected">
+        <span class="pl-item-name">{$item.name|escape}</span>
+        {if $item.status == 1}
+        {* completed by username *}
+        <span class="hint">{sprintf('%s by %s', 'COMPLETED_WAHUMANDATETIME', 'COMPLETE_USERNAME')}</span>
+        {else}
+        {if 111 || CREATED_NOT_BY_ME}
+        <span class="hint">{sprintf('%s by %s', 'CREATE_WAHUMANDATETIME', 'CREATE_USERNAME')}</span>
+        {/if}
+        {if !empty($item.note|escape)}<p class="hint">{$item.note|escape|nl2br}</p>{/if}
+        {/if}
+        {if !empty($item.due_datetime)}
+        <br>
+        <span class="small bold {if $item.due_status == 0}pl-due-someday{elseif $item.due_status == 1}pl-due-tomorrow{elseif $item.due_status == 2}pl-due-today{elseif $item.due_status == 3}pl-due-overdue{/if}">{$item.due_date|wa_datetime:'humandatetime'}</span>
+        {else if !empty($item.due_date)}
+        <br>
+        <span class="small bold small bold {if $item.due_status == 0}pl-due-someday{elseif $item.due_status == 1}pl-due-tomorrow{elseif $item.due_status == 2}pl-due-today{elseif $item.due_status == 3}pl-due-overdue{/if}">{$item.due_date|wa_date:'humandate'}</span>
+        {/if}
+    </label>
+</div>

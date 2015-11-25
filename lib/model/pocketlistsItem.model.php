@@ -4,6 +4,19 @@ class pocketlistsItemModel extends waModel
 {
     protected $table = 'pocketlists_item';
 
+    public function getById($id)
+    {
+        $items = parent::getById($id);
+        if (is_array($id)) {
+            foreach($items as $id => $item) {
+                $items[$id] = $this->updateItemPriority($item);
+            }
+        } else {
+            $items = $this->updateItemPriority($items);
+        }
+        return $items;
+    }
+
     public function getAllByList($list_id, $tree = true)
     {
         $sql = "SELECT *
@@ -47,27 +60,9 @@ class pocketlistsItemModel extends waModel
     private function getItems($sql, $list_id, $tree)
     {
         $items = $this->query($sql, array('lid' => $list_id))->fetchAll();
-
         foreach ($items as $id => $item) {
-            $date = strtotime($item['due_date']);
-            $now = time();
-
-            if ($item['due_date'] || $item['due_datetime']) {
-                if ($now > ($item['due_datetime'] ? $item['due_datetime'] : $date)) { // overdue
-                    $items[$id]['due_status'] = 3;
-                } elseif ($item['due_date'] == date("Y-m-d")) { // today
-                    $items[$id]['due_status'] = 2;
-                } elseif ($item['due_date'] == date("Y-m-d", $now + 60 * 60 * 24)) { // tomorrow
-                    $items[$id]['due_status'] = 1;
-                } else {
-                    $items[$id]['due_status'] = 0;
-                }
-
-                $items[$id]['priority'] = max($items[$id]['due_status'], $item['priority']);
-            }
+            $items[$id] = $this->updateItemPriority($item);
         }
-
-
         return $tree ? $this->getTree($items, $tree) : $items;
     }
 
@@ -119,5 +114,26 @@ class pocketlistsItemModel extends waModel
                 )->fetchField('sort') + 1;
         }
         return $this->updateById($id, array('sort' => $sort, 'update_datetime' => date("Y-m-d H:i:s")));
+    }
+
+    private function updateItemPriority($item)
+    {
+        $date = strtotime($item['due_date']);
+        $now = time();
+
+        $item['due_status'] = 0;
+        if ($item['due_date'] || $item['due_datetime']) {
+            if ($now > ($item['due_datetime'] ? $item['due_datetime'] : $date)) { // overdue
+                $item['due_status'] = 3;
+            } elseif ($item['due_date'] == date("Y-m-d")) { // today
+                $item['due_status'] = 2;
+            } elseif ($item['due_date'] == date("Y-m-d", $now + 60 * 60 * 24)) { // tomorrow
+                $item['due_status'] = 1;
+            }
+
+            $item['priority'] = max($item['due_status'], $item['priority']);
+        }
+
+        return $item;
     }
 }
