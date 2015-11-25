@@ -320,7 +320,7 @@
             );
             $this.prop('checked', true);
         } else { // on third
-            $details.hide();
+            $details.hide().empty();
             $list_items_wrapper.find('.pl-item').removeClass('pl-item-selected');
             $this.prop('checked', false);
         }
@@ -366,10 +366,11 @@
                 break;
             case 27: // esc
                 if ($('#pl-list-details').is(':visible')) {
-                    $('#pl-list-details').hide();
+                    $('#pl-list-details').hide().empty();
+                    $('.pl-list-title').removeData('pl-clicked');
                 }
                 if ($('#pl-item-details').is(':visible')) {
-                    $('#pl-item-details').hide();
+                    $('#pl-item-details').hide().empty();
                     var $selected = $list_items_wrapper.find('.pl-item-selected');
                     $selected.removeClass('pl-item-selected').prop('checked', false);;
                 }
@@ -416,7 +417,8 @@
             // cancel
             $wrapper.on('click', '#pl-item-details-cancel', function (e) {
                 e.preventDefault();
-                $wrapper.hide();
+                $wrapper.hide().empty();
+                $('.pl-list-title').removeData('pl-clicked');
             });
             $wrapper.on('click', '#pl-item-priority a', function (e) {
                 e.preventDefault();
@@ -449,7 +451,7 @@
             );
         } else if (clicked == 2) {
             $this.removeData('pl-clicked');
-            $details.hide();
+            $details.hide().empty();
         } else {
             $this.data('pl-clicked', 1);
         }
@@ -464,6 +466,7 @@
         var handlers = function () {
             // save
             $wrapper.on('submit', 'form', function (e) {
+                debugger;
                 e.preventDefault();
                 var $this = $(this);
                 $this.find('#pl-list-details-save').after($loading);
@@ -481,7 +484,7 @@
             // cancel
             $wrapper.on('click', '#pl-list-details-cancel', function (e) {
                 e.preventDefault();
-                $wrapper.hide();
+                $wrapper.hide().empty();
             });
             $wrapper.on('click', '#pl-list-color a', function (e) {
                 e.preventDefault();
@@ -499,6 +502,7 @@
             $('#pl-lists')
                 .find('[data-pl-list-id="' + list_id + '"]').removeClass().addClass('pl-' + color)
                 .find('.pl-list-name').text(name);
+            $('.pl-items').removeClass().addClass('pl-items pl-' + color);
         };
 
         init();
