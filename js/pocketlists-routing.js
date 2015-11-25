@@ -159,7 +159,7 @@
             var load_list = this.getHash().indexOf('list') > 0 ? true : false;
             if (list_id) {
                 if (list_id === 'new') {
-                    list_id = 0;
+                    list_id = -1;
                 }
             }
             var id = id || 1;

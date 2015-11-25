@@ -1,4 +1,4 @@
-<div class="pl-items pl-{$list.color|default:'none'}">
+<div class="pl-items pl-{$list.color|default:'none'}{if $empty == 0} pl-list-empty{/if}">
     <header class="pl-list-title">
         <div class="float-right block half-padded">
             {if isset($list.id)}

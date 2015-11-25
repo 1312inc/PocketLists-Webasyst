@@ -29,7 +29,7 @@ class pocketlistsPocketAction extends waViewAction
         $lists = $lm->getLists($pocket['id']);
 
         if (!$list_id) {
-            if (isset($last_pocket_list_id['list_id']) && $last_pocket_list_id['pocket_id'] == $pocket['id']) {
+            if ($list_id != -1 && isset($last_pocket_list_id['list_id']) && $last_pocket_list_id['pocket_id'] == $pocket['id']) {
                 $list_id = $last_pocket_list_id['list_id'];
             } else {
                 if ($lists) {

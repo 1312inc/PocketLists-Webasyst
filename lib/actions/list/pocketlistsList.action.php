@@ -6,7 +6,7 @@ class pocketlistsListAction extends waViewAction
     {
         $list_id = isset($this->params['list_id']) ? $this->params['list_id'] : waRequest::get('id', false, waRequest::TYPE_INT);
 
-        if ($list_id) { // existing list
+        if ($list_id != -1) { // existing list
             $lm = new pocketlistsListModel();
             $list = $lm->getList($list_id);
 
@@ -21,9 +21,14 @@ class pocketlistsListAction extends waViewAction
             $this->view->assign('list', $list);
 
             $im = new pocketlistsItemModel();
-            $this->view->assign('items', $im->getUndoneByList($list_id));
+            $undone = $im->getUndoneByList($list_id);
+            $this->view->assign('items', $undone);
+            $this->view->assign('empty', count($undone));
             $this->view->assign('items_done', $im->getDoneByList($list_id));
+            $this->view->assign('new', false);
+        } else {
+            $this->view->assign('new', true);
+            $this->view->assign('empty', true);
         }
-        $this->view->assign('new', $list_id ? false : true);
     }
 }
