@@ -10,12 +10,13 @@
         <span class="pl-item-name">{$item.name|escape}</span>
         {if $item.status == 1}
         {* completed by username *}
-        <span class="hint">{sprintf('%s by %s', 'COMPLETED_WAHUMANDATETIME', 'COMPLETE_USERNAME')}</span>
+        <span class="hint">{sprintf('%s by %s', $item.complete_datetime|wa_datetime:'humandatetime', $item.complete_username)}</span>
         {else}
-        {if 111 || CREATED_NOT_BY_ME}
-        <span class="hint">{sprintf('%s by %s', $item.create_datetime, $item.username)}</span>
-        {/if}
-        {if !empty($item.note|escape)}<p class="hint">{$item.note|escape|nl2br}</p>{/if}
+            {*if 111 || CREATED_NOT_BY_ME*}
+            {if $item.contact_id != $wa->user()->getId()}
+        <span class="hint">{sprintf('%s by %s', $item.create_datetime|wa_datetime:'humandatetime', $item.username)}</span>
+            {/if}
+            {if !empty($item.note|escape)}<p class="hint">{$item.note|escape|nl2br}</p>{/if}
         {/if}
         {if !empty($item.due_datetime)}
         <br>

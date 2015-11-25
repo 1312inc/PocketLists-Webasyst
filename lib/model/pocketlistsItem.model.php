@@ -9,10 +9,10 @@ class pocketlistsItemModel extends waModel
         $items = parent::getById($id);
         if (is_array($id)) {
             foreach($items as $id => $item) {
-                $items[$id] = $this->updateItemPriority($item);
+                $items[$id] = $this->updateItem($item);
             }
         } else {
-            $items = $this->updateItemPriority($items);
+            $items = $this->updateItem($items);
         }
         return $items;
     }
@@ -61,8 +61,7 @@ class pocketlistsItemModel extends waModel
     {
         $items = $this->query($sql, array('lid' => $list_id))->fetchAll();
         foreach ($items as $id => $item) {
-            $items[$id] = $this->updateItemPriority($item);
-            $items[$id]['username'] = wa()->getUser()->getName();
+            $items[$id] = $this->updateItem($item);
         }
         return $tree ? $this->getTree($items, $tree) : $items;
     }
@@ -117,8 +116,14 @@ class pocketlistsItemModel extends waModel
         return $this->updateById($id, array('sort' => $sort, 'update_datetime' => date("Y-m-d H:i:s")));
     }
 
-    private function updateItemPriority($item)
+    private function updateItem($item)
     {
+        $item['username'] = wa()->getUser()->getName();
+        if ($item['complete_contact_id']) {
+            $complere_user = new waContact($item['complete_contact_id']);
+            $item['complete_username'] = $complere_user->getName();
+        }
+
         $date = strtotime($item['due_date']);
         $now = time();
 

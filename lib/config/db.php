@@ -29,6 +29,7 @@ return array(
         'create_datetime' => array('datetime'),
         'update_datetime' => array('datetime'),
         'complete_datetime' => array('datetime'),
+        'complete_contact_id' => array('int', 11),
         'name' => array('mediumtext'),
         'note' => array('text'),
         'due_date' => array('date'),

@@ -40,6 +40,9 @@ class pocketlistsItemCompleteController extends waJsonController
         );
         if ($status) {
             $data['complete_datetime'] = date("Y-m-d H:i:s");
+            $data['complete_contact_id'] = wa()->getUser()->getId();
+        } else {
+            $data['complete_contact_id'] = null;
         }
         if (!$im->updateById($item['id'], $data)) {
             $this->errors[] = 'error while updating parent id: ' . $item['id'];
