@@ -78,7 +78,7 @@
             <div class="name">[`Created`]</div>
             <div class="value no-shift">
                 <i class="icon16 userpic20"></i>
-                {$item.contact_name}
+                {$item.username}
                 <span class="hint">{$item.create_datetime|wa_datetime:'humandatetime'}</span>
             </div>
         </div>
@@ -87,7 +87,7 @@
                 <div class="name">[`Completed`]</div>
                 <div class="value no-shift">
                     <i class="icon16 userpic20"></i>
-                    USERNAMEWHOCOMPLETEDTHISTODO
+                    {$item.complete_username|default:''}
                     <span class="hint">{$item.complete_datetime|wa_datetime:'humandatetime'}</span>
                 </div>
             </div>
@@ -101,7 +101,7 @@
                 <div class="float-right block half-padded">
                     <ul class="menu-h ">
                         <li>
-                            <a href="#"><i class="icon16 delete"></i>[`Delete to-do`]</a>
+                            <a data-pl-action="item-delete" href="#"><i class="icon16 delete"></i>[`Delete to-do`]</a>
                         </li>
                     </ul>
                 </div>

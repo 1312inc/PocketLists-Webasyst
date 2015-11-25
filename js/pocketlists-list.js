@@ -426,6 +426,19 @@
                 $(this).addClass('selected')
                     .siblings().removeClass('selected')
             });
+            $wrapper.on('click', '[data-pl-action="item-delete"]', function(e) {
+                if (!confirm("[s`Are you sure?`]")) {
+                    return false;
+                }
+                e.preventDefault();
+                $.post('?module=item&action=delete', { id: id, list_id: list_id }, function(r) {
+                     if (r.status === 'ok') {
+                         $list_items_wrapper.find('[data-id="' + r.data.id + '"]').remove();
+                     } else {
+
+                     }
+                }, 'json');
+            });
         };
 
         init();
