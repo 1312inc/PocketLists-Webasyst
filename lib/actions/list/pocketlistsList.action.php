@@ -6,7 +6,7 @@ class pocketlistsListAction extends waViewAction
     {
         $list_id = isset($this->params['list_id']) ? $this->params['list_id'] : waRequest::get('id', false, waRequest::TYPE_INT);
 
-        if ($list_id != -1) { // existing list
+        if ($list_id > 0) { // existing list
             $lm = new pocketlistsListModel();
             $list = $lm->getList($list_id);
 
