@@ -394,17 +394,6 @@
                 gotoCurrent: true,
                 constrainInput: false,
                 minDate: new Date()
-
-//        beforeShow: function () {
-//            // hack! It's needed after-show-callback for changing z-index, but it doesn't exist
-//            setTimeout(function () {
-//                // make min z-index 10
-//                var zIndex = $('#ui-datepicker-div').css('z-index');
-//                if (zIndex < 10) {
-//                    $('#ui-datepicker-div').css('z-index', 10);
-//                }
-//            }, 0);
-//        }
             };
 
             $wrapper.find('#pl-item-due-datetime').datepicker(datepicker_options);
@@ -441,18 +430,29 @@
     };
 
     $('.pl-list-title').on('click', function(e) {
-        var $details = $('#pl-list-details');
-        $details.html($loading).toggle();
-        $.post(
-            '?module=list&action=details',
-            {
-                id: parseInt($('#pl-list-id').val())
-            },
-            function (html) {
-                $details.html(html);
-                list_details($details);
-            }
-        );
+        var $details = $('#pl-list-details'),
+            $this = $(this),
+            clicked = $this.data('pl-clicked');
+
+        if (clicked == 1) {
+            $details.html($loading).show();
+            $this.data('pl-clicked', 2);
+            $.post(
+                '?module=list&action=details',
+                {
+                    id: parseInt($('#pl-list-id').val())
+                },
+                function (html) {
+                    $details.html(html);
+                    list_details($details);
+                }
+            );
+        } else if (clicked == 2) {
+            $this.removeData('pl-clicked');
+            $details.hide();
+        } else {
+            $this.data('pl-clicked', 1);
+        }
     });
 
     var list_details = function ($wrapper) {
