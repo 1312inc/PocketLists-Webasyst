@@ -62,6 +62,7 @@ class pocketlistsItemModel extends waModel
         $items = $this->query($sql, array('lid' => $list_id))->fetchAll();
         foreach ($items as $id => $item) {
             $items[$id] = $this->updateItemPriority($item);
+            $items[$id]['username'] = wa()->getUser()->getName();
         }
         return $tree ? $this->getTree($items, $tree) : $items;
     }
