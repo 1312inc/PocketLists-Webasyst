@@ -163,6 +163,10 @@
                 }
             }
             var id = id || 1;
+            var $list_name = $('#pl-list-name');
+            if ($list_name.length) {
+                $list_name.after('<i class="icon16 loading">');
+            }
             this.load('?module=pocket&id=' + id + '&list_id=' + list_id, function (result) {
                 // show pockets
                 $('#content').html(result);
