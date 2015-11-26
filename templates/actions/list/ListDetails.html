@@ -7,9 +7,13 @@
             <div class="name">[`Title`]</div>
             <div class="value"><input type="text" class="bold large long" name="list[name]" value="{$list.name|escape}" /></div>
         </div>
-        <div class="field">
+        <div class="field" id="pl-list-icon-change">
             <div class="name">[`Icon`]</div>
-            <div class="value"></div>
+            <div class="value">
+                <input type="hidden" name="list[icon]" value="{$list.icon|default:'li-list@2x.png'}"/>
+                <div><i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$list.icon|default:'li-list@2x.png'});"></i></div>
+                <div><a href="#">[`Change`]</a></div>
+            </div>
         </div>
         <div class="field" id="pl-list-color">
             <div class="name">[`Color`]</div>
@@ -60,4 +64,20 @@
         </div>
     </div>
 </form>
+</div>
+
+<div id="pl-list-icon-dialog" style="display: none;">
+    <form action="post">
+        <div class="dialog-content">
+            <h1>[`Choose list icon`]</h1>
+            <ul data-pl-icons-path="{$wa_url}wa-apps/pocketlists/img/listicons/">
+                {foreach $list_icons as $icon}
+                <li><a href="#" data-pl-list-icon="{$icon}" {if $icon == $list.icon}class="selected"{/if}><i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$icon});"></i></a></li>
+                {/foreach}
+            </ul>
+        </div>
+        <div class="dialog-buttons">
+            <input type="submit" value="[`Choose`]" class="button green" /> [`or`] <a class="cancel" href="#">[`cancel`]</a>
+        </div>
+    </form>
 </div>

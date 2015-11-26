@@ -215,6 +215,30 @@ input#pl-new-list-input,
 
 input.pl-due-date-input { width: 130px; min-width: 130px; }
 
+/* List details
+--------------- */
+#pl-list-icon-dialog ul {
+    list-style: none;
+    padding: 0;
+    margin: 5px 0;
+    overflow: hidden;
+    overflow-y: scroll;
+    height: 100%;
+}
+#pl-list-icon-dialog li {
+    float: left;
+    margin: 0 5px 5px;
+    padding: 0;
+}
+#pl-list-icon-dialog li a {
+    border: 2px solid transparent;
+    display: block;
+}
+#pl-list-icon-dialog li a:hover,
+#pl-list-icon-dialog li a.selected {
+    border: 2px solid #5da5f5;
+}
+
 /* List icons
 ------------- */
 

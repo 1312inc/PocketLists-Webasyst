@@ -483,6 +483,7 @@
 
     var list_details = function ($wrapper) {
         var list_id = 0;
+        var icon_path = $wrapper.find('#pl-list-icon-dialog').find('ul').data('pl-icons-path');
         var init = function () {
             handlers();
             list_id = parseInt($wrapper.find('input[name="list\[id\]"]').val());
@@ -490,7 +491,6 @@
         var handlers = function () {
             // save
             $wrapper.on('submit', 'form', function (e) {
-                debugger;
                 e.preventDefault();
                 var $this = $(this);
                 $this.find('#pl-list-details-save').after($loading);
@@ -516,17 +516,49 @@
                 $(this).addClass('selected')
                     .siblings().removeClass('selected')
             });
+            $wrapper.on('click', '#pl-list-icon-change a', function (e) {
+                e.preventDefault();
+                var $this = $(this);
+
+                $('#pl-list-icon-dialog').waDialog({
+                    'height': '450px',
+                    'width': '600px',
+                    onLoad: function() {
+                        var $dialog = $(this);
+
+                        $('#pl-list-icon-dialog').on('click', 'a[data-pl-list-icon]', function (e) {
+                            e.preventDefault();
+                            $(this).closest('ul').find('a[data-pl-list-icon]').removeClass('selected');
+                            $(this).addClass('selected');
+                            $wrapper.find('#pl-list-icon-change').find('input').val($(this).data('pl-list-icon'));
+                        })
+                    },
+                    onSubmit: function (d) {
+                        var $selected_icon = $('#pl-list-icon-dialog').find('a[data-pl-list-icon].selected'),
+                            icon = $selected_icon.data('pl-list-icon');
+
+                        $this.find('input').val(icon);
+                        $wrapper.find('#pl-list-icon-change .listicon48').css('background-image', 'url(' + icon_path + icon + ')');
+                        d.trigger('close');
+                        return false;
+                    }
+                });
+            });
         };
         var update_list_list = function() {
             // update name
             var name = $wrapper.find('input[name="list\[name\]"]').val(),
-                color = $wrapper.find('[data-pl-list-color].selected').data('pl-list-color');
+                color = $wrapper.find('[data-pl-list-color].selected').data('pl-list-color'),
+                icon = $wrapper.find('input[name="list\[icon\]"]').val();
             $('#pl-list-name').text(name);
             // update color
             $('#pl-lists')
                 .find('[data-pl-list-id="' + list_id + '"]').removeClass().addClass('pl-' + color)
-                .find('.pl-list-name').text(name);
+                .find('.pl-list-name').text(name)
+                .end()
+                .find('.listicon48').css('background-image', 'url(' + icon_path + icon + ')');
             $('.pl-items').removeClass().addClass('pl-items pl-' + color);
+            // update icon
         };
 
         init();
@@ -555,7 +587,6 @@
             }
         });
     });
-
 
     $('.pl-items').on('click', '[data-pl-action="list-archive"]', function(e) {
         e.preventDefault();
