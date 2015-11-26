@@ -28,7 +28,7 @@ class pocketlistsItemModel extends waModel
                 JOIN pocketlists_list l ON l.id = i.list_id
                 JOIN pocketlists_pocket p ON p.id = l.pocket_id
                 WHERE i.status > 0
-                ORDER BY i.complete_datetime, i.parent_id  DESC";
+                ORDER BY i.complete_datetime DESC";
 
         $items = $this->query($sql)->fetchAll();
         foreach ($items as $id => $item) {
