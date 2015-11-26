@@ -61,7 +61,7 @@
         </section>
 
         <!-- completed to-dos log -->
-        <section id="pl-complete-log">
+        <section id="pl-complete-log" class="pl-logbook">
             <h5 class="heading">[`Logbook`]</h5>
             <ul class="menu-v">
             {if !empty($items_done)}
@@ -82,10 +82,11 @@
     <div id="pl-dialog-delete-confirm" style="display: none;">
         <form action="post">
             <div class="dialog-content">
-                <h1>Are you sure?</h1>
+                <h1>{$list.name|escape|default:'[`Delete list`]'}</h1>
+                <p>[`List will be deleted permanently without the ability to restore. Are you sure?`]</p>
             </div>
             <div class="dialog-buttons">
-                <input type="submit" value="[`Delete`]" class="button red" /> [`or`] <a class="cancel" href="#">[`cancel`]</a>
+                <input type="submit" value="[`Delete list`]" class="button red" /> [`or`] <a class="cancel" href="#">[`cancel`]</a>
             </div>
         </form>
     </div>

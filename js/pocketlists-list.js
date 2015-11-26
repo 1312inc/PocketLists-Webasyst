@@ -430,9 +430,9 @@
                 e.preventDefault();
 
                 $('#pl-dialog-delete-confirm').waDialog({
-                    'height': '60px',
-                    'min-height': '60px',
-                    'width': '250px',
+                    'height': '150px',
+                    'min-height': '150px',
+                    'width': '400px',
                     onLoad: function() {
                         var $this = $(this);
                     },
@@ -568,9 +568,9 @@
         e.preventDefault();
 
         $('#pl-dialog-delete-confirm').waDialog({
-            'height': '60px',
-            'min-height': '60px',
-            'width': '250px',
+            'height': '150px',
+            'min-height': '150px',
+            'width': '400px',
             onLoad: function() {
                 var $this = $(this);
             },

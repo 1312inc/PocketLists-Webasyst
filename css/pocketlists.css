@@ -203,9 +203,15 @@ input#pl-new-list-input,
     min-height: 5px;
 }
 
-#pl-complete-log { display: none; color: #aaa; }
+#pl-complete-log { display: none; }
 #pl-complete-log h5 { margin: 30px 15px 5px; }
 #pl-complete-log-link { padding: 13px 15px; display: block; }
+
+.pl-logbook { color: #aaa; }
+.pl-logbook .pl-due-overdue,
+.pl-logbook .pl-due-today,
+.pl-logbook .pl-due-tomorrow,
+.pl-logbook .pl-due-someday { display: none; }
 
 /* Item details
 --------------- */
