@@ -4,7 +4,7 @@
     {include '../item/ItemData.html' item=$i inline}
     {if !empty($i.childs)}
         <ul class="menu-v">
-        {include '../item/ItemCreate.html' items=$i.childs archive=false inline}
+        {include '../item/ItemCreate.html' items=$i.childs archive=isset($archive) inline}
             </ul>
     {/if}
     </li>
