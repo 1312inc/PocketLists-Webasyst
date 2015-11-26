@@ -556,6 +556,20 @@
         });
     });
 
+
+    $('.pl-items').on('click', '[data-pl-action="list-archive"]', function(e) {
+        e.preventDefault();
+
+        $.post('?module=list&action=archive', { list_id: list_id, archive: 1 }, function(r) {
+            if (r.status === 'ok') {
+                d.trigger('close');
+                $.wa.setHash('#/pocket/1/');
+            } else {
+
+            }
+        }, 'json');
+    });
+
     $('#pl-list-complete').on('click', function (e) {
         e.stopPropagation();
         alert('waDialog с предложением либо зачекать все айтемы как выполненные с дополнительным чекбоксом “отправить этот список в архив”');

@@ -174,8 +174,9 @@
                 //load_list && self.listAction(list_id);
             });
         },
-        archiveAction: function () {
-            this.load('?module=archive', function (result) {
+        archiveAction: function (id) {
+            var id = id || 0;
+            this.load('?module=archive&id=' + id, function (result) {
                 $('#content').html(result);
             });
         },

@@ -4,6 +4,40 @@ class pocketlistsItemModel extends waModel
 {
     protected $table = 'pocketlists_item';
 
+
+    public function getCompleted()
+    {
+        $sql = "SELECT
+                  i.id id,
+                  i.parent_id parent_id,
+                  i.has_children has_children,
+                  i.name name,
+                  i.note note,
+                  i.status status,
+                  i.priority priority,
+                  i.contact_id contact_id,
+                  i.due_date due_date,
+                  i.due_datetime due_datetime,
+                  i.complete_datetime complete_datetime,
+                  i.complete_contact_id complete_contact_id,
+                  l.id list_id,
+                  l.name list_name,
+                  p.id pocket_id,
+                  p.name pocket_name
+                FROM pocketlists_item i
+                JOIN pocketlists_list l ON l.id = i.list_id
+                JOIN pocketlists_pocket p ON p.id = l.pocket_id
+                WHERE i.status > 0
+                ORDER BY i.complete_datetime, i.parent_id  DESC";
+
+        $items = $this->query($sql)->fetchAll();
+        foreach ($items as $id => $item) {
+            $items[$id] = $this->updateItem($item);
+        }
+        return $items;
+//        return $this->getTree($items, $tree);
+    }
+
     public function getById($id)
     {
         $items = parent::getById($id);

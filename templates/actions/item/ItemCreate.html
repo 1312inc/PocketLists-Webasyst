@@ -1,10 +1,10 @@
 {if !empty($items)}
 {foreach $items as $i}
     <li class="pl-item-wrapper" data-id="{$i.id}" data-parent-id="{$i.parent_id}">
-    {include './ItemData.html' item=$i inline}
+    {include '../item/ItemData.html' item=$i inline}
     {if !empty($i.childs)}
         <ul class="menu-v">
-        {include '../item/ItemCreate.html' items=$i.childs inline}
+        {include '../item/ItemCreate.html' items=$i.childs archive=false inline}
             </ul>
     {/if}
     </li>

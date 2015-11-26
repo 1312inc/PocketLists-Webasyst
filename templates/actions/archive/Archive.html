@@ -27,6 +27,21 @@
 
         по умолчанию при входе в раздел выбирать первый список.
 
+        {if !empty($items)}
+        <div class="pl-items">
+            <div class="pl-list-items" id="pl-list-items">
+                <ul class="menu-v">
+                {foreach $items as $i}
+                    <li class="pl-item-wrapper" data-id="{$i.id}" data-parent-id="{$i.parent_id}">
+                        {include '../item/ItemData.html' item=$i archive=true inline}
+                    </li>
+                {/foreach}
+                </ul>
+            </div>
+        </div>
+        {/if}
+
+
     </main>
 
 </div>

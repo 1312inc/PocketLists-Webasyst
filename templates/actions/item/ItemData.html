@@ -2,11 +2,11 @@
     <a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
     {if 1111 || ASSIGNED_TO}<span class="pl-author" title="{sprintf('Assigned to %s', 'USERNAME')}"><i class="icon16 userpic20"></i></span>{/if}
     <label class="pl-done-label">
-        <input type="checkbox" class="pl-done{if $item.priority == 1} pl-green{elseif $item.priority == 2} pl-yellow{elseif $item.priority == 3} pl-red{/if}" {if $item.status == 1}checked="checked"{/if}>
+        <input type="checkbox" class="pl-done{if $item.priority == 1} pl-green{elseif $item.priority == 2} pl-yellow{elseif $item.priority == 3} pl-red{/if}" {if $item.status == 1}checked="checked"{/if}{if $archive}disabled{/if}>
         <span></span>
     </label>
     <label class="pl-select-label">
-        <input type="checkbox" class="pl-is-selected">
+        <input type="checkbox" class="pl-is-selected" {if $archive}disabled{/if}>
         <span class="pl-item-name">{$item.name|escape}</span>
         {if $item.status == 1}
         {* completed by username *}
