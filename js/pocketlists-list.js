@@ -301,28 +301,31 @@
             is_selected = $item_content_wrapper.hasClass('pl-item-selected');
 
         e.preventDefault();
-        if(!details_shown && !is_selected) { // on first click - select
-            $details.hide();
-            $list_items_wrapper.find('.pl-item').removeClass('pl-item-selected');
-            $item_content_wrapper.addClass('pl-item-selected');
-            $this.prop('checked', true);
-        } else if(!details_shown) { // on second - show details
-            $details.html($loading).show();
-            $.post(
-                '?module=item&action=details',
-                {
-                    id: parseInt($item_wrapper.data('id'))
-                },
-                function (html) {
-                    $details.html(html);
-                    item_details($details);
-                }
-            );
-            $this.prop('checked', true);
-        } else { // on third
-            $details.hide().empty();
-            $list_items_wrapper.find('.pl-item').removeClass('pl-item-selected');
-            $this.prop('checked', false);
+
+        if (!$item_wrapper.find('#pl-item-add').length) {
+            if (!details_shown && !is_selected) { // on first click - select
+                $details.hide();
+                $list_items_wrapper.find('.pl-item').removeClass('pl-item-selected');
+                $item_content_wrapper.addClass('pl-item-selected');
+                $this.prop('checked', true);
+            } else if (!details_shown) { // on second - show details
+                $details.html($loading).show();
+                $.post(
+                    '?module=item&action=details',
+                    {
+                        id: parseInt($item_wrapper.data('id'))
+                    },
+                    function (html) {
+                        $details.html(html);
+                        item_details($details);
+                    }
+                );
+                $this.prop('checked', true);
+            } else { // on third
+                $details.hide().empty();
+                $list_items_wrapper.find('.pl-item').removeClass('pl-item-selected');
+                $this.prop('checked', false);
+            }
         }
     });
 
