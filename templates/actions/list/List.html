@@ -15,6 +15,9 @@
                         </li>
                         *}
                         <li>
+                            <a href="#" onClick="alert('открывается сайдбар с редактированием свойств списка');"><i class="icon16 settings"></i> [`List settings`]</a>
+                        </li>
+                        <li>
                             <a href="#" onClick="alert('открывается новое окно с содержимым данного списка и кнопкой Print. см. как в ШС сделана печать информации о заказе.');"><i class="icon16 print"></i> [`Print list`]</a>
                         </li>
                         <li>
@@ -31,9 +34,9 @@
                 <li>
                     <a href="#" id="pl-item-add-link" class="bold"><i class="icon16 add"></i> [`New to-do`]</a>
                 </li>
-                <li class="pl-list-favorite">
+                {* <li class="pl-list-favorite">
                     <a href="#"><i class="icon16 star-empty"></i></a>
-                </li>
+                </li> *}
             </ul>
             {/if}
         </div>
@@ -93,7 +96,9 @@
 
     <div id="pl-item-add">
         <div class="pl-item">
-            <a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
+            {* <div class="pl-meta">
+                <a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
+            </div> *}
             <label class="pl-done-label">
                 <input type="checkbox" disabled="disabled" class="pl-done">
                 <span></span>

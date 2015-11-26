@@ -1,10 +1,12 @@
 <div class="pl-item">
-    <a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
-    {if $item.status == 1}
-        <span class="pl-author" title="{sprintf('[`Completed by %s`]', $item.complete_username|default:'%username%')}"><i class="icon16 userpic20"></i></span>
-    {else}
-        {if 1111 || ASSIGNED_TO}<span class="pl-author" title="{sprintf('[`Assigned to %s`]', 'USERNAME')}"><i class="icon16 userpic20"></i></span>{/if}
-    {/if}
+    <div class="pl-meta">
+        {* <a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a> *}
+        {if $item.status == 1}
+            <span class="pl-author" title="{sprintf('[`Completed by %s`]', $item.complete_username|default:'%username%')}"><i class="icon16 userpic20"></i></span>
+        {else}
+            {if 1111 || ASSIGNED_TO}<span class="pl-author" title="{sprintf('[`Assigned to %s`]', 'USERNAME')}"><i class="icon16 userpic20"></i></span>{/if}
+        {/if}
+    </div>
     <label class="pl-done-label">
         <input type="checkbox" class="pl-done{if $item.priority == 1} pl-green{elseif $item.priority == 2} pl-yellow{elseif $item.priority == 3} pl-red{/if}" {if $item.status == 1}checked="checked"{/if}{if isset($archive) && $archive == true}disabled{/if}>
         <span></span>
