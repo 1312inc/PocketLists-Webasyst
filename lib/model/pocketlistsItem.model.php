@@ -118,7 +118,10 @@ class pocketlistsItemModel extends waModel
 
     private function updateItem($item)
     {
-        $item['username'] = wa()->getUser()->getName();
+        if ($item['complete_id']) {
+            $user = new waContact($item['complete_id']);
+            $item['username'] = $user->getName();
+        }
         if ($item['complete_contact_id']) {
             $complere_user = new waContact($item['complete_contact_id']);
             $item['complete_username'] = $complere_user->getName();
