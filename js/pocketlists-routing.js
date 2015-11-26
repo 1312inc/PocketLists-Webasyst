@@ -180,6 +180,11 @@
                 $('#content').html(result);
             });
         },
+        logbookAction: function (id) {
+            this.load('?module=logbook', function (result) {
+                $('#content').html(result);
+            });
+        },
         settingsAction: function () {
             this.load('?module=settings', function (result) {
                 $('#content').html(result);

@@ -1,0 +1,16 @@
+<div class="shadowed">
+    <p>LOG: список всех зачеканных айтемов всех пользователей, всех списков, всех карманов в хронологическом порядке (order by complete_datetime). справа будет юзерпик того, кто зачекал этот айтем (я уже ставил отдельное задание по этому поводу).</p>
+    <main class="content pl-items pl-blue" id="pl-list-content">
+    {if !empty($items)}
+        <div class="pl-list-items" id="pl-list-items">
+            <ul class="menu-v">
+            {foreach $items as $i}
+                <li class="pl-item-wrapper" data-id="{$i.id}" data-parent-id="{$i.parent_id}">
+                    {include '../item/ItemData.html' item=$i archive=true inline}
+                </li>
+            {/foreach}
+            </ul>
+        </div>
+    {/if}
+    </main>
+</div>
