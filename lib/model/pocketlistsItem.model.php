@@ -119,7 +119,7 @@ class pocketlistsItemModel extends waModel
     private function updateItem($item)
     {
         if ($item['contact_id']) {
-            $user = new waContact($item['complete_id']);
+            $user = new waContact($item['contact_id']);
             $item['username'] = $user->getName();
         }
         if ($item['complete_contact_id']) {
