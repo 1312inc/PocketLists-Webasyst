@@ -524,8 +524,6 @@
                 var $this = $(this);
 
                 $('#pl-list-icon-dialog').waDialog({
-                    'height': '450px',
-                    'width': '600px',
                     onLoad: function() {
                         var $dialog = $(this);
 

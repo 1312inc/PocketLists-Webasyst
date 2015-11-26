@@ -8,11 +8,13 @@
             <div class="value"><input type="text" class="bold large long" name="list[name]" value="{$list.name|escape}" /></div>
         </div>
         <div class="field" id="pl-list-icon-change">
-            <div class="name">[`Icon`]</div>
+            <div class="name"><br>[`Icon`]</div>
             <div class="value">
                 <input type="hidden" name="list[icon]" value="{$list.icon|default:'li-list@2x.png'}"/>
-                <div><i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$list.icon|default:'li-list@2x.png'});"></i></div>
-                <div><a href="#">[`Change`]</a></div>
+                <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$list.icon|default:'li-list@2x.png'});"></i>
+                <br>
+                <a href="#" class="small gray">[`Change`]</a>
+                <br><br>
             </div>
         </div>
         <div class="field" id="pl-list-color">
@@ -66,18 +68,25 @@
 </form>
 </div>
 
-<div id="pl-list-icon-dialog" style="display: none;">
+<div id="pl-list-icon-dialog" class="dialog large">
+    <div class="dialog-background"></div>
     <form action="post">
+      <div class="dialog-window">
         <div class="dialog-content">
-            <h1>[`Choose list icon`]</h1>
-            <ul data-pl-icons-path="{$wa_url}wa-apps/pocketlists/img/listicons/">
+          <div class="dialog-content-indent">
+            <h1>{$list.name|default:'[`Choose list icon`]'}</h1>
+            <ul data-pl-icons-path="{$wa_url}wa-apps/pocketlists/img/listicons/" class="pl-icon-library">
                 {foreach $list_icons as $icon}
                 <li><a href="#" data-pl-list-icon="{$icon}" {if $icon == $list.icon}class="selected"{/if}><i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$icon});"></i></a></li>
                 {/foreach}
             </ul>
+          </div>
         </div>
         <div class="dialog-buttons">
-            <input type="submit" value="[`Choose`]" class="button green" /> [`or`] <a class="cancel" href="#">[`cancel`]</a>
+          <div class="dialog-buttons-gradient">
+            <input type="submit" value="[`Set this icon`]" class="button green" /> [`or`] <a class="cancel" href="#">[`cancel`]</a>
+          </div>
         </div>
+      </div>
     </form>
 </div>
