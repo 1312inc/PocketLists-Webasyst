@@ -67,7 +67,7 @@ return array(
         'type' => array('enum', "'checklist','notes'"),
         'contact_id' => array('int', 11),
         'name' => array('varchar', 255),
-        'icon' => array('varchar', 32),
+        'icon' => array('varchar', 64),
         'archived' => array('tinyint', 1, 'default' => '0'),
         'hash' => array('varchar', 32),
         'color' => array('enum', "'none','red','green','blue','yellow','purple'", 'default' => 'none'),
