@@ -425,8 +425,8 @@
                 $this.find('#pl-item-details-save').after($loading);
                 $.post('?module=item&action=data', $this.serialize(), function (html) {
                     $loading.remove();
-                    debugger;
                     $list_items_wrapper.find('[data-id="' + id + '"] > .pl-item').replaceWith($(html).addClass('pl-item-selected'));
+                    $wrapper.hide().empty();
                 });
                 return false;
             });
