@@ -11,16 +11,24 @@ class pocketlistsListModel extends waModel
 
     public function getLists($pocket_id = false)
     {
+        $select_pocket = "";
         if ($pocket_id) {
-            return $this->getByField(array(
-                'archived' => 0,
-                'pocket_id' => $pocket_id
-            ), true);
-        } else {
-            return $this->getByField(array(
-                'archive' => 1
-            ));
+            $select_pocket = " AND l.pocket_id = i:pocket_id";
         }
+        $sql = "SELECT
+                  l.*,
+                  COUNT(i.id) 'count'
+                FROM pocketlists_list l
+                LEFT JOIN pocketlists_item i ON i.list_id = l.id
+                WHERE
+                  l.archived = i:archived
+                  {$select_pocket}
+                GROUP BY l.id";
+
+        return $this->query($sql, array(
+            'archived' => 0,
+            'pocket_id' => $pocket_id
+        ))->fetchAll();
     }
 
 }

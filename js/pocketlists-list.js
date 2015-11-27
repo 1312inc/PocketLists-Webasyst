@@ -132,8 +132,9 @@
         );
     };
     var complete_item = function (id, status, callback) {
-        this.find('label').first().append($loading);
-        this.prop('disabled', true);
+        var $item = this;
+        $item.find('label').first().append($loading);
+        $item.prop('disabled', true);
         $.post(
             '?module=item&action=complete',
             {
@@ -143,8 +144,25 @@
             },
             function (r) {
                 if (r.status === 'ok') {
-                    // remove from
-                    callback && $.isFunction(callback) && callback.call();
+                    // remove from undone list
+                    $item.find('ul.menu-v .pl-done').prop('checked', status); // check nesting items
+                    $item.find('.pl-done').prop('disabled', false);
+                    $item.slideToggle(200, function () {
+                        $item.show();
+                        if (status) {
+                            $done_items_wrapper.append($item);
+                        } else {
+                            $undone_items_wrapper.append($item);
+                            update_sort.call($item);
+                        }
+
+                        // always update list count icon
+                        $('#pl-lists')
+                            .find('[data-pl-list-id="' + list_id + '"]')
+                            .find('count').text($undone_items_wrapper.find('[data-id]').length);
+
+                        callback && $.isFunction(callback) && callback.call($item);
+                    });
                 } else {
                     alert(r.errors);
                 }
@@ -336,20 +354,7 @@
             id = parseInt($item.data('id')),
             status = $this.is(':checked') ? 1 : 0;
 
-        $item.find('ul.menu-v .pl-done').prop('checked', status);
-        complete_item.call($item, id, status, function () {
-            $this.prop('disabled', false);
-            $item.slideToggle(200, function () {
-                $item.show();
-                if (status) {
-                    $done_items_wrapper.append($item);
-                } else {
-                    $undone_items_wrapper.append($item);
-                    update_sort.call($item);
-                }
-            });
-
-        });
+        complete_item.call($item, id, status);
     });
 
     $(document).on('keydown', function (e) {
