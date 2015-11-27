@@ -164,6 +164,8 @@
                                 .find('[data-pl-list-id="' + list_id + '"]')
                                 .find('.count').text($undone_items_wrapper.find('[data-id]').length);
 
+                            $('#pl-complete-log-link').find('i').text($_('Show all ' + $done_items_wrapper.find('[data-id]').length + ' completed to-dos'));
+
                             callback && $.isFunction(callback) && callback.call($item);
                         });
                     }, 500);

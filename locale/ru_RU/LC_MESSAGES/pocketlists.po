@@ -1,0 +1,484 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: pocketlists\n"
+"POT-Creation-Date: 2015-11-27 15:00-0400\n"
+"PO-Revision-Date: \n"
+"Last-Translator:  pocketlists\n"
+"Language-Team:  pocketlists\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=((((n%10)==1)&&((n%100)!=11))?(0):(((((n%10)>=2)&&((n%10)<=4))&&(((n%100)<10)||((n%100)>=20)))?(1):2));\n"
+"X-Poedit-Language: ru_RU\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: .\n"
+
+#: /wa-apps/pocketlists/templates/actions/archive/Archive.html:16
+msgid "To archive an active list, tap on it’s checkmark."
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/archive/Archive.html:28
+msgid "Unarchive"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/archive/Archive.html:30
+msgid "Acrhived on %s"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemData.html:5
+msgid "Completed by %s"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemData.html:7
+msgid "Assigned to %s"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:7
+#: /wa-apps/pocketlists/templates/actions/list/ListDetails.html:7
+msgid "Title"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:11
+msgid "Note"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:12
+msgid "Optional text note"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:16
+msgid "Attachment"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:21
+msgid "Priority"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:37
+msgid "Due"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:45
+msgid "Repeat"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:48
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:20
+msgid "None"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:49
+msgid "Every Day"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:50
+msgid "Every Week"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:51
+msgid "Every 2 Weeks"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:52
+msgid "Every Month"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:53
+msgid "Every Year"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:54
+msgid "Custom..."
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:59
+msgid "Location"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:71
+msgid "Assigned to"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:74
+msgid "Nobody"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:78
+#: /wa-apps/pocketlists/templates/actions/list/ListDetails.html:38
+msgid "Created"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:87
+msgid "Completed"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:104
+msgid "Delete to-do"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:109
+#: /wa-apps/pocketlists/templates/actions/list/ListDetails.html:60
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:122
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:183
+msgid "Save"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:110
+#: /wa-apps/pocketlists/templates/actions/list/List.html:101
+#: /wa-apps/pocketlists/templates/actions/list/List.html:111
+#: /wa-apps/pocketlists/templates/actions/list/ListDetails.html:61
+#: /wa-apps/pocketlists/templates/actions/list/ListDetails.html:88
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:183
+msgid "or"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:111
+#: /wa-apps/pocketlists/templates/actions/list/List.html:102
+#: /wa-apps/pocketlists/templates/actions/list/List.html:112
+#: /wa-apps/pocketlists/templates/actions/list/ListDetails.html:62
+#: /wa-apps/pocketlists/templates/actions/list/ListDetails.html:88
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:183
+msgid "cancel"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:113
+#: /wa-apps/pocketlists/templates/actions/list/ListDetails.html:64
+msgid "error"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:114
+#: /wa-apps/pocketlists/templates/actions/list/ListDetails.html:65
+msgid "saved"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/list/List.html:8
+msgid "More"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/list/List.html:12
+msgid "Get public link"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/list/List.html:17
+msgid "Email list"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/list/List.html:21
+msgid "List settings"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/list/List.html:24
+msgid "Print list"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/list/List.html:31
+msgid "Archive list"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/list/List.html:35
+#: /wa-apps/pocketlists/templates/actions/list/List.html:92
+#: /wa-apps/pocketlists/templates/actions/list/List.html:100
+#: /wa-apps/pocketlists/templates/actions/list/ListDetails.html:55
+msgid "Delete list"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/list/List.html:38
+msgid "Sort"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/list/List.html:44
+msgid "New to-do"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/list/List.html:59
+#: /wa-apps/pocketlists/templates/actions/pocket/Pocket.html:6
+msgid "New list"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/list/List.html:77
+#: /wa-apps/pocketlists/templates/layouts/Default.html:77
+msgid "Logbook"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/list/List.html:83
+msgid "Show all %d completed to-dos"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/list/List.html:93
+msgid "List will be deleted permanently without the ability to restore. Are you sure?"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/list/List.html:102
+msgid "Choose your option"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/list/List.html:106
+msgid "Mark all as completed"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/list/List.html:109
+msgid "Archive this list"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/list/List.html:124
+#: /wa-apps/pocketlists/templates/actions/team/Team.html:85
+msgid "Add to-do"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/list/ListDetails.html:11
+msgid "Icon"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/list/ListDetails.html:16
+msgid "Change"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/list/ListDetails.html:21
+#: /wa-apps/pocketlists/templates/actions/pocket/PocketSettingsDialog.html:21
+msgid "Color"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/list/ListDetails.html:78
+msgid "Choose list icon"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/list/ListDetails.html:88
+msgid "Set this icon"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/pocket/PocketSettingsDialog.html:4
+msgid "(unnamed pocket)"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/pocket/PocketSettingsDialog.html:6
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:144
+msgid "New pocket"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/pocket/PocketSettingsDialog.html:13
+msgid "Pocket name"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/pocket/PocketSettingsDialog.html:34
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:130
+msgid "Access rights"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/pocket/PocketSettingsDialog.html:37
+msgid "Use Contacts app to customize access rights for pockets."
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/pocket/PocketSettingsDialog.html:42
+msgid "Everyone"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/pocket/PocketSettingsDialog.html:44
+msgid "Every user who can access Pocket Lists app will see lists and to-dos in this pocket."
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/pocket/PocketSettingsDialog.html:48
+msgid "Limited"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/pocket/PocketSettingsDialog.html:50
+msgid "Once selected users will be able to access lists and to-dos in this pocket."
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/pocket/PocketSettingsDialog.html:70
+msgid "Selected users"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/pocket/PocketSettingsDialog.html:92
+msgid "Start typing name..."
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:7
+msgid "My personal settings"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:12
+msgid "App icon counter"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:17
+msgid "Overdue"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:18
+msgid "Overdue + Today"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:19
+msgid "Overdue + Today + Tomorrow"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:22
+msgid "App icon counter will also alert you about new to-do items and lists assigned to you by other users."
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:28
+msgid "To-do Stream"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:32
+msgid "High priority &amp; Due"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:35
+msgid "Upcoming week"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:36
+msgid "Upcoming month"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:37
+msgid "All time"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:40
+msgid "Created by me only"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:41
+msgid "Created by anyone"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:46
+msgid "Assigned to me"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:51
+#: /wa-apps/pocketlists/templates/layouts/Default.html:44
+msgid "Favorites"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:58
+msgid "Email me"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:62
+msgid "Daily recap on what’s up next"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:65
+msgid "for today"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:66
+msgid "for today and tomorrow"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:67
+msgid "for next 7 days"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:71
+msgid "Daily recap notifications require CRON to be configured, which is not the case for your Pocket Lists app. See <a href=\"#\" target=\"_blank\">how to setup CRON for Pocket Lists</a>"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:73
+msgid "We’ll keep you up to date! And when there is nothing planned for the upcoming period, no alerts will be sent."
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:78
+msgid "When someone assigns me a to-do"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:83
+msgid "When someone marks a to-do item as complete"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:86
+msgid "only items I created"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:87
+msgid "only items I marked as favorite"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:88
+msgid "only items on to-do lists I previously marked as favorite"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:89
+msgid "any item on any list"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:94
+msgid "When someone adds a to-do item"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:97
+msgid "to any list I previously marked as favorite"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:98
+msgid "to just any list"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:104
+msgid "When someone comments a to-do item"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:107
+msgid "which I’ve created"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:108
+msgid "which I previously marked as favorite"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:109
+msgid "in just any list"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:115
+msgid "When someone creates a new to-do list"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:134
+msgid "Pockets"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/team/Team.html:55
+msgid "All done"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/team/Team.html:69
+msgid "Invite your teammates to collaborate simply by granting access to Pocket Lists app in <strong>Contacts app</strong>."
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/layouts/Default.html:34
+msgid "Lists"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/layouts/Default.html:39
+msgid "To-do"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/layouts/Default.html:51
+msgid "Map"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/layouts/Default.html:55
+msgid "Tags"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/layouts/Default.html:60
+msgid "Notes"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/layouts/Default.html:67
+msgid "Team"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/layouts/Default.html:80
+msgid "Archive"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/layouts/Default.html:83
+msgid "Settings"
+msgstr ""
