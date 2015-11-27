@@ -149,7 +149,7 @@
                     $item.find('ul.menu-v .pl-done').prop('checked', status); // check nesting items
                     $item.find('.pl-done').prop('disabled', false);
                     $item.find('.pl-item-name').toggleClass('gray');
-                    setTimeout(function(){
+                    setTimeout(function () {
                         $item.slideToggle(200, function () {
                             $item.show();
                             if (status) {
@@ -176,7 +176,7 @@
             'json'
         );
     };
-    var increase_item = function() {
+    var increase_item = function () {
         var $items = $undone_items_wrapper.find('.pl-item-selected').closest(item_selector);
         if ($items.length) {
             $items.each(function () {
@@ -198,7 +198,7 @@
             });
         }
     };
-    var decrease_item = function() {
+    var decrease_item = function () {
         var $items = $undone_items_wrapper.find('.pl-item-selected').closest(item_selector);
         if ($items.length) {
             $items.each(function () {
@@ -385,7 +385,7 @@
                 if ($('#pl-item-details').is(':visible')) {
                     $('#pl-item-details').hide().empty();
                     var $selected = $list_items_wrapper.find('.pl-item-selected');
-                    $selected.removeClass('pl-item-selected').prop('checked', false);;
+                    $selected.removeClass('pl-item-selected').prop('checked', false);
                 }
                 break;
         }
@@ -439,18 +439,18 @@
                 $(this).addClass('selected')
                     .siblings().removeClass('selected')
             });
-            $wrapper.on('click', '[data-pl-action="item-delete"]', function(e) {
+            $wrapper.on('click', '[data-pl-action="item-delete"]', function (e) {
                 e.preventDefault();
 
                 $('#pl-dialog-delete-confirm').waDialog({
                     'height': '150px',
                     'min-height': '150px',
                     'width': '400px',
-                    onLoad: function() {
+                    onLoad: function () {
                         var $this = $(this);
                     },
                     onSubmit: function (d) {
-                        $.post('?module=item&action=delete', { id: id, list_id: list_id }, function(r) {
+                        $.post('?module=item&action=delete', {id: id, list_id: list_id}, function (r) {
                             if (r.status === 'ok') {
                                 $list_items_wrapper.find('[data-id="' + r.data.id + '"]').remove();
                                 $wrapper.find('#pl-item-details-cancel').trigger('click');
@@ -468,11 +468,14 @@
         init();
     };
 
-    $('.pl-list-title').on('click', function(e) {
+    $('.pl-list-title').on('click', function (e) {
         var $details = $('#pl-list-details'),
             $this = $(this),
             clicked = $this.data('pl-clicked');
 
+        if ($(e.target).closest('.pl-done-label').length) {
+            return;
+        }
         if (clicked == 1) {
             $details.html($loading).show();
             $this.data('pl-clicked', 2);
@@ -534,7 +537,7 @@
                 var $this = $(this);
 
                 $('#pl-list-icon-dialog').waDialog({
-                    onLoad: function() {
+                    onLoad: function () {
                         var $dialog = $(this);
 
                         $('#pl-list-icon-dialog').on('click', 'a[data-pl-list-icon]', function (e) {
@@ -556,7 +559,7 @@
                 });
             });
         };
-        var update_list_list = function() {
+        var update_list_list = function () {
             // update name
             var name = $wrapper.find('input[name="list\[name\]"]').val(),
                 color = $wrapper.find('[data-pl-list-color].selected').data('pl-list-color'),
@@ -575,18 +578,18 @@
         init();
     };
 
-    $('.pl-items').on('click', '[data-pl-action="list-delete"]', function(e) {
+    $('.pl-items').on('click', '[data-pl-action="list-delete"]', function (e) {
         e.preventDefault();
 
         $('#pl-dialog-delete-confirm').waDialog({
             'height': '150px',
             'min-height': '150px',
             'width': '400px',
-            onLoad: function() {
+            onLoad: function () {
                 var $this = $(this);
             },
             onSubmit: function (d) {
-                $.post('?module=list&action=delete', { list_id: list_id }, function(r) {
+                $.post('?module=list&action=delete', {list_id: list_id}, function (r) {
                     if (r.status === 'ok') {
                         d.trigger('close');
                         $.wa.setHash('#/pocket/1/');
@@ -599,10 +602,10 @@
         });
     });
 
-    $('.pl-items').on('click', '[data-pl-action="list-archive"]', function(e) {
+    $('.pl-items').on('click', '[data-pl-action="list-archive"]', function (e) {
         e.preventDefault();
 
-        $.post('?module=list&action=archive', { list_id: list_id, archive: 1 }, function(r) {
+        $.post('?module=list&action=archive', {list_id: list_id, archive: 1}, function (r) {
             if (r.status === 'ok') {
                 $.wa.setHash('#/pocket/1/');
             } else {
@@ -614,11 +617,11 @@
     $('#pl-list-complete').on('click', function (e) {
         e.stopPropagation();
 
-        $('#pl-dialog-list-archive-checkall').waDialog({
+        $('#pl-dialog-list-archive-complete-all').waDialog({
             'height': '150px',
             'min-height': '150px',
             'width': '400px',
-            onLoad: function() {
+            onLoad: function () {
                 var $this = $(this);
                 $this.on('click', '[data-pl-action]', function (e) {
                     e.preventDefault();
@@ -629,7 +632,7 @@
                     $button.after($loading);
 
                     if (action === 'list-complete-all') {
-                        $.post('?module=item&action=complete', { list_id: list_id, status: 1, id: -1 }, function(r) {
+                        $.post('?module=item&action=complete', {list_id: list_id, status: 1, id: -1}, function (r) {
                             if (r.status === 'ok') {
                                 $this.trigger('close');
                                 //$.wa.setHash('#/pocket/' + pocket_id + '/list/' + list_id );
@@ -638,13 +641,17 @@
                             }
                         }, 'json');
                     } else if (action === 'list-archive') {
-                        $.post('?module=list&action=archive', { list_id: list_id, archive: 1 }, function(r) {
+                        $.post('?module=list&action=archive', {list_id: list_id, archive: 1}, function (r) {
                             if (r.status === 'ok') {
                                 $this.trigger('close');
                                 $.wa.setHash('#/pocket/' + pocket_id);
                             } else {
                             }
                         }, 'json');
+                    } else if (action === 'cancel') {
+                        $('#pl-list-complete').prop('checked', false);
+                        $this.trigger('close');
+                        $loading.remove();
                     }
                 });
             }
