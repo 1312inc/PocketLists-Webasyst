@@ -19,7 +19,7 @@ class pocketlistsListModel extends waModel
                   l.*,
                   COUNT(i.id) 'count'
                 FROM pocketlists_list l
-                LEFT JOIN pocketlists_item i ON i.list_id = l.id
+                LEFT JOIN pocketlists_item i ON i.list_id = l.id AND i.status = 0
                 WHERE
                   l.archived = i:archived
                   {$select_pocket}
