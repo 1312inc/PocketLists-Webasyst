@@ -133,7 +133,7 @@
     };
     var complete_item = function (id, status, callback) {
         var $item = this;
-        $item.find('label').first().append($loading);
+        $item.find('.pl-select-label').first().append($loading);
         $item.prop('disabled', true);
         $.post(
             '?module=item&action=complete',
@@ -147,22 +147,27 @@
                     // remove from undone list
                     $item.find('ul.menu-v .pl-done').prop('checked', status); // check nesting items
                     $item.find('.pl-done').prop('disabled', false);
-                    $item.slideToggle(200, function () {
-                        $item.show();
-                        if (status) {
-                            $done_items_wrapper.append($item);
-                        } else {
-                            $undone_items_wrapper.append($item);
-                            update_sort.call($item);
-                        }
+                    debugger;
+                    $item.find('.pl-item-name').toggleClass('gray');
+                    setTimeout(function(){
+                        $item.slideToggle(200, function () {
+                            $item.show();
+                            if (status) {
+                                $done_items_wrapper.append($item);
+                            } else {
+                                $undone_items_wrapper.append($item);
+                                update_sort.call($item);
+                            }
 
-                        // always update list count icon
-                        $('#pl-lists')
-                            .find('[data-pl-list-id="' + list_id + '"]')
-                            .find('count').text($undone_items_wrapper.find('[data-id]').length);
+                            // always update list count icon
+                            $('#pl-lists')
+                                .find('[data-pl-list-id="' + list_id + '"]')
+                                .find('count').text($undone_items_wrapper.find('[data-id]').length);
 
-                        callback && $.isFunction(callback) && callback.call($item);
-                    });
+                            callback && $.isFunction(callback) && callback.call($item);
+                        });
+                    }, 500);
+
                 } else {
                     alert(r.errors);
                 }
