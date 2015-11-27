@@ -1,4 +1,5 @@
 (function () {
+    // todo: refactor...
     var list_id = parseInt($('#pl-list-id').val()),
         pocket_id = parseInt($('#pl-pocket-id').val()),
         $list_items_wrapper = $('#pl-list-items'),
@@ -603,7 +604,6 @@
 
         $.post('?module=list&action=archive', { list_id: list_id, archive: 1 }, function(r) {
             if (r.status === 'ok') {
-                d.trigger('close');
                 $.wa.setHash('#/pocket/1/');
             } else {
 
@@ -613,7 +613,42 @@
 
     $('#pl-list-complete').on('click', function (e) {
         e.stopPropagation();
-        alert('waDialog с предложением либо зачекать все айтемы как выполненные с дополнительным чекбоксом “отправить этот список в архив”');
+
+        $('#pl-dialog-list-archive-checkall').waDialog({
+            'height': '150px',
+            'min-height': '150px',
+            'width': '400px',
+            onLoad: function() {
+                var $this = $(this);
+                $this.on('click', '[data-pl-action]', function (e) {
+                    e.preventDefault();
+
+                    var $button = $(this),
+                        action = $button.data('pl-action');
+
+                    $button.after($loading);
+
+                    if (action === 'list-complete-all') {
+                        $.post('?module=item&action=complete', { list_id: list_id, status: 1, id: -1 }, function(r) {
+                            if (r.status === 'ok') {
+                                $this.trigger('close');
+                                //$.wa.setHash('#/pocket/' + pocket_id + '/list/' + list_id );
+                                $.pocketlists_routing.redispatch();
+                            } else {
+                            }
+                        }, 'json');
+                    } else if (action === 'list-archive') {
+                        $.post('?module=list&action=archive', { list_id: list_id, archive: 1 }, function(r) {
+                            if (r.status === 'ok') {
+                                $this.trigger('close');
+                                $.wa.setHash('#/pocket/' + pocket_id);
+                            } else {
+                            }
+                        }, 'json');
+                    }
+                });
+            }
+        });
     });
 
     $('#pl-complete-log-link').click(function () {

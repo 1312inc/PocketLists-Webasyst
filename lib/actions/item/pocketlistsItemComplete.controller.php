@@ -8,19 +8,24 @@ class pocketlistsItemCompleteController extends waJsonController
         $id = waRequest::post('id', 0, waRequest::TYPE_INT);
         $status = waRequest::post('status', 0, waRequest::TYPE_INT);
 
-        if ($list_id && $id) {
+        if ($list_id) {
             $im = new pocketlistsItemModel();
-            $item = $im->getByField(
-                array(
-                    'list_id' => $list_id,
-                    'id' => $id
-                )
-            );
-            if ($item['has_children']) {
-                $tree = $im->getAllByList($list_id, $id);
-                $this->changeComplete($item['id'], $tree[$item['id']], $status, $im);
-            } else {
-                $this->changeComplete($item['id'], array('id' => $item['id'], 'childs' => array()), $status, $im);
+            if ($id > 0) {
+                $item = $im->getByField(
+                    array(
+                        'list_id' => $list_id,
+                        'id' => $id
+                    )
+                );
+                if ($item['has_children']) {
+                    $tree = $im->getAllByList($list_id, $id);
+                    $this->changeComplete($item['id'], $tree[$item['id']], $status, $im);
+                } else {
+                    $this->changeComplete($item['id'], array('id' => $item['id'], 'childs' => array()), $status, $im);
+                }
+            } elseif ($id === -1) {
+                $tree = $im->getUndoneByList($list_id);
+                $this->changeComplete(0, array('id' => null, 'childs' => $tree), $status, $im);
             }
         }
 

@@ -134,6 +134,10 @@
                 this.postExecute();
             }
         },
+        redispatch: function() {
+            this.prevHash = null;
+            this.dispatch();
+        },
         preExecute: function () {
 
         },
