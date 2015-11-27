@@ -61,24 +61,24 @@ class pocketlistsItemModel extends waModel
         return $this->getItems($sql, $list_id, $tree);
     }
 
-    public function getUndoneByList($list_id, $tree = true)
+    public function getUndoneByList($list_id, &$count, $tree = true)
     {
         $sql = "SELECT *
                 FROM {$this->table}
                 WHERE list_id = i:lid AND status = 0
                 ORDER BY parent_id, sort ASC";
 
-        return $this->getItems($sql, $list_id, $tree);
+        return $this->getItems($sql, $list_id, $count, $tree);
     }
 
-    public function getDoneByList($list_id, $tree = true)
+    public function getDoneByList($list_id, &$count, $tree = true)
     {
         $sql = "SELECT *
                 FROM {$this->table}
                 WHERE list_id = i:lid AND status > 0
                 ORDER BY parent_id, sort ASC";
 
-        return $this->getItems($sql, $list_id, $tree);
+        return $this->getItems($sql, $list_id, $count, $tree);
     }
 
     public function getArchiveByList($list_id, $tree = true)
@@ -91,9 +91,10 @@ class pocketlistsItemModel extends waModel
         return $this->getItems($sql, $list_id, $tree);
     }
 
-    private function getItems($sql, $list_id, $tree)
+    private function getItems($sql, $list_id, &$count, $tree)
     {
         $items = $this->query($sql, array('lid' => $list_id))->fetchAll();
+        $count = count($items);
         foreach ($items as $id => $item) {
             $items[$id] = $this->updateItem($item);
         }

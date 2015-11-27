@@ -74,7 +74,7 @@
         </section>
 
         {if !empty($items_done)}
-            <a href="#" id="pl-complete-log-link" class="inline-link gray"><b><i>{_w('Show all %d completed to-do', 'Show all %d completed to-dos', count($items_done))}</i></b></a>
+            <a href="#" id="pl-complete-log-link" class="inline-link gray"><b><i>{_w('Show all %d completed to-do', 'Show all %d completed to-dos', $count_items_done)}</i></b></a>
         {/if}
     </div>
     <div class="clear-both"></div>

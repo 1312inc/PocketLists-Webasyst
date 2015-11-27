@@ -21,10 +21,14 @@ class pocketlistsListAction extends waViewAction
             $this->view->assign('list', $list);
 
             $im = new pocketlistsItemModel();
-            $undone = $im->getUndoneByList($list_id);
+            $count_undone = $count_done = 0;
+            $undone = $im->getUndoneByList($list_id, $count_undone);
+            $done = $im->getDoneByList($list_id, $count_done);
             $this->view->assign('items', $undone);
             $this->view->assign('empty', count($undone));
-            $this->view->assign('items_done', $im->getDoneByList($list_id));
+            $this->view->assign('items_done', $done);
+            $this->view->assign('count_items_done', $count_done);
+            $this->view->assign('count_items_undone', $count_undone);
             $this->view->assign('new', false);
         } else {
             $this->view->assign('new', true);
