@@ -9,7 +9,7 @@ class pocketlistsListDetailsAction extends waViewAction
         if ($id) {
             $list = $im->getById($id);
             $user_name  = new waContact($list['contact_id']);
-            $list['contact_name'] = $user_name->getName();
+            $list['username'] = $user_name->getName();
             $this->view->assign('list', $list);
 
             // get icons

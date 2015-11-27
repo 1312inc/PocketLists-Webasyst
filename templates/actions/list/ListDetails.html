@@ -30,12 +30,13 @@
     </div>
 
     <div class="field-group">
-        {if 1 || ITEM_WAS_CREATED_BY_SOMEONE_OTHER_THAN_ME}
+        {*ITEM_WAS_CREATED_BY_SOMEONE_OTHER_THAN_ME*}
+        {if $list.contact_id != $wa->user()->getId()}
         <div class="field">
             <div class="name">[`Created`]</div>
             <div class="value no-shift">
                 <i class="icon16 userpic20"></i>
-                {$list.contact_name}
+                {$list.username}
                 <span class="hint">{$list.create_datetime|wa_datetime:'humandatetime'}</span>
             </div>
         </div>
