@@ -538,7 +538,6 @@
             e.preventDefault();
 
             $.post('?module=list&action=sort', {list_id: list_id}, function (r) {
-                debugger;
                 if (r.status === 'ok') {
                     $.pocketlists_routing.redispatch();
                 } else {
