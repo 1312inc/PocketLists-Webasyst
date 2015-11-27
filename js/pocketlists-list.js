@@ -78,6 +78,7 @@
                 $new_item_input.val('').trigger('focus');
                 $('.pl-list-empty').removeClass('pl-list-empty');
 
+                update_list_count_badge();
                 update_sort.call($html);
             }
         );
@@ -160,9 +161,7 @@
                             }
 
                             // always update list count icon
-                            $('#pl-lists')
-                                .find('[data-pl-list-id="' + list_id + '"]')
-                                .find('.count').text($undone_items_wrapper.find('[data-id]').length);
+                            update_list_count_badge();
 
                             $('#pl-complete-log-link').find('i').text($_('Show all ' + $done_items_wrapper.find('[data-id]').length + ' completed to-dos'));
 
@@ -226,6 +225,12 @@
                 }
             });
         }
+    };
+
+    var update_list_count_badge = function() {
+        $('#pl-lists')
+            .find('[data-pl-list-id="' + list_id + '"]')
+            .find('.count').text($undone_items_wrapper.find('[data-id]').length);
     };
 
     if ($new_list_inpit.length) {
