@@ -21,7 +21,7 @@
                             <a href="#" onClick="alert('открывается новое окно с содержимым данного списка и кнопкой Print. см. как в ШС сделана печать информации о заказе.');"><i class="icon16 print"></i> [`Print list`]</a>
                         </li>
                         <li>
-                            <a href="#" onClick="alert('список добавляется в архив без вопросов и пользователя редиректит туда же в архив.');"><i class="icon16 pl archive"></i> [`Archive list`]</a>
+                            <a href="#" data-pl-action="list-archive"><i class="icon16 pl archive"></i> [`Archive list`]</a>
                         </li>
                         <li>
                             <a href="#" data-pl-action="list-delete"><i class="icon16 delete"></i> [`Delete list`]</a>
@@ -29,7 +29,7 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="#"><i class="icon16 update"></i> [`Sort`]</a>
+                    <a href="#" data-pl-action="list-sort"><i class="icon16 update"></i> [`Sort`]</a>
                 </li>
                 <li>
                     <a href="#" id="pl-item-add-link" class="bold"><i class="icon16 add"></i> [`New to-do`]</a>

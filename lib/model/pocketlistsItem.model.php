@@ -42,7 +42,7 @@ class pocketlistsItemModel extends waModel
     {
         $items = parent::getById($id);
         if (is_array($id)) {
-            foreach($items as $id => $item) {
+            foreach ($items as $id => $item) {
                 $items[$id] = $this->updateItem($item);
             }
         } else {
@@ -178,5 +178,30 @@ class pocketlistsItemModel extends waModel
         }
 
         return $item;
+    }
+
+
+    public function sortItems($list_id)
+    {
+        $sql = "SELECT *
+                FROM pocketlists_item i
+                WHERE
+                  i.list_id = i:id
+                  AND i.status = 0
+                -- GROUP BY i.parent_id, i.id
+                ORDER BY i.priority DESC, i.due_date DESC, i.name ASC";
+        $items = $this->query($sql, array('id' => $list_id))->fetchAll();
+
+        $sort = 0;
+        foreach ($items as $item) {
+            $this->updateById(
+                $item['id'],
+                array(
+                    'update_datetime' => date("Y-m-d H:i:s"),
+                    'sort' => $sort++
+                )
+            );
+        }
+        return $this->getTree($items, true);
     }
 }
