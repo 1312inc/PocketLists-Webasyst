@@ -147,7 +147,6 @@
                     // remove from undone list
                     $item.find('ul.menu-v .pl-done').prop('checked', status); // check nesting items
                     $item.find('.pl-done').prop('disabled', false);
-                    debugger;
                     $item.find('.pl-item-name').toggleClass('gray');
                     setTimeout(function(){
                         $item.slideToggle(200, function () {
@@ -162,7 +161,7 @@
                             // always update list count icon
                             $('#pl-lists')
                                 .find('[data-pl-list-id="' + list_id + '"]')
-                                .find('count').text($undone_items_wrapper.find('[data-id]').length);
+                                .find('.count').text($undone_items_wrapper.find('[data-id]').length);
 
                             callback && $.isFunction(callback) && callback.call($item);
                         });
