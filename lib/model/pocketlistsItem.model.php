@@ -166,7 +166,9 @@ class pocketlistsItemModel extends waModel
 
         $item['due_status'] = 0;
         if ($item['due_date'] || $item['due_datetime']) {
-            if ($now > ($item['due_datetime'] ? $item['due_datetime'] : $date)) { // overdue
+            if ($item['due_datetime'] && $now > $item['due_datetime']) { // overdue datetime
+                $item['due_status'] = 3;
+            } elseif (strtotime(date("Y-m-d")) > $date) { // overdue date
                 $item['due_status'] = 3;
             } elseif ($item['due_date'] == date("Y-m-d")) { // today
                 $item['due_status'] = 2;
@@ -174,7 +176,7 @@ class pocketlistsItemModel extends waModel
                 $item['due_status'] = 1;
             }
 
-            $item['priority'] = max($item['due_status'], $item['priority']);
+            $item['calc_priority'] = max($item['due_status'], $item['priority']);
         }
 
         return $item;
