@@ -10,4 +10,5 @@ return array (
   'vendor' => '--',
   'frontend' => true,
   'plugins' => true,
+  'rights' => true,
 );
