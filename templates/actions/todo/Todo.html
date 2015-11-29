@@ -4,173 +4,51 @@
         <!-- CALENDAR -->
         <div class="pl-inner-sidebar">
 
+            {foreach $days as $year => $months}
+            {foreach $months as $month_name => $month}
+            <div class="block double-padded align-center">
+                <h5 class="heading">
+                    [`{$month_name}`] {$year}
+                </h5>
+            </div>
+
+            <!-- sample from Blog -->
+            <table class="pl-calendar">
+                <thead>
+                <tr class="small">
+                    {if $week_first_sunday}<th>{_ws('Sun')}</th>{/if}
+                    <th>{_ws('Mon')}</th>
+                    <th>{_ws('Tue')}</th>
+                    <th>{_ws('Wed')}</th>
+                    <th>{_ws('Thu')}</th>
+                    <th>{_ws('Fri')}</th>
+                    <th>{_ws('Sat')}</th>
+                    {if !$week_first_sunday}<th>{_ws('Sun')}</th>{/if}
+                </tr>
+                </thead>
+                <tbody>
 
 
+                {foreach $month.weeks as $week}
+                    <tr>
+                    {foreach $week as $day}
+                        <td id="date-{$day.date.date}"  class="{if $day.date.month != $month.num}pl-not-this-month{/if} {if $day.date.month == $today_month && $day.date.day == $today &&  $month.num == $today_month}pl-today{/if} ui-droppable">
+                            <span class="pl-date">{$day.date.day}</span>
 
-        <div class="block double-padded align-center">
-            <h5 class="heading">
-                November 2015
-            </h5>
-        </div>
+                            <div><i class="icon10 color pl-dark-gray"></i><i class="icon10 color pl-dark-gray"></i><i
+                                    class="icon10 color pl-dark-gray"></i></div>
 
-        <!-- sample from Blog -->
-        <table class="pl-calendar">
-              <thead>
-              <tr class="small">
-                <th>Пн</th>
-                <th>Вт</th>
-                <th>Ср</th>
-                <th>Чт</th>
-                <th>Пт</th>
-                <th>Сб</th>
-                <th>Вс</th>      </tr>
-              </thead>
-              <tbody>
+                            <div><i class="icon10 color pl-dark-green"></i><i class="icon10 color pl-dark-green"></i></div>
+                        </td>
+                    {/foreach}
+                    </tr>
+                {/foreach}
+                </tbody>
 
-                      <tr>
-                          <td class="pl-not-this-month ui-droppable" id="date-2015-10-26" title="Щелкните, чтобы создать запись с датой публикации в этот день">
-                    <span class="pl-date">26</span>
-                              </td>
-                          <td class="pl-not-this-month ui-droppable" id="date-2015-10-27" title="Щелкните, чтобы создать запись с датой публикации в этот день">
-                    <span class="pl-date">27</span>
-                              </td>
-                          <td class="pl-not-this-month ui-droppable" id="date-2015-10-28" title="Щелкните, чтобы создать запись с датой публикации в этот день">
-                    <span class="pl-date">28</span>
-                              </td>
-                          <td class="pl-not-this-month ui-droppable" id="date-2015-10-29" title="Щелкните, чтобы создать запись с датой публикации в этот день">
-                    <span class="pl-date">29</span>
-                              </td>
-                          <td class="pl-not-this-month ui-droppable" id="date-2015-10-30" title="Щелкните, чтобы создать запись с датой публикации в этот день">
-                    <span class="pl-date">30</span>
-                              </td>
-                          <td class="pl-not-this-month ui-droppable" id="date-2015-10-31" title="Щелкните, чтобы создать запись с датой публикации в этот день">
-                    <span class="pl-date">31</span>
-                              </td>
-                          <td id="date-2015-11-01" title="Щелкните, чтобы создать запись с датой публикации в этот день" class="ui-droppable">
-                    <span class="pl-date">1</span>
-                              </td>
-                        </tr>
-                      <tr>
-                          <td id="date-2015-11-02" title="Щелкните, чтобы создать запись с датой публикации в этот день" class="ui-droppable">
-                    <span class="pl-date">2</span><div><i class="icon10 color pl-dark-gray"></i><i class="icon10 color pl-dark-gray"></i><i class="icon10 color pl-dark-gray"></i></div>
-                              </td>
-                          <td id="date-2015-11-03" title="Щелкните, чтобы создать запись с датой публикации в этот день" class="ui-droppable">
-                    <span class="pl-date">3</span>
-                              </td>
-                          <td id="date-2015-11-04" title="Щелкните, чтобы создать запись с датой публикации в этот день" class="ui-droppable">
-                    <span class="pl-date">4</span><div><i class="icon10 color pl-dark-gray"></i><i class="icon10 color pl-dark-gray"></i></div>
-                              </td>
-                          <td id="date-2015-11-05" title="Щелкните, чтобы создать запись с датой публикации в этот день" class="ui-droppable">
-                    <span class="pl-date">5</span><div><i class="icon10 color pl-dark-gray"></i></div>
-                              </td>
-                          <td id="date-2015-11-06" title="Щелкните, чтобы создать запись с датой публикации в этот день" class="ui-droppable">
-                    <span class="pl-date">6</span>
-                              </td>
-                          <td id="date-2015-11-07" title="Щелкните, чтобы создать запись с датой публикации в этот день" class="ui-droppable">
-                    <span class="pl-date">7</span><div><i class="icon10 color pl-dark-gray"></i><i class="icon10 color pl-dark-gray"></i><i class="icon10 color pl-dark-gray"></i></div>
-                              </td>
-                          <td id="date-2015-11-08" title="Щелкните, чтобы создать запись с датой публикации в этот день" class="ui-droppable">
-                    <span class="pl-date">8</span>
-                              </td>
-                        </tr>
-                      <tr>
-                          <td id="date-2015-11-09" title="Щелкните, чтобы создать запись с датой публикации в этот день" class="ui-droppable">
-                    <span class="pl-date">9</span>
-                              </td>
-                          <td id="date-2015-11-10" title="Щелкните, чтобы создать запись с датой публикации в этот день" class="ui-droppable">
-                    <span class="pl-date">10</span><div><i class="icon10 color pl-dark-yellow"></i></div>
-                              </td>
-                          <td id="date-2015-11-11" title="Щелкните, чтобы создать запись с датой публикации в этот день" class="ui-droppable">
-                    <span class="pl-date">11</span>
-                    <div><i class="icon10 color pl-dark-yellow"></i></div>
-                              </td>
-                          <td id="date-2015-11-12" title="Щелкните, чтобы создать запись с датой публикации в этот день" class="ui-droppable">
-                    <span class="pl-date">12</span>
-                              </td>
-                          <td class="pl-today" id="date-2015-11-13" title="Щелкните, чтобы создать запись с датой публикации в этот день">
-                    <span class="pl-date">13</span><div><i class="icon10 color pl-dark-green"></i><i class="icon10 color pl-dark-purple"></i></div>
-                              </td>
-                          <td id="date-2015-11-14" title="Щелкните, чтобы создать запись с датой публикации в этот день" class="ui-droppable">
-                    <span class="pl-date">14</span>
-                              </td>
-                          <td id="date-2015-11-15" title="Щелкните, чтобы создать запись с датой публикации в этот день" class="ui-droppable">
-                    <span class="pl-date">15</span>
-                              </td>
-                        </tr>
-                      <tr>
-                          <td id="date-2015-11-16" title="Щелкните, чтобы создать запись с датой публикации в этот день" class="ui-droppable">
-                    <span class="pl-date">16</span>
-                              </td>
-                          <td id="date-2015-11-17" title="Щелкните, чтобы создать запись с датой публикации в этот день" class="ui-droppable">
-                    <span class="pl-date">17</span><div><i class="icon10 color pl-dark-green"></i><i class="icon10 color pl-dark-green"></i></div>
-                              </td>
-                          <td id="date-2015-11-18" title="Щелкните, чтобы создать запись с датой публикации в этот день" class="ui-droppable">
-                    <span class="pl-date">18</span>
-                              </td>
-                          <td id="date-2015-11-19" title="Щелкните, чтобы создать запись с датой публикации в этот день" class="ui-droppable">
-                    <span class="pl-date">19</span>
-                              </td>
-                          <td id="date-2015-11-20" title="Щелкните, чтобы создать запись с датой публикации в этот день" class="ui-droppable">
-                    <span class="pl-date">20</span><div><i class="icon10 color pl-dark-blue"></i><i class="icon10 color pl-dark-purple"></i><i class="icon10 color pl-dark-purple"></i></div>
-                              </td>
-                          <td id="date-2015-11-21" title="Щелкните, чтобы создать запись с датой публикации в этот день" class="ui-droppable">
-                    <span class="pl-date">21</span>
-                              </td>
-                          <td id="date-2015-11-22" title="Щелкните, чтобы создать запись с датой публикации в этот день" class="ui-droppable">
-                    <span class="pl-date">22</span><div><i class="icon10 color pl-dark-blue"></i><i class="icon10 color pl-dark-blue"></i></div>
-                              </td>
-                        </tr>
-                      <tr>
-                          <td id="date-2015-11-23" title="Щелкните, чтобы создать запись с датой публикации в этот день" class="ui-droppable">
-                    <span class="pl-date">23</span><div><i class="icon10 color pl-dark-red"></i><i class="icon10 color pl-dark-blue"></i></div>
-                              </td>
-                          <td id="date-2015-11-24" title="Щелкните, чтобы создать запись с датой публикации в этот день" class="ui-droppable">
-                    <span class="pl-date">24</span>
-                              </td>
-                          <td id="date-2015-11-25" title="Щелкните, чтобы создать запись с датой публикации в этот день" class="ui-droppable">
-                    <span class="pl-date">25</span>
-                              </td>
-                          <td id="date-2015-11-26" title="Щелкните, чтобы создать запись с датой публикации в этот день" class="ui-droppable">
-                    <span class="pl-date">26</span>
-                              </td>
-                          <td id="date-2015-11-27" title="Щелкните, чтобы создать запись с датой публикации в этот день" class="ui-droppable">
-                    <span class="pl-date">27</span>
-                              </td>
-                          <td id="date-2015-11-28" title="Щелкните, чтобы создать запись с датой публикации в этот день" class="ui-droppable">
-                    <span class="pl-date">28</span>
-                              </td>
-                          <td id="date-2015-11-29" title="Щелкните, чтобы создать запись с датой публикации в этот день" class="ui-droppable">
-                    <span class="pl-date">29</span>
-                              </td>
-                        </tr>
-                      <tr>
-                          <td id="date-2015-11-30" title="Щелкните, чтобы создать запись с датой публикации в этот день" class="ui-droppable">
-                    <span class="pl-date">30</span>
-                              </td>
-                          <td class="pl-not-this-month ui-droppable" id="date-2015-12-01" title="Щелкните, чтобы создать запись с датой публикации в этот день">
-                    <span class="pl-date">1</span>
-                              </td>
-                          <td class="pl-not-this-month ui-droppable" id="date-2015-12-02" title="Щелкните, чтобы создать запись с датой публикации в этот день">
-                    <span class="pl-date">2</span>
-                              </td>
-                          <td class="pl-not-this-month ui-droppable" id="date-2015-12-03" title="Щелкните, чтобы создать запись с датой публикации в этот день">
-                    <span class="pl-date">3</span>
-                              </td>
-                          <td class="pl-not-this-month ui-droppable" id="date-2015-12-04" title="Щелкните, чтобы создать запись с датой публикации в этот день">
-                    <span class="pl-date">4</span>
-                              </td>
-                          <td class="pl-not-this-month ui-droppable" id="date-2015-12-05" title="Щелкните, чтобы создать запись с датой публикации в этот день">
-                    <span class="pl-date">5</span>
-                              </td>
-                          <td class="pl-not-this-month ui-droppable" id="date-2015-12-06" title="Щелкните, чтобы создать запись с датой публикации в этот день">
-                    <span class="pl-date">6</span>
-                              </td>
-                        </tr>
-                    </tbody>
             </table>
             <!-- end of sample from Blog -->
-
-
+            {/foreach} {*month*}
+            {/foreach} {*year*}
             ... показывать в календаре здесь 3 месяца подряд в одной таблице ...
 
             <br><br>
