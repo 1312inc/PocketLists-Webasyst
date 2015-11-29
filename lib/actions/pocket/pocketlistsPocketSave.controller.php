@@ -10,7 +10,10 @@ class pocketlistsPocketSaveController extends  waJsonController
             unset($pocket['id']);
         }
         $id = $pm->insert($pocket, 1);
-        // todo: update access rights
+        // add full rights for this pocket
+        $rm = new waContactRightsModel();
+        $rm->save(wa()->getUser()->getId(), wa()->getApp(), 'pocket.'.$id, 1);
+        // todo: update access rights for others
         $this->response = array(
             'id' => isset($pocket['id']) ? $pocket['id'] : $id,
             'new' => isset($pocket['id']) ? 0 : 1

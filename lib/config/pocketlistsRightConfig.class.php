@@ -13,7 +13,7 @@ class pocketlistsRightConfig extends waRightConfig
             $items[$pocket['id']] = $pocket['name'];
         }
         $this->addItem(
-            'pocketlists',
+            'pocket',
             _w('Pocketlists'),
             'selectlist',
             array(
