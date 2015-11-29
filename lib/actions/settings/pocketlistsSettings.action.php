@@ -9,10 +9,6 @@ class pocketlistsSettingsAction extends  waViewAction
         $this->view->assign('settings', pocketlistsHelper::getUserSettings());
 
         $pm = new pocketlistsPocketModel();
-        $rights = false;
-        if (!wa()->getUser()->isAdmin()) {
-            $rights = $this->getRights();
-        }
-        $this->view->assign('pockets', $pm->getAllPockets($rights));
+        $this->view->assign('pockets', $pm->getAllPockets(wa()->getUser()));
     }
 }

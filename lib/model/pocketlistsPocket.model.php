@@ -5,17 +5,18 @@ class pocketlistsPocketModel extends waModel
     protected $table = 'pocketlists_pocket';
 
     /**
-     * @param array|bool|false $rights
+     * @param waAuthUser|waUser|waContact|bool|false $user
      * @return array
      */
-    public function getAllPockets($rights = false)
+    public function getAllPockets($user = false)
     {
         $where_ids = '';
         $accessed_pockets = array();
-        if ($rights) {
+        if ($user && !$user->isAdmin()) {
+            $rights = $user->getRights(wa()->getApp());
             foreach($rights as $pocket => $value) {
                 $p = explode(".", $pocket);
-                if (count($p) == 2) {
+                if ($p[0] == 'pocket') {
                     $accessed_pockets[$p[1]] = array(
                         'pocket_id' => $p[1],
                         'access' => $value

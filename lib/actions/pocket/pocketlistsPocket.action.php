@@ -55,14 +55,6 @@ class pocketlistsPocketAction extends waViewAction
         $this->view->assign('lists', $lists);
         $this->view->assign('list_id', $list_id);
         $this->view->assign('pocket', $pocket);
-        // todo: get only sgfn
-
-        $rights = false;
-        if (!wa()->getUser()->isAdmin()) {
-            $rights = $this->getRights();
-        }
-        $this->view->assign('pockets', $pm->getAllPockets($rights));
-
-
+        $this->view->assign('pockets', $pm->getAllPockets(wa()->getUser()));
     }
 }
