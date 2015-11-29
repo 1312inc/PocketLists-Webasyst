@@ -56,7 +56,23 @@ class pocketlistsPocketAction extends waViewAction
         $this->view->assign('list_id', $list_id);
         $this->view->assign('pocket', $pocket);
         // todo: get only sgfn
-        $this->view->assign('pockets', $pm->getAll());
+
+        $user = wa()->getUser();
+        $accessed_pockets = array();
+        if (!$user->isAdmin()) {
+            $rights = $this->getRights();
+            foreach($rights as $pocket => $value) {
+                $p = explode(".", $pocket);
+                if (count($p) == 2) {
+                    $accessed_pockets[$p[1]] = array(
+                        'pocket_id' => $p[1],
+                        'access' => $value
+                    );
+                }
+            }
+        }
+        $pockets = $pm->getAllPockets($accessed_pockets);
+        $this->view->assign('pockets', $pockets);
 
 
     }

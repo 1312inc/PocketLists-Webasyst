@@ -9,6 +9,10 @@ class pocketlistsPocketSettingsDialogAction extends waViewAction
         if ($id > 0) {
             $pm = new pocketlistsPocketModel();
             $this->view->assign('pocket', $pm->getById($id));
+        } else {
+            $this->view->assign('pocket', array(
+                'color' => 'blue'
+            ));
         }
     }
 }
