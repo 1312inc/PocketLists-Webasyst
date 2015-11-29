@@ -1,6 +1,6 @@
 <?php
 
-class pocketlistsTodoAction extends  waViewAction
+class pocketlistsTodoAction extends waViewAction
 {
     public function execute()
     {
@@ -16,6 +16,10 @@ class pocketlistsTodoAction extends  waViewAction
         }
         $month_date = strtotime($month_date);
 
+
+        // get pocket dots
+        $im = new pocketlistsItemModel();
+
         $days = array();
         for ($i = 0; $i < $month_count; $i++) { // 3 month
             $days_count = date("t", $month_date);
@@ -29,8 +33,8 @@ class pocketlistsTodoAction extends  waViewAction
             }
             $first_day = ($first_day == 0) ? 6 : $first_day - 1;
             $last_day = ($last_day == 0) ? 0 : 7 - $last_day;
-            $date_start = strtotime("-".$first_day." days", $month_date);
-            $date_end = strtotime("+".($days_count + $last_day)." days", $month_date);
+            $date_start = strtotime("-" . $first_day . " days", $month_date);
+            $date_end = strtotime("+" . ($days_count + $last_day) . " days", $month_date);
 
             $current_date_start = $date_start;
             $year = date("Y", $month_date);
@@ -40,6 +44,16 @@ class pocketlistsTodoAction extends  waViewAction
                 'weeks' => array(),
                 'num' => $month_num
             );
+
+            $items = $im->getCompleted(
+                wa()->getUser()->getId(),
+                array('after' => date('Y-m-d', $current_date_start), 'before' => date('Y-m-d', $date_end))
+            );
+            $pocket_colors = array();
+            foreach ($items as $item) {
+                $pocket_colors[date("Y-m-d", strtotime($item['complete_datetime']))][$item['pocket_color']] = 1;
+            }
+
             do {
                 $week = (int)date("W", $current_date_start);
                 $day = (int)date("w", $current_date_start);
@@ -51,13 +65,14 @@ class pocketlistsTodoAction extends  waViewAction
                 if (!isset($days[$year][$month_name]['weeks'][$week])) {
                     $days[$year][$month_name]['days'][$week] = array();
                 }
+                $date_date = date("Y-m-d", $current_date_start);
                 $days[$year][$month_name]['weeks'][$week][$day] = array(
-                    "date"  => array(
-                        'day'   => date("j", $current_date_start),
+                    "date" => array(
+                        'day' => date("j", $current_date_start),
                         'month' => date("n", $current_date_start),
-                        'date'  => date("Y-m-d", $current_date_start),
+                        'date' => $date_date,
                     ),
-                    "posts" => array(),
+                    'pockets' => isset($pocket_colors[$date_date]) ? array_keys($pocket_colors[$date_date]) : array()
                 );
                 $current_date_start = strtotime("+1 days", $current_date_start);
             } while ($date_end > $current_date_start);

@@ -5,8 +5,22 @@ class pocketlistsItemModel extends waModel
     protected $table = 'pocketlists_item';
 
 
-    public function getCompleted()
+    public function getCompleted($contact_id = false, $date_range = false)
     {
+        $by_user = '';
+        if ($contact_id) {
+            $by_user = 'AND i.complete_contact_id = i:contact_id';
+        }
+        $by_date_range = '';
+        if ($date_range && is_array($date_range)) {
+            if (!empty($date_range['after'])) {
+                $by_date_range = '  AND i.complete_datetime > s:date_after';
+            }
+            if (!empty($date_range['before'])) {
+                $by_date_range .= '  AND i.complete_datetime < s:date_before';
+            }
+        }
+
         $sql = "SELECT
                   i.id id,
                   i.parent_id parent_id,
@@ -23,14 +37,25 @@ class pocketlistsItemModel extends waModel
                   l.id list_id,
                   l.name list_name,
                   p.id pocket_id,
-                  p.name pocket_name
+                  p.name pocket_name,
+                  p.color pocket_color
                 FROM pocketlists_item i
                 JOIN pocketlists_list l ON l.id = i.list_id
                 JOIN pocketlists_pocket p ON p.id = l.pocket_id
-                WHERE i.status > 0
+                WHERE
+                  i.status > 0
+                  {$by_user}
+                  {$by_date_range}
                 ORDER BY i.complete_datetime DESC";
 
-        $items = $this->query($sql)->fetchAll();
+        $items = $this->query(
+            $sql,
+            array(
+                'contact_id' => wa()->getUser()->getId(),
+                'date_after' => !empty($date_range['after']) ? $date_range['after'] : '',
+                'date_before' => !empty($date_range['before']) ? $date_range['before'] : '',
+            )
+        )->fetchAll();
         foreach ($items as $id => $item) {
             $items[$id] = $this->updateItem($item);
         }

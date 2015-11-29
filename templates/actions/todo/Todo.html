@@ -37,8 +37,13 @@
 
                             <div><i class="icon10 color pl-dark-gray"></i><i class="icon10 color pl-dark-gray"></i><i
                                     class="icon10 color pl-dark-gray"></i></div>
-
-                            <div><i class="icon10 color pl-dark-green"></i><i class="icon10 color pl-dark-green"></i></div>
+                            {if !empty($day.pockets)}
+                            <div>
+                                {foreach $day.pockets as $pocket_color}
+                                <i class="icon10 color pl-dark-{$pocket_color}"></i>
+                                {/foreach}
+                            </div>
+                            {/if}
                         </td>
                     {/foreach}
                     </tr>
