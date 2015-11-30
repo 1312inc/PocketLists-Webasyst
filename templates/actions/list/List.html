@@ -6,16 +6,14 @@
                 <li>
                     <a href="#" class="inline-link gray" onClick="alert('waDialog с получением ссылки на список /list/...');"><b><i>[`More`]</i></b></a>
                     <ul class="menu-v with-icons" style="width: 230px;">
-                        {*
+                        <li>
+                            <a href="#" onClick="alert('открывается сайдбар с редактированием свойств списка');"><i class="icon16 edit"></i> [`Edit list`]</a>
+                        </li>
                         <li>
                             <a href="#" onClick="alert('waDialog с получением ссылки на список /list/...');"><i class="icon16 link"></i> [`Get public link`]</a>
                         </li>
                         <li>
                             <a href="#" onClick="alert('waDialog для ввода email-адреса, куда отправлять список');"><i class="icon16 email"></i> [`Email list`]</a>
-                        </li>
-                        *}
-                        <li>
-                            <a href="#" onClick="alert('открывается сайдбар с редактированием свойств списка');"><i class="icon16 settings"></i> [`List settings`]</a>
                         </li>
                         <li>
                             <a href="#" onClick="alert('открывается новое окно с содержимым данного списка и кнопкой Print. см. как в ШС сделана печать информации о заказе.');"><i class="icon16 print"></i> [`Print list`]</a>
@@ -34,9 +32,9 @@
                 <li>
                     <a href="#" id="pl-item-add-link" class="bold"><i class="icon16 add"></i> [`New to-do`]</a>
                 </li>
-                {* <li class="pl-list-favorite">
+                <li class="pl-list-favorite">
                     <a href="#"><i class="icon16 star-empty"></i></a>
-                </li> *}
+                </li>
             </ul>
             {/if}
         </div>
