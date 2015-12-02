@@ -105,6 +105,14 @@ return array(
             'PRIMARY' => 'id',
         ),
     ),
+    'pocketlists_pocket_rights' => array(
+        'pocket_id' => array('int', 11, 'unsigned' => 1, 'null' => 0),
+        'contact_id' => array('int', 11, 'unsigned' => 1, 'null' => 0),
+        'right' => array('smallint', 11, 'unsigned' => 1, 'null' => 0, 'default' => '0'),
+        ':keys' => array(
+            'PRIMARY' => array('contact_id', 'pocket_id'),
+        ),
+    ),
     'pocketlists_tag' => array(
         'id' => array('int', 11, 'null' => 0, 'autoincrement' => 1),
         'text' => array('varchar', 255, 'null' => 0),
