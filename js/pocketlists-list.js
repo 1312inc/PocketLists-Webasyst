@@ -471,6 +471,10 @@
                     }
                 });
             });
+            $wrapper.on('change', '#pl-assigned-contact select', function() {
+                var assigned_contact_id = $(this).val();
+                $('#pl-assigned-contact').find('[data-pl-contact-id="' + assigned_contact_id + '"]').show().siblings().hide();
+            });
         };
 
         init();

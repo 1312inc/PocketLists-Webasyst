@@ -25,14 +25,19 @@ class pocketlistsHelper
               (app_id = 'wa()->getApp()' AND ((name = s:id AND value = 1) OR (name = 'backend' AND value = 2))
               OR
               (app_id = 'webasyst' AND name = 'backend' AND value = 1))";
-        $contact_ids = $wcr->query($query,
+        $contact_ids = $wcr->query(
+            $query,
             array(
-                'id' => 'pocket.'.$pocket_id
-            ))->fetchAll();
+                'id' => 'pocket.' . $pocket_id
+            )
+        )->fetchAll();
         $contacts = array();
-        foreach($contact_ids as $id) {
+        foreach ($contact_ids as $id) {
             $contact = new waContact(-$id['group_id']);
-            $contacts[$contact->getId()] = $contact->getName();
+            $contacts[$contact->getId()] = array(
+                'username' => $contact->getName(),
+                'userpic' => $contact->getPhoto(20)
+            );
         }
         return $contacts;
     }

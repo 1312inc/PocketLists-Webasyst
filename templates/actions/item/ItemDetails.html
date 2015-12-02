@@ -66,15 +66,20 @@
     </div>
 
 
-    <div class="field-group">
+    <div class="field-group" id="pl-assigned-contact">
         <div class="field">
             <div class="name">[`Assigned to`]</div>
             <div class="value no-shift">
-                <i class="icon16 userpic20"></i>
+                <span>
+                    <i class="icon16 userpic20" data-pl-contact-id="0" style="{if (!empty($item.assigned_contact_id))}display: none;{/if}"></i>
+                    {foreach $contacts as $contact_id => $contact}
+                    <i class="icon16 userpic20" style="background-image: url({$contact.userpic}); {if (!empty($item.assigned_contact_id) && $contact_id == $item.assigned_contact_id)}{else}display: none;{/if}" alt="{$contact.username}" data-pl-contact-id="{$contact_id}"></i>
+                    {/foreach}
+                </span>
                 <select name="item[assigned_contact_id]">
                     <option value="0" {if !$item.assigned_contact_id}selected="selected"{/if}>[`Nobody`]</option>
-                    {foreach $contacts as $contact_id => $contact_name}
-                    <option value="{$contact_id}" {if isset($item.assigned_contact_id) && $item.assigned_contact_id == $contact_id}selected="selected"{/if}>{$contact_name}</option>
+                    {foreach $contacts as $contact_id => $contact}
+                    <option value="{$contact_id}" {if isset($item.assigned_contact_id) && $item.assigned_contact_id == $contact_id}selected="selected"{/if}>{$contact.username}</option>
                     {/foreach}
                 </select>
             </div>
@@ -82,7 +87,8 @@
         <div class="field">
             <div class="name">[`Created`]</div>
             <div class="value no-shift">
-                <i class="icon16 userpic20"></i>
+                <i class="icon16 userpic20" style="background-image: url({$item.userpic})" alt="{$item.username}"></i>
+
                 {$item.username}
                 <span class="hint">{$item.create_datetime|wa_datetime:'humandatetime'}</span>
             </div>
@@ -91,7 +97,7 @@
             <div class="field">
                 <div class="name">[`Completed`]</div>
                 <div class="value no-shift">
-                    <i class="icon16 userpic20"></i>
+                    <i class="icon16 userpic20" style="background-image: url({$item.complete_userpic|default:'/wa-content/img/userpic20@2x.jpg'})" alt="{$item.complete_username}"></i>
                     {$item.complete_username|default:''}
                     <span class="hint">{$item.complete_datetime|wa_datetime:'humandatetime'}</span>
                 </div>

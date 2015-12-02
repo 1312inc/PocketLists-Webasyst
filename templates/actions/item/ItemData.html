@@ -4,7 +4,7 @@
         {if $item.status == 1}
             <span class="pl-author" title="{sprintf('[`Completed by %s`]', $item.complete_username|default:'%username%')}">
                 {if isset($item.complete_userpic)}
-                <img src="{$item.complete_userpic}" alt="{$item.complete_username}" class="userpic">
+                <i class="icon16 userpic20" style="background-image: url({$item.complete_userpic})" alt="{$item.complete_username}"></i>
                 {else}
                 <i class="icon16 userpic20"></i>
                 {/if}
@@ -12,7 +12,7 @@
         {else}
             {if !empty($item.assigned_contact_id)}<span class="pl-author" title="{sprintf('[`Assigned to %s`]', {$item.assigned_username})}">
                 {if isset($item.assigned_userpic)}
-                <img src="{$item.assigned_userpic}" alt="{$item.assigned_username}" class="userpic">
+                <i class="icon16 userpic20" style="background-image: url({$item.assigned_userpic})" alt="{$item.assigned_username}"></i>
                 {else}
                 <i class="icon16 userpic20"></i>
                 {/if}
