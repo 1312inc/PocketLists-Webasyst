@@ -180,10 +180,17 @@ class pocketlistsItemModel extends waModel
         if ($item['contact_id']) {
             $user = new waContact($item['contact_id']);
             $item['username'] = $user->getName();
+            $item['userpic'] = $user->getPhoto('20');
+        }
+        if ($item['assigned_contact_id']) {
+            $user = new waContact($item['assigned_contact_id']);
+            $item['assigned_username'] = $user->getName();
+            $item['assigned_userpic'] = $user->getPhoto('20');
         }
         if ($item['complete_contact_id']) {
-            $complere_user = new waContact($item['complete_contact_id']);
-            $item['complete_username'] = $complere_user->getName();
+            $user = new waContact($item['complete_contact_id']);
+            $item['complete_username'] = $user->getName();
+            $item['complete_userpic'] = $user->getPhoto('20');
         }
 
         $date = strtotime($item['due_date']);

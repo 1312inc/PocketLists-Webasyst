@@ -71,7 +71,12 @@
             <div class="name">[`Assigned to`]</div>
             <div class="value no-shift">
                 <i class="icon16 userpic20"></i>
-                <select><option>[`Nobody`]</option><option>...pocket user list here...</option></select>
+                <select name="item[assigned_contact_id]">
+                    <option value="0" {if !$item.assigned_contact_id}selected="selected"{/if}>[`Nobody`]</option>
+                    {foreach $contacts as $contact_id => $contact_name}
+                    <option value="{$contact_id}" {if isset($item.assigned_contact_id) && $item.assigned_contact_id == $contact_id}selected="selected"{/if}>{$contact_name}</option>
+                    {/foreach}
+                </select>
             </div>
         </div>
         <div class="field">
