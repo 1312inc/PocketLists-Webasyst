@@ -1,6 +1,6 @@
 <div class="pl-item">
     <div class="pl-meta">
-        {* <a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a> *}
+        <a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
         {if $item.status == 1}
             <span class="pl-author" title="{sprintf('[`Completed by %s`]', $item.complete_username|default:'%username%')}"><i class="icon16 userpic20"></i></span>
         {else}
