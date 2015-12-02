@@ -116,6 +116,11 @@ label.pl-done-label { cursor: pointer; }
 
 .pl-done:checked + span { background: transparent url('../img/pl-done-checkbox.png') no-repeat !important; background-size: 14px 14px !important; border: none; border-radius: 0; opacity: 0.3; }
 
+/* Discussions
+-------------- */
+
+.pl-discuss { position: absolute; bottom: 0; left: 0; right: 0; border-top: 1px solid rgba(0,0,0,0.1); padding: 13px; }
+
 /* Items
 -------- */
 
@@ -140,7 +145,8 @@ label.pl-done-label { cursor: pointer; }
 }
 
 input#pl-new-list-input,
-#pl-item-add textarea {
+#pl-item-add textarea,
+.pl-discuss textarea {
     min-width: 350px;
     width: 90%;
     white-space: nowrap;

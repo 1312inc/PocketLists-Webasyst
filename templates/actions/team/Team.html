@@ -92,6 +92,12 @@
         <br><br>
         все айтемы сортированы, как в потоке: по приоритету + дате.<br>
         создание нового айтема в этом списке автоматически назначает его на этого пользователя
+
+        <div class="pl-discuss">
+          <span class="pl-author" title="{sprintf('[`Completed by %s`]', $item.complete_username|default:'%username%')}"><i class="icon16 userpic20"></i></span>
+          <textarea rows="1" placeholder="[`Message`]"></textarea>
+        </div>
+
     </main>
 
 </div>
