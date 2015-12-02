@@ -371,9 +371,9 @@
 
     $(document).on('keydown', function (e) {
         switch (e.which) {
-            case 39: // -->
-                increase_item.call(this);
-                break;
+            //case 39: // -->
+            //    increase_item.call(this);
+            //    break;
             case 9: // tab
                 if (e.shiftKey) {
                     decrease_item.call(this);
@@ -381,9 +381,9 @@
                     increase_item.call(this);
                 }
                 break;
-            case 37: // <--
-                decrease_item.call(this);
-                break;
+            //case 37: // <--
+            //    decrease_item.call(this);
+            //    break;
             case 27: // esc
                 if ($('#pl-list-details').is(':visible')) {
                     $('#pl-list-details').hide().empty();
@@ -576,6 +576,7 @@
                     } else {
                         $wrapper.find('.error').show().delay(3000).hide();
                     }
+                    $wrapper.data('pl-clicked', 1).hide();
                 }, 'json');
                 return false;
             });
@@ -596,23 +597,18 @@
 
                 $('#pl-list-icon-dialog').waDialog({
                     onLoad: function () {
-                        var $dialog = $(this);
+                        var d = $(this);
 
                         $('#pl-list-icon-dialog').on('click', 'a[data-pl-list-icon]', function (e) {
                             e.preventDefault();
-                            $(this).closest('ul').find('a[data-pl-list-icon]').removeClass('selected');
-                            $(this).addClass('selected');
+                            var icon = $(this).data('pl-list-icon');
                             $wrapper.find('#pl-list-icon-change').find('input').val($(this).data('pl-list-icon'));
-                        })
-                    },
-                    onSubmit: function (d) {
-                        var $selected_icon = $('#pl-list-icon-dialog').find('a[data-pl-list-icon].selected'),
-                            icon = $selected_icon.data('pl-list-icon');
 
-                        $this.find('input').val(icon);
-                        $wrapper.find('#pl-list-icon-change .listicon48').css('background-image', 'url(' + icon_path + icon + ')');
-                        d.trigger('close');
-                        return false;
+                            $this.find('input').val(icon);
+                            $wrapper.find('#pl-list-icon-change .listicon48').css('background-image', 'url(' + icon_path + icon + ')');
+                            d.trigger('close');
+                            return false;
+                        })
                     }
                 });
             });

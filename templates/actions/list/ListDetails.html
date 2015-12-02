@@ -11,10 +11,7 @@
             <div class="name"><br>[`Icon`]</div>
             <div class="value">
                 <input type="hidden" name="list[icon]" value="{$list.icon|default:'li-list@2x.png'}"/>
-                <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$list.icon|default:'li-list@2x.png'});"></i>
-                <br>
-                <a href="#" class="small gray">[`Change`]</a>
-                <br><br>
+                <a href="#"><i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$list.icon|default:'li-list@2x.png'});"></i></a>
             </div>
         </div>
         <div class="field" id="pl-list-color">
@@ -71,23 +68,22 @@
 
 <div id="pl-list-icon-dialog" class="dialog large">
     <div class="dialog-background"></div>
-    <form action="post">
-      <div class="dialog-window">
+    <div class="dialog-window">
         <div class="dialog-content">
-          <div class="dialog-content-indent">
-            <h1>{$list.name|default:'[`Choose list icon`]'}</h1>
-            <ul data-pl-icons-path="{$wa_url}wa-apps/pocketlists/img/listicons/" class="pl-icon-library">
-                {foreach $list_icons as $icon}
-                <li><a href="#" data-pl-list-icon="{$icon}" {if $icon == $list.icon}class="selected"{/if}><i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$icon});"></i></a></li>
-                {/foreach}
-            </ul>
-          </div>
+            <div class="dialog-content-indent">
+                <h1>{$list.name|default:'[`Choose list icon`]'}</h1>
+                <ul data-pl-icons-path="{$wa_url}wa-apps/pocketlists/img/listicons/" class="pl-icon-library">
+                    {foreach $list_icons as $icon}
+                    <li><a href="#" data-pl-list-icon="{$icon}" {if $icon== $list.icon}class="selected" {/if}><i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$icon});"></i></a>
+                    </li>
+                    {/foreach}
+                </ul>
+            </div>
         </div>
         <div class="dialog-buttons">
-          <div class="dialog-buttons-gradient">
-            <input type="submit" value="[`Set this icon`]" class="button green" /> [`or`] <a class="cancel" href="#">[`cancel`]</a>
-          </div>
+            <div class="dialog-buttons-gradient">
+                <a class="cancel" href="#">[`cancel`]</a>
+            </div>
         </div>
-      </div>
-    </form>
+    </div>
 </div>
