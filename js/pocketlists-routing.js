@@ -200,8 +200,9 @@
                 $('#content').html(result);
             });
         },
-        teamAction: function () {
-            this.load('?module=team', function (result) {
+        teamAction: function (teammate) {
+            var teammate = teammate || 0;
+            this.load('?module=team&teammate=' + teammate, function (result) {
                 $('#content').html(result);
             });
         },

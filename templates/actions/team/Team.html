@@ -6,8 +6,8 @@
 
             {if count($teammates)}
             <ul class="zebra pl-team">
-                {foreach $teammates as $teammate_id => $teammate}
-                <li class="selected" data-pl-team-id="{$teammate.id}">
+                {foreach $teammates as $teammate}
+                <li {if $teammate.id == $teammate_id}class="selected"{/if} data-pl-team-id="{$teammate.id}">
                     <a href="#/team/{$teammate.login}">
                         <div class="profile image50px">
                             <div class="image">
@@ -32,9 +32,9 @@
             <p class="hint">[`Invite your teammates to collaborate simply by granting access to Pocket Lists app in <strong>Contacts app</strong>.`]</p>
             {/if}
 
-            (тут показываются все пользователи, у которых есть доступ к приложению; order by last_activity_datetime)<br><br>
+            {*(тут показываются все пользователи, у которых есть доступ к приложению; order by last_activity_datetime)<br><br>
             себя показывать не надо.<br><br>
-            если в команде никого нет, то какая-нибудь надпись [`Invite your teammates to collaborate simply by granting access to Pocket Lists app in <strong>Contacts app</strong>.`]
+            если в команде никого нет, то какая-нибудь надпись [`Invite your teammates to collaborate simply by granting access to Pocket Lists app in <strong>Contacts app</strong>.`]*}
 
         </div>
 
@@ -52,16 +52,47 @@
                 </ul>
             </div>
             <h1>
-                Kirill Maramygin
+                {$teammate_name}
             </h1>
         </header>
 
-        в этом списке показываются:<br>
+        <div class="pl-list-items" id="pl-list-items">
+
+            <section id="pl-undone-items">
+                <ul class="menu-v">
+                    {if !empty($items)}
+                    {include '../item/ItemCreate.html' parent_id=0 items=$items}
+                    {/if}
+                </ul>
+            </section>
+
+            <!-- completed to-dos log -->
+            <section id="pl-complete-log" class="pl-logbook" style="display: block;">
+                <h5 class="heading">[`Logbook`]</h5>
+                <ul class="menu-v">
+                    {if !empty($items_done)}
+                    {include '../item/ItemCreate.html' items=$items_done}
+                    {/if}
+                </ul>
+            </section>
+
+        </div>
+        <div class="clear-both"></div>
+
+        {include '../../include/deltedialog.html' inline}
+
+        {include '../../include/listdetails.html' inline}
+
+        {include '../../include/itemdetails.html' inline}
+
+        {include '../../include/itemadd.html' inline}
+
+        {*в этом списке показываются:<br>
         — сначала все активные айтемы, назначенные на данного пользователя (assigned_contact_id == CONTACT_ID)<br>
         — ниже серым (как в списке) все выполненные данным пользователем айтемы (тут уже без требования назначенности; просто все, что данный пользователь зачекал complete_contact_id == CONTACT_ID — надо добавить такое поле в таблицу айтемов, если его там еще нет)
         <br><br>
         все айтемы сортированы, как в потоке: по приоритету + дате.<br>
-        создание нового айтема в этом списке автоматически назначает его на этого пользователя
+        создание нового айтема в этом списке автоматически назначает его на этого пользователя*}
 
         <div class="pl-discuss">
           <span class="pl-author" title="{sprintf('[`Completed by %s`]', $item.complete_username|default:'%username%')}"><i class="icon16 userpic20"></i></span>
@@ -72,6 +103,7 @@
 
 </div>
 
+<script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-list.js"></script>
 <script text="text/javascript">
 
 </script>

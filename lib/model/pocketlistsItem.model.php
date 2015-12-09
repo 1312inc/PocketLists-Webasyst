@@ -282,23 +282,23 @@ class pocketlistsItemModel extends waModel
         return $this->getTree($items, true);
     }
 
-    public function getAssignedItemsCountAndNames($contact_id)
+    public function getAssignedItemsCountAndNames($contact_ids)
     {
-        if (!is_array($contact_id)) {
-            $contact_id = array($contact_id);
+        if (!is_array($contact_ids)) {
+            $contact_ids = array($contact_ids);
         }
         $q = "SELECT
                 assigned_contact_id,
                 name item_name
               FROM {$this->table}
               WHERE assigned_contact_id IN (i:contact_id) AND status = 0";
-        return $this->query($q, array('contact_id' => $contact_id))->fetchAll('assigned_contact_id', 2);
+        return $this->query($q, array('contact_id' => $contact_ids))->fetchAll('assigned_contact_id', 2);
     }
 
-    public function getContactLastActivity($contact_id)
+    public function getContactLastActivity($contact_ids)
     {
-        if (!is_array($contact_id)) {
-            $contact_id = array($contact_id);
+        if (!is_array($contact_ids)) {
+            $contact_ids = array($contact_ids);
         }
         // ох что-то я сомневаюсь
         $q = "SELECT
@@ -325,8 +325,21 @@ class pocketlistsItemModel extends waModel
                   GROUP BY i.contact_id
               ) t
             GROUP BY t.contact_id ";
-    return $this->query($q, array('contact_id' => $contact_id))->fetchAll('contact_id', 1);
+        return $this->query($q, array('contact_id' => $contact_ids))->fetchAll('contact_id', 1);
     }
 
+    public function getAssignedOrCompletesByContactItems($contact_id)
+    {
+        $q = "SELECT * FROM {$this->table} WHERE assigned_contact_id = i:id OR complete_contact_id = i:id ";
+        $items = $this->query($q, array('id' => $contact_id))->fetchAll();
+        $results = array(
+            0 => array(),
+            1 => array()
+        );
+        foreach ($items as $id => $item) {
+            $results[$item['status']][$id] = $this->updateItem($item);
+        }
+        return $results;
+    }
 
 }

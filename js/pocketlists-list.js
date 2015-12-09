@@ -234,7 +234,7 @@
     };
 
     var init = function() {
-        if ($.pocketlists_routing.getHash() == '#/todo/') {
+        if ($.pocketlists_routing.getHash() == '#/todo/' && $.pocketlists_routing.getHash().indexOf('/team/') > 0) {
             $new_item_wrapper.prependTo($undone_items_wrapper).slideDown(200).wrap('<li class="pl-new-item-wrapper">');
             $new_item_input.focus();
         }
