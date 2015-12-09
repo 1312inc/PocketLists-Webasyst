@@ -6,16 +6,27 @@ class pocketlistsTeamAction extends  waViewAction
     {
         // get all pocketlists users
         // all admin
-
+        $teammates = array();
         $teammates_ids = pocketlistsHelper::getAllPocketListsContacts();
-        $teammates = new waContactsCollection('/id/'.implode(',', $teammates_ids).'/');
-        $teammates = $teammates->getContacts(array('id', 'name', 'photo_url'));
+        if ($teammates_ids) {
+            $teammates = new waContactsCollection('/id/'.implode(',', $teammates_ids).'/');
+            $teammates = $teammates->getContacts(array('id', 'name', 'photo_url'));
 
-        $im = new pocketlistsItemModel();
-        $items_count_names = $im->getAssignedItemsCountAndNames($teammates_ids);
-        foreach ($teammates as $tid => $tval) {
-            $teammates[$tid]['item_count'] = isset($items_count_names[$tid]) ? count($items_count_names[$tid]) : false;
-            $teammates[$tid]['item_names'] = isset($items_count_names[$tid]) ? implode(', ', $items_count_names[$tid]) : false;
+            $im = new pocketlistsItemModel();
+            $items_count_names = $im->getAssignedItemsCountAndNames($teammates_ids);
+            foreach ($teammates as $tid => $tval) {
+                if ($tid != wa()->getUser()->getId()) {
+                    $teammates[$tid]['item_count'] = isset($items_count_names[$tid]) ? count(
+                        $items_count_names[$tid]
+                    ) : false;
+                    $teammates[$tid]['item_names'] = isset($items_count_names[$tid]) ? implode(
+                        ', ',
+                        $items_count_names[$tid]
+                    ) : false;
+                } else {
+                    unset($teammates[$tid]);
+                }
+            }
         }
 
         $this->view->assign('teammates', $teammates);

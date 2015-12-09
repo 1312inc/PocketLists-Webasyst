@@ -4,6 +4,7 @@
         <!-- TEAM -->
         <div class="pl-inner-sidebar">
 
+            {if count($teammates)}
             <ul class="zebra pl-team">
                 {foreach $teammates as $teammate_id => $teammate}
                 <li class="selected" data-pl-team-id="{$teammate.id}">
@@ -20,67 +21,16 @@
                                 <span class="large nowrap">{$teammate.name}</span>
                                 <div class="pl-active-items small black">{$teammate.item_names}</div>
 
-                                <span class="hint">Today 10:20</span>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                {/foreach}
-                <li class="selected">
-                    <a href="#">
-                        <div class="profile image50px">
-                            <div class="image">
-                                <img class="userpic" src="http://maramygin.ru/kmwa-logo-small.png">
-                            </div>
-                            <div class="details">
-                                <span class="count indicator red">3</span>
-
-                                <span class="large nowrap">Kirill Maramygin</span>
-                                <div class="pl-active-items small black">Setup Pocket Lists database structure, UI aplha version, Deploy to some test environment</div>
-
-                                <span class="hint">Today 10:20</span>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="#">
-                        <div class="profile image50px">
-                            <div class="image">
-                                <img class="userpic" src="http://www.vofka.ru/wa-data/public/site/img/userpic/vofkatuporshin.jpg">
-                            </div>
-                            <div class="details">
-                                <span class="count">5</span>
-                                <span class="large nowrap">Vladimir V. Tuporshin</span>
-
-                                <div class="pl-active-items small black">Finalize Webasyst app design, iOS app concept, Mac app concept, Public Pocket Lists Cloud frontend task draft</div>
-
-                                <span class="hint">Nov 5, 13:03</span>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="#">
-                        <div class="profile image50px">
-                            <div class="image">
-                                <img class="userpic" src="/wa-content/img/userpic50@2x.jpg">
-                            </div>
-                            <div class="details">
-                                <span class="count"># of items</span>
-                                <span class="large nowrap">username</span>
-
-                                <div class="pl-active-items small black">List, Of, Active, Items|default:[`All done`]</div>
-
                                 <span class="hint">Last activity |wa_humandatetime</span>
                             </div>
                         </div>
                     </a>
                 </li>
-
+                {/foreach}
             </ul>
+            {else}
+            [`Invite your teammates to collaborate simply by granting access to Pocket Lists app in <strong>Contacts app</strong>.`]
+            {/if}
 
             (тут показываются все пользователи, у которых есть доступ к приложению; order by last_activity_datetime)<br><br>
             себя показывать не надо.<br><br>
