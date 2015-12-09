@@ -64,6 +64,6 @@ class pocketlistsHelper
             WHERE
               app_id = 'pocketlists' AND name = 'backend' AND value > 0
             ORDER BY user_id ASC";
-        return $wcr->query($query)->fetchAll('user_id');
+        return array_keys($wcr->query($query)->fetchAll('user_id'));
     }
 }

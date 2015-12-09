@@ -7,7 +7,7 @@ class pocketlistsTeamAction extends  waViewAction
         // get all pocketlists users
         // all admin
 
-        $teammates_ids = array_keys(pocketlistsHelper::getAllPocketListsContacts());
+        $teammates_ids = pocketlistsHelper::getAllPocketListsContacts();
         $teammates = new waContactsCollection('/id/'.implode(',', $teammates_ids).'/');
         $teammates = $teammates->getContacts(array('id', 'name', 'photo_url'));
 
