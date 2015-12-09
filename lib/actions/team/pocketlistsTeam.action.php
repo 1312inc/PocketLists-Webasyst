@@ -10,7 +10,7 @@ class pocketlistsTeamAction extends  waViewAction
         $teammates_ids = pocketlistsHelper::getAllPocketListsContacts();
         if ($teammates_ids) {
             $teammates = new waContactsCollection('/id/'.implode(',', $teammates_ids).'/');
-            $teammates = $teammates->getContacts(array('id', 'name', 'photo_url'));
+            $teammates = $teammates->getContacts(array('id', 'name', 'photo_url', 'login'));
 
             $im = new pocketlistsItemModel();
             $items_count_names = $im->getAssignedItemsCountAndNames($teammates_ids);
@@ -24,7 +24,7 @@ class pocketlistsTeamAction extends  waViewAction
                         ', ',
                         $items_count_names[$tid]
                     ) : false;
-                    $teammates[$tid]['last_activity'] = isset($last_activities[$tid]) ? $last_activities[$tid]['complete_datetime'] : false;
+                    $teammates[$tid]['last_activity'] = isset($last_activities[$tid]) ? $last_activities[$tid]: false;
                 } else {
                     unset($teammates[$tid]);
                 }

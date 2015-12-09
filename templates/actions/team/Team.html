@@ -8,7 +8,7 @@
             <ul class="zebra pl-team">
                 {foreach $teammates as $teammate_id => $teammate}
                 <li class="selected" data-pl-team-id="{$teammate.id}">
-                    <a href="#">
+                    <a href="#/team/{$teammate.login}">
                         <div class="profile image50px">
                             <div class="image">
                                 <img class="userpic" src="{$teammate.photo_url}">

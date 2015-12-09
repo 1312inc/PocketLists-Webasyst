@@ -300,15 +300,32 @@ class pocketlistsItemModel extends waModel
         if (!is_array($contact_id)) {
             $contact_id = array($contact_id);
         }
+        // ох что-то я сомневаюсь
         $q = "SELECT
-                  id,
-                  complete_contact_id,
-                  name,
-                  max(complete_datetime) complete_datetime
-                FROM {$this->table}
-                WHERE complete_contact_id in (i:contact_id)
-                GROUP BY complete_contact_id";
-        return $this->query($q, array('contact_id' => $contact_id))->fetchAll('complete_contact_id', 1);
+              MAX(t.last_date) last_activity_datetime,
+              t.contact_id contact_id
+            FROM
+              (
+                  SELECT
+                    i.complete_contact_id contact_id,
+                    max(i.complete_datetime) last_date
+                  FROM {$this->table} i
+                  WHERE
+                    i.complete_contact_id IN (i:contact_id)
+                  GROUP BY i.complete_contact_id
+
+                  UNION
+
+                  SELECT
+                    i.contact_id contact_id,
+                    max(i.create_datetime) last_date
+                  FROM {$this->table} i
+                  WHERE
+                    i.contact_id IN (i:contact_id)
+                  GROUP BY i.contact_id
+              ) t
+            GROUP BY t.contact_id ";
+    return $this->query($q, array('contact_id' => $contact_id))->fetchAll('contact_id', 1);
     }
 
 
