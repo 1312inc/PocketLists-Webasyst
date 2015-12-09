@@ -54,4 +54,16 @@ class pocketlistsHelper
         }
         return array_keys($pockets);
     }
+
+    public static function getAllPocketListsContacts()
+    {
+        $wcr = new waContactRightsModel();
+        $query = "SELECT
+                -1*group_id user_id
+            FROM wa_contact_rights
+            WHERE
+              app_id = 'pocketlists' AND name = 'backend' AND value > 0
+            ORDER BY user_id ASC";
+        return $wcr->query($query)->fetchAll('user_id');
+    }
 }

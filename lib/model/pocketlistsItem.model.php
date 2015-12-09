@@ -281,4 +281,17 @@ class pocketlistsItemModel extends waModel
         }
         return $this->getTree($items, true);
     }
+
+    public function getAssignedItemsCountAndNames($contact_id)
+    {
+        if (!is_array($contact_id)) {
+            $contact_id = array($contact_id);
+        }
+        $q = "SELECT
+                assigned_contact_id,
+                name item_name
+              FROM {$this->table}
+              WHERE assigned_contact_id IN (i:contact_id) AND status = 0";
+        return $this->query($q, array('contact_id' => $contact_id))->fetchAll('assigned_contact_id', 2);
+    }
 }
