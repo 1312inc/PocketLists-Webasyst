@@ -14,6 +14,7 @@ class pocketlistsTeamAction extends  waViewAction
 
             $im = new pocketlistsItemModel();
             $items_count_names = $im->getAssignedItemsCountAndNames($teammates_ids);
+            $last_activities = $im->getContactLastActivity($teammates_ids);
             foreach ($teammates as $tid => $tval) {
                 if ($tid != wa()->getUser()->getId()) {
                     $teammates[$tid]['item_count'] = isset($items_count_names[$tid]) ? count(
@@ -23,6 +24,7 @@ class pocketlistsTeamAction extends  waViewAction
                         ', ',
                         $items_count_names[$tid]
                     ) : false;
+                    $teammates[$tid]['last_activity'] = isset($last_activities[$tid]) ? $last_activities[$tid]['complete_datetime'] : false;
                 } else {
                     unset($teammates[$tid]);
                 }

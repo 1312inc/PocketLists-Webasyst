@@ -294,4 +294,22 @@ class pocketlistsItemModel extends waModel
               WHERE assigned_contact_id IN (i:contact_id) AND status = 0";
         return $this->query($q, array('contact_id' => $contact_id))->fetchAll('assigned_contact_id', 2);
     }
+
+    public function getContactLastActivity($contact_id)
+    {
+        if (!is_array($contact_id)) {
+            $contact_id = array($contact_id);
+        }
+        $q = "SELECT
+                  id,
+                  complete_contact_id,
+                  name,
+                  max(complete_datetime) complete_datetime
+                FROM {$this->table}
+                WHERE complete_contact_id in (i:contact_id)
+                GROUP BY complete_contact_id";
+        return $this->query($q, array('contact_id' => $contact_id))->fetchAll('complete_contact_id', 1);
+    }
+
+
 }
