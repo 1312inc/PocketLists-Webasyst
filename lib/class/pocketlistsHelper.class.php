@@ -58,11 +58,13 @@ class pocketlistsHelper
     public static function getAllPocketListsContacts()
     {
         $wcr = new waContactRightsModel();
-        $query = "SELECT
+        $query = "SELECT DISTINCT
                 -1*group_id user_id
             FROM wa_contact_rights
             WHERE
-              app_id = 'pocketlists' AND name = 'backend' AND value > 0
+              (app_id = 'pocketlists' AND name = 'backend' AND value > 0)
+              OR
+              (app_id = 'webasyst' AND name = 'backend' AND value > 0)
             ORDER BY user_id ASC";
         return array_keys($wcr->query($query)->fetchAll('user_id'));
     }
