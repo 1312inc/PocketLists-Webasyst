@@ -233,6 +233,15 @@
             .find('.count').text($undone_items_wrapper.find('[data-id]').length);
     };
 
+    var init = function() {
+        if ($.pocketlists_routing.getHash() == '#/todo/') {
+            $new_item_wrapper.prependTo($undone_items_wrapper).slideDown(200).wrap('<li class="pl-new-item-wrapper">');
+            $new_item_input.focus();
+        }
+    };
+
+    init();
+
     if ($new_list_inpit.length) {
         $new_list_inpit.focus();
         $new_list_inpit.on('keydown', function (e) {

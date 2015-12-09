@@ -16,9 +16,35 @@ class pocketlistsTodoAction extends waViewAction
         }
         $month_date = strtotime($month_date);
 
-
         // get pocket dots
         $im = new pocketlistsItemModel();
+
+        // get all due or priority or assigned to me items
+        $items = $im->getToDo(wa()->getUser()->getId());
+        $undone = $done = $pocket_colors = array();
+        foreach ($items as $item) {
+            // todo: add status const
+            if ($item['status'] == 0) {
+                $undone[] = $item;
+            } else {
+                $done[] = $item;
+            }
+            if ($item['status'] && $item['complete_datetime']) {
+                $pocket_colors[date("Y-m-d", strtotime($item['complete_datetime']))]['gray'][] = $item['id'];
+            } elseif ($item['due_datetime'] || $item['due_date']) {
+                $pocket_colors[date("Y-m-d", strtotime($item['due_date'] ? $item['due_date'] : $item['due_datetime']))]['color'][$item['pocket_color']][] = $item['id'];
+            }
+        }
+
+
+//        $items = $im->getCompleted(
+//            wa()->getUser()->getId(),
+//            array('after' => date('Y-m-d', $current_date_start), 'before' => date('Y-m-d', $date_end))
+//        );
+//        $pocket_colors = array();
+//        foreach ($items as $item) {
+//            $pocket_colors[date("Y-m-d", strtotime($item['complete_datetime']))][$item['pocket_color']] = 1;
+//        }
 
         $days = array();
         for ($i = 0; $i < $month_count; $i++) { // 3 month
@@ -45,14 +71,16 @@ class pocketlistsTodoAction extends waViewAction
                 'num' => $month_num
             );
 
-            $items = $im->getCompleted(
-                wa()->getUser()->getId(),
-                array('after' => date('Y-m-d', $current_date_start), 'before' => date('Y-m-d', $date_end))
-            );
-            $pocket_colors = array();
-            foreach ($items as $item) {
-                $pocket_colors[date("Y-m-d", strtotime($item['complete_datetime']))][$item['pocket_color']] = 1;
-            }
+
+            // completed for this date period
+//            $items = $im->getCompleted(
+//                wa()->getUser()->getId(),
+//                array('after' => date('Y-m-d', $current_date_start), 'before' => date('Y-m-d', $date_end))
+//            );
+//            $pocket_colors = array();
+//            foreach ($items as $item) {
+//                $pocket_colors[date("Y-m-d", strtotime($item['complete_datetime']))][$item['pocket_color']] = 1;
+//            }
 
             do {
                 $week = (int)date("W", $current_date_start);
@@ -72,7 +100,11 @@ class pocketlistsTodoAction extends waViewAction
                         'month' => date("n", $current_date_start),
                         'date' => $date_date,
                     ),
-                    'pockets' => isset($pocket_colors[$date_date]) ? array_keys($pocket_colors[$date_date]) : array()
+                    'pockets' => array(
+                        'color' => isset($pocket_colors[$date_date]['color']) ? array_keys($pocket_colors[$date_date]['color']) : array(),
+                        'gray' => isset($pocket_colors[$date_date]['gray']) ? $pocket_colors[$date_date]['gray'] : array()
+                    ),
+//                        isset($pocket_colors[$date_date]) ? array_keys($pocket_colors[$date_date]) : array()
                 );
                 $current_date_start = strtotime("+1 days", $current_date_start);
             } while ($date_end > $current_date_start);
@@ -88,10 +120,10 @@ class pocketlistsTodoAction extends waViewAction
         $this->view->assign("prev_month", date("Y-m", strtotime("-1 month", $month_date)));
         $this->view->assign("next_month", date("Y-m", strtotime("+1 month", $month_date)));
 
-
         // cast to user timezone
         $this->view->assign("today", waDateTime::date("j", null, $timezone));
         $this->view->assign("today_month", waDateTime::date("n", null, $timezone));
 
+        $this->view->assign('undone_items', $undone);
     }
 }

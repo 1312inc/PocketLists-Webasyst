@@ -77,8 +77,6 @@
     </div>
     <div class="clear-both"></div>
 
-    <div id="pl-item-details" class="block double-padded"><i class="icon16 loading"></i></div>
-    <div id="pl-list-details" class="block double-padded"><i class="icon16 loading"></i></div>
 
     <div id="pl-dialog-delete-confirm" style="display: none;">
         <form action="post">
@@ -101,21 +99,11 @@
         </div>
     </div>
 
-    <div id="pl-item-add">
-        <div class="pl-item">
-            {* <div class="pl-meta">
-                <a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
-            </div> *}
-            <label class="pl-done-label">
-                <input type="checkbox" disabled="disabled" class="pl-done">
-                <span></span>
-            </label>
-            <label class="pl-select-label">
-                <input type="checkbox" class="pl-is-selected">
-                <textarea rows="1" placeholder="[`Add to-do`]"></textarea>
-            </label>
-        </div>
-    </div>
+    {include '../../include/listdetails.html' inline}
+
+    {include '../../include/itemdetails.html' inline}
+
+    {include '../../include/itemadd.html' inline}
 </div>
 <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-list.js"></script>
 <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists.js"></script>

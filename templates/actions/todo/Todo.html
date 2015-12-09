@@ -32,18 +32,19 @@
                 {foreach $month.weeks as $week}
                     <tr>
                     {foreach $week as $day}
-                        <td id="date-{$day.date.date}"  class="{if $day.date.month != $month.num}pl-not-this-month{/if} {if $day.date.month == $today_month && $day.date.day == $today &&  $month.num == $today_month}pl-today{/if} ui-droppable">
+                        <td data-pl-todo-date="{$day.date.date}" class="{if $day.date.month != $month.num}pl-not-this-month{/if} {if $day.date.month == $today_month && $day.date.day == $today &&  $month.num == $today_month}pl-today{/if} ui-droppable">
                             <span class="pl-date">{$day.date.day}</span>
 
-                            <div><i class="icon10 color pl-dark-gray"></i><i class="icon10 color pl-dark-gray"></i><i
-                                    class="icon10 color pl-dark-gray"></i></div>
-                            {if !empty($day.pockets)}
                             <div>
-                                {foreach $day.pockets as $pocket_color}
+                                {foreach $day.pockets.gray as $pocket_color}
+                                <i class="icon10 color pl-dark-gray"></i>
+                                {/foreach}
+                            </div>
+                            <div>
+                                {foreach $day.pockets.color as $pocket_color}
                                 <i class="icon10 color pl-dark-{$pocket_color}"></i>
                                 {/foreach}
                             </div>
-                            {/if}
                         </td>
                     {/foreach}
                     </tr>
@@ -54,7 +55,7 @@
             <!-- end of sample from Blog -->
             {/foreach} {*month*}
             {/foreach} {*year*}
-            ... показывать в календаре здесь 3 месяца подряд в одной таблице ...
+            {*... показывать в календаре здесь 3 месяца подряд в одной таблице ...
 
             <br><br>
 
@@ -63,7 +64,7 @@
 
             <br><br>
 
-            в favorites интерфейс тот же, просто показываются только задания, отмеченные звездочкой
+            в favorites интерфейс тот же, просто показываются только задания, отмеченные звездочкой*}
 
 
         </div>
@@ -71,16 +72,48 @@
     </nav>
 
     <!-- ITEMS -->
-    <main class="content left300px blank bordered-left pl-items pl-blue" id="pl-list-content">
-        в этом разделе — МОЙ поток айтемов: все с датой, приоритетом или назначенное на меня (все как в иОС-приложении + назначенное на меня). сортировка по приоритету и дате выполнения (как в иОС-приложении).
+    <main class="content left300px blank bordered-left pl-items pl-list-items pl-blue" id="pl-list-content">
+        {*в этом разделе — МОЙ поток айтемов: все с датой, приоритетом или назначенное на меня (все как в иОС-приложении + назначенное на меня). сортировка по приоритету и дате выполнения (как в иОС-приложении).
         <br><br>
 
         самый первый элемент массива айтемов — уже открытый элемент Add to-do. так как на данной странице нет шапки с кнопкой добавления айтема, пусть этот элемент сразу всегда будет на странице на самом верху.
+        <br><br>*}
+        <div class="pl-list-items" id="pl-list-items">
+
+            <section id="pl-undone-items">
+                <ul class="menu-v">
+                    {if !empty($undone_items)}
+                    {include '../item/ItemCreate.html' parent_id=0 items=$undone_items}
+                    {/if}
+                </ul>
+            </section>
+
+        </div>
+
+        <div class="clear-both"></div>
+
+        {include '../../include/listdetails.html' inline}
+
+        {include '../../include/itemdetails.html' inline}
+
+        {include '../../include/itemadd.html' inline}
 
     </main>
-
 </div>
 
-<script text="text/javascript">
+<script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-list.js"></script>
+<script type="text/javascript">
+    (function(){
+        var $dates = $('[data-pl-todo-date]');
+        $dates.on('click', function() {
+            var $this = $(this),
+                date = $this.data('pl-todo-date');
 
+            $dates.filter('.pl-today').removeClass('pl-today');
+            $this.addClass('pl-today');
+            $('#pl-list-items')
+                    .find('[data-id]').slideUp().end()
+                    .find('[data-pl-due-date="' + date + '"]').slideDown();
+        });
+    }());
 </script>

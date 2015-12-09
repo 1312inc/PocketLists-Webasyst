@@ -171,6 +171,7 @@
             if ($list_name.length) {
                 $list_name.after('<i class="icon16 loading">');
             }
+            // todo: load list separetly
             this.load('?module=pocket&id=' + id + '&list_id=' + list_id, function (result) {
                 // show pockets
                 $('#content').html(result);

@@ -15,7 +15,7 @@ class pocketlistsHelper
         );
     }
 
-    public static function getAccessContacts($pocket_id)
+    public static function getAccessContactsForPocket($pocket_id)
     {
         $wcr = new waContactRightsModel();
         $query = "SELECT DISTINCT
@@ -40,5 +40,18 @@ class pocketlistsHelper
             );
         }
         return $contacts;
+    }
+
+    public static function getAccessPocketForContact($contact_id)
+    {
+        $user = new waContact($contact_id);
+        if ($user->isAdmin() || $user->isAdmin('pocketlists')) {
+            $pm = new pocketlistsPocketModel();
+            $pockets = $pm->getAll('id');
+        } else {
+            $pockets = $user->getRights('pocketlists', 'pocket.%');
+
+        }
+        return array_keys($pockets);
     }
 }

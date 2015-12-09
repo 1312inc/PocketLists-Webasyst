@@ -34,6 +34,7 @@ class pocketlistsItemModel extends waModel
                   i.due_datetime due_datetime,
                   i.complete_datetime complete_datetime,
                   i.complete_contact_id complete_contact_id,
+                  i.assigned_contact_id assigned_contact_id,
                   l.id list_id,
                   l.name list_name,
                   p.id pocket_id,
@@ -61,6 +62,45 @@ class pocketlistsItemModel extends waModel
         }
         return $items;
 //        return $this->getTree($items, $tree);
+    }
+
+    public function getToDo($contact_id)
+    {
+        $pockets = pocketlistsHelper::getAccessPocketForContact($contact_id);
+        $sql = "SELECT
+                  i.id id,
+                  i.parent_id parent_id,
+                  i.has_children has_children,
+                  i.name name,
+                  i.note note,
+                  i.status status,
+                  i.priority priority,
+                  i.contact_id contact_id,
+                  i.create_datetime create_datetime,
+                  i.due_date due_date,
+                  i.due_datetime due_datetime,
+                  i.complete_datetime complete_datetime,
+                  i.complete_contact_id complete_contact_id,
+                  i.assigned_contact_id assigned_contact_id,
+                  l.id list_id,
+                  l.name list_name,
+                  p.id pocket_id,
+                  p.name pocket_name,
+                  p.color pocket_color
+                FROM pocketlists_item i
+                JOIN pocketlists_list l ON l.id = i.list_id AND l.pocket_id IN (i:pocket_ids)
+                JOIN pocketlists_pocket p ON p.id = l.pocket_id
+                WHERE
+                  i.contact_id = i:contact_id AND i.priority > 0
+                  OR i.assigned_contact_id = i:contact_id
+                  OR i.complete_contact_id = i:contact_id
+                ORDER by i.priority DESC";
+
+        $items = $this->query($sql, array('pocket_ids' => $pockets, 'contact_id' => $contact_id))->fetchAll();
+        foreach ($items as $id => $item) {
+            $items[$id] = $this->updateItem($item);
+        }
+        return $items;
     }
 
     public function getById($id)
@@ -115,6 +155,8 @@ class pocketlistsItemModel extends waModel
 
         return $this->getItems($sql, $list_id, $tree);
     }
+
+
 
     private function getItems($sql, $list_id, $tree)
     {
@@ -177,6 +219,7 @@ class pocketlistsItemModel extends waModel
 
     private function updateItem($item)
     {
+        // todo: bulk update?
         if ($item['contact_id']) {
             $user = new waContact($item['contact_id']);
             $item['username'] = $user->getName();
