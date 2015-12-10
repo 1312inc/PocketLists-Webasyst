@@ -118,8 +118,27 @@ class pocketlistsItemModel extends waModel
 
     public function updateWithCalcPriority($id, $item)
     {
+        if ($email_me = pocketlistsUserSettings::emailWhenNewAssignToMe()) {
+            $old_item = $this->getById($id);
+        }
+
         $this->updatePriority($item);
-        $this->updateById($id, $item);
+        if ($this->updateById($id, $item)) {
+            if ($email_me && // settings are set
+                $item['assigned_contact_id'] && // assigned to me is set
+                $item['assigned_contact_id'] == wa()->getUser()->getId() && // assigned id is mine
+                $item['assigned_contact_id'] != $old_item['assigned_contact_id'] ) { // assigned id is updated
+                pocketlistsNotifications::sendMail(array(
+                    'contact_id' => $item['assigned_contact_id'],
+                    'subject' => 'string:New assign!',
+                    'body' => wa()->getAppPath('templates/mails/newassignitem.html'),
+                    'variables' => array(
+                        'item_name' => $item['name'],
+                        'due_date' => waDateTime::format('humandatetime',$item['due_date']),
+                    )
+                ));
+            }
+        }
     }
 
     public function getAllByList($list_id, $tree = true)
@@ -355,7 +374,7 @@ class pocketlistsItemModel extends waModel
 
     public function getAppCountForUser()
     {
-        $settings = pocketlistsHelper::getUserSettings();
+        $settings = pocketlistsUserSettings::getAllSettings();
         $now = time();
 
         $q = "SELECT id FROM {$this->table} WHERE status = 0 AND assigned_contact_id = i:contact_id";
