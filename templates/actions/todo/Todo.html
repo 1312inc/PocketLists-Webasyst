@@ -35,15 +35,9 @@
                         <td data-pl-todo-date="{$day.date.date}" class="{if $day.date.month != $month.num}pl-not-this-month{/if} {if $day.date.month == $today_month && $day.date.day == $today &&  $month.num == $today_month}pl-today{/if} ui-droppable">
                             <span class="pl-date">{$day.date.day}</span>
 
-                            <div>
-                                {foreach $day.pockets.gray as $pocket_color}
-                                <i class="icon10 color pl-dark-gray"></i>
-                                {/foreach}
-                            </div>
-                            <div>
-                                {foreach $day.pockets.color as $pocket_color}
-                                <i class="icon10 color pl-dark-{$pocket_color}"></i>
-                                {/foreach}
+                            <div class="pl-dots">
+                                {foreach $day.pockets.gray as $pocket_color}<i class="icon10 color pl-dark-gray"></i>{/foreach}<!--
+                                -->{foreach $day.pockets.color as $pocket_color}<i class="icon10 color pl-dark-{$pocket_color}"></i>{/foreach}
                             </div>
                         </td>
                     {/foreach}
@@ -73,11 +67,24 @@
 
     <!-- ITEMS -->
     <main class="content left300px blank bordered-left pl-items pl-list-items pl-blue" id="pl-list-content">
-        {*в этом разделе — МОЙ поток айтемов: все с датой, приоритетом или назначенное на меня (все как в иОС-приложении + назначенное на меня). сортировка по приоритету и дате выполнения (как в иОС-приложении).
-        <br><br>
 
-        самый первый элемент массива айтемов — уже открытый элемент Add to-do. так как на данной странице нет шапки с кнопкой добавления айтема, пусть этот элемент сразу всегда будет на странице на самом верху.
-        <br><br>*}
+        <header class="pl-list-title">
+            <div class="float-right block half-padded">
+                <ul class="menu-h">
+                    <li>
+                        <a href="#"><i class="icon16 add"></i> [`Add to-do`]</a>
+                    </li>
+                </ul>
+            </div>
+            <h1 class="not-padded">
+                {if 111}
+                  [`To-do stream`]
+                {else}
+                  December 8, 2015 <a href="#" class="back">[`Show stream`]</a>
+                {/if}
+            </h1>
+        </header>
+
         <div class="pl-list-items" id="pl-list-items">
 
             <section id="pl-undone-items">

@@ -18,10 +18,10 @@
                                 <span class="count indicator red">{$teammate.item_count}</span>
                                 {/if}
 
-                                <span class="large nowrap">{$teammate.name}</span>
-                                <div class="pl-active-items small black">{$teammate.item_names}</div>
+                                <span class="large nowrap">{$teammate.name|default:'%username%'}</span>
 
-                                <span class="hint">{$teammate.last_activity|wa_date:'humandatetime'}</span>
+                                <div class="pl-active-items small black">{$teammate.item_names}</div>
+                                <span class="hint">{$teammate.last_activity|wa_date:'humandatetime'|default:sprintf('[`No to-dos have been assigned to %s yet`]',$teammate.name|default:'%username%')}</span>
                             </div>
                         </div>
                     </a>
@@ -51,8 +51,8 @@
                     </li>
                 </ul>
             </div>
-            <h1>
-                {$teammate_name}
+            <h1 class="not-padded">
+                {$teammate_name|default:'&nbsp;'}
             </h1>
         </header>
 
@@ -93,11 +93,6 @@
         <br><br>
         все айтемы сортированы, как в потоке: по приоритету + дате.<br>
         создание нового айтема в этом списке автоматически назначает его на этого пользователя*}
-
-        <div class="pl-discuss">
-          <span class="pl-author" title="{sprintf('[`Completed by %s`]', $item.complete_username|default:'%username%')}"><i class="icon16 userpic20"></i></span>
-          <textarea rows="1" placeholder="[`Message`]"></textarea>
-        </div>
 
     </main>
 
