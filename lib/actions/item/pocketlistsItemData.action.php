@@ -13,7 +13,7 @@ class pocketlistsItemDataAction extends waViewAction
                     strtotime($item['due_date'])
                 ) : null;
                 $item['update_datetime'] = date("Y-m-d H:i:s");
-                $im->updateById($item['id'], $item);
+                $im->updateWithCalcPriority($item['id'], $item);
 
                 $this->view->assign('item', $im->getById($item['id']));
             }

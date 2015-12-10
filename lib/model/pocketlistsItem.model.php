@@ -116,6 +116,12 @@ class pocketlistsItemModel extends waModel
         return $items;
     }
 
+    public function updateWithCalcPriority($id, $item)
+    {
+        $this->updatePriority($item);
+        $this->updateById($id, $item);
+    }
+
     public function getAllByList($list_id, $tree = true)
     {
         $sql = "SELECT *
@@ -186,6 +192,9 @@ class pocketlistsItemModel extends waModel
         return $result;
     }
 
+    /**
+     * @deprecated
+     */
     public function move($list_id, $id, $before_id)
     {
         if ($before_id) { // before some item - shift other items
@@ -236,27 +245,29 @@ class pocketlistsItemModel extends waModel
             $item['complete_userpic'] = $user->getPhoto('20');
         }
 
-        $date = strtotime($item['due_date']);
-        $now = time();
-
-        $item['due_status'] = 0;
-        if ($item['due_date'] || $item['due_datetime']) {
-            if ($item['due_datetime'] && $now > $item['due_datetime']) { // overdue datetime
-                $item['due_status'] = 3;
-            } elseif (strtotime(date("Y-m-d")) > $date) { // overdue date
-                $item['due_status'] = 3;
-            } elseif ($item['due_date'] == date("Y-m-d")) { // today
-                $item['due_status'] = 2;
-            } elseif ($item['due_date'] == date("Y-m-d", $now + 60 * 60 * 24)) { // tomorrow
-                $item['due_status'] = 1;
-            }
-
-            $item['calc_priority'] = max($item['due_status'], $item['priority']);
-        }
+        $this->updatePriority($item);
 
         return $item;
     }
 
+    private function updatePriority(&$item)
+    {
+        $date = strtotime($item['due_date']);
+        $now = time();
+        $due_status = 0;
+        if (!empty($item['due_date']) || !empty($item['due_datetime'])) {
+            if (!empty($item['due_datetime']) && $now > $item['due_datetime']) { // overdue datetime
+                $due_status = 3;
+            } elseif (strtotime(date("Y-m-d")) > $date) { // overdue date
+                $due_status = 3;
+            } elseif ($item['due_date'] == date("Y-m-d")) { // today
+                $due_status = 2;
+            } elseif ($item['due_date'] == date("Y-m-d", $now + 60 * 60 * 24)) { // tomorrow
+                $due_status = 1;
+            }
+        }
+        $item['calc_priority'] = max($due_status, $item['priority']);
+    }
 
     public function sortItems($list_id)
     {
@@ -266,7 +277,7 @@ class pocketlistsItemModel extends waModel
                   i.list_id = i:id
                   AND i.status = 0
                 -- GROUP BY i.parent_id, i.id
-                ORDER BY i.priority DESC, i.due_date DESC, i.name ASC";
+                ORDER BY i.calc_priority DESC, (i.due_date IS NULL), i.due_date ASC, (i.due_datetime IS NULL), i.due_datetime ASC, i.name ASC";
         $items = $this->query($sql, array('id' => $list_id))->fetchAll();
 
         $sort = 0;

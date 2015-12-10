@@ -20,7 +20,7 @@
         {/if}
     </div>
     <label class="pl-done-label">
-        <input type="checkbox" class="pl-done{if $item.priority == 1} pl-green{elseif $item.priority == 2} pl-yellow{elseif $item.priority == 3} pl-red{/if}" {if $item.status == 1}checked="checked"{/if}{if isset($archive) && $archive == true}disabled{/if}>
+        <input type="checkbox" class="pl-done{if $item.calc_priority == 1} pl-green{elseif $item.calc_priority == 2} pl-yellow{elseif $item.calc_priority == 3} pl-red{/if}" {if $item.status == 1}checked="checked"{/if}{if isset($archive) && $archive == true}disabled{/if}>
         <span></span>
     </label>
     <label class="pl-select-label">
