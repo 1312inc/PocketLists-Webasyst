@@ -20,7 +20,7 @@ class pocketlistsNotifications
         $message = new waMailMessage($subject, $body);
         $message->setTo($to);
         // todo: settings?
-        $message->setFrom('pocketlists@webasyst.ru', 'Pocketlists Notifier');
+//        $message->setFrom('pocketlists@webasyst.ru', 'Pocketlists Notifier');
 
         if ($message->send()) {
         }
