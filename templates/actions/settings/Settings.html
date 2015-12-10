@@ -120,6 +120,7 @@
                 <div class="value no-shift submit">
                     <br>
                     <input type="submit" value="[`Save`]" id="pl-save-settings" class="button green" />
+                    <i class="icon16 yes" style="display: none;"></i>
                 </div>
 
               </div>
@@ -164,13 +165,14 @@
     (function(){
         var $loading = $('<i class="icon16 loading">');
         $('#pl-save-settings').on('click', function(e) {
+            var $this = $(this);
             e.preventDefault();
-            $('#pl-save-settings').after($loading);
+            $this.after($loading);
             $.post('?module=settings&action=save', $('#pl-settings-form').serialize(), function(r){
                 $loading.remove();
                 if (r.status==='ok') {
-                    var $saved = $('<span><i class="icon16 yes"></i></span>');
-                    $('#pl-save-settings').after($saved.delay(3000).remove());
+                    $.pocketlist.updateAppCounter();
+                    $this.next('.icon16.yes').show(200).delay(3000).hide(200);
                 } else {
                     alert('error while saving');
                 }

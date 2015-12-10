@@ -146,6 +146,7 @@
             },
             function (r) {
                 if (r.status === 'ok') {
+                    $.pocketlist.updateAppCounter();
                     // remove from undone list
                     $item.find('ul.menu-v').find(':checkbox').prop('checked', status); // check nesting items
                     $item.find('.pl-done').prop('disabled', false);
@@ -438,6 +439,7 @@
                 var $this = $(this);
                 $this.find('#pl-item-details-save').after($loading);
                 $.post('?module=item&action=data', $this.serialize(), function (html) {
+                    $.pocketlist.updateAppCounter();
                     $loading.remove();
                     $list_items_wrapper.find('[data-id="' + id + '"] > .pl-item').replaceWith($(html).addClass('pl-item-selected'));
                     $wrapper.hide().empty();

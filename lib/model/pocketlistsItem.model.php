@@ -342,4 +342,27 @@ class pocketlistsItemModel extends waModel
         return $results;
     }
 
+    public function getAppCountForUser()
+    {
+        $settings = pocketlistsHelper::getUserSettings();
+        $now = time();
+
+        $q = "SELECT id FROM {$this->table} WHERE status = 0 AND assigned_contact_id = i:contact_id";
+
+        switch ($settings['app_icon']) {
+            case 0: // overdue
+                $q .= " AND (due_date <= '".(date("Y-m-d", $now - 60 * 60 * 24))."' OR due_datetime < {$now})";
+                break;
+            case 1: // overdue + today
+                $q .= " AND (due_date <= '".(date("Y-m-d"))."' OR due_datetime < ".(strtotime("+1 day", $now)).")";
+                break;
+            case 2:
+                $q .= " AND (due_date <= '".(date("Y-m-d", $now + 60 * 60 * 24))."' OR due_datetime < ".(strtotime("+2 days", $now)).")";
+                break;
+            default:
+                return '';
+        }
+        return $this->query($q, array('contact_id' => wa()->getUser()->getId()))->count();
+    }
+
 }
