@@ -2,6 +2,9 @@
 
 class pocketlistsItemCompleteController extends waJsonController
 {
+    private $completed_items = array();
+    private $list;
+
     public function execute()
     {
         $list_id = waRequest::post('list_id', 0, waRequest::TYPE_INT);
@@ -10,7 +13,8 @@ class pocketlistsItemCompleteController extends waJsonController
 
         if ($list_id) {
             $im = new pocketlistsItemModel();
-            if ($id > 0) {
+            $list = false;
+            if ($id > 0) { // complete item/items
                 $item = $im->getByField(
                     array(
                         'list_id' => $list_id,
@@ -21,12 +25,15 @@ class pocketlistsItemCompleteController extends waJsonController
                     $tree = $im->getAllByList($list_id, $id);
                     $this->changeComplete($item['id'], $tree[$item['id']], $status, $im);
                 } else {
-                    $this->changeComplete($item['id'], array('id' => $item['id'], 'childs' => array()), $status, $im);
+                    $this->changeComplete($item['id'], $item + array('childs' => array()), $status, $im);
                 }
-            } elseif ($id === -1) {
+            } elseif ($id === -1) { // complete list
                 $tree = $im->getUndoneByList($list_id);
+                $lm = new pocketlistsListModel();
+                $list = $lm->getById($list_id);
                 $this->changeComplete(0, array('id' => null, 'childs' => $tree), $status, $im);
             }
+            pocketlistsNotifications::notifyAboutCompleteItems($this->completed_items, $list);
         }
 
     }
@@ -49,8 +56,12 @@ class pocketlistsItemCompleteController extends waJsonController
         } else {
             $data['complete_contact_id'] = null;
         }
-        if (!$im->updateById($item['id'], $data)) {
+        if (!$im->updateById($item['id'], $data, null, true)) {
             $this->errors[] = 'error while updating parent id: ' . $item['id'];
+        } else {
+            if ($status) {
+                $this->completed_items[] = array_merge($item, $data);
+            }
         };
         foreach ($item['childs'] as $i) {
             $this->changeComplete($item_id, $i, $status, $im);
