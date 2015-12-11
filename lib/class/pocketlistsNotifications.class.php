@@ -98,6 +98,56 @@ class pocketlistsNotifications
         }
     }
 
+    public static function notifyAboutNewAssign($item)
+    {
+        self::sendMail(array(
+            'contact_id' => $item['assigned_contact_id'],
+            'subject' => 'string:New assign!',
+            'body' => wa()->getAppPath('templates/mails/newassignitem.html'),
+            'variables' => array(
+                'item_name' => $item['name'],
+                'due_date' => waDateTime::format('humandatetime',$item['due_date']),
+            )
+        ));
+    }
+
+    public static function notifyAboutNewList($list)
+    {
+        $csm = new waContactSettingsModel();
+        $q = "SELECT
+                cs1.contact_id contact_id
+              FROM wa_contact_settings cs1
+              WHERE
+                cs1.app_id = s:app_id
+                AND cs1.name = 'email_create_list_on'
+                AND cs1.value = 1";
+        $users = $csm->query(
+            $q,
+            array(
+                'app_id' => wa()->getApp(),
+            )
+        )->fetchAll('contact_id');
+
+        $c = new waContact($list['contact_id']);
+        $create_contact_name = $c->getName();
+        $list['create_datetime'] = waDateTime::format('humandatetime',$list['create_datetime']);
+        foreach ($users as $user_id => $user) { // foreach user
+            if ($list['contact_id'] != $user_id) { // created not by user
+                self::sendMail(
+                    array(
+                        'contact_id' => $user_id,
+                        'subject' => 'string:New list!',
+                        'body' => wa()->getAppPath('templates/mails/newlist.html'),
+                        'variables' => array(
+                            'list_name' => $list['name'],
+                            'by' => $create_contact_name,
+                            'create_datetime' => $list['create_datetime'],
+                        )
+                    )
+                );
+            }
+        }
+    }
 
     /**
      * Send email to user

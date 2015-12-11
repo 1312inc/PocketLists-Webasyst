@@ -118,7 +118,8 @@ class pocketlistsItemModel extends waModel
 
     public function updateWithCalcPriority($id, $item)
     {
-        if ($email_me = pocketlistsUserSettings::emailWhenNewAssignToMe()) {
+        $us = new pocketlistsUserSettings();
+        if ($email_me = $us->emailWhenNewAssignToMe()) {
             $old_item = $this->getById($id);
         }
 
@@ -128,15 +129,7 @@ class pocketlistsItemModel extends waModel
                 $item['assigned_contact_id'] && // assigned to me is set
                 $item['assigned_contact_id'] == wa()->getUser()->getId() && // assigned id is mine
                 $item['assigned_contact_id'] != $old_item['assigned_contact_id'] ) { // assigned id is updated
-                pocketlistsNotifications::sendMail(array(
-                    'contact_id' => $item['assigned_contact_id'],
-                    'subject' => 'string:New assign!',
-                    'body' => wa()->getAppPath('templates/mails/newassignitem.html'),
-                    'variables' => array(
-                        'item_name' => $item['name'],
-                        'due_date' => waDateTime::format('humandatetime',$item['due_date']),
-                    )
-                ));
+                pocketlistsNotifications::notifyAboutNewAssign($item);
             }
         }
     }
