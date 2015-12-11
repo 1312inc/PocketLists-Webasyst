@@ -1,0 +1,10 @@
+<h3>Hi {$name}!</h3>
+{if $type = pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_ITEM_TO_FAVORITE_LIST}
+{elseif $type = pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_ITEM_TO_ANY_LIST}
+<p>Items just created in <b>{$list_name}</b>:</p>
+<ul>
+    {foreach $items as $item}
+    <li>{$item.name} by {$item.contact_name}</li>
+    {/foreach}
+</ul>
+{/if}

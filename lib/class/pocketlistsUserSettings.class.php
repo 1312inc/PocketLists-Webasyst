@@ -18,7 +18,7 @@ class pocketlistsUserSettings
     const EMAIL_WHEN_SOMEONE_COMPETES_ITEM_IN_FAVORITE_LIST = 2;
     const EMAIL_WHEN_SOMEONE_COMPETES_ANY_ITEM = 3;
 
-    const EMAIL_WHEN_SOMEONE_ADDS_ITEM_TO_LIST_FAVORITE = 0;
+    const EMAIL_WHEN_SOMEONE_ADDS_ITEM_TO_FAVORITE_LIST = 0;
     const EMAIL_WHEN_SOMEONE_ADDS_ITEM_TO_ANY_LIST = 1;
 
     public function __construct($contact_id = false)

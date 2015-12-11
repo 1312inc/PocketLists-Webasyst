@@ -98,6 +98,76 @@ class pocketlistsNotifications
         }
     }
 
+    /**
+     * Notify all related users (according to their settings about items
+     * @param $items array()
+     */
+    public static function notifyAboutNewItems($items, $list = false)
+    {
+        if (!count($items)) {
+            return;
+        }
+        if (!is_array($items)) {
+            $items = array($items);
+        }
+        $csm = new waContactSettingsModel();
+        $q = "SELECT
+                cs1.contact_id contact_id,
+                cs2.value setting
+              FROM wa_contact_settings cs1
+              LEFT JOIN wa_contact_settings cs2 ON
+                cs1.contact_id = cs2.contact_id
+                AND cs2.app_id = s:app_id
+                AND cs2.name = 'email_add_item'
+                AND cs2.value IN (i:setting)
+              WHERE
+                cs1.app_id = s:app_id
+                AND cs1.name = 'email_add_item_on'
+                AND cs1.value = 1";
+        $users = $csm->query(
+            $q,
+            array(
+                'app_id' => wa()->getApp(),
+                'setting' => array(
+                    pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_ITEM_TO_FAVORITE_LIST,
+                    pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_ITEM_TO_ANY_LIST,
+                )
+            )
+        )->fetchAll('contact_id');
+
+        foreach ($users as $user_id => $user) { // foreach user
+            $filtered_items = array();
+            switch ($user['setting']) {
+                case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_ITEM_TO_FAVORITE_LIST:
+                    // todo: get favs lists for user;
+                    break;
+                case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_ITEM_TO_ANY_LIST:
+                    foreach ($items as $item) { // filter items according to settings
+                        if ($item['contact_id'] != $user_id) { // created not by user
+                            $filtered_items[$item['id']] = $item;
+                            $c = new waContact($item['contact_id']);
+                            $filtered_items[$item['id']]['contact_name'] = $c->getName();
+                        }
+                    }
+                    if ($filtered_items) {
+                        self::sendMail(
+                            array(
+                                'contact_id' => $user_id,
+                                'subject' => 'string:New item!',
+                                'body' => wa()->getAppPath('templates/mails/newitem.html'),
+                                'variables' => array(
+                                    'list_name' => $list ? $list['name'] : false,
+                                    'type' => pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_ITEM_TO_ANY_LIST,
+                                    'items' => $filtered_items
+                                ),
+                            )
+                        );
+                    }
+                    break;
+            }
+        }
+    }
+
     public static function notifyAboutNewAssign($item)
     {
         self::sendMail(array(
