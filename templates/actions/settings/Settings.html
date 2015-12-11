@@ -14,10 +14,10 @@
                 </div>
                 <div class="value no-shift">
                     <select name="app_icon">
-                        <option value="0" {if $settings.app_icon == 0}selected="selected"{/if}>[`Overdue`]</option>
-                        <option value="1" {if $settings.app_icon == 1}selected="selected"{/if}>[`Overdue + Today`]</option>
-                        <option value="2" {if $settings.app_icon == 2}selected="selected"{/if}>[`Overdue + Today + Tomorrow`]</option>
-                        <option value="3" {if $settings.app_icon == 3}selected="selected"{/if}>[`None`]</option>
+                        <option value="0" {if !empty($settings.app_icon) && $settings.app_icon == 0}selected="selected"{/if}>[`Overdue`]</option>
+                        <option value="1" {if !empty($settings.app_icon) && $settings.app_icon == 1}selected="selected"{/if}>[`Overdue + Today`]</option>
+                        <option value="2" {if !empty($settings.app_icon) && $settings.app_icon == 2}selected="selected"{/if}>[`Overdue + Today + Tomorrow`]</option>
+                        <option value="3" {if !empty($settings.app_icon) && $settings.app_icon == 3}selected="selected"{/if}>[`None`]</option>
                     </select>
                     <p class="hint">[`App icon counter will also alert you about new to-do items and lists assigned to you by other users.`]</p>
                 </div>
@@ -59,12 +59,12 @@
                 </div>
                 <div class="value no-shift">
                     <label>
-                        <input value="1" type="checkbox" name="daily_recap[next][enable]" {if !empty($settings.daily_recap['next']['enable'])}checked="checked"{/if}> [`Daily recap on what’s up next`]
+                        <input value="1" type="checkbox" name="daily_recap_on" {if !empty($settings.daily_recap_on)}checked="checked"{/if}> [`Daily recap on what’s up next`]
                     </label>
-                    <select name="daily_recap[next][which]">
-                        <option value="today" {if $settings.daily_recap['next']['which'] == 'today'}selected="selected"{/if}>[`for today`]</option>
-                        <option value="today tomorrow" {if $settings.daily_recap['next']['which'] == 'today tomorrow'}selected="selected"{/if}>[`for today and tomorrow`]</option>
-                        <option value="next 7" {if $settings.daily_recap['next']['which'] == 'next 7'}selected="selected"{/if}>[`for next 7 days`]</option>
+                    <select name="daily_recap">
+                        <option value="0" {if !empty($settings.daily_recap) && $settings.daily_recap == 0}selected="selected"{/if}>[`for today`]</option>
+                        <option value="1" {if !empty($settings.daily_recap) && $settings.daily_recap == 1}selected="selected"{/if}>[`for today and tomorrow`]</option>
+                        <option value="2" {if !empty($settings.daily_recap) && $settings.daily_recap == 2}selected="selected"{/if}>[`for next 7 days`]</option>
                     </select>
 
                     {if 00}
@@ -75,44 +75,44 @@
                 </div>
                 <div class="value no-shift">
                     <label>
-                        <input value="1" type="checkbox" name="email_me[assigns_me_item][enable]" {if !empty($settings.email_me['assigns_me_item']['enable'])}checked="checked"{/if}> [`When someone assigns me a to-do`]
+                        <input value="1" type="checkbox" name="email_assign_me" {if !empty($settings.email_assign_me)}checked="checked"{/if}> [`When someone assigns me a to-do`]
                     </label>
                 </div>
                 <div class="value no-shift">
                     <label>
-                        <input value="1" type="checkbox" name="email_me[completes_item][enable]" {if !empty($settings.email_me['completes_item']['enable'])}checked="checked"{/if}> [`When someone marks a to-do item as complete`]
+                        <input value="1" type="checkbox" name="email_complete_item_on" {if !empty($settings.email_complete_item_on)}checked="checked"{/if}> [`When someone marks a to-do item as complete`]
                     </label>
-                    <select name="email_me[completes_item][which]">
-                        <option value="created" {if isset($settings.email_me['completes_item']['which']) && $settings.email_me['completes_item']['which'] == 'created'}selected="selected"{/if}>[`only items I created`]</option>
-                        <option value="favorite" {if isset($settings.email_me['completes_item']['which']) && $settings.email_me['completes_item']['which'] == 'favorite'}selected="selected"{/if}>[`only items I marked as favorite`]</option>
-                        <option value="favorite_list" {if isset($settings.email_me['completes_item']['which']) && $settings.email_me['completes_item']['which'] == 'favorite_list'}selected="selected"{/if}>[`only items on to-do lists I previously marked as favorite`]</option>
-                        <option value="any" {if isset($settings.email_me['completes_item']['which']) && $settings.email_me['completes_item']['which'] == 'any'}selected="selected"{/if}>[`any item on any list`]</option>
+                    <select name="email_complete_item">
+                        <option value="0" {if isset($settings.email_complete_item) && $settings.email_complete_item == 0}selected="selected"{/if}>[`only items I created`]</option>
+                        <option value="1" {if isset($settings.email_complete_item) && $settings.email_complete_item == 1}selected="selected"{/if}>[`only items I marked as favorite`]</option>
+                        <option value="2" {if isset($settings.email_complete_item) && $settings.email_complete_item == 2}selected="selected"{/if}>[`only items on to-do lists I previously marked as favorite`]</option>
+                        <option value="3" {if isset($settings.email_complete_item) && $settings.email_complete_item == 3}selected="selected"{/if}>[`any item on any list`]</option>
                     </select>
                 </div>
                 <div class="value no-shift">
                     <label>
-                        <input value="1" type="checkbox" name="email_me[adds_item][enable]" {if !empty($settings.email_me['adds_item']['enable'])}checked="checked"{/if}> [`When someone adds a to-do item`]
+                        <input value="1" type="checkbox" name="email_add_item_on" {if !empty($settings.email_add_item_on)}checked="checked"{/if}> [`When someone adds a to-do item`]
                     </label>
-                    <select name="email_me[adds_item][which]">
-                        <option value="favorite" {if isset($settings.email_me['adds_item']['which']) && $settings.email_me['adds_item']['which'] == 'favorite'}selected="selected"{/if}>[`to any list I previously marked as favorite`]</option>
-                        <option value="any" {if isset($settings.email_me['adds_item']['which']) && $settings.email_me['adds_item']['which'] == 'any'}selected="selected"{/if}>[`to just any list`]</option>
+                    <select name="email_add_item">
+                        <option value="0" {if isset($settings.email_add_item) && $settings.email_add_item == 0}selected="selected"{/if}>[`to any list I previously marked as favorite`]</option>
+                        <option value="1" {if isset($settings.email_add_item) && $settings.email_add_item == 1}selected="selected"{/if}>[`to just any list`]</option>
                     </select>
                 </div>
                 {*
                 <div class="value no-shift">
                     <label>
-                        <input value="1" type="checkbox" name="email_me[comments_item][enable]" {if !empty($settings.email_me['comments_item']['enable'])}checked="checked"{/if}> [`When someone comments a to-do item`]
+                        <input value="1" type="checkbox" name="email_comment_item_on" {if !empty($settings.email_comment_item_on)}checked="checked"{/if}> [`When someone comments a to-do item`]
                     </label>
-                    <select name="email_me[comments_item][which]">
-                        <option value="created" {if isset($settings.email_me['comments_item']['which']) && $settings.email_me['comments_item']['which'] == 'created'}selected="selected"{/if}>[`which I’ve created`]</option>
-                        <option value="favorite" {if isset($settings.email_me['comments_item']['which']) && $settings.email_me['comments_item']['which'] == 'favorite'}selected="selected"{/if}>[`which I previously marked as favorite`]</option>
-                        <option value="any" {if isset($settings.email_me['comments_item']['which']) && $settings.email_me['comments_item']['which'] == 'any'}selected="selected"{/if}>[`in just any list`]</option>
+                    <select name="email_comment_item">
+                        <option value="0" {if isset($settings.email_comment_item) && $settings.email_comment_item == 0}selected="selected"{/if}>[`which I’ve created`]</option>
+                        <option value="1" {if isset($settings.email_comment_item) && $settings.email_comment_item == 1}selected="selected"{/if}>[`which I previously marked as favorite`]</option>
+                        <option value="2" {if isset($settings.email_comment_item) && $settings.email_comment_item == 2}selected="selected"{/if}>[`in just any list`]</option>
                     </select>
                 </div>
                 *}
                 <div class="value no-shift">
                     <label>
-                        <input value="1" type="checkbox" name="email_me[creates_new_list][enable]" {if !empty($settings.email_me['creates_new_list']['enable'])}checked="checked"{/if}> [`When someone creates a new to-do list`]
+                        <input value="1" type="checkbox" name="email_create_list_on" {if !empty($settings.email_create_list_on)}checked="checked"{/if}> [`When someone creates a new to-do list`]
                     </label>
                 </div>
               </div>
