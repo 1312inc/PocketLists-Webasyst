@@ -53,11 +53,14 @@
                         <option value="2" {if !empty($settings.daily_recap) && $settings.daily_recap == 2}selected="selected"{/if}>[`for next 7 days`]</option>
                     </select>
 
-                    {if 00}
+                    <div class="pl-cron-msg" {if empty($settings.daily_recap_on)}style="display: none;"{/if}>
+                    {if !$last_recap_cron_time}
                         <p class="small"><br><em><i class="icon10 exclamation"></i> [`Daily recap notifications require CRON to be configured, which is not the case for your Pocket Lists app. See <a href="#" target="_blank">how to setup CRON for Pocket Lists</a>`]</em></p>
+                        <p class="small">{$cron_command}</p>
                     {else}
                         <p class="small"><br><em><i class="icon10 yes"></i> [`We’ll keep you up to date! And when there is nothing planned for the upcoming period, no alerts will be sent.`]</em></p>
                     {/if}
+                    </div>
                 </div>
                 <div class="value no-shift">
                     <label>
@@ -163,6 +166,10 @@
                     alert('error while saving');
                 }
             }, 'json')
+        });
+
+        $('input[name="daily_recap_on"]').on('click', function() {
+            $('.pl-cron-msg').toggle(200);
         });
 
         $('.pl-pocket-settings').on('click', 'a', function() {

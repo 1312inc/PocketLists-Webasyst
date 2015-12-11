@@ -3,7 +3,7 @@
 class pocketlistsNotifications
 {
     /**
-     * Notify all related users (according to their settings about items
+     * Notify all related users about completed items (according to their settings)
      * @param $items array()
      */
     public static function notifyAboutCompleteItems($items, $list = false)
@@ -99,7 +99,7 @@ class pocketlistsNotifications
     }
 
     /**
-     * Notify all related users (according to their settings about items
+     * Notify all related users about new items (according to their settings)
      * @param $items array()
      */
     public static function notifyAboutNewItems($items, $list = false)
@@ -170,15 +170,67 @@ class pocketlistsNotifications
 
     public static function notifyAboutNewAssign($item)
     {
-        self::sendMail(array(
-            'contact_id' => $item['assigned_contact_id'],
-            'subject' => 'string:New assign!',
-            'body' => wa()->getAppPath('templates/mails/newassignitem.html'),
-            'variables' => array(
-                'item_name' => $item['name'],
-                'due_date' => waDateTime::format('humandatetime',$item['due_date']),
+        self::sendMail(
+            array(
+                'contact_id' => $item['assigned_contact_id'],
+                'subject' => 'string:New assign!',
+                'body' => wa()->getAppPath('templates/mails/newassignitem.html'),
+                'variables' => array(
+                    'item_name' => $item['name'],
+                    'due_date' => waDateTime::format('humandatetime', $item['due_date']),
+                )
             )
-        ));
+        );
+    }
+
+    public static function notifyDailyRecap($vars = array())
+    {
+        $time = time();
+        $csm = new waContactSettingsModel();
+        // get recap setting for all users and do not select users who received daily recap less then 24 hours ago
+        $q = "SELECT
+                cs1.contact_id contact_id,
+                cs2.value last_recap_cron_time,
+                cs3.value setting
+              FROM wa_contact_settings cs1
+              LEFT JOIN wa_contact_settings cs2 ON
+                cs2.contact_id = cs1.contact_id
+                AND cs2.app_id = 'pocketlists'
+                AND cs2.name = 'last_recap_cron_time'
+              LEFT JOIN wa_contact_settings cs3 ON
+                cs3.contact_id = cs1.contact_id
+                AND cs3.app_id = 'pocketlists'
+                AND cs3.name = 'daily_recap'
+                AND cs3.value IN (i:setting)
+              WHERE
+                cs1.app_id = 'pocketlists'
+                AND cs1.name = 'daily_recap_on'
+                AND cs1.value = 1
+                AND cs2.value <= ($time - 60*60*24)";
+        $users = $csm->query(
+            $q,
+            array(
+                'setting' => array(
+                    pocketlistsUserSettings::DAILY_RECAP_FOR_TODAY,
+                    pocketlistsUserSettings::DAILY_RECAP_FOR_TODAY_AND_TOMORROW,
+                    pocketlistsUserSettings::DAILY_RECAP_FOR_NEXT_7_DAYS
+                )
+            )
+        )->fetchAll('contact_id');
+        $im = new pocketlistsItemModel();
+        foreach ($users as $user_id => $user) {
+            self::sendMail(
+                array(
+                    'contact_id' => $user_id,
+                    'subject' => 'string:Daily recap!',
+                    'body' => wa()->getAppPath('templates/mails/dailyrecap.html'),
+                    'variables' => array(
+                            'items' => $im->getDailyRecapItems($user_id, $user['setting'])
+                        ) + $vars
+                )
+            );
+            $csm->set($user_id, 'pocketlists', 'last_recap_cron_time', $time);
+        }
     }
 
     public static function notifyAboutNewList($list)
@@ -200,7 +252,7 @@ class pocketlistsNotifications
 
         $c = new waContact($list['contact_id']);
         $create_contact_name = $c->getName();
-        $list['create_datetime'] = waDateTime::format('humandatetime',$list['create_datetime']);
+        $list['create_datetime'] = waDateTime::format('humandatetime', $list['create_datetime']);
         foreach ($users as $user_id => $user) { // foreach user
             if ($list['contact_id'] != $user_id) { // created not by user
                 self::sendMail(
@@ -234,6 +286,8 @@ class pocketlistsNotifications
         $view->clearAllAssign();
 
         $view->assign('name', $contact->getName());
+        $view->assign('now', waDateTime::date("Y-m-d H:i:s", time(), $contact->getTimezone()));
+        $view->assign('backend_url', wa()->getConfig()->getBackendUrl(true).'/pocketlists/');
         foreach ($data['variables'] as $var_name => $var_value) {
             $view->assign($var_name, $var_value);
         }

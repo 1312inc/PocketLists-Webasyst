@@ -1,0 +1,8 @@
+<h3>Hi {$name}!</h3>
+<p>Now is {$now|wa_datetime:'humandatetime'} and here is your PocketLists Daily Recap:</p>
+<ul>
+    {foreach $items as $item}
+    <li>{$item.name}. Due date: {$item.due_datetime|default:$item.due_date|wa_datetime:'humandatetime'}</li>
+    {/foreach}
+</ul>
+<p><a href="{$backend_url}" target="_blank">Check it!</a></p>

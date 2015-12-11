@@ -365,6 +365,37 @@ class pocketlistsItemModel extends waModel
         return $results;
     }
 
+    public function getDailyRecapItems($contact_id, $when) {
+        $now = time();
+        $today = date("Y-m-d");
+        $tomorrow = date("Y-m-d", strtotime("+1 day", $now));
+        $seven_days = date("Y-m-d", strtotime("+7 days", $now));
+        switch ($when) {
+            case pocketlistsUserSettings::DAILY_RECAP_FOR_TODAY:
+                $when = " AND (due_date = '".$today."' OR (due_datetime >= ".strtotime($today)." AND due_datetime < ".strtotime($tomorrow)."))";
+                break;
+            case pocketlistsUserSettings::DAILY_RECAP_FOR_TODAY_AND_TOMORROW:
+                $when = " AND (due_date = '".$today."' OR due_date = '".$tomorrow."' OR (due_datetime >= ".strtotime($today)." AND due_datetime < ".(strtotime($tomorrow) + 60*60*24)."))";
+                break;
+            case pocketlistsUserSettings::DAILY_RECAP_FOR_NEXT_7_DAYS:
+                $when = " AND (due_date >= '".$today."' AND due_date <= '".$seven_days."' OR (due_datetime >= ".strtotime($today)." AND due_datetime < ".(strtotime($seven_days) + 60*60*24)."))";
+                break;
+        }
+        $q = "SELECT
+                *
+              FROM {$this->table}
+              WHERE
+                assigned_contact_id = i:id
+                AND status = 0
+                {$when}";
+
+        $items = $this->query($q, array('id' => $contact_id))->fetchAll();
+        foreach ($items as $id => $item) {
+            $items[$id] = $this->updateItem($item);
+        }
+        return $items;
+    }
+
     public function getAppCountForUser()
     {
         $settings = pocketlistsUserSettings::getAllSettings();
