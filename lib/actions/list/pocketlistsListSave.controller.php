@@ -10,7 +10,7 @@ class pocketlistsListSaveController extends waJsonController
             $im = new pocketlistsListModel();
             $list['update_datetime'] = date("Y-m-d H:i:s");
             $list['contact_id'] = wa()->getUser()->getId();
-            if ($im->updateById($list['id'], $list)) {
+            if ($im->update($list['id'], $list)) {
                 $this->response = 'ok';
             } else {
                 $this->errors = 'error while saving item';

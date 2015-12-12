@@ -7,7 +7,7 @@ class pocketlistsListDetailsAction extends waViewAction
         $id = waRequest::post('id', false, waRequest::TYPE_INT);
         $im = new pocketlistsListModel();
         if ($id) {
-            $list = $im->getById($id);
+            $list = $im->getList($id);
             $user_name  = new waContact($list['contact_id']);
             $list['username'] = $user_name->getName();
             $this->view->assign('list', $list);

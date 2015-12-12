@@ -14,10 +14,10 @@ class pocketlistsListUpdateController extends waJsonController
             $data['create_datetime'] = date("Y-m-d H:i:s");
         }
         $data['contact_id'] = wa()->getUser()->getId();
-        if ($inserted = $lm->insert($data, 1)) {
-            pocketlistsNotifications::notifyAboutNewList($data + array('id' => $inserted));
+        if ($data = $lm->add($data, 1)) {
+            pocketlistsNotifications::notifyAboutNewList($data);
         }
 
-        $this->response = array('id' => $inserted);
+        $this->response = array('id' => $data['id']);
     }
 }
