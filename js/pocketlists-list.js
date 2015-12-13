@@ -227,7 +227,25 @@
             });
         }
     };
-
+    var favorite = function(type, id) {
+        var $star = this.find('[class*="star"]');
+        $.post(
+            '?module=' + type + '&action=favorite',
+            {
+                id: id,
+                status: $star.hasClass('star-empty') ? 1 : 0
+            },
+            function (r) {
+                if (r.status === 'ok') {
+                    $star.toggleClass('star-empty star')
+                } else {
+                    alert(r.errors);
+                }
+                //$loading.remove();
+            },
+            'json'
+        );
+    };
     var update_list_count_badge = function() {
         $('#pl-lists')
             .find('[data-pl-list-id="' + list_id + '"]')
@@ -377,6 +395,15 @@
             status = $this.is(':checked') ? 1 : 0;
 
         complete_item.call($item, id, status);
+    });
+
+    // fav item
+    $list_items_wrapper.on('click', '.pl-favorite', function(e) {
+        e.preventDefault();
+        var $this = $(this),
+            $item = $this.closest(item_selector),
+            id = parseInt($item.data('id'));
+        favorite.call($item, 'item', id);
     });
 
     $(document).on('keydown', function (e) {
@@ -564,6 +591,13 @@
 
                 }
             }, 'json');
+        })
+        .on('click', '[data-pl-action="list-favorite"]', function (e) {
+            e.preventDefault();
+            var $this = $(this),
+                $list = $this.closest('.pl-list-title');
+
+            favorite.call($list, 'list', $list.find('#pl-list-id').val());
         });
 
     var list_details = function ($wrapper) {

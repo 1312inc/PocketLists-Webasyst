@@ -9,11 +9,13 @@ class pocketlistsListModel extends waModel
         return $this->query(
             "SELECT
               i.*,
-              l.*
+              l.*,
+              IF(uf.contact_id, 1, 0) favorite
             FROM {$this->table} l
             LEFT JOIN pocketlists_item i ON i.key_list_id = l.id
+            LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:id AND uf.item_id = i.id
             WHERE l.id = i:id",
-            array('id' => $id)
+            array('id' => $id, 'contact_id' => wa()->getUser()->getId())
         )->fetchAssoc();
     }
 

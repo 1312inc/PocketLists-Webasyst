@@ -36,13 +36,15 @@ class pocketlistsItemModel extends waModel
                   i.complete_contact_id complete_contact_id,
                   i.assigned_contact_id assigned_contact_id,
                   l.id list_id,
-                  l.name list_name,
+                  /*l.name list_name,*/
                   p.id pocket_id,
                   p.name pocket_name,
-                  p.color pocket_color
-                FROM pocketlists_item i
+                  p.color pocket_color,
+                  IF(uf.contact_id, 1, 0) favorite
+                FROM {$this->table} i
                 JOIN pocketlists_list l ON l.id = i.list_id
                 JOIN pocketlists_pocket p ON p.id = l.pocket_id
+                LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
                 WHERE
                   i.status > 0
                   {$by_user}
@@ -83,13 +85,15 @@ class pocketlistsItemModel extends waModel
                   i.complete_contact_id complete_contact_id,
                   i.assigned_contact_id assigned_contact_id,
                   l.id list_id,
-                  l.name list_name,
+                  /*l.name list_name,*/
                   p.id pocket_id,
                   p.name pocket_name,
-                  p.color pocket_color
-                FROM pocketlists_item i
+                  p.color pocket_color,
+                  IF(uf.contact_id, 1, 0) favorite
+                FROM {$this->table} i
                 JOIN pocketlists_list l ON l.id = i.list_id AND l.pocket_id IN (i:pocket_ids)
                 JOIN pocketlists_pocket p ON p.id = l.pocket_id
+                LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
                 WHERE
                   i.contact_id = i:contact_id AND i.priority > 0
                   OR i.assigned_contact_id = i:contact_id
@@ -105,7 +109,11 @@ class pocketlistsItemModel extends waModel
 
     public function getById($id)
     {
-        $items = parent::getById($id);
+//        $items = parent::getById($id);
+        $items = $this->query(
+            $this->getQuery()."LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id",
+            array('contact_id' => wa()->getUser()->get())
+        )->fetchAll();
         if (is_array($id)) {
             foreach ($items as $id => $item) {
                 $items[$id] = $this->updateItem($item);
@@ -128,16 +136,25 @@ class pocketlistsItemModel extends waModel
             if ($email_me && // settings are set
                 $item['assigned_contact_id'] && // assigned to me is set
                 $item['assigned_contact_id'] == wa()->getUser()->getId() && // assigned id is mine
-                $item['assigned_contact_id'] != $old_item['assigned_contact_id'] ) { // assigned id is updated
+                $item['assigned_contact_id'] != $old_item['assigned_contact_id']
+            ) { // assigned id is updated
                 pocketlistsNotifications::notifyAboutNewAssign($item);
             }
         }
     }
 
+    private function getQuery()
+    {
+        return "SELECT
+                  i.*,
+                  IF(uf.contact_id, 1, 0) favorite
+                FROM {$this->table} i
+                LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id ";
+    }
+
     public function getAllByList($list_id, $tree = true)
     {
-        $sql = "SELECT *
-                FROM {$this->table}
+        $sql = $this->getQuery() . "
                 WHERE list_id = i:lid
                 ORDER BY parent_id, sort ASC";
 
@@ -146,8 +163,7 @@ class pocketlistsItemModel extends waModel
 
     public function getUndoneByList($list_id, $tree = true)
     {
-        $sql = "SELECT *
-                FROM {$this->table}
+        $sql = $this->getQuery() . "
                 WHERE list_id = i:lid AND status = 0
                 ORDER BY parent_id, sort ASC";
 
@@ -156,8 +172,7 @@ class pocketlistsItemModel extends waModel
 
     public function getDoneByList($list_id, $tree = true)
     {
-        $sql = "SELECT *
-                FROM {$this->table}
+        $sql = $this->getQuery() . "
                 WHERE list_id = i:lid AND status > 0
                 ORDER BY parent_id, sort ASC";
 
@@ -166,8 +181,7 @@ class pocketlistsItemModel extends waModel
 
     public function getArchiveByList($list_id, $tree = true)
     {
-        $sql = "SELECT *
-                FROM {$this->table}
+        $sql = $this->getQuery() . "
                 WHERE list_id = i:lid AND status < 0
                 ORDER BY parent_id, sort ASC";
 
@@ -175,10 +189,9 @@ class pocketlistsItemModel extends waModel
     }
 
 
-
     private function getItems($sql, $list_id, $tree)
     {
-        $items = $this->query($sql, array('lid' => $list_id))->fetchAll();
+        $items = $this->query($sql, array('lid' => $list_id, 'contact_id' => wa()->getUser()->getId()))->fetchAll();
         foreach ($items as $id => $item) {
             $items[$id] = $this->updateItem($item);
         }
@@ -283,14 +296,13 @@ class pocketlistsItemModel extends waModel
 
     public function sortItems($list_id)
     {
-        $sql = "SELECT *
-                FROM pocketlists_item i
-                WHERE
+        $sql = $this->getQuery()."WHERE
                   i.list_id = i:id
                   AND i.status = 0
                 -- GROUP BY i.parent_id, i.id
                 ORDER BY i.calc_priority DESC, (i.due_date IS NULL), i.due_date ASC, (i.due_datetime IS NULL), i.due_datetime ASC, i.name ASC";
-        $items = $this->query($sql, array('id' => $list_id))->fetchAll();
+        $items = $this->getItems($sql, $list_id, false);
+//        $items = $this->query($sql, array('id' => $list_id))->fetchAll();
 
         $sort = 0;
         foreach ($items as $item) {
@@ -353,7 +365,9 @@ class pocketlistsItemModel extends waModel
 
     public function getAssignedOrCompletesByContactItems($contact_id)
     {
-        $q = "SELECT * FROM {$this->table} WHERE assigned_contact_id = i:id OR complete_contact_id = i:id ";
+        $q = "SELECT *
+              FROM {$this->table}
+              WHERE assigned_contact_id = i:id OR complete_contact_id = i:id ";
         $items = $this->query($q, array('id' => $contact_id))->fetchAll();
         $results = array(
             0 => array(),
@@ -365,20 +379,27 @@ class pocketlistsItemModel extends waModel
         return $results;
     }
 
-    public function getDailyRecapItems($contact_id, $when) {
+    public function getDailyRecapItems($contact_id, $when)
+    {
         $now = time();
         $today = date("Y-m-d");
         $tomorrow = date("Y-m-d", strtotime("+1 day", $now));
         $seven_days = date("Y-m-d", strtotime("+7 days", $now));
         switch ($when) {
             case pocketlistsUserSettings::DAILY_RECAP_FOR_TODAY:
-                $when = " AND (due_date = '".$today."' OR (due_datetime >= ".strtotime($today)." AND due_datetime < ".strtotime($tomorrow)."))";
+                $when = " AND (due_date = '" . $today . "' OR (due_datetime >= " . strtotime(
+                        $today
+                    ) . " AND due_datetime < " . strtotime($tomorrow) . "))";
                 break;
             case pocketlistsUserSettings::DAILY_RECAP_FOR_TODAY_AND_TOMORROW:
-                $when = " AND (due_date = '".$today."' OR due_date = '".$tomorrow."' OR (due_datetime >= ".strtotime($today)." AND due_datetime < ".(strtotime($tomorrow) + 60*60*24)."))";
+                $when = " AND (due_date = '" . $today . "' OR due_date = '" . $tomorrow . "' OR (due_datetime >= " . strtotime(
+                        $today
+                    ) . " AND due_datetime < " . (strtotime($tomorrow) + 60 * 60 * 24) . "))";
                 break;
             case pocketlistsUserSettings::DAILY_RECAP_FOR_NEXT_7_DAYS:
-                $when = " AND (due_date >= '".$today."' AND due_date <= '".$seven_days."' OR (due_datetime >= ".strtotime($today)." AND due_datetime < ".(strtotime($seven_days) + 60*60*24)."))";
+                $when = " AND (due_date >= '" . $today . "' AND due_date <= '" . $seven_days . "' OR (due_datetime >= " . strtotime(
+                        $today
+                    ) . " AND due_datetime < " . (strtotime($seven_days) + 60 * 60 * 24) . "))";
                 break;
         }
         $q = "SELECT
@@ -405,13 +426,19 @@ class pocketlistsItemModel extends waModel
 
         switch ($settings['app_icon']) {
             case 0: // overdue
-                $q .= " AND (due_date <= '".(date("Y-m-d", $now - 60 * 60 * 24))."' OR due_datetime < {$now})";
+                $q .= " AND (due_date <= '" . (date("Y-m-d", $now - 60 * 60 * 24)) . "' OR due_datetime < {$now})";
                 break;
             case 1: // overdue + today
-                $q .= " AND (due_date <= '".(date("Y-m-d"))."' OR due_datetime < ".(strtotime("+1 day", $now)).")";
+                $q .= " AND (due_date <= '" . (date("Y-m-d")) . "' OR due_datetime < " . (strtotime(
+                        "+1 day",
+                        $now
+                    )) . ")";
                 break;
             case 2:
-                $q .= " AND (due_date <= '".(date("Y-m-d", $now + 60 * 60 * 24))."' OR due_datetime < ".(strtotime("+2 days", $now)).")";
+                $q .= " AND (due_date <= '" . (date(
+                        "Y-m-d",
+                        $now + 60 * 60 * 24
+                    )) . "' OR due_datetime < " . (strtotime("+2 days", $now)) . ")";
                 break;
             default:
                 return '';
