@@ -7,9 +7,6 @@
                     <a href="#" class="inline-link gray" onClick="alert('waDialog с получением ссылки на список /list/...');"><b><i>[`More`]</i></b></a>
                     <ul class="menu-v with-icons" style="width: 230px;">
                         <li>
-                            <a href="#" onClick="alert('открывается сайдбар с редактированием свойств списка');"><i class="icon16 edit"></i> [`Edit list`]</a>
-                        </li>
-                        <li>
                             <a href="#" onClick="alert('waDialog с получением ссылки на список /list/...');"><i class="icon16 link"></i> [`Get public link`]</a>
                         </li>
                         <li>
@@ -20,6 +17,9 @@
                         </li>
                         <li>
                             <a href="#" data-pl-action="list-archive"><i class="icon16 pl archive"></i> [`Archive list`]</a>
+                        </li>
+                        <li class="bordered-top">
+                            <a href="#" onClick="alert('открывается сайдбар с редактированием свойств списка');"><i class="icon16 edit"></i> [`Edit list`]</a>
                         </li>
                         <li>
                             <a href="#" data-pl-action="list-delete"><i class="icon16 delete"></i> [`Delete list`]</a>
@@ -47,7 +47,7 @@
             {if $new}
                 <input type="text" placeholder="[`New list`]" id="pl-new-list-input" class="bold" />
             {else}
-                <span id="pl-list-name">{$list.name|escape|default:''}</span>
+                <span id="pl-list-name">{$list.name|escape|default:'&nbsp;'}</span>
             {/if}
         </h1>
     </header>
