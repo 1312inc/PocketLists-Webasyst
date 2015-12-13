@@ -22,10 +22,11 @@ class pocketlistsListModel extends waModel
     public function add($data, $type = false)
     {
         $inserted_list_id = $this->insert($data, $type);
-        $data = $data + array('key_list_id',$inserted_list_id);
+        $data['key_list_id'] = $inserted_list_id;
         $im = new pocketlistsItemModel();
         $inserted_item_id = $im->insert($data, $type);
-        $this->updateById($data['key_list_id'], array('key_list_id' => $inserted_item_id));
+        $data['id'] = $inserted_list_id;
+        $this->updateById($data['id'], array('key_item_id' => $inserted_item_id));
         return $inserted_list_id ? $data : false;
     }
 
