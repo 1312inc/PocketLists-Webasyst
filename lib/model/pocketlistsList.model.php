@@ -4,7 +4,7 @@ class pocketlistsListModel extends waModel
 {
     protected $table = 'pocketlists_list';
 
-    public function getList($id)
+    public function getById($id)
     {
         return $this->query(
             "SELECT

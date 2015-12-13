@@ -8,7 +8,7 @@ class pocketlistsListAction extends waViewAction
 
         if ($list_id > 0) { // existing list
             $lm = new pocketlistsListModel();
-            $list = $lm->getList($list_id);
+            $list = $lm->getById($list_id);
 
             $cs = new waContactSettingsModel();
             $cs->set(

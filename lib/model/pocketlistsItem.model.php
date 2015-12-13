@@ -107,21 +107,22 @@ class pocketlistsItemModel extends waModel
         return $items;
     }
 
-    public function getById($id)
+    public function getById($ids)
     {
+        if (!is_array($ids)) {
+            $ids = array($ids);
+        }
 //        $items = parent::getById($id);
         $items = $this->query(
-            $this->getQuery()."LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id",
-            array('contact_id' => wa()->getUser()->get())
+            $this->getQuery()."WHERE id IN (i:id)",
+            array('contact_id' => wa()->getUser()->getId(), 'id' => $ids)
         )->fetchAll();
-        if (is_array($id)) {
-            foreach ($items as $id => $item) {
-                $items[$id] = $this->updateItem($item);
-            }
-        } else {
-            $items = $this->updateItem($items);
+//        $items = $this->getItems($this->getQuery(), null, false);
+        foreach ($items as $id => $item) {
+            $items[$id] = $this->updateItem($item);
         }
-        return $items;
+//        return $items;
+        return count($ids) > 1 ? $items : reset($items);
     }
 
     public function updateWithCalcPriority($id, $item)
@@ -299,7 +300,7 @@ class pocketlistsItemModel extends waModel
         $sql = $this->getQuery()."WHERE
                   i.list_id = i:id
                   AND i.status = 0
-                -- GROUP BY i.parent_id, i.id
+                /*GROUP BY i.parent_id, i.id*/
                 ORDER BY i.calc_priority DESC, (i.due_date IS NULL), i.due_date ASC, (i.due_datetime IS NULL), i.due_datetime ASC, i.name ASC";
         $items = $this->getItems($sql, $list_id, false);
 //        $items = $this->query($sql, array('id' => $list_id))->fetchAll();
