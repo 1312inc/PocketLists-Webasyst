@@ -1,0 +1,7 @@
+<h3>Hi {$name}!</h3>
+<p>Your items completed by others:</p>
+<ul>
+    {foreach $items as $item}
+    <li>{$item.name} by {$item.complete_contact_name}</li>
+{/foreach}
+</ul>
