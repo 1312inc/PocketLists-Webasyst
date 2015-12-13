@@ -302,8 +302,8 @@ class pocketlistsItemModel extends waModel
                   AND i.status = 0
                 /*GROUP BY i.parent_id, i.id*/
                 ORDER BY i.calc_priority DESC, (i.due_date IS NULL), i.due_date ASC, (i.due_datetime IS NULL), i.due_datetime ASC, i.name ASC";
-        $items = $this->getItems($sql, $list_id, false);
-//        $items = $this->query($sql, array('id' => $list_id))->fetchAll();
+//        $items = $this->getItems($sql, $list_id, false);
+        $items = $this->query($sql, array('id' => $list_id, 'contact_id' => wa()->getUser()->getId()))->fetchAll();
 
         $sort = 0;
         foreach ($items as $item) {
