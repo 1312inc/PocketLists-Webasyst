@@ -12,7 +12,7 @@ class pocketlistsListFavoriteController extends waJsonController
             $im = new pocketlistsItemModel();
             $hidden_item = $im->getByField('key_list_id', $id);
             if ($status) {
-                $ufm->insert(array('contact_id' => wa()->getUser()->getId(), 'item_id' => $hidden_item['id']));
+                $ufm->insert(array('contact_id' => wa()->getUser()->getId(), 'item_id' => $hidden_item['id']), 2);
 //                $im = new pocketlistsItemModel();
 //                pocketlistsNotifications::notifyAboutCompleteItems($im->getById($id));
             } else {
