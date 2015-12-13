@@ -1,14 +1,16 @@
 <div class="pl-items pl-{$list.color|default:'none'}{if $empty == 0} pl-list-empty{/if}">
-    <header class="pl-list-title">
+    <header class="pl-list-title pl-title">
         <div class="float-right block half-padded">
             {if isset($list.id)}
             <ul class="menu-h dropdown">
                 <li>
                     <a href="#" class="inline-link gray" onClick="alert('waDialog с получением ссылки на список /list/...');"><b><i>[`More`]</i></b></a>
                     <ul class="menu-v with-icons" style="width: 230px;">
+                        {*
                         <li>
-                            <a href="#" onClick="alert('waDialog с получением ссылки на список /list/...');"><i class="icon16 link"></i> [`Get public link`]</a>
+                            <a href="#" onClick="alert('Coming soon');"><i class="icon16 link"></i> [`Get public link`]</a>
                         </li>
+                        *}
                         <li>
                             <a href="#" onClick="alert('waDialog для ввода email-адреса, куда отправлять список');"><i class="icon16 email"></i> [`Email list`]</a>
                         </li>

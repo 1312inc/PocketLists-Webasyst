@@ -18,6 +18,7 @@
                 {/if}
     </span>{/if}
         {/if}
+        <a href="#" class="pl-edit inline-link"><b><i>[`Edit`]</i></b></a>
     </div>
     <label class="pl-done-label">
         <input type="checkbox" class="pl-done{if $item.calc_priority == 1} pl-green{elseif $item.calc_priority == 2} pl-yellow{elseif $item.calc_priority == 3} pl-red{/if}" {if $item.status == 1}checked="checked"{/if}{if isset($archive) && $archive == true}disabled{/if}>

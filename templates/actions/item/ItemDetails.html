@@ -93,7 +93,7 @@
                 <span class="hint">{$item.create_datetime|wa_datetime:'humandatetime'}</span>
             </div>
         </div>
-        {if $item.complete_datetime}
+        {if $item.status == 1 && $item.complete_datetime}
             <div class="field">
                 <div class="name">[`Completed`]</div>
                 <div class="value no-shift">
