@@ -72,11 +72,9 @@ class pocketlistsNotifications
                     )->fetchAll('item_id');
                     $user_lists = array_keys($user_items);
                     foreach ($items as $item) {
-                        if (in_array(
-                            $item['id'],
-                            $user_items &&
+                        if (in_array($item['id'], $user_items) &&
                             $item['complete_contact_id'] != $user_id
-                        )) {
+                        ) {
                             $filtered_items[$item['id']] = $item;
                             $c = new waContact($item['complete_contact_id']);
                             $filtered_items[$item['id']]['complete_contact_name'] = $c->getName();
