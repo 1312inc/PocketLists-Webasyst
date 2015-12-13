@@ -124,9 +124,7 @@ label.pl-done-label { cursor: pointer; }
 /* Items
 -------- */
 
-#pl-item-add-link { }
 #pl-item-add { display: none; }
-
 #pl-item-add-wrapper-hover {
     display: block;
     max-height: 0;
@@ -166,16 +164,16 @@ input#pl-new-list-input,
 .pl-items { position: relative; min-height: 500px; }
 .pl-items.content.left300px { margin-left: 299px; }
 
-.pl-list-title { border-bottom: 1px solid rgba(0,0,0,0.1); padding: 25px 5px 25px 20px; }
-.pl-list-title:hover { background: rgba(0,0,0,0.04); }
-.pl-list-title h1 { padding-left: 29px; position: relative; cursor: default; }
-.pl-list-title h1 .pl-done + span { left: -7px; top: 4px; width: 22px; height: 22px; position: absolute; z-index: 1; }
-.pl-list-title h1 .loading { margin-left: 3px; margin-top: 8px; opacity: 0.5; }
-.pl-list-title h1.not-padded { padding-left: 0; }
-.pl-list-title ul.menu-h { position: relative; z-index: 2; }
-.pl-list-title ul.menu-h li:hover { background: transparent; }
-.pl-list-title ul.menu-h li ul.menu-v { top: 75%; }
-.pl-list-title ul.menu-h li ul.menu-v li:hover { background: rgba(0,0,0,0.07); }
+.pl-title { border-bottom: 1px solid rgba(0,0,0,0.1); padding: 25px 5px 25px 20px; }
+.pl-title:hover { background: rgba(0,0,0,0.04); }
+.pl-title h1 { padding-left: 29px; position: relative; }
+.pl-title h1 .pl-done + span { left: -7px; top: 4px; width: 22px; height: 22px; position: absolute; z-index: 1; }
+.pl-title h1 .loading { margin-left: 3px; margin-top: 8px; opacity: 0.5; }
+.pl-title h1.not-padded { padding-left: 0; }
+.pl-title ul.menu-h { position: relative; z-index: 2; }
+.pl-title ul.menu-h li:hover { background: transparent; }
+.pl-title ul.menu-h li ul.menu-v { top: 75%; }
+.pl-title ul.menu-h li ul.menu-v li:hover { background: rgba(0,0,0,0.07); }
 
 .pl-list-favorite { margin-right: 0 !important; padding-right: 3px !important; }
 
@@ -202,16 +200,17 @@ input#pl-new-list-input,
 .pl-list-items ul.menu-v li ul li ul li ul li ul li ul li ul li ul li ul li ul li .pl-item { padding-left: 238px; }
 
 .pl-list-items ul.menu-v li .pl-item .pl-meta { display: inline-block; float: right; margin: 0; padding: 14px; }
-.pl-list-items ul.menu-v li .pl-item .pl-favorite  { display: inline-block; float: right; margin-left: 5px; }
+.pl-list-items ul.menu-v li .pl-item .pl-favorite { display: inline-block; float: right; margin-left: 5px; }
 .pl-list-items ul.menu-v li .pl-item .pl-author { display: inline-block; float: right; margin-left: 5px; margin-top: 1px; }
+.pl-list-items ul.menu-v li .pl-item .pl-edit { display: none; position: absolute; right: 17px; margin-top: -4px; color: #aaa; }
 .pl-list-items ul.menu-v li .pl-item p { margin-bottom: 0; margin-top: 4px; line-height: 1.2em; }
+.pl-list-items ul.menu-v li .pl-item.pl-item-selected .pl-edit { display: inline-block; }
+.pl-list-items ul.menu-v li .pl-item.pl-item-selected .pl-favorite,
+.pl-list-items ul.menu-v li .pl-item.pl-item-selected .pl-author { opacity: 0; }
 
 .pl-is-selected { display: none; }
 
-.pl-list-items .pl-item-placeholder {
-    background: #fdda3b;
-    min-height: 5px;
-}
+.pl-list-items .pl-item-placeholder { background: rgba(0,0,0,0.1); min-height: 5px; }
 
 #pl-complete-log { display: none; }
 #pl-complete-log h5 { margin: 30px 15px 5px; }
@@ -222,6 +221,9 @@ input#pl-new-list-input,
 .pl-logbook .pl-due-today,
 .pl-logbook .pl-due-tomorrow,
 .pl-logbook .pl-due-someday { display: none; }
+.pl-logbook .pl-edit { display: none !important; }
+.pl-logbook .pl-favorite,
+.pl-logbook .pl-author { opacity: 1 !important; }
 
 /* Item & List details
 ---------------------- */
