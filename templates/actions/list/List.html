@@ -47,7 +47,7 @@
             {if $new}
                 <input type="text" placeholder="[`New list`]" id="pl-new-list-input" class="bold" />
             {else}
-                <span id="pl-list-name">{$list.name|escape|default:''}</span>
+                <span id="pl-list-name">{$list.name|escape|default:'&nbsp;'}</span>
             {/if}
         </h1>
     </header>

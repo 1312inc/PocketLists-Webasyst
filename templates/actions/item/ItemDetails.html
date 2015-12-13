@@ -17,6 +17,10 @@
             <div class="value no-shift"><input name="item[attachment]" type="file" /></div>
         </div>
         *}
+    </div>
+
+    <!-- notifications -->
+    <div class="field-group">
         <div class="field">
             <div class="name">[`Priority`]</div>
             <div class="value no-shift" id="pl-item-priority">
@@ -28,17 +32,13 @@
 
             </div>
         </div>
-    </div>
-
-    <!-- notifications -->
-    <div class="field-group">
-
         <div class="field">
             <div class="name">[`Due`]</div>
             <div class="value">
                 <input name="item[due_date]" class="pl-due-date-input" type="text" id="pl-item-due-datetime" value="{$item.due_date|default:''|wa_date}" />
                 <a href="#"><i class="icon16 calendar"></i></a>
             </div>
+            {if $item.status == 1}<div class="value"><p class="hint">[`This item is <strong>marked as completed</strong>. Setting priority and due date won’t be visible within the to-do list.`]</p></div>{/if}
         </div>
         {*
         <div class="field">
