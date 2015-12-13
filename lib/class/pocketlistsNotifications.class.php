@@ -67,10 +67,16 @@ class pocketlistsNotifications
                     break;
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_COMPETES_ITEM_I_FAVORITE:
                     $ufm = new pocketlistsUserFavoritesModel();
-                    $user_items = $ufm->query("SELECT item_id FROM {$ufm->getTableName()} WHERE contact_id = {$user_id}")->fetchAll('item_id');
+                    $user_items = $ufm->query(
+                        "SELECT item_id FROM {$ufm->getTableName()} WHERE contact_id = {$user_id}"
+                    )->fetchAll('item_id');
                     $user_lists = array_keys($user_items);
                     foreach ($items as $item) {
-                        if (in_array($item['id'], $user_items)) {
+                        if (in_array(
+                            $item['id'],
+                            $user_items &&
+                            $item['complete_contact_id'] != $user_id
+                        )) {
                             $filtered_items[$item['id']] = $item;
                             $c = new waContact($item['complete_contact_id']);
                             $filtered_items[$item['id']]['complete_contact_name'] = $c->getName();
@@ -91,10 +97,14 @@ class pocketlistsNotifications
                     break;
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_COMPETES_ITEM_IN_FAVORITE_LIST:
                     $ufm = new pocketlistsUserFavoritesModel();
-                    $user_lists = $ufm->query("SELECT i.key_list_id FROM {$ufm->getTableName()} uf JOIN pocketlists_item i ON uf.item_id = i.id AND i.key_list_id > 0 WHERE uf.contact_id = {$user_id}")->fetchAll('key_list_id');
+                    $user_lists = $ufm->query(
+                        "SELECT i.key_list_id FROM {$ufm->getTableName()} uf JOIN pocketlists_item i ON uf.item_id = i.id AND i.key_list_id > 0 WHERE uf.contact_id = {$user_id}"
+                    )->fetchAll('key_list_id');
                     $user_lists = array_keys($user_lists);
                     foreach ($items as $item) {
-                        if (in_array($item['list_id'], $user_lists)) {
+                        if (in_array($item['list_id'], $user_lists) &&
+                            $item['complete_contact_id'] != $user_id
+                        ) {
                             $filtered_items[$item['id']] = $item;
                             $c = new waContact($item['complete_contact_id']);
                             $filtered_items[$item['id']]['complete_contact_name'] = $c->getName();
@@ -180,7 +190,9 @@ class pocketlistsNotifications
             switch ($user['setting']) {
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_ITEM_TO_FAVORITE_LIST:
                     $ufm = new pocketlistsUserFavoritesModel();
-                    $user_lists = $ufm->query("SELECT i.key_list_id FROM {$ufm->getTableName()} uf JOIN pocketlists_item i ON uf.item_id = i.id AND i.key_list_id > 0 WHERE uf.contact_id = {$user_id}")->fetchAll('key_list_id');
+                    $user_lists = $ufm->query(
+                        "SELECT i.key_list_id FROM {$ufm->getTableName()} uf JOIN pocketlists_item i ON uf.item_id = i.id AND i.key_list_id > 0 WHERE uf.contact_id = {$user_id}"
+                    )->fetchAll('key_list_id');
                     $user_lists = array_keys($user_lists);
                     foreach ($items as $item) {
                         if (in_array($item['list_id'], $user_lists)) {
@@ -349,7 +361,7 @@ class pocketlistsNotifications
 
         $view->assign('name', $contact->getName());
         $view->assign('now', waDateTime::date("Y-m-d H:i:s", time(), $contact->getTimezone()));
-        $view->assign('backend_url', wa()->getConfig()->getBackendUrl(true).'/pocketlists/');
+        $view->assign('backend_url', wa()->getConfig()->getBackendUrl(true) . '/pocketlists/');
         foreach ($data['variables'] as $var_name => $var_value) {
             $view->assign($var_name, $var_value);
         }
