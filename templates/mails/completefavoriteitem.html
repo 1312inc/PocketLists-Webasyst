@@ -1,7 +1,7 @@
 <h3>Hi {$name}!</h3>
-<p>Favorite items completed by others:</p>
+<p>Favorite items {if !$complete}un{/if}completed by others:</p>
 <ul>
     {foreach $items as $item}
-    <li>{$item.name} by {$item.complete_contact_name}</li>
+    <li>{$item.name}{if $complete} by {$item.complete_contact_name}{/if}</li>
     {/foreach}
 </ul>

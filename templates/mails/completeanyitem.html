@@ -1,7 +1,7 @@
 <h3>Hi {$name}!</h3>
-<p>Items completed by others:</p>
+<p>Items {if !$complete}un{/if}completed by others:</p>
 <ul>
     {foreach $items as $item}
-    <li>{$item.name} by {$item.complete_contact_name}</li>
-{/foreach}
+    <li>{$item.name}{if $complete} by {$item.complete_contact_name}{/if}</li>
+    {/foreach}
 </ul>

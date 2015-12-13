@@ -57,9 +57,10 @@ class pocketlistsNotifications
                     self::sendMail(
                         array(
                             'contact_id' => $user_id,
-                            'subject' => 'string:Item you created was completed',
+                            'subject' => 'string:Item you created was {if !$complete}un{/if}completed',
                             'body' => wa()->getAppPath('templates/mails/completemyitem.html'),
                             'variables' => array(
+                                'complete' => reset($filtered_items)['status'],
                                 'items' => $filtered_items
                             ),
                         )
@@ -84,9 +85,10 @@ class pocketlistsNotifications
                         self::sendMail(
                             array(
                                 'contact_id' => $user_id,
-                                'subject' => 'string:Your favorite Item was completed',
+                                'subject' => 'string:Your favorite Item was {if !$complete}un{/if}completed',
                                 'body' => wa()->getAppPath('templates/mails/completefavoriteitem.html'),
                                 'variables' => array(
+                                    'complete' => reset($filtered_items)['status'],
                                     'items' => $filtered_items
                                 ),
                             )
@@ -112,9 +114,10 @@ class pocketlistsNotifications
                         self::sendMail(
                             array(
                                 'contact_id' => $user_id,
-                                'subject' => 'string:Item in your favorite list was completed',
+                                'subject' => 'string:Item in your favorite list was {if !$complete}un{/if}completed',
                                 'body' => wa()->getAppPath('templates/mails/completefavoritelistitem.html'),
                                 'variables' => array(
+                                    'complete' => reset($filtered_items)['status'],
                                     'items' => $filtered_items
                                 ),
                             )
@@ -133,9 +136,10 @@ class pocketlistsNotifications
                         self::sendMail(
                             array(
                                 'contact_id' => $user_id,
-                                'subject' => 'string:Item was completed',
+                                'subject' => 'string:Item was {if !$complete}un{/if}completed',
                                 'body' => wa()->getAppPath('templates/mails/completeanyitem.html'),
                                 'variables' => array(
+                                    'complete' => reset($filtered_items)['status'],
                                     'items' => $filtered_items
                                 ),
                             )

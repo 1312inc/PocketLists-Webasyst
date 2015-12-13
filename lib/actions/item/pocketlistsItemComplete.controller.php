@@ -59,9 +59,7 @@ class pocketlistsItemCompleteController extends waJsonController
         if (!$im->updateById($item['id'], $data, null, true)) {
             $this->errors[] = 'error while updating parent id: ' . $item['id'];
         } else {
-            if ($status) {
-                $this->completed_items[] = array_merge($item, $data);
-            }
+            $this->completed_items[] = array_merge($item, $data);
         };
         foreach ($item['childs'] as $i) {
             $this->changeComplete($item_id, $i, $status, $im);
