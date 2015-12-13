@@ -68,6 +68,28 @@ class pocketlistsNotifications
                     break;
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_COMPETES_ITEM_I_FAVORITE:
                     // todo: get favs items for user;
+                    $ufm = new pocketlistsUserFavoritesModel();
+                    $user_items = $ufm->query("SELECT item_id FROM {$ufm->getTableName()} WHERE contact_id = {$user_id}")->fetchAssoc(); //$ufm->getByField('contact_id', $user_id);
+                    foreach ($items as $item) {
+                        if (in_array($item['id'], $user_items)) {
+                            $filtered_items[$item['id']] = $item;
+                            $c = new waContact($item['complete_contact_id']);
+                            $filtered_items[$item['id']]['complete_contact_name'] = $c->getName();
+                        }
+                    }
+                    if ($filtered_items) {
+                        self::sendMail(
+                            array(
+                                'contact_id' => $user_id,
+                                'subject' => 'string:Your favorite Item was completed',
+                                'body' => wa()->getAppPath('templates/mails/completeitem.html'),
+                                'variables' => array(
+                                    'type' => pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_COMPETES_ITEM_I_FAVORITE,
+                                    'items' => $filtered_items
+                                ),
+                            )
+                        );
+                    }
                     break;
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_COMPETES_ITEM_IN_FAVORITE_LIST:
                     // todo: get favs lists for user;
@@ -284,6 +306,7 @@ class pocketlistsNotifications
         }
         $view = wa()->getView();
         $view->clearAllAssign();
+        $view->clearAllCache();
 
         $view->assign('name', $contact->getName());
         $view->assign('now', waDateTime::date("Y-m-d H:i:s", time(), $contact->getTimezone()));

@@ -4,11 +4,18 @@
 <p>Your items completed by others:</p>
 <ul>
     {foreach $items as $item}
-    <li>{$item.name} by {$item.completed_contac_name}</li>
+    <li>{$item.name} by {$item.complete_contact_name}</li>
 {/foreach}
 </ul>
 {elseif $type = pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_COMPETES_ANY_ITEM}
 <p>Items completed by others:</p>
+<ul>
+    {foreach $items as $item}
+    <li>{$item.name} by {$item.complete_contact_name}</li>
+    {/foreach}
+</ul>
+{elseif $type = pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_COMPETES_ITEM_I_FAVORITE}
+<p>Favorite items completed by others:</p>
 <ul>
     {foreach $items as $item}
     <li>{$item.name} by {$item.complete_contact_name}</li>
