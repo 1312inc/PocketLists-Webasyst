@@ -60,14 +60,12 @@ class pocketlistsNotifications
                             'subject' => 'string:Item you created was completed',
                             'body' => wa()->getAppPath('templates/mails/completemyitem.html'),
                             'variables' => array(
-                                'type' => pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_COMPETES_ITEM_I_CREATED,
                                 'items' => $filtered_items
                             ),
                         )
                     );
                     break;
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_COMPETES_ITEM_I_FAVORITE:
-                    // todo: get favs items for user;
                     $ufm = new pocketlistsUserFavoritesModel();
                     $user_items = $ufm->query("SELECT item_id FROM {$ufm->getTableName()} WHERE contact_id = {$user_id}")->fetchAll('item_id');
                     $user_lists = array_keys($user_items);
@@ -85,7 +83,6 @@ class pocketlistsNotifications
                                 'subject' => 'string:Your favorite Item was completed',
                                 'body' => wa()->getAppPath('templates/mails/completefavoriteitem.html'),
                                 'variables' => array(
-                                    'type' => pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_COMPETES_ITEM_I_FAVORITE,
                                     'items' => $filtered_items
                                 ),
                             )
@@ -93,7 +90,6 @@ class pocketlistsNotifications
                     }
                     break;
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_COMPETES_ITEM_IN_FAVORITE_LIST:
-                    // todo: get favs lists for user;
                     $ufm = new pocketlistsUserFavoritesModel();
                     $user_lists = $ufm->query("SELECT i.key_list_id FROM {$ufm->getTableName()} uf JOIN pocketlists_item i ON uf.item_id = i.id AND i.key_list_id > 0 WHERE uf.contact_id = {$user_id}")->fetchAll('key_list_id');
                     $user_lists = array_keys($user_lists);
@@ -111,7 +107,6 @@ class pocketlistsNotifications
                                 'subject' => 'string:Item in your favorite list was completed',
                                 'body' => wa()->getAppPath('templates/mails/completefavoritelistitem.html'),
                                 'variables' => array(
-                                    'type' => pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_COMPETES_ITEM_IN_FAVORITE_LIST,
                                     'items' => $filtered_items
                                 ),
                             )
@@ -133,7 +128,6 @@ class pocketlistsNotifications
                                 'subject' => 'string:Item was completed',
                                 'body' => wa()->getAppPath('templates/mails/completeanyitem.html'),
                                 'variables' => array(
-                                    'type' => pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_COMPETES_ANY_ITEM,
                                     'items' => $filtered_items
                                 ),
                             )
@@ -185,7 +179,29 @@ class pocketlistsNotifications
             $filtered_items = array();
             switch ($user['setting']) {
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_ITEM_TO_FAVORITE_LIST:
-                    // todo: get favs lists for user;
+                    $ufm = new pocketlistsUserFavoritesModel();
+                    $user_lists = $ufm->query("SELECT i.key_list_id FROM {$ufm->getTableName()} uf JOIN pocketlists_item i ON uf.item_id = i.id AND i.key_list_id > 0 WHERE uf.contact_id = {$user_id}")->fetchAll('key_list_id');
+                    $user_lists = array_keys($user_lists);
+                    foreach ($items as $item) {
+                        if (in_array($item['list_id'], $user_lists)) {
+                            $filtered_items[$item['id']] = $item;
+                            $c = new waContact($item['contact_id']);
+                            $filtered_items[$item['id']]['contact_name'] = $c->getName();
+                        }
+                    }
+                    if ($filtered_items) {
+                        self::sendMail(
+                            array(
+                                'contact_id' => $user_id,
+                                'subject' => 'string:New item in your favorite list!',
+                                'body' => wa()->getAppPath('templates/mails/newfavoritelistitem.html'),
+                                'variables' => array(
+                                    'list_name' => $list ? $list['name'] : false,
+                                    'items' => $filtered_items
+                                ),
+                            )
+                        );
+                    }
                     break;
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_ITEM_TO_ANY_LIST:
                     foreach ($items as $item) { // filter items according to settings
@@ -203,7 +219,6 @@ class pocketlistsNotifications
                                 'body' => wa()->getAppPath('templates/mails/newitem.html'),
                                 'variables' => array(
                                     'list_name' => $list ? $list['name'] : false,
-                                    'type' => pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_ITEM_TO_ANY_LIST,
                                     'items' => $filtered_items
                                 ),
                             )
