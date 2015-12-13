@@ -32,6 +32,7 @@ class pocketlistsListModel extends waModel
     public function update($id, $data)
     {
         $im = new pocketlistsItemModel();
+        unset($data['id']);
         $im->updateByField('key_list_id', $id, $data);
         return $this->updateById($id, $data);
     }
