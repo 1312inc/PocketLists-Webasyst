@@ -364,7 +364,6 @@
 
     $undone_items_wrapper
         .on('mouseenter', item_selector + ' > .pl-item', function (e) {
-            debugger;
             e.stopPropagation();
             var $item = $(this);
             if (!$item.find($new_item_wrapper).length) { // if no placeholder here
