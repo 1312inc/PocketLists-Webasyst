@@ -364,10 +364,11 @@
 
     $undone_items_wrapper
         .on('mouseenter', item_selector + ' > .pl-item', function (e) {
+            debugger;
             e.stopPropagation();
             var $item = $(this);
             if (!$item.find($new_item_wrapper).length) { // if no placeholder here
-                var $has_children = $item.closest(item_selector).find('.menu-v');
+                //var $has_children = $item.closest(item_selector).find('.menu-v');
                 //if ($has_children.length) { // if item has children - indent
                 //    $has_children.find('.pl-item').first().find('.pl-select-label').append($new_item_wrapper_hover.show())
                 //} else { // else on same level
