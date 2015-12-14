@@ -100,7 +100,7 @@ ul.pl-team li .pl-active-items { max-height: 2.4em; overflow: hidden; margin: 5p
 /* Done checkbox
 ---------------- */
 
-label.pl-done-label { cursor: pointer; }
+label.pl-done-label { cursor: pointer;position: relative;z-index: 2;}
 
 .pl-done { display: none; }
 .pl-done + span { display: block; float:left; width:16px; height:16px; background: rgba(255,255,255,0.2); border: 1px solid rgba(0,0,0,0.2); border-radius: 50%; position: relative; top: 14px; left: 17px; }
@@ -121,14 +121,17 @@ label.pl-done-label { cursor: pointer; }
 #pl-item-add { display: none; }
 #pl-item-add-wrapper-hover {
     display: block;
-    max-height: 0;
+    max-height: 10px;
     height: 4px;
     position: absolute;
-    left: 0; right: 0; bottom: -1px;
+    left: 0;
+    right: 0;
+    bottom: -1px;
     background: #fdda3b;
     margin: 0;
     cursor: pointer;
-
+    z-index: 10;
+    /* width: 100%; */
 }
 .pl-item-wrapper:hover #pl-item-add-wrapper-hover {
     max-height: 99px;
@@ -161,7 +164,7 @@ input#pl-new-list-input,
 .pl-title { border-bottom: 1px solid rgba(0,0,0,0.1); padding: 25px 5px 25px 20px; }
 .pl-title:hover { background: rgba(0,0,0,0.04); }
 .pl-title h1 { padding-left: 29px; position: relative; cursor: default; }
-.pl-title h1 .pl-done + span { left: -7px; top: 4px; width: 22px; height: 22px; position: absolute; z-index: 1; }
+.pl-title h1 .pl-done + span {left: -34px; top: 4px; width: 22px; height: 22px; position: absolute; z-index: 1;}
 .pl-title h1 .loading { margin-left: 3px; margin-top: 8px; opacity: 0.5; }
 .pl-title h1.not-padded { padding-left: 0; }
 .pl-title ul.menu-h { position: relative; z-index: 2; }
@@ -180,10 +183,10 @@ input#pl-new-list-input,
 
 .pl-list-items ul.menu-v { margin: 0; padding: 0; }
 .pl-list-items ul.menu-v li { padding: 0; margin: 0; }
-.pl-list-items ul.menu-v li .pl-item { display: block; border-bottom: 1px solid rgba(0,0,0,0.1); }
+.pl-list-items ul.menu-v li .pl-item { display: block; border-bottom: 1px solid rgba(0,0,0,0.1);position: relative;}
 .pl-list-items ul.menu-v li .pl-item:hover { background: rgba(0,0,0,0.04); }
 .pl-list-items ul.menu-v li .pl-item.pl-item-selected { background: rgba(0,0,0,0.06); }
-.pl-list-items ul.menu-v li label.pl-select-label { padding: 13px 25px 15px 49px; display: block; line-height: 1.3em; }
+.pl-list-items ul.menu-v li label.pl-select-label { padding: 13px 25px 15px 49px; display: block; line-height: 1.3em;position: relative;}
 .pl-list-items ul.menu-v li ul { padding-left: 0; margin: 0; }
 .pl-list-items ul.menu-v li ul li .pl-item { padding-left: 30px; }
 .pl-list-items ul.menu-v li ul li ul li .pl-item { padding-left: 56px; }

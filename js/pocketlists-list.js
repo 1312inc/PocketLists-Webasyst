@@ -65,12 +65,17 @@
                 data: data
             },
             function (html) {
+                debugger;
                 var $li = $this.closest(item_selector);
                 var $html = $('' + html + '');
                 $html.filter(item_selector).last()
                     .find('.pl-item').first().after($new_item_wrapper);
                 if ($li.length) {
-                    $li.after($html);
+                    if (!$li.parents(item_selector).length || $li.prev(item_selector).length) { // not first item in subs and not root item
+                        $li.after($html);
+                    } else {
+                        $li.before($html);
+                    }
                 } else {
                     $undone_items_wrapper.prepend($html);
                 }
@@ -363,11 +368,11 @@
             var $item = $(this);
             if (!$item.find($new_item_wrapper).length) { // if no placeholder here
                 var $has_children = $item.closest(item_selector).find('.menu-v');
-                if ($has_children.length) { // if item has children - indent
-                    $has_children.find('.pl-item').first().before($new_item_wrapper_hover.show())
-                } else { // else on same level
-                    $item.after($new_item_wrapper_hover.show());
-                }
+                //if ($has_children.length) { // if item has children - indent
+                //    $has_children.find('.pl-item').first().find('.pl-select-label').append($new_item_wrapper_hover.show())
+                //} else { // else on same level
+                    $item.find('.pl-select-label').append($new_item_wrapper_hover.show());
+                //}
             }
         })
         .on('mouseleave', function (e) {
@@ -375,7 +380,14 @@
         });
 
     $new_item_wrapper_hover.on('click', function (e) {
-        $new_item_wrapper_hover.after($new_item_wrapper);
+        // if item has children - place it before first
+        var $item = $(this);
+        var $has_children = $item.closest(item_selector).find('.menu-v');
+        if ($has_children.length) { // if item has children - indent
+            $has_children.find('.pl-item').first().before($new_item_wrapper);
+        } else { // else on same level
+            $item.closest(item_selector).find('.pl-item').first().after($new_item_wrapper);
+        }
         $new_item_wrapper_hover.detach();
         $new_item_wrapper.slideDown(200);
         $new_item_input.focus();
