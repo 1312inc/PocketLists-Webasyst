@@ -75,7 +75,7 @@
                     $undone_items_wrapper.prepend($html);
                 }
                 $loading.remove();
-                $new_item_input.val('').trigger('focus');
+                $new_item_input.val('').css('height', 'auto').trigger('focus');
                 $('.pl-list-empty').removeClass('pl-list-empty');
 
                 update_list_count_badge();
@@ -310,7 +310,15 @@
         $add_item_link.trigger('click');
     }
 
+    function resizeTextarea () {
+        $new_item_input.css('height', 'auto');
+        $new_item_input.css('height', ($new_item_input.get(0).scrollHeight - parseInt($new_item_input.css('padding-top')) - parseInt($new_item_input.css('padding-bottom'))) + 'px');
+    }
+
     $new_item_input
+        .on('change cut keydown drop paste', function() {
+            window.setTimeout(resizeTextarea, 0);
+        })
         .on('keydown', function (e) {
             var $this = $(this);
             if (!e.shiftKey && e.which === 13) {

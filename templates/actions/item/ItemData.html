@@ -26,7 +26,7 @@
     </label>
     <label class="pl-select-label">
         <input type="checkbox" class="pl-is-selected" {if isset($archive) && $archive == true}disabled{/if}>
-        <span class="pl-item-name{if $item.status == 1} gray{/if}">{$item.name|escape|default:'&nbsp;'}</span>
+        <span class="pl-item-name{if $item.status == 1} gray{/if}">{$item.name|default:'&nbsp;'}</span>
         {if $item.status == 1}
             {* completed *}
             <span class="hint">{$item.complete_datetime|wa_datetime:'humandatetime'}</span>
