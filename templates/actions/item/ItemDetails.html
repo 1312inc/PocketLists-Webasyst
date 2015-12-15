@@ -37,6 +37,18 @@
             <div class="value">
                 <input name="item[due_date]" class="pl-due-date-input" type="text" id="pl-item-due-datetime" value="{$item.due_date|default:''|wa_date}" />
                 <a href="#"><i class="icon16 calendar"></i></a>
+                <span id="pl-item-due-datetime-time">
+                    {$hour = $item.due_datetime|default:''|wa_datetime:'H'}
+                    <select name="item[due_datetime_hours]" class="pl-due-date-input" id="pl-item-due-datetime-hours" value="{$hour}" {if empty($item.due_datetime)}style="display: none;"{/if}>
+                        {for $i=0 to 24}{$h = "%02d"|sprintf:$i}<option value="{$h}" {if $h == $hour}selected="selected"{/if}>{$h}</option>{/for}
+                    </select>
+                    {$minutes = $item.due_datetime|default:''|wa_datetime:'i'}
+                    <select name="item[due_datetime_minutes]" class="pl-due-date-input" type="text" id="pl-item-due-datetime-minutes" value="{$minutes}" {if empty($item.due_datetime)}style="display: none;"{/if}>
+                        {for $i=0 to 60 step 5}{$m = "%02d"|sprintf:$i}<option value="{$m}" {if $m == $minutes}selected="selected"{/if}>{$m}</option>{/for}
+                    </select>
+                    <a href="#" id="pl-item-due-datetime-set" class="small" {if !empty($item.due_datetime)}style="display: none;"{/if}>[`Set time`]</a>
+                    <a href="#" id="pl-item-due-datetime-clear" class="small" {if empty($item.due_datetime)}style="display: none;"{/if}>[`Clear time`]</a>
+                </span>
             </div>
             {if $item.status == 1}<div class="value"><p class="hint">[`This item is <strong>marked as completed</strong>. Setting priority and due date won’t be visible within the to-do list.`]</p></div>{/if}
         </div>

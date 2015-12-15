@@ -575,6 +575,16 @@
                 $(this).addClass('selected')
                     .siblings().removeClass('selected')
             });
+            $wrapper.find('#pl-item-due-datetime-set').on('click', function(e) {
+                e.preventDefault();
+                var $this = $(this);
+                $this.hide().siblings().show().filter('select').prop('disabled', false);
+            });
+            $wrapper.find('#pl-item-due-datetime-clear').on('click', function(e) {
+                e.preventDefault();
+                var $this = $(this);
+                $this.hide().siblings().show().filter('select').hide().prop('disabled', true);
+            });
             $wrapper.find('[data-pl-action="item-delete"]').on('click', function (e) {
                 e.preventDefault();
 

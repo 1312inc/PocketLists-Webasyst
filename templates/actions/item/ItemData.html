@@ -39,7 +39,7 @@
         {/if}
         {if !empty($item.due_datetime)}
         <br>
-        <span class="small bold {if $item.due_status == 0}pl-due-someday{elseif $item.due_status == 1}pl-due-tomorrow{elseif $item.due_status == 2}pl-due-today{elseif $item.due_status == 3}pl-due-overdue{/if}">{$item.due_date|wa_datetime:'humandatetime'}</span>
+        <span class="small bold {if $item.calc_priority == 0}pl-due-someday{elseif $item.calc_priority == 1}pl-due-tomorrow{elseif $item.calc_priority == 2}pl-due-today{elseif $item.calc_priority == 3}pl-due-overdue{/if}">{$item.due_datetime|wa_datetime:'humandatetime'}</span>
         {else if !empty($item.due_date)}
         <br>
         <span class="small bold small bold {if $item.calc_priority == 0}pl-due-someday{elseif $item.calc_priority == 1}pl-due-tomorrow{elseif $item.calc_priority == 2}pl-due-today{elseif $item.calc_priority == 3}pl-due-overdue{/if}">{$item.due_date|wa_date:'humandate'}</span>
