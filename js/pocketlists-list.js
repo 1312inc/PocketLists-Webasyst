@@ -55,7 +55,7 @@
             );
         }
     };
-    var add_items = function (data) {
+    var add_items = function (data, callback) {
         var $this = $(this);
         $this.after($loading);
         $.post(
@@ -65,7 +65,6 @@
                 data: data
             },
             function (html) {
-                debugger;
                 var $li = $this.closest(item_selector);
                 var $html = $('' + html + '');
                 $html.filter(item_selector).last()
@@ -82,6 +81,8 @@
                 $loading.remove();
                 $new_item_input.val('').css('height', 'auto').trigger('focus');
                 $('.pl-list-empty').removeClass('pl-list-empty');
+
+                $.isFunction(callback) && callback.call($this);
 
                 update_list_count_badge();
                 update_sort.call($html);
@@ -301,15 +302,21 @@
     $add_item_link.on('click', function (e) {
         e.preventDefault();
         e.stopPropagation();
+        function show_new_item_wrapper() {
+            $new_item_wrapper.prependTo($undone_items_wrapper).slideDown(200, function () {
+                $new_item_input.focus();
+            }).wrap('<li class="pl-new-item-wrapper">');
+        }
         if ($new_item_wrapper.is(':visible')) {
             $new_item_wrapper.slideUp(200, function () {
                 $new_item_wrapper.detach();
                 $('.pl-new-item-wrapper').remove();
+                show_new_item_wrapper();
             });
         } else {
-            $new_item_wrapper.prependTo($undone_items_wrapper).slideDown(200).wrap('<li class="pl-new-item-wrapper">');
+            show_new_item_wrapper();
         }
-        $new_item_input.focus();
+
     });
     if ($('.pl-list-empty').length) {
         $add_item_link.trigger('click');
@@ -360,6 +367,25 @@
                     add_items.call(self, data);
                 }
             }, 100);
+        })
+        .on('blur', function() {
+            var $this = $(this),
+                parent_id = $this.closest('.menu-v').find(item_selector).first().data('parent-id'),
+                name = $this.val().trim();
+            function hide_new_item_wrapper() {
+                $new_item_wrapper.slideUp(200, function () {
+                    $new_item_wrapper.detach();
+                    $('.pl-new-item-wrapper').remove();
+                });
+            }
+            if (name) {
+                add_items.call(this, [{
+                    name: name,
+                    parent_id: parent_id
+                }], hide_new_item_wrapper);
+            } else {
+                hide_new_item_wrapper();
+            }
         });
 
     $undone_items_wrapper
