@@ -395,20 +395,19 @@
             }
         });
 
+    var undone_items_wrapper_hover_timeout = null;
     $undone_items_wrapper
         .on('mouseenter', item_selector + ' > .pl-item', function (e) {
             e.stopPropagation();
             var $item = $(this);
-            if (!$item.find($new_item_wrapper).length) { // if no placeholder here
-                //var $has_children = $item.closest(item_selector).find('.menu-v');
-                //if ($has_children.length) { // if item has children - indent
-                //    $has_children.find('.pl-item').first().find('.pl-select-label').append($new_item_wrapper_hover.show())
-                //} else { // else on same level
+            undone_items_wrapper_hover_timeout = setTimeout(function(){
+                if (!$item.find($new_item_wrapper).length) { // if no placeholder here
                     $item.find('.pl-select-label').append($new_item_wrapper_hover.show());
-                //}
-            }
+                }
+            }, 1000);
         })
-        .on('mouseleave', function (e) {
+        .on('mouseleave', item_selector + ' > .pl-item', function (e) {
+            clearTimeout(undone_items_wrapper_hover_timeout);
             $new_item_wrapper_hover.detach();
         });
 
