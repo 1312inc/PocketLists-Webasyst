@@ -70,10 +70,10 @@
 
                 $new_item_input.data('can_blur', false);
 
-                $html.filter(item_selector).last()
-                    .find('.pl-item').first().after($new_item_wrapper);
                 if ($li.length) {
-                    if (!$li.parents(item_selector).length || $li.prev(item_selector).length) { // not first item in subs and not root item
+                    if (!$li.parents(item_selector).length || // not root item
+                        //$li.prev(item_selector).length || // not first item in subs
+                        $new_item_wrapper.prev('.pl-item').length) { // new item wrapper is after item
                         $li.after($html);
                     } else {
                         $li.before($html);
@@ -81,6 +81,9 @@
                 } else {
                     $undone_items_wrapper.prepend($html);
                 }
+                $html.filter(item_selector).last()
+                    .find('.pl-item').first().after($new_item_wrapper);
+
                 $loading.remove();
                 $('.pl-list-empty').removeClass('pl-list-empty');
 
@@ -188,9 +191,11 @@
             'json'
         );
     };
-    var increase_item = function () {
+    var increase_item = function (e) {
         var $items = $undone_items_wrapper.find('.pl-item-selected').closest(item_selector);
         if ($items.length) {
+            e.preventDefault();
+            e.stopPropagation();
             $items.each(function () {
                 var $item = $(this),
                     $prev = $item.prev(item_selector);
@@ -210,9 +215,11 @@
             });
         }
     };
-    var decrease_item = function () {
+    var decrease_item = function (e) {
         var $items = $undone_items_wrapper.find('.pl-item-selected').closest(item_selector);
         if ($items.length) {
+            e.preventDefault();
+            e.stopPropagation();
             $items.each(function () {
                 var $item = $(this),
                     $prev = $item.parents(item_selector).first();
@@ -345,6 +352,7 @@
         })
         .on('keydown', function (e) {
             var $this = $(this);
+            $this.data('can_blur', true);
             if (!e.shiftKey && e.which === 13) {
                 e.preventDefault();
                 var parent_id = $this.closest('.menu-v').find(item_selector).first().data('parent-id'),
@@ -404,7 +412,7 @@
                 if (!$item.find($new_item_wrapper).length) { // if no placeholder here
                     $item.find('.pl-select-label').append($new_item_wrapper_hover.show());
                 }
-            }, 1000);
+            }, 500);
         })
         .on('mouseleave', item_selector + ' > .pl-item', function (e) {
             clearTimeout(undone_items_wrapper_hover_timeout);
@@ -415,6 +423,8 @@
         // if item has children - place it before first
         var $item = $(this);
         var $has_children = $item.closest(item_selector).find('.menu-v');
+
+        $new_item_input.data('can_blur', false);
         if ($has_children.length) { // if item has children - indent
             $has_children.find('.pl-item').first().before($new_item_wrapper);
         } else { // else on same level
@@ -423,6 +433,7 @@
         $new_item_wrapper_hover.detach();
         $new_item_wrapper.slideDown(200);
         $new_item_input.focus();
+        $new_item_input.data('can_blur', true);
     });
 
     $list_items_wrapper.on('change', '.pl-is-selected', function (e) {
@@ -490,9 +501,9 @@
             //    break;
             case 9: // tab
                 if (e.shiftKey) {
-                    decrease_item.call(this);
+                    decrease_item.call(this, e);
                 } else {
-                    increase_item.call(this);
+                    increase_item.call(this, e);
                 }
                 break;
             //case 37: // <--
