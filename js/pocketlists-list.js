@@ -442,6 +442,7 @@
                 $item_content_wrapper.addClass('pl-item-selected');
                 $this.prop('checked', true);
             } else if (!details_shown) { // on second - show details
+                $.pocketlist.scrollToTop();
                 $details.html($loading).show();
                 stickyDetailsSidebar();
                 $.post(
@@ -604,6 +605,7 @@
                 return;
             }
             if (clicked == 1) {
+                $.pocketlist.scrollToTop();
                 $details.html($loading).show();
                 stickyDetailsSidebar();
                 $this.data('pl-clicked', 2);

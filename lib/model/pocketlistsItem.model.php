@@ -420,7 +420,8 @@ class pocketlistsItemModel extends waModel
 
     public function getAppCountForUser()
     {
-        $settings = pocketlistsUserSettings::getAllSettings();
+        $us = new pocketlistsUserSettings();
+        $settings = $us->getAllSettings();
         $now = time();
 
         $q = "SELECT id FROM {$this->table} WHERE status = 0 AND assigned_contact_id = i:contact_id";

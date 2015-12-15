@@ -160,7 +160,7 @@
             $.post('?module=settings&action=save', $('#pl-settings-form').serialize(), function(r){
                 $loading.remove();
                 if (r.status==='ok') {
-                    $.pocketlist.updateAppCounter();
+                    $.pocketlists.updateAppCounter();
                     $this.next('.icon16.yes').show(200).delay(3000).hide(200);
                 } else {
                     alert('error while saving');
