@@ -500,10 +500,12 @@
             //    increase_item.call(this);
             //    break;
             case 9: // tab
-                if (e.shiftKey) {
-                    decrease_item.call(this, e);
-                } else {
-                    increase_item.call(this, e);
+                if (!$('#pl-list-details').is(':visible') && !$('#pl-item-details').is(':visible')) {
+                    if (e.shiftKey) {
+                        decrease_item.call(this, e);
+                    } else {
+                        increase_item.call(this, e);
+                    }
                 }
                 break;
             //case 37: // <--
