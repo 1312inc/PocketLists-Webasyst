@@ -117,6 +117,7 @@
 
             </form>
 
+        {if $admin}
             <h6 class="heading">[`Access rights`]</h6>
             <div class="field-group">
                 <div class="field">
@@ -137,6 +138,7 @@
                     </div>
                 </div>
             </div>
+        {/if}
         </div>
 
         <div class="clear-both"></div>
@@ -171,7 +173,12 @@
         $('input[name="daily_recap_on"]').on('click', function() {
             $('.pl-cron-msg').toggle(200);
         });
+    }());
+</script>
 
+{if $admin}
+<script type="text/javascript">
+    (function(){
         $('.pl-pocket-settings').on('click', 'a', function() {
             var $this = $(this);
             $('#pl-pocket-dialog').waDialog({
@@ -256,6 +263,6 @@
 
             return false;
         });
-
     }());
 </script>
+{/if}

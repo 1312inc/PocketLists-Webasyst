@@ -55,4 +55,13 @@ class pocketlistsHelper
             ORDER BY user_id ASC";
         return array_keys($wcr->query($query)->fetchAll('user_id'));
     }
+
+    public static function isAdmin()
+    {
+        static $result = null;
+        if ($result === null) {
+            $result = wa()->getUser()->getRights('pocketlists', 'backend') > 1;
+        }
+        return $result;
+    }
 }

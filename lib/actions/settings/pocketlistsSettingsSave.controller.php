@@ -7,6 +7,10 @@ class pocketlistsSettingsSaveController extends  waJsonController
         $cs = new waContactSettingsModel();
         $app_name = wa()->getApp();
 
+        if (!pocketlistsHelper::isAdmin()) {
+            throw new waException('Access denied.', 403);
+        }
+
         $data = array_merge(array(
             'daily_recap_on' => 0,
             'email_assign_me' => 0,
