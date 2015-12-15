@@ -29,9 +29,9 @@ class pocketlistsHelper
         return $contacts;
     }
 
-    public static function getAccessPocketForContact($contact_id)
+    public static function getAccessPocketForContact($contact_id = false)
     {
-        $user = new waContact($contact_id);
+        $user = $contact_id ? new waContact($contact_id) : wa()->getUser();
         if ($user->isAdmin() || $user->isAdmin('pocketlists')) {
             $pm = new pocketlistsPocketModel();
             $pockets = $pm->getAll('id');

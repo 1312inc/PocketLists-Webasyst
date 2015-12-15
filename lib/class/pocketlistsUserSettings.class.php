@@ -2,7 +2,9 @@
 
 class pocketlistsUserSettings
 {
-    private $settings = array();
+    private $settings;
+    private $contact_id;
+    private $csm;
 
     const ICON_OVERDUE = 0;
     const ICON_OVERDUE_TODAY= 1;
@@ -23,9 +25,15 @@ class pocketlistsUserSettings
 
     public function __construct($contact_id = false)
     {
-        $cs = new waContactSettingsModel();
+        $this->csm = new waContactSettingsModel();
         $app_name = wa()->getApp();
-        $this->settings = $cs->get($contact_id ? $contact_id : wa()->getUser()->getId(), $app_name);
+        $this->contact_id = $contact_id ? $contact_id : wa()->getUser()->getId();
+        $this->settings = $this->csm->get($this->contact_id, $app_name);
+    }
+
+    public function set($name, $value)
+    {
+        return $this->csm->set($this->contact_id, wa()->getApp(), $name, $value);
     }
 
     /**
@@ -81,6 +89,11 @@ class pocketlistsUserSettings
     public function isCreateNewList()
     {
         return !empty($this->settings['email_create_list_on']) ? true : false;
+    }
+
+    public function getLastPocketList()
+    {
+        return !empty($this->settings['last_pocket_list_id']) ? json_decode($this->settings['last_pocket_list_id'], true) : false;
     }
 
 }
