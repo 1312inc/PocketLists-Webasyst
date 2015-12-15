@@ -17,7 +17,6 @@ class pocketlistsItemCreateAction extends waViewAction
             $lm = new pocketlistsListModel();
             $list = $lm->getById($list_id);
             foreach ($data as $i => $d) {
-                $data[$i]['name'] = nl2br(strip_tags($data[$i]['name']));
                 $data[$i]['create_datetime'] = date("Y-m-d H:i:s");
                 $data[$i]['list_id'] = $list['id'];
                 $data[$i]['contact_id'] = $user_id;
