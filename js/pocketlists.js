@@ -28,9 +28,9 @@
                 }, 'json');
             }
         },
-        scrollToTop: function () {
-            if ($('body').scrollTop() > 80) {
-                $('html,body').animate({scrollTop: '80px'});
+        scrollToTop: function (speed, offset) {
+            if ($('body').scrollTop() > offset) {
+                $('html,body').animate({scrollTop: offset + 'px'}, speed);
             }
         },
         init: function () {
@@ -38,7 +38,7 @@
 
             var self = this;
             $('#wa-app').on('click', '[data-pl-scroll-to-top] a', function () {
-                self.scrollToTop();
+                self.scrollToTop(0, 80);
             });
             self.updateAppCounter();
         }
