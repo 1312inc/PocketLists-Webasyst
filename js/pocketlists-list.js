@@ -67,6 +67,9 @@
             function (html) {
                 var $li = $this.closest(item_selector);
                 var $html = $('' + html + '');
+
+                $new_item_input.data('can_blur', false);
+
                 $html.filter(item_selector).last()
                     .find('.pl-item').first().after($new_item_wrapper);
                 if ($li.length) {
@@ -79,8 +82,9 @@
                     $undone_items_wrapper.prepend($html);
                 }
                 $loading.remove();
-                $new_item_input.val('').css('height', 'auto').trigger('focus');
                 $('.pl-list-empty').removeClass('pl-list-empty');
+
+                $new_item_input.val('').trigger('focus').css('height', 'auto').data('can_blur', true);
 
                 $.isFunction(callback) && callback.call($this);
 
@@ -327,6 +331,14 @@
         $new_item_input.css('height', ($new_item_input.get(0).scrollHeight - parseInt($new_item_input.css('padding-top')) - parseInt($new_item_input.css('padding-bottom'))) + 'px');
     }
 
+    function hide_new_item_wrapper() {
+        $new_item_wrapper.slideUp(200, function () {
+            $new_item_wrapper.detach();
+            $('.pl-new-item-wrapper').remove();
+            $new_item_input.val('');
+        });
+    }
+
     $new_item_input
         .on('change cut keydown drop paste', function() {
             window.setTimeout(resizeTextarea, 0);
@@ -335,17 +347,14 @@
             var $this = $(this);
             if (!e.shiftKey && e.which === 13) {
                 e.preventDefault();
-                var parent_id = $this.closest('.menu-v').find(item_selector).first().data('parent-id');
+                var parent_id = $this.closest('.menu-v').find(item_selector).first().data('parent-id'),
+                    name = $this.val().trim();
                 add_items.call(this, [{
                     name: $this.val().trim(),
                     parent_id: parent_id
                 }]);
             } else if (e.which === 27) {
-                $new_item_wrapper.slideUp(200, function () {
-                    $new_item_wrapper.detach();
-                    $('.pl-new-item-wrapper').remove();
-                });
-                $new_item_input.val('');
+                hide_new_item_wrapper();
             }
         })
         .on('paste', function (e) {
@@ -371,20 +380,18 @@
         .on('blur', function() {
             var $this = $(this),
                 parent_id = $this.closest('.menu-v').find(item_selector).first().data('parent-id'),
-                name = $this.val().trim();
-            function hide_new_item_wrapper() {
-                $new_item_wrapper.slideUp(200, function () {
-                    $new_item_wrapper.detach();
-                    $('.pl-new-item-wrapper').remove();
-                });
-            }
-            if (name) {
-                add_items.call(this, [{
-                    name: name,
-                    parent_id: parent_id
-                }], hide_new_item_wrapper);
-            } else {
-                hide_new_item_wrapper();
+                name = $this.val().trim(),
+                can_blur = $this.data('can_blur');
+
+            if (can_blur) {
+                if (name) {
+                    add_items.call(this, [{
+                        name: name,
+                        parent_id: parent_id
+                    }], hide_new_item_wrapper);
+                } else {
+                    hide_new_item_wrapper();
+                }
             }
         });
 
