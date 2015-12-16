@@ -10,13 +10,13 @@ class pocketlistsListAction extends waViewAction
             $lm = new pocketlistsListModel();
             $list = $lm->getById($list_id);
 
-            $cs = new waContactSettingsModel();
-            $cs->set(
-                wa()->getUser()->getId(),
-                wa()->getApp(),
-                'last_pocket_list_id',
-                json_encode(array('pocket_id' => $list['pocket_id'], 'list_id' => $list['id']))
-            );
+            $available_pockets = pocketlistsHelper::getAccessPocketForContact();
+            if (!in_array($list['pocket_id'], $available_pockets)) {
+                throw new waException('Access denied.', 403);
+            }
+
+            $us = new pocketlistsUserSettings();
+            $us->set('last_pocket_list_id', json_encode(array('pocket_id' => $list['pocket_id'], 'list_id' => $list['id'])));
 
             $this->view->assign('list', $list);
 

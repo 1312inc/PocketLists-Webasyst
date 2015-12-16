@@ -7,7 +7,7 @@
             <div class="name">[`Title`]</div>
             <div class="value"><input type="text" class="bold large long" name="item[name]" value="{$item.name|escape}" /></div>
         </div>
-        <div class="field">
+        <div class="fiel
             <div class="name">[`Note`]</div>
             <div class="value"><textarea name="item[note]" placeholder="[`Optional text note`]">{$item.note|escape}</textarea></div>
         </div>
@@ -21,6 +21,7 @@
 
     <!-- notifications -->
     <div class="field-group">
+        {if $item.status == 0}
         <div class="field">
             <div class="name">[`Priority`]</div>
             <div class="value no-shift" id="pl-item-priority">
@@ -34,6 +35,7 @@
         </div>
         <div class="field">
             <div class="name">[`Due`]</div>
+
             <div class="value">
                 <input name="item[due_date]" class="pl-due-date-input" type="text" id="pl-item-due-datetime" value="{$item.due_date|default:''|wa_date}" />
                 <a href="#"><i class="icon16 calendar"></i></a>
@@ -50,8 +52,12 @@
                     <a href="#" id="pl-item-due-datetime-clear" class="small" {if empty($item.due_datetime)}style="display: none;"{/if}>[`Clear time`]</a>
                 </span>
             </div>
-            {if $item.status == 1}<div class="value"><p class="hint">[`This item is <strong>marked as completed</strong>. Setting priority and due date won’t be visible within the to-do list.`]</p></div>{/if}
         </div>
+        {else}
+        <div class="field">
+            <div class="value"><p class="hint">[`This item is <strong>marked as completed</strong>. Setting priority and due date won’t be visible within the to-do list.`]</p></div>
+        </div>
+        {/if}
         {*
         <div class="field">
             <div class="name">[`Repeat`]</div>

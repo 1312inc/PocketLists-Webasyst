@@ -540,8 +540,7 @@
                 stepMonths: 1,
                 numberOfMonths: 1,
                 gotoCurrent: true,
-                constrainInput: false,
-                minDate: new Date()
+                constrainInput: false
             };
 
             $wrapper.find('#pl-item-due-datetime').datepicker(datepicker_options);
@@ -706,6 +705,21 @@
         var list_id = 0;
         var icon_path = $wrapper.find('#pl-list-icon-dialog').find('ul').data('pl-icons-path');
         var init = function () {
+            var datepicker_options = {
+                changeMonth: true,
+                changeYear: true,
+                shortYearCutoff: 2,
+                dateShowWeek: false,
+                showOtherMonths: true,
+                selectOtherMonths: true,
+                stepMonths: 1,
+                numberOfMonths: 1,
+                gotoCurrent: true,
+                constrainInput: false
+            };
+
+            $wrapper.find('#pl-list-due-datetime').datepicker(datepicker_options);
+
             handlers();
             list_id = parseInt($wrapper.find('input[name="list\[id\]"]').val());
         };
@@ -737,6 +751,16 @@
                 $('#pl-list-color').find('input').val($(this).data('pl-list-color'));
                 $(this).addClass('selected')
                     .siblings().removeClass('selected')
+            });
+            $wrapper.find('#pl-list-due-datetime-set').on('click', function(e) {
+                e.preventDefault();
+                var $this = $(this);
+                $this.hide().siblings().show().filter('select').prop('disabled', false);
+            });
+            $wrapper.find('#pl-list-due-datetime-clear').on('click', function(e) {
+                e.preventDefault();
+                var $this = $(this);
+                $this.hide().siblings().show().filter('select').hide().prop('disabled', true);
             });
             $wrapper.find('#pl-list-icon-change a').on('click', function (e) {
                 e.preventDefault();
