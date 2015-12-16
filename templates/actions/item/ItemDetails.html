@@ -48,8 +48,8 @@
                     <select name="item[due_datetime_minutes]" class="pl-due-date-input" type="text" id="pl-item-due-datetime-minutes" value="{$minutes}" {if empty($item.due_datetime)}style="display: none;" disabled="disabled"{/if}>
                         {for $i=0 to 59 step 5}{$m = "%02d"|sprintf:$i}<option value="{$m}" {if $m == $minutes}selected="selected"{/if}>{$m}</option>{/for}
                     </select>
-                    <a href="#" id="pl-item-due-datetime-set" class="small" {if !empty($item.due_datetime)}style="display: none;"{/if}>[`Set time`]</a>
-                    <a href="#" id="pl-item-due-datetime-clear" class="small" {if empty($item.due_datetime)}style="display: none;"{/if}>[`Clear time`]</a>
+                    <a href="#" id="pl-item-due-datetime-set" class="small inline-link" {if !empty($item.due_datetime)}style="display: none;"{/if}><b><i>[`Set time`]</i></b></a>
+                    <a href="#" id="pl-item-due-datetime-clear" class="small inline-link" {if empty($item.due_datetime)}style="display: none;"{/if}><b><i>[`Clear time`]</i></b></a>
                 </span>
             </div>
         </div>

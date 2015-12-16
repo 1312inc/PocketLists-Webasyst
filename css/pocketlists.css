@@ -163,10 +163,11 @@ input#pl-new-list-input,
 
 .pl-title { border-bottom: 1px solid rgba(0,0,0,0.1); padding: 25px 5px 25px 20px; }
 .pl-title:hover { background: rgba(0,0,0,0.04); }
-.pl-title h1 { padding-left: 29px; position: relative; cursor: default; }
+.pl-title h1 { padding-left: 29px; position: relative; cursor: default; margin-bottom: 0.2em; }
 .pl-title h1 .pl-done + span {left: -34px; top: 4px; width: 22px; height: 22px; position: absolute; z-index: 1;}
 .pl-title h1 .loading { margin-left: 3px; margin-top: 8px; opacity: 0.5; }
 .pl-title h1.not-padded { padding-left: 0; }
+.pl-title h1 .pl-list-due { font-size: 1rem; display: block; margin-bottom: -10px; }
 .pl-title ul.menu-h { position: relative; z-index: 2; }
 .pl-title ul.menu-h li:hover { background: transparent; }
 .pl-title ul.menu-h li ul.menu-v { top: 75%; }
@@ -198,7 +199,7 @@ input#pl-new-list-input,
 .pl-list-items ul.menu-v li ul li ul li ul li ul li ul li ul li ul li ul li .pl-item { padding-left: 212px; }
 .pl-list-items ul.menu-v li ul li ul li ul li ul li ul li ul li ul li ul li ul li .pl-item { padding-left: 238px; }
 
-.pl-list-items ul.menu-v li .pl-item .pl-meta { display: inline-block; float: right; margin: 0; padding: 14px; }
+.pl-list-items ul.menu-v li .pl-item .pl-meta { display: inline-block; float: right; margin: 0; padding: 14px; cursor: move; }
 .pl-list-items ul.menu-v li .pl-item .pl-favorite { display: inline-block; float: right; margin-left: 5px; }
 .pl-list-items ul.menu-v li .pl-item .pl-author { display: inline-block; float: right; margin-left: 5px; margin-top: 1px; }
 .pl-list-items ul.menu-v li .pl-item .pl-edit { display: none; position: absolute; right: 17px; margin-top: -4px; }
