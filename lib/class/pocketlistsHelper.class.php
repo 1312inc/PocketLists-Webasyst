@@ -64,4 +64,17 @@ class pocketlistsHelper
         }
         return $result;
     }
+
+    public static function getDueDatetime(&$date)
+    {
+        if ($date['due_date'] && !empty($date['due_datetime_hours']) && !empty($date['due_datetime_minutes']))  {
+            $date['due_datetime'] = waDateTime::parse('datetime', $date['due_date']." ".$date['due_datetime_hours'].":".$date['due_datetime_minutes'].":00");
+            unset($date['due_datetime_hours']);
+            unset($date['due_datetime_minutes']);
+        } else {
+            $date['due_datetime'] = null;
+        }
+
+        $date['due_date'] = $date['due_date'] ? waDateTime::parse('date', $date['due_date']) : null;
+    }
 }

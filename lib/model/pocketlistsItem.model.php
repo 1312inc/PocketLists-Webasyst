@@ -421,25 +421,23 @@ class pocketlistsItemModel extends waModel
     {
         $us = new pocketlistsUserSettings();
         $settings = $us->getAllSettings();
-        $now = time();
+
+        $now = @waDateTime::parse('Y-m-d H:i:s', waDateTime::date('Y-m-d H:i:s'));
+        $today = date("Y-m-d");
+        $tomorrow = date("Y-m-d", strtotime("+1 day"));
+        $day_after_tomorrow = date("Y-m-d", strtotime("+2 day"));
 
         $q = "SELECT id FROM {$this->table} WHERE status = 0 AND assigned_contact_id = i:contact_id";
 
         switch ($settings['app_icon']) {
             case 0: // overdue
-                $q .= " AND (due_date <= '" . (date("Y-m-d", $now - 60 * 60 * 24)) . "' OR due_datetime < {$now})";
+                $q .= " AND ((due_date <= '{$today}' AND due_datetime < '{$now}') OR due_date < '{$today}')";
                 break;
             case 1: // overdue + today
-                $q .= " AND (due_date <= '" . (date("Y-m-d")) . "' OR due_datetime < " . (strtotime(
-                        "+1 day",
-                        $now
-                    )) . ")";
+                $q .= " AND (due_date <= '" . $today . "' OR due_datetime < '" . $tomorrow . "')";
                 break;
-            case 2:
-                $q .= " AND (due_date <= '" . (date(
-                        "Y-m-d",
-                        $now + 60 * 60 * 24
-                    )) . "' OR due_datetime < " . (strtotime("+2 days", $now)) . ")";
+            case 2: // overdue + today + tomorrow
+                $q .= " AND (due_date <= '" . $tomorrow . "' OR due_datetime < '" . $day_after_tomorrow . "')";
                 break;
             default:
                 return '';
