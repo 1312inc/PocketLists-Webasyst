@@ -34,11 +34,11 @@
                 <a href="#"><i class="icon16 calendar"></i></a>
                 <span id="pl-list-due-datetime-time">
                     {$hour = $list.due_datetime|default:''|wa_datetime:'H'}
-                    <select name="list[due_datetime_hours]" class="pl-due-date-input" id="pl-list-due-datetime-hours" value="{$hour}" {if empty($list.due_datetime)}style="display: none;"{/if}>
+                    <select name="list[due_datetime_hours]" class="pl-due-date-input" id="pl-list-due-datetime-hours" value="{$hour}" {if empty($list.due_datetime)}style="display: none;" disabled="disabled"{/if}>
                         {for $i=0 to 23}{$h = "%02d"|sprintf:$i}<option value="{$h}" {if $h == $hour}selected="selected"{/if}>{$h}</option>{/for}
                     </select>
                     {$minutes = $list.due_datetime|default:''|wa_datetime:'i'}
-                    <select name="list[due_datetime_minutes]" class="pl-due-date-input" type="text" id="pl-list-due-datetime-minutes" value="{$minutes}" {if empty($list.due_datetime)}style="display: none;"{/if}>
+                    <select name="list[due_datetime_minutes]" class="pl-due-date-input" type="text" id="pl-list-due-datetime-minutes" value="{$minutes}" {if empty($list.due_datetime)}style="display: none;" disabled="disabled"{/if}>
                         {for $i=0 to 59 step 5}{$m = "%02d"|sprintf:$i}<option value="{$m}" {if $m == $minutes}selected="selected"{/if}>{$m}</option>{/for}
                     </select>
                     <a href="#" id="pl-list-due-datetime-set" class="small" {if !empty($list.due_datetime)}style="display: none;"{/if}>[`Set time`]</a>
