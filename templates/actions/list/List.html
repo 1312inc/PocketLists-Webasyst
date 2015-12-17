@@ -53,6 +53,11 @@
                 <input type="text" placeholder="[`New list`]" id="pl-new-list-input" class="bold" />
             {else}
                 <span id="pl-list-name">{$list.name|escape|default:'&nbsp;'}</span>
+                {if !empty($list.due_datetime)}
+                <span class="pl-list-due {if $list.calc_priority == 0}pl-due-someday{elseif $list.calc_priority == 1}pl-due-tomorrow{elseif $list.calc_priority == 2}pl-due-today{elseif $list.calc_priority == 3}pl-due-overdue{/if}">{$list.due_datetime|wa_datetime:'humandatetime'}</span>
+                {else if !empty($list.due_date)}
+                <span class="pl-list-due {if $list.calc_priority == 0}pl-due-someday{elseif $list.calc_priority == 1}pl-due-tomorrow{elseif $list.calc_priority == 2}pl-due-today{elseif $list.calc_priority == 3}pl-due-overdue{/if}">{$list.due_date|wa_date:'humandate'}</span>
+                {/if}
             {/if}
         </h1>
     </header>
