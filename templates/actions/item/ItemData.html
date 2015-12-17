@@ -10,13 +10,10 @@
                 {/if}
             </span>
         {else}
-            {if !empty($item.assigned_contact_id)}<span class="pl-author" title="{sprintf('[`Assigned to %s`]', {$item.assigned_username})}">
-                {if isset($item.assigned_userpic)}
-                <i class="icon16 userpic20" style="background-image: url({$item.assigned_userpic})" alt="{$item.assigned_username}"></i>
-                {else}
-                <i class="icon16 userpic20"></i>
-                {/if}
-    </span>{/if}
+            {if $item.contact_id != $wa->user()->getId()}
+                {* item author userpic *}
+                <span class="pl-author" title="{sprintf('%s by %s', $item.create_datetime|wa_datetime:'humandatetime', $item.username|default:'%username%')}"><i class="icon16 userpic20" style="background-image: url({$item.userpic})" alt="{$item.username}"></i></span>
+            {/if}
         {/if}
         <a href="#" class="pl-edit inline-link"><b><i>[`Edit`]</i></b></a>
     </div>
@@ -30,12 +27,6 @@
         {if $item.status == 1}
             {* completed *}
             <span class="hint">{$item.complete_datetime|wa_datetime:'humandatetime'}</span>
-        {else}
-            {*if 111 || CREATED_NOT_BY_ME*}
-            {if $item.contact_id != $wa->user()->getId()}
-        <span class="hint">{sprintf('%s by %s', $item.create_datetime|wa_datetime:'humandatetime', $item.username|default:'%username%')}</span>
-            {/if}
-            {if !empty($item.note|escape)}<p class="hint">{$item.note|escape|nl2br}</p>{/if}
         {/if}
         {if !empty($item.due_datetime)}
         <br>
@@ -43,6 +34,11 @@
         {else if !empty($item.due_date)}
         <br>
         <span class="small bold {if $item.calc_priority == 0}pl-due-someday{elseif $item.calc_priority == 1}pl-due-tomorrow{elseif $item.calc_priority == 2}pl-due-today{elseif $item.calc_priority == 3}pl-due-overdue{/if}">{$item.due_date|wa_date:'humandate'}</span>
+        {/if}
+        {if $item.status != 1}
+            {if !empty($item.assigned_contact_id)}<strong class="hint"><br>{sprintf('[`Assigned to %s`]', {$item.assigned_username})}</strong>{/if}
+            {* <i class="icon16 userpic20" style="background-image: url({$item.assigned_userpic})" alt="{$item.assigned_username}"></i> *}
+            {if !empty($item.note|escape)}<p class="hint">{$item.note|escape|nl2br}</p>{/if}
         {/if}
     </label>
 </div>
