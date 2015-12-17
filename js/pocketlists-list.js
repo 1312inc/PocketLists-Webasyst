@@ -162,7 +162,7 @@
 
                     favoriteList();
                 })
-                .find('#pl-list-complete').on('click', function (e) {
+                .on('click', '#pl-list-complete', function (e) {
                     e.stopPropagation();
 
                     $dialog_complete_all.waDialog({
@@ -358,7 +358,7 @@
             $.post(
                 '?module=item&action=complete',
                 {
-                    list_id: list_id,
+                    list_id: list.list_id,
                     id: id,
                     status: status
                 },
