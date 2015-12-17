@@ -386,7 +386,7 @@
 
                                 callback && $.isFunction(callback) && callback.call($item);
                             });
-                        }, 500);
+                        }, 800);
 
                     } else {
                         alert(r.errors);
