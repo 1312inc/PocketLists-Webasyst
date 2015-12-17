@@ -41,6 +41,11 @@ class pocketlistsNotifications
             )
         )->fetchAll('contact_id');
 
+        $lm = new pocketlistsListModel();
+        $im = new pocketlistsItemModel();
+
+        $subject = 'string:{$item.name|escape} {if !$complete}un{/if}completed!';
+        // todo: refactor
         foreach ($users as $user_id => $user) { // foreach user
             $filtered_items = array();
             switch ($user['setting']) {
@@ -54,24 +59,31 @@ class pocketlistsNotifications
                             $filtered_items[$item['id']]['complete_contact_name'] = $c->getName();
                         }
                     }
-                    self::sendMail(
-                        array(
-                            'contact_id' => $user_id,
-                            'subject' => 'string:Item you created was {if !$complete}un{/if}completed',
-                            'body' => wa()->getAppPath('templates/mails/completemyitem.html'),
-                            'variables' => array(
-                                'complete' => reset($filtered_items)['status'],
-                                'items' => $filtered_items
-                            ),
-                        )
-                    );
+                    if ($filtered_items) {
+                        $item = reset($filtered_items);
+                        $list = $lm->getById($item['list_id']);
+                        $items_left = count($im->getUndoneByList($list['id'], false));
+                        self::sendMail(
+                            array(
+                                'contact_id' => $user_id,
+                                'subject' => $subject,
+                                'body' => wa()->getAppPath('templates/mails/completeanyitem.html'),
+                                'variables' => array(
+                                    'n' => $items_left,
+                                    'list' => $list,
+                                    'list_url' => wa()->getConfig()->getBackendUrl(true) . 'pocketlists/#/pocket/' . $list['pocket_id'] . '/list/' . $list['id'] . '/',
+                                    'complete' => $item['status'],
+                                    'item' => $item
+                                ),
+                            )
+                        );
+                    }
                     break;
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_COMPETES_ITEM_I_FAVORITE:
                     $ufm = new pocketlistsUserFavoritesModel();
                     $user_items = $ufm->query(
                         "SELECT item_id FROM {$ufm->getTableName()} WHERE contact_id = {$user_id}"
                     )->fetchAll('item_id');
-                    $user_lists = array_keys($user_items);
                     foreach ($items as $item) {
                         if (in_array($item['id'], $user_items) &&
                             $item['complete_contact_id'] != $user_id
@@ -82,14 +94,20 @@ class pocketlistsNotifications
                         }
                     }
                     if ($filtered_items) {
+                        $item = reset($filtered_items);
+                        $list = $lm->getById($item['list_id']);
+                        $items_left = count($im->getUndoneByList($list['id'], false));
                         self::sendMail(
                             array(
                                 'contact_id' => $user_id,
-                                'subject' => 'string:Your favorite Item was {if !$complete}un{/if}completed',
-                                'body' => wa()->getAppPath('templates/mails/completefavoriteitem.html'),
+                                'subject' => $subject,
+                                'body' => wa()->getAppPath('templates/mails/completeanyitem.html'),
                                 'variables' => array(
-                                    'complete' => reset($filtered_items)['status'],
-                                    'items' => $filtered_items
+                                    'n' => $items_left,
+                                    'list' => $list,
+                                    'list_url' => wa()->getConfig()->getBackendUrl(true) . 'pocketlists/#/pocket/' . $list['pocket_id'] . '/list/' . $list['id'] . '/',
+                                    'complete' => $item['status'],
+                                    'item' => $item
                                 ),
                             )
                         );
@@ -111,14 +129,20 @@ class pocketlistsNotifications
                         }
                     }
                     if ($filtered_items) {
+                        $item = reset($filtered_items);
+                        $list = $lm->getById($item['list_id']);
+                        $items_left = count($im->getUndoneByList($list['id'], false));
                         self::sendMail(
                             array(
                                 'contact_id' => $user_id,
-                                'subject' => 'string:Item in your favorite list was {if !$complete}un{/if}completed',
-                                'body' => wa()->getAppPath('templates/mails/completefavoritelistitem.html'),
+                                'subject' => $subject,
+                                'body' => wa()->getAppPath('templates/mails/completeanyitem.html'),
                                 'variables' => array(
-                                    'complete' => reset($filtered_items)['status'],
-                                    'items' => $filtered_items
+                                    'n' => $items_left,
+                                    'list' => $list,
+                                    'list_url' => wa()->getConfig()->getBackendUrl(true) . 'pocketlists/#/pocket/' . $list['pocket_id'] . '/list/' . $list['id'] . '/',
+                                    'complete' => $item['status'],
+                                    'item' => $item
                                 ),
                             )
                         );
@@ -133,14 +157,20 @@ class pocketlistsNotifications
                         }
                     }
                     if ($filtered_items) {
+                        $item = reset($filtered_items);
+                        $list = $lm->getById($item['list_id']);
+                        $items_left = count($im->getUndoneByList($list['id'], false));
                         self::sendMail(
                             array(
                                 'contact_id' => $user_id,
-                                'subject' => 'string:Item was {if !$complete}un{/if}completed',
+                                'subject' => $subject,
                                 'body' => wa()->getAppPath('templates/mails/completeanyitem.html'),
                                 'variables' => array(
-                                    'complete' => reset($filtered_items)['status'],
-                                    'items' => $filtered_items
+                                    'n' => $items_left,
+                                    'list' => $list,
+                                    'list_url' => $list ? wa()->getConfig()->getBackendUrl(true) . 'pocketlists/#/pocket/' . $list['pocket_id'] . '/list/' . $list['id'] . '/' : false,
+                                    'complete' => $item['status'],
+                                    'item' => $item
                                 ),
                             )
                         );
@@ -363,7 +393,7 @@ class pocketlistsNotifications
 
         $view->assign('name', $contact->getName());
         $view->assign('now', waDateTime::date("Y-m-d H:i:s", time(), $contact->getTimezone()));
-        $view->assign('backend_url', wa()->getConfig()->getBackendUrl(true) . '/pocketlists/');
+        $view->assign('backend_url', wa()->getConfig()->getBackendUrl(true) . 'pocketlists/');
         foreach ($data['variables'] as $var_name => $var_value) {
             $view->assign($var_name, $var_value);
         }
