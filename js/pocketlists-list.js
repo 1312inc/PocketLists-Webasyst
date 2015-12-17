@@ -670,7 +670,6 @@
                             item_details.trigger('hide.pl2');
                             selectItem($item);
                         } else if (!details_shown) { // on second - show details
-                            $.pocketlists.scrollToTop(200, 80);
                             item_details.trigger('show.pl2', [parseInt($item.data('id'))]); // show item details
                             selectItem($item);
                         } else { // on third
