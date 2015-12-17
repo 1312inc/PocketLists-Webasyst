@@ -9,7 +9,7 @@ class pocketlistsHelper
                 group_id
             FROM wa_contact_rights
             WHERE
-              (app_id = 'wa()->getApp()' AND ((name = s:id AND value = 1) OR (name = 'backend' AND value = 2))
+              (app_id = 'pocketlists' AND ((name = s:id AND value = 1) OR (name = 'backend' AND value = 2))
               OR
               (app_id = 'webasyst' AND name = 'backend' AND value = 1))";
         $contact_ids = $wcr->query(
