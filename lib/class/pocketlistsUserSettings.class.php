@@ -96,4 +96,9 @@ class pocketlistsUserSettings
         return !empty($this->settings['last_pocket_list_id']) ? json_decode($this->settings['last_pocket_list_id'], true) : false;
     }
 
+    public function getStreamInboxList()
+    {
+        return !empty($this->settings['stream_inbox_list']) ? $this->settings['stream_inbox_list'] : false;
+    }
+
 }

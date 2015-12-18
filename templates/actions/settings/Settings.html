@@ -28,13 +28,19 @@
                   [`To-do stream inbox`]
                 </div>
                 <div class="value no-shift">
-                    <select>
-                        <option>[`None`]</option>
-                        <option>...pocket1 > list1...</option>
-                        <option>...pocket1 > list2...</option>
-                        <option>...pocket2 > list1...</option>
-                        <option>...pocket2 > list2...</option>
+                    <select id="pl-inbox-pocket">
+                        <option value="0">[`None`]</option>
+                        {foreach $pockets as $pocket}
+                        <option value="{$pocket.id}" {if isset($inbox_list) && $inbox_list.pocket_id == $pocket.id}selected="selected"{/if}>{$pocket.name}</option>
+                        {/foreach}
                     </select>
+                    <select id="pl-inbox-list" {if !$settings.stream_inbox_list}style="display:none;"{/if}>
+                        {foreach $inbox_lists as $list}
+                        <option value="{$list.id}" {if $settings.stream_inbox_list == $list.id}selected="selected"{/if}>{$list.name}</option>
+                        {foreachelse}
+                        {/foreach}
+                    </select>
+                    <input type="hidden" name="stream_inbox_list" value="{$settings.stream_inbox_list}"/>
                     <p class="hint">[`When you add to-dos to your To-do stream, they will be stored within the specified particular to-do list.`]</p>
                 </div>
               </div>
@@ -173,6 +179,29 @@
         $('input[name="daily_recap_on"]').on('click', function() {
             $('.pl-cron-msg').toggle(200);
         });
+
+        $('#pl-inbox-pocket').on('change', function() {
+            var pocket_id =  $(this).find(':selected').val();
+            if (pocket_id > 0) {
+                $(this).after($loading);
+                $.get('?module=json&action=getLists&id=' + pocket_id, function (r) {
+                    $loading.remove();
+                    if (r.status === 'ok') {
+                        var options = '';
+                        $.each(r.data, function () {
+                            options += '<option value="' + this.id + '">' + this.name + '</option>';
+                        });
+                        $('#pl-inbox-list').show().html(options);
+                    }
+                }, 'json')
+            } else {
+                $('#pl-inbox-list').hide()
+                $('[name="stream_inbox_list"]').val('0');
+            }
+        });
+        $('#pl-inbox-list').on('change', function() {
+            $('[name="stream_inbox_list"]').val($(this).find(':selected').val());
+        });
     }());
 </script>
 
@@ -180,6 +209,7 @@
 <script type="text/javascript">
     (function(){
         $('.pl-pocket-settings').on('click', 'a', function() {
+            var $loading = $('<i class="icon16 loading">');
             var $this = $(this);
             $('#pl-pocket-dialog').waDialog({
                 'buttons': '<input type="submit" value="[`Save`]" class="button green" /> [`or`] <a class="cancel" href="#">[`cancel`]</a>',

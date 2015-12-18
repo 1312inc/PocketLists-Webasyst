@@ -5,11 +5,17 @@ class pocketlistsSettingsAction extends  waViewAction
     public function execute()
     {
         $us = new pocketlistsUserSettings(wa()->getUser()->getId());
-        $this->view->assign('settings', $us->getAllSettings());
+        $settings = $us->getAllSettings();
+        $this->view->assign('settings', $settings);
 
-        if (pocketlistsHelper::isAdmin()) {
-            $pm = new pocketlistsPocketModel();
-            $this->view->assign('pockets', $pm->getAllPockets(wa()->getUser()->getId()));
+        $pm = new pocketlistsPocketModel();
+        $this->view->assign('pockets', $pm->getAllPockets(wa()->getUser()->getId()));
+
+        if ($inbox_list_id = $us->getStreamInboxList()) {
+            $lm = new pocketlistsListModel();
+            $inbox_list = $lm->getById($inbox_list_id);
+            $this->view->assign('inbox_lists', $lm->getLists($inbox_list['pocket_id']));
+            $this->view->assign('inbox_list', $inbox_list);
         }
 
         $asp = new waAppSettingsModel();
