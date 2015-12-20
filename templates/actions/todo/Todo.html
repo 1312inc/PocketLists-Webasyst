@@ -78,12 +78,11 @@
                 </ul>
             </div>
             {/if}
-            <h1 class="not-padded">
-                {if 111}
-                  [`To-do stream`]
-                {else}
-                  December 8, 2015 <a href="#" class="back">[`Show stream`]</a>
-                {/if}
+            <h1 class="not-padded" pl-todo-stream="all">
+                [`To-do stream`]
+            </h1>
+            <h1 class="not-padded" style="display: none;" pl-todo-stream="date">
+                <span>December 8, 2015</span> <a href="#" id="pl-show-stream" class="back">[`Show stream`]</a>
             </h1>
         </header>
 
@@ -119,13 +118,21 @@
             var $this = $(this),
                 date = $this.data('pl-todo-date');
 
-            $dates.filter('.pl-today').removeClass('pl-today');
-            $this.addClass('pl-today');
+//            $dates.filter('.pl-today').removeClass('pl-today');
+//            $this.addClass('pl-today');
+            $('[pl-todo-stream="all"]').hide();
+            $('[pl-todo-stream="date"]').show().find('span').text(date);
             $('#pl-list-items')
                     .find('[data-id]').slideUp().end()
                     .find('[data-pl-due-date="' + date + '"]').slideDown();
         });
+        $('#pl-show-stream').on('click', function(e) {
+            e.preventDefault();
+            $('[pl-todo-stream="all"]').show();
+            $('[pl-todo-stream="date"]').hide();
 
+            $('#pl-list-items').find('[data-id]').slideDown();
+        });
         new $.pocketlists.Items($('#pl-list-items'), {
             enableAddLinkOnHover: false,
             enableChangeLevel: false,

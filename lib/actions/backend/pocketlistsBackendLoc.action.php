@@ -7,12 +7,12 @@ class pocketlistsBackendLocAction extends waViewAction
 {
     public function execute()
     {
-        $strings = array(
-            'Show all %d completed to-dos'
-        );
+        $strings = array();
 
         // Application locale strings
-        foreach(array() as $s) {
+        foreach(array(
+                    'Show all %d completed to-dos'
+                ) as $s) {
             $strings[$s] = _w($s);
         }
 
