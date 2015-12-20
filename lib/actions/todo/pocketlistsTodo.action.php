@@ -125,5 +125,9 @@ class pocketlistsTodoAction extends waViewAction
         $this->view->assign("today_month", waDateTime::date("n", null, $timezone));
 
         $this->view->assign('undone_items', $undone);
+
+        $us = new pocketlistsUserSettings();
+        $this->view->assign("stream_list_id", $us->getStreamInboxList());
+
     }
 }

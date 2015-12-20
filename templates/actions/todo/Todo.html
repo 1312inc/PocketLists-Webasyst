@@ -69,13 +69,15 @@
     <main class="content left300px blank bordered-left pl-items pl-list-items pl-blue" id="pl-list-content">
 
         <header class="pl-title">
+            {if $stream_list_id}
             <div class="float-right block half-padded">
                 <ul class="menu-h">
                     <li>
-                        <a href="#"><i class="icon16 add"></i> [`Add to-do`]</a>
+                        <a href="#" id="pl-item-add-link"><i class="icon16 add"></i> [`Add to-do`]</a>
                     </li>
                 </ul>
             </div>
+            {/if}
             <h1 class="not-padded">
                 {if 111}
                   [`To-do stream`]
@@ -110,7 +112,6 @@
     </main>
 </div>
 
-<script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-list.js"></script>
 <script type="text/javascript">
     (function(){
         var $dates = $('[data-pl-todo-date]');
@@ -123,6 +124,12 @@
             $('#pl-list-items')
                     .find('[data-id]').slideUp().end()
                     .find('[data-pl-due-date="' + date + '"]').slideDown();
+        });
+
+        new $.pocketlists.Items($('#pl-list-items'), {
+            enableAddLinkOnHover: false,
+            enableChangeLevel: false,
+            enableSortItems: false
         });
     }());
 </script>

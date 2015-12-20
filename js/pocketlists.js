@@ -41,6 +41,7 @@
                 self.scrollToTop(0, 80);
             });
             self.updateAppCounter();
-        }
+        },
+        $loading: $('<i class="icon16 loading">')
     };
 }(jQuery));

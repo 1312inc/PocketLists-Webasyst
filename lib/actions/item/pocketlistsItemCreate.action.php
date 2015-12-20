@@ -10,6 +10,13 @@ class pocketlistsItemCreateAction extends waViewAction
         $im = new pocketlistsItemModel();
         $inserted = $inserted_items = array();
         $user_id = wa()->getUser()->getId();
+        // if no list_id -> add to inbox stream
+        $todo = false;
+        if (!$list_id) {
+            $todo = true;
+            $us = new pocketlistsUserSettings();
+            $list_id = $us->getStreamInboxList();
+        }
         if ($list_id && $data) {
             if (!is_array($data)) {
                 $data = array($data);
@@ -21,12 +28,21 @@ class pocketlistsItemCreateAction extends waViewAction
                 $data[$i]['list_id'] = $list['id'];
                 $data[$i]['contact_id'] = $user_id;
 
+                if ($todo) {
+                    $data[$i]['assigned_contact_id'] = $user_id;
+                    $data[$i]['due_date'] = waDateTime::date('Y-m-d');
+                }
+
                 $last_id = $im->insert($data[$i], 1);
                 $inserted[] = $last_id;
                 $inserted_items[] = $data[$i] + array('id' => $last_id);
             }
             pocketlistsNotifications::notifyAboutNewItems($inserted_items, $list);
         }
-        $this->view->assign('items', $im->getByField('id', $inserted, true));
+        $items = $im->getById($inserted);
+        if (isset($items['id'])) {
+            $items = array($items);
+        }
+        $this->view->assign('items', $items);
     }
 }

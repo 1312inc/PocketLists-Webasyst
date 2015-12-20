@@ -9,12 +9,149 @@
      * - archive
      * - sort all
      */
-    var List = function($wrapper) {
+    $.pocketlists.List = function($wrapper) {
         var $new_list_input = $wrapper.find('#pl-new-list-input'),
             list_id = parseInt($wrapper.find('#pl-list-id').val()),
             pocket_id = parseInt($('#pl-pocket-id').val()),
             $dialog_delete = $('#pl-dialog-delete-confirm'),
-            $dialog_complete_all =$('#pl-dialog-list-archive-complete-all');
+            $dialog_complete_all = $('#pl-dialog-list-archive-complete-all');
+
+        /**
+         * for show and manipulate with list details
+         * - show/hide container (p)
+         * - change icon
+         * - save details
+         */
+        var ListDetails = (function ($wrapper) {
+            var icon_path = null;
+
+            // show list details container and load html with list details from server
+            var showListDetails = function() {
+                $.pocketlists.scrollToTop(200, 80);
+                $wrapper.html($.pocketlists.$loading).show();
+
+                stickyDetailsSidebar();
+
+                $.post('?module=list&action=details',{ id: list_id }, function (html) {
+                    $wrapper.html(html);
+                    afterLoad();
+                });
+            };
+            var hideListDetails = function() {
+                $wrapper.hide().empty();
+                //list.trigger('deselectList.pl2');
+            };
+            var updateList = function () {
+                var name = $wrapper.find('input[name="list\[name\]"]').val(),
+                    color = $wrapper.find('[data-pl-list-color].selected').data('pl-list-color'),
+                    icon = $wrapper.find('input[name="list\[icon\]"]').val();
+                $('#pl-list-name').text(name); // update name
+                // middle sidebar
+                $('#pl-lists')
+                    .find('[data-pl-list-id="' + list_id + '"]').removeClass().addClass('pl-' + color) // update color
+                    .find('.pl-list-name').text(name) // update name
+                    .end()
+                    .find('.listicon48').css('background-image', 'url(' + icon_path + icon + ')');
+                $('.pl-items').removeClass().addClass('pl-items pl-' + color); // update icon
+            };
+            var afterLoad = function() {
+                var datepicker_options = {
+                    changeMonth: true,
+                    changeYear: true,
+                    shortYearCutoff: 2,
+                    dateShowWeek: false,
+                    showOtherMonths: true,
+                    selectOtherMonths: true,
+                    stepMonths: 1,
+                    numberOfMonths: 1,
+                    gotoCurrent: true,
+                    constrainInput: false
+                };
+
+                $wrapper.find('#pl-list-due-datetime').datepicker(datepicker_options);
+                icon_path = $wrapper.find('#pl-list-icon-dialog').find('ul').data('pl-icons-path')
+            };
+
+            var init = function () {
+                if ($wrapper.data('pl-ListDetails')) {
+                    return;
+                }
+                $wrapper.data('pl-ListDetails', true);
+
+
+
+                $wrapper
+                    .on('submit', 'form', function (e) {
+                        e.preventDefault();
+                        var $this = $(this);
+                        $this.find('#pl-list-details-save').after($.pocketlists.$loading);
+                        $.post('?module=list&action=save', $this.serialize(), function (r) {
+                            $.pocketlists.$loading.remove();
+                            if (r.status === 'ok') {
+                                updateList();
+                                hideListDetails();
+                            } else {
+                                $wrapper.find('.error').show().delay(3000).hide();
+                            }
+                        }, 'json');
+                        return false;
+                    }) // save
+                    .on('click', '#pl-list-details-cancel', function (e) {
+                        e.preventDefault();
+                        hideListDetails();
+                    })
+                    .on('click', '#pl-list-color a', function (e) {
+                        e.preventDefault();
+                        $('#pl-list-color').find('input').val($(this).data('pl-list-color'));
+                        $(this).addClass('selected')
+                            .siblings().removeClass('selected')
+                    })
+                    .on('click', '#pl-list-due-datetime-set', function (e) {
+                        e.preventDefault();
+                        var $this = $(this);
+                        $this.hide().siblings().show().filter('select').prop('disabled', false);
+                    })
+                    .on('click', '#pl-list-due-datetime-clear', function (e) {
+                        e.preventDefault();
+                        var $this = $(this);
+                        $this.hide().siblings().show().filter('select').hide().prop('disabled', true);
+                    })
+                    .on('click', '#pl-list-icon-change a', function (e) {
+                        e.preventDefault();
+
+                        $('#pl-list-icon-dialog').waDialog({
+                            onLoad: function () {
+                                var d = $(this);
+
+                                $('#pl-list-icon-dialog').on('click', 'a[data-pl-list-icon]', function (e) {
+                                    e.preventDefault();
+                                    var icon = $(this).data('pl-list-icon'),
+                                        $this = $(this);
+                                    $wrapper.find('#pl-list-icon-change').find('input').val($(this).data('pl-list-icon'));
+
+                                    $this.find('input').val(icon);
+                                    $wrapper.find('#pl-list-icon-change .listicon48').css('background-image', 'url(' + icon_path + icon + ')');
+                                    d.trigger('close');
+                                    return false;
+                                })
+                            }
+                        });
+                    })
+                    .on('show.pl2', showListDetails)
+                    .on('hide.pl2', hideListDetails);
+            };
+            init();
+
+            return {
+                $el: $wrapper,
+                trigger: function(event, data) {
+                    this.$el && this.$el.trigger(event, data);
+                },
+                isVisible: function() {
+                    return this.$el ? this.$el.is(':visible') : false;
+                }
+            };
+        }($('#pl-list-details')));
 
         // add list
         var addNewList = function (id) {
@@ -24,7 +161,7 @@
                 pocket_id: pocket_id
             };
             if (data.name) {
-                //$(this).after($loading);
+                //$(this).after($.pocketlists.$loading);
                 $.post(
                     '?module=list&action=update',
                     {
@@ -59,7 +196,7 @@
                     } else {
                         alert(r.errors);
                     }
-                    //$loading.remove();
+                    //$.pocketlists.$loading.remove();
                 },
                 'json'
             );
@@ -132,11 +269,11 @@
 
                         $.pocketlists.scrollToTop(200, 80);
 
-                        //list_details.show();
-                        list_details.trigger('show.pl2');
+                        //$.pocketlists.ListDetails.show();
+                        ListDetails.trigger('show.pl2');
                     } else if (clicked == 2) {
-                        //list_details.hide();
-                        list_details.trigger('hide.pl2');
+                        //$.pocketlists.ListDetails.hide();
+                        ListDetails.trigger('hide.pl2');
                         deselectList();
                     } else {
                         $wrapper.data('pl-clicked', 1);
@@ -177,10 +314,10 @@
                                 var $button = $(this),
                                     action = $button.data('pl-action');
 
-                                $button.after($loading);
+                                $button.after($.pocketlists.$loading);
 
                                 if (action === 'list-complete-all') {
-                                    $.post('?module=item&action=complete', {list_id: list_id, status: 1, id: -1}, function (r) {
+                                    $.post('?module=list&action=complete', {list_id: list_id, status: 1}, function (r) {
                                         if (r.status === 'ok') {
                                             $this.trigger('close');
                                             //$.wa.setHash('#/pocket/' + pocket_id + '/list/' + list_id );
@@ -199,7 +336,7 @@
                                 } else if (action === 'cancel') {
                                     $('#pl-list-complete').prop('checked', false);
                                     $this.trigger('close');
-                                    $loading.remove();
+                                    $.pocketlists.$loading.remove();
                                 }
                             });
                         }
@@ -207,16 +344,25 @@
                 })
                 .on('deleteList.pl2', deleteList)
                 .on('deselectList.pl2', deselectList);
+
+            // keyboard
+            $(document).on('keydown', function (e) {
+                switch (e.which) {
+                    case 27: // esc
+                        ListDetails.isVisible() && ListDetails.trigger('hide.pl2');
+                        break;
+                }
+            });
+
+            //this.list_details = list_details;
         };
 
         init();
 
-        // public
         return {
+            list_details: ListDetails,
             list_id: list_id,
-            pocket_id: pocket_id,
-            //deleteList: _deleteList,
-            $el: $wrapper
+            pocket_id: pocket_id
         }
     };
 
@@ -227,7 +373,7 @@
      * - replace
      * - drag
      */
-    var Items = function($list_items_wrapper) {
+    $.pocketlists.Items = function($list_items_wrapper, options) {
         var $undone_items_wrapper = $list_items_wrapper.find('#pl-undone-items > ul.menu-v'),
             $sortable_items = $('#pl-undone-items ul.menu-v'),
             $done_items_wrapper = $list_items_wrapper.find('#pl-complete-log > ul.menu-v'),
@@ -236,50 +382,42 @@
             $new_item_wrapper_hover = $('<div id="pl-item-add-wrapper-hover" style="display: none;">'),
             item_selector = '[data-parent-id]',
             $add_item_link = $('#pl-item-add-link'),
-            $current_item = null;
+            $current_item = null,
+            defaults = {
+                enableAddLinkOnHover: true,
+                enableChangeLevel: true,
+                enableSortItems: true,
+                list: null
+            },
+            o = {},
+            selfItems = this;
 
-        // unused
-        /* var move_item = function (data, callback) {
-            $.post(
-                '?module=item&action=move',
-                {
-                    list_id: list_id,
-                    data: data
-                },
-                function (r) {
-                    if (r.status === 'ok') {
-                        $.isFunction(callback) && callback.call();
-                    } else {
-                        alert(r.errors);
-                    }
-                },
-                'json'
-            );
-        }; */
         // sortable items
         var initSortable = function () {
-            $sortable_items.sortable({
-                item: item_selector,
-                connectWith: "ul.menu-v",
-                placeholder: 'pl-item-placeholder',
-                tolerance: 'pointer',
-                stop: function (event, ui) {
-                    var $prev = ui.item.parents(item_selector).first(),
-                        parent_id = $prev.length ? parseInt($prev.data('id')) : 0;
+            if (o.enableSortItems) {
+                $sortable_items.sortable({
+                    item: item_selector,
+                    connectWith: "ul.menu-v",
+                    placeholder: 'pl-item-placeholder',
+                    tolerance: 'pointer',
+                    stop: function (event, ui) {
+                        var $prev = ui.item.parents(item_selector).first(),
+                            parent_id = $prev.length ? parseInt($prev.data('id')) : 0;
 
-                    ui.item.data('parent-id', parent_id);
-                    updateSort(parseInt(ui.item.data('id')));
-                }
-            });
+                        ui.item.data('parent-id', parent_id);
+                        updateSort(parseInt(ui.item.data('id')));
+                    }
+                });
+            }
         };
         // save item
         var addItem = function (data, callback) {
             var $this = $(this);
-            //$this.after($loading);
+            //$this.after($.pocketlists.$loading);
             $.post(
                 '?module=item&action=create',
                 {
-                    list_id: list.list_id,
+                    list_id: o.list ? o.list.list_id : 0,
                     data: data
                 },
                 function (html) {
@@ -302,7 +440,7 @@
                     $html.filter(item_selector).last()
                         .find('.pl-item').first().after($new_item_wrapper);
 
-                    //$loading.remove();
+                    //$.pocketlists.$loading.remove();
                     $('.pl-list-empty').removeClass('pl-list-empty'); // list is not empty now
 
                     $new_item_input.val('').trigger('focus').css('height', 'auto').data('can_blur', true);
@@ -330,35 +468,36 @@
         };
         // update sort base on current positions
         var updateSort = function (id) {
-            //this.find('label').first().append($loading);
-            $.post(
-                '?module=item&action=sort',
-                {
-                    list_id: list.list_id,
-                    item_id: id ? id : 0,
-                    data: getItems()
-                },
-                function (r) {
-                    if (r.status === 'ok') {
-                        initSortable();
-                    } else {
-                        alert(r.errors);
-                    }
-                    //$loading.remove();
-                },
-                'json'
-            );
+            //this.find('label').first().append($.pocketlists.$loading);
+            if (o.enableSortItems) {
+                $.post(
+                    '?module=item&action=sort',
+                    {
+                        list_id: $.pocketlists.List.list_id,
+                        item_id: id ? id : 0,
+                        data: getItems()
+                    },
+                    function (r) {
+                        if (r.status === 'ok') {
+                            initSortable();
+                        } else {
+                            alert(r.errors);
+                        }
+                        //$.pocketlists.$loading.remove();
+                    },
+                    'json'
+                );
+            }
         };
         // complete/uncomplete items
         var completeItem = function ($item, status, callback) {
-            //$item.find('.pl-select-label').first().append($loading);
+            //$item.find('.pl-select-label').first().append($.pocketlists.$loading);
             var id = parseInt($item.data('id'));
 
             $item.prop('disabled', true);
             $.post(
                 '?module=item&action=complete',
                 {
-                    list_id: list.list_id,
                     id: id,
                     status: status
                 },
@@ -391,7 +530,7 @@
                     } else {
                         alert(r.errors);
                     }
-                    $loading.remove();
+                    $.pocketlists.$loading.remove();
                 },
                 'json'
             );
@@ -399,7 +538,7 @@
         // increase item level
         var increaseItem = function (e) {
             //var $items = $undone_items_wrapper.find('.pl-item-selected').closest(item_selector);
-            if ($current_item) {
+            if (o.changeLevel && $current_item) {
                 e.preventDefault();
                 e.stopPropagation();
                 $current_item.each(function () {
@@ -424,7 +563,7 @@
         // decrease item level
         var decreaseItem = function (e) {
             //var $items = $undone_items_wrapper.find('.pl-item-selected').closest(item_selector);
-            if ($current_item) {
+            if (o.changeLevel && $current_item) {
                 e.preventDefault();
                 e.stopPropagation();
                 $current_item.each(function () {
@@ -467,7 +606,7 @@
                     } else {
                         alert(r.errors);
                     }
-                    //$loading.remove();
+                    //$.pocketlists.$loading.remove();
                 },
                 'json'
             );
@@ -501,12 +640,17 @@
             }
         };
         var updateListCountBadge = function() {
-            $('#pl-lists')
-                .find('[data-pl-list-id="' + list.list_id + '"]')
-                .find('.count').text($undone_items_wrapper.find('[data-id]').length);
+            if (o.list && o.list.list_id) {
+                $('#pl-lists')
+                    .find('[data-pl-list-id="' + o.list.list_id + '"]')
+                    .find('.count').text($undone_items_wrapper.find('[data-id]').length);
+            }
         };
 
-        var newItem = function() {
+        /**
+         * for new item dom manipulating
+         */
+        var NewItemWrapper = function() {
             var resizeTextarea = function () {
                 $new_item_input.css('height', 'auto');
                 $new_item_input.css('height', ($new_item_input.get(0).scrollHeight - parseInt($new_item_input.css('padding-top')) - parseInt($new_item_input.css('padding-bottom'))) + 'px');
@@ -530,6 +674,7 @@
                             $new_item_input.focus();
                         }).wrap('<li class="pl-new-item-wrapper">');
                     }
+
                     if ($new_item_wrapper.is(':visible')) {
                         $new_item_wrapper.slideUp(200, function () {
                             $new_item_wrapper.detach();
@@ -545,7 +690,7 @@
                     $add_item_link.trigger('click');
                 }
                 $new_item_input
-                    .on('change cut keydown drop paste', function() {
+                    .on('change cut keydown drop paste', function () {
                         window.setTimeout(resizeTextarea, 0);
                     })
                     .on('keydown', function (e) {
@@ -585,7 +730,7 @@
                             }
                         }, 100);
                     })
-                    .on('blur', function() {
+                    .on('blur', function () {
                         var $this = $(this),
                             parent_id = $this.closest('.menu-v').find(item_selector).first().data('parent-id'),
                             name = $this.val().trim(),
@@ -604,42 +749,175 @@
                     });
 
                 var undone_items_wrapper_hover_timeout = null;
-                $undone_items_wrapper
-                    .on('mouseenter', item_selector + ' > .pl-item', function (e) {
-                        e.stopPropagation();
+                if (o.enableAddLinkOnHover) {
+                    $undone_items_wrapper
+                        .on('mouseenter', item_selector + ' > .pl-item', function (e) {
+                            e.stopPropagation();
+                            var $item = $(this);
+                            undone_items_wrapper_hover_timeout = setTimeout(function () {
+                                if (!$item.find($new_item_wrapper).length) { // if no placeholder here
+                                    $item.find('.pl-select-label').append($new_item_wrapper_hover.show());
+                                }
+                            }, 500);
+                        })
+                        .on('mouseleave', item_selector + ' > .pl-item', function () {
+                            clearTimeout(undone_items_wrapper_hover_timeout);
+                            $new_item_wrapper_hover.detach();
+                        });
+
+                    $new_item_wrapper_hover.on('click', function () {
+                        // if item has children - place it before first
                         var $item = $(this);
-                        undone_items_wrapper_hover_timeout = setTimeout(function(){
-                            if (!$item.find($new_item_wrapper).length) { // if no placeholder here
-                                $item.find('.pl-select-label').append($new_item_wrapper_hover.show());
-                            }
-                        }, 500);
-                    })
-                    .on('mouseleave', item_selector + ' > .pl-item', function () {
-                        clearTimeout(undone_items_wrapper_hover_timeout);
+                        var $has_children = $item.closest(item_selector).find('.menu-v');
+
+                        $new_item_input.data('can_blur', false);
+                        if ($has_children.length) { // if item has children - indent
+                            $has_children.find('.pl-item').first().before($new_item_wrapper);
+                        } else { // else on same level
+                            $item.closest(item_selector).find('.pl-item').first().after($new_item_wrapper);
+                        }
                         $new_item_wrapper_hover.detach();
+                        $new_item_wrapper.slideDown(200);
+                        $new_item_input.focus();
+                        $new_item_input.data('can_blur', true);
                     });
-
-                $new_item_wrapper_hover.on('click', function () {
-                    // if item has children - place it before first
-                    var $item = $(this);
-                    var $has_children = $item.closest(item_selector).find('.menu-v');
-
-                    $new_item_input.data('can_blur', false);
-                    if ($has_children.length) { // if item has children - indent
-                        $has_children.find('.pl-item').first().before($new_item_wrapper);
-                    } else { // else on same level
-                        $item.closest(item_selector).find('.pl-item').first().after($new_item_wrapper);
-                    }
-                    $new_item_wrapper_hover.detach();
-                    $new_item_wrapper.slideDown(200);
-                    $new_item_input.focus();
-                    $new_item_input.data('can_blur', true);
-                });
+                }
             };
+
             init();
         };
 
+        /**
+         * for item details
+         * - show/hide (p)
+         * - change details
+         */
+        var ItemDetails = (function ($wrapper) {
+            var id = 0,
+                $dialog_confirm = $('#pl-dialog-delete-confirm'),
+                self = this;
+
+            var hideItemDetails = function () {
+                $wrapper.hide().empty();
+                id = 0;
+                $list_items_wrapper.trigger('deselectItem.pl2');
+            };
+            var showItemDetails = function (id_item) {
+                id = id_item;
+                $wrapper.html($.pocketlists.$loading).show();
+                stickyDetailsSidebar();
+                $.post('?module=item&action=details',{ id: id }, function (html) {
+                    $wrapper.html(html);
+                    afterLoad();
+                });
+            };
+            var afterLoad = function() {
+                var datepicker_options = {
+                    changeMonth: true,
+                    changeYear: true,
+                    shortYearCutoff: 2,
+                    dateShowWeek: false,
+                    showOtherMonths: true,
+                    selectOtherMonths: true,
+                    stepMonths: 1,
+                    numberOfMonths: 1,
+                    gotoCurrent: true,
+                    constrainInput: false
+                };
+
+                $wrapper.find('#pl-item-due-datetime').datepicker(datepicker_options);
+            };
+
+            var init = function () {
+                if ($wrapper.data('pl-ListDetails')) {
+                    return;
+                }
+                $wrapper.data('pl-ListDetails', true);
+
+                //id = parseInt($wrapper.find('input[name="item\[id\]"]').val());
+                $wrapper
+                    .on('submit', 'form', function (e) {
+                        e.preventDefault();
+                        var $this = $(this);
+                        $this.find('#pl-item-details-save').after($.pocketlists.$loading);
+                        $.post('?module=item&action=data', $this.serialize(), function (html) {
+                            $.pocketlists.updateAppCounter();
+                            $.pocketlists.$loading.remove();
+                            $list_items_wrapper.trigger('replaceSelectedItem.pl2', [html]);
+                            hideItemDetails();
+                        });
+                        return false;
+                    })
+                    .on('click', '#pl-item-details-cancel', function (e) {
+                        e.preventDefault();
+
+                        hideItemDetails();
+                    })
+                    .on('click', '#pl-item-priority a', function (e) {
+                        e.preventDefault();
+                        $('#pl-item-priority').find('input').val($(this).data('pl-item-priority'));
+                        $(this).addClass('selected').siblings().removeClass('selected')
+                    })
+                    .on('click', '#pl-item-due-datetime-set', function (e) {
+                        e.preventDefault();
+                        var $this = $(this);
+                        $this.hide().siblings().show().filter('select').prop('disabled', false);
+                    })
+                    .on('click', '#pl-item-due-datetime-clear', function (e) {
+                        e.preventDefault();
+                        var $this = $(this);
+                        $this.hide().siblings().show().filter('select').hide().prop('disabled', true);
+                    })
+                    .on('click', '[data-pl-action="item-delete"]', function (e) {
+                        e.preventDefault();
+
+                        $dialog_confirm.waDialog({
+                            'height': '150px',
+                            'min-height': '150px',
+                            'width': '400px',
+                            onLoad: function () {},
+                            onSubmit: function (d) {
+                                $.post('?module=item&action=delete', {id: id, list_id: list.list_id}, function (r) {
+                                    if (r.status === 'ok') {
+                                        $list_items_wrapper.trigger('deselectItem.pl2', [r.data.id]);
+                                        hideItemDetails();
+                                        d.trigger('close');
+                                    } else {
+
+                                    }
+                                }, 'json');
+                                return false;
+                            }
+                        });
+                    })
+                    .on('change', '#pl-assigned-contact select', function () {
+                        var assigned_contact_id = $(this).val();
+                        $('#pl-assigned-contact').find('[data-pl-contact-id="' + assigned_contact_id + '"]').show().siblings().hide();
+                    })
+                    .on('show.pl2', function(e, id){
+                        showItemDetails(id);
+                    })
+                    .on('hide.pl2', hideItemDetails);
+
+                //this.$el = $wrapper;
+            };
+
+            init();
+
+            return {
+                $el: $wrapper,
+                trigger: function(event, data) {
+                    this.$el && this.$el.trigger(event, data);
+                },
+                isVisible: function() {
+                    return this.$el ? this.$el.is(':visible') : false;
+                }
+            };
+        }($('#pl-item-details')));
+
         var init = function() {
+            o = $.extend({}, defaults, options);
+
             if ($.pocketlists_routing.getHash() == '#/todo/' &&
                 $.pocketlists_routing.getHash().indexOf('/team/') > 0) {
                 $new_item_wrapper.prependTo($undone_items_wrapper).slideDown(200).wrap('<li class="pl-new-item-wrapper">');
@@ -647,7 +925,7 @@
             }
 
             initSortable();
-            new newItem();
+            $add_item_link.length && new NewItemWrapper();
 
             $list_items_wrapper
                 .on('change', '.pl-done', function () {
@@ -659,21 +937,19 @@
                 }) // action: complete item
                 .on('change', '.pl-is-selected', function (e) {
                     var $this = $(this),
-                        $item = $this.closest(item_selector);
-
-                    var details_shown = item_details.is(':visible'),
+                        $item = $this.closest(item_selector),
                         is_selected = ($current_item && $current_item.data('id') == $item.data('id')) ? true : false;
                     e.preventDefault();
 
                     if (!$item.find('#pl-item-add').length) {
-                        if (!details_shown && !is_selected) { // on first click - select
-                            item_details.trigger('hide.pl2');
+                        if (!ItemDetails.isVisible() && !is_selected) { // on first click - select
+                            ItemDetails.trigger('hide.pl2');
                             selectItem($item);
-                        } else if (!details_shown) { // on second - show details
-                            item_details.trigger('show.pl2', [parseInt($item.data('id'))]); // show item details
+                        } else if (!ItemDetails.isVisible()) { // on second - show details
+                            ItemDetails.trigger('show.pl2', [parseInt($item.data('id'))]); // show item details
                             selectItem($item);
                         } else { // on third
-                            item_details.trigger('hide.pl2');
+                            ItemDetails.trigger('hide.pl2');
                             deselectItem();
                         }
                     }
@@ -699,271 +975,40 @@
                     replaceItem(data);
                 });
 
-        };
-
-        init();
-
-        return $list_items_wrapper;
-    };
-
-    /**
-     * for show and manipulate with list
-     * - show/hide container (p)
-     * - change icon
-     * - save details
-     */
-    var listDetails = function ($wrapper) {
-        var list_id = list.list_id,
-            icon_path = null;
-
-        var init = function () {
-            $wrapper
-                .on('submit', 'form', function (e) {
-                    e.preventDefault();
-                    var $this = $(this);
-                    $this.find('#pl-list-details-save').after($loading);
-                    $.post('?module=list&action=save', $this.serialize(), function (r) {
-                        $loading.remove();
-                        if (r.status === 'ok') {
-                            updateList();
-                            hideListDetails();
-                        } else {
-                            $wrapper.find('.error').show().delay(3000).hide();
+            // keyboard
+            $(document).on('keydown', function (e) {
+                switch (e.which) {
+                    //case 39: // -->
+                    //    increase_item.call(this);
+                    //    break;
+                    case 9: // tab
+                        if (!o.list.list_details.isVisible() && !item_details.isVisible()) {
+                            if (e.shiftKey) {
+                                decreaseItem(e);
+                            } else {
+                                increaseItem(e);
+                            }
                         }
-                    }, 'json');
-                    return false;
-                }) // save
-                .on('click', '#pl-list-details-cancel', function (e) {
-                    e.preventDefault();
-                    hideListDetails();
-                })
-                .on('click', '#pl-list-color a', function (e) {
-                    e.preventDefault();
-                    $('#pl-list-color').find('input').val($(this).data('pl-list-color'));
-                    $(this).addClass('selected')
-                        .siblings().removeClass('selected')
-                })
-                .on('click', '#pl-list-due-datetime-set', function (e) {
-                    e.preventDefault();
-                    var $this = $(this);
-                    $this.hide().siblings().show().filter('select').prop('disabled', false);
-                })
-                .on('click', '#pl-list-due-datetime-clear', function (e) {
-                    e.preventDefault();
-                    var $this = $(this);
-                    $this.hide().siblings().show().filter('select').hide().prop('disabled', true);
-                })
-                .on('click', '#pl-list-icon-change a', function (e) {
-                    e.preventDefault();
-                    var $this = $(this);
-
-                    $('#pl-list-icon-dialog').waDialog({
-                        onLoad: function () {
-                            var d = $(this);
-
-                            $('#pl-list-icon-dialog').on('click', 'a[data-pl-list-icon]', function (e) {
-                                e.preventDefault();
-                                var icon = $(this).data('pl-list-icon'),
-                                    $this = $(this);
-                                $wrapper.find('#pl-list-icon-change').find('input').val($(this).data('pl-list-icon'));
-
-                                $this.find('input').val(icon);
-                                $wrapper.find('#pl-list-icon-change .listicon48').css('background-image', 'url(' + icon_path + icon + ')');
-                                d.trigger('close');
-                                return false;
-                            })
-                        }
-                    });
-                })
-                .on('show.pl2', showListDetails)
-                .on('hide.pl2', hideListDetails);
-        };
-        // show list details container and load html with list details from server
-        var showListDetails = function() {
-            $.pocketlists.scrollToTop(200, 80);
-            $wrapper.html($loading).show();
-
-            stickyDetailsSidebar();
-
-            $.post('?module=list&action=details',{ id: list_id }, function (html) {
-                $wrapper.html(html);
-                afterLoad();
-            });
-        };
-        var hideListDetails = function() {
-            $wrapper.hide().empty();
-            //list.trigger('deselectList.pl2');
-        };
-        var updateList = function () {
-            var name = $wrapper.find('input[name="list\[name\]"]').val(),
-                color = $wrapper.find('[data-pl-list-color].selected').data('pl-list-color'),
-                icon = $wrapper.find('input[name="list\[icon\]"]').val();
-            $('#pl-list-name').text(name); // update name
-            // middle sidebar
-            $('#pl-lists')
-                .find('[data-pl-list-id="' + list_id + '"]').removeClass().addClass('pl-' + color) // update color
-                .find('.pl-list-name').text(name) // update name
-                .end()
-                .find('.listicon48').css('background-image', 'url(' + icon_path + icon + ')');
-            $('.pl-items').removeClass().addClass('pl-items pl-' + color); // update icon
-        };
-        var afterLoad = function() {
-            var datepicker_options = {
-                changeMonth: true,
-                changeYear: true,
-                shortYearCutoff: 2,
-                dateShowWeek: false,
-                showOtherMonths: true,
-                selectOtherMonths: true,
-                stepMonths: 1,
-                numberOfMonths: 1,
-                gotoCurrent: true,
-                constrainInput: false
-            };
-
-            $wrapper.find('#pl-list-due-datetime').datepicker(datepicker_options);
-            icon_path = $wrapper.find('#pl-list-icon-dialog').find('ul').data('pl-icons-path')
-        };
-        init();
-
-        return $wrapper;
-    };
-
-    /**
-     * for item details
-     * - show/hide (p)
-     * - change details
-     */
-    var itemDetails = function ($wrapper) {
-        var id = 0,
-            $dialog_confirm = $('#pl-dialog-delete-confirm');
-
-        var init = function () {
-            //id = parseInt($wrapper.find('input[name="item\[id\]"]').val());
-
-            $wrapper
-                .on('submit', 'form', function (e) {
-                    e.preventDefault();
-                    var $this = $(this);
-                    $this.find('#pl-item-details-save').after($loading);
-                    $.post('?module=item&action=data', $this.serialize(), function (html) {
-                        $.pocketlists.updateAppCounter();
-                        $loading.remove();
-                        items.trigger('replaceSelectedItem.pl2', [html]);
-                        hideItemDetails();
-                    });
-                    return false;
-                })
-                .on('click', '#pl-item-details-cancel', function (e) {
-                    e.preventDefault();
-
-                    hideItemDetails();
-                })
-                .on('click', '#pl-item-priority a', function (e) {
-                    e.preventDefault();
-                    $('#pl-item-priority').find('input').val($(this).data('pl-item-priority'));
-                    $(this).addClass('selected').siblings().removeClass('selected')
-                })
-                .on('click', '#pl-item-due-datetime-set', function (e) {
-                    e.preventDefault();
-                    var $this = $(this);
-                    $this.hide().siblings().show().filter('select').prop('disabled', false);
-                })
-                .on('click', '#pl-item-due-datetime-clear', function (e) {
-                    e.preventDefault();
-                    var $this = $(this);
-                    $this.hide().siblings().show().filter('select').hide().prop('disabled', true);
-                })
-                .on('click', '[data-pl-action="item-delete"]', function (e) {
-                    e.preventDefault();
-
-                    $dialog_confirm.waDialog({
-                        'height': '150px',
-                        'min-height': '150px',
-                        'width': '400px',
-                        onLoad: function () {},
-                        onSubmit: function (d) {
-                            $.post('?module=item&action=delete', {id: id, list_id: list.list_id}, function (r) {
-                                if (r.status === 'ok') {
-                                    items.trigger('deselectItem.pl2', [r.data.id]);
-                                    hideItemDetails();
-                                    d.trigger('close');
-                                } else {
-
-                                }
-                            }, 'json');
-                            return false;
-                        }
-                    });
-                })
-                .on('change', '#pl-assigned-contact select', function () {
-                    var assigned_contact_id = $(this).val();
-                    $('#pl-assigned-contact').find('[data-pl-contact-id="' + assigned_contact_id + '"]').show().siblings().hide();
-                })
-                .on('show.pl2', function(e, id){
-                    showItemDetails(id);
-                })
-                .on('hide.pl2', hideItemDetails);
-        };
-        var hideItemDetails = function () {
-            $wrapper.hide().empty();
-            id = 0;
-            items.trigger('deselectItem.pl2');
-        };
-        var showItemDetails = function (id_item) {
-            id = id_item;
-            $wrapper.html($loading).show();
-            stickyDetailsSidebar();
-            $.post('?module=item&action=details',{ id: id }, function (html) {
-                $wrapper.html(html);
-                afterLoad();
-            });
-        };
-        var afterLoad = function() {
-            var datepicker_options = {
-                changeMonth: true,
-                changeYear: true,
-                shortYearCutoff: 2,
-                dateShowWeek: false,
-                showOtherMonths: true,
-                selectOtherMonths: true,
-                stepMonths: 1,
-                numberOfMonths: 1,
-                gotoCurrent: true,
-                constrainInput: false
-            };
-
-            $wrapper.find('#pl-item-due-datetime').datepicker(datepicker_options);
-        };
-        init();
-
-        return $wrapper;
-    };
-
-    // keyboard
-    $(document).on('keydown', function (e) {
-        switch (e.which) {
-            //case 39: // -->
-            //    increase_item.call(this);
-            //    break;
-            case 9: // tab
-                if (!item_details.is(':visible') && !list_details.is(':visible')) {
-                    if (e.shiftKey) {
-                        items.trigger('decreaseSelectedItem.pl2');
-                    } else {
-                        items.trigger('increaseSelectedItem.pl2');
-                    }
+                        break;
+                    //case 37: // <--
+                    //    decrease_item.call(this);
+                    //    break;
+                    case 27: // esc
+                        ItemDetails.isVisible() && ItemDetails.trigger('hide.pl2');
+                        break;
                 }
-                break;
-            //case 37: // <--
-            //    decrease_item.call(this);
-            //    break;
-            case 27: // esc
-                list_details.is(':visible') && list_details.trigger('hide.pl2');
-                item_details.is(':visible') && item_details.trigger('hide.pl2');
-                break;
-        }
-    });
+            });
+        };
+
+        init();
+
+        return {
+            $el: $list_items_wrapper,
+            trigger: function(event, data) {
+                this.$el && this.$el.trigger(event, data);
+            }
+        };
+    };
 
     $('#pl-complete-log-link').click(function () {
         $('#pl-complete-log').slideDown(200);
@@ -996,11 +1041,4 @@
     $(window).scroll(function() {
         stickyDetailsSidebar();
     });
-
-    var $loading = $('<i class="icon16 loading">');
-    var items = new Items($('#pl-list-items'));
-    var list = new List($('.pl-list-title'));
-    var item_details = new itemDetails($('#pl-item-details'));
-    var list_details = new listDetails($('#pl-list-details'));
-
 }());

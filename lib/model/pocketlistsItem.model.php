@@ -144,6 +144,16 @@ class pocketlistsItemModel extends waModel
         }
     }
 
+    public function completeItem($id, $status)
+    {
+        if ($status) {
+            $data['complete_datetime'] = date("Y-m-d H:i:s");
+            $data['complete_contact_id'] = wa()->getUser()->getId();
+        } else {
+            $data['complete_contact_id'] = null;
+        }
+    }
+
     private function getQuery()
     {
         return "SELECT

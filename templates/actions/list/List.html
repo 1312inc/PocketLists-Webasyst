@@ -95,4 +95,8 @@
 
     {include '../../include/itemadd.html' inline}
 </div>
-<script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-list.js"></script>
+<script type="text/javascript">
+    new $.pocketlists.Items($('#pl-list-items'), {
+        list: new $.pocketlists.List($('.pl-list-title'))
+    });
+</script>
