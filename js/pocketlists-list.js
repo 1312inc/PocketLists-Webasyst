@@ -53,7 +53,7 @@
                     } else if(data.calc_priority == 3) {
                         due_class = 'pl-due-overdue';
                     }
-                    $list_wrapper.find('.pl-list-due').removeClass().addClass('pl-list-due ' + due_class).text(data.due_datetime ? data.due_datetime : data.due_date);
+                    $list_wrapper.find('.pl-list-due').removeClass().addClass('pl-list-due ' + due_class).text(data.due_datetime ? data.due_datetime : data.due_date).show();
                 } else {
                     $list_wrapper.find('.pl-list-due').hide();
                 }
