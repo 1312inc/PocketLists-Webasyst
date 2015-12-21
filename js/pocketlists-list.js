@@ -389,8 +389,7 @@
                 enableSortItems: true,
                 list: null
             },
-            o = {},
-            selfItems = this;
+            o = {};
 
         // sortable items
         var initSortable = function () {
@@ -538,7 +537,7 @@
         // increase item level
         var increaseItem = function (e) {
             //var $items = $undone_items_wrapper.find('.pl-item-selected').closest(item_selector);
-            if (o.changeLevel && $current_item) {
+            if (o.enableChangeLevel && $current_item) {
                 e.preventDefault();
                 e.stopPropagation();
                 $current_item.each(function () {
@@ -563,7 +562,7 @@
         // decrease item level
         var decreaseItem = function (e) {
             //var $items = $undone_items_wrapper.find('.pl-item-selected').closest(item_selector);
-            if (o.changeLevel && $current_item) {
+            if (o.enableChangeLevel && $current_item) {
                 e.preventDefault();
                 e.stopPropagation();
                 $current_item.each(function () {
@@ -794,8 +793,7 @@
          */
         var ItemDetails = (function ($wrapper) {
             var id = 0,
-                $dialog_confirm = $('#pl-dialog-delete-confirm'),
-                self = this;
+                $dialog_confirm = $('#pl-dialog-delete-confirm');
 
             var hideItemDetails = function () {
                 $wrapper.hide().empty();
