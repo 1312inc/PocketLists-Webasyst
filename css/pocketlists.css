@@ -72,6 +72,7 @@ table.pl-calendar { width: 100%; margin-bottom: 0; }
 table.pl-calendar th { color: #ccc; font-weight: normal; padding-bottom: 5px; }
 table.pl-calendar td { border: 1px solid #ddd; background: #fff; padding: 10px 7px; width: 14.28%; min-height: 30px; vertical-align: top; line-height: 1em; text-align: center; }
 table.pl-calendar td:hover { background: #ffffee; cursor: pointer; }
+table.pl-calendar td.pl-selected { background: #a5ffaf; }
 table.pl-calendar td.pl-today { background: #ffc; }
 table.pl-calendar td.pl-today:hover { background: #ecf7ff; }
 table.pl-calendar td.pl-not-this-month { background: #eee; }

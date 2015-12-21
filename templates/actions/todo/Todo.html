@@ -129,8 +129,8 @@
             var $this = $(this),
                 date = $this.data('pl-todo-date');
 
-//            $dates.filter('.pl-today').removeClass('pl-today');
-//            $this.addClass('pl-today');
+            $dates.removeClass('pl-selected');
+            $this.addClass('pl-selected');
             $stream_all_header.hide();
             $stream_date_header.show().find('span').text(date);
 
@@ -144,6 +144,7 @@
         });
         $stream_all_header.on('click', 'a', function(e) {
             e.preventDefault();
+            $dates.removeClass('pl-selected');
             $stream_all_header.show();
             $stream_date_header.hide();
 
