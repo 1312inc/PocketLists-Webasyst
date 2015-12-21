@@ -917,7 +917,7 @@
 
         var init = function() {
             o = $.extend({}, defaults, options);
-
+debugger;
             if ($.pocketlists_routing.getHash() == '#/todo/' &&
                 $.pocketlists_routing.getHash().indexOf('/team/') > 0) {
                 $new_item_wrapper.prependTo($undone_items_wrapper).slideDown(200).wrap('<li class="pl-new-item-wrapper">');
@@ -982,7 +982,7 @@
                     //    increase_item.call(this);
                     //    break;
                     case 9: // tab
-                        if (!o.list.list_details.isVisible() && !item_details.isVisible()) {
+                        if (!(o.list && o.list.list_details.isVisible()) && !ItemDetails.isVisible()) {
                             if (e.shiftKey) {
                                 decreaseItem(e);
                             } else {
