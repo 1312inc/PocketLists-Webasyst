@@ -468,11 +468,11 @@
         // update sort base on current positions
         var updateSort = function (id) {
             //this.find('label').first().append($.pocketlists.$loading);
-            if (o.enableSortItems) {
+            if (o.enableSortItems && o.list) {
                 $.post(
                     '?module=item&action=sort',
                     {
-                        list_id: $.pocketlists.List.list_id,
+                        list_id: o.list.list_id,
                         item_id: id ? id : 0,
                         data: getItems()
                     },
