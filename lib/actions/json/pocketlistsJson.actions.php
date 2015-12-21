@@ -13,6 +13,11 @@ class pocketlistsJsonActions extends waJsonActions
         $this->response = $pi->getAppCountForUser();
     }
 
+    public function GetHumandateAction()
+    {
+        $this->response = waDateTime::format('humandate', waRequest::get('date'));
+    }
+
     public function GetListsAction()
     {
         $pocket_id = waRequest::get('id', false, waRequest::TYPE_INT);

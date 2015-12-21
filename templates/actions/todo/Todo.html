@@ -132,16 +132,20 @@
 
             $dates.removeClass('pl-selected');
             $this.addClass('pl-selected');
-            $stream_all_header.hide();
-            $stream_date_header.show().find('span').text(date);
+            $.get('?module=json&action=getHumandate&date=' + date, function(r){
+                if (r.status === 'ok') {
+                    $stream_all_header.hide();
+                    $stream_date_header.show().find('span').text(r.data);
 
-            $undone_items_wrapper
-                    .find('[data-id]').slideUp().end()
-                    .find('[data-pl-due-date="' + date + '"]').slideDown();
-            $complete_items_wrapper
-                    .find('[data-id]').slideUp().end()
-                    .find('[data-pl-complete-datetime^="' + date + '"]').slideDown();
-            $complete_items_wrapper.show();
+                    $undone_items_wrapper
+                            .find('[data-id]').slideUp().end()
+                            .find('[data-pl-due-date="' + date + '"]').slideDown();
+                    $complete_items_wrapper
+                            .find('[data-id]').slideUp().end()
+                            .find('[data-pl-complete-datetime^="' + date + '"]').slideDown();
+                    $complete_items_wrapper.show();
+                }
+            }, 'json');
         });
         $stream_date_header.on('click', 'a', function(e) {
             e.preventDefault();
