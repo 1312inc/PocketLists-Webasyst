@@ -95,7 +95,7 @@ class pocketlistsItemModel extends waModel
                 JOIN pocketlists_pocket p ON p.id = l.pocket_id
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
                 WHERE
-                  i.contact_id = i:contact_id AND i.priority > 0
+                  i.contact_id = i:contact_id AND i.calc_priority > 0
                   OR i.assigned_contact_id = i:contact_id
                   OR i.complete_contact_id = i:contact_id
                 ORDER by i.priority DESC";
