@@ -34,8 +34,14 @@ class pocketlistsListModel extends waModel
     {
         $im = new pocketlistsItemModel();
         unset($data['id']);
-        $im->updateByField('key_list_id', $id, $data);
-        return $this->updateById($id, $data);
+        $item = $im->getByField('key_list_id', $id);
+        if ($im->updateWithCalcPriority($item['id'], array_merge($item, $data)) &&
+            $this->updateById($id, $data)
+        ) {
+            $list = $this->getById($id);
+            return $list;
+        }
+        return false;
     }
 
     public function delete($id)

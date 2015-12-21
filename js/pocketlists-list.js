@@ -9,12 +9,13 @@
      * - archive
      * - sort all
      */
-    $.pocketlists.List = function($wrapper) {
-        var $new_list_input = $wrapper.find('#pl-new-list-input'),
-            list_id = parseInt($wrapper.find('#pl-list-id').val()),
+    $.pocketlists.List = function($list_wrapper) {
+        var $new_list_input = $list_wrapper.find('#pl-new-list-input'),
+            list_id = parseInt($list_wrapper.find('#pl-list-id').val()),
             pocket_id = parseInt($('#pl-pocket-id').val()),
             $dialog_delete = $('#pl-dialog-delete-confirm'),
-            $dialog_complete_all = $('#pl-dialog-list-archive-complete-all');
+            $dialog_complete_all = $('#pl-dialog-list-archive-complete-all'),
+            _list = this;
 
         /**
          * for show and manipulate with list details
@@ -41,18 +42,29 @@
                 $wrapper.hide().empty();
                 //list.trigger('deselectList.pl2');
             };
-            var updateList = function () {
-                var name = $wrapper.find('input[name="list\[name\]"]').val(),
-                    color = $wrapper.find('[data-pl-list-color].selected').data('pl-list-color'),
-                    icon = $wrapper.find('input[name="list\[icon\]"]').val();
-                $('#pl-list-name').text(name); // update name
+            var updateList = function (data) {
+                $list_wrapper.find('#pl-list-name').text(data.name); // update name
+                if (data.due_date || data.due_datetime) {
+                    var due_class = 'pl-due-someday';
+                    if (data.calc_priority == 1) {
+                        due_class = 'pl-due-tomorrow';
+                    } else if(data.calc_priority == 2) {
+                        due_class = 'pl-due-today';
+                    } else if(data.calc_priority == 3) {
+                        due_class = 'pl-due-overdue';
+                    }
+                    $list_wrapper.find('.pl-list-due').removeClass().addClass('pl-list-due ' + due_class).text(data.due_datetime ? data.due_datetime : data.due_date);
+                } else {
+                    $list_wrapper.find('.pl-list-due').hide();
+                }
+
                 // middle sidebar
                 $('#pl-lists')
-                    .find('[data-pl-list-id="' + list_id + '"]').removeClass().addClass('pl-' + color) // update color
-                    .find('.pl-list-name').text(name) // update name
+                    .find('[data-pl-list-id="' + list_id + '"]').removeClass().addClass('pl-' + data.color) // update color
+                    .find('.pl-list-name').text(data.name) // update name
                     .end()
-                    .find('.listicon48').css('background-image', 'url(' + icon_path + icon + ')');
-                $('.pl-items').removeClass().addClass('pl-items pl-' + color); // update icon
+                    .find('.listicon48').css('background-image', 'url(' + icon_path + data.icon + ')');
+                $('.pl-items').removeClass().addClass('pl-items pl-' + data.color); // update icon
             };
             var afterLoad = function() {
                 var datepicker_options = {
@@ -78,8 +90,6 @@
                 }
                 $wrapper.data('pl-ListDetails', true);
 
-
-
                 $wrapper
                     .on('submit', 'form', function (e) {
                         e.preventDefault();
@@ -88,7 +98,7 @@
                         $.post('?module=list&action=save', $this.serialize(), function (r) {
                             $.pocketlists.$loading.remove();
                             if (r.status === 'ok') {
-                                updateList();
+                                updateList(r.data);
                                 hideListDetails();
                             } else {
                                 $wrapper.find('.error').show().delay(3000).hide();
@@ -183,7 +193,7 @@
         };
         // favorite list
         var favoriteList = function() {
-            var $star = $wrapper.find('[class*="star"]');
+            var $star = $list_wrapper.find('[class*="star"]');
             $.post(
                 '?module=list&action=favorite',
                 {
@@ -241,7 +251,7 @@
             }, 'json');
         };
         var deselectList = function() {
-            $wrapper.removeData('pl-clicked');
+            $list_wrapper.removeData('pl-clicked');
         };
 
         var init = function() {
@@ -256,16 +266,16 @@
                 });
             }
 
-            $wrapper
+            $list_wrapper
                 .on('click', function (e) {
-                    var clicked = $wrapper.data('pl-clicked');
+                    var clicked = $list_wrapper.data('pl-clicked');
 
                     // ignore when click on checkbox
                     if ($(e.target).closest('.pl-done-label').length) {
                         return;
                     }
                     if (clicked == 1) {
-                        $wrapper.data('pl-clicked', 2);
+                        $list_wrapper.data('pl-clicked', 2);
 
                         $.pocketlists.scrollToTop(200, 80);
 
@@ -276,7 +286,7 @@
                         ListDetails.trigger('hide.pl2');
                         deselectList();
                     } else {
-                        $wrapper.data('pl-clicked', 1);
+                        $list_wrapper.data('pl-clicked', 1);
                     }
                 }) // open details
                 .on('click', '[data-pl-action="list-delete"]', function (e) {
@@ -360,6 +370,7 @@
         init();
 
         return {
+            $el: $list_wrapper,
             list_details: ListDetails,
             list_id: list_id,
             pocket_id: pocket_id

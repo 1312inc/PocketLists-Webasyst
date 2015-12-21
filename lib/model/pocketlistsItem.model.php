@@ -141,6 +141,7 @@ class pocketlistsItemModel extends waModel
             ) { // assigned id is updated
                 pocketlistsNotifications::notifyAboutNewAssign($item);
             }
+            return true;
         }
     }
 
