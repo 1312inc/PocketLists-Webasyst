@@ -102,6 +102,13 @@ ul.pl-team li .pl-active-items { max-height: 2.4em; overflow: hidden; margin: 5p
 ---------------- */
 
 label.pl-done-label { cursor: pointer;position: relative;z-index: 2;}
+label.pl-done-label .listicon48 {
+    float: left;
+    position: relative;
+    top: 14px;
+    left: 17px;
+    background-size: 20px;
+}
 
 .pl-done { display: none; }
 .pl-done + span { display: block; float:left; width:16px; height:16px; background: rgba(255,255,255,0.2); border: 1px solid rgba(0,0,0,0.2); border-radius: 50%; position: relative; top: 14px; left: 17px; }

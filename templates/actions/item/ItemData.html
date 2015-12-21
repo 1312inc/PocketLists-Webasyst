@@ -18,12 +18,22 @@
         <a href="#" class="pl-edit inline-link"><b><i>[`Edit`]</i></b></a>
     </div>
     <label class="pl-done-label">
+        {if !empty($item.key_list_id)}
+        <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$item.list_icon|default:'li-list@2x.png'});"></i>
+        {else}
         <input type="checkbox" class="pl-done{if $item.calc_priority == 1} pl-green{elseif $item.calc_priority == 2} pl-yellow{elseif $item.calc_priority == 3} pl-red{/if}" {if $item.status == 1}checked="checked"{/if}{if isset($archive) && $archive == true}disabled{/if}>
         <span></span>
+        {/if}
     </label>
     <label class="pl-select-label">
-        <input type="checkbox" class="pl-is-selected" {if isset($archive) && $archive == true}disabled{/if}>
-        <span class="pl-item-name{if $item.status == 1} gray{/if}">{$item.name|escape|nl2br|default:'&nbsp;'}</span>
+        <input type="checkbox" class="pl-is-selected" {if isset($archive) && $archive == true || !empty($item.key_list_id)}disabled{/if}>
+        <span class="pl-item-name{if $item.status == 1} gray{/if}">
+            {if !empty($item.key_list_id)}
+            <a href="#/pocket/{$item.pocket_id}/list/{$item.list_id}/">{$item.name|escape|nl2br|default:'&nbsp;'}</a>
+            {else}
+            {$item.name|escape|nl2br|default:'&nbsp;'}
+            {/if}
+        </span>
         {if $item.status == 1}
             {* completed *}
             <span class="hint">{$item.complete_datetime|wa_datetime:'humandatetime'}</span>

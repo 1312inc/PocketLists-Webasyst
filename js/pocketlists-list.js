@@ -14,8 +14,7 @@
             list_id = parseInt($list_wrapper.find('#pl-list-id').val()),
             pocket_id = parseInt($('#pl-pocket-id').val()),
             $dialog_delete = $('#pl-dialog-delete-confirm'),
-            $dialog_complete_all = $('#pl-dialog-list-archive-complete-all'),
-            _list = this;
+            $dialog_complete_all = $('#pl-dialog-list-archive-complete-all');
 
         /**
          * for show and manipulate with list details
