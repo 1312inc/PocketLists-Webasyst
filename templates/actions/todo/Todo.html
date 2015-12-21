@@ -66,7 +66,7 @@
     </nav>
 
     <!-- ITEMS -->
-    <main class="content left300px blank bordered-left pl-items pl-list-items pl-blue" id="pl-list-content">
+    <main class="content left300px blank bordered-left pl-items pl-list-items pl-blue pl-todo" id="pl-list-content">
 
         <header class="pl-title">
             {if $stream_list_id}
@@ -82,7 +82,7 @@
                 [`To-do stream`]
             </h1>
             <h1 class="not-padded" style="display: none;" pl-todo-stream="date">
-                <span>December 8, 2015</span> <a href="#" id="pl-show-stream" class="back">[`Show stream`]</a>
+                <span>December 8, 2015</span> <a href="#" class="back">[`Show stream`]</a>
             </h1>
         </header>
 
@@ -96,13 +96,19 @@
                 </ul>
             </section>
 
+            {if !empty($complete_items)}
+            <section id="pl-complete-log" class="pl-logbook">
+                <ul class="menu-v">
+                    {include '../item/ItemCreate.html' parent_id=0 items=$complete_items}
+                </ul>
+            </section>
+            {/if}
+
         </div>
 
         <div class="clear-both"></div>
 
         {include '../../include/deltedialog.html' inline}
-
-        {include '../../include/listdetails.html' inline}
 
         {include '../../include/itemdetails.html' inline}
 
@@ -113,27 +119,39 @@
 
 <script type="text/javascript">
     (function(){
-        var $dates = $('[data-pl-todo-date]');
+        var $dates = $('[data-pl-todo-date]'),
+            $stream_all_header = $('[pl-todo-stream="all"]'),
+            $stream_date_header = $('[pl-todo-stream="date"]'),
+            $all_items_wrapper = $('#pl-list-items'),
+            $undone_items_wrapper = $('#pl-undone-items'),
+            $complete_items_wrapper = $('#pl-complete-log');
         $dates.on('click', function() {
             var $this = $(this),
                 date = $this.data('pl-todo-date');
 
 //            $dates.filter('.pl-today').removeClass('pl-today');
 //            $this.addClass('pl-today');
-            $('[pl-todo-stream="all"]').hide();
-            $('[pl-todo-stream="date"]').show().find('span').text(date);
-            $('#pl-list-items')
+            $stream_all_header.hide();
+            $stream_date_header.show().find('span').text(date);
+
+            $undone_items_wrapper
                     .find('[data-id]').slideUp().end()
                     .find('[data-pl-due-date="' + date + '"]').slideDown();
+            $complete_items_wrapper
+                    .find('[data-id]').slideUp().end()
+                    .find('[data-pl-complete-datetime^="' + date + '"]').slideDown();
+            $complete_items_wrapper.show();
         });
-        $('#pl-show-stream').on('click', function(e) {
+        $stream_all_header.on('click', 'a', function(e) {
             e.preventDefault();
-            $('[pl-todo-stream="all"]').show();
-            $('[pl-todo-stream="date"]').hide();
+            $stream_all_header.show();
+            $stream_date_header.hide();
 
-            $('#pl-list-items').find('[data-id]').slideDown();
+            $undone_items_wrapper.find('[data-id]').slideDown();
+            $complete_items_wrapper.find('[data-id]').slideUp();
+            $complete_items_wrapper.hide();
         });
-        new $.pocketlists.Items($('#pl-list-items'), {
+        new $.pocketlists.Items($all_items_wrapper, {
             enableAddLinkOnHover: false,
             enableChangeLevel: false,
             enableSortItems: false
