@@ -34,13 +34,14 @@
                         <option value="{$pocket.id}" {if isset($inbox_list) && $inbox_list.pocket_id == $pocket.id}selected="selected"{/if}>{$pocket.name}</option>
                         {/foreach}
                     </select>
-                    <select id="pl-inbox-list" {if !$settings.stream_inbox_list}style="display:none;"{/if}>
+                    <select id="pl-inbox-list" {if empty($settings.stream_inbox_list)}style="display:none;"{/if}>
+                    {if $inbox_lists}
                         {foreach $inbox_lists as $list}
-                        <option value="{$list.id}" {if $settings.stream_inbox_list == $list.id}selected="selected"{/if}>{$list.name}</option>
-                        {foreachelse}
+                        <option value="{$list.id}" {if !empty($settings.stream_inbox_list) && $settings.stream_inbox_list == $list.id}selected="selected"{/if}>{$list.name}</option>
                         {/foreach}
+                    {/if}
                     </select>
-                    <input type="hidden" name="stream_inbox_list" value="{$settings.stream_inbox_list}"/>
+                    <input type="hidden" name="stream_inbox_list" value="{$settings.stream_inbox_list|default:0}"/>
                     <p class="hint">[`When you add to-dos to your To-do stream, they will be stored within the specified particular to-do list.`]</p>
                 </div>
               </div>

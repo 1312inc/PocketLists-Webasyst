@@ -44,16 +44,19 @@
     <main class="content left300px blank bordered-left pl-items pl-blue" id="pl-list-content">
 
         <header class="pl-title">
+            {if $stream_list_id}
             <div class="float-right block half-padded">
                 <ul class="menu-h">
                     <li>
-                        <a href="#"><i class="icon16 add"></i> [`Add to-do`]</a>
+                        <a href="#" id="pl-item-add-link"><i class="icon16 add"></i> [`Add to-do`]</a>
                     </li>
                 </ul>
             </div>
+            {/if}
             <h1 class="not-padded">
                 {$teammate_name|default:'&nbsp;'}
             </h1>
+            <input type="hidden" id="pl-assigned-contact-id" value="{$teammate_id}"/>
         </header>
 
         <div class="pl-list-items" id="pl-list-items">
@@ -81,8 +84,6 @@
 
         {include '../../include/deltedialog.html' inline}
 
-        {include '../../include/listdetails.html' inline}
-
         {include '../../include/itemdetails.html' inline}
 
         {include '../../include/itemadd.html' inline}
@@ -98,7 +99,13 @@
 
 </div>
 
-<script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-list.js"></script>
 <script text="text/javascript">
+    var $all_items_wrapper = $('#pl-list-items');
 
+    new $.pocketlists.Items($all_items_wrapper, {
+        enableAddLinkOnHover: false,
+        enableChangeLevel: false,
+        enableSortItems: false,
+        assignUser: parseInt($('#pl-assigned-contact-id').val())
+    });
 </script>

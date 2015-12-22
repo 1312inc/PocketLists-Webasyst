@@ -160,7 +160,8 @@
         new $.pocketlists.Items($all_items_wrapper, {
             enableAddLinkOnHover: false,
             enableChangeLevel: false,
-            enableSortItems: false
+            enableSortItems: false,
+            assignUser: parseInt('{$wa->user()->getId()}')
         });
     }());
 </script>

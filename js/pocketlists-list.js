@@ -397,7 +397,8 @@
                 enableAddLinkOnHover: true,
                 enableChangeLevel: true,
                 enableSortItems: true,
-                list: null
+                list: null,
+                assignUser: null
             },
             o = {};
 
@@ -422,12 +423,19 @@
         // save item
         var addItem = function (data, callback) {
             var $this = $(this);
+//             debugger;
+//             if (o.assignUser) {
+//                 $.each(data, function() {
+//                      data['assigned_contact_id'] = o.assignUser;
+//                 });
+//             }
             //$this.after($.pocketlists.$loading);
             $.post(
                 '?module=item&action=create',
                 {
                     list_id: o.list ? o.list.list_id : 0,
-                    data: data
+                    data: data,
+                    assigned_contact_id: o.assignUser ? o.assignUser : false
                 },
                 function (html) {
                     var $li = $this.closest(item_selector);
