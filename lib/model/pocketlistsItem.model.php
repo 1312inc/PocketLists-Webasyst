@@ -97,10 +97,10 @@ class pocketlistsItemModel extends waModel
                 JOIN pocketlists_pocket p ON p.id = l.pocket_id
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
                 WHERE
-                  i.contact_id = i:contact_id AND i.calc_priority > 0
+                  i.contact_id = i:contact_id AND (i.calc_priority > 0 OR i.due_date IS NOT NULL OR i.due_datetime IS NOT NULL)
                   OR i.assigned_contact_id = i:contact_id
                   OR i.complete_contact_id = i:contact_id
-                ORDER by i.priority DESC";
+                ORDER BY i.calc_priority DESC, (i.due_date IS NULL), i.due_date ASC, (i.due_datetime IS NULL), i.due_datetime ASC";
 
         $items = $this->query($sql, array('pocket_ids' => $pockets, 'contact_id' => $contact_id))->fetchAll();
         foreach ($items as $id => $item) {
@@ -127,16 +127,16 @@ class pocketlistsItemModel extends waModel
         return count($ids) > 1 ? $items : reset($items);
     }
 
-    public function updateWithCalcPriority($id, $item)
+    public function updateWithCalcPriority($id, $item, $silent = false)
     {
         $us = new pocketlistsUserSettings();
-        if ($email_me = $us->emailWhenNewAssignToMe()) {
+        if (!$silent && $email_me = $us->emailWhenNewAssignToMe()) {
             $old_item = $this->getById($id);
         }
 
         $this->updatePriority($item);
         if ($this->updateById($id, $item)) {
-            if ($email_me && // settings are set
+            if ($silent && $email_me && // settings are set
                 $item['assigned_contact_id'] && // assigned to me is set
                 $item['assigned_contact_id'] == wa()->getUser()->getId() && // assigned id is mine
                 $item['assigned_contact_id'] != $old_item['assigned_contact_id']
@@ -201,7 +201,6 @@ class pocketlistsItemModel extends waModel
 
         return $this->getItems($sql, $list_id, $tree);
     }
-
 
     private function getItems($sql, $list_id, $tree)
     {
@@ -468,22 +467,30 @@ class pocketlistsItemModel extends waModel
         $tomorrow = date("Y-m-d", strtotime("+1 day"));
         $day_after_tomorrow = date("Y-m-d", strtotime("+2 day"));
 
-        $q = "SELECT id FROM {$this->table} WHERE status = 0 AND assigned_contact_id = i:contact_id";
+        $q = "SELECT id
+              FROM {$this->table}
+              WHERE
+                status = 0
+                AND ((contact_id = i:contact_id OR assigned_contact_id = i:contact_id)";
 
         switch ($settings['app_icon']) {
-            case 0: // overdue
-                $q .= " AND ((due_date <= '{$today}' AND due_datetime < '{$now}') OR due_date < '{$today}')";
+            case pocketlistsUserSettings::ICON_OVERDUE: // overdue
+                $q .= "AND ((due_date <= '{$today}' AND due_datetime < '{$now}') OR due_date < '{$today}' OR calc_priority = 3))";
                 break;
-            case 1: // overdue + today
-                $q .= " AND (due_date <= '" . $today . "' OR due_datetime < '" . $tomorrow . "')";
+            case pocketlistsUserSettings::ICON_OVERDUE_TODAY: // overdue + today
+                $q .= "AND (due_date <= '" . $today . "' OR due_datetime < '" . $tomorrow . "' OR calc_priority IN (2, 3)))";
                 break;
-            case 2: // overdue + today + tomorrow
-                $q .= " AND (due_date <= '" . $tomorrow . "' OR due_datetime < '" . $day_after_tomorrow . "')";
+            case pocketlistsUserSettings::ICON_OVERDUE_TODAY_AND_TOMORROW: // overdue + today + tomorrow
+                $q .= "AND (due_date <= '" . $tomorrow . "' OR due_datetime < '" . $day_after_tomorrow . "' OR calc_priority IN (1, 2, 3)))";
                 break;
             default:
                 return '';
         }
-        return $this->query($q, array('contact_id' => wa()->getUser()->getId()))->count();
+        if ($settings['app_icon'] != pocketlistsUserSettings::ICON_NONE ) {
+            return $this->query($q, array('contact_id' => wa()->getUser()->getId()))->count();
+        } else {
+            return false;
+        }
     }
 
 }
