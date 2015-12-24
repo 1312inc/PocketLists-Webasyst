@@ -22,7 +22,7 @@
 .pl-dark-purple { background: #bc7cf5 !important; }
 .pl-dark-red { background: #f7696d !important; }
 .pl-dark-yellow { background: #f5cf24 !important; }
-.pl-dark-none { background: #eee !important; }
+.pl-dark-none { background: #ddd !important; }
 
 .icon10.color { border: none; border-radius: 50%; width: 5px; height: 5px; }
 .icon16.color { border: none; }
@@ -210,6 +210,7 @@ input#pl-new-list-input,
 .pl-list-items ul.menu-v li .pl-item .pl-meta { display: inline-block; float: right; margin: 0; padding: 14px; position: relative; z-index: 1; }
 .pl-list-items ul.menu-v li .pl-item .pl-favorite { display: inline-block; float: right; margin-left: 5px; }
 .pl-list-items ul.menu-v li .pl-item .pl-author { display: inline-block; float: right; margin-left: 5px; margin-top: 1px; }
+.pl-list-items ul.menu-v li .pl-item .pl-author i.icon16 { margin-left: 5px; }
 .pl-list-items ul.menu-v li .pl-item .pl-edit { display: none; position: absolute; right: 17px; margin-top: -4px; }
 .pl-list-items ul.menu-v li .pl-item p { margin-bottom: 0; margin-top: 4px; line-height: 1.2em; }
 .pl-list-items ul.menu-v li .pl-item.pl-item-selected .pl-edit { display: inline-block; }
