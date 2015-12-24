@@ -9,8 +9,7 @@ class pocketlistsJsonActions extends waJsonActions
 
     public function AppCountAction()
     {
-        $pi = new pocketlistsItemModel();
-        $this->response = $pi->getAppCountForUser();
+        $this->response = wa('pocketlists')->getConfig()->onCount();
     }
 
     public function GetHumandateAction()

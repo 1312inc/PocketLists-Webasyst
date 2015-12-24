@@ -460,7 +460,7 @@ class pocketlistsItemModel extends waModel
     public function getAppCountForUser()
     {
         $us = new pocketlistsUserSettings();
-        $settings = $us->getAllSettings();
+        $icon = $us->appIcon();
 
         $now = @waDateTime::parse('Y-m-d H:i:s', waDateTime::date('Y-m-d H:i:s'));
         $today = date("Y-m-d");
@@ -468,12 +468,12 @@ class pocketlistsItemModel extends waModel
         $day_after_tomorrow = date("Y-m-d", strtotime("+2 day"));
 
         $q = "SELECT id
-              FROM {$this->table}
-              WHERE
-                status = 0
-                AND ((contact_id = i:contact_id OR assigned_contact_id = i:contact_id)";
+          FROM {$this->table}
+          WHERE
+            status = 0
+            AND ((contact_id = i:contact_id OR assigned_contact_id = i:contact_id)";
 
-        switch ($settings['app_icon']) {
+        switch ($icon) {
             case pocketlistsUserSettings::ICON_OVERDUE: // overdue
                 $q .= "AND ((due_date <= '{$today}' AND due_datetime < '{$now}') OR due_date < '{$today}' OR calc_priority = 3))";
                 break;
@@ -486,10 +486,11 @@ class pocketlistsItemModel extends waModel
             default:
                 return '';
         }
-        if ($settings['app_icon'] != pocketlistsUserSettings::ICON_NONE ) {
-            return $this->query($q, array('contact_id' => wa()->getUser()->getId()))->count();
+        if ($icon !== false && $icon != pocketlistsUserSettings::ICON_NONE) {
+            $count = $this->query($q, array('contact_id' => wa()->getUser()->getId()))->count();
+            return $count;
         } else {
-            return false;
+            return null;
         }
     }
 

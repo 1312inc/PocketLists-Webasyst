@@ -40,7 +40,6 @@
             $('#wa-app').on('click', '[data-pl-scroll-to-top] a', function () {
                 self.scrollToTop(0, 80);
             });
-            self.updateAppCounter();
         },
         $loading: $('<i class="icon16 loading">')
     };
