@@ -90,7 +90,7 @@ class pocketlistsUserSettings
      */
     public function appIcon()
     {
-        return !empty($this->settings['app_icon']) ? $this->settings['app_icon'] : false;
+        return isset($this->settings['app_icon']) ? $this->settings['app_icon'] : false;
     }
 
     /**
