@@ -106,7 +106,7 @@ class pocketlistsItemModel extends waModel
         foreach ($items as $id => $item) {
             $items[$id] = $this->updateItem($item);
         }
-        return $items;
+        return $this->getTree($items, true);
     }
 
     public function getById($ids)
