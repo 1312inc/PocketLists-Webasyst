@@ -148,6 +148,10 @@
                     })
                     .on('show.pl2', showListDetails)
                     .on('hide.pl2', hideListDetails);
+
+                $(window).scroll(function() {
+                    stickyDetailsSidebar();
+                });
             };
             init();
 
@@ -386,12 +390,14 @@
     $.pocketlists.Items = function($list_items_wrapper, options) {
         var $undone_items_wrapper = $list_items_wrapper.find('#pl-undone-items > ul.menu-v'),
             $sortable_items = $('#pl-undone-items ul.menu-v'),
-            $done_items_wrapper = $list_items_wrapper.find('#pl-complete-log > ul.menu-v'),
+            $done_items = $list_items_wrapper.find('#pl-complete-log'),
+            $done_items_wrapper = $done_items.find('ul.menu-v').first(),
             $new_item_wrapper = $('#pl-item-add').detach(),
             $new_item_input = $new_item_wrapper.find('textarea'),
             $new_item_wrapper_hover = $('<div id="pl-item-add-wrapper-hover" style="display: none;">'),
             item_selector = '[data-parent-id]',
             $add_item_link = $('#pl-item-add-link'),
+            $show_logbook_items = $('#pl-complete-log-link'),
             $current_item = null,
             defaults = {
                 enableAddLinkOnHover: true,
@@ -915,7 +921,9 @@
                     })
                     .on('hide.pl2', hideItemDetails);
 
-                //this.$el = $wrapper;
+                $(window).scroll(function() {
+                    stickyDetailsSidebar();
+                });
             };
 
             init();
@@ -1014,6 +1022,13 @@
                         break;
                 }
             });
+
+            // show logbook items
+            $show_logbook_items.click(function () {
+                $done_items.slideDown(200);
+                $(this).slideUp(200);
+                return false;
+            });
         };
 
         init();
@@ -1025,12 +1040,6 @@
             }
         };
     };
-
-    $('#pl-complete-log-link').click(function () {
-        $('#pl-complete-log').slideDown(200);
-        $(this).slideUp(200);
-        return false;
-    });
 
     function stickyDetailsSidebar() {
         var list_top_offset = $('#pl-list-content').offset().top;
@@ -1053,8 +1062,4 @@
             $('.pl-details').removeClass('sticky');
         }
     }
-
-    $(window).scroll(function() {
-        stickyDetailsSidebar();
-    });
 }());
