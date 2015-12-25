@@ -401,8 +401,8 @@ class pocketlistsItemModel extends waModel
                   p.color pocket_color,
                   IF(uf.contact_id, 1, 0) favorite
                 FROM {$this->table} i
-                JOIN pocketlists_list l ON (l.id = i.list_id  OR l.id = i.key_list_id)
-                JOIN pocketlists_pocket p ON p.id = l.pocket_id
+                LEFT JOIN pocketlists_list l ON (l.id = i.list_id  OR l.id = i.key_list_id)
+                LEFT JOIN pocketlists_pocket p ON p.id = l.pocket_id
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
                 WHERE
                   i.assigned_contact_id = i:contact_id AND i.status = 0
