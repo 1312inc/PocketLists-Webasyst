@@ -39,12 +39,12 @@
                 $li.addClass('selected');
             } else {
                 var hash = $.pocketlists_routing.getHash(),
-                    $a = $all_li.find('a[href^="' + hash + '"]');
+                    $a = $all_li.find('a[href="' + hash + '"]');
 
                 if (hash) {
                     $all_li.removeClass('selected');
                 }
-                if ($a.length) {
+                if ($a.length) { // first find full match
                     $a.closest('li').addClass('selected');
                 } else { // more complex hash
                     hash = hash.split("/");
