@@ -49,7 +49,7 @@
                 } else { // more complex hash
                     hash = hash.split("/");
                     if (hash[1]) {
-                        $all_li.find('a[href^="' + hash[0] + '/' + hash[1] + '"]').closest('li').addClass('selected');;
+                        $all_li.find('a[href^="' + hash[0] + '/' + hash[1] + '"]').first().closest('li').addClass('selected');;
                     }
                 }
             }
