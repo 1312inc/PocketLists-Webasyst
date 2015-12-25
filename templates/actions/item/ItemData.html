@@ -4,6 +4,7 @@
         {if $item.status == 1}
             <span class="pl-author" title="{sprintf('[`Completed by %s`]', $item.complete_username|default:'%username%')}">
                 {if isset($item.complete_userpic)}
+                <span class="hint">{$item.complete_datetime|wa_datetime:'humandatetime'}</span>
                 <i class="icon16 userpic20" style="background-image: url({$item.complete_userpic})" alt="{$item.complete_username}"></i>
                 {else}
                 <i class="icon16 userpic20"></i>
@@ -34,10 +35,6 @@
             {$item.name|escape|nl2br|default:'&nbsp;'}
             {/if}
         </span>
-        {if $item.status == 1}
-            {* completed *}
-            <span class="hint">{$item.complete_datetime|wa_datetime:'humandatetime'}</span>
-        {/if}
         {if !empty($item.due_datetime)}
         <br>
         <span class="small bold {if $item.calc_priority == 0}pl-due-someday{elseif $item.calc_priority == 1}pl-due-tomorrow{elseif $item.calc_priority == 2}pl-due-today{elseif $item.calc_priority == 3}pl-due-overdue{/if}">{$item.due_datetime|wa_datetime:'humandatetime'}</span>
