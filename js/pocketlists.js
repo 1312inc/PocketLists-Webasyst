@@ -33,12 +33,25 @@
                 $('html,body').animate({scrollTop: offset + 'px'}, speed);
             }
         },
-        setSelectSidebar: function($li) {
-            var $all_li = $('#pl-sidebar-core').find('li').removeClass('selected');
+        highlightSidebar: function($li) {
+            var $all_li = $('#pl-sidebar-core').find('li');
             if ($li) {
                 $li.addClass('selected');
             } else {
-                $all_li.find('a[href^="' + $.pocketlists_routing.getHash() + '"]').closest('li').addClass('selected');
+                var hash = $.pocketlists_routing.getHash(),
+                    $a = $all_li.find('a[href^="' + hash + '"]');
+
+                if (hash) {
+                    $all_li.removeClass('selected');
+                }
+                if ($a.length) {
+                    $a.closest('li').addClass('selected');
+                } else { // more complex hash
+                    hash = hash.split("/");
+                    if (hash[1]) {
+                        $all_li.find('a[href^="' + hash[0] + '/' + hash[1] + '"]').closest('li').addClass('selected');;
+                    }
+                }
             }
         },
         $loading: $('<i class="icon16 loading">'),
@@ -46,11 +59,13 @@
             $.pocketlists_routing.init();
 
             var self = this;
+            self.highlightSidebar();
+
             $('#wa-app').on('click', '[data-pl-scroll-to-top] a', function () {
                 self.scrollToTop(0, 80);
             });
             $('#pl-sidebar-core').on('click', 'a', function() {
-                self.setSelectSidebar($(this).closest('li'));
+                self.highlightSidebar($(this).closest('li'));
             });
         }
     };
