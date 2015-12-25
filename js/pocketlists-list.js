@@ -1,4 +1,4 @@
-(function () {
+(function ($) {
     "use strict";
 
     /**
@@ -748,24 +748,27 @@
                         }
                     })
                     .on('paste', function () {
-                        var parent_id = $(this).closest('.menu-v').find(item_selector).first().data('parent-id');
-                        var self = this;
-                        setTimeout(function () {
-                            var items = $new_item_input.val().split(/\n/);
-                            var data = [];
-                            if (items.length > 1) {
-                                for (var i = 0; i < items.length; i++) {
-                                    var name = $.trim(items[i]);
-                                    if (name) {
-                                        data.push({
-                                            name: name,
-                                            parent_id: parent_id
-                                        });
+                        var self = this,
+                            parent_id = $(this).closest('.menu-v').find(item_selector).first().data('parent-id');
+
+                        if (!$(this).val().length) {
+                            setTimeout(function () {
+                                var items = $new_item_input.val().split(/\n/);
+                                var data = [];
+                                if (items.length > 1) {
+                                    for (var i = 0; i < items.length; i++) {
+                                        var name = $.trim(items[i]);
+                                        if (name) {
+                                            data.push({
+                                                name: name,
+                                                parent_id: parent_id
+                                            });
+                                        }
                                     }
+                                    addItem.call(self, data);
                                 }
-                                addItem.call(self, data);
-                            }
-                        }, 100);
+                            }, 100);
+                        }
                     })
                     .on('blur', function () {
                         var $this = $(this),
@@ -1078,4 +1081,4 @@
             $('.pl-details').removeClass('sticky');
         }
     }
-}());
+}(jQuery));
