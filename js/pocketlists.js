@@ -36,6 +36,7 @@
         highlightSidebar: function($li) {
             var $all_li = $('#pl-sidebar-core').find('li');
             if ($li) {
+                $all_li.removeClass('selected');
                 $li.addClass('selected');
             } else {
                 var hash = $.pocketlists_routing.getHash(),
