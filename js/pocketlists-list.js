@@ -398,13 +398,15 @@
             item_selector = '[data-parent-id]',
             $add_item_link = $('#pl-item-add-link'),
             $show_logbook_items = $('#pl-complete-log-link'),
+            $empty_list_msg = $list_items_wrapper.find('#pl-empty-list-msg'),
             $current_item = null,
             defaults = {
                 enableAddLinkOnHover: true,
                 enableChangeLevel: true,
                 enableSortItems: true,
                 list: null,
-                assignUser: null
+                assignUser: null,
+                showMessageOnEmptyList: false
             },
             o = {};
 
@@ -464,12 +466,12 @@
                         .find('.pl-item').first().after($new_item_wrapper);
 
                     //$.pocketlists.$loading.remove();
-                    $('.pl-list-empty').removeClass('pl-list-empty'); // list is not empty now
 
                     $new_item_input.val('').trigger('focus').css('height', 'auto').data('can_blur', true);
 
                     $.isFunction(callback) && callback.call($this);
 
+                    hideEmptyListMessage();
                     updateListCountBadge();
                     updateSort();
                 }
@@ -545,6 +547,8 @@
                                 updateListCountBadge();
 
                                 $('#pl-complete-log-link').find('i').text($_('Show all ' + $done_items_wrapper.find('[data-id]').length + ' completed to-dos')); // update "complete items" heading
+
+                                showEmptyListMessage();
 
                                 callback && $.isFunction(callback) && callback.call($item);
                             });
@@ -669,7 +673,15 @@
                     .find('.count').text($undone_items_wrapper.find('[data-id]').length);
             }
         };
-
+        var isEmptyList = function() {
+            return !getItems().length;
+        };
+        var showEmptyListMessage = function() {
+            isEmptyList() && o.showMessageOnEmptyList && $empty_list_msg.show();
+        };
+        var hideEmptyListMessage = function() {
+            o.showMessageOnEmptyList && $empty_list_msg.hide();
+        };
         /**
          * for new item dom manipulating
          */
@@ -684,6 +696,7 @@
                     $new_item_wrapper.detach();
                     $('.pl-new-item-wrapper').remove();
                     $new_item_input.val('');
+                    showEmptyListMessage();
                 });
             };
 
@@ -693,6 +706,7 @@
                     e.preventDefault();
                     e.stopPropagation();
                     function show_new_item_wrapper() {
+                        hideEmptyListMessage();
                         $new_item_wrapper.prependTo($undone_items_wrapper).slideDown(200, function () {
                             $new_item_input.focus();
                         }).wrap('<li class="pl-new-item-wrapper">');
@@ -709,7 +723,7 @@
                     }
 
                 });
-                if ($('.pl-list-empty').length) { // show new item input on empty list
+                if (isEmptyList() && !o.showMessageOnEmptyList) { // show new item input on empty list
                     $add_item_link.trigger('click');
                 }
                 $new_item_input
@@ -947,6 +961,8 @@
                 $new_item_wrapper.prependTo($undone_items_wrapper).slideDown(200).wrap('<li class="pl-new-item-wrapper">');
                 $new_item_input.focus();
             }
+
+            showEmptyListMessage();
 
             initSortable();
             $add_item_link.length && new NewItemWrapper();

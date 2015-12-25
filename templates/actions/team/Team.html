@@ -7,7 +7,7 @@
             {if count($teammates)}
             <ul class="zebra pl-team">
                 {foreach $teammates as $teammate}
-                <li {if $teammate.id == $teammate_id}class="selected"{/if} data-pl-team-id="{$teammate.id}">
+                <li {if $teammate.id == $current_teammate.id}class="selected"{/if} data-pl-team-id="{$teammate.id}">
                     <a href="#/team/{$teammate.login}">
                         <div class="profile image50px">
                             <div class="image">
@@ -44,7 +44,6 @@
     <main class="content left300px blank bordered-left pl-items pl-blue" id="pl-list-content">
 
         <header class="pl-title">
-            {if $stream_list_id}
             <div class="float-right block half-padded">
                 <ul class="menu-h">
                     <li>
@@ -52,14 +51,18 @@
                     </li>
                 </ul>
             </div>
-            {/if}
             <h1 class="not-padded">
-                {$teammate_name|default:'&nbsp;'}
+                {$current_teammate.name|default:'&nbsp;'}
             </h1>
-            <input type="hidden" id="pl-assigned-contact-id" value="{$teammate_id}"/>
+            <input type="hidden" id="pl-assigned-contact-id" value="{$current_teammate.id}"/>
         </header>
 
         <div class="pl-list-items" id="pl-list-items">
+            <div class="align-center" id="pl-empty-list-msg" {if !empty($items)}style="display:none;"{/if}>
+                <img class="userpic" src="{$current_teammate.photo_url}">
+                <h3>[`{$current_teammate.name}'s to-do list is empty.`]</h3>
+                <p>[`There are no to-dos assigned to {$current_teammate.name}. To assign a to-do iteam, either @mention user when adding a to-do, or select in to-do details.`]</p>
+            </div>
 
             <section id="pl-undone-items">
                 <ul class="menu-v">
@@ -106,6 +109,7 @@
         enableAddLinkOnHover: false,
         enableChangeLevel: false,
         enableSortItems: false,
-        assignUser: parseInt($('#pl-assigned-contact-id').val())
+        assignUser: parseInt($('#pl-assigned-contact-id').val()),
+        showMessageOnEmptyList: true
     });
 </script>

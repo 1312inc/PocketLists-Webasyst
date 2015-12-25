@@ -44,10 +44,11 @@ class pocketlistsTeamAction extends  waViewAction
             $this->view->assign('items', $items[0]);
             $this->view->assign('items_done', $items[1]);
             $contact = new waContact($id);
-            $this->view->assign('teammate_name', $contact->getName());
-            $this->view->assign('teammate_id', $contact->getId());
-            $us = new pocketlistsUserSettings($contact->getId());
-            $this->view->assign("stream_list_id", $us->getStreamInboxList());
+            $this->view->assign('current_teammate', array(
+                'name' => $contact->getName(),
+                'id' => $contact->getId(),
+                'photo_url' => $contact->getPhoto()
+            ));
         }
 
         $this->view->assign('teammates', $teammates);

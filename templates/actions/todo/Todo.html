@@ -85,6 +85,10 @@
         </header>
 
         <div class="pl-list-items" id="pl-list-items">
+            <div class="align-center" id="pl-empty-list-msg" {if !empty($items)}style="display:none;"{/if}>
+                <h3>[`To-do stream is empty.`]</h3>
+                <p>[`Stream automatically collects all important to-dos from your lists, and presents them in priority & due order.`]</p>
+            </div>
 
             <section id="pl-undone-items">
                 <ul class="menu-v">
@@ -159,7 +163,8 @@
             enableAddLinkOnHover: false,
             enableChangeLevel: false,
             enableSortItems: false,
-            assignUser: parseInt('{$wa->user()->getId()}')
+            assignUser: parseInt('{$wa->user()->getId()}'),
+            showMessageOnEmptyList: true
         });
     }());
 </script>
