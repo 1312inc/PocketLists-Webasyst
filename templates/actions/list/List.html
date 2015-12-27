@@ -81,9 +81,7 @@
             </ul>
         </section>
 
-        {if !empty($items_done)}
-            <a href="#" id="pl-complete-log-link" class="inline-link gray"><b><i>{_w('Show all %d completed to-do', 'Show all %d completed to-dos', $count_items_done)}</i></b></a>
-        {/if}
+        <a href="#" id="pl-complete-log-link" class="inline-link gray" {if empty($items_done)}style="display:none;"{/if}><b><i>{_w('Show all %d completed to-do', 'Show all %d completed to-dos', $count_items_done)}</i></b></a>
     </div>
     <div class="clear-both"></div>
 

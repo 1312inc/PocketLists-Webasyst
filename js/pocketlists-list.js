@@ -555,7 +555,7 @@
                                 // always update list count icon
                                 updateListCountBadge();
 
-                                $('#pl-complete-log-link').find('i').text($_('Show all ' + $done_items_wrapper.find('[data-id]').length + ' completed to-dos')); // update "complete items" heading
+                                $show_logbook_items.show().find('i').text($_('Show all ' + $done_items_wrapper.find('[data-id]').length + ' completed to-dos')); // update "complete items" heading
 
                                 showEmptyListMessage();
 
