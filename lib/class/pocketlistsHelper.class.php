@@ -77,4 +77,24 @@ class pocketlistsHelper
 
         $date['due_date'] = $date['due_date'] ? waDateTime::parse('date', $date['due_date']) : null;
     }
+
+    public static function calcPriorityOnDueDate($due_date, $due_datetime)
+    {
+        $now = time();
+        $due_status = 0;
+
+        if (!empty($due_date) || !empty($due_datetime)) {
+            if (!empty($due_datetime) && $now > strtotime($due_datetime)) { // overdue datetime
+                $due_status = 3;
+            } elseif (strtotime(date("Y-m-d")) > strtotime($due_date)) { // overdue date
+                $due_status = 3;
+            } elseif ($due_date == date("Y-m-d")) { // today
+                $due_status = 2;
+            } elseif ($due_date == date("Y-m-d", $now + 60 * 60 * 24)) { // tomorrow
+                $due_status = 1;
+            }
+        }
+
+        return $due_status;
+    }
 }

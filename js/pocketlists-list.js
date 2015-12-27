@@ -486,18 +486,80 @@
                 }
             );
         };
+        // update item
+        var updateItem = function (data, callback) {
+            $.post('?module=item&action=data', data, function (html) {
+                $.pocketlists.updateAppCounter();
+                $.pocketlists.$loading.remove();
+                replaceItem(html);
+                // update indicator color
+                if (o.list) {
+                    var priority = 0,
+                        list_priority = 0,
+                        priority_class = '';
+                    $.each(getItems(), function () {
+                        priority = Math.max(priority, this.priority);
+                    });
+                    // don't forget about list priority
+                    var $list_due = o.list.$el.find('.pl-list-due');
+                    if ($list_due.length) {
+                        switch ($list_due.attr('class').match(/pl-list-due\s(pl-.*)/)[1]) {
+                            case 'pl-due-tomorrow':
+                                list_priority = 1;
+                                break;
+                            case 'pl-due-today':
+                                list_priority = 2;
+                                break;
+                            case 'pl-due-overdue':
+                                list_priority = 3;
+                                break;
+                        }
+                    }
+                    switch (Math.max(priority, list_priority)) {
+                        case 1:
+                            priority_class = ' pl-green';
+                            break;
+                        case 2:
+                            priority_class = ' pl-yellow';
+                            break;
+                        case 3:
+                            priority_class = ' pl-red';
+                            break;
+                    }
+                    $('#pl-lists').find('[data-pl-list-id="' + o.list.list_id + '"] span.count').removeClass().addClass('count' + priority_class);
+                }
+                $.isFunction(callback) && callback.call();
+            });
+        };
         // get all items list
         var getItems = function () {
             var data = [];
             $undone_items_wrapper.find(item_selector).each(function (i) {
-                var $this = $(this);
+                var $this = $(this),
+                    color = $this.find('.pl-done').attr('class').match(/pl-done\s(pl-.*)/),
+                    priority = 0;
+                if (color && color.length > 0) {
+                    switch (color[1]) {
+                        case 'pl-red':
+                            priority = 3;
+                            break;
+                        case 'pl-yellow':
+                            priority = 2;
+                            break;
+                        case 'pl-green':
+                            priority = 1;
+                            break;
+                    }
+                }
                 data.push({
                     id: $this.data('id'),
                     parent_id: $this.data('parent-id'),
                     sort: i,
-                    has_children: $this.find(item_selector).length ? 1 : 0
+                    has_children: $this.find(item_selector).length ? 1 : 0,
+                    priority: priority
                 });
             });
+            console.dir(data);
             return data;
         };
         // update sort base on current positions
@@ -895,11 +957,9 @@
                     .on('submit', 'form', function (e) {
                         e.preventDefault();
                         var $this = $(this);
-                        $this.find('#pl-item-details-save').removeClass('yellow').after($.pocketlists.$loading);
-                        $.post('?module=item&action=data', $this.serialize(), function (html) {
-                            $.pocketlists.updateAppCounter();
-                            $.pocketlists.$loading.remove();
-                            $list_items_wrapper.trigger('replaceSelectedItem.pl2', [html]);
+                        $this.find('#pl-item-details-save').after($.pocketlists.$loading);
+                        updateItem($this.serialize(), function(){
+                            $this.find('#pl-item-details-save').removeClass('yellow');
                             hideItemDetails();
                         });
                         return false;

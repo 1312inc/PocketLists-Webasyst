@@ -290,20 +290,7 @@ class pocketlistsItemModel extends waModel
 
     private function updatePriority(&$item)
     {
-        $now = time();
-        $due_status = 0;
-        if (!empty($item['due_date']) || !empty($item['due_datetime'])) {
-            if (!empty($item['due_datetime']) && $now > strtotime($item['due_datetime'])) { // overdue datetime
-                $due_status = 3;
-            } elseif (strtotime(date("Y-m-d")) > strtotime($item['due_date'])) { // overdue date
-                $due_status = 3;
-            } elseif ($item['due_date'] == date("Y-m-d")) { // today
-                $due_status = 2;
-            } elseif ($item['due_date'] == date("Y-m-d", $now + 60 * 60 * 24)) { // tomorrow
-                $due_status = 1;
-            }
-        }
-        $item['calc_priority'] = max($due_status, $item['priority']);
+        $item['calc_priority'] = max(pocketlistsHelper::calcPriorityOnDueDate($item['due_date'], $item['due_datetime']), $item['priority']);
     }
 
     public function sortItems($list_id)

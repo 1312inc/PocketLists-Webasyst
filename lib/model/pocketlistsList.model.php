@@ -59,24 +59,30 @@ class pocketlistsListModel extends waModel
             $select_pocket = " AND l.pocket_id = i:pocket_id";
         }
         $sql = "SELECT
-                  i2.*,
+                  i.*,
                   l.*,
-                  COUNT(i.id) 'count'
+                  SUM(IF(i.key_list_id IS NULL, 1, 0)) 'count',
+                  MAX(i.calc_priority) 'max_priority',
+                  MIN(i.due_date) 'min_due_date',
+                  MIN(i.due_datetime) 'min_due_datetime'
                 FROM pocketlists_list l
-                LEFT JOIN pocketlists_item i ON i.list_id = l.id AND i.status = 0
-                LEFT JOIN pocketlists_item i2 ON i2.key_list_id = l.id
+                LEFT JOIN pocketlists_item i ON (i.list_id = l.id OR i.key_list_id = l.id) AND i.status = 0
+                /*LEFT JOIN pocketlists_item i2 ON i2.key_list_id = l.id*/
                 WHERE
                   l.archived = i:archived
                   {$select_pocket}
                 GROUP BY l.id";
 
-        return $this->query(
+        $lists = $this->query(
             $sql,
             array(
                 'archived' => 0,
                 'pocket_id' => $pocket_id
             )
         )->fetchAll();
+        foreach($lists as $id => $list) {
+            $lists[$id]['calc_priority'] = max(pocketlistsHelper::calcPriorityOnDueDate($list['min_due_date'], $list['min_due_datetime']), $list['max_priority']);
+        }
+        return $lists;
     }
-
 }
