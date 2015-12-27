@@ -1021,6 +1021,15 @@
                         }
                     }
                 }) // action: select item
+                .on('click', '.pl-edit', function (e) {
+                    e.preventDefault();
+
+                    var $this = $(this),
+                        $item = $this.closest(item_selector);
+
+                    ItemDetails.trigger('show.pl2', [parseInt($item.data('id'))]); // show item details
+                    selectItem($item);
+                })
                 .on('click', '.pl-favorite', function(e) {
                     e.preventDefault();
                     var $this = $(this),
