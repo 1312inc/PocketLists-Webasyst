@@ -424,6 +424,7 @@
             if (o.enableSortItems) {
                 $sortable_items.sortable({
                     item: item_selector,
+                    distance: 5,
                     connectWith: "ul.menu-v",
                     placeholder: 'pl-item-placeholder',
                     tolerance: 'pointer',
