@@ -152,7 +152,7 @@ input#pl-new-list-input,
 .pl-discuss textarea {
     min-width: 350px;
     width: 90%;
-    white-space: nowrap;
+    /* white-space: nowrap; */
     height: 1.3em;
     line-height: 1.3em;
     resize: none;
