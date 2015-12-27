@@ -537,7 +537,7 @@
             var data = [];
             $undone_items_wrapper.find(item_selector).each(function (i) {
                 var $this = $(this),
-                    color = $this.find('.pl-done').attr('class').match(/pl-done\s(pl-.*)/),
+                    color = $this.find('.pl-done').length ? $this.find('.pl-done').attr('class').match(/pl-done\s(pl-.*)/) : null,
                     priority = 0;
                 if (color && color.length > 0) {
                     switch (color[1]) {

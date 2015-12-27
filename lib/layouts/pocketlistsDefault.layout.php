@@ -8,5 +8,6 @@ class pocketlistsDefaultLayout extends waLayout
         if ($us->appIcon() === false) {
             $us->saveDefaults();
         }
+        $this->view->assign('sidebar_todo_count', wa('pocketlists')->getConfig()->onCount());
     }
 }
