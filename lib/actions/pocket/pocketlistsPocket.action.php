@@ -43,6 +43,8 @@ class pocketlistsPocketAction extends waViewAction
                     $last_pocket_list_id = array("pocket_id" => $id);
                 }
             }
+        } else {
+            $last_pocket_list_id = array("pocket_id" => $id, "list_id" => $list_id);
         }
 
         if ($list_id != -1) {

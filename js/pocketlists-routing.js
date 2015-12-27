@@ -1,6 +1,7 @@
 (function ($) {
     'use strict';
 
+    $.storage = new $.store();
     $.pocketlists_routing = {
         options: {},
         init: function (options) {
@@ -14,7 +15,12 @@
 
             var hash = window.location.hash;
             if (hash === '#/' || !hash) {
-                this.dispatch();
+                hash = $.storage.get('pocketlists/hash');
+                if (hash && hash != null) {
+                    $.wa.setHash('#/' + hash);
+                } else {
+                    this.dispatch();
+                }
             } else {
                 $.wa.setHash(hash);
             }
@@ -96,6 +102,7 @@
                                 actionName = h;
                             } else if (parseInt(h, 10) != h && h.indexOf('=') == -1) {
                                 actionName += h.substr(0, 1).toUpperCase() + h.substr(1);
+
                             } else {
                                 break;
                             }
@@ -119,6 +126,7 @@
                     if (typeof(this[actionName + 'Action']) == 'function') {
                         console.info('dispatch', [actionName + 'Action', attr]);
                         this[actionName + 'Action'].apply(this, attr);
+                        $.storage.set('pocketlists/hash', hash.join('/'));
                     } else {
                         console.info('Invalid action name:', actionName + 'Action');
                     }
@@ -166,7 +174,7 @@
                     list_id = -1;
                 }
             }
-            var id = id || 1;
+            var id = id || 0;
             var $list_name = $('#pl-list-name');
             if ($list_name.length) {
                 $list_name.after('<i class="icon16 loading">');
