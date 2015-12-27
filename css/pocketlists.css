@@ -237,7 +237,7 @@ input#pl-new-list-input,
 /* Item & List details
 ---------------------- */
 
-.pl-details { display: none; padding: 13px 20px; position: absolute; top: 0; bottom: 0; right: 0; width: 500px; background: #fff; box-shadow: -10px 0 20px -10px rgba(0,0,0,0.1);z-index: 9;}
+.pl-details { display: none; padding: 13px 20px; position: absolute; top: 0; bottom: 0;right: -100%; width: 500px; background: #fff; box-shadow: -10px 0 20px -10px rgba(0,0,0,0.1);z-index: 9;}
 .pl-details.sticky,
 .pl-details.sticky { position: fixed; right: 16px; padding-top: 8px; }
 

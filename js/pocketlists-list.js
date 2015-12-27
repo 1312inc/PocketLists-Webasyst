@@ -28,7 +28,9 @@
             // show list details container and load html with list details from server
             var showListDetails = function() {
                 $.pocketlists.scrollToTop(200, 80);
-                $wrapper.html($.pocketlists.$loading).show();
+                $wrapper.html($.pocketlists.$loading).show().animate({
+                    'right': '0%'
+                }, 200);
 
                 stickyDetailsSidebar();
 
@@ -38,8 +40,11 @@
                 });
             };
             var hideListDetails = function() {
-                $wrapper.hide().empty();
-                //list.trigger('deselectList.pl2');
+                $wrapper.animate({
+                    'right': '-100%'
+                }, 200, function() {
+                    $wrapper.hide().empty()
+                });
             };
             var updateList = function (data) {
                 $list_wrapper.find('#pl-list-name').text(data.name); // update name
@@ -93,7 +98,7 @@
                     .on('submit', 'form', function (e) {
                         e.preventDefault();
                         var $this = $(this);
-                        $this.find('#pl-list-details-save').after($.pocketlists.$loading);
+                        $this.find('#pl-list-details-save').removeClass('yellow').after($.pocketlists.$loading);
                         $.post('?module=list&action=save', $this.serialize(), function (r) {
                             $.pocketlists.$loading.remove();
                             if (r.status === 'ok') {
@@ -111,7 +116,7 @@
                     })
                     .on('click', '#pl-list-color a', function (e) {
                         e.preventDefault();
-                        $('#pl-list-color').find('input').val($(this).data('pl-list-color'));
+                        $('#pl-list-color').find('input').val($(this).data('pl-list-color')).trigger('change');
                         $(this).addClass('selected')
                             .siblings().removeClass('selected')
                     })
@@ -140,11 +145,15 @@
 
                                     $this.find('input').val(icon);
                                     $wrapper.find('#pl-list-icon-change .listicon48').css('background-image', 'url(' + icon_path + icon + ')');
+                                    $wrapper.find('#pl-list-details-save').addClass('yellow');
                                     d.trigger('close');
                                     return false;
                                 })
                             }
                         });
+                    })
+                    .on('change paste keyup', ':input', function () {
+                        $wrapper.find('#pl-list-details-save').addClass('yellow');
                     })
                     .on('show.pl2', showListDetails)
                     .on('hide.pl2', hideListDetails);
@@ -838,13 +847,20 @@
                 $dialog_confirm = $('#pl-dialog-delete-confirm');
 
             var hideItemDetails = function () {
-                $wrapper.hide().empty();
+                $wrapper.animate({
+                    'right': '-100%'
+                }, 200, function() {
+                    $wrapper.hide().empty()
+                });
                 id = 0;
                 $list_items_wrapper.trigger('deselectItem.pl2');
             };
             var showItemDetails = function (id_item) {
                 id = id_item;
-                $wrapper.html($.pocketlists.$loading).show();
+                //$wrapper.html($.pocketlists.$loading).show();
+                $wrapper.html($.pocketlists.$loading).show().animate({
+                    'right': '0%'
+                }, 200);
                 stickyDetailsSidebar();
                 $.post('?module=item&action=details',{ id: id }, function (html) {
                     $wrapper.html(html);
@@ -879,7 +895,7 @@
                     .on('submit', 'form', function (e) {
                         e.preventDefault();
                         var $this = $(this);
-                        $this.find('#pl-item-details-save').after($.pocketlists.$loading);
+                        $this.find('#pl-item-details-save').removeClass('yellow').after($.pocketlists.$loading);
                         $.post('?module=item&action=data', $this.serialize(), function (html) {
                             $.pocketlists.updateAppCounter();
                             $.pocketlists.$loading.remove();
@@ -895,7 +911,7 @@
                     })
                     .on('click', '#pl-item-priority a', function (e) {
                         e.preventDefault();
-                        $('#pl-item-priority').find('input').val($(this).data('pl-item-priority'));
+                        $('#pl-item-priority').find('input').val($(this).data('pl-item-priority')).trigger('change');
                         $(this).addClass('selected').siblings().removeClass('selected')
                     })
                     .on('click', '#pl-item-due-datetime-set', function (e) {
@@ -933,6 +949,9 @@
                     .on('change', '#pl-assigned-contact select', function () {
                         var assigned_contact_id = $(this).val();
                         $('#pl-assigned-contact').find('[data-pl-contact-id="' + assigned_contact_id + '"]').show().siblings().hide();
+                    })
+                    .on('change paste keyup', ':input', function () {
+                        $wrapper.find('#pl-item-details-save').addClass('yellow');
                     })
                     .on('show.pl2', function(e, id){
                         showItemDetails(id);
