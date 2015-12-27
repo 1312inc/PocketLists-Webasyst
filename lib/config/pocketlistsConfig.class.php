@@ -23,5 +23,12 @@ class pocketlistsConfig extends waAppConfig
         return true;
     }
 
+    public function explainLogs($logs)
+    {
+        $logs = parent::explainLogs($logs);
+        $app_url = wa()->getConfig()->getBackendUrl(true).$this->getApplication().'/';
+
+        return $logs;
+    }
 }
 

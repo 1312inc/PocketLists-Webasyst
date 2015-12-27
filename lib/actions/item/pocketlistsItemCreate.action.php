@@ -37,9 +37,9 @@ class pocketlistsItemCreateAction extends waViewAction
                 $inserted[] = $last_id;
                 $inserted_items[] = $data[$i] + array('id' => $last_id);
             }
-            pocketlistsNotifications::notifyAboutNewItems($inserted_items, $list);
 
             if ($inserted) {
+                pocketlistsNotifications::notifyAboutNewItems($inserted_items, $list);
                 $items = $im->getById($inserted);
                 if (isset($items['id'])) {
                     $items = array($items);
