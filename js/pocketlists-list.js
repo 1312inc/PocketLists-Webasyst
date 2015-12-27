@@ -428,6 +428,9 @@
                     connectWith: "ul.menu-v",
                     placeholder: 'pl-item-placeholder',
                     tolerance: 'pointer',
+                    start: function(e, ui ){
+                        ui.placeholder.height(ui.helper.outerHeight());
+                    },
                     stop: function (event, ui) {
                         var $prev = ui.item.parents(item_selector).first(),
                             parent_id = $prev.length ? parseInt($prev.data('id')) : 0;
