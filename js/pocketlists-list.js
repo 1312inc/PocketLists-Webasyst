@@ -437,7 +437,7 @@
 //                      data['assigned_contact_id'] = o.assignUser;
 //                 });
 //             }
-            //$this.after($.pocketlists.$loading);
+            $this.closest('.pl-item').find('.pl-done-label span').html($.pocketlists.$loading);
             $.post(
                 '?module=item&action=create',
                 {
@@ -465,7 +465,7 @@
                     $html.filter(item_selector).last()
                         .find('.pl-item').first().after($new_item_wrapper);
 
-                    //$.pocketlists.$loading.remove();
+                    $.pocketlists.$loading.remove();
 
                     $new_item_input.val('').trigger('focus').css('height', 'auto').data('can_blur', true);
 
