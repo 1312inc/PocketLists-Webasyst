@@ -941,6 +941,7 @@
                                         $list_items_wrapper.find('[data-id="' + r.data.id + '"]').remove();
                                         d.trigger('close');
                                         hideItemDetails();
+                                        updateListCountBadge();
                                     } else {
 
                                     }
