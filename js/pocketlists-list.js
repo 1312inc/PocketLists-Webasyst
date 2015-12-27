@@ -424,6 +424,7 @@
             if (o.enableSortItems) {
                 $sortable_items.sortable({
                     item: item_selector,
+                    distance: 5,
                     connectWith: "ul.menu-v",
                     placeholder: 'pl-item-placeholder',
                     tolerance: 'pointer',
@@ -517,13 +518,13 @@
                     }
                     switch (Math.max(priority, list_priority)) {
                         case 1:
-                            priority_class = ' pl-green';
+                            priority_class = ' indicator green';
                             break;
                         case 2:
-                            priority_class = ' pl-yellow';
+                            priority_class = ' indicator yellow';
                             break;
                         case 3:
-                            priority_class = ' pl-red';
+                            priority_class = ' indicator red';
                             break;
                     }
                     $('#pl-lists').find('[data-pl-list-id="' + o.list.list_id + '"] span.count').removeClass().addClass('count' + priority_class);

@@ -59,7 +59,7 @@ ul.pl-lists { background: #fff; padding: 0; margin: 0; }
 ul.pl-lists li { list-style: none; }
 ul.pl-lists li a { border-bottom: 1px solid rgba(0,0,0,0.1); padding: 20px 15px 5px; font-size: 1.15em; display: block; }
 ul.pl-lists li a .count { font-size: 0.9em; }
-ul.pl-lists li a .indicator { padding: 3px 7px 4px; margin-top: -3px; }
+ul.pl-lists li a .indicator { padding: 3px 7px 2px; margin-top: -3px; }
 ul.pl-lists li a i.listicon48 { position: relative; top: -7px; margin-right: 10px; }
 ul.pl-lists li a.pl-is-selected, ul.pl-lists li a:hover { color: red !important; background: rgba(0,0,0,0.025); }
 ul.pl-lists li.selected a { color: #000 !important; }
