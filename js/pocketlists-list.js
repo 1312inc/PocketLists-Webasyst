@@ -546,7 +546,7 @@
                             $item.slideToggle(200, function () {
                                 $item.show();
                                 if (status) {
-                                    $done_items_wrapper.append($item);
+                                    $done_items_wrapper.prepend($item);
                                 } else {
                                     $undone_items_wrapper.append($item);
                                     updateSort();

@@ -188,7 +188,7 @@ class pocketlistsItemModel extends waModel
     {
         $sql = $this->getQuery() . "
                 WHERE list_id = i:lid AND status > 0
-                ORDER BY parent_id, sort ASC";
+                ORDER BY complete_datetime DESC, parent_id, sort ASC";
 
         return $this->getItems($sql, $list_id, $tree);
     }
