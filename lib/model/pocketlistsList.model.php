@@ -59,7 +59,7 @@ class pocketlistsListModel extends waModel
             $select_pocket = " AND l.pocket_id = i:pocket_id";
         }
         $sql = "SELECT
-                  i.*,
+                  i2.*,
                   l.*,
                   SUM(IF(i.key_list_id IS NULL, 1, 0)) 'count',
                   MAX(i.calc_priority) 'max_priority',
@@ -67,7 +67,7 @@ class pocketlistsListModel extends waModel
                   MIN(i.due_datetime) 'min_due_datetime'
                 FROM pocketlists_list l
                 LEFT JOIN pocketlists_item i ON (i.list_id = l.id OR i.key_list_id = l.id) AND i.status = 0
-                /*LEFT JOIN pocketlists_item i2 ON i2.key_list_id = l.id*/
+                LEFT JOIN pocketlists_item i2 ON i2.key_list_id = l.id
                 WHERE
                   l.archived = i:archived
                   {$select_pocket}
