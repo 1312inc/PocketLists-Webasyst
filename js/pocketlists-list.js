@@ -698,7 +698,7 @@
             var $star = $item.find('[class*="star"]'),
                 id = parseInt($item.data('id'));
             $.post(
-                '?module=' + type + '&action=favorite',
+                '?module=item&action=favorite',
                 {
                     id: id,
                     status: $star.hasClass('star-empty') ? 1 : 0
