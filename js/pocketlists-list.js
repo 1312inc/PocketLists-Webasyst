@@ -13,7 +13,7 @@
         var $new_list_input = $list_wrapper.find('#pl-new-list-input'),
             list_id = parseInt($list_wrapper.find('#pl-list-id').val()),
             pocket_id = parseInt($('#pl-pocket-id').val()),
-            $dialog_delete = $('#pl-dialog-delete-confirm'),
+            $dialog_delete = $('#pl-dialog-delete-list-confirm'),
             $dialog_complete_all = $('#pl-dialog-list-archive-complete-all');
 
         /**
@@ -844,7 +844,7 @@
          */
         var ItemDetails = (function ($wrapper) {
             var id = 0,
-                $dialog_confirm = $('#pl-dialog-delete-confirm');
+                $dialog_confirm = $('#pl-dialog-delete-item-confirm');
 
             var hideItemDetails = function () {
                 $wrapper.animate({
@@ -931,13 +931,16 @@
                             'height': '150px',
                             'min-height': '150px',
                             'width': '400px',
-                            onLoad: function () {},
+                            onLoad: function () {
+                                var $d = $(this);
+                                //$d.find('h1').text($wrapper.find('input[name="item[name]"]').val());
+                            },
                             onSubmit: function (d) {
-                                $.post('?module=item&action=delete', {id: id, list_id: list.list_id}, function (r) {
+                                $.post('?module=item&action=delete', {id: id}, function (r) {
                                     if (r.status === 'ok') {
-                                        $list_items_wrapper.trigger('deselectItem.pl2', [r.data.id]);
-                                        hideItemDetails();
+                                        $list_items_wrapper.find('[data-id="' + r.data.id + '"]').remove();
                                         d.trigger('close');
+                                        hideItemDetails();
                                     } else {
 
                                     }

@@ -6,19 +6,13 @@ class pocketlistsItemDeleteController extends waJsonController
 
     public function execute()
     {
-        $list_id = waRequest::post('list_id', 0, waRequest::TYPE_INT);
         $id = waRequest::post('id', 0, waRequest::TYPE_INT);
 
-        if ($list_id && $id) {
+        if ($id) {
             $im = new pocketlistsItemModel();
-            $item = $im->getByField(
-                array(
-                    'list_id' => $list_id,
-                    'id' => $id
-                )
-            );
+            $item = $im->getById($id);
             if ($item['has_children']) {
-                $tree = $im->getAllByList($list_id, $id);
+                $tree = $im->getAllByList($item['list_id'], $id);
                 $this->getDeleteArray($item['id'], $tree[$item['id']]);
             } else {
                 $this->getDeleteArray($item['id'], array('id' => $item['id'], 'childs' => array()));
@@ -27,8 +21,9 @@ class pocketlistsItemDeleteController extends waJsonController
             $lm->deleteById(array_values($this->delete_ids));
 
             $this->response = array('id' => $item['id']);
+        } else {
+            $this->errors = 'no item error';
         }
-
     }
 
     /**
