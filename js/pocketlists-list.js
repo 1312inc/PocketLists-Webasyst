@@ -450,7 +450,7 @@
 //                      data['assigned_contact_id'] = o.assignUser;
 //                 });
 //             }
-            $this.closest('.pl-item').find('.pl-done-label span').html($.pocketlists.$loading);
+            var $pl_done = $this.closest('.pl-item').find('.pl-done-label span').addClass('transparent').html($.pocketlists.$loading);
             $.post(
                 '?module=item&action=create',
                 {
@@ -479,6 +479,7 @@
                         .find('.pl-item').first().after($new_item_wrapper);
 
                     $.pocketlists.$loading.remove();
+                    $pl_done.removeClass('transparent');
 
                     $new_item_input.val('').trigger('focus').css('height', 'auto').data('can_blur', true);
 

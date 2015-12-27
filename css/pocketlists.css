@@ -112,6 +112,7 @@ label.pl-done-label .listicon48 {
 
 .pl-done { display: none; }
 .pl-done + span { display: block; float:left; width:16px; height:16px; background: rgba(255,255,255,0.2); border: 1px solid rgba(0,0,0,0.2); border-radius: 50%; position: relative; top: 14px; left: 17px; }
+.pl-done + span.transparent { border-color: transparent;background: none; }
 .pl-done.pl-green + span { background: #7ac33c; }
 .pl-done.pl-yellow + span { background: #f5cf24; }
 .pl-done.pl-red + span { background: #f7696d; }
