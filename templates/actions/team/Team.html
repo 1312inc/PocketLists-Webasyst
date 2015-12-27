@@ -20,7 +20,7 @@
 
                                 <span class="large nowrap">{$teammate.name|default:'%username%'}</span>
 
-                                <div class="pl-active-items small black">{$teammate.item_names}</div>
+                                <div class="pl-active-items small black">{$teammate.item_names|escape}</div>
                                 <span class="hint">{$teammate.last_activity|wa_date:'humandatetime'|default:sprintf('[`No to-dos have been assigned to %s yet`]',$teammate.name|default:'%username%')}</span>
                             </div>
                         </div>
