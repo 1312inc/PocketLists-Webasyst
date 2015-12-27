@@ -2,6 +2,9 @@
     'use strict';
 
     $.pocketlists = {
+        $loading: $('<i class="icon16 loading">'),
+        defaults: {},
+        options: {},
         updateAppCounter: function (count) {
             var self = this;
 
@@ -64,13 +67,25 @@
                 }
             }
         },
-        $loading: $('<i class="icon16 loading">'),
-        init: function () {
+        setTitle: function(title) {
+            var self = this;
+            var $h1 = $('#wa-app .content h1').first();
+            if ($h1.length && !title) {
+                title = $h1.contents().filter(function () {
+                    return this.nodeType == 3 && this.nodeValue.trim().length > 0;
+                })[0].nodeValue.trim()
+            }
+            if (title) {
+                $('title').html(title + " &mdash; " + self.options.account_name);
+            }
+        },
+        init: function (o) {
             $.pocketlists_routing.init();
 
             var self = this;
             self.$app_menu_pocket = $('#wa-app-pocketlists');
             self.$core_sidebar = $('#pl-sidebar-core');
+            self.options = $.extend({}, self.defaults, o);
 
             self.highlightSidebar();
 

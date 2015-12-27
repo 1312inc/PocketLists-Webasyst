@@ -91,7 +91,9 @@
         </div>
     </div>
 <script type="text/javascript">
-    $.pocketlists.init();
+    $.pocketlists.init({
+        account_name: '{$wa->accountName()}'
+    });
 </script>
 </body>
 </html>

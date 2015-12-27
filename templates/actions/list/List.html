@@ -101,4 +101,5 @@
     new $.pocketlists.Items($('#pl-list-items'), {
         list: new $.pocketlists.List($('.pl-list-title'))
     });
+    $.pocketlists.setTitle('{if isset($list.name)}{$list.name|escape|default:"&nbsp;"}{else}[`New list`]{/if}');
 </script>

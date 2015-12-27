@@ -209,6 +209,8 @@
 {if $admin}
 <script type="text/javascript">
     (function(){
+        $.pocketlists.setTitle($_('My personal settings'));
+
         $('.pl-pocket-settings').on('click', 'a', function() {
             var $loading = $('<i class="icon16 loading">');
             var $this = $(this);
