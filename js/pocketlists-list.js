@@ -744,6 +744,7 @@
                                 }]);
                             }
                         } else if (e.which === 27) {
+                            $this.data('can_blur', false);
                             hide_new_item_wrapper();
                         }
                     })
