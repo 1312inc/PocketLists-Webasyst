@@ -12,7 +12,7 @@ class pocketlistsTodoAction extends waViewAction
         if (!$month_date) {
             $month_date = waDateTime::date("Y-m", null, $timezone);
         } elseif ($month_date <= "1970" || $month_date >= "2033" || !strtotime($month_date)) {
-            $this->redirect("?action=calendar");
+            $this->redirect("?action=todo");
         }
         $month_date = strtotime($month_date);
 
@@ -21,16 +21,9 @@ class pocketlistsTodoAction extends waViewAction
 
         // get all due or priority or assigned to me items
         $items = $im->getToDo(wa()->getUser()->getId());
-        $undone = $done = $complete = $pocket_colors = array();
+        $pocket_colors = array();
         foreach ($items as $item) {
-            // todo: add status const
-            if ($item['status'] == 0) {
-                $undone[] = $item;
-            } else {
-                $done[] = $item;
-            }
             if ($item['status'] && $item['complete_datetime']) {
-                $complete[] = $item;
                 $pocket_colors[date("Y-m-d", strtotime($item['complete_datetime']))]['gray'][] = $item['id'];
             } elseif ($item['due_datetime'] || $item['due_date']) {
                 $pocket_colors[date("Y-m-d", strtotime($item['due_date'] ? $item['due_date'] : $item['due_datetime']))]['color'][$item['pocket_color']][] = $item['id'];
@@ -124,12 +117,5 @@ class pocketlistsTodoAction extends waViewAction
         // cast to user timezone
         $this->view->assign("today", waDateTime::date("j", null, $timezone));
         $this->view->assign("today_month", waDateTime::date("n", null, $timezone));
-
-        $this->view->assign('undone_items', $undone);
-        $this->view->assign('complete_items', $complete);
-
-        $us = new pocketlistsUserSettings();
-        $this->view->assign("stream_list_id", $us->getStreamInboxList());
-
     }
 }

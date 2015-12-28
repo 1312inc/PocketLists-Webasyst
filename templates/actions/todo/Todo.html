@@ -66,107 +66,43 @@
     </nav>
 
     <!-- ITEMS -->
-    <main class="content left300px blank bordered-left pl-items pl-list-items pl-blue pl-todo" id="pl-list-content">
+    <section id="pl-list-todo-items"></section>
 
-        <header class="pl-title">
-            <div class="float-right block half-padded">
-                <ul class="menu-h">
-                    <li>
-                        <a href="#" id="pl-item-add-link"><i class="icon16 add"></i> [`Add to-do`]</a>
-                    </li>
-                </ul>
-            </div>
-            <h1 class="not-padded" pl-todo-stream="all">
-                [`To-do stream`]
-            </h1>
-            <h1 class="not-padded" style="display: none;" pl-todo-stream="date">
-                <span>December 8, 2015</span> <a href="#" class="back">[`Show stream`]</a>
-            </h1>
-        </header>
+    {include '../../include/deleteitemdialog.html' inline}
 
-        <div class="pl-list-items" id="pl-list-items">
-            <div class="align-center" id="pl-empty-list-msg" {if !empty($undone_items)}style="display:none;"{/if}>
-                <h3>[`To-do stream is empty.`]</h3>
-                <p>[`Stream automatically collects all important to-dos from your lists, and presents them in priority & due order.`]</p>
-            </div>
+    {include '../../include/itemdetails.html' inline}
 
-            <section id="pl-undone-items">
-                <ul class="menu-v">
-                    {if !empty($undone_items)}
-                    {include '../item/ItemCreate.html' parent_id=0 items=$undone_items}
-                    {/if}
-                </ul>
-            </section>
-
-            {if !empty($complete_items)}
-            <section id="pl-complete-log" class="pl-logbook">
-                <h5 class="heading">[`Logbook`]</h5>
-                <ul class="menu-v">
-                    {include '../item/ItemCreate.html' parent_id=0 items=$complete_items}
-                </ul>
-            </section>
-            {/if}
-
-        </div>
-
-        <div class="clear-both"></div>
-
-        {include '../../include/deleteitemdialog.html' inline}
-
-        {include '../../include/itemdetails.html' inline}
-
-        {include '../../include/itemadd.html' inline}
-
-    </main>
+    {include '../../include/itemadd.html' inline}
 </div>
 
 <script type="text/javascript">
     (function(){
         $.pocketlists.setTitle();
 
+        var getStream = function (date) {
+            $.get('?module=todo&action=date' + (date ? ('&date=' + date) : ''), function (html) {
+                $items_wrapper.html(html);
+            });
+        };
+        getStream();
+
         var $dates = $('[data-pl-todo-date]'),
-            $stream_all_header = $('[pl-todo-stream="all"]'),
-            $stream_date_header = $('[pl-todo-stream="date"]'),
-            $all_items_wrapper = $('#pl-list-items'),
-            $undone_items_wrapper = $('#pl-undone-items'),
-            $complete_items_wrapper = $('#pl-complete-log');
+            $items_wrapper = $('#pl-list-todo-items');
+
         $dates.on('click', function() {
             var $this = $(this),
                 date = $this.data('pl-todo-date');
 
             $dates.removeClass('pl-selected');
             $this.addClass('pl-selected');
-            $.get('?module=json&action=getHumandate&date=' + date, function(r){
-                if (r.status === 'ok') {
-                    $stream_all_header.hide();
-                    $stream_date_header.show().find('span').text(r.data);
 
-                    $undone_items_wrapper
-                            .find('[data-id]').slideUp().end()
-                            .find('[data-pl-due-date="' + date + '"]').slideDown();
-                    $complete_items_wrapper
-                            .find('[data-id]').slideUp().end()
-                            .find('[data-pl-complete-datetime^="' + date + '"]').slideDown();
-                    $complete_items_wrapper.show();
-                }
-            }, 'json');
+            getStream(date);
         });
-        $stream_date_header.on('click', 'a', function(e) {
+        $items_wrapper.on('click', '[pl-todo-stream="date"] a', function(e) {
             e.preventDefault();
             $dates.removeClass('pl-selected');
-            $stream_all_header.show();
-            $stream_date_header.hide();
 
-            $undone_items_wrapper.find('[data-id]').slideDown();
-            $complete_items_wrapper.find('[data-id]').slideUp();
-            $complete_items_wrapper.hide();
-        });
-        new $.pocketlists.Items($all_items_wrapper, {
-            enableAddLinkOnHover: false,
-            enableChangeLevel: false,
-            enableSortItems: false,
-            assignUser: parseInt('{$wa->user()->getId()}'),
-            showMessageOnEmptyList: true
+            getStream();
         });
     }());
 </script>

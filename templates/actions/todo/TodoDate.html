@@ -1,0 +1,62 @@
+<main class="content left300px blank bordered-left pl-items pl-list-items pl-blue pl-todo" id="pl-list-content">
+
+    <header class="pl-title">
+        <div class="float-right block half-padded">
+            <ul class="menu-h">
+                <li>
+                    <a href="#" id="pl-item-add-link"><i class="icon16 add"></i> [`Add to-do`]</a>
+                </li>
+            </ul>
+        </div>
+        {if !$date}
+        <h1 class="not-padded">
+            [`To-do stream`]
+        </h1>
+        {else}
+        <h1 class="not-padded" pl-todo-stream="date">
+            <span>{$date}</span> <a href="#" class="back">[`Show stream`]</a>
+        </h1>
+        {/if}
+    </header>
+
+    <div class="pl-list-items" id="pl-list-items">
+        <div class="align-center" id="pl-empty-list-msg" {if !empty($undone_items)}style="display:none;"{/if}>
+            <h3>[`To-do stream is empty.`]</h3>
+            <p>[`Stream automatically collects all important to-dos from your lists, and presents them in priority & due order.`]</p>
+        </div>
+
+        <section id="pl-undone-items">
+            <ul class="menu-v">
+                {if !empty($undone_items)}
+                {include '../item/ItemCreate.html' parent_id=0 items=$undone_items}
+                {/if}
+            </ul>
+        </section>
+
+
+        <section id="pl-complete-log" class="pl-logbook" style="display: block;">
+            <h5 class="heading">[`Logbook`]</h5>
+            <ul class="menu-v">
+                {if !empty($done_items)}
+                {include '../item/ItemCreate.html' parent_id=0 items=$done_items}
+                {/if}
+            </ul>
+        </section>
+
+    </div>
+
+    <div class="clear-both"></div>
+
+</main>
+
+<script type="text/javascript">
+    (function(){
+        new $.pocketlists.Items($('#pl-list-items'), {
+            enableAddLinkOnHover: false,
+            enableChangeLevel: false,
+            enableSortItems: false,
+            assignUser: parseInt('{$wa->user()->getId()}'),
+            showMessageOnEmptyList: true
+        });
+    }());
+</script>
