@@ -28,10 +28,10 @@
 
                                 <span class="count">{$teammate.item_count|default:'0'}</span>
 
-                                <span class="large nowrap">{$teammate.name|default:'%username%'}</span>
+                                <span class="pl-username">{$teammate.name|escape|default:'%username%'}</span>
 
                                 <div class="pl-active-items small black">{$teammate.item_names|escape}</div>
-                                <span class="hint">{$teammate.last_activity|wa_date:'humandatetime'|default:sprintf('[`No to-dos were assigned to %s yet`]',$teammate.name|default:'%username%')}</span>
+                                <span class="hint">{$teammate.last_activity|wa_date:'humandatetime'|default:sprintf('[`No to-dos were assigned to %s yet`]',$teammate.name|escape|default:'%username%')}</span>
                             </div>
                         </div>
                     </a>
@@ -55,15 +55,15 @@
                 </ul>
             </div>
             <h1 class="not-padded">
-                {$current_teammate.name|default:'&nbsp;'}
+                {$current_teammate.name|escape|default:'&nbsp;'}
             </h1>
             <input type="hidden" id="pl-assigned-contact-id" value="{$current_teammate.id}"/>
         </header>
 
         <div class="pl-list-items" id="pl-list-items">
             <div class="pl-empty-list" id="pl-empty-list-msg" {if !empty($items)}style="display:none;"{/if}>
-                <img class="userpic" src="{$current_teammate.photo_url}" alt="{$current_teammate.name}" title="{$current_teammate.name}" />
-                <h2>{sprintf('[`%s’s to-do list is empty`]',$current_teammate.name)}</h2>
+                <img class="userpic" src="{$current_teammate.photo_url}" alt="{$current_teammate.name|escape}" title="{$current_teammate.name|escape}" />
+                <h2>{sprintf('[`%s’s to-do list is empty`]',$current_teammate.name|escape)}</h2>
                 <p>[`To assign a to-do to a user, either select him in to-do item details or add a to-do item above.`]</p>
             </div>
 
@@ -111,5 +111,5 @@
         assignUser: parseInt($('#pl-assigned-contact-id').val()),
         showMessageOnEmptyList: true
     });
-    $.pocketlists.setTitle('{$current_teammate.name}');
+    $.pocketlists.setTitle('{$current_teammate.name|escape}');
 </script>

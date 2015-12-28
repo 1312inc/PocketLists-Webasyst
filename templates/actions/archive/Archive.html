@@ -1,10 +1,10 @@
 <div class="shadowed">
     <nav class="sidebar left200px">
         {if !empty($lists)}
-        <ul class="menu-v with-icons stack">
+        <ul class="menu-v with-icons stack top-padded">
             {foreach $lists as $l_id => $l}
             <li data-pl-list-id="{$l.id}" {if $l.id == $list_id}class="selected"{/if}>
-                <a href="#"><i class="icon16" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l.icon|default:'li-list@2x.png'}); background-size: 16px 16px;"></i>{$l.name}</a>
+                <a href="#"><i class="icon16" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l.icon|default:'li-list@2x.png'}); background-size: 16px 16px;"></i>{$l.name|escape}</a>
             </li>
             {foreachelse}
             {/foreach}

@@ -19,7 +19,7 @@
                         <option value="3" {if !empty($settings.app_icon) && $settings.app_icon == 3}selected="selected"{/if}>[`Reds + Yellows + Greens`]</option>
                         <option value="0" {if !empty($settings.app_icon) && $settings.app_icon == 0}selected="selected"{/if}>[`None`]</option>
                     </select>
-                    <p class="hint">[`To-dos of selected colors will be Selected colors will be counted in both app icon badge count and to-do screen.`]</p>
+                    <p class="hint">[`To-dos of selected colors will be shown Selected colors will be counted in both app icon badge count and to-do screen.`]</p>
                 </div>
               </div>
 
@@ -31,18 +31,18 @@
                     <select id="pl-inbox-pocket">
                         <option value="0">[`None`]</option>
                         {foreach $pockets as $pocket}
-                        <option value="{$pocket.id}" {if isset($inbox_list) && $inbox_list.pocket_id == $pocket.id}selected="selected"{/if}>{$pocket.name|truncate:32}</option>
+                        <option value="{$pocket.id}" {if isset($inbox_list) && $inbox_list.pocket_id == $pocket.id}selected="selected"{/if}>{$pocket.name|escape|truncate:32}</option>
                         {/foreach}
                     </select>
                     <select id="pl-inbox-list" {if empty($settings.stream_inbox_list)}style="display:none;"{/if}>
                     {if $inbox_lists}
                         {foreach $inbox_lists as $list}
-                        <option value="{$list.id}" {if !empty($settings.stream_inbox_list) && $settings.stream_inbox_list == $list.id}selected="selected"{/if}>{$list.name}</option>
+                        <option value="{$list.id}" {if !empty($settings.stream_inbox_list) && $settings.stream_inbox_list == $list.id}selected="selected"{/if}>{$list.name|escape}</option>
                         {/foreach}
                     {/if}
                     </select>
                     <input type="hidden" name="stream_inbox_list" value="{$settings.stream_inbox_list|default:0}"/>
-                    <p class="hint">[`When you add to-dos to your To-do stream, they will be stored within the specified particular to-do list.`]</p>
+                    <p class="hint">[`When you add to-dos to your To-do stream directly, they will be added into the specified to-do list.`]</p>
                 </div>
               </div>
 
@@ -62,7 +62,7 @@
 
                     <div class="pl-cron-msg" {if empty($settings.daily_recap_on)}style="display: none;"{/if}>
                     {if !$last_recap_cron_time}
-                        <p class="small"><br><em><i class="icon10 exclamation"></i> [`Daily recap notifications require CRON to be configured, which is not the case for your Pocket Lists app. See <a href="#" target="_blank">how to setup CRON for Pocket Lists</a>`]</em></p>
+                        <p class="small"><br><em><i class="icon10 exclamation"></i> [`Daily recap notifications require CRON to be configured, which is not the case for your Pocket Lists app. Cron the following command to run daily:`]</em></p>
                         <p class="small"><span class="highlighted">{$cron_command}</span></p>
                     {else}
                         <p class="small"><br><em><i class="icon10 yes"></i> [`We’ll keep you up to date! And when there is nothing planned for the upcoming period, no alerts will be sent.`]</em></p>
@@ -190,7 +190,7 @@
                     if (r.status === 'ok') {
                         var options = '';
                         $.each(r.data, function () {
-                            options += '<option value="' + this.id + '">' + this.name + '</option>';
+                            options += '<option value="' + this.id + '">' + this.name.text() + '</option>';
                         });
                         $('#pl-inbox-list').show().html(options);
                     }
