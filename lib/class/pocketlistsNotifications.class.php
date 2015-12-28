@@ -44,7 +44,7 @@ class pocketlistsNotifications
         $lm = new pocketlistsListModel();
         $im = new pocketlistsItemModel();
 
-        $subject = 'string:{$item.name|escape} {if !$complete}un{/if}completed!';
+        $subject = 'string:{if !$complete}[`UNDONE`]{else}[`DONE`]{/if}: {$item.name|escape}';
         // todo: refactor
         foreach ($users as $user_id => $user) { // foreach user
             $filtered_items = array();
@@ -237,7 +237,7 @@ class pocketlistsNotifications
                         self::sendMail(
                             array(
                                 'contact_id' => $user_id,
-                                'subject' => 'string:New item in your favorite list!',
+                                'subject' => 'string:[`New to-do on your favorite list!`]',
                                 'body' => wa()->getAppPath('templates/mails/newfavoritelistitem.html'),
                                 'variables' => array(
                                     'list_name' => $list ? $list['name'] : false,
@@ -259,7 +259,7 @@ class pocketlistsNotifications
                         self::sendMail(
                             array(
                                 'contact_id' => $user_id,
-                                'subject' => 'string:New item!',
+                                'subject' => 'string:[`New to-do`]',
                                 'body' => wa()->getAppPath('templates/mails/newitem.html'),
                                 'variables' => array(
                                     'list_name' => $list ? $list['name'] : false,
@@ -278,7 +278,7 @@ class pocketlistsNotifications
         self::sendMail(
             array(
                 'contact_id' => $item['assigned_contact_id'],
-                'subject' => 'string:New assign!',
+                'subject' => 'string:[`NEW: You’ve been assigned to a to-do`]`',
                 'body' => wa()->getAppPath('templates/mails/newassignitem.html'),
                 'variables' => array(
                     'item_name' => $item['name'],
@@ -327,7 +327,7 @@ class pocketlistsNotifications
             self::sendMail(
                 array(
                     'contact_id' => $user_id,
-                    'subject' => 'string:Daily recap!',
+                    'subject' => 'string:[`Today — WAHUMANDATE`]',
                     'body' => wa()->getAppPath('templates/mails/dailyrecap.html'),
                     'variables' => array(
                             'items' => $im->getDailyRecapItems($user_id, $user['setting'])
@@ -363,7 +363,7 @@ class pocketlistsNotifications
                 self::sendMail(
                     array(
                         'contact_id' => $user_id,
-                        'subject' => 'string:New list!',
+                        'subject' => 'string:[`New list!`]`',
                         'body' => wa()->getAppPath('templates/mails/newlist.html'),
                         'variables' => array(
                             'list_name' => $list['name'],
