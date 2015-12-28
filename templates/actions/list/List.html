@@ -5,7 +5,7 @@
             <ul class="menu-h dropdown">
                 {if !$archive}
                 <li>
-                    <a href="#" class="inline-link gray" onClick="alert('waDialog с получением ссылки на список /list/...');"><b><i>[`More`]</i></b></a>
+                    <a href="#" class="inline-link gray"><b><i>[`More`]</i></b></a>
                     <ul class="menu-v with-icons" style="width: 230px;">
                         {*
                         <li>
@@ -15,12 +15,14 @@
                         <li class="pl-list-sort-dropdown">
                             <a href="#" data-pl-action="list-sort"><i class="icon16 update"></i> [`Sort`]</a>
                         </li>
+                        {*
                         <li>
                             <a href="#" onClick="alert('waDialog для ввода email-адреса, куда отправлять список');"><i class="icon16 email"></i> [`Email list`]</a>
                         </li>
                         <li>
                             <a href="#" onClick="alert('открывается новое окно с содержимым данного списка и кнопкой Print. см. как в ШС сделана печать информации о заказе.');"><i class="icon16 print"></i> [`Print list`]</a>
                         </li>
+                        *}
                         <li>
                             <a href="#" data-pl-action="list-archive"><i class="icon16 pl archive"></i> [`Archive list`]</a>
                         </li>
@@ -43,7 +45,7 @@
                 </li>
                 {else}
                 <li>
-                    <a href="#" data-pl-action="list-unarchive" class="bold"><i class="icon16 archive"></i> [`Unarchive list`]</a>
+                    <a href="#" data-pl-action="list-unarchive" class="bold"><i class="icon16 pl archive"></i> [`Unarchive list`]</a>
                     {*<div class="small hint">[`Acrhived on`] </div>  надо добавить поля в БД *}
                 </li>
                 <li>

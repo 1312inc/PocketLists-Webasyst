@@ -1,10 +1,20 @@
 <div class="shadowed">
+
+    {if empty($teammates)}
+
+        <main class="content blank" id="pl-list-content">
+            <div class="pl-empty-list" id="pl-empty-list-msg">
+            <img class="userpic" src="{$current_teammate.photo_url}" alt="{$current_teammate.name}" title="{$current_teammate.name}" />
+            <h3>[`Use <strong>Contacts app</strong> to invite your teammates. Select a user and simply provide access to Pocket Lists app.`]</h3>
+        </main>
+
+    {else}
+
     <nav class="sidebar left300px">
 
         <!-- TEAM -->
         <div class="pl-inner-sidebar">
 
-            {if count($teammates)}
             <ul class="zebra pl-team">
                 {foreach $teammates as $teammate}
                 <li {if $teammate.id == $current_teammate.id}class="selected"{/if} data-pl-team-id="{$teammate.id}">
@@ -27,13 +37,6 @@
                 </li>
                 {/foreach}
             </ul>
-            {else}
-            <p class="hint">[`Invite your teammates to collaborate simply by granting access to Pocket Lists app in <strong>Contacts app</strong>.`]</p>
-            {/if}
-
-            {*(тут показываются все пользователи, у которых есть доступ к приложению; order by last_activity_datetime)<br><br>
-            себя показывать не надо.<br><br>
-            если в команде никого нет, то какая-нибудь надпись [`Invite your teammates to collaborate simply by granting access to Pocket Lists app in <strong>Contacts app</strong>.`]*}
 
         </div>
 
@@ -58,7 +61,7 @@
 
         <div class="pl-list-items" id="pl-list-items">
             <div class="pl-empty-list" id="pl-empty-list-msg" {if !empty($items)}style="display:none;"{/if}>
-                <img class="userpic" src="{$current_teammate.photo_url}" alt="{$current_teammate.name}" title="{}$current_teammate.name}" />
+                <img class="userpic" src="{$current_teammate.photo_url}" alt="{$current_teammate.name}" title="{$current_teammate.name}" />
                 <h2>{sprintf('[`%s’s to-do list is empty`]',$current_teammate.name)}</h2>
                 <p>[`To assign a to-do to a user, either select him in to-do item details or add a to-do item above.`]</p>
             </div>
@@ -93,6 +96,7 @@
         {include '../../include/itemadd.html' inline}
 
     </main>
+    {/if}
 
 </div>
 
