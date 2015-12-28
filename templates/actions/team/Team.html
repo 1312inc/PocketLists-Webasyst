@@ -2,10 +2,11 @@
 
     {if empty($teammates)}
 
-        <main class="content blank" id="pl-list-content">
-            <div class="pl-empty-list" id="pl-empty-list-msg">
+        <main class="content pl-items" id="pl-list-content">
+            <div class="pl-empty-list top-padded" id="pl-empty-list-msg">
             <img class="userpic" src="{$current_teammate.photo_url}" alt="{$current_teammate.name}" title="{$current_teammate.name}" />
-            <h3>[`Use <strong>Contacts app</strong> to invite your teammates. Select a user and simply provide access to Pocket Lists app.`]</h3>
+            <h2>[`Invite your teammates!`]</h2>
+            <p>[`Use <strong>Contacts app</strong> to add your teammates to Pocket Lists and to start collaborating on to-do lists together.`]</p>
         </main>
 
     {else}

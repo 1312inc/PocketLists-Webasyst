@@ -914,7 +914,7 @@
                                 if (!$item.find($new_item_wrapper).length) { // if no placeholder here
                                     $item.find('.pl-select-label').append($new_item_wrapper_hover.show());
                                 }
-                            }, 500);
+                            }, 1312);
                         })
                         .on('mouseleave', item_selector + ' > .pl-item', function () {
                             clearTimeout(undone_items_wrapper_hover_timeout);
