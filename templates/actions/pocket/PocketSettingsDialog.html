@@ -1,7 +1,7 @@
 <input type="hidden" name="pocket[id]" value="{$pocket.id|default:0}"/>
 
 {if isset($pocket.id)}
-    <h1>{$pocket.name|default:'[`(unnamed pocket)`]'}</h1>
+    <h1>{$pocket.name|default:'[`(unnamed pocket)`]'|truncate:32}</h1>
 {else}
     <h1>[`New pocket`]</h1>
 {/if}
