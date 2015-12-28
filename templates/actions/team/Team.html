@@ -67,7 +67,7 @@
             <section id="pl-undone-items">
                 <ul class="menu-v">
                     {if !empty($items)}
-                    {include '../item/ItemCreate.html' parent_id=0 items=$items}
+                    {include '../item/Item.html' parent_id=0 items=$items}
                     {/if}
                 </ul>
             </section>
@@ -77,7 +77,7 @@
                 <h5 class="heading">[`Logbook`]</h5>
                 <ul class="menu-v">
                     {if !empty($items_done)}
-                    {include '../item/ItemCreate.html' items=$items_done}
+                    {include '../item/Item.html' items=$items_done}
                     {/if}
                 </ul>
             </section>

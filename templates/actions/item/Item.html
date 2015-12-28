@@ -1,0 +1,13 @@
+{if !empty($items)}
+{foreach $items as $i}
+    <li class="pl-item-wrapper" data-id="{$i.id}" data-parent-id="{$i.parent_id}" {if $i.due_date}data-pl-due-date="{$i.due_date}"{/if} {if $i.due_datetime}data-pl-due-datetime="{$i.due_datetime}"{/if} {if $i.complete_datetime}data-pl-complete-datetime="{$i.complete_datetime}"{/if}>
+    {include '../item/ItemData.html' item=$i inline}
+    {if !empty($i.childs)}
+        <ul class="menu-v">
+        {if !isset($archive)}{$archive = false}{/if}
+        {include '../item/Item.html' items=$i.childs archive=$archive inline}
+            </ul>
+    {/if}
+    </li>
+{/foreach}
+{/if}
