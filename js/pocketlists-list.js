@@ -374,12 +374,12 @@
                         }
                     });
                 })
-                .on('click', '#pl-list-unarchive', function (e) {
+                .on('click', '[data-pl-action="list-unarchive"]', function (e) {
                     e.preventDefault();
 
                     $.post('?module=list&action=archive', {list_id: list_id, archive: 0}, function (r) {
                         if (r.status === 'ok') {
-                            $.pocketlists_routing.redispatch();
+                            $.wa.setHash('#/pocket/' + pocket_id + '/list/' +  list_id + '/');
                         } else {
                         }
                     }, 'json');
