@@ -37,7 +37,7 @@
 
                             <div class="pl-dots">
                                 {foreach $day.pockets.gray as $pocket_color name=foo}{if $smarty.foreach.foo.index == 3}{break}{/if}<i class="icon10 color pl-dark-none"></i>{/foreach}<!--
-                                -->{foreach $day.pockets.color as $pocket_color name=foo}{if $smarty.foreach.foo.index == 3}{break}{/if}<i class="icon10 color pl-dark-{$pocket_color}"></i>{/foreach}
+                                -->{foreach $day.pockets.color as $pocket_color => $item_dots}{foreach $item_dots as $dot name=foo}{if $smarty.foreach.foo.index == 3}{break}{/if}<i class="icon10 color pl-dark-{$pocket_color}"></i>{/foreach}{/foreach}
                             </div>
                         </td>
                     {/foreach}
@@ -75,7 +75,7 @@
 
 <script type="text/javascript">
     (function(){
-        $.pocketlists.setTitle();
+        $.pocketlists.setTitle('[`To-do stream`]');
 
         var getStream = function (date) {
             $.get('?module=todo&action=date' + (date ? ('&date=' + date) : ''), function (html) {
