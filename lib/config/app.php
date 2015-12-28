@@ -7,8 +7,8 @@ return array (
     96 => 'img/pocketlists96.png',
   ),
   'version' => '1.0.0',
-  'vendor' => '--',
-  'frontend' => true,
-  'plugins' => true,
+  'vendor' => '1021997',
+  'frontend' => false,
+  'plugins' => false,
   'rights' => true,
 );
