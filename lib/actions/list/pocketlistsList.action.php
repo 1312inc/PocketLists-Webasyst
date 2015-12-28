@@ -5,7 +5,7 @@ class pocketlistsListAction extends waViewAction
     public function execute()
     {
         $list_id = isset($this->params['list_id']) ? $this->params['list_id'] : waRequest::get('id', false, waRequest::TYPE_INT);
-
+        $archived = isset($this->params['archive'])  ? true : false;
         if ($list_id > 0) { // existing list
             $lm = new pocketlistsListModel();
             $list = $lm->getById($list_id);
@@ -19,6 +19,7 @@ class pocketlistsListAction extends waViewAction
             $us->set('last_pocket_list_id', json_encode(array('pocket_id' => $list['pocket_id'], 'list_id' => $list['id'])));
 
             $this->view->assign('list', $list);
+            $this->view->assign('archive', $archived || $list['archived']);
 
             $im = new pocketlistsItemModel();
             $count_undone = $im->countByField(array(
@@ -38,9 +39,9 @@ class pocketlistsListAction extends waViewAction
             $this->view->assign('count_items_undone', $count_undone);
             $this->view->assign('new', false);
         } else {
+            $this->view->assign('archive', $archived);
             $this->view->assign('new', true);
             $this->view->assign('empty', true);
         }
-        $this->view->assign('archive', isset($this->params['archive']) ? $this->params['archive'] : false);
     }
 }

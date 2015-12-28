@@ -112,6 +112,7 @@ class pocketlistsItemModel extends waModel
                     OR i.assigned_contact_id = i:contact_id
                     OR i.complete_contact_id = i:contact_id
                   )
+                  AND l.archived = 0
                   {$due_date_or_mine}
                 ORDER BY i.calc_priority DESC, (i.due_date IS NULL), i.due_date ASC, (i.due_datetime IS NULL), i.due_datetime ASC";
 
@@ -406,8 +407,11 @@ class pocketlistsItemModel extends waModel
                 LEFT JOIN pocketlists_pocket p ON p.id = l.pocket_id
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
                 WHERE
-                  i.assigned_contact_id = i:contact_id AND i.status = 0
-                  OR i.complete_contact_id = i:contact_id AND i.status > 0
+                  (
+                    i.assigned_contact_id = i:contact_id AND i.status = 0
+                    OR i.complete_contact_id = i:contact_id AND i.status > 0
+                  )
+                  AND l.archived = 0
                 ORDER by i.priority DESC";
         $items = $this->query($q, array('contact_id' => $contact_id))->fetchAll();
         $results = array(

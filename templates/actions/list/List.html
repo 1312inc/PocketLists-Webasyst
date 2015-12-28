@@ -61,13 +61,18 @@
             {if $new && !$archive}
                 <input type="text" placeholder="[`New list`]" id="pl-new-list-input" class="bold" />
             {else}
+                {if isset($list.pocket_id)}
                 <input type="hidden" value="{$list.pocket_id}" id="pl-pocket-id">
-                <span id="pl-list-name">{$list.name|escape|default:'&nbsp;'}</span>
-                {if !empty($list.due_datetime)}
-                <span class="pl-list-due {if $list.calc_priority == 0}pl-due-someday{elseif $list.calc_priority == 1}pl-due-tomorrow{elseif $list.calc_priority == 2}pl-due-today{elseif $list.calc_priority == 3}pl-due-overdue{/if}">{$list.due_datetime|wa_datetime:'humandatetime'}</span>
-                {else if !empty($list.due_date)}
-                <span class="pl-list-due {if $list.calc_priority == 0}pl-due-someday{elseif $list.calc_priority == 1}pl-due-tomorrow{elseif $list.calc_priority == 2}pl-due-today{elseif $list.calc_priority == 3}pl-due-overdue{/if}">{$list.due_date|wa_date:'humandate'}</span>
                 {/if}
+                <span id="pl-list-name">{$list.name|escape|default:'&nbsp;'}</span>
+
+                <span class="pl-list-due {if $list.calc_priority == 0}pl-due-someday{elseif $list.calc_priority == 1}pl-due-tomorrow{elseif $list.calc_priority == 2}pl-due-today{elseif $list.calc_priority == 3}pl-due-overdue{/if}" {if empty($list.due_datetime) && empty($list.due_date)}style="display: none;"{/if}>
+                {if !empty($list.due_datetime)}
+                    {$list.due_datetime|wa_datetime:'humandatetime'}
+                {else if !empty($list.due_date)}
+                    {$list.due_date|wa_date:'humandate'}
+                {/if}
+                </span>
             {/if}
         </h1>
     </header>
