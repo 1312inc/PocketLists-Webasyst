@@ -71,7 +71,7 @@ class pocketlistsItemModel extends waModel
         $pockets = pocketlistsHelper::getAccessPocketForContact($contact_id);
         $due_date_or_mine = " AND (i.assigned_contact_id = i:contact_id OR i.assigned_contact_id IS NULL)";
         if ($date) {
-            $due_date_or_mine = "AND i.due_date = s:date OR DATE(i.due_datetime) = s:date";
+            $due_date_or_mine = "AND ((i.status = 0 AND (i.due_date = s:date OR DATE(i.due_datetime) = s:date)) OR (i.status > 0 AND DATE(i.complete_datetime) = s:date))";
         }
         $sql = "SELECT
                   i.id id,

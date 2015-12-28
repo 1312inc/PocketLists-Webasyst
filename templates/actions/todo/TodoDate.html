@@ -20,10 +20,12 @@
     </header>
 
     <div class="pl-list-items" id="pl-list-items">
+        {if !$date}
         <div class="align-center" id="pl-empty-list-msg" {if !empty($undone_items)}style="display:none;"{/if}>
             <h3>[`To-do stream is empty.`]</h3>
             <p>[`Stream automatically collects all important to-dos from your lists, and presents them in priority & due order.`]</p>
         </div>
+        {/if}
 
         <section id="pl-undone-items">
             <ul class="menu-v">
