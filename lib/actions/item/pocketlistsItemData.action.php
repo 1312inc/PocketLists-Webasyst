@@ -10,6 +10,7 @@ class pocketlistsItemDataAction extends waViewAction
                 $im = new pocketlistsItemModel();
 
                 pocketlistsHelper::getDueDatetime($item);
+                $item['assigned_contact_id'] = $item['assigned_contact_id'] ? $item['assigned_contact_id'] : null;
                 $item['update_datetime'] = date("Y-m-d H:i:s");
                 $im->updateWithCalcPriority($item['id'], $item);
                 $this->view->assign('item', $im->getById($item['id']));
