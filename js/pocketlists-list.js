@@ -460,6 +460,10 @@
                     assigned_contact_id: o.assignUser ? o.assignUser : false
                 },
                 function (html) {
+                    $.pocketlists.updateAppCounter();
+                    $.pocketlists.$loading.remove();
+                    $pl_done.removeClass('transparent');
+
                     var $li = $this.closest(item_selector);
                     var $html = $('' + html + '');
 
@@ -478,9 +482,6 @@
                     }
                     $html.filter(item_selector).last()
                         .find('.pl-item').first().after($new_item_wrapper);
-
-                    $.pocketlists.$loading.remove();
-                    $pl_done.removeClass('transparent');
 
                     $new_item_input.val('').trigger('focus').css('height', 'auto').data('can_blur', true);
 
