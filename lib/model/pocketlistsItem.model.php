@@ -479,7 +479,7 @@ class pocketlistsItemModel extends waModel
           FROM {$this->table} i
           LEFT JOIN pocketlists_list l ON l.id = i.list_id
           WHERE
-            i.status = 0 AND l.archived = 0
+            i.status = 0 AND (l.archived = 0 OR l.archived IS NULL)
             AND ((i.contact_id = i:contact_id OR i.assigned_contact_id = i:contact_id)";
 
         switch ($icon) {
