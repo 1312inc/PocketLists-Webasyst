@@ -127,6 +127,11 @@ label.pl-done-label .listicon48 {
 /* Items
 -------- */
 
+.pl-empty-list { margin: 0 60px 20px; padding-top: 30px; text-align: center; }
+.pl-empty-list .pl-jumbodone { width: 180px; height: 180px; margin: 0 auto; background: transparent url('../img/pl-jumbodone.png') no-repeat; background-size: 180px 180px; opacity: 0.13; }
+.pl-empty-list h2 { margin-top: 20px; color: #333; }
+.pl-empty-list p { color: #888; font-size: 0.9em; }
+
 #pl-item-add { display: none; }
 #pl-item-add-wrapper-hover {
     display: block;
@@ -234,6 +239,7 @@ input#pl-new-list-input,
 .pl-logbook .pl-edit { display: none !important; }
 .pl-logbook .pl-favorite,
 .pl-logbook .pl-author { opacity: 1 !important; }
+.pl-logbook .pl-empty-list { padding-top: 100px; margin-top: 0; }
 
 /* Item & List details
 ---------------------- */

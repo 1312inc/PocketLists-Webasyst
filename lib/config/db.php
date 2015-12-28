@@ -115,7 +115,7 @@ return array(
     'pocketlists_pocket' => array(
         'id' => array('int', 11, 'null' => 0, 'autoincrement' => 1),
         'name' => array('varchar', 255),
-        'color' => array('enum', "'none','red','green','blue','yellow','purple'", 'default' => 'none'),
+        'color' => array('enum', "'none','red','green','blue','yellow','purple'", 'default' => 'blue'),
         'passcode' => array('varchar', 32),
         ':keys' => array(
             'PRIMARY' => 'id',

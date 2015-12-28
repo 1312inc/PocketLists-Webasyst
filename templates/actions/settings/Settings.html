@@ -19,7 +19,7 @@
                         <option value="3" {if !empty($settings.app_icon) && $settings.app_icon == 3}selected="selected"{/if}>[`Reds + Yellows + Greens`]</option>
                         <option value="0" {if !empty($settings.app_icon) && $settings.app_icon == 0}selected="selected"{/if}>[`None`]</option>
                     </select>
-                    <p class="hint">[`App icon counter will also alert you about new to-do items and lists assigned to you by other users.`]</p>
+                    <p class="hint">[`Selected colors will be counted in both app icon badge count and to-do screen.`]</p>
                 </div>
               </div>
 
@@ -31,7 +31,7 @@
                     <select id="pl-inbox-pocket">
                         <option value="0">[`None`]</option>
                         {foreach $pockets as $pocket}
-                        <option value="{$pocket.id}" {if isset($inbox_list) && $inbox_list.pocket_id == $pocket.id}selected="selected"{/if}>{$pocket.name}</option>
+                        <option value="{$pocket.id}" {if isset($inbox_list) && $inbox_list.pocket_id == $pocket.id}selected="selected"{/if}>{$pocket.name|truncate:32}</option>
                         {/foreach}
                     </select>
                     <select id="pl-inbox-list" {if empty($settings.stream_inbox_list)}style="display:none;"{/if}>
@@ -63,7 +63,7 @@
                     <div class="pl-cron-msg" {if empty($settings.daily_recap_on)}style="display: none;"{/if}>
                     {if !$last_recap_cron_time}
                         <p class="small"><br><em><i class="icon10 exclamation"></i> [`Daily recap notifications require CRON to be configured, which is not the case for your Pocket Lists app. See <a href="#" target="_blank">how to setup CRON for Pocket Lists</a>`]</em></p>
-                        <p class="small">{$cron_command}</p>
+                        <p class="small"><span class="highlighted">{$cron_command}</span></p>
                     {else}
                         <p class="small"><br><em><i class="icon10 yes"></i> [`We’ll keep you up to date! And when there is nothing planned for the upcoming period, no alerts will be sent.`]</em></p>
                     {/if}

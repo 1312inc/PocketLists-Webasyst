@@ -14,14 +14,13 @@
                                 <img class="userpic" src="{$teammate.photo_url}">
                             </div>
                             <div class="details">
-                                {if $teammate.item_count}
-                                <span class="count indicator red">{$teammate.item_count}</span>
-                                {/if}
+
+                                <span class="count">{$teammate.item_count|default:'0'}</span>
 
                                 <span class="large nowrap">{$teammate.name|default:'%username%'}</span>
 
                                 <div class="pl-active-items small black">{$teammate.item_names|escape}</div>
-                                <span class="hint">{$teammate.last_activity|wa_date:'humandatetime'|default:sprintf('[`No to-dos have been assigned to %s yet`]',$teammate.name|default:'%username%')}</span>
+                                <span class="hint">{$teammate.last_activity|wa_date:'humandatetime'|default:sprintf('[`No to-dos were assigned to %s yet`]',$teammate.name|default:'%username%')}</span>
                             </div>
                         </div>
                     </a>
@@ -58,10 +57,10 @@
         </header>
 
         <div class="pl-list-items" id="pl-list-items">
-            <div class="align-center" id="pl-empty-list-msg" {if !empty($items)}style="display:none;"{/if}>
-                <img class="userpic" src="{$current_teammate.photo_url}">
-                <h3>[`{$current_teammate.name}'s to-do list is empty.`]</h3>
-                <p>[`There are no to-dos assigned to {$current_teammate.name}. To assign a to-do iteam, either @mention user when adding a to-do, or select in to-do details.`]</p>
+            <div class="pl-empty-list" id="pl-empty-list-msg" {if !empty($items)}style="display:none;"{/if}>
+                <img class="userpic" src="{$current_teammate.photo_url}" alt="{$current_teammate.name}" title="{}$current_teammate.name}" />
+                <h2>{sprintf('[`%s’s to-do list is empty`]',$current_teammate.name)}</h2>
+                <p>[`To assign a to-do to a user, either select him in to-do item details or add a to-do item above.`]</p>
             </div>
 
             <section id="pl-undone-items">
@@ -90,13 +89,6 @@
         {include '../../include/itemdetails.html' inline}
 
         {include '../../include/itemadd.html' inline}
-
-        {*в этом списке показываются:<br>
-        — сначала все активные айтемы, назначенные на данного пользователя (assigned_contact_id == CONTACT_ID)<br>
-        — ниже серым (как в списке) все выполненные данным пользователем айтемы (тут уже без требования назначенности; просто все, что данный пользователь зачекал complete_contact_id == CONTACT_ID — надо добавить такое поле в таблицу айтемов, если его там еще нет)
-        <br><br>
-        все айтемы сортированы, как в потоке: по приоритету + дате.<br>
-        создание нового айтема в этом списке автоматически назначает его на этого пользователя*}
 
     </main>
 
