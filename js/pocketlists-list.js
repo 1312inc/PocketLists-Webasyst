@@ -785,12 +785,16 @@
             return !getItems().length;
         };
         var showEmptyListMessage = function() {
-            isEmptyList() && o.showMessageOnEmptyList && $empty_list_msg.show();
-            $('.pl-title h1').css('opacity','0.25');
+            if (isEmptyList() && o.showMessageOnEmptyList) {
+                $empty_list_msg.show();
+                $('.pl-title h1').css('opacity','0.25');
+            }
         };
         var hideEmptyListMessage = function() {
-            o.showMessageOnEmptyList && $empty_list_msg.hide();
-            $('.pl-title h1').css('opacity','1');
+            if (o.showMessageOnEmptyList)  {
+                $empty_list_msg.hide();
+                $('.pl-title h1').css('opacity','1');
+            }
         };
         /**
          * for new item dom manipulating

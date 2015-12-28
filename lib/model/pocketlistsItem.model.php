@@ -337,10 +337,11 @@ class pocketlistsItemModel extends waModel
             $contact_ids = array($contact_ids);
         }
         $q = "SELECT
-                assigned_contact_id,
-                name item_name
-              FROM {$this->table}
-              WHERE assigned_contact_id IN (i:contact_id) AND status = 0";
+                i.assigned_contact_id,
+                i.name item_name
+              FROM {$this->table} i
+              JOIN pocketlists_list l ON l.id = i.list_id AND l.archived = 0
+              WHERE i.assigned_contact_id IN (i:contact_id) AND status = 0";
         return $this->query($q, array('contact_id' => $contact_ids))->fetchAll('assigned_contact_id', 2);
     }
 

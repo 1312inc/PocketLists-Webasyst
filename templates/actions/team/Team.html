@@ -72,7 +72,7 @@
             </section>
 
             <!-- completed to-dos log -->
-            <section id="pl-complete-log" class="pl-logbook" style="display: block;">
+            <section id="pl-complete-log" class="pl-logbook">
                 <h5 class="heading">[`Logbook`]</h5>
                 <ul class="menu-v">
                     {if !empty($items_done)}
@@ -80,6 +80,8 @@
                     {/if}
                 </ul>
             </section>
+
+            <a href="#" id="pl-complete-log-link" class="inline-link gray" {if !$count_done_items}style="display:none;"{/if}><b><i>{_w('Show all %d completed to-do', 'Show all %d completed to-dos', $count_done_items)}</i></b></a>
 
         </div>
         <div class="clear-both"></div>
