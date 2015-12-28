@@ -36,9 +36,11 @@ class pocketlistsTeamAction extends  waViewAction
             if ($selected_teammate) {
                 $user_model = new waUserModel();
                 $id = $user_model->select('id')->where("login = s:0", array($selected_teammate))->limit(1)->fetch(
-                )['id'];
+                );
+                $id = $id['id'];
             } else {
-                $id = reset($teammates)['id'];
+                $id = reset($teammates);
+                $id = $id['id'];
             }
             $items = $im->getAssignedOrCompletesByContactItems($id);
             $this->view->assign('items', $items[0]);

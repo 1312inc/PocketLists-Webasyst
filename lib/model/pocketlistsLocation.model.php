@@ -1,6 +1,6 @@
 <?php
 
-class pocketlistsUserFavoritesModel extends waModel
+class pocketlistsLocationModel extends waModel
 {
-    protected $table = 'pocketlists_user_favorites';
+    protected $table = 'pocketlists_location';
 }

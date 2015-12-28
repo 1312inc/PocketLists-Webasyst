@@ -145,7 +145,8 @@ class pocketlistsItemModel extends waModel
     public function updateWithCalcPriority($id, $item, $silent = false)
     {
         $us = new pocketlistsUserSettings();
-        if (!$silent && $email_me = $us->emailWhenNewAssignToMe()) {
+        $email_me = $us->emailWhenNewAssignToMe();
+        if (!$silent && $email_me) {
             $old_item = $this->getById($id);
         }
 
@@ -159,16 +160,6 @@ class pocketlistsItemModel extends waModel
                 pocketlistsNotifications::notifyAboutNewAssign($item);
             }
             return true;
-        }
-    }
-
-    public function completeItem($id, $status)
-    {
-        if ($status) {
-            $data['complete_datetime'] = date("Y-m-d H:i:s");
-            $data['complete_contact_id'] = wa()->getUser()->getId();
-        } else {
-            $data['complete_contact_id'] = null;
         }
     }
 

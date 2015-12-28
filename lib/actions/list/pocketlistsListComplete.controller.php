@@ -11,10 +11,8 @@ class pocketlistsListCompleteController extends pocketlistsComplete
 
         if ($list_id) { // complete all list items
             $tree = $im->getUndoneByList($list_id);
-            $lm = new pocketlistsListModel();
-            $list = $lm->getById($list_id);
             $this->changeComplete(0, array('id' => null, 'childs' => $tree), $status, $im);
-            pocketlistsNotifications::notifyAboutCompleteItems($this->completed_items, $list);
+            pocketlistsNotifications::notifyAboutCompleteItems($this->completed_items);
 
             $this->response = $list_id;
         } else {

@@ -11,7 +11,8 @@ class pocketlistsSettingsAction extends  waViewAction
         $pm = new pocketlistsPocketModel();
         $this->view->assign('pockets', $pm->getAllPockets(wa()->getUser()->getId()));
 
-        if ($inbox_list_id = $us->getStreamInboxList()) {
+        $inbox_list_id = $us->getStreamInboxList();
+        if ($inbox_list_id) {
             $lm = new pocketlistsListModel();
             $inbox_list = $lm->getById($inbox_list_id);
             $this->view->assign('inbox_lists', $lm->getLists($inbox_list['pocket_id']));

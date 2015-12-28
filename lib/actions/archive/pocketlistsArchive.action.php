@@ -9,7 +9,8 @@ class pocketlistsArchiveAction extends  waViewAction
 
         $list_id = waRequest::get('id', 0, waRequest::TYPE_INT);
         if (!$list_id) { // get first archived list
-            $list_id = reset($lists)['id'];
+            $list_id = reset($lists);
+            $list_id = $list_id['id'];
         }
 
         $lists_html = wao(new pocketlistsListAction(array('list_id' => $list_id, 'archive' => true)))->display();

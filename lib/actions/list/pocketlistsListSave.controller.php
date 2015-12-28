@@ -12,7 +12,8 @@ class pocketlistsListSaveController extends waJsonController
 
             $list['update_datetime'] = date("Y-m-d H:i:s");
             $list['contact_id'] = wa()->getUser()->getId();
-            if ($data = $im->update($list['id'], $list)) {
+            $data = $im->update($list['id'], $list);
+            if ($data) {
                 if ($data['due_date']) {
                     $data['due_date'] = waDateTime::format('humandate', $data['due_date']);
                 }

@@ -6,7 +6,7 @@ class pocketlistsNotifications
      * Notify all related users about completed items (according to their settings)
      * @param $items array()
      */
-    public static function notifyAboutCompleteItems($items, $list = false)
+    public static function notifyAboutCompleteItems($items)
     {
         if (!count($items)) {
             return;
