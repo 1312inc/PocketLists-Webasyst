@@ -35,15 +35,18 @@
             </ul>
         </section>
 
-
-        <section id="pl-complete-log" class="pl-logbook" style="display: block;">
+        {if $date}
+        <section id="pl-complete-log" class="pl-logbook">
             <h5 class="heading">[`Logbook`]</h5>
             <ul class="menu-v">
-                {if !empty($done_items)}
+                {if $count_done_items}
                 {include '../item/ItemCreate.html' parent_id=0 items=$done_items}
                 {/if}
             </ul>
         </section>
+
+        <a href="#" id="pl-complete-log-link" class="inline-link gray" {if !$count_done_items}style="display:none;"{/if}><b><i>{_w('Show all %d completed to-do', 'Show all %d completed to-dos', $count_done_items)}</i></b></a>
+        {/if}
 
     </div>
 
