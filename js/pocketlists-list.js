@@ -389,6 +389,7 @@
 
                     $.post('?module=list&action=archive', {list_id: list_id, archive: 0}, function (r) {
                         if (r.status === 'ok') {
+                            $.pocketlists.updateAppCounter();
                             $.wa.setHash('#/pocket/' + pocket_id + '/list/' +  list_id + '/');
                         } else {
                         }

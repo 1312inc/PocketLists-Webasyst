@@ -69,7 +69,7 @@ class pocketlistsItemModel extends waModel
     public function getToDo($contact_id, $date = false)
     {
         $pockets = pocketlistsHelper::getAccessPocketForContact($contact_id);
-        $due_date_or_mine = " AND (i.assigned_contact_id = i:contact_id OR i.assigned_contact_id IS NULL)";
+        $due_date_or_mine = " AND (i.assigned_contact_id = i:contact_id OR i.assigned_contact_id IS NULL OR i.assigned_contact_id = 0)";
         if ($date) {
             $due_date_or_mine = "AND ((i.status = 0 AND (i.due_date = s:date OR DATE(i.due_datetime) = s:date)) OR (i.status > 0 AND DATE(i.complete_datetime) = s:date))";
         }
@@ -433,27 +433,29 @@ class pocketlistsItemModel extends waModel
         $seven_days = date("Y-m-d", strtotime("+7 days", $now));
         switch ($when) {
             case pocketlistsUserSettings::DAILY_RECAP_FOR_TODAY:
-                $when = " AND (due_date = '" . $today . "' OR (due_datetime >= " . strtotime(
+                $when = " AND (i.due_date = '" . $today . "' OR (i.due_datetime >= " . strtotime(
                         $today
-                    ) . " AND due_datetime < " . strtotime($tomorrow) . "))";
+                    ) . " AND i.due_datetime < " . strtotime($tomorrow) . "))";
                 break;
             case pocketlistsUserSettings::DAILY_RECAP_FOR_TODAY_AND_TOMORROW:
-                $when = " AND (due_date = '" . $today . "' OR due_date = '" . $tomorrow . "' OR (due_datetime >= " . strtotime(
+                $when = " AND (i.due_date = '" . $today . "' OR i.due_date = '" . $tomorrow . "' OR (i.due_datetime >= " . strtotime(
                         $today
-                    ) . " AND due_datetime < " . (strtotime($tomorrow) + 60 * 60 * 24) . "))";
+                    ) . " AND i.due_datetime < " . (strtotime($tomorrow) + 60 * 60 * 24) . "))";
                 break;
             case pocketlistsUserSettings::DAILY_RECAP_FOR_NEXT_7_DAYS:
-                $when = " AND (due_date >= '" . $today . "' AND due_date <= '" . $seven_days . "' OR (due_datetime >= " . strtotime(
+                $when = " AND (i.due_date >= '" . $today . "' AND i.due_date <= '" . $seven_days . "' OR (i.due_datetime >= " . strtotime(
                         $today
-                    ) . " AND due_datetime < " . (strtotime($seven_days) + 60 * 60 * 24) . "))";
+                    ) . " AND i.due_datetime < " . (strtotime($seven_days) + 60 * 60 * 24) . "))";
                 break;
         }
         $q = "SELECT
-                *
-              FROM {$this->table}
+                i.*
+              FROM {$this->table} i
+              LEFT JOIN pocketlists_list l ON l.id = i.list_id
               WHERE
-                assigned_contact_id = i:id
-                AND status = 0
+                i.assigned_contact_id = i:id
+                AND i.status = 0
+                AND (l.archived = 0 OR l.archived IS NULL)
                 {$when}";
 
         $items = $this->query($q, array('id' => $contact_id))->fetchAll();
@@ -477,20 +479,31 @@ class pocketlistsItemModel extends waModel
           SELECT
             i.id
           FROM {$this->table} i
-          LEFT JOIN pocketlists_list l ON l.id = i.list_id
+          LEFT JOIN pocketlists_list l ON (l.id = i.list_id  OR l.id = i.key_list_id)
           WHERE
-            i.status = 0 AND (l.archived = 0 OR l.archived IS NULL)
-            AND ((i.contact_id = i:contact_id OR i.assigned_contact_id = i:contact_id)";
+            i.status = 0
+            AND i.contact_id = i:contact_id
+            AND
+            (
+              l.archived = 0
+              OR l.archived IS NULL
+            )
+            AND
+            (
+              i.assigned_contact_id = i:contact_id
+              OR i.assigned_contact_id IS NULL
+              OR i.assigned_contact_id = 0
+            )";
 
         switch ($icon) {
             case pocketlistsUserSettings::ICON_OVERDUE: // overdue
-                $q .= "AND ((i.due_date <= '{$today}' AND i.due_datetime < '{$now}') OR i.due_date < '{$today}' OR i.calc_priority = 3))";
+                $q .= "AND ((i.due_date <= '{$today}' AND i.due_datetime < '{$now}') OR i.due_date < '{$today}' OR i.calc_priority = 3)";
                 break;
             case pocketlistsUserSettings::ICON_OVERDUE_TODAY: // overdue + today
-                $q .= "AND (i.due_date <= '" . $today . "' OR i.due_datetime < '" . $tomorrow . "' OR i.calc_priority IN (2, 3)))";
+                $q .= "AND (i.due_date <= '" . $today . "' OR i.due_datetime < '" . $tomorrow . "' OR i.calc_priority IN (2, 3))";
                 break;
             case pocketlistsUserSettings::ICON_OVERDUE_TODAY_AND_TOMORROW: // overdue + today + tomorrow
-                $q .= "AND (i.due_date <= '" . $tomorrow . "' OR i.due_datetime < '" . $day_after_tomorrow . "' OR i.calc_priority IN (1, 2, 3)))";
+                $q .= "AND (i.due_date <= '" . $tomorrow . "' OR i.due_datetime < '" . $day_after_tomorrow . "' OR i.calc_priority IN (1, 2, 3))";
                 break;
             default:
                 return '';
