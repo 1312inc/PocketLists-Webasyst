@@ -180,30 +180,33 @@
 
         // add list
         var addNewList = function (id) {
-            var data = {
-                name: $new_list_input.val().trim(),
-                type: 'checklist',
-                pocket_id: pocket_id
-            };
-            if (data.name) {
-                //$(this).after($.pocketlists.$loading);
-                $.post(
-                    '?module=list&action=update',
-                    {
-                        data: data,
-                        id: id
-                    },
-                    function (r) {
-                        if (r.status === 'ok') {
-                            if (list_id === -1) {
-                                $.wa.setHash('#/pocket/' + pocket_id + '/list/' + r.data.id + '/');
-                            }
-                        } else {
+            var name = $new_list_input.val().trim();
+            if (name.length) {
+                var data = {
+                    name: $new_list_input.val().trim(),
+                    type: 'checklist',
+                    pocket_id: pocket_id
+                };
+                if (data.name) {
+                    //$(this).after($.pocketlists.$loading);
+                    $.post(
+                        '?module=list&action=update',
+                        {
+                            data: data,
+                            id: id
+                        },
+                        function (r) {
+                            if (r.status === 'ok') {
+                                if (list_id === -1) {
+                                    $.wa.setHash('#/pocket/' + pocket_id + '/list/' + r.data.id + '/');
+                                }
+                            } else {
 
-                        }
-                    },
-                    'json'
-                );
+                            }
+                        },
+                        'json'
+                    );
+                }
             }
         };
         // favorite list
@@ -274,12 +277,19 @@
             // will add new list if we can
             if ($new_list_input.length) {
                 $new_list_input.focus();
-                $new_list_input.on('keydown', function (e) {
-                    if (e.which === 13) {
-                        e.preventDefault();
-                        addNewList(list_id);
-                    }
-                });
+                $new_list_input
+                    .on('keydown', function (e) {
+                        $new_list_input.data('pl-can-add', true);
+                        if (e.which === 13 && $new_list_input.data('pl-can-add')) {
+                            e.preventDefault();
+                            addNewList(list_id);
+                        }
+                        if (e.which === 27) {
+                            $new_list_input.data('pl-can-add', false).val('');
+                        }
+                    }).on('blur', function (e) {
+                        $new_list_input.data('pl-can-add') && addNewList(list_id);
+                    });
             }
 
             if (o.archive) {
