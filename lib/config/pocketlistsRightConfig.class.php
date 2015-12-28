@@ -53,45 +53,45 @@ class pocketlistsRightConfig extends waRightConfig
 //     * @param mixed $value value to save
 //     * @return boolean false to write this key and value to system storage; true if application chooses to keep it in its own place.
 //     */
-    public function setRights($contact_id, $right, $value = null)
-    {
-        $ppm = new pocketlistsPocketRightsModel();
-        if ($right === 'backend') {
-            if ($value == 0) { // no access
-                $ppm->deleteByField(
-                    array(
-                        'contact_id' => $contact_id,
-                    )
-                );
-            } else {
-                $ppm->insert(
-                    array(
-                        'pocket_id' => 0,
-                        'contact_id' => $contact_id,
-                        'right' => $value,
-                    ),
-                    1
-                );
-            }
-        } else {
-            $pocket_id = explode(".", $right);
-            if ($value) {
-                $ppm->insert(
-                    array(
-                        'pocket_id' => $pocket_id[1],
-                        'contact_id' => $contact_id,
-                        'right' => $value,
-                    ),
-                    1
-                );
-            } else {
-                $ppm->deleteByField(array(
-                    'pocket_id' => $pocket_id[1],
-                    'contact_id' => $contact_id,
-                ));
-            }
-        }
-
-        return true;
-    }
+//    public function setRights($contact_id, $right, $value = null)
+//    {
+//        $ppm = new pocketlistsPocketRightsModel();
+//        if ($right === 'backend') {
+//            if ($value == 0) { // no access
+//                $ppm->deleteByField(
+//                    array(
+//                        'contact_id' => $contact_id,
+//                    )
+//                );
+//            } else {
+//                $ppm->insert(
+//                    array(
+//                        'pocket_id' => 0,
+//                        'contact_id' => $contact_id,
+//                        'right' => $value,
+//                    ),
+//                    1
+//                );
+//            }
+//        } else {
+//            $pocket_id = explode(".", $right);
+//            if ($value) {
+//                $ppm->insert(
+//                    array(
+//                        'pocket_id' => $pocket_id[1],
+//                        'contact_id' => $contact_id,
+//                        'right' => $value,
+//                    ),
+//                    1
+//                );
+//            } else {
+//                $ppm->deleteByField(array(
+//                    'pocket_id' => $pocket_id[1],
+//                    'contact_id' => $contact_id,
+//                ));
+//            }
+//        }
+//
+//        return true;
+//    }
 }
