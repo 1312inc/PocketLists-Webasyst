@@ -69,11 +69,9 @@ class pocketlistsItemModel extends waModel
     public function getToDo($contact_id, $date = false)
     {
         $pockets = pocketlistsHelper::getAccessPocketForContact($contact_id);
-        $mine = " AND (i.assigned_contact_id = i:contact_id OR i.assigned_contact_id IS NULL)";
-        $due_date = "OR i.due_date IS NOT NULL OR i.due_datetime IS NOT NULL";
+        $due_date_or_mine = " AND (i.assigned_contact_id = i:contact_id OR i.assigned_contact_id IS NULL)";
         if ($date) {
-            $due_date = "AND i.due_date = s:date OR DATE(i.due_datetime) = s:date";
-            $mine = "";
+            $due_date_or_mine = "AND i.due_date = s:date OR DATE(i.due_datetime) = s:date";
         }
         $sql = "SELECT
                   i.id id,
@@ -103,10 +101,18 @@ class pocketlistsItemModel extends waModel
                 LEFT JOIN pocketlists_pocket p ON p.id = l.pocket_id
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
                 WHERE
-                  (i.contact_id = i:contact_id AND (i.calc_priority > 0 {$due_date})
-                  OR i.assigned_contact_id = i:contact_id
-                  OR i.complete_contact_id = i:contact_id)
-                  {$mine}
+                  (
+                    i.contact_id = i:contact_id
+                    AND
+                      (
+                        i.calc_priority > 0
+                        OR i.due_date IS NOT NULL
+                        OR i.due_datetime IS NOT NULL
+                      )
+                    OR i.assigned_contact_id = i:contact_id
+                    OR i.complete_contact_id = i:contact_id
+                  )
+                  {$due_date_or_mine}
                 ORDER BY i.calc_priority DESC, (i.due_date IS NULL), i.due_date ASC, (i.due_datetime IS NULL), i.due_datetime ASC";
 
         $items = $this->query($sql, array('pocket_ids' => $pockets, 'contact_id' => $contact_id, 'date' => $date))->fetchAll();

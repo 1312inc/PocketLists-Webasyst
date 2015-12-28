@@ -49,6 +49,8 @@
 
 </main>
 
+{include '../../include/itemadd.html' inline}
+
 <script type="text/javascript">
     (function(){
         new $.pocketlists.Items($('#pl-list-items'), {
@@ -56,7 +58,8 @@
             enableChangeLevel: false,
             enableSortItems: false,
             assignUser: parseInt('{$wa->user()->getId()}'),
-            showMessageOnEmptyList: true
+            showMessageOnEmptyList: true,
+            dueDate: '{if $timestamp}{$timestamp|wa_date}{/if}'
         });
     }());
 </script>

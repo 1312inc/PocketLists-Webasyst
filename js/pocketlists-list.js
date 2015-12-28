@@ -415,7 +415,8 @@
                 enableSortItems: true,
                 list: null,
                 assignUser: null,
-                showMessageOnEmptyList: false
+                showMessageOnEmptyList: false,
+                dueDate: ''
             },
             o = {};
 
@@ -445,11 +446,11 @@
         var addItem = function (data, callback) {
             var $this = $(this);
 //             debugger;
-//             if (o.assignUser) {
-//                 $.each(data, function() {
-//                      data['assigned_contact_id'] = o.assignUser;
-//                 });
-//             }
+             if (o.dueDate) {
+                 $.each(data, function(i) {
+                      data[i]['due_date'] = o.dueDate;
+                 });
+             }
             var $pl_done = $this.closest('.pl-item').find('.pl-done-label span').addClass('transparent').html($.pocketlists.$loading);
             $.post(
                 '?module=item&action=create',

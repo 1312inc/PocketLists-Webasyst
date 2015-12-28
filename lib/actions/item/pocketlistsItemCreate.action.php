@@ -10,6 +10,7 @@ class pocketlistsItemCreateAction extends waViewAction
 
         $im = new pocketlistsItemModel();
         $inserted = $inserted_items = $items = array();
+        $assign_contact = null;
         $user_id = wa()->getUser()->getId();
         // if no list_id -> add to inbox stream or just to stream
         if ($assigned_contact_id) {
@@ -30,7 +31,7 @@ class pocketlistsItemCreateAction extends waViewAction
 
                 if ($assigned_contact_id) {
                     $data[$i]['assigned_contact_id'] = $assign_contact->getId();
-                    $data[$i]['due_date'] = waDateTime::date('Y-m-d');
+                    $data[$i]['due_date'] = waDateTime::date('Y-m-d', !empty($data[$i]['due_date']) ? strtotime( $data[$i]['due_date']) : time());
                 }
 
                 $last_id = $im->insert($data[$i], 1);
