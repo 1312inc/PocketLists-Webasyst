@@ -31,7 +31,10 @@ class pocketlistsItemCreateAction extends waViewAction
 
                 if ($assigned_contact_id) {
                     $data[$i]['assigned_contact_id'] = $assign_contact->getId();
-                    $data[$i]['due_date'] = waDateTime::date('Y-m-d', !empty($data[$i]['due_date']) ? strtotime( $data[$i]['due_date']) : time());
+                }
+
+                if (!empty($data[$i]['due_date'])) {
+                    $data[$i]['due_date'] = waDateTime::date('Y-m-d', strtotime( $data[$i]['due_date']));
                 }
 
                 $last_id = $im->insert($data[$i], 1);
