@@ -2,15 +2,12 @@
     <nav class="sidebar left200px">
 
         <ul class="menu-v with-icons stack">
-          <li>
-            <a href="#"><i class="icon16" style="background-image: url(/wa-apps/pocketlists/img/listicons/li-list@2x.png); background-size: 16px 16px;"></i>List #1</a>
-          </li>
-          <li>
-            <a href="#"><i class="icon16" style="background-image: url(/wa-apps/pocketlists/img/listicons/li-money@2x.png); background-size: 16px 16px;"></i>List #2</a>
-          </li>
-          <li>
-            <a href="#"><i class="icon16" style="background-image: url(/wa-apps/pocketlists/img/listicons/li-travel@2x.png); background-size: 16px 16px;"></i>List #3</a>
-          </li>
+            {foreach $lists as $l_id => $l}
+            <li data-pl-list-id="{$l.id}" {if $l.id == $list_id}class="selected"{/if}>
+                <a href="#"><i class="icon16" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l.icon|default:'li-list@2x.png'}); background-size: 16px 16px;"></i>{$l.name}</a>
+            </li>
+            {foreachelse}
+            {/foreach}
         </ul>
         <div class="block double-padded align-center hr">
             <p class="hint">[`To archive an active list, tap on it’s checkmark.`]</p>
@@ -19,29 +16,29 @@
 
     </nav>
 
+    {*ARCHIVED LIST: если выбрать список из архива, то он покажется, как есть (как на основном экране Lists), только в режиме read-only: все чекбоксы задизеблены, кнопки Add to-do нет.<br><br>
+
+    справа вместо Add to-do — кнопка [`Unarchive`] и подсказка серым цветом [`Acrhived on %s`], где %s = wa_humandate архивирования списка.<br><br>
+
+    по умолчанию при входе в раздел выбирать первый список.*}
     <main class="content left200px blank bordered-left pl-items pl-blue" id="pl-list-content">
-
-        ARCHIVED LIST: если выбрать список из архива, то он покажется, как есть (как на основном экране Lists), только в режиме read-only: все чекбоксы задизеблены, кнопки Add to-do нет.<br><br>
-
-        справа вместо Add to-do — кнопка [`Unarchive`] и подсказка серым цветом [`Acrhived on %s`], где %s = wa_humandate архивирования списка.<br><br>
-
-        по умолчанию при входе в раздел выбирать первый список.
-
-        {if !empty($items)}
-        <div class="pl-items">
-            <div class="pl-list-items" id="pl-list-items">
-                <ul class="menu-v">
-                {foreach $items as $i}
-                    <li class="pl-item-wrapper" data-id="{$i.id}" data-parent-id="{$i.parent_id}">
-                        {include '../item/ItemData.html' item=$i archive=true inline}
-                    </li>
-                {/foreach}
-                </ul>
-            </div>
-        </div>
-        {/if}
-
-
+        {$lists_html|default:""}
     </main>
-
 </div>
+<script text="text/javascript">
+    var $all_items_wrapper = $('#pl-list-items');
+    $.pocketlists.setTitle('[`Archive`]');
+
+    $('[data-pl-list-id]').on('click', 'a', function (e) {
+        e.preventDefault();
+
+        var $this = $(this),
+            $wrapper = $this.closest('[data-pl-list-id]'),
+            list_id = parseInt($wrapper.data('pl-list-id'));
+
+        $.post('?module=list&id=' + list_id, function (result) {
+            $wrapper.addClass('selected').siblings().removeClass('selected');
+            $('#pl-list-content').html(result);
+        });
+    });
+</script>

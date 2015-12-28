@@ -9,12 +9,15 @@
      * - archive
      * - sort all
      */
-    $.pocketlists.List = function($list_wrapper) {
+    $.pocketlists.List = function($list_wrapper, options) {
         var $new_list_input = $list_wrapper.find('#pl-new-list-input'),
             list_id = parseInt($list_wrapper.find('#pl-list-id').val()),
             pocket_id = parseInt($('#pl-pocket-id').val()),
             $dialog_delete = $('#pl-dialog-delete-list-confirm'),
-            $dialog_complete_all = $('#pl-dialog-list-archive-complete-all');
+            $dialog_complete_all = $('#pl-dialog-list-archive-complete-all'),
+            o = {
+                archive: false
+            };
 
         /**
          * for show and manipulate with list details
@@ -267,6 +270,7 @@
         };
 
         var init = function() {
+            o = $.extend({}, options);
             // will add new list if we can
             if ($new_list_input.length) {
                 $new_list_input.focus();
@@ -278,27 +282,33 @@
                 });
             }
 
+            if (o.archive) {
+                $list_wrapper.find(':checkbox').prop('disabled', true);
+            }
+
             $list_wrapper
                 .on('click', function (e) {
-                    var clicked = $list_wrapper.data('pl-clicked');
+                    if (!o.archive) {
+                        var clicked = $list_wrapper.data('pl-clicked');
 
-                    // ignore when click on checkbox
-                    if ($(e.target).closest('.pl-done-label').length) {
-                        return;
-                    }
-                    if (clicked == 1) {
-                        $list_wrapper.data('pl-clicked', 2);
+                        // ignore when click on checkbox
+                        if ($(e.target).closest('.pl-done-label').length) {
+                            return;
+                        }
+                        if (clicked == 1) {
+                            $list_wrapper.data('pl-clicked', 2);
 
-                        $.pocketlists.scrollToTop(200, 80);
+                            $.pocketlists.scrollToTop(200, 80);
 
-                        //$.pocketlists.ListDetails.show();
-                        ListDetails.trigger('show.pl2');
-                    } else if (clicked == 2) {
-                        //$.pocketlists.ListDetails.hide();
-                        ListDetails.trigger('hide.pl2');
-                        deselectList();
-                    } else {
-                        $list_wrapper.data('pl-clicked', 1);
+                            //$.pocketlists.ListDetails.show();
+                            ListDetails.trigger('show.pl2');
+                        } else if (clicked == 2) {
+                            //$.pocketlists.ListDetails.hide();
+                            ListDetails.trigger('hide.pl2');
+                            deselectList();
+                        } else {
+                            $list_wrapper.data('pl-clicked', 1);
+                        }
                     }
                 }) // open details
                 .on('click', '[data-pl-action="list-delete"]', function (e) {
@@ -364,6 +374,16 @@
                         }
                     });
                 })
+                .on('click', '#pl-list-unarchive', function (e) {
+                    e.preventDefault();
+
+                    $.post('?module=list&action=archive', {list_id: list_id, archive: 0}, function (r) {
+                        if (r.status === 'ok') {
+                            $.pocketlists_routing.redispatch();
+                        } else {
+                        }
+                    }, 'json');
+                })
                 .on('deleteList.pl2', deleteList)
                 .on('deselectList.pl2', deselectList);
 
@@ -409,16 +429,16 @@
             $show_logbook_items = $('#pl-complete-log-link'),
             $empty_list_msg = $list_items_wrapper.find('#pl-empty-list-msg'),
             $current_item = null,
-            defaults = {
+            o = {
                 enableAddLinkOnHover: true,
                 enableChangeLevel: true,
                 enableSortItems: true,
                 list: null,
                 assignUser: null,
                 showMessageOnEmptyList: false,
-                dueDate: ''
-            },
-            o = {};
+                dueDate: '',
+                archive: false
+            };
 
         // sortable items
         var initSortable = function () {
@@ -1048,13 +1068,17 @@
         }($('#pl-item-details')));
 
         var init = function() {
-            o = $.extend({}, defaults, options);
+            o = $.extend({}, o, options);
 
             //if ($.pocketlists_routing.getHash() == '#/todo/' &&
             //    $.pocketlists_routing.getHash().indexOf('/team/') > 0) {
             //    $new_item_wrapper.prependTo($undone_items_wrapper).slideDown(200).wrap('<li class="pl-new-item-wrapper">');
             //    $new_item_input.focus();
             //}
+
+            if (o.archive) {
+                $list_items_wrapper.find(':checkbox').prop('disabled', true);
+            }
 
             showEmptyListMessage();
 

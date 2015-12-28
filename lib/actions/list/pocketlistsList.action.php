@@ -41,5 +41,6 @@ class pocketlistsListAction extends waViewAction
             $this->view->assign('new', true);
             $this->view->assign('empty', true);
         }
+        $this->view->assign('archive', isset($this->params['archive']) ? $this->params['archive'] : false);
     }
 }

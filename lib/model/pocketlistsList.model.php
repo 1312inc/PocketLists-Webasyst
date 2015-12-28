@@ -85,4 +85,33 @@ class pocketlistsListModel extends waModel
         }
         return $lists;
     }
+
+    public function getArchived()
+    {
+        $available_pockets = pocketlistsHelper::getAccessPocketForContact();
+
+        $sql = "SELECT
+                  i2.*,
+                  l.*,
+                  SUM(IF(i.key_list_id IS NULL, 1, 0)) 'count',
+                  MAX(i.calc_priority) 'max_priority',
+                  MIN(i.due_date) 'min_due_date',
+                  MIN(i.due_datetime) 'min_due_datetime'
+                FROM pocketlists_list l
+                LEFT JOIN pocketlists_item i ON (i.list_id = l.id OR i.key_list_id = l.id) AND i.status = 0
+                LEFT JOIN pocketlists_item i2 ON i2.key_list_id = l.id
+                WHERE
+                  l.archived = i:archived
+                  AND l.pocket_id IN (i:pocket_ids)
+                GROUP BY l.id";
+
+        $lists = $this->query(
+            $sql,
+            array(
+                'archived' => 1,
+                'pocket_ids' => $available_pockets
+            )
+        )->fetchAll();
+        return $lists;
+    }
 }
