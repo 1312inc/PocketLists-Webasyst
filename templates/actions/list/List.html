@@ -99,6 +99,7 @@
 </div>
 <script type="text/javascript">
     new $.pocketlists.Items($('#pl-list-items'), {
+        enableChangeLevel: false,
         list: new $.pocketlists.List($('.pl-list-title'))
     });
     $.pocketlists.setTitle('{if isset($list.name)}{$list.name|escape|default:"&nbsp;"}{else}[`New list`]{/if}');
