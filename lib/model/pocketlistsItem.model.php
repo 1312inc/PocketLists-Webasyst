@@ -123,8 +123,8 @@ class pocketlistsItemModel extends waModel
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
                 WHERE
                   (
-                    /*i.contact_id = i:contact_id
-                    AND*/ (
+                    i.contact_id = i:contact_id
+                    AND (
                       i.calc_priority > 0
                       OR i.due_date IS NOT NULL
                       OR i.due_datetime IS NOT NULL
@@ -140,7 +140,7 @@ class pocketlistsItemModel extends waModel
                     p.id IN (i:pocket_ids)
                     OR p.id IS NULL
                   )
-                  AND i.list_id IS NULL
+                  OR (i.list_id IS NULL AND i.key_list_id IS NULL)
                   {$due_date_or_mine}
                 ORDER BY
                   i.status,
@@ -475,6 +475,7 @@ class pocketlistsItemModel extends waModel
                   p.id IN (i:pocket_ids)
                   OR p.id IS NULL
                 )
+                OR (i.list_id IS NULL AND i.key_list_id IS NULL)
                 {$when}";
 
         $items = $this->query($q, array('contact_id' => $contact_id, 'pocket_ids' => $pockets))->fetchAll();
@@ -489,12 +490,43 @@ class pocketlistsItemModel extends waModel
         $us = new pocketlistsUserSettings();
         $icon = $us->appIcon();
 
-        $pockets = pocketlistsHelper::getAccessPocketForContact();
+        $pocket_rights = "";
+        $pockets = array();
+        // if user is admin - show all completed items
+        // else only items user has access and null list items
+        if (!pocketlistsHelper::isAdmin()) {
+            $pockets = pocketlistsHelper::getAccessPocketForContact();
+            // only accessed pockets or null list items which are created or completed by user
+//            $pocket_rights = "AND (
+//                    p.id IN (i:pocket_ids)
+//                    OR (p.id IS NULL AND (i.contact_id = i:contact_id OR i.complete_contact_id = i:contact_id)
+//                  )";
+            // only accessed pockets or null list items
+            $pocket_rights = "AND (
+                    p.id IN (i:pocket_ids)
+                    OR p.id IS NULL
+                  )";
+        }
 
         $now = @waDateTime::parse('Y-m-d H:i:s', waDateTime::date('Y-m-d H:i:s'));
         $today = date("Y-m-d");
         $tomorrow = date("Y-m-d", strtotime("+1 day"));
         $day_after_tomorrow = date("Y-m-d", strtotime("+2 day"));
+
+        $colors = "";
+        switch ($icon) {
+            case pocketlistsUserSettings::ICON_OVERDUE: // overdue
+                $colors = "AND ((i.due_date <= '{$today}' AND i.due_datetime < '{$now}') OR i.due_date < '{$today}' OR i.calc_priority = 3)";
+                break;
+            case pocketlistsUserSettings::ICON_OVERDUE_TODAY: // overdue + today
+                $colors = "AND (i.due_date <= '" . $today . "' OR i.due_datetime < '" . $tomorrow . "' OR i.calc_priority IN (2, 3))";
+                break;
+            case pocketlistsUserSettings::ICON_OVERDUE_TODAY_AND_TOMORROW: // overdue + today + tomorrow
+                $colors = "AND (i.due_date <= '" . $tomorrow . "' OR i.due_datetime < '" . $day_after_tomorrow . "' OR i.calc_priority IN (1, 2, 3))";
+                break;
+            default:
+                return '';
+        }
 
         $q = "
           SELECT
@@ -503,35 +535,21 @@ class pocketlistsItemModel extends waModel
           LEFT JOIN pocketlists_list l ON (l.id = i.list_id  OR l.id = i.key_list_id)
           LEFT JOIN pocketlists_pocket p ON p.id = l.pocket_id
           WHERE
-            i.status = 0
-            AND i.contact_id = i:contact_id
-            AND (
-              l.archived = 0
-              OR l.archived IS NULL
+            (
+              (
+                i.contact_id = i:contact_id
+                OR i.assigned_contact_id = i:contact_id
+                OR i.complete_contact_id = i:contact_id
+              )
+              AND (
+                l.archived = 0
+                OR l.archived IS NULL
+              )
+              OR (i.list_id IS NULL AND i.key_list_id IS NULL)
             )
-            AND (
-              i.assigned_contact_id = i:contact_id
-              OR i.assigned_contact_id IS NULL
-              OR i.assigned_contact_id = 0
-            )
-            AND ( /* only accessed pockets or null list */
-              p.id IN (i:pocket_ids)
-              OR p.id IS NULL
-            )";
+            {$colors}
+            {$pocket_rights}";
 
-        switch ($icon) {
-            case pocketlistsUserSettings::ICON_OVERDUE: // overdue
-                $q .= "AND ((i.due_date <= '{$today}' AND i.due_datetime < '{$now}') OR i.due_date < '{$today}' OR i.calc_priority = 3)";
-                break;
-            case pocketlistsUserSettings::ICON_OVERDUE_TODAY: // overdue + today
-                $q .= "AND (i.due_date <= '" . $today . "' OR i.due_datetime < '" . $tomorrow . "' OR i.calc_priority IN (2, 3))";
-                break;
-            case pocketlistsUserSettings::ICON_OVERDUE_TODAY_AND_TOMORROW: // overdue + today + tomorrow
-                $q .= "AND (i.due_date <= '" . $tomorrow . "' OR i.due_datetime < '" . $day_after_tomorrow . "' OR i.calc_priority IN (1, 2, 3))";
-                break;
-            default:
-                return '';
-        }
         if ($icon !== false && $icon != pocketlistsUserSettings::ICON_NONE) {
             $count = $this->query($q, array(
                 'contact_id' => wa()->getUser()->getId(),
