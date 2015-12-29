@@ -320,6 +320,16 @@
                         }
                     }
                 }) // open details
+                .on('click', '[data-pl-action="list-edit"]', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    $list_wrapper.data('pl-clicked', 2);
+
+                    $.pocketlists.scrollToTop(200, 80);
+
+                    ListDetails.trigger('show.pl2');
+                }) // open details
                 .on('click', '[data-pl-action="list-delete"]', function (e) {
                     e.preventDefault();
 
