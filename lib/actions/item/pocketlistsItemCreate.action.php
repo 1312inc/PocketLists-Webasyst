@@ -12,10 +12,12 @@ class pocketlistsItemCreateAction extends waViewAction
         $inserted = $inserted_items = $items = array();
         $assign_contact = null;
         $user_id = wa()->getUser()->getId();
-        // if no list_id -> add to inbox stream or just to stream
         if ($assigned_contact_id) {
             $assign_contact = new waContact($assigned_contact_id);
-            $us = new pocketlistsUserSettings($assign_contact->getId());
+        }
+        // if no list id passed - get default list from settings
+        if (!$list_id) {
+            $us = new pocketlistsUserSettings($assign_contact ? $assign_contact->getId() : $user_id);
             $list_id = $us->getStreamInboxList();
         }
         if ($data) {

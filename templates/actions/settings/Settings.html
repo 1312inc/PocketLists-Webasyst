@@ -190,9 +190,9 @@
                     if (r.status === 'ok') {
                         var options = '';
                         $.each(r.data, function () {
-                            options += '<option value="' + this.id + '">' + this.name.text() + '</option>';
+                            options += '<option value="' + this.id + '">' + this.name + '</option>';
                         });
-                        $('#pl-inbox-list').show().html(options);
+                        $('#pl-inbox-list').show().html(options).trigger('change');
                     }
                 }, 'json')
             } else {
