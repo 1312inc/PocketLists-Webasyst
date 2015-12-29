@@ -575,7 +575,7 @@ msgid "NEW: You’ve been assigned to a to-do"
 msgstr ""
 
 #: /wa-apps/pocketlists/lib/class/pocketlistsNotifications.class.php:330
-msgid "Today — WAHUMANDATE"
+msgid "Daily recap for %s"
 msgstr ""
 
 #: /wa-apps/pocketlists/lib/class/pocketlistsNotifications.class.php:366
@@ -612,4 +612,28 @@ msgstr ""
 
 #: /wa-apps/pocketlists/lib/config/pocketlistsRightConfig.class.php:24
 msgid "Full access"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/mails/completeanyitem.html:7
+msgid "Just %d more items left on <a href=\"%s\">%s</a>"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/mails/completeanyitem.html:9
+msgid "Woohoo, <a href=\"%s\">%s</a> to-do list has been completed :)"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/mails/dailyrecap.html:4
+msgid "Here is your <a href=\"%s\">daily recap</a> for %s:"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/mails/newassignitem.html:4
+msgid "You’ve been assigned a new to-do"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/mails/newfavoritelistitem.html:4
+msgid "There are new items on your favorite <strong>%s</strong> to-do list:"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/mails/newitem.html:4
+msgid "There are new items on <strong>%s</strong> to-do list:"
 msgstr ""
