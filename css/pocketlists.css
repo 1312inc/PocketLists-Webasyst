@@ -284,6 +284,7 @@ ul.pl-icon-library li i.listicon48 { background-size: 48px 48px; width: 48px; he
 .icon16.pl.todo { background-position:-32px 0; }
 .icon16.pl.archive { background-position:-48px 0; }
 .icon16.pl.todo-bw { background-position:-64px 0; }
+.icon16.pl.logbook { background-position:-80px 0; }
 .icon16.pl.add { background-position:0 -16px; }
 .icon16.pl.darr { background-position:-16px -16px; }
 
