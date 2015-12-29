@@ -1,13 +1,9 @@
 <div class="shadowed">
     <main class="content pl-items pl-logbook" id="pl-list-content">
     {if !empty($items)}
-        <div class="pl-list-items" id="pl-list-items">
+        <div class="pl-list-items" id="pl-complete-log" style="display: block;">
             <ul class="menu-v">
-            {foreach $items as $i}
-                <li class="pl-item-wrapper" data-id="{$i.id}" data-parent-id="{$i.parent_id}">
-                    {include '../item/ItemData.html' item=$i archive=true inline}
-                </li>
-            {/foreach}
+                {include '../item/Item.html' items=$items}
             </ul>
         </div>
     {else}
@@ -20,7 +16,7 @@
     </main>
 </div>
 <script type="text/javascript">
-    new $.pocketlists.Items($('#pl-list-items'), {
+    new $.pocketlists.Items($('#pl-list-content'), {
         enableAddLinkOnHover: false,
         enableChangeLevel: false,
         enableSortItems: false
