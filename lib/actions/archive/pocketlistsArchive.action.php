@@ -1,6 +1,6 @@
 <?php
 
-class pocketlistsArchiveAction extends  waViewAction
+class pocketlistsArchiveAction extends waViewAction
 {
     public function execute()
     {
@@ -20,5 +20,4 @@ class pocketlistsArchiveAction extends  waViewAction
         $this->view->assign('list_id', $list_id);
         $this->view->assign('archive', true);
     }
-
 }

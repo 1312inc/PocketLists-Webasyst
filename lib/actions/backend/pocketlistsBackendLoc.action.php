@@ -10,7 +10,7 @@ class pocketlistsBackendLocAction extends waViewAction
         $strings = array();
 
         // Application locale strings
-        foreach(array(
+        foreach (array(
                     'Show all %d completed to-dos'
                 ) as $s) {
             $strings[$s] = _w($s);

@@ -67,8 +67,14 @@ class pocketlistsHelper
 
     public static function getDueDatetime(&$date)
     {
-        if ($date['due_date'] && !empty($date['due_datetime_hours']) && !empty($date['due_datetime_minutes']))  {
-            $date['due_datetime'] = waDateTime::parse('datetime', $date['due_date']." ".$date['due_datetime_hours'].":".$date['due_datetime_minutes'].":00");
+        if ($date['due_date'] &&
+            !empty($date['due_datetime_hours']) &&
+            !empty($date['due_datetime_minutes'])
+        ) {
+            $date['due_datetime'] = waDateTime::parse(
+                'datetime',
+                $date['due_date'] . " " . $date['due_datetime_hours'] . ":" . $date['due_datetime_minutes'] . ":00"
+            );
             unset($date['due_datetime_hours']);
             unset($date['due_datetime_minutes']);
         } else {

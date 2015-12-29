@@ -1,6 +1,6 @@
 <?php
 
-class pocketlistslogbookAction extends  waViewAction
+class pocketlistslogbookAction extends waViewAction
 {
     public function execute()
     {
@@ -8,5 +8,4 @@ class pocketlistslogbookAction extends  waViewAction
 
         $this->view->assign('items', $im->getCompleted());
     }
-
 }

@@ -166,9 +166,9 @@
             });
         },
         pocketAction: function (id) {
-            var self = this;
+            //var self = this;
             var list_id = decodeURIComponent(this.getHash().substr(('#/pocket/' + id + '/list/').length).replace('/', '')) || 0;
-            var load_list = this.getHash().indexOf('list') > 0 ? true : false;
+            //var load_list = this.getHash().indexOf('list') > 0;
             if (list_id) {
                 if (list_id === 'new') {
                     list_id = -1;
@@ -193,7 +193,7 @@
                 $('#content').html(result);
             });
         },
-        logbookAction: function (id) {
+        logbookAction: function () {
             this.load('?module=logbook', function (result) {
                 $('#content').html(result);
             });

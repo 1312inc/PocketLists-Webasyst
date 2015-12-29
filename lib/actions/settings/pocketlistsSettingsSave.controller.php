@@ -1,6 +1,6 @@
 <?php
 
-class pocketlistsSettingsSaveController extends  waJsonController
+class pocketlistsSettingsSaveController extends waJsonController
 {
     public function execute()
     {
@@ -14,8 +14,8 @@ class pocketlistsSettingsSaveController extends  waJsonController
         $data = array_merge($us->getZeroSettings(), waRequest::post());
 
         // update new
-        foreach($data as $name => $value) {
-            $us->set( $name, $value);
+        foreach ($data as $name => $value) {
+            $us->set($name, $value);
         }
         $this->response = 'ok';
     }

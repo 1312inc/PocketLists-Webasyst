@@ -1,6 +1,6 @@
 <?php
 
-class pocketlistsPocketSaveController extends  waJsonController
+class pocketlistsPocketSaveController extends waJsonController
 {
     public function execute()
     {

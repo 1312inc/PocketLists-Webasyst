@@ -287,7 +287,7 @@
                         if (e.which === 27) {
                             $new_list_input.data('pl-can-add', false).val('');
                         }
-                    }).on('blur', function (e) {
+                    }).on('blur', function () {
                         $new_list_input.data('pl-can-add') && addNewList(list_id);
                     });
             }
@@ -429,7 +429,7 @@
      */
     $.pocketlists.Items = function($list_items_wrapper, options) {
         var $undone_items_wrapper = $list_items_wrapper.find('#pl-undone-items > ul.menu-v'),
-            $sortable_items = $('#pl-undone-items ul.menu-v'),
+            $sortable_items = $('#pl-undone-items').find('ul.menu-v'),
             $done_items = $list_items_wrapper.find('#pl-complete-log'),
             $done_items_wrapper = $done_items.find('ul.menu-v').first(),
             $new_item_wrapper = $('#pl-item-add').detach(),
@@ -1036,7 +1036,7 @@
                             'min-height': '150px',
                             'width': '400px',
                             onLoad: function () {
-                                var $d = $(this);
+                                //var $d = $(this);
                                 //$d.find('h1').text($wrapper.find('input[name="item[name]"]').val());
                             },
                             onSubmit: function (d) {
@@ -1205,21 +1205,22 @@
         var list_top_offset = $('#pl-list-content').offset().top;
         var _viewport_top_offset = $(window).scrollTop();
         var _window_height = $(window).height();
+        var $list_details = $('.pl-details');
 
         if ($('.pl-details .fields form').height() > _window_height)
             return;
 
         if ( _viewport_top_offset > list_top_offset)
         {
-            $('.pl-details').addClass('sticky');
+            $list_details.addClass('sticky');
             var _viewport_bottom_offset = $(document).height() - _window_height - _viewport_top_offset;
 
-            $('.pl-details').css('bottom', Math.max(0, 16-_viewport_bottom_offset)+'px');
+            $list_details.css('bottom', Math.max(0, 16-_viewport_bottom_offset)+'px');
 
         }
         else
         {
-            $('.pl-details').removeClass('sticky');
+            $list_details.removeClass('sticky');
         }
     }
 }(jQuery));

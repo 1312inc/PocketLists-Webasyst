@@ -24,7 +24,10 @@ class pocketlistsPocketAction extends waViewAction
         }
 
         // check if user have access to this pocket/list
-        if (!in_array($id, $available_pockets) || isset($last_pocket_list_id['pocket_id']) && !in_array($last_pocket_list_id['pocket_id'], $available_pockets)) {
+        if (!in_array($id, $available_pockets) ||
+            isset($last_pocket_list_id['pocket_id']) &&
+            !in_array($last_pocket_list_id['pocket_id'], $available_pockets)
+        ) {
             $id = reset($available_pockets);
         }
 

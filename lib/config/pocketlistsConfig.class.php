@@ -31,4 +31,3 @@ class pocketlistsConfig extends waAppConfig
         return $logs;
     }
 }
-

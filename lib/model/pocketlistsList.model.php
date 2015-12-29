@@ -80,7 +80,7 @@ class pocketlistsListModel extends waModel
                 'pocket_id' => $pocket_id
             )
         )->fetchAll();
-        foreach($lists as $id => $list) {
+        foreach ($lists as $id => $list) {
             $lists[$id]['calc_priority'] = max(pocketlistsHelper::calcPriorityOnDueDate($list['min_due_date'], $list['min_due_datetime']), $list['max_priority']);
         }
         return $lists;

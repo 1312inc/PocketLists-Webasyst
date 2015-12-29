@@ -1,6 +1,6 @@
 <?php
 
-class pocketlistsTeamAction extends  waViewAction
+class pocketlistsTeamAction extends waViewAction
 {
     public function execute()
     {

@@ -33,7 +33,7 @@ class pocketlistsUserSettings
 
     public function saveDefaults()
     {
-        foreach($this->getDefaults() as $name => $value) {
+        foreach ($this->getDefaults() as $name => $value) {
             $this->set($name, $value);
         }
     }
@@ -141,5 +141,4 @@ class pocketlistsUserSettings
     {
         return !empty($this->settings['stream_inbox_list']) ? $this->settings['stream_inbox_list'] : false;
     }
-
 }

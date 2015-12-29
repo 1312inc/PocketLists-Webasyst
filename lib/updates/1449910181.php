@@ -28,4 +28,3 @@ try {
     $model->exec("ALTER TABLE pocketlists_list DROP create_datetime");
     $model->exec("ALTER TABLE pocketlists_list DROP update_datetime");
 }
-

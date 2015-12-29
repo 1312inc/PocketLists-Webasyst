@@ -24,8 +24,7 @@ class pocketlistsJsonActions extends waJsonActions
             if ($this->getRights('pocket.'.$pocket_id) > 0) {
                 $il = new pocketlistsListModel();
                 $this->response = $il->getLists($pocket_id);
-            }
-            else {
+            } else {
                 $this->errors = '403 error';
             }
         } else {

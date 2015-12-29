@@ -14,7 +14,7 @@ class pocketlistsItemSortController extends waJsonController
                 if ($item_id && $item_id == $value['id']) { // update update_datetime only for root item
                     $value['update_datetime'] = date("Y-m-d H:i:s");
                 }
-                if (!$im->updateById($value['id'],$value)) {
+                if (!$im->updateById($value['id'], $value)) {
                     $this->errors[] = 'error while updating parent id: ' . join(", ", $value);
                 }
             }
