@@ -549,12 +549,10 @@ class pocketlistsItemModel extends waModel
               )
               OR (i.list_id IS NULL AND i.key_list_id IS NULL)
             )
+            AND i.status = 0
             {$colors} /* selected option */
             AND (i.assigned_contact_id = i:contact_id OR i.assigned_contact_id IS NULL OR i.assigned_contact_id = 0) /* only mine */
             {$pocket_rights}";
-
-        echo "<pre>{$q}</pre>";
-        die;
 
         if ($icon !== false && $icon != pocketlistsUserSettings::ICON_NONE) {
             $count = $this->query($q, array(
