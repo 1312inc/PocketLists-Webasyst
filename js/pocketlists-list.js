@@ -15,9 +15,9 @@
             pocket_id = parseInt($('#pl-pocket-id').val()),
             $dialog_delete = $('#pl-dialog-delete-list-confirm'),
             $dialog_complete_all = $('#pl-dialog-list-archive-complete-all'),
-            o = {
+            o = $.extend({}, {
                 archive: false
-            };
+            }, options);
 
         /**
          * for show and manipulate with list details
@@ -273,7 +273,6 @@
         };
 
         var init = function() {
-            o = $.extend({}, options);
             // will add new list if we can
             if ($new_list_input.length) {
                 $new_list_input.focus();
@@ -440,7 +439,7 @@
             $show_logbook_items = $('#pl-complete-log-link'),
             $empty_list_msg = $list_items_wrapper.find('#pl-empty-list-msg'),
             $current_item = null,
-            o = {
+            o = $.extend({}, {
                 enableAddLinkOnHover: true,
                 enableChangeLevel: true,
                 enableSortItems: true,
@@ -449,7 +448,7 @@
                 showMessageOnEmptyList: false,
                 dueDate: '',
                 archive: false
-            };
+            }, options);
 
         // sortable items
         var initSortable = function () {
@@ -802,7 +801,7 @@
         /**
          * for new item dom manipulating
          */
-        var NewItemWrapper = (function($wrapper) {
+        var NewItemWrapper = function($wrapper) {
             var resizeTextarea = function () {
                 $new_item_input.css('height', 'auto');
                 $new_item_input.css('height', ($new_item_input.get(0).scrollHeight - parseInt($new_item_input.css('padding-top')) - parseInt($new_item_input.css('padding-bottom'))) + 'px');
@@ -950,7 +949,7 @@
             return {
                 hide: hide_new_item_wrapper
             }
-        }($new_item_wrapper));
+        });
 
         /**
          * for item details
@@ -1094,8 +1093,6 @@
         }($('#pl-item-details')));
 
         var init = function() {
-            o = $.extend({}, o, options);
-
             //if ($.pocketlists_routing.getHash() == '#/todo/' &&
             //    $.pocketlists_routing.getHash().indexOf('/team/') > 0) {
             //    $new_item_wrapper.prependTo($undone_items_wrapper).slideDown(200).wrap('<li class="pl-new-item-wrapper">');
