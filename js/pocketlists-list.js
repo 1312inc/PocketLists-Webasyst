@@ -949,7 +949,7 @@
             return {
                 hide: hide_new_item_wrapper
             }
-        });
+        };
 
         /**
          * for item details
