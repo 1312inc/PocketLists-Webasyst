@@ -114,7 +114,12 @@ class pocketlistsItemModel extends waModel
                   )
                   AND (l.archived = 0 OR l.archived IS NULL)
                   {$due_date_or_mine}
-                ORDER BY i.calc_priority DESC, (i.due_date IS NULL), i.due_date ASC, (i.due_datetime IS NULL), i.due_datetime ASC";
+                ORDER BY
+                  i.status,
+                  (i.complete_datetime IS NULL), i.complete_datetime DESC,
+                  i.calc_priority DESC,
+                  (i.due_date IS NULL), i.due_date ASC,
+                  (i.due_datetime IS NULL), i.due_datetime ASC";
 
         $items = $this->query($sql, array('pocket_ids' => $pockets, 'contact_id' => $contact_id, 'date' => $date))->fetchAll();
         foreach ($items as $id => $item) {
@@ -370,7 +375,12 @@ class pocketlistsItemModel extends waModel
                     OR i.complete_contact_id = i:contact_id AND i.status > 0
                   )
                   AND (l.archived = 0 OR l.archived IS NULL)
-                ORDER by i.priority DESC";
+                ORDER BY
+                  i.status,
+                  (i.complete_datetime IS NULL), i.complete_datetime DESC,
+                  i.calc_priority DESC,
+                  (i.due_date IS NULL), i.due_date ASC,
+                  (i.due_datetime IS NULL), i.due_datetime ASC";
         $items = $this->query($q, array('contact_id' => $contact_id))->fetchAll();
         $results = array(
             0 => array(),
