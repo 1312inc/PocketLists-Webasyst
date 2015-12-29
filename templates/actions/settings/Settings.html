@@ -80,8 +80,8 @@
                     </label>
                     <select name="email_complete_item">
                         <option value="0" {if isset($settings.email_complete_item) && $settings.email_complete_item == 0}selected="selected"{/if}>[`only items I created`]</option>
-                        <option value="1" {if isset($settings.email_complete_item) && $settings.email_complete_item == 1}selected="selected"{/if}>[`only items I marked as favorite`]</option>
-                        <option value="2" {if isset($settings.email_complete_item) && $settings.email_complete_item == 2}selected="selected"{/if}>[`only items on to-do lists I previously marked as favorite`]</option>
+                        {*<option value="1" {if isset($settings.email_complete_item) && $settings.email_complete_item == 1}selected="selected"{/if}>[`only items I marked as favorite`]</option>*}
+                        {*<option value="2" {if isset($settings.email_complete_item) && $settings.email_complete_item == 2}selected="selected"{/if}>[`only items on to-do lists I previously marked as favorite`]</option>*}
                         <option value="3" {if isset($settings.email_complete_item) && $settings.email_complete_item == 3}selected="selected"{/if}>[`any item on any list`]</option>
                     </select>
                 </div>
@@ -90,7 +90,7 @@
                         <input value="1" type="checkbox" name="email_add_item_on" {if !empty($settings.email_add_item_on)}checked="checked"{/if}> [`When someone adds a to-do item`]
                     </label>
                     <select name="email_add_item">
-                        <option value="0" {if isset($settings.email_add_item) && $settings.email_add_item == 0}selected="selected"{/if}>[`to any list I previously marked as favorite`]</option>
+                        {*<option value="0" {if isset($settings.email_add_item) && $settings.email_add_item == 0}selected="selected"{/if}>[`to any list I previously marked as favorite`]</option>*}
                         <option value="1" {if isset($settings.email_add_item) && $settings.email_add_item == 1}selected="selected"{/if}>[`to just any list`]</option>
                     </select>
                 </div>
