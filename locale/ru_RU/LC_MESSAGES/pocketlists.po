@@ -293,7 +293,7 @@ msgstr "В журнал автоматически добавляются зад
 
 #: /wa-apps/pocketlists/templates/actions/pocket/Pocket.html:42
 msgid "This pocket is empty. Start by creating a to-do list."
-msgstr "Проект пока не содержит списков. Добавьте список!"
+msgstr "Проект пока не содержит списков. Создайте первый список!"
 
 #: /wa-apps/pocketlists/templates/actions/pocket/PocketSettingsDialog.html:4
 msgid "(unnamed pocket)"
@@ -657,3 +657,7 @@ msgstr "<strong>%s</strong> %s"
 #: /wa-apps/pocketlists/templates/mails/newitem0.html:8
 msgid "<strong>%s</strong> by %s"
 msgstr "<strong>%s</strong> %s"
+
+#: /wa-apps/pocketlists/templates/mails/completeanyitem.html:1
+msgid "%s have just completed a to-do <strong>%s</strong>"
+msgstr "%s выполнил задачу <strong>%s</strong>"

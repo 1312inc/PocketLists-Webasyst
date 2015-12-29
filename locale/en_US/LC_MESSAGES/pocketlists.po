@@ -656,3 +656,7 @@ msgstr ""
 #: /wa-apps/pocketlists/templates/mails/newitem0.html:8
 msgid "<strong>%s</strong> by %s"
 msgstr ""
+
+#: /wa-apps/pocketlists/templates/mails/completeanyitem.html:1
+msgid "%s have just completed a to-do <strong>%s</strong>"
+msgstr ""
