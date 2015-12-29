@@ -324,17 +324,20 @@ class pocketlistsNotifications
         )->fetchAll('contact_id');
         $im = new pocketlistsItemModel();
         foreach ($users as $user_id => $user) {
-            self::sendMail(
-                array(
-                    'contact_id' => $user_id,
-                    'subject' => 'string:'.sprintf(_w("Daily recap for %s"), waDateTime::format('humandate')),
-                    'body' => wa()->getAppPath('templates/mails/dailyrecap.html'),
-                    'variables' => array(
-                            'items' => $im->getDailyRecapItems($user_id, $user['setting'])
+            $items = $im->getDailyRecapItems($user_id, $user['setting']);
+            if ($items) {
+                self::sendMail(
+                    array(
+                        'contact_id' => $user_id,
+                        'subject' => 'string:' . sprintf(_w("Daily recap for %s"), waDateTime::format('humandate')),
+                        'body' => wa()->getAppPath('templates/mails/dailyrecap.html'),
+                        'variables' => array(
+                                'items' =>
                         ) + $vars
-                )
-            );
-            $csm->set($user_id, 'pocketlists', 'last_recap_cron_time', $time);
+                    )
+                );
+                $csm->set($user_id, 'pocketlists', 'last_recap_cron_time', $time);
+            }
         }
     }
 
