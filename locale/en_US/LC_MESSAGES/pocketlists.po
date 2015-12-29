@@ -362,7 +362,7 @@ msgid "Reds + Yellows + Greens"
 msgstr ""
 
 #: /wa-apps/pocketlists/templates/actions/settings/Settings.html:22
-msgid "To-dos of selected colors will be shown Selected colors will be counted in both app icon badge count and to-do screen."
+msgid "Only unassigned to-dos and to-dos assigned to you will be counted in the app icon counter."
 msgstr ""
 
 #: /wa-apps/pocketlists/templates/actions/settings/Settings.html:28
@@ -636,4 +636,27 @@ msgstr ""
 
 #: /wa-apps/pocketlists/templates/mails/newitem.html:4
 msgid "There are new items on <strong>%s</strong> to-do list:"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/mails/dailyrecap.html:1
+#: /wa-apps/pocketlists/templates/mails/newassignitem.html:1
+#: /wa-apps/pocketlists/templates/mails/newfavoritelistitem.html:1
+#: /wa-apps/pocketlists/templates/mails/newitem.html:1
+#: /wa-apps/pocketlists/templates/mails/newitem0.html:1
+#: /wa-apps/pocketlists/templates/mails/newlist.html:1
+msgid "Hi %s,"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/mails/dailyrecap.html:7
+msgid "<strong>%s</strong> on %s"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/mails/newfavoritelistitem.html:8
+#: /wa-apps/pocketlists/templates/mails/newitem.html:8
+#: /wa-apps/pocketlists/templates/mails/newitem0.html:8
+msgid "<strong>%s</strong> by %s"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/mails/completeanyitem.html:1
+msgid "%s have just completed a to-do <strong>%s</strong>"
 msgstr ""
