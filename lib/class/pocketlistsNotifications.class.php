@@ -327,10 +327,9 @@ class pocketlistsNotifications
             self::sendMail(
                 array(
                     'contact_id' => $user_id,
-                    'subject' => 'string:[`Daily recap for {$today}`]',
+                    'subject' => 'string:'.sprintf(_w("Daily recap for %s"), waDateTime::date('wa_humandate')),
                     'body' => wa()->getAppPath('templates/mails/dailyrecap.html'),
                     'variables' => array(
-                            'today' => waDateTime::date('wa_humandate'),
                             'items' => $im->getDailyRecapItems($user_id, $user['setting'])
                         ) + $vars
                 )
