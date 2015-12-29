@@ -363,8 +363,8 @@ msgid "Reds + Yellows + Greens"
 msgstr "Красные + Желтые + Зеленые"
 
 #: /wa-apps/pocketlists/templates/actions/settings/Settings.html:22
-msgid "To-dos of selected colors will be shown Selected colors will be counted in both app icon badge count and to-do screen."
-msgstr ""
+msgid "Only unassigned to-dos and to-dos assigned to you will be counted in the app icon counter."
+msgstr "В счетчике учитываются задачи, которые либо не назначены ни на кого, либо назначены на вас."
 
 #: /wa-apps/pocketlists/templates/actions/settings/Settings.html:28
 msgid "To-do stream inbox"
@@ -638,3 +638,22 @@ msgstr "В вашем избранном списке <strong>%s</strong> поя
 #: /wa-apps/pocketlists/templates/mails/newitem.html:4
 msgid "There are new items on <strong>%s</strong> to-do list:"
 msgstr "В списке <strong>%s</strong> появились новые задачи:"
+
+#: /wa-apps/pocketlists/templates/mails/dailyrecap.html:1
+#: /wa-apps/pocketlists/templates/mails/newassignitem.html:1
+#: /wa-apps/pocketlists/templates/mails/newfavoritelistitem.html:1
+#: /wa-apps/pocketlists/templates/mails/newitem.html:1
+#: /wa-apps/pocketlists/templates/mails/newitem0.html:1
+#: /wa-apps/pocketlists/templates/mails/newlist.html:1
+msgid "Hi %s,"
+msgstr "Привет, %s!"
+
+#: /wa-apps/pocketlists/templates/mails/dailyrecap.html:7
+msgid "<strong>%s</strong> on %s"
+msgstr "<strong>%s</strong> %s"
+
+#: /wa-apps/pocketlists/templates/mails/newfavoritelistitem.html:8
+#: /wa-apps/pocketlists/templates/mails/newitem.html:8
+#: /wa-apps/pocketlists/templates/mails/newitem0.html:8
+msgid "<strong>%s</strong> by %s"
+msgstr "<strong>%s</strong> %s"
