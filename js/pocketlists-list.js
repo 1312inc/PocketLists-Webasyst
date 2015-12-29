@@ -811,7 +811,7 @@
         /**
          * for new item dom manipulating
          */
-        var NewItemWrapper = function($wrapper) {
+        var NewItemWrapper = (function($wrapper) {
             var resizeTextarea = function () {
                 $new_item_input.css('height', 'auto');
                 $new_item_input.css('height', ($new_item_input.get(0).scrollHeight - parseInt($new_item_input.css('padding-top')) - parseInt($new_item_input.css('padding-bottom'))) + 'px');
@@ -959,7 +959,7 @@
             return {
                 hide: hide_new_item_wrapper
             }
-        };
+        }($new_item_wrapper));
 
         /**
          * for item details
