@@ -611,7 +611,6 @@
                     priority: priority
                 });
             });
-            console.dir(data);
             return data;
         };
         // update sort base on current positions
