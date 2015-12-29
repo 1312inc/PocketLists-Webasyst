@@ -116,7 +116,7 @@
                 <div class="name">[`Completed`]</div>
                 <div class="value no-shift">
                     <i class="icon16 userpic20" style="background-image: url({$item.complete_userpic|default:'/wa-content/img/userpic20@2x.jpg'})" alt="{$item.complete_username|escape}"></i>
-                    {$item.complete_username|escape|default:''}
+                    {$item.complete_username|default:''|escape}
                     <span class="hint">{$item.complete_datetime|wa_datetime:'humandatetime'}</span>
                 </div>
             </div>

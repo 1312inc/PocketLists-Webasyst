@@ -437,7 +437,23 @@ class pocketlistsItemModel extends waModel
 
     public function getDailyRecapItems($contact_id, $when)
     {
-        $pockets = pocketlistsHelper::getAccessPocketForContact($contact_id);
+        $pocket_rights = "";
+        $pockets = array();
+        // if user is admin - show all completed items
+        // else only items user has access and null list items
+        if (!pocketlistsHelper::isAdmin()) {
+            $pockets = pocketlistsHelper::getAccessPocketForContact($contact_id);
+            // only accessed pockets or null list items which are created or completed by user
+//            $pocket_rights = "AND (
+//                    p.id IN (i:pocket_ids)
+//                    OR (p.id IS NULL AND (i.contact_id = i:contact_id OR i.complete_contact_id = i:contact_id)
+//                  )";
+            // only accessed pockets or null list items
+            $pocket_rights = "AND (
+                    p.id IN (i:pocket_ids)
+                    OR p.id IS NULL
+                  )";
+        }
 
         $now = time();
         $today = date("Y-m-d");
@@ -464,21 +480,20 @@ class pocketlistsItemModel extends waModel
               LEFT JOIN pocketlists_pocket p ON p.id = l.pocket_id
               WHERE
                 i.status = 0
-                AND i.contact_id = i:contact_id
                 AND (
-                  l.archived = 0
-                  OR l.archived IS NULL
+                  (
+                    i.contact_id = i:contact_id
+                    OR i.assigned_contact_id = i:contact_id
+                    OR i.complete_contact_id = i:contact_id
+                  )
+                  AND (
+                    l.archived = 0
+                    OR l.archived IS NULL
+                   )
+                  OR (i.list_id IS NULL AND i.key_list_id IS NULL)
                 )
-                AND (
-                  i.assigned_contact_id = i:contact_id
-                  OR i.assigned_contact_id IS NULL
-                  OR i.assigned_contact_id = 0
-                )
-                AND ( /* only accessed pockets or null list */
-                  p.id IN (i:pocket_ids)
-                  OR p.id IS NULL
-                )
-                OR (i.list_id IS NULL AND i.key_list_id IS NULL)
+                AND (i.assigned_contact_id = i:contact_id OR i.assigned_contact_id IS NULL OR i.assigned_contact_id = 0) /* only mine */
+                {$pocket_rights}
                 {$when}";
 
         $items = $this->query($q, array('contact_id' => $contact_id, 'pocket_ids' => $pockets))->fetchAll();

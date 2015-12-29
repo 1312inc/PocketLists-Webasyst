@@ -4,7 +4,9 @@
 {sprintf('[`Here is your <a href="%s">daily recap</a> for %s:`]', $backend_url|cat:'pocketlists/#/todo/', $now|wa_date:'humandate')}
 <br><br>
 {foreach $items as $item}
-&mdash; {sprintf('[`<strong>%s</strong> on %s`]', $item.name|escape, $item.due_datetime|default:$item.due_date|wa_datetime:'humandatetime')}<br>
+{$format = 'humandate'}
+{if $item.due_datetime}{$format = 'humandatetime'}{/if}
+&mdash; {sprintf('[`<strong>%s</strong> on %s`]', $item.name|escape, $item.due_datetime|default:$item.due_date|wa_datetime:$format)}<br>
 {/foreach}
 <br>
 via Pocket Lists app

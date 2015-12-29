@@ -15,7 +15,7 @@
                         {foreach $pockets as $p}
                         <li class="{if $pocket.id == $p.id}selected{/if}">
                             {if isset($p.indicator) && $p.indicator.count}<span class="count indicator {$p.indicator.color}">{$p.indicator.count}</span>{/if}
-                            <a href="#/pocket/{$p.id}/"><i class="icon16 color pl-dark-{$p.color|default:'none'}"></i>{$p.name|escape|default:''}</a>
+                            <a href="#/pocket/{$p.id}/"><i class="icon16 color pl-dark-{$p.color|default:'none'}"></i>{$p.name|default:''|escape}</a>
                         </li>
                         {/foreach}
                     </ul>

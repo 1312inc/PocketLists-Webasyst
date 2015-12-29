@@ -1,4 +1,4 @@
-(function ($) {
+(function () {
     "use strict";
 
     /**
@@ -106,6 +106,7 @@
                             $.pocketlists.$loading.remove();
                             if (r.status === 'ok') {
                                 updateList(r.data);
+                                $.pocketlists.updateAppCounter();
                                 hideListDetails();
                             } else {
                                 $wrapper.find('.error').show().delay(3000).hide();
@@ -1241,4 +1242,4 @@
             $list_details.removeClass('sticky');
         }
     }
-}(jQuery));
+}());

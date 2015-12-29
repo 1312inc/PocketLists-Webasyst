@@ -28,10 +28,10 @@
 
                                 <span class="count">{$teammate.item_count|default:'0'}</span>
 
-                                <span class="pl-username">{$teammate.name|escape|default:'%username%'}</span>
+                                <span class="pl-username">{$teammate.name|default:'%username%'|escape}</span>
 
                                 <div class="pl-active-items small black">{$teammate.item_names|escape}</div>
-                                <span class="hint">{$teammate.last_activity|wa_date:'humandatetime'|default:sprintf('[`No to-dos were assigned to %s yet`]',$teammate.name|escape|default:'%username%')}</span>
+                                <span class="hint">{if empty($teammate.last_activity)}{$teammate.last_activity|wa_date:'humandatetime'}{else}{sprintf('[`No to-dos were assigned to %s yet`]',$teammate.name|default:'%username%'|escape)}{/if}</span>
                             </div>
                         </div>
                     </a>
@@ -55,7 +55,7 @@
                 </ul>
             </div>
             <h1 class="not-padded">
-                {$current_teammate.name|escape|default:'&nbsp;'}
+                {$current_teammate.name|default:' '|escape}
             </h1>
             <input type="hidden" id="pl-assigned-contact-id" value="{$current_teammate.id}"/>
         </header>

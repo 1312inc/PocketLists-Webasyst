@@ -311,7 +311,7 @@ class pocketlistsNotifications
                 cs1.app_id = 'pocketlists'
                 AND cs1.name = 'daily_recap_on'
                 AND cs1.value = 1
-                AND cs2.value <= ($time - 60*60*24)";
+                AND IF(cs2.value IS NULL, 0, cs2.value) <= ($time - 60*60*24)";
         $users = $csm->query(
             $q,
             array(
@@ -327,7 +327,7 @@ class pocketlistsNotifications
             self::sendMail(
                 array(
                     'contact_id' => $user_id,
-                    'subject' => 'string:'.sprintf(_w("Daily recap for %s"), waDateTime::date('wa_humandate')),
+                    'subject' => 'string:'.sprintf(_w("Daily recap for %s"), waDateTime::format('humandate')),
                     'body' => wa()->getAppPath('templates/mails/dailyrecap.html'),
                     'variables' => array(
                             'items' => $im->getDailyRecapItems($user_id, $user['setting'])

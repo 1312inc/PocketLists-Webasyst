@@ -69,7 +69,7 @@
                 {if isset($list.pocket_id)}
                 <input type="hidden" value="{$list.pocket_id}" id="pl-pocket-id">
                 {/if}
-                <span id="pl-list-name">{$list.name|escape|default:'&nbsp;'}</span>
+                <span id="pl-list-name">{$list.name|default:' '|escape}</span>
 
                 <span class="pl-list-due {if $list.calc_priority == 0}pl-due-someday{elseif $list.calc_priority == 1}pl-due-tomorrow{elseif $list.calc_priority == 2}pl-due-today{elseif $list.calc_priority == 3}pl-due-overdue{/if}" {if empty($list.due_datetime) && empty($list.due_date)}style="display: none;"{/if}>
                 {if !empty($list.due_datetime)}
@@ -127,5 +127,5 @@
                     archive: {if $archive}true{else}false{/if}
                 })
     });
-    $.pocketlists.setTitle('{if isset($list.name)}{$list.name|escape|default:"&nbsp;"}{else}[`New list`]{/if}');
+    $.pocketlists.setTitle('{if isset($list.name)}{$list.name|default:" "|escape}{else}[`New list`]{/if}');
 </script>
