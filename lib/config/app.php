@@ -8,7 +8,7 @@ return array (
   ),
   'version' => '1.0.0',
   'vendor' => '1021997',
-  'frontend' => false,
+  'frontend' => true,
   'plugins' => false,
   'rights' => true,
 );
