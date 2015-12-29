@@ -802,15 +802,15 @@
         /**
          * for new item dom manipulating
          */
-        var NewItemWrapper = function() {
+        var NewItemWrapper = (function($wrapper) {
             var resizeTextarea = function () {
                 $new_item_input.css('height', 'auto');
                 $new_item_input.css('height', ($new_item_input.get(0).scrollHeight - parseInt($new_item_input.css('padding-top')) - parseInt($new_item_input.css('padding-bottom'))) + 'px');
             };
 
             var hide_new_item_wrapper = function () {
-                $new_item_wrapper.slideUp(200, function () {
-                    $new_item_wrapper.detach();
+                $wrapper.slideUp(200, function () {
+                    $wrapper.detach();
                     $('.pl-new-item-wrapper').remove();
                     $new_item_input.val('');
                     showEmptyListMessage();
@@ -824,14 +824,14 @@
                     e.stopPropagation();
                     function show_new_item_wrapper() {
                         hideEmptyListMessage();
-                        $new_item_wrapper.prependTo($undone_items_wrapper).slideDown(200, function () {
+                        $wrapper.prependTo($undone_items_wrapper).slideDown(200, function () {
                             $new_item_input.focus();
                         }).wrap('<li class="pl-new-item-wrapper">');
                     }
 
-                    if ($new_item_wrapper.is(':visible')) {
-                        $new_item_wrapper.slideUp(200, function () {
-                            $new_item_wrapper.detach();
+                    if ($wrapper.is(':visible')) {
+                        $wrapper.slideUp(200, function () {
+                            $wrapper.detach();
                             $('.pl-new-item-wrapper').remove();
                             show_new_item_wrapper();
                         });
@@ -906,6 +906,7 @@
                         }
                     });
 
+                //$wrapper.on('hide.pl2', hide_new_item_wrapper);
                 var undone_items_wrapper_hover_timeout = null;
                 if (o.enableAddLinkOnHover) {
                     $undone_items_wrapper
@@ -923,7 +924,10 @@
                             $new_item_wrapper_hover.detach();
                         });
 
-                    $new_item_wrapper_hover.on('click', function () {
+                    $new_item_wrapper_hover.on('click', function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+
                         // if item has children - place it before first
                         var $item = $(this);
                         var $has_children = $item.closest(item_selector).find('.menu-v');
@@ -935,15 +939,18 @@
                             $item.closest(item_selector).find('.pl-item').first().after($new_item_wrapper);
                         }
                         $new_item_wrapper_hover.detach();
-                        $new_item_wrapper.slideDown(200);
+                        $wrapper.slideDown(200);
                         $new_item_input.focus();
                         $new_item_input.data('can_blur', true);
                     });
                 }
             };
 
-            init();
-        };
+            $add_item_link.length && init();
+            return {
+                hide: hide_new_item_wrapper
+            }
+        }($new_item_wrapper));
 
         /**
          * for item details
@@ -1100,9 +1107,7 @@
             }
 
             showEmptyListMessage();
-
             initSortable();
-            $add_item_link.length && new NewItemWrapper();
 
             $list_items_wrapper
                 .on('change', '.pl-done', function () {
@@ -1113,22 +1118,22 @@
                     completeItem($item, status);
                 }) // action: complete item
                 .on('change', '.pl-is-selected', function (e) {
+                    if (e.target)
                     var $this = $(this),
                         $item = $this.closest(item_selector),
                         is_selected = ($current_item && $current_item.data('id') == $item.data('id')) ? true : false;
                     e.preventDefault();
 
-                    if (!$item.find('#pl-item-add').length) {
-                        if (!ItemDetails.isVisible() && !is_selected) { // on first click - select
-                            ItemDetails.trigger('hide.pl2');
-                            selectItem($item);
-                        } else if (!ItemDetails.isVisible()) { // on second - show details
-                            ItemDetails.trigger('show.pl2', [parseInt($item.data('id'))]); // show item details
-                            selectItem($item);
-                        } else { // on third
-                            ItemDetails.trigger('hide.pl2');
-                            deselectItem();
-                        }
+                    if (!ItemDetails.isVisible() && !is_selected) { // on first click - select
+                        ItemDetails.trigger('hide.pl2');
+                        selectItem($item);
+                    } else if (!ItemDetails.isVisible()) { // on second - show details
+                        ItemDetails.trigger('show.pl2', [parseInt($item.data('id'))]); // show item details
+                        selectItem($item);
+                        //NewItemWrapper.hide();
+                    } else { // on third
+                        ItemDetails.trigger('hide.pl2');
+                        deselectItem();
                     }
                 }) // action: select item
                 .on('click', '.pl-edit', function (e) {
