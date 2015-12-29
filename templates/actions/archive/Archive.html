@@ -1,31 +1,30 @@
 <div class="shadowed">
-    <nav class="sidebar left200px">
-        {if !empty($lists)}
-        <ul class="menu-v with-icons stack top-padded">
-            {foreach $lists as $l_id => $l}
-            <li data-pl-list-id="{$l.id}" {if $l.id == $list_id}class="selected"{/if}>
-                <a href="#"><i class="icon16" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l.icon|default:'li-list@2x.png'}); background-size: 16px 16px;"></i>{$l.name|escape}</a>
-            </li>
-            {foreachelse}
-            {/foreach}
-        </ul>
-        <div class="block double-padded align-center hr">
-            <p class="hint">[`To archive an active list, tap on it’s checkmark.`]</p>
-        </div>
-        {/if}
-    </nav>
 
-    <main class="content left200px blank bordered-left pl-items pl-archive" id="pl-list-content">
-        {if !empty($lists)}
-            {$lists_html|default:""}
-        {else}
+    {if empty($lists)}
+        <main class="content  blank pl-items" id="pl-list-content">
             <div class="pl-empty-list top-padded">
                 <h2>[`Archive is empty`]</h2>
                 <p>[`Archiving is a handy way to hide a to-do list instead of deleting it permanently. To archive a list, tap on it’s big checkmark or click <em>Archive list</em> in the list action menu.`]</p>
             </div>
-
-        {/if}
-    </main>
+        </main>
+    {else}
+        <nav class="sidebar left200px">
+            <ul class="menu-v with-icons stack top-padded">
+                {foreach $lists as $l_id => $l}
+                <li data-pl-list-id="{$l.id}" {if $l.id == $list_id}class="selected"{/if}>
+                    <a href="#"><i class="icon16" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l.icon|default:'li-list@2x.png'}); background-size: 16px 16px;"></i>{$l.name|escape}</a>
+                </li>
+                {foreachelse}
+                {/foreach}
+            </ul>
+            <div class="block double-padded align-center hr">
+                <p class="hint">[`To archive an active list, tap on it’s checkmark.`]</p>
+            </div>
+        </nav>
+        <main class="content left200px blank bordered-left pl-items pl-archive" id="pl-list-content">
+            {$lists_html|default:""}
+        </main>
+    {/if}
 </div>
 <script text="text/javascript">
     var $all_items_wrapper = $('#pl-list-items');

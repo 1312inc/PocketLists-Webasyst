@@ -1,7 +1,11 @@
-<h3>Hi {$name}!</h3>
-<p>Items just created in <b>{$list_name}</b>:</p>
-<ul>
-    {foreach $items as $item}
-    <li>{$item.name} by {$item.contact_name}</li>
-    {/foreach}
-</ul>
+{sprintf('Hi %s,', $name|escape)}
+<br>
+<br>
+{sprintf('[`There are new items on <strong>%s</strong> to-do list:`]', $list_name|escape)}
+<br>
+<br>
+{foreach $items as $item}
+— {sprintf('%s by %s', $item.name|escape, $item.contact_name|escape)}<br>
+{/foreach}
+<br>
+via Pocket Lists app

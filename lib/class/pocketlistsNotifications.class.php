@@ -327,7 +327,7 @@ class pocketlistsNotifications
             self::sendMail(
                 array(
                     'contact_id' => $user_id,
-                    'subject' => 'string:[`Today — WAHUMANDATE`]',
+                    'subject' => 'string:[`Daily recap for %s`]',
                     'body' => wa()->getAppPath('templates/mails/dailyrecap.html'),
                     'variables' => array(
                             'items' => $im->getDailyRecapItems($user_id, $user['setting'])

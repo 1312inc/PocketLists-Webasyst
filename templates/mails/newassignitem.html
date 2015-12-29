@@ -1,1 +1,8 @@
-Hi {$name}! You have new assigned item: {$item_name}, due_date - {$due_date}. Check it!
+{sprintf('Hi %s,', $name|escape)}
+<br>
+<br>
+[`You’ve been assigned a new to-do`]:<br><br>
+<strong>{$item_name|escape}</strong>
+<br><br>
+{if $due_date}[`Due`]: {$due_date}<br><br>{/if}
+via Pocket Lists app
