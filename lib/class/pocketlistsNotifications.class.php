@@ -332,7 +332,7 @@ class pocketlistsNotifications
                         'subject' => 'string:' . sprintf(_w("Daily recap for %s"), waDateTime::format('humandate')),
                         'body' => wa()->getAppPath('templates/mails/dailyrecap.html'),
                         'variables' => array(
-                                'items' =>
+                                'items' => $items
                         ) + $vars
                     )
                 );
