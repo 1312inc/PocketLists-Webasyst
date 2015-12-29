@@ -2,20 +2,20 @@
 
 class pocketlistsHelper
 {
-    public static function getAccessContactsForPocket($pocket_id)
+    public static function getAccessContactsForPocket($pocket_id = false)
     {
         $wcr = new waContactRightsModel();
         $query = "SELECT DISTINCT
                 group_id
             FROM wa_contact_rights
             WHERE
-              (app_id = 'pocketlists' AND ((name = s:id AND value = 1) OR (name = 'backend' AND value = 2))
+              (app_id = 'pocketlists' AND ((name LIKE s:id AND value = 1) OR (name = 'backend' AND value = 2))
               OR
               (app_id = 'webasyst' AND name = 'backend' AND value = 1))";
         $contact_ids = $wcr->query(
             $query,
             array(
-                'id' => 'pocket.' . $pocket_id
+                'id' => 'pocket.' . ($pocket_id ? $pocket_id : '%')
             )
         )->fetchAll();
         $contacts = array();

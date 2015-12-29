@@ -7,6 +7,24 @@ class pocketlistsItemModel extends waModel
 
     public function getCompleted($contact_id = false, $date_range = false)
     {
+        $pocket_rights = "";
+        $pockets = array();
+        // if user is admin - show all completed items
+        // else only items user has access and null list items
+        if (!pocketlistsHelper::isAdmin()) {
+            $pockets = pocketlistsHelper::getAccessPocketForContact($contact_id);
+            // only accessed pockets or null list items which are created or completed by user
+//            $pocket_rights = "AND (
+//                    p.id IN (i:pocket_ids)
+//                    OR (p.id IS NULL AND (i.contact_id = i:contact_id OR i.complete_contact_id = i:contact_id)
+//                  )";
+            // only accessed pockets or null list items
+            $pocket_rights = "AND (
+                    p.id IN (i:pocket_ids)
+                    OR p.id IS NULL
+                  )";
+        }
+
         $by_user = '';
         if ($contact_id) {
             $by_user = 'AND i.complete_contact_id = i:contact_id';
@@ -42,11 +60,12 @@ class pocketlistsItemModel extends waModel
                   p.color pocket_color,
                   IF(uf.contact_id, 1, 0) favorite
                 FROM {$this->table} i
-                JOIN pocketlists_list l ON l.id = i.list_id
-                JOIN pocketlists_pocket p ON p.id = l.pocket_id
+                LEFT JOIN pocketlists_list l ON l.id = i.list_id
+                LEFT JOIN pocketlists_pocket p ON p.id = l.pocket_id
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
                 WHERE
                   i.status > 0
+                  {$pocket_rights}
                   {$by_user}
                   {$by_date_range}
                 ORDER BY i.complete_datetime DESC";
@@ -55,6 +74,7 @@ class pocketlistsItemModel extends waModel
             $sql,
             array(
                 'contact_id' => wa()->getUser()->getId(),
+                'pocket_ids' => $pockets,
                 'date_after' => !empty($date_range['after']) ? $date_range['after'] : '',
                 'date_before' => !empty($date_range['before']) ? $date_range['before'] : '',
             )
@@ -68,6 +88,7 @@ class pocketlistsItemModel extends waModel
 
     public function getToDo($contact_id, $date = false)
     {
+        // get to-do items only from accessed pockets
         $pockets = pocketlistsHelper::getAccessPocketForContact($contact_id);
         $due_date_or_mine = " AND (i.assigned_contact_id = i:contact_id OR i.assigned_contact_id IS NULL OR i.assigned_contact_id = 0)";
         if ($date) {
@@ -102,8 +123,8 @@ class pocketlistsItemModel extends waModel
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
                 WHERE
                   (
-                    i.contact_id = i:contact_id
-                    AND (
+                    /*i.contact_id = i:contact_id
+                    AND*/ (
                       i.calc_priority > 0
                       OR i.due_date IS NOT NULL
                       OR i.due_datetime IS NOT NULL
@@ -115,10 +136,11 @@ class pocketlistsItemModel extends waModel
                     l.archived = 0
                     OR l.archived IS NULL
                   )
-                  AND ( /* only accessed pockets or null list */
+                  AND ( /* items from accessed pockets or null list items */
                     p.id IN (i:pocket_ids)
                     OR p.id IS NULL
                   )
+                  AND i.list_id IS NULL
                   {$due_date_or_mine}
                 ORDER BY
                   i.status,
