@@ -117,6 +117,10 @@
                         e.preventDefault();
                         hideListDetails();
                     })
+                    .on('click', '[data-pl-action="list-delete"]', function (e) {
+                        e.preventDefault();
+                        deleteList();
+                    })
                     .on('click', '#pl-list-color a', function (e) {
                         e.preventDefault();
                         $('#pl-list-color').find('input').val($(this).data('pl-list-color')).trigger('change');
