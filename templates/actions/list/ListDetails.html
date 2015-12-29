@@ -56,7 +56,7 @@
             <div class="name">[`Created`]</div>
             <div class="value no-shift">
                 <i class="icon16 userpic20"></i>
-                {$list.username}
+                {$list.username|escape}
                 <span class="hint">{$list.create_datetime|wa_datetime:'humandatetime'}</span>
             </div>
         </div>
