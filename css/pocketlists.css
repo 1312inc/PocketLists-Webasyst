@@ -63,7 +63,7 @@ ul.pl-lists li a .indicator { padding: 3px 7px 2px; margin-top: -1px; line-heigh
 ul.pl-lists li a i.listicon48 { position: relative; top: -7px; margin-right: 10px; }
 ul.pl-lists li a.pl-is-selected, ul.pl-lists li a:hover { color: red !important; background: rgba(0,0,0,0.025); }
 ul.pl-lists li.selected a { color: #000 !important; }
-ul.pl-lists li span { display: inline-block; overflow: hidden; text-overflow: ellipsis; height: 1.1em; max-width: 210px; white-space: nowrap; }
+ul.pl-lists li span { display: inline-block; overflow: hidden; text-overflow: ellipsis; height: 1.1em; max-width: 190px; white-space: nowrap; }
 
 /* Calendar
 ----------- */
@@ -312,7 +312,7 @@ a:hover .icon16.pl.darr { background-position:-16px -32px; }
 
 @media screen and (max-width: 1024px) {
     .pl-items.content.left300px { margin-left: 229px; }
-    ul.pl-lists li span { max-width: 140px; }
+    ul.pl-lists li span { max-width: 120px; }
     ul.pl-team li .pl-username { max-width: 120px; }
     .pl-details { width: 400px; }
     .pl-details input.long { min-width: 200px !important; width: 200px !important; }
