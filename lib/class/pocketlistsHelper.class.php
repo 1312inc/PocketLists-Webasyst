@@ -67,7 +67,7 @@ class pocketlistsHelper
 
     public static function getDueDatetime(&$date)
     {
-        if (!empty($date['due_date']) &&
+        if (isset($date['due_date']) &&
             !empty($date['due_datetime_hours']) &&
             !empty($date['due_datetime_minutes'])
         ) {
@@ -81,7 +81,7 @@ class pocketlistsHelper
             $date['due_datetime'] = null;
         }
 
-        $date['due_date'] = !empty($date['due_date']) ? waDateTime::parse('date', $date['due_date']) : null;
+        $date['due_date'] = isset($date['due_date']) ? waDateTime::parse('date', waDateTime::format('date', $date['due_date'])) : null;
     }
 
     public static function calcPriorityOnDueDate($due_date, $due_datetime)
