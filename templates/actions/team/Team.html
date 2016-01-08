@@ -31,7 +31,12 @@
                                 <span class="pl-username">{$teammate.name|default:'%username%'|escape}</span>
 
                                 <div class="pl-active-items small black">{$teammate.item_names|escape}</div>
-                                <span class="hint">{if empty($teammate.last_activity)}{$teammate.last_activity|wa_date:'humandatetime'}{else}{sprintf('[`No to-dos were assigned to %s yet`]',$teammate.name|default:'%username%'|escape)}{/if}</span>
+                                <span class="hint">
+                                    {if empty($teammate.last_activity)}{$teammate.last_activity|wa_date:'humandatetime'}{/if}
+                                </span>
+                                <span class="hint">
+                                    {if empty($teammate.item_names)}{sprintf('[`No to-dos were assigned to %s yet`]',$teammate.name|default:'%username%'|escape)}{/if}
+                                </span>
                             </div>
                         </div>
                     </a>
