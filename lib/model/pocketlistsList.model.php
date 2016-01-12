@@ -61,12 +61,12 @@ class pocketlistsListModel extends waModel
         $sql = "SELECT
                   i2.*,
                   l.*,
-                  SUM(IF(i.key_list_id IS NULL, 1, 0)) 'count',
-                  MAX(i.calc_priority) 'max_priority',
+                  SUM(IF(i.list_id IS NULL, 0, 1)) 'count',
+                  MAX(i.priority) 'max_priority',
                   MIN(i.due_date) 'min_due_date',
                   MIN(i.due_datetime) 'min_due_datetime'
                 FROM pocketlists_list l
-                LEFT JOIN pocketlists_item i ON (i.list_id = l.id OR i.key_list_id = l.id) AND i.status = 0
+                LEFT JOIN pocketlists_item i ON i.list_id = l.id AND i.status = 0
                 LEFT JOIN pocketlists_item i2 ON i2.key_list_id = l.id
                 WHERE
                   l.archived = i:archived
@@ -93,12 +93,12 @@ class pocketlistsListModel extends waModel
         $sql = "SELECT
                   i2.*,
                   l.*,
-                  SUM(IF(i.key_list_id IS NULL, 1, 0)) 'count',
-                  MAX(i.calc_priority) 'max_priority',
+                  SUM(IF(i.list_id IS NULL, 0, 1)) 'count',
+                  MAX(i.priority) 'max_priority',
                   MIN(i.due_date) 'min_due_date',
                   MIN(i.due_datetime) 'min_due_datetime'
                 FROM pocketlists_list l
-                LEFT JOIN pocketlists_item i ON (i.list_id = l.id OR i.key_list_id = l.id) AND i.status = 0
+                LEFT JOIN pocketlists_item i ON i.list_id = l.id AND i.status = 0
                 LEFT JOIN pocketlists_item i2 ON i2.key_list_id = l.id
                 WHERE
                   l.archived = i:archived
