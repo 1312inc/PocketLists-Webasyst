@@ -301,14 +301,10 @@ class pocketlistsItemModel extends waModel
 
     private function updatePriority(&$item)
     {
-        if ((!empty($item['due_date']) || !empty($item['due_datetime'])) &&
-            isset($item['priority'])
-        ) {
-            $item['calc_priority'] = max(
-                pocketlistsHelper::calcPriorityOnDueDate($item['due_date'], $item['due_datetime']),
-                $item['priority']
-            );
-        }
+        $item['calc_priority'] = max(
+            pocketlistsHelper::calcPriorityOnDueDate($item['due_date'], $item['due_datetime']),
+            isset($item['priority']) ? $item['priority'] : 0
+        );
     }
 
     public function sortItems($list_id)
