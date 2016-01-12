@@ -127,7 +127,7 @@ class pocketlistsItemModel extends waModel
                     (
                       i.contact_id = i:contact_id
                       AND (
-                        i.calc_priority > 0
+                        i.priority > 0
                         OR i.due_date IS NOT NULL
                         OR i.due_datetime IS NOT NULL
                       )
@@ -147,19 +147,24 @@ class pocketlistsItemModel extends waModel
                   {$due_date_or_mine}
                 ORDER BY
                   i.status,
-                  (i.complete_datetime IS NULL), i.complete_datetime DESC,
-                  i.calc_priority DESC,
-                  (i.due_date IS NULL), i.due_date ASC,
-                  (i.due_datetime IS NULL), i.due_datetime ASC";
+                  (i.complete_datetime IS NULL), i.complete_datetime DESC";
 
         $items = $this->query($sql, array(
             'pocket_ids' => $pockets,
             'contact_id' => $contact_id,
             'date' => $date))->fetchAll();
+
+        $result = array(
+            0 => array(),
+            1 => array(),
+        );
         foreach ($items as $id => $item) {
-            $items[$id] = $this->updateItem($item);
+            $result[$item['status']][$id] = $this->updateItem($item);
         }
-        return $items;
+        return array(
+            0 => $this->getProperSort($result[0]),
+            1 => $result[1]
+        );
 //        return $this->getTree($items, true);
     }
 
@@ -301,13 +306,45 @@ class pocketlistsItemModel extends waModel
 
     private function updatePriority(&$item)
     {
-        if ((!empty($item['due_date']) || !empty($item['due_datetime'])) &&
-            isset($item['priority'])
-        ) {
-            $item['calc_priority'] = max(
-                pocketlistsHelper::calcPriorityOnDueDate($item['due_date'], $item['due_datetime']),
-                $item['priority']
-            );
+        $item['calc_priority'] = max(
+            pocketlistsHelper::calcPriorityOnDueDate($item['due_date'], $item['due_datetime']),
+            isset($item['priority']) ? $item['priority'] : 0
+        );
+    }
+
+    private function getProperSort($items)
+    {
+        usort($items, array($this, 'compare_for_proper_sort'));
+        return $items;
+    }
+
+    private function compare_for_proper_sort($i1, $i2)
+    {
+        if ($i1['calc_priority'] < $i2['calc_priority']) {
+            return 1;
+        } elseif ($i1['calc_priority'] > $i2['calc_priority']) {
+            return -1;
+        } else {
+            $date1 = !empty($i1['due_datetime']) ? strtotime($i1['due_datetime']) :
+                (!empty($i1['due_date']) ? strtotime($i1['due_date']) : null);
+            $date2 = !empty($i2['due_datetime']) ? strtotime($i2['due_datetime']) :
+                (!empty($i2['due_date']) ? strtotime($i2['due_date']) : null);
+            // check due_date
+            if ($date1 && $date2) { // check both dates
+                if ($date1 < $date2) {
+                    return -1;
+                } elseif ($date1 > $date2) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            } elseif ($date1 && !$date2) {
+                return -1;
+            } elseif (!$date1 && $date2) {
+                return 1;
+            } else {
+                return 0;
+            }
         }
     }
 
@@ -316,11 +353,11 @@ class pocketlistsItemModel extends waModel
         $sql = $this->getQuery()."WHERE
                   i.list_id = i:id
                   AND i.status = 0
-                /*GROUP BY i.parent_id, i.id*/
-                ORDER BY i.calc_priority DESC, (i.due_date IS NULL), i.due_date ASC, (i.due_datetime IS NULL), i.due_datetime ASC, i.name ASC";
+                /*GROUP BY i.parent_id, i.id*/";
 //        $items = $this->getItems($sql, $list_id, false);
         $items = $this->query($sql, array('id' => $list_id, 'contact_id' => wa()->getUser()->getId()))->fetchAll();
 
+        $items = $this->getProperSort($items);
         $sort = 0;
         foreach ($items as $item) {
             $this->updateById(
@@ -430,10 +467,7 @@ class pocketlistsItemModel extends waModel
                   )
                 ORDER BY
                   i.status,
-                  (i.complete_datetime IS NULL), i.complete_datetime DESC,
-                  i.calc_priority DESC,
-                  (i.due_date IS NULL), i.due_date ASC,
-                  (i.due_datetime IS NULL), i.due_datetime ASC";
+                  (i.complete_datetime IS NULL), i.complete_datetime DESC";
         $items = $this->query($q, array('contact_id' => $contact_id, 'pocket_ids' => $pockets))->fetchAll();
         $results = array(
             0 => array(),
@@ -442,7 +476,10 @@ class pocketlistsItemModel extends waModel
         foreach ($items as $id => $item) {
             $results[$item['status']][$id] = $this->updateItem($item);
         }
-        return $results;
+        return array(
+            0 => $this->getProperSort($results[0]),
+            1 => $results[1]
+        );
     }
 
     public function getDailyRecapItems($contact_id, $when)
@@ -543,13 +580,13 @@ class pocketlistsItemModel extends waModel
 
         switch ($icon) {
             case pocketlistsUserSettings::ICON_OVERDUE: // overdue
-                $colors = "AND ((i.due_date <= '{$today}' AND i.due_datetime < '{$now}') OR i.due_date < '{$today}' OR i.calc_priority = 3)";
+                $colors = "AND ((i.due_date <= '{$today}' AND i.due_datetime < '{$now}') OR i.due_date < '{$today}' OR i.priority = 3)";
                 break;
             case pocketlistsUserSettings::ICON_OVERDUE_TODAY: // overdue + today
-                $colors = "AND (i.due_date <= '" . $today . "' OR i.due_datetime < '" . $tomorrow . "' OR i.calc_priority IN (2, 3))";
+                $colors = "AND (i.due_date <= '" . $today . "' OR i.due_datetime < '" . $tomorrow . "' OR i.priority IN (2, 3))";
                 break;
             case pocketlistsUserSettings::ICON_OVERDUE_TODAY_AND_TOMORROW: // overdue + today + tomorrow
-                $colors = "AND (i.due_date <= '" . $tomorrow . "' OR i.due_datetime < '" . $day_after_tomorrow . "' OR i.calc_priority IN (1, 2, 3))";
+                $colors = "AND (i.due_date <= '" . $tomorrow . "' OR i.due_datetime < '" . $day_after_tomorrow . "' OR i.priority IN (1, 2, 3))";
                 break;
             default:
                 return '';

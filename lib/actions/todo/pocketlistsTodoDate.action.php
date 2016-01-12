@@ -11,19 +11,10 @@ class pocketlistsTodoDateAction extends waViewAction
 
         // get all due or priority or assigned to me items
         $items = $im->getToDo(wa()->getUser()->getId(), $date);
-        $undone = $done = array();
-        foreach ($items as $item) {
-            // todo: add status const
-            if ($item['status'] == 0) {
-                $undone[] = $item;
-            } else {
-                $done[] = $item;
-            }
-        }
 
-        $this->view->assign('undone_items', $undone);
-        $this->view->assign('done_items', $done);
-        $this->view->assign('count_done_items', count($done));
+        $this->view->assign('undone_items', $items[0]);
+        $this->view->assign('done_items', $items[1]);
+        $this->view->assign('count_done_items', count($items[1]));
 
         $this->view->assign('date', $date ? waDateTime::format('humandate', $date) : false);
         $this->view->assign('timestamp', $date ? strtotime($date) : time());
