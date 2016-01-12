@@ -39,7 +39,7 @@ class pocketlistsHelper
             $pockets = $user->getRights('pocketlists', 'pocket.%');
 
         }
-        return array_keys($pockets);
+        return $pockets ? array_keys($pockets) : false;
     }
 
     public static function getAllPocketListsContacts()
