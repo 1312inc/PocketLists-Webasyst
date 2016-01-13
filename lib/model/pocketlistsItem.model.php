@@ -142,7 +142,6 @@ class pocketlistsItemModel extends waModel
                       p.id IN (i:pocket_ids)
                       OR p.id IS NULL
                     )
-                    OR (i.list_id IS NULL AND i.key_list_id IS NULL)
                   )
                   {$due_date_or_mine}
                 ORDER BY
