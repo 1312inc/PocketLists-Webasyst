@@ -48,7 +48,7 @@ class pocketlistsItemDataAction extends waViewAction
                     $pa->insert(array(
                         'item_id' => $item['id'],
                         'filename' => $name
-                    ), 2);
+                    ));
                 } else {
                     $errors[] = sprintf(_w('Failed to upload file %s.'), $f->name);
                 }

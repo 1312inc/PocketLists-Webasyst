@@ -4,7 +4,7 @@ return array(
         'item_id' => array('int', 11, 'null' => 0),
         'filename' => array('text'),
         ':keys' => array(
-            'PRIMARY' => 'item_id',
+            'item_id' => 'item_id',
         ),
     ),
     'pocketlists_comment' => array(
