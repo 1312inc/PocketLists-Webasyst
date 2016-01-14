@@ -2,19 +2,19 @@
 
 return array(
     'list_created' => array(
-        'name' => /*_w*/('%s created new list %s')
+        'name' => /*_w*/('created new list')
     ),
     'list_deleted' => array(
-        'name' => /*_w*/('%s deleted a list')
+        'name' => /*_w*/('deleted a list')
     ),
     'list_archived' => array(
-        'name' => /*_w*/('%s archived %s')
+        'name' => /*_w*/('archived')
     ),
 
     'new_items' => array(
-        'name' => /*_w*/('%s added new items to %s')
+        'name' => /*_w*/('added new items to')
     ),
     'item_completed' => array(
-        'name' => /*_w*/('%s marked completed a to-do item %s')
+        'name' => /*_w*/('marked completed a to-do item')
     ),
 );

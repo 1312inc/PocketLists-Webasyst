@@ -28,6 +28,38 @@ class pocketlistsConfig extends waAppConfig
         $logs = parent::explainLogs($logs);
         $app_url = wa()->getConfig()->getBackendUrl(true).$this->getApplication().'/';
 
+        foreach ($logs as $log_id => $log_entry) {
+            $logs[$log_id]['params_html'] = '';
+            switch ($log_entry['action']) {
+                case 'new_items':
+                    $list = json_decode($log_entry['params'], true);
+                    if ($list['id']) {
+                        $list_url = $app_url.'#/pocket/'.$list['pocket_id'].'/list/'.$list['id'].'/';
+                        $logs[$log_id]['params_html'] .= "<a href=\"{$list_url}\">{$list['name']}</a>";
+                    } else {
+                        $logs[$log_id]['params_html'] .= _w("to his todo stream");
+                    }
+                    break;
+                case 'item_completed':
+                    $item = json_decode($log_entry['params'], true);
+                    $logs[$log_id]['params_html'] .= $item['name'];
+                    break;
+                case 'list_created':
+                    $list = json_decode($log_entry['params'], true);
+                    $list_url = $app_url.'#/pocket/'.$list['pocket_id'].'/list/'.$list['id'].'/';
+                    $logs[$log_id]['params_html'] .= "<a href=\"{$list_url}\">{$list['name']}</a>";
+                    break;
+                case 'list_deleted':
+                    break;
+                case 'list_archived':
+                    $lm = new pocketlistsListModel();
+                    $list = $lm->getById($log_entry['params']);
+                    $list_url = $app_url.'#/pocket/'.$list['pocket_id'].'/list/'.$list['id'].'/';
+                    $logs[$log_id]['params_html'] .= "<a href=\"{$list_url}\">{$list['name']}</a>";
+                    break;
+            }
+        }
+
         return $logs;
     }
 }

@@ -27,6 +27,14 @@ class pocketlistsListModel extends waModel
         $inserted_item_id = $im->insert($data, $type);
         $data['id'] = $inserted_list_id;
         $this->updateById($data['id'], array('key_item_id' => $inserted_item_id));
+
+        if ($inserted_list_id) {
+            // log this action
+            class_exists('waLogModel') || wa('webasyst');
+            $log_model = new waLogModel();
+            $log_model->add('list_created', $data);
+        }
+
         return $inserted_list_id ? $data : false;
     }
 
