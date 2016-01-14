@@ -584,8 +584,8 @@
             };
 
             var _iframePost = function ($form, callback) {
-                var form_id = $form.attr('id');
-                var iframe_id = form_id + '-iframe';
+                var form_id = $form.attr('id'),
+                    iframe_id = form_id + '-iframe';
 
                 // add hidden iframe if need
                 if (!$('#' + iframe_id).length) {
@@ -600,17 +600,13 @@
                     afterUpdateItem(html, callback);
                 });
             };
+            //var _ajaxPost = function ($form, callback) {
+            //    $.post('?module=item&action=data', $form.serialize(), function (html) {
+            //        afterUpdateItem(html, callback);
+            //    });
+            //};
 
-            debugger;
-
-            // if file selected  - use iframe
-            if ($form.find('input[name="item\[attachment\]"]').val()) {
-                _iframePost($form, callback);
-            } else {
-                $.post('?module=item&action=data', $form.serialize(), function (html) {
-                    afterUpdateItem(html, callback);
-                });
-            }
+            _iframePost($form, callback);
         };
         // get all items list
         var getItems = function () {
@@ -1057,9 +1053,6 @@
                             $this.find('#pl-item-details-save').removeClass('yellow');
                             hideItemDetails();
                         });
-                        if (!$this.find('input[name="item\[attachment\]"]').val()) {
-                            return false;
-                        }
                     })
                     .on('click', '#pl-item-details-cancel', function (e) {
                         e.preventDefault();
