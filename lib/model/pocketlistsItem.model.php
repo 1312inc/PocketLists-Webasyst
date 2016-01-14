@@ -90,10 +90,9 @@ class pocketlistsItemModel extends waModel
     {
         // get to-do items only from accessed pockets
         $pockets = pocketlistsHelper::getAccessPocketForContact($contact_id);
-        $due_date_or_mine = " AND (i.assigned_contact_id = i:contact_id OR i.assigned_contact_id IS NULL OR i.assigned_contact_id = 0)";
+        $due_date_or_mine = "AND (i.assigned_contact_id = i:contact_id OR i.assigned_contact_id IS NULL OR i.assigned_contact_id = 0) /* ONLY assigned to me or noone */";
         if ($date) {
-//            $mine = "";
-            $due_date_or_mine = "AND ((i.status = 0 AND (i.due_date = s:date OR DATE(i.due_datetime) = s:date)) OR (i.status > 0 AND DATE(i.complete_datetime) = s:date))";
+            $due_date_or_mine = "AND ((i.status = 0 AND (i.due_date = s:date OR DATE(i.due_datetime) = s:date)) OR (i.status > 0 AND DATE(i.complete_datetime) = s:date)) /* with due date or completed this day */";
         }
         $sql = "SELECT
                   i.id id,
@@ -123,27 +122,24 @@ class pocketlistsItemModel extends waModel
                 LEFT JOIN pocketlists_pocket p ON p.id = l.pocket_id
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
                 WHERE
+                (
+                  (i.assigned_contact_id = i:contact_id) /* + items assigned to me */
+                  OR i.priority > 0 /* + items with priority */
+                  OR
                   (
-                    (
-                      i.contact_id = i:contact_id
-                      AND (
-                        i.priority > 0
-                        OR i.due_date IS NOT NULL
-                        OR i.due_datetime IS NOT NULL
-                      )
-                      OR i.assigned_contact_id = i:contact_id
-                      OR i.complete_contact_id = i:contact_id
-                    )
-                    AND (
-                      l.archived = 0
-                      OR l.archived IS NULL
-                    )
-                    AND ( /* items from accessed pockets or null list items */
-                      p.id IN (i:pocket_ids)
-                      OR p.id IS NULL
-                    )
+                    /*((i.due_date IS NOT NULL OR i.due_datetime IS NOT NULL) AND i.list_id IS NULL AND i.key_list_id IS NULL AND i.contact_id = 7)
+                    OR
+                    ((i.due_date IS NOT NULL OR i.due_datetime IS NOT NULL) AND (i.list_id IS NOT NULL OR i.key_list_id IS NOT NULL)) */
+                    (i.due_date IS NOT NULL OR i.due_datetime IS NOT NULL) /* + items with due */
+                    AND
+                    IF(i.list_id IS NULL AND i.key_list_id IS NULL, i.contact_id = i:contact_id, i.contact_id > 0) /* + and if item is from NULL-list check contact_id */
                   )
-                  {$due_date_or_mine}
+                  OR (i.complete_contact_id = i:contact_id) /* + items completed by me */
+                  OR (i.contact_id = i:contact_id AND i.list_id IS NULL AND i.key_list_id IS NULL) /* + my items from NULL-list */
+                )
+                AND (l.archived = 0 OR l.archived IS NULL) /* ONLY not archived items */
+                AND (p.id IN (i:pocket_ids) OR p.id IS NULL) /* ONLY items from accessed pockets or NULL-list items */
+                {$due_date_or_mine}
                 ORDER BY
                   i.status,
                   (i.complete_datetime IS NULL), i.complete_datetime DESC";
@@ -525,20 +521,23 @@ class pocketlistsItemModel extends waModel
               LEFT JOIN pocketlists_list l ON (l.id = i.list_id  OR l.id = i.key_list_id)
               LEFT JOIN pocketlists_pocket p ON p.id = l.pocket_id
               WHERE
-                i.status = 0
-                AND (
+                (
+                  (i.assigned_contact_id = i:contact_id) /* + items assigned to me */
+                  OR i.priority > 0 /* + items with priority */
+                  OR
                   (
-                    i.contact_id = i:contact_id
-                    OR i.assigned_contact_id = i:contact_id
-                    OR i.complete_contact_id = i:contact_id
+                    /*((i.due_date IS NOT NULL OR i.due_datetime IS NOT NULL) AND i.list_id IS NULL AND i.key_list_id IS NULL AND i.contact_id = 7)
+                    OR
+                    ((i.due_date IS NOT NULL OR i.due_datetime IS NOT NULL) AND (i.list_id IS NOT NULL OR i.key_list_id IS NOT NULL)) */
+                    (i.due_date IS NOT NULL OR i.due_datetime IS NOT NULL) /* + items with due */
+                    AND
+                    IF(i.list_id IS NULL AND i.key_list_id IS NULL, i.contact_id = i:contact_id, i.contact_id > 0) /* + and if item is from NULL-list check contact_id */
                   )
-                  AND (
-                    l.archived = 0
-                    OR l.archived IS NULL
-                   )
-                  OR (i.list_id IS NULL AND i.key_list_id IS NULL)
+                  OR (i.contact_id = i:contact_id AND i.list_id IS NULL AND i.key_list_id IS NULL) /* + my items from NULL-list */
                 )
-                AND (i.assigned_contact_id = i:contact_id OR i.assigned_contact_id IS NULL OR i.assigned_contact_id = 0) /* only mine */
+                AND i.status = 0 /* ONLY not completed items */
+                AND (l.archived = 0 OR l.archived IS NULL) /* ONLY not archived items */
+                AND (i.assigned_contact_id = i:contact_id OR i.assigned_contact_id IS NULL OR i.assigned_contact_id = 0) /* ONLY assigned to me or noone */
                 {$pocket_rights}
                 {$when}";
 
@@ -599,20 +598,23 @@ class pocketlistsItemModel extends waModel
           LEFT JOIN pocketlists_pocket p ON p.id = l.pocket_id
           WHERE
             (
+              (i.assigned_contact_id = i:contact_id) /* + items assigned to me */
+              OR i.priority > 0 /* + items with priority */
+              OR
               (
-                i.contact_id = i:contact_id
-                OR i.assigned_contact_id = i:contact_id
-                OR i.complete_contact_id = i:contact_id
+                /*((i.due_date IS NOT NULL OR i.due_datetime IS NOT NULL) AND i.list_id IS NULL AND i.key_list_id IS NULL AND i.contact_id = 7)
+                OR
+                ((i.due_date IS NOT NULL OR i.due_datetime IS NOT NULL) AND (i.list_id IS NOT NULL OR i.key_list_id IS NOT NULL)) */
+                (i.due_date IS NOT NULL OR i.due_datetime IS NOT NULL) /* + items with due */
+                AND
+                IF(i.list_id IS NULL AND i.key_list_id IS NULL, i.contact_id = i:contact_id, i.contact_id > 0) /* + and if item is from NULL-list check contact_id */
               )
-              AND (
-                l.archived = 0
-                OR l.archived IS NULL
-              )
-              OR (i.list_id IS NULL AND i.key_list_id IS NULL)
+              OR (i.contact_id = i:contact_id AND i.list_id IS NULL AND i.key_list_id IS NULL) /* + my items from NULL-list */
             )
+            AND (l.archived = 0 OR l.archived IS NULL) /* ONLY not completed items */
             AND i.status = 0
+            AND (i.assigned_contact_id = i:contact_id OR i.assigned_contact_id IS NULL OR i.assigned_contact_id = 0) /* ONLY assigned to me or noone */
             {$colors} /* selected option */
-            AND (i.assigned_contact_id = i:contact_id OR i.assigned_contact_id IS NULL OR i.assigned_contact_id = 0) /* only mine */
             {$pocket_rights}";
 
         if ($icon !== false && $icon != pocketlistsUserSettings::ICON_NONE) {
