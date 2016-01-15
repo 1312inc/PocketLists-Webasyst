@@ -5,6 +5,7 @@ class pocketlistsItemCreateAction extends waViewAction
     public function execute()
     {
         $data = waRequest::post('data', false, waRequest::TYPE_ARRAY);
+        $filter = waRequest::post('filter', false);
         $list_id = waRequest::post('list_id', false, waRequest::TYPE_INT);
         $assigned_contact_id = waRequest::post('assigned_contact_id', false, waRequest::TYPE_INT);
 
@@ -46,6 +47,19 @@ class pocketlistsItemCreateAction extends waViewAction
 
             if ($inserted) {
                 pocketlistsNotifications::notifyAboutNewItems($inserted_items, $list);
+
+                switch ($filter) {
+                    case 'favorites':
+                        $ufm = new pocketlistsUserFavoritesModel();
+                        foreach ($inserted_items as $item) {
+                            $ufm->insert(array(
+                                'item_id' => $item['id'],
+                                'contact_id' => $user_id
+                            ));
+                        }
+                        break;
+                }
+
                 $items = $im->getById($inserted);
                 if (isset($items['id'])) {
                     $items = array($items);

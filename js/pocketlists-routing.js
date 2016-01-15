@@ -208,6 +208,11 @@
                 $('#content').html(result);
             });
         },
+        favoritesAction: function () {
+            this.load('?module=todo&filter=favorites', function (result) {
+                $('#content').html(result);
+            });
+        },
         teamAction: function (teammate) {
             var teammate = teammate || 0;
             this.load('?module=team&teammate=' + teammate, function (result) {
