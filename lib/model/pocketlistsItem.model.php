@@ -86,13 +86,19 @@ class pocketlistsItemModel extends waModel
 //        return $this->getTree($items, $tree);
     }
 
-    public function getToDo($contact_id, $date = false)
+    public function getToDo($contact_id, $date = false, $filter = false)
     {
         // get to-do items only from accessed pockets
         $pockets = pocketlistsHelper::getAccessPocketForContact($contact_id);
         $due_date_or_mine = "AND (i.assigned_contact_id = i:contact_id OR i.assigned_contact_id IS NULL OR i.assigned_contact_id = 0) /* ONLY assigned to me or noone */";
         if ($date) {
             $due_date_or_mine = "AND ((i.status = 0 AND (i.due_date = s:date OR DATE(i.due_datetime) = s:date)) OR (i.status > 0 AND DATE(i.complete_datetime) = s:date)) /* with due date or completed this day */";
+        }
+        $filter_sql = '';
+        switch ($filter) {
+            case 'favorites':
+                $filter_sql = "AND uf.item_id IS NOT NULL";
+                break;
         }
         $sql = "SELECT
                   i.id id,
@@ -140,6 +146,7 @@ class pocketlistsItemModel extends waModel
                 AND (l.archived = 0 OR l.archived IS NULL) /* ONLY not archived items */
                 AND (p.id IN (i:pocket_ids) OR p.id IS NULL) /* ONLY items from accessed pockets or NULL-list items */
                 {$due_date_or_mine}
+                {$filter_sql}
                 ORDER BY
                   i.status,
                   (i.complete_datetime IS NULL), i.complete_datetime DESC";
