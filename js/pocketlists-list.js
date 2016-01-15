@@ -539,8 +539,8 @@
             );
         };
         // update item
-        var updateItem = function (data, callback) {
-            $.post('?module=item&action=data', data, function (html) {
+        var updateItem = function ($form, callback) {
+            var afterUpdateItem = function(html, callback) {
                 $.pocketlists.updateAppCounter();
                 $.pocketlists.$loading.remove();
                 replaceItem(html);
@@ -581,7 +581,32 @@
                     $('#pl-lists').find('[data-pl-list-id="' + o.list.list_id + '"] span.count').removeClass().addClass('count' + priority_class);
                 }
                 $.isFunction(callback) && callback.call();
-            });
+            };
+
+            var _iframePost = function ($form, callback) {
+                var form_id = $form.attr('id'),
+                    iframe_id = form_id + '-iframe';
+
+                // add hidden iframe if need
+                if (!$('#' + iframe_id).length) {
+                    $form.after("<iframe id=" + iframe_id + " name=" + iframe_id + " style='display:none;'></iframe>");
+                }
+
+                var $iframe = $('#' + iframe_id);
+                $form.attr('target', iframe_id);
+
+                $iframe.one('load', function () {
+                    var html = $(this).contents().find('body').html();
+                    afterUpdateItem(html, callback);
+                });
+            };
+            //var _ajaxPost = function ($form, callback) {
+            //    $.post('?module=item&action=data', $form.serialize(), function (html) {
+            //        afterUpdateItem(html, callback);
+            //    });
+            //};
+
+            _iframePost($form, callback);
         };
         // get all items list
         var getItems = function () {
@@ -1021,14 +1046,13 @@
                 //id = parseInt($wrapper.find('input[name="item\[id\]"]').val());
                 $wrapper
                     .on('submit', 'form', function (e) {
-                        e.preventDefault();
+                        //e.preventDefault();
                         var $this = $(this);
                         $this.find('#pl-item-details-save').after($.pocketlists.$loading);
-                        updateItem($this.serialize(), function(){
+                        updateItem($this, function() {
                             $this.find('#pl-item-details-save').removeClass('yellow');
                             hideItemDetails();
                         });
-                        return false;
                     })
                     .on('click', '#pl-item-details-cancel', function (e) {
                         e.preventDefault();
