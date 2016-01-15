@@ -1156,7 +1156,7 @@
                     ItemDetails.trigger('show.pl2', [parseInt($item.data('id'))]); // show item details
                     selectItem($item);
                 })
-                .on('click', '.pl-favorite', function(e) {
+                .on('click', '[data-pl-action="item-favorite"]', function(e) {
                     e.preventDefault();
                     var $this = $(this),
                         $item = $this.closest(item_selector);
