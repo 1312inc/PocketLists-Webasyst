@@ -23,5 +23,6 @@ class pocketlistsTodoDateAction extends waViewAction
         $us = new pocketlistsUserSettings();
         $this->view->assign("stream_list_id", $us->getStreamInboxList());
 
+        $this->view->assign('filter', $filter);
     }
 }

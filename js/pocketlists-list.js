@@ -462,6 +462,7 @@
                 assignUser: null,
                 showMessageOnEmptyList: false,
                 dueDate: '',
+                filter: false,
                 archive: false
             }, options);
 
@@ -502,7 +503,8 @@
                 {
                     list_id: o.list ? o.list.list_id : 0,
                     data: data,
-                    assigned_contact_id: o.assignUser ? o.assignUser : false
+                    assigned_contact_id: o.assignUser ? o.assignUser : false,
+                    filter: o.filter
                 },
                 function (html) {
                     $.pocketlists.updateAppCounter();
