@@ -22,8 +22,8 @@ class pocketlistsItemDataAction extends waViewAction
 
     private function saveAttachment($item)
     {
-        $path_private = wa()->getDataPath('attachments/'.$item['id'].'/');
-        if (is_writable($path_private)) {
+        $path_public = wa()->getDataPath('attachments/'.$item['id'].'/', true);
+        if (is_writable($path_public)) {
             $errors = array();
             $f = waRequest::file('attachment');
             $name = $f->name;
@@ -34,17 +34,17 @@ class pocketlistsItemDataAction extends waViewAction
                         $name = $tmp_name;
                     }
                 }
-                if (file_exists($path_private.DIRECTORY_SEPARATOR.$name)) {
+                if (file_exists($path_public.DIRECTORY_SEPARATOR.$name)) {
                     $i = strrpos($name, '.');
                     $ext = substr($name, $i + 1);
                     $name = substr($name, 0, $i);
                     $i = 1;
-                    while (file_exists($path_private.DIRECTORY_SEPARATOR.$name.'-'.$i.'.'.$ext)) {
+                    while (file_exists($path_public.DIRECTORY_SEPARATOR.$name.'-'.$i.'.'.$ext)) {
                         $i++;
                     }
                     $name = $name.'-'.$i.'.'.$ext;
                 }
-                if ($f->moveTo($path_private, $name)) {
+                if ($f->moveTo($path_public, $name)) {
                     $pa = new pocketlistsAttachmentModel();
                     $pa->insert(array(
                         'item_id' => $item['id'],
