@@ -249,7 +249,7 @@ class pocketlistsItemModel extends waModel
 
     private function getItems($sql, $list_id, $tree)
     {
-        $items = $this->query($sql, array('lid' => $list_id, 'contact_id' => wa()->getUser()->getId()))->fetchAll();
+        $items = $this->query($sql, array('lid' => $list_id, 'contact_id' => wa()->getUser()->getId()))->fetchAll('id');
         foreach ($items as $id => $item) {
             $items[$id] = $this->updateItem($item);
         }

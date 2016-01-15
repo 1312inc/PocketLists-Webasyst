@@ -55,8 +55,20 @@ class pocketlistsListModel extends waModel
     public function delete($id)
     {
         $im = new pocketlistsItemModel();
+        $items = $im->getAllByList($id);
+        $items_list = $im->getByField('key_list_id', $id, true);
+
         $im->deleteByField('list_id', $id);
         $im->deleteByField('key_list_id', $id);
+
+        $am = new pocketlistsAttachmentModel();
+        $am->delete(array_keys($items)); // items attachements
+        $items = array();
+        foreach ($items_list as $item) {
+            $items[] = $item['id'];
+        }
+        $am->delete($items); // list attachements
+
         return $this->deleteById($id);
     }
 

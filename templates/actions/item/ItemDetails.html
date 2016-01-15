@@ -19,7 +19,9 @@
             {if $attachments}
             <div class="value no-shift">
                 {foreach $attachments as $attachment}
-                <div><a href="{$attachments_path}{$attachment.filename}" target="_blank">{$attachment.filename}</a></div>
+                <div>
+                    <label>[`delete`] <input type="checkbox" name="attachment_delete[]" value="{$attachment.filename}"/></label>
+                    <a href="{$attachments_path}{$attachment.filename}" target="_blank">{$attachment.filename}</a></div>
                 {/foreach}
             </div>
             {/if}

@@ -8,6 +8,7 @@ class pocketlistsItemDataAction extends waViewAction
             $item = waRequest::post('item', array(), waRequest::TYPE_ARRAY);
             if ($item) {
                 $this->saveAttachment($item);
+                $this->deleteAttachmnets($item);
                 $im = new pocketlistsItemModel();
 
                 pocketlistsHelper::getDueDatetime($item);
@@ -55,6 +56,15 @@ class pocketlistsItemDataAction extends waViewAction
             } else {
                 $errors[] = sprintf(_w('Failed to upload file %s.'), $f->name).' ('.$f->error.')';
             }
+        }
+    }
+
+    private function deleteAttachmnets($item)
+    {
+        $to_delete = waRequest::post('attachment_delete', false);
+        if ($to_delete) {
+            $am = new pocketlistsAttachmentModel();
+            $am->delete($item['id'], $to_delete);
         }
     }
 }
