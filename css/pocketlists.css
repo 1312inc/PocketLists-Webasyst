@@ -87,7 +87,7 @@ table.pl-calendar td .pl-dots i.icon10 { margin-top: 0.2em; margin-right: 0.2em;
 ul.pl-team li .count { font-size: 1em; padding: 3px 7px 4px; margin-top: -1px; }
 ul.pl-team li .indicator {  }
 ul.pl-team li .pl-username { display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 195px; font-size: 1.2em; margin-top: 2px; }
-ul.pl-team li .pl-active-items { max-height: 2.4em; overflow: hidden; margin: 5px 25px 0 0; line-height: 1.2em; }
+ul.pl-team li .pl-active-items { max-height: 2.4em; overflow: hidden; margin: 5px 25px 0 0; line-height: 1.2em; font-size: 0.9em; color: #aaa; }
 
 /* Settings
 ----------- */
@@ -157,7 +157,7 @@ label.pl-done-label .listicon48 {
 
 input#pl-new-list-input,
 #pl-item-add textarea,
-.pl-discuss textarea {
+.pl-chat textarea {
     min-width: 350px;
     width: 90%;
     /* white-space: nowrap; */
@@ -174,6 +174,7 @@ input#pl-new-list-input,
     top: -1px;
     outline: 0 none;
 }
+.pl-chat textarea { background: #fff; margin-left: 5px; }
 .pl-items { position: relative; min-height: 400px; }
 .pl-items.content.left300px { margin-left: 299px; }
 
@@ -219,11 +220,24 @@ input#pl-new-list-input,
 .pl-list-items ul.menu-v li .pl-item .pl-favorite { display: inline-block; float: right; margin-left: 5px; }
 .pl-list-items ul.menu-v li .pl-item .pl-author { display: inline-block; float: right; margin-left: 5px; margin-top: 1px; }
 .pl-list-items ul.menu-v li .pl-item .pl-author i.icon16 { margin-left: 5px; }
-.pl-list-items ul.menu-v li .pl-item .pl-edit { display: none; position: absolute; right: 17px; margin-top: -4px; }
+.pl-list-items ul.menu-v li .pl-item .pl-edit { opacity: 0; right: 17px; margin-top: -4px; display: inline-block; float: right; }
 .pl-list-items ul.menu-v li .pl-item p { margin-bottom: 0; margin-top: 4px; line-height: 1.2em; }
-.pl-list-items ul.menu-v li .pl-item.pl-item-selected .pl-edit { display: inline-block; }
 .pl-list-items ul.menu-v li .pl-item.pl-item-selected .pl-favorite,
 .pl-list-items ul.menu-v li .pl-item.pl-item-selected .pl-author { opacity: 0; }
+.pl-list-items ul.menu-v li .pl-item:hover .pl-edit { opacity: 1; transition: opacity 0.1s ease-in; transition-delay: 0.5s; }
+
+.pl-chat { display: none; padding: 13px 25px 15px 49px; }
+.pl-item-selected .pl-chat { display: block; }
+.pl-chat .pl-cue { margin-bottom: 10px; width: 100%; }
+.pl-chat .pl-cue .pl-cue-inner { width: 70%; font-size: 0.95em; }
+.pl-chat .pl-cue .pl-bubble { background: #def; border-radius: 10px; padding: 8px; margin-bottom: 13px; position: relative; border: 1px solid rgba(0,0,0,0.1); line-height: 1.1em; }
+.pl-chat .pl-cue .pl-bubble .pl-bubble-arrow { background: #def; transform: rotate(45deg); width: 10px; height: 10px; display: block; position: absolute; left: 15px; bottom: -4px; border: 1px solid rgba(0,0,0,0.1); }
+.pl-chat .pl-cue .pl-bubble .pl-bubble-arrow:after { content: ''; border-top: 1px solid red;}
+.pl-chat .pl-cue.pl-my-cue .pl-cue-inner { margin-left: 30%; }
+.pl-chat .pl-cue.pl-my-cue .pl-bubble,
+.pl-chat .pl-cue.pl-my-cue .pl-bubble .pl-bubble-arrow { background: #fff; }
+.pl-chat .userpic20 { margin-left: 12px; }
+.pl-chat .pl-reply { margin-top: 20px; }
 
 .pl-is-selected { display: none; }
 
