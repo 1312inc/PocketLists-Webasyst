@@ -30,8 +30,8 @@
 
                                 <span class="pl-username">{$teammate.name|default:'%username%'|escape}</span>
 
-                                <div class="pl-active-items">{if empty($teammate.item_names)}{$teammate.item_names|escape}{else}{sprintf('[`No to-dos were assigned to %s yet`]',$teammate.name|default:'%username%'|escape)}{/if}</div>
-                                
+                                <div class="pl-active-items">{if !empty($teammate.item_names)}{$teammate.item_names|escape}{else}{sprintf('[`No to-dos were assigned to %s yet`]',$teammate.name|default:'%username%'|escape)}{/if}</div>
+
                             </div>
                         </div>
                     </a>
