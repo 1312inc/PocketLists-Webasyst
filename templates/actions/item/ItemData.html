@@ -45,6 +45,14 @@
         {if $item.status != 1}
             {if !empty($item.assigned_contact_id)}<strong class="hint"><br>{sprintf('[`Assigned to %s`]', {$item.assigned_username|escape})}</strong>{/if}
             {* <i class="icon16 userpic20" style="background-image: url({$item.assigned_userpic})" alt="{$item.assigned_username|escape}"></i> *}
+            {if !empty($item.attachments)}
+            <p class="hint">
+            <ul>{foreach $item.attachments as $attachment}
+                {if $attachment.filetype == 'image'}<li><a href="{$attachments_path}/{$item.id}/{$attachment.filename}" target="_blank"><img src="{$attachments_path}/{$item.id}/{$attachment.filename}" style="max-height: 200px;"></a></li>
+                {else}<li><a href="{$attachments_path}/{$item.id}/{$attachment.filename}" target="_blank"><i class="icon16 attachment"></i> {$attachment.filename}</a></li>
+                {/if}
+            {/foreach}</ul></p>
+            {/if}
             {if !empty($item.note)}<p class="hint">{$item.note|escape|nl2br}</p>{/if}
         {/if}
     </label>

@@ -294,6 +294,9 @@ class pocketlistsItemModel extends waModel
             $item['complete_userpic'] = $user->getPhoto('20');
         }
 
+        $am = new pocketlistsAttachmentModel();
+        $item['attachments'] = $am->getByField('item_id', $item['id'], true);
+
         $this->updatePriority($item);
 
         return $item;

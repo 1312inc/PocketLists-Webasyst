@@ -3,6 +3,7 @@ return array(
     'pocketlists_attachment' => array(
         'item_id' => array('int', 11, 'null' => 0),
         'filename' => array('text'),
+        'filetype' => array('enum', "'image'"),
         ':keys' => array(
             'item_id' => 'item_id',
         ),
