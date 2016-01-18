@@ -15,5 +15,7 @@ class pocketlistsFavoritesAction extends waViewAction
 
         $us = new pocketlistsUserSettings();
         $this->view->assign("stream_list_id", $us->getStreamInboxList());
+
+        $this->view->assign('attachments_path', wa()->getDataUrl('attachments/', true));
     }
 }
