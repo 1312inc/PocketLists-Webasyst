@@ -86,19 +86,13 @@ class pocketlistsItemModel extends waModel
 //        return $this->getTree($items, $tree);
     }
 
-    public function getToDo($contact_id, $date = false, $filter = false)
+    public function getToDo($contact_id, $date = false)
     {
         // get to-do items only from accessed pockets
         $pockets = pocketlistsHelper::getAccessPocketForContact($contact_id);
         $due_date_or_mine = "AND (i.assigned_contact_id = i:contact_id OR i.assigned_contact_id IS NULL OR i.assigned_contact_id = 0) /* ONLY assigned to me or noone */";
         if ($date) {
             $due_date_or_mine = "AND ((i.status = 0 AND (i.due_date = s:date OR DATE(i.due_datetime) = s:date)) OR (i.status > 0 AND DATE(i.complete_datetime) = s:date)) /* with due date or completed this day */";
-        }
-        $filter_sql = '';
-        switch ($filter) {
-            case 'favorites':
-                $filter_sql = "AND uf.item_id IS NOT NULL";
-                break;
         }
         $sql = "SELECT
                   i.id id,
@@ -146,7 +140,69 @@ class pocketlistsItemModel extends waModel
                 AND (l.archived = 0 OR l.archived IS NULL) /* ONLY not archived items */
                 AND (p.id IN (i:pocket_ids) OR p.id IS NULL) /* ONLY items from accessed pockets or NULL-list items */
                 {$due_date_or_mine}
-                {$filter_sql}
+                ORDER BY
+                  i.status,
+                  (i.complete_datetime IS NULL), i.complete_datetime DESC";
+
+        $items = $this->query($sql, array(
+            'pocket_ids' => $pockets,
+            'contact_id' => $contact_id,
+            'date' => $date))->fetchAll();
+
+        $result = array(
+            0 => array(),
+            1 => array(),
+        );
+        foreach ($items as $id => $item) {
+            $result[$item['status']][$id] = $this->updateItem($item);
+        }
+        return array(
+            0 => $this->getProperSort($result[0]),
+            1 => $result[1]
+        );
+//        return $this->getTree($items, true);
+    }
+
+    public function getFavorites($contact_id, $date = false)
+    {
+        // get to-do items only from accessed pockets
+        $pockets = pocketlistsHelper::getAccessPocketForContact($contact_id);
+        $due_date = "";
+        if ($date) {
+            $due_date = "AND ((i.status = 0 AND (i.due_date = s:date OR DATE(i.due_datetime) = s:date)) OR (i.status > 0 AND DATE(i.complete_datetime) = s:date)) /* with due date or completed this day */";
+        }
+        $sql = "SELECT
+                  i.id id,
+                  i.parent_id parent_id,
+                  i.has_children has_children,
+                  i.name name,
+                  i.note note,
+                  i.status status,
+                  i.priority priority,
+                  i.contact_id contact_id,
+                  i.create_datetime create_datetime,
+                  i.due_date due_date,
+                  i.due_datetime due_datetime,
+                  i.complete_datetime complete_datetime,
+                  i.complete_contact_id complete_contact_id,
+                  i.assigned_contact_id assigned_contact_id,
+                  i.key_list_id key_list_id,
+                  l.id list_id,
+                  l.icon list_icon,
+                  /*l.name list_name,*/
+                  p.id pocket_id,
+                  p.name pocket_name,
+                  p.color pocket_color,
+                  IF(uf.contact_id, 1, 0) favorite
+                FROM {$this->table} i
+                LEFT JOIN pocketlists_list l ON (l.id = i.list_id  OR l.id = i.key_list_id)
+                LEFT JOIN pocketlists_pocket p ON p.id = l.pocket_id
+                LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
+                WHERE
+                uf.item_id IS NOT NULL
+                AND (l.archived = 0 OR l.archived IS NULL) /* ONLY not archived items */
+                AND (p.id IN (i:pocket_ids) OR p.id IS NULL) /* ONLY items from accessed pockets or NULL-list items */
+                {$due_date}
                 ORDER BY
                   i.status,
                   (i.complete_datetime IS NULL), i.complete_datetime DESC";

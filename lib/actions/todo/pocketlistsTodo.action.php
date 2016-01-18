@@ -22,7 +22,13 @@ class pocketlistsTodoAction extends waViewAction
         $im = new pocketlistsItemModel();
 
         // get all due or priority or assigned to me items
-        $items = $im->getToDo(wa()->getUser()->getId(), false, $filter);
+        switch ($filter) {
+            case 'favorites':
+                $items = $im->getFavorites(wa()->getUser()->getId());
+                break;
+            default:
+                $items = $im->getToDo(wa()->getUser()->getId());
+        }
         $pocket_colors = array();
         // completed items
         foreach ($items[1] as $item) {
