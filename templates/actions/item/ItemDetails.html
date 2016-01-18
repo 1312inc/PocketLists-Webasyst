@@ -130,6 +130,25 @@
                 </div>
             </div>
         {/if}
+        <div class="field">
+            <div class="name nowrap">
+                [`Move item to`]
+            </div>
+            <div class="value no-shift">
+                <select id="pl-inbox-pocket">
+                    <option value="0">[`None`]</option>
+                    {foreach $pockets as $pocket}
+                    <option value="{$pocket.id}" {if $list.pocket_id == $pocket.id}selected="selected"{/if}>{$pocket.name|escape|truncate:32}</option>
+                    {/foreach}
+                </select>
+                <select id="pl-item-list">
+                {foreach $lists as $l}
+                <option value="{$list.id}" {if $item.list_id == $l.id}selected="selected"{/if}>{$l.name|escape}</option>
+                {/foreach}
+                </select>
+                <input type="hidden" name="item[list_id]" value="{$item.list_id}"/>
+            </div>
+        </div>
     </div>
 
     <div class="field-group">
