@@ -11,7 +11,7 @@ class pocketlistsTodoDateAction extends waViewAction
         $filter = waRequest::get('filter', false);
 
         // get all due or priority or assigned to me items
-        $items = $im->getToDo(wa()->getUser()->getId(), $date, $filter);
+        $items = $im->getToDo(wa()->getUser()->getId(), $date);
 
         $this->view->assign('undone_items', $items[0]);
         $this->view->assign('done_items', $items[1]);

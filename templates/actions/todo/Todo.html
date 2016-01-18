@@ -61,7 +61,6 @@
 
 <script type="text/javascript">
     (function(){
-        var filter = '{$filter|default:0|escape}';
         $.pocketlists.setTitle('[`To-do stream`]');
 
         var getStream = function (date, filter) {
@@ -69,7 +68,7 @@
                 $items_wrapper.html(html);
             });
         };
-        getStream(false, filter);
+        getStream();
 
         var $dates = $('[data-pl-todo-date]'),
             $items_wrapper = $('#pl-list-todo-items');
@@ -81,13 +80,13 @@
             $dates.removeClass('pl-selected');
             $this.addClass('pl-selected');
 
-            getStream(date, filter);
+            getStream(date);
         });
         $items_wrapper.on('click', '[pl-todo-stream="date"] a', function(e) {
             e.preventDefault();
             $dates.removeClass('pl-selected');
 
-            getStream(false, filter);
+            getStream();
         });
     }());
 </script>

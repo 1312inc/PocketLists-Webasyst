@@ -1,0 +1,63 @@
+<div class="shadowed">
+    <main class="content pl-items pl-favorites" id="pl-list-content">
+
+        <header class="pl-title">
+            <div class="float-right block half-padded">
+                <ul class="menu-h">
+                    <li>
+                        <a href="#" id="pl-item-add-link"><i class="icon16 add"></i> [`New to-do`]</a>
+                    </li>
+                </ul>
+            </div>
+            <h1 class="not-padded">
+                [`Favorites`]
+            </h1>
+        </header>
+
+        <div class="pl-list-items" id="pl-list-items">
+            <div class="pl-empty-list" id="pl-empty-list-msg" {if !empty($undone_items)}style="display:none;"{/if}>
+            <div class="pl-jumbodone" title="[`Favorites is empty`]"></div>
+            <h2>[`Favorites is empty`]</h2>
+            <p>[`Favorites automatically collects all favorites to-dos and lists.`]</p>
+        </div>
+
+        <section id="pl-undone-items">
+            <ul class="menu-v">
+                {if !empty($undone_items)}
+                {include '../item/ItemCreate.html' parent_id=0 items=$undone_items}
+                {/if}
+            </ul>
+        </section>
+
+        <section id="pl-complete-log" class="pl-logbook">
+            <h5 class="heading">[`Logbook`]</h5>
+            <ul class="menu-v">
+                {if $count_done_items}
+                {include '../item/ItemCreate.html' parent_id=0 items=$done_items}
+                {/if}
+            </ul>
+        </section>
+
+        <a href="#" id="pl-complete-log-link" class="inline-link gray" {if !$count_done_items}style="display:none;"{/if}><b><i>{_w('Show all %d completed to-do', 'Show all %d completed to-dos', $count_done_items)}</i></b></a>
+
+        <div class="clear-both"></div>
+
+        {include '../../include/itemadd.html' inline}
+
+        {include '../../include/deleteitemdialog.html' inline}
+
+        {include '../../include/itemdetails.html' inline}
+    </main>
+</div>
+
+<script type="text/javascript">
+    (function(){
+        new $.pocketlists.Items($('#pl-list-items'), {
+            enableAddLinkOnHover: false,
+            enableChangeLevel: false,
+            enableSortItems: false,
+            showMessageOnEmptyList: true,
+            filter: 'favorites'
+        });
+        }());
+</script>
