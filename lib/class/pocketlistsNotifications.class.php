@@ -85,7 +85,7 @@ class pocketlistsNotifications
                         "SELECT item_id FROM {$ufm->getTableName()} WHERE contact_id = {$user_id}"
                     )->fetchAll('item_id');
                     foreach ($items as $item) {
-                        if (in_array($item['id'], $user_items) &&
+                        if (in_array($item['id'], array_keys($user_items)) &&
                             $item['complete_contact_id'] != $user_id
                         ) {
                             $filtered_items[$item['id']] = $item;
@@ -118,9 +118,8 @@ class pocketlistsNotifications
                     $user_lists = $ufm->query(
                         "SELECT i.key_list_id FROM {$ufm->getTableName()} uf JOIN pocketlists_item i ON uf.item_id = i.id AND i.key_list_id > 0 WHERE uf.contact_id = {$user_id}"
                     )->fetchAll('key_list_id');
-                    $user_lists = array_keys($user_lists);
                     foreach ($items as $item) {
-                        if (in_array($item['list_id'], $user_lists) &&
+                        if (in_array($item['list_id'], array_keys($user_lists)) &&
                             $item['complete_contact_id'] != $user_id
                         ) {
                             $filtered_items[$item['id']] = $item;
