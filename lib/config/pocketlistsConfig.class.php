@@ -43,7 +43,7 @@ class pocketlistsConfig extends waAppConfig
                     break;
                 case 'item_completed':
                     $item = json_decode($log_entry['params'], true);
-                    $logs[$log_id]['params_html'] .= $item['name'];
+                    $logs[$log_id]['params_html'] .= htmlspecialchars($item['name']);
                     break;
                 case 'list_created':
                     $list = json_decode($log_entry['params'], true);
