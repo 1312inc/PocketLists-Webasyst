@@ -15,8 +15,8 @@ class pocketlistsItemDataAction extends waViewAction
                 $item['assigned_contact_id'] = $item['assigned_contact_id'] ? $item['assigned_contact_id'] : null;
                 $item['update_datetime'] = date("Y-m-d H:i:s");
                 $im->updateWithCalcPriority($item['id'], $item);
-                $this->view->assign('item', $im->getById($item['id']));
                 $this->view->assign('attachments_path', wa()->getDataUrl('attachments/', true));
+                $this->view->assign('item', $im->getById($item['id']));
             }
         }
     }

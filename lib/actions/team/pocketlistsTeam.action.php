@@ -55,6 +55,7 @@ class pocketlistsTeamAction extends waViewAction
         }
 
         $this->view->assign('teammates', $teammates);
+        $this->view->assign('attachments_path', wa()->getDataUrl('attachments/', true));
     }
 
     private function compare_last_activity($a, $b)
