@@ -1130,11 +1130,11 @@
                         $.get('?module=json&action=getLists&id=' + pocket_id, function (r) {
                             $.pocketlists.$loading.remove();
                             if (r.status === 'ok') {
-                                var options = '';
+                                $('#pl-item-list').empty();
                                 $.each(r.data, function () {
-                                    options += '<option value="' + this.id + '">' + this.name + '</option>';
+                                    $('#pl-item-list').append($('<option value="' + this.id + '">').text(this.name));
                                 });
-                                $('#pl-item-list').html(options).trigger('change');
+                                $('#pl-item-list').trigger('change');
                             }
                         }, 'json')
                     })
