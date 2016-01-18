@@ -1112,7 +1112,28 @@
                     .on('show.pl2', function(e, id){
                         showItemDetails(id);
                     })
-                    .on('hide.pl2', hideItemDetails);
+                    .on('hide.pl2', hideItemDetails)
+                    .on('change', '#pl-item-pocket', function() {
+                        var pocket_id =  $(this).find(':selected').val();
+
+                        $(this).after($.pocketlists.$loading);
+                        $.get('?module=json&action=getLists&id=' + pocket_id, function (r) {
+                            $.pocketlists.$loading.remove();
+                            if (r.status === 'ok') {
+                                var options = '';
+                                $.each(r.data, function () {
+                                    options += '<option value="' + this.id + '">' + this.name + '</option>';
+                                });
+                                $('#pl-item-list').html(options).trigger('change');
+                            }
+                        }, 'json')
+                    })
+                    .on('change', '#pl-item-list', function() {
+                        var item_id = $(this).find(':selected').val();
+                        if (item_id) {
+                            $wrapper.find('[name="item\[list_id\]"').val($(this).find(':selected').val());
+                        }
+                    });
 
                 $(window).scroll(function() {
                     stickyDetailsSidebar();

@@ -135,8 +135,8 @@
                 [`Move item to`]
             </div>
             <div class="value no-shift">
-                <select id="pl-inbox-pocket">
-                    <option value="0">[`None`]</option>
+                <select id="pl-item-pocket">
+                    <!--<option value="0">[`None`]</option>-->
                     {foreach $pockets as $pocket}
                     <option value="{$pocket.id}" {if $list.pocket_id == $pocket.id}selected="selected"{/if}>{$pocket.name|escape|truncate:32}</option>
                     {/foreach}
