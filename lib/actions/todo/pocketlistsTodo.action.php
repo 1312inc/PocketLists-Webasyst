@@ -22,13 +22,7 @@ class pocketlistsTodoAction extends waViewAction
         $im = new pocketlistsItemModel();
 
         // get all due or priority or assigned to me items
-        switch ($filter) {
-            case 'favorites':
-                $items = $im->getFavorites(wa()->getUser()->getId());
-                break;
-            default:
-                $items = $im->getToDo(wa()->getUser()->getId());
-        }
+        $items = $im->getToDo(wa()->getUser()->getId());
         $pocket_colors = array();
         // completed items
         foreach ($items[1] as $item) {
@@ -121,8 +115,6 @@ class pocketlistsTodoAction extends waViewAction
         }
 
         $this->view->assign("days", $days);
-
-        $this->view->assign('filter', $filter);
 
         $this->view->assign("week_first_sunday", waLocale::getFirstDay() == 7);
         $this->view->assign("current_month", date("n", $month_date));

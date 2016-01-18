@@ -163,14 +163,10 @@ class pocketlistsItemModel extends waModel
 //        return $this->getTree($items, true);
     }
 
-    public function getFavorites($contact_id, $date = false)
+    public function getFavorites($contact_id)
     {
         // get to-do items only from accessed pockets
         $pockets = pocketlistsHelper::getAccessPocketForContact($contact_id);
-        $due_date = "";
-        if ($date) {
-            $due_date = "AND ((i.status = 0 AND (i.due_date = s:date OR DATE(i.due_datetime) = s:date)) OR (i.status > 0 AND DATE(i.complete_datetime) = s:date)) /* with due date or completed this day */";
-        }
         $sql = "SELECT
                   i.id id,
                   i.parent_id parent_id,
@@ -202,15 +198,13 @@ class pocketlistsItemModel extends waModel
                 uf.item_id IS NOT NULL
                 AND (l.archived = 0 OR l.archived IS NULL) /* ONLY not archived items */
                 AND (p.id IN (i:pocket_ids) OR p.id IS NULL) /* ONLY items from accessed pockets or NULL-list items */
-                {$due_date}
                 ORDER BY
                   i.status,
                   (i.complete_datetime IS NULL), i.complete_datetime DESC";
 
         $items = $this->query($sql, array(
             'pocket_ids' => $pockets,
-            'contact_id' => $contact_id,
-            'date' => $date))->fetchAll();
+            'contact_id' => $contact_id))->fetchAll();
 
         $result = array(
             0 => array(),

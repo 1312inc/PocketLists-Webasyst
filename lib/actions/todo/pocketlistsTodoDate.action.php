@@ -11,13 +11,7 @@ class pocketlistsTodoDateAction extends waViewAction
         $filter = waRequest::get('filter', false);
 
         // get all due or priority or assigned to me items
-        switch ($filter) {
-            case 'favorites':
-                $items = $im->getFavorites(wa()->getUser()->getId(), $date);
-                break;
-            default:
-                $items = $im->getToDo(wa()->getUser()->getId(), $date);
-        }
+        $items = $im->getToDo(wa()->getUser()->getId(), $date);
 
         $this->view->assign('undone_items', $items[0]);
         $this->view->assign('done_items', $items[1]);
@@ -28,7 +22,5 @@ class pocketlistsTodoDateAction extends waViewAction
 
         $us = new pocketlistsUserSettings();
         $this->view->assign("stream_list_id", $us->getStreamInboxList());
-
-        $this->view->assign('filter', $filter);
     }
 }

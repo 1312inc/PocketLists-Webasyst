@@ -209,7 +209,7 @@
             });
         },
         favoritesAction: function () {
-            this.load('?module=todo&filter=favorites', function (result) {
+            this.load('?module=favorites', function (result) {
                 $('#content').html(result);
             });
         },
