@@ -198,12 +198,12 @@ msgstr "Отправить по почте"
 
 #: /wa-apps/pocketlists/templates/actions/list/List.html:27
 msgid "Print list"
-msgstr "Печать"
+msgstr "Распечатать"
 
 #: /wa-apps/pocketlists/templates/actions/list/List.html:30
 #: /wa-apps/pocketlists/templates/include/archivelistdialog.html:7
 msgid "Archive list"
-msgstr "В архив"
+msgstr "Поместить в архив"
 
 #: /wa-apps/pocketlists/templates/actions/list/List.html:33
 msgid "Edit list"

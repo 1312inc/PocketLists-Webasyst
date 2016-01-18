@@ -95,8 +95,6 @@
         </div>
         *}
     </div>
-
-
     <div class="field-group">
         <div class="field" id="pl-assigned-contact">
             <div class="name">[`Assigned to`]</div>
@@ -134,9 +132,11 @@
                 </div>
             </div>
         {/if}
+    </div>
+    <div class="field-group">
         <div class="field">
             <div class="name nowrap">
-                [`Move item to`]
+                [`List`]
             </div>
             <div class="value no-shift">
                 <select id="pl-item-pocket">
@@ -147,7 +147,7 @@
                 </select>
                 <select id="pl-item-list">
                 {foreach $lists as $l}
-                <option value="{$l.id}" {if $item.list_id == $l.id}selected="selected"{/if}>{$l.name|escape}</option>
+                    <option value="{$l.id}" {if $item.list_id == $l.id}selected="selected"{/if}>{$l.name|escape|truncate:32}</option>
                 {/foreach}
                 </select>
                 <input type="hidden" name="item[list_id]" value="{$item.list_id}"/>

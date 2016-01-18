@@ -193,6 +193,10 @@ input#pl-new-list-input,
 .pl-list-favorite { margin-right: 0 !important; padding-right: 3px !important; }
 .pl-list-sort { display: inline-block !important; }
 .pl-list-sort-dropdown { display: none !important; }
+.pl-list-access { padding-left: 6px !important; }
+.pl-list-access:hover { background: transparent !important; }
+.pl-list-access img { width: 32px; height: 32px; margin-top: 4px; }
+.pl-list-access p { margin-bottom: 3px; margin-top: 4px; line-height: 1.2em; }
 
 .pl-due-overdue { color: red; }
 .pl-due-today { color: #ca0; }
@@ -229,7 +233,7 @@ input#pl-new-list-input,
 .pl-attachments { padding-left: 0; }
 .pl-attachments li { padding-top: 10px !important; margin-bottom: 3px !important; list-style: none; word-break: break-all; }
 .pl-attachments li a { display: inline !important; }
-.pl-attachments li img { max-width: 100%; max-height: 200px; }
+.pl-attachments li img { max-width: 100%; max-height: 300px; }
 .pl-attachments li i.icon16 { margin-left: -4px; }
 .pl-attachments li label { background: #eee; border-radius: 10px; padding: 4px 6px; font-size: 0.9em; color: #aaa; }
 .pl-attachments li label input[type="checkbox"] { margin-top: -4px; }
