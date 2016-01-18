@@ -38,6 +38,7 @@ class pocketlistsListAction extends waViewAction
             $this->view->assign('count_items_done', $count_done);
             $this->view->assign('count_items_undone', $count_undone);
             $this->view->assign('new', false);
+            $this->view->assign('attachments_path', wa()->getDataUrl('attachments/', true));
         } else {
             $this->view->assign('archive', $archived);
             $this->view->assign('new', true);
