@@ -1,6 +1,7 @@
 <div class="fields form width100px">
 <form method="post" id="pl-item-details-form" action="?module=item&action=data" target="pl-item-details-form-iframe" enctype="multipart/form-data">
     <input type="hidden" name="item[id]" value="{$item.id}"/>
+    <input type="hidden" id="pl-item-list-id" value="{$item.list_id}"/>
     <!-- core -->
     <div class="field-group">
         <div class="field">
@@ -93,8 +94,8 @@
     </div>
 
 
-    <div class="field-group" id="pl-assigned-contact">
-        <div class="field">
+    <div class="field-group">
+        <div class="field" id="pl-assigned-contact">
             <div class="name">[`Assigned to`]</div>
             <div class="value no-shift">
                 <span>
@@ -143,7 +144,7 @@
                 </select>
                 <select id="pl-item-list">
                 {foreach $lists as $l}
-                <option value="{$list.id}" {if $item.list_id == $l.id}selected="selected"{/if}>{$l.name|escape}</option>
+                <option value="{$l.id}" {if $item.list_id == $l.id}selected="selected"{/if}>{$l.name|escape}</option>
                 {/foreach}
                 </select>
                 <input type="hidden" name="item[list_id]" value="{$item.list_id}"/>
