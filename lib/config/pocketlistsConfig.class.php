@@ -47,7 +47,8 @@ class pocketlistsConfig extends waAppConfig
                 case 'list_created':
                     $list = json_decode($log_entry['params'], true);
                     $list_url = $app_url.'#/pocket/'.$list['pocket_id'].'/list/'.$list['id'].'/';
-                    $logs[$log_id]['params_html'] .= "<a href=\"{$list_url}\">{$list['name']}</a>";
+                    $list_name = htmlspecialchars($list['name'], ENT_QUOTES);
+                    $logs[$log_id]['params_html'] .= "<a href=\"{$list_url}\">{$list_name}</a>";
                     break;
                 case 'list_deleted':
                     break;
@@ -55,7 +56,8 @@ class pocketlistsConfig extends waAppConfig
                     $lm = new pocketlistsListModel();
                     $list = $lm->getById($log_entry['params']);
                     $list_url = $app_url.'#/pocket/'.$list['pocket_id'].'/list/'.$list['id'].'/';
-                    $logs[$log_id]['params_html'] .= "<a href=\"{$list_url}\">{$list['name']}</a>";
+                    $list_name = htmlspecialchars($list['name'], ENT_QUOTES);
+                    $logs[$log_id]['params_html'] .= "<a href=\"{$list_url}\">{$list_name}</a>";
                     break;
             }
         }
