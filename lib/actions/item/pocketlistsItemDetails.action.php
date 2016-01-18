@@ -21,6 +21,12 @@ class pocketlistsItemDetailsAction extends waViewAction
             $this->view->assign('attachments_path', wa()->getDataUrl('attachments/'.$item['id'].'/', true));
             $this->view->assign('attachments', $attachments);
             $this->view->assign('contacts', $contacts);
+
+            $pm = new pocketlistsPocketModel();
+            $this->view->assign('pockets', $pm->getAllPockets(wa()->getUser()->getId()));
+
+            $this->view->assign('list', $list);
+            $this->view->assign('lists', $lm->getLists($list['pocket_id']));
         }
     }
 }

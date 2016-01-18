@@ -542,6 +542,9 @@
         };
         // update item
         var updateItem = function ($form, callback) {
+            var item_list_id = $form.find('#pl-item-list-id').val(),
+                item_list_id_new = $form.find('[name="item\[list_id\]"]').val();
+
             var afterUpdateItem = function(html, callback) {
                 $.pocketlists.updateAppCounter();
                 $.pocketlists.$loading.remove();
@@ -550,37 +553,43 @@
                 if (o.list) {
                     var priority = 0,
                         list_priority = 0,
-                        priority_class = '';
+                        $list_count = $('#pl-lists').find('[data-pl-list-id="' + o.list.list_id + '"] span.count');
+
+                    var priority_class = {
+                            'green': 1, 'pl-green': 1, 'pl-due-tomorrow': 1,
+                            'yellow': 2, 'pl-yellow': 2, 'pl-due-today': 2,
+                            'red': 3, 'pl-red': 3, 'pl-due-overdue': 3,
+                            'none': 0, 'pl-none':0, 'pl-due-someday': 0, 'undefined': 0
+                        },
+                        class_priority = {
+                            1: ' indicator green', 2: ' indicator yellow', 3: ' indicator red', 0: ''
+                        };
+
+                    // item moved to another
+                    if (item_list_id != item_list_id_new) {
+                        removeItem($form.find('input[name="item\[id\]"]').val());
+                        updateListCountBadge();
+
+                        // update other list count && indicator color
+                        var $other_list_count = $('#pl-lists').find('[data-pl-list-id="' + item_list_id_new + '"] span.count'),
+                            other_list_count = parseInt($other_list_count.text()),
+                            other_list_class = $other_list_count.attr('class').match(/count\sindicator\s(.+)/),
+                            item_priority_class = $(html).find('.pl-done').attr('class').match(/pl-done\s(pl-.+)/);
+
+                        $other_list_count.text(++other_list_count);
+                        $other_list_count.removeClass().addClass('count' + class_priority[Math.max((other_list_class ? priority_class[other_list_class[1]] : 0), (item_priority_class ? priority_class[item_priority_class[1]] : 0))]);
+                    }
+
                     $.each(getItems(), function () {
                         priority = Math.max(priority, this.priority);
                     });
                     // don't forget about list priority
                     var $list_due = o.list.$el.find('.pl-list-due');
                     if ($list_due.length) {
-                        switch ($list_due.attr('class').match(/pl-list-due\s(pl-.*)/)[1]) {
-                            case 'pl-due-tomorrow':
-                                list_priority = 1;
-                                break;
-                            case 'pl-due-today':
-                                list_priority = 2;
-                                break;
-                            case 'pl-due-overdue':
-                                list_priority = 3;
-                                break;
-                        }
+                        list_priority = priority_class[$list_due.attr('class').match(/pl-list-due\s(pl-.*)/)[1]];
                     }
-                    switch (Math.max(priority, list_priority)) {
-                        case 1:
-                            priority_class = ' indicator green';
-                            break;
-                        case 2:
-                            priority_class = ' indicator yellow';
-                            break;
-                        case 3:
-                            priority_class = ' indicator red';
-                            break;
-                    }
-                    $('#pl-lists').find('[data-pl-list-id="' + o.list.list_id + '"] span.count').removeClass().addClass('count' + priority_class);
+
+                    $list_count.removeClass().addClass('count' + class_priority[Math.max(priority, list_priority)]);
                 }
                 $.isFunction(callback) && callback.call();
             };
@@ -1090,6 +1099,7 @@
                             onSubmit: function (d) {
                                 $.post('?module=item&action=delete', {id: id}, function (r) {
                                     if (r.status === 'ok') {
+                                        removeItem(r.data.id);
                                         $list_items_wrapper.find('[data-id="' + r.data.id + '"]').remove();
                                         d.trigger('close');
                                         hideItemDetails();
@@ -1112,7 +1122,28 @@
                     .on('show.pl2', function(e, id){
                         showItemDetails(id);
                     })
-                    .on('hide.pl2', hideItemDetails);
+                    .on('hide.pl2', hideItemDetails)
+                    .on('change', '#pl-item-pocket', function() {
+                        var pocket_id =  $(this).find(':selected').val();
+
+                        $(this).after($.pocketlists.$loading);
+                        $.get('?module=json&action=getLists&id=' + pocket_id, function (r) {
+                            $.pocketlists.$loading.remove();
+                            if (r.status === 'ok') {
+                                var options = '';
+                                $.each(r.data, function () {
+                                    options += '<option value="' + this.id + '">' + this.name + '</option>';
+                                });
+                                $('#pl-item-list').html(options).trigger('change');
+                            }
+                        }, 'json')
+                    })
+                    .on('change', '#pl-item-list', function() {
+                        var item_id = $(this).find(':selected').val();
+                        if (item_id) {
+                            $wrapper.find('input[name="item\[list_id\]"]').val(item_id);
+                        }
+                    });
 
                 $(window).scroll(function() {
                     stickyDetailsSidebar();
