@@ -45,6 +45,7 @@
         {if $item.status != 1}
             {if !empty($item.assigned_contact_id)}<strong class="hint"><br>{sprintf('[`Assigned to %s`]', {$item.assigned_username|escape})}</strong>{/if}
             {* <i class="icon16 userpic20" style="background-image: url({$item.assigned_userpic})" alt="{$item.assigned_username|escape}"></i> *}
+            {if !empty($item.note)}<p class="hint">{$item.note|escape|nl2br}</p>{/if}
             {if !empty($item.attachments)}
               <ul class="pl-attachments">
                 {foreach $item.attachments as $attachment}
@@ -54,7 +55,6 @@
                 {/foreach}
               </ul>
             {/if}
-            {if !empty($item.note)}<p class="hint">{$item.note|escape|nl2br}</p>{/if}
         {/if}
     </label>
     <div class="pl-chat">
