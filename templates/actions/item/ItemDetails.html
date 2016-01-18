@@ -13,17 +13,20 @@
             <div class="value"><textarea name="item[note]" placeholder="[`Optional text note`]"{if $item.status == 1} disabled="disabled"{/if}>{$item.note|escape}</textarea></div>
         </div>
         <div class="field">
-            <div class="name">[`Attachment`]</div>
+            <div class="name">[`Attachments`]</div>
             <div class="value no-shift">
                 <input name="attachment" type="file" />
             </div>
             {if $attachments}
             <div class="value no-shift">
+                <ul class="pl-attachments">
                 {foreach $attachments as $attachment}
-                <div>
-                    <label>[`delete`] <input type="checkbox" name="attachment_delete[]" value="{$attachment.filename}"/></label>
-                    <a href="{$attachments_path}{$attachment.filename}" target="_blank">{$attachment.filename}</a></div>
+                    <li>
+                        <a href="{$attachments_path}{$attachment.filename}" target="_blank"><i class="icon16 download"></i>{$attachment.filename|truncate:128}</a>
+                        <label><input type="checkbox" name="attachment_delete[]" value="{$attachment.filename}"/> [`Delete`] </label>
+                    </li>
                 {/foreach}
+                </ul>
             </div>
             {/if}
         </div>
