@@ -19,5 +19,7 @@ class pocketlistsArchiveAction extends waViewAction
         $this->view->assign('lists', $lists);
         $this->view->assign('list_id', $list_id);
         $this->view->assign('archive', true);
+
+        $this->view->assign('attachments_path', wa()->getDataUrl('attachments/', true));
     }
 }
