@@ -236,8 +236,8 @@
         };
         var deleteList = function() {
             $dialog_delete.waDialog({
-                'height': '150px',
-                'min-height': '150px',
+                'height': '200px',
+                'min-height': '200px',
                 'width': '400px',
                 onLoad: function () {},
                 onSubmit: function (d) {
