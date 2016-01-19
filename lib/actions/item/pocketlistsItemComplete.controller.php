@@ -1,4 +1,4 @@
-<?php
+x<?php
 
 class pocketlistsItemCompleteController extends pocketlistsComplete
 {
@@ -11,6 +11,7 @@ class pocketlistsItemCompleteController extends pocketlistsComplete
 
         if ($id > 0) { // complete item/items
             $item = $im->getById($id);
+            // todo: use pocketlistsHelper::getItemChildIds ???
             if ($item['has_children']) {
                 $tree = $im->getAllByList($item['list_id'], $id);
                 $this->changeComplete($item['id'], $tree[$item['id']], $status, $im);

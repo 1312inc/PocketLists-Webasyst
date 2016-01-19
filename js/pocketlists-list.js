@@ -1049,7 +1049,14 @@
                     stepMonths: 1,
                     numberOfMonths: 1,
                     gotoCurrent: true,
-                    constrainInput: false
+                    constrainInput: false,
+                    onClose: function() {
+                        if ($wrapper.find('#pl-item-due-datetime').val()) {
+                            $wrapper.find('#pl-item-due-datetime-set').show();
+                        } else {
+                            $wrapper.find('#pl-item-due-datetime-set, #pl-item-due-datetime-hours, #pl-item-due-datetime-minutes, #pl-item-due-datetime-clear').hide()
+                        }
+                    }
                 };
 
                 $wrapper.find('#pl-item-due-datetime').datepicker(datepicker_options);
