@@ -65,7 +65,7 @@
                         <p class="small"><br><em><i class="icon10 exclamation"></i> [`Daily recap notifications require CRON to be configured, which is not the case for your Pocket Lists app. Cron the following command to run daily:`]</em></p>
                         <p class="small"><span class="highlighted">{$cron_command}</span></p>
                     {else}
-                        <p class="small"><br><em><i class="icon10 yes"></i> [`We’ll keep you up to date! And when there is nothing planned for the upcoming period, no alerts will be sent.`]</em></p>
+                        <p class="small"><br><em><i class="icon10 yes"></i> [`We’ll keep you up to date and notify you on what’s up next! And when there is nothing planned for the upcoming period, no alerts will be sent.`] <span class="gray">{sprintf('[`Last Cron execution time: %s`]', $last_recap_cron_time|wa_datetime:'humandatetime')}</span></em></p>
                     {/if}
                     </div>
                 </div>
