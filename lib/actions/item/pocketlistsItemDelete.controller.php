@@ -2,8 +2,6 @@
 
 class pocketlistsItemDeleteController extends waJsonController
 {
-    private $delete_ids = array();
-
     public function execute()
     {
         $id = waRequest::post('id', 0, waRequest::TYPE_INT);
@@ -11,34 +9,24 @@ class pocketlistsItemDeleteController extends waJsonController
         if ($id) {
             $im = new pocketlistsItemModel();
             $item = $im->getById($id);
+
+            $delete_ids = array();
             if ($item['has_children']) {
                 $tree = $im->getAllByList($item['list_id'], $id);
-                $this->getDeleteArray($item['id'], $tree[$item['id']]);
+                pocketlistsHelper::getItemChildIds($item['id'], $tree[$item['id']], $delete_ids);
             } else {
-                $this->getDeleteArray($item['id'], array('id' => $item['id'], 'childs' => array()));
+                pocketlistsHelper::getItemChildIds($item['id'], array('id' => $item['id'], 'childs' => array()), $delete_ids);
             }
             $lm = new pocketlistsItemModel();
-            $lm->deleteById(array_values($this->delete_ids));
+            $lm->deleteById($delete_ids);
 
             // delete all attachments
             $am = new pocketlistsAttachmentModel();
-            $am->delete(array_values($this->delete_ids));
+            $am->delete($delete_ids);
 
             $this->response = array('id' => $item['id']);
         } else {
             $this->errors = 'no item error';
-        }
-    }
-
-    /**
-     * @param $item_id int
-     * @param $item array
-     */
-    private function getDeleteArray($item_id, $item)
-    {
-        $this->delete_ids[] = $item['id'];
-        foreach ($item['childs'] as $i) {
-            $this->getDeleteArray($item_id, $i);
         }
     }
 }

@@ -542,7 +542,8 @@
         };
         // update item
         var updateItem = function ($form, callback) {
-            var item_list_id = $form.find('#pl-item-list-id').val(),
+            var item_id = $form.find('#pl-item-list-id').val(),
+                item_list_id = $form.find('#pl-item-list-id').val(),
                 item_list_id_new = $form.find('[name="item\[list_id\]"]').val();
 
             var afterUpdateItem = function(html, callback) {
@@ -567,17 +568,22 @@
 
                     // item moved to another
                     if (item_list_id != item_list_id_new) {
-                        removeItem($form.find('input[name="item\[id\]"]').val());
-                        updateListCountBadge();
-
                         // update other list count && indicator color
                         var $other_list_count = $('#pl-lists').find('[data-pl-list-id="' + item_list_id_new + '"] span.count'),
                             other_list_count = parseInt($other_list_count.text()),
+                            other_list_priority = 0,
                             other_list_class = $other_list_count.attr('class').match(/count\sindicator\s(.+)/),
-                            item_priority_class = $(html).find('.pl-done').attr('class').match(/pl-done\s(pl-.+)/);
+                            other_list_items = getItems($('<div>').html($current_item));
 
-                        $other_list_count.text(++other_list_count);
-                        $other_list_count.removeClass().addClass('count' + class_priority[Math.max((other_list_class ? priority_class[other_list_class[1]] : 0), (item_priority_class ? priority_class[item_priority_class[1]] : 0))]);
+                        $.each(other_list_items, function () {
+                            other_list_priority = Math.max(other_list_priority, this.priority);
+                        });
+
+                        $other_list_count.text(other_list_count + other_list_items.length);
+                        $other_list_count.removeClass().addClass('count' + class_priority[Math.max(other_list_priority, (other_list_class ? priority_class[other_list_class[1]] : 0))]);
+
+                        removeItem($form.find('input[name="item\[id\]"]').val());
+                        updateListCountBadge();
                     }
 
                     $.each(getItems(), function () {
@@ -620,9 +626,10 @@
             _iframePost($form, callback);
         };
         // get all items list
-        var getItems = function () {
+        var getItems = function ($items_wrapper) {
+            $items_wrapper = $items_wrapper || $undone_items_wrapper;
             var data = [];
-            $undone_items_wrapper.find(item_selector).each(function (i) {
+            $items_wrapper.find(item_selector).each(function (i) {
                 var $this = $(this),
                     color = $this.find('.pl-done').length ? $this.find('.pl-done').attr('class').match(/pl-done\s(pl-.*)/) : null,
                     priority = 0;
