@@ -533,11 +533,32 @@
 
                     $new_item_input.val('').trigger('focus').css('height', 'auto').data('can_blur', true);
 
-                    $.isFunction(callback) && callback.call($this);
+                    // update calendar date with new dot
+                    var $calendar = $('.pl-calendar');
+                    if (!o.list && $calendar.length) {
+                        $.get('?module=json&action=getItemsPocketColor&id=' + parseInt($html.data('id')), function (r) {
+                            if (r.status === 'ok') {
+                                var $selected_date = $calendar.find('.pl-selected').length ? $calendar.find('.pl-selected') : $calendar.find('.pl-today'),
+                                    $dots_wrapper = $selected_date.find('.pl-dots'),
+                                    $new_dot = $('<i class="icon10 color pl-dark-' + r.data + '">');
+
+                                if (!$dots_wrapper.length) {
+                                    $dots_wrapper = $('<div class="pl-dots">');
+                                    $selected_date.append($dots_wrapper);
+                                }
+
+                                if ($dots_wrapper.find('i').not('.pl-dark-none').length < 3) {
+                                    $dots_wrapper.append($new_dot);
+                                }
+                            }
+                        }, 'json');
+                    }
 
                     hideEmptyListMessage();
                     updateListCountBadge();
                     updateSort();
+
+                    $.isFunction(callback) && callback.call($this);
                 }
             );
         };
@@ -715,6 +736,22 @@
                                 updateListCountBadge();
 
                                 $show_logbook_items.show().find('i').text($_('Show all ' + $done_items_wrapper.find('[data-id]').length + ' completed to-dos')); // update "complete items" heading
+
+                                //var $calendar = $('.pl-calendar');
+                                //if (!o.list && $calendar.length) {
+                                //    var $selected_date = $calendar.find('.pl-selected'),
+                                //        $dots_wrapper = $selected_date.find('.pl-dots'),
+                                //        $new_dot = $('<i class="icon10 color pl-dark-none">');
+                                //
+                                //    if (!$dots_wrapper.length) {
+                                //        $dots_wrapper = $('<div class="pl-dots">');
+                                //        $selected_date.append($dots_wrapper);
+                                //    }
+                                //
+                                //    if ($dots_wrapper.find('.pl-dark-none').length < 3) {
+                                //        $dots_wrapper.prepend($new_dot);
+                                //    }
+                                //}
 
                                 showEmptyListMessage();
 
