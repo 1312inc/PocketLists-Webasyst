@@ -405,6 +405,7 @@
                         if (r.status === 'ok') {
                             $.pocketlists.updateAppCounter();
                             $.wa.setHash('#/pocket/' + pocket_id + '/list/' +  list_id + '/');
+                            $.pocketlists.highlightSidebar();
                         } else {
                         }
                     }, 'json');
