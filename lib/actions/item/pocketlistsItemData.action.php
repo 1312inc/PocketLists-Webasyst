@@ -5,18 +5,32 @@ class pocketlistsItemDataAction extends waViewAction
     public function execute()
     {
         if (waRequest::getMethod() == 'post') {
-            $item = waRequest::post('item', array(), waRequest::TYPE_ARRAY);
-            if ($item) {
-                $this->saveAttachment($item);
-                $this->deleteAttachments($item);
-                $im = new pocketlistsItemModel();
+            $item_new_data = waRequest::post('item', array(), waRequest::TYPE_ARRAY);
+            $im = new pocketlistsItemModel();
+            $item_from_db = $im->getById($item_new_data['id']);
+            if ($item_new_data && $item_from_db) {
+                $item_new_data['id'] = $item_from_db['id'];
 
-                pocketlistsHelper::getDueDatetime($item);
-                $item['assigned_contact_id'] = $item['assigned_contact_id'] ? $item['assigned_contact_id'] : null;
-                $item['update_datetime'] = date("Y-m-d H:i:s");
-                $im->updateWithCalcPriority($item['id'], $item);
+                // move item's children to another list
+                $move_ids = array();
+                if ($item_from_db['has_children'] && $item_from_db['list_id'] != $item_new_data['list_id']) {
+                    $tree = $im->getAllByList($item_from_db['list_id'], true);
+                    pocketlistsHelper::getItemChildIds($item_new_data['id'], $tree[$item_new_data['id']], $move_ids);
+                    $im->updateById($move_ids, array(
+                        'list_id' =>  $item_new_data['list_id'],
+                        'update_datetime' => date("Y-m-d H:i:s")
+                    ));
+                }
+
+                $this->saveAttachment($item_new_data);
+                $this->deleteAttachments($item_new_data);
+
+                pocketlistsHelper::getDueDatetime($item_new_data);
+                $item_new_data['assigned_contact_id'] = $item_new_data['assigned_contact_id'] ? $item_new_data['assigned_contact_id'] : null;
+                $item_new_data['update_datetime'] = date("Y-m-d H:i:s");
+                $im->updateWithCalcPriority($item_new_data['id'], $item_new_data);
                 $this->view->assign('attachments_path', wa()->getDataUrl('attachments/', true));
-                $this->view->assign('item', $im->getById($item['id']));
+                $this->view->assign('item', $im->getById($item_new_data['id']));
             }
         }
     }

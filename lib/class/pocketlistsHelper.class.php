@@ -103,4 +103,12 @@ class pocketlistsHelper
 
         return $due_status;
     }
+
+    public static function getItemChildIds($item_id, $item, &$return)
+    {
+        $return[] = $item['id'];
+        foreach ($item['childs'] as $i) {
+            self::getItemChildIds($item_id, $i, $return);
+        }
+    }
 }
