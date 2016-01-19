@@ -11,4 +11,5 @@ return array (
   'frontend' => true,
   'plugins' => false,
   'rights' => true,
+  'sash_color' => '#2aabfc'
 );

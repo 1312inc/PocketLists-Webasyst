@@ -506,7 +506,7 @@ class pocketlistsItemModel extends waModel
                 FROM {$this->table} i
                 LEFT JOIN pocketlists_list l ON (l.id = i.list_id  OR l.id = i.key_list_id)
                 LEFT JOIN pocketlists_pocket p ON p.id = l.pocket_id
-                LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
+                LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:user_contact_id AND uf.item_id = i.id
                 WHERE
                   (
                     i.assigned_contact_id = i:contact_id AND i.status = 0
@@ -523,7 +523,10 @@ class pocketlistsItemModel extends waModel
                 ORDER BY
                   i.status,
                   (i.complete_datetime IS NULL), i.complete_datetime DESC";
-        $items = $this->query($q, array('contact_id' => $contact_id, 'pocket_ids' => $pockets))->fetchAll();
+        $items = $this->query($q, array(
+            'contact_id' => $contact_id,
+            'pocket_ids' => $pockets,
+            'user_contact_id' => wa()->getUser()->getId()))->fetchAll();
         $results = array(
             0 => array(),
             1 => array()

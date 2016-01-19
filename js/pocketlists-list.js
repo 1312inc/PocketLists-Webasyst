@@ -1130,11 +1130,11 @@
                         $.get('?module=json&action=getLists&id=' + pocket_id, function (r) {
                             $.pocketlists.$loading.remove();
                             if (r.status === 'ok') {
-                                var options = '';
+                                $('#pl-item-list').empty();
                                 $.each(r.data, function () {
-                                    options += '<option value="' + this.id + '">' + this.name + '</option>';
+                                    $('#pl-item-list').append($('<option value="' + this.id + '">').text(this.name));
                                 });
-                                $('#pl-item-list').html(options).trigger('change');
+                                $('#pl-item-list').trigger('change');
                             }
                         }, 'json')
                     })
@@ -1186,22 +1186,25 @@
                     completeItem($item, status);
                 }) // action: complete item
                 .on('change', '.pl-is-selected', function (e) {
-                    if (e.target)
                     var $this = $(this),
                         $item = $this.closest(item_selector),
-                        is_selected = ($current_item && $current_item.data('id') == $item.data('id')) ? true : false;
+                        is_selected = ($current_item && $current_item.data('id') == $item.data('id')) ? true : false,
+                        item_id = parseInt($item.data('id'));
+
                     e.preventDefault();
 
-                    if (!ItemDetails.isVisible() && !is_selected) { // on first click - select
-                        ItemDetails.trigger('hide.pl2');
-                        selectItem($item);
-                    } else if (!ItemDetails.isVisible()) { // on second - show details
-                        ItemDetails.trigger('show.pl2', [parseInt($item.data('id'))]); // show item details
-                        selectItem($item);
-                        //NewItemWrapper.hide();
-                    } else { // on third
-                        ItemDetails.trigger('hide.pl2');
-                        deselectItem();
+                    if (item_id) {
+                        if (!ItemDetails.isVisible() && !is_selected) { // on first click - select
+                            ItemDetails.trigger('hide.pl2');
+                            selectItem($item);
+                        } else if (!ItemDetails.isVisible()) { // on second - show details
+                            ItemDetails.trigger('show.pl2', [item_id]); // show item details
+                            selectItem($item);
+                            //NewItemWrapper.hide();
+                        } else { // on third
+                            ItemDetails.trigger('hide.pl2');
+                            deselectItem();
+                        }
                     }
                 }) // action: select item
                 .on('click', '.pl-edit', function (e) {
