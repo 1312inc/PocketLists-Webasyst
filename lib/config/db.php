@@ -67,6 +67,7 @@ return array(
     'pocketlists_list' => array(
         'id' => array('int', 11, 'null' => 0, 'autoincrement' => 1),
         'pocket_id' => array('int', 11, 'null' => 0),
+        'sort' => array('int', 11, 'null' => 0, 'default' => '0'),
         'type' => array('enum', "'checklist','notes'"),
         'icon' => array('varchar', 64),
         'archived' => array('tinyint', 1, 'default' => '0'),

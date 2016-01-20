@@ -85,13 +85,14 @@ class pocketlistsListModel extends waModel
                   MAX(i.priority) 'max_priority',
                   MIN(i.due_date) 'min_due_date',
                   MIN(i.due_datetime) 'min_due_datetime'
-                FROM pocketlists_list l
+                FROM {$this->table} l
                 LEFT JOIN pocketlists_item i ON i.list_id = l.id AND i.status = 0
                 LEFT JOIN pocketlists_item i2 ON i2.key_list_id = l.id
                 WHERE
                   l.archived = i:archived
                   {$select_pocket}
-                GROUP BY l.id";
+                GROUP BY l.id
+                ORDER BY l.sort";
 
         $lists = $this->query(
             $sql,

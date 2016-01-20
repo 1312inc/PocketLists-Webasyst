@@ -4,12 +4,13 @@ class pocketlistsListSortController extends waJsonController
 {
     public function execute()
     {
-        $list_id = waRequest::post('list_id', 0, waRequest::TYPE_INT);
+        $data = waRequest::post('data', false);
 
-        if ($list_id) {
-
-            $im = new pocketlistsItemModel();
-            $items = $im->sortItems($list_id);
+        if ($data) {
+            $lm = new pocketlistsListModel();
+            foreach ($data as $list) {
+                $lm->updateById($list['id'], array('sort' => $list['sort']));
+            }
         }
     }
 }
