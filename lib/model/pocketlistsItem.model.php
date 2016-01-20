@@ -354,6 +354,9 @@ class pocketlistsItemModel extends waModel
         $am = new pocketlistsAttachmentModel();
         $item['attachments'] = $am->getByField('item_id', $item['id'], true);
 
+        $cm = new pocketlistsCommentModel();
+        $item['chat'] = $cm->getByField('item_id', $item['id'], true);
+
         $this->updatePriority($item);
 
         return $item;

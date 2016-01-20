@@ -57,7 +57,8 @@
             {/if}
         {/if}
     </label>
-    <div class="pl-chat">
+    <div class="pl-chat" {if empty($item.chat)} style="display:none;"{/if}>
+        {if $item.chat}
         <div class="pl-cue">
             <div class="pl-cue-inner">
                 <div class="pl-bubble">
@@ -94,6 +95,7 @@
                 <span class="hint">Today 13:40</span>
             </div>
         </div>
+        {/if}
         <div class="pl-reply">
             <i class="icon16 userpic20"></i>
             <textarea placeholder="[`Add comment`]"></textarea>
