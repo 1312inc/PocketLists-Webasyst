@@ -17,7 +17,7 @@ class pocketlistsPocketModel extends waModel
             $where_ids = 'WHERE id IN (i:access_id)';
         }
 
-        $sql = "SELECT * FROM {$this->table} {$where_ids} ORDER BY id ASC ";
+        $sql = "SELECT * FROM {$this->table} {$where_ids} ORDER BY sort ASC ";
         return $this->query($sql, array(
             'access_id' => $accessed_pockets
         ))->fetchAll();

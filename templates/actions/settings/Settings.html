@@ -132,12 +132,14 @@
                         [`Pockets`]
                     </div>
                     <div class="value">
-                        <ul class="zebra menu-v with-icons pl-pocket-settings" style="max-width: 250px;">
+                        <ul class="zebra menu-v with-icons pl-pocket-settings" style="max-width: 250px;" id="pl-pockets">
                             {foreach $pockets as $p}
                             <li>
                                 <a href="#" data-pl-pocket-id="{$p.id}"><i class="icon16 color pl-dark-{$p.color|default:'none'}"></i><span>{$p.name|escape}</span></a>
                             </li>
                             {/foreach}
+                        </ul>
+                        <ul class="zebra menu-v with-icons pl-pocket-settings" style="max-width: 250px;">
                             <li class="top-padded" style="background: #fff;">
                                 <a href="#" class="small"><i class="icon10 add"></i>[`New pocket`]</a>
                             </li>
@@ -204,6 +206,51 @@
             var list_id = $(this).find(':selected').val();
             if (list_id) {
                 $('[name="stream_inbox_list"]').val(list_id);
+            }
+        });
+
+        var $pocket_wrapper = $('#pl-pockets');
+        $pocket_wrapper.sortable({
+            item: 'li',
+            distance: 5,
+            placeholder: 'pl-pocket-placeholder',
+            tolerance: 'pointer',
+            start: function(e, ui ){
+                ui.placeholder.height(ui.helper.outerHeight());
+            },
+            stop: function (event, ui) {
+                var getPockets = function () {
+                    var data = [];
+                    $pocket_wrapper.find('li').each(function (i) {
+                        var $this = $(this).find('a'),
+                            color = $this.find('i').attr('class').match(/icon16\scolor\spl-dark-(.*)/);
+                        debugger;
+                        data.push({
+                            id: $this.data('pl-pocket-id'),
+                            sort: i,
+                            color: color[1]
+                        });
+                    });
+                    return data;
+                };
+
+                var updateSort = function () {
+                    $.post(
+                            '?module=pocket&action=sort',
+                            {
+                                data: getPockets()
+                            },
+                            function (r) {
+                                if (r.status === 'ok') {
+                                } else {
+                                    alert(r.errors);
+                                }
+                            },
+                            'json'
+                    );
+                };
+
+                updateSort();
             }
         });
     }());
