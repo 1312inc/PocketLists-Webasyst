@@ -44,7 +44,7 @@
                     <select name="list[due_datetime_minutes]" class="pl-due-date-input" type="text" id="pl-list-due-datetime-minutes" value="{$minutes}" {if empty($list.due_datetime)}style="display: none;" disabled="disabled"{/if}>
                         {for $i=0 to 59 step 5}{$m = "%02d"|sprintf:$i}<option value="{$m}" {if $m == $minutes}selected="selected"{/if}>{$m}</option>{/for}
                     </select>
-                    <a href="#" id="pl-list-due-datetime-set" class="small inline-link" {if !empty($list.due_datetime)}style="display: none;"{/if}><b><i>[`Set time`]</i></b></a>
+                    <a href="#" id="pl-list-due-datetime-set" class="small inline-link" {if empty($list.due_date) || !empty($list.due_datetime)}style="display: none;"{/if}><b><i>[`Set time`]</i></b></a>
                     <a href="#" id="pl-list-due-datetime-clear" class="small inline-link" {if empty($list.due_datetime)}style="display: none;"{/if}><b><i>[`Clear time`]</i></b></a>
                 </span>
             </div>

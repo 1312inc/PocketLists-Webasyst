@@ -84,7 +84,17 @@
                     stepMonths: 1,
                     numberOfMonths: 1,
                     gotoCurrent: true,
-                    constrainInput: false
+                    constrainInput: false,
+                    dateFormat: "yy-mm-dd",
+                    onClose: function() {
+                        if ($wrapper.find('#pl-list-due-datetime').val()) {
+                            if (!$wrapper.find('#pl-list-due-datetime-clear').is(':visible')) {
+                                $wrapper.find('#pl-list-due-datetime-set').show();
+                            }
+                        } else {
+                            $wrapper.find('#pl-list-due-datetime-set, #pl-list-due-datetime-hours, #pl-list-due-datetime-minutes, #pl-list-due-datetime-clear').hide()
+                        }
+                    }
                 };
 
                 $wrapper.find('#pl-list-due-datetime').datepicker(datepicker_options);
@@ -1088,9 +1098,12 @@
                     numberOfMonths: 1,
                     gotoCurrent: true,
                     constrainInput: false,
+                    dateFormat: "yy-mm-dd",
                     onClose: function() {
                         if ($wrapper.find('#pl-item-due-datetime').val()) {
-                            $wrapper.find('#pl-item-due-datetime-set').show();
+                            if (!$wrapper.find('#pl-item-due-datetime-clear').is(':visible')) {
+                                $wrapper.find('#pl-item-due-datetime-set').show();
+                            }
                         } else {
                             $wrapper.find('#pl-item-due-datetime-set, #pl-item-due-datetime-hours, #pl-item-due-datetime-minutes, #pl-item-due-datetime-clear').hide()
                         }
