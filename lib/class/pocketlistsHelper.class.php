@@ -71,9 +71,9 @@ class pocketlistsHelper
             !empty($date['due_datetime_hours']) &&
             !empty($date['due_datetime_minutes'])
         ) {
-            $date['due_datetime'] = waDateTime::parse(
-                'datetime',
-                $date['due_date'] . " " . $date['due_datetime_hours'] . ":" . $date['due_datetime_minutes'] . ":00"
+            $date['due_datetime'] = waDateTime::date(
+                "Y-m-d H:i:s",
+                strtotime($date['due_date'] . " " . $date['due_datetime_hours'] . ":" . $date['due_datetime_minutes'] . ":00")
             );
             unset($date['due_datetime_hours']);
             unset($date['due_datetime_minutes']);
