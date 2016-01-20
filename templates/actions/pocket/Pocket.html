@@ -109,7 +109,7 @@
     (function(){
         var $lists_wrapper = $('#pl-lists').find('.pl-lists');
         $lists_wrapper.sortable({
-            item: $('[data-pl-list-id]'),
+            item: '[data-pl-list-id]',
             distance: 5,
             placeholder: 'pl-list-placeholder',
             tolerance: 'pointer',
@@ -121,11 +121,11 @@
                     var data = [];
                     $lists_wrapper.find('[data-pl-list-id]').each(function (i) {
                         var $this = $(this),
-                            color = $this.attr('class').match(/(pl-.*)/)[1];
+                            color = $this.attr('class').match(/pl-(.*)/);
                         data.push({
                             id: $this.data('pl-list-id'),
                             sort: i,
-                            color: color
+                            color: color[1]
                         });
                     });
                     return data;
