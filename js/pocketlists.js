@@ -79,6 +79,32 @@
                 $('title').html(title + " &mdash; " + self.options.account_name);
             }
         },
+        stickyDetailsSidebar: function() {
+            var list_top_offset = $('#pl-list-content').offset().top,
+                _viewport_top_offset = $(window).scrollTop(),
+                _window_height = $(window).height(),
+                $el = $('.pl-details');
+
+            if ($el.find('.fields form').height() > _window_height) {
+                return;
+            }
+
+            if (_viewport_top_offset > list_top_offset) {
+                $el.addClass('sticky');
+                var _viewport_bottom_offset = $(document).height() - _window_height - _viewport_top_offset;
+
+                $el.css('bottom', Math.max(0, 16-_viewport_bottom_offset)+'px');
+
+            } else {
+                $el.removeClass('sticky');
+            }
+        },
+        resizeTextarea: function ($textarea) {
+            if ($textarea.is(':visible')) {
+                $textarea.css('height', 'auto');
+                $textarea.css('height', ($textarea.get(0).scrollHeight - parseInt($textarea.css('padding-top')) - parseInt($textarea.css('padding-bottom'))) + 'px');
+            }
+        },
         init: function (o) {
             $.pocketlists_routing.init();
 

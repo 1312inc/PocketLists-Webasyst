@@ -174,7 +174,7 @@ input#pl-new-list-input,
     top: -1px;
     outline: 0 none;
 }
-.pl-chat textarea { background: #fff; margin-left: 5px; }
+.pl-chat textarea { background: #fff;margin-left: 5px;}
 .pl-items { position: relative; min-height: 400px; }
 .pl-items.content.left300px { margin-left: 299px; }
 
@@ -254,7 +254,7 @@ input#pl-new-list-input,
 .pl-attachments li label { background: #eee; border-radius: 10px; padding: 4px 6px; font-size: 0.9em; color: #aaa; }
 .pl-attachments li label input[type="checkbox"] { margin-top: -4px; }
 
-.pl-chat { display: none; padding: 13px 25px 15px 49px; }
+.pl-chat {/* display: none; */ padding: 13px 25px 15px 49px;}
 .pl-item-selected .pl-chat { display: block; }
 .pl-chat .pl-cue { margin-bottom: 10px; width: 100%; }
 .pl-chat .pl-cue .pl-cue-inner { width: 70%; font-size: 0.95em; }

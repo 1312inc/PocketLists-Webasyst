@@ -94,7 +94,6 @@
                         <option value="1" {if isset($settings.email_add_item) && $settings.email_add_item == 1}selected="selected"{/if}>[`to just any list`]</option>
                     </select>
                 </div>
-                {*
                 <div class="value no-shift">
                     <label>
                         <input value="1" type="checkbox" name="email_comment_item_on" {if !empty($settings.email_comment_item_on)}checked="checked"{/if}> [`When someone comments a to-do item`]
@@ -105,7 +104,6 @@
                         <option value="2" {if isset($settings.email_comment_item) && $settings.email_comment_item == 2}selected="selected"{/if}>[`in just any list`]</option>
                     </select>
                 </div>
-                *}
                 <div class="value no-shift">
                     <label>
                         <input value="1" type="checkbox" name="email_create_list_on" {if !empty($settings.email_create_list_on)}checked="checked"{/if}> [`When someone creates a new to-do list`]
