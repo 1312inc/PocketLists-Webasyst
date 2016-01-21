@@ -93,10 +93,12 @@
                 $el.addClass('sticky');
                 var _viewport_bottom_offset = $(document).height() - _window_height - _viewport_top_offset;
 
-                $el.css('bottom', Math.max(0, 16-_viewport_bottom_offset)+'px');
-
+                $el.css({
+                    bottom: Math.max(0, 16-_viewport_bottom_offset),
+                    right: 16
+                });
             } else {
-                $el.removeClass('sticky');
+                $el.removeClass('sticky').css('right', 0);
             }
         },
         resizeTextarea: function ($textarea) {
