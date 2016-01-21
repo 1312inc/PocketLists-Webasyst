@@ -804,9 +804,12 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                 })
                 .on('change', '#pl-item-list', function() {
                     var item_id = $(this).find(':selected').val();
-                    //if (item_id) {
-                        $wrapper.find('input[name="item\[list_id\]"]').val(item_id);
-                    //}
+                    $wrapper.find('input[name="item\[list_id\]"]').val(item_id);
+                    if (item_id) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
                 });
 
             $(window).scroll(function() {

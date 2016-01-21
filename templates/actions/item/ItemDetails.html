@@ -145,7 +145,7 @@
                     <option value="{$pocket.id}"{if $list.pocket_id == $pocket.id} selected="selected"{/if}>{$pocket.name|escape|truncate:32}</option>
                     {/foreach}
                 </select>
-                <select id="pl-item-list">
+                <select id="pl-item-list" {if !$list}style="display: none"{/if}>
                 {if !$list || $item.contact_id == $wa->user()->get('id')}<option value=""{if !$list} selected="selected"{/if}>[`None`]</option>{/if}
                 {foreach $lists as $l}
                     <option value="{$l.id}" {if $item.list_id == $l.id}selected="selected"{/if}>{$l.name|escape|truncate:32}</option>
