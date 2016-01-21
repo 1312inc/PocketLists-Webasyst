@@ -7,11 +7,12 @@
                 <span class="hint">{$item.complete_datetime|wa_datetime:'humandatetime'}</span>
                 <i class="icon16 userpic20" style="background-image: url({$item.complete_userpic})" alt="{$item.complete_username|escape}"></i>
                 {else}
-                <i class="icon16 userpic20"></i>
+                    <i class="icon16 userpic20"></i>
                 {/if}
+
             </span>
         {else}
-            {if $item.contact_id != $wa->user()->getId()}
+            {if $item.contact_id != $wa->user()->getId() || $item.list_id == NULL}
                 {* item author userpic *}
                 <span class="pl-author" title="{sprintf('%s by %s', $item.create_datetime|wa_datetime:'humandatetime', $item.username|default:'%username%'|escape)}"><i class="icon16 userpic20" style="background-image: url({$item.userpic})" alt="{$item.username|escape}"></i></span>
             {/if}
