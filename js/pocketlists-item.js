@@ -544,7 +544,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
             $textarea
                 .on('change cut keydown drop paste', function () {
                     window.setTimeout(function () {
-                        $.pocketlists.resizeTextarea($new_item_input)
+                        $.pocketlists.resizeTextarea($textarea)
                     }, 0);
                 })
                 .on('keydown', function (e) {
