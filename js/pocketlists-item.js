@@ -467,27 +467,37 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
             $current_item.find('.pl-chat').hide();
         }
     };
-    var resizeTextarea = function ($textarea) {
-        $textarea.css('height', 'auto');
-        $textarea.css('height', ($textarea.get(0).scrollHeight - parseInt($textarea.css('padding-top')) - parseInt($textarea.css('padding-bottom'))) + 'px');
-    };
     var addComment = function(data) {
-        if ($current_item.length) {
-            var item_id = $current_item.data('id');
-            $.post(
-                '?module=comment&action=add',
-                {
-                    item_id: item_id,
-                    comment: data.comment
-                },
-                function (r) {
-                    if (r.status === 'ok') {
+        var $this = $(this),
+            item_id = $this.closest(item_selector).data('id');
 
-                    }
-                },
-                'json'
-            );
-        }
+        $.post(
+            '?module=comment&action=add',
+            {
+                item_id: item_id,
+                comment: data.comment
+            },
+            function (r) {
+                if (r.status === 'ok') {
+                    var $reply_wrapper = $this.closest('.pl-reply'),
+                        $user_pic = $reply_wrapper.find('i').clone(),
+                        $my_reply = $('<div class="pl-cue pl-my-cue">')
+
+                    // todo: use template
+                    $my_reply.append(
+                        $('<div class="pl-cue-inner">').append(
+                            '<div class="pl-bubble">' + r.data.comment + '</div></div>',
+                            $user_pic,
+                            ' ' + r.data.username,
+                            ' <span class="hint">' + r.data.datetime + '</span>')
+                    );
+                    $this.closest('.pl-reply').before($my_reply);
+
+                    $this.val('').trigger('focus');
+                }
+            },
+            'json'
+        );
     };
 
     /**
@@ -532,7 +542,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
             $textarea
                 .on('change cut keydown drop paste', function () {
                     window.setTimeout(function () {
-                        resizeTextarea($new_item_input)
+                        $.pocketlists.resizeTextarea($new_item_input)
                     }, 0);
                 })
                 .on('keydown', function (e) {
@@ -893,7 +903,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
             .on('change cut keydown drop paste', '.pl-chat .pl-reply textarea', function () {
                 var $textarea = $(this);
                 window.setTimeout(function () {
-                    resizeTextarea($textarea)
+                    $.pocketlists.resizeTextarea($textarea)
                 }, 0);
             })
             .on('keydown', '.pl-chat .pl-reply textarea', function(e) {

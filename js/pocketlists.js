@@ -99,6 +99,12 @@
                 $el.removeClass('sticky');
             }
         },
+        resizeTextarea: function ($textarea) {
+            if ($textarea.is(':visible')) {
+                $textarea.css('height', 'auto');
+                $textarea.css('height', ($textarea.get(0).scrollHeight - parseInt($textarea.css('padding-top')) - parseInt($textarea.css('padding-bottom'))) + 'px');
+            }
+        },
         init: function (o) {
             $.pocketlists_routing.init();
 

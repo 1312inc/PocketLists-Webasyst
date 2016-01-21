@@ -354,8 +354,7 @@ class pocketlistsItemModel extends waModel
         $am = new pocketlistsAttachmentModel();
         $item['attachments'] = $am->getByField('item_id', $item['id'], true);
 
-        $cm = new pocketlistsCommentModel();
-        $item['chat'] = $cm->getByField('item_id', $item['id'], true);
+        $this->updateChat($item);
 
         $this->updatePriority($item);
 
@@ -368,6 +367,26 @@ class pocketlistsItemModel extends waModel
             pocketlistsHelper::calcPriorityOnDueDate($item['due_date'], $item['due_datetime']),
             isset($item['priority']) ? $item['priority'] : 0
         );
+    }
+
+    private function updateChat(&$item)
+    {
+        $cm = new pocketlistsCommentModel();
+        $chat = $cm->getByField('item_id', $item['id'], true);
+        $item['chat'] = array(
+            'current_user' => array(
+                'username' => wa()->getUser()->getName(),
+                'userpic' => wa()->getUser()->getPhoto(20),
+            ),
+            'comments' => array()
+        );
+        foreach ($chat as $comment) {
+            $item['chat']['comments'][$comment['id']] = $comment;
+            $comment_user = new waContact($comment['contact_id']);
+            $item['chat']['comments'][$comment['id']]['my'] = $comment['contact_id'] == wa()->getUser()->getId() ? true : false;
+            $item['chat']['comments'][$comment['id']]['username'] = $comment_user->getName();
+            $item['chat']['comments'][$comment['id']]['userpic'] = $comment_user->getPhoto('20');
+        }
     }
 
     private function getProperSort($items)

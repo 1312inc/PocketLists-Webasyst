@@ -57,49 +57,22 @@
             {/if}
         {/if}
     </label>
-    <div class="pl-chat" {if empty($item.chat)} style="display:none;"{/if}>
-        {if $item.chat}
-        <div class="pl-cue">
+    <div class="pl-chat" {if empty($item.chat.comments)} style="display:none;"{/if}>
+        {foreach $item.chat.comments as $comment}
+        <div class="pl-cue{if $comment.my} pl-my-cue{/if}">
             <div class="pl-cue-inner">
                 <div class="pl-bubble">
-                    Hi, I just downloaded your app. I do not understand how to create a sub-item, and there is no real "help" point that addresses this. Also, when I set something due for a day, it says "20 Jan"; how can I change this to "January 20"? Thanks.
+                    {$comment.comment|escape}
                     <!-- <span class="pl-bubble-arrow"></span> -->
                 </div>
-                <i class="icon16 userpic20"></i> username
-                <span class="hint">Today 13:40</span>
+                <i class="icon16 userpic20" style="background-image: url({$comment.userpic})" alt="{$comment.username|escape}"></i> {$comment.username|escape}
+                <span class="hint">{$comment.create_datetime|wa_datetime:'humandatetime'}</span>
             </div>
         </div>
-        <div class="pl-cue pl-my-cue">
-            <div class="pl-cue-inner">
-                <div class="pl-bubble">
-                  Hi, Thanks for using Pocket Lists!<br><br>
-
-    When inside a particular to-do list, swipe a to-do left or right to define hierarchy. Enable edit mode (tap on three-striped icon at the bottom) if you wish to move nested to-dos to other parents.<br><br>
-
-    Also, when adding to-dos, you may add spaces before to-do names (just a regular space symbol before the to-do name) which will automatically define hierarchy right at the moment of adding a to-do.<br><br>
-
-    For now there is no way to start adding new to-dos into the hierarchy (in the middle of the list), but we plan to integrate such ability in one of the next app updates.
-                    <!-- <span class="pl-bubble-arrow"></span> -->
-                </div>
-                <i class="icon16 userpic20"></i> username
-                <span class="hint">Today 13:50</span>
-            </div>
-        </div>
-        <div class="pl-cue">
-            <div class="pl-cue-inner">
-                <div class="pl-bubble">
-                    Thanks for getting back to me!
-                    <!-- <span class="pl-bubble-arrow"></span> -->
-                </div>
-                <i class="icon16 userpic20"></i> username
-                <span class="hint">Today 13:40</span>
-            </div>
-        </div>
-        {/if}
+        {/foreach}
         <div class="pl-reply">
-            <i class="icon16 userpic20"></i>
-            <textarea placeholder="[`Add comment`]"></textarea>
+            <i class="icon16 userpic20" style="background-image: url({$item.chat.current_user.userpic})" alt="{$item.chat.current_user.username|escape}"></i>
+            <textarea rows="1" placeholder="[`Add comment`]"></textarea>
         </div>
-
     </div>
 </div>
