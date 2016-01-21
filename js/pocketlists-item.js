@@ -291,14 +291,14 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                             if (status) {
                                 if ($done_items_wrapper.length) {
                                     $done_items_wrapper.prepend($item);
+                                    $item.show();
                                 }
                                 $item.find('.pl-reply').hide();
                             } else {
-                                $undone_items_wrapper.append($item);
+                                $undone_items_wrapper.append($item.show());
                                 $item.find('.pl-reply').show();
                                 updateSort();
                             }
-                            $item.show();
 
                             // always update list count icon
                             updateListCountBadge();
