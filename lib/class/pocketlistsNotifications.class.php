@@ -53,7 +53,14 @@ class pocketlistsNotifications
                     foreach ($items as $item) { // filter items according to settings
                         if ($item['contact_id'] == $user_id && // created by mine
                             $item['complete_contact_id'] != $user_id && // completed not by me
-                            ($item['list_id'] || (isset($item['assigned_contact_id']) && $item['list_id'] == null && $item['assigned_contact_id'] == $user_id)) // not from NULL-list OR from NULL-list, but assigned to this user
+                            (
+                                $item['list_id'] || ( // not from NULL-list
+                                    $item['list_id'] == null && ( // OR from NULL-list,
+                                        isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id || // but assigned to this user
+                                        $item['contact_id'] == $user_id // OR created by user
+                                    )
+                                )
+                            )
                         ) {
                             $filtered_items[$item['id']] = $item;
                             $c = new waContact($item['complete_contact_id']);
@@ -87,8 +94,14 @@ class pocketlistsNotifications
                     )->fetchAll('item_id');
                     foreach ($items as $item) {
                         if (in_array($item['id'], array_keys($user_items)) &&
-                            $item['complete_contact_id'] != $user_id &&
-                            ($item['list_id'] || (isset($item['assigned_contact_id']) && $item['list_id'] == null && $item['assigned_contact_id'] == $user_id)) // not from NULL-list OR from NULL-list, but assigned to this user
+                            $item['complete_contact_id'] != $user_id && (
+                                $item['list_id'] || ( // not from NULL-list
+                                    $item['list_id'] == null && ( // OR from NULL-list,
+                                        isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id || // but assigned to this user
+                                        $item['contact_id'] == $user_id // OR created by user
+                                    )
+                                )
+                            )
                         ) {
                             $filtered_items[$item['id']] = $item;
                             $c = new waContact($item['complete_contact_id']);
@@ -122,8 +135,14 @@ class pocketlistsNotifications
                     )->fetchAll('key_list_id');
                     foreach ($items as $item) {
                         if (in_array($item['list_id'], array_keys($user_lists)) &&
-                            $item['complete_contact_id'] != $user_id &&
-                            ($item['list_id'] || (isset($item['assigned_contact_id']) && $item['list_id'] == null && $item['assigned_contact_id'] == $user_id)) // not from NULL-list OR from NULL-list, but assigned to this user
+                            $item['complete_contact_id'] != $user_id && (
+                                $item['list_id'] || ( // not from NULL-list
+                                    $item['list_id'] == null && ( // OR from NULL-list,
+                                        isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id || // but assigned to this user
+                                        $item['contact_id'] == $user_id // OR created by user
+                                    )
+                                )
+                            )
                         ) {
                             $filtered_items[$item['id']] = $item;
                             $c = new waContact($item['complete_contact_id']);
@@ -152,8 +171,14 @@ class pocketlistsNotifications
                     break;
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_COMPETES_ANY_ITEM:
                     foreach ($items as $item) { // filter items according to settings
-                        if ($item['complete_contact_id'] != $user_id &&
-                            ($item['list_id'] || (isset($item['assigned_contact_id']) && $item['list_id'] == null && $item['assigned_contact_id'] == $user_id)) // not from NULL-list OR from NULL-list, but assigned to this user
+                        if ($item['complete_contact_id'] != $user_id && (
+                                $item['list_id'] || ( // not from NULL-list
+                                    $item['list_id'] == null && ( // OR from NULL-list,
+                                        isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id || // but assigned to this user
+                                        $item['contact_id'] == $user_id // OR created by user
+                                    )
+                                )
+                            )
                         ) { // completed not by me & not from NULL-list
                             $filtered_items[$item['id']] = $item;
                             $c = new waContact($item['complete_contact_id']);
@@ -231,8 +256,14 @@ class pocketlistsNotifications
                     )->fetchAll('key_list_id');
                     $user_lists = array_keys($user_lists);
                     foreach ($items as $item) {
-                        if (in_array($item['list_id'], $user_lists) &&
-                            ($item['list_id'] || (isset($item['assigned_contact_id']) && $item['list_id'] == null && $item['assigned_contact_id'] == $user_id))
+                        if (in_array($item['list_id'], $user_lists) && (
+                                $item['list_id'] || ( // not from NULL-list
+                                    $item['list_id'] == null && ( // OR from NULL-list,
+                                        isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id || // but assigned to this user
+                                        $item['contact_id'] == $user_id // OR created by user
+                                    )
+                                )
+                            )
                         ) {
                             $filtered_items[$item['id']] = $item;
                             $c = new waContact($item['contact_id']);
@@ -256,7 +287,14 @@ class pocketlistsNotifications
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_ITEM_TO_ANY_LIST:
                     foreach ($items as $item) { // filter items according to settings
                         if ($item['contact_id'] != $user_id && // created not by this user
-                            ($item['list_id'] || (isset($item['assigned_contact_id']) && isset($item['assigned_contact_id']) && $item['list_id'] == null && $item['assigned_contact_id'] == $user_id)) // not from NULL-list OR from NULL-list, but assigned to this user
+                            (
+                                $item['list_id'] || ( // not from NULL-list
+                                    $item['list_id'] == null && ( // OR from NULL-list,
+                                        isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id || // but assigned to this user
+                                        $item['contact_id'] == $user_id // OR created by user
+                                    )
+                                )
+                            )
                         ) {
                             $filtered_items[$item['id']] = $item;
                             $c = new waContact($item['contact_id']);
@@ -335,8 +373,14 @@ class pocketlistsNotifications
                     case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_ITEM:
                         $im = new pocketlistsItemModel();
                         $item = $im->getById($comment['item_id']);
-                        if ($item['contact_id'] == $user_id &&
-                            ($item['list_id'] || (isset($item['assigned_contact_id']) && $item['list_id'] == null && $item['assigned_contact_id'] == $user_id)) // not from NULL-list OR from NULL-list, but assigned to this user
+                        if ($item['contact_id'] == $user_id && (
+                                $item['list_id'] || ( // not from NULL-list
+                                    $item['list_id'] == null && ( // OR from NULL-list,
+                                        isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id || // but assigned to this user
+                                        $item['contact_id'] == $user_id // OR created by user
+                                    )
+                                )
+                            )
                         ) {
                             self::sendMail(
                                 array(
@@ -353,8 +397,14 @@ class pocketlistsNotifications
                     case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_FAVORITE_ITEM:
                         $im = new pocketlistsItemModel();
                         $item = $im->getById($comment['item_id'], $user_id);
-                        if ($item['favorite'] &&
-                            ($item['list_id'] || (isset($item['assigned_contact_id']) && $item['list_id'] == null && $item['assigned_contact_id'] == $user_id)) // not from NULL-list OR from NULL-list, but assigned to this user
+                        if ($item['favorite'] && (
+                                $item['list_id'] || ( // not from NULL-list
+                                    $item['list_id'] == null && ( // OR from NULL-list,
+                                        isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id || // but assigned to this user
+                                        $item['contact_id'] == $user_id // OR created by user
+                                    )
+                                )
+                            )
                         ) {
                             self::sendMail(
                                 array(
@@ -371,8 +421,14 @@ class pocketlistsNotifications
                     case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_ANY_LIST_ITEM:
                         $im = new pocketlistsItemModel();
                         $item = $im->getById($comment['item_id']);
-                        if ($item &&
-                            ($item['list_id'] || (isset($item['assigned_contact_id']) && $item['list_id'] == null && $item['assigned_contact_id'] == $user_id)) // not from NULL-list OR from NULL-list, but assigned to this user
+                        if ($item && (
+                                $item['list_id'] || ( // not from NULL-list
+                                    $item['list_id'] == null && ( // OR from NULL-list,
+                                        isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id || // but assigned to this user
+                                        $item['contact_id'] == $user_id // OR created by user
+                                    )
+                                )
+                            )
                         ) {
                             self::sendMail(
                                 array(

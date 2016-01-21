@@ -790,20 +790,23 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                     $(this).after($.pocketlists.$loading);
                     $.get('?module=json&action=getLists&id=' + pocket_id, function (r) {
                         $.pocketlists.$loading.remove();
+                        var $pocket_lists = $('#pl-item-list');
+                        $pocket_lists.empty();
                         if (r.status === 'ok') {
-                            $('#pl-item-list').empty();
                             $.each(r.data, function () {
-                                $('#pl-item-list').append($('<option value="' + this.id + '">').text(this.name));
+                                $pocket_lists.append($('<option value="' + this.id + '">').text(this.name));
                             });
-                            $('#pl-item-list').trigger('change');
+                        } else {
+                            $pocket_lists.append('<option value="" selected="selected">' + $_('None') + '</option>');
                         }
+                        $pocket_lists.trigger('change');
                     }, 'json')
                 })
                 .on('change', '#pl-item-list', function() {
                     var item_id = $(this).find(':selected').val();
-                    if (item_id) {
+                    //if (item_id) {
                         $wrapper.find('input[name="item\[list_id\]"]').val(item_id);
-                    }
+                    //}
                 });
 
             $(window).scroll(function() {

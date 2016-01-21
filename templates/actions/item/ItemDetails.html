@@ -140,12 +140,13 @@
             </div>
             <div class="value no-shift">
                 <select id="pl-item-pocket">
-                    <!--<option value="0">[`None`]</option>-->
+                    {if !$list || $item.contact_id == $wa->user()->get('id')}<option value="0"{if !$list} selected="selected"{/if}>[`None`]</option>{/if}
                     {foreach $pockets as $pocket}
-                    <option value="{$pocket.id}" {if $list.pocket_id == $pocket.id}selected="selected"{/if}>{$pocket.name|escape|truncate:32}</option>
+                    <option value="{$pocket.id}"{if $list.pocket_id == $pocket.id} selected="selected"{/if}>{$pocket.name|escape|truncate:32}</option>
                     {/foreach}
                 </select>
                 <select id="pl-item-list">
+                {if !$list || $item.contact_id == $wa->user()->get('id')}<option value=""{if !$list} selected="selected"{/if}>[`None`]</option>{/if}
                 {foreach $lists as $l}
                     <option value="{$l.id}" {if $item.list_id == $l.id}selected="selected"{/if}>{$l.name|escape|truncate:32}</option>
                 {/foreach}

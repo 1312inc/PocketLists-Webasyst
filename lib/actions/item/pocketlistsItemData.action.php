@@ -10,6 +10,8 @@ class pocketlistsItemDataAction extends waViewAction
             $item_from_db = $im->getById($item_new_data['id']);
             if ($item_new_data && $item_from_db) {
                 $item_new_data['id'] = $item_from_db['id'];
+                $item_new_data['list_id'] = $item_new_data['list_id'] === "" ?
+                    null : $item_new_data['list_id']; // do not update list_id for items from NULL-list
 
                 // move item's children to another list
                 $move_ids = array();

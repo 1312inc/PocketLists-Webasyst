@@ -26,7 +26,7 @@ class pocketlistsItemDetailsAction extends waViewAction
             $this->view->assign('pockets', $pm->getAllPockets(wa()->getUser()->getId()));
 
             $this->view->assign('list', $list);
-            $this->view->assign('lists', $lm->getLists($list ? $list['pocket_id'] : false));
+            $this->view->assign('lists', $list ? $lm->getLists($list['pocket_id']) : array());
         }
     }
 }
