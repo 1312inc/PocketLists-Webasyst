@@ -287,6 +287,95 @@ class pocketlistsNotifications
         );
     }
 
+    public static function notifyAboutNewComment($comment)
+    {
+        if (!$comment) {
+            return;
+        }
+
+        // todo: refactor
+        $csm = new waContactSettingsModel();
+        $q = "SELECT
+                cs1.contact_id contact_id,
+                cs2.value setting
+              FROM wa_contact_settings cs1
+              LEFT JOIN wa_contact_settings cs2 ON
+                cs1.contact_id = cs2.contact_id
+                AND cs2.app_id = s:app_id
+                AND cs2.name = 'email_comment_item'
+                AND cs2.value IN (i:setting)
+              WHERE
+                cs1.app_id = s:app_id
+                AND cs1.name = 'email_comment_item_on'
+                AND cs1.value = 1";
+        $users = $csm->query(
+            $q,
+            array(
+                'app_id' => wa()->getApp(),
+                'setting' => array(
+                    pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_ITEM,
+                    pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_FAVORITE_ITEM,
+                    pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_ANY_LIST_ITEM,
+                )
+            )
+        )->fetchAll('contact_id');
+
+        foreach ($users as $user_id => $user) { // foreach user
+            if ($comment['contact_id'] != $user_id) {
+                switch ($user['setting']) {
+                    case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_ITEM:
+                        $im = new pocketlistsItemModel();
+                        $item = $im->getById($comment['item_id']);
+                        if ($item['contact_id'] == $user_id) {
+                            self::sendMail(
+                                array(
+                                    'contact_id' => $user_id,
+                                    'subject' => 'string:[`New comment`]',
+                                    'body' => wa()->getAppPath('templates/mails/newcomment.html'),
+                                    'variables' => array(
+                                        'item' => $item
+                                    ),
+                                )
+                            );
+                        }
+                        break;
+                    case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_FAVORITE_ITEM:
+                        $im = new pocketlistsItemModel();
+                        $item = $im->getById($comment['item_id'], $user_id);
+                        if ($item['favorite']) {
+                            self::sendMail(
+                                array(
+                                    'contact_id' => $user_id,
+                                    'subject' => 'string:[`New comment`]',
+                                    'body' => wa()->getAppPath('templates/mails/newcomment.html'),
+                                    'variables' => array(
+                                        'item' => $item
+                                    ),
+                                )
+                            );
+                        }
+                        break;
+                    case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_ANY_LIST_ITEM:
+                        $im = new pocketlistsItemModel();
+                        $item = $im->getById($comment['item_id']);
+                        if ($item) {
+                            self::sendMail(
+                                array(
+                                    'contact_id' => $user_id,
+                                    'subject' => 'string:[`New comment`]',
+                                    'body' => wa()->getAppPath('templates/mails/newcomment.html'),
+                                    'variables' => array(
+                                        'item' => $item
+                                    ),
+                                )
+                            );
+                        }
+                        break;
+                }
+            }
+        }
+    }
+
     public static function notifyDailyRecap($vars = array())
     {
         $time = time();

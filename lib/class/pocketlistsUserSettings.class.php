@@ -24,6 +24,10 @@ class pocketlistsUserSettings
     const EMAIL_WHEN_SOMEONE_ADDS_ITEM_TO_FAVORITE_LIST = 0;
     const EMAIL_WHEN_SOMEONE_ADDS_ITEM_TO_ANY_LIST = 1;
 
+    const EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_ITEM = 0;
+    const EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_FAVORITE_ITEM = 1;
+    const EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_ANY_LIST_ITEM = 2;
+
     public function __construct($contact_id = false)
     {
         $this->csm = new waContactSettingsModel();
@@ -50,6 +54,7 @@ class pocketlistsUserSettings
             'email_add_item_on' => 1,
             'email_add_item' => self::EMAIL_WHEN_SOMEONE_ADDS_ITEM_TO_FAVORITE_LIST,
             'email_comment_item_on' => 1,
+            'email_comment_item' => self::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_ITEM,
             'email_create_list_on' => 1,
             'stream_inbox_list' => 0
         );
@@ -122,6 +127,14 @@ class pocketlistsUserSettings
     public function emailWhenAddsItem()
     {
         return !empty($this->settings['email_add_item_on']) ? $this->settings['email_add_item'] : false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function emailWhenAddsComment()
+    {
+        return !empty($this->settings['email_comment_item_on']) ? $this->settings['email_comment_item'] : false;
     }
 
     /**

@@ -220,15 +220,18 @@ class pocketlistsItemModel extends waModel
 //        return $this->getTree($items, true);
     }
 
-    public function getById($ids)
+    public function getById($ids, $user_id = false)
     {
+        if (!$user_id) {
+            $user_id = wa()->getUser()->getId();
+        }
         if (!is_array($ids)) {
             $ids = array($ids);
         }
 //        $items = parent::getById($id);
         $items = $this->query(
             $this->getQuery()."WHERE id IN (i:id)",
-            array('contact_id' => wa()->getUser()->getId(), 'id' => $ids)
+            array('contact_id' => $user_id, 'id' => $ids)
         )->fetchAll();
 //        $items = $this->getItems($this->getQuery(), null, false);
         foreach ($items as $id => $item) {
