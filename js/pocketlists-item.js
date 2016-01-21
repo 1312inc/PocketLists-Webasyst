@@ -613,7 +613,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                         var $item = $(this);
                         undone_items_wrapper_hover_timeout = setTimeout(function () {
                             if (!$item.find($new_item_wrapper).length) { // if no placeholder here
-                                $item.find('.pl-select-label').append($new_item_wrapper_hover.show());
+                                $item.find('.pl-chat').after($new_item_wrapper_hover.show());
                             }
                         }, 1312);
                     })
