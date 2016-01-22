@@ -658,8 +658,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
      * - change details
      */
     var ItemDetails = (function ($wrapper) {
-        var id = 0,
-            $dialog_confirm = $('#pl-dialog-delete-item-confirm');
+        var id = 0;
 
         var hideItemDetails = function () {
             $wrapper.animate({
@@ -710,10 +709,10 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
         };
 
         var init = function () {
-            if ($wrapper.data('pl-ListDetails')) {
+            if ($wrapper.data('pl-ItemDetails')) {
                 return;
             }
-            $wrapper.data('pl-ListDetails', true);
+            $wrapper.data('pl-ItemDetails', true);
 
             //id = parseInt($wrapper.find('input[name="item\[id\]"]').val());
             $wrapper
@@ -748,30 +747,35 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                 })
                 .on('click', '[data-pl-action="item-delete"]', function (e) {
                     e.preventDefault();
+                    var $dialog_confirm = $('#pl-dialog-delete-item-confirm');
 
-                    $dialog_confirm.waDialog({
-                        'height': '150px',
-                        'min-height': '150px',
-                        'width': '400px',
-                        onLoad: function () {
-                            //var $d = $(this);
-                            //$d.find('h1').text($wrapper.find('input[name="item[name]"]').val());
-                        },
-                        onSubmit: function (d) {
-                            $.post('?module=item&action=delete', {id: id}, function (r) {
-                                if (r.status === 'ok') {
-                                    removeItem(r.data.id);
-                                    $list_items_wrapper.find('[data-id="' + r.data.id + '"]').remove();
-                                    d.trigger('close');
-                                    hideItemDetails();
-                                    updateListCountBadge();
-                                } else {
+                    if ($dialog_confirm.hasClass('dialog')) {
+                        $dialog_confirm.show();
+                    } else {
+                        $dialog_confirm.waDialog({
+                            'height': '150px',
+                            'min-height': '150px',
+                            'width': '400px',
+                            onLoad: function () {
+                                //var $d = $(this);
+                                //$d.find('h1').text($wrapper.find('input[name="item[name]"]').val());
+                            },
+                            onSubmit: function (d) {
+                                $.post('?module=item&action=delete', {id: id}, function (r) {
+                                    if (r.status === 'ok') {
+                                        removeItem(r.data.id);
+                                        $list_items_wrapper.find('[data-id="' + r.data.id + '"]').remove();
+                                        d.trigger('close');
+                                        hideItemDetails();
+                                        updateListCountBadge();
+                                    } else {
 
-                                }
-                            }, 'json');
-                            return false;
-                        }
-                    });
+                                    }
+                                }, 'json');
+                                return false;
+                            }
+                        });
+                    }
                 })
                 .on('change', '#pl-assigned-contact select', function () {
                     var assigned_contact_id = $(this).val();

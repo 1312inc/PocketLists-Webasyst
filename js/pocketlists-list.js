@@ -12,8 +12,6 @@ $.pocketlists.List = function ($list_wrapper, options) {
     var $new_list_input = $list_wrapper.find('#pl-new-list-input'),
         list_id = parseInt($list_wrapper.find('#pl-list-id').val()),
         pocket_id = parseInt($('#pl-pocket-id').val()),
-        $dialog_delete = $('#pl-dialog-delete-list-confirm'),
-        $dialog_complete_all = $('#pl-dialog-list-archive-complete-all'),
         o = $.extend({}, {
             archive: false
         }, options);
@@ -244,25 +242,31 @@ $.pocketlists.List = function ($list_wrapper, options) {
         );
     };
     var deleteList = function () {
-        $dialog_delete.waDialog({
-            'height': '200px',
-            'min-height': '200px',
-            'width': '400px',
-            onLoad: function () {
-            },
-            onSubmit: function (d) {
-                $.post('?module=list&action=delete', {list_id: list_id}, function (r) {
-                    if (r.status === 'ok') {
-                        d.trigger('close');
-                        // todo: redirect to allowed pocket/list
-                        $.wa.setHash('#/pocket/1/');
-                    } else {
+        var $dialog_delete = $('#pl-dialog-delete-list-confirm');
 
-                    }
-                }, 'json');
-                return false;
-            }
-        });
+        if ($dialog_delete.hasClass('dialog')) {
+            $dialog_delete.show();
+        } else {
+            $dialog_delete.waDialog({
+                'height': '200px',
+                'min-height': '200px',
+                'width': '400px',
+                onLoad: function () {
+                },
+                onSubmit: function (d) {
+                    $.post('?module=list&action=delete', {list_id: list_id}, function (r) {
+                        if (r.status === 'ok') {
+                            d.trigger('close');
+                            // todo: redirect to allowed pocket/list
+                            $.wa.setHash('#/pocket/1/');
+                        } else {
+
+                        }
+                    }, 'json');
+                    return false;
+                }
+            });
+        }
     };
     var archiveItem = function () {
         $.post('?module=list&action=archive', {list_id: list_id, archive: 1}, function (r) {
@@ -367,46 +371,53 @@ $.pocketlists.List = function ($list_wrapper, options) {
             })
             .on('click', '#pl-list-complete', function (e) {
                 e.stopPropagation();
+                var $dialog_complete_all = $('#pl-dialog-list-archive-complete-all');
 
-                $dialog_complete_all.waDialog({
-                    'height': '150px',
-                    'min-height': '150px',
-                    'width': '400px',
-                    onLoad: function () {
-                        var $this = $(this);
-                        $this.on('click', '[data-pl-action]', function (e) {
-                            e.preventDefault();
+                if ($dialog_complete_all.hasClass('dialog')) {
+                    $dialog_complete_all.show();
+                } else {
+                    $dialog_complete_all.waDialog({
+                        'height': '150px',
+                        'min-height': '150px',
+                        'width': '400px',
+                        onLoad: function () {
+                            var $this = $(this);
+                            $this.on('click', '[data-pl-action]', function (e) {
+                                e.preventDefault();
 
-                            var $button = $(this),
-                                action = $button.data('pl-action');
+                                var $button = $(this),
+                                    action = $button.data('pl-action');
 
-                            $button.after($.pocketlists.$loading);
+                                $button.after($.pocketlists.$loading);
 
-                            if (action === 'list-complete-all') {
-                                $.post('?module=list&action=complete', {list_id: list_id, status: 1}, function (r) {
-                                    if (r.status === 'ok') {
-                                        $this.trigger('close');
-                                        //$.wa.setHash('#/pocket/' + pocket_id + '/list/' + list_id );
-                                        $.pocketlists_routing.redispatch();
-                                    } else {
-                                    }
-                                }, 'json');
-                            } else if (action === 'list-archive') {
-                                $.post('?module=list&action=archive', {list_id: list_id, archive: 1}, function (r) {
-                                    if (r.status === 'ok') {
-                                        $this.trigger('close');
-                                        $.wa.setHash('#/pocket/' + pocket_id);
-                                    } else {
-                                    }
-                                }, 'json');
-                            } else if (action === 'cancel') {
-                                $('#pl-list-complete').prop('checked', false);
-                                $this.trigger('close');
-                                $.pocketlists.$loading.remove();
-                            }
-                        });
-                    }
-                });
+                                if (action === 'list-complete-all') {
+                                    $.post('?module=list&action=complete', {list_id: list_id, status: 1}, function (r) {
+                                        if (r.status === 'ok') {
+                                            $this.trigger('close');
+                                            //$.wa.setHash('#/pocket/' + pocket_id + '/list/' + list_id );
+                                            $.pocketlists_routing.redispatch();
+                                        } else {
+                                        }
+                                    }, 'json');
+                                } else if (action === 'list-archive') {
+                                    $.post('?module=list&action=archive', {list_id: list_id, archive: 1}, function (r) {
+                                        if (r.status === 'ok') {
+                                            $this.trigger('close');
+                                            $.wa.setHash('#/pocket/' + pocket_id);
+                                        } else {
+                                        }
+                                    }, 'json');
+                                } else if (action === 'cancel') {
+                                    $this.trigger('close');
+                                }
+                            });
+                        },
+                        onClose: function () {
+                            $('#pl-list-complete').prop('checked', false);
+                            $.pocketlists.$loading.remove();
+                        }
+                    });
+                }
             })
             .on('click', '[data-pl-action="list-unarchive"]', function (e) {
                 e.preventDefault();
