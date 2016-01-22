@@ -2,7 +2,7 @@
 
 class pocketlistsHelper
 {
-    public static function getAccessContactsForPocket($pocket_id = false)
+    public static function getAccessContactsForPocket($pocket_id = false, $photo_size = 20)
     {
         $wcr = new waContactRightsModel();
         $query = "SELECT DISTINCT
@@ -23,7 +23,7 @@ class pocketlistsHelper
             $contact = new waContact(-$id['group_id']);
             $contacts[$contact->getId()] = array(
                 'username' => $contact->getName(),
-                'userpic' => $contact->getPhoto(20)
+                'userpic' => $contact->getPhoto($photo_size)
             );
         }
         return $contacts;

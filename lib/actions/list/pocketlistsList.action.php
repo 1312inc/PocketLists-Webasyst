@@ -14,6 +14,8 @@ class pocketlistsListAction extends waViewAction
             if (!in_array($list['pocket_id'], $available_pockets)) {
                 throw new waException('Access denied.', 403);
             }
+            $list_access_contacts = pocketlistsHelper::getAccessContactsForPocket($list['pocket_id']);
+
 
             $us = new pocketlistsUserSettings();
             $us->set('last_pocket_list_id', json_encode(array('pocket_id' => $list['pocket_id'], 'list_id' => $list['id'])));
@@ -39,6 +41,7 @@ class pocketlistsListAction extends waViewAction
             $this->view->assign('count_items_undone', $count_undone);
             $this->view->assign('new', false);
             $this->view->assign('attachments_path', wa()->getDataUrl('attachments/', true));
+            $this->view->assign('list_access_contacts', $list_access_contacts);
         } else {
             $this->view->assign('archive', $archived);
             $this->view->assign('new', true);
