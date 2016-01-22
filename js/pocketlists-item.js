@@ -273,6 +273,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
         var id = parseInt($item.data('id'));
 
         $item.prop('disabled', true);
+        $item.find('.pl-item-name').toggleClass('gray');
         $.post(
             '?module=item&action=complete',
             {
@@ -285,7 +286,6 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                     // remove from undone list
                     $item.find('ul.menu-v').find(':checkbox').prop('checked', status); // check nesting items
                     $item.find('.pl-done').prop('disabled', false);
-                    $item.find('.pl-item-name').toggleClass('gray');
                     setTimeout(function () {
                         $item.slideToggle(200, function () {
                             if (status) {
