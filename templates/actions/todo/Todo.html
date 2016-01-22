@@ -32,7 +32,7 @@
                 {foreach $month.weeks as $week}
                     <tr>
                     {foreach $week as $day}
-                        <td data-pl-todo-date="{$day.date.date}" class="{if $day.date.month != $month.num}pl-not-this-month{/if} {if $day.date.month == $today_month && $day.date.day == $today &&  $month.num == $today_month}pl-today{/if} ui-droppable">
+                        <td data-pl-todo-date="{$day.date.date}" class="{if $day.date.month != $month.num}pl-not-this-month{/if} {if $day.date.month == $today_month && $day.date.day == $today &&  $month.num == $today_month}pl-today{/if} ui-droppable"{if $day.hide} style="visibility: hidden;border: none;"{/if}>
                             <span class="pl-date">{$day.date.day}</span>
 
                             <div class="pl-dots">

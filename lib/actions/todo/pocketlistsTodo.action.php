@@ -4,8 +4,6 @@ class pocketlistsTodoAction extends waViewAction
 {
     public function execute()
     {
-        $filter = waRequest::get('filter', false);
-
         $month_count = 3;
 
         $timezone = wa()->getUser()->getTimezone();
@@ -94,12 +92,24 @@ class pocketlistsTodoAction extends waViewAction
                     $days[$year][$month_name]['days'][$week] = array();
                 }
                 $date_date = date("Y-m-d", $current_date_start);
+                $hide_other_month_date = false;
+                $current_month = date("n", $current_date_start);
+                if ($month_num != $current_month) { // hide other month days
+                    $hide_other_month_date = true;
+                }
+                if ($i == 0 && $current_date_start < $month_date) { // but show dates before first month
+                    $hide_other_month_date = false;
+                }
+                if ($i == ($month_count - 1) && $current_date_start > $month_date) { // and after last month
+                    $hide_other_month_date = false;
+                }
                 $days[$year][$month_name]['weeks'][$week][$day] = array(
                     "date" => array(
                         'day' => date("j", $current_date_start),
-                        'month' => date("n", $current_date_start),
+                        'month' => $current_month,
                         'date' => $date_date,
                     ),
+                    "hide" => $hide_other_month_date,
                     'pockets' => array(
                         'color' => isset($pocket_colors[$date_date]['color']) ?
                             $pocket_colors[$date_date]['color'] : array(),
