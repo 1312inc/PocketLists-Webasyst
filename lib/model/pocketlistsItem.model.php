@@ -591,16 +591,13 @@ class pocketlistsItemModel extends waModel
         $seven_days = date("Y-m-d", strtotime("+7 days", $now));
         switch ($when) {
             case pocketlistsUserSettings::DAILY_RECAP_FOR_TODAY:
-                $when = " AND (i.due_date = '" . $today . "' OR (i.due_datetime >= " .
-                    strtotime($today) . " AND i.due_datetime < " . strtotime($tomorrow) . "))";
+                $when = " AND (i.due_date <= '" . $today . "')";
                 break;
             case pocketlistsUserSettings::DAILY_RECAP_FOR_TODAY_AND_TOMORROW:
-                $when = " AND (i.due_date = '" . $today . "' OR i.due_date = '" . $tomorrow . "' OR (i.due_datetime >= " .
-                    strtotime($today) . " AND i.due_datetime < " . (strtotime($tomorrow) + 60 * 60 * 24) . "))";
+                $when = " AND (i.due_date <= '" . $tomorrow . "')";
                 break;
             case pocketlistsUserSettings::DAILY_RECAP_FOR_NEXT_7_DAYS:
-                $when = " AND (i.due_date >= '" . $today . "' AND i.due_date <= '" . $seven_days . "' OR (i.due_datetime >= " .
-                    strtotime($today) . " AND i.due_datetime < " . (strtotime($seven_days) + 60 * 60 * 24) . "))";
+                $when = " AND (i.due_date <= '" . $seven_days . "')";
                 break;
         }
         $q = "SELECT
