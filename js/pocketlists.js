@@ -107,6 +107,17 @@
                 $textarea.css('height', ($textarea.get(0).scrollHeight - parseInt($textarea.css('padding-top')) - parseInt($textarea.css('padding-bottom'))) + 'px');
             }
         },
+        initNotice: function(wrapper_selector) {
+            var $wrapper = $(wrapper_selector);
+            if (!$.storage.get('pocketlists/stream/' + wrapper_selector)) {
+                $wrapper.show().one('click', '.close', function() {
+                    $.storage.set('pocketlists/stream/' + wrapper_selector, 1);
+                    $wrapper.slideUp();
+                });
+            } else {
+                $wrapper.remove();
+            }
+        },
         init: function (o) {
             $.pocketlists_routing.init();
 

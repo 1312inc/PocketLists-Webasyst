@@ -1,6 +1,10 @@
 <main class="content left300px blank bordered-left pl-items pl-list-items pl-todo" id="pl-list-content">
 
     <header class="pl-title">
+        <div id="pl-stream-notice" class="pl-alert" style="display: none;">
+            <a href="javascript:void(0)" class="close pl-alert-close">×</a>
+            это динамический список дел, собранный из всех статических списков и сортированный по приоритету и сроку. [x]
+        </div>
         <div class="float-right block half-padded">
             <ul class="menu-h">
                 <li>
@@ -12,6 +16,7 @@
         <h1 class="not-padded">
             [`To-do stream`]
         </h1>
+        <span></span>
         {else}
         <h1 class="not-padded" pl-todo-stream="date">
             <span>{$date}</span> <a href="#" class="back">[`Show stream`]</a>
@@ -60,6 +65,8 @@
 
 <script type="text/javascript">
     (function(){
+        $.pocketlists.initNotice('#pl-stream-notice');
+
         new $.pocketlists.Items($('#pl-list-items'), {
             enableAddLinkOnHover: false,
             enableChangeLevel: false,

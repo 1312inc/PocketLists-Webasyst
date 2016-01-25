@@ -362,3 +362,22 @@ a:hover .icon16.pl.darr { background-position:-16px -32px; }
     .pl-list-sort { display: none !important; }
     .pl-list-sort-dropdown { display: block !important; }
 }
+
+/* Mixins
+--------- */
+.pl-alert {
+    margin: 0 20px 20px 0;
+    background: #ffffe0;
+    padding: 15px 20px;
+    border: 1px solid #eed;
+    line-height: 1.3em;
+    font-size: 0.9em;
+    color: #555;
+}
+
+.pl-alert .pl-alert-close {
+    margin: -2px -2px 0 12px;
+    float: right;
+    color: #333;
+    font-size: 1.4em;
+}
