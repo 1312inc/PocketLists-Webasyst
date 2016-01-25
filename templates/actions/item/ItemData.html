@@ -25,7 +25,7 @@
         {else}
             <input type="checkbox" class="pl-done{if isset($item.calc_priority)}{if $item.calc_priority == 1} pl-green{elseif $item.calc_priority == 2} pl-yellow{elseif $item.calc_priority == 3} pl-red{/if}{/if}" {if $item.status == 1}checked="checked"{/if}{if isset($archive) && $archive == true}disabled{/if}>
             <span></span>
-            {if $item.status != 1 && !empty($item.assigned_contact_id)}<i class="icon16 userpic20" style="background-image: url({$item.assigned_userpic})" alt="{$item.assigned_username|escape}" title="{sprintf('[`Assigned to %s`]', $item.assigned_username|escape)}"></i>{/if}
+            {if $item.status != 1 && !empty($item.assigned_contact_id) && $item.assigned_contact_id != $wa->user()->getId()}<i class="icon16 userpic20" style="background-image: url({$item.assigned_userpic})" alt="{$item.assigned_username|escape}" title="{sprintf('[`Assigned to %s`]', $item.assigned_username|escape)}"></i>{/if}
         {/if}
     </label>
     <label class="pl-select-label">

@@ -117,8 +117,9 @@ label.pl-done-label .listicon48 {
     background-size: 20px;
 }
 label.pl-done-label i.icon16.userpic20 {
-    position: absolute;
-    top: 29px;
+    position: relative;
+    float: left;
+    top: 14px;
     left: -2px;
     background-size: 20px;
     width: 20px;
