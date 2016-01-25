@@ -18,6 +18,7 @@
             {/if}
         {/if}
         <a href="#" class="pl-edit inline-link"><b><i>[`Edit`]</i></b></a>
+        <a href="#" class="pl-comment inline-link"><b><i>[`Comment`]</i></b></a>
     </div>
     <label class="pl-done-label">
         {if !empty($item.key_list_id)}
@@ -64,7 +65,7 @@
         <div class="pl-cue{if $comment.my} pl-my-cue{/if}">
             <div class="pl-cue-inner">
                 <div class="pl-bubble">
-                    {$comment.comment|escape}
+                    {$comment.comment|escape|nl2br}
                     <!-- <span class="pl-bubble-arrow"></span> -->
                 </div>
                 <i class="icon16 userpic20" style="background-image: url({$comment.userpic})" alt="{$comment.username|escape}"></i> {$comment.username|escape}
