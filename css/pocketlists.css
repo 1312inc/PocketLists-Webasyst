@@ -239,19 +239,13 @@ input#pl-new-list-input,
 .pl-list-items ul.menu-v li .pl-item.pl-item-selected .pl-favorite,
 .pl-list-items ul.menu-v li .pl-item.pl-item-selected .pl-author { opacity: 0; }
 .pl-list-items ul.menu-v li .pl-item:hover .pl-edit { opacity: 1; transition: opacity 0.1s ease-in; transition-delay: 0.5s; }
-.pl-list-items ul.menu-v li .pl-item.pl-item-assigned { box-shadow: 0 2px 5px -3px rgba(0,0,0,0.1) inset; background: repeating-linear-gradient(
-  -55deg,
-  rgba(0,0,0,0.07),
-  rgba(0,0,0,0.07) 10px,
-  rgba(0,0,0,0.1) 10px,
-  rgba(0,0,0,0.1) 20px
-); }
+.pl-list-items ul.menu-v li .pl-item.pl-item-assigned { box-shadow: 0 2px 5px -3px rgba(0,0,0,0.1) inset; background: rgba(0,0,0,0.07); border-left: 5px solid rgba(0,0,0,0.1); }
 
 .pl-teammate-items .pl-list-items ul.menu-v li .pl-item.pl-item-assigned { box-shadow: none; background: transparent; }
 .pl-teammate-items .pl-list-items ul.menu-v li .pl-item:hover { background: rgba(0,0,0,0.04); }
 .pl-teammate-items .pl-list-items ul.menu-v li .pl-item.pl-item-selected { background: rgba(0,0,0,0.06); }
 
-.pl-assignee { font-size: 0.8em; border-radius: 4px; background: #aaa; color: #fff; padding: 2px 4px 1px; margin-right: 4px; }
+.pl-assignee { font-size: 0.8em; border-radius: 4px; background: #aaa; color: #fff; padding: 5px 4px 4px; margin-right: 4px; line-height: 1.4em; vertical-align: top; }
 .pl-assignee.pl-green { background: #7ac33c; }
 .pl-assignee.pl-yellow { background: #f5cf24; }
 .pl-assignee.pl-red { background: #f7696d; }
