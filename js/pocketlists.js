@@ -80,25 +80,28 @@
             }
         },
         stickyDetailsSidebar: function() {
-            var list_top_offset = $('#pl-list-content').offset().top,
-                _viewport_top_offset = $(window).scrollTop(),
-                _window_height = $(window).height(),
-                $el = $('.pl-details');
+            var $list = $('#pl-list-content');
+            if ($list.length) {
+                var list_top_offset = $list.offset().top,
+                    _viewport_top_offset = $(window).scrollTop(),
+                    _window_height = $(window).height(),
+                    $el = $('.pl-details');
 
-            if ($el.find('.fields form').height() > _window_height) {
-                return;
-            }
+                if ($el.find('.fields form').height() > _window_height) {
+                    return;
+                }
 
-            if (_viewport_top_offset > list_top_offset) {
-                $el.addClass('sticky');
-                var _viewport_bottom_offset = $(document).height() - _window_height - _viewport_top_offset;
+                if (_viewport_top_offset > list_top_offset) {
+                    $el.addClass('sticky');
+                    var _viewport_bottom_offset = $(document).height() - _window_height - _viewport_top_offset;
 
-                $el.css({
-                    bottom: Math.max(0, 16-_viewport_bottom_offset),
-                    right: 16
-                });
-            } else {
-                $el.removeClass('sticky').css('right', 0);
+                    $el.css({
+                        bottom: Math.max(0, 16 - _viewport_bottom_offset),
+                        right: 16
+                    });
+                } else {
+                    $el.removeClass('sticky').css('right', 0);
+                }
             }
         },
         resizeTextarea: function ($textarea) {
