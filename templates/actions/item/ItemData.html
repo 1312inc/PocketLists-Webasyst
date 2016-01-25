@@ -21,10 +21,11 @@
     </div>
     <label class="pl-done-label">
         {if !empty($item.key_list_id)}
-        <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$item.list_icon|default:'li-list@2x.png'});"></i>
+            <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$item.list_icon|default:'li-list@2x.png'});"></i>
         {else}
-        <input type="checkbox" class="pl-done{if isset($item.calc_priority)}{if $item.calc_priority == 1} pl-green{elseif $item.calc_priority == 2} pl-yellow{elseif $item.calc_priority == 3} pl-red{/if}{/if}" {if $item.status == 1}checked="checked"{/if}{if isset($archive) && $archive == true}disabled{/if}>
-        <span></span>
+            <input type="checkbox" class="pl-done{if isset($item.calc_priority)}{if $item.calc_priority == 1} pl-green{elseif $item.calc_priority == 2} pl-yellow{elseif $item.calc_priority == 3} pl-red{/if}{/if}" {if $item.status == 1}checked="checked"{/if}{if isset($archive) && $archive == true}disabled{/if}>
+            <span></span>
+            {if $item.status != 1 && !empty($item.assigned_contact_id)}<i class="icon16 userpic20" style="background-image: url({$item.assigned_userpic})" alt="{$item.assigned_username|escape}" title="{sprintf('[`Assigned to %s`]', $item.assigned_username|escape)}"></i>{/if}
         {/if}
     </label>
     <label class="pl-select-label">
@@ -33,7 +34,7 @@
             {if !empty($item.key_list_id)}
             <a href="#/pocket/{$item.pocket_id}/list/{$item.list_id}/">{$item.name|default:' '|escape|nl2br}</a>
             {else}
-            {if $item.status != 1 && !empty($item.assigned_contact_id)}<strong class="pl-assignee{if isset($item.calc_priority)}{if $item.calc_priority == 1} pl-green{elseif $item.calc_priority == 2} pl-yellow{elseif $item.calc_priority == 3} pl-red{/if}{/if}" title="{sprintf('[`Assigned to %s`]', $item.assigned_username|escape)}"><i class="icon16 userpic20" style="background-image: url({$item.assigned_userpic})" alt="{$item.assigned_username|escape}"></i>{$item.assigned_username|escape|truncate:32}</strong>{/if}{$item.name|default:' '|escape|nl2br}
+            {* if $item.status != 1 && !empty($item.assigned_contact_id)}<strong class="pl-assignee{if isset($item.calc_priority)}{if $item.calc_priority == 1} pl-green{elseif $item.calc_priority == 2} pl-yellow{elseif $item.calc_priority == 3} pl-red{/if}{/if}" title="{sprintf('[`Assigned to %s`]', $item.assigned_username|escape)}">{$item.assigned_username|escape|truncate:32}</strong>{/if *}{$item.name|default:' '|escape|nl2br}
             {/if}
         </span>
         {if !empty($item.due_datetime)}
@@ -44,7 +45,7 @@
         <span class="small bold {if $item.calc_priority == 0}pl-due-someday{elseif $item.calc_priority == 1}pl-due-tomorrow{elseif $item.calc_priority == 2}pl-due-today{elseif $item.calc_priority == 3}pl-due-overdue{/if}">{$item.due_date|wa_date:'humandate'}</span>
         {/if}
         {if $item.status != 1}
-            {* if !empty($item.assigned_contact_id)}<strong class="hint"><br>{sprintf('[`Assigned to %s`]', $item.assigned_username|escape)}</strong>{/if *}
+            {if !empty($item.assigned_contact_id)}<strong class="hint"><br>{sprintf('[`Assigned to %s`]', $item.assigned_username|escape)}</strong>{/if}
             {* <i class="icon16 userpic20" style="background-image: url({$item.assigned_userpic})" alt="{$item.assigned_username|escape}"></i> *}
             {if !empty($item.note)}<p class="hint">{$item.note|escape|nl2br}</p>{/if}
             {if !empty($item.attachments)}
