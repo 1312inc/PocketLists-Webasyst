@@ -312,8 +312,9 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                     $.pocketlists.updateAppCounter();
                     // remove from undone list
                     $item.find('ul.menu-v').find(':checkbox').prop('checked', status); // check nesting items
-                    $item.find('.pl-done').prop('disabled', false);
+                    $item.find('.pl-done').prop('disabled', true);
                     setTimeout(function () {
+                        $item.find('.pl-done').prop('disabled', false);
                         $item.slideToggle(200, function () {
                             if (status) {
                                 if ($done_items_wrapper.length) {
