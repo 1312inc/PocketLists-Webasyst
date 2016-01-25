@@ -1,10 +1,17 @@
 <main class="content left300px blank bordered-left pl-items pl-list-items pl-todo" id="pl-list-content">
 
+    <div id="pl-stream-notice" class="pl-alert" style="display: none;">
+        <a href="javascript:void(0)" class="close pl-alert-close">&times;</a>
+        [`This is <strong>To-do Stream</strong> — your personal dynamic to-do list that automatically collects all important to-dos from all of your lists and presents them in the priority &amp; due order. Most important to-dos are on top. Since this is your personal list, to-do items assigned to your teammates won’t be listed on this list.`]
+        <br><br>
+        {if 1 || STREAM_INBOX_LIST_IS_SET}
+            {sprintf('[`To-dos added to this list directly will be automatically added to <strong>%s</strong> list and thus will be available to your teammates who can access this list. <a href="%s">Configure</a>`]','INBOX_LIST_NAME','#/settings/')}
+        {else}
+            {sprintf('[`To-dos added to the stream directly will be <em>your private to-dos</em> unless you manually assign them to any to-do list or <a href="%s">select the default stream inbox list</a> in the app settings.`]','#/settings/')}
+        {/if}
+    </div>
+
     <header class="pl-title">
-        <div id="pl-stream-notice" class="pl-alert" style="display: none;">
-            <a href="javascript:void(0)" class="close pl-alert-close">×</a>
-            это динамический список дел, собранный из всех статических списков и сортированный по приоритету и сроку. [x]
-        </div>
         <div class="float-right block half-padded">
             <ul class="menu-h">
                 <li>

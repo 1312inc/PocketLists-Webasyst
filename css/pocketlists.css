@@ -8,6 +8,9 @@
 .pl-sidebar-core { margin-top: 20px; }
 .pl-inner-sidebar {  }
 
+/* Misc
+------- */
+
 .pl-white { background: #fff; }
 .pl-gray { background: #eee; }
 .pl-green { background: #e8fcce; }
@@ -32,6 +35,9 @@
 
 .indicator.yellow { background-color: #da3; color: #fff; }
 .indicator.green { background-color: green; color: #fff; }
+
+.pl-alert { margin: 0 0 20px 0; background: #ffffe0; padding: 15px 20px; border-bottom: 1px solid #eed; line-height: 1.3em; font-size: 0.9em; color: #555; }
+.pl-alert .pl-alert-close { margin: -2px -2px 0 12px; float: right; color: #333; font-size: 1.4em; }
 
 /* Pocket
 --------- */
@@ -202,6 +208,10 @@ input#pl-new-list-input,
 .pl-due-today { color: #ca0; }
 .pl-due-tomorrow { color: green; }
 .pl-due-someday { color: #aaa; }
+.gray .pl-due-overdue,
+.gray .pl-due-today,
+.gray .pl-due-tomorrow,
+.gray .pl-due-someday { color: #aaa; }
 
 .pl-list-items ul.menu-v { margin: 0; padding: 0; }
 .pl-list-items ul.menu-v li { padding: 0; margin: 0; }
@@ -229,19 +239,13 @@ input#pl-new-list-input,
 .pl-list-items ul.menu-v li .pl-item.pl-item-selected .pl-favorite,
 .pl-list-items ul.menu-v li .pl-item.pl-item-selected .pl-author { opacity: 0; }
 .pl-list-items ul.menu-v li .pl-item:hover .pl-edit { opacity: 1; transition: opacity 0.1s ease-in; transition-delay: 0.5s; }
-.pl-list-items ul.menu-v li .pl-item.pl-item-assigned { box-shadow: 0 2px 5px -3px rgba(0,0,0,0.1) inset; background: repeating-linear-gradient(
-  -55deg,
-  rgba(0,0,0,0.07),
-  rgba(0,0,0,0.07) 10px,
-  rgba(0,0,0,0.1) 10px,
-  rgba(0,0,0,0.1) 20px
-); }
+.pl-list-items ul.menu-v li .pl-item.pl-item-assigned { box-shadow: 0 2px 5px -3px rgba(0,0,0,0.1) inset; background: rgba(0,0,0,0.07); border-left: 5px solid rgba(0,0,0,0.1); }
 
 .pl-teammate-items .pl-list-items ul.menu-v li .pl-item.pl-item-assigned { box-shadow: none; background: transparent; }
 .pl-teammate-items .pl-list-items ul.menu-v li .pl-item:hover { background: rgba(0,0,0,0.04); }
 .pl-teammate-items .pl-list-items ul.menu-v li .pl-item.pl-item-selected { background: rgba(0,0,0,0.06); }
 
-.pl-assignee { font-size: 0.8em; border-radius: 4px; background: #aaa; color: #fff; padding: 2px 4px 1px; margin-right: 4px; }
+.pl-assignee { font-size: 0.8em; border-radius: 4px; background: #aaa; color: #fff; padding: 5px 4px 4px; margin-right: 4px; line-height: 1.4em; vertical-align: top; }
 .pl-assignee.pl-green { background: #7ac33c; }
 .pl-assignee.pl-yellow { background: #f5cf24; }
 .pl-assignee.pl-red { background: #f7696d; }
@@ -361,23 +365,4 @@ a:hover .icon16.pl.darr { background-position:-16px -32px; }
     .pl-details textarea { min-width: 250px !important; }
     .pl-list-sort { display: none !important; }
     .pl-list-sort-dropdown { display: block !important; }
-}
-
-/* Mixins
---------- */
-.pl-alert {
-    margin: 0 20px 20px 0;
-    background: #ffffe0;
-    padding: 15px 20px;
-    border: 1px solid #eed;
-    line-height: 1.3em;
-    font-size: 0.9em;
-    color: #555;
-}
-
-.pl-alert .pl-alert-close {
-    margin: -2px -2px 0 12px;
-    float: right;
-    color: #333;
-    font-size: 1.4em;
 }

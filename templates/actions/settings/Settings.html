@@ -25,7 +25,7 @@
 
               <div class="field">
                 <div class="name nowrap">
-                  [`To-do stream inbox`]
+                  [`To-do Stream inbox`]
                 </div>
                 <div class="value no-shift">
                     <select id="pl-inbox-pocket">
@@ -42,7 +42,7 @@
                     {/if}
                     </select>
                     <input type="hidden" name="stream_inbox_list" value="{$settings.stream_inbox_list|default:0}"/>
-                    <p class="hint">[`When you add to-dos to your To-do stream directly, they will be added into the specified to-do list.`]</p>
+                    <p class="hint">[`When you add to-dos to your To-do Stream directly, they will be added into the specified to-do list and thus will be available to your teammates who can access this list. If you want such to-dos be your private to-dos by default, select None.`]</p>
                 </div>
               </div>
 
@@ -51,8 +51,10 @@
                   [`Natural input`]
                 </div>
                 <div class="value no-shift">
-                    <input type="checkbox" checked />
-                    <p class="hint">[`When enabled, Pocket Lists will automatically set to-do due date and time according to the name you enter.<br> E.g. “meeting tomorrow morning”, “call James next friday 5pm”.`]</p>
+                    <label>
+                        <input type="checkbox" checked /> [`Set to-do due date and time according to it’s name`]
+                        <p class="hint">[`When enabled, Pocket Lists will automatically parse to-do name and set due date and time accordingly.<br> E.g. “meeting tomorrow morning”, “call James next friday 5pm”.`]</p>
+                    </label>
                 </div>
               </div>
 
