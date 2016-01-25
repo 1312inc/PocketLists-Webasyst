@@ -558,6 +558,17 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
             });
         };
 
+        var enable_prevent_close_browser = function ($el) {
+            window.onbeforeunload = function(e) {
+                $el.data('can_blur', false);
+                return $_('Close?');
+            };
+        };
+
+        var disable_prevent_close_browser = function () {
+            window.onbeforeunload = function(e) {};
+        };
+
         var init = function () {
             // adding new item by clickin on top link
             $add_item_link.on('click', function (e) {
@@ -592,9 +603,11 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                 })
                 .on('keydown', function (e) {
                     var $this = $(this);
+                    enable_prevent_close_browser($this);
                     $this.data('can_blur', true);
                     if (!e.shiftKey && e.which === 13) {
                         e.preventDefault();
+                        disable_prevent_close_browser();
                         var parent_id = $this.closest('.menu-v').find(item_selector).first().data('parent-id'),
                             name = $this.val().trim();
                         if (name) {
@@ -605,6 +618,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                         }
                     } else if (e.which === 27) {
                         $this.data('can_blur', false);
+                        disable_prevent_close_browser();
                         hide_new_item_wrapper();
                     }
                 })
@@ -631,13 +645,20 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                         }, 100);
                     }
                 })
+                .on('focus', function () {
+                    var $this = $(this);
+                    
+                    $this.data('can_blur', true);
+                })
                 .on('blur', function () {
                     var $this = $(this),
                         parent_id = $this.closest('.menu-v').find(item_selector).first().data('parent-id'),
                         name = $this.val().trim(),
                         can_blur = $this.data('can_blur');
-
+                    
                     if (can_blur) {
+                        disable_prevent_close_browser($this);
+
                         if (name) {
                             addItem.call(this, [{
                                 name: name,
