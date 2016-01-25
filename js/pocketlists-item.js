@@ -300,7 +300,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
         var id = parseInt($item.data('id'));
 
         $item.prop('disabled', true);
-        $item.find('.pl-item-name').toggleClass('gray');
+        $item.find('.pl-item').toggleClass('gray');
         $.post(
             '?module=item&action=complete',
             {
@@ -648,7 +648,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                 })
                 .on('focus', function () {
                     var $this = $(this);
-                    
+
                     $this.data('can_blur', true);
                 })
                 .on('blur', function () {
@@ -656,7 +656,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                         parent_id = $this.closest('.menu-v').find(item_selector).first().data('parent-id'),
                         name = $this.val().trim(),
                         can_blur = $this.data('can_blur');
-                    
+
                     if (can_blur) {
                         disable_prevent_close_browser($this);
 

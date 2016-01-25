@@ -8,6 +8,9 @@
 .pl-sidebar-core { margin-top: 20px; }
 .pl-inner-sidebar {  }
 
+/* Misc
+------- */
+
 .pl-white { background: #fff; }
 .pl-gray { background: #eee; }
 .pl-green { background: #e8fcce; }
@@ -32,6 +35,9 @@
 
 .indicator.yellow { background-color: #da3; color: #fff; }
 .indicator.green { background-color: green; color: #fff; }
+
+.pl-alert { margin: 0 0 20px 0; background: #ffffe0; padding: 15px 20px; border-bottom: 1px solid #eed; line-height: 1.3em; font-size: 0.9em; color: #555; }
+.pl-alert .pl-alert-close { margin: -2px -2px 0 12px; float: right; color: #333; font-size: 1.4em; }
 
 /* Pocket
 --------- */
@@ -202,6 +208,10 @@ input#pl-new-list-input,
 .pl-due-today { color: #ca0; }
 .pl-due-tomorrow { color: green; }
 .pl-due-someday { color: #aaa; }
+.gray .pl-due-overdue,
+.gray .pl-due-today,
+.gray .pl-due-tomorrow,
+.gray .pl-due-someday { color: #aaa; }
 
 .pl-list-items ul.menu-v { margin: 0; padding: 0; }
 .pl-list-items ul.menu-v li { padding: 0; margin: 0; }
@@ -361,23 +371,4 @@ a:hover .icon16.pl.darr { background-position:-16px -32px; }
     .pl-details textarea { min-width: 250px !important; }
     .pl-list-sort { display: none !important; }
     .pl-list-sort-dropdown { display: block !important; }
-}
-
-/* Mixins
---------- */
-.pl-alert {
-    margin: 0 20px 20px 0;
-    background: #ffffe0;
-    padding: 15px 20px;
-    border: 1px solid #eed;
-    line-height: 1.3em;
-    font-size: 0.9em;
-    color: #555;
-}
-
-.pl-alert .pl-alert-close {
-    margin: -2px -2px 0 12px;
-    float: right;
-    color: #333;
-    font-size: 1.4em;
 }
