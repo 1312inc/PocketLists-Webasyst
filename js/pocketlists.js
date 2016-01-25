@@ -109,9 +109,9 @@
         },
         initNotice: function(wrapper_selector) {
             var $wrapper = $(wrapper_selector);
-            if (!$.storage.get('pocketlists/stream/' + wrapper_selector)) {
+            if (!$.storage.get('pocketlists/notice/' + wrapper_selector)) {
                 $wrapper.show().one('click', '.close', function() {
-                    $.storage.set('pocketlists/stream/' + wrapper_selector, 1);
+                    $.storage.set('pocketlists/notice/' + wrapper_selector, 1);
                     $wrapper.slideUp();
                 });
             } else {
