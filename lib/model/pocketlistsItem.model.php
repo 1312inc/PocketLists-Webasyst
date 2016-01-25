@@ -711,4 +711,16 @@ class pocketlistsItemModel extends waModel
             return null;
         }
     }
+
+    public function getAllByPocket($id)
+    {
+        if (!$id) {
+            return false;
+        }
+        $result = $this->query("SELECT i.*
+                             FROM {$this->table} i
+                             JOIN pocketlists_list l ON l.id = i.list_id
+                             WHERE l.pocket_id = i:pocket_id", array('pocket_id' => $id));
+        return $result->fetchAll('id');
+    }
 }

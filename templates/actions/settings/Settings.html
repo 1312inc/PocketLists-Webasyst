@@ -278,7 +278,8 @@
                 'width': '600px',
                 'url': '?module=pocket&action=settingsDialog&pocket_id=' + $this.data('pl-pocket-id'),
                 onLoad: function () {
-                    var $this = $(this);
+                    var $this = $(this),
+                        pocket_id = parseInt($this.find('[name="pocket\[id\]"]').val());
 
                     $('#pl-pocket-color').on('click', 'a', function (e) {
                         e.preventDefault();
@@ -323,6 +324,17 @@
                     $this.find('[data-pl-selected-user]').on('click', 'a', function (e) {
                         e.preventDefault();
                         $(this).closest('[data-pl-selected-user]').remove();
+                    });
+                    $this.find('[data-action="pl-delete-pocket"]').on('click', function (e) {
+                        e.preventDefault();
+                        if (confirm($_('ALL TO-DO LISTS AND ITEMS FROM THIS PROJECT WILL BE DELETED PERMANENTLY. ARE YOU SURE?'))) {
+                            $.post('?module=pocket&action=delete', { id: pocket_id }, function (r) {
+                                if (r.status === 'ok') {
+                                    $.pocketlists_routing.redispatch();
+                                    $this.trigger('close');
+                                } else {}
+                            }, 'json');
+                        }
                     });
                 },
                 onSubmit: function (d) {
