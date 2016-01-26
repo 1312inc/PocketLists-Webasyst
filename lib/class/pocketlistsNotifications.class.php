@@ -44,7 +44,7 @@ class pocketlistsNotifications
         $lm = new pocketlistsListModel();
         $im = new pocketlistsItemModel();
 
-        $subject = 'string:{if !$complete}&#10006;{else}&#10004;{/if} {$item.name|truncate:64}';
+        $subject = 'string:{if !$complete}&#10006;{else}✔{/if} {$item.name|truncate:64}';
         // todo: refactor
         foreach ($users as $user_id => $user) { // foreach user
             $filtered_items = array();

@@ -272,7 +272,7 @@ input#pl-new-list-input,
 .pl-attachments li label { background: #eee; border-radius: 10px; padding: 4px 6px; font-size: 0.9em; color: #aaa; }
 .pl-attachments li label input[type="checkbox"] { margin-top: -4px; }
 
-.pl-chat {/* display: none; */ padding: 13px 25px 15px 49px;}
+.pl-chat {/* display: none; */ padding: 13px 25px 15px 0px;}
 .pl-item-selected .pl-chat { display: block; }
 .pl-chat .pl-cue { margin-bottom: 10px; width: 100%; }
 .pl-chat .pl-cue .pl-cue-inner { width: 70%; font-size: 0.95em; }
@@ -282,7 +282,7 @@ input#pl-new-list-input,
 .pl-chat .pl-cue.pl-my-cue .pl-cue-inner { margin-left: 30%; }
 .pl-chat .pl-cue.pl-my-cue .pl-bubble,
 .pl-chat .pl-cue.pl-my-cue .pl-bubble .pl-bubble-arrow { background: #def; }
-.pl-chat .userpic20 { margin-left: 12px; }
+.pl-chat .userpic20 { margin-left: 10px; margin-top: 1px; }
 .pl-chat .pl-reply { margin-top: 20px; }
 .pl-chat .pl-reply .userpic20 { margin-top: 1px; }
 
