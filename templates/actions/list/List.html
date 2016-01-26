@@ -132,7 +132,8 @@
                 $('.pl-list-title'),
                 {
                     archive: {if $archive}true{else}false{/if}
-                })
+                }),
+        current_user_id: {$wa->user()->get('id')}
     });
     $.pocketlists.setTitle('{if isset($list.name)}{$list.name|default:" "|escape}{else}[`New list`]{/if}');
 </script>

@@ -19,7 +19,8 @@
     new $.pocketlists.Items($('#pl-list-content'), {
         enableAddLinkOnHover: false,
         enableChangeLevel: false,
-        enableSortItems: false
+        enableSortItems: false,
+        current_user_id: {$wa->user()->get('id')}
     });
     $.pocketlists.setTitle($_('Logbook'));
 </script>

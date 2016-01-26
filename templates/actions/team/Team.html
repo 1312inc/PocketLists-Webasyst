@@ -107,7 +107,8 @@
         enableChangeLevel: false,
         enableSortItems: false,
         assignUser: parseInt($('#pl-assigned-contact-id').val()),
-        showMessageOnEmptyList: true
+        showMessageOnEmptyList: true,
+        current_user_id: {$wa->user()->get('id')}
     });
     $.pocketlists.setTitle('{$current_teammate.name|escape}');
 </script>

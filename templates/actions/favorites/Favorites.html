@@ -55,7 +55,8 @@
             enableChangeLevel: false,
             enableSortItems: false,
             showMessageOnEmptyList: true,
-            filter: 'favorites'
+            filter: 'favorites',
+            current_user_id: {$wa->user()->get('id')}
         });
     }());
 </script>

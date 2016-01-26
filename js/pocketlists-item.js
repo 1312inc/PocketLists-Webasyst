@@ -30,7 +30,8 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
             dueDate: '',
             filter: false,
             archive: false,
-            allowChat: true
+            allowChat: true,
+            current_user_id: 0
         }, options),
         request_in_action = false;
 
@@ -961,7 +962,13 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                     $item = $this.closest(item_selector),
                     status = $this.is(':checked') ? 1 : 0;
 
-                completeItem($item, status);
+                if ($item.data('pl-assigned-contact') != o.current_user_id) {
+                    if (confirm($_('This to-do is assigned to another person. Are you sure you want to mark this item as complete?'))) {
+                        completeItem($item, status);
+                    }
+                } else {
+                    completeItem($item, status);
+                }
             }) // action: complete item
             .on('change', '.pl-is-selected', function (e) {
                 var $this = $(this),
