@@ -150,7 +150,7 @@
 
         },
         postExecute: function () {
-
+            $.pocketlists.highlightSidebar();
         },
 
         // actions

@@ -134,9 +134,6 @@
             $('#wa-app').on('click', '[data-pl-scroll-to-top] a', function () {
                 self.scrollToTop(0, 80);
             });
-            self.$core_sidebar.on('click', 'a', function() {
-                self.highlightSidebar($(this).closest('li'));
-            });
         }
     };
 }(jQuery));
