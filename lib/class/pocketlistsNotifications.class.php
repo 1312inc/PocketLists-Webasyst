@@ -44,7 +44,7 @@ class pocketlistsNotifications
         $lm = new pocketlistsListModel();
         $im = new pocketlistsItemModel();
 
-        $subject = 'string:{if !$complete}&#10006;{else}✔{/if} {$item.name|truncate:64}';
+        $subject = 'string:{if !$complete}✖{else}✔{/if} {$item.name|truncate:64}';
         // todo: refactor
         foreach ($users as $user_id => $user) { // foreach user
             $filtered_items = array();
@@ -274,7 +274,7 @@ class pocketlistsNotifications
                         self::sendMail(
                             array(
                                 'contact_id' => $user_id,
-                                'subject' => 'string:&#9898; {$item.name|truncate:64}',
+                                'subject' => 'string:⚪ {$item.name|truncate:64}',
                                 'body' => wa()->getAppPath('templates/mails/newfavoritelistitem.html'),
                                 'variables' => array(
                                     'list_name' => $list ? $list['name'] : false,
@@ -306,7 +306,7 @@ class pocketlistsNotifications
                         self::sendMail(
                             array(
                                 'contact_id' => $user_id,
-                                'subject' => 'string:&#9898; {$item.name|truncate:64}',
+                                'subject' => 'string:⚪ {$item.name|truncate:64}',
                                 'body' => wa()->getAppPath('templates/mails/newitem.html'),
                                 'variables' => array(
                                     'list_name' => $list ? $list['name'] : false,
@@ -326,7 +326,7 @@ class pocketlistsNotifications
         self::sendMail(
             array(
                 'contact_id' => $item['assigned_contact_id'],
-                'subject' => 'string:&#10132; {$item.name|truncate:64}',
+                'subject' => 'string:➔ {$item.name|truncate:64}',
                 'body' => wa()->getAppPath('templates/mails/newassignitem.html'),
                 'variables' => array(
                     'item_name' => $item['name'],
