@@ -750,8 +750,9 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
             //$wrapper.html($.pocketlists.$loading).show();
             $wrapper.html($.pocketlists.$loading).show().animate({
                 'right': '0%'
-            }, 200);
-            $.pocketlists.stickyDetailsSidebar();
+            }, 200, function() {
+                $.pocketlists.stickyDetailsSidebar();
+            });
             $.post('?module=item&action=details',{ id: id }, function (html) {
                 $wrapper.html(html);
                 afterLoad();
