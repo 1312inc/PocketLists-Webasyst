@@ -520,8 +520,15 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
         request_in_action = true;
 
         var $this = $(this),
-            item_id = $this.closest(item_selector).data('id');
+            item_id = $this.closest(item_selector).data('id'),
+            $reply_wrapper = $this.closest('.pl-reply'),
+            $userpic = $reply_wrapper.find('.icon16');
 
+        $userpic.hide();
+        $reply_wrapper.prepend($.pocketlists.$loading.css({
+            'margin-top': 1,
+            'margin-left': 12
+        }));
         $.post(
             '?module=comment&action=add',
             {
@@ -529,6 +536,8 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                 comment: data.comment
             },
             function (r) {
+                $.pocketlists.$loading.removeAttr('style').remove();
+                $userpic.show();
                 if (r.status === 'ok') {
                     var $reply_wrapper = $this.closest('.pl-reply'),
                         $user_pic = $reply_wrapper.find('i').clone(),
