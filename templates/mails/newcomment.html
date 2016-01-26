@@ -1,6 +1,9 @@
-{sprintf('[`Hi %s,`]', $name|escape)}
+{sprintf('[`%s commented on <a href="%s">%s</strong>`]', '___USERNAME_WHO_COMMENTED_ON_THIS', '___LIST_URL', $item.name|escape|truncate:64)}
 <br>
 <br>
-New comment in {$item.name|escape}.
+<blockquote style="background: #ffd; padding: 20px; border-radius: 5px; border: 1px solid #ddb;">
+___COMMENT_TEXT_HERE
+</blockquote>
+<br>
 <br>
 via Pocket Lists app

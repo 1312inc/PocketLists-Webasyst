@@ -44,7 +44,7 @@ class pocketlistsNotifications
         $lm = new pocketlistsListModel();
         $im = new pocketlistsItemModel();
 
-        $subject = 'string:{if !$complete}[`UNDONE`]{else}[`DONE`]{/if}: {$item.name|truncate:64}';
+        $subject = 'string:{if !$complete}&#10006;{else}&#10004;{/if} {$item.name|truncate:64}';
         // todo: refactor
         foreach ($users as $user_id => $user) { // foreach user
             $filtered_items = array();
@@ -274,10 +274,11 @@ class pocketlistsNotifications
                         self::sendMail(
                             array(
                                 'contact_id' => $user_id,
-                                'subject' => 'string:[`New to-do on your favorite list!`]',
+                                'subject' => 'string:&#9898; {$item.name|truncate:64}',
                                 'body' => wa()->getAppPath('templates/mails/newfavoritelistitem.html'),
                                 'variables' => array(
                                     'list_name' => $list ? $list['name'] : false,
+                                    'list_url' => wa()->getConfig()->getBackendUrl(true) . 'pocketlists/#/pocket/' . $list['pocket_id'] . '/list/' . $list['id'] . '/',
                                     'items' => $filtered_items
                                 ),
                             )
@@ -305,10 +306,11 @@ class pocketlistsNotifications
                         self::sendMail(
                             array(
                                 'contact_id' => $user_id,
-                                'subject' => 'string:[`New to-do`]',
+                                'subject' => 'string:&#9898; {$item.name|truncate:64}',
                                 'body' => wa()->getAppPath('templates/mails/newitem.html'),
                                 'variables' => array(
                                     'list_name' => $list ? $list['name'] : false,
+                                    'list_url' => wa()->getConfig()->getBackendUrl(true) . 'pocketlists/#/pocket/' . $list['pocket_id'] . '/list/' . $list['id'] . '/',
                                     'items' => $filtered_items
                                 ),
                             )
@@ -324,7 +326,7 @@ class pocketlistsNotifications
         self::sendMail(
             array(
                 'contact_id' => $item['assigned_contact_id'],
-                'subject' => 'string:[`NEW: You’ve been assigned to a to-do`]`',
+                'subject' => 'string:&#10132; {$item.name|truncate:64}',
                 'body' => wa()->getAppPath('templates/mails/newassignitem.html'),
                 'variables' => array(
                     'item_name' => $item['name'],
@@ -529,6 +531,7 @@ class pocketlistsNotifications
                         'body' => wa()->getAppPath('templates/mails/newlist.html'),
                         'variables' => array(
                             'list_name' => $list['name'],
+                            'list_url' => wa()->getConfig()->getBackendUrl(true) . 'pocketlists/#/pocket/' . $list['pocket_id'] . '/list/' . $list['id'] . '/',
                             'by' => $create_contact_name,
                             'create_datetime' => $list['create_datetime'],
                         )

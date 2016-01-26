@@ -1,6 +1,3 @@
-{sprintf('[`Hi %s,`]', $name|escape)}
-<br>
-<br>
-{sprintf('[`%s have just created a new to-do list <strong>%s</strong>`]', $by|escape, $list_name|escape)}
+{sprintf('[`%s have just created a new to-do list <strong><a href="%s">%s</a></strong>`]', $by|escape, $list_url, $list_name|escape)}
 <br><br>
 via Pocket Lists app
