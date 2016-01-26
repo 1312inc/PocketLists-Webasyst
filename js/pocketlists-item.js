@@ -505,10 +505,11 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
     };
     var hideChatCommentInput = function() {
         if ($current_item.length) {
-            var $comment_input = $current_item.find('.pl-chat').find('textarea');
+            var $comments_wrapper = $current_item.find('.pl-chat'),
+                $comment_input = $comments_wrapper.find('textarea');
             $comment_input.trigger('blur');
             if (!$current_item.find('.pl-cue').length) {
-                $comment_input.hide();
+                $comments_wrapper.hide();
             }
         }
     };
