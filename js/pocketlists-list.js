@@ -368,7 +368,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
         }
         request_in_action = true;
 
-        $.post('?module=list&action=sort', {list_id: list_id}, function (r) {
+        $.post('?module=list&action=autoSort', {list_id: list_id}, function (r) {
             if (r.status === 'ok') {
                 $.pocketlists_routing.redispatch();
             } else {

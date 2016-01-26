@@ -275,7 +275,7 @@ class pocketlistsItemModel extends waModel
     {
         $sql = $this->getQuery() . "
                 WHERE list_id = i:lid
-                ORDER BY parent_id, sort ASC";
+                ORDER BY parent_id, sort ASC, id DESC";
 
         return $this->getItems($sql, $list_id, $tree);
     }
@@ -284,7 +284,7 @@ class pocketlistsItemModel extends waModel
     {
         $sql = $this->getQuery() . "
                 WHERE list_id = i:lid AND status = 0
-                ORDER BY parent_id, sort ASC";
+                ORDER BY parent_id, sort ASC, id DESC";
 
         return $this->getItems($sql, $list_id, $tree);
     }
@@ -293,7 +293,7 @@ class pocketlistsItemModel extends waModel
     {
         $sql = $this->getQuery() . "
                 WHERE list_id = i:lid AND status > 0
-                ORDER BY complete_datetime DESC, parent_id, sort ASC";
+                ORDER BY complete_datetime DESC, parent_id, sort ASC, id DESC";
 
         return $this->getItems($sql, $list_id, $tree);
     }
@@ -302,7 +302,7 @@ class pocketlistsItemModel extends waModel
     {
         $sql = $this->getQuery() . "
                 WHERE list_id = i:lid AND status < 0
-                ORDER BY parent_id, sort ASC";
+                ORDER BY parent_id, sort ASC, id DESC";
 
         return $this->getItems($sql, $list_id, $tree);
     }
@@ -433,6 +433,7 @@ class pocketlistsItemModel extends waModel
         $sql = $this->getQuery()."WHERE
                   i.list_id = i:id
                   AND i.status = 0
+                  ORDER BY i.id DESC
                 /*GROUP BY i.parent_id, i.id*/";
 //        $items = $this->getItems($sql, $list_id, false);
         $items = $this->query($sql, array('id' => $list_id, 'contact_id' => wa()->getUser()->getId()))->fetchAll();
