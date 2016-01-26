@@ -221,7 +221,13 @@ $.pocketlists.List = function ($list_wrapper, options) {
                 pocket_id: pocket_id
             };
             if (data.name) {
-                //$(this).after($.pocketlists.$loading);
+                var $pl_done = $new_list_input.closest('.pl-list-title').find('.pl-done-label span').addClass('transparent').html($.pocketlists.$loading.css({
+                    'background-size': '24px 24px',
+                    width: 24,
+                    height: 24,
+                    opacity: 1,
+                    margin: 0
+                }));
                 $.post(
                     '?module=list&action=update',
                     {
@@ -229,6 +235,8 @@ $.pocketlists.List = function ($list_wrapper, options) {
                         id: id
                     },
                     function (r) {
+                        $pl_done.removeClass('transparent');
+                        $.pocketlists.$loading.removeAttr('style').remove();
                         if (r.status === 'ok') {
                             if (list_id === -1) {
                                 $.wa.setHash('#/pocket/' + pocket_id + '/list/' + r.data.id + '/');
