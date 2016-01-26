@@ -144,7 +144,7 @@ label.pl-done-label i.icon16.userpic20 {
 /* Items
 -------- */
 
-.pl-empty-list { margin: 0 60px 20px; padding-top: 30px; text-align: center; }
+.pl-empty-list { margin: 0 60px 20px; padding-top: 70px; text-align: center; }
 .pl-empty-list .pl-jumbodone { width: 180px; height: 180px; margin: 0 auto; background: transparent url('../img/pl-jumbodone.png') no-repeat; background-size: 180px 180px; opacity: 0.13; }
 .pl-empty-list h2 { margin-top: 20px; color: #333; }
 .pl-empty-list p { color: #888; font-size: 0.9em; }
@@ -276,8 +276,8 @@ input#pl-new-list-input,
 .pl-item-selected .pl-chat { display: block; }
 .pl-chat .pl-cue { margin-bottom: 10px; width: 100%; }
 .pl-chat .pl-cue .pl-cue-inner { width: 70%; font-size: 0.95em; }
-.pl-chat .pl-cue .pl-bubble { background: #fff; border-radius: 10px; padding: 8px; margin-bottom: 13px; position: relative; border: 1px solid rgba(0,0,0,0.1); line-height: 1.1em; }
-.pl-chat .pl-cue .pl-bubble .pl-bubble-arrow { background: #fff; transform: rotate(45deg); width: 10px; height: 10px; display: block; position: absolute; left: 15px; bottom: -4px; border: 1px solid rgba(0,0,0,0.1); }
+.pl-chat .pl-cue .pl-bubble { background: rgba(0,0,0,0.05); border-radius: 10px; padding: 8px; margin-bottom: 13px; position: relative; border: 1px solid rgba(0,0,0,0.1); line-height: 1.1em; }
+.pl-chat .pl-cue .pl-bubble .pl-bubble-arrow { background: rgba(0,0,0,0.05); transform: rotate(45deg); width: 10px; height: 10px; display: block; position: absolute; left: 15px; bottom: -4px; border: 1px solid rgba(0,0,0,0.1); }
 .pl-chat .pl-cue .pl-bubble .pl-bubble-arrow:after { content: ''; border-top: 1px solid red;}
 .pl-chat .pl-cue.pl-my-cue .pl-cue-inner { margin-left: 30%; }
 .pl-chat .pl-cue.pl-my-cue .pl-bubble,
@@ -299,7 +299,8 @@ input#pl-new-list-input,
 .pl-logbook .pl-due-today,
 .pl-logbook .pl-due-tomorrow,
 .pl-logbook .pl-due-someday { display: none; }
-.pl-logbook .pl-edit { display: none !important; }
+.pl-logbook .pl-edit,
+.pl-logbook .pl-comment { display: none !important; }
 .pl-logbook .pl-favorite,
 .pl-logbook .pl-author { opacity: 1 !important; }
 
