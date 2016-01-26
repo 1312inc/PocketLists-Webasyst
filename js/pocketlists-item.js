@@ -499,11 +499,13 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
         }
     };
     var showChatCommentInput = function() {
-        $current_item.find('.pl-chat').show().find('textarea').trigger('focus');
+        if ($current_item.length) {
+            $current_item.find('.pl-chat').show().find('textarea').trigger('focus');
+        }
     };
     var hideChatCommentInput = function() {
-        if (!$current_item.find('.pl-cue').length) {
-            $current_item.find('.pl-chat').hide();
+        if ($current_item.length && !$current_item.find('.pl-cue').length) {
+            $current_item.find('.pl-chat').hide().find('textarea').trigger('blur');
         }
     };
     var addComment = function(data) {
@@ -952,25 +954,38 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
 
                 e.preventDefault();
 
-                if (ItemDetails.isVisible()) { // hide item details
-                    deselectItem($item);
-                    ItemDetails.trigger('hide.pl2');
-                }
-
                 if (item_id) {
                     if (!ItemDetails.isVisible() && !is_selected) { // on first click - select
                         ItemDetails.trigger('hide.pl2');
                         selectItem($item);
-                    } else if (!$current_item.find('.pl-chat').is(':visible')) { // hide item details
+                    } else if (!ItemDetails.isVisible()) { // on second - show details
+                        ItemDetails.trigger('show.pl2', [item_id]); // show item details
                         selectItem($item);
-                        showChatCommentInput();
                         //NewItemWrapper.hide();
                     } else { // on third
-                        hideChatCommentInput();
+                        ItemDetails.trigger('hide.pl2');
                         deselectItem();
                     }
                 }
             }) // action: select item
+            .on('click', '.pl-comment', function (e) {
+                e.preventDefault();
+
+                var $this = $(this),
+                    $item = $this.closest(item_selector),
+                    item_id = parseInt($item.data('id'));
+
+                if (item_id) {
+                    if (!$item.find('.pl-chat').is(':visible') || // if no comments - show input and focus
+                        ($item.find('.pl-chat').is(':visible') && $item.find('.pl-cue').length)) { // OR if already visible (there are some comments) - focus
+                        selectItem($item);
+                        showChatCommentInput();
+                    } else { // hide if no comments
+                        hideChatCommentInput();
+                        deselectItem();
+                    }
+                }
+            })
             .on('click', '.pl-edit', function (e) {
                 e.preventDefault();
 
@@ -1018,6 +1033,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                     }
                 } else if (e.which === 27) {
                     hideChatCommentInput();
+                    deselectItem();
                 }
             });
 

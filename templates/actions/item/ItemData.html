@@ -59,23 +59,23 @@
               </ul>
             {/if}
         {/if}
-    </label>
-    <div class="pl-chat" {if empty($item.chat.comments)} style="display:none;"{/if}>
-        {foreach $item.chat.comments as $comment}
-        <div class="pl-cue{if $comment.my} pl-my-cue{/if}">
-            <div class="pl-cue-inner">
-                <div class="pl-bubble">
-                    {$comment.comment|escape|nl2br}
-                    <!-- <span class="pl-bubble-arrow"></span> -->
+        <div class="pl-chat" {if empty($item.chat.comments)} style="display:none;"{/if}>
+            {foreach $item.chat.comments as $comment}
+            <div class="pl-cue{if $comment.my} pl-my-cue{/if}">
+                <div class="pl-cue-inner">
+                    <div class="pl-bubble">
+                        {$comment.comment|escape|nl2br}
+                        <!-- <span class="pl-bubble-arrow"></span> -->
+                    </div>
+                    <i class="icon16 userpic20" style="background-image: url({$comment.userpic})" alt="{$comment.username|escape}"></i> {$comment.username|escape}
+                    <span class="hint">{$comment.create_datetime|wa_datetime:'humandatetime'}</span>
                 </div>
-                <i class="icon16 userpic20" style="background-image: url({$comment.userpic})" alt="{$comment.username|escape}"></i> {$comment.username|escape}
-                <span class="hint">{$comment.create_datetime|wa_datetime:'humandatetime'}</span>
+            </div>
+            {/foreach}
+            <div class="pl-reply"{if $item.status} style="display:none;"{/if}>
+                <i class="icon16 userpic20" style="background-image: url({$item.chat.current_user.userpic})" alt="{$item.chat.current_user.username|escape}"></i>
+                <textarea rows="1" placeholder="[`Add comment`]"></textarea>
             </div>
         </div>
-        {/foreach}
-        <div class="pl-reply"{if $item.status} style="display:none;"{/if}>
-            <i class="icon16 userpic20" style="background-image: url({$item.chat.current_user.userpic})" alt="{$item.chat.current_user.username|escape}"></i>
-            <textarea rows="1" placeholder="[`Add comment`]"></textarea>
-        </div>
-    </div>
+    </label>
 </div>
