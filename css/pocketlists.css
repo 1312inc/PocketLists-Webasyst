@@ -36,7 +36,7 @@
 .indicator.yellow { background-color: #da3; color: #fff; }
 .indicator.green { background-color: green; color: #fff; }
 
-.pl-alert { margin: 0 0 20px 0; background: #ffffe0; padding: 15px 20px; border-bottom: 1px solid #eed; line-height: 1.3em; font-size: 0.9em; color: #555; }
+.pl-alert { margin: 0; background: #ffffe0; padding: 15px 20px; border-bottom: 1px solid #eed; line-height: 1.3em; font-size: 0.9em; color: #555; }
 .pl-alert .pl-alert-close { margin: -2px -2px 0 12px; float: right; color: #333; font-size: 1.4em; }
 
 /* Pocket
@@ -247,6 +247,7 @@ input#pl-new-list-input,
 .pl-list-items ul.menu-v li .pl-item .pl-edit { opacity: 0; margin-top: -4px; display: inline-block; float: right; font-size: 0.9em; }
 .pl-list-items ul.menu-v li .pl-item .pl-comment { opacity: 0; margin-right: 8px; margin-top: -4px; display: inline-block; float: right; font-size: 0.9em; }
 .pl-list-items ul.menu-v li .pl-item p { margin-bottom: 0; margin-top: 4px; line-height: 1.2em; }
+.pl-list-items ul.menu-v li .pl-item i.icon10 { margin-top: 4px; }
 /*.pl-list-items ul.menu-v li .pl-item.pl-item-selected .pl-favorite,
 .pl-list-items ul.menu-v li .pl-item.pl-item-selected .pl-author { opacity: 0; }*/
 /*.pl-list-items ul.menu-v li .pl-item.pl-item-assigned { box-shadow: 0 2px 5px -3px rgba(0,0,0,0.1) inset; background: rgba(0,0,0,0.07); }*/
