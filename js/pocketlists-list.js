@@ -107,7 +107,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
         };
 
         var init = function () {
-            if ($wrapper.data('pl-ListDetails')) {
+            if ($wrapper.data('pl-ListDetails') || !list_id || list_id < 0) {
                 return;
             }
             $wrapper.data('pl-ListDetails', true);
