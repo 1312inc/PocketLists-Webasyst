@@ -905,8 +905,10 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                     $wrapper.find('input[name="item\[list_id\]"]').val(item_id);
                     if (item_id) {
                         $(this).show();
+                        $wrapper.find('#pl-null-list-msg').hide();
                     } else {
                         $(this).hide();
+                        $wrapper.find('#pl-null-list-msg').show();
                     }
                 });
 
