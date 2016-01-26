@@ -504,8 +504,12 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
         }
     };
     var hideChatCommentInput = function() {
-        if ($current_item.length && !$current_item.find('.pl-cue').length) {
-            $current_item.find('.pl-chat').hide().find('textarea').trigger('blur');
+        if ($current_item.length) {
+            var $comment_input = $current_item.find('.pl-chat').find('textarea');
+            $comment_input.trigger('blur');
+            if (!$current_item.find('.pl-cue').length) {
+                $comment_input.hide();
+            }
         }
     };
     var addComment = function(data) {
@@ -1035,6 +1039,12 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                     hideChatCommentInput();
                     deselectItem();
                 }
+            })
+            .on('focus', '.pl-chat .pl-reply textarea', function(e) {
+                var $this = $(this),
+                    $item = $this.closest(item_selector);
+
+                selectItem($item);
             });
 
         // keyboard
