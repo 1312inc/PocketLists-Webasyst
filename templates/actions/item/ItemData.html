@@ -12,7 +12,7 @@
 
             </span>
         {else}
-            {if $item.contact_id != $wa->user()->getId() || $item.list_id == NULL}
+            {if $item.contact_id != $wa->user()->getId()}
                 {* item author userpic *}
                 <span class="pl-author" title="{sprintf('%s by %s', $item.create_datetime|wa_datetime:'humandatetime', $item.username|default:'%username%'|escape)}"><i class="icon16 userpic20" style="background-image: url({$item.userpic})" alt="{$item.username|escape}"></i></span>
             {/if}
