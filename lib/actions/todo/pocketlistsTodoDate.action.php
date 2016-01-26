@@ -21,7 +21,12 @@ class pocketlistsTodoDateAction extends waViewAction
         $this->view->assign('timestamp', $date ? strtotime($date) : time());
 
         $us = new pocketlistsUserSettings();
-        $this->view->assign("stream_list_id", $us->getStreamInboxList());
+        $stream_list_id = $us->getStreamInboxList();
+        if ($stream_list_id) {
+            $lm = new pocketlistsListModel();
+            $stream_list = $lm->getById($stream_list_id);
+            $this->view->assign("stream_list", $stream_list);
+        }
 
         $this->view->assign('filter', $filter);
 
