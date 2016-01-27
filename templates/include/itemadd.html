@@ -10,7 +10,7 @@
         <label class="pl-select-label">
             <input type="checkbox" class="pl-is-selected">
             <textarea rows="1" placeholder="[`New to-do`]"></textarea>
-            {if !isset($stream_list)}<i class="icon16 lock-bw"></i>{/if}
+            {if isset($this_is_stream) && !isset($stream_list)}<i class="icon16 lock-bw"></i>{/if}
         </label>
     </div>
 </div>
