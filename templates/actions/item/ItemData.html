@@ -12,7 +12,7 @@
 
             </span>
         {else}
-            {if $item.contact_id != $wa->user()->getId() || $item.list_id == NULL}
+            {if $item.contact_id != $wa->user()->getId()}
                 {* item author userpic *}
                 <span class="pl-author" title="{sprintf('%s by %s', $item.create_datetime|wa_datetime:'humandatetime', $item.username|default:'%username%'|escape)}"><i class="icon16 userpic20" style="background-image: url({$item.userpic})" alt="{$item.username|escape}"></i></span>
             {/if}
@@ -35,7 +35,9 @@
             {if !empty($item.key_list_id)}
             <a href="#/pocket/{$item.pocket_id}/list/{$item.list_id}/">{$item.name|default:' '|escape|nl2br}</a>
             {else}
-            {* if $item.status != 1 && !empty($item.assigned_contact_id)}<strong class="pl-assignee{if isset($item.calc_priority)}{if $item.calc_priority == 1} pl-green{elseif $item.calc_priority == 2} pl-yellow{elseif $item.calc_priority == 3} pl-red{/if}{/if}" title="{sprintf('[`Assigned to %s`]', $item.assigned_username|escape)}">{$item.assigned_username|escape|truncate:32}</strong>{/if *}{$item.name|default:' '|escape|nl2br}
+            {* if $item.status != 1 && !empty($item.assigned_contact_id)}<strong class="pl-assignee{if isset($item.calc_priority)}{if $item.calc_priority == 1} pl-green{elseif $item.calc_priority == 2} pl-yellow{elseif $item.calc_priority == 3} pl-red{/if}{/if}" title="{sprintf('[`Assigned to %s`]', $item.assigned_username|escape)}">{$item.assigned_username|escape|truncate:32}</strong>{/if *}
+            {$item.name|default:' '|escape|nl2br}
+            {if $item.list_id == NULL && (empty($item.assigned_contact_id) || $item.assigned_contact_id == $wa->user()->getId())}<i class="icon10 lock-bw" title="[`Only you can see this item`]"></i>{/if}
             {/if}
         </span>
         {if !empty($item.due_datetime)}
