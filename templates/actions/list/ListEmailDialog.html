@@ -2,35 +2,39 @@
 <form method="post">
     <div class="dialog-window">
         <div class="dialog-content">
-            <div class="dialog-content-indent">
-                <h1>[`Send list`]</h1>
+
+                <h1>[`Email list`]</h1>
                 <input type="hidden" name="mail[list_id]" value="{$list.id}">
-                <div class="field">
-                    <div class="name">[`To`]</div>
-                    <div class="value">
-                        <input type="email" placeholder="[`Enter email`]" name="mail[to]"/>
+                <div class="fields form width100px">
+                    <div class="field">
+                        <div class="name">[`To`]</div>
+                        <div class="value">
+                            <input type="email" placeholder="email@address" name="mail[to]" class="long bold" />
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="name">[`Subject`]</div>
+                        <div class="value">
+                            <input type="text" value="{$list.name}" name="mail[subject]"  class="long bold" />
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="name">[`Message`]</div>
+                        <div class="value">
+                            <textarea name="mail[body]" style="height: 170px;">{foreach $items as $item}&#10061; {$item.name}
+{/foreach}
+
+via Pocket Lists app</textarea>
+                            {*include '../item/ItemEmail.html' items=$items*}
+                            <!--<div><a href="{$list_url}">[`Check it`]</a></div>-->
+                        </div>
                     </div>
                 </div>
-                <div class="field">
-                    <div class="name">[`Subject`]</div>
-                    <div class="value">
-                        <input type="text" value="{$list.name}" name="mail[subject]"/>
-                    </div>
-                </div>
-                <div class="field">
-                    <div class="name">[`Message`]</div>
-                    <div class="value">
-                        <textarea name="mail[body]" rows="10">{foreach $items as $item}- {$item.name}
-{/foreach}</textarea>
-                        {*include '../item/ItemEmail.html' items=$items*}
-                        <!--<div><a href="{$list_url}">[`Check it`]</a></div>-->
-                    </div>
-                </div>
-            </div>
+
         </div>
         <div class="dialog-buttons">
-            <input type="submit" value="[`Send email`]" class="button green">
-                [`or`] <a class="cancel" href="#">[`close`]</a>
+            <input type="submit" value="[`Send`]" class="button green">
+                [`or`] <a class="cancel" href="#">[`cancel`]</a>
         </div>
     </div>
 </form>
