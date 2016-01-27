@@ -385,12 +385,25 @@ class pocketlistsNotifications
             )
         )->fetchAll('contact_id');
 
+        $comment_user = new waUser($comment['contact_id']);
+        $lm = new pocketlistsListModel();
+        $list = array(
+            'url' => wa()->getConfig()->getRootUrl(true) . '/' . wa()->getConfig()->getBackendUrl() . 'pocketlists/#/todo/',
+            'name' => _('Stream')
+        );
         foreach ($users as $user_id => $user) { // foreach user
             if ($comment['contact_id'] != $user_id) {
                 switch ($user['setting']) {
                     case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_ITEM:
                         $im = new pocketlistsItemModel();
                         $item = $im->getById($comment['item_id']);
+                        if ($item['list_id']) {
+                            $list_ = $lm->getById($item['list_id']);
+                            $list = array(
+                                'url' => wa()->getConfig()->getRootUrl(true) . '/' . wa()->getConfig()->getBackendUrl() . 'pocketlists/#/pocket/' . $list_['pocket_id'] . '/list/' . $list_['id'] . '/',
+                                'name' => $list_['name']
+                            );
+                        }
                         if ($item['contact_id'] == $user_id && (
                                 $item['list_id'] || ( // not from NULL-list
                                     $item['list_id'] == null && ( // OR from NULL-list,
@@ -406,7 +419,10 @@ class pocketlistsNotifications
                                     'subject' => 'string:[`New comment`]',
                                     'body' => wa()->getAppPath('templates/mails/newcomment.html'),
                                     'variables' => array(
-                                        'item' => $item
+                                        'item' => $item,
+                                        'comment' => $comment,
+                                        'by_username' => $comment_user->getName(),
+                                        'list' => $list
                                     ),
                                 )
                             );
@@ -415,6 +431,13 @@ class pocketlistsNotifications
                     case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_FAVORITE_ITEM:
                         $im = new pocketlistsItemModel();
                         $item = $im->getById($comment['item_id'], $user_id);
+                        if ($item['list_id']) {
+                            $list_ = $lm->getById($item['list_id']);
+                            $list = array(
+                                'url' => wa()->getConfig()->getRootUrl(true) . '/' . wa()->getConfig()->getBackendUrl() . 'pocketlists/#/pocket/' . $list_['pocket_id'] . '/list/' . $list_['id'] . '/',
+                                'name' => $list_['name']
+                            );
+                        }
                         if ($item['favorite'] && (
                                 $item['list_id'] || ( // not from NULL-list
                                     $item['list_id'] == null && ( // OR from NULL-list,
@@ -430,7 +453,10 @@ class pocketlistsNotifications
                                     'subject' => 'string:[`New comment`]',
                                     'body' => wa()->getAppPath('templates/mails/newcomment.html'),
                                     'variables' => array(
-                                        'item' => $item
+                                        'item' => $item,
+                                        'comment' => $comment,
+                                        'by_username' => $comment_user->getName(),
+                                        'list' => $list
                                     ),
                                 )
                             );
@@ -439,6 +465,13 @@ class pocketlistsNotifications
                     case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_ANY_LIST_ITEM:
                         $im = new pocketlistsItemModel();
                         $item = $im->getById($comment['item_id']);
+                        if ($item['list_id']) {
+                            $list_ = $lm->getById($item['list_id']);
+                            $list = array(
+                                'url' => wa()->getConfig()->getRootUrl(true) . '/' . wa()->getConfig()->getBackendUrl() . 'pocketlists/#/pocket/' . $list_['pocket_id'] . '/list/' . $list_['id'] . '/',
+                                'name' => $list_['name']
+                            );
+                        }
                         if ($item && (
                                 $item['list_id'] || ( // not from NULL-list
                                     $item['list_id'] == null && ( // OR from NULL-list,
@@ -454,7 +487,10 @@ class pocketlistsNotifications
                                     'subject' => 'string:[`New comment`]',
                                     'body' => wa()->getAppPath('templates/mails/newcomment.html'),
                                     'variables' => array(
-                                        'item' => $item
+                                        'item' => $item,
+                                        'comment' => $comment,
+                                        'by_username' => $comment_user->getName(),
+                                        'list' => $list
                                     ),
                                 )
                             );
@@ -500,6 +536,7 @@ class pocketlistsNotifications
             )
         )->fetchAll('contact_id');
         $im = new pocketlistsItemModel();
+        $us = new waContactSettingsModel();
         foreach ($users as $user_id => $user) {
             $items = $im->getDailyRecapItems($user_id, $user['setting']);
             if ($items) {
@@ -511,7 +548,8 @@ class pocketlistsNotifications
                         'variables' => array(
                                 'items' => $items
                         ) + $vars
-                    )
+                    ),
+                    $us->getOne($user_id, 'webasyst', 'backend_url') . 'pocketlists/'
                 );
                 $csm->set($user_id, 'pocketlists', 'last_recap_cron_time', $time);
             }
@@ -561,7 +599,7 @@ class pocketlistsNotifications
      * Send email to user
      * @param $data
      */
-    public static function sendMail($data)
+    public static function sendMail($data, $backend_url = false)
     {
         $contact = new waContact($data['contact_id']);
         $to = $contact->get('email', 'default'); // todo: add email option in settings
@@ -574,7 +612,8 @@ class pocketlistsNotifications
 
         $view->assign('name', $contact->getName());
         $view->assign('now', waDateTime::date("Y-m-d H:i:s", time(), $contact->getTimezone()));
-        $view->assign('backend_url', wa()->getConfig()->getRootUrl(true) . '/' . wa()->getConfig()->getBackendUrl() . 'pocketlists/');
+        $absolute_backend_url = $backend_url ? $backend_url : wa()->getConfig()->getRootUrl(true) . wa()->getConfig()->getBackendUrl() . '/pocketlists/';
+        $view->assign('backend_url', $absolute_backend_url);
         foreach ($data['variables'] as $var_name => $var_value) {
             $view->assign($var_name, $var_value);
         }

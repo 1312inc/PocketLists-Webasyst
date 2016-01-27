@@ -1,7 +1,7 @@
 {sprintf('[`Hi %s,`]', $name|escape)}
 <br>
 <br>
-{sprintf('[`Here is your <a href="%s">daily recap</a> for %s:`]', $backend_url|cat:'pocketlists/#/todo/', $now|wa_date:'humandate')}
+{sprintf('[`Here is your <a href="%s">daily recap</a> for %s:`]', $backend_url|cat:'#/todo/', $now|wa_date:'humandate')}
 <br><br>
 {foreach $items as $item}
 {$format = 'humandate'}
