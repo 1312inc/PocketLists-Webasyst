@@ -1,5 +1,14 @@
+{if isset($list.id) && $print}
+<html>
+<head>
+    <title>{$list.name}</title>
+    <link type="text/css" rel="stylesheet" href="{$wa_app_static_url}css/pocketlists-print.css">
+</head>
+<body>
+{/if}
 <div class="pl-items pl-{$list.color|default:'none'}">
     <header class="pl-list-title pl-title">
+        {if !$print}
         <div class="float-right block half-padded">
             {if isset($list.id)}
             <ul class="menu-h dropdown">
@@ -29,7 +38,7 @@
                             <a href="#" onClick="alert('waDialog для ввода email-адреса, куда отправлять список');"><i class="icon16 email"></i> [`Email list`]</a>
                         </li>
                         <li>
-                            <a href="#" onClick="alert('открывается новое окно с содержимым данного списка и кнопкой Print. см. как в ШС сделана печать информации о заказе.');"><i class="icon16 print"></i> [`Print list`]</a>
+                            <a href="?module=list&id={$list.id}&print=true" target="_blank"><i class="icon16 print"></i> [`Print list`]</a>
                         </li>
 
                         <li>
@@ -64,6 +73,7 @@
             </ul>
             {/if}
         </div>
+        {/if}
         <h1>
             <input type="hidden" value="{$list.id|default:-1}" id="pl-list-id">
             {if !$archive}
@@ -114,6 +124,8 @@
     </div>
     <div class="clear-both"></div>
 
+    {if !$print}
+
     {include '../../include/archivelistdialog.html' inline}
 
     {include '../../include/deletelistdialog.html' inline}
@@ -123,7 +135,14 @@
     {include '../../include/itemdetails.html' inline}
 
     {include '../../include/itemadd.html' inline}
+
+    {/if}
 </div>
+{if isset($list.id) && $print}
+<button onclick="window.print();">[`Print`]</button>
+</body>
+</html>
+{else}
 <script type="text/javascript">
     new $.pocketlists.Items($('#pl-list-items'), {
         enableChangeLevel: false,
@@ -137,3 +156,4 @@
     });
     $.pocketlists.setTitle('{if isset($list.name)}{$list.name|default:" "|escape}{else}[`New list`]{/if}');
 </script>
+{/if}

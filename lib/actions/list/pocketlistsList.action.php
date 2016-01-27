@@ -42,6 +42,7 @@ class pocketlistsListAction extends waViewAction
             $this->view->assign('new', false);
             $this->view->assign('attachments_path', wa()->getDataUrl('attachments/', true));
             $this->view->assign('list_access_contacts', $list_access_contacts);
+            $this->view->assign('print', waRequest::get('print', false));
         } else {
             $this->view->assign('archive', $archived);
             $this->view->assign('new', true);
