@@ -133,11 +133,11 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                 updateListCountBadge();
                 updateSort();
 
+                request_in_action = false;
+
                 $.isFunction(callback) && callback.call($this);
             }
-        ).always(function() {
-            request_in_action = false;
-        });
+        );
     };
     // update item
     var updateItem = function ($form, callback) {
@@ -264,13 +264,13 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
     };
     // update sort base on current positions
     var updateSort = function (id) {
-        if (request_in_action) {
-            return;
-        }
-        request_in_action = true;
-
         //this.find('label').first().append($.pocketlists.$loading);
         if (o.enableSortItems && o.list) {
+            if (request_in_action) {
+                return;
+            }
+            request_in_action = true;
+
             $.post(
                 '?module=item&action=sort',
                 {
@@ -285,31 +285,25 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                         alert(r.errors);
                     }
                     //$.pocketlists.$loading.remove();
+                    request_in_action = false;
                 },
                 'json'
-            ).always(function() {
-                request_in_action = false;
-            });
+            );
         }
     };
     // complete/uncomplete items
     var completeItem = function ($item, status, callback) {
-        if (request_in_action) {
-            return;
-        }
         var id = parseInt($item.data('id')),
-            $checkbox = $(this),
             $assigned_user_icon = $item.find('.pl-done-label').find('.icon16.userpic20'),
             $item_data_wrapper = $item.find('.pl-item');
-
+        
         if (status && $item_data_wrapper.data('pl-assigned-contact') && $item_data_wrapper.data('pl-assigned-contact') != o.current_user_id) {
             if (!confirm($_('This to-do is assigned to another person. Are you sure you want to mark this item as complete?'))) {
+                callback && $.isFunction(callback) && callback.call($item);
                 return;
             }
         }
-        request_in_action = true;
 
-        $checkbox.prop('disabled', true);
         $item_data_wrapper.toggleClass('gray');
         $assigned_user_icon.hide();
         $.post(
@@ -325,8 +319,6 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                     $item.find('ul.menu-v').find(':checkbox').prop('checked', status); // check nesting items
                     setTimeout(function () {
                         $item.slideToggle(200, function () {
-                            request_in_action = false;
-                            $checkbox.prop('disabled', false);
                             $assigned_user_icon.show();
 
                             if (status) {
@@ -353,8 +345,6 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                     }, 800);
 
                 } else {
-                    request_in_action = false;
-                    $checkbox.prop('disabled', false);
                     $assigned_user_icon.show();
                     alert(r.errors);
                 }
@@ -439,12 +429,11 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                 } else {
                     alert(r.errors);
                 }
+                request_in_action = false;
                 //$.pocketlists.$loading.remove();
             },
             'json'
-        ).always(function() {
-            request_in_action = false;
-        });
+        );
     };
     // select clicked item
     var selectItem = function($item) {
@@ -553,11 +542,10 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
 
                     $this.val('').trigger('focus');
                 }
+                request_in_action = false;
             },
             'json'
-        ).always(function() {
-            request_in_action = false;
-        });
+        );
     };
 
     /**
@@ -764,7 +752,6 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
             $.post('?module=item&action=details',{ id: id }, function (html) {
                 $wrapper.html(html);
                 afterLoad();
-            }).always(function() {
                 request_in_action = false;
             });
         };
@@ -863,10 +850,8 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                                     } else {
 
                                     }
-                                }, 'json')
-                                    .always(function() {
-                                        request_in_action = false;
-                                    });
+                                    request_in_action = false;
+                                }, 'json');
                                 return false;
                             }
                         });
@@ -904,10 +889,8 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                             $pocket_lists.append('<option value="" selected="selected">' + $_('None') + '</option>');
                         }
                         $pocket_lists.trigger('change');
-                    }, 'json')
-                        .always(function() {
-                            request_in_action = false;
-                        });
+                        request_in_action = false;
+                    }, 'json');
                 })
                 .on('change', '#pl-item-list', function() {
                     var item_id = $(this).find(':selected').val();
@@ -960,8 +943,10 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                     $item = $this.closest(item_selector),
                     status = $this.is(':checked') ? 1 : 0;
 
-
-                completeItem.call(this, $item, status);
+                $this.prop('disabled', true);
+                completeItem.call(this, $item, status, function() {
+                    $this.prop('disabled', false);
+                });
             }) // action: complete item
             .on('change', '.pl-is-selected', function (e) {
                 var $this = $(this),
