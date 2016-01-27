@@ -279,7 +279,8 @@ class pocketlistsNotifications
                                 'variables' => array(
                                     'list_name' => $list ? $list['name'] : false,
                                     'list_url' => wa()->getConfig()->getBackendUrl(true) . 'pocketlists/#/pocket/' . $list['pocket_id'] . '/list/' . $list['id'] . '/',
-                                    'items' => $filtered_items
+                                    'items' => $filtered_items,
+                                    'item' => reset($filtered_items)
                                 ),
                             )
                         );
@@ -311,7 +312,8 @@ class pocketlistsNotifications
                                 'variables' => array(
                                     'list_name' => $list ? $list['name'] : false,
                                     'list_url' => wa()->getConfig()->getBackendUrl(true) . 'pocketlists/#/pocket/' . $list['pocket_id'] . '/list/' . $list['id'] . '/',
-                                    'items' => $filtered_items
+                                    'items' => $filtered_items,
+                                    'item' => reset($filtered_items)
                                 ),
                             )
                         );
