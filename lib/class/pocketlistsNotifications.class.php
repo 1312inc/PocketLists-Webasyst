@@ -484,7 +484,7 @@ class pocketlistsNotifications
                             self::sendMail(
                                 array(
                                     'contact_id' => $user_id,
-                                    'subject' => 'string:✍ [`New comment`]',
+                                    'subject' => 'string:✍ {sprintf("[`New comment on %s`]", str_replace(array("\r", "\n"), " ", $item.name)|escape|truncate:32)}',
                                     'body' => wa()->getAppPath('templates/mails/newcomment.html'),
                                     'variables' => array(
                                         'item' => $item,
