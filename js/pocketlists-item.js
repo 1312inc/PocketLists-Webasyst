@@ -297,18 +297,21 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
         if (request_in_action) {
             return;
         }
-        if ($item.data('pl-assigned-contact') && $item.data('pl-assigned-contact') != o.current_user_id) {
+        var id = parseInt($item.data('id')),
+            $checkbox = $(this),
+            $assigned_user_icon = $item.find('.pl-done-label').find('.icon16.userpic20'),
+            $item_data_wrapper = $item.find('.pl-item');
+
+        if ($item_data_wrapper.data('pl-assigned-contact') && $item_data_wrapper.data('pl-assigned-contact') != o.current_user_id) {
             if (!confirm($_('This to-do is assigned to another person. Are you sure you want to mark this item as complete?'))) {
                 return;
             }
         }
         request_in_action = true;
 
-        var id = parseInt($item.data('id')),
-            $checkbox = $(this);
-
         $checkbox.prop('disabled', true);
-        $item.find('.pl-item').toggleClass('gray');
+        $item_data_wrapper.toggleClass('gray');
+        $assigned_user_icon.hide();
         $.post(
             '?module=item&action=complete',
             {
@@ -324,6 +327,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                         $item.slideToggle(200, function () {
                             request_in_action = false;
                             $checkbox.prop('disabled', false);
+                            $assigned_user_icon.show();
 
                             if (status) {
                                 if ($done_items_wrapper.length) {
@@ -351,6 +355,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                 } else {
                     request_in_action = false;
                     $checkbox.prop('disabled', false);
+                    $assigned_user_icon.show();
                     alert(r.errors);
                 }
                 $.pocketlists.$loading.remove();

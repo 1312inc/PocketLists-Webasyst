@@ -1,4 +1,4 @@
-<div class="pl-item{if !empty($item.assigned_contact_id) && $item.assigned_contact_id != $wa->user()->getId() && $item.status != 1} pl-item-assigned{/if}{if $item.status == 1} gray{/if}">
+<div class="pl-item{if !empty($item.assigned_contact_id) && $item.assigned_contact_id != $wa->user()->getId() && $item.status != 1} pl-item-assigned{/if}{if $item.status == 1} gray{/if}" {if $i.assigned_contact_id}data-pl-assigned-contact="{$i.assigned_contact_id}"{/if}>
     <div class="pl-meta">
         <a href="#" class="pl-favorite" data-pl-action="item-favorite" title="[`Favorite`]"><i class="icon16 star{if empty($item.favorite)}-empty{/if}"></i></a>
         {if $item.status == 1}
