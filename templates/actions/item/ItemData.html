@@ -1,4 +1,4 @@
-<div class="pl-item{if !empty($item.assigned_contact_id) && $item.assigned_contact_id != $wa->user()->getId() && $item.status != 1} pl-item-assigned{/if}">
+<div class="pl-item{if !empty($item.assigned_contact_id) && $item.assigned_contact_id != $wa->user()->getId() && $item.status != 1} pl-item-assigned{/if}{if $item.status == 1} gray{/if}">
     <div class="pl-meta">
         <a href="#" class="pl-favorite" data-pl-action="item-favorite" title="[`Favorite`]"><i class="icon16 star{if empty($item.favorite)}-empty{/if}"></i></a>
         {if $item.status == 1}
@@ -31,7 +31,7 @@
     </label>
     <label class="pl-select-label">
         <input type="checkbox" class="pl-is-selected" {if isset($archive) && $archive == true || !empty($item.key_list_id)}disabled{/if}>
-        <span class="pl-item-name{if $item.status == 1} gray{/if}">
+        <span class="pl-item-name">
             {if !empty($item.key_list_id)}
             <a href="#/pocket/{$item.pocket_id}/list/{$item.list_id}/">{$item.name|default:' '|escape|nl2br}</a>
             {else}

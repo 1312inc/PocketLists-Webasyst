@@ -35,6 +35,8 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
         }, options),
         request_in_action = false;
 
+    // todo: add wrapper around $.post $.get with request_in_action implementation
+
     // sortable items
     var initSortable = function () {
         if (o.enableSortItems) {
@@ -295,12 +297,17 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
         if (request_in_action) {
             return;
         }
+        if ($item.data('pl-assigned-contact') && $item.data('pl-assigned-contact') != o.current_user_id) {
+            if (!confirm($_('This to-do is assigned to another person. Are you sure you want to mark this item as complete?'))) {
+                return;
+            }
+        }
         request_in_action = true;
 
-        //$item.find('.pl-select-label').first().append($.pocketlists.$loading);
-        var id = parseInt($item.data('id'));
+        var id = parseInt($item.data('id')),
+            $checkbox = $(this);
 
-        $item.prop('disabled', true);
+        $checkbox.prop('disabled', true);
         $item.find('.pl-item').toggleClass('gray');
         $.post(
             '?module=item&action=complete',
@@ -313,10 +320,11 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                     $.pocketlists.updateAppCounter();
                     // remove from undone list
                     $item.find('ul.menu-v').find(':checkbox').prop('checked', status); // check nesting items
-                    $item.find('.pl-done').prop('disabled', true);
                     setTimeout(function () {
-                        $item.find('.pl-done').prop('disabled', false);
                         $item.slideToggle(200, function () {
+                            request_in_action = false;
+                            $checkbox.prop('disabled', false);
+
                             if (status) {
                                 if ($done_items_wrapper.length) {
                                     $done_items_wrapper.prepend($item);
@@ -334,22 +342,6 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
 
                             $show_logbook_items.show().find('i').text($_('Show all ' + $done_items_wrapper.find('[data-id]').length + ' completed to-dos')); // update "complete items" heading
 
-                            //var $calendar = $('.pl-calendar');
-                            //if (!o.list && $calendar.length) {
-                            //    var $selected_date = $calendar.find('.pl-selected'),
-                            //        $dots_wrapper = $selected_date.find('.pl-dots'),
-                            //        $new_dot = $('<i class="icon10 color pl-dark-none">');
-                            //
-                            //    if (!$dots_wrapper.length) {
-                            //        $dots_wrapper = $('<div class="pl-dots">');
-                            //        $selected_date.append($dots_wrapper);
-                            //    }
-                            //
-                            //    if ($dots_wrapper.find('.pl-dark-none').length < 3) {
-                            //        $dots_wrapper.prepend($new_dot);
-                            //    }
-                            //}
-
                             showEmptyListMessage();
 
                             callback && $.isFunction(callback) && callback.call($item);
@@ -357,14 +349,14 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                     }, 800);
 
                 } else {
+                    request_in_action = false;
+                    $checkbox.prop('disabled', false);
                     alert(r.errors);
                 }
                 $.pocketlists.$loading.remove();
             },
             'json'
-        ).always(function() {
-            request_in_action = false;
-        });
+        );
     };
     // increase item level
     var increaseItem = function (e) {
@@ -956,19 +948,15 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
         showEmptyListMessage();
         initSortable();
 
+
         $list_items_wrapper
-            .on('change', '.pl-done', function () {
+            .on('click', '.pl-done', function (e) {
                 var $this = $(this),
                     $item = $this.closest(item_selector),
                     status = $this.is(':checked') ? 1 : 0;
 
-                if ($item.data('pl-assigned-contact') != o.current_user_id) {
-                    if (confirm($_('This to-do is assigned to another person. Are you sure you want to mark this item as complete?'))) {
-                        completeItem($item, status);
-                    }
-                } else {
-                    completeItem($item, status);
-                }
+
+                completeItem.call(this, $item, status);
             }) // action: complete item
             .on('change', '.pl-is-selected', function (e) {
                 var $this = $(this),
