@@ -17,14 +17,19 @@ class pocketlistsTeamAction extends waViewAction
             $last_activities = $im->getContactLastActivity($teammates_ids);
             foreach ($teammates as $tid => $tval) {
                 if ($tid != wa()->getUser()->getId()) {
-                    $teammates[$tid]['item_count'] = isset($items_count_names[$tid]) ? count(
-                        $items_count_names[$tid]
-                    ) : false;
-                    $teammates[$tid]['item_names'] = isset($items_count_names[$tid]) ? implode(
-                        ', ',
-                        $items_count_names[$tid]
-                    ) : false;
-                    $teammates[$tid]['last_activity'] = isset($last_activities[$tid]) ? $last_activities[$tid]: false;
+                    $teammates[$tid]['last_activity'] = isset($last_activities[$tid]) ? $last_activities[$tid] : false;
+                    $teammates[$tid]['items_info'] = array(
+                        'count' => 0,
+                        'names' => "",
+                        'max_priority' => 0,
+                    );
+                    if (isset($items_count_names[$tid])) {
+                        $teammates[$tid]['items_info'] = array(
+                            'count' => count($items_count_names[$tid]['item_names']),
+                            'names' => implode(', ', $items_count_names[$tid]['item_names']),
+                            'max_priority' => $items_count_names[$tid]['item_max_priority'],
+                        );
+                    }
                 } else {
                     unset($teammates[$tid]);
                 }

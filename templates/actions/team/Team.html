@@ -16,9 +16,9 @@
         <!-- TEAM -->
         <div class="pl-inner-sidebar">
 
-            <ul class="zebra pl-team">
+            <ul class="zebra pl-team" id="pl-lists">
                 {foreach $teammates as $teammate}
-                <li {if $teammate.id == $current_teammate.id}class="selected"{/if} data-pl-team-id="{$teammate.id}">
+                <li {if $teammate.id == $current_teammate.id}class="selected"{/if} data-pl-team-id="{$teammate.id}" data-pl-list-id="{$teammate.id}">
                     <a href="#/team/{$teammate.login}">
                         <div class="profile image50px">
                             <div class="image">
@@ -26,11 +26,11 @@
                             </div>
                             <div class="details">
 
-                                <span class="count">{if !empty($teammate.item_count)}{$teammate.item_count}{else}0{/if}</span>
+                                <span class="count{if $teammate.items_info.max_priority == 1} indicator green{elseif $teammate.items_info.max_priority == 2} indicator yellow{elseif $teammate.items_info.max_priority == 3} indicator red{/if}">{$teammate.items_info.count}</span>
 
                                 <span class="pl-username">{$teammate.name|default:'%username%'|escape}</span>
 
-                                <div class="pl-active-items">{$teammate.item_names|escape}</div>
+                                <div class="pl-active-items">{$teammate.items_info.names|escape}</div>
 
                             </div>
                         </div>
@@ -54,6 +54,7 @@
                     </li>
                 </ul>
             </div>
+            <input type="hidden" id="pl-list-id" value="{$current_teammate.id}"/>
             <h1 class="not-padded">
                 {$current_teammate.name|default:' '|escape}
             </h1>
@@ -90,9 +91,9 @@
         </div>
         <div class="clear-both"></div>
 
-        {include '../../include/deleteitemdialog.html' inline}
-
         {include '../../include/itemadd.html' inline}
+
+        {include '../../include/itemdetails.html' inline}
 
     </main>
     {/if}
@@ -108,6 +109,7 @@
         enableSortItems: false,
         assignUser: parseInt($('#pl-assigned-contact-id').val()),
         showMessageOnEmptyList: true,
+        list: new $.pocketlists.List($('.pl-title')),
         current_user_id: {$wa->user()->get('id')}
     });
     $.pocketlists.setTitle('{$current_teammate.name|escape}');

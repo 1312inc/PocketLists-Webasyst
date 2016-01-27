@@ -461,15 +461,30 @@ class pocketlistsItemModel extends waModel
             $contact_ids = array($contact_ids);
         }
         $q = "SELECT
-                i.assigned_contact_id,
-                i.name item_name
+                i.id id,
+                i.assigned_contact_id assigned_contact_id,
+                i.name name,
+                i.priority priority,
+                i.due_date due_date,
+                i.due_datetime due_datetime
               FROM {$this->table} i
               LEFT JOIN pocketlists_list l ON l.id = i.list_id
               WHERE
                 i.assigned_contact_id IN (i:contact_id)
                 AND i.status = 0
                 AND (l.archived = 0 OR l.archived IS NULL) /*archived is NULL when item is in null-list*/";
-        return $this->query($q, array('contact_id' => $contact_ids))->fetchAll('assigned_contact_id', 2);
+        $items = $this->query($q, array('contact_id' => $contact_ids))->fetchAll('id');
+        $result = array();
+        foreach ($items as $assigned_item_id => $assigned_item) {
+            $this->updatePriority($assigned_item);
+            $result[$assigned_item['assigned_contact_id']]['item_names'][] = $assigned_item['name'];
+            $result[$assigned_item['assigned_contact_id']]['item_max_priority'] = max(
+                isset($result[$assigned_item['assigned_contact_id']]['item_max_priority']) ?
+                    $result[$assigned_item['assigned_contact_id']]['item_max_priority'] : 0,
+                $assigned_item['calc_priority']
+            );
+        }
+        return $result;
     }
 
     public function getContactLastActivity($contact_ids)
