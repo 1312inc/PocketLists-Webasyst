@@ -14,7 +14,7 @@ class pocketlistsRightConfig extends waRightConfig
         }
         $this->addItem(
             'pocket',
-            _w('Pocketlists'),
+            _w('Lists'),
             'selectlist',
             array(
                 'items' => $items,

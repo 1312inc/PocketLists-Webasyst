@@ -15,6 +15,6 @@ return array(
         'name' => /*_w*/('added new items to')
     ),
     'item_completed' => array(
-        'name' => /*_w*/('marked completed a to-do item')
+        'name' => /*_w*/('completed')
     ),
 );

@@ -38,7 +38,7 @@ class pocketlistsConfig extends waAppConfig
                         $list_name = htmlspecialchars($list['name'], ENT_QUOTES);
                         $logs[$log_id]['params_html'] .= "<a href=\"{$list_url}\">{$list_name}</a>";
                     } else {
-                        $logs[$log_id]['params_html'] .= _w("to his todo stream");
+                        $logs[$log_id]['params_html'] .= _w("to his personal to-do stream");
                     }
                     break;
                 case 'item_completed':
