@@ -1,8 +1,8 @@
 {sprintf('[`%s commented on <a href="%s">%s</a>`]', $by_username|escape, $list.url, $item.name|escape|truncate:64)}
 <br>
 <br>
-<blockquote style="background: #ffd; padding: 20px; border-radius: 10px; border: 1px solid #ddb; margin-left: 0;">
-{$comment.comment|escape}
+<blockquote style="background: #ffd; padding: 10px; border-radius: 10px; border: 1px solid #ddb; margin-left: 0;">
+{$comment.comment|escape|nl2br}
 </blockquote>
 <br>
 <br>
