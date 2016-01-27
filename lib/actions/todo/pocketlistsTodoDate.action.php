@@ -31,5 +31,6 @@ class pocketlistsTodoDateAction extends waViewAction
         $this->view->assign('filter', $filter);
 
         $this->view->assign('attachments_path', wa()->getDataUrl('attachments/', true));
+        $this->view->assign('this_is_stream', true);
     }
 }
