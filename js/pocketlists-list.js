@@ -469,6 +469,33 @@ $.pocketlists.List = function ($list_wrapper, options) {
 
                 favoriteList();
             })
+            .on('click', '[data-pl-action="list-email"]', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                $('<div>').waDialog({
+                    'url': '?module=list&action=emailDialog&id=' + list_id,
+                    onLoad: function () {
+                    },
+                    onSubmit: function (d) {
+                        var $this = $(this);
+
+                        $this.after($.pocketlists.$loading);
+                        $.post('?module=list&action=email', $this.serialize(), function(r) {
+                            $.pocketlists.$loading.remove();
+                            if (r.status === 'ok') {
+                                d.trigger('close');
+                            }  else {
+                                alert(r.errors);
+                            }
+                        }, 'json');
+                        return false;
+                    },
+                    onClose: function () {
+                        this.remove();
+                    }
+                });
+            })
             .on('click', '#pl-list-complete', function (e) {
                 e.stopPropagation();
                 var $dialog_complete_all = $('#pl-dialog-list-archive-complete-all');
