@@ -44,7 +44,7 @@ class pocketlistsNotifications
         $lm = new pocketlistsListModel();
         $im = new pocketlistsItemModel();
 
-        $subject = 'string:{if !$complete}✖{else}✔{/if} {$item.name|truncate:64}';
+        $subject = 'string:{if !$complete}✖{else}✔{/if} {str_replace(array("\r", "\n"), " ", $item.name)|truncate:64}';
         // todo: refactor
         foreach ($users as $user_id => $user) { // foreach user
             $filtered_items = array();
@@ -274,7 +274,7 @@ class pocketlistsNotifications
                         self::sendMail(
                             array(
                                 'contact_id' => $user_id,
-                                'subject' => 'string:❍ {trim(preg_replace("/\s+/", " ", $item.name))|truncate:64}',
+                                'subject' => 'string:❍ {str_replace(array("\r", "\n"), " ", $item.name)|truncate:64}',
                                 'body' => wa()->getAppPath('templates/mails/newfavoritelistitem.html'),
                                 'variables' => array(
                                     'list_name' => $list ? $list['name'] : false,
@@ -307,7 +307,7 @@ class pocketlistsNotifications
                         self::sendMail(
                             array(
                                 'contact_id' => $user_id,
-                                'subject' => 'string:❍ {trim(preg_replace("/\s+/", " ", $item.name)|truncate:64}',
+                                'subject' => 'string:❍ {str_replace(array("\r", "\n"), " ", $item.name)|truncate:64}',
                                 'body' => wa()->getAppPath('templates/mails/newitem.html'),
                                 'variables' => array(
                                     'list_name' => $list ? $list['name'] : false,
@@ -340,7 +340,7 @@ class pocketlistsNotifications
         self::sendMail(
             array(
                 'contact_id' => $item['assigned_contact_id'],
-                'subject' => 'string:➔ {trim(preg_replace("/\s+/", " ", $item_name))|truncate:64}',
+                'subject' => 'string:➔ {str_replace(array("\r", "\n"), " ", $item_name)|truncate:64}',
                 'body' => wa()->getAppPath('templates/mails/newassignitem.html'),
                 'variables' => array(
                     'item_name' => $item['name'],
@@ -416,7 +416,7 @@ class pocketlistsNotifications
                             self::sendMail(
                                 array(
                                     'contact_id' => $user_id,
-                                    'subject' => 'string:✍ [`New comment`]',
+                                    'subject' => 'string:✍ {sprintf("[`New comment on %s`]", str_replace(array("\r", "\n"), " ", $item.name)|escape|truncate:32)}',
                                     'body' => wa()->getAppPath('templates/mails/newcomment.html'),
                                     'variables' => array(
                                         'item' => $item,
@@ -450,7 +450,7 @@ class pocketlistsNotifications
                             self::sendMail(
                                 array(
                                     'contact_id' => $user_id,
-                                    'subject' => 'string:✍ [`New comment`]',
+                                    'subject' => 'string:✍ {sprintf("[`New comment on %s`]", str_replace(array("\r", "\n"), " ", $item.name)|escape|truncate:32)}',
                                     'body' => wa()->getAppPath('templates/mails/newcomment.html'),
                                     'variables' => array(
                                         'item' => $item,
