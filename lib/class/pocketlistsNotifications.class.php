@@ -274,7 +274,7 @@ class pocketlistsNotifications
                         self::sendMail(
                             array(
                                 'contact_id' => $user_id,
-                                'subject' => 'string:❍ {trim(preg_replace('/\s+/', ' ', $item.name))|truncate:64}',
+                                'subject' => 'string:❍ {trim(preg_replace("/\s+/", " ", $item.name))|truncate:64}',
                                 'body' => wa()->getAppPath('templates/mails/newfavoritelistitem.html'),
                                 'variables' => array(
                                     'list_name' => $list ? $list['name'] : false,
@@ -307,7 +307,7 @@ class pocketlistsNotifications
                         self::sendMail(
                             array(
                                 'contact_id' => $user_id,
-                                'subject' => 'string:❍ {trim(preg_replace('/\s+/', ' ', $item.name)|truncate:64}',
+                                'subject' => 'string:❍ {trim(preg_replace("/\s+/", " ", $item.name)|truncate:64}',
                                 'body' => wa()->getAppPath('templates/mails/newitem.html'),
                                 'variables' => array(
                                     'list_name' => $list ? $list['name'] : false,
@@ -340,7 +340,7 @@ class pocketlistsNotifications
         self::sendMail(
             array(
                 'contact_id' => $item['assigned_contact_id'],
-                'subject' => 'string:➔ {trim(preg_replace('/\s+/', ' ', $item_name))|truncate:64}',
+                'subject' => 'string:➔ {trim(preg_replace("/\s+/", " ", $item_name))|truncate:64}',
                 'body' => wa()->getAppPath('templates/mails/newassignitem.html'),
                 'variables' => array(
                     'item_name' => $item['name'],
