@@ -111,7 +111,7 @@ class pocketlistsUserSettings
      */
     public function emailWhenNewAssignToMe()
     {
-        return !empty($this->settings['email_assign_me_on']) ? true : false;
+        return !empty($this->settings['email_assign_me']) ? true : false;
     }
     /**
      * @return bool

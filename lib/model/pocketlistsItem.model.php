@@ -243,20 +243,23 @@ class pocketlistsItemModel extends waModel
 
     public function updateWithCalcPriority($id, $item, $silent = false)
     {
-        $us = new pocketlistsUserSettings();
-        $email_me = $us->emailWhenNewAssignToMe();
-        if (!$silent && $email_me) {
-            $old_item = $this->getById($id);
+        $email_to_assigned_contact = false;
+        $old_item = array('assigned_contact_id' => false);
+        if (!$silent && $item['assigned_contact_id']) {
+            $us = new pocketlistsUserSettings($item['assigned_contact_id']);
+            $email_to_assigned_contact = $us->emailWhenNewAssignToMe();
+            if ($email_to_assigned_contact) {
+                $old_item = $this->getById($id);
+            }
         }
 
         $this->updatePriority($item);
         if ($this->updateById($id, $item)) {
-            if ($silent && $email_me && // settings are set
-                $item['assigned_contact_id'] && // assigned to me is set
-                $item['assigned_contact_id'] == wa()->getUser()->getId() && // assigned id is mine
+            if (!$silent && $email_to_assigned_contact && // settings are set
+                $item['assigned_contact_id'] != wa()->getUser()->getId() && // do not email if I assign myself
                 $item['assigned_contact_id'] != $old_item['assigned_contact_id']
             ) { // assigned id is updated
-                pocketlistsNotifications::notifyAboutNewAssign($item);
+                pocketlistsNotifications::notifyAboutNewAssign($item, wa()->getUser()->getName());
             }
             return true;
         }
