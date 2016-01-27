@@ -302,7 +302,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
             $assigned_user_icon = $item.find('.pl-done-label').find('.icon16.userpic20'),
             $item_data_wrapper = $item.find('.pl-item');
 
-        if ($item_data_wrapper.data('pl-assigned-contact') && $item_data_wrapper.data('pl-assigned-contact') != o.current_user_id) {
+        if (status && $item_data_wrapper.data('pl-assigned-contact') && $item_data_wrapper.data('pl-assigned-contact') != o.current_user_id) {
             if (!confirm($_('This to-do is assigned to another person. Are you sure you want to mark this item as complete?'))) {
                 return;
             }
@@ -336,7 +336,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                                 }
                                 $item.find('.pl-reply').hide();
                             } else {
-                                $undone_items_wrapper.append($item.show());
+                                $undone_items_wrapper.length && $undone_items_wrapper.append($item.show());
                                 $item.find('.pl-reply').show();
                                 updateSort();
                             }
