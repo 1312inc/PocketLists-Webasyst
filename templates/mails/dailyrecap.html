@@ -6,7 +6,7 @@
 {foreach $items as $item}
 {$format = 'humandate'}
 {if $item.due_datetime}{$format = 'humandatetime'}{/if}
-&mdash; {sprintf('[`<strong>%s</strong> on %s`]', $item.name|escape, $item.due_datetime|default:$item.due_date|wa_datetime:$format)}<br>
+&mdash; {sprintf('[`<strong>%s</strong> on %s`]', $item.name|escape|nl2br, $item.due_datetime|default:$item.due_date|wa_datetime:$format)}<br>
 {/foreach}
 <br>
 via Pocket Lists app
