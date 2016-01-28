@@ -8,6 +8,9 @@ html, body {
     width: 100%;
     margin: 0;
 }
+.hint, a.hint, span.hint { color: #aaa; font-size: 0.8em; }
+.bold { font-weight: bold !important; }
+.small { font-size: 0.8em; }
 .pl-print-button { padding: 20px; }
 
 .pl-dark-gray { background: #aaa !important; }
@@ -27,7 +30,7 @@ html, body {
 /* Done checkbox
 ---------------- */
 
-label.pl-done-label { cursor: pointer;position: relative;z-index: 2;}
+label.pl-done-label {  }
 label.pl-done-label .listicon48 {
     float: left;
     position: relative;
@@ -114,9 +117,8 @@ input#pl-new-list-input,
 .pl-items.content.left300px { margin-left: 299px; }
 
 .pl-title { border-bottom: 1px solid rgba(0,0,0,0.1); padding: 25px 5px 25px 20px; }
-.pl-title:hover { background: rgba(0,0,0,0.04); }
-.pl-title h1 { padding-left: 29px; position: relative; cursor: default; margin-bottom: 0.2em; }
-.pl-title h1 .pl-done + span {left: -34px; top: -22px; width: 22px; height: 22px; position: absolute; z-index: 1;}
+.pl-title h1 { padding-left: 29px; position: relative; margin-bottom: 0.2em; }
+.pl-title h1 .pl-done + span {left: -7px; top: 6px; width: 22px; height: 22px; position: absolute; z-index: 1;}
 .pl-title h1 .loading { margin-left: 3px; margin-top: 8px; opacity: 0.5; }
 .pl-title h1.not-padded { padding-left: 0; }
 .pl-title h1 .pl-list-due { font-size: 1rem; display: block; margin-bottom: -10px; }
@@ -143,11 +145,10 @@ input#pl-new-list-input,
 .gray .pl-due-someday { color: #aaa; }
 
 .pl-list-items ul.menu-v { margin: 0; padding: 0; }
-.pl-list-items ul.menu-v li { padding: 0; margin: 0; }
+.pl-list-items ul.menu-v li { padding: 0; margin: 0; list-style: none; }
 .pl-list-items ul.menu-v li .pl-item { display: block; border-bottom: 1px solid rgba(0,0,0,0.1);position: relative;}
-.pl-list-items ul.menu-v li .pl-item:hover { background: rgba(0,0,0,0.04); }
 .pl-list-items ul.menu-v li .pl-item.pl-item-selected { background: rgba(0,0,0,0.06); }
-.pl-list-items ul.menu-v li label.pl-select-label { padding: 13px 25px 15px 49px; display: block; line-height: 1.3em;position: relative;}
+.pl-list-items ul.menu-v li label.pl-select-label { padding: 13px 25px 15px 49px; display: block; line-height: 1.3em;position: relative;cursor: auto;}
 .pl-list-items ul.menu-v li ul { padding-left: 0; margin: 0; }
 .pl-list-items ul.menu-v li ul li .pl-item { padding-left: 30px; }
 .pl-list-items ul.menu-v li ul li ul li .pl-item { padding-left: 56px; }
@@ -165,10 +166,6 @@ input#pl-new-list-input,
 .pl-list-items ul.menu-v li .pl-item.pl-item-assigned .pl-item-name { font-style: italic; }
 .pl-list-items ul.menu-v li .pl-item:hover .pl-edit,
 .pl-list-items ul.menu-v li .pl-item:hover .pl-comment { opacity: 1; transition: opacity 0.1s ease-in; transition-delay: 0.5s; }
-
-.pl-teammate-items .pl-list-items ul.menu-v li .pl-item.pl-item-assigned { box-shadow: none; background: transparent; }
-.pl-teammate-items .pl-list-items ul.menu-v li .pl-item:hover { background: rgba(0,0,0,0.04); }
-.pl-teammate-items .pl-list-items ul.menu-v li .pl-item.pl-item-selected { background: rgba(0,0,0,0.06); }
 
 .pl-attachments { padding-left: 0; }
 .pl-attachments li { padding-top: 10px !important; margin-bottom: 3px !important; list-style: none; word-break: break-all; }

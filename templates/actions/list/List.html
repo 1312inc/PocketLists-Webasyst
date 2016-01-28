@@ -77,7 +77,7 @@
             <input type="hidden" value="{$list.id|default:-1}" id="pl-list-id">
             {if !$archive}
             <label class="pl-done-label">
-                <input type="checkbox" class="pl-done" id="pl-list-complete">
+                <input type="checkbox" class="pl-done" id="pl-list-complete"{if $print} disabled="disabled"{/if}>
                 <span></span>
             </label>
             {/if}
