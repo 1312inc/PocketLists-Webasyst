@@ -33,11 +33,11 @@
         <input type="checkbox" class="pl-is-selected" {if isset($archive) && $archive == true || !empty($item.key_list_id)}disabled{/if}>
         <span class="pl-item-name">
             {if !empty($item.key_list_id)}
-            <a href="#/pocket/{$item.pocket_id}/list/{$item.list_id}/">{$item.name|default:' '|escape|nl2br}</a>
+                <a href="#/pocket/{$item.pocket_id}/list/{$item.list_id}/">{$item.name|default:' '|escape|nl2br}</a>
             {else}
-            {* if $item.status != 1 && !empty($item.assigned_contact_id)}<strong class="pl-assignee{if isset($item.calc_priority)}{if $item.calc_priority == 1} pl-green{elseif $item.calc_priority == 2} pl-yellow{elseif $item.calc_priority == 3} pl-red{/if}{/if}" title="{sprintf('[`Assigned to %s`]', $item.assigned_username|escape)}">{$item.assigned_username|escape|truncate:32}</strong>{/if *}
-            {$item.name|default:' '|escape|nl2br}
-            {if $item.list_id == NULL && (empty($item.assigned_contact_id) || $item.assigned_contact_id == $wa->user()->getId())}<i class="icon10 lock-bw" title="[`Only you can see this item`]"></i>{/if}
+                {* <strong class="pl-label pl-dark-red">LABEL</strong> *}
+                {$item.name|default:' '|escape|nl2br}
+                {if $item.list_id == NULL && (empty($item.assigned_contact_id) || $item.assigned_contact_id == $wa->user()->getId())}<i class="icon10 lock-bw" title="[`Only you can see this item`]"></i>{/if}
             {/if}
         </span>
         {if !empty($item.due_datetime)}

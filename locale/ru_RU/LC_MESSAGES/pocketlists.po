@@ -697,7 +697,7 @@ msgstr "Удалить проект"
 
 #: /wa-apps/pocketlists/templates/actions/settings/Settings.html:28
 msgid "To-do Stream inbox"
-msgstr "Список входящих задач"
+msgstr "Список для входящих"
 
 #: /wa-apps/pocketlists/templates/actions/settings/Settings.html:45
 msgid "When you add to-dos to your To-do Stream directly, they will be added into the specified to-do list and thus will be available to your teammates who can access this list. If you want such to-dos be your private to-dos by default, select None."
@@ -709,11 +709,11 @@ msgstr "Умный ввод"
 
 #: /wa-apps/pocketlists/templates/actions/settings/Settings.html:55
 msgid "Set due date and time according to to-do name"
-msgstr "Устанавливать срок выполнения задачи по его названию"
+msgstr "Устанавливать срок выполнения по названию задачи"
 
 #: /wa-apps/pocketlists/templates/actions/settings/Settings.html:56
 msgid "When enabled, Pocket Lists will automatically parse to-do name and set due date and time if it was typed.<br> E.g. “meeting tomorrow morning”, “call James next friday 5pm”."
-msgstr "Включите, чтобы срок выполнения задачи устанавливался автоматически по введенному названию.<br> Например, «встреча завтра утром», «позвонить Кириллу в пятницу в 17:00» — Pocket Lists понимает по-русски и по-английски."
+msgstr "Приложение автоматически установит дату и время выполнения задачи по введенному названию.<br> Например, «встреча завтра утром», «позвонить Кириллу в пятницу в 17:00» — Pocket Lists понимает по-русски и по-английски."
 
 #: /wa-apps/pocketlists/templates/actions/settings/Settings.html:80
 msgid "We’ll keep you up to date and notify you on what’s up next! And when there is nothing planned for the upcoming period, no alerts will be sent."
@@ -729,7 +729,7 @@ msgstr "ВСЕ СПИСКИ И ЗАДАЧИ ЭТОГО ПРОЕКТА БУДУТ
 
 #: /wa-apps/pocketlists/templates/actions/todo/TodoDate.html:5
 msgid "This is <strong>To-do Stream</strong> — your personal dynamic to-do list that automatically collects all important to-dos from all of your lists and presents them in the priority &amp; due order. Most important to-dos are on top. Since this is your personal list, to-do items assigned to your teammates won’t be listed on this list."
-msgstr "Это <strong>Поток задач</strong> — ваш список дел, в котором автоматически собираются задачи из всех списков и сортируются в порядке приоритета и срока выполнения. Самые важные задачи наверху. Это ваш персонифицированный список, и поэтому задачи, назначенные на других пользователей, в нем показывать не будут."
+msgstr "Это <strong>Поток задач</strong> — ваш список дел, в котором автоматически собираются задачи из всех списков и сортируются в порядке приоритета и срока выполнения. Самые важные задачи наверху. Это ваш персонифицированный список, и поэтому задачи, назначенные на других пользователей, в нем показаны не будут."
 
 #: /wa-apps/pocketlists/templates/actions/todo/TodoDate.html:8
 msgid "To-dos added to this list directly will be automatically added to <strong>%s</strong> list and thus will be available to your teammates who can access this list. <a href=\"%s\">Configure</a>"
@@ -737,7 +737,7 @@ msgstr "Задачи, добавленные напрямую в поток, б�
 
 #: /wa-apps/pocketlists/templates/actions/todo/TodoDate.html:10
 msgid "To-dos added to the stream directly will be <em>your private to-dos</em> unless you manually assign them to any to-do list or <a href=\"%s\">select the default stream inbox list</a> in the app settings."
-msgstr "Задачи, добавленные напрямую в поток, будут <strong>видны только вам</strong> до тех пор, пока вы не переместите в один из общих списков дел или не <a href=\"%s\">выберите входящий список дел</a> в настройках, прежде чем добавлять новые задачи в поток."
+msgstr "Задачи, добавленные напрямую в поток, будут <strong>видны только вам</strong> до тех пор, пока вы не переместите их в один из общих списков дел или не <a href=\"%s\">выберите список для входящих</a> в настройках, прежде чем добавлять новые задачи в поток."
 
 #: /wa-apps/pocketlists/templates/include/deletelistdialog.html:6
 msgid "All to-do items (either completed or not) will be deleted permanently."

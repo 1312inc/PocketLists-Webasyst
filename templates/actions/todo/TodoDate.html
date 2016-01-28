@@ -7,7 +7,7 @@
         {if isset($stream_list)}
             {sprintf('[`To-dos added to this list directly will be automatically added to <strong>%s</strong> list and thus will be available to your teammates who can access this list. <a href="%s">Configure</a>`]',$stream_list['name']|escape,'#/settings/')}
         {else}
-            {sprintf('[`To-dos added to the stream directly will be <em>your private to-dos</em> unless you manually assign them to any to-do list or <a href="%s">select the default stream inbox list</a> in the app settings.`]','#/settings/')}
+            <i class="icon10 lock-bw"></i> {sprintf('[`To-dos added to the stream directly will be <em>your private to-dos</em> unless you manually assign them to any to-do list or <a href="%s">select the default stream inbox list</a> in the app settings.`]','#/settings/')}
         {/if}
     </div>
 
