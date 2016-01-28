@@ -56,7 +56,8 @@ class pocketlistsUserSettings
             'email_comment_item_on' => 1,
             'email_comment_item' => self::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_ITEM,
             'email_create_list_on' => 1,
-            'stream_inbox_list' => 0
+            'stream_inbox_list' => 0,
+            'natural_input_on' => 1
         );
     }
 
@@ -73,7 +74,8 @@ class pocketlistsUserSettings
             'email_add_item_on' => 0,
             'email_comment_item_on' => 0,
             'email_create_list_on' => 0,
-            'stream_inbox_list' => 0
+            'stream_inbox_list' => 0,
+            'natural_input_on' => 0
         );
     }
 
@@ -153,5 +155,10 @@ class pocketlistsUserSettings
     public function getStreamInboxList()
     {
         return !empty($this->settings['stream_inbox_list']) ? $this->settings['stream_inbox_list'] : false;
+    }
+
+    public function getNaturalInput()
+    {
+        return !empty($this->settings['natural_input_on']) ? $this->settings['natural_input_on'] : false;
     }
 }
