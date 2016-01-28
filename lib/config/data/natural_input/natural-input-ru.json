@@ -1,0 +1,350 @@
+{
+    "smartparse": {
+        "week": [
+            ["пон", 2, "\\w*"],
+            ["пн", 2, "(?=\\W|\\z)"],
+            ["пнт", 2, "(?=\\W|\\z)"],
+            ["втор", 3, "\\w*"],
+            ["вт", 3, "(?=\\W|\\z)"],
+            ["втр", 3, "(?=\\W|\\z)"],
+            ["сред", 4, "\\w*"],
+            ["ср", 4, "(?=\\W|\\z)"],
+            ["срд", 4, "(?=\\W|\\z)"],
+            ["четвер", 5, "\\w*"],
+            ["чт", 5, "(?=\\W|\\z)"],
+            ["чтв", 5, "(?=\\W|\\z)"],
+            ["пятниц", 6, "\\w*"],
+            ["пт", 6, "(?=\\W|\\z)"],
+            ["птн", 6, "(?=\\W|\\z)"],
+            ["суббот", 7, "\\w*"],
+            ["сб", 7, "(?=\\W|\\z)"],
+            ["сбт", 7, "(?=\\W|\\z)"],
+            ["воскресен", 1, "\\w*"],
+            ["вс", 1, "(?=\\W|\\z)"],
+            ["вск", 1, "(?=\\W|\\z)"]
+        ],
+        "month": [
+            ["январ", 1, "\\w*"],
+            ["янв", 1, "(?=\\W|\\z)"],
+            ["феврал", 2, "\\w*"],
+            ["фев", 2, "(?=\\W|\\z)"],
+            ["март", 3, "(?=\\W|\\z)"],
+            ["марта", 3, "(?=\\W|\\z)"],
+            ["мар", 3, "(?=\\W|\\z)"],
+            ["апрел", 4, "\\w*"],
+            ["апр", 4, "(?=\\W|\\z)"],
+            ["май", 5, "(?=\\W|\\z)"],
+            ["мая", 5, "(?=\\W|\\z)"],
+            ["мае", 5, "(?=\\W|\\z)"],
+            ["июн", 6, "\\w*"],
+            ["июн", 6, "(?=\\W|\\z)"],
+            ["июл", 7, "\\w*"],
+            ["июл", 7, "(?=\\W|\\z)"],
+            ["август", 8, "\\w*"],
+            ["авг", 8, "(?=\\W|\\z)"],
+            ["сентябр", 9, "\\w*"],
+            ["сен", 9, "(?=\\W|\\z)"],
+            ["октябр", 10, "\\w*"],
+            ["окт", 10, "(?=\\W|\\z)"],
+            ["ноябр", 11, "\\w*"],
+            ["ноя", 11, "(?=\\W|\\z)"],
+            ["декабр", 12, "\\w*"],
+            ["дек", 12, "(?=\\W|\\z)"]
+        ],
+        "numeric": [
+            ["один", 1, "(?=\\W|\\z)"],
+            ["одну", 1, "(?=\\W|\\z)"],
+            ["два", 2, "(?=\\W|\\z)"],
+            ["две", 2, "(?=\\W|\\z)"],
+            ["три", 3, "(?=\\W|\\z)"],
+            ["четыр", 4, "\\w*"],
+            ["пять", 5],
+            ["шесть", 6],
+            ["семь", 7],
+            ["восемь", 8],
+            ["девять", 9],
+            ["десять", 10],
+            ["20", 20],
+            ["21", 21],
+            ["22", 22],
+            ["23", 23],
+            ["24", 24],
+            ["10", 10],
+            ["11", 11],
+            ["12", 12],
+            ["13", 13],
+            ["14", 14],
+            ["15", 15],
+            ["16", 16],
+            ["17", 17],
+            ["18", 18],
+            ["19", 19],
+            ["1", 1],
+            ["2", 2],
+            ["3", 3],
+            ["4", 4],
+            ["5", 5],
+            ["6", 6],
+            ["7", 7],
+            ["8", 8],
+            ["9", 9]
+        ],
+        "relday": [
+            ["пслзвтр", 2],
+            ["завтра", 1, "(?=\\W|\\z)"],
+            ["звтр", 1, "(?=\\W|\\z)"],
+            ["послезавтра", 2],
+            ["через день", 2],
+            ["сегодня", 3],
+            ["сгдн", 3]
+        ],
+        "reltime": [
+            ["утр", 1, "(?=\\W|\\z)"],
+            ["утрм", 1, "(?=\\W|\\z)"],
+            ["утром", 1],
+            ["утра", 1, "(?=\\W|\\z)"],
+            ["утро", 1, "(?=\\W|\\z)"],
+            ["днем", 2],
+            ["днм", 2, "(?=\\W|\\z)"],
+            ["дня", 2, "(?=\\W|\\z)"],
+            ["вечером", 3],
+            ["вечера", 3],
+            ["вечер", 3, "(?=\\W|\\z)"],
+            ["вчр", 3, "(?=\\W|\\z)"],
+            ["вч", 3, "(?=\\W|\\z)"]
+        ],
+        "repitrs": [
+            ["день", 2, "(?=\\W|\\z)"],
+            ["неделю", 3, "(?=\\W|\\z)"],
+            ["месяц", 5, "(?=\\W|\\z)"],
+            ["год", 7, "(?=\\W|\\z)"]
+        ],
+        "lookup_rules": [{
+                "comment": "use one block for each rule..."
+            }
+
+            , {
+                "regex": ["(через (\\numeric) час\\w*)", "(через() час)"],
+                "example": "пробежка через два часа",
+                "script": "local res=getNow2()+60*60*getNumeric(getMatch(2,1));return {ts=res,timed=1};"
+            }
+
+            , {
+                "regex": ["(через (\\numeric) дн\\w*)(?:\\W|\\z)", "(через (\\numeric) день)(?:\\W|\\z)", "(через() день)(?:\\W|\\z)"],
+                "example": "пробежка через 3 дня",
+                "script": "local res=getNow2()+24*60*60*getNumeric(getMatch(2,1));return {ts=res,timed=0};"
+            }
+
+            , {
+                "regex": ["(через (\\numeric) недел\\w*)", "(через (\\numeric) нед)(?:\\W|\\z)", "(через() неделю)(?:\\W|\\z)"],
+                "script": "local res=getNow2()+7*24*60*60*getNumeric(getMatch(2,1));return {ts=res,timed=0};"
+            }
+
+            , {
+                "regex": ["(через (\\numeric) месяц\\w*)", "(через (\\numeric) мес)(?:\\W|\\z)", "(через() месяц)(?:\\W|\\z)", "(через() мес)(?:\\W|\\z)"],
+                "script": "local res=getNow2();res=addMonth(res,getNumeric(getMatch(2,1)));return {ts=res,timed=0};"
+            }
+
+            , {
+                "regex": ["(через (\\numeric) год\\w*)", "(через (\\numeric) лет)", "(через() год)(?:\\W|\\z)"],
+                "script": "local res=getNow2();res=addMonth(res,12*getNumeric(getMatch(2,1)));return {ts=res,timed=0};"
+            }
+
+            , {
+                "regex": ["(в (\\week) (\\reltime))"],
+                "example": "занятия спортом в пятницу утром",
+                "script": "local res=getNow2();res=replaceWeekDay(res,getMatch(2)); setFastF(7*24*60*60); res = checkFastF(res); res=addReltime(res,getMatch(3));return {ts=res,timed=1};"
+            }
+
+            , {
+                "regex": ["((\\relday) (\\d+) (\\reltime))"],
+                "example": "занятия завтра в 5 утра",
+                "script": "local res=getNow2();res=replaceHour(res,getMatch(3));res=replaceMinutes(res,0);res=addRelday(res,getMatch(2));return {ts=res,timed=1};"
+            }
+
+            , {
+                "regex": ["((\\d+) (\\month) (\\d\\d\\d\\d))"],
+                "script": "local res=getNow2();res=replaceYear(res,getMatch(4));res=replaceMonth(res,getMatch(3));res=replaceDate(res,getMatch(2));if res<getNow() then res=addMonth(res,12);res=replaceMonth(res,getMatch(3));res=replaceDate(res,getMatch(2)); end;return {ts=res,timed=0};"
+            }
+
+            , {
+                "regex": ["((\\d+) (\\month))"],
+                "example": "день рождения Костика 26 апреля",
+                "note": "replacing date/month twice because of 29 feb",
+                "script": "local res=getNow2();res=replaceMonth(res,getMatch(3));res=replaceDate(res,getMatch(2));if res<getNow() then res=addMonth(res,12);res=replaceMonth(res,getMatch(3));res=replaceDate(res,getMatch(2)); end;return {ts=res,timed=0};"
+            }
+
+            , {
+                "regex": ["((\\month) (\\d+))"],
+                "example": "поздравить с датой май 31",
+                "script": "local res=getNow2();res=replaceMonth(res,getMatch(2));local dater=getMatch(3);if tonumber(dater)>2011 then res=replaceYear(res,dater); else res=replaceDate(res,dater); end; setFastF(365*24*60*60); res = checkFastF(res); return {ts=res,timed=0};"
+            }
+
+            , {
+                "regex": ["((\\relday) (\\reltime))"],
+                "example": "не забыть что-то завтра утром",
+                "script": "local res=getNow2();res=addRelday(res,getMatch(2));res=addReltime(res,getMatch(3));return {ts=res,timed=1};"
+            }
+
+            , {
+                "regex": ["((\\relday) в (\\d+)[:\\.](\\d\\d))(?:\\W|\\z)"],
+                "example": "тренировка завтра в 13",
+                "script": "local res=getNow2();res=addRelday(res,getMatch(2));res=replaceHour(res,getMatch(3));res=replaceMinutes(res,getMatch(4));return {ts=res,timed=1};"
+            }
+
+            , {
+                "regex": ["((\\relday) в (\\d+))(?:\\W|\\z)"],
+                "example": "тренировка завтра в 13",
+                "script": "local res=getNow2();res=addRelday(res,getMatch(2));res=replaceHour(res,getMatch(3));res=replaceMinutes(res,0);return {ts=res,timed=1};"
+            }
+
+            , {
+                "regex": ["(каждый (\\week))", "(каждую (\\week))", "(каждое (\\week))"],
+                "script": "local res=getNow2();res=replaceWeekDay(res,getMatch(2)); setFastF(7*24*60*60); res = checkFastF(res); return {ts=res,timed=0,rept=3};"
+            }
+
+            , {
+                "regex": ["(каждый (\\repitrs))", "(каждую (\\repitrs))"],
+                "script": "local repitr=getRepitr(getMatch(2)); local res=-1;if getNow2() == getNow() then res = getNow(); end; return {ts=res,rept=repitr};"
+            }
+
+            , {
+                "regex": ["(\\relday)"],
+                "example": "послезавтра кино",
+                "script": "local res=getNow2();res=addRelday(res,getMatch(1));return {ts=res,timed=0};"
+            }
+
+            , {
+                "regex": ["(след (\\week))", "(следующая (\\week))", "(следующую (\\week))"],
+                "script": "local res=getNow2();res=replaceWeekDay(res,getMatch(2));res=res+7*24*60*60;return {ts=res,timed=0};"
+            }
+
+            , {
+                "regex": ["(в (\\week))", "(во (\\week))", "((\\week))"],
+                "example": "занятия спортом в пятницу",
+                "script": "local res=getNow2();res=replaceWeekDay(res,getMatch(2)); setFastF(7*24*60*60); res = checkFastF(res); return {ts=res,timed=0};"
+            }
+
+            , {
+                "regex": ["(\\reltime)"],
+                "script": "addReltime(getNow2(),getMatch(1));return {ts=getNow2(),no_trim=1};"
+            }
+
+            , {
+                "regex": ["(в (\\d+)[:\\.](\\d\\d))(?:\\W|\\z)"],
+                "script": "local res=getNow2();res=replaceHour(res,getMatch(2));res=replaceMinutes(res,getMatch(3)); res = checkFastF(res); return {ts=res,timed=1};"
+            }
+
+            , {
+                "regex": ["(в (\\d\\d))(?:\\W|\\z)", "(в (\\d))(?:\\W|\\z)"],
+                "script": "local res=getNow2();res=replaceHour(res,getMatch(2));res=replaceMinutes(res,0); res = checkFastF(res); return {ts=res,timed=1};"
+            }
+
+            , {
+                "regex": ["(\\reltime)"],
+                "example": "выключить утюг утром",
+                "script": "local res=getNow2();res=addReltime(res,getMatch(1));res=checkFastF(res);return {ts=res,timed=1};"
+            }
+
+        ]
+    },
+    "task_categs": {
+        "flag-argentina": ["аргентин"],
+        "flag-australia": ["австрали", "сидней"],
+        "flag-belarus": ["беларус", "белорус"],
+        "flag-belgium": ["бельги"],
+        "flag-brazil": ["бразил", "рио"],
+        "flag-canada": ["канад", "торонт"],
+        "flag-china": ["китай", "пекин"],
+        "flag-colombia": ["колумбия"],
+        "flag-cuba": ["чили"],
+        "flag-denmark": ["дания"],
+        "flag-eu": ["евро", "шенген"],
+        "flag-finland": ["финлянд", "финк"],
+        "flag-france": ["франц", "париж"],
+        "flag-germany": ["германи", "берлин", "немец"],
+        "flag-greece": ["греци"],
+        "flag-hongkong": ["гонг", "конг"],
+        "flag-india": ["индия", "гоа"],
+        "flag-israel": ["израил"],
+        "flag-italy": ["итали", "рим"],
+        "flag-jamaica": ["ямайк"],
+        "flag-japan": ["япони", "токио"],
+        "flag-kenya": ["кения"],
+        "flag-korea": ["корея"],
+        "flag-mexico": ["мексик"],
+        "flag-netherlands": ["голланд", "недерланд", "амстер"],
+        "flag-new-zealand": ["зеланд"],
+        "flag-norway": ["норвеги"],
+        "flag-south-africa": ["африка"],
+        "flag-russia": ["росс"],
+        "flag-portugal": ["португал"],
+        "flag-spain": ["испан", "мадрид", "барсело"],
+        "flag-sweden": ["швец", "швед", "стокгол"],
+        "flag-switzerland": ["швейцар"],
+        "flag-thailand": ["тайланд", "таиланд"],
+        "flag-turkey": ["турци", "стамбул"],
+        "flag-uk": ["лондон", "англи"],
+        "flag-ukraine": ["украин", "хохл", "крым", "киев"],
+        "flag-usa": ["сша", "штаты", "америк", "йорк", "анжелес", "франциско", "калифорни", "майам", "флорид"],
+        "flag-vietnam": ["виетнам", "вьетнам"],
+        "travel": ["поездк", "путешеств", "чемодан", "вещ", "поход"],
+        "books": ["читат", "книги", "литератур", "учебн", "диссертац", "диплом", "курсов"],
+        "passport": ["документ", "паспорт", "права", "виз"],
+        "gym": ["зал", "трениров", "спорт", "гимнаст"],
+        "tools": ["ремонт", "сервис", "обслужива", "техосмотр"],
+        "recipe": ["рецепт"],
+        "vacations": ["отпуск", "отдых", "побыват"],
+        "video": ["кино", "фильм", "посмотре", "видео"],
+        "plane": ["самолет"],
+        "pencil": ["блог", "писа", "стать"],
+        "money": ["деньги", "плат", "кредит", "долг", "займ", "прода"],
+        "medicine": ["лекарств", "аптек", "аптечк", "здоров", "врач", "доктор", "больниц"],
+        "idea": ["идея", "идеи", "идей", "мысл"],
+        "grocery": ["магазин", "купить", "продукт", "еда", "фрукт", "овощ", "рынок", "рынк"],
+        "bag": ["покуп", "заказ"],
+        "calendar": ["календар", "праздник", "событ"],
+        "construction": ["работ", "проект", "презентац"],
+        "contact": ["приглаш", "приглас", "контакт"],
+        "star": ["свадьб", "дела", "избран", "вечеринк"],
+        "invoice": ["налог", "счет"],
+        "gift": ["подар"],
+        "delivery": ["машин", "авто", "тачк"],
+        "home": ["дом", "дача", "даче", "дачи", "квартир", "аренд", "семья"],
+        "lock": ["секрет"],
+        "palette": ["дизайн", "интерьер", "оформлен", "выставк"],
+        "phone": ["позвон", "телефон"],
+        "paid-education": ["школ", "урок", "задан", "учеб", "физик", "математик", "учит", "универ", "колледж", "институт", "диссер", "диплом", "наук", "науч"],
+        "paid-christmas": ["новый год", "рождество"],
+        "paid-baby": ["детям", "садик", "детский", "малыш"],
+        "paid-apple": ["apple", "ябло", "фрукт"],
+        "paid-dogcat": ["собак", "кошк", "животн"],
+        "paid-diskette": ["скачать", "приложени"],
+        "paid-discount": ["скидк", "продаж"],
+        "paid-cocktail": ["вечеринк", "гости", "алко", "выпит", "бухло"],
+        "paid-birthday": ["рожден", "поздрав", "годовщ", "юбиле"],
+        "paid-flower": ["цветы"],
+        "paid-map": ["сходи", "мест", "москв", "питер", "петербур"],
+        "paid-music": ["музык", "песни", "itunes"],
+        "paid-notepad": ["блокнот", "заметк"],
+        "achtung": ["забыт", "напомни", "напомин", "срочн"],
+        "award": ["цели", "достиж", "чемпион", "приз", "соревнова"],
+        "cart": ["корзина", "шопинг", "шоппинг"],
+        "paid-saturn": ["космос", "когда"],
+        "paid-tie": ["сделк", "договор", "клиент", "покупател", "встреч", "инвест"],
+        "paid-tv": ["тв", "телевизор"],
+        "paid-starbucks": ["коф", "facebook", "twitter", "вконтакт"],
+        "piggy": ["копи", "коллекц", "сохран"],
+        "paid-snow": ["снег", "сноу", "альп"],
+        "paid2-iphone": ["iphone"],
+        "paid2-santa": ["санта", "дед мороз"],
+        "paid2-crab": ["путин", "море", "пляж", "океан"],
+        "paid2-boxes": ["посылк", "склад", "почт"],
+        "paid2-hotspot": ["wifi", "wi-fi"],
+        "paid2-camera": ["камера", "фото", "объектив"],
+        "paid2-guitar": ["гитар", "ноты", "пианино"],
+        "paid2-tent": ["поход", "кемпинг", "костер", "рюкзак", "клмн"],
+        "paid2-checkmark": ["сделать"],
+        "paid-imac": ["mac", "мак", "комп", "апгр"]
+    }
+}

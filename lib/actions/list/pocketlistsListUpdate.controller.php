@@ -14,6 +14,9 @@ class pocketlistsListUpdateController extends waJsonController
             $data['create_datetime'] = date("Y-m-d H:i:s");
         }
         $data['contact_id'] = wa()->getUser()->getId();
+        if (1) { // check user setting
+            pocketlistsNaturalInput::matchCategory($data['name']);
+        }
         $data = $lm->add($data, 1);
         if ($data) {
             pocketlistsNotifications::notifyAboutNewList($data);
