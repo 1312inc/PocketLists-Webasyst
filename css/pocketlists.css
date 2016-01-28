@@ -181,7 +181,7 @@ input#pl-new-list-input,
     line-height: 1.3em;
     resize: none;
     word-wrap: normal;
-    overflow-x: hidden;
+    overflow: hidden;
     border: none;
     background: rgba(0,0,0,0.05);
     padding: 5px;
