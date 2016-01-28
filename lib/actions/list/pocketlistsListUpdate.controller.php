@@ -14,6 +14,14 @@ class pocketlistsListUpdateController extends waJsonController
             $data['create_datetime'] = date("Y-m-d H:i:s");
         }
         $data['contact_id'] = wa()->getUser()->getId();
+        $us = new pocketlistsUserSettings($data['contact_id']);
+        if ($us->getNaturalInput()) { // check user setting
+            $list_icons = pocketlistsHelper::getListIcons();
+            $matched_icon = pocketlistsNaturalInput::matchCategory($data['name']);
+            if ($matched_icon && isset($list_icons[$matched_icon])) {
+                $data['icon'] = $list_icons[$matched_icon];
+            }
+        }
         $data = $lm->add($data, 1);
         if ($data) {
             pocketlistsNotifications::notifyAboutNewList($data);
