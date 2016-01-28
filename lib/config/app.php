@@ -6,7 +6,7 @@ return array (
     48 => 'img/pocketlists48.png',
     96 => 'img/pocketlists96.png',
   ),
-  'version' => '1.0.0',
+  'version' => '1.1.0',
   'vendor' => '1021997',
   'frontend' => true,
   'plugins' => false,
