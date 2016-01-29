@@ -535,14 +535,16 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                     // todo: use template
                     $my_reply.append(
                         $('<div class="pl-cue-inner">').append(
-                            '<div class="pl-bubble">' + r.data.comment + '</div></div>',
+                            '<div class="pl-bubble"></div></div>',
                             $user_pic,
                             ' ' + r.data.username,
                             ' <span class="hint">' + r.data.datetime + '</span>')
                     );
+                    $my_reply.find('.pl-bubble').html(r.data.comment);
                     $this.closest('.pl-reply').before($my_reply);
 
                     $this.val('').trigger('focus');
+                    $.pocketlists.resizeTextarea($this);
                 }
                 request_in_action = false;
             },

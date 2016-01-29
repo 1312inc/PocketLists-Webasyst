@@ -26,9 +26,8 @@ class pocketlistsCommentAddController extends waJsonController
                     $this->response = array(
                         'datetime' => waDateTime::format("humandatetime", $insert_data['create_datetime']),
                         'username' => htmlspecialchars($user->getName(), ENT_QUOTES),
-                        'comment' => htmlspecialchars($insert_data['comment'], ENT_QUOTES)
+                        'comment' => nl2br(htmlspecialchars($insert_data['comment'], ENT_QUOTES))
                     );
-
                     pocketlistsNotifications::notifyAboutNewComment($insert_data);
                 } else {
                     $this->errors = 'error while adding new item comment';
