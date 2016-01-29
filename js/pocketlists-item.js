@@ -933,6 +933,8 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
         //    $new_item_input.focus();
         //}
 
+        var do_not_show_item_details = false;
+
         if (o.archive) {
             $list_items_wrapper.find(':checkbox').prop('disabled', true);
         }
@@ -942,6 +944,9 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
 
 
         $list_items_wrapper
+        /**
+         * complete/uncomplete item
+         */
             .on('click', '.pl-done', function (e) {
                 var $this = $(this),
                     $item = $this.closest(item_selector),
@@ -951,7 +956,11 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                 completeItem.call(this, $item, status, function() {
                     $this.prop('disabled', false);
                 });
-            }) // action: complete item
+            })
+        /**
+         * select/deselect item
+         */
+            // todo: do we really need checkbox?
             .on('change', '.pl-is-selected', function (e) {
                 var $this = $(this),
                     $item = $this.closest(item_selector),
@@ -1042,11 +1051,10 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                     deselectItem();
                 }
             })
-            .on('focus', '.pl-chat .pl-reply textarea', function(e) {
-                var $this = $(this),
-                    $item = $this.closest(item_selector);
+            .on('click', '.pl-chat .pl-reply textarea', function(e) {
+                e.preventDefault();
 
-                selectItem($item);
+                selectItem($(this).closest(item_selector));
             });
 
         // keyboard
