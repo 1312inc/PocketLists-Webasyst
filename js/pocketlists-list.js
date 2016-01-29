@@ -279,11 +279,6 @@ $.pocketlists.List = function ($list_wrapper, options) {
         );
     };
     var deleteList = function () {
-        if (request_in_action) {
-            return;
-        }
-        request_in_action = true;
-
         var $dialog_delete = $('#pl-dialog-delete-list-confirm');
 
         if ($dialog_delete.hasClass('dialog')) {
@@ -296,14 +291,19 @@ $.pocketlists.List = function ($list_wrapper, options) {
                 onLoad: function () {
                 },
                 onSubmit: function (d) {
+                    if (request_in_action) {
+                        return;
+                    }
+                    request_in_action = true;
+
                     $.post('?module=list&action=delete', {list_id: list_id}, function (r) {
                         if (r.status === 'ok') {
-                            d.trigger('close');
                             // todo: redirect to allowed pocket/list
                             $.wa.setHash('#/pocket/1/');
                         } else {
 
                         }
+                        d.trigger('close');
                         request_in_action = false;
                     }, 'json');
                     return false;
