@@ -11,7 +11,14 @@ class pocketlistsBackendLocAction extends waViewAction
 
         // Application locale strings
         foreach (array(
-                    'Show all %d completed to-dos'
+                     'Show all %d completed to-dos',
+                     'This to-do is assigned to another person. Are you sure you want to mark this item as complete?',
+                     'ALL TO-DO LISTS AND ITEMS FROM THIS PROJECT WILL BE DELETED PERMANENTLY. ARE YOU SURE?',
+                     'My personal settings',
+                     'This to-do is assigned to another person. Are you sure you want to mark this item as complete?',
+                     'Close',
+                     'None',
+                     'Logbook',
                 ) as $s) {
             $strings[$s] = _w($s);
         }
