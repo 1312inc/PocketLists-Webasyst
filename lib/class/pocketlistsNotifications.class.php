@@ -594,11 +594,12 @@ class pocketlistsNotifications
                         'body' => wa()->getAppPath('templates/mails/newlist.html'),
                         'variables' => array(
                             'list_name' => $list['name'],
-                            'list_url' => wa()->getConfig()->getRootUrl(true) . '/' . wa()->getConfig()->getBackendUrl() . 'pocketlists/#/pocket/' . $list['pocket_id'] . '/list/' . $list['id'] . '/',
+                            'list_url' => '#/pocket/' . $list['pocket_id'] . '/list/' . $list['id'] . '/',
                             'by' => $create_contact_name,
                             'create_datetime' => $list['create_datetime'],
                         )
-                    )
+                    ),
+                    self::getBackendUrl($user_id)
                 );
             }
         }
