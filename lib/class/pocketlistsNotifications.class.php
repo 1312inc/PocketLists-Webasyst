@@ -652,6 +652,6 @@ class pocketlistsNotifications
     private static function getBackendUrl($user_id)
     {
         $us = new waContactSettingsModel();
-        return $us->getOne($user_id, 'webasyst', 'backend_url') . '/';
+        return $us->getOne($user_id, 'webasyst', 'backend_url');
     }
 }
