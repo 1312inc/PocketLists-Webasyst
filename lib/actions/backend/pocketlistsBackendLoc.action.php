@@ -15,7 +15,6 @@ class pocketlistsBackendLocAction extends waViewAction
                      'This to-do is assigned to another person. Are you sure you want to mark this item as complete?',
                      'ALL TO-DO LISTS AND ITEMS FROM THIS PROJECT WILL BE DELETED PERMANENTLY. ARE YOU SURE?',
                      'My personal settings',
-                     'This to-do is assigned to another person. Are you sure you want to mark this item as complete?',
                      'Close',
                      'None',
                      'Logbook',
