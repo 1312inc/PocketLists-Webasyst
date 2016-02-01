@@ -1,4 +1,4 @@
-{sprintf('[`%s assigned you to a to-do on <a href="%s">%s</a>`]', $by_username|escape, $list.url, $list.name|escape)}<br><br>
+{sprintf('[`%s assigned you to a to-do on <a href="%s">%s</a>`]', $by_username|escape, $backend_url|cat:$list.url, $list.name|escape)}<br><br>
 <strong>&#10132; {$item_name|escape|nl2br}</strong>
 <br><br>
 {if $due_date}<em>[`Due`]: {$due_date}</em><br><br>{/if}

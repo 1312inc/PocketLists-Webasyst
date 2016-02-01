@@ -8,9 +8,9 @@
 {*if ITEM BELONGS TO SOME LIST*}
 {if $list}
 {if $n > 0}
-<em>{sprintf('[`Just %d more items left on <a href="%s">%s</a>`]', $n, $list_url, $list.name|escape)}</em>
+<em>{sprintf('[`Just %d more items left on <a href="%s">%s</a>`]', $n, $backend_url|cat:$list_url, $list.name|escape)}</em>
 {else}
-<em>{sprintf('[`Woohoo, <a href="%s">%s</a> to-do list has been completed :)`]', $list_url, $list.name|escape)}</em>
+<em>{sprintf('[`Woohoo, <a href="%s">%s</a> to-do list has been completed :)`]', $backend_url|cat:$list_url, $list.name|escape)}</em>
 {/if}
 <br>
 <br>

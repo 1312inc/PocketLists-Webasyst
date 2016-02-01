@@ -295,10 +295,12 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
     var completeItem = function ($item, status, callback) {
         var id = parseInt($item.data('id')),
             $assigned_user_icon = $item.find('.pl-done-label').find('.icon16.userpic20'),
-            $item_data_wrapper = $item.find('.pl-item');
+            $item_data_wrapper = $item.find('.pl-item'),
+            $checkbox = $(this);
         
         if (status && $item_data_wrapper.data('pl-assigned-contact') && $item_data_wrapper.data('pl-assigned-contact') != o.current_user_id) {
             if (!confirm($_('This to-do is assigned to another person. Are you sure you want to mark this item as complete?'))) {
+                $checkbox.prop('checked', false); // uncheck
                 callback && $.isFunction(callback) && callback.call($item);
                 return;
             }
@@ -316,7 +318,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                 if (r.status === 'ok') {
                     $.pocketlists.updateAppCounter();
                     // remove from undone list
-                    $item.find('ul.menu-v').find(':checkbox').prop('checked', status); // check nesting items
+                    $checkbox.prop('checked', status); // check nesting items
                     setTimeout(function () {
                         $item.slideToggle(200, function () {
                             $assigned_user_icon.show();
@@ -533,14 +535,16 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                     // todo: use template
                     $my_reply.append(
                         $('<div class="pl-cue-inner">').append(
-                            '<div class="pl-bubble">' + r.data.comment + '</div></div>',
+                            '<div class="pl-bubble"></div></div>',
                             $user_pic,
                             ' ' + r.data.username,
                             ' <span class="hint">' + r.data.datetime + '</span>')
                     );
+                    $my_reply.find('.pl-bubble').html(r.data.comment);
                     $this.closest('.pl-reply').before($my_reply);
 
                     $this.val('').trigger('focus');
+                    $.pocketlists.resizeTextarea($this);
                 }
                 request_in_action = false;
             },
@@ -929,6 +933,8 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
         //    $new_item_input.focus();
         //}
 
+        var do_not_show_item_details = false;
+
         if (o.archive) {
             $list_items_wrapper.find(':checkbox').prop('disabled', true);
         }
@@ -938,16 +944,23 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
 
 
         $list_items_wrapper
+        /**
+         * complete/uncomplete item
+         */
             .on('click', '.pl-done', function (e) {
                 var $this = $(this),
                     $item = $this.closest(item_selector),
-                    status = $this.is(':checked') ? 1 : 0;
+                    status = $this.prop('checked') ? 1 : 0;
 
                 $this.prop('disabled', true);
                 completeItem.call(this, $item, status, function() {
                     $this.prop('disabled', false);
                 });
-            }) // action: complete item
+            })
+        /**
+         * select/deselect item
+         */
+            // todo: do we really need checkbox?
             .on('change', '.pl-is-selected', function (e) {
                 var $this = $(this),
                     $item = $this.closest(item_selector),
@@ -1038,11 +1051,10 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                     deselectItem();
                 }
             })
-            .on('focus', '.pl-chat .pl-reply textarea', function(e) {
-                var $this = $(this),
-                    $item = $this.closest(item_selector);
+            .on('click', '.pl-chat .pl-reply textarea', function(e) {
+                e.preventDefault();
 
-                selectItem($item);
+                selectItem($(this).closest(item_selector));
             });
 
         // keyboard

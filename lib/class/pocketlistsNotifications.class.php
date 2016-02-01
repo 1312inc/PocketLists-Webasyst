@@ -79,11 +79,12 @@ class pocketlistsNotifications
                                 'variables' => array(
                                     'n' => $items_left,
                                     'list' => $list,
-                                    'list_url' => wa()->getConfig()->getRootUrl(true) . '/' . wa()->getConfig()->getBackendUrl() . 'pocketlists/#/pocket/' . $list['pocket_id'] . '/list/' . $list['id'] . '/',
+                                    'list_url' => '#/pocket/' . $list['pocket_id'] . '/list/' . $list['id'] . '/',
                                     'complete' => $item['status'],
                                     'item' => $item
                                 ),
-                            )
+                            ),
+                            self::getBackendUrl($user_id)
                         );
                     }
                     break;
@@ -120,11 +121,12 @@ class pocketlistsNotifications
                                 'variables' => array(
                                     'n' => $items_left,
                                     'list' => $list,
-                                    'list_url' => wa()->getConfig()->getRootUrl(true) . '/' . wa()->getConfig()->getBackendUrl() . 'pocketlists/#/pocket/' . $list['pocket_id'] . '/list/' . $list['id'] . '/',
+                                    'list_url' => '#/pocket/' . $list['pocket_id'] . '/list/' . $list['id'] . '/',
                                     'complete' => $item['status'],
                                     'item' => $item
                                 ),
-                            )
+                            ),
+                            self::getBackendUrl($user_id)
                         );
                     }
                     break;
@@ -161,11 +163,12 @@ class pocketlistsNotifications
                                 'variables' => array(
                                     'n' => $items_left,
                                     'list' => $list,
-                                    'list_url' => wa()->getConfig()->getRootUrl(true) . '/' . wa()->getConfig()->getBackendUrl() . 'pocketlists/#/pocket/' . $list['pocket_id'] . '/list/' . $list['id'] . '/',
+                                    'list_url' => '#/pocket/' . $list['pocket_id'] . '/list/' . $list['id'] . '/',
                                     'complete' => $item['status'],
                                     'item' => $item
                                 ),
-                            )
+                            ),
+                            self::getBackendUrl($user_id)
                         );
                     }
                     break;
@@ -197,11 +200,12 @@ class pocketlistsNotifications
                                 'variables' => array(
                                     'n' => $items_left,
                                     'list' => $list,
-                                    'list_url' => $list ? wa()->getConfig()->getRootUrl(true) . '/' . wa()->getConfig()->getBackendUrl() . 'pocketlists/#/pocket/' . $list['pocket_id'] . '/list/' . $list['id'] . '/' : false,
+                                    'list_url' => $list ? '#/pocket/' . $list['pocket_id'] . '/list/' . $list['id'] . '/' : false,
                                     'complete' => $item['status'],
                                     'item' => $item
                                 ),
-                            )
+                            ),
+                            self::getBackendUrl($user_id)
                         );
                     }
                     break;
@@ -278,11 +282,12 @@ class pocketlistsNotifications
                                 'body' => wa()->getAppPath('templates/mails/newfavoritelistitem.html'),
                                 'variables' => array(
                                     'list_name' => $list ? $list['name'] : false,
-                                    'list_url' => wa()->getConfig()->getRootUrl(true) . '/' . wa()->getConfig()->getBackendUrl() . 'pocketlists/#/pocket/' . $list['pocket_id'] . '/list/' . $list['id'] . '/',
+                                    'list_url' => '#/pocket/' . $list['pocket_id'] . '/list/' . $list['id'] . '/',
                                     'items' => $filtered_items,
                                     'item' => reset($filtered_items)
                                 ),
-                            )
+                            ),
+                            self::getBackendUrl($user_id)
                         );
                     }
                     break;
@@ -311,11 +316,12 @@ class pocketlistsNotifications
                                 'body' => wa()->getAppPath('templates/mails/newitem.html'),
                                 'variables' => array(
                                     'list_name' => $list ? $list['name'] : false,
-                                    'list_url' => wa()->getConfig()->getRootUrl(true) . '/' . wa()->getConfig()->getBackendUrl() . 'pocketlists/#/pocket/' . $list['pocket_id'] . '/list/' . $list['id'] . '/',
+                                    'list_url' => '#/pocket/' . $list['pocket_id'] . '/list/' . $list['id'] . '/',
                                     'items' => $filtered_items,
                                     'item' => reset($filtered_items)
                                 ),
-                            )
+                            ),
+                            self::getBackendUrl($user_id)
                         );
                     }
                     break;
@@ -348,7 +354,8 @@ class pocketlistsNotifications
                     'list' => $list,
                     'by_username' => $by_username
                 )
-            )
+            ),
+            self::getBackendUrl($item['assigned_contact_id'])
         );
     }
 
@@ -424,7 +431,8 @@ class pocketlistsNotifications
                                         'by_username' => $comment_user->getName(),
                                         'list' => $list
                                     ),
-                                )
+                                ),
+                                self::getBackendUrl($user_id)
                             );
                         }
                         break;
@@ -434,7 +442,7 @@ class pocketlistsNotifications
                         if ($item['list_id']) {
                             $list_ = $lm->getById($item['list_id']);
                             $list = array(
-                                'url' => wa()->getConfig()->getRootUrl(true) . '/' . wa()->getConfig()->getBackendUrl() . 'pocketlists/#/pocket/' . $list_['pocket_id'] . '/list/' . $list_['id'] . '/',
+                                'url' => '#/pocket/' . $list_['pocket_id'] . '/list/' . $list_['id'] . '/',
                                 'name' => $list_['name']
                             );
                         }
@@ -458,7 +466,8 @@ class pocketlistsNotifications
                                         'by_username' => $comment_user->getName(),
                                         'list' => $list
                                     ),
-                                )
+                                ),
+                                self::getBackendUrl($user_id)
                             );
                         }
                         break;
@@ -468,7 +477,7 @@ class pocketlistsNotifications
                         if ($item['list_id']) {
                             $list_ = $lm->getById($item['list_id']);
                             $list = array(
-                                'url' => wa()->getConfig()->getRootUrl(true) . '/' . wa()->getConfig()->getBackendUrl() . 'pocketlists/#/pocket/' . $list_['pocket_id'] . '/list/' . $list_['id'] . '/',
+                                'url' => '#/pocket/' . $list_['pocket_id'] . '/list/' . $list_['id'] . '/',
                                 'name' => $list_['name']
                             );
                         }
@@ -492,7 +501,8 @@ class pocketlistsNotifications
                                         'by_username' => $comment_user->getName(),
                                         'list' => $list
                                     ),
-                                )
+                                ),
+                                self::getBackendUrl($user_id)
                             );
                         }
                         break;
@@ -536,7 +546,6 @@ class pocketlistsNotifications
             )
         )->fetchAll('contact_id');
         $im = new pocketlistsItemModel();
-        $us = new waContactSettingsModel();
         foreach ($users as $user_id => $user) {
             $items = $im->getDailyRecapItems($user_id, $user['setting']);
             if ($items) {
@@ -549,7 +558,7 @@ class pocketlistsNotifications
                                 'items' => $items
                         ) + $vars
                     ),
-                    $us->getOne($user_id, 'webasyst', 'backend_url') . 'pocketlists/'
+                    self::getBackendUrl($user_id)
                 );
                 $csm->set($user_id, 'pocketlists', 'last_recap_cron_time', $time);
             }
@@ -585,11 +594,12 @@ class pocketlistsNotifications
                         'body' => wa()->getAppPath('templates/mails/newlist.html'),
                         'variables' => array(
                             'list_name' => $list['name'],
-                            'list_url' => wa()->getConfig()->getRootUrl(true) . '/' . wa()->getConfig()->getBackendUrl() . 'pocketlists/#/pocket/' . $list['pocket_id'] . '/list/' . $list['id'] . '/',
+                            'list_url' => '#/pocket/' . $list['pocket_id'] . '/list/' . $list['id'] . '/',
                             'by' => $create_contact_name,
                             'create_datetime' => $list['create_datetime'],
                         )
-                    )
+                    ),
+                    self::getBackendUrl($user_id)
                 );
             }
         }
@@ -619,8 +629,8 @@ class pocketlistsNotifications
             return;
         }
 
-        $absolute_backend_url = $backend_url ? $backend_url : wa()->getConfig()->getRootUrl(true) . wa()->getConfig()->getBackendUrl() . '/pocketlists/';
-        $view->assign('backend_url', $absolute_backend_url);
+        $absolute_backend_url = $backend_url ? $backend_url : wa()->getConfig()->getRootUrl(true) . wa()->getConfig()->getBackendUrl();
+        $view->assign('backend_url', $absolute_backend_url . 'pocketlists/');
         if (isset($data['variables'])) {
             foreach ($data['variables'] as $var_name => $var_value) {
                 $view->assign($var_name, $var_value);
@@ -637,5 +647,11 @@ class pocketlistsNotifications
 
         if ($message->send()) {
         }
+    }
+
+    private static function getBackendUrl($user_id)
+    {
+        $us = new waContactSettingsModel();
+        return $us->getOne($user_id, 'webasyst', 'backend_url');
     }
 }
