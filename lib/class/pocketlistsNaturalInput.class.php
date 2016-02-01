@@ -65,4 +65,16 @@ class pocketlistsNaturalInput
         }
         return false;
     }
+
+    public static function matchNote($item_name)
+    {
+        $matches = array();
+        if (preg_match('/^(.+?)\/{2}(.+?)$/is', $item_name, $matches)) {
+            return array(
+                'name' => trim($matches[1]),
+                'note' => trim($matches[2])
+            );
+        }
+        return false;
+    }
 }

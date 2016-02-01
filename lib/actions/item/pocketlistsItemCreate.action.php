@@ -43,9 +43,13 @@ class pocketlistsItemCreateAction extends waViewAction
                 $data[$i]['name'] = trim($data[$i]['name']);
 
                 // natural input parse
-                if ($priority = pocketlistsNaturalInput::matchPriority($data[$i]['name'])) {
-                    $data[$i]['name'] = $priority['name'];
-                    $data[$i]['priority'] = $priority['priority'];
+                if ($ni = pocketlistsNaturalInput::matchPriority($data[$i]['name'])) {
+                    $data[$i]['name'] = $ni['name'];
+                    $data[$i]['priority'] = $ni['priority'];
+                }
+                if ($ni = pocketlistsNaturalInput::matchNote($data[$i]['name'])) {
+                    $data[$i]['name'] = $ni['name'];
+                    $data[$i]['note'] = $ni['note'];
                 }
 
                 $last_id = $im->insert($data[$i], 1);
