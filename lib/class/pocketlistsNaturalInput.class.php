@@ -48,4 +48,21 @@ class pocketlistsNaturalInput
         }
         return false;
     }
+
+    public static function matchPriority($item_name)
+    {
+        $matches = array();
+        if (preg_match('/^(!{1,3})(.+?)$/is', $item_name, $matches)) {
+            $priority = array(
+                '!' => 1,
+                '!!' => 2,
+                '!!!' => 3
+            );
+            return array(
+                'name' => trim($matches[2]),
+                'priority' => $priority[$matches[1]]
+            );
+        }
+        return false;
+    }
 }

@@ -40,6 +40,14 @@ class pocketlistsItemCreateAction extends waViewAction
                     $data[$i]['due_date'] = waDateTime::date('Y-m-d', strtotime($data[$i]['due_date']));
                 }
 
+                $data[$i]['name'] = trim($data[$i]['name']);
+
+                // natural input parse
+                if ($priority = pocketlistsNaturalInput::matchPriority($data[$i]['name'])) {
+                    $data[$i]['name'] = $priority['name'];
+                    $data[$i]['priority'] = $priority['priority'];
+                }
+
                 $last_id = $im->insert($data[$i], 1);
                 $inserted[] = $last_id;
                 $inserted_items[] = $data[$i] + array('id' => $last_id);
