@@ -77,4 +77,51 @@ class pocketlistsNaturalInput
         }
         return false;
     }
+
+    public static function matchDueDate($item_name)
+    {
+        $instance = self::getInstance();
+        foreach ($instance::$json_rules as $json_rule) {
+            if (isset($json_rule['smartparse'])) {
+                $lookup_rules = $json_rule['smartparse']['lookup_rules'];
+                unset($json_rule['smartparse']['lookup_rules']);
+
+                // combine "time" regexes
+                $timegroup_regexes = array();
+                foreach ($json_rule['smartparse'] as $smart_name => $smart_value) {
+                    $tmp = array();
+                    foreach ($smart_value as $v) {
+                        if (isset($v[2])) {
+                            $tmp[] = $v[0].$v[2];
+                        } else {
+                            $tmp[] = $v[0];
+                        }
+                    }
+                    $timegroup_regexes[$smart_name] = join('|', $tmp);
+                }
+
+                foreach ($lookup_rules as $lookup_rule) {
+                    foreach ($lookup_rule['regex'] as $regex) {
+                        // replace smart placeholders by regexes
+                        $matched_groups = array(); // for matched time groups
+                        foreach ($timegroup_regexes as $time_regex_name => $time_regex_value) {
+                            $new_regex = str_replace("\\".$time_regex_name, $time_regex_value, $regex);
+                            // if replaces - save such group for futher time calculation
+                            if (strcmp($regex, $new_regex) !== 0) {
+                                $matched_groups[] = $time_regex_name;
+                                $regex = $new_regex;
+                            }
+                        }
+                        if (preg_match("/".$regex."/imu", $item_name, $matches)) {
+                            // what time unit
+
+                            // time unit value
+
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

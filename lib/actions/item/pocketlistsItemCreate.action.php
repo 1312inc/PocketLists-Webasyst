@@ -51,6 +51,9 @@ class pocketlistsItemCreateAction extends waViewAction
                     $data[$i]['name'] = $ni['name'];
                     $data[$i]['note'] = $ni['note'];
                 }
+                if ($ni = pocketlistsNaturalInput::matchDueDate($data[$i]['name'])) {
+
+                }
 
                 $last_id = $im->insert($data[$i], 1);
                 $inserted[] = $last_id;
