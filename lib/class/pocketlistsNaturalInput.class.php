@@ -7,10 +7,10 @@ class pocketlistsNaturalInput
 
     public function __construct()
     {
-        $files_path = wa()->getAppPath().'/lib/config/data/natural_input/';
+        $files_path = wa()->getAppPath() . '/lib/config/data/natural_input/';
         $files = array(
-            $files_path.'natural-input-en.json',
-            $files_path.'natural-input-ru.json'
+            $files_path . 'natural-input-en.json',
+            $files_path . 'natural-input-ru.json'
         );
         foreach ($files as $file) {
             if (file_exists($file)) {
@@ -81,47 +81,182 @@ class pocketlistsNaturalInput
     public static function matchDueDate($item_name)
     {
         $instance = self::getInstance();
-        foreach ($instance::$json_rules as $json_rule) {
-            if (isset($json_rule['smartparse'])) {
-                $lookup_rules = $json_rule['smartparse']['lookup_rules'];
+
+        $secs_in = array(
+            'hour' => 60 * 60,
+            'day'  => 60 * 60 * 24,
+            'week' => 60 * 60 * 24 * 7,
+
+        );
+        $reltime_secs = array(
+            1 => $secs_in['hour'] * 9, // 9 o'clock
+            2 => $secs_in['hour'] * 12, // 12 o'clock
+            3 => $secs_in['hour'] * 18 // 18 o'clock
+        );
+        $relday_secs = array(
+            1 => $secs_in['day'] * 2, // after tomorrow
+            2 => $secs_in['day'] * 1, // tomorrow
+            3 => 0 // today
+        );
+        foreach ($instance::$json_rules as $json_rule) { // all langs
+            if (isset($json_rule['smartparse'])) { // all smart phrases
+                $lookup_rules = $json_rule['smartparse']['lookup_rules']; // save main rules
                 unset($json_rule['smartparse']['lookup_rules']);
 
-                // combine "time" regexes
-                $timegroup_regexes = array();
-                foreach ($json_rule['smartparse'] as $smart_name => $smart_value) {
+                // combine "time" regexes into one long regex
+                $smartphrase_long_regexes = array();
+                foreach ($json_rule['smartparse'] as $smartphrase_name => $smartphrase_value) {
                     $tmp = array();
-                    foreach ($smart_value as $v) {
-                        if (isset($v[2])) {
-                            $tmp[] = $v[0].$v[2];
-                        } else {
-                            $tmp[] = $v[0];
-                        }
+                    foreach ($smartphrase_value as $v) {
+                        $tmp[] = $v[0] . (isset($v[2]) ? $v[2] : '');
                     }
-                    $timegroup_regexes[$smart_name] = join('|', $tmp);
+                    $smartphrase_long_regexes[$smartphrase_name] = join('|', $tmp);
                 }
 
+                // through all main rules
                 foreach ($lookup_rules as $lookup_rule) {
-                    foreach ($lookup_rule['regex'] as $regex) {
-                        // replace smart placeholders by regexes
-                        $matched_groups = array(); // for matched time groups
-                        foreach ($timegroup_regexes as $time_regex_name => $time_regex_value) {
-                            $new_regex = str_replace("\\".$time_regex_name, $time_regex_value, $regex);
+                    if (!isset($lookup_rule['regex'])) {
+                        continue;
+                    }
+                    // and for each regex inside main rule
+                    foreach ($lookup_rule['regex'] as $regex_in_rule) {
+                        // replace smart placeholders (\number, \week, etc) by combined long regexes
+                        $matched_smartphrase_groups = array(); // for matched smartphrase groups
+                        foreach ($smartphrase_long_regexes as $smartphrase_long_name => $smartphrase_long_regex) {
+                            $new_regex = str_replace("\\" . $smartphrase_long_name, $smartphrase_long_regex, $regex_in_rule);
                             // if replaces - save such group for futher time calculation
-                            if (strcmp($regex, $new_regex) !== 0) {
-                                $matched_groups[] = $time_regex_name;
-                                $regex = $new_regex;
+                            if (strcmp($regex_in_rule, $new_regex) !== 0) {
+                                $matched_smartphrase_groups[] = $smartphrase_long_name;
+                                $regex_in_rule = $new_regex;
                             }
                         }
-                        if (preg_match("/".$regex."/imu", $item_name, $matches)) {
-                            // what time unit
+                        // found something!!!
+                        if (preg_match("/" . $regex_in_rule . "/imu", $item_name, $matches)) {
+                            $the_date = false;
 
-                            // time unit value
+                            $lookup_rule_rules = ifset($lookup_rule['rules'], false);
+                            $lookup_rule_settime = ifset($lookup_rule['settime'], null);
+                            $lookup_rule_notrim = ifset($lookup_rule['notrim'], null);
 
-                            break;
+                            $real_now = $lookup_rule_settime ? time() : strtotime(date("Y-m-d"));
+                            $now = $real_now;
+
+                            $current = array(
+                                'day_number' => date('j', $real_now), // determine current month day number
+                                'day_of_week_number' => date('N', $real_now), // determine current week day number
+                                'month_number' => date('m', $real_now) // determine current month number
+                            );
+
+                            // rules describe how to intreper matched values, in what order, etc
+                            foreach ($lookup_rule_rules as $lookup_rule_rule_regex_id => $lookup_rule_rule) {
+                                $true_index = $lookup_rule_rule_regex_id + 1; // first match - all phrase, second - captured same all phrase - because of regexp format
+                                $smartphrase_regex_value = 0;
+                                // for each found group
+//                                foreach ($matched_smartphrase_groups as $matched_smartphrase_group) {
+//
+//
+//                                    $i++;
+//                                }
+
+
+                                switch ($lookup_rule_rule) {
+                                    // add to current time X hours, days, weeks, monthes, years
+                                    case "hours":
+                                    case "days":
+                                    case "weeks":
+                                    case "monthes":
+                                    case "years":
+                                        // for each regex in group
+                                        foreach ($json_rule['smartparse']['numeric'] as $regex_group) {
+                                            $time_regex = $regex_group[0] . (isset($regex_group[2]) ? $regex_group[2] : '');
+                                            // try to determine time multiplier from suitable smartphrase regex
+                                            if (preg_match("/" . $time_regex . "/imu", $matches[$true_index])) {
+                                                $smartphrase_regex_value = $regex_group[1];
+                                                break;
+                                            }
+                                        }
+                                        if ($matches[$true_index] === "") {
+                                            $smartphrase_regex_value = 1;
+                                        }
+                                        if ($smartphrase_regex_value) {
+                                            $now = strtotime("+ " . $smartphrase_regex_value . " " . $lookup_rule_rule, $real_now);
+                                        }
+                                        break;
+                                    case "minute":
+                                        break;
+                                    case "hour":
+                                        break;
+                                    case "week":
+                                        // for each regex in group
+                                        foreach ($json_rule['smartparse']['week'] as $regex_group) {
+                                            $time_regex = $regex_group[0] . (isset($regex_group[2]) ? $regex_group[2] : '');
+                                            // try to determine time multiplier from suitable smartphrase regex
+                                            if (preg_match("/" . $time_regex . "/imu", $matches[$true_index])) {
+                                                $smartphrase_regex_value = $regex_group[1];
+                                                break;
+                                            }
+                                        }
+                                        $now += abs($current['day_of_week_number'] - $smartphrase_regex_value) * $secs_in['day'];
+                                        break;
+                                    case "next week":
+                                        // for each regex in group
+                                        foreach ($json_rule['smartparse']['week'] as $regex_group) {
+                                            $time_regex = $regex_group[0] . (isset($regex_group[2]) ? $regex_group[2] : '');
+                                            // try to determine time multiplier from suitable smartphrase regex
+                                            if (preg_match("/" . $time_regex . "/imu", $matches[$true_index])) {
+                                                $smartphrase_regex_value = $regex_group[1];
+                                                break;
+                                            }
+                                        }
+                                        // determine current week day number
+                                        $now += abs($current['day_of_week_number'] - $smartphrase_regex_value) * $secs_in['day'] + $secs_in['week'];
+                                        break;
+                                    case "month":
+                                        // for each regex in group
+                                        foreach ($json_rule['smartparse']['month'] as $regex_group) {
+                                            $time_regex = $regex_group[0] . (isset($regex_group[2]) ? $regex_group[2] : '');
+                                            // try to determine time multiplier from suitable smartphrase regex
+                                            if (preg_match("/" . $time_regex . "/imu", $matches[$true_index])) {
+                                                $smartphrase_regex_value = $regex_group[1];
+                                                break;
+                                            }
+                                        }
+                                        if ($current['month_number'] >= $smartphrase_regex_value) {
+                                            $now = strtotime("+ " . (12 - $smartphrase_regex_value) . " monthes", $real_now);
+                                        } else {
+                                            $now = strtotime("+ " . ($current['month_number'] - $smartphrase_regex_value) . " monthes", $real_now);
+                                        }
+                                        // will substruct all days in month to get first day in month
+                                        $now -= ($current['day_number'] * $secs_in['day']);
+                                        break;
+                                    case "year":
+                                        break;
+                                    case "day of month":
+                                        // add days to month in $now
+                                        $now += ($smartphrase_regex_value * $secs_in['day']);
+                                        break;
+                                    case "time of day":
+                                        if (isset($reltime_secs[$smartphrase_regex_value])) {
+                                            $now += $reltime_secs[$smartphrase_regex_value];
+                                        }
+                                        break;
+                                    case "time of week":
+                                        if (isset($relday_secs[$smartphrase_regex_value])) {
+                                            $now += $relday_secs[$smartphrase_regex_value];
+                                        }
+                                        break;
+                                }
+                            }
+                            return array(
+                                'due_date' => date("Y-m-d", $real_now),
+                                'due_datetime' => $lookup_rule_settime ? date("Y-m-d H:i:s", $real_now) : null
+                            );
+//                            break 2;
                         }
                     }
                 }
             }
         }
+        return false;
     }
 }
