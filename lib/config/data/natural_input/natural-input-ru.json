@@ -139,8 +139,7 @@
                 "script": "local res=getNow2()+24*60*60*getNumeric(getMatch(2,1));return {ts=res,timed=0};",
                 "rules": {
                     "1": "days"
-                },
-                "settime": 0
+                }
             }
 
             , {
@@ -148,17 +147,15 @@
                 "script": "local res=getNow2()+7*24*60*60*getNumeric(getMatch(2,1));return {ts=res,timed=0};",
                 "rules": {
                     "1": "weeks"
-                },
-                "settime": 0
+                }
             }
 
             , {
                 "regex": ["(через (\\numeric) месяц\\w*)", "(через (\\numeric) мес)(?:\\W|\\z)", "(через() месяц)(?:\\W|\\z)", "(через() мес)(?:\\W|\\z)"],
                 "script": "local res=getNow2();res=addMonth(res,getNumeric(getMatch(2,1)));return {ts=res,timed=0};",
                 "rules": {
-                    "1": "monthes"
-                },
-                "settime": 0
+                    "1": "months"
+                }
             }
 
             , {
@@ -166,8 +163,7 @@
                 "script": "local res=getNow2();res=addMonth(res,12*getNumeric(getMatch(2,1)));return {ts=res,timed=0};",
                 "rules": {
                     "1": "years"
-                },
-                "settime": 0
+                }
             }
 
             , {
@@ -187,7 +183,7 @@
                 "script": "local res=getNow2();res=replaceHour(res,getMatch(3));res=replaceMinutes(res,0);res=addRelday(res,getMatch(2));return {ts=res,timed=1};",
                 "rules": {
                     "1": "time of week",
-                    "2": 3600,
+                    "2": "hours",
                     "3": "time of day"
                 },
                 "settime": 1
@@ -199,21 +195,21 @@
                 "rules": {
                     "3": "year",
                     "2": "month",
-                    "1": "day of month"
+                    "1": "days"
                 },
-                "settime": 0
+                "absolute": 1
             }
 
             , {
                 "regex": ["((\\d+) (\\month))"],
-                "example": "день рождения Костика 26 апреля",
+                "example": "день рождения Чувака 26 апреля",
                 "note": "replacing date/month twice because of 29 feb",
                 "script": "local res=getNow2();res=replaceMonth(res,getMatch(3));res=replaceDate(res,getMatch(2));if res<getNow() then res=addMonth(res,12);res=replaceMonth(res,getMatch(3));res=replaceDate(res,getMatch(2)); end;return {ts=res,timed=0};",
                 "rules": {
                     "2": "month",
-                    "1": "day of month"
+                    "1": "days"
                 },
-                "settime": 0
+                "absolute": 1
             }
 
             , {
@@ -222,9 +218,9 @@
                 "script": "local res=getNow2();res=replaceMonth(res,getMatch(2));local dater=getMatch(3);if tonumber(dater)>2011 then res=replaceYear(res,dater); else res=replaceDate(res,dater); end; setFastF(365*24*60*60); res = checkFastF(res); return {ts=res,timed=0};",
                 "rules": {
                     "1": "month",
-                    "2": "day of month"
+                    "2": "days"
                 },
-                "settime": 0
+                "absolute": 1
             }
 
             , {
@@ -259,7 +255,6 @@
                     "2": "hour"
                 },
                 "settime": 1
-
             }
 
             , {
@@ -278,8 +273,7 @@
                 "script": "local res=getNow2();res=addRelday(res,getMatch(1));return {ts=res,timed=0};",
                 "rules": {
                     "1": "time of week"
-                },
-                "settime": 0
+                }
             }
 
             , {
@@ -287,16 +281,16 @@
                 "script": "local res=getNow2();res=replaceWeekDay(res,getMatch(2));res=res+7*24*60*60;return {ts=res,timed=0};",
                 "rules": {
                     "1": "next week"
-                },
-                "settime": 0
+                }
             }
 
             , {
                 "regex": ["(в (\\week))", "(во (\\week))", "((\\week))"],
                 "example": "занятия спортом в пятницу",
                 "script": "local res=getNow2();res=replaceWeekDay(res,getMatch(2)); setFastF(7*24*60*60); res = checkFastF(res); return {ts=res,timed=0};",
-                "rules": ["week"],
-                "settime": 0
+                "rules": {
+                    "1": "week"
+                }
             }
 
             , {
