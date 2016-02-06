@@ -7,7 +7,7 @@ class pocketlistsNaturalInput
 
     public function __construct()
     {
-        $files_path = wa()->getAppPath() . '/lib/config/data/natural_input/';
+        $files_path = wa()->getAppPath('/lib/config/data/natural_input/', 'pocketlists');
         $files = array(
             $files_path . 'natural-input-en.json',
             $files_path . 'natural-input-ru.json'
@@ -140,13 +140,13 @@ class pocketlistsNaturalInput
             }
             // found something!!!
             if (preg_match("/" . $regex_in_rule . "/imu", $item_name, $matches)) {
-                return self::proceedFoundRegex($matches, $lookup_rule, $json_rule);
+                return self::proceedFoundRegex($matches, $lookup_rule, $json_rule, $matched_smartphrase_groups);
             }
         }
         return false;
     }
 
-    private static function proceedFoundRegex($matches, $lookup_rule, $json_rule)
+    private static function proceedFoundRegex($matches, $lookup_rule, $json_rule, $matched_smartphrase_groups)
     {
         $instance = self::getInstance();
 
@@ -155,37 +155,37 @@ class pocketlistsNaturalInput
             'day'  => 60 * 60 * 24,
             'week' => 60 * 60 * 24 * 7,
         );
-        $reltime_secs = array(
-            1 => $secs_in['hour'] * 9, // 9 o'clock
-            2 => $secs_in['hour'] * 12, // 12 o'clock
-            3 => $secs_in['hour'] * 18 // 18 o'clock
+        $reltime_hours = array(
+            1 => 9,
+            2 => 12,
+            3 => 18
         );
-        $relday_secs = array(
-            1 => $secs_in['day'] * 1, // tomorrow
-            2 => $secs_in['day'] * 2, // after tomorrow
+        $relday_days = array(
+            1 => 1, // tomorrow
+            2 => 2, // after tomorrow
             3 => 0 // today
         );
 
         $lookup_rule_rules = ifset($lookup_rule['rules'], false);
-        // set hours and minutes
-        $lookup_rule_settime = ifset($lookup_rule['settime'], null);
         // time is calculated based not on current time
-        $lookup_rule_absolute = ifset($lookup_rule['absolute'], null);
+        $lookup_rule_relative = ifset($lookup_rule['relative'], false);
         // will check if calculated time is in the past
-        $lookup_rule_checkpasttime = ifset($lookup_rule['checkpasttime'], null);
-        // trim time from item's name?
-//        $lookup_rule_notrim = ifset($lookup_rule['notrim'], null);
+        $lookup_rule_checkpasttime = ifset($lookup_rule['checkpasttime'], false);
 
-        $date_now = strtotime(date("Y-m-d"));
-        $real_now = $lookup_rule_settime ? time() : $date_now;
-        $now = $real_now;
+        $datetime_now = time();
+        $date_now = strtotime(date("Y-m-d 00:00:00"), $datetime_now);
+//        $real_now = $lookup_rule_relative ? time() : $date_now;
+        $now = $lookup_rule_relative ? $datetime_now : $date_now;
 
         $current = array(
-            'day_number' => date('j', $real_now), // determine current month day number
-            'day_of_week_number' => $instance::getCurrentWeekDay(date('N', $real_now)), // determine current week day number
-            'month_number' => date('m', $real_now), // determine current month number
+            'day_number' => date('j', $datetime_now), // current month day number
+            'day_of_week_number' => $instance::getCurrentWeekDay(date('N', $datetime_now)), // current week day number
+            'month_number' => date('m', $datetime_now), // current month number
             'seconds_passed' => (time() - $date_now),
         );
+
+        // if user passed hour or minute it will be true
+        $time_was_set_by_user = false;
 
         // rules describe how to intreper matched values, in what order, etc
         foreach ($lookup_rule_rules as $lookup_rule_rule_regex_id => $lookup_rule_rule) {
@@ -196,6 +196,7 @@ class pocketlistsNaturalInput
 
             switch ($lookup_rule_rule) {
                 // add to current time X hours, days, weeks, months, years
+                case "minutes":
                 case "hours":
                 case "days":
                 case "weeks":
@@ -220,10 +221,14 @@ class pocketlistsNaturalInput
                     } else {
                         $smartphrase_regex_value = (int) $matches[$true_index];
                     }
-                    if ($lookup_rule_absolute && !in_array($lookup_rule_rule, array("hours", "weeks"))) {
+                    if (!$lookup_rule_relative && !in_array($lookup_rule_rule, array("hours", "weeks", "minutes"))) {
                         $smartphrase_regex_value--;
                     }
                     $now = strtotime("+ " . $smartphrase_regex_value . " " . $lookup_rule_rule, $now);
+                    // way to tell futher rules, that time was set by user in item's name
+                    if (in_array($lookup_rule_rule, array("hours", "minutes"))) {
+                        $time_was_set_by_user = true;
+                    }
                     break;
                 case "minute":
                     break;
@@ -240,11 +245,14 @@ class pocketlistsNaturalInput
                         }
                     }
 //                    $now += abs($current['day_of_week_number'] - $smartphrase_regex_value) * $secs_in['day'];
-                    $days = abs($current['day_of_week_number'] - $smartphrase_regex_value);
-                    $days = $days === 0 ? 7 : $days; // if new date equals current - +1 week
+                    $days = $smartphrase_regex_value - $current['day_of_week_number'];
+                    if ($days < 0) {
+                        $days = 7 + $days;
+                    }
                     $now = strtotime("+" . $days . " days", $now);
                     // and reset to the beging of the day
-                    $now -= $current['seconds_passed'];
+                    $now = strtotime(date("Y-m-d 00:00:00", $now));
+//                    $now -= $current['seconds_passed'];
                     break;
                 case "next week":
                     // for each regex in group
@@ -271,15 +279,18 @@ class pocketlistsNaturalInput
                             break;
                         }
                     }
-                    $month_to_add = $smartphrase_regex_value - $current['month_number'];
-                    if ($month_to_add <= 0) {
-                        $month_to_add = 12 + $month_to_add;
+                    if ($lookup_rule_relative) {
+                        $month_to_add = $smartphrase_regex_value - $current['month_number'];
+                        if ($month_to_add < 0) {
+                            $month_to_add = 12 + $month_to_add;
+                        }
+                    } else {
+                        $month_to_add = $smartphrase_regex_value - 1;
                     }
                     $now = strtotime("+ " . $month_to_add . " months", $now);
                     // will substruct all days in month to get first day in month
                     $now = strtotime(date("Y-m-1", $now));
 //                  $now -= strtotime("+ " . $current['day_number'] . " days", $now);($current['day_number'] * $secs_in['day']);
-//                                        }
                     break;
                 case "year":
                     $now = strtotime("01.01." . $matches[$true_index]);
@@ -299,16 +310,20 @@ class pocketlistsNaturalInput
                         }
 
                     }
-                    if (date('G', $now)) { // if there are some hours already
+                    if ($time_was_set_by_user) { // if there was hours in item's name
                         if ($smartphrase_regex_value === 0 ||
                             $smartphrase_regex_value === 2 ||
                             $smartphrase_regex_value === 3
                         ) { // day, evening
-                            $now += ($reltime_secs[$smartphrase_regex_value] + 12 * $secs_in['hour']);
+                            $now = strtotime("+". ($reltime_hours[$smartphrase_regex_value] + 12) . " hours", $now);
                         }
-                    } else { // if not - just add predefined hours
-                        $now += $reltime_secs[$smartphrase_regex_value];
+                    } else { // if not
+                        // reset to the begining of the day
+                        $now = strtotime(date("Y-m-d 00:00:00", $now));
+                        // and just add predefined hours
+                        $now = strtotime("+". $reltime_hours[$smartphrase_regex_value] . " hours", $now);
                     }
+                    $time_was_set_by_user = true;
                     break;
                 case "time of week":
                     // for each regex in group
@@ -320,10 +335,10 @@ class pocketlistsNaturalInput
                             break;
                         }
                     }
-                    if (isset($relday_secs[$smartphrase_regex_value])) {
-                        $now += $relday_secs[$smartphrase_regex_value];
-                        if ($lookup_rule_settime) { // reset day time
-                            $now -= $current['seconds_passed'];
+                    if (isset($relday_days[$smartphrase_regex_value])) {
+                        $now = strtotime("+" . $relday_days[$smartphrase_regex_value] . " days", $now);
+                        if (!$lookup_rule_relative) { // reset day time
+                            $now = strtotime(date("Y-m-d 00:00:00", $now));
                         }
                     }
                     break;
@@ -332,13 +347,23 @@ class pocketlistsNaturalInput
         // due can't be in past
         // will check this and fix
         if ($lookup_rule_checkpasttime) {
-            if ($now < $real_now) {
-                $now += strtotime("+1 ".$lookup_rule_checkpasttime, $now);
+            if ($now <= $datetime_now) {
+                $now = strtotime("+1 ".$lookup_rule_checkpasttime, $now);
             }
         }
         return array(
             'due_date' => date("Y-m-d", $now),
-            'due_datetime' => $lookup_rule_settime ? date("Y-m-d H:i:s", $now) : null
+            'due_datetime' => ($lookup_rule_relative || $time_was_set_by_user) ? date("Y-m-d H:i:s", $now) : null
         );
+    }
+
+    public static function testMatchDueDate($strings)
+    {
+        if (!is_array($strings)) {
+            $strings = array($strings);
+        }
+        foreach ($strings as $string) {
+            print_r(array('string' => $string, 'server_date' => date("Y-m-d H:i:s")) + self::matchDueDate($string));
+        }
     }
 }

@@ -130,7 +130,7 @@
                 "rules": {
                     "1": "hours"
                 },
-                "settime": 1
+                "relative": 1
             }
 
             , {
@@ -139,7 +139,8 @@
                 "script": "local res=getNow2()+24*60*60*getNumeric(getMatch(2,1));return {ts=res,timed=0};",
                 "rules": {
                     "1": "days"
-                }
+                },
+                "relative": 1
             }
 
             , {
@@ -147,7 +148,8 @@
                 "script": "local res=getNow2()+7*24*60*60*getNumeric(getMatch(2,1));return {ts=res,timed=0};",
                 "rules": {
                     "1": "weeks"
-                }
+                },
+                "relative": 1
             }
 
             , {
@@ -155,7 +157,8 @@
                 "script": "local res=getNow2();res=addMonth(res,getNumeric(getMatch(2,1)));return {ts=res,timed=0};",
                 "rules": {
                     "1": "months"
-                }
+                },
+                "relative": 1
             }
 
             , {
@@ -163,7 +166,8 @@
                 "script": "local res=getNow2();res=addMonth(res,12*getNumeric(getMatch(2,1)));return {ts=res,timed=0};",
                 "rules": {
                     "1": "years"
-                }
+                },
+                "relative": 1
             }
 
             , {
@@ -174,7 +178,6 @@
                     "1": "week",
                     "2": "time of day"
                 },
-                "settime": 1,
                 "checkpasttime": "week"
             }
 
@@ -186,8 +189,7 @@
                     "1": "time of week",
                     "2": "hours",
                     "3": "time of day"
-                },
-                "settime": 1
+                }
             }
 
             , {
@@ -197,8 +199,7 @@
                     "3": "year",
                     "2": "month",
                     "1": "days"
-                },
-                "absolute": 1
+                }
             }
 
             , {
@@ -210,7 +211,6 @@
                     "2": "month",
                     "1": "days"
                 },
-                "absolute": 1,
                 "checkpasttime": "year"
             }
 
@@ -222,7 +222,6 @@
                     "1": "month",
                     "2": "days"
                 },
-                "absolute": 1,
                 "checkpasttime": "year"
             }
 
@@ -233,20 +232,18 @@
                 "rules": {
                     "1": "time of week",
                     "2": "time of day"
-                },
-                "settime": 1
+                }
             }
 
             , {
                 "regex": ["((\\relday) в (\\d+)[:\\.](\\d\\d))(?:\\W|\\z)"],
-                "example": "тренировка завтра в 13",
+                "example": "тренировка завтра в 13:12",
                 "script": "local res=getNow2();res=addRelday(res,getMatch(2));res=replaceHour(res,getMatch(3));res=replaceMinutes(res,getMatch(4));return {ts=res,timed=1};",
                 "rules": {
-                    "1": "time of day",
-                    "2": "hour",
-                    "3": "minute"
-                },
-                "settime": 1
+                    "1": "time of week",
+                    "2": "hours",
+                    "3": "minutes"
+                }
             }
 
             , {
@@ -255,9 +252,8 @@
                 "script": "local res=getNow2();res=addRelday(res,getMatch(2));res=replaceHour(res,getMatch(3));res=replaceMinutes(res,0);return {ts=res,timed=1};",
                 "rules": {
                     "1": "time of week",
-                    "2": "hour"
-                },
-                "settime": 1
+                    "2": "hours"
+                }
             }
 
             , {
@@ -275,7 +271,7 @@
                 "example": "послезавтра кино",
                 "script": "local res=getNow2();res=addRelday(res,getMatch(1));return {ts=res,timed=0};",
                 "rules": {
-                    "1": "time of week"
+                    "0": "time of week"
                 }
             }
 
@@ -301,20 +297,18 @@
                 "regex": ["(\\reltime)"],
                 "script": "addReltime(getNow2(),getMatch(1));return {ts=getNow2(),no_trim=1};",
                 "rules": {
-                    "1": "time of day"
+                    "0": "time of day"
                 },
-                "settime": 1,
-                "notrim": 1
+                "checkpasttime": "day"
             }
 
             , {
                 "regex": ["(в (\\d+)[:\\.](\\d\\d))(?:\\W|\\z)"],
                 "script": "local res=getNow2();res=replaceHour(res,getMatch(2));res=replaceMinutes(res,getMatch(3)); res = checkFastF(res); return {ts=res,timed=1};",
                 "rules": {
-                    "1": "hour",
-                    "2": "minute"
+                    "1": "hours",
+                    "2": "minutes"
                 },
-                "settime": 1,
                 "checkpasttime": "day"
             }
 
@@ -324,8 +318,7 @@
                 "rules": {
                     "1": "hour"
                 },
-                "settime": 1,
-                "checkpasttime": "week"
+                "checkpasttime": "day"
             }
 
             , {
@@ -333,9 +326,8 @@
                 "example": "выключить утюг утром",
                 "script": "local res=getNow2();res=addReltime(res,getMatch(1));res=checkFastF(res);return {ts=res,timed=1};",
                 "rules": {
-                    "1": "time of day"
+                    "0": "time of day"
                 },
-                "settime": 1,
                 "checkpasttime": "day"
             }
 
