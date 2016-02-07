@@ -180,7 +180,7 @@ class pocketlistsNaturalInput
         $current = array(
             'day_number' => date('j', $datetime_now), // current month day number
             'day_of_week_number' => $instance::getCurrentWeekDay(date('N', $datetime_now)), // current week day number
-            'month_number' => date('m', $datetime_now), // current month number
+            'month_number' => date('n', $datetime_now), // current month number
             'seconds_passed' => (time() - $date_now),
         );
 
@@ -215,11 +215,11 @@ class pocketlistsNaturalInput
                                 break;
                             }
                         }
-                        if ($matches[$true_index] === "") {
-                            $smartphrase_regex_value = 1;
-                        }
                     } else {
                         $smartphrase_regex_value = (int) $matches[$true_index];
+                    }
+                    if ($matches[$true_index] === "") {
+                        $smartphrase_regex_value = 1;
                     }
                     if (!$lookup_rule_relative && !in_array($lookup_rule_rule, array("hours", "weeks", "minutes"))) {
                         $smartphrase_regex_value--;
@@ -279,14 +279,13 @@ class pocketlistsNaturalInput
                             break;
                         }
                     }
-                    if ($lookup_rule_relative) {
-                        $month_to_add = $smartphrase_regex_value - $current['month_number'];
-                        if ($month_to_add < 0) {
-                            $month_to_add = 12 + $month_to_add;
-                        }
-                    } else {
-                        $month_to_add = $smartphrase_regex_value - 1;
+                    $month_to_add = $smartphrase_regex_value - $current['month_number'];
+                    if ($month_to_add < 0) {
+                        $month_to_add = 12 + $month_to_add;
                     }
+//                    if (!$lookup_rule_relative) {
+//                        $month_to_add = $month_to_add - 1;
+//                    }
                     $now = strtotime("+ " . $month_to_add . " months", $now);
                     // will substruct all days in month to get first day in month
                     $now = strtotime(date("Y-m-1", $now));
@@ -353,7 +352,7 @@ class pocketlistsNaturalInput
         }
         return array(
             'due_date' => date("Y-m-d", $now),
-            'due_datetime' => ($lookup_rule_relative || $time_was_set_by_user) ? date("Y-m-d H:i:s", $now) : null
+            'due_datetime' => ($time_was_set_by_user) ? date("Y-m-d H:i:s", $now) : null
         );
     }
 
