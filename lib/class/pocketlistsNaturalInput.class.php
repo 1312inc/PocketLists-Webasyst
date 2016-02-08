@@ -68,7 +68,7 @@ class pocketlistsNaturalInput
                 '!!!' => 3
             );
             return array(
-                'name' => trim(str_replace($matches[1], '', $matches[2])),
+                'name' => trim(str_replace($matches[1], '', $item_name)),
                 'priority' => $priority[$matches[1]]
             );
         }
