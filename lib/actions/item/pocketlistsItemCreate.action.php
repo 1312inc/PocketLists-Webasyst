@@ -16,6 +16,7 @@ class pocketlistsItemCreateAction extends waViewAction
         if ($assigned_contact_id) {
             $assign_contact = new waContact($assigned_contact_id);
         }
+
         // if no list id passed - get default list from settings
         if (!$list_id) {
             $us = new pocketlistsUserSettings($assign_contact ? $assign_contact->getId() : $user_id);
@@ -51,7 +52,9 @@ class pocketlistsItemCreateAction extends waViewAction
                     $data[$i]['name'] = $ni['name'];
                     $data[$i]['note'] = $ni['note'];
                 }
-                if ($ni = pocketlistsNaturalInput::matchDueDate($data[$i]['name'])) {
+
+                $us = new pocketlistsUserSettings($user_id);
+                if ($us->getNaturalInput() && $ni = pocketlistsNaturalInput::matchDueDate($data[$i]['name'])) {
                     $data[$i]['due_date'] = $ni['due_date'];
                     $data[$i]['due_datetime'] = $ni['due_datetime'];
                 }
