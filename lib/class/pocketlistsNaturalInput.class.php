@@ -387,6 +387,16 @@ class pocketlistsNaturalInput
                         $now = strtotime(date("Y-m-d 00:00:00", $now));
                     }
                 }
+            } elseif ($rule_mod == "am") {
+                $hours_count = date("G", $now);
+                if ($hours_count > 12) {
+                    $now = strtotime("-12 hours", $now);
+                }
+            } elseif ($rule_mod == "pm") {
+                $hours_count = date("G", $now);
+                if ($hours_count >= 0 && $hours_count < 12) {
+                    $now = strtotime("+12 hours", $now);
+                }
             }
         }
         // due can't be in past, so will check this and fix
