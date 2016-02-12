@@ -65,7 +65,6 @@ class pocketlistsItemModel extends waModel
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
                 WHERE
                   i.status > 0
-                  AND i.list_id IS NULL AND
                   {$pocket_rights}
                   {$by_user}
                   {$by_date_range}
