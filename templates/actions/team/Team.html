@@ -28,7 +28,16 @@
 
                                 <span class="count{if $teammate.items_info.max_priority == 1} indicator green{elseif $teammate.items_info.max_priority == 2} indicator yellow{elseif $teammate.items_info.max_priority == 3} indicator red{/if}">{$teammate.items_info.count}</span>
 
-                                <span class="pl-username">{$teammate.name|default:'%username%'|escape}</span>
+                                <span class="pl-username">
+                                    {$teammate.name|default:'%username%'|escape}
+                                    <span class="bold">
+                                        {if $teammate.status == 'online'}
+                                        <i class="icon10 online"></i>
+                                        {else}
+                                        <i class="icon10 status-yellow"></i>
+                                        {/if}
+                                    </span>
+                                </span>
 
                                 <div class="pl-active-items">{$teammate.items_info.names|escape}</div>
 

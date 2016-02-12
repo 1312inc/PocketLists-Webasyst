@@ -9,14 +9,18 @@ class pocketlistsTeamAction extends waViewAction
         $teammates = array();
         $teammates_ids = pocketlistsHelper::getAllPocketListsContacts();
         if ($teammates_ids) {
-            $teammates = new waContactsCollection('/id/'.implode(',', $teammates_ids).'/');
-            $teammates = $teammates->getContacts('id,name,photo_url,login');
-
             $im = new pocketlistsItemModel();
             $items_count_names = $im->getAssignedItemsCountAndNames($teammates_ids);
             $last_activities = $im->getContactLastActivity($teammates_ids);
-            foreach ($teammates as $tid => $tval) {
+            foreach ($teammates_ids as $tid) {
                 if ($tid != wa()->getUser()->getId()) {
+                    $mate = new waContact($tid);
+                    $teammates[$tid]['name'] = $mate->getName();
+                    $teammates[$tid]['id'] = $mate->getId();
+                    $teammates[$tid]['photo_url'] = $mate->getPhoto();
+                    $teammates[$tid]['login'] = $mate->get('login');
+                    $teammates[$tid]['status'] = $mate->getStatus();
+
                     $teammates[$tid]['last_activity'] = isset($last_activities[$tid]) ? $last_activities[$tid] : false;
                     $teammates[$tid]['items_info'] = array(
                         'count' => 0,
