@@ -85,9 +85,7 @@ class pocketlistsItemCreateAction extends waViewAction
                 }
 
                 // log this action
-                class_exists('waLogModel') || wa('webasyst');
-                $log_model = new waLogModel();
-                $log_model->add('new_items', $list);
+                $this->logAction('new_items', $list);
             }
         }
 

@@ -13,9 +13,7 @@ class pocketlistsListDeleteController extends waJsonController
                 $this->response = 'ok';
 
                 // log this action
-                class_exists('waLogModel') || wa('webasyst');
-                $log_model = new waLogModel();
-                $log_model->add('list_deleted');
+                $this->logAction('list_deleted');
             } else {
                 $this->errors = 'error while deleting list and it items';
             }

@@ -23,6 +23,8 @@ class pocketlistsListUpdateController extends waJsonController
 
         $data = $lm->add($data, 1);
         if ($data) {
+            // log this action
+            $this->logAction('list_created', $data);
             pocketlistsNotifications::notifyAboutNewList($data);
         }
 

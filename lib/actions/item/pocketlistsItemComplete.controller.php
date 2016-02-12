@@ -23,10 +23,8 @@ class pocketlistsItemCompleteController extends pocketlistsComplete
             $this->response = $id;
 
             // log this action
-            class_exists('waLogModel') || wa('webasyst');
-            $log_model = new waLogModel();
             foreach ($this->completed_items as $complete_item) {
-                $log_model->add('item_completed', $complete_item);
+                $this->logAction('item_completed', $complete_item);
             }
 
         } else {
