@@ -29,6 +29,10 @@ class pocketlistsPocketModel extends waModel
             return false;
         }
 
+        // delete from wa_contact_rights
+        $wcr = new waContactRightsModel();
+        $wcr->deleteByField('name', 'pocket.'.$id);
+
         // delete attachments
         $im = new pocketlistsItemModel();
         $items = $im->getAllByPocket($id);
