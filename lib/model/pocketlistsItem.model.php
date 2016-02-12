@@ -5,7 +5,7 @@ class pocketlistsItemModel extends waModel
     protected $table = 'pocketlists_item';
 
 
-    public function getCompleted($contact_id = false, $date_range = false)
+    public function getLogbookItems($contact_id = false, $date_range = false)
     {
         $pocket_rights = "";
         $pockets = array();
@@ -21,7 +21,7 @@ class pocketlistsItemModel extends waModel
             // only accessed pockets or null list items
             $pocket_rights = "AND (
                     p.id IN (i:pocket_ids)
-                    OR p.id IS NULL
+                    OR (p.id IS NULL AND i.contact_id = i:contact_id)
                   )";
         }
 
@@ -65,6 +65,7 @@ class pocketlistsItemModel extends waModel
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
                 WHERE
                   i.status > 0
+                  AND i.list_id IS NULL AND
                   {$pocket_rights}
                   {$by_user}
                   {$by_date_range}
