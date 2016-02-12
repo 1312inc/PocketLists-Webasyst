@@ -109,40 +109,70 @@
             , {
                 "regex": ["(in (\\numeric) day\\w*)", "(in() a day)(?:\\W|\\z)"],
                 "example": "cinema in two days",
-                "script": "local res=getNow2()+24*60*60*getNumeric(getMatch(2,1));return {ts=res,timed=0};"
+                "script": "local res=getNow2()+24*60*60*getNumeric(getMatch(2,1));return {ts=res,timed=0};",
+                "rules": {
+                    "1": "numeric|days"
+                },
+                "relative": 1
             }
 
             , {
                 "regex": ["(in (\\numeric) hour\\w*)", "(in() an hour)(?:\\W|\\z)", "(in() a hour)(?:\\W|\\z)"],
                 "example": "cinema in two hours",
-                "script": "local res=getNow2()+60*60*getNumeric(getMatch(2,1));return {ts=res,timed=1};"
+                "script": "local res=getNow2()+60*60*getNumeric(getMatch(2,1));return {ts=res,timed=1};",
+                "rules": {
+                    "1": "numeric|hours"
+                },
+                "relative": 1
             }
 
             , {
                 "regex": ["(in (\\numeric) week\\w*)", "(in() a week)(?:\\W|\\z)"],
-                "script": "local res=getNow2()+7*24*60*60*getNumeric(getMatch(2,1));return {ts=res,timed=0};"
+                "script": "local res=getNow2()+7*24*60*60*getNumeric(getMatch(2,1));return {ts=res,timed=0};",
+                "rules": {
+                    "1": "numeric|weeks"
+                },
+                "relative": 1
             }
 
             , {
                 "regex": ["(in (\\numeric) month\\w*)", "(in() a month)(?:\\W|\\z)"],
-                "script": "local res=getNow2();res=addMonth(res,getNumeric(getMatch(2,1)));return {ts=res,timed=0};"
+                "script": "local res=getNow2();res=addMonth(res,getNumeric(getMatch(2,1)));return {ts=res,timed=0};",
+                "rules": {
+                    "1": "numeric|months"
+                },
+                "relative": 1
             }
 
             , {
                 "regex": ["(in (\\numeric) year\\w*)", "(in() a year)(?:\\W|\\z)"],
-                "script": "local res=getNow2();res=addMonth(res,12*getNumeric(getMatch(2,1)));return {ts=res,timed=0};"
+                "script": "local res=getNow2();res=addMonth(res,12*getNumeric(getMatch(2,1)));return {ts=res,timed=0};",
+                "rules": {
+                    "1": "numeric|years"
+                },
+                "relative": 1
             }
 
             , {
                 "regex": ["((\\d+) (\\month) (\\d\\d\\d\\d))"],
-                "script": "local res=getNow2();res=replaceYear(res,getMatch(4));res=replaceMonth(res,getMatch(3));res=replaceDate(res,getMatch(2));if res<getNow() then res=addMonth(res,12);res=replaceMonth(res,getMatch(3));res=replaceDate(res,getMatch(2)); end;return {ts=res,timed=0};"
+                "script": "local res=getNow2();res=replaceYear(res,getMatch(4));res=replaceMonth(res,getMatch(3));res=replaceDate(res,getMatch(2));if res<getNow() then res=addMonth(res,12);res=replaceMonth(res,getMatch(3));res=replaceDate(res,getMatch(2)); end;return {ts=res,timed=0};",
+                "rules": {
+                    "3": "year",
+                    "2": "numeric|month",
+                    "1": "days"
+                }
             }
 
             , {
                 "regex": ["((\\d+) (\\month))"],
                 "example": "meeting 27 september",
                 "note": "replacing date/month twice because of 29 feb",
-                "script": "local res=getNow2();res=replaceMonth(res,getMatch(3));res=replaceDate(res,getMatch(2));if res<getNow() then res=addMonth(res,12);res=replaceMonth(res,getMatch(3));res=replaceDate(res,getMatch(2)); end;return {ts=res,timed=0};"
+                "script": "local res=getNow2();res=replaceMonth(res,getMatch(3));res=replaceDate(res,getMatch(2));if res<getNow() then res=addMonth(res,12);res=replaceMonth(res,getMatch(3));res=replaceDate(res,getMatch(2)); end;return {ts=res,timed=0};",
+                "rules": {
+                    "2": "month",
+                    "1": "days"
+                },
+                "checkpasttime": "year"
             }
 
             , {
@@ -158,60 +188,110 @@
             , {
                 "regex": ["(\\relday)"],
                 "example": "tomorrow food shopping",
-                "script": "local res=getNow2();res=addRelday(res,getMatch(1));return {ts=res,timed=0};"
+                "script": "local res=getNow2();res=addRelday(res,getMatch(1));return {ts=res,timed=0};",
+                "rules": {
+                    "0": "relday"
+                }
             }
 
             , {
                 "regex": ["(next (\\week))"],
-                "script": "local res=getNow2();res=replaceWeekDay(res,getMatch(2));res=res+7*24*60*60;return {ts=res,timed=0};"
+                "script": "local res=getNow2();res=replaceWeekDay(res,getMatch(2));res=res+7*24*60*60;return {ts=res,timed=0};",
+                "rules": {
+                    "1": "week|next"
+                }
             }
 
             , {
                 "regex": ["(on (\\week))", "((\\week))"],
                 "example": "work on friday",
-                "script": "local res=getNow2();res=replaceWeekDay(res,getMatch(2)); setFastF(7*24*60*60); res = checkFastF(res); return {ts=res,timed=0};"
+                "script": "local res=getNow2();res=replaceWeekDay(res,getMatch(2)); setFastF(7*24*60*60); res = checkFastF(res); return {ts=res,timed=0};",
+                "rules": {
+                    "1": "week"
+                },
+                "checkpasttime": "week"
             }
 
             , {
                 "regex": ["(at (\\d+)[:\\.](\\d\\d)(?:pm| pm|p.m.| p.m.))(?:\\W|\\z)", "((\\d+)[:\\.](\\d\\d)(?:pm| pm|p.m.| p.m.))(?:\\W|\\z)"],
-                "script": "local res=getNow2();local hr=tonumber(getMatch(2,-1));if hr>=0 and hr<12 then hr=hr+12; end; res=replaceHour(res,hr);res=replaceMinutes(res,getMatch(3,-1)); res = checkFastF(res); return {ts=res,timed=1};"
+                "script": "local res=getNow2();local hr=tonumber(getMatch(2,-1));if hr>=0 and hr<12 then hr=hr+12; end; res=replaceHour(res,hr);res=replaceMinutes(res,getMatch(3,-1)); res = checkFastF(res); return {ts=res,timed=1};",
+                "rules": {
+                    "1": "hours",
+                    "2": "minutes",
+                    "3": "pm"
+                },
+                "checkpasttime": "day"
             }
 
             , {
                 "regex": ["(at (\\d+)(?:pm| pm|p.m.| p.m.))(?:\\W|\\z)", "((\\d+)(?:pm| pm|p.m.| p.m.))(?:\\W|\\z)"],
-                "script": "local res=getNow2();local hr=tonumber(getMatch(2,-1));if hr>=0 and hr<12 then hr=hr+12; end; res=replaceHour(res,hr);res=replaceMinutes(res,0); res = checkFastF(res); return {ts=res,timed=1};"
+                "script": "local res=getNow2();local hr=tonumber(getMatch(2,-1));if hr>=0 and hr<12 then hr=hr+12; end; res=replaceHour(res,hr);res=replaceMinutes(res,0); res = checkFastF(res); return {ts=res,timed=1};",
+                "rules": {
+                    "1": "hours",
+                    "2": "pm"
+                },
+                "checkpasttime": "day"
             }
 
             , {
                 "regex": ["(at (\\d+)[:\\.](\\d\\d)(?:am| am|a.m.| a.m.))(?:\\W|\\z)", "((\\d+)[:\\.](\\d\\d)(?:am| am|a.m.| a.m.))(?:\\W|\\z)"],
-                "script": "shareddata.force_pm = 0;local res=getNow2();local hr=tonumber(getMatch(2,-1));if hr>=12 then hr=hr-12; end; res=replaceHour(res,hr);res=replaceMinutes(res,getMatch(3,-1)); res = checkFastF(res); return {ts=res,timed=1};"
+                "script": "shareddata.force_pm = 0;local res=getNow2();local hr=tonumber(getMatch(2,-1));if hr>=12 then hr=hr-12; end; res=replaceHour(res,hr);res=replaceMinutes(res,getMatch(3,-1)); res = checkFastF(res); return {ts=res,timed=1};",
+                "rules": {
+                    "1": "hours",
+                    "2": "minutes",
+                    "3": "am"
+                },
+                "checkpasttime": "day"
             }
 
             , {
                 "regex": ["(at (\\d+)(?:am| am|a.m.| a.m.))(?:\\W|\\z)", "((\\d+)(?:am| am|a.m.| a.m.))(?:\\W|\\z)"],
-                "script": "shareddata.force_pm = 0;local res=getNow2();local hr=tonumber(getMatch(2,-1));if hr>=12 then hr=hr-12; end;res=replaceHour(res,hr);res=replaceMinutes(res,0); res = checkFastF(res); return {ts=res,timed=1};"
+                "script": "shareddata.force_pm = 0;local res=getNow2();local hr=tonumber(getMatch(2,-1));if hr>=12 then hr=hr-12; end;res=replaceHour(res,hr);res=replaceMinutes(res,0); res = checkFastF(res); return {ts=res,timed=1};",
+                "rules": {
+                    "1": "hours",
+                    "2": "am"
+                },
+                "checkpasttime": "day"
             }
 
             , {
                 "regex": ["(at (\\d+)[:\\.](\\d\\d))(?:\\W|\\z)"],
-                "script": "local res=getNow2();res=replaceHour(res,getMatch(2));res=replaceMinutes(res,getMatch(3)); res = checkFastF(res); return {ts=res,timed=1};"
+                "script": "local res=getNow2();res=replaceHour(res,getMatch(2));res=replaceMinutes(res,getMatch(3)); res = checkFastF(res); return {ts=res,timed=1};",
+                "rules": {
+                    "1": "hours",
+                    "2": "minutes"
+                },
+                "checkpasttime": "day"
             }
 
             , {
                 "regex": ["(at (\\d+))(?:\\W|\\z)"],
                 "example": "gym tomorrow at 13",
-                "script": "local res=getNow2();res=replaceHour(res,getMatch(2));res=replaceMinutes(res,0); res = checkFastF(res); return {ts=res,timed=1};"
+                "script": "local res=getNow2();res=replaceHour(res,getMatch(2));res=replaceMinutes(res,0); res = checkFastF(res); return {ts=res,timed=1};",
+                "rules": {
+                    "1": "hours"
+                },
+                "checkpasttime": "day"
             }
 
             , {
                 "regex": ["((\\month) (\\d+))"],
                 "example": "friends wedding may 20",
-                "script": "local res=getNow2();res=replaceMonth(res,getMatch(2));local dater=getMatch(3);if tonumber(dater)>2011 then res=replaceYear(res,dater); else res=replaceDate(res,dater); end; setFastF(365*24*60*60); res = checkFastF(res); return {ts=res,timed=0};"
+                "script": "local res=getNow2();res=replaceMonth(res,getMatch(2));local dater=getMatch(3);if tonumber(dater)>2011 then res=replaceYear(res,dater); else res=replaceDate(res,dater); end; setFastF(365*24*60*60); res = checkFastF(res); return {ts=res,timed=0};",
+                "rules": {
+                    "1": "month",
+                    "2": "days"
+                },
+                "checkpasttime": "year"
             }
 
             , {
                 "regex": ["(\\reltime)"],
-                "script": "local res=getNow2();res=addReltime(res,getMatch(1));res=checkFastF(res);return {ts=res,timed=1};"
+                "script": "local res=getNow2();res=addReltime(res,getMatch(1));res=checkFastF(res);return {ts=res,timed=1};",
+                "rules": {
+                    "0": "reltime"
+                },
+                "checkpasttime": "day"
             }
 
         ]
