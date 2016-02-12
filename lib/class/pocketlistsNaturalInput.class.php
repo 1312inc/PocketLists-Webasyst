@@ -43,8 +43,7 @@ class pocketlistsNaturalInput
     public static function matchCategory($category_name)
     {
         $category_name = mb_strtolower(trim($category_name));
-        $instance = self::getInstance();
-        foreach ($instance::$json_rules as $json_rule) {
+        foreach (self::$json_rules as $json_rule) {
             if (isset($json_rule['task_categs'])) {
                 foreach ($json_rule['task_categs'] as $flag_id => $flag_strings) {
                     foreach ($flag_strings as $flag_string) {
@@ -156,7 +155,7 @@ class pocketlistsNaturalInput
             }
             foreach ($lookup_rule['rules'] as $rule_in_rule_id => $rule_in_rule) {
                 $tmp = explode('|', $rule_in_rule); // smartparse group name
-                if (in_array($rule_in_rule[0], $instance::$numeric_entities)) {
+                if (in_array($rule_in_rule[0], self::$numeric_entities)) {
                     $lookup_rules[$lookup_rule_id]['rules'][$rule_in_rule_id] = array(
                         $rule_in_rule => &$smartphrases['numeric']
                     );
@@ -188,14 +187,17 @@ class pocketlistsNaturalInput
                     $time_after_rules = $instance::proceedFoundRegex($matches, $lookup_rule, $time_after_rules);
                     if ($time_after_rules) {
                         // trim found date from item's name
-                        $item_name = str_replace($matches[1], '', $item_name);
-                        // and try to search more rules (time?..)
-                        $instance::proceedLookupRules(
-                            $item_name,
-                            $lookup_rules,
-                            $smartphrase_long_regexes,
-                            $time_after_rules
-                        );
+                        $item_name_new = trim(str_replace($matches[1], '', $item_name));
+                        if (strlen($item_name_new) > 2) { // do not leave lees then 2 letters
+                            $item_name = $item_name_new;
+                            // and try to search more rules (time?..)
+                            $instance::proceedLookupRules(
+                                $item_name,
+                                $lookup_rules,
+                                $smartphrase_long_regexes,
+                                $time_after_rules
+                            );
+                        }
                     }
                     $due = array(
                         'due_date' => date("Y-m-d", $time_after_rules['now']),
@@ -263,7 +265,7 @@ class pocketlistsNaturalInput
             $rule_mod = end($rule_mod); // get rule smartparse group name or time modificator - always last in array
 
             // add to current time X hours, days, weeks, months, years
-            if (in_array($rule_mod, $instance::$numeric_entities)) {
+            if (in_array($rule_mod, self::$numeric_entities)) {
                 // if this is numeric group
                 if ($smartparses) {
                     // for each regex in group
