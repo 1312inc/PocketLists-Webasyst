@@ -298,8 +298,11 @@ $.pocketlists.List = function ($list_wrapper, options) {
 
                     $.post('?module=list&action=delete', {list_id: list_id}, function (r) {
                         if (r.status === 'ok') {
-                            // todo: redirect to allowed pocket/list
-                            $.wa.setHash('#/pocket/1/');
+                            if (pocket_id) {
+                                $.wa.setHash('#/pocket/' + pocket_id);
+                            } else {
+                                $.wa.setHash('#');
+                            }
                         } else {
 
                         }
