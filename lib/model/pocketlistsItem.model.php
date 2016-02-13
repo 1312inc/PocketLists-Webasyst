@@ -7,24 +7,6 @@ class pocketlistsItemModel extends waModel
 
     public function getLogbookItems($contact_id = false, $date_range = false)
     {
-        $pocket_rights = "";
-        $pockets = array();
-        // if user is admin - show all completed items
-        // else only items user has access and null list items
-        if (!pocketlistsHelper::isAdmin()) {
-            $pockets = pocketlistsHelper::getAccessPocketForContact($contact_id);
-            // only accessed pockets or null list items which are created or completed by user
-//            $pocket_rights = "AND (
-//                    p.id IN (i:pocket_ids)
-//                    OR (p.id IS NULL AND (i.contact_id = i:contact_id OR i.complete_contact_id = i:contact_id)
-//                  )";
-            // only accessed pockets or null list items
-            $pocket_rights = "AND (
-                    p.id IN (i:pocket_ids)
-                    OR (p.id IS NULL AND i.contact_id = i:contact_id)
-                  )";
-        }
-
         $by_user = '';
         if ($contact_id) {
             $by_user = 'AND i.complete_contact_id = i:contact_id';
@@ -65,7 +47,10 @@ class pocketlistsItemModel extends waModel
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
                 WHERE
                   i.status > 0
-                  {$pocket_rights}
+                  AND (
+                    p.id IN (i:pocket_ids)
+                    OR (p.id IS NULL AND i.contact_id = i:contact_id)
+                  )
                   {$by_user}
                   {$by_date_range}
                 ORDER BY i.complete_datetime DESC";
@@ -74,7 +59,7 @@ class pocketlistsItemModel extends waModel
             $sql,
             array(
                 'contact_id' => wa()->getUser()->getId(),
-                'pocket_ids' => $pockets,
+                'pocket_ids' => pocketlistsHelper::getAccessPocketForContact(wa()->getUser()->getId()),
                 'date_after' => !empty($date_range['after']) ? $date_range['after'] : '',
                 'date_before' => !empty($date_range['before']) ? $date_range['before'] : '',
             )
