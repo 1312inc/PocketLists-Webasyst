@@ -85,7 +85,7 @@ class pocketlistsListModel extends waModel
                   l.archived = i:archived
                   {$select_pocket}
                 GROUP BY l.id
-                ORDER BY l.sort";
+                ORDER BY l.sort, l.id DESC";
 
         $lists = $this->query(
             $sql,
