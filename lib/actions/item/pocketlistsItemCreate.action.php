@@ -23,8 +23,11 @@ class pocketlistsItemCreateAction extends waViewAction
             $list_id = $us->getStreamInboxList();
         }
         if ($data) {
+            $paste = false;
             if (!is_array($data)) {
                 $data = array($data);
+            } else {
+                $paste = true;
             }
             $lm = new pocketlistsListModel();
             $list = $lm->getById($list_id);
@@ -42,6 +45,11 @@ class pocketlistsItemCreateAction extends waViewAction
                 }
 
                 $data[$i]['name'] = trim($data[$i]['name']);
+
+                // if add throught paste - cut some letters
+                if ($paste) {
+                    $data[$i]['name'] = preg_replace('/^(([-|—|–]*)(\s*))(.*)$/u', "$4", $data[$i]['name']);
+                }
 
                 // natural input parse
                 if ($ni = pocketlistsNaturalInput::matchPriority($data[$i]['name'])) {
