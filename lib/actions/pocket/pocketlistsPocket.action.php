@@ -8,7 +8,7 @@ class pocketlistsPocketAction extends waViewAction
         $list_id = waRequest::get('list_id', false, waRequest::TYPE_INT);
 
         $available_pockets = pocketlistsHelper::getAccessPocketForContact();
-        if (!$available_pockets) {
+        if (!in_array($id, $available_pockets)) {
             throw new waException('Access denied.', 403);
         }
 
