@@ -300,6 +300,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
                         if (r.status === 'ok') {
                             if (pocket_id) {
                                 $.wa.setHash('#/pocket/' + pocket_id);
+                                $.pocketlists_routing.redispatch();
                             } else {
                                 $.wa.setHash('#');
                             }
