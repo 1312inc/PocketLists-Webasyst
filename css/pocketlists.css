@@ -92,7 +92,7 @@ table.pl-calendar td .pl-dots i.icon10 { margin-top: 0.2em; margin-right: 0.2em;
 
 ul.pl-team li .count { font-size: 1em; padding: 3px 7px 4px; margin-top: -1px; }
 ul.pl-team li .indicator {  }
-ul.pl-team li .pl-username { display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 195px; font-size: 1.2em; margin-top: 2px; }
+ul.pl-team li .pl-username { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 195px; font-size: 1.2em; margin-top: 2px; }
 ul.pl-team li .pl-active-items { max-height: 2.4em; overflow: hidden; margin: 3px 25px 0 0; line-height: 1.2em; font-size: 0.9em; color: #aaa; }
 
 /* Settings
@@ -375,4 +375,7 @@ a:hover .icon16.pl.darr { background-position:-16px -32px; }
     .pl-details textarea { min-width: 250px !important; }
     .pl-list-sort { display: none !important; }
     .pl-list-sort-dropdown { display: block !important; }
+    input#pl-new-list-input,
+    #pl-item-add textarea,
+    .pl-chat textarea { width: 80%; }
 }
