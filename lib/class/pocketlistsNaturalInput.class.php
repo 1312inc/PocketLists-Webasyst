@@ -42,6 +42,7 @@ class pocketlistsNaturalInput
 
     public static function matchCategory($category_name)
     {
+        $instance = self::getInstance();
         $category_name = mb_strtolower(trim($category_name));
         foreach (self::$json_rules as $json_rule) {
             if (isset($json_rule['task_categs'])) {
