@@ -32,9 +32,7 @@
                                     {$teammate.name|default:'%username%'|escape}
                                     <span class="bold">
                                         {if $teammate.status == 'online'}
-                                        <i class="icon10 online"></i>
-                                        {else}
-                                        <i class="icon10 status-yellow"></i>
+                                            <i class="icon10 online" title="[`Online`]"></i>
                                         {/if}
                                     </span>
                                 </span>
