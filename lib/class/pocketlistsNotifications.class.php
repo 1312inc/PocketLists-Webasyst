@@ -350,7 +350,7 @@ class pocketlistsNotifications
                 'body' => wa()->getAppPath('templates/mails/newassignitem.html'),
                 'variables' => array(
                     'item_name' => $item['name'],
-                    'due_date' => waDateTime::format('humandatetime', $item['due_date']),
+                    'due_date' => $item['due_date'] ? waDateTime::format('humandatetime', $item['due_date']) : false,
                     'list' => $list,
                     'by_username' => $by_username
                 )

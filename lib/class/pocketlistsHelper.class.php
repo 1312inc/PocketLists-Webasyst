@@ -110,17 +110,34 @@ class pocketlistsHelper
             !empty($date['due_datetime_hours']) &&
             !empty($date['due_datetime_minutes'])
         ) {
-            $date['due_datetime'] = waDateTime::date(
-                "Y-m-d H:i:s",
-                strtotime($date['due_date'] . " " . $date['due_datetime_hours'] . ":" . $date['due_datetime_minutes'] . ":00")
-            );
+            $tm = strtotime($date['due_date'] . " " . $date['due_datetime_hours'] . ":" . $date['due_datetime_minutes'] . ":00");
+            $tm = self::convertToServerTime($tm);
+            $date['due_datetime'] = waDateTime::date("Y-m-d H:i:s", $tm);
             unset($date['due_datetime_hours']);
             unset($date['due_datetime_minutes']);
         } else {
             $date['due_datetime'] = null;
         }
 
-        $date['due_date'] = !empty($date['due_date']) ? waDateTime::parse('date', waDateTime::format('date', $date['due_date'])) : null;
+        if (!empty($date['due_date'])) {
+            $date['due_date'] = date("Y-m-d", strtotime($date['due_date']));
+//            waDateTime::parse('date', waDateTime::format('date', $date['due_date']));
+        } else {
+            $date['due_date'] = null;
+        }
+    }
+
+    // thanks to hub
+    public static function convertToServerTime($timestamp)
+    {
+        $timezone = wa()->getUser()->getTimezone();
+        $default_timezone = waDateTime::getDefaultTimeZone();
+        if ($timezone && $timezone != $default_timezone) {
+            $date_time = new DateTime(date('Y-m-d H:i:s', $timestamp), new DateTimeZone($timezone));
+            $date_time->setTimezone(new DateTimeZone($default_timezone));
+            $timestamp = (int) $date_time->format('U');
+        }
+        return $timestamp;
     }
 
     public static function calcPriorityOnDueDate($due_date, $due_datetime)

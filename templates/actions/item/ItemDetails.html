@@ -50,7 +50,7 @@
             <div class="name">[`Due`]</div>
 
             <div class="value">
-                <input name="item[due_date]" class="pl-due-date-input" type="text" id="pl-item-due-datetime" value="{$item.due_date|default:''|wa_date}" />
+                <input name="item[due_date]" class="pl-due-date-input" type="text" id="pl-item-due-datetime" value="{$item.due_date|default:''}" />
                 <a href="#"><i class="icon16 calendar"></i></a>
                 <span id="pl-item-due-datetime-time">
                     {$hour = $item.due_datetime|default:''|wa_datetime:'H'}
