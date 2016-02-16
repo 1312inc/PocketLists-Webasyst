@@ -78,7 +78,7 @@ class pocketlistsNaturalInput
     public static function matchNote($item_name)
     {
         $matches = array();
-        if (preg_match('/^(.+?)\/{2}(.+?)$/isu', $item_name, $matches)) {
+        if (preg_match('/^(.+?)\s\/{2}(.+?)$/isu', $item_name, $matches)) {
             return array(
                 'name' => trim($matches[1]),
                 'note' => trim($matches[2])
