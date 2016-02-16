@@ -52,19 +52,27 @@ class pocketlistsItemCreateAction extends waViewAction
                 }
 
                 // natural input parse
-                if ($ni = pocketlistsNaturalInput::matchPriority($data[$i]['name'])) {
+                $ni = pocketlistsNaturalInput::matchPriority($data[$i]['name']);
+                if ($ni) {
                     $data[$i]['name'] = $ni['name'];
                     $data[$i]['priority'] = $ni['priority'];
                 }
-                if ($ni = pocketlistsNaturalInput::matchNote($data[$i]['name'])) {
+                $ni = pocketlistsNaturalInput::matchNote($data[$i]['name']);
+                if ($ni) {
                     $data[$i]['name'] = $ni['name'];
                     $data[$i]['note'] = $ni['note'];
                 }
 
                 $us = new pocketlistsUserSettings($user_id);
-                if ($us->getNaturalInput() && $ni = pocketlistsNaturalInput::matchDueDate($data[$i]['name'])) {
-                    $data[$i]['due_date'] = $ni['due_date'];
-                    $data[$i]['due_datetime'] = $ni['due_datetime'];
+                if ($us->getNaturalInput()) {
+                    $ni = pocketlistsNaturalInput::matchDueDate($data[$i]['name']);
+                    if ($ni) {
+                        $data[$i]['due_date'] = $ni['due_date'];
+                        if ($ni['due_datetime']) {
+                            $tm = pocketlistsHelper::convertToServerTime(strtotime($ni['due_datetime']));
+                            $data[$i]['due_datetime'] = waDateTime::date("Y-m-d H:i:s", $tm);
+                        }
+                    }
                 }
 
                 $last_id = $im->insert($data[$i], 1);
