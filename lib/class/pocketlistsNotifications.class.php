@@ -343,14 +343,15 @@ class pocketlistsNotifications
                 'name' => $list_['name']
             );
         }
+        $contact = new waContact($item['assigned_contact_id']);
         self::sendMail(
             array(
-                'contact_id' => $item['assigned_contact_id'],
+                'contact_id' => $contact->getId(),
                 'subject' => 'string:➔ {str_replace(array("\r", "\n"), " ", $item_name)|truncate:64}',
                 'body' => wa()->getAppPath('templates/mails/newassignitem.html'),
                 'variables' => array(
                     'item_name' => $item['name'],
-                    'due_date' => $item['due_date'] ? waDateTime::format('humandatetime', $item['due_date']) : false,
+                    'due_date' => $item['due_datetime'] ? waDateTime::format('humandatetime', $item['due_datetime'], $contact->getTimezone()) : ($item['due_date'] ? waDateTime::format('humandate', $item['due_date'], $contact->getTimezone()) : false),
                     'list' => $list,
                     'by_username' => $by_username
                 )
