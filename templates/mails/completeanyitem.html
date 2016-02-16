@@ -1,7 +1,7 @@
 {if $complete}
 {sprintf('[`%s have just completed <strong>&#10004; %s</strong>`]', $item.complete_contact_name|escape, $item.name|escape)}
 {else}
-{sprintf('[`%s have just returned <strong>&#10006; %s</strong>`]', $item.complete_contact_name|escape, $item.name|escape)}
+{sprintf('[`To-do has been uncompleted: <strong>&#10006; %s</strong>`]', $item.name|escape)}
 {/if}
 <br>
 <br>

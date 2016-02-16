@@ -747,7 +747,7 @@ msgid "%s have just completed <strong>&#10004; %s</strong>"
 msgstr ""
 
 #: /wa-apps/pocketlists/templates/mails/completeanyitem.html:4
-msgid "%s have just returned <strong>&#10006; %s</strong>"
+msgid "To-do has been uncompleted: <strong>&#10006; %s</strong>"
 msgstr ""
 
 #: /wa-apps/pocketlists/templates/mails/newassignitem.html:1
