@@ -748,8 +748,8 @@ msgid "%s have just completed <strong>&#10004; %s</strong>"
 msgstr "%s выполнил задачу <strong>&#10004; %s</strong>"
 
 #: /wa-apps/pocketlists/templates/mails/completeanyitem.html:4
-msgid "%s have just returned <strong>&#10006; %s</strong>"
-msgstr "%s вернул задачу <strong>&#10004; %s</strong>"
+msgid "To-do has been uncompleted: <strong>&#10006; %s</strong>"
+msgstr "Задача возвращена: <strong>&#10006; %s</strong>"
 
 #: /wa-apps/pocketlists/templates/mails/newassignitem.html:1
 msgid "%s assigned you to a to-do on <a href=\"%s\">%s</a>"
