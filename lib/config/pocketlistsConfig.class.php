@@ -65,4 +65,19 @@ class pocketlistsConfig extends waAppConfig
 
         return $logs;
     }
+
+    public function getCronJob($name = null)
+    {
+        static $tasks;
+        if (!isset($tasks)) {
+            $tasks = array();
+            $path = $this->getAppConfigPath('cron');
+            if (file_exists($path)) {
+                $tasks = include($path);
+            } else {
+                $tasks = array();
+            }
+        }
+        return $name ? (isset($tasks[$name]) ? $tasks[$name] : null) : $tasks;
+    }
 }

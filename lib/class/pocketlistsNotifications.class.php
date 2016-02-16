@@ -512,10 +512,16 @@ class pocketlistsNotifications
         }
     }
 
-    public static function notifyDailyRecap($vars = array())
+    public static function notifyDailyRecap($vars = array(), $test = false)
     {
         $time = time();
         $csm = new waContactSettingsModel();
+
+        $check_time = "AND IF(cs2.value IS NULL, 0, cs2.value) <= ($time - 60*60*24)";
+        if ($test) {
+            $check_time = "";
+        }
+
         // get recap setting for all users and do not select users who received daily recap less then 24 hours ago
         $q = "SELECT
                 cs1.contact_id contact_id,
@@ -535,7 +541,7 @@ class pocketlistsNotifications
                 cs1.app_id = 'pocketlists'
                 AND cs1.name = 'daily_recap_on'
                 AND cs1.value = 1
-                AND IF(cs2.value IS NULL, 0, cs2.value) <= ($time - 60*60*24)";
+                {$check_time}";
         $users = $csm->query(
             $q,
             array(
@@ -548,7 +554,8 @@ class pocketlistsNotifications
         )->fetchAll('contact_id');
         $im = new pocketlistsItemModel();
         foreach ($users as $user_id => $user) {
-            $items = $im->getDailyRecapItems($user_id, $user['setting']);
+            $contact = new waContact($user_id);
+            $items = $im->getDailyRecapItems($contact->getId(), $user['setting']);
             if ($items) {
                 self::sendMail(
                     array(
@@ -556,7 +563,8 @@ class pocketlistsNotifications
                         'subject' => 'string:' . sprintf(_w("Daily recap for %s"), waDateTime::format('humandate')),
                         'body' => wa()->getAppPath('templates/mails/dailyrecap.html'),
                         'variables' => array(
-                                'items' => $items
+                                'items' => $items,
+                                'timezone' => $contact->getTimezone()
                         ) + $vars
                     ),
                     self::getBackendUrl($user_id)

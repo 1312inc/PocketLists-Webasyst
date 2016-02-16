@@ -96,11 +96,8 @@ class pocketlistsHelper
 
     public static function isAdmin($contact_id = false)
     {
-        static $result = null;
-        if ($result === null) {
-            $user = $contact_id ? new waContact($contact_id) : wa()->getUser();
-            $result = $user->isAdmin() || $user->isAdmin('pocketlists');
-        }
+        $user = $contact_id ? new waContact($contact_id) : wa()->getUser();
+        $result = $user->isAdmin() || $user->isAdmin('pocketlists');
         return $result;
     }
 

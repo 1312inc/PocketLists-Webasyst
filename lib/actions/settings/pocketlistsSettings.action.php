@@ -25,7 +25,7 @@ class pocketlistsSettingsAction extends waViewAction
             $asp->get(wa()->getApp(), 'last_recap_cron_time')
         );
 
-        $this->view->assign('cron_command', 'php '.wa()->getConfig()->getRootPath().'/cli.php '.wa()->getApp().' recap');
+        $this->view->assign('cron_command', $this->getConfig()->getCronJob('recap_mail'));
         $this->view->assign('admin', pocketlistsHelper::isAdmin());
     }
 }
