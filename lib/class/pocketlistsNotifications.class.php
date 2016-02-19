@@ -555,6 +555,11 @@ class pocketlistsNotifications
         $im = new pocketlistsItemModel();
         foreach ($users as $user_id => $user) {
             $contact = new waContact($user_id);
+
+            if (wa()->getEnv() == 'cli') { // to load locale in cli
+                wa()->setLocale($contact->getLocale());
+            }
+
             $items = $im->getDailyRecapItems($contact->getId(), $user['setting']);
             if ($items) {
                 self::sendMail(
@@ -638,7 +643,8 @@ class pocketlistsNotifications
             return;
         }
 
-        $absolute_backend_url = $backend_url ? $backend_url : wa()->getConfig()->getRootUrl(true) . wa()->getConfig()->getBackendUrl();
+        $absolute_backend_url = $backend_url ?
+            $backend_url : wa()->getConfig()->getRootUrl(true) . wa()->getConfig()->getBackendUrl();
         $view->assign('backend_url', $absolute_backend_url . 'pocketlists/');
         if (isset($data['variables'])) {
             foreach ($data['variables'] as $var_name => $var_value) {
