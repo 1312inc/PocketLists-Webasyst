@@ -604,7 +604,7 @@ class pocketlistsNotifications
                 self::sendMail(
                     array(
                         'contact_id' => $user_id,
-                        'subject' => 'string:[`New list!`]`',
+                        'subject' => 'string:[`New list!`]',
                         'body' => wa()->getAppPath('templates/mails/newlist.html'),
                         'variables' => array(
                             'list_name' => $list['name'],
