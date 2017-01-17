@@ -2,7 +2,7 @@
     <div class="pl-meta">
         <a href="#" class="pl-favorite" data-pl-action="item-favorite" title="[`Favorite`]"><i class="icon16 star{if empty($item.favorite)}-empty{/if}"></i></a>
         {if $item.status == 1}
-            <span class="pl-author" title="{sprintf('[`Completed by %s`]', $item.complete_username|default:'%username%'|escape)}">
+            {* JAN 2017: switched author to assignee <span class="pl-author" title="{sprintf('[`Completed by %s`]', $item.complete_username|default:'%username%'|escape)}">
                 {if isset($item.complete_userpic)}
                 <span class="hint">{$item.complete_datetime|wa_datetime:'humandatetime'}</span>
                 <i class="icon16 userpic20" style="background-image: url({$item.complete_userpic})" alt="{$item.complete_username|escape}"></i>
@@ -10,12 +10,17 @@
                     <i class="icon16 userpic20"></i>
                 {/if}
 
-            </span>
+            </span> *}
         {else}
-            {if $item.contact_id != $wa->user()->getId()}
-                {* item author userpic *}
+            {* item author userpic *}
+            {* {if $item.contact_id != $wa->user()->getId()}
+
                 <span class="pl-author" title="{sprintf('%s by %s', $item.create_datetime|wa_datetime:'humandatetime', $item.username|default:'%username%'|escape)}"><i class="icon16 userpic20" style="background-image: url({$item.userpic})" alt="{$item.username|escape}"></i></span>
-            {/if}
+            {/if} *}
+
+            {* assigned to *}
+            {if !empty($item.assigned_contact_id) && $item.assigned_contact_id != $wa->user()->getId()}<span class="pl-assignee"><i class="icon16 userpic20" style="background-image: url({$item.assigned_userpic})" alt="{$item.assigned_username|escape}" title="{sprintf('[`Assigned to %s`]', $item.assigned_username|escape)}"></i></span>{/if}
+
         {/if}
         <a href="#" class="pl-edit inline-link"><b><i>[`Edit`]</i></b></a>
         <a href="#" class="pl-comment inline-link"><b><i>[`Comment`]</i></b></a>
@@ -26,7 +31,6 @@
         {else}
             <input type="checkbox" class="pl-done{if isset($item.calc_priority)}{if $item.calc_priority == 1} pl-green{elseif $item.calc_priority == 2} pl-yellow{elseif $item.calc_priority == 3} pl-red{/if}{/if}" {if $item.status == 1}checked="checked"{/if}{if isset($archive) && $archive == true}disabled{/if}>
             <span></span>
-            {if $item.status != 1 && !empty($item.assigned_contact_id) && $item.assigned_contact_id != $wa->user()->getId()}<i class="icon16 userpic20" style="background-image: url({$item.assigned_userpic})" alt="{$item.assigned_username|escape}" title="{sprintf('[`Assigned to %s`]', $item.assigned_username|escape)}"></i>{/if}
         {/if}
     </label>
     <label class="pl-select-label">
@@ -35,9 +39,9 @@
             {if !empty($item.key_list_id)}
                 <a href="#/pocket/{$item.pocket_id}/list/{$item.list_id}/">{$item.name|default:' '|escape|nl2br}</a>
             {else}
-                {* <strong class="pl-label pl-dark-red">LABEL</strong> *}
+                {if $item.list_id != NULL}<a href="#LISTURL" class="pl-label pl-dark-LISTCOLOR">LISTNAME</a>{/if}
                 {$item.name|default:' '|escape|nl2br}
-                {if $item.list_id == NULL && (empty($item.assigned_contact_id) || $item.assigned_contact_id == $wa->user()->getId())}<i class="icon10 lock-bw" title="[`Only you can see this item`]"></i>{/if}
+                {* if $item.list_id == NULL && (empty($item.assigned_contact_id) || $item.assigned_contact_id == $wa->user()->getId())}<i class="icon10 lock-bw" title="[`Only you can see this item`]"></i>{/if *}
             {/if}
         </span>
         {if !empty($item.due_datetime)}

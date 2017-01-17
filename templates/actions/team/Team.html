@@ -1,8 +1,8 @@
-<div class="shadowed">
+<div class="">
 
     {if empty($teammates)}
 
-        <main class="content pl-items" id="pl-list-content">
+        <main class="pl-inner-content pl-items shadowed" id="pl-list-content">
             <div class="pl-empty-list top-padded" id="pl-empty-list-msg">
             <img class="userpic" src="{$current_teammate.photo_url}" alt="{$current_teammate.name}" title="{$current_teammate.name}" />
             <h2>[`Invite your teammates!`]</h2>
@@ -11,16 +11,15 @@
 
     {else}
 
-    <nav class="sidebar left300px">
 
         <!-- TEAM -->
-        <div class="pl-inner-sidebar">
+        <nav class="pl-inner-sidebar">
 
             <ul class="zebra pl-team" id="pl-lists">
                 {foreach $teammates as $teammate}
                 <li {if $teammate.id == $current_teammate.id}class="selected"{/if} data-pl-team-id="{$teammate.id}" data-pl-list-id="{$teammate.id}">
                     <a href="#/team/{$teammate.login}">
-                        <div class="profile image50px">
+                        <div class="profile image32px">
                             <div class="image">
                                 <img class="userpic" src="{$teammate.photo_url}">
                             </div>
@@ -37,7 +36,8 @@
                                     </span>
                                 </span>
 
-                                <div class="pl-active-items">{$teammate.items_info.names|escape}</div>
+                                <div class="pl-active-items">{$teammate.items_info.names|escape}
+                                |default:TEAMROLE</div>
 
                             </div>
                         </div>
@@ -46,12 +46,11 @@
                 {/foreach}
             </ul>
 
-        </div>
+        </nav>
 
-    </nav>
 
     <!-- ITEMS -->
-    <main class="content left300px blank bordered-left pl-items pl-teammate-items" id="pl-list-content">
+    <main class="pl-inner-content pl-items shadowed pl-teammate-items" id="pl-list-content">
 
         <header class="pl-title">
             <div class="float-right block half-padded">

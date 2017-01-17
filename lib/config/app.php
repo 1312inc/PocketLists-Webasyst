@@ -1,12 +1,12 @@
 <?php
 return array (
-  'name' => 'Lists',
+  'name' => 'To-dos',
   'icon' =>
   array (
     48 => 'img/pocketlists48.png',
     96 => 'img/pocketlists96.png',
   ),
-  'version' => '1.1.0',
+  'version' => '1.2.0',
   'vendor' => '1021997',
   'frontend' => true,
   'plugins' => false,

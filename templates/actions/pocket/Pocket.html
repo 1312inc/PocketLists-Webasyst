@@ -1,110 +1,57 @@
-<div class="shadowed">
-    <nav class="sidebar left300px">
 
-        <!-- POCKET -->
-        <div class="pl-pocket pl-dark-{$pocket.color}">
-            <a href="#/pocket/{$pocket.id}/list/new" class="count" title="[`New list`]">
-                <i class="icon16 pl add"></i>
-            </a>
-            <ul class="menu-h dropdown">
-                <li>
-                    <input type="hidden" id="pl-pocket-id" value="{$pocket.id}"/>
-                    <h5><a href="#/pocket/{$pocket.id}/">{$pocket.name|escape}{if count($pockets)}{if 000}<span class="indicator red">2</span>{/if} <i class="icon16 pl darr"></i>{/if}</a></h5>
-                    {if count($pockets)}
-                    <ul class="menu-v with-icons">
-                        {foreach $pockets as $p}
-                        <li class="{if $pocket.id == $p.id}selected{/if}">
-                            {if isset($p.indicator) && $p.indicator.count}<span class="count indicator {$p.indicator.color}">{$p.indicator.count}</span>{/if}
-                            <a href="#/pocket/{$p.id}/"><i class="icon16 color pl-dark-{$p.color|default:'none'}"></i>{$p.name|default:''|escape}</a>
-                        </li>
-                        {/foreach}
-                    </ul>
-                    {/if}
-                </li>
-            </ul>
-        </div>
+<nav class="pl-inner-sidebar">
 
-        <!-- LISTS -->
-        <div class="pl-inner-sidebar" id="pl-lists" data-pl-scroll-to-top>
-            {if !empty($lists)}
-            <ul class="pl-lists">
-                {foreach $lists as $l}
-                <li class="pl-{$l.color|default:'none'}" data-pl-list-id="{$l.id}">
-                    <a href="#/pocket/{$pocket.id}/list/{$l.id}/"{if $l.id == $list_id} class="pl-is-selected"{/if}>
-                        <span class="count{if $l.calc_priority == 1} indicator green{elseif $l.calc_priority == 2} indicator yellow{elseif $l.calc_priority == 3} indicator red{/if}">{$l.count}</span>
-                        <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l.icon|default:'li-list@2x.png'});"></i> <span class="pl-list-name">{$l.name|escape}</span>
-                    </a>
-                </li>
-                {/foreach}
-            </ul>
-            {else}
-                <div class="block double-padded align-center">
-                    <p class="gray">[`This pocket is empty. Start by creating a to-do list.`]</p>
-                </div>
-            {/if}
-        </div>
+    <!-- POCKET -->
+    <div class="pl-pocket pl-dark-{$pocket.color}">
+        <a href="#/pocket/{$pocket.id}/list/new" class="count" title="[`New list`]">
+            <i class="icon16 pl add"></i>
+        </a>
+        <ul class="menu-h dropdown">
+            <li>
+                <input type="hidden" id="pl-pocket-id" value="{$pocket.id}"/>
+                <h5><a href="#/pocket/{$pocket.id}/">{$pocket.name|escape}{if count($pockets)}{if 000}<span class="indicator red">2</span>{/if} <i class="icon16 pl darr"></i>{/if}</a></h5>
+                {if count($pockets)}
+                <ul class="menu-v with-icons">
+                    {foreach $pockets as $p}
+                    <li class="{if $pocket.id == $p.id}selected{/if}">
+                        {if isset($p.indicator) && $p.indicator.count}<span class="count indicator {$p.indicator.color}">{$p.indicator.count}</span>{/if}
+                        <a href="#/pocket/{$p.id}/"><i class="icon16 color pl-dark-{$p.color|default:'none'}"></i>{$p.name|default:''|escape}</a>
+                    </li>
+                    {/foreach}
+                </ul>
+                {/if}
+            </li>
+        </ul>
+    </div>
 
-        {*<div class="pl-inner-sidebar">
-            <ul class="pl-lists">
-                <li class="pl-red">
-                    <a href="#">
-                        <span class="count">14</span>
-                        <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/li-award@2x.png);"></i> Goals
-                    </a>
-                </li>
-                <li class="selected pl-blue">
-                    <a href="#">
-                        <span class="count indicator red">5130 <span class="ruble">Р</span></span>
-                        <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/li-grocery@2x.png);"></i> Groceries
-                    </a>
-                </li>
-                <li class="pl-green">
-                    <a href="#">
-                        <span class="count indicator red">2</span>
-                        <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/li-books@2x.png);"></i> Books to read
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span class="count indicator yellow">10</span>
-                        <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/li-travel@2x.png);"></i> Places to visit
-                    </a>
-                </li>
-                <li class="pl-yellow">
-                    <a href="#">
-                        <span class="count indicator green">2</span>
-                        <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/li-flag-eu@2x.png);"></i> Europe trip
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span class="count">2</span>
-                        <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/li-video@2x.png);"></i> Movies to watch
-                    </a>
-                </li>
-                <li class="pl-purple">
-                    <a href="#">
-                        <span class="count indicator yellow">5</span>
-                        <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/li-lock@2x.png);"></i> Party secret list
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span class="count">2 <i class="icon16 lock-bw"></i></span>
-                        <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/li-gift@2x.png);"></i> Gift list
-                    </a>
-                </li>
-            </ul>
-        </div>*}
+    <!-- LISTS -->
+    <div id="pl-lists" data-pl-scroll-to-top>
+        {if !empty($lists)}
+        <ul class="pl-lists">
+            {foreach $lists as $l}
+            <li class="pl-{$l.color|default:'none'}" data-pl-list-id="{$l.id}">
+                <a href="#/pocket/{$pocket.id}/list/{$l.id}/"{if $l.id == $list_id} class="pl-is-selected"{/if}>
+                    <span class="count{if $l.calc_priority == 1} indicator green{elseif $l.calc_priority == 2} indicator yellow{elseif $l.calc_priority == 3} indicator red{/if}">{$l.count}</span>
+                    <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l.icon|default:'li-list@2x.png'});"></i> <span class="pl-list-name">{$l.name|escape}</span>
+                </a>
+            </li>
+            {/foreach}
+        </ul>
+        {else}
+            <div class="block double-padded align-center">
+                <p class="gray">[`This pocket is empty. Start by creating a to-do list.`]</p>
+            </div>
+        {/if}
+    </div>
 
-    </nav>
 
-    <!-- ITEMS -->
-    <main class="content left300px blank bordered-left" id="pl-list-content">
-        {$lists_html|default:""}
-    </main>
+</nav>
 
-</div>
+<!-- ITEMS -->
+<main id="pl-list-content">
+    {$lists_html|default:""}
+</main>
+
 <script>
     (function(){
         var $lists_wrapper = $('#pl-lists').find('.pl-lists');

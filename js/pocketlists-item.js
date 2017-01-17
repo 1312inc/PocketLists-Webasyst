@@ -297,7 +297,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
             $assigned_user_icon = $item.find('.pl-done-label').find('.icon16.userpic20'),
             $item_data_wrapper = $item.find('.pl-item'),
             $checkbox = $(this);
-        
+
         if (status && $item_data_wrapper.data('pl-assigned-contact') && $item_data_wrapper.data('pl-assigned-contact') != o.current_user_id) {
             if (!confirm($_('This to-do is assigned to another person. Are you sure you want to mark this item as complete?'))) {
                 $checkbox.prop('checked', false); // uncheck
@@ -478,13 +478,13 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
     var showEmptyListMessage = function() {
         if (isEmptyList() && o.showMessageOnEmptyList) {
             $empty_list_msg.show();
-            $('.pl-title h1').css('opacity','0.25');
+            //$('.pl-title h1').css('opacity','0.25');
         }
     };
     var hideEmptyListMessage = function() {
         if (o.showMessageOnEmptyList)  {
             $empty_list_msg.hide();
-            $('.pl-title h1').css('opacity','1');
+            //$('.pl-title h1').css('opacity','1');
         }
     };
     var showChatCommentInput = function() {

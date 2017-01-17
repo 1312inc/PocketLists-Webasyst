@@ -21,7 +21,7 @@
     <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-list.js?v{$wa->version()}"></script>
     <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-item.js?v{$wa->version()}"></script>
 
-    <script type="text/javascript" src="?action=loc&v={$wa->version()}"></script>
+    <script type="text/javascript" src="?action=loc&amp;v={$wa->version()}"></script>
 
 </head>
 <body>
@@ -30,52 +30,108 @@
         <div id="wa-app">
 
             <div class="sidebar left200px" data-pl-scroll-to-top id="pl-sidebar-core">
+
+                <!-- CORE FILTERS -->
                 <div class="block pl-sidebar-core">
 
-                    <!-- CORE FILTERS -->
                     <ul class="menu-v with-icons">
-                         <li class="selected">
-                             <a href="#/pocket/"><i class="icon16 pl lists"></i>[`Lists`]</a>
-                         </li>
+                         {*  *}
 
                          <li data-pl-sidebar="todo">
                              {if $sidebar_todo_count}<span class="count indicator red">{$sidebar_todo_count}</span>{/if}
-                             <a href="#/todo/"><i class="icon16 pl todo"></i>[`To-do`]</a>
+                             <a href="#/todo/"><i class="icon16 pl todo"></i>[`My to-dos`]</a>
                          </li>
                          <li>
                              <a href="#/favorites/"><i class="icon16 star"></i>[`Favorites`]</a>
                          </li>
-
-                         {*
-                         <li>
-                             <span class="count">2</span>
-                             <a href="#tags"><i class="icon16 map"></i>[`Map`]</a>
-                         </li>
-                         <li>
-                             <span class="count">2</span>
-                             <a href="#tags"><i class="icon16 tags"></i>[`Tags`]</a>
-                         </li>
-
-                         <li>
-                             <span class="count">5</span>
-                             <a href="#notes"><i class="icon16 edit"></i>[`Notes`]</a>
-                         </li>
-                         *}
-
-                         <li>
+                         {* <li>
+                             <a href="#tags"><i class="icon16 calendar"></i>[`Calendar`]</a>
+                         </li> *}
+                         {* <li>
                              <a href="#/team/"><i class="icon16 contact"></i>[`Team`]</a>
+                         </li> *}
+                         <li>
+                             <a href="#/logbook/"><i class="icon16 pl logbook"></i>[`Logbook`] <span class="highlighted bold small black">+3</span></a>
                          </li>
+
+                         {* <li class="top-padded">
+                             <a href="#/"><i class="icon16 "></i>CRM</a>
+                         </li>
+                         <li>
+                             <a href="#/"><i class="icon16 "></i>Tasks</a>
+                         </li>
+                         <li>
+                             <a href="#/"><i class="icon16 "></i>Blog</a>
+                         </li> *}
 
                     </ul>
 
-                  </div>
+                </div>
 
+                <!-- LISTS -->
+                <div class="block">
+                    <h5 class="heading">
+                        <a href="#" class="count"><i class="icon16 add"></i></a>
+                        [`Lists`]
+                    </h5>
+
+                    <ul class="menu-v with-icons collapsible">
+                        <li>
+                            <a href="#/pocket/">
+                                <span class="count indicator yellow">5</span>
+                                <i class="icon16 listicon16" style="background-image:url(/wa-apps/pocketlists/img/listicons/li-paid-tie@2x.png)"></i>На работе
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/pocket/">
+                                <span class="count">13</span>
+                                <i class="icon16 listicon16" style="background-image:url(/wa-apps/pocketlists/img/listicons/li-star@2x.png)"></i>ECOM Expo 2017
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/pocket/">
+                                <span class="count indicator red">2</span>
+                                <i class="icon16 listicon16" style="background-image:url(/wa-apps/pocketlists/img/listicons/li-plane@2x.png)"></i>Командировка
+                                <i class="pl-list-color-indicator pl-purple"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/pocket/">
+                                <span class="count">8</span>
+                                <i class="icon16 listicon16" style="background-image:url(/wa-apps/pocketlists/img/listicons/li-books@2x.png)"></i>Почитать на выходных
+                                <i class="pl-list-color-indicator pl-red"></i>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+
+                <!-- TEAM -->
+                <div class="block">
+                    <h5 class="heading">
+                        [`Team`]
+                    </h5>
+
+                    <ul class="menu-v with-icons collapsible">
+                        <li>
+                            <a href="#/team/">
+                                <span class="count">1</span>
+                                <i class="icon16 userpic20" style="background-image:url(/wa-content/img/userpic20@2x.jpg);"></i>km
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#/team/">
+                                <span class="count indicator red">2</span>
+                                <i class="icon16 userpic20" style="background-image:url(/wa-content/img/userpic20@2x.jpg);"></i>vofka
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- SYSTEM -->
                 <div class="hr"></div>
                 <div class="block">
                     <ul class="menu-v with-icons">
-                         <li>
-                             <a href="#/logbook/"><i class="icon16 pl logbook"></i>[`Logbook`]</a>
-                         </li>
                          <li>
                              <a href="#/archive/"><i class="icon16 pl archive"></i>[`Archive`]</a>
                          </li>

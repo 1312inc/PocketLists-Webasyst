@@ -1,12 +1,14 @@
 /* Pocket Lists for Webasyst
 ============================ */
 
-/* Sidebars
------------ */
+/* Layout
+--------- */
 
 .shadowed { background: #fff; }
 .pl-sidebar-core { margin-top: 20px; }
-.pl-inner-sidebar {  }
+
+.pl-inner-sidebar { background: #ffc; border: 2px dashed #ddb; float: right; width: 345px; margin-top: 20px; margin-right: 5px; }
+.pl-inner-content { position: relative; min-height: 530px; margin-right: 350px; }
 
 /* Misc
 ------- */
@@ -191,12 +193,10 @@ input#pl-new-list-input,
     outline: 0 none;
 }
 .pl-chat textarea { background: #fff; margin-left: 0px; border-radius: 10px; border: 1px solid rgba(0,0,0,0.1); padding-left: 8px; }
-.pl-items { position: relative; min-height: 530px; }
-.pl-items.content.left300px { margin-left: 299px; }
 
 .pl-title { border-bottom: 1px solid rgba(0,0,0,0.1); padding: 25px 5px 25px 20px; }
 .pl-title:hover { background: rgba(0,0,0,0.04); }
-.pl-title h1 { padding-left: 29px; position: relative; cursor: default; margin-bottom: 0.2em; }
+.pl-title h1 { padding-left: 29px; position: relative; margin-bottom: 0.2em; }
 .pl-title h1 .pl-done + span {left: -34px; top: 4px; width: 22px; height: 22px; position: absolute; z-index: 1;}
 .pl-title h1 .loading { margin-left: 3px; margin-top: 8px; opacity: 0.5; }
 .pl-title h1.not-padded { padding-left: 0; }
@@ -242,8 +242,8 @@ input#pl-new-list-input,
 
 .pl-list-items ul.menu-v li .pl-item .pl-meta { display: inline-block; float: right; margin: 0; padding: 14px; position: relative; z-index: 1; }
 .pl-list-items ul.menu-v li .pl-item .pl-favorite { display: inline-block; float: right; margin-left: 5px; }
-.pl-list-items ul.menu-v li .pl-item .pl-author { display: inline-block; float: right; margin-left: 5px; margin-top: 1px; }
-.pl-list-items ul.menu-v li .pl-item .pl-author i.icon16 { margin-left: 5px; }
+.pl-list-items ul.menu-v li .pl-item .pl-assignee { display: inline-block; float: right; margin-left: 5px; margin-top: 1px; }
+.pl-list-items ul.menu-v li .pl-item .pl-assignee i.icon16 { margin-left: 5px; }
 .pl-list-items ul.menu-v li .pl-item .pl-edit { opacity: 0; margin-top: -4px; display: inline-block; float: right; font-size: 0.9em; }
 .pl-list-items ul.menu-v li .pl-item .pl-comment { opacity: 0; margin-right: 8px; margin-top: -4px; display: inline-block; float: right; font-size: 0.9em; }
 .pl-list-items ul.menu-v li .pl-item p { margin-bottom: 0; margin-top: 4px; line-height: 1.2em; }
@@ -256,7 +256,8 @@ input#pl-new-list-input,
 .pl-teammate-items .pl-list-items ul.menu-v li .pl-item:hover { background: rgba(0,0,0,0.04); }
 .pl-teammate-items .pl-list-items ul.menu-v li .pl-item.pl-item-selected { background: rgba(0,0,0,0.06); }
 
- .pl-label { font-size: 0.9em; border-radius: 4px; background: #aaa; color: #fff; padding: 1px 4px 2px; margin-right: 2px; line-height: 1.4em; vertical-align: top; margin-top: 1px; }
+ .pl-label { font-size: 0.9em; border-radius: 4px; background: #aaa; color: #fff !important; padding: 1px 4px 2px !important; margin-right: 2px !important; line-height: 1.4em; vertical-align: top; margin-top: 1px; display: inline !important; font-weight: bold; }
+ .pl-label:hover { color: #ffa !important; }
 
 .pl-attachments { padding-left: 0; }
 .pl-attachments li { padding-top: 10px !important; margin-bottom: 3px !important; list-style: none; word-break: break-all; }
@@ -296,10 +297,11 @@ input#pl-new-list-input,
 .pl-logbook .pl-edit,
 .pl-logbook .pl-comment { display: none !important; }
 .pl-logbook .pl-favorite,
-.pl-logbook .pl-author { opacity: 1 !important; }
+.pl-logbook .pl-assignee { opacity: 1 !important; }
 
 .pl-archive { background: #eee; }
 .pl-archive .pl-title h1 { padding-left: 0; }
+.pl-archive .pl-inner-content { margin-right: 0; }
 
 /* Item & List details
 ---------------------- */
@@ -347,6 +349,10 @@ ul.pl-icon-library li i.listicon48 { background-size: 48px 48px; width: 48px; he
 a:hover .icon16.pl.add { background-position:0 -32px; }
 a:hover .icon16.pl.darr { background-position:-16px -32px; }
 
+i.icon16.listicon16 { background-size: 16px 16px; }
+
+i.pl-list-color-indicator { display: inline-block; background-image: none; border-radius: 50%; height: 8px; margin-right: 2px !important; margin-top: 3px !important; width: 8px; }
+
 /* Custom jQuery UI styling
 --------------------------- */
 
@@ -367,7 +373,7 @@ a:hover .icon16.pl.darr { background-position:-16px -32px; }
 ----------------- */
 
 @media screen and (max-width: 1024px) {
-    .pl-items.content.left300px { margin-left: 229px; }
+    /*.pl-items.content.left300px { margin-left: 229px; }*/
     ul.pl-lists li span { max-width: 120px; }
     ul.pl-team li .pl-username { max-width: 120px; }
     .pl-details { width: 400px; }
@@ -378,4 +384,15 @@ a:hover .icon16.pl.darr { background-position:-16px -32px; }
     input#pl-new-list-input,
     #pl-item-add textarea,
     .pl-chat textarea { width: 80%; }
+
+    .pl-inner-sidebar { width: 250px; }
+    .pl-inner-content { margin-right: 250px; }
+
+}
+
+@media screen and (min-width: 1400px) {
+
+    .pl-inner-sidebar { width: 400px; }
+    .pl-inner-content { margin-right: 400px; }
+
 }
