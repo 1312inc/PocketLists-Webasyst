@@ -9,5 +9,7 @@ class pocketlistsDefaultLayout extends waLayout
             $us->saveDefaults();
         }
         $this->view->assign('sidebar_todo_count', wa('pocketlists')->getConfig()->onCount());
+        $list_model = new pocketlistsListModel();
+        $this->view->assign('lists', $list_model->getAllActiveLists());
     }
 }

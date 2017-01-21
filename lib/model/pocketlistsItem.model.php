@@ -215,7 +215,7 @@ class pocketlistsItemModel extends waModel
         }
 //        $items = parent::getById($id);
         $items = $this->query(
-            $this->getQuery()."WHERE id IN (i:id)",
+            $this->getQuery()."WHERE i.id IN (i:id)",
             array('contact_id' => $user_id, 'id' => $ids)
         )->fetchAll();
 //        $items = $this->getItems($this->getQuery(), null, false);
@@ -254,16 +254,26 @@ class pocketlistsItemModel extends waModel
     {
         return "SELECT
                   i.*,
-                  IF(uf.contact_id, 1, 0) favorite
+                  IF(uf.contact_id, 1, 0) favorite,
+                  pi2.name list_name,
+                  pl.sort list_sort,
+                  pl.type list_type,
+                  pl.icon list_icon,
+                  pl.archived list_archived,
+                  pl.hash list_hash,
+                  pl.color list_color
                 FROM {$this->table} i
-                LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id ";
+                LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
+                LEFT JOIN pocketlists_list pl ON pl.id = i.list_id
+                JOIN pocketlists_item pi2 ON pi2.key_list_id = pl.id
+                ";
     }
 
     public function getAllByList($list_id, $tree = true)
     {
         $sql = $this->getQuery() . "
-                WHERE list_id = i:lid
-                ORDER BY parent_id, sort ASC, id DESC";
+                WHERE i.list_id = i:lid
+                ORDER BY i.parent_id, i.sort ASC, i.id DESC";
 
         return $this->getItems($sql, $list_id, $tree);
     }
@@ -271,8 +281,8 @@ class pocketlistsItemModel extends waModel
     public function getUndoneByList($list_id, $tree = true)
     {
         $sql = $this->getQuery() . "
-                WHERE list_id = i:lid AND status = 0
-                ORDER BY parent_id, sort ASC, id DESC";
+                WHERE i.list_id = i:lid AND i.status = 0
+                ORDER BY i.parent_id, i.sort ASC, i.id DESC";
 
         return $this->getItems($sql, $list_id, $tree);
     }
@@ -280,8 +290,8 @@ class pocketlistsItemModel extends waModel
     public function getDoneByList($list_id, $tree = true)
     {
         $sql = $this->getQuery() . "
-                WHERE list_id = i:lid AND status > 0
-                ORDER BY complete_datetime DESC, parent_id, sort ASC, id DESC";
+                WHERE i.list_id = i:lid AND i.status > 0
+                ORDER BY i.complete_datetime DESC, i.parent_id, i.sort ASC, i.id DESC";
 
         return $this->getItems($sql, $list_id, $tree);
     }
@@ -289,8 +299,8 @@ class pocketlistsItemModel extends waModel
     public function getArchiveByList($list_id, $tree = true)
     {
         $sql = $this->getQuery() . "
-                WHERE list_id = i:lid AND status < 0
-                ORDER BY parent_id, sort ASC, id DESC";
+                WHERE i.list_id = i:lid AND i.status < 0
+                ORDER BY i.parent_id, i.sort ASC, i.id DESC";
 
         return $this->getItems($sql, $list_id, $tree);
     }

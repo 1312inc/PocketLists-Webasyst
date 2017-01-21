@@ -65,44 +65,26 @@ class pocketlistsListModel extends waModel
         return $this->deleteById($id);
     }
 
-    public function getLists($pocket_id = false)
+    /**
+     * Get only active lists and its items with calculated priority that are accessible for current user
+     * @return array
+     */
+    public function getLists()
     {
-        $select_pocket = "";
-        if ($pocket_id) {
-            $select_pocket = " AND l.pocket_id = i:pocket_id";
-        }
-        $sql = "SELECT
-                  i2.*,
-                  l.*,
-                  SUM(IF(i.list_id IS NULL, 0, 1)) 'count',
-                  MAX(i.priority) 'max_priority',
-                  MIN(i.due_date) 'min_due_date',
-                  MIN(i.due_datetime) 'min_due_datetime'
-                FROM {$this->table} l
-                LEFT JOIN pocketlists_item i ON i.list_id = l.id AND i.status = 0
-                LEFT JOIN pocketlists_item i2 ON i2.key_list_id = l.id
-                WHERE
-                  l.archived = i:archived
-                  {$select_pocket}
-                GROUP BY l.id
-                ORDER BY l.sort, l.id DESC";
-
-        $lists = $this->query(
-            $sql,
-            array(
-                'archived' => 0,
-                'pocket_id' => $pocket_id
-            )
-        )->fetchAll();
-        foreach ($lists as $id => $list) {
+        $lists = $this->getAllActiveLists();
+        foreach ($lists as $id => &$list) {
             $lists[$id]['calc_priority'] = max(pocketlistsHelper::calcPriorityOnDueDate($list['min_due_date'], $list['min_due_datetime']), $list['max_priority']);
         }
         return $lists;
     }
 
-    public function getArchived()
+    /**
+     * Get all lists (including archived) that are accessible for current user
+     * @return array
+     */
+    public function getAllAccessedLists()
     {
-        $available_pockets = pocketlistsHelper::getAccessPocketForContact();
+        $available_lists = pocketlistsHelper::getAccessListForContact();
 
         $sql = "SELECT
                   i2.*,
@@ -114,18 +96,44 @@ class pocketlistsListModel extends waModel
                 FROM pocketlists_list l
                 LEFT JOIN pocketlists_item i ON i.list_id = l.id AND i.status = 0
                 LEFT JOIN pocketlists_item i2 ON i2.key_list_id = l.id
-                WHERE
-                  l.archived = i:archived
-                  AND l.pocket_id IN (i:pocket_ids)
+                WHERE l.id IN (i:list_ids)
                 GROUP BY l.id";
 
         $lists = $this->query(
             $sql,
             array(
-                'archived' => 1,
-                'pocket_ids' => $available_pockets
+                'list_ids' => $available_lists
             )
         )->fetchAll();
+        return $lists;
+    }
+
+    /**
+     * Get only archived lists and its items that are accessible for current user
+     * @return array
+     */
+    public function getArchivedLists()
+    {
+        $lists = $this->getAllAccessedLists();
+        foreach ($lists as $id => &$list) {
+            if (!$list['archived']) {
+                unset($lists[$id]);
+            }
+        }
+        return $lists;
+    }
+
+    /**
+     * Get only active lists and its items that are accessible for current user
+     * @return array
+     */
+    public function getAllActiveLists() {
+        $lists = $this->getAllAccessedLists();
+        foreach ($lists as $id => &$list) {
+            if ($list['archived']) {
+                unset($lists[$id]);
+            }
+        }
         return $lists;
     }
 }

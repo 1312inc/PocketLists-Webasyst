@@ -39,7 +39,7 @@
             {if !empty($item.key_list_id)}
                 <a href="#/pocket/{$item.pocket_id}/list/{$item.list_id}/">{$item.name|default:' '|escape|nl2br}</a>
             {else}
-                {if $item.list_id != NULL}<a href="#LISTURL" class="pl-label pl-dark-LISTCOLOR">LISTNAME</a>{/if}
+                {if $item.list_id != NULL}<a href="#/list/{$item.list_id}" class="pl-label pl-dark-{$item.list_color}">{$item.list_name|escape}</a>{/if}
                 {$item.name|default:' '|escape|nl2br}
                 {* if $item.list_id == NULL && (empty($item.assigned_contact_id) || $item.assigned_contact_id == $wa->user()->getId())}<i class="icon10 lock-bw" title="[`Only you can see this item`]"></i>{/if *}
             {/if}

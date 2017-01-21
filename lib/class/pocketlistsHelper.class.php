@@ -2,7 +2,13 @@
 
 class pocketlistsHelper
 {
-    public static function getAccessContactsForPocket($pocket_id = false, $photo_size = 20)
+    /**
+     * Return users for given list
+     * @param bool|integer $list_id
+     * @param int $photo_size
+     * @return array
+     */
+    public static function getAccessContactsForList($list_id = false, $photo_size = 20)
     {
         $wcr = new waContactRightsModel();
         // select users
@@ -16,7 +22,7 @@ class pocketlistsHelper
         $contact_ids = $wcr->query(
             $query,
             array(
-                'id' => 'pocket.' . ($pocket_id ? $pocket_id : '%')
+                'id' => 'list.' . ($list_id ? $list_id : '%')
             )
         )->fetchAll();
         $contacts = array();
@@ -49,20 +55,28 @@ class pocketlistsHelper
         return $contacts;
     }
 
-    public static function getAccessPocketForContact($contact_id = false)
+    /**
+     * Return all list ids accessible for given user
+     * @param bool|integer $contact_id
+     * @return array|bool
+     */
+    public static function getAccessListForContact($contact_id = false)
     {
         $user = $contact_id ? new waContact($contact_id) : wa()->getUser();
         if ($user->isAdmin() || $user->isAdmin('pocketlists')) {
-            $pm = new pocketlistsPocketModel();
-            $pockets = $pm->getAll('id');
+            $list_model = new pocketlistsListModel();
+            $lists = $list_model->getAll('id');
         } else {
-            $pockets = $user->getRights('pocketlists', 'pocket.%');
-
+            $lists = $user->getRights('pocketlists', 'list.%');
         }
-        return $pockets ? array_keys($pockets) : false;
+        // todo: может сразу возвращать модели?
+        return $lists ? array_keys($lists) : false;
     }
 
-    public static function getAllPocketListsContacts()
+    /**
+     * @return array
+     */
+    public static function getAllListsContacts()
     {
         $wcr = new waContactRightsModel();
         $query = "SELECT DISTINCT
@@ -94,6 +108,11 @@ class pocketlistsHelper
         return $contacts;
     }
 
+    /**
+     * Check if user is admin
+     * @param bool|integer $contact_id
+     * @return bool
+     */
     public static function isAdmin($contact_id = false)
     {
         $user = $contact_id ? new waContact($contact_id) : wa()->getUser();
@@ -410,5 +429,11 @@ class pocketlistsHelper
         }
 
         return $icons;
+    }
+
+    public static function canAccessToList($list_id, $contact_id = false)
+    {
+        $available_lists = pocketlistsHelper::getAccessListForContact($contact_id);
+        return in_array($list_id, $available_lists);
     }
 }

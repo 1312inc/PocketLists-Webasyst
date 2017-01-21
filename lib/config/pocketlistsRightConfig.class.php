@@ -7,13 +7,14 @@ class pocketlistsRightConfig extends waRightConfig
 
     public function init()
     {
-        $pm = new pocketlistsPocketModel();
+        $list_model = new pocketlistsListModel();
         $items = array();
-        foreach ($pm->getAllPockets() as $pocket) {
-            $items[$pocket['id']] = $pocket['name'];
+        // todo: только активные? или все подряд?
+        foreach ($list_model->getAllActiveLists() as $list) {
+            $items[$list['id']] = $list['name'];
         }
         $this->addItem(
-            'pocket',
+            'list',
             _w('Lists'),
             'selectlist',
             array(

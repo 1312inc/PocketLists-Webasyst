@@ -5,7 +5,7 @@ class pocketlistsArchiveAction extends waViewAction
     public function execute()
     {
         $lm = new pocketlistsListModel();
-        $lists = $lm->getArchived();
+        $lists = $lm->getArchivedLists();
 
         $list_id = waRequest::get('id', 0, waRequest::TYPE_INT);
         if (!$list_id) { // get first archived list

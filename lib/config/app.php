@@ -1,6 +1,6 @@
 <?php
 return array (
-  'name' => 'To-dos',
+  'name' =>  _w('To-dos'),
   'icon' =>
   array (
     48 => 'img/pocketlists48.png',

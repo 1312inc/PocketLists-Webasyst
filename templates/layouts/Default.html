@@ -76,33 +76,14 @@
                     </h5>
 
                     <ul class="menu-v with-icons collapsible">
+                        {foreach $lists as $l}
                         <li>
-                            <a href="#/pocket/">
-                                <span class="count indicator yellow">5</span>
-                                <i class="icon16 listicon16" style="background-image:url(/wa-apps/pocketlists/img/listicons/li-paid-tie@2x.png)"></i>На работе
+                            <a href="#/list/{$l.id}">
+                                <span class="count{if $l.calc_priority == 1} indicator green{elseif $l.calc_priority == 2} indicator yellow{elseif $l.calc_priority == 3} indicator red{/if}">{$l.count}</span>
+                                <i class="icon16 listicon16" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l.icon|default:'li-list@2x.png'});"></i>{$l.name|escape}
                             </a>
                         </li>
-                        <li>
-                            <a href="#/pocket/">
-                                <span class="count">13</span>
-                                <i class="icon16 listicon16" style="background-image:url(/wa-apps/pocketlists/img/listicons/li-star@2x.png)"></i>ECOM Expo 2017
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#/pocket/">
-                                <span class="count indicator red">2</span>
-                                <i class="icon16 listicon16" style="background-image:url(/wa-apps/pocketlists/img/listicons/li-plane@2x.png)"></i>Командировка
-                                <i class="pl-list-color-indicator pl-purple"></i>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#/pocket/">
-                                <span class="count">8</span>
-                                <i class="icon16 listicon16" style="background-image:url(/wa-apps/pocketlists/img/listicons/li-books@2x.png)"></i>Почитать на выходных
-                                <i class="pl-list-color-indicator pl-red"></i>
-                            </a>
-                        </li>
-
+                        {/foreach}
                     </ul>
                 </div>
 

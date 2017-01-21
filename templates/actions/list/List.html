@@ -6,7 +6,14 @@
 </head>
 <body>
 {/if}
-<div class="pl-inner-content pl-items shadowed pl-{$list.color|default:'none'}">
+
+<nav class="pl-inner-sidebar">
+
+</nav>
+
+<main id="pl-list-content">
+
+    <div class="pl-inner-content pl-items shadowed pl-{$list.color|default:'none'}">
     <header class="pl-list-title pl-title">
         {if !$print}
         <div class="float-right block half-padded">
@@ -137,6 +144,9 @@
 
     {/if}
 </div>
+
+</main>
+
 {if isset($list.id) && $print}
 <div class="pl-print-button">
 <button onclick="window.print();">[`Print`]</button>
