@@ -238,8 +238,9 @@ $.pocketlists.List = function ($list_wrapper, options) {
                         $pl_done.removeClass('transparent');
                         $.pocketlists.$loading.removeAttr('style').remove();
                         if (r.status === 'ok') {
+                            $.pocketlists.reloadSidebar();
                             if (list_id === -1) {
-                                $.wa.setHash('#/pocket/' + pocket_id + '/list/' + r.data.id + '/');
+                                $.wa.setHash('#/list/' + r.data.id + '/');
                             }
                         } else {
 
@@ -298,12 +299,12 @@ $.pocketlists.List = function ($list_wrapper, options) {
 
                     $.post('?module=list&action=delete', {list_id: list_id}, function (r) {
                         if (r.status === 'ok') {
-                            if (pocket_id) {
-                                $.wa.setHash('#/pocket/' + pocket_id);
+                            // if (pocket_id) {
+                                $.wa.setHash('#/todo/');
                                 $.pocketlists_routing.redispatch();
-                            } else {
-                                $.wa.setHash('#');
-                            }
+                            // } else {
+                            //     $.wa.setHash('#');
+                            // }
                         } else {
 
                         }
@@ -326,7 +327,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
         $.post('?module=list&action=archive', {list_id: list_id, archive: 1}, function (r) {
             if (r.status === 'ok') {
                 $dialog && $dialog.trigger('close');
-                $.wa.setHash('#/pocket/' + pocket_id);
+                $.wa.setHash('#/list/' + list_id);
             } else {
             }
             request_in_action = false;
@@ -343,7 +344,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
         $.post('?module=list&action=complete', {list_id: list_id, status: 1}, function (r) {
             if (r.status === 'ok') {
                 $dialog.trigger('close');
-                //$.wa.setHash('#/pocket/' + pocket_id + '/list/' + list_id );
+                //$.wa.setHash('#/list/' + list_id );
                 $.pocketlists_routing.redispatch();
             } else {
             }
@@ -359,8 +360,8 @@ $.pocketlists.List = function ($list_wrapper, options) {
         $.post('?module=list&action=archive', {list_id: list_id, archive: 0}, function (r) {
             if (r.status === 'ok') {
                 $.pocketlists.updateAppCounter();
-                $.wa.setHash('#/pocket/' + pocket_id + '/list/' + list_id + '/');
-                $.pocketlists.highlightSidebar();
+                $.wa.setHash('#/list/' + list_id + '/');
+                $.pocketlists.reloadSidebar();
             } else {
             }
             request_in_action = false;

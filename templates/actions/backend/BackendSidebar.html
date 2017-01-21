@@ -1,0 +1,90 @@
+<!-- CORE FILTERS -->
+<div class="block pl-sidebar-core">
+
+    <ul class="menu-v with-icons">
+        {*  *}
+
+        <li data-pl-sidebar="todo">
+            {if $sidebar_todo_count}<span class="count indicator red">{$sidebar_todo_count}</span>{/if}
+            <a href="#/todo/"><i class="icon16 pl todo"></i>[`My to-dos`]</a>
+        </li>
+        <li>
+            <a href="#/favorites/"><i class="icon16 star"></i>[`Favorites`]</a>
+        </li>
+        {* <li>
+        <a href="#tags"><i class="icon16 calendar"></i>[`Calendar`]</a>
+    </li> *}
+        {* <li>
+        <a href="#/team/"><i class="icon16 contact"></i>[`Team`]</a>
+    </li> *}
+        <li>
+            <a href="#/logbook/"><i class="icon16 pl logbook"></i>[`Logbook`] <span class="highlighted bold small black">+3</span></a>
+        </li>
+
+        {* <li class="top-padded">
+        <a href="#/"><i class="icon16 "></i>CRM</a>
+    </li>
+        <li>
+            <a href="#/"><i class="icon16 "></i>Tasks</a>
+        </li>
+        <li>
+            <a href="#/"><i class="icon16 "></i>Blog</a>
+        </li> *}
+
+    </ul>
+
+</div>
+
+<!-- LISTS -->
+<div class="block">
+    <h5 class="heading">
+        <a href="#/list/new" class="count"><i class="icon16 add"></i></a>
+        [`Lists`]
+    </h5>
+
+    <ul class="menu-v with-icons collapsible">
+        {foreach $lists as $l}
+        <li>
+            <a href="#/list/{$l.id}/">
+                <span class="count{if $l.calc_priority == 1} indicator green{elseif $l.calc_priority == 2} indicator yellow{elseif $l.calc_priority == 3} indicator red{/if}">{$l.count}</span>
+                <i class="icon16 listicon16" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l.icon|default:'li-list@2x.png'});"></i>{$l.name|escape}
+            </a>
+        </li>
+        {/foreach}
+    </ul>
+</div>
+
+<!-- TEAM -->
+<div class="block">
+    <h5 class="heading">
+        [`Team`]
+    </h5>
+
+    <ul class="menu-v with-icons collapsible">
+        <li>
+            <a href="#/team/">
+                <span class="count">1</span>
+                <i class="icon16 userpic20" style="background-image:url(/wa-content/img/userpic20@2x.jpg);"></i>km
+            </a>
+        </li>
+        <li>
+            <a href="#/team/">
+                <span class="count indicator red">2</span>
+                <i class="icon16 userpic20" style="background-image:url(/wa-content/img/userpic20@2x.jpg);"></i>vofka
+            </a>
+        </li>
+    </ul>
+</div>
+
+<!-- SYSTEM -->
+<div class="hr"></div>
+<div class="block">
+    <ul class="menu-v with-icons">
+        <li>
+            <a href="#/archive/"><i class="icon16 pl archive"></i>[`Archive`]</a>
+        </li>
+        <li>
+            <a href="#/settings/"><i class="icon16 settings"></i>[`Settings`]</a>
+        </li>
+    </ul>
+</div>

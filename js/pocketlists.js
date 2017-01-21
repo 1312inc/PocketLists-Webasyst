@@ -52,7 +52,7 @@
                 $li.addClass('selected');
             } else {
                 var hash = $.pocketlists_routing.getHash(),
-                    $a = $all_li.find('a[href="' + hash + '"]');
+                    $a = self.$core_sidebar.find('a[href="' + hash + '"]');
 
                 if (hash) {
                     $all_li.removeClass('selected');
@@ -62,7 +62,7 @@
                 } else { // more complex hash
                     hash = hash.split("/");
                     if (hash[1]) {
-                        $all_li.find('a[href^="' + hash[0] + '/' + hash[1] + '"]').first().closest('li').addClass('selected');
+                        self.$core_sidebar.find('a[href^="' + hash[0] + '/' + hash[1] + '"]').first().closest('li').addClass('selected');
                     }
                 }
             }
@@ -120,6 +120,14 @@
             } else {
                 $wrapper.remove();
             }
+        },
+        reloadSidebar: function () {
+            var self = this;
+
+            $.get("?module=backend&action=sidebar", function (result) {
+                $('#pl-sidebar-core').html(result);
+                self.highlightSidebar();
+            });
         },
         init: function (o) {
             $.pocketlists_routing.init();
