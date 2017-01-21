@@ -625,11 +625,11 @@ class pocketlistsNotifications
      */
     public static function sendMail($data, $backend_url = false)
     {
-        $default_data = array(
+        $default_variables = array(
             'email_settings_url' => '#/settings/'
         );
 
-        $data = array_merge($default_data, $data);
+        $data['variables'] = array_merge($default_variables, $data['variables']);
 
         $to = false;
         $view = wa()->getView();
