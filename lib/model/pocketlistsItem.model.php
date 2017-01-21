@@ -45,7 +45,7 @@ class pocketlistsItemModel extends waModel
                   IF(uf.contact_id, 1, 0) favorite
                 FROM {$this->table} i
                 LEFT JOIN pocketlists_list l ON l.id = i.list_id
-                LEFT JOIN pocketlists_item i2 ON i2.id = i.list_id
+                LEFT JOIN pocketlists_item i2 ON i2.key_list_id = i.list_id
                 LEFT JOIN pocketlists_pocket p ON p.id = l.pocket_id
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
                 WHERE
@@ -108,7 +108,7 @@ class pocketlistsItemModel extends waModel
                   IF(uf.contact_id, 1, 0) favorite
                 FROM {$this->table} i
                 LEFT JOIN pocketlists_list l ON (l.id = i.list_id  OR l.id = i.key_list_id)
-                LEFT JOIN pocketlists_item i2 ON i2.id = i.list_id 
+                LEFT JOIN pocketlists_item i2 ON i2.key_list_id = i.list_id 
                 LEFT JOIN pocketlists_pocket p ON p.id = l.pocket_id
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
                 WHERE
@@ -183,7 +183,7 @@ class pocketlistsItemModel extends waModel
                   IF(uf.contact_id, 1, 0) favorite
                 FROM {$this->table} i
                 LEFT JOIN pocketlists_list l ON (l.id = i.list_id  OR l.id = i.key_list_id)
-                LEFT JOIN pocketlists_item i2 ON i2.id = i.list_id
+                LEFT JOIN pocketlists_item i2 ON i2.key_list_id = i.list_id
                 LEFT JOIN pocketlists_pocket p ON p.id = l.pocket_id
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
                 WHERE
@@ -272,7 +272,7 @@ class pocketlistsItemModel extends waModel
                 FROM {$this->table} i
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
                 LEFT JOIN pocketlists_list pl ON pl.id = i.list_id
-                LEFT JOIN pocketlists_item pi2 ON pi2.key_list_id = pl.id
+                LEFT JOIN pocketlists_item pi2 ON pi2.key_list_id = i.list_id
                 ";
     }
 
@@ -552,7 +552,7 @@ class pocketlistsItemModel extends waModel
                   IF(uf.contact_id, 1, 0) favorite
                 FROM {$this->table} i
                 LEFT JOIN pocketlists_list l ON (l.id = i.list_id  OR l.id = i.key_list_id)
-                LEFT JOIN pocketlists_item i2 ON i2.id = i.list_id
+                LEFT JOIN pocketlists_item i2 ON i2.key_list_id = i.list_id
                 LEFT JOIN pocketlists_pocket p ON p.id = l.pocket_id
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:user_contact_id AND uf.item_id = i.id
                 WHERE
