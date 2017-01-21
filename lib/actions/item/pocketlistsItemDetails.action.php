@@ -15,18 +15,15 @@ class pocketlistsItemDetailsAction extends waViewAction
 
             $list = $lm->getById($item['list_id']);
             // get contact that have access to this pocket
-            $contacts = pocketlistsHelper::getAccessContactsForPocket($list ? $list['pocket_id'] : false);
+            $contacts = pocketlistsHelper::getAccessContactsForList($list ? $list['pocket_id'] : false);
 
             $this->view->assign('item', $item);
             $this->view->assign('attachments_path', wa()->getDataUrl('attachments/'.$item['id'].'/', true));
             $this->view->assign('attachments', $attachments);
             $this->view->assign('contacts', $contacts);
 
-            $pm = new pocketlistsPocketModel();
-            $this->view->assign('pockets', $pm->getAllPockets(wa()->getUser()->getId()));
-
             $this->view->assign('list', $list);
-            $this->view->assign('lists', $list ? $lm->getLists($list['pocket_id']) : array());
+            $this->view->assign('lists', $list ? $lm->getLists() : array());
         }
     }
 }

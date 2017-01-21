@@ -1055,6 +1055,16 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                 e.preventDefault();
 
                 selectItem($(this).closest(item_selector));
+            })
+            /* calendar day highlight */
+            .on('mouseenter mouseleave', '.pl-item-wrapper[data-pl-due-date]', function () {
+                var $calendar = $('.pl-calendar');
+                if ($calendar.length) {
+                    var $day = $calendar.find('[data-pl-todo-date="' + $(this).data('pl-due-date') + '"]');
+                    if ($day.length) {
+                        $day.toggleClass('highlighted-background');
+                    }
+                }
             });
 
         // keyboard

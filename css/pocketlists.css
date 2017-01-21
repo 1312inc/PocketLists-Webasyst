@@ -396,3 +396,13 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
     .pl-inner-content { margin-right: 400px; }
 
 }
+
+
+
+.pl-list-content .pl-item-name .pl-label.pl-item-list-name {
+    display: none !important;
+}
+
+.highlighted-background {
+    background-color: #22ffbb !important;
+}

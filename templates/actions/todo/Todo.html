@@ -84,5 +84,12 @@
 
             getStream();
         });
+        $dates.on('mouseenter mouseleave', function () {
+            var date = $(this).data('pl-todo-date'),
+                $items = $items_wrapper.find('.pl-item-wrapper[data-pl-due-date="' + date + '"]');
+            if ($items.length) {
+                $items.toggleClass('highlighted-background');
+            }
+        });
     }());
 </script>
