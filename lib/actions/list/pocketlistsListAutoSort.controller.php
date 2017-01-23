@@ -10,7 +10,7 @@ class pocketlistsListAutoSortController extends waJsonController
             $lm = new pocketlistsListModel();
             $list = $lm->getById($list_id);
 
-            if (!in_array($list['pocket_id'], pocketlistsHelper::getAccessPocketForContact())) {
+            if (!in_array($list['id'], pocketlistsHelper::getAccessListForContact())) {
                 throw new waRightsException('403');
             }
 

@@ -11,7 +11,6 @@
 $.pocketlists.List = function ($list_wrapper, options) {
     var $new_list_input = $list_wrapper.find('#pl-new-list-input'),
         list_id = parseInt($list_wrapper.find('#pl-list-id').val()),
-        pocket_id = parseInt($('#pl-pocket-id').val()),
         o = $.extend({}, {
             archive: false
         }, options),
@@ -217,8 +216,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
         if (name.length) {
             var data = {
                 name: $new_list_input.val().trim(),
-                type: 'checklist',
-                pocket_id: pocket_id
+                type: 'checklist'
             };
             if (data.name) {
                 var $pl_done = $new_list_input.closest('.pl-list-title').find('.pl-done-label span').addClass('transparent').html($.pocketlists.$loading.css({
@@ -299,15 +297,9 @@ $.pocketlists.List = function ($list_wrapper, options) {
 
                     $.post('?module=list&action=delete', {list_id: list_id}, function (r) {
                         if (r.status === 'ok') {
-                            // if (pocket_id) {
-                                $.wa.setHash('#/todo/');
-                                $.pocketlists_routing.redispatch();
-                            // } else {
-                            //     $.wa.setHash('#');
-                            // }
-                        } else {
-
-                        }
+                            $.wa.setHash('#/todo/');
+                            $.pocketlists_routing.redispatch();
+                        } else {}
                         d.trigger('close');
                         request_in_action = false;
                     }, 'json');
@@ -385,7 +377,51 @@ $.pocketlists.List = function ($list_wrapper, options) {
     var deselectList = function () {
         $list_wrapper.removeData('pl-clicked');
     };
+    var sortList = function() {
+        var $lists_wrapper = $('#pl-lists').find('.pl-lists');
+        $lists_wrapper.sortable({
+            item: '[data-pl-list-id]',
+            distance: 5,
+            placeholder: 'pl-list-placeholder',
+            tolerance: 'pointer',
+            start: function(e, ui ){
+                ui.placeholder.height(ui.helper.outerHeight());
+            },
+            stop: function (event, ui) {
+                var getLists = function () {
+                    var data = [];
+                    $lists_wrapper.find('[data-pl-list-id]').each(function (i) {
+                        var $this = $(this),
+                            color = $this.attr('class').match(/pl-(.*)/);
+                        data.push({
+                            id: $this.data('pl-list-id'),
+                            sort: i,
+                            color: color[1]
+                        });
+                    });
+                    return data;
+                };
 
+                var updateSort = function () {
+                    $.post(
+                        '?module=list&action=sort',
+                        {
+                            data: getLists()
+                        },
+                        function (r) {
+                            if (r.status === 'ok') {
+                            } else {
+                                alert(r.errors);
+                            }
+                        },
+                        'json'
+                    );
+                };
+
+                updateSort();
+            }
+        });
+    };
     var init = function () {
         // will add new list if we can
         if ($new_list_input.length) {
@@ -553,7 +589,6 @@ $.pocketlists.List = function ($list_wrapper, options) {
     return {
         $el: $list_wrapper,
         list_details: ListDetails,
-        list_id: list_id,
-        pocket_id: pocket_id
+        list_id: list_id
     }
 };

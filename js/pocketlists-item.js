@@ -878,10 +878,8 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                     }
                     request_in_action = true;
 
-                    var pocket_id =  $(this).find(':selected').val();
-
                     $(this).after($.pocketlists.$loading);
-                    $.get('?module=json&action=getLists&id=' + pocket_id, function (r) {
+                    $.get('?module=json&action=getLists', function (r) {
                         $.pocketlists.$loading.remove();
                         var $pocket_lists = $('#pl-item-list');
                         $pocket_lists.empty();

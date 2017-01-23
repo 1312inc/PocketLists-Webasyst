@@ -20,7 +20,7 @@ class pocketlistsListAction extends waViewAction
             $list_access_contacts = pocketlistsHelper::getAccessContactsForList($list['id']);
 
             $us = new pocketlistsUserSettings();
-            $us->set('last_pocket_list_id', json_encode(array('pocket_id' => $list['pocket_id'], 'list_id' => $list['id'])));
+            $us->set('last_pocket_list_id', json_encode(array('list_id' => $list['id'])));
 
             $this->view->assign('list', $list);
             $this->view->assign('archive', $archived || $list['archived']);

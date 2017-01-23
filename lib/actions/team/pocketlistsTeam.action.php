@@ -7,7 +7,7 @@ class pocketlistsTeamAction extends waViewAction
         // get all pocketlists users
         // all admin
         $teammates = array();
-        $teammates_ids = pocketlistsHelper::getAllPocketListsContacts();
+        $teammates_ids = pocketlistsHelper::getAllListsContacts();
         if ($teammates_ids) {
             $im = new pocketlistsItemModel();
             $items_count_names = $im->getAssignedItemsCountAndNames($teammates_ids);

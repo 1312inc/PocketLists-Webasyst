@@ -34,8 +34,8 @@
                     <span class="pl-date">{$day.date.day}</span>
 
                     <div class="pl-dots">
-                        {foreach $day.pockets.gray as $pocket_color name=foo}{if $smarty.foreach.foo.index == 3}{break}{/if}<i class="icon10 color pl-dark-none"></i>{/foreach}<!--
-                        -->{foreach $day.pockets.color as $pocket_color => $item_dots}{foreach $item_dots as $dot name=foo}{if $smarty.foreach.foo.index == 3}{break}{/if}<i class="icon10 color pl-dark-{$pocket_color}"></i>{/foreach}{/foreach}
+                        {foreach $day.lists.gray as $list_color name=foo}{if $smarty.foreach.foo.index == 3}{break}{/if}<i class="icon10 color pl-dark-none"></i>{/foreach}<!--
+                        -->{foreach $day.lists.color as $list_color => $item_dots}{foreach $item_dots as $dot name=foo}{if $smarty.foreach.foo.index == 3}{break}{/if}<i class="icon10 color pl-dark-{$list_color}"></i>{/foreach}{/foreach}
                     </div>
                 </td>
             {/foreach}

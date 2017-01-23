@@ -79,7 +79,7 @@ class pocketlistsNotifications
                                 'variables' => array(
                                     'n' => $items_left,
                                     'list' => $list,
-                                    'list_url' => '#/pocket/' . $list['pocket_id'] . '/list/' . $list['id'] . '/',
+                                    'list_url' => '#/list/' . $list['id'] . '/',
                                     'complete' => $item['status'],
                                     'item' => $item
                                 ),
@@ -121,7 +121,7 @@ class pocketlistsNotifications
                                 'variables' => array(
                                     'n' => $items_left,
                                     'list' => $list,
-                                    'list_url' => '#/pocket/' . $list['pocket_id'] . '/list/' . $list['id'] . '/',
+                                    'list_url' => '#/list/' . $list['id'] . '/',
                                     'complete' => $item['status'],
                                     'item' => $item
                                 ),
@@ -163,7 +163,7 @@ class pocketlistsNotifications
                                 'variables' => array(
                                     'n' => $items_left,
                                     'list' => $list,
-                                    'list_url' => '#/pocket/' . $list['pocket_id'] . '/list/' . $list['id'] . '/',
+                                    'list_url' => '#/list/' . $list['id'] . '/',
                                     'complete' => $item['status'],
                                     'item' => $item
                                 ),
@@ -200,7 +200,7 @@ class pocketlistsNotifications
                                 'variables' => array(
                                     'n' => $items_left,
                                     'list' => $list,
-                                    'list_url' => $list ? '#/pocket/' . $list['pocket_id'] . '/list/' . $list['id'] . '/' : false,
+                                    'list_url' => $list ? '#/list/' . $list['id'] . '/' : false,
                                     'complete' => $item['status'],
                                     'item' => $item
                                 ),
@@ -282,7 +282,7 @@ class pocketlistsNotifications
                                 'body' => wa()->getAppPath('templates/mails/newfavoritelistitem.html'),
                                 'variables' => array(
                                     'list_name' => $list ? $list['name'] : false,
-                                    'list_url' => '#/pocket/' . $list['pocket_id'] . '/list/' . $list['id'] . '/',
+                                    'list_url' => '#/list/' . $list['id'] . '/',
                                     'items' => $filtered_items,
                                     'item' => reset($filtered_items)
                                 ),
@@ -316,7 +316,7 @@ class pocketlistsNotifications
                                 'body' => wa()->getAppPath('templates/mails/newitem.html'),
                                 'variables' => array(
                                     'list_name' => $list ? $list['name'] : false,
-                                    'list_url' => '#/pocket/' . $list['pocket_id'] . '/list/' . $list['id'] . '/',
+                                    'list_url' => '#/list/' . $list['id'] . '/',
                                     'items' => $filtered_items,
                                     'item' => reset($filtered_items)
                                 ),
@@ -339,7 +339,7 @@ class pocketlistsNotifications
         if ($item['list_id']) {
             $list_ = $lm->getById($item['list_id']);
             $list = array(
-                'url' => wa()->getConfig()->getRootUrl(true) . '/' . wa()->getConfig()->getBackendUrl() . 'pocketlists/#/pocket/' . $list_['pocket_id'] . '/list/' . $list_['id'] . '/',
+                'url' => wa()->getConfig()->getRootUrl(true) . '/' . wa()->getConfig()->getBackendUrl() . 'pocketlists/#/list/' . $list_['id'] . '/',
                 'name' => $list_['name']
             );
         }
@@ -408,7 +408,7 @@ class pocketlistsNotifications
                         if ($item['list_id']) {
                             $list_ = $lm->getById($item['list_id']);
                             $list = array(
-                                'url' => wa()->getConfig()->getRootUrl(true) . '/' . wa()->getConfig()->getBackendUrl() . 'pocketlists/#/pocket/' . $list_['pocket_id'] . '/list/' . $list_['id'] . '/',
+                                'url' => wa()->getConfig()->getRootUrl(true) . '/' . wa()->getConfig()->getBackendUrl() . 'pocketlists/#/list/' . $list_['id'] . '/',
                                 'name' => $list_['name']
                             );
                         }
@@ -443,7 +443,7 @@ class pocketlistsNotifications
                         if ($item['list_id']) {
                             $list_ = $lm->getById($item['list_id']);
                             $list = array(
-                                'url' => '#/pocket/' . $list_['pocket_id'] . '/list/' . $list_['id'] . '/',
+                                'url' => '#/list/' . $list_['id'] . '/',
                                 'name' => $list_['name']
                             );
                         }
@@ -478,7 +478,7 @@ class pocketlistsNotifications
                         if ($item['list_id']) {
                             $list_ = $lm->getById($item['list_id']);
                             $list = array(
-                                'url' => '#/pocket/' . $list_['pocket_id'] . '/list/' . $list_['id'] . '/',
+                                'url' => '#/list/' . $list_['id'] . '/',
                                 'name' => $list_['name']
                             );
                         }
@@ -608,7 +608,7 @@ class pocketlistsNotifications
                         'body' => wa()->getAppPath('templates/mails/newlist.html'),
                         'variables' => array(
                             'list_name' => $list['name'],
-                            'list_url' => '#/pocket/' . $list['pocket_id'] . '/list/' . $list['id'] . '/',
+                            'list_url' => '#/list/' . $list['id'] . '/',
                             'by' => $create_contact_name,
                             'create_datetime' => $list['create_datetime'],
                         )

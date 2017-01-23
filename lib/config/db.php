@@ -66,7 +66,6 @@ return array(
     ),
     'pocketlists_list' => array(
         'id' => array('int', 11, 'null' => 0, 'autoincrement' => 1),
-        'pocket_id' => array('int', 11, 'null' => 0),
         'sort' => array('int', 11, 'null' => 0, 'default' => '0'),
         'type' => array('enum', "'checklist','notes'"),
         'icon' => array('varchar', 64),
@@ -94,24 +93,6 @@ return array(
         'location_radius' => array('decimal', "10,0"),
         ':keys' => array(
             'PRIMARY' => 'id',
-        ),
-    ),
-    'pocketlists_pocket' => array(
-        'id' => array('int', 11, 'null' => 0, 'autoincrement' => 1),
-        'sort' => array('int', 11, 'null' => 0, 'default' => '0'),
-        'name' => array('varchar', 255),
-        'color' => array('enum', "'none','red','green','blue','yellow','purple'", 'default' => 'blue'),
-        'passcode' => array('varchar', 32),
-        ':keys' => array(
-            'PRIMARY' => 'id',
-        ),
-    ),
-    'pocketlists_pocket_rights' => array(
-        'pocket_id' => array('int', 11, 'unsigned' => 1, 'null' => 0),
-        'contact_id' => array('int', 11, 'unsigned' => 1, 'null' => 0),
-        'right' => array('smallint', 11, 'unsigned' => 1, 'null' => 0, 'default' => '0'),
-        ':keys' => array(
-            'PRIMARY' => array('contact_id', 'pocket_id'),
         ),
     ),
     'pocketlists_tag' => array(

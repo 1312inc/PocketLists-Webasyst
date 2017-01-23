@@ -39,20 +39,16 @@ class pocketlistsItemModel extends waModel
                   l.icon list_icon,
                   l.color list_color,
                   i2.name list_name,
-                  p.id pocket_id,
-                  p.name pocket_name,
-                  p.color pocket_color,
                   IF(uf.contact_id, 1, 0) favorite
                 FROM {$this->table} i
                 LEFT JOIN pocketlists_list l ON l.id = i.list_id
                 LEFT JOIN pocketlists_item i2 ON i2.key_list_id = i.list_id
-                LEFT JOIN pocketlists_pocket p ON p.id = l.pocket_id
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
                 WHERE
                   i.status > 0
                   AND (
-                    p.id IN (i:pocket_ids)
-                    OR (p.id IS NULL AND i.contact_id = i:contact_id)
+                    l.id IN (i:list_ids)
+                    OR (l.id IS NULL AND i.contact_id = i:contact_id)
                   )
                   {$by_user}
                   {$by_date_range}
@@ -62,7 +58,7 @@ class pocketlistsItemModel extends waModel
             $sql,
             array(
                 'contact_id' => wa()->getUser()->getId(),
-                'pocket_ids' => pocketlistsHelper::getAccessListForContact(wa()->getUser()->getId()),
+                'list_ids' => pocketlistsHelper::getAccessListForContact(wa()->getUser()->getId()),
                 'date_after' => !empty($date_range['after']) ? $date_range['after'] : '',
                 'date_before' => !empty($date_range['before']) ? $date_range['before'] : '',
             )
@@ -102,14 +98,10 @@ class pocketlistsItemModel extends waModel
                   l.icon list_icon,
                   l.color list_color,
                   i2.name list_name,
-                  p.id pocket_id,
-                  p.name pocket_name,
-                  p.color pocket_color,
                   IF(uf.contact_id, 1, 0) favorite
                 FROM {$this->table} i
                 LEFT JOIN pocketlists_list l ON (l.id = i.list_id  OR l.id = i.key_list_id)
                 LEFT JOIN pocketlists_item i2 ON i2.key_list_id = i.list_id 
-                LEFT JOIN pocketlists_pocket p ON p.id = l.pocket_id
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
                 WHERE
                 (
@@ -128,14 +120,14 @@ class pocketlistsItemModel extends waModel
                   OR (i.contact_id = i:contact_id AND i.list_id IS NULL AND i.key_list_id IS NULL) /* + my items from NULL-list */
                 )
                 AND (l.archived = 0 OR l.archived IS NULL) /* ONLY not archived items */
-                AND (p.id IN (i:pocket_ids) OR p.id IS NULL) /* ONLY items from accessed pockets or NULL-list items */
+                AND (l.id IN (i:list_ids) OR l.id IS NULL) /* ONLY items from accessed pockets or NULL-list items */
                 {$due_date_or_mine}
                 ORDER BY
                   i.status,
                   (i.complete_datetime IS NULL), i.complete_datetime DESC";
 
         $items = $this->query($sql, array(
-            'pocket_ids' => $lists,
+            'list_ids' => $lists,
             'contact_id' => $contact_id,
             'date' => $date))->fetchAll();
 
@@ -156,7 +148,7 @@ class pocketlistsItemModel extends waModel
     public function getFavorites($contact_id)
     {
         // get to-do items only from accessed pockets
-        $pockets = pocketlistsHelper::getAccessListForContact($contact_id);
+        $lists = pocketlistsHelper::getAccessListForContact($contact_id);
         $sql = "SELECT
                   i.id id,
                   i.parent_id parent_id,
@@ -177,25 +169,21 @@ class pocketlistsItemModel extends waModel
                   l.icon list_icon,
                   l.color list_color,
                   i2.name list_name,
-                  p.id pocket_id,
-                  p.name pocket_name,
-                  p.color pocket_color,
                   IF(uf.contact_id, 1, 0) favorite
                 FROM {$this->table} i
                 LEFT JOIN pocketlists_list l ON (l.id = i.list_id  OR l.id = i.key_list_id)
                 LEFT JOIN pocketlists_item i2 ON i2.key_list_id = i.list_id
-                LEFT JOIN pocketlists_pocket p ON p.id = l.pocket_id
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
                 WHERE
                 uf.item_id IS NOT NULL
                 AND (l.archived = 0 OR l.archived IS NULL) /* ONLY not archived items */
-                AND (p.id IN (i:pocket_ids) OR p.id IS NULL) /* ONLY items from accessed pockets or NULL-list items */
+                AND (l.id IN (i:list_ids) OR l.id IS NULL) /* ONLY items from accessed pockets or NULL-list items */
                 ORDER BY
                   i.status,
                   (i.complete_datetime IS NULL), i.complete_datetime DESC";
 
         $items = $this->query($sql, array(
-            'pocket_ids' => $pockets,
+            'list_ids' => $lists,
             'contact_id' => $contact_id))->fetchAll();
 
         $result = array(
@@ -524,7 +512,7 @@ class pocketlistsItemModel extends waModel
 
     public function getAssignedOrCompletesByContactItems($contact_id)
     {
-        $pockets = pocketlistsHelper::getAccessListForContact($contact_id);
+        $lists = pocketlistsHelper::getAccessListForContact($contact_id);
 
         $q = "SELECT
                   i.id id,
@@ -546,14 +534,10 @@ class pocketlistsItemModel extends waModel
                   l.icon list_icon,
                   l.color list_color,
                   i2.name list_name,
-                  p.id pocket_id,
-                  p.name pocket_name,
-                  p.color pocket_color,
                   IF(uf.contact_id, 1, 0) favorite
                 FROM {$this->table} i
                 LEFT JOIN pocketlists_list l ON (l.id = i.list_id  OR l.id = i.key_list_id)
                 LEFT JOIN pocketlists_item i2 ON i2.key_list_id = i.list_id
-                LEFT JOIN pocketlists_pocket p ON p.id = l.pocket_id
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:user_contact_id AND uf.item_id = i.id
                 WHERE
                   (
@@ -565,15 +549,15 @@ class pocketlistsItemModel extends waModel
                     OR l.archived IS NULL
                   )
                   AND ( /* only accessed pockets or null list */
-                    p.id IN (i:pocket_ids)
-                    OR p.id IS NULL
+                    l.id IN (i:list_ids)
+                    OR l.id IS NULL
                   )
                 ORDER BY
                   i.status,
                   (i.complete_datetime IS NULL), i.complete_datetime DESC";
         $items = $this->query($q, array(
             'contact_id' => $contact_id,
-            'pocket_ids' => $pockets,
+            'list_ids' => $lists,
             'user_contact_id' => wa()->getUser()->getId()))->fetchAll();
         $results = array(
             0 => array(),
@@ -609,7 +593,6 @@ class pocketlistsItemModel extends waModel
                 i.*
               FROM {$this->table} i
               LEFT JOIN pocketlists_list l ON (l.id = i.list_id  OR l.id = i.key_list_id)
-              LEFT JOIN pocketlists_pocket p ON p.id = l.pocket_id
               WHERE
                 (
                   (i.assigned_contact_id = i:contact_id) /* + items assigned to me */
@@ -629,14 +612,14 @@ class pocketlistsItemModel extends waModel
                 AND (l.archived = 0 OR l.archived IS NULL) /* ONLY not archived items */
                 AND (i.assigned_contact_id = i:contact_id OR i.assigned_contact_id IS NULL OR i.assigned_contact_id = 0) /* ONLY assigned to me or noone */
                 AND (
-                  p.id IN (i:pocket_ids)
-                  OR p.id IS NULL
+                  l.id IN (i:list_ids)
+                  OR l.id IS NULL
                 )
                 {$when}";
 
         $items = $this->query($q, array(
             'contact_id' => $contact_id,
-            'pocket_ids' => pocketlistsHelper::getAccessListForContact($contact_id)
+            'list_ids' => pocketlistsHelper::getAccessListForContact($contact_id)
         ))->fetchAll();
         foreach ($items as $id => $item) {
             $items[$id] = $this->updateItem($item);
@@ -654,7 +637,7 @@ class pocketlistsItemModel extends waModel
         // if user is admin - show all completed items
         // else only items user has access and null list items
         if (!pocketlistsHelper::isAdmin()) {
-            $pockets = pocketlistsHelper::getAccessListForContact();
+            $lists = pocketlistsHelper::getAccessListForContact();
             // only accessed pockets or null list items which are created or completed by user
 //            $pocket_rights = "AND (
 //                    p.id IN (i:pocket_ids)
@@ -662,8 +645,8 @@ class pocketlistsItemModel extends waModel
 //                  )";
             // only accessed pockets or null list items
             $pocket_rights = "AND (
-                    p.id IN (i:pocket_ids)
-                    OR p.id IS NULL
+                    l.id IN (i:list_ids)
+                    OR l.id IS NULL
                   )";
         }
 
@@ -691,7 +674,6 @@ class pocketlistsItemModel extends waModel
             i.id
           FROM {$this->table} i
           LEFT JOIN pocketlists_list l ON (l.id = i.list_id  OR l.id = i.key_list_id)
-          LEFT JOIN pocketlists_pocket p ON p.id = l.pocket_id
           WHERE
             (
               (i.assigned_contact_id = i:contact_id) /* + items assigned to me */
@@ -716,22 +698,10 @@ class pocketlistsItemModel extends waModel
         if ($icon !== false && $icon != pocketlistsUserSettings::ICON_NONE) {
             $count = $this->query($q, array(
                 'contact_id' => wa()->getUser()->getId(),
-                'pocket_ids' => $pockets))->count();
+                'list_ids' => $pockets))->count();
             return $count;
         } else {
             return null;
         }
-    }
-
-    public function getAllByPocket($id)
-    {
-        if (!$id) {
-            return false;
-        }
-        $result = $this->query("SELECT i.*
-                             FROM {$this->table} i
-                             JOIN pocketlists_list l ON l.id = i.list_id
-                             WHERE l.pocket_id = i:pocket_id", array('pocket_id' => $id));
-        return $result->fetchAll('id');
     }
 }

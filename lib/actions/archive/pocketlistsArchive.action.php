@@ -13,6 +13,7 @@ class pocketlistsArchiveAction extends waViewAction
             $list_id = $list_id['id'];
         }
 
+        // todo: !
         $lists_html = wao(new pocketlistsListAction(array('list_id' => $list_id, 'archive' => true)))->display();
         $this->view->assign('lists_html', $lists_html);
 

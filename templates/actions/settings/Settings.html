@@ -28,12 +28,6 @@
                   [`To-do Stream inbox`]
                 </div>
                 <div class="value no-shift">
-                    <select id="pl-inbox-pocket">
-                        <option value="0">[`None`]</option>
-                        {foreach $pockets as $pocket}
-                        <option value="{$pocket.id}" {if isset($inbox_list) && $inbox_list.pocket_id == $pocket.id}selected="selected"{/if}>{$pocket.name|escape|truncate:32}</option>
-                        {/foreach}
-                    </select>
                     <select id="pl-inbox-list" {if empty($settings.stream_inbox_list)}style="display:none;"{/if}>
                     {if $inbox_lists}
                         {foreach $inbox_lists as $list}
@@ -72,7 +66,7 @@
                         <option value="2" {if !empty($settings.daily_recap) && $settings.daily_recap == 2}selected="selected"{/if}>[`for next 7 days`]</option>
                     </select>
 
-                    <div class="pl-cron-msg" {if empty($settings.daily_recap_on)}style="display: none;"{/if}>
+                    <div class="pl-cron-msg" style="{if empty($settings.daily_recap_on)}display: none;{/if}">
                     {if !$last_recap_cron_time}
                         <p class="small"><br><em><i class="icon10 exclamation"></i> [`Daily recap notifications require CRON to be configured, which is not the case for your Pocket Lists app. Cron the following command to run daily:`]</em></p>
                         <p class="small"><span class="highlighted">{$cron_command}</span></p>
@@ -122,42 +116,16 @@
                     </label>
                 </div>
               </div>
+
               <div class="field">
                 <div class="value no-shift submit">
                     <br>
                     <input type="submit" value="[`Save`]" id="pl-save-settings" class="button green" />
                     <i class="icon16 yes" style="display: none;"></i>
                 </div>
-
               </div>
             </div>
-
             </form>
-
-        {if $admin}
-            <h6 class="heading">[`Access rights`]</h6>
-            <div class="field-group">
-                <div class="field">
-                    <div class="name">
-                        [`Pockets`]
-                    </div>
-                    <div class="value">
-                        <ul class="zebra menu-v with-icons pl-pocket-settings" style="max-width: 250px;" id="pl-pockets">
-                            {foreach $pockets as $p}
-                            <li>
-                                <a href="#" data-pl-pocket-id="{$p.id}"><i class="icon16 color pl-dark-{$p.color|default:'none'}"></i><span>{$p.name|escape}</span></a>
-                            </li>
-                            {/foreach}
-                        </ul>
-                        <ul class="zebra menu-v with-icons pl-pocket-settings" style="max-width: 250px;">
-                            <li class="top-padded" style="background: #fff;">
-                                <a href="#" class="small"><i class="icon10 add"></i>[`New pocket`]</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        {/if}
         </div>
 
         <div class="clear-both"></div>
@@ -166,13 +134,10 @@
 
 </div>
 
-<div id="pl-pocket-dialog" style="display: none;">
-
-
-</div>
-
 <script type="text/javascript">
     (function(){
+        $.pocketlists.setTitle($_('My personal settings'));
+
         var $loading = $('<i class="icon16 loading">');
         $('#pl-save-settings').on('click', function(e) {
             var $this = $(this);
@@ -193,181 +158,11 @@
             $('.pl-cron-msg').toggle(200);
         });
 
-        $('#pl-inbox-pocket').on('change', function() {
-            var pocket_id =  $(this).find(':selected').val();
-            if (pocket_id > 0) {
-                $(this).after($loading);
-                $.get('?module=json&action=getLists&id=' + pocket_id, function (r) {
-                    $loading.remove();
-                    if (r.status === 'ok') {
-                        $('#pl-inbox-list').empty();
-                        $.each(r.data, function () {
-                            $('#pl-inbox-list').append($('<option value="' + this.id + '">').text(this.name));
-                        });
-                        $('#pl-inbox-list').show().trigger('change');
-                    }
-                }, 'json')
-            } else {
-                $('#pl-inbox-list').hide()
-                $('[name="stream_inbox_list"]').val('0');
-            }
-        });
         $('#pl-inbox-list').on('change', function() {
             var list_id = $(this).find(':selected').val();
             if (list_id) {
                 $('[name="stream_inbox_list"]').val(list_id);
             }
         });
-
-        var $pocket_wrapper = $('#pl-pockets');
-        $pocket_wrapper.sortable({
-            item: 'li',
-            distance: 5,
-            placeholder: 'pl-pocket-placeholder',
-            tolerance: 'pointer',
-            start: function(e, ui ){
-                ui.placeholder.height(ui.helper.outerHeight());
-            },
-            stop: function (event, ui) {
-                var getPockets = function () {
-                    var data = [];
-                    $pocket_wrapper.find('li').each(function (i) {
-                        var $this = $(this).find('a'),
-                            color = $this.find('i').attr('class').match(/icon16\scolor\spl-dark-(.*)/);
-                        debugger;
-                        data.push({
-                            id: $this.data('pl-pocket-id'),
-                            sort: i,
-                            color: color[1]
-                        });
-                    });
-                    return data;
-                };
-
-                var updateSort = function () {
-                    $.post(
-                            '?module=pocket&action=sort',
-                            {
-                                data: getPockets()
-                            },
-                            function (r) {
-                                if (r.status === 'ok') {
-                                } else {
-                                    alert(r.errors);
-                                }
-                            },
-                            'json'
-                    );
-                };
-
-                updateSort();
-            }
-        });
     }());
 </script>
-
-{if $admin}
-<script type="text/javascript">
-    (function(){
-        $.pocketlists.setTitle($_('My personal settings'));
-
-        $('.pl-pocket-settings').on('click', 'a', function() {
-            var $loading = $('<i class="icon16 loading">');
-            var $this = $(this);
-            $('#pl-pocket-dialog').waDialog({
-                'buttons': '<input type="submit" value="[`Save`]" class="button green" /> [`or`] <a class="cancel" href="#">[`cancel`]</a>',
-                'height': '250px',
-                'width': '600px',
-                'url': '?module=pocket&action=settingsDialog&pocket_id=' + $this.data('pl-pocket-id'),
-                onLoad: function () {
-                    var $this = $(this),
-                        pocket_id = parseInt($this.find('[name="pocket\[id\]"]').val());
-
-                    $('#pl-pocket-color').on('click', 'a', function (e) {
-                        e.preventDefault();
-                        $('#pl-pocket-color').find('input').val($(this).data('pl-pocket-color'));
-                        $(this).addClass('selected')
-                                .siblings().removeClass('selected')
-                    });
-
-                    var $autocomplete = $this.find(':input[name="new_user"]').autocomplete({
-                        source: backend_url + 'contacts/?action=autocomplete&type=person',
-                        minLength: 2,
-                        appendTo: '#pl-pocket-dialog',
-                        delay: 300,
-                        select: function (event, ui) {
-                            debugger;
-                            this.value = '';
-                            var $table = $(this).closest('table');
-                            var exist = $table.find('[data-pl-selected-user="' +  ui.item.value + '"]').length;
-
-                            if (exist) {
-                                $autocomplete.autocomplete('close');
-                            } else {
-                                var $row = $table.find('tr').first().clone();
-                                $row.data('pl-selected-user', ui.item.value);
-                                $row.find(':input').val(ui.item.value);
-                                $row.find('.pl-selected-users-name').text(ui.item.name);
-                                $(this).closest('tr').before($row);
-                                $autocomplete.autocomplete('close');
-                            }
-
-                            return false;
-                        },
-                        focus: function (event, ui) {
-                            this.value = ui.item.name;
-                            return false;
-                        }
-                    }).autocomplete('instance')._renderItem = function( ul, item ) {
-                        return $("<li>")
-                                .html( item.label )
-                                .appendTo( ul );
-                    };
-                    $this.find('[data-pl-selected-user]').on('click', 'a', function (e) {
-                        e.preventDefault();
-                        $(this).closest('[data-pl-selected-user]').remove();
-                    });
-                    $this.find('[data-action="pl-delete-pocket"]').on('click', function (e) {
-                        e.preventDefault();
-                        if (confirm($_('ALL TO-DO LISTS AND ITEMS FROM THIS PROJECT WILL BE DELETED PERMANENTLY. ARE YOU SURE?'))) {
-                            $.post('?module=pocket&action=delete', { id: pocket_id }, function (r) {
-                                if (r.status === 'ok') {
-                                    $.pocketlists_routing.redispatch();
-                                    $this.trigger('close');
-                                } else {}
-                            }, 'json');
-                        }
-                    });
-                },
-                onSubmit: function (d) {
-                    d.find('.dialog-buttons input[type="button"]').after($loading);
-                    $.post('?module=pocket&action=save', d.find('form').serialize(), function(r) {
-                        $loading.remove();
-                        if (r.status === 'ok') {
-                            var $new_pocket = null;
-                            if (r.data.new) {
-                                $new_pocket = $('.pl-pocket-settings li').first().clone();
-                            } else {
-                                $new_pocket = $('.pl-pocket-settings a[data-pl-pocket-id="' + r.data.id + '"]').closest('li');
-                            }
-                            $new_pocket
-                                    .find('a').data('pl-pocket-id', r.data.id)
-                                    .find('.color').removeClass().addClass('icon16 color pl-dark-' + $('#pl-pocket-color').find('input').val())
-                                    .end()
-                                    .find('span').text(d.find('input[name="pocket\[name\]"]').val());
-
-                            r.data.new && $('.pl-pocket-settings li').last().before($new_pocket);
-                            d.trigger('close');
-                        } else {
-
-                        }
-                    }, 'json');
-                    return false;
-                }
-            });
-
-            return false;
-        });
-    }());
-</script>
-{/if}

@@ -2,6 +2,8 @@
 
 class pocketlistsHelper
 {
+    const COLOR_DEFAULT = 'blue';
+
     /**
      * Return users for given list
      * @param bool|integer $list_id

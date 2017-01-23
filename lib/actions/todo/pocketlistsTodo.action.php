@@ -21,16 +21,16 @@ class pocketlistsTodoAction extends waViewAction
 
         // get all due or priority or assigned to me items
         $items = $im->getToDo(wa()->getUser()->getId());
-        $pocket_colors = array();
+        $list_colors = array();
         // completed items
         foreach ($items[1] as $item) {
-            $pocket_colors[date("Y-m-d", strtotime($item['complete_datetime']))]['gray'][] = $item['id'];
+            $list_colors[date("Y-m-d", strtotime($item['complete_datetime']))]['gray'][] = $item['id'];
         }
         foreach ($items[0] as $item) {
             if ($item['due_datetime'] || $item['due_date']) {
                 $due_date = date("Y-m-d", strtotime($item['due_date'] ? $item['due_date'] : $item['due_datetime']));
-                $item['pocket_color'] = $item['pocket_color'] ? $item['pocket_color'] : 'blue';
-                $pocket_colors[$due_date]['color'][$item['pocket_color']][] = $item['id'];
+                $item['list_color'] = $item['list_color'] ? $item['list_color'] : 'blue';
+                $list_colors[$due_date]['color'][$item['list_color']][] = $item['id'];
             }
         }
 
@@ -39,9 +39,9 @@ class pocketlistsTodoAction extends waViewAction
 //            wa()->getUser()->getId(),
 //            array('after' => date('Y-m-d', $current_date_start), 'before' => date('Y-m-d', $date_end))
 //        );
-//        $pocket_colors = array();
+//        $list_colors = array();
 //        foreach ($items as $item) {
-//            $pocket_colors[date("Y-m-d", strtotime($item['complete_datetime']))][$item['pocket_color']] = 1;
+//            $list_colors[date("Y-m-d", strtotime($item['complete_datetime']))][$item['list_color']] = 1;
 //        }
 
         $days = array();
@@ -75,9 +75,9 @@ class pocketlistsTodoAction extends waViewAction
 //                wa()->getUser()->getId(),
 //                array('after' => date('Y-m-d', $current_date_start), 'before' => date('Y-m-d', $date_end))
 //            );
-//            $pocket_colors = array();
+//            $list_colors = array();
 //            foreach ($items as $item) {
-//                $pocket_colors[date("Y-m-d", strtotime($item['complete_datetime']))][$item['pocket_color']] = 1;
+//                $list_colors[date("Y-m-d", strtotime($item['complete_datetime']))][$item['list_color']] = 1;
 //            }
 
             do {
@@ -110,13 +110,13 @@ class pocketlistsTodoAction extends waViewAction
                         'date' => $date_date,
                     ),
                     "hide" => $hide_other_month_date,
-                    'pockets' => array(
-                        'color' => isset($pocket_colors[$date_date]['color']) ?
-                            $pocket_colors[$date_date]['color'] : array(),
-                        'gray' => isset($pocket_colors[$date_date]['gray']) ?
-                            $pocket_colors[$date_date]['gray'] : array()
+                    'lists' => array(
+                        'color' => isset($list_colors[$date_date]['color']) ?
+                            $list_colors[$date_date]['color'] : array(),
+                        'gray' => isset($list_colors[$date_date]['gray']) ?
+                            $list_colors[$date_date]['gray'] : array()
                     ),
-//                        isset($pocket_colors[$date_date]) ? array_keys($pocket_colors[$date_date]) : array()
+//                        isset($list_colors[$date_date]) ? array_keys($list_colors[$date_date]) : array()
                 );
                 $current_date_start = strtotime("+1 days", $current_date_start);
             } while ($date_end > $current_date_start);
