@@ -55,26 +55,24 @@
 </div>
 
 <!-- TEAM -->
+{if $team}
 <div class="block">
     <h5 class="heading">
         [`Team`]
     </h5>
 
     <ul class="menu-v with-icons collapsible">
+        {foreach $team as $team_id => $teammate}
         <li>
-            <a href="#/team/">
+            <a href="#/team/{$team_id}">
                 <span class="count">1</span>
-                <i class="icon16 userpic20" style="background-image:url(/wa-content/img/userpic20@2x.jpg);"></i>km
+                <i class="icon16 userpic20" style="background-image: url({$teammate.userpic})" alt="{$teammate.username|escape}" data-pl-contact-id="{$team_id}"></i>{$teammate.username|escape}
             </a>
         </li>
-        <li>
-            <a href="#/team/">
-                <span class="count indicator red">2</span>
-                <i class="icon16 userpic20" style="background-image:url(/wa-content/img/userpic20@2x.jpg);"></i>vofka
-            </a>
-        </li>
+        {/foreach}
     </ul>
 </div>
+{/if}
 
 <!-- SYSTEM -->
 <div class="hr"></div>

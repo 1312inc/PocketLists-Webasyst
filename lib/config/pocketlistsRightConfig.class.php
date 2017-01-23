@@ -7,6 +7,8 @@ class pocketlistsRightConfig extends waRightConfig
 
     public function init()
     {
+        $this->addItem('canassign', _w('Can assign to-dos to teammates'), 'checkbox');
+
         $list_model = new pocketlistsListModel();
         $items = array();
         // todo: только активные? или все подряд?
@@ -26,5 +28,10 @@ class pocketlistsRightConfig extends waRightConfig
                 ),
             )
         );
+    }
+
+    public function setDefaultRights($contact_id)
+    {
+        return array('canassign' => 1);
     }
 }
