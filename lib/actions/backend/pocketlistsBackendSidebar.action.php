@@ -11,16 +11,9 @@ class pocketlistsBackendSidebarAction extends waViewAction
 
         $teammates = array();
         if ($this->getRights('canassign')) {
-            $team = pocketlistsHelper::getAccessContactsForList();
-            $im = new pocketlistsItemModel();
-            $last_activities = $im->getContactLastActivity(array_keys($team), true);
-            foreach ($last_activities as $mate_id => $last_activity) {
-                $teammates[$mate_id] = array(
-                    'last_activity' => $last_activity
-                ) + $team[$mate_id];
-                unset($team[$mate_id]);
-            }
-            $teammates = $teammates + $team;
+            $teammates_ids = pocketlistsHelper::getAllListsContacts();
+
+            $teammates = pocketlistsHelper::getTeammates($teammates_ids);
         }
         $this->view->assign('team', $teammates);
     }

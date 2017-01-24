@@ -410,3 +410,9 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 .pl-list-placeholder {
     background-color: #22ffbb !important;
 }
+
+#pl-sidebar-core .pl-online {
+    position: absolute;
+    left: 8px;
+    top: 6px;
+}

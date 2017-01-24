@@ -9,37 +9,7 @@ class pocketlistsTeamAction extends waViewAction
         $teammates = array();
         $teammates_ids = pocketlistsHelper::getAllListsContacts();
         if ($teammates_ids) {
-            $im = new pocketlistsItemModel();
-            $items_count_names = $im->getAssignedItemsCountAndNames($teammates_ids);
-            $last_activities = $im->getContactLastActivity($teammates_ids);
-            foreach ($teammates_ids as $tid) {
-                if ($tid != wa()->getUser()->getId()) {
-                    $mate = new waContact($tid);
-                    $teammates[$tid]['name'] = $mate->getName();
-                    $teammates[$tid]['id'] = $mate->getId();
-                    $teammates[$tid]['photo_url'] = $mate->getPhoto();
-                    $teammates[$tid]['login'] = $mate->get('login');
-                    $teammates[$tid]['status'] = $mate->getStatus();
-
-                    $teammates[$tid]['last_activity'] = isset($last_activities[$tid]) ? $last_activities[$tid] : false;
-                    $teammates[$tid]['items_info'] = array(
-                        'count' => 0,
-                        'names' => "",
-                        'max_priority' => 0,
-                    );
-                    if (isset($items_count_names[$tid])) {
-                        $teammates[$tid]['items_info'] = array(
-                            'count' => count($items_count_names[$tid]['item_names']),
-                            'names' => implode(', ', $items_count_names[$tid]['item_names']),
-                            'max_priority' => $items_count_names[$tid]['item_max_priority'],
-                        );
-                    }
-                } else {
-                    unset($teammates[$tid]);
-                }
-            }
-
-            usort($teammates, array($this, "compare_last_activity"));
+            $teammates = pocketlistsHelper::getTeammates($teammates_ids);
 
             $selected_teammate = waRequest::get('teammate');
             if ($selected_teammate) {
@@ -50,6 +20,8 @@ class pocketlistsTeamAction extends waViewAction
                 $id = reset($teammates);
                 $id = $id['id'];
             }
+
+            $im = new pocketlistsItemModel();
             $items = $im->getAssignedOrCompletesByContactItems($id);
             $this->view->assign('items', $items[0]);
             $this->view->assign('items_done', $items[1]);
@@ -64,10 +36,5 @@ class pocketlistsTeamAction extends waViewAction
 
         $this->view->assign('teammates', $teammates);
         $this->view->assign('attachments_path', wa()->getDataUrl('attachments/', true));
-    }
-
-    private function compare_last_activity($a, $b)
-    {
-        return strtotime($b['last_activity']) - strtotime($a['last_activity']);
     }
 }

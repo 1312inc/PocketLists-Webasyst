@@ -477,12 +477,11 @@ class pocketlistsItemModel extends waModel
         return $result;
     }
 
-    public function getContactLastActivity($contact_ids, $order_by_last_activity = false)
+    public function getContactLastActivity($contact_ids)
     {
         if (!is_array($contact_ids)) {
             $contact_ids = array($contact_ids);
         }
-        $order_by_last_activity = $order_by_last_activity ? " ORDER BY last_activity_datetime DESC" : '';
 
         // ох что-то я сомневаюсь
         $q = "SELECT
@@ -513,8 +512,7 @@ class pocketlistsItemModel extends waModel
               ) t
             WHERE
                 t.contact_id IN (i:contact_id)
-            GROUP BY t.contact_id
-            {$order_by_last_activity}";
+            GROUP BY t.contact_id";
 
         return $this->query(
             $q,

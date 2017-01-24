@@ -440,4 +440,50 @@ class pocketlistsHelper
         $available_lists = pocketlistsHelper::getAccessListForContact($contact_id);
         return in_array($list_id, $available_lists);
     }
+
+    private static function compare_last_activity($a, $b)
+    {
+        return strtotime($b['last_activity']) - strtotime($a['last_activity']);
+    }
+
+    public static function getTeammates($teammates_ids, $sort_by_last_activity = true, $exclude_me = true)
+    {
+        $teammates = array();
+
+        $im = new pocketlistsItemModel();
+        $items_count_names = $im->getAssignedItemsCountAndNames($teammates_ids);
+        $last_activities = $im->getContactLastActivity($teammates_ids);
+        foreach ($teammates_ids as $tid) {
+            if ($exclude_me && $tid == wa()->getUser()->getId()) {
+                unset($teammates[$tid]);
+                continue;
+            }
+            $mate = new waContact($tid);
+            $teammates[$tid]['name'] = $mate->getName();
+            $teammates[$tid]['id'] = $mate->getId();
+            $teammates[$tid]['photo_url'] = $mate->getPhoto();
+            $teammates[$tid]['login'] = $mate->get('login');
+            $teammates[$tid]['status'] = $mate->getStatus();
+
+            $teammates[$tid]['last_activity'] = isset($last_activities[$tid]) ? $last_activities[$tid] : false;
+            $teammates[$tid]['items_info'] = array(
+                'count' => 0,
+                'names' => "",
+                'max_priority' => 0,
+            );
+            if (isset($items_count_names[$tid])) {
+                $teammates[$tid]['items_info'] = array(
+                    'count' => count($items_count_names[$tid]['item_names']),
+                    'names' => implode(', ', $items_count_names[$tid]['item_names']),
+                    'max_priority' => $items_count_names[$tid]['item_max_priority'],
+                );
+            }
+        }
+
+        if ($sort_by_last_activity) {
+            usort($teammates, array('pocketlistsHelper', "compare_last_activity"));
+        }
+
+        return $teammates;
+    }
 }
