@@ -35,7 +35,8 @@ class pocketlistsHelper
                 $contact = new waContact(-$id['group_id']);
                 $contacts[$contact->getId()] = array(
                     'username' => $contact->getName(),
-                    'userpic' => $contact->getPhoto($photo_size)
+                    'userpic' => $contact->getPhoto($photo_size),
+                    'login' => $contact['login']
                 );
             } else {
                 $groups[] = $id['group_id'];
@@ -50,7 +51,8 @@ class pocketlistsHelper
             if (!isset($contacts[$contact->getId()])) {
                 $contacts[$contact->getId()] = array(
                     'username' => $contact->getName(),
-                    'userpic' => $contact->getPhoto($photo_size)
+                    'userpic' => $contact->getPhoto($photo_size),
+                    'login' => $contact['login']
                 );
             }
         }

@@ -38,7 +38,7 @@
 <!-- LISTS -->
 <div class="block">
     <h5 class="heading">
-        <a href="#/list/new" class="count"><i class="icon16 add"></i></a>
+        <a href="#/list/new/" class="count"><i class="icon16 add"></i></a>
         [`Lists`]
     </h5>
 
@@ -64,7 +64,7 @@
     <ul class="menu-v with-icons collapsible">
         {foreach $team as $team_id => $teammate}
         <li>
-            <a href="#/team/{$team_id}">
+            <a href="#/team/{$teammate.login|escape}/">
                 <span class="count">1</span>
                 <i class="icon16 userpic20" style="background-image: url({$teammate.userpic})" alt="{$teammate.username|escape}" data-pl-contact-id="{$team_id}"></i>{$teammate.username|escape}
             </a>

@@ -512,7 +512,7 @@ class pocketlistsItemModel extends waModel
 
     public function getAssignedOrCompletesByContactItems($contact_id)
     {
-        $lists = pocketlistsHelper::getAccessListForContact($contact_id);
+        $lists = pocketlistsHelper::getAccessListForContact();
 
         $q = "SELECT
                   i.id id,
@@ -633,7 +633,7 @@ class pocketlistsItemModel extends waModel
         $icon = $us->appIcon();
 
         $pocket_rights = "";
-        $pockets = array();
+        $lists = array();
         // if user is admin - show all completed items
         // else only items user has access and null list items
         if (!pocketlistsHelper::isAdmin()) {
@@ -698,7 +698,7 @@ class pocketlistsItemModel extends waModel
         if ($icon !== false && $icon != pocketlistsUserSettings::ICON_NONE) {
             $count = $this->query($q, array(
                 'contact_id' => wa()->getUser()->getId(),
-                'list_ids' => $pockets))->count();
+                'list_ids' => $lists))->count();
             return $count;
         } else {
             return null;

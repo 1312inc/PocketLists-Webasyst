@@ -44,8 +44,7 @@ class pocketlistsTeamAction extends waViewAction
             $selected_teammate = waRequest::get('teammate');
             if ($selected_teammate) {
                 $user_model = new waUserModel();
-                $id = $user_model->select('id')->where("login = s:0", array($selected_teammate))->limit(1)->fetch(
-                );
+                $id = $user_model->getByLogin($selected_teammate);
                 $id = $id['id'];
             } else {
                 $id = reset($teammates);

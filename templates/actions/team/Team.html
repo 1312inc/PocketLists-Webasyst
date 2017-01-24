@@ -18,7 +18,7 @@
             <ul class="zebra pl-team" id="pl-lists">
                 {foreach $teammates as $teammate}
                 <li {if $teammate.id == $current_teammate.id}class="selected"{/if} data-pl-team-id="{$teammate.id}" data-pl-list-id="{$teammate.id}">
-                    <a href="#/team/{$teammate.login}">
+                    <a href="#/team/{$teammate.login|escape}/">
                         <div class="profile image32px">
                             <div class="image">
                                 <img class="userpic" src="{$teammate.photo_url}">
@@ -115,7 +115,7 @@
         enableSortItems: false,
         assignUser: parseInt($('#pl-assigned-contact-id').val()),
         showMessageOnEmptyList: true,
-        list: new $.pocketlists.List($('.pl-title')),
+//        list: new $.pocketlists.List($('.pl-title')),
         current_user_id: {$wa->user()->get('id')}
     });
     $.pocketlists.setTitle('{$current_teammate.name|escape}');
