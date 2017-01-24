@@ -36,7 +36,7 @@ class pocketlistsHelper
                 $contacts[$contact->getId()] = array(
                     'username' => $contact->getName(),
                     'userpic' => $contact->getPhoto($photo_size),
-                    'login' => $contact['login']
+                    'login' => $contact['login'],
                 );
             } else {
                 $groups[] = $id['group_id'];
@@ -52,7 +52,7 @@ class pocketlistsHelper
                 $contacts[$contact->getId()] = array(
                     'username' => $contact->getName(),
                     'userpic' => $contact->getPhoto($photo_size),
-                    'login' => $contact['login']
+                    'login' => $contact['login'],
                 );
             }
         }

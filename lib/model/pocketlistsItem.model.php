@@ -477,23 +477,22 @@ class pocketlistsItemModel extends waModel
         return $result;
     }
 
-    public function getContactLastActivity($contact_ids)
+    public function getContactLastActivity($contact_ids, $order_by_last_activity = false)
     {
         if (!is_array($contact_ids)) {
             $contact_ids = array($contact_ids);
         }
+        $order_by_last_activity = $order_by_last_activity ? " ORDER BY last_activity_datetime DESC" : '';
+
         // ох что-то я сомневаюсь
         $q = "SELECT
               MAX(t.last_date) last_activity_datetime,
               t.contact_id contact_id
-            FROM
-              (
+            FROM (
                   SELECT
                     i.complete_contact_id contact_id,
                     max(i.complete_datetime) last_date
                   FROM {$this->table} i
-                  WHERE
-                    i.complete_contact_id IN (i:contact_id)
                   GROUP BY i.complete_contact_id
 
                   UNION
@@ -502,12 +501,25 @@ class pocketlistsItemModel extends waModel
                     i.contact_id contact_id,
                     max(i.create_datetime) last_date
                   FROM {$this->table} i
-                  WHERE
-                    i.contact_id IN (i:contact_id)
                   GROUP BY i.contact_id
+                  
+                  UNION
+
+                  SELECT
+                    c.contact_id contact_id,
+                    max(c.create_datetime) last_date
+                  FROM pocketlists_comment c
+                  GROUP BY c.contact_id
               ) t
-            GROUP BY t.contact_id ";
-        return $this->query($q, array('contact_id' => $contact_ids))->fetchAll('contact_id', 1);
+            WHERE
+                t.contact_id IN (i:contact_id)
+            GROUP BY t.contact_id
+            {$order_by_last_activity}";
+
+        return $this->query(
+            $q,
+            array('contact_id' => $contact_ids)
+        )->fetchAll('contact_id', 1);
     }
 
     public function getAssignedOrCompletesByContactItems($contact_id)
