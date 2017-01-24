@@ -406,3 +406,7 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 .highlighted-background {
     background-color: #22ffbb !important;
 }
+
+.pl-list-placeholder {
+    background-color: #22ffbb !important;
+}

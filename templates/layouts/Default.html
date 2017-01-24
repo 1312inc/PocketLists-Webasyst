@@ -42,7 +42,8 @@
     </div>
 <script type="text/javascript">
     $.pocketlists.init({
-        account_name: '{$wa->accountName()|escape}'
+        account_name: '{$wa->accountName()|escape}',
+        isAdmin: {$isAdmin}
     });
 </script>
 </body>

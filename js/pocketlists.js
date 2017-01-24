@@ -3,7 +3,9 @@
 
     $.pocketlists = {
         $loading: $('<i class="icon16 loading">'),
-        defaults: {},
+        defaults: {
+            isAdmin: false
+        },
         options: {},
         updateAppCounter: function (count) {
             var self = this;
@@ -129,6 +131,56 @@
                 self.highlightSidebar();
             });
         },
+        sortLists: function() {
+            var self = this;
+            if (!self.options.isAdmin) {
+                return;
+            }
+
+            var $lists_wrapper = self.$core_sidebar.find('[data-pl-sidebar-block="lists"]');
+            $lists_wrapper.sortable({
+                item: '[data-pl-list-id]',
+                distance: 5,
+                placeholder: 'pl-list-placeholder',
+                tolerance: 'pointer',
+                start: function(e, ui ){
+                    ui.placeholder.height(ui.helper.outerHeight());
+                },
+                stop: function (event, ui) {
+                    var getLists = function () {
+                        var data = [];
+                        $lists_wrapper.find('[data-pl-list-id]').each(function (i) {
+                            var $this = $(this);
+                                // color = $this.attr('class').match(/pl-(.*)/);
+                            data.push({
+                                id: $this.data('pl-list-id'),
+                                sort: i
+                                // color: color[1]
+                            });
+                        });
+                        return data;
+                    };
+
+                    var updateSort = function () {
+                        $.post(
+                            '?module=list&action=sort',
+                            {
+                                data: getLists()
+                            },
+                            function (r) {
+                                if (r.status === 'ok') {
+                                } else {
+                                    alert(r.errors);
+                                }
+                            },
+                            'json'
+                        );
+                    };
+
+                    updateSort();
+                }
+            });
+        },
         init: function (o) {
             $.pocketlists_routing.init();
 
@@ -138,6 +190,8 @@
             self.options = $.extend({}, self.defaults, o);
 
             self.highlightSidebar();
+
+            self.sortLists();
 
             $('#wa-app').on('click', '[data-pl-scroll-to-top] a', function () {
                 self.scrollToTop(0, 80);

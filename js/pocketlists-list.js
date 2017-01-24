@@ -377,51 +377,6 @@ $.pocketlists.List = function ($list_wrapper, options) {
     var deselectList = function () {
         $list_wrapper.removeData('pl-clicked');
     };
-    var sortList = function() {
-        var $lists_wrapper = $('#pl-lists').find('.pl-lists');
-        $lists_wrapper.sortable({
-            item: '[data-pl-list-id]',
-            distance: 5,
-            placeholder: 'pl-list-placeholder',
-            tolerance: 'pointer',
-            start: function(e, ui ){
-                ui.placeholder.height(ui.helper.outerHeight());
-            },
-            stop: function (event, ui) {
-                var getLists = function () {
-                    var data = [];
-                    $lists_wrapper.find('[data-pl-list-id]').each(function (i) {
-                        var $this = $(this),
-                            color = $this.attr('class').match(/pl-(.*)/);
-                        data.push({
-                            id: $this.data('pl-list-id'),
-                            sort: i,
-                            color: color[1]
-                        });
-                    });
-                    return data;
-                };
-
-                var updateSort = function () {
-                    $.post(
-                        '?module=list&action=sort',
-                        {
-                            data: getLists()
-                        },
-                        function (r) {
-                            if (r.status === 'ok') {
-                            } else {
-                                alert(r.errors);
-                            }
-                        },
-                        'json'
-                    );
-                };
-
-                updateSort();
-            }
-        });
-    };
     var init = function () {
         // will add new list if we can
         if ($new_list_input.length) {
