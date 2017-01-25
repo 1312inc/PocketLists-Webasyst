@@ -205,13 +205,18 @@
                 $('#content').html(result);
             });
         },
+        activityAction: function () {
+            this.load('?module=activity', function (result) {
+                $('#content').html(result);
+            });
+        },
         favoritesAction: function () {
             this.load('?module=favorites', function (result) {
                 $('#content').html(result);
             });
         },
         teamAction: function (teammate) {
-            var teammate = teammate || 0;
+            teammate = teammate || 0;
             this.load('?module=team&teammate=' + teammate, function (result) {
                 $('#content').html(result);
             });

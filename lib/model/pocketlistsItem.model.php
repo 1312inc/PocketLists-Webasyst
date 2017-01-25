@@ -262,6 +262,7 @@ class pocketlistsItemModel extends waModel
             }
             return true;
         }
+        return false;
     }
 
     private function getQuery()

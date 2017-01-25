@@ -28,6 +28,12 @@ class pocketlistsCommentAddController extends waJsonController
                         'username' => htmlspecialchars($user->getName(), ENT_QUOTES),
                         'comment' => nl2br(htmlspecialchars($insert_data['comment'], ENT_QUOTES))
                     );
+
+                    $this->logAction('item_comment', array(
+                        'list_id' => $item['list_id'],
+                        'comment_id' => $last_id
+                    ));
+
                     pocketlistsNotifications::notifyAboutNewComment($insert_data);
                 } else {
                     $this->errors = 'error while adding new item comment';
