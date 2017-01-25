@@ -21,7 +21,7 @@
             <p>[`Click on a tiny star icon next to to-do name to add it to your personal favorties list.`]</p>
         </div>
 
-        <section id="pl-undone-items">
+        <section id="pl-undone-items" data-pl-items="undone">
             <ul class="menu-v">
                 {if !empty($undone_items)}
                 {include '../item/ItemCreate.html' parent_id=0 items=$undone_items}

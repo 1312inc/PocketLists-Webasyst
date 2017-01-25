@@ -8,8 +8,8 @@
  * - drag
  */
 $.pocketlists.Items = function($list_items_wrapper, options) {
-    var $undone_items_wrapper = $list_items_wrapper.find('#pl-undone-items > ul.menu-v'),
-        $sortable_items = $('#pl-undone-items').find('ul.menu-v'),
+    var $undone_items_wrapper = $list_items_wrapper.find('[data-pl-items="undone"] > ul.menu-v'),
+        $sortable_items = $('[data-pl-items="undone"]').find('ul.menu-v'),
         $done_items = $list_items_wrapper.find('#pl-complete-log'),
         $done_items_wrapper = $done_items.find('ul.menu-v').first(),
         $new_item_wrapper = $('#pl-item-add').detach(),

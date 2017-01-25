@@ -1,7 +1,7 @@
 <div class="shadowed">
     <main class="content pl-items pl-logbook" id="pl-list-content">
     {if !empty($items)}
-        <div class="pl-list-items" id="pl-complete-log" style="display: block;">
+        <div class="pl-list-items" id="pl-complete-log" style="display: block;" data-pl-items="undone">
             <ul class="menu-v">
                 {include '../item/Item.html' items=$items}
             </ul>
@@ -13,6 +13,11 @@
             <p>[`Logbook will automatically collect all to-do items completed by you and your teammates.`]</p>
         </div>
     {/if}
+
+    <div class="clear-both"></div>
+
+    {include '../../include/itemdetails.html' inline}
+
     </main>
 </div>
 <script type="text/javascript">

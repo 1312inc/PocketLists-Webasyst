@@ -452,7 +452,7 @@ class pocketlistsHelper
 
         $im = new pocketlistsItemModel();
         $items_count_names = $im->getAssignedItemsCountAndNames($teammates_ids);
-        $last_activities = $im->getContactLastActivity($teammates_ids);
+        $last_activities = $im->getLastActivities($teammates_ids);
         foreach ($teammates_ids as $tid) {
             if ($exclude_me && $tid == wa()->getUser()->getId()) {
                 unset($teammates[$tid]);

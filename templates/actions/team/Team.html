@@ -74,7 +74,7 @@
                 <p>[`To assign a to-do to a user, either select him in to-do item details or add a to-do item above.`]</p>
             </div>
 
-            <section id="pl-undone-items">
+            <section id="pl-undone-items" data-pl-items="undone">
                 <ul class="menu-v">
                     {if !empty($items)}
                     {include '../item/Item.html' parent_id=0 items=$items}

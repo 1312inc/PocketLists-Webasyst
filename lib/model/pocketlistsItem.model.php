@@ -4,8 +4,12 @@ class pocketlistsItemModel extends waModel
 {
     protected $table = 'pocketlists_item';
 
+    public function getCompletedItems($contact_id = false, $date_range = false)
+    {
+        return $this->getLogbookItems($contact_id, $date_range);
+    }
 
-    public function getLogbookItems($contact_id = false, $date_range = false)
+    public function getLogbookItems($contact_id = false, $date_range = false, $completed = false)
     {
         $by_user = '';
         if ($contact_id) {
@@ -19,6 +23,11 @@ class pocketlistsItemModel extends waModel
             if (!empty($date_range['before'])) {
                 $by_date_range .= '  AND i.complete_datetime < s:date_before';
             }
+        }
+
+        $only_completed = '';
+        if ($completed) {
+            $only_completed = " AND i.status > 0";
         }
 
         $sql = "SELECT
@@ -45,11 +54,12 @@ class pocketlistsItemModel extends waModel
                 LEFT JOIN pocketlists_item i2 ON i2.key_list_id = i.list_id
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
                 WHERE
-                  i.status > 0
+                  i.key_list_id IS NULL
                   AND (
                     l.id IN (i:list_ids)
                     OR (l.id IS NULL AND i.contact_id = i:contact_id)
                   )
+                  {$only_completed}
                   {$by_user}
                   {$by_date_range}
                 ORDER BY i.complete_datetime DESC";
@@ -58,15 +68,24 @@ class pocketlistsItemModel extends waModel
             $sql,
             array(
                 'contact_id' => wa()->getUser()->getId(),
-                'list_ids' => pocketlistsHelper::getAccessListForContact(wa()->getUser()->getId()),
+                'list_ids' => pocketlistsHelper::getAccessListForContact(),
                 'date_after' => !empty($date_range['after']) ? $date_range['after'] : '',
                 'date_before' => !empty($date_range['before']) ? $date_range['before'] : '',
             )
         )->fetchAll();
-        foreach ($items as $id => $item) {
-            $items[$id] = $this->updateItem($item);
+
+        $activities = $this->getLastActivities();
+        $result = array();
+        foreach ($activities as $id => $item) {
+            if (isset($items[$id])) {
+                $result[$id] = $this->updateItem($items[$id]);
+                unset($items[$id]);
+            }
         }
-        return $items;
+        foreach ($items as $id => $item) {
+            $result[$id] = $this->updateItem($items[$id]);
+        }
+        return $result;
 //        return $this->getTree($items, $tree);
     }
 
@@ -477,10 +496,12 @@ class pocketlistsItemModel extends waModel
         return $result;
     }
 
-    public function getContactLastActivity($contact_ids)
+    public function getLastActivities($contact_ids = array())
     {
-        if (!is_array($contact_ids)) {
+        $by_contact = "";
+        if ($contact_ids && !is_array($contact_ids)) {
             $contact_ids = array($contact_ids);
+            $by_contact = " WHERE t.contact_id IN (i:contact_id)";
         }
 
         // ох что-то я сомневаюсь
@@ -510,8 +531,7 @@ class pocketlistsItemModel extends waModel
                   FROM pocketlists_comment c
                   GROUP BY c.contact_id
               ) t
-            WHERE
-                t.contact_id IN (i:contact_id)
+            {$by_contact}
             GROUP BY t.contact_id";
 
         return $this->query(

@@ -289,15 +289,15 @@ input#pl-new-list-input,
 #pl-complete-log h5 { margin: 30px 15px 5px; }
 #pl-complete-log-link { padding: 13px 15px; display: block; }
 
-.pl-logbook { color: #aaa; }
-.pl-logbook .pl-due-overdue,
-.pl-logbook .pl-due-today,
-.pl-logbook .pl-due-tomorrow,
-.pl-logbook .pl-due-someday { display: none; }
-.pl-logbook .pl-edit,
-.pl-logbook .pl-comment { display: none !important; }
-.pl-logbook .pl-favorite,
-.pl-logbook .pl-assignee { opacity: 1 !important; }
+.pl-logbook .pl-item.gray { color: #aaa; }
+.pl-logbook .pl-item.gray .pl-due-overdue,
+.pl-logbook .pl-item.gray .pl-due-today,
+.pl-logbook .pl-item.gray .pl-due-tomorrow,
+.pl-logbook .pl-item.gray .pl-due-someday { display: none; }
+.pl-logbook .pl-item.gray .pl-edit,
+.pl-logbook .pl-item.gray .pl-comment { display: none !important; }
+.pl-logbook .pl-item.gray .pl-favorite,
+.pl-logbook .pl-item.gray .pl-assignee { opacity: 1 !important; }
 
 .pl-archive { background: #eee; }
 .pl-archive .pl-title h1 { padding-left: 0; }
