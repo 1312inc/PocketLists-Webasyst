@@ -69,9 +69,9 @@ class pocketlistsListModel extends waModel
      * Get only active lists and its items with calculated priority that are accessible for current user
      * @return array
      */
-    public function getLists()
+    public function getLists($check_access = true)
     {
-        $lists = $this->getAllActiveLists();
+        $lists = $this->getAllActiveLists($check_access);
         foreach ($lists as $id => &$list) {
             $lists[$id]['calc_priority'] = max(pocketlistsHelper::calcPriorityOnDueDate($list['min_due_date'], $list['min_due_datetime']), $list['max_priority']);
         }
@@ -82,9 +82,15 @@ class pocketlistsListModel extends waModel
      * Get all lists (including archived) that are accessible for current user
      * @return array
      */
-    public function getAllAccessedLists()
+    public function getAllLists($check_access = true)
     {
-        $available_lists = pocketlistsHelper::getAccessListForContact();
+        $accessed_lists = "";
+        $available_lists = array();
+
+        if ($check_access) {
+            $available_lists = pocketlistsHelper::getAccessListForContact();
+            $accessed_lists = " WHERE l.id IN (i:list_ids)";
+        }
 
         $sql = "SELECT
                   i2.*,
@@ -96,7 +102,7 @@ class pocketlistsListModel extends waModel
                 FROM pocketlists_list l
                 LEFT JOIN pocketlists_item i ON i.list_id = l.id AND i.status = 0
                 LEFT JOIN pocketlists_item i2 ON i2.key_list_id = l.id
-                WHERE l.id IN (i:list_ids)
+                {$accessed_lists}
                 GROUP BY l.id
                 ORDER BY l.sort, l.id";
 
@@ -113,9 +119,9 @@ class pocketlistsListModel extends waModel
      * Get only archived lists and its items that are accessible for current user
      * @return array
      */
-    public function getArchivedLists()
+    public function getArchivedLists($check_access = true)
     {
-        $lists = $this->getAllAccessedLists();
+        $lists = $this->getAllLists($check_access);
         foreach ($lists as $id => &$list) {
             if (!$list['archived']) {
                 unset($lists[$id]);
@@ -128,8 +134,8 @@ class pocketlistsListModel extends waModel
      * Get only active lists and its items that are accessible for current user
      * @return array
      */
-    public function getAllActiveLists() {
-        $lists = $this->getAllAccessedLists();
+    public function getAllActiveLists($check_access = true) {
+        $lists = $this->getAllLists($check_access);
         foreach ($lists as $id => &$list) {
             if ($list['archived']) {
                 unset($lists[$id]);

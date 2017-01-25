@@ -1,7 +1,9 @@
 <?php
-$pm = new pocketlistsPocketModel();
-$inserted = $pm->insert(array(
-    'name' => wa()->accountName()
+$lm = new pocketlistsListModel();
+$lm->add(array(
+    'name' => wa()->accountName(),
+    'create_datetime' => date('Y-m-d H:i:s'),
+    'contact_id' => wa()->getUser()->getId()
 ));
 $pr = new pocketlistsRightConfig();
 $pr->setRights(wa()->getUser()->getId(), 'backend', 2);

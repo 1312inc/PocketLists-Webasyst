@@ -12,7 +12,7 @@ class pocketlistsRightConfig extends waRightConfig
         $list_model = new pocketlistsListModel();
         $items = array();
         // todo: только активные? или все подряд?
-        foreach ($list_model->getAllActiveLists() as $list) {
+        foreach ($list_model->getAllLists(false) as $list) {
             $items[$list['id']] = $list['name'];
         }
         $this->addItem(

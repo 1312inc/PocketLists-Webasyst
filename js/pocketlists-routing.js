@@ -155,7 +155,7 @@
 
         // actions
         defaultAction: function () {
-            this.pocketAction();
+            this.todoAction();
         },
         listsAction: function() {
             //var self = this;
