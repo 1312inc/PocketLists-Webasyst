@@ -7,6 +7,7 @@ class pocketlistsRightConfig extends waRightConfig
 
     public function init()
     {
+        $this->addItem('cancreatetodos', _w('Can create to-dos'), 'always_enabled');
         $this->addItem('canassign', _w('Can assign to-dos to teammates'), 'checkbox');
         $this->addItem('cancreatelists', _w('Can create lists'), 'checkbox');
 
@@ -21,9 +22,9 @@ class pocketlistsRightConfig extends waRightConfig
             _w('Lists'),
             'selectlist',
             array(
-                'items' => $items,
+                'items'    => $items,
                 'position' => 'right',
-                'options' => array(
+                'options'  => array(
                     self::RIGHT_NONE => _w('No access'),
                     self::RIGHT_FULL => _w('Full access'),
                 ),
@@ -33,6 +34,10 @@ class pocketlistsRightConfig extends waRightConfig
 
     public function setDefaultRights($contact_id)
     {
-        return array('canassign' => 1, 'cancreatelists' => 1);
+        return array(
+            'cancreatetodos' => 1,
+            'canassign'      => 1,
+            'cancreatelists' => 1,
+        );
     }
 }
