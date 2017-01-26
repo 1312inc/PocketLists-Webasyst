@@ -164,8 +164,34 @@ class pocketlistsItemModel extends waModel
 //        return $this->getTree($items, true);
     }
 
-    public function getFavorites($contact_id)
+    public function getFavoritesCount($contact_id = false)
     {
+        if (!$contact_id) {
+            $contact_id = wa()->getUser()->getId();
+        }
+
+        $lists = pocketlistsHelper::getAccessListForContact($contact_id);
+        $sql = "SELECT
+                  SUM(i.status > 0) done,
+                  SUM(i.status = 0) undone
+                FROM {$this->table} i
+                LEFT JOIN pocketlists_list l ON (l.id = i.list_id  OR l.id = i.key_list_id)
+                LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
+                WHERE
+                  uf.item_id IS NOT NULL
+                  AND (l.archived = 0 OR l.archived IS NULL) /* ONLY not archived items */
+                  AND (l.id IN (i:list_ids) OR l.id IS NULL) /* ONLY items from accessed pockets or NULL-list items */";
+        return $this->query($sql, array(
+            'list_ids'   => $lists,
+            'contact_id' => $contact_id,
+        ))->fetch();
+    }
+
+    public function getFavorites($contact_id = false)
+    {
+        if (!$contact_id) {
+            $contact_id = wa()->getUser()->getId();
+        }
         // get to-do items only from accessed pockets
         $lists = pocketlistsHelper::getAccessListForContact($contact_id);
         $sql = "SELECT

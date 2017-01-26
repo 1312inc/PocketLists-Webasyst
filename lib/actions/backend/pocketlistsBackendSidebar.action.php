@@ -23,6 +23,9 @@ class pocketlistsBackendSidebarAction extends waViewAction
         $this->view->assign('new_items_count', count($last_logs));
         $this->view->assign('last_activity', $last_activity);
 
+        $item_model = new pocketlistsItemModel();
+        $this->view->assign('favorites_count', $item_model->getFavoritesCount());
+
 //        pocketlistsActivity::setUserActivity();
     }
 }

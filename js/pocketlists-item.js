@@ -418,15 +418,19 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
         request_in_action = true;
 
         var $star = $item.find('[class*="star"]'),
-            id = parseInt($item.data('id'));
+            id = parseInt($item.data('id')),
+            status = $star.hasClass('star-empty') ? 1 : 0;
         $.post(
             '?module=item&action=favorite',
             {
                 id: id,
-                status: $star.hasClass('star-empty') ? 1 : 0
+                status: status
             },
             function (r) {
                 if (r.status === 'ok') {
+                    var $favorites_count = $('[data-pl-sidebar="favorites-count"]'),
+                        current_favorites_count = parseInt($favorites_count.text());
+                    $favorites_count.text(status ? ++current_favorites_count : --current_favorites_count);
                     $star.toggleClass('star-empty star')
                 } else {
                     alert(r.errors);
