@@ -1,53 +1,9 @@
 <nav class="pl-inner-sidebar">
-
-    <!-- CALENDAR -->
-
-    {foreach $days as $year => $months}
-    {foreach $months as $month_name => $month}
-    <div class="block double-padded align-center">
-        <h5 class="heading">
-            {_ws($month_name)} {$year}
-        </h5>
+    <div data-pl-todo-calendar>
+        {$calendar_html}
     </div>
-
-    <!-- sample from Blog -->
-    <table class="pl-calendar">
-        <thead>
-        <tr class="small">
-            {if $week_first_sunday}<th>{_ws('Sun')}</th>{/if}
-            <th>{_ws('Mon')}</th>
-            <th>{_ws('Tue')}</th>
-            <th>{_ws('Wed')}</th>
-            <th>{_ws('Thu')}</th>
-            <th>{_ws('Fri')}</th>
-            <th>{_ws('Sat')}</th>
-            {if !$week_first_sunday}<th>{_ws('Sun')}</th>{/if}
-        </tr>
-        </thead>
-        <tbody>
-
-
-        {foreach $month.weeks as $week}
-            <tr>
-            {foreach $week as $day}
-                <td data-pl-todo-date="{$day.date.date}" class="{if $day.date.month != $month.num}pl-not-this-month{/if} {if $day.date.month == $today_month && $day.date.day == $today &&  $month.num == $today_month}pl-today{/if} ui-droppable"{if $day.hide} style="visibility: hidden;border: none;"{/if}>
-                    <span class="pl-date">{$day.date.day}</span>
-
-                    <div class="pl-dots">
-                        {foreach $day.lists.gray as $list_color name=foo}{if $smarty.foreach.foo.index == 3}{break}{/if}<i class="icon10 color pl-dark-none"></i>{/foreach}<!--
-                        -->{foreach $day.lists.color as $list_color => $item_dots}{foreach $item_dots as $dot name=foo}{if $smarty.foreach.foo.index == 3}{break}{/if}<i class="icon10 color pl-dark-{$list_color}"></i>{/foreach}{/foreach}
-                    </div>
-                </td>
-            {/foreach}
-            </tr>
-        {/foreach}
-        </tbody>
-
-    </table>
-    <!-- end of sample from Blog -->
-    {/foreach} {*month*}
-    {/foreach} {*year*}
-
+    <a href="#" data-pl-todo-calendar-action="next">туда</a>
+    <a href="#" data-pl-todo-calendar-action="prev">сюда</a>
 </nav>
 
 <!-- ITEMS -->
@@ -57,7 +13,24 @@
 
 <script type="text/javascript">
     (function(){
+        var $calendar_wrapper = $('[data-pl-todo-calendar]'),
+            month = 0,
+            $items_wrapper = $('#pl-list-todo-items');
+
         $.pocketlists.setTitle('[`To-do stream`]');
+
+        $('[data-pl-todo-calendar-action]').on('click', function (e) {
+            e.preventDefault();
+            if ($(this).data('pl-todo-calendar-action') === 'next') {
+                month++;
+            } else {
+                month--;
+            }
+
+            $.get('?module=todo&action=month&month=' + month, function (html) {
+                $calendar_wrapper.html(html);
+            });
+        });
 
         var getStream = function (date, filter) {
             $.get('?module=todo&action=date' + (date ? ('&date=' + date) : '') + (filter ? ('&filter=' + filter): ''), function (html) {
@@ -66,30 +39,31 @@
         };
         getStream();
 
-        var $dates = $('[data-pl-todo-date]'),
-            $items_wrapper = $('#pl-list-todo-items');
 
-        $dates.on('click', function() {
-            var $this = $(this),
-                date = $this.data('pl-todo-date');
+        $calendar_wrapper
+                .on('click', '[data-pl-todo-date]', function () {
+                    var $this = $(this),
+                        date = $this.data('pl-todo-date');
 
-            $dates.removeClass('pl-selected');
-            $this.addClass('pl-selected');
+                    $calendar_wrapper.find('[data-pl-todo-date]').removeClass('pl-selected');
+                    $this.addClass('pl-selected');
 
-            getStream(date);
-        });
-        $items_wrapper.on('click', '[pl-todo-stream="date"] a', function(e) {
+                    getStream(date);
+                })
+                .on('mouseenter mouseleave', '[data-pl-todo-date]', function () {
+                    var date = $(this).data('pl-todo-date'),
+                        $items = $items_wrapper.find('.pl-item-wrapper[data-pl-due-date="' + date + '"]');
+
+                    if ($items.length) {
+                        $items.toggleClass('highlighted-background');
+                    }
+                });
+
+        $items_wrapper.on('click', '[pl-todo-stream="date"] a', function (e) {
             e.preventDefault();
-            $dates.removeClass('pl-selected');
+            $calendar_wrapper.find('[data-pl-todo-date]').removeClass('pl-selected');
 
             getStream();
-        });
-        $dates.on('mouseenter mouseleave', function () {
-            var date = $(this).data('pl-todo-date'),
-                $items = $items_wrapper.find('.pl-item-wrapper[data-pl-due-date="' + date + '"]');
-            if ($items.length) {
-                $items.toggleClass('highlighted-background');
-            }
         });
     }());
 </script>
