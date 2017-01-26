@@ -431,9 +431,12 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                     var $favorites_count = $('[data-pl-sidebar="favorites-count"]'),
                         current_favorites_count = parseInt($favorites_count.text());
 
-                    if (current_favorites_count) {
-                        $favorites_count.text(status ? ++current_favorites_count : --current_favorites_count);
+                    if (status && current_favorites_count >= 0) {
+                        current_favorites_count++;
+                    } else if (!status && current_favorites_count > 0) {
+                        current_favorites_count--;
                     }
+                    $favorites_count.text(current_favorites_count);
                     $star.toggleClass('star-empty star')
                 } else {
                     alert(r.errors);
