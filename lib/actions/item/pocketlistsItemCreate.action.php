@@ -102,7 +102,7 @@ class pocketlistsItemCreateAction extends waViewAction
                 }
 
                 // log this action
-                $this->logAction(pocketlistsLogAction::NEW_ITEMS, $list);
+                $this->logAction(pocketlistsLogAction::NEW_ITEMS, array('list_id' => $list['id']));
             }
         }
 

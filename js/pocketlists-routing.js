@@ -150,7 +150,12 @@
 
         },
         postExecute: function () {
-            $.pocketlists.highlightSidebar();
+            $.pocketlists.reloadSidebar();
+            this.heartbeat();
+        },
+
+        heartbeat: function() {
+            $.post('?module=json&action=heartbeat');
         },
 
         // actions

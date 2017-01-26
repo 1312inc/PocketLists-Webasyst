@@ -49,4 +49,9 @@ class pocketlistsJsonActions extends waJsonActions
             $this->errors = 'no item id';
         }
     }
+
+    public function heartbeatAction()
+    {
+        pocketlistsActivity::setUserActivity(wa()->getUser()->getId());
+    }
 }

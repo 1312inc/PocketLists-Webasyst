@@ -10,5 +10,7 @@ class pocketlistsDefaultLayout extends waLayout
         }
         $this->executeAction('sidebar', new pocketlistsBackendSidebarAction());
         $this->view->assign('isAdmin', wa()->getUser()->isAdmin() || wa()->getUser()->isAdmin('pocketlists') ? 1 : 0);
+
+//        pocketlistsActivity::setUserActivity();
     }
 }

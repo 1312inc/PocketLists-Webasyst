@@ -8,12 +8,13 @@ class pocketlistsListDeleteController extends waJsonController
 
         if ($list_id) {
             $lm = new pocketlistsListModel();
+            $list = $lm->getById($list_id);
 
-            if ($lm->delete($list_id)) {
+            if ($list && $lm->delete($list_id)) {
                 $this->response = 'ok';
 
                 // log this action
-                $this->logAction('list_deleted');
+                $this->logAction(pocketlistsLogAction::LIST_DELETED, array('list_name' => $list['name']));
             } else {
                 $this->errors = 'error while deleting list and it items';
             }

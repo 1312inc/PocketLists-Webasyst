@@ -729,10 +729,27 @@ class pocketlistsItemModel extends waModel
         if ($icon !== false && $icon != pocketlistsUserSettings::ICON_NONE) {
             $count = $this->query($q, array(
                 'contact_id' => wa()->getUser()->getId(),
-                'list_ids' => $lists))->count();
+                'list_ids'   => $lists
+            ))->count();
             return $count;
         } else {
             return null;
         }
     }
+
+    /**
+     * @param $name
+     * @param $datetime
+     * @return array
+     */
+    public function getItemByNameAndCreatedDatetime($name, $datetime)
+    {
+        return $this->query("SELECT * FROM {$this->table} WHERE name = s:name AND 
+ create_datetime BETWEEN (s:d1, s:d2) LIMIT 1", array(
+            'name' => $name,
+            'd1'   => date('Y-m-d H:i:s', strtotime($datetime) - 60),
+            'd2'   => date('Y-m-d H:i:s', strtotime($datetime) + 60),
+        ))->fetch();
+    }
+
 }

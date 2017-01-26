@@ -24,7 +24,7 @@ class pocketlistsItemCompleteController extends pocketlistsComplete
 
             // log this action
             foreach ($this->completed_items as $complete_item) {
-                $this->logAction('item_completed', $complete_item);
+                $this->logAction(pocketlistsLogAction::ITEM_COMPLETED, array('item_id' => $complete_item['id']));
             }
 
         } else {

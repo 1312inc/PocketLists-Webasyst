@@ -2,6 +2,7 @@
 
 class pocketlistsHelper
 {
+    const APP_ID = 'pocketlists';
     const COLOR_DEFAULT = 'blue';
 
     /**

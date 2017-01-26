@@ -18,10 +18,10 @@
         <a href="#/team/"><i class="icon16 contact"></i>[`Team`]</a>
     </li> *}
         <li>
-            <a href="#/logbook/"><i class="icon16 pl logbook"></i>[`Logbook`] <span class="highlighted bold small black">+3</span></a>
+            <a href="#/logbook/"><i class="icon16 pl logbook"></i>[`Logbook`]</a>
         </li>
         <li>
-            <a href="#/activity/"><i class="icon16 pl logbook"></i>[`Activity`]</a>
+            <a href="#/activity/"><i class="icon16 pl logbook"></i>[`Activity`] {if $new_items_count}<span class="highlighted bold small black" title="{$last_activity|wa_datetime}">+{$new_items_count}</span>{/if}</a>
         </li>
 
         {* <li class="top-padded">

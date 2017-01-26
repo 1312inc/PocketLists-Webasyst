@@ -25,7 +25,8 @@ class pocketlistsConfig extends waAppConfig
 
     public function explainLogs($logs)
     {
-        $logs = pocketlistsLogAction::explainLogs($logs);
+        $log_action = new pocketlistsLogAction();
+        $logs = $log_action->explainLogs($logs);
         return $logs;
     }
 

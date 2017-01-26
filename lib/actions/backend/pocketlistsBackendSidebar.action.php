@@ -16,5 +16,13 @@ class pocketlistsBackendSidebarAction extends waViewAction
             $teammates = pocketlistsHelper::getTeammates($teammates_ids);
         }
         $this->view->assign('team', $teammates);
+
+        $last_activity = pocketlistsActivity::getUserActivity();
+        $pactions = new pocketlistsLogAction();
+        $last_logs  = $pactions->getLogsForUser($last_activity);
+        $this->view->assign('new_items_count', count($last_logs));
+        $this->view->assign('last_activity', $last_activity);
+
+//        pocketlistsActivity::setUserActivity();
     }
 }

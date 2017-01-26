@@ -13,7 +13,8 @@ class pocketlistsListArchiveController extends waJsonController
                 $this->response = 'ok';
 
                 // log this action
-                $this->logAction('list_archived', $list_id);
+                $this->logAction($archive ? pocketlistsLogAction::LIST_ARCHIVED : pocketlistsLogAction::LIST_UNARCHIVED
+                    , array('list_id' => $list_id));
             } else {
                 $this->errors = 'error while deleting list and his items';
             }
