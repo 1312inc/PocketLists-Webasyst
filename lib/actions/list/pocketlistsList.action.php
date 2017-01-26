@@ -45,6 +45,9 @@ class pocketlistsListAction extends waViewAction
             $this->view->assign('attachments_path', wa()->getDataUrl('attachments/', true));
             $this->view->assign('list_access_contacts', $list_access_contacts);
         } else {
+            if (!pocketlistsHelper::canCreateLists()) {
+                throw new waException('Access denied.', 403);
+            }
             $this->view->assign('archive', $archived);
             $this->view->assign('new', true);
             $this->view->assign('empty', true);

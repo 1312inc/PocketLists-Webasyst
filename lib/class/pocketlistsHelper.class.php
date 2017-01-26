@@ -487,4 +487,14 @@ class pocketlistsHelper
 
         return $teammates;
     }
+
+    public static function canCreateLists()
+    {
+        return wa()->getUser()->getRights(self::APP_ID, 'cancreatelists');
+    }
+
+    public static function canAssign()
+    {
+        return wa()->getUser()->getRights(self::APP_ID, 'canassign');
+    }
 }

@@ -13,7 +13,7 @@ class pocketlistsItemCreateAction extends waViewAction
         $inserted = $inserted_items = $items = array();
         $assign_contact = null;
         $user_id = wa()->getUser()->getId();
-        $canAssign = $assigned_contact_id && $this->getRights('canassign');
+        $canAssign = $assigned_contact_id && pocketlistsHelper::canAssign();
         if ($canAssign) {
             $assign_contact = new waContact($assigned_contact_id);
         }
