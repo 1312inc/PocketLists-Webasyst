@@ -53,13 +53,6 @@
     <main class="pl-inner-content pl-items shadowed pl-teammate-items" id="pl-list-content">
 
         <header class="pl-title">
-            <div class="float-right block half-padded">
-                <ul class="menu-h">
-                    <li>
-                        <a href="#" id="pl-item-add-link"><i class="icon16 add"></i> [`New to-do`]</a>
-                    </li>
-                </ul>
-            </div>
             <input type="hidden" id="pl-list-id" value="{$current_teammate.id}"/>
             <h1 class="not-padded">
                 {$current_teammate.name|default:' '|escape}

@@ -33,11 +33,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
             request_in_action = true;
 
             $.pocketlists.scrollToTop(200, 80);
-            $wrapper.html($.pocketlists.$loading).show().animate({
-                'right': '0%'
-            }, 200, function() {
-                $.pocketlists.stickyDetailsSidebar();
-            });
+            $wrapper.html($.pocketlists.$loading).show();
 
             $.post('?module=list&action=details', {id: list_id}, function (html) {
                 $wrapper.html(html);
@@ -47,11 +43,6 @@ $.pocketlists.List = function ($list_wrapper, options) {
             });
         };
         var hideListDetails = function () {
-            $wrapper.animate({
-                'right': '-100%'
-            }, 200, function () {
-                $wrapper.hide().empty()
-            });
         };
         var updateList = function (data) {
             $list_wrapper.find('#pl-list-name').text(data.name); // update name
