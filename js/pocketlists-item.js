@@ -13,7 +13,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
         $done_items = $list_items_wrapper.find('#pl-complete-log'),
         $done_items_wrapper = $done_items.find('ul.menu-v').first(),
         item_selector = '[data-parent-id]',
-        $add_item_link = $('#pl-item-add-link'),
+        // $add_item_link = $('#pl-item-add-link'),
         $show_logbook_items = $('#pl-complete-log-link'),
         $empty_list_msg = $list_items_wrapper.find('#pl-empty-list-msg'),
         $current_item = null,
@@ -413,6 +413,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
         if (o.enableSortItems) {
             $sortable_items.sortable({
                 item: item_selector,
+                handle: '[data-pl-action="item-sort"]',
                 distance: 5,
                 connectWith: "ul.menu-v",
                 placeholder: 'pl-item-placeholder',
@@ -428,6 +429,8 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                     updateSort(parseInt(ui.item.data('id')));
                 }
             });
+        } else {
+            $sortable_items.find('[data-pl-action="item-sort"]').hide();
         }
     };
     // save item

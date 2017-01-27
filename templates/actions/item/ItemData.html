@@ -1,6 +1,7 @@
 <div class="pl-item{if !empty($item.assigned_contact_id) && $item.assigned_contact_id != $wa->user()->getId() && $item.status != 1} pl-item-assigned{/if}{if $item.status == 1} gray{/if}" {if $item.assigned_contact_id}data-pl-assigned-contact="{$item.assigned_contact_id}"{/if}>
     <div class="pl-meta">
         <a href="#" class="pl-favorite" data-pl-action="item-favorite" title="[`Favorite`]"><i class="icon16 star{if empty($item.favorite)}-empty{/if}"></i></a>
+        <a href="#" class="pl-favorite" data-pl-action="item-sort" title="[`Sort`]"><i class="icon16" style="background-image: url('http://p.yusukekamiyamane.com/icons/search/fugue/icons/ui-splitter-horizontal.png')"></i></a>
         {if $item.status == 1}
             {* JAN 2017: switched author to assignee <span class="pl-author" title="{sprintf('[`Completed by %s`]', $item.complete_username|default:'%username%'|escape)}">
                 {if isset($item.complete_userpic)}
