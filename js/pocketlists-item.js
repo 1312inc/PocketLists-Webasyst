@@ -973,11 +973,42 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                             ' ' + r.data.username,
                             ' <span class="hint">' + r.data.datetime + '</span>')
                     );
-                    $my_reply.find('.pl-bubble').html(r.data.comment);
+                    $my_reply.find('.pl-bubble').html(r.data.comment + '<a href="#" style="float: right;" class="small inline-link" data-pl-action="comment-delete"><b>' + $_('delete') + '</b></a>');
                     $this.closest('.pl-reply').before($my_reply);
 
                     $this.val('').trigger('focus');
                     $.pocketlists.resizeTextarea($this);
+                }
+                request_in_action = false;
+            },
+            'json'
+        );
+    };
+    var deleteComment = function() {
+        if (!confirm($_('This will permanently delete this comment. Are you sure?'))) {
+            return;
+        }
+
+        if (request_in_action) {
+            return;
+        }
+        request_in_action = true;
+
+        var $this = $(this),
+            $comment_wrapper = $this.closest('[data-pl-comment-id]'),
+            comment_id = $comment_wrapper.data('pl-comment-id');
+
+        $.post(
+            '?module=comment&action=delete',
+            {
+                id: comment_id
+            },
+            function (r) {
+                $.pocketlists.$loading.removeAttr('style').remove();
+                if (r.status === 'ok') {
+                    $comment_wrapper.hide(200, function () {
+                        $comment_wrapper.remove();
+                    });
                 }
                 request_in_action = false;
             },
@@ -1108,6 +1139,11 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                     hideChatCommentInput();
                     deselectItem();
                 }
+            })
+            .on('click', '[data-pl-action="comment-delete"]', function (e) {
+                e.preventDefault();
+
+                deleteComment.call(this);
             })
             .on('click', '.pl-chat .pl-reply textarea', function(e) {
                 e.preventDefault();

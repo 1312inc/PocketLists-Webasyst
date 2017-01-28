@@ -428,6 +428,7 @@ class pocketlistsItemModel extends waModel
             $item['chat']['comments'][$comment['id']]['my'] = $comment['contact_id'] == wa()->getUser()->getId() ? true : false;
             $item['chat']['comments'][$comment['id']]['username'] = $comment_user->getName();
             $item['chat']['comments'][$comment['id']]['userpic'] = $comment_user->getPhoto('20');
+            $item['chat']['comments'][$comment['id']]['can_be_deleted'] = (time() - strtotime($comment['create_datetime']) < 60 * 10);
         }
     }
 
