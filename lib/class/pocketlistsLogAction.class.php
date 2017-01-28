@@ -195,7 +195,7 @@ class pocketlistsLogAction
     {
         $list = $log[self::$ext]['list'];
         // todo: ability to see others
-        if (pocketlistsHelper::isAdmin() || ($list && in_array($list['id'], $this->lists))) {
+        if (pocketlistsHelper::isAdmin() || ($list && $this->lists && in_array($list['id'], $this->lists))) {
             return true;
         }
 
