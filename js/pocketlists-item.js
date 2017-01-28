@@ -68,7 +68,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
 
             var show_new_item_wrapper = function () {
                 // hideEmptyListMessage();
-                $top_new_item_wrapper.prependTo($undone_items_wrapper).show(1, function () {
+                $top_new_item_wrapper.prependTo($undone_items_wrapper).show(100, function () {
                     if (isEmptyList() && !o.showMessageOnEmptyList) {
                         $textarea.focus();
                     }
