@@ -14,21 +14,28 @@
         </div>
         <div class="field">
             <div class="name">[`Attachments`]</div>
-            <div class="value no-shift">
-                <input name="attachment" type="file" />
-            </div>
-            {if $attachments}
-            <div class="value no-shift">
+
+                <div class="block double-padded pl-add-attachment-dropbox" data-pl-item-details-fileupload>
+                    <i class="icon16 upload"></i>Выберите файлы<input type="file" name="files[]" multiple="">
+                    <span class="gray">или перетащите их сюда, чтобы начать загрузку.</span>
+                </div>
+
+                <div id="progress" class="progress" style="width: 100%; height: 2px;">
+                    <div class="progress-bar progress-bar-success" style="background-color: #00aa00"></div>
+                </div>
+
+                {*$wa->csrf()*}
+
+            <div class="value no-shift" data-pl-item-details-attachments>
                 <ul class="pl-attachments">
                 {foreach $attachments as $attachment}
                     <li>
                         <a href="{$attachments_path}{$attachment.filename}" target="_blank"><i class="icon16 download"></i>{$attachment.filename|truncate:128}</a>
-                        <label><input type="checkbox" name="attachment_delete[]" value="{$attachment.filename}"/> [`Delete`] </label>
+                        <a href="#" class="small inline-link" data-pl-attachment-name="{$attachment.filename}" style="margin-left: 10px;"> <b>[`Delete`]</b> </a>
                     </li>
                 {/foreach}
                 </ul>
             </div>
-            {/if}
         </div>
     </div>
 

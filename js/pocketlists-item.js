@@ -268,6 +268,30 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
             };
 
             $wrapper.find('#pl-item-due-datetime').datepicker(datepicker_options);
+
+            $wrapper.find('[data-pl-item-details-fileupload]').fileupload({
+                url: '?module=item&action=addAttachment',
+                dataType: 'json',
+                autoUpload: true,
+                dropZone: '[data-pl-item-details-fileupload]',
+                formData: {
+                    item_id: id
+                },
+                done: function (e, data) {
+                    var $attachments = $wrapper.find('[data-pl-item-details-attachments]');
+                    $.each(data.result.data.files, function (index, file) {
+                        $attachments.find('ul').append('<li><a href="' + file.path + '/' + file.name + '" target="_blank"><i class="icon16 download"></i>' + file.name + '</a> <a href="#" class="small inline-link" data-pl-attachment-name="' + file.name + '" style="margin-left: 10px;"> <b>' + $_('Delete') + '</b> </a></li>');
+                    });
+                },
+                progressall: function (e, data) {
+                    var progress = parseInt(data.loaded / data.total * 100, 10);
+                    $wrapper.find('#progress .progress-bar').css(
+                        'width',
+                        progress + '%'
+                    );
+                }
+            });
+
         };
 
         var init = function () {
@@ -388,6 +412,27 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                         $(this).hide();
                         $wrapper.find('#pl-null-list-msg').show();
                     }
+                })
+                .on('click', '[data-pl-attachment-name]', function (e) {
+                    e.preventDefault();
+
+                    if (!confirm($_('Are you sure you want to delete this file?'))) {
+                        return false;
+                    }
+
+                    var $this = $(this),
+                        attachment_name = $this.data('pl-attachment-name'),
+                        $w = $this.closest('li');
+                    $.post('?module=item&action=deleteAttachment', {
+                        attachment: attachment_name,
+                        item_id: id
+                    }, function (r) {
+                        if (r.status === 'ok') {
+                            $w.hide(200, function () {
+                                $w.remove();
+                            });
+                        }
+                    }, 'json');
                 });
 
             $(window).scroll(function() {

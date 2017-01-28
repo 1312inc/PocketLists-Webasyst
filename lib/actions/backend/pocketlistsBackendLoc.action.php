@@ -18,6 +18,8 @@ class pocketlistsBackendLocAction extends waViewAction
                      'Close',
                      'None',
                      'Logbook',
+                     'Delete',
+                     'Are you sure you want to delete this file?'
                 ) as $s) {
             $strings[$s] = _w($s);
         }

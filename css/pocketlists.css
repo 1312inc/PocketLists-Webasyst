@@ -416,3 +416,8 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
     left: 8px;
     top: 6px;
 }
+
+.pl-add-attachment-dropbox {
+    border: 3px dashed red;
+    padding: 20px;
+}
