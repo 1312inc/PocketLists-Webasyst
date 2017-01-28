@@ -915,8 +915,8 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                         $dialog_confirm.show();
                     } else {
                         $dialog_confirm.waDialog({
-                            'height': '150px',
-                            'min-height': '150px',
+                            'height': '140px',
+                            'min-height': '140px',
                             'width': '400px',
                             onLoad: function () {
                                 //var $d = $(this);

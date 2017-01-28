@@ -41,6 +41,8 @@
 .pl-alert { margin: 0; background: #ffffe0; padding: 15px 20px; border-bottom: 1px solid #eed; line-height: 1.3em; font-size: 0.9em; color: #555; }
 .pl-alert .pl-alert-close { margin: -2px -2px 0 12px; float: right; color: #333; font-size: 1.4em; }
 
+.dialog p i.icon16 { margin-top: 0.1em; }
+
 /* Pocket
 --------- */
 
@@ -110,7 +112,7 @@ ul.pl-team li .pl-active-items { max-height: 2.4em; overflow: hidden; margin: 3p
 /* Done checkbox
 ---------------- */
 
-label.pl-done-label { cursor: pointer;position: relative;z-index: 2;}
+label.pl-done-label { position: relative;z-index: 2;}
 label.pl-done-label .listicon48 {
     float: left;
     position: relative;
@@ -130,13 +132,14 @@ label.pl-done-label i.icon16.userpic20 {
 }
 
 .pl-done { display: none; }
-.pl-done + span { display: block; float:left; width:16px; height:16px; background: rgba(255,255,255,0.2); border: 1px solid rgba(0,0,0,0.2); border-radius: 50%; position: relative; top: 14px; left: 17px; }
+.pl-done + span { display: block; float:left; width:16px; height:16px; background: rgba(255,255,255,0.2); border: 1px solid rgba(0,0,0,0.2); border-radius: 50%; position: relative; top: 14px; left: 17px; cursor: pointer; }
 .pl-done + span.transparent { border-color: transparent;background: none; }
 .pl-done.pl-green + span { background: #7ac33c; }
 .pl-done.pl-yellow + span { background: #f5cf24; }
 .pl-done.pl-red + span { background: #f7696d; }
 
 .pl-done:checked + span, .pl-done:disabled:checked + span {background: transparent url('../img/pl-done-checkbox.png') no-repeat !important;background-size: 14px 14px !important; border: none; border-radius: 0; opacity: 0.3;}
+.pl-done + span.pl-add-todo {background: transparent url('../img/pl-add-todo.png') no-repeat !important;background-size: 13px 13px !important; border: none; border-radius: 0; opacity: 0.3; left: 19px; cursor: default; }
 
 /* Discussions
 -------------- */
@@ -177,7 +180,7 @@ input#pl-new-list-input,
 #pl-item-add textarea,
 .pl-chat textarea {
     min-width: 350px;
-    width: 90%;
+    width: 100%;
     /* white-space: nowrap; */
     height: 1.3em;
     line-height: 1.3em;
@@ -185,17 +188,19 @@ input#pl-new-list-input,
     word-wrap: normal;
     overflow: hidden;
     border: none;
-    background: rgba(0,0,0,0.05);
     padding: 5px;
     margin: -5px 0 -7px -5px;
     position: relative;
     top: -1px;
     outline: 0 none;
 }
-.pl-chat textarea { background: #fff; margin-left: 0px; border-radius: 10px; border: 1px solid rgba(0,0,0,0.1); padding-left: 8px; }
+input#pl-new-list-input:hover,
+#pl-item-add textarea:hover { background: rgba(0,0,0,0.04); }
+input#pl-new-list-input:focus,
+#pl-item-add textarea:focus { background: rgba(0,0,0,0.06); }
+.pl-chat textarea { background: #fff; margin-left: 0px; border-radius: 10px; border: 1px solid rgba(0,0,0,0.1); padding-left: 8px; width: 70%; }
 
-.pl-title { border-bottom: 1px solid rgba(0,0,0,0.1); padding: 25px 5px 25px 20px; }
-.pl-title:hover { background: rgba(0,0,0,0.04); }
+.pl-title { padding: 25px 5px 25px 20px; }
 .pl-title h1 { padding-left: 29px; position: relative; margin-bottom: 0.2em; }
 .pl-title h1 .pl-done + span {left: -34px; top: 4px; width: 22px; height: 22px; position: absolute; z-index: 1;}
 .pl-title h1 .loading { margin-left: 3px; margin-top: 8px; opacity: 0.5; }
@@ -251,6 +256,7 @@ input#pl-new-list-input,
 .pl-list-items ul.menu-v li .pl-item.pl-item-assigned .pl-item-name { font-style: italic; }
 .pl-list-items ul.menu-v li .pl-item:hover .pl-edit,
 .pl-list-items ul.menu-v li .pl-item:hover .pl-comment { opacity: 1; transition: opacity 0.1s ease-in; transition-delay: 0.5s; }
+.pl-list-items ul.menu-v li #pl-item-add .pl-item:hover { background: transparent; }
 
 .pl-teammate-items .pl-list-items ul.menu-v li .pl-item.pl-item-assigned { box-shadow: none; background: transparent; }
 .pl-teammate-items .pl-list-items ul.menu-v li .pl-item:hover { background: rgba(0,0,0,0.04); }

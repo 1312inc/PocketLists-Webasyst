@@ -275,8 +275,8 @@ $.pocketlists.List = function ($list_wrapper, options) {
             $dialog_delete.show();
         } else {
             $dialog_delete.waDialog({
-                'height': '200px',
-                'min-height': '200px',
+                'height': '140px',
+                'min-height': '140px',
                 'width': '400px',
                 onLoad: function () {
                 },
