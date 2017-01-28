@@ -85,12 +85,17 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
             },
             function (html) {
                 $.pocketlists.updateAppCounter();
+                $.pocketlists.reloadSidebar();
                 $.pocketlists.$loading.remove();
                 $pl_done.removeClass('transparent');
 
                 var $li = $this.closest(item_selector),
                     $html = $('' + html + ''),
                     _itemAdd = isTopAdd ? NewItemWrapper.top_new_item : NewItemWrapper.new_item;
+
+                if (!o.enableSortItems) {
+                    $html.find('[data-pl-action="item-sort"]').hide();
+                }
 
                 _itemAdd.textarea.data('can_blur', false);
                 if ($li.length) {
@@ -151,6 +156,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
 
         var afterUpdateItem = function(html, callback) {
             $.pocketlists.updateAppCounter();
+            $.pocketlists.reloadSidebar();
             $.pocketlists.$loading.remove();
             replaceItem(html);
             // update indicator color
@@ -344,6 +350,8 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
 
                             $show_logbook_items.show().find('i').text($_('Show all ' + $done_items_wrapper.find('[data-id]').length + ' completed to-dos')); // update "complete items" heading
 
+                            $.pocketlists.reloadSidebar();
+
                             showEmptyListMessage();
 
                             callback && $.isFunction(callback) && callback.call($item);
@@ -441,7 +449,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                         current_favorites_count--;
                     }
                     $favorites_count.text(current_favorites_count);
-                    $star.toggleClass('star-empty star')
+                    $star.toggleClass('star-empty star');
                 } else {
                     alert(r.errors);
                 }
@@ -769,7 +777,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                 textarea: $textarea
             },
             top_new_item: {
-                wrapper: $top_new_item_wrapper,
+                wrapper: $top_new_item_wrapper.closest('[data-pl-item-add-top]'),
                 textarea: $top_textarea
             }
         }

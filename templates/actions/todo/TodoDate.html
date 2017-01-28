@@ -36,7 +36,7 @@
         <section id="pl-undone-items" data-pl-items="undone">
             <ul class="menu-v">
                 {if !empty($undone_items)}
-                {include '../item/ItemCreate.html' parent_id=0 items=$undone_items}
+                {include '../item/Item.html' parent_id=0 items=$undone_items}
                 {/if}
             </ul>
         </section>
@@ -45,7 +45,7 @@
             <h5 class="heading">[`Logbook`]</h5>
             <ul class="menu-v">
                 {if $count_done_items}
-                {include '../item/ItemCreate.html' parent_id=0 items=$done_items}
+                {include '../item/Item.html' parent_id=0 items=$done_items}
                 {/if}
             </ul>
         </section>

@@ -107,5 +107,7 @@ class pocketlistsItemCreateAction extends waViewAction
         }
 
         $this->view->assign('items', $items);
+
+        $this->setTemplate('templates/actions/item/Item.html');
     }
 }
