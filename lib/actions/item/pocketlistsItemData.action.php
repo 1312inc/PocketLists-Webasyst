@@ -24,9 +24,6 @@ class pocketlistsItemDataAction extends waViewAction
                     ));
                 }
 
-                $this->saveAttachment($item_new_data);
-                $this->deleteAttachments($item_new_data);
-
                 pocketlistsHelper::getDueDatetime($item_new_data);
                 $item_new_data['assigned_contact_id'] = $item_new_data['assigned_contact_id'] ? $item_new_data['assigned_contact_id'] : null;
                 $item_new_data['update_datetime'] = date("Y-m-d H:i:s");
