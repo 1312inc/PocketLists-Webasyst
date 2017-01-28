@@ -11,7 +11,7 @@ class pocketlistsCommentDeleteController extends waJsonController
             $comment = $cm->getById($comment_id);
             if ($comment) {
                 if ($comment['contact_id'] === wa()->getUser()->getId()
-                    && (time() - strtotime($comment['create_datetime']) < 60 * 10)
+                    && (time() - strtotime($comment['create_datetime']) < 60 * 60 * 24)
                     && $cm->deleteById($comment_id)
                 ) {
                     $this->response = 'ok';
