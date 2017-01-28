@@ -456,7 +456,6 @@ class pocketlistsHelper
         $last_activities = $im->getLastActivities($teammates_ids);
         foreach ($teammates_ids as $tid) {
             if ($exclude_me && $tid == wa()->getUser()->getId()) {
-                unset($teammates[$tid]);
                 continue;
             }
             $mate = new waContact($tid);
