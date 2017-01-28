@@ -856,7 +856,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                 done: function (e, data) {
                     var $attachments = $wrapper.find('[data-pl-item-details-attachments]');
                     $.each(data.result.data.files, function (index, file) {
-                        $attachments.find('ul').append('<li><a href="' + file.path + '/' + file.name + '" target="_blank"><i class="icon16 download"></i>' + file.name + '</a> <a href="#" class="small inline-link" data-pl-attachment-name="' + file.name + '" style="margin-left: 10px;"> <b>' + $_('Delete') + '</b> </a></li>');
+                        $attachments.find('ul').append('<li><a href="' + file.path + '/' + file.name + '" target="_blank">' + file.name + '</a> <a href="#" class="gray" data-pl-attachment-name="' + file.name + '" style="margin-left: 10px;" title="' + $_('Delete') + '">&times;</a></li>');
                     });
                 },
                 progressall: function (e, data) {
