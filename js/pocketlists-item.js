@@ -97,7 +97,6 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                     $html.find('[data-pl-action="item-sort"]').hide();
                 }
 
-                _itemAdd.textarea.data('can_blur', false);
                 if ($li.length) {
                     if (!$li.parents(item_selector).length || // not root item
                             //$li.prev(item_selector).length || // not first item in subs
@@ -112,7 +111,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                 $html.filter(item_selector).last()
                     .find('.pl-item').first().after(_itemAdd);
 
-                _itemAdd.textarea.val('').css('height', 'auto').data('can_blur', true);
+                _itemAdd.textarea.val('').css('height', 'auto');
                 setTimeout(function () {
                     _itemAdd.textarea.trigger('focus');
                 }, 500);
@@ -629,7 +628,6 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
 
         var enable_prevent_close_browser = function ($el) {
             window.onbeforeunload = function() {
-                $el.data('can_blur', false);
                 return $_('Close?');
             };
         };
@@ -662,7 +660,6 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                 .on('keydown', function (e) {
                     var $this = $(this);
                     enable_prevent_close_browser($this);
-                    $this.data('can_blur', true);
                     if (!e.shiftKey && e.which === 13) {
                         e.preventDefault();
                         disable_prevent_close_browser();
@@ -675,7 +672,6 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                             }]);
                         }
                     } else if (e.which === 27) {
-                        $this.data('can_blur', false);
                         disable_prevent_close_browser();
                         hide_new_item_wrapper();
                     }
@@ -701,30 +697,6 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                                 addItem.call(self, data);
                             }
                         }, 100);
-                    }
-                })
-                .on('focus', function () {
-                    var $this = $(this);
-
-                    $this.data('can_blur', true);
-                })
-                .on('blur', function () {
-                    var $this = $(this),
-                        parent_id = $this.closest('.menu-v').find(item_selector).first().data('parent-id'),
-                        name = $this.val().trim(),
-                        can_blur = $this.data('can_blur');
-
-                    if (can_blur) {
-                        disable_prevent_close_browser($this);
-
-                        if (name) {
-                            addItem.call(this, [{
-                                name: name,
-                                parent_id: parent_id
-                            }], hide_new_item_wrapper);
-                        } else {
-                            hide_new_item_wrapper();
-                        }
                     }
                 });
 
@@ -754,7 +726,6 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                     var $item = $(this);
                     var $has_children = $item.closest(item_selector).find('.menu-v');
 
-                    $textarea.data('can_blur', false);
                     if ($has_children.length) { // if item has children - indent
                         $has_children.find('.pl-item').first().before($new_item_wrapper);
                     } else { // else on same level
@@ -763,7 +734,6 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                     $new_item_wrapper_hover.detach();
                     $new_item_wrapper.slideDown(200);
                     $textarea.focus();
-                    $textarea.data('can_blur', true);
                 });
             }
         };
