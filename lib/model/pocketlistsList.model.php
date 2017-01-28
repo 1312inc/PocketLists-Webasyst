@@ -104,7 +104,7 @@ class pocketlistsListModel extends waModel
                 LEFT JOIN pocketlists_item i2 ON i2.key_list_id = l.id
                 {$accessed_lists}
                 GROUP BY l.id
-                ORDER BY l.sort, l.id";
+                ORDER BY l.sort, l.id DESC";
 
         $lists = $this->query(
             $sql,
