@@ -636,11 +636,11 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
             var show_new_item_wrapper = function () {
                 // hideEmptyListMessage();
                 $top_new_item_wrapper.prependTo($undone_items_wrapper).show().wrap('<li data-pl-item-add-top>');
-                // function () {
-                //     if (isEmptyList() && !o.showMessageOnEmptyList) {
-                //         $textarea.focus();
-                //     }
-                // })
+                setTimeout(function () {
+                    if (isEmptyList()/* && !o.showMessageOnEmptyList*/) {
+                        $top_textarea.val('').trigger('focus');
+                    }
+                }, 500);
             };
             !isNewList() && show_new_item_wrapper();
 
