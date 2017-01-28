@@ -10,7 +10,7 @@ class pocketlistsCommentModel extends waModel
             $item_ids = array($item_ids);
         }
         return $this->query(
-            "SELECT * FROM {$this->table} WHERE list_id IN (i:ids)",
+            "SELECT * FROM {$this->table} WHERE item_id IN (i:ids) ORDER BY item_id, id",
             array('ids' => $item_ids)
         )->fetchAll('item_id', 2);
     }

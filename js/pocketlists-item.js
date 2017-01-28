@@ -114,7 +114,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
 
                 _itemAdd.textarea.val('').css('height', 'auto').data('can_blur', true);
                 setTimeout(function () {
-                    _itemAdd.textarea.val('').trigger('focus');
+                    _itemAdd.textarea.trigger('focus');
                 }, 500);
 
                 // update calendar date with new dot
@@ -555,7 +555,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                 if (r.status === 'ok') {
                     var $reply_wrapper = $this.closest('.pl-reply'),
                         $user_pic = $reply_wrapper.find('i').clone(),
-                        $my_reply = $('<div class="pl-cue pl-my-cue">');
+                        $my_reply = $('<div class="pl-cue pl-my-cue" data-pl-comment-id="' + r.data.id + '">');
 
                     // todo: use template
                     $my_reply.append(

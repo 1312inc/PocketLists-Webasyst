@@ -78,12 +78,12 @@ class pocketlistsItemModel extends waModel
         $result = array();
         foreach ($activities as $id => $item) {
             if (isset($items[$id])) {
-                $result[$id] = $this->updateItem($items[$id]);
+                $result[$id] = $this->extendItemData($items[$id]);
                 unset($items[$id]);
             }
         }
         foreach ($items as $id => $item) {
-            $result[$id] = $this->updateItem($items[$id]);
+            $result[$id] = $this->extendItemData($items[$id]);
         }
         return $result;
 //        return $this->getTree($items, $tree);
@@ -155,7 +155,7 @@ class pocketlistsItemModel extends waModel
             1 => array(),
         );
         foreach ($items as $id => $item) {
-            $result[$item['status']][$id] = $this->updateItem($item);
+            $result[$item['status']][$id] = $this->extendItemData($item);
         }
         return array(
             0 => $this->getProperSort($result[0]),
@@ -236,7 +236,7 @@ class pocketlistsItemModel extends waModel
             1 => array(),
         );
         foreach ($items as $id => $item) {
-            $result[$item['status']][$id] = $this->updateItem($item);
+            $result[$item['status']][$id] = $this->extendItemData($item);
         }
         return array(
             0 => $this->getProperSort($result[0]),
@@ -260,13 +260,13 @@ class pocketlistsItemModel extends waModel
         )->fetchAll();
 //        $items = $this->getItems($this->getQuery(), null, false);
         foreach ($items as $id => $item) {
-            $items[$id] = $this->updateItem($item);
+            $items[$id] = $this->extendItemData($item);
         }
 //        return $items;
         return count($ids) > 1 ? $items : reset($items);
     }
 
-    public function updateWithCalcPriority($id, $item, $silent = false)
+    public function addCalculatedPriorityData($id, $item, $silent = false)
     {
         $email_to_assigned_contact = false;
         $old_item = array('assigned_contact_id' => false);
@@ -278,7 +278,7 @@ class pocketlistsItemModel extends waModel
             }
         }
 
-        $this->updatePriority($item);
+        $this->addPriorityData($item);
         if ($this->updateById($id, $item)) {
             if (!$silent && $email_to_assigned_contact && // settings are set
                 $item['assigned_contact_id'] != wa()->getUser()->getId() && // do not email if I assign myself
@@ -350,7 +350,7 @@ class pocketlistsItemModel extends waModel
     {
         $items = $this->query($sql, array('lid' => $list_id, 'contact_id' => wa()->getUser()->getId()))->fetchAll('id');
         foreach ($items as $id => $item) {
-            $items[$id] = $this->updateItem($item);
+            $items[$id] = $this->extendItemData($item);
         }
         return $tree ? $this->getTree($items, $tree) : $items;
     }
@@ -374,7 +374,7 @@ class pocketlistsItemModel extends waModel
         return $result;
     }
 
-    private function updateItem($item)
+    private function extendItemData($item)
     {
         // todo: bulk update?
         if ($item['contact_id']) {
@@ -396,14 +396,14 @@ class pocketlistsItemModel extends waModel
         $am = new pocketlistsAttachmentModel();
         $item['attachments'] = $am->getByField('item_id', $item['id'], true);
 
-        $this->updateChat($item);
+        $this->addChatData($item);
 
-        $this->updatePriority($item);
+        $this->addPriorityData($item);
 
         return $item;
     }
 
-    private function updatePriority(&$item)
+    private function addPriorityData(&$item)
     {
         $item['calc_priority'] = max(
             pocketlistsHelper::calcPriorityOnDueDate($item['due_date'], $item['due_datetime']),
@@ -411,10 +411,10 @@ class pocketlistsItemModel extends waModel
         );
     }
 
-    private function updateChat(&$item)
+    private function addChatData(&$item)
     {
         $cm = new pocketlistsCommentModel();
-        $chat = $cm->getByField('item_id', $item['id'], true);
+        $chat = $cm->getAllByItems($item['id']);
         $item['chat'] = array(
             'current_user' => array(
                 'username' => wa()->getUser()->getName(),
@@ -422,7 +422,10 @@ class pocketlistsItemModel extends waModel
             ),
             'comments' => array()
         );
-        foreach ($chat as $comment) {
+        if (empty($chat[$item['id']])) {
+            return;
+        }
+        foreach ($chat[$item['id']] as $comment) {
             $item['chat']['comments'][$comment['id']] = $comment;
             $comment_user = new waContact($comment['contact_id']);
             $item['chat']['comments'][$comment['id']]['my'] = $comment['contact_id'] == wa()->getUser()->getId() ? true : false;
@@ -513,7 +516,7 @@ class pocketlistsItemModel extends waModel
         $items = $this->query($q, array('contact_id' => $contact_ids))->fetchAll('id');
         $result = array();
         foreach ($items as $assigned_item_id => $assigned_item) {
-            $this->updatePriority($assigned_item);
+            $this->addPriorityData($assigned_item);
             $result[$assigned_item['assigned_contact_id']]['item_names'][] = $assigned_item['name'];
             $result[$assigned_item['assigned_contact_id']]['item_max_priority'] = max(
                 isset($result[$assigned_item['assigned_contact_id']]['item_max_priority']) ?
@@ -622,7 +625,7 @@ class pocketlistsItemModel extends waModel
             1 => array()
         );
         foreach ($items as $id => $item) {
-            $results[$item['status']][$id] = $this->updateItem($item);
+            $results[$item['status']][$id] = $this->extendItemData($item);
         }
         return array(
             0 => $this->getProperSort($results[0]),
@@ -680,7 +683,7 @@ class pocketlistsItemModel extends waModel
             'list_ids' => pocketlistsHelper::getAccessListForContact($contact_id)
         ))->fetchAll();
         foreach ($items as $id => $item) {
-            $items[$id] = $this->updateItem($item);
+            $items[$id] = $this->extendItemData($item);
         }
         return $items;
     }
