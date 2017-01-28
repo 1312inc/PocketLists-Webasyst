@@ -439,4 +439,36 @@ class pocketlistsNaturalInput
             );
         }
     }
+
+    public static function matchLinks($string)
+    {
+        $pattern = '(?i)\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:\'".,<>?«»“”‘’]))';
+        $replace = array();
+
+        $i = 0;
+        while (preg_match(
+            '/' . $pattern . '/miu',
+            $string,
+            $matches)
+        ) {
+            $i++;
+            $now = time();
+            $replace_key = "###{$i}1312{$now}WILLBEREPLACEDWITHLINK{$now}1312{$i}###";
+            $string = str_replace($matches[1], $replace_key, $string);
+            $replace[$replace_key] = self::replaceWithLink($matches[1]);
+        }
+        $string = str_replace(array_keys($replace), $replace,$string);
+
+        return $string;
+    }
+
+    private static function replaceWithLink($url)
+    {
+        return '<a href="http://' . str_replace('http://', '', $url) . '" target="_blank">' . $url . '</a>';
+    }
+
+    public static function removeTags($string)
+    {
+        return strip_tags($string);
+    }
 }

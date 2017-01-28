@@ -37,10 +37,10 @@
         <input type="checkbox" class="pl-is-selected" {if isset($archive) && $archive == true || !empty($item.key_list_id)}disabled{/if}>
         <span class="pl-item-name">
             {if !empty($item.key_list_id)}
-                <a href="#/list/{$item.list_id}/">{$item.name|default:' '|escape|nl2br}</a>
+                <a href="#/list/{$item.list_id}/">{$item.name|default:' '}</a>
             {else}
                 {if $item.list_id != NULL}<a href="#/list/{$item.list_id}" class="pl-label pl-dark-{$item.list_color} pl-item-list-name">{$item.list_name|escape}</a>{/if}
-                {$item.name|default:' '|escape|nl2br}
+                {$item.name|default:' '|nl2br}
                 {* if $item.list_id == NULL && (empty($item.assigned_contact_id) || $item.assigned_contact_id == $wa->user()->getId())}<i class="icon10 lock-bw" title="[`Only you can see this item`]"></i>{/if *}
             {/if}
         </span>
@@ -54,7 +54,7 @@
         {if $item.status != 1}
             {if !empty($item.assigned_contact_id)}<strong class="hint"><br>{sprintf('[`Assigned to %s`]', $item.assigned_username|escape)}</strong>{/if}
             {* <i class="icon16 userpic20" style="background-image: url({$item.assigned_userpic})" alt="{$item.assigned_username|escape}"></i> *}
-            {if !empty($item.note)}<p class="hint">{$item.note|escape|nl2br}</p>{/if}
+            {if !empty($item.note)}<p class="hint">{$item.note|nl2br}</p>{/if}
             {if !empty($item.attachments)}
               <ul class="pl-attachments">
                 {foreach $item.attachments as $attachment}
@@ -71,7 +71,7 @@
                 <div class="pl-cue-inner">
                     <div class="pl-bubble">
                         {if $comment.my && $comment.can_be_deleted}<a href="#" class="pl-delete-comment" data-pl-action="comment-delete" title="[`Delete`]">&times;</a>{/if}
-                        {$comment.comment|escape|nl2br}
+                        {$comment.comment|nl2br}
                         <!-- <span class="pl-bubble-arrow"></span> -->
                     </div>
                     <i class="icon16 userpic20" style="background-image: url({$comment.userpic})" alt="{$comment.username|escape}"></i> {$comment.username|escape}

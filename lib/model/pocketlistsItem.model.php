@@ -400,7 +400,22 @@ class pocketlistsItemModel extends waModel
 
         $this->addPriorityData($item);
 
+        $this->prepareOutput($item);
+
         return $item;
+    }
+
+    private function prepareOutput(&$item)
+    {
+        foreach (array('name', 'note') as $param) {
+            $item[$param] = pocketlistsNaturalInput::removeTags($item[$param]);
+            $item[$param] = pocketlistsNaturalInput::matchLinks($item[$param]);
+        }
+
+        foreach ($item['chat']['comments'] as &$comment) {
+            $comment['comment'] = pocketlistsNaturalInput::removeTags($comment['comment']);
+            $comment['comment'] = pocketlistsNaturalInput::matchLinks($comment['comment']);
+        }
     }
 
     private function addPriorityData(&$item)
