@@ -8,8 +8,8 @@ class pocketlistsRightConfig extends waRightConfig
     public function init()
     {
         $this->addItem('cancreatetodos', _w('Can create to-dos'), 'always_enabled');
-        $this->addItem('canassign', _w('Can assign to-dos to teammates'), 'checkbox');
         $this->addItem('cancreatelists', _w('Can create lists'), 'checkbox');
+        $this->addItem('canassign', _w('Can assign to-dos to teammates'), 'checkbox');
 
         $list_model = new pocketlistsListModel();
         $items = array();
@@ -36,8 +36,8 @@ class pocketlistsRightConfig extends waRightConfig
     {
         return array(
             'cancreatetodos' => 1,
-            'canassign'      => 1,
             'cancreatelists' => 1,
+            'canassign'      => 1,
         );
     }
 }

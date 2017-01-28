@@ -598,7 +598,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
             function (r) {
                 $.pocketlists.$loading.removeAttr('style').remove();
                 if (r.status === 'ok') {
-                    $comment_wrapper.hide(200, function () {
+                    $comment_wrapper.slideUp(200, function () {
                         $comment_wrapper.remove();
                     });
                 }

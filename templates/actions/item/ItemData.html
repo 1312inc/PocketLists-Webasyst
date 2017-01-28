@@ -71,9 +71,9 @@
             <div class="pl-cue{if $comment.my} pl-my-cue{/if}" data-pl-comment-id="{$comment.id}">
                 <div class="pl-cue-inner">
                     <div class="pl-bubble">
+                        {if $comment.my && $comment.can_be_deleted}<a href="#" class="pl-delete-comment" data-pl-action="comment-delete" title="[`Delete`]">&times;</a>{/if}
                         {$comment.comment|escape|nl2br}
                         <!-- <span class="pl-bubble-arrow"></span> -->
-                        {if $comment.my && $comment.can_be_deleted}<a href="#" style="float: right;" class="small inline-link" data-pl-action="comment-delete"><b>[`delete`]</b></a>{/if}
                     </div>
                     <i class="icon16 userpic20" style="background-image: url({$comment.userpic})" alt="{$comment.username|escape}"></i> {$comment.username|escape}
                     <span class="hint">{$comment.create_datetime|wa_datetime:'humandatetime'}</span>
