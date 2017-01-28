@@ -490,7 +490,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
         return getItems().length ? false : true;
     };
     var isNewList = function () {
-        return o.list.list_id < 0;
+        return o.list && o.list.list_id < 0;
     };
     var showEmptyListMessage = function() {
         if (isEmptyList() && o.showMessageOnEmptyList) {
