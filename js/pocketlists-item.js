@@ -74,7 +74,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                     }
                 }).wrap('<li data-pl-item-add-top>');
             };
-            show_new_item_wrapper();
+            !isEmptyList() && show_new_item_wrapper();
 
             // handlers for both textareas (top and movable)
             $textarea.add($top_textarea)
