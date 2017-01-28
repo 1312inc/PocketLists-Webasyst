@@ -565,7 +565,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                             ' ' + r.data.username,
                             ' <span class="hint">' + r.data.datetime + '</span>')
                     );
-                    $my_reply.find('.pl-bubble').html(r.data.comment + '<a href="#" style="float: right;" class="small inline-link" data-pl-action="comment-delete"><b>' + $_('delete') + '</b></a>');
+                    $my_reply.find('.pl-bubble').html(r.data.comment + '<a href="#" class="pl-delete-comment" data-pl-action="comment-delete" title="' + $_('Delete') + '">&times;</a>');
                     $this.closest('.pl-reply').before($my_reply);
 
                     $this.val('').trigger('focus');
