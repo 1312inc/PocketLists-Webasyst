@@ -266,7 +266,7 @@ input#pl-new-list-input:focus,
 .pl-list-items ul.menu-v li .pl-item p { margin-bottom: 0; margin-top: 4px; line-height: 1.2em; }
 .pl-list-items ul.menu-v li .pl-item i.icon10 { margin-top: 5px; }
 .pl-list-items ul.menu-v li .pl-item.pl-item-assigned .pl-item-name { font-style: italic; }
-.pl-list-items ul.menu-v li .pl-item .pl-item-drag-handle { display: none; position: absolute; top: 0; bottom: 0; left: 0; width: 10px; background: rgba(220,0,0,0.6); }
+.pl-list-items ul.menu-v li .pl-item .pl-item-drag-handle { display: none; position: absolute; top: 0; bottom: 0; left: 0; width: 10px; background: rgba(220,0,0,0.6);  z-index: 3;}
 .pl-list-items ul.menu-v li .pl-item:hover .pl-item-drag-handle { display: block; }
 .pl-list-items ul.menu-v li .pl-item:hover .pl-edit,
 .pl-list-items ul.menu-v li .pl-item:hover .pl-comment { opacity: 1; transition: opacity 0.1s ease-in; transition-delay: 0.5s; }
