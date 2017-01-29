@@ -10,6 +10,7 @@ class pocketlistsItemDetailsAction extends waViewAction
             $lm = new pocketlistsListModel();
             $am = new pocketlistsAttachmentModel();
             $item = $im->getById($id);
+            $item = $im->extendItemData($item, true);
 
             $attachments = $am->getByField('item_id', $item['id'], true);
 

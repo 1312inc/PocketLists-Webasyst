@@ -464,7 +464,11 @@ class pocketlistsNaturalInput
 
     private static function replaceWithLink($url)
     {
-        return '<a href="http://' . str_replace('http://', '', $url) . '" target="_blank">' . $url . '</a>';
+        if (strpos($url, 'http') === 0) {
+            return '<a href="' . $url . '" target="_blank">' . $url . '</a>';
+        } else {
+            return '<a href="http://' . $url . '" target="_blank">' . $url . '</a>';
+        }
     }
 
     public static function removeTags($string)

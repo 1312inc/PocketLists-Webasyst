@@ -255,7 +255,8 @@ class pocketlistsLogAction
     private function getItemData($id)
     {
         $m = new pocketlistsItemModel();
-        return $m->getById($id);
+        $item = $m->getById($id);
+        return $m->extendItemData($item);
     }
 
     private function getCommentData($id)

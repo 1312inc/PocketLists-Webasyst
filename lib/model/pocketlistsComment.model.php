@@ -14,4 +14,15 @@ class pocketlistsCommentModel extends waModel
             array('ids' => $item_ids)
         )->fetchAll('item_id', 2);
     }
+
+    public static function extendData($comment)
+    {
+        $comment_user = new waContact($comment['contact_id']);
+        return $comment + array(
+            'my'             => $comment['contact_id'] == wa()->getUser()->getId() ? true : false,
+            'username'       => $comment_user->getName(),
+            'userpic'        => $comment_user->getPhoto('20'),
+            'can_be_deleted' => (time() - strtotime($comment['create_datetime']) < 60 * 60 * 24),
+        );
+    }
 }

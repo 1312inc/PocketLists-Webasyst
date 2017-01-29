@@ -37,7 +37,9 @@ class pocketlistsItemDataAction extends waViewAction
                 }
 
                 $this->view->assign('attachments_path', wa()->getDataUrl('attachments/', true));
-                $this->view->assign('item', $im->getById($item_new_data['id']));
+                $item = $im->getById($item_new_data['id']);
+                $item = $im->extendItemData($item);
+                $this->view->assign('item', $item);
             }
         }
     }

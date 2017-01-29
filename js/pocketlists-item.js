@@ -548,31 +548,31 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                 item_id: item_id,
                 comment: data.comment
             },
-            function (r) {
+            function (html) {
                 $.pocketlists.$loading.removeAttr('style').remove();
                 $userpic.show();
-                if (r.status === 'ok') {
-                    var $reply_wrapper = $this.closest('.pl-reply'),
-                        $user_pic = $reply_wrapper.find('i').clone(),
-                        $my_reply = $('<div class="pl-cue pl-my-cue" data-pl-comment-id="' + r.data.id + '">');
 
-                    // todo: use template
-                    $my_reply.append(
-                        $('<div class="pl-cue-inner">').append(
-                            '<div class="pl-bubble"></div></div>',
-                            $user_pic,
-                            ' ' + r.data.username,
-                            ' <span class="hint">' + r.data.datetime + '</span>')
-                    );
-                    $my_reply.find('.pl-bubble').html(r.data.comment + '<a href="#" class="pl-delete-comment" data-pl-action="comment-delete" title="' + $_('Delete') + '">&times;</a>');
-                    $this.closest('.pl-reply').before($my_reply);
+                // var $reply_wrapper = $this.closest('.pl-reply'),
+                //     $user_pic = $reply_wrapper.find('i').clone(),
+                //     $my_reply = $('<div class="pl-cue pl-my-cue" data-pl-comment-id="' + r.data.id + '">');
+                //
+                // todo: use template
+                // $my_reply.append(
+                //     $('<div class="pl-cue-inner">').append(
+                //         '<div class="pl-bubble"></div></div>',
+                //         $user_pic,
+                //         ' ' + r.data.username,
+                //         ' <span class="hint">' + r.data.datetime + '</span>')
+                // );
+                // $my_reply.find('.pl-bubble').html(r.data.comment + '<a href="#" class="pl-de lete-comment" data-pl-action="comment-delete" title="' + $_('Delete') + '">&times;</a>');
+                // $this.closest('.pl-reply').before($my_reply);
+                $this.closest('.pl-reply').before(html);
 
-                    $this.val('').trigger('focus');
-                    $.pocketlists.resizeTextarea($this);
-                }
+                $this.val('').trigger('focus');
+                $.pocketlists.resizeTextarea($this);
+
                 request_in_action = false;
-            },
-            'json'
+            }
         );
     };
     var deleteComment = function() {

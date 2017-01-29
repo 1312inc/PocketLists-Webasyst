@@ -259,9 +259,6 @@ class pocketlistsItemModel extends waModel
             array('contact_id' => $user_id, 'id' => $ids)
         )->fetchAll();
 //        $items = $this->getItems($this->getQuery(), null, false);
-        foreach ($items as $id => $item) {
-            $items[$id] = $this->extendItemData($item);
-        }
 //        return $items;
         return count($ids) > 1 ? $items : reset($items);
     }
@@ -349,9 +346,8 @@ class pocketlistsItemModel extends waModel
     private function getItems($sql, $list_id, $tree)
     {
         $items = $this->query($sql, array('lid' => $list_id, 'contact_id' => wa()->getUser()->getId()))->fetchAll('id');
-        foreach ($items as $id => $item) {
-            $items[$id] = $this->extendItemData($item);
-        }
+        $items = $this->extendItemData($items);
+
         return $tree ? $this->getTree($items, $tree) : $items;
     }
 
@@ -374,35 +370,41 @@ class pocketlistsItemModel extends waModel
         return $result;
     }
 
-    private function extendItemData($item)
+    public function extendItemData($items, $edit = false)
     {
-        // todo: bulk update?
-        if ($item['contact_id']) {
-            $user = new waContact($item['contact_id']);
-            $item['username'] = $user->getName();
-            $item['userpic'] = $user->getPhoto('20');
+        if (isset($items['id'])) {
+            $items = array($items);
         }
-        if ($item['assigned_contact_id']) {
-            $user = new waContact($item['assigned_contact_id']);
-            $item['assigned_username'] = $user->getName();
-            $item['assigned_userpic'] = $user->getPhoto('20');
+        foreach ($items as $id => &$item) {
+            if ($items[$id]['contact_id']) {
+                $user = new waContact($items[$id]['contact_id']);
+                $items[$id]['username'] = $user->getName();
+                $items[$id]['userpic'] = $user->getPhoto('20');
+            }
+            if ($items[$id]['assigned_contact_id']) {
+                $user = new waContact($items[$id]['assigned_contact_id']);
+                $items[$id]['assigned_username'] = $user->getName();
+                $items[$id]['assigned_userpic'] = $user->getPhoto('20');
+            }
+            if ($items[$id]['complete_contact_id']) {
+                $user = new waContact($items[$id]['complete_contact_id']);
+                $items[$id]['complete_username'] = $user->getName();
+                $items[$id]['complete_userpic'] = $user->getPhoto('20');
+            }
+
+            $am = new pocketlistsAttachmentModel();
+            $items[$id]['attachments'] = $am->getByField('item_id', $items[$id]['id'], true);
+
+            $this->addChatData($items[$id]);
+
+            $this->addPriorityData($items[$id]);
+
+            if (!$edit) {
+                $this->prepareOutput($items[$id]);
+            }
         }
-        if ($item['complete_contact_id']) {
-            $user = new waContact($item['complete_contact_id']);
-            $item['complete_username'] = $user->getName();
-            $item['complete_userpic'] = $user->getPhoto('20');
-        }
 
-        $am = new pocketlistsAttachmentModel();
-        $item['attachments'] = $am->getByField('item_id', $item['id'], true);
-
-        $this->addChatData($item);
-
-        $this->addPriorityData($item);
-
-        $this->prepareOutput($item);
-
-        return $item;
+        return count($items) > 1 ? $items : reset($items);
     }
 
     private function prepareOutput(&$item)
@@ -441,12 +443,7 @@ class pocketlistsItemModel extends waModel
             return;
         }
         foreach ($chat[$item['id']] as $comment) {
-            $item['chat']['comments'][$comment['id']] = $comment;
-            $comment_user = new waContact($comment['contact_id']);
-            $item['chat']['comments'][$comment['id']]['my'] = $comment['contact_id'] == wa()->getUser()->getId() ? true : false;
-            $item['chat']['comments'][$comment['id']]['username'] = $comment_user->getName();
-            $item['chat']['comments'][$comment['id']]['userpic'] = $comment_user->getPhoto('20');
-            $item['chat']['comments'][$comment['id']]['can_be_deleted'] = (time() - strtotime($comment['create_datetime']) < 60 * 60 * 24);
+            $item['chat']['comments'][$comment['id']] = pocketlistsCommentModel::extendData($comment);
         }
     }
 
