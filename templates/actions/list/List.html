@@ -7,76 +7,72 @@
 <body>
 {/if}
 
+{if !$print}
 <nav class="pl-inner-sidebar" data-pl="uho">
+{if isset($list.id)}
+    {if !$archive}
+    <div class="block">
+        {*
+        <div>
+            <a href="#" onClick="alert('Coming soon');"><i class="icon16 link"></i> [`Get public link`]</a>
+        </div>
+        *}
 
+        <div class="pl-list-access">
+            <h5 class="heading">[`Access rights`]</h5>
+            {foreach $list_access_contacts as $list_access_contact_id => $list_access_contact}
+            <img src="{$list_access_contact.userpic}" title="{$list_access_contact.username|escape}" alt="{$list_access_contact.username|escape}">
+            {/foreach}
+            <p class="hint">[`Use Contacts app to customize access rights for pockets.`]</p>
+        </div>
+
+        <div class="pl-list-sort-dropdown bordered-top">
+            <a href="#" data-pl-action="list-sort"><i class="icon16 update"></i> [`Sort`]</a>
+        </div>
+
+        <div class="bordered-top">
+            <a href="#" data-pl-action="list-email"><i class="icon16 email"></i> [`Email list`]</a>
+        </div>
+        <div>
+            <a href="?module=list&amp;id={$list.id}&amp;print=true" target="_blank"><i class="icon16 print"></i> [`Print list`]</a>
+        </div>
+
+        <div>
+            <a href="#" data-pl-action="list-archive"><i class="icon16 pl archive"></i> [`Archive list`]</a>
+        </div>
+        <div class="bordered-top">
+            <a href="#" data-pl-action="list-edit"><i class="icon16 edit"></i> [`Edit list`]</a>
+        </div>
+        <div>
+            <a href="#" data-pl-action="list-delete"><i class="icon16 delete"></i> [`Delete list`]</a>
+        </div>
+    </div>
+    <div class="block">
+            <div class="pl-list-sort">
+                <a href="#" data-pl-action="list-sort"><i class="icon16 update"></i> [`Sort`]</a>
+            </div>
+            <div class="pl-list-favorite">
+                <a href="#" data-pl-action="list-favorite"><i class="icon16 star{if !$list.favorite}-empty{/if}"></i></a>
+            </div>
+    </div>
+    {else}
+    <div class="block">
+            <div>
+                <a href="#" data-pl-action="list-unarchive" class="bold"><i class="icon16 pl archive"></i> [`Unarchive list`]</a>
+            </div>
+            <div>
+                <a href="#" data-pl-action="list-delete"><i class="icon16 delete"></i> [`Delete`]</a>
+            </div>
+    {/if}
+    </div>
+{/if}
 </nav>
+{/if}
 
 <main id="pl-list-content" class="pl-list-content">
 
     <div class="pl-inner-content pl-items shadowed pl-{$list.color|default:'none'}">
     <header class="pl-list-title pl-title">
-        {if !$print}
-        <div class="float-right block half-padded">
-            {if isset($list.id)}
-            <ul class="menu-h dropdown">
-                {if !$archive}
-                <li>
-                    <a href="javascript:void();" class="inline-link gray"><b><i>[`List`]</i></b></a>
-                    <ul class="menu-v with-icons" style="width: 230px;">
-                        {*
-                        <li>
-                            <a href="#" onClick="alert('Coming soon');"><i class="icon16 link"></i> [`Get public link`]</a>
-                        </li>
-                        *}
-
-                        <li class="pl-list-access">
-                            <h5 class="heading">[`Access rights`]</h5>
-                            {foreach $list_access_contacts as $list_access_contact_id => $list_access_contact}
-                            <img src="{$list_access_contact.userpic}" title="{$list_access_contact.username|escape}" alt="{$list_access_contact.username|escape}">
-                            {/foreach}
-                            <p class="hint">[`Use Contacts app to customize access rights for pockets.`]</p>
-                        </li>
-
-                        <li class="pl-list-sort-dropdown bordered-top">
-                            <a href="#" data-pl-action="list-sort"><i class="icon16 update"></i> [`Sort`]</a>
-                        </li>
-
-                        <li class="bordered-top">
-                            <a href="#" data-pl-action="list-email"><i class="icon16 email"></i> [`Email list`]</a>
-                        </li>
-                        <li>
-                            <a href="?module=list&amp;id={$list.id}&amp;print=true" target="_blank"><i class="icon16 print"></i> [`Print list`]</a>
-                        </li>
-
-                        <li>
-                            <a href="#" data-pl-action="list-archive"><i class="icon16 pl archive"></i> [`Archive list`]</a>
-                        </li>
-                        <li class="bordered-top">
-                            <a href="#" data-pl-action="list-edit"><i class="icon16 edit"></i> [`Edit list`]</a>
-                        </li>
-                        <li>
-                            <a href="#" data-pl-action="list-delete"><i class="icon16 delete"></i> [`Delete list`]</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="pl-list-sort">
-                    <a href="#" data-pl-action="list-sort"><i class="icon16 update"></i> [`Sort`]</a>
-                </li>
-                <li class="pl-list-favorite">
-                    <a href="#" data-pl-action="list-favorite"><i class="icon16 star{if !$list.favorite}-empty{/if}"></i></a>
-                </li>
-                {else}
-                <li>
-                    <a href="#" data-pl-action="list-unarchive" class="bold"><i class="icon16 pl archive"></i> [`Unarchive list`]</a>
-                </li>
-                <li>
-                    <a href="#" data-pl-action="list-delete"><i class="icon16 delete"></i> [`Delete`]</a>
-                </li>
-                {/if}
-            </ul>
-            {/if}
-        </div>
-        {/if}
         <h1>
             <input type="hidden" value="{$list.id|default:-1}" id="pl-list-id">
             {if !$archive}

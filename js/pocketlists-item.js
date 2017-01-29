@@ -763,7 +763,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
 
         var hideItemDetails = function () {
             $wrapper.animate({
-                'right': '-100%'
+                'left': '0%'
             }, 200, function() {
                 $wrapper.hide().empty()
             });
@@ -779,7 +779,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
             id = id_item;
             //$wrapper.html($.pocketlists.$loading).show();
             $wrapper.html($.pocketlists.$loading).show().animate({
-                'right': '0%'
+                'left': '100%'
             }, 200, function() {
                 $.pocketlists.stickyDetailsSidebar();
             });

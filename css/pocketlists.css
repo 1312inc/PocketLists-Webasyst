@@ -8,7 +8,7 @@
 .pl-sidebar-core { margin-top: 20px; }
 
 .pl-inner-sidebar { background: #ffc; border: 2px dashed #ddb; float: right; width: 345px; margin-top: 20px; margin-right: 5px; }
-.pl-inner-content { position: relative; min-height: 530px; margin-right: 350px; }
+.pl-inner-content { position: relative; min-height: 530px; margin-right: 350px; z-index: 10}
 
 /* Misc
 ------- */
@@ -228,11 +228,15 @@ input#pl-new-list-input:focus,
 .gray .pl-due-tomorrow,
 .gray .pl-due-someday { color: #aaa; }
 
+.pl-list-items, .pl-list-title, #pl-item-add {
+    position: relative;
+    z-index: 10;
+}
 .pl-list-items ul.menu-v { margin: 0; padding: 0; }
 .pl-list-items ul.menu-v li { padding: 0; margin: 0; }
-.pl-list-items ul.menu-v li .pl-item { display: block; border-bottom: 1px solid rgba(0,0,0,0.1);position: relative;}
-.pl-list-items ul.menu-v li .pl-item:hover { background: rgba(0,0,0,0.04); }
-.pl-list-items ul.menu-v li .pl-item.pl-item-selected { background: rgba(0,0,0,0.06); }
+.pl-list-items ul.menu-v li .pl-item { display: block; border-bottom: 1px solid rgba(0,0,0,0.1);position: relative;background: rgb(255, 255, 255);}
+.pl-list-items ul.menu-v li .pl-item:hover { background: rgb(250, 250, 250); }
+.pl-list-items ul.menu-v li .pl-item.pl-item-selected { background: rgb(240, 240, 240); }
 .pl-list-items ul.menu-v li label.pl-select-label { padding: 13px 25px 15px 49px; display: block; line-height: 1.3em; position: relative; cursor: auto; }
 .pl-list-items ul.menu-v li ul { padding-left: 0; margin: 0; }
 .pl-list-items ul.menu-v li ul li .pl-item { padding-left: 30px; }
@@ -314,7 +318,7 @@ input#pl-new-list-input:focus,
 /* Item & List details
 ---------------------- */
 
-.pl-details { display: none; padding: 13px 20px; position: absolute; top: 0; bottom: 0;right: -100%; width: 500px; background: #fff; box-shadow: -10px 0 20px -10px rgba(0,0,0,0.1);z-index: 9;}
+.pl-details { display: none; padding: 13px 20px; position: absolute; top: 0; bottom: 0;left: 0; width: 500px; background: #fff; box-shadow: -10px 0 20px -10px rgba(0,0,0,0.1);z-index: 9;}
 .pl-details.sticky,
 .pl-details.sticky { position: fixed; right: 16px; padding-top: 8px; }
 
