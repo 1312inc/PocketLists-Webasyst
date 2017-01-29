@@ -391,7 +391,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
             $list_wrapper.find(':checkbox').prop('disabled', true);
         }
 
-        $list_wrapper
+        $list_wrapper.add('[data-pl="uho"]')
             .on('click', function (e) {
                 if (!o.archive) {
                     var clicked = $list_wrapper.data('pl-clicked');

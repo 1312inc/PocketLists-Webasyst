@@ -372,7 +372,9 @@ class pocketlistsItemModel extends waModel
 
     public function extendItemData($items, $edit = false)
     {
+        $is_array = true;
         if (isset($items['id'])) {
+            $is_array = false;
             $items = array($items);
         }
         foreach ($items as $id => &$item) {
@@ -404,7 +406,7 @@ class pocketlistsItemModel extends waModel
             }
         }
 
-        return count($items) > 1 ? $items : reset($items);
+        return ($is_array || !$items) ? $items : reset($items);
     }
 
     private function prepareOutput(&$item)
