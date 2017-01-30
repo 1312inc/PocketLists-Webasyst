@@ -6,7 +6,10 @@ class pocketlistsListModel extends waModel
 
     public function getById($id)
     {
-        return $this->query(
+        if (!is_array($id)) {
+            $id = array($id);
+        }
+        $lists = $this->query(
             "SELECT
               i.*,
               l.*,
@@ -14,9 +17,11 @@ class pocketlistsListModel extends waModel
             FROM {$this->table} l
             LEFT JOIN pocketlists_item i ON i.key_list_id = l.id
             LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
-            WHERE l.id = i:id",
+            WHERE l.id IN (i:id)",
             array('id' => $id, 'contact_id' => wa()->getUser()->getId())
-        )->fetchAssoc();
+        )->fetchAll();
+
+        return count($id) === 1 ? reset($lists) : $lists;
     }
 
     public function add($data, $type = false)

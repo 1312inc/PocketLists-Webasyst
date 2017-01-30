@@ -1,103 +1,109 @@
-<div class="">
-
-    {if empty($teammates)}
-
-        <main class="pl-inner-content pl-items shadowed" id="pl-list-content">
-            <div class="pl-empty-list top-padded" id="pl-empty-list-msg">
-            <img class="userpic" src="{$current_teammate.photo_url}" alt="{$current_teammate.name}" title="{$current_teammate.name}" />
-            <h2>[`Invite your teammates!`]</h2>
-            <p>[`Use <strong>Contacts app</strong> to add your teammates to Pocket Lists and to start collaborating on to-do lists together.`]</p>
-        </main>
-
-    {else}
+{if isset($current_teammate.name) && $print}
+<html>
+<head>
+    <title>{$list.name} &mdash; {$wa->accountName()}</title>
+    <link type="text/css" rel="stylesheet" href="{$wa_app_static_url}css/pocketlists-print.css">
+</head>
+<body>
+{/if}
 
 
-        <!-- TEAM -->
-        <nav class="pl-inner-sidebar">
 
-            <ul class="zebra pl-team" id="pl-lists">
-                {foreach $teammates as $teammate}
-                <li {if $teammate.id == $current_teammate.id}class="selected"{/if} data-pl-team-id="{$teammate.id}" data-pl-list-id="{$teammate.id}">
-                    <a href="#/team/{$teammate.login|escape}/">
-                        <div class="profile image32px">
-                            <div class="image">
-                                <img class="userpic" src="{$teammate.photo_url}">
-                            </div>
-                            <div class="details">
+{if empty($teammates)}
+{if !$print}
+<main class="pl-inner-content pl-items shadowed" id="pl-list-content">
+    <div class="pl-empty-list top-padded" id="pl-empty-list-msg">
+    <img class="userpic" src="{$current_teammate.photo_url}" alt="{$current_teammate.name}" title="{$current_teammate.name}" />
+    <h2>[`Invite your teammates!`]</h2>
+    <p>[`Use <strong>Contacts app</strong> to add your teammates to Pocket Lists and to start collaborating on to-do lists together.`]</p>
+</main>
+{/if}
+{else}
 
-                                <span class="count{if $teammate.items_info.max_priority == 1} indicator green{elseif $teammate.items_info.max_priority == 2} indicator yellow{elseif $teammate.items_info.max_priority == 3} indicator red{/if}">{$teammate.items_info.count}</span>
+{if !$print}
+<!-- TEAM -->
+<nav class="pl-inner-sidebar" data-pl="uho">
+    <h5 class="heading">[`Access rights`]</h5>
 
-                                <span class="pl-username">
-                                    {$teammate.name|default:'%username%'|escape}
-                                    <span class="bold">
-                                        {if $teammate.status == 'online'}
-                                            <i class="icon10 online" title="[`Online`]"></i>
-                                        {/if}
-                                    </span>
-                                </span>
+    <ul class="menu-v with-icons collapsible" data-pl-sidebar-block="lists">
+        {foreach $lists as $l}
+        <li>
+            <a href="#/list/{$l.id}/">
+                <i class="icon16 listicon16" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l.icon|default:'li-list@2x.png'});"></i>{if $l.color != 'none'}<span class="pl-{$l.color}">{$l.name|escape}</span>{else}{$l.name|escape}{/if}
+            </a>
+        </li>
+        {/foreach}
+    </ul>
 
-                                <div class="pl-active-items">{$teammate.items_info.names|escape}
-                                |default:TEAMROLE</div>
+    <p class="hint">[`Use Contacts app to customize access rights for pockets.`]</p>
 
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                {/foreach}
-            </ul>
+    <div class="bordered-top">
+        <a href="#" data-pl-action="list-email"><i class="icon16 email"></i> [`Email list`]</a>
+    </div>
+    <div>
+        <a href="?module=team&amp;teammate={$current_teammate.name}&amp;print=true" target="_blank"><i class="icon16 print"></i> [`Print list`]</a>
+    </div>
+</nav>
+{/if}
 
-        </nav>
+<!-- ITEMS -->
+<main class="pl-inner-content pl-items shadowed pl-teammate-items" id="pl-list-content">
 
+    <header class="pl-title">
+        <input type="hidden" id="pl-list-id" value="{$current_teammate.id}"/>
+        <h1 class="not-padded">
+            {$current_teammate.name|default:' '|escape}
+        </h1>
+        <input type="hidden" id="pl-assigned-contact-id" value="{$current_teammate.id}"/>
+    </header>
 
-    <!-- ITEMS -->
-    <main class="pl-inner-content pl-items shadowed pl-teammate-items" id="pl-list-content">
-
-        <header class="pl-title">
-            <input type="hidden" id="pl-list-id" value="{$current_teammate.id}"/>
-            <h1 class="not-padded">
-                {$current_teammate.name|default:' '|escape}
-            </h1>
-            <input type="hidden" id="pl-assigned-contact-id" value="{$current_teammate.id}"/>
-        </header>
-
-        <div class="pl-list-items" id="pl-list-items">
-            <div class="pl-empty-list" id="pl-empty-list-msg" {if !empty($items)}style="display:none;"{/if}>
-                <img class="userpic" src="{$current_teammate.photo_url}" alt="{$current_teammate.name|escape}" title="{$current_teammate.name|escape}" />
-                <h2>{sprintf('[`%s’s to-do list is empty`]',$current_teammate.name|escape)}</h2>
-                <p>[`To assign a to-do to a user, either select him in to-do item details or add a to-do item above.`]</p>
-            </div>
-
-            <section id="pl-undone-items" data-pl-items="undone">
-                <ul class="menu-v">
-                    {if !empty($items)}
-                    {include '../item/Item.html' parent_id=0 items=$items}
-                    {/if}
-                </ul>
-            </section>
-
-            <!-- completed to-dos log -->
-            <section id="pl-complete-log" class="pl-logbook">
-                <h5 class="heading">[`Logbook`]</h5>
-                <ul class="menu-v">
-                    {if !empty($items_done)}
-                    {include '../item/Item.html' items=$items_done}
-                    {/if}
-                </ul>
-            </section>
-
-            <a href="#" id="pl-complete-log-link" class="inline-link gray" {if !$count_done_items}style="display:none;"{/if}><b><i>{_w('Show all %d completed to-do', 'Show all %d completed to-dos', $count_done_items)}</i></b></a>
-
+    <div class="pl-list-items" id="pl-list-items">
+        <div class="pl-empty-list" id="pl-empty-list-msg" {if !empty($items)}style="display:none;"{/if}>
+            <img class="userpic" src="{$current_teammate.photo_url}" alt="{$current_teammate.name|escape}" title="{$current_teammate.name|escape}" />
+            <h2>{sprintf('[`%s’s to-do list is empty`]',$current_teammate.name|escape)}</h2>
+            <p>[`To assign a to-do to a user, either select him in to-do item details or add a to-do item above.`]</p>
         </div>
-        <div class="clear-both"></div>
 
-        {include '../../include/itemadd.html' inline}
+        <section id="pl-undone-items" data-pl-items="undone">
+            <ul class="menu-v">
+                {if !empty($items)}
+                {include '../item/Item.html' parent_id=0 items=$items}
+                {/if}
+            </ul>
+        </section>
 
-        {include '../../include/itemdetails.html' inline}
+        <!-- completed to-dos log -->
+        <section id="pl-complete-log" class="pl-logbook">
+            <h5 class="heading">[`Logbook`]</h5>
+            <ul class="menu-v">
+                {if !empty($items_done)}
+                {include '../item/Item.html' items=$items_done}
+                {/if}
+            </ul>
+        </section>
 
-    </main>
+        <a href="#" id="pl-complete-log-link" class="inline-link gray" {if !$count_done_items}style="display:none;"{/if}><b><i>{_w('Show all %d completed to-do', 'Show all %d completed to-dos', $count_done_items)}</i></b></a>
+
+    </div>
+    <div class="clear-both"></div>
+
+    {if !$print}
+
+    {include '../../include/itemadd.html' inline}
+
+    {include '../../include/itemdetails.html' inline}
+
     {/if}
+</main>
+{/if}
 
+{if isset($current_teammate.name) && $print}
+<div class="pl-print-button">
+    <button onclick="window.print();">[`Print`]</button>
 </div>
+</body>
+</html>
+{else}
 
 <script text="text/javascript">
     var $all_items_wrapper = $('#pl-list-items');
@@ -113,3 +119,4 @@
     });
     $.pocketlists.setTitle('{$current_teammate.name|escape}');
 </script>
+{/if}

@@ -40,6 +40,14 @@
         getStream();
 
 
+        var setPrintLink = function (date) {
+            var $print_link = $calendar_wrapper.find('[data-pl-action="list-print"]'),
+                href = $print_link.attr('href'),
+                new_href = href.replace(/&date=.*$/, '&date=' + (date ? date : ''));
+
+            $print_link.attr('href', new_href);
+        };
+
         $calendar_wrapper
                 .on('click', '[data-pl-todo-date]', function () {
                     var $this = $(this),
@@ -48,6 +56,7 @@
                     $calendar_wrapper.find('[data-pl-todo-date]').removeClass('pl-selected');
                     $this.addClass('pl-selected');
 
+                    setPrintLink(date);
                     getStream(date);
                 })
                 .on('mouseenter mouseleave', '[data-pl-todo-date]', function () {
@@ -63,6 +72,7 @@
             e.preventDefault();
             $calendar_wrapper.find('[data-pl-todo-date]').removeClass('pl-selected');
 
+            setPrintLink()
             getStream();
         });
     }());

@@ -38,6 +38,7 @@ class pocketlistsHelper
                     'username' => $contact->getName(),
                     'userpic' => $contact->getPhoto($photo_size),
                     'login' => $contact['login'],
+                    'status' => $contact->getStatus()
                 );
             } else {
                 $groups[] = $id['group_id'];
@@ -54,6 +55,7 @@ class pocketlistsHelper
                     'username' => $contact->getName(),
                     'userpic' => $contact->getPhoto($photo_size),
                     'login' => $contact['login'],
+                    'status' => $contact->getStatus()
                 );
             }
         }

@@ -19,9 +19,27 @@
         *}
 
         <div class="pl-list-access">
-            <h5 class="heading">[`Access rights`]</h5>
+            <ul>
             {foreach $list_access_contacts as $list_access_contact_id => $list_access_contact}
-            <img src="{$list_access_contact.userpic}" title="{$list_access_contact.username|escape}" alt="{$list_access_contact.username|escape}">
+            <li>
+                <div class="profile image32px">
+                    <div class="image">
+                        <img class="userpic" src="{$list_access_contact.userpic}">
+                    </div>
+                    <div class="details">
+                        <span class="pl-username">
+                            {$list_access_contact.username|default:'%username%'|escape}
+                            <span class="bold">
+                                {if $list_access_contact.status == 'online'}
+                                    <i class="icon10 online" title="[`Online`]"></i>
+                                {/if}
+                            </span>
+                        </span>
+
+                        <div class="pl-active-items">TEAMROLE</div>
+                    </div>
+                </div>
+            </li>
             {/foreach}
             <p class="hint">[`Use Contacts app to customize access rights for pockets.`]</p>
         </div>

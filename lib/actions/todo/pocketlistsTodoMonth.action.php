@@ -10,7 +10,7 @@ class pocketlistsTodoMonthAction extends waViewAction
         $show_month = waRequest::get("month", 0, waRequest::TYPE_INT);
         $month_date = waDateTime::date("Y-m", null, $timezone);
         if ($show_month) {
-            $month_date = date("Y-m", strtotime($show_month . ' month'));
+            $month_date = date("Y-m", strtotime(date("Y-m-01") . ' ' . ($show_month . ' month')));
         }
         $month_date = strtotime($month_date);
 

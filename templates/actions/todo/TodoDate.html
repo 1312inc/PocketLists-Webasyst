@@ -1,3 +1,13 @@
+{if $print}
+<html>
+<head>
+    <title>{if !$date}[`My to-dos`]{else}{$date}{/if} &mdash; {$wa->accountName()}</title>
+    <link type="text/css" rel="stylesheet" href="{$wa_app_static_url}css/pocketlists-print.css">
+</head>
+<body>
+{/if}
+
+
 <main class="blank bordered-right pl-inner-content pl-items pl-list-items pl-todo shadowed" id="pl-list-content">
 
     <div id="pl-stream-notice" class="pl-alert" style="display: none;">
@@ -19,7 +29,7 @@
         <span></span>
         {else}
         <h1 class="not-padded" pl-todo-stream="date">
-            <span>{$date}</span> <a href="#" class="back">[`Show stream`]</a>
+            <span>{$date}</span>{if !$print} <a href="#" class="back">[`Show stream`]</a>{/if}
         </h1>
         {/if}
     </header>
@@ -41,6 +51,7 @@
             </ul>
         </section>
 
+        {if !$print}
         <section id="pl-complete-log" class="pl-logbook">
             <h5 class="heading">[`Logbook`]</h5>
             <ul class="menu-v">
@@ -51,16 +62,21 @@
         </section>
 
         <a href="#" id="pl-complete-log-link" class="inline-link gray" {if !$count_done_items}style="display:none;"{/if}><b><i>{_w('Show all %d completed to-do', 'Show all %d completed to-dos', $count_done_items)}</i></b></a>
+        {/if}
 
     </div>
 
     <div class="clear-both"></div>
 
+    {if !$print}
+
     {include '../../include/itemadd.html' inline}
 
     {include '../../include/itemdetails.html' inline}
-</main>
 
+    {/if}
+</main>
+{if !$print}
 <script type="text/javascript">
     (function(){
         $.pocketlists.initNotice('#pl-stream-notice');
@@ -76,3 +92,10 @@
         });
     }());
 </script>
+{else}
+<div class="pl-print-button">
+    <button onclick="window.print();">[`Print`]</button>
+</div>
+</body>
+</html>
+{/if}
