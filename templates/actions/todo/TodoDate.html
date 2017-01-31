@@ -1,7 +1,7 @@
 {if $print}
 <html>
 <head>
-    <title>{if !$date}[`My to-dos`]{else}{$date}{/if} &mdash; {$wa->accountName()}</title>
+    <title>{if !$date}[`My to-dos`]{else}{$date|wa_date:'humandate'}{/if} &mdash; {$wa->accountName()}</title>
     <link type="text/css" rel="stylesheet" href="{$wa_app_static_url}css/pocketlists-print.css">
 </head>
 <body>
@@ -29,7 +29,7 @@
         <span></span>
         {else}
         <h1 class="not-padded" pl-todo-stream="date">
-            <span>{$date}</span>{if !$print} <a href="#" class="back">[`Show stream`]</a>{/if}
+            <span>{$date|wa_date:'humandate'}</span>{if !$print} <a href="#" class="back">[`Show stream`]</a>{/if}
         </h1>
         {/if}
     </header>

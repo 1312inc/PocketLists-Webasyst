@@ -22,6 +22,7 @@ class pocketlistsBackendLocAction extends waViewAction
                      'delete',
                      'Are you sure you want to delete this file?',
                      'This will permanently delete this comment. Are you sure?',
+                     'Assigned to',
                  ) as $s) {
             $strings[$s] = _w($s);
         }

@@ -129,6 +129,7 @@
             $.get("?module=backend&action=sidebar", function (result) {
                 $('#pl-sidebar-core').html(result);
                 self.highlightSidebar();
+                self.sortLists();
             });
         },
         sortLists: function() {
@@ -137,7 +138,47 @@
                 return;
             }
 
-            var $lists_wrapper = self.$core_sidebar.find('[data-pl-sidebar-block="lists"]');
+            var $lists_wrapper = self.$core_sidebar.find('[data-pl-sidebar-block="lists"]'),
+                $team_wrapper = self.$core_sidebar.find('[data-pl-sidebar-block="team"]');
+
+            $('[data-pl-list-id]', $lists_wrapper).droppable({
+                accept: '[data-parent-id]',
+                disabled: false,
+                greedy: true,
+                tolerance: 'pointer',
+                over: function( event, ui ) {
+                    $(this).addClass('pl-list-placeholder');
+                },
+                out: function( event, ui ) {
+                    $(this).removeClass('pl-list-placeholder');
+                },
+                drop: function(event, ui) {
+                    var $item = $(ui.draggable[0]),
+                        $list = $(event.target),
+                        list_id = $list.data('pl-list-id');
+
+                    $item.trigger('moveToList.pl2', {id: list_id});
+                }
+            });
+            $('[data-pl-team-id]', $team_wrapper).droppable({
+                accept: '[data-parent-id]',
+                disabled: false,
+                greedy: true,
+                tolerance: 'pointer',
+                over: function( event, ui ) {
+                    $(this).addClass('pl-list-placeholder');
+                },
+                out: function( event, ui ) {
+                    $(this).removeClass('pl-list-placeholder');
+                },
+                drop: function(event, ui) {
+                    var $item = $(ui.draggable[0]),
+                        $list = $(event.target),
+                        team_id = $list.data('pl-team-id');
+
+                    $item.trigger('assignTo.pl2', {id: team_id});
+                }
+            });
             $lists_wrapper.sortable({
                 item: '[data-pl-list-id]',
                 distance: 5,
@@ -189,9 +230,8 @@
             self.$core_sidebar = $('#pl-sidebar-core');
             self.options = $.extend({}, self.defaults, o);
 
-            self.highlightSidebar();
-
-            self.sortLists();
+            // self.highlightSidebar();
+            // self.sortLists();
 
             $('#wa-app').on('click', '[data-pl-scroll-to-top] a', function () {
                 self.scrollToTop(0, 80);

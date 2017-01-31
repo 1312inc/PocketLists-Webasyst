@@ -17,7 +17,7 @@ class pocketlistsTodoDateAction extends waViewAction
         $this->view->assign('done_items', $items[1]);
         $this->view->assign('count_done_items', count($items[1]));
 
-        $this->view->assign('date', $date ? waDateTime::format('humandate', $date) : false);
+        $this->view->assign('date', $date);
         $this->view->assign('timestamp', $date ? strtotime($date) : time());
 
         $us = new pocketlistsUserSettings();

@@ -454,7 +454,7 @@ class pocketlistsHelper
     public static function canAccessToList($list_id, $contact_id = false)
     {
         $available_lists = pocketlistsHelper::getAccessListForContact($contact_id);
-        return in_array($list_id, $available_lists);
+        return $available_lists && in_array($list_id, $available_lists);
     }
 
     private static function compare_last_activity($a, $b)

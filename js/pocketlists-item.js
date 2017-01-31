@@ -58,6 +58,21 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
         } else {
             $sortable_items.find('[data-pl-action="item-sort"]').hide();
         }
+// debugger;
+        $(item_selector, $sortable_items).draggable({
+            handle: '[data-pl-action="item-sort"]',
+            opacity: 0.75,
+            zIndex: 9999,
+            distance: 5,
+            appendTo: 'body',
+            cursor: 'move',
+            revert : 'invalid',
+            start: function(){
+                // var $this = $(this);
+                // debugger;
+                // $this.data("pl-item-original-position", $this.position());
+            }
+        });
     };
     // save item
     var addItem = function (data, callback) {
@@ -587,6 +602,70 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                         $comment_wrapper.remove();
                     });
                 }
+                request_in_action = false;
+            },
+            'json'
+        );
+    };
+    var moveToList = function (list_id) {
+        if (request_in_action) {
+            return;
+        }
+        request_in_action = true;
+
+        var $this = $(this);
+
+        $.post(
+            '?module=item&action=moveToList',
+            {
+                id: parseInt($this.data('id')),
+                list_id: list_id
+            },
+            function (r) {
+                // $.pocketlists.$loading.removeAttr('style').remove();
+                if (r.status === 'ok') {
+                    $this.hide(function () {
+                        $this.remove();
+                    });
+                    $.pocketlists.reloadSidebar();
+                } else {
+                    $this.animate({
+                        top: 0, left: 0
+                    });
+                }
+                request_in_action = false;
+            },
+            'json'
+        );
+    };
+    var assignTo = function (team_id) {
+        if (request_in_action) {
+            return;
+        }
+        request_in_action = true;
+
+        var $this = $(this);
+
+        $.post(
+            '?module=item&action=assignTo',
+            {
+                id: parseInt($this.data('id')),
+                team_id: team_id
+            },
+            function (r) {
+                // $.pocketlists.$loading.removeAttr('style').remove();
+                if (r.status === 'ok') {
+                    if ($this.find('.pl-item').data('pl-assigned-contact') === undefined) {
+                        $this.find('.pl-item-name').after('<strong class="hint"><br>' + $_('Assigned to') + ' ' + r.data + '</strong>');
+                    } else {
+                        $this.find('.pl-item-name + .hint').html('<br>' + $_('Assigned to') + ' ' + r.data);
+                    }
+                    $this.find('.pl-item').data('pl-assigned-contact', team_id);
+                    $.pocketlists.reloadSidebar();
+                }
+                $this.animate({
+                    top: 0, left: 0
+                });
                 request_in_action = false;
             },
             'json'
@@ -1135,6 +1214,12 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                         $day.toggleClass('highlighted-background');
                     }
                 }
+            })
+            .on('moveToList.pl2', item_selector, function (e, data) {
+                moveToList.call(this, data.id);
+            })
+            .on('assignTo.pl2', item_selector, function (e, data) {
+                assignTo.call(this, data.id);
             });
 
         // keyboard
