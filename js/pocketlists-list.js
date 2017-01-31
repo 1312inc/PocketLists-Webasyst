@@ -382,8 +382,6 @@ $.pocketlists.List = function ($list_wrapper, options) {
                     if (e.which === 27) {
                         $new_list_input.data('pl-can-add', false).val('');
                     }
-                }).on('blur', function () {
-                    $new_list_input.data('pl-can-add') && addNewList(list_id);
                 });
         }
 
