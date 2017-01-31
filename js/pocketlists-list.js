@@ -288,7 +288,11 @@ $.pocketlists.List = function ($list_wrapper, options) {
 
                     $.post('?module=list&action=delete', {list_id: list_id}, function (r) {
                         if (r.status === 'ok') {
-                            $.wa.setHash('#/todo/');
+                            if (/#\/archive/.test(window.location.hash)) {
+                                $.wa.setHash('#/archive/');
+                            } else {
+                                $.wa.setHash('#/todo/');
+                            }
                             $.pocketlists_routing.redispatch();
                         } else {}
                         d.trigger('close');
