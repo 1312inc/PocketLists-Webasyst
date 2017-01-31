@@ -1016,6 +1016,9 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
 
                 $this.prop('disabled', true);
                 completeItem.call(this, $item, status, function() {
+                    if (ItemDetails.isVisible()) {
+                        ItemDetails.trigger('hide.pl2');
+                    }
                     $this.prop('disabled', false);
                 });
             })
