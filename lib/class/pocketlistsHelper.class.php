@@ -5,6 +5,8 @@ class pocketlistsHelper
     const APP_ID = 'pocketlists';
     const COLOR_DEFAULT = 'blue';
 
+    private static $access_rights = [];
+
     /**
      * Return users for given list
      * @param bool|integer $list_id
@@ -78,6 +80,17 @@ class pocketlistsHelper
         }
         // todo: может сразу возвращать модели?
         return $lists ? array_keys($lists) : false;
+    }
+
+    public static function userHasAccessToList($list_id, $user_id = false)
+    {
+        $user_id = $user_id ? $user_id : wa()->getUser()->getId();
+        if (!isset(self::$access_rights[$user_id])) {
+            self::$access_rights[$user_id] = self::getAccessListForContact($user_id);
+        }
+
+        return in_array($list_id, self::$access_rights[$user_id]);
+
     }
 
     /**

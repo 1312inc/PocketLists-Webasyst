@@ -483,7 +483,7 @@ class pocketlistsNotifications
                             );
                         }
                         if ($item && (
-                                $item['list_id'] || ( // not from NULL-list
+                            ($item['list_id'] && pocketlistsHelper::userHasAccessToList($item['list_id'], $user_id)) || ( // not from NULL-list
                                     $item['list_id'] == null && ( // OR from NULL-list,
                                         isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id || // but assigned to this user
                                         $item['contact_id'] == $user_id // OR created by user
