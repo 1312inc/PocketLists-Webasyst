@@ -642,6 +642,9 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                     window.setTimeout(function () {
                         $.pocketlists.resizeTextarea($textarea)
                     }, 0);
+                    window.setTimeout(function () {
+                        $.pocketlists.resizeTextarea($top_textarea)
+                    }, 0);
                 })
                 .on('keydown', function (e) {
                     var $this = $(this);
