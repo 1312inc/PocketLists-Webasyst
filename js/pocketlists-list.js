@@ -310,7 +310,8 @@ $.pocketlists.List = function ($list_wrapper, options) {
         $.post('?module=list&action=archive', {list_id: list_id, archive: 1}, function (r) {
             if (r.status === 'ok') {
                 $dialog && $dialog.trigger('close');
-                $.wa.setHash('#/list/' + list_id);
+                $.wa.setHash('#/todo/');
+                $.pocketlists.reloadSidebar();
             } else {
             }
             request_in_action = false;
