@@ -577,7 +577,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
         );
     };
     var deleteComment = function() {
-        if (!confirm($_('This will permanently delete this comment. Are you sure?'))) {
+        if (!confirm($_('You are about to permanently delete this comment. Delete?'))) {
             return;
         }
 
