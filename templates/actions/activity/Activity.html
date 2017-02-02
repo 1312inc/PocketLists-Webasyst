@@ -1,14 +1,17 @@
 <div class="shadowed">
     <main class="content pl-items pl-logbook" id="pl-list-content">
-    {if !empty($activities)}
-        <ul>
-            {foreach $activities as $activity}
-            <li><pre>{$activity|print_r}</pre></li>
-            {/foreach}
-        </ul>
-    {/if}
+        <div class="pl-list-items">
 
-    <div class="clear-both"></div>
+            {if !empty($activities)}
+                <ul class="menu-v">
+                    {foreach $activities as $activity}
+                        <li>{$activity|print_r}</li>
+                    {/foreach}
+                </ul>
+            {/if}
+        </div>
+
+        <div class="clear-both"></div>
 
     </main>
 </div>

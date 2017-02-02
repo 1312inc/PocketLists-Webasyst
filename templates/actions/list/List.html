@@ -18,61 +18,69 @@
         </div>
         *}
 
+        <ul class="menu-v with-icons">
+            <li class="pl-list-sort">
+                <a href="#" data-pl-action="list-sort" class="bold"><i class="icon16 update"></i> [`Re-sort list`]</a>
+            </li>
+            {* DEPRECATED FEB 2017 <li class="pl-list-favorite">
+                <a href="#" data-pl-action="list-favorite"><i class="icon16 star{if !$list.favorite}-empty{/if}"></i></a>
+            </li> *}
+        </ul>
+
+        <hr>
+
         <div class="pl-list-access">
-            <ul>
+
+            <h5 class="heading">[`Access`]</h5>
             {foreach $list_access_contacts as $list_access_contact_id => $list_access_contact}
-            <li>
+
                 <div class="profile image32px">
                     <div class="image">
                         <img class="userpic" src="{$list_access_contact.userpic}">
                     </div>
                     <div class="details">
                         <span class="pl-username">
-                            {$list_access_contact.username|default:'%username%'|escape}
+                            <a href="###">{$list_access_contact.username|default:'%username%'|escape}</a>
                             <span class="bold">
                                 {if $list_access_contact.status == 'online'}
                                     <i class="icon10 online" title="[`Online`]"></i>
                                 {/if}
                             </span>
                         </span>
-
-                        <div class="pl-active-items">TEAMROLE</div>
+                        <div class="hint">TEAMROLE</div>
                     </div>
                 </div>
-            </li>
+
             {/foreach}
-            <p class="hint">[`Use Contacts app to customize access rights for pockets.`]</p>
+            <p class="hint">[`Use Team app to customize access rights for pockets.`]</p>
         </div>
 
-        <div class="pl-list-sort-dropdown bordered-top">
-            <a href="#" data-pl-action="list-sort"><i class="icon16 update"></i> [`Sort`]</a>
-        </div>
+        <hr>
 
-        <div class="bordered-top">
-            <a href="#" data-pl-action="list-email"><i class="icon16 email"></i> [`Email list`]</a>
-        </div>
-        <div>
-            <a href="?module=list&amp;id={$list.id}&amp;print=true" target="_blank"><i class="icon16 print"></i> [`Print list`]</a>
-        </div>
-
-        <div>
-            <a href="#" data-pl-action="list-archive"><i class="icon16 pl archive"></i> [`Archive list`]</a>
-        </div>
-        <div class="bordered-top">
-            <a href="#" data-pl-action="list-edit"><i class="icon16 edit"></i> [`Edit list`]</a>
-        </div>
-        <div>
-            <a href="#" data-pl-action="list-delete"><i class="icon16 delete"></i> [`Delete list`]</a>
-        </div>
-    </div>
-    <div class="block">
-            <div class="pl-list-sort">
+        <ul class="menu-v">
+            {* <li class="pl-list-sort-dropdown">
                 <a href="#" data-pl-action="list-sort"><i class="icon16 update"></i> [`Sort`]</a>
-            </div>
-            <div class="pl-list-favorite">
-                <a href="#" data-pl-action="list-favorite"><i class="icon16 star{if !$list.favorite}-empty{/if}"></i></a>
-            </div>
+            </li> *}
+            <li>
+                <a href="#" data-pl-action="list-email"><i class="icon16 email"></i> [`Email list`]</a>
+            </li>
+            <li>
+                <a href="?module=list&amp;id={$list.id}&amp;print=true" target="_blank"><i class="icon16 print"></i> [`Print list`]</a>
+            </li>
+        </ul>
+        <ul class="menu-v">
+            <li>
+                <a href="#" data-pl-action="list-archive"><i class="icon16 pl archive"></i> [`Archive list`]</a>
+            </li>
+            <li>
+                <a href="#" data-pl-action="list-edit"><i class="icon16 edit"></i> [`Edit list`]</a>
+            </li>
+            <li>
+                <a href="#" data-pl-action="list-delete"><i class="icon16 delete"></i> [`Delete list`]</a>
+            </li>
+        </ul>
     </div>
+
     {else}
     <div class="block">
             <div>

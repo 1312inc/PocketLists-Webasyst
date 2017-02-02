@@ -7,7 +7,7 @@
 .shadowed { background: #fff; }
 .pl-sidebar-core { margin-top: 20px; }
 
-.pl-inner-sidebar { background: #ffc; border: 2px dashed #ddb; float: right; width: 345px; margin-top: 20px; margin-right: 5px; }
+.pl-inner-sidebar { background: #f3f3f3; float: right; width: 340px; margin-top: 20px; margin-right: 10px; }
 .pl-inner-content { position: relative; min-height: 530px; margin-right: 350px; z-index: 10}
 
 /* Misc
@@ -78,17 +78,17 @@ ul.pl-lists li span { display: inline-block; overflow: hidden; text-overflow: el
 /* Calendar
 ----------- */
 
-table.pl-calendar { width: 100%; margin-bottom: 0; }
-table.pl-calendar th { color: #ccc; font-weight: normal; padding-bottom: 5px; }
-table.pl-calendar td { border: 1px solid #ddd; background: #fff; padding: 10px 7px; width: 14.28%; min-height: 30px; vertical-align: top; line-height: 1em; text-align: center; }
+table.pl-calendar { width: 100%; margin: 20px 0 25px; }
+table.pl-calendar th { color: #d3d3d3; font-weight: normal; padding-bottom: 5px; font-size: 0.9em; }
+table.pl-calendar td { background: #f9f9f9; padding: 10px 7px; width: 14.28%; min-height: 30px; vertical-align: top; line-height: 1em; text-align: center; }
 table.pl-calendar td:hover { background: #ffffee; cursor: pointer; }
-table.pl-calendar td.pl-selected { background: #a5ffaf; }
-table.pl-calendar td.pl-today { background: #ffc; }
-table.pl-calendar td.pl-today:hover { background: #ecf7ff; }
-table.pl-calendar td.pl-not-this-month { background: #eee; }
+table.pl-calendar td.pl-selected { background: #fffaba; }
+table.pl-calendar td.pl-today { border: 3px solid #fdda3b; }
+/*table.pl-calendar td.pl-today:hover { background: #ecf7ff; }*/
+table.pl-calendar td.pl-not-this-month { background: transparent; }
 table.pl-calendar td.pl-not-this-month:hover { background: #e2e2e2; }
 table.pl-calendar td .pl-date { color: #aaa; font-size: 0.8em; }
-table.pl-calendar td .pl-dots { font-size: 0.7em; line-height: 0; letter-spacing: 0; margin-top: 0.5em; white-space: nowrap;}
+table.pl-calendar td .pl-dots { font-size: 0.8em; line-height: 0; letter-spacing: 0; margin-top: 0.2em; white-space: nowrap;}
 table.pl-calendar td .pl-dots i.icon10 { margin-top: 0.2em; margin-right: 0.2em; }
 
 /* Team
@@ -194,21 +194,23 @@ input#pl-new-list-input,
     position: relative;
     top: -1px;
     outline: 0 none;
+    border-radius: 2px;
 }
-input#pl-new-list-input::-webkit-placeholder,
-#pl-item-add textarea::-webkit-placeholder,
-input#pl-new-list-input::-moz-placeholder,
-#pl-item-add textarea::-moz-placeholder,
-input#pl-new-list-input:-moz-placeholder,
-#pl-item-add textarea:-moz-placeholder { color: red; }
+input#pl-new-list-input::-webkit-placeholder { color: rgba(0,0,0,0.4) !important; }
+#pl-item-add textarea::-webkit-placeholder { color: rgba(0,0,0,0.4) !important; }
+input#pl-new-list-input::-moz-placeholder { color: rgba(0,0,0,0.4) !important; }
+#pl-item-add textarea::-moz-placeholder { color: rgba(0,0,0,0.4) !important; }
+input#pl-new-list-input:-moz-placeholder { color: rgba(0,0,0,0.4) !important; }
+#pl-item-add textarea:-moz-placeholder { color: rgba(0,0,0,0.4) !important; }
 input#pl-new-list-input:hover,
 #pl-item-add textarea:hover { background: rgba(0,0,0,0.04); }
 input#pl-new-list-input:focus,
 #pl-item-add textarea:focus { background: rgba(0,0,0,0.06); }
 .pl-chat textarea { background: #fff; margin-left: 0px; border-radius: 10px; border: 1px solid rgba(0,0,0,0.1); padding-left: 8px; width: 70%; }
+.pl-unsaved { border: 1px solid #faa !important; color: red !important; }
 
-.pl-title { padding: 25px 5px 25px 20px; }
-.pl-title h1 { padding-left: 29px; position: relative; margin-bottom: 0.2em; }
+.pl-title { padding: 25px 5px 15px 20px; }
+.pl-title h1 { padding-left: 29px; position: relative; margin-bottom: 0.2em; line-height: 1.1em; }
 .pl-title h1 .pl-done + span {left: -34px; top: 4px; width: 22px; height: 22px; position: absolute; z-index: 1;}
 .pl-title h1 .loading { margin-left: 3px; margin-top: 8px; opacity: 0.5; }
 .pl-title h1.not-padded { padding-left: 0; }
@@ -221,10 +223,10 @@ input#pl-new-list-input:focus,
 .pl-list-favorite { margin-right: 0 !important; padding-right: 3px !important; }
 .pl-list-sort { display: inline-block !important; }
 .pl-list-sort-dropdown { display: none !important; }
-.pl-list-access { padding-left: 6px !important; }
-.pl-list-access:hover { background: transparent !important; }
-.pl-list-access img { width: 32px; height: 32px; margin-top: 4px; border-radius: 50%; }
-.pl-list-access p { margin-bottom: 3px; margin-top: 4px; line-height: 1.2em; }
+
+.pl-list-access { line-height: 1.2em; }
+.pl-list-access .profile { margin-bottom: 5px; }
+.pl-list-access .profile img { width: 32px; height: 32px; }
 
 .pl-due-overdue { color: red; }
 .pl-due-today { color: #ca0; }
@@ -266,10 +268,10 @@ input#pl-new-list-input:focus,
 .pl-list-items ul.menu-v li .pl-item p { margin-bottom: 0; margin-top: 4px; line-height: 1.2em; }
 .pl-list-items ul.menu-v li .pl-item i.icon10 { margin-top: 5px; }
 .pl-list-items ul.menu-v li .pl-item.pl-item-assigned .pl-item-name { font-style: italic; }
-.pl-list-items ul.menu-v li .pl-item .pl-item-drag-handle { display: none; position: absolute; top: 0; bottom: 0; left: 0; width: 10px; background: rgba(220,0,0,0.6);  z-index: 3;}
+.pl-list-items ul.menu-v li .pl-item .pl-item-drag-handle { display: none; position: absolute; top: 4px; bottom: 4px; left: 4px; width: 6px; background: url('../img/pl-drag-handle.png') repeat-y; background-size: 6px 20px; opacity: 0.1; z-index: 3; cursor: move; }
 .pl-list-items ul.menu-v li .pl-item:hover .pl-item-drag-handle { display: block; }
 .pl-list-items ul.menu-v li .pl-item:hover .pl-edit,
-.pl-list-items ul.menu-v li .pl-item:hover .pl-comment { opacity: 1; transition: opacity 0.1s ease-in; transition-delay: 0.5s; }
+.pl-list-items ul.menu-v li .pl-item:hover .pl-comment { opacity: 1; transition: opacity 0.1s ease-in; transition-delay: 0.1s; }
 .pl-list-items ul.menu-v li #pl-item-add .pl-item:hover { background: transparent; }
 
 .pl-teammate-items .pl-list-items ul.menu-v li .pl-item.pl-item-assigned { box-shadow: none; background: transparent; }
@@ -426,9 +428,7 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
     display: none !important;
 }
 
-.highlighted-background {
-    background-color: #22ffbb !important;
-}
+.highlighted-background { background-color: #fffaba !important; }
 
 .pl-list-placeholder {
     background-color: #22ffbb !important;
