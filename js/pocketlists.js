@@ -153,11 +153,13 @@
                     $(this).removeClass('pl-list-placeholder');
                 },
                 drop: function(event, ui) {
-                    var $item = $(ui.draggable[0]),
+                    var $item = ui.draggable,
                         $list = $(event.target),
                         list_id = $list.data('pl-list-id');
 
                     $item.trigger('moveToList.pl2', {id: list_id});
+                    $(this).removeClass('pl-list-placeholder');
+                    $item.addClass('pl-dropped');
                 }
             });
             $('[data-pl-team-id]', $team_wrapper).droppable({
@@ -172,11 +174,13 @@
                     $(this).removeClass('pl-list-placeholder');
                 },
                 drop: function(event, ui) {
-                    var $item = $(ui.draggable[0]),
+                    var $item = ui.draggable,
                         $list = $(event.target),
                         team_id = $list.data('pl-team-id');
 
                     $item.trigger('assignTo.pl2', {id: team_id});
+                    $(this).removeClass('pl-list-placeholder');
+                    $item.addClass('pl-dropped');
                 }
             });
             $lists_wrapper.sortable({

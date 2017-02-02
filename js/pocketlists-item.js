@@ -38,41 +38,38 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
     var initSortable = function () {
         if (o.enableSortItems) {
             $sortable_items.sortable({
-                item: item_selector,
+                item: '> ' + item_selector,
                 handle: '[data-pl-action="item-sort"]',
-                distance: 5,
-                connectWith: "ul.menu-v",
+                // distance: 5,
+                opacity: 0.75,
+                appendTo: 'body',
+                // connectWith: '[data-pl-items="done"] ul.menu-v',
                 placeholder: 'pl-item-placeholder',
                 tolerance: 'pointer',
+                revert: true,
                 start: function(e, ui ){
                     ui.placeholder.height(ui.helper.outerHeight());
                 },
+                // forcePlaceholderSize: true,
+                // forceHelperSize: true,
                 stop: function (event, ui) {
-                    var $prev = ui.item.parents(item_selector).first(),
-                        parent_id = $prev.length ? parseInt($prev.data('id')) : 0;
+                    var $item = ui.item;
 
-                    ui.item.data('parent-id', parent_id);
-                    updateSort(parseInt(ui.item.data('id')));
+                    if ($item.hasClass('pl-dropped')) {
+                        $(this).sortable('cancel');
+                        $item.removeClass('pl-dropped');
+                    } else {
+                        var $prev = $item.parents(item_selector).first(),
+                            parent_id = $prev.length ? parseInt($prev.data('id')) : 0;
+
+                        $item.data('parent-id', parent_id);
+                        updateSort(parseInt($item.data('id')));
+                    }
                 }
             });
         } else {
             $sortable_items.find('[data-pl-action="item-sort"]').hide();
         }
-// debugger;
-        $(item_selector, $sortable_items).draggable({
-            handle: '[data-pl-action="item-sort"]',
-            opacity: 0.75,
-            zIndex: 9999,
-            distance: 5,
-            appendTo: 'body',
-            cursor: 'move',
-            revert : 'invalid',
-            start: function(){
-                // var $this = $(this);
-                // debugger;
-                // $this.data("pl-item-original-position", $this.position());
-            }
-        });
     };
     // save item
     var addItem = function (data, callback) {
@@ -625,14 +622,10 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
             function (r) {
                 // $.pocketlists.$loading.removeAttr('style').remove();
                 if (r.status === 'ok') {
-                    $this.hide(function () {
-                        $this.remove();
-                    });
                     $.pocketlists.reloadSidebar();
+                    alert('ok');
                 } else {
-                    $this.animate({
-                        top: 0, left: 0
-                    });
+                    alert('err');
                 }
                 request_in_action = false;
             },
@@ -663,10 +656,11 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                     }
                     $this.find('.pl-item').data('pl-assigned-contact', team_id);
                     $.pocketlists.reloadSidebar();
+                    alert('ok');
+                } else {
+                    alert('err');
                 }
-                $this.animate({
-                    top: 0, left: 0
-                });
+
                 request_in_action = false;
             },
             'json'
