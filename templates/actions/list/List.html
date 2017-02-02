@@ -15,6 +15,7 @@
         <i class="icon16 update"></i> [`Re-sort list`]
     </a>
     <div class="block double-padded">
+        {if pocketlistsRBAC::canAssign()}
         <div class="pl-list-access">
 
             <h5 class="heading">[`Access`]</h5>
@@ -42,6 +43,7 @@
         </div>
 
         <hr>
+        {/if}
 
         <ul class="menu-v with-icons">
             {* <li class="pl-list-sort-dropdown">

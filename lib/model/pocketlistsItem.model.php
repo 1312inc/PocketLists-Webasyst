@@ -372,37 +372,41 @@ class pocketlistsItemModel extends waModel
 
     public function extendItemData($items, $edit = false)
     {
+        if (!is_array($items)) {
+            return false;
+        }
+
         $is_array = true;
         if (isset($items['id'])) {
             $is_array = false;
             $items = array($items);
         }
-        foreach ($items as $id => &$item) {
-            if ($items[$id]['contact_id']) {
-                $user = new waContact($items[$id]['contact_id']);
-                $items[$id]['username'] = $user->getName();
-                $items[$id]['userpic'] = $user->getPhoto('20');
+        foreach ($items as &$item) {
+            if ($item['contact_id']) {
+                $user = new waContact($item['contact_id']);
+                $item['username'] = $user->getName();
+                $item['userpic'] = $user->getPhoto('20');
             }
-            if ($items[$id]['assigned_contact_id']) {
-                $user = new waContact($items[$id]['assigned_contact_id']);
-                $items[$id]['assigned_username'] = $user->getName();
-                $items[$id]['assigned_userpic'] = $user->getPhoto('20');
+            if ($item['assigned_contact_id']) {
+                $user = new waContact($item['assigned_contact_id']);
+                $item['assigned_username'] = $user->getName();
+                $item['assigned_userpic'] = $user->getPhoto('20');
             }
-            if ($items[$id]['complete_contact_id']) {
-                $user = new waContact($items[$id]['complete_contact_id']);
-                $items[$id]['complete_username'] = $user->getName();
-                $items[$id]['complete_userpic'] = $user->getPhoto('20');
+            if ($item['complete_contact_id']) {
+                $user = new waContact($item['complete_contact_id']);
+                $item['complete_username'] = $user->getName();
+                $item['complete_userpic'] = $user->getPhoto('20');
             }
 
             $am = new pocketlistsAttachmentModel();
-            $items[$id]['attachments'] = $am->getByField('item_id', $items[$id]['id'], true);
+            $item['attachments'] = $am->getByField('item_id', $item['id'], true);
 
-            $this->addChatData($items[$id]);
+            $this->addChatData($item);
 
-            $this->addPriorityData($items[$id]);
+            $this->addPriorityData($item);
 
             if (!$edit) {
-                $this->prepareOutput($items[$id]);
+                $this->prepareOutput($item);
             }
         }
 

@@ -18,7 +18,8 @@ class pocketlistsItemDetailsAction extends waViewAction
             // get contact that have access to this pocket
             $contacts = array();
             if (pocketlistsRBAC::canAssign()) {
-                $contacts = pocketlistsRBAC::getAccessContactsForList($list ? $list['id'] : false);
+                // if this item is from list - select only available contacts for this list
+                $contacts = pocketlistsRBAC::getAccessContacts($list ? $list['id'] : 0);
             }
 
             $this->view->assign('item', $item);

@@ -318,7 +318,11 @@ class pocketlistsHelper
 
     private static function compare_last_activity($a, $b)
     {
-        return strtotime($b['last_activity']) - strtotime($a['last_activity']);
+        $delta = strtotime($b['last_activity']) - strtotime($a['last_activity']);
+        if (!$delta) {
+            $delta = $a['id'] - $b['id'];
+        }
+        return $delta;
     }
 
     public static function getTeammates($teammates_ids, $sort_by_last_activity = true, $exclude_me = true)
@@ -334,14 +338,16 @@ class pocketlistsHelper
             }
             $mate = new waContact($tid);
             $teammates[$tid]['name'] = $mate->getName();
+            $teammates[$tid]['username'] = $teammates[$tid]['name'];
             $teammates[$tid]['id'] = $mate->getId();
             $teammates[$tid]['photo_url'] = $mate->getPhoto();
+            $teammates[$tid]['userpic'] = $mate->getPhoto(20);
             $teammates[$tid]['login'] = $mate->get('login');
             $teammates[$tid]['status'] = $mate->getStatus();
-            $teammates[$tid]['role'] = $mate->get('jobtitle');
+            $teammates[$tid]['teamrole'] = $mate->get('jobtitle');
             $teammates[$tid]['me'] = ($tid == wa()->getUser()->getId());
 
-            $teammates[$tid]['last_activity'] = isset($last_activities[$tid]) ? $last_activities[$tid] : false;
+            $teammates[$tid]['last_activity'] = isset($last_activities[$tid]) ? $last_activities[$tid] : 0;
             $teammates[$tid]['items_info'] = array(
                 'count' => 0,
                 'names' => "",

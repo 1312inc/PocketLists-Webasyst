@@ -17,7 +17,7 @@ class pocketlistsListAction extends waViewAction
             if (!pocketlistsRBAC::canAccessToList($list['id'])) {
                 throw new waException('Access denied.', 403);
             }
-            $list_access_contacts = pocketlistsRBAC::getAccessContactsForList($list['id']);
+            $list_access_contacts = pocketlistsHelper::getTeammates(pocketlistsRBAC::getAccessContacts($list['id']), true, false);
 
             $us = new pocketlistsUserSettings();
             $us->set('last_pocket_list_id', json_encode(array('list_id' => $list['id'])));
@@ -52,6 +52,7 @@ class pocketlistsListAction extends waViewAction
             $this->view->assign('new', true);
             $this->view->assign('empty', true);
         }
+        $this->view->assign('backend_url', wa()->getConfig()->getBackendUrl());
         $this->view->assign('print', waRequest::get('print', false));
     }
 }

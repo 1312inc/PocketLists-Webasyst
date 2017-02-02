@@ -5,65 +5,6 @@ class pocketlistsRBAC
     private static $access_rights = array();
 
     /**
-     * Return users for given list
-     * @param bool|integer $list_id
-     * @param int $photo_size
-     * @return array
-     */
-    public static function getAccessContactsForList($list_id = false, $photo_size = 20)
-    {
-        $wcr = new waContactRightsModel();
-        // select users
-        $query = "SELECT DISTINCT
-                group_id
-            FROM wa_contact_rights
-            WHERE
-              (app_id = 'pocketlists' AND ((name LIKE s:id AND value = 1) OR (name = 'backend' AND value = 2))
-              OR
-              (app_id = 'webasyst' AND name = 'backend' AND value = 1))";
-        $contact_ids = $wcr->query(
-            $query,
-            array(
-                'id' => 'list.' . ($list_id ? $list_id : '%'),
-            )
-        )->fetchAll();
-        $contacts = array();
-        $groups = array();
-        $gm = new waUserGroupsModel();
-        foreach ($contact_ids as $id) {
-            if ($id['group_id'] < 0) {
-                $contact = new waContact(-$id['group_id']);
-                $contacts[$contact->getId()] = array(
-                    'username' => $contact->getName(),
-                    'userpic'  => $contact->getPhoto($photo_size),
-                    'login'    => $contact['login'],
-                    'status'   => $contact->getStatus(),
-                    'teamrole' => $contact->get('jobtitle'),
-                );
-            } else {
-                $groups[] = $id['group_id'];
-            }
-        }
-        $contact_ids = array();
-        foreach ($groups as $group_id) {
-            $contact_ids = array_merge($contact_ids, $gm->getContactIds($group_id));
-        }
-        foreach ($contact_ids as $id) {
-            $contact = new waContact($id);
-            if (!isset($contacts[$contact->getId()])) {
-                $contacts[$contact->getId()] = array(
-                    'username' => $contact->getName(),
-                    'userpic'  => $contact->getPhoto($photo_size),
-                    'login'    => $contact['login'],
-                    'status'   => $contact->getStatus(),
-                    'teamrole' => $contact->get('jobtitle'),
-                );
-            }
-        }
-        return $contacts;
-    }
-
-    /**
      * Return all list ids accessible for given user
      * @param bool|integer $contact_id
      * @return array
@@ -81,50 +22,64 @@ class pocketlistsRBAC
         return $lists ? array_keys($lists) : array();
     }
 
-    public static function canAccessToList($list_id, $user_id = false)
+
+    private static function haveFullAdminSQL()
     {
-        $user_id = $user_id ? $user_id : wa()->getUser()->getId();
-        if (!isset(self::$access_rights[$user_id])) {
-            self::$access_rights[$user_id] = self::getAccessListForContact($user_id);
-        }
-
-        return in_array($list_id, self::$access_rights[$user_id]);
-
+        return " (app_id = 'webasyst' AND name = 'backend' AND value = 1) ";
     }
 
-    /**
-     * @return array
-     */
-    public static function getAllListsContacts()
+    private static function haveFullAccessSQL()
     {
-        $wcr = new waContactRightsModel();
-        $query = "SELECT DISTINCT
-                group_id
-            FROM wa_contact_rights
-            WHERE
-              (app_id = 'pocketlists' AND name = 'backend' AND value > 0)
-              OR
-              (app_id = 'webasyst' AND name = 'backend' AND value > 0)
-            ORDER BY group_id ASC";
-        $contact_ids = $wcr->query($query)->fetchAll();
+        return " (app_id = '" . pocketlistsHelper::APP_ID . "' AND name = 'backend' AND value = 2) ";
+    }
+
+    private static function haveAccessSQL()
+    {
+        return " (app_id = '" . pocketlistsHelper::APP_ID . "' AND name = 'backend' AND value = 1) ";
+    }
+
+    private static function haveAccessToListSQL($list_id = 0)
+    {
+        return " (app_id = '" . pocketlistsHelper::APP_ID . "' AND name = 'list." . ($list_id ? (int)$list_id : '%') . "' AND value = 1) ";
+    }
+
+    private static function getContactIds($contact_ids)
+    {
         $contacts = array();
-        $groups = array();
         $gm = new waUserGroupsModel();
         foreach ($contact_ids as $id) {
             if ($id['group_id'] < 0) { // user
-                $contacts[-$id['group_id']] = -$id['group_id'];
+                $contacts[] = -$id['group_id'];
             } else { // group
-                $groups[] = $id['group_id'];
+                $contacts = array_merge($contacts, $gm->getContactIds($id['group_id']));
             }
         }
-        $contact_ids = array();
-        foreach ($groups as $group_id) {
-            $contact_ids = array_merge($contact_ids, $gm->getContactIds($group_id));
-        }
-        foreach ($contact_ids as $id) {
-            $contacts[$id] = $id;
-        }
         return $contacts;
+    }
+
+    /**
+     * Return users for given list
+     * @param integer $list_id
+     * @param int $photo_size
+     * @return array
+     */
+    public static function getAccessContacts($list_id = 0)
+    {
+        $wcr = new waContactRightsModel();
+        $query = "
+            SELECT DISTINCT
+                group_id
+            FROM wa_contact_rights
+            WHERE "
+            . self::haveFullAdminSQL()
+            . " OR "
+            . self::haveFullAccessSQL()
+            . " OR "
+            . ($list_id ? self::haveAccessToListSQL($list_id) : self::haveAccessSQL());
+        $contact_ids = $wcr->query($query)->fetchAll();
+
+        $contact_ids = self::getContactIds($contact_ids);
+        return $contact_ids;
     }
 
     /**
@@ -132,20 +87,42 @@ class pocketlistsRBAC
      * @param bool|integer $contact_id
      * @return bool
      */
-    public static function isAdmin($contact_id = false)
+    public static function isAdmin($user_id = false)
     {
-        $user = $contact_id ? new waContact($contact_id) : wa()->getUser();
-        $result = $user->isAdmin() || $user->isAdmin('pocketlists');
-        return $result;
+        $user = $user_id ? new waContact($user_id) : wa()->getUser();
+        return $user->isAdmin() || $user->isAdmin('pocketlists');
     }
 
-    public static function canCreateLists()
+    public static function canAccessToList($list_id, $user_id = false)
     {
-        return wa()->getUser()->getRights(pocketlistsHelper::APP_ID, 'cancreatelists');
+//        $user_id = $user_id ? $user_id : wa()->getUser()->getId();
+//        if (!isset(self::$access_rights[$user_id])) {
+//            self::$access_rights[$user_id] = self::getAccessListForContact($user_id);
+//        }
+        $user = $user_id ? new waContact($user_id) : wa()->getUser();
+        if ($user->getRights(pocketlistsHelper::APP_ID, 'list.' . $list_id)) {
+            self::$access_rights[$user_id][$list_id] = true;
+            return true;
+        }
+        return false;
+
     }
 
-    public static function canAssign()
+    public static function canCreateLists($user_id = false)
     {
-        return wa()->getUser()->getRights(pocketlistsHelper::APP_ID, 'canassign');
+        $user = $user_id ? new waContact($user_id) : wa()->getUser();
+        return $user->getRights(pocketlistsHelper::APP_ID, 'cancreatelists');
+    }
+
+    public static function canAssign($user_id = false)
+    {
+        $user = $user_id ? new waContact($user_id) : wa()->getUser();
+        return $user->getRights(pocketlistsHelper::APP_ID, 'canassign');
+    }
+
+    public static function canAccess($user_id = false)
+    {
+        $user = $user_id ? new waContact($user_id) : wa()->getUser();
+        return $user->getRights(pocketlistsHelper::APP_ID, 'backend') === 1 || $user->getRights(pocketlistsHelper::APP_ID, 'cancreatetodos');
     }
 }
