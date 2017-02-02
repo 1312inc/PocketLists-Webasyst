@@ -443,3 +443,19 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
     left: 8px;
     top: 6px;
 }
+
+
+.pl-droppable {
+    background-color: #fff;
+    -webkit-transition: all 1s;
+    -moz-transition: all 1s;
+    -ms-transition: all 1s;
+    -o-transition: all 1s;
+    transition: all 1s;
+}
+.pl-drop-success {
+    background-color: greenyellow;
+}
+.pl-drop-fail {
+    background-color: indianred;
+}

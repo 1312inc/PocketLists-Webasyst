@@ -150,19 +150,22 @@
                 disabled: false,
                 greedy: true,
                 tolerance: 'pointer',
+                classes: {
+                    'ui-droppable': 'pl-droppable'
+                },
                 over: function( event, ui ) {
-                    $(this).addClass('pl-list-placeholder');
+                    $(this).addClass('highlighted-background');
                 },
                 out: function( event, ui ) {
-                    $(this).removeClass('pl-list-placeholder');
+                    $(this).removeClass('highlighted-background');
                 },
                 drop: function(event, ui) {
                     var $item = ui.draggable,
                         $list = $(event.target),
                         list_id = $list.data('pl-list-id');
 
-                    $item.trigger('moveToList.pl2', {id: list_id});
-                    $(this).removeClass('pl-list-placeholder');
+                    $item.trigger('moveToList.pl2', {id: list_id, drop: this});
+                    $(this).removeClass('highlighted-background');
                     $item.addClass('pl-dropped');
                 }
             });
@@ -171,22 +174,45 @@
                 disabled: false,
                 greedy: true,
                 tolerance: 'pointer',
+                classes: {
+                    'ui-droppable': 'pl-droppable'
+                },
                 over: function( event, ui ) {
-                    $(this).addClass('pl-list-placeholder');
+                    $(this).addClass('highlighted-background');
                 },
                 out: function( event, ui ) {
-                    $(this).removeClass('pl-list-placeholder');
+                    $(this).removeClass('highlighted-background');
                 },
                 drop: function(event, ui) {
                     var $item = ui.draggable,
                         $list = $(event.target),
                         team_id = $list.data('pl-team-id');
 
-                    $item.trigger('assignTo.pl2', {id: team_id});
-                    $(this).removeClass('pl-list-placeholder');
+                    $item.trigger('assignTo.pl2', {id: team_id, drop: this});
+                    $(this).removeClass('highlighted-background');
                     $item.addClass('pl-dropped');
                 }
             });
+
+            self.$core_sidebar.on('dropActionDone.pl2', '[data-pl-list-id], [data-pl-team-id]', function (e, data) {
+                var $this = $(this);
+                if (data.result) {
+                    $this.addClass('pl-drop-success');
+                } else {
+                    $this.addClass('pl-drop-fail');
+                }
+                setTimeout(function () {
+                    $this.removeClass('pl-drop-success pl-drop-fail');
+                    // hell
+                    if (data.result) {
+                        setTimeout(function () {
+                            $.pocketlists.reloadSidebar();
+                        }, 1000);
+                    }
+                }, 500);
+
+            });
+
             $lists_wrapper.sortable({
                 item: '[data-pl-list-id]',
                 distance: 5,

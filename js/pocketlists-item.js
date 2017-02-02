@@ -38,7 +38,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
     var initSortable = function () {
         if (o.enableSortItems) {
             $sortable_items.sortable({
-                item: '> ' + item_selector,
+                item: item_selector,
                 handle: '[data-pl-action="item-sort"]',
                 // distance: 5,
                 opacity: 0.75,
@@ -46,9 +46,11 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                 // connectWith: '[data-pl-items="done"] ul.menu-v',
                 placeholder: 'pl-item-placeholder',
                 tolerance: 'pointer',
-                revert: true,
                 start: function(e, ui ){
                     ui.placeholder.height(ui.helper.outerHeight());
+                },
+                classes: {
+                    'ui-sortable-helper': 'shadowed'
                 },
                 // forcePlaceholderSize: true,
                 // forceHelperSize: true,
@@ -605,7 +607,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
             'json'
         );
     };
-    var moveToList = function (list_id) {
+    var moveToList = function (list_id, drop) {
         if (request_in_action) {
             return;
         }
@@ -613,7 +615,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
 
         var $this = $(this);
 
-        $.post(
+        return $.post(
             '?module=item&action=moveToList',
             {
                 id: parseInt($this.data('id')),
@@ -622,17 +624,17 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
             function (r) {
                 // $.pocketlists.$loading.removeAttr('style').remove();
                 if (r.status === 'ok') {
-                    $.pocketlists.reloadSidebar();
-                    alert('ok');
-                } else {
-                    alert('err');
+                    $this.hide(200, function() {
+                        $this.remove();
+                    });
                 }
+                $(drop).trigger('dropActionDone.pl2', {result: r.status === 'ok'});
                 request_in_action = false;
             },
             'json'
         );
     };
-    var assignTo = function (team_id) {
+    var assignTo = function (team_id, drop) {
         if (request_in_action) {
             return;
         }
@@ -640,7 +642,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
 
         var $this = $(this);
 
-        $.post(
+        return $.post(
             '?module=item&action=assignTo',
             {
                 id: parseInt($this.data('id')),
@@ -655,12 +657,8 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                         $this.find('.pl-item-name + .hint').html('<br>' + $_('Assigned to') + ' ' + r.data);
                     }
                     $this.find('.pl-item').data('pl-assigned-contact', team_id);
-                    $.pocketlists.reloadSidebar();
-                    alert('ok');
-                } else {
-                    alert('err');
                 }
-
+                $(drop).trigger('dropActionDone.pl2', {result: r.status === 'ok'});
                 request_in_action = false;
             },
             'json'
@@ -1253,10 +1251,10 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                 }
             })
             .on('moveToList.pl2', item_selector, function (e, data) {
-                moveToList.call(this, data.id);
+                moveToList.call(this, data.id, data.drop);
             })
             .on('assignTo.pl2', item_selector, function (e, data) {
-                assignTo.call(this, data.id);
+                assignTo.call(this, data.id, data.drop);
             });
 
         // keyboard
