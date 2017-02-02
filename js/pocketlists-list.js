@@ -10,6 +10,7 @@
  */
 $.pocketlists.List = function ($list_wrapper, options) {
     var $new_list_input = $list_wrapper.find('#pl-new-list-input'),
+        $uho = $('[data-pl="uho"]'),
         list_id = parseInt($list_wrapper.find('#pl-list-id').val()),
         o = $.extend({}, {
             archive: false
@@ -33,7 +34,11 @@ $.pocketlists.List = function ($list_wrapper, options) {
             request_in_action = true;
 
             $.pocketlists.scrollToTop(200, 80);
-            $wrapper.html($.pocketlists.$loading).show();
+            $wrapper.html($.pocketlists.$loading).show().animate({
+                'right': '0%'
+            }, 200, function() {
+                $.pocketlists.stickyDetailsSidebar();
+            });
 
             $.post('?module=list&action=details', {id: list_id}, function (html) {
                 $wrapper.html(html);
@@ -43,6 +48,11 @@ $.pocketlists.List = function ($list_wrapper, options) {
             });
         };
         var hideListDetails = function () {
+            $wrapper.animate({
+                'right': '100%'
+            }, 200, function () {
+                $wrapper.hide().empty()
+            });
         };
         var updateList = function (data) {
             $list_wrapper.find('#pl-list-name').text(data.name); // update name
@@ -399,7 +409,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
             $list_wrapper.find(':checkbox').prop('disabled', true);
         }
 
-        $list_wrapper.add('[data-pl="uho"]')
+        $list_wrapper
             .on('click', function (e) {
                 if (!o.archive) {
                     var clicked = $list_wrapper.data('pl-clicked');
@@ -423,7 +433,8 @@ $.pocketlists.List = function ($list_wrapper, options) {
                         $list_wrapper.data('pl-clicked', 1);
                     }
                 }
-            }) // open details
+            }); // open details
+        $uho
             .on('click', '[data-pl-action="list-edit"]', function (e) {
                 e.preventDefault();
                 e.stopPropagation();
