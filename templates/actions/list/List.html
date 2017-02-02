@@ -11,24 +11,10 @@
 <nav class="pl-inner-sidebar" data-pl="uho">
 {if isset($list.id)}
     {if !$archive}
-    <div class="block">
-        {*
-        <div>
-            <a href="#" onClick="alert('Coming soon');"><i class="icon16 link"></i> [`Get public link`]</a>
-        </div>
-        *}
-
-        <ul class="menu-v with-icons">
-            <li class="pl-list-sort">
-                <a href="#" data-pl-action="list-sort" class="bold"><i class="icon16 update"></i> [`Re-sort list`]</a>
-            </li>
-            {* DEPRECATED FEB 2017 <li class="pl-list-favorite">
-                <a href="#" data-pl-action="list-favorite"><i class="icon16 star{if !$list.favorite}-empty{/if}"></i></a>
-            </li> *}
-        </ul>
-
-        <hr>
-
+    <a class="pl-list-resort" href="#" data-pl-action="list-sort">
+        <i class="icon16 update"></i> [`Re-sort list`]
+    </a>
+    <div class="block double-padded">
         <div class="pl-list-access">
 
             <h5 class="heading">[`Access`]</h5>
@@ -40,7 +26,7 @@
                     </div>
                     <div class="details">
                         <span class="pl-username">
-                            <a href="###">{$list_access_contact.username|default:'%username%'|escape}</a>
+                            <a href="###LINK_TO_USER_PROFILE_AT_TEAM_APP">{$list_access_contact.username|default:'%username%'|escape} {if 1 || THIS_IS_ME}([`me`]){/if}</a>
                             <span class="bold">
                                 {if $list_access_contact.status == 'online'}
                                     <i class="icon10 online" title="[`Online`]"></i>
@@ -52,46 +38,46 @@
                 </div>
 
             {/foreach}
-            <p class="hint">[`Use Team app to customize access rights for pockets.`]</p>
+            <p class="hint">[`Use Team app to customize team access to lists.`]</p>
         </div>
 
         <hr>
 
-        <ul class="menu-v">
+        <ul class="menu-v with-icons">
             {* <li class="pl-list-sort-dropdown">
                 <a href="#" data-pl-action="list-sort"><i class="icon16 update"></i> [`Sort`]</a>
             </li> *}
             <li>
-                <a href="#" data-pl-action="list-email"><i class="icon16 email"></i> [`Email list`]</a>
+                <a href="#" data-pl-action="list-email"><i class="icon16 email"></i>[`Email list`]</a>
             </li>
             <li>
-                <a href="?module=list&amp;id={$list.id}&amp;print=true" target="_blank"><i class="icon16 print"></i> [`Print list`]</a>
-            </li>
-        </ul>
-        <ul class="menu-v">
-            <li>
-                <a href="#" data-pl-action="list-archive"><i class="icon16 pl archive"></i> [`Archive list`]</a>
+                <a href="?module=list&amp;id={$list.id}&amp;print=true" target="_blank"><i class="icon16 print"></i>[`Print list`]</a>
             </li>
             <li>
-                <a href="#" data-pl-action="list-edit"><i class="icon16 edit"></i> [`Edit list`]</a>
+                <a href="#" data-pl-action="list-archive"><i class="icon16 pl archive"></i>[`Archive list`]</a>
             </li>
             <li>
-                <a href="#" data-pl-action="list-delete"><i class="icon16 delete"></i> [`Delete list`]</a>
+                <a href="#" data-pl-action="list-edit"><i class="icon16 edit"></i>[`Edit list`]</a>
+            </li>
+            <li>
+                <a href="#" data-pl-action="list-delete"><i class="icon16 delete"></i>[`Delete list`]</a>
             </li>
         </ul>
     </div>
 
     {else}
     <div class="block">
-            <div>
-                <a href="#" data-pl-action="list-unarchive" class="bold"><i class="icon16 pl archive"></i> [`Unarchive list`]</a>
-            </div>
-            <div>
-                <a href="#" data-pl-action="list-delete"><i class="icon16 delete"></i> [`Delete`]</a>
-            </div>
+        <div>
+            <a href="#" data-pl-action="list-unarchive" class="bold"><i class="icon16 pl archive"></i> [`Unarchive list`]</a>
+        </div>
+        <div>
+            <a href="#" data-pl-action="list-delete"><i class="icon16 delete"></i> [`Delete`]</a>
+        </div>
     {/if}
     </div>
 {/if}
+{include '../../include/listdetails.html' inline}
+{include '../../include/itemdetails.html' inline}
 </nav>
 {/if}
 
@@ -99,6 +85,22 @@
 
     <div class="pl-inner-content pl-items shadowed pl-{$list.color|default:'none'}">
     <header class="pl-list-title pl-title">
+
+        {if !empty($list.due_date) || !empty($list.due_datetime)}
+        <div class="float-right block half-padded pl-list-due" title="[`Due`]">
+
+            <i class="icon16 exclamation"></i>
+            <span class="bold {if $list.calc_priority == 0}pl-due-someday{elseif $list.calc_priority == 1}pl-due-tomorrow{elseif $list.calc_priority == 2}pl-due-today{elseif $list.calc_priority == 3}pl-due-overdue{/if}" {if empty($list.due_datetime) && empty($list.due_date)}style="display: none;"{/if}>
+            {if !empty($list.due_datetime)}
+                {$list.due_datetime|wa_datetime:'humandatetime'}
+            {else if !empty($list.due_date)}
+                {$list.due_date|wa_date:'humandate'}
+            {/if}
+            </span>
+
+        </div>
+        {/if}
+
         <h1>
             <input type="hidden" value="{$list.id|default:-1}" id="pl-list-id">
             {if !$archive}
@@ -111,14 +113,6 @@
                 <input type="text" placeholder="[`New list`]" id="pl-new-list-input" class="bold" />
             {else}
                 <span id="pl-list-name">{$list.name|default:' '|escape}</span>
-
-                <span class="pl-list-due {if $list.calc_priority == 0}pl-due-someday{elseif $list.calc_priority == 1}pl-due-tomorrow{elseif $list.calc_priority == 2}pl-due-today{elseif $list.calc_priority == 3}pl-due-overdue{/if}" {if empty($list.due_datetime) && empty($list.due_date)}style="display: none;"{/if}>
-                {if !empty($list.due_datetime)}
-                    {$list.due_datetime|wa_datetime:'humandatetime'}
-                {else if !empty($list.due_date)}
-                    {$list.due_date|wa_date:'humandate'}
-                {/if}
-                </span>
             {/if}
         </h1>
     </header>
@@ -148,15 +142,9 @@
 
     {if !$print}
 
-    {include '../../include/archivelistdialog.html' inline}
-
-    {include '../../include/deletelistdialog.html' inline}
-
-    {include '../../include/listdetails.html' inline}
-
-    {include '../../include/itemdetails.html' inline}
-
-    {include '../../include/itemadd.html' inline}
+        {include '../../include/archivelistdialog.html' inline}
+        {include '../../include/deletelistdialog.html' inline}
+        {include '../../include/itemadd.html' inline}
 
     {/if}
 </div>

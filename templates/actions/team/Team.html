@@ -23,26 +23,28 @@
 {if !$print}
 <!-- TEAM -->
 <nav class="pl-inner-sidebar" data-pl="uho">
-    <h5 class="heading">[`Access rights`]</h5>
+    <div class="block double-padded">
+        <h5 class="heading">[`Access rights`]</h5>
 
-    <ul class="menu-v with-icons collapsible" data-pl-sidebar-block="lists">
-        {foreach $lists as $l}
-        <li>
-            <a href="#/list/{$l.id}/">
-                <i class="icon16 listicon16" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l.icon|default:'li-list@2x.png'});"></i>{if $l.color != 'none'}<span class="pl-{$l.color}">{$l.name|escape}</span>{else}{$l.name|escape}{/if}
-            </a>
-        </li>
-        {/foreach}
-    </ul>
+        <ul class="menu-v with-icons" data-pl-sidebar-block="lists">
+            {foreach $lists as $l}
+            <li>
+                <a href="#/list/{$l.id}/">
+                    <i class="icon16 listicon16" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l.icon|default:'li-list@2x.png'});"></i>{if $l.color != 'none'}<span class="pl-{$l.color}">{$l.name|escape}</span>{else}{$l.name|escape}{/if}
+                </a>
+            </li>
+            {/foreach}
+        </ul>
 
-    <p class="hint">[`Use Contacts app to customize access rights for pockets.`]</p>
+        <p class="hint">[`Use Contacts app to customize access rights for pockets.`]</p>
 
-    <div class="bordered-top">
-        <a href="#" data-pl-action="list-email"><i class="icon16 email"></i> [`Email list`]</a>
+        <ul class="menu-v with-icons">
+            <li><a href="#" data-pl-action="list-email"><i class="icon16 email"></i> [`Email list`]</a></li>
+            <li><a href="?module=team&amp;teammate={$current_teammate.name}&amp;print=true" target="_blank"><i class="icon16 print"></i> [`Print list`]</a></li>
+        </ul>
+
     </div>
-    <div>
-        <a href="?module=team&amp;teammate={$current_teammate.name}&amp;print=true" target="_blank"><i class="icon16 print"></i> [`Print list`]</a>
-    </div>
+    {include '../../include/itemdetails.html' inline}
 </nav>
 {/if}
 
@@ -88,11 +90,7 @@
     <div class="clear-both"></div>
 
     {if !$print}
-
-    {include '../../include/itemadd.html' inline}
-
-    {include '../../include/itemdetails.html' inline}
-
+        {include '../../include/itemadd.html' inline}
     {/if}
 </main>
 {/if}
