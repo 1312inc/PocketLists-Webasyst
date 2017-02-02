@@ -385,8 +385,13 @@ $.pocketlists.List = function ($list_wrapper, options) {
                         addNewList(list_id);
                     }
                     if (e.which === 27) {
-                        $new_list_input.data('pl-can-add', false).val('');
+                        $new_list_input.data('pl-can-add', false).val('').removeClass('pl-unsaved');
                     }
+                }).on('blur', function () {
+                    // $new_list_input.data('pl-can-add') && addNewList(list_id);
+                    $new_list_input.addClass('pl-unsaved');
+                }).on('focus', function () {
+                    $new_list_input.removeClass('pl-unsaved');
                 });
         }
 
