@@ -82,6 +82,9 @@ class pocketlistsLogAction
         $this->ext_logs = $this->filter();
 
         foreach ($this->ext_logs as $id => $log_entry) {
+            if (!$log_entry) {
+                continue;
+            }
             $action = $log_entry['action'];
             try {
                 $this->ext_logs[$id]['params_html'] = $this->$action($id);
@@ -185,7 +188,7 @@ class pocketlistsLogAction
 
             $logs[$id] = $this->extendLog($log);
             if (!$this->canAccess($logs[$id])) {
-                unset($logs[$id]);
+                $logs[$id] = false;
             }
         }
         return $logs;
@@ -229,7 +232,7 @@ class pocketlistsLogAction
         }
 
         if (!empty($log['params']['item_id'])) {
-            $log[self::$ext]['item'] = $this->getItemData($log['params']['item_id']);
+            $log[self::$ext]['item'] = $this->getItemData($log['params']['item_id'], false);
             if ($log[self::$ext]['item'] && !$log[self::$ext]['list']) {
                 $log[self::$ext]['list'] = $this->getListData($log[self::$ext]['item']['list_id']);
             }
