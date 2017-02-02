@@ -215,9 +215,13 @@
 
             $lists_wrapper.sortable({
                 item: '[data-pl-list-id]',
-                distance: 5,
                 placeholder: 'pl-list-placeholder',
+                opacity: 0.75,
+                appendTo: 'body',
                 tolerance: 'pointer',
+                classes: {
+                    'ui-sortable-helper': 'shadowed'
+                },
                 start: function(e, ui ){
                     ui.placeholder.height(ui.helper.outerHeight());
                 },
