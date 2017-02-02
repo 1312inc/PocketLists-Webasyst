@@ -1220,9 +1220,12 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                 }
             })
             .on('blur', '.pl-chat .pl-reply textarea', function(e) {
-                var $this = $(this);
-                $this.addClass('pl-unsaved');
-                enable_prevent_close_browser();
+                var $this = $(this),
+                    comment = $this.val().trim();
+                if (comment) {
+                    $this.addClass('pl-unsaved');
+                    enable_prevent_close_browser();
+                }
             })
             .on('focus', '.pl-chat .pl-reply textarea', function(e) {
                 var $this = $(this);
