@@ -23,6 +23,6 @@ class pocketlistsSettingsAction extends waViewAction
         );
 
         $this->view->assign('cron_command', $this->getConfig()->getCronJob('recap_mail'));
-        $this->view->assign('admin', pocketlistsHelper::isAdmin());
+        $this->view->assign('admin', pocketlistsRBAC::isAdmin());
     }
 }

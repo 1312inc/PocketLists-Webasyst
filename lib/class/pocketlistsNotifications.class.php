@@ -54,7 +54,7 @@ class pocketlistsNotifications
                         if ($item['contact_id'] == $user_id && // created by mine
                             $item['complete_contact_id'] != $user_id && // completed not by me
                             (
-                                $item['list_id'] || ( // not from NULL-list
+                            ($item['list_id'] && pocketlistsRBAC::canAccessToList($item['list_id'], $user_id)) || ( // not from NULL-list
                                     $item['list_id'] == null && ( // OR from NULL-list,
                                         isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id || // but assigned to this user
                                         $item['contact_id'] == $user_id // OR created by user
@@ -96,7 +96,7 @@ class pocketlistsNotifications
                     foreach ($items as $item) {
                         if (in_array($item['id'], array_keys($user_items)) &&
                             $item['complete_contact_id'] != $user_id && (
-                                $item['list_id'] || ( // not from NULL-list
+                                ($item['list_id'] && pocketlistsRBAC::canAccessToList($item['list_id'], $user_id)) || ( // not from NULL-list
                                     $item['list_id'] == null && ( // OR from NULL-list,
                                         isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id || // but assigned to this user
                                         $item['contact_id'] == $user_id // OR created by user
@@ -138,7 +138,7 @@ class pocketlistsNotifications
                     foreach ($items as $item) {
                         if (in_array($item['list_id'], array_keys($user_lists)) &&
                             $item['complete_contact_id'] != $user_id && (
-                                $item['list_id'] || ( // not from NULL-list
+                                ($item['list_id'] && pocketlistsRBAC::canAccessToList($item['list_id'], $user_id)) || ( // not from NULL-list
                                     $item['list_id'] == null && ( // OR from NULL-list,
                                         isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id || // but assigned to this user
                                         $item['contact_id'] == $user_id // OR created by user
@@ -175,7 +175,7 @@ class pocketlistsNotifications
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_COMPETES_ANY_ITEM:
                     foreach ($items as $item) { // filter items according to settings
                         if ($item['complete_contact_id'] != $user_id && (
-                                $item['list_id'] || ( // not from NULL-list
+                                ($item['list_id'] && pocketlistsRBAC::canAccessToList($item['list_id'], $user_id)) || ( // not from NULL-list
                                     $item['list_id'] == null && ( // OR from NULL-list,
                                         isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id || // but assigned to this user
                                         $item['contact_id'] == $user_id // OR created by user
@@ -261,7 +261,7 @@ class pocketlistsNotifications
                     $user_lists = array_keys($user_lists);
                     foreach ($items as $item) {
                         if (in_array($item['list_id'], $user_lists) && (
-                                $item['list_id'] || ( // not from NULL-list
+                                ($item['list_id'] && pocketlistsRBAC::canAccessToList($item['list_id'], $user_id)) || ( // not from NULL-list
                                     $item['list_id'] == null && ( // OR from NULL-list,
                                         isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id || // but assigned to this user
                                         $item['contact_id'] == $user_id // OR created by user
@@ -295,7 +295,7 @@ class pocketlistsNotifications
                     foreach ($items as $item) { // filter items according to settings
                         if ($item['contact_id'] != $user_id && // created not by this user
                             (
-                                $item['list_id'] || ( // not from NULL-list
+                                ($item['list_id'] && pocketlistsRBAC::canAccessToList($item['list_id'], $user_id)) || ( // not from NULL-list
                                     $item['list_id'] == null && ( // OR from NULL-list,
                                         isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id || // but assigned to this user
                                         $item['contact_id'] == $user_id // OR created by user
@@ -336,7 +336,7 @@ class pocketlistsNotifications
             'url' => wa()->getConfig()->getRootUrl(true) . '/' . wa()->getConfig()->getBackendUrl() . 'pocketlists/#/todo/',
             'name' => _('Stream')
         );
-        if ($item['list_id']) {
+        if ($item['list_id'] && pocketlistsRBAC::canAccessToList($item['list_id'], $item['assigned_contact_id'])) {
             $list_ = $lm->getById($item['list_id']);
             $list = array(
                 'url' => wa()->getConfig()->getRootUrl(true) . '/' . wa()->getConfig()->getBackendUrl() . 'pocketlists/#/list/' . $list_['id'] . '/',
@@ -413,7 +413,7 @@ class pocketlistsNotifications
                             );
                         }
                         if ($item['contact_id'] == $user_id && (
-                                $item['list_id'] || ( // not from NULL-list
+                                ($item['list_id'] && pocketlistsRBAC::canAccessToList($item['list_id'], $user_id)) || ( // not from NULL-list
                                     $item['list_id'] == null && ( // OR from NULL-list,
                                         isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id || // but assigned to this user
                                         $item['contact_id'] == $user_id // OR created by user
@@ -448,7 +448,7 @@ class pocketlistsNotifications
                             );
                         }
                         if ($item['favorite'] && (
-                                $item['list_id'] || ( // not from NULL-list
+                                ($item['list_id'] && pocketlistsRBAC::canAccessToList($item['list_id'], $user_id)) || ( // not from NULL-list
                                     $item['list_id'] == null && ( // OR from NULL-list,
                                         isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id || // but assigned to this user
                                         $item['contact_id'] == $user_id // OR created by user
@@ -483,7 +483,7 @@ class pocketlistsNotifications
                             );
                         }
                         if ($item && (
-                            ($item['list_id'] && pocketlistsHelper::userHasAccessToList($item['list_id'], $user_id)) || ( // not from NULL-list
+                            ($item['list_id'] && pocketlistsRBAC::canAccessToList($item['list_id'], $user_id)) || ( // not from NULL-list
                                     $item['list_id'] == null && ( // OR from NULL-list,
                                         isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id || // but assigned to this user
                                         $item['contact_id'] == $user_id // OR created by user
@@ -600,7 +600,7 @@ class pocketlistsNotifications
         $create_contact_name = $c->getName();
         $list['create_datetime'] = waDateTime::format('humandatetime', $list['create_datetime']);
         foreach ($users as $user_id => $user) { // foreach user
-            if ($list['contact_id'] != $user_id) { // created not by user
+            if ($list['contact_id'] != $user_id && pocketlistsRBAC::canAccessToList($list['id'], $user_id)) { // created not by user
                 self::sendMail(
                     array(
                         'contact_id' => $user_id,

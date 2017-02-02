@@ -15,7 +15,7 @@ class pocketlistsItemMoveToListController extends waJsonController
             $item = $im->getById($id);
             $list = $lm->getById($list_id);
 
-            if ($item && $list && pocketlistsHelper::canAccessToList($list_id)) {
+            if ($item && $list && pocketlistsRBAC::canAccessToList($list_id)) {
                 // todo: childs??
                 if ($im->updateById($item['id'], array(
                     'list_id'         => $list['id'],

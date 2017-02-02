@@ -40,10 +40,10 @@
 </div>
 
 <!-- LISTS -->
-{if $lists || pocketlistsHelper::canCreateLists()}
+{if $lists || pocketlistsRBAC::canCreateLists()}
 <div class="block">
     <h5 class="heading">
-        {if pocketlistsHelper::canCreateLists()}<a href="#/list/new/" class="count"><i class="icon16 add"></i></a>{/if}
+        {if pocketlistsRBAC::canCreateLists()}<a href="#/list/new/" class="count"><i class="icon16 add"></i></a>{/if}
         [`Lists`]
     </h5>
 

@@ -19,10 +19,10 @@ class pocketlistsArchiveAction extends waViewAction
             throw new waException('Not found.', 404);
         }
 
-        if (!pocketlistsHelper::canAccessToList($list['id'])) {
+        if (!pocketlistsRBAC::canAccessToList($list['id'])) {
             throw new waException('Access denied.', 403);
         }
-        $list_access_contacts = pocketlistsHelper::getAccessContactsForList($list['id']);
+        $list_access_contacts = pocketlistsRBAC::getAccessContactsForList($list['id']);
 
         $this->view->assign('list', $list);
         $this->view->assign('archive', $list['archived']);

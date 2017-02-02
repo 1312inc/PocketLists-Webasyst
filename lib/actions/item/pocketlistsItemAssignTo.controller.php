@@ -15,7 +15,7 @@ class pocketlistsItemAssignToController extends waJsonController
             $list = $lm->getById($item['list_id']);
             $contact = new waContact($team_id);
 
-            if ($item && $list && $contact && pocketlistsHelper::canAccessToList($list['id']) && pocketlistsHelper::canAccessToList($list['id'],
+            if ($item && $list && $contact && pocketlistsRBAC::canAccessToList($list['id']) && pocketlistsRBAC::canAccessToList($list['id'],
                     $contact->getId())
             ) {
                 // todo: childs??

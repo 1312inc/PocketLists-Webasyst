@@ -14,10 +14,10 @@ class pocketlistsListAction extends waViewAction
                 return;
             }
 
-            if (!pocketlistsHelper::canAccessToList($list['id'])) {
+            if (!pocketlistsRBAC::canAccessToList($list['id'])) {
                 throw new waException('Access denied.', 403);
             }
-            $list_access_contacts = pocketlistsHelper::getAccessContactsForList($list['id']);
+            $list_access_contacts = pocketlistsRBAC::getAccessContactsForList($list['id']);
 
             $us = new pocketlistsUserSettings();
             $us->set('last_pocket_list_id', json_encode(array('list_id' => $list['id'])));
@@ -45,7 +45,7 @@ class pocketlistsListAction extends waViewAction
             $this->view->assign('attachments_path', wa()->getDataUrl('attachments/', true));
             $this->view->assign('list_access_contacts', $list_access_contacts);
         } else {
-            if (!pocketlistsHelper::canCreateLists()) {
+            if (!pocketlistsRBAC::canCreateLists()) {
                 throw new waException('Access denied.', 403);
             }
             $this->view->assign('archive', $archived);

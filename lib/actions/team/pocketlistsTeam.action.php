@@ -7,7 +7,7 @@ class pocketlistsTeamAction extends waViewAction
         // get all pocketlists users
         // all admin
         $teammates = array();
-        $teammates_ids = pocketlistsHelper::getAllListsContacts();
+        $teammates_ids = pocketlistsRBAC::getAllListsContacts();
         if ($teammates_ids) {
             $teammates = pocketlistsHelper::getTeammates($teammates_ids);
 
@@ -18,7 +18,7 @@ class pocketlistsTeamAction extends waViewAction
                 $id = $user_model->getByLogin($selected_teammate);
                 $id = $id['id'];
 
-                $list_ids = pocketlistsHelper::getAccessListForContact($id);
+                $list_ids = pocketlistsRBAC::getAccessListForContact($id);
                 $lm = new pocketlistsListModel();
                 $lists = $lm->getById($list_ids);
             } else {

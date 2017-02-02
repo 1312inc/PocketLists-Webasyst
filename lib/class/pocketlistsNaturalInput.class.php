@@ -14,7 +14,7 @@ class pocketlistsNaturalInput
     );
 
 
-    public function __construct()
+    protected function __construct()
     {
         $files_path = wa()->getAppPath('/lib/config/data/natural_input/', 'pocketlists');
         $files = array(
@@ -98,13 +98,13 @@ class pocketlistsNaturalInput
                 unset($json_rule['smartparse']['lookup_rules']);
 
                 // combine "time" regexes into one long regex
-                $smartphrase_long_regexes = $instance->combineSmartparse($json_rule['smartparse']);
+                $smartphrase_long_regexes = static::combineSmartparse($json_rule['smartparse']);
 
                 // prepare before parse
-                $instance->prepareLookupRules($lookup_rules, $json_rule['smartparse'], $smartphrase_long_regexes);
+                static::prepareLookupRules($lookup_rules, $json_rule['smartparse'], $smartphrase_long_regexes);
 
                 // through all main rules (for first found language only)
-                $due = $instance->proceedLookupRules(
+                $due = static::proceedLookupRules(
                     $item_name,
                     $lookup_rules,
                     $smartphrase_long_regexes
@@ -185,14 +185,14 @@ class pocketlistsNaturalInput
             foreach ($lookup_rule['regex'] as $regex_in_rule_id => $regex_in_rule) {
                 // found something!!!
                 if (preg_match("/" . $regex_in_rule . "/imu", $item_name, $matches)) {
-                    $time_after_rules = $instance->proceedFoundRegex($matches, $lookup_rule, $time_after_rules);
+                    $time_after_rules = static::proceedFoundRegex($matches, $lookup_rule, $time_after_rules);
                     if ($time_after_rules) {
                         // trim found date from item's name
                         $item_name_new = trim(str_replace($matches[1], '', $item_name));
                         if (strlen($item_name_new) > 2) { // do not leave lees then 2 letters
                             $item_name = $item_name_new;
                             // and try to search more rules (time?..)
-                            $instance->proceedLookupRules(
+                            static::proceedLookupRules(
                                 $item_name,
                                 $lookup_rules,
                                 $smartphrase_long_regexes,
@@ -242,7 +242,7 @@ class pocketlistsNaturalInput
 
         $current = array(
             'day_number' => date('j', $datetime_now), // current month day number
-            'day_of_week_number' => $instance->getCurrentWeekDay(date('N', $datetime_now)), // current week day number
+            'day_of_week_number' => static::getCurrentWeekDay(date('N', $datetime_now)), // current week day number
             'month_number' => date('n', $datetime_now), // current month number
             'seconds_passed' => (time() - $date_now),
         );

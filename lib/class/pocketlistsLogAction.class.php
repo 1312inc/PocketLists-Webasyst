@@ -174,7 +174,7 @@ class pocketlistsLogAction
     private function filter($user_id = false)
     {
         $this->user_id = $user_id ? $user_id : wa()->getUser()->getId();
-        $this->lists = pocketlistsHelper::getAccessListForContact($this->user_id);
+        $this->lists = pocketlistsRBAC::getAccessListForContact($this->user_id);
 
         $logs = array();
         foreach ($this->getLogs() as $id => $log) {
@@ -195,7 +195,7 @@ class pocketlistsLogAction
     {
         $list = $log[self::$ext]['list'];
         // todo: ability to see others
-        if (pocketlistsHelper::isAdmin() || ($list && $this->lists && in_array($list['id'], $this->lists))) {
+        if (pocketlistsRBAC::isAdmin() || ($list && $this->lists && in_array($list['id'], $this->lists))) {
             return true;
         }
 

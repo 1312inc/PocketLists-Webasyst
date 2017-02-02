@@ -93,7 +93,7 @@ class pocketlistsListModel extends waModel
         $available_lists = array();
 
         if ($check_access) {
-            $available_lists = pocketlistsHelper::getAccessListForContact();
+            $available_lists = pocketlistsRBAC::getAccessListForContact();
             $accessed_lists = " WHERE l.id IN (i:list_ids)";
         }
 

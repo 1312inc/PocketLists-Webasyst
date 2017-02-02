@@ -10,8 +10,8 @@ class pocketlistsBackendSidebarAction extends waViewAction
         $this->view->assign('lists', $list_model->getAllActiveLists());
 
         $teammates = array();
-        if (pocketlistsHelper::canAssign()) {
-            $teammates_ids = pocketlistsHelper::getAllListsContacts();
+        if (pocketlistsRBAC::canAssign()) {
+            $teammates_ids = pocketlistsRBAC::getAllListsContacts();
 
             $teammates = pocketlistsHelper::getTeammates($teammates_ids);
         }

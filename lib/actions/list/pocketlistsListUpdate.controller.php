@@ -4,7 +4,7 @@ class pocketlistsListUpdateController extends waJsonController
 {
     public function execute()
     {
-        if (!pocketlistsHelper::canCreateLists()) {
+        if (!pocketlistsRBAC::canCreateLists()) {
             throw new waException('Access denied.', 403);
         }
 
@@ -28,7 +28,7 @@ class pocketlistsListUpdateController extends waJsonController
         $data = $lm->add($data, 1);
         if ($data) {
             // add access for user
-            if (!pocketlistsHelper::isAdmin()) {
+            if (!pocketlistsRBAC::isAdmin()) {
                 $rm = new waContactRightsModel();
                 $rm->save($data['contact_id'], pocketlistsHelper::APP_ID, 'list.' . $data['id'], 2);
             }

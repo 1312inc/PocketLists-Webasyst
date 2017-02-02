@@ -68,7 +68,7 @@ class pocketlistsItemModel extends waModel
             $sql,
             array(
                 'contact_id' => wa()->getUser()->getId(),
-                'list_ids' => pocketlistsHelper::getAccessListForContact(),
+                'list_ids' => pocketlistsRBAC::getAccessListForContact(),
                 'date_after' => !empty($date_range['after']) ? $date_range['after'] : '',
                 'date_before' => !empty($date_range['before']) ? $date_range['before'] : '',
             )
@@ -92,7 +92,7 @@ class pocketlistsItemModel extends waModel
     public function getToDo($contact_id, $date = false)
     {
         // get to-do items only from accessed pockets
-        $lists = pocketlistsHelper::getAccessListForContact($contact_id);
+        $lists = pocketlistsRBAC::getAccessListForContact($contact_id);
         $due_date_or_mine = "AND (i.assigned_contact_id = i:contact_id OR i.assigned_contact_id IS NULL OR i.assigned_contact_id = 0) /* ONLY assigned to me or noone */";
         if ($date) {
             $due_date_or_mine = "AND ((i.status = 0 AND (i.due_date = s:date OR DATE(i.due_datetime) = s:date)) OR (i.status > 0 AND DATE(i.complete_datetime) = s:date)) /* with due date or completed this day */";
@@ -170,7 +170,7 @@ class pocketlistsItemModel extends waModel
             $contact_id = wa()->getUser()->getId();
         }
 
-        $lists = pocketlistsHelper::getAccessListForContact($contact_id);
+        $lists = pocketlistsRBAC::getAccessListForContact($contact_id);
         $sql = "SELECT
                   SUM(i.status > 0) done,
                   SUM(i.status = 0) undone
@@ -193,7 +193,7 @@ class pocketlistsItemModel extends waModel
             $contact_id = wa()->getUser()->getId();
         }
         // get to-do items only from accessed pockets
-        $lists = pocketlistsHelper::getAccessListForContact($contact_id);
+        $lists = pocketlistsRBAC::getAccessListForContact($contact_id);
         $sql = "SELECT
                   i.id id,
                   i.parent_id parent_id,
@@ -587,7 +587,7 @@ class pocketlistsItemModel extends waModel
 
     public function getAssignedOrCompletesByContactItems($contact_id)
     {
-        $lists = pocketlistsHelper::getAccessListForContact();
+        $lists = pocketlistsRBAC::getAccessListForContact();
 
         $q = "SELECT
                   i.id id,
@@ -694,7 +694,7 @@ class pocketlistsItemModel extends waModel
 
         $items = $this->query($q, array(
             'contact_id' => $contact_id,
-            'list_ids' => pocketlistsHelper::getAccessListForContact($contact_id)
+            'list_ids' => pocketlistsRBAC::getAccessListForContact($contact_id)
         ))->fetchAll();
         foreach ($items as $id => $item) {
             $items[$id] = $this->extendItemData($item);
@@ -711,8 +711,8 @@ class pocketlistsItemModel extends waModel
         $lists = array();
         // if user is admin - show all completed items
         // else only items user has access and null list items
-        if (!pocketlistsHelper::isAdmin()) {
-            $lists = pocketlistsHelper::getAccessListForContact();
+        if (!pocketlistsRBAC::isAdmin()) {
+            $lists = pocketlistsRBAC::getAccessListForContact();
             // only accessed pockets or null list items which are created or completed by user
 //            $pocket_rights = "AND (
 //                    p.id IN (i:pocket_ids)
