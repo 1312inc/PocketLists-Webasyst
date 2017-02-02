@@ -447,11 +447,11 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 
 .pl-droppable {
     background-color: #fff;
-    -webkit-transition: all 1s;
-    -moz-transition: all 1s;
-    -ms-transition: all 1s;
-    -o-transition: all 1s;
-    transition: all 1s;
+    -webkit-transition: background-color 1s;
+    -moz-transition: background-color 1s;
+    -ms-transition: background-color 1s;
+    -o-transition: background-color 1s;
+    transition: background-color 1s;
 }
 .pl-drop-success {
     background-color: greenyellow;
