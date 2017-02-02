@@ -47,7 +47,7 @@
                                 {/if}
                             </span>
                         </span>
-                        <div class="hint">TEAMROLE</div>
+                        {if !empty($list_access_contact.teamrole)}<div class="hint">{$list_access_contact.teamrole|escape}</div>{/if}
                     </div>
                 </div>
 

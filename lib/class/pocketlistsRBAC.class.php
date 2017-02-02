@@ -38,6 +38,7 @@ class pocketlistsRBAC
                     'userpic'  => $contact->getPhoto($photo_size),
                     'login'    => $contact['login'],
                     'status'   => $contact->getStatus(),
+                    'teamrole' => $contact->get('jobtitle'),
                 );
             } else {
                 $groups[] = $id['group_id'];
@@ -55,6 +56,7 @@ class pocketlistsRBAC
                     'userpic'  => $contact->getPhoto($photo_size),
                     'login'    => $contact['login'],
                     'status'   => $contact->getStatus(),
+                    'teamrole' => $contact->get('jobtitle'),
                 );
             }
         }
@@ -64,7 +66,7 @@ class pocketlistsRBAC
     /**
      * Return all list ids accessible for given user
      * @param bool|integer $contact_id
-     * @return array|bool
+     * @return array
      */
     public static function getAccessListForContact($contact_id = false)
     {
@@ -76,7 +78,7 @@ class pocketlistsRBAC
             $lists = $user->getRights('pocketlists', 'list.%');
         }
         // todo: может сразу возвращать модели?
-        return $lists ? array_keys($lists) : false;
+        return $lists ? array_keys($lists) : array();
     }
 
     public static function canAccessToList($list_id, $user_id = false)
