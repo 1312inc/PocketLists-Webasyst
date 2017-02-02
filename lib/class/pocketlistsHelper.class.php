@@ -339,6 +339,7 @@ class pocketlistsHelper
             $teammates[$tid]['login'] = $mate->get('login');
             $teammates[$tid]['status'] = $mate->getStatus();
             $teammates[$tid]['role'] = $mate->get('jobtitle');
+            $teammates[$tid]['me'] = ($tid == wa()->getUser()->getId());
 
             $teammates[$tid]['last_activity'] = isset($last_activities[$tid]) ? $last_activities[$tid] : false;
             $teammates[$tid]['items_info'] = array(

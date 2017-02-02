@@ -26,7 +26,7 @@
                     </div>
                     <div class="details">
                         <span class="pl-username">
-                            <a href="###LINK_TO_USER_PROFILE_AT_TEAM_APP">{$list_access_contact.username|default:'%username%'|escape} {if 1 || THIS_IS_ME}([`me`]){/if}</a>
+                            <a href="/{$backend_url}/team/u/{$list_access_contact.login}/">{$list_access_contact.username|default:'%username%'|escape} {if $list_access_contact.me}([`me`]){/if}</a>
                             <span class="bold">
                                 {if $list_access_contact.status == 'online'}
                                     <i class="icon10 online" title="[`Online`]"></i>
