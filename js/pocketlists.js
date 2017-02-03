@@ -217,6 +217,7 @@
                 item: '[data-pl-list-id]',
                 placeholder: 'pl-list-placeholder',
                 opacity: 0.75,
+                distance: 5,
                 appendTo: 'body',
                 tolerance: 'pointer',
                 classes: {

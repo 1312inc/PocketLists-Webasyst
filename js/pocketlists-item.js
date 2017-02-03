@@ -40,7 +40,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
             $sortable_items.sortable({
                 item: item_selector,
                 handle: '[data-pl-action="item-sort"]',
-                // distance: 5,
+                distance: 5,
                 opacity: 0.75,
                 appendTo: 'body',
                 // connectWith: '[data-pl-items="done"] ul.menu-v',
