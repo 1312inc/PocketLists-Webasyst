@@ -1158,10 +1158,6 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                     if (!ItemDetails.isVisible() && !is_selected) { // on first click - select
                         ItemDetails.trigger('hide.pl2');
                         selectItem($item);
-                    } else if (!ItemDetails.isVisible()) { // on second - show details
-                        ItemDetails.trigger('show.pl2', [item_id]); // show item details
-                        selectItem($item);
-                        //NewItemWrapper.hide();
                     } else { // on third
                         ItemDetails.trigger('hide.pl2');
                         deselectItem();

@@ -405,31 +405,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
             $list_wrapper.find(':checkbox').prop('disabled', true);
         }
 
-        $list_wrapper
-            .on('click', function (e) {
-                if (!o.archive) {
-                    var clicked = $list_wrapper.data('pl-clicked');
 
-                    // ignore when click on checkbox
-                    if ($(e.target).closest('.pl-done-label').length) {
-                        return;
-                    }
-                    if (clicked == 1) {
-                        $list_wrapper.data('pl-clicked', 2);
-
-                        $.pocketlists.scrollToTop(200, 80);
-
-                        //$.pocketlists.ListDetails.show();
-                        ListDetails.trigger('show.pl2');
-                    } else if (clicked == 2) {
-                        //$.pocketlists.ListDetails.hide();
-                        ListDetails.trigger('hide.pl2');
-                        deselectList();
-                    } else {
-                        $list_wrapper.data('pl-clicked', 1);
-                    }
-                }
-            }); // open details
         $uho.add($list_wrapper)
             .on('click', '[data-pl-action="list-edit"]', function (e) {
                 e.preventDefault();
@@ -440,8 +416,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
                 $.pocketlists.scrollToTop(200, 80);
 
                 ListDetails.trigger('show.pl2');
-            }) // open details
-        $uho
+            })
             .on('click', '[data-pl-action="list-delete"]', function (e) {
                 e.preventDefault();
 
