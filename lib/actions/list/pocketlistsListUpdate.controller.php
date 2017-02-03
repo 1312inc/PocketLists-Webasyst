@@ -30,7 +30,7 @@ class pocketlistsListUpdateController extends waJsonController
             // add access for user
             if (!pocketlistsRBAC::isAdmin()) {
                 $rm = new waContactRightsModel();
-                $rm->save($data['contact_id'], pocketlistsHelper::APP_ID, 'list.' . $data['id'], 2);
+                $rm->save($data['contact_id'], pocketlistsHelper::APP_ID, 'list.' . $data['id'], pocketlistsRBAC::ACCESS_VALUE);
             }
             // log this action
             $this->logAction(pocketlistsLogAction::LIST_CREATED, array(

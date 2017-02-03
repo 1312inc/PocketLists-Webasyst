@@ -2,6 +2,9 @@
 
 class pocketlistsRBAC
 {
+    const ADMIN_VALUE = 2;
+    const ACCESS_VALUE = 1;
+
     private static $access_rights = array();
 
     /**
