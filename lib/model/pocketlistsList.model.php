@@ -24,15 +24,18 @@ class pocketlistsListModel extends waModel
         return count($id) === 1 ? reset($lists) : $lists;
     }
 
-    public function add($data, $type = false)
+    public function add($data, $type = 0)
     {
-        $inserted_list_id = $this->insert($data, $type);
-        $data['key_list_id'] = $inserted_list_id;
-        $im = new pocketlistsItemModel();
-        $inserted_item_id = $im->insert($data, $type);
-        $data['id'] = $inserted_list_id;
-        $this->updateById($data['id'], array('key_item_id' => $inserted_item_id));
-
+        if ($inserted_list_id = $this->insert($data, $type)) {
+            $data['key_list_id'] = $inserted_list_id;
+            $im = new pocketlistsItemModel();
+            if ($inserted_item_id = $im->insert($data, $type)) {
+                $data['id'] = $inserted_list_id;
+                $this->updateById($data['id'], array('key_item_id' => $inserted_item_id));
+            } else {
+                $this->deleteById($inserted_list_id);
+            }
+        }
         return $inserted_list_id ? $data : false;
     }
 
@@ -92,8 +95,7 @@ class pocketlistsListModel extends waModel
         $accessed_lists = "";
         $available_lists = array();
 
-        if ($check_access) {
-            $available_lists = pocketlistsRBAC::getAccessListForContact();
+        if ($check_access && $available_lists = pocketlistsRBAC::getAccessListForContact()) {
             $accessed_lists = " WHERE l.id IN (i:list_ids)";
         }
 
