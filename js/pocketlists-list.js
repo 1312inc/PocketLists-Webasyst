@@ -24,8 +24,17 @@ $.pocketlists.List = function ($list_wrapper, options) {
      * - save details
      */
     var ListDetails = (function ($wrapper) {
-        var icon_path = null;
+        var icon_path = null,
+            list_color = 'none';
 
+        var getListColor = function () {
+            return $wrapper.find('#pl-list-color a.selected').data('pl-list-color');
+        };
+        var setListColor = function (color) {
+            color = color || list_color;
+            $('.pl-items').removeClass().addClass('pl-inner-content pl-items shadowed pl-' + color);
+
+        };
         // show list details container and load html with list details from server
         var showListDetails = function () {
             if (request_in_action) {
@@ -48,6 +57,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
             });
         };
         var hideListDetails = function () {
+            setListColor();
             $wrapper.animate({
                 'right': '100%'
             }, 200, function () {
@@ -69,9 +79,6 @@ $.pocketlists.List = function ($list_wrapper, options) {
             } else {
                 $uho.find('.pl-list-due').hide();
             }
-
-            // items background color
-            $('.pl-items').removeClass().addClass('pl-inner-content pl-items shadowed pl-' + data.color); // update icon
         };
         var afterLoad = function () {
             var datepicker_options = {
@@ -98,7 +105,8 @@ $.pocketlists.List = function ($list_wrapper, options) {
             };
 
             $wrapper.find('#pl-list-due-datetime').datepicker(datepicker_options);
-            icon_path = $wrapper.find('#pl-list-icon-dialog').find('ul').data('pl-icons-path')
+            icon_path = $wrapper.find('#pl-list-icon-dialog').find('ul').data('pl-icons-path');
+            list_color = getListColor(); // color before save
         };
 
         var init = function () {
@@ -120,6 +128,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
                     $.post('?module=list&action=save', $this.serialize(), function (r) {
                         $.pocketlists.$loading.remove();
                         if (r.status === 'ok') {
+                            list_color = getListColor();
                             updateList(r.data);
                             $.pocketlists.updateAppCounter();
                             $.pocketlists.reloadSidebar();
@@ -143,6 +152,8 @@ $.pocketlists.List = function ($list_wrapper, options) {
                 })
                 .on('click', '#pl-list-color a', function (e) {
                     e.preventDefault();
+                    var color = $(this).data('pl-list-color');
+                    setListColor(color); // just preview
                     $('#pl-list-color').find('input').val($(this).data('pl-list-color')).trigger('change');
                     $(this).addClass('selected')
                         .siblings().removeClass('selected')
