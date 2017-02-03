@@ -430,7 +430,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
                     }
                 }
             }); // open details
-        $uho
+        $uho.add($list_wrapper)
             .on('click', '[data-pl-action="list-edit"]', function (e) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -441,6 +441,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
 
                 ListDetails.trigger('show.pl2');
             }) // open details
+        $uho
             .on('click', '[data-pl-action="list-delete"]', function (e) {
                 e.preventDefault();
 
