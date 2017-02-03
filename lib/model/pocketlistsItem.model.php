@@ -30,6 +30,8 @@ class pocketlistsItemModel extends waModel
             $only_completed = " AND i.status > 0";
         }
 
+        $lists = pocketlistsRBAC::getAccessListForContact();
+        $list_sql = $lists ? "AND (l.id IN (i:list_ids) OR (l.id IS NULL AND i.contact_id = i:contact_id))" : "AND (l.id IS NULL AND i.contact_id = i:contact_id)";
         $sql = "SELECT
                   i.id id,
                   i.parent_id parent_id,
@@ -55,10 +57,7 @@ class pocketlistsItemModel extends waModel
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
                 WHERE
                   i.key_list_id IS NULL
-                  AND (
-                    l.id IN (i:list_ids)
-                    OR (l.id IS NULL AND i.contact_id = i:contact_id)
-                  )
+                  {$list_sql}
                   {$only_completed}
                   {$by_user}
                   {$by_date_range}
@@ -68,7 +67,7 @@ class pocketlistsItemModel extends waModel
             $sql,
             array(
                 'contact_id' => wa()->getUser()->getId(),
-                'list_ids' => pocketlistsRBAC::getAccessListForContact(),
+                'list_ids' => $lists,
                 'date_after' => !empty($date_range['after']) ? $date_range['after'] : '',
                 'date_before' => !empty($date_range['before']) ? $date_range['before'] : '',
             )
@@ -93,6 +92,7 @@ class pocketlistsItemModel extends waModel
     {
         // get to-do items only from accessed pockets
         $lists = pocketlistsRBAC::getAccessListForContact($contact_id);
+        $list_sql = $lists ? " AND (l.id IN (i:list_ids) OR l.id IS NULL) /* ONLY items from accessed pockets or NULL-list items */" : " AND l.id IS NULL /* ONLY items from NULL-list items */";
         $due_date_or_mine = "AND (i.assigned_contact_id = i:contact_id OR i.assigned_contact_id IS NULL OR i.assigned_contact_id = 0) /* ONLY assigned to me or noone */";
         if ($date) {
             $due_date_or_mine = "AND ((i.status = 0 AND (i.due_date = s:date OR DATE(i.due_datetime) = s:date)) OR (i.status > 0 AND DATE(i.complete_datetime) = s:date)) /* with due date or completed this day */";
@@ -139,7 +139,7 @@ class pocketlistsItemModel extends waModel
                   OR (i.contact_id = i:contact_id AND i.list_id IS NULL AND i.key_list_id IS NULL) /* + my items from NULL-list */
                 )
                 AND (l.archived = 0 OR l.archived IS NULL) /* ONLY not archived items */
-                AND (l.id IN (i:list_ids) OR l.id IS NULL) /* ONLY items from accessed pockets or NULL-list items */
+                {$list_sql}
                 {$due_date_or_mine}
                 ORDER BY
                   i.status,
@@ -171,6 +171,7 @@ class pocketlistsItemModel extends waModel
         }
 
         $lists = pocketlistsRBAC::getAccessListForContact($contact_id);
+        $lists_sql = $lists ? " AND (l.id IN (i:list_ids) OR l.id IS NULL) /* ONLY items from accessed pockets or NULL-list items */" : " AND l.id IS NULL /* ONLY items from accessed pockets or NULL-list items */";
         $sql = "SELECT
                   SUM(i.status > 0) done,
                   SUM(i.status = 0) undone
@@ -180,7 +181,7 @@ class pocketlistsItemModel extends waModel
                 WHERE
                   uf.item_id IS NOT NULL
                   AND (l.archived = 0 OR l.archived IS NULL) /* ONLY not archived items */
-                  AND (l.id IN (i:list_ids) OR l.id IS NULL) /* ONLY items from accessed pockets or NULL-list items */";
+                  {$lists_sql}";
         return $this->query($sql, array(
             'list_ids'   => $lists,
             'contact_id' => $contact_id,
@@ -194,6 +195,7 @@ class pocketlistsItemModel extends waModel
         }
         // get to-do items only from accessed pockets
         $lists = pocketlistsRBAC::getAccessListForContact($contact_id);
+        $lists_sql = $lists ? " AND (l.id IN (i:list_ids) OR l.id IS NULL) /* ONLY items from accessed pockets or NULL-list items */" : " AND l.id IS NULL /* ONLY items from NULL-list items */";
         $sql = "SELECT
                   i.id id,
                   i.parent_id parent_id,
@@ -222,7 +224,7 @@ class pocketlistsItemModel extends waModel
                 WHERE
                 uf.item_id IS NOT NULL
                 AND (l.archived = 0 OR l.archived IS NULL) /* ONLY not archived items */
-                AND (l.id IN (i:list_ids) OR l.id IS NULL) /* ONLY items from accessed pockets or NULL-list items */
+                {$lists_sql}
                 ORDER BY
                   i.status,
                   (i.complete_datetime IS NULL), i.complete_datetime DESC";
@@ -592,7 +594,7 @@ class pocketlistsItemModel extends waModel
     public function getAssignedOrCompletesByContactItems($contact_id)
     {
         $lists = pocketlistsRBAC::getAccessListForContact();
-
+        $list_sql = $lists ? " AND (l.id IN (i:list_ids) OR l.id IS NULL) /* only accessed pockets or null list */" : " AND l.id IS NULL /* only null list */";
         $q = "SELECT
                   i.id id,
                   i.parent_id parent_id,
@@ -627,10 +629,7 @@ class pocketlistsItemModel extends waModel
                     l.archived = 0
                     OR l.archived IS NULL
                   )
-                  AND ( /* only accessed pockets or null list */
-                    l.id IN (i:list_ids)
-                    OR l.id IS NULL
-                  )
+                  {$list_sql}
                 ORDER BY
                   i.status,
                   (i.complete_datetime IS NULL), i.complete_datetime DESC";
@@ -668,6 +667,8 @@ class pocketlistsItemModel extends waModel
                 $when = " AND (i.due_date <= '" . $seven_days . "')";
                 break;
         }
+        $lists = pocketlistsRBAC::getAccessListForContact($contact_id);
+        $list_sql = $lists ? " AND (l.id IN (i:list_ids) OR l.id IS NULL) " : " AND l.id IS NULL ";
         $q = "SELECT
                 i.*
               FROM {$this->table} i
@@ -690,15 +691,12 @@ class pocketlistsItemModel extends waModel
                 AND i.status = 0 /* ONLY not completed items */
                 AND (l.archived = 0 OR l.archived IS NULL) /* ONLY not archived items */
                 AND (i.assigned_contact_id = i:contact_id OR i.assigned_contact_id IS NULL OR i.assigned_contact_id = 0) /* ONLY assigned to me or noone */
-                AND (
-                  l.id IN (i:list_ids)
-                  OR l.id IS NULL
-                )
+                {$list_sql}
                 {$when}";
 
         $items = $this->query($q, array(
             'contact_id' => $contact_id,
-            'list_ids' => pocketlistsRBAC::getAccessListForContact($contact_id)
+            'list_ids' => $lists
         ))->fetchAll();
         foreach ($items as $id => $item) {
             $items[$id] = $this->extendItemData($item);
@@ -711,7 +709,7 @@ class pocketlistsItemModel extends waModel
         $us = new pocketlistsUserSettings();
         $icon = $us->appIcon();
 
-        $pocket_rights = "";
+        $list_sql = "";
         $lists = array();
         // if user is admin - show all completed items
         // else only items user has access and null list items
@@ -723,10 +721,7 @@ class pocketlistsItemModel extends waModel
 //                    OR (p.id IS NULL AND (i.contact_id = i:contact_id OR i.complete_contact_id = i:contact_id)
 //                  )";
             // only accessed pockets or null list items
-            $pocket_rights = "AND (
-                    l.id IN (i:list_ids)
-                    OR l.id IS NULL
-                  )";
+            $list_sql = $lists ? " AND (l.id IN (i:list_ids) OR l.id IS NULL) " : " AND l.id IS NULL ";
         }
 
         $now = @waDateTime::parse('Y-m-d H:i:s', waDateTime::date('Y-m-d H:i:s'));
@@ -772,7 +767,7 @@ class pocketlistsItemModel extends waModel
             AND i.status = 0
             AND (i.assigned_contact_id = i:contact_id OR i.assigned_contact_id IS NULL OR i.assigned_contact_id = 0) /* ONLY assigned to me or noone */
             {$colors} /* selected option */
-            {$pocket_rights}";
+            {$list_sql}";
 
         if ($icon !== false && $icon != pocketlistsUserSettings::ICON_NONE) {
             $count = $this->query($q, array(

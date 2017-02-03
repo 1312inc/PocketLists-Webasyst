@@ -12,7 +12,7 @@ class pocketlistsRBAC
     public static function getAccessListForContact($contact_id = false)
     {
         $user = $contact_id ? new waContact($contact_id) : wa()->getUser();
-        if ($user->isAdmin() || $user->isAdmin('pocketlists')) {
+        if (self::isAdmin($contact_id)) {
             $list_model = new pocketlistsListModel();
             $lists = $list_model->getAll('id');
         } else {

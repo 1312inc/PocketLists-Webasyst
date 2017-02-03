@@ -6,6 +6,9 @@ class pocketlistsListModel extends waModel
 
     public function getById($id)
     {
+        if (!$id) {
+            return array();
+        }
         if (!is_array($id)) {
             $id = array($id);
         }
@@ -95,8 +98,12 @@ class pocketlistsListModel extends waModel
         $accessed_lists = "";
         $available_lists = array();
 
-        if ($check_access && $available_lists = pocketlistsRBAC::getAccessListForContact()) {
-            $accessed_lists = " WHERE l.id IN (i:list_ids)";
+        if ($check_access) {
+            if ($available_lists = pocketlistsRBAC::getAccessListForContact()) {
+                $accessed_lists = " WHERE l.id IN (i:list_ids)";
+            } else {
+                $accessed_lists = " WHERE l.id IS NULL";
+            }
         }
 
         $sql = "SELECT
