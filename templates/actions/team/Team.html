@@ -116,5 +116,32 @@
         current_user_id: {$wa->user()->get('id')}
     });
     $.pocketlists.setTitle('{$current_teammate.name|escape}');
+
+    $('[data-pl="uho"]').on('click', '[data-pl-action="list-email"]', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        $('<div>').waDialog({
+            'url': '?module=list&action=emailDialog&teammate={$current_teammate.name|default:""|escape}',
+            onLoad: function () {
+            },
+            onSubmit: function (d) {
+                var $this = $(this);
+
+                $this.after($.pocketlists.$loading);
+                $.post('?module=list&action=email', $this.serialize(), function(r) {
+                    $.pocketlists.$loading.remove();
+                    if (r.status === 'ok') {
+                        d.trigger('close');
+                    }  else {
+                        alert(r.errors);
+                    }
+                }, 'json');
+                return false;
+            },
+            onClose: function () {
+                this.remove();
+            }
+        });
+    })
 </script>
 {/if}

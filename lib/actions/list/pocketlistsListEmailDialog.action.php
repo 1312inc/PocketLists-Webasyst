@@ -6,6 +6,7 @@ class pocketlistsListEmailDialogAction extends waViewAction
     {
         $id = waRequest::get('id', false, waRequest::TYPE_INT);
         $date = waRequest::get('date', '');
+        $teammate = waRequest::get('teammate', '');
         $lm = new pocketlistsListModel();
         $im = new pocketlistsItemModel();
         if ($id) {
@@ -20,6 +21,14 @@ class pocketlistsListEmailDialogAction extends waViewAction
             $items = $im->getToDo(wa()->getUser()->getId(), $date);
             $this->view->assign('date', $date);
             $this->view->assign('items', $items[0]);
+        } elseif ($teammate) {
+            $user_model = new waUserModel();
+            $id = $user_model->getByLogin($teammate);
+            if ($id) {
+                $items = $im->getAssignedOrCompletesByContactItems($id['id']);
+                $this->view->assign('teammate', $teammate);
+                $this->view->assign('items', $items[0]);
+            }
         }
     }
 
