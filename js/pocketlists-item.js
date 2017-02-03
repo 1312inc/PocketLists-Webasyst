@@ -966,7 +966,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                         hideItemDetails();
                     });
                 })
-                .on('click', '#pl-item-details-cancel', function (e) {
+                .on('click', '.pl-item-details-cancel', function (e) {
                     e.preventDefault();
 
                     hideItemDetails();

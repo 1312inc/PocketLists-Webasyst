@@ -249,7 +249,7 @@ input#pl-new-list-input:focus,
 .pl-list-items ul.menu-v li a { display: inline; }
 .pl-list-items ul.menu-v li .pl-item { display: block; border-bottom: 1px solid rgba(0,0,0,0.1); position: relative; }
 .pl-list-items ul.menu-v li .pl-item:hover { background: rgba(0, 0, 0, 0.04); }
-.pl-list-items ul.menu-v li .pl-item.pl-item-selected { background: rgba(0, 0, 0, 0.06); }
+.pl-list-items ul.menu-v li .pl-item.pl-item-selected { background: rgba(155, 155, 155, 0.13); }
 .pl-list-items ul.menu-v li label.pl-select-label { padding: 14px 25px 15px 49px; display: block; line-height: 1.3em; position: relative; cursor: auto; }
 .pl-list-items ul.menu-v li ul { padding-left: 0; margin: 0; }
 .pl-list-items ul.menu-v li ul li .pl-item { padding-left: 30px; }
@@ -307,12 +307,12 @@ input#pl-new-list-input:focus,
 .pl-item-selected .pl-chat { display: block; }
 .pl-chat .pl-cue { margin-bottom: 13px; width: 100%; }
 .pl-chat .pl-cue .pl-cue-inner { width: 70%; font-size: 0.95em; }
-.pl-chat .pl-cue .pl-bubble { background: rgba(255,255,255,0.7); border-radius: 5px; padding: 8px; margin-bottom: 8px; position: relative; border: 1px solid rgba(0,0,0,0.1); line-height: 1.1em; }
+.pl-chat .pl-cue .pl-bubble { background: rgba(255,255,222,0.7); border-radius: 5px; padding: 8px; margin-bottom: 8px; position: relative; border: 1px solid rgba(0,0,0,0.1); line-height: 1.1em; }
 .pl-chat .pl-cue .pl-bubble .pl-bubble-arrow { background: rgba(0,0,0,0.05); transform: rotate(45deg); width: 10px; height: 10px; display: block; position: absolute; left: 15px; bottom: -4px; border: 1px solid rgba(0,0,0,0.1); }
 .pl-chat .pl-cue .pl-bubble .pl-bubble-arrow:after { content: ''; border-top: 1px solid red;}
 .pl-chat .pl-cue.pl-my-cue .pl-cue-inner { margin-left: 30%; }
 .pl-chat .pl-cue.pl-my-cue .pl-bubble,
-.pl-chat .pl-cue.pl-my-cue .pl-bubble .pl-bubble-arrow { background: #def; }
+.pl-chat .pl-cue.pl-my-cue .pl-bubble .pl-bubble-arrow { background: #e7f7ff; }
 .pl-chat .userpic20 { margin-left: 10px; margin-top: 1px; }
 .pl-chat .pl-reply { margin-top: 20px; }
 .pl-chat .pl-reply .userpic20 { margin-top: 1px; }
@@ -343,17 +343,18 @@ input#pl-new-list-input:focus,
 /* Item & List details
 ---------------------- */
 
-.pl-details { display: none; padding: 0; position: absolute; top: 0; bottom: 0; right: 100%; width: 340px; background: #eee; box-shadow: -10px 0 20px -10px rgba(0,0,0,0.1);z-index: 9; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+.pl-details { display: none; padding: 0; position: absolute; top: 0; bottom: 0; right: 100%; width: 340px; background: #eed; box-shadow: -10px 0 20px -10px rgba(0,0,0,0.1);z-index: 9; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
 .pl-details.sticky,
 .pl-details.sticky { position: fixed; right: 0; width: 350px; overflow-y: scroll; }
 
-.pl-details .pl-details-form { background: #eee; padding: 15px 10px 15px 15px; }
+.pl-details .pl-details-form { background: #eed; padding: 15px 10px 15px 15px; }
 .pl-details .fields.form { width: 100%; }
 .pl-details .fields.form .field-group { margin-top: 0; }
 .pl-details .fields.form .field .name { float: none; padding-bottom: 5px; }
 .pl-details .fields.form .field .value { margin-left: 0 !important; }
-.pl-details .fields.form input.long { width: 83% !important; min-width: 0 !important; }
+.pl-details .fields.form input.long { width: 95% !important; min-width: 0 !important; }
 .pl-details .fields.form textarea { width: 98% !important; min-width: 0 !important; }
+.pl-details i.icon16.color { width: 32px; height: 32px; }
 
 .pl-close,
 .pl-close:visited { font-size: 2em; color: rgba(0,0,0,0.3) !important; text-decoration: none; float: right; position: relative; z-index: 1; margin-right: 10px; }
@@ -421,7 +422,7 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
     /*.pl-items.content.left300px { margin-left: 229px; }*/
     ul.pl-lists li span { max-width: 120px; }
     ul.pl-team li .pl-username { max-width: 120px; }
-    .pl-details { width: 400px; }
+    .pl-details { width: 240px; }
     .pl-details input.long { min-width: 200px !important; width: 200px !important; }
     .pl-details textarea { min-width: 250px !important; }
     .pl-list-sort { display: none !important; }
@@ -435,10 +436,14 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 
 }
 
+/* Wide screens
+--------------- */
+
 @media screen and (min-width: 1400px) {
 
     .pl-inner-sidebar { width: 400px; }
     .pl-inner-content { margin-right: 400px; }
+    .pl-details { width: 390px; }
 
 }
 

@@ -92,21 +92,23 @@
     <div class="pl-inner-content pl-items shadowed pl-{$list.color|default:'none'}">
     <header class="pl-list-title pl-title">
 
-        {if !empty($list.due_date) || !empty($list.due_datetime)}
-            <a href="#" class="pl-edit pl-list-due" title="[`Due`]" data-pl-action="list-edit">
+        {if !$new && !$archive}
+            {if !empty($list.due_date) || !empty($list.due_datetime)}
+                <a href="#" class="pl-edit pl-list-due" title="[`Due`]" data-pl-action="list-edit">
 
-                <i class="icon16 exclamation"></i>
-                <span class="bold {if $list.calc_priority == 0}pl-due-someday{elseif $list.calc_priority == 1}pl-due-tomorrow{elseif $list.calc_priority == 2}pl-due-today{elseif $list.calc_priority == 3}pl-due-overdue{/if}" {if empty($list.due_datetime) && empty($list.due_date)}style="display: none;"{/if}>
-                    {if !empty($list.due_datetime)}
-                        {$list.due_datetime|wa_datetime:'humandatetime'}
-                    {else if !empty($list.due_date)}
-                        {$list.due_date|wa_date:'humandate'}
-                    {/if}
-                </span>
+                    <i class="icon16 exclamation"></i>
+                    <span class="bold {if $list.calc_priority == 0}pl-due-someday{elseif $list.calc_priority == 1}pl-due-tomorrow{elseif $list.calc_priority == 2}pl-due-today{elseif $list.calc_priority == 3}pl-due-overdue{/if}" {if empty($list.due_datetime) && empty($list.due_date)}style="display: none;"{/if}>
+                        {if !empty($list.due_datetime)}
+                            {$list.due_datetime|wa_datetime:'humandatetime'}
+                        {else if !empty($list.due_date)}
+                            {$list.due_date|wa_date:'humandate'}
+                        {/if}
+                    </span>
 
-            </a>
-        {else}
-            <a href="#" class="pl-edit inline-link" data-pl-action="list-edit"><b><i>[`Edit`]</i></b></a>
+                </a>
+            {else}
+                <a href="#" class="pl-edit inline-link" data-pl-action="list-edit"><b><i>[`Edit`]</i></b></a>
+            {/if}
         {/if}
 
         <h1>

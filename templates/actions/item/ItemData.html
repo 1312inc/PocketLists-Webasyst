@@ -23,7 +23,9 @@
             {if !empty($item.assigned_contact_id) && $item.assigned_contact_id != $wa->user()->getId()}<span class="pl-assignee"><i class="icon16 userpic20" style="background-image: url({$item.assigned_userpic})" alt="{$item.assigned_username|escape}" title="{sprintf('[`Assigned to %s`]', $item.assigned_username|escape)}"></i></span>{/if}
 
         {/if}
-        <a href="#" class="pl-edit inline-link"><b><i>[`Edit`]</i></b></a>
+        {if !(isset($archive) && $archive == true)}
+            <a href="#" class="pl-edit inline-link"><b><i>[`Edit`]</i></b></a>
+        {/if}
     </div>
     {/if}
     <label class="pl-done-label">
@@ -46,7 +48,7 @@
             {/if}
         </span>
 
-        {if empty($item.key_list_id)}<a href="#" class="pl-comment{if !empty($item.chat.comments)} pl-comment-count{/if}" title="[`Comment`]"><i class="icon16 comments"></i>{if !empty($item.chat.comments)}{count($item.chat.comments)}{/if}</a>{/if}
+        {if empty($item.key_list_id) && !(isset($archive) && $archive == true)}<a href="#" class="pl-comment{if !empty($item.chat.comments)} pl-comment-count{/if}" title="[`Comment`]"><i class="icon16 comments"></i>{if !empty($item.chat.comments)}{count($item.chat.comments)}{/if}</a>{/if}
 
         {if !empty($item.due_datetime)}
         <br>

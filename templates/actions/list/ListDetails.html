@@ -1,7 +1,7 @@
 <div class="pl-details-form">
 <div class="fields form">
 <form method="post">
-    <a href="#" id="pl-list-details-cancel" class="pl-close" title="[`Close`]">&times;</a>
+    {* <a href="#" class="pl-list-details-cancel" class="pl-close" title="[`Close`]">&times;</a> *}
     <input type="hidden" name="list[id]" value="{$list.id}"/>
     <!-- core -->
     <div class="field-group">
@@ -58,7 +58,7 @@
             <div class="value no-shift">
                 <i class="icon16 userpic20"></i>
                 {$list.username|escape}
-                <span class="hint">{$list.create_datetime|wa_datetime:'humandatetime'}</span>
+                <span class="hint nowrap">{$list.create_datetime|wa_datetime:'humandatetime'}</span>
             </div>
         </div>
     </div>
@@ -68,6 +68,8 @@
             <div class="value">
 
                 <input type="submit" class="button green" value="[`Save`]"  id="pl-list-details-save"/>
+                [`or`]
+                <a href="#" class="pl-list-details-cancel inline-link"><b><i>[`cancel`]</i></b></a>
 
                 <span class="error" style="display: none;">[`error`]</span>
                 <span class="success" style="display: none;">[`saved`]</span>

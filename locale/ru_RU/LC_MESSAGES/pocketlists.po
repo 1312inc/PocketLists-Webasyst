@@ -74,12 +74,12 @@ msgstr "Срок"
 #: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:51
 #: /wa-apps/pocketlists/templates/actions/list/ListDetails.html:47
 msgid "Set time"
-msgstr "Время"
+msgstr "Указать время"
 
 #: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:52
 #: /wa-apps/pocketlists/templates/actions/list/ListDetails.html:48
 msgid "Clear time"
-msgstr "Очистить"
+msgstr "Только дата"
 
 #: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:58
 msgid "This item is <strong>marked as completed</strong>. Setting priority and due date won’t be visible within the to-do list."
@@ -194,7 +194,7 @@ msgstr "Сортировать"
 
 #: /wa-apps/pocketlists/templates/actions/list/List.html:21
 msgid "Email list"
-msgstr "Отправить по почте"
+msgstr "Отправить список по почте"
 
 #: /wa-apps/pocketlists/templates/actions/list/List.html:27
 msgid "Print list"

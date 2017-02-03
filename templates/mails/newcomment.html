@@ -1,12 +1,9 @@
 {sprintf('[`%s commented on <a href="%s">%s</a>`]', $by_username|escape, $backend_url|cat:$list.url, $item.name|escape|truncate:64)}
 <br>
-<br>
-<blockquote style="background: #ffd; padding: 10px; border-radius: 10px; border: 1px solid #ddb; margin-left: 0;">
+<blockquote style="background: #ffd; padding: 10px; border-radius: 5px; border: 1px solid #ddb; margin-left: 0; display: inline-block;">
 {$comment.comment|escape|nl2br}
 </blockquote>
 <br>
-<br>
-via Pocket Lists app
-<br>
-<br>
-<a href="{$backend_url}{$email_settings_url}" style="font-size:90%;color:#aaa;">[`Manage my subscription settings`]</a>
+--<br>
+{$wa->accountName()}<br>
+<a href="{$backend_url}{$email_settings_url}" style="color:#aaa;">[`Manage my subscription`]</a>

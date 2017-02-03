@@ -1,7 +1,7 @@
 {if $complete}
-{sprintf('[`%s have just completed <strong>&#10004; %s</strong>`]', $item.complete_contact_name|escape, $item.name|escape)}
+{sprintf('[`%s has just completed <strong>&#9989; %s</strong>`]', $item.complete_contact_name|escape, $item.name|escape)}
 {else}
-{sprintf('[`To-do has been uncompleted: <strong>&#10006; %s</strong>`]', $item.name|escape)}
+{sprintf('[`The following to-do has just been uncompleted and rolled back to active status: <strong>&#10060; %s</strong>`]', $item.name|escape)}
 {/if}
 <br>
 <br>
@@ -15,7 +15,6 @@
 <br>
 <br>
 {/if}
-via Pocket Lists app
-<br>
-<br>
-<a href="{$backend_url}{$email_settings_url}" style="font-size:90%;color:#aaa;">[`Manage my subscription settings`]</a>
+--<br>
+{$wa->accountName()}<br>
+<a href="{$backend_url}{$email_settings_url}" style="color:#aaa;">[`Manage my subscription`]</a>

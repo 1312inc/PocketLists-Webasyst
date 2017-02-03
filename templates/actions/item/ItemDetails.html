@@ -1,7 +1,7 @@
 <div class="pl-details-form">
 <div class="fields form">
 <form method="post" id="pl-item-details-form" action="?module=item&amp;action=data" target="pl-item-details-form-iframe" enctype="multipart/form-data">
-    <a href="#" id="pl-item-details-cancel" class="pl-close" title="[`Close`]">&times;</a>
+    {* <a href="#" class="pl-item-details-cancel" class="pl-close" title="[`Close`]">&times;</a> *}
     <input type="hidden" name="item[id]" value="{$item.id}"/>
     <input type="hidden" id="pl-item-list-id" value="{$item.list_id}"/>
     <!-- core -->
@@ -61,7 +61,7 @@
                 <i class="icon16 userpic20" style="background-image: url({$item.userpic})" alt="{$item.username|escape}"></i>
 
                 {$item.username|escape}
-                <span class="hint">{$item.create_datetime|wa_datetime:'humandatetime'}</span>
+                <span class="hint nowrap">{$item.create_datetime|wa_datetime:'humandatetime'}</span>
             </div>
         </div>
         {if $item.status == 1 && $item.complete_datetime}
@@ -70,7 +70,7 @@
                 <div class="value no-shift">
                     <i class="icon16 userpic20" style="background-image: url({$item.complete_userpic|default:'/wa-content/img/userpic20@2x.jpg'})" alt="{$item.complete_username|escape}"></i>
                     {$item.complete_username|default:''|escape}
-                    <span class="hint">{$item.complete_datetime|wa_datetime:'humandatetime'}</span>
+                    <span class="hint nowrap">{$item.complete_datetime|wa_datetime:'humandatetime'}</span>
                 </div>
             </div>
         {/if}
@@ -105,8 +105,8 @@
                     <select name="item[due_datetime_minutes]" class="pl-due-date-input" type="text" id="pl-item-due-datetime-minutes" value="{$minutes}" {if empty($item.due_datetime)}style="display: none;" disabled="disabled"{/if}>
                         {for $i=0 to 59 step 5}{$m = "%02d"|sprintf:$i}<option value="{$m}" {if $m == $minutes}selected="selected"{/if}>{$m}</option>{/for}
                     </select>
-                    <a href="#" id="pl-item-due-datetime-set" class="small inline-link" {if empty($item.due_date) || !empty($item.due_datetime)}style="display: none;"{/if}><b><i>[`Set time`]</i></b></a>
-                    <a href="#" id="pl-item-due-datetime-clear" class="small inline-link" {if empty($item.due_datetime)}style="display: none;"{/if}><b><i>[`Clear time`]</i></b></a>
+                    <a href="#" id="pl-item-due-datetime-set" class="small inline-link nowrap" {if empty($item.due_date) || !empty($item.due_datetime)}style="display: none;"{/if}><b><i>[`Set time`]</i></b></a>
+                    <a href="#" id="pl-item-due-datetime-clear" class="small inline-link nowrap" {if empty($item.due_datetime)}style="display: none;"{/if}><b><i>[`Clear time`]</i></b></a>
                 </span>
             </div>
         </div>
@@ -164,13 +164,11 @@
             <div class="value">
 
                 <input type="submit" class="button green" value="[`Save`]"  id="pl-item-details-save"/>
+                [`or`]
+                <a href="#" class="pl-item-details-cancel inline-link"><b><i>[`cancel`]</i></b></a>
 
                 <span class="error" style="display: none;">[`error`]</span>
                 <span class="success" style="display: none;">[`saved`]</span>
-
-                <div class="float-right block half-padded">
-                    <ul class="menu-h"><li><a class="float-right" data-pl-action="item-delete" href="#"><i class="icon16 delete"></i>[`Delete to-do`]</a></li></ul>
-                </div>
 
             </div>
 
@@ -181,4 +179,7 @@
 </div>
 <div class="clear-both"></div>
 </div>
+<a class="pl-link-box pl-delete-box" href="#" data-pl-action="item-delete">
+    <i class="icon16 delete"></i> [`Delete to-do`]
+</a>
 {include '../../include/deleteitemdialog.html' inline}

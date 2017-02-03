@@ -26,7 +26,7 @@
                 <header class="pl-list-title pl-title">
                     <div class="float-right block half-padded">
                         {if isset($list.id)}
-                        <ul class="menu-h dropdown">
+                        <ul class="menu-h">
                             <li>
                                 <a href="#" data-pl-action="list-unarchive" class="bold"><i class="icon16 pl archive"></i> [`Unarchive list`]</a>
                             </li>
@@ -60,8 +60,7 @@
                     </section>
 
                     <!-- completed to-dos log -->
-                    <section id="pl-complete-log" class="pl-logbook">
-                        <h5 class="heading">[`Logbook`]</h5>
+                    <section id="pl-complete-log1" class="pl-logbook">
                         <ul class="menu-v">
                             {if !empty($items_done)}
                             {include '../item/Item.html' items=$items_done}
@@ -69,7 +68,6 @@
                         </ul>
                     </section>
 
-                    <a href="#" id="pl-complete-log-link" class="inline-link gray" {if empty($items_done)}style="display:none;"{/if}><b><i>{_w('Show all %d completed to-do', 'Show all %d completed to-dos', $count_items_done)}</i></b></a>
                 </div>
                 <div class="clear-both"></div>
 
