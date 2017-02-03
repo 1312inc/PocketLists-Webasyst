@@ -19,7 +19,8 @@ class pocketlistsItemDetailsAction extends waViewAction
             $contacts = array();
             if (pocketlistsRBAC::canAssign()) {
                 // if this item is from list - select only available contacts for this list
-                $contacts = pocketlistsRBAC::getAccessContacts($list ? $list['id'] : 0);
+                $contacts = pocketlistsHelper::getTeammates(pocketlistsRBAC::getAccessContacts($list ? $list['id'] : 0), false);
+
             }
 
             $this->view->assign('item', $item);
