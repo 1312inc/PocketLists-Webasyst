@@ -5,13 +5,16 @@
     <link type="text/css" rel="stylesheet" href="{$wa_app_static_url}css/pocketlists-print.css">
 </head>
 <body>
+    <div class="pl-print-button">
+        <button onclick="window.print();">[`Print`]</button>
+    </div>
 {/if}
 
 {if !$print}
 <nav class="pl-inner-sidebar" data-pl="uho">
 {if isset($list.id)}
     {if !$archive}
-    <a class="pl-list-resort" href="#" data-pl-action="list-sort">
+    <a class="pl-link-box bold" href="#" data-pl-action="list-sort">
         <i class="icon16 update"></i> [`Re-sort list`]
     </a>
     <div class="block double-padded">
@@ -61,11 +64,12 @@
             <li>
                 <a href="#" data-pl-action="list-edit"><i class="icon16 edit"></i>[`Edit list`]</a>
             </li>
-            <li>
-                <a href="#" data-pl-action="list-delete"><i class="icon16 delete"></i>[`Delete list`]</a>
-            </li>
         </ul>
     </div>
+
+    <a class="pl-link-box pl-delete-box" href="#" data-pl-action="list-delete">
+        <i class="icon16 delete"></i> [`Delete list`]
+    </a>
 
     {else}
     <div class="block">
@@ -89,18 +93,20 @@
     <header class="pl-list-title pl-title">
 
         {if !empty($list.due_date) || !empty($list.due_datetime)}
-        <div class="float-right block half-padded pl-list-due" title="[`Due`]">
+            <a href="#" class="pl-edit pl-list-due" title="[`Due`]" data-pl-action="list-edit">
 
-            <i class="icon16 exclamation"></i>
-            <span class="bold {if $list.calc_priority == 0}pl-due-someday{elseif $list.calc_priority == 1}pl-due-tomorrow{elseif $list.calc_priority == 2}pl-due-today{elseif $list.calc_priority == 3}pl-due-overdue{/if}" {if empty($list.due_datetime) && empty($list.due_date)}style="display: none;"{/if}>
-            {if !empty($list.due_datetime)}
-                {$list.due_datetime|wa_datetime:'humandatetime'}
-            {else if !empty($list.due_date)}
-                {$list.due_date|wa_date:'humandate'}
-            {/if}
-            </span>
+                <i class="icon16 exclamation"></i>
+                <span class="bold {if $list.calc_priority == 0}pl-due-someday{elseif $list.calc_priority == 1}pl-due-tomorrow{elseif $list.calc_priority == 2}pl-due-today{elseif $list.calc_priority == 3}pl-due-overdue{/if}" {if empty($list.due_datetime) && empty($list.due_date)}style="display: none;"{/if}>
+                    {if !empty($list.due_datetime)}
+                        {$list.due_datetime|wa_datetime:'humandatetime'}
+                    {else if !empty($list.due_date)}
+                        {$list.due_date|wa_date:'humandate'}
+                    {/if}
+                </span>
 
-        </div>
+            </a>
+        {else}
+            <a href="#" class="pl-edit inline-link" data-pl-action="list-edit"><b><i>[`Edit`]</i></b></a>
         {/if}
 
         <h1>
@@ -154,9 +160,6 @@
 </main>
 
 {if isset($list.id) && $print}
-<div class="pl-print-button">
-<button onclick="window.print();">[`Print`]</button>
-</div>
 </body>
 </html>
 {else}

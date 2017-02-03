@@ -883,6 +883,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
 
             id = id_item;
             //$wrapper.html($.pocketlists.$loading).show();
+            $(window).scrollTop();
             $wrapper.html($.pocketlists.$loading).show().animate({
                 'right': '0%'
             }, 200, function() {

@@ -1,10 +1,11 @@
-<div class="fields form width100px">
+<div class="pl-details-form">
+<div class="fields form">
 <form method="post">
+    <a href="#" id="pl-list-details-cancel" class="pl-close" title="[`Close`]">&times;</a>
     <input type="hidden" name="list[id]" value="{$list.id}"/>
     <!-- core -->
     <div class="field-group">
         <div class="field">
-            <div class="name">[`Title`]</div>
             <div class="value"><input type="text" class="bold large long" name="list[name]" value="{$list.name|escape}" /></div>
         </div>
         <div class="field" id="pl-list-icon-change">
@@ -66,17 +67,7 @@
         <div class="field">
             <div class="value">
 
-                <div class="float-right block half-padded">
-                    <ul class="menu-h ">
-                        <li>
-                            <a data-pl-action="list-delete" href="#"><i class="icon16 delete"></i>[`Delete list`]</a>
-                        </li>
-                    </ul>
-                </div>
-
                 <input type="submit" class="button green" value="[`Save`]"  id="pl-list-details-save"/>
-                [`or`]
-                <a href="#" id="pl-list-details-cancel">[`cancel`]</a>
 
                 <span class="error" style="display: none;">[`error`]</span>
                 <span class="success" style="display: none;">[`saved`]</span>
@@ -84,6 +75,7 @@
         </div>
     </div>
 </form>
+</div>
 </div>
 
 <div id="pl-list-icon-dialog" class="dialog large">

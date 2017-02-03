@@ -83,7 +83,7 @@
         },
         stickyDetailsSidebar: function() {
 
-            return;
+            //return;
             // DEPRECATED FEB 2017. MUST USE SMART BOTTOM/TOP SCROLL FIXED MODE.
 
             var $list = $('#pl-list-content');
@@ -103,7 +103,7 @@
 
                     $el.css({
                         bottom: Math.max(0, 16 - _viewport_bottom_offset),
-                        right: 16
+                        right: 0
                     });
                 } else {
                     $el.removeClass('sticky').css('right', 0);

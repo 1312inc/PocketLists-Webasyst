@@ -1,5 +1,6 @@
 <div class="pl-item{if !empty($item.assigned_contact_id) && $item.assigned_contact_id != $wa->user()->getId() && $item.status != 1} pl-item-assigned{/if}{if $item.status == 1} gray{/if}" {if $item.assigned_contact_id}data-pl-assigned-contact="{$item.assigned_contact_id}"{/if}>
-    {if !$item.status}<div class="pl-item-drag-handle" title="[`Sort`]" data-pl-action="item-sort"></div>{/if}
+    {if !$item.status && empty($item.key_list_id)}<div class="pl-item-drag-handle" title="[`Sort`]" data-pl-action="item-sort"></div>{/if}
+    {if empty($item.key_list_id)}
     <div class="pl-meta">
         <a href="#" class="pl-favorite" data-pl-action="item-favorite" title="[`Favorite`]"><i class="icon16 star{if empty($item.favorite)}-empty{/if}"></i></a>
         {if $item.status == 1}
@@ -24,6 +25,7 @@
         {/if}
         <a href="#" class="pl-edit inline-link"><b><i>[`Edit`]</i></b></a>
     </div>
+    {/if}
     <label class="pl-done-label">
         {if !empty($item.key_list_id)}
             <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$item.list_icon|default:'li-list@2x.png'});"></i>
@@ -44,7 +46,7 @@
             {/if}
         </span>
 
-        <a href="#" class="pl-comment{if !empty($item.chat.comments)} pl-comment-count{/if}" title="[`Comment`]"><i class="icon16 comments"></i>{if !empty($item.chat.comments)}{count($item.chat.comments)}{/if}</a>
+        {if empty($item.key_list_id)}<a href="#" class="pl-comment{if !empty($item.chat.comments)} pl-comment-count{/if}" title="[`Comment`]"><i class="icon16 comments"></i>{if !empty($item.chat.comments)}{count($item.chat.comments)}{/if}</a>{/if}
 
         {if !empty($item.due_datetime)}
         <br>

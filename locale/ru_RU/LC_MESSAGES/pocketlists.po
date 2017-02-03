@@ -207,14 +207,14 @@ msgstr "Поместить в архив"
 
 #: /wa-apps/pocketlists/templates/actions/list/List.html:33
 msgid "Edit list"
-msgstr "Редактировать"
+msgstr "Редактировать список"
 
 #: /wa-apps/pocketlists/templates/actions/list/List.html:38
 #: /wa-apps/pocketlists/templates/actions/list/ListDetails.html:72
 #: /wa-apps/pocketlists/templates/include/deletelistdialog.html:4
 #: /wa-apps/pocketlists/templates/include/deletelistdialog.html:8
 msgid "Delete list"
-msgstr "Удалить"
+msgstr "Удалить список"
 
 #: /wa-apps/pocketlists/templates/actions/list/List.html:44
 #: /wa-apps/pocketlists/lib/class/pocketlistsNotifications.class.php:262
