@@ -629,6 +629,9 @@ class pocketlistsNotifications
             'email_settings_url' => '#/settings/'
         );
 
+        if (empty($data['variables'])) {
+            $data['variables'] = array();
+        }
         $data['variables'] = array_merge($default_variables, $data['variables']);
 
         $to = false;

@@ -1,4 +1,4 @@
-<nav class="pl-inner-sidebar">
+<nav class="pl-inner-sidebar" data-pl="uho">
     <div class="block double-padded align-center">
         <a href="#" data-pl-todo-calendar-action="next" class="float-right" title="[`Next`]"><i class="icon16 rarr"></i></a>
         <a href="#" data-pl-todo-calendar-action="prev" class="float-left" title="[`Previous`]"><i class="icon16 larr"></i></a>
@@ -75,8 +75,37 @@
             e.preventDefault();
             $calendar_wrapper.find('[data-pl-todo-date]').removeClass('pl-selected');
 
-            setPrintLink()
+            setPrintLink();
             getStream();
         });
+
+
+        $('[data-pl="uho"]').on('click', '[data-pl-action="list-email"]', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var date = $('.pl-selected[data-pl-todo-date]').length ? $('.pl-selected[data-pl-todo-date]').data('pl-todo-date') : 'today';
+            $('<div>').waDialog({
+                'url': '?module=list&action=emailDialog&date=' + date,
+                onLoad: function () {
+                },
+                onSubmit: function (d) {
+                    var $this = $(this);
+
+                    $this.after($.pocketlists.$loading);
+                    $.post('?module=list&action=email', $this.serialize(), function(r) {
+                        $.pocketlists.$loading.remove();
+                        if (r.status === 'ok') {
+                            d.trigger('close');
+                        }  else {
+                            alert(r.errors);
+                        }
+                    }, 'json');
+                    return false;
+                },
+                onClose: function () {
+                    this.remove();
+                }
+            });
+        })
     }());
 </script>
