@@ -40,7 +40,7 @@
             <div class="name">[`Assigned to`]</div>
             <div class="value no-shift">
                 <span>
-                    <i class="icon16 userpic20" data-pl-contact-id="0" style="{if (!empty($item.assigned_contact_id))}display: none;{/if}"></i>
+                    <i class="icon16 userpic20" data-pl-contact-id="0" style="display: none;"></i>
                     {foreach $contacts as $contact_id => $contact}
                     <i class="icon16 userpic20" style="background-image: url({$contact.userpic}); {if (!empty($item.assigned_contact_id) && $contact_id == $item.assigned_contact_id)}{else}display: none;{/if}" alt="{$contact.username|escape}" data-pl-contact-id="{$contact_id}"></i>
                     {/foreach}

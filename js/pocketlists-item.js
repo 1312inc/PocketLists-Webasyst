@@ -1025,8 +1025,12 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                     }
                 })
                 .on('change', '#pl-assigned-contact select', function () {
-                    var assigned_contact_id = $(this).val();
-                    $('#pl-assigned-contact').find('[data-pl-contact-id="' + assigned_contact_id + '"]').show().siblings().hide();
+                    var assigned_contact_id = parseInt($(this).val());
+                    if (assigned_contact_id) {
+                        $('#pl-assigned-contact').find('[data-pl-contact-id="' + assigned_contact_id + '"]').show().siblings().hide();
+                    } else {
+                        $('#pl-assigned-contact').find('[data-pl-contact-id]').hide()
+                    }
                 })
                 .on('change paste keyup', ':input', function () {
                     $wrapper.find('#pl-item-details-save').addClass('yellow');
