@@ -19,8 +19,8 @@
             <div class="value no-shift" data-pl-item-details-attachments>
 
                 <div class="block double-padded pl-add-attachment-dropbox" data-pl-item-details-fileupload>
-{if count($attachments)}
-                    <ul class="pl-attachments">
+
+                    <ul class="pl-attachments" {if count($attachments)}style="display:none"{/if}>
                     {foreach $attachments as $attachment}
                         <li>
                             <a href="{$attachments_path}{$attachment.filename}" target="_blank">{$attachment.filename|truncate:128}</a>
@@ -28,7 +28,6 @@
                         </li>
                     {/foreach}
                     </ul>
-{/if}
                     <input type="file" name="files[]" multiple="">
 
                 </div>
