@@ -70,7 +70,22 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                 }
             });
         } else {
-            $sortable_items.find('[data-pl-action="item-sort"]').hide();
+            $(item_selector, $sortable_items).draggable({
+                handle: '[data-pl-action="item-sort"]',
+                distance: 5,
+                opacity: 0.75,
+                appendTo: 'body',
+                // connectWith: '[data-pl-items="done"] ul.menu-v',
+                tolerance: 'pointer',
+                revert: true,
+                revertDuration: 0,
+                classes: {
+                    'ui-sortable-helper': 'shadowed'
+                }
+                // forcePlaceholderSize: true,
+                // forceHelperSize: true,
+
+            });
         }
     };
     // save item
