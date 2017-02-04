@@ -884,6 +884,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
             id = id_item;
             //$wrapper.html($.pocketlists.$loading).show();
             $(window).scrollTop();
+            o.list && o.list.list_details.isVisible() && o.list.list_details.trigger('hide.pl2');
             $wrapper.html($.pocketlists.$loading).show().animate({
                 'right': '0%'
             }, 200, function() {

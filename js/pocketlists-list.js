@@ -43,6 +43,9 @@ $.pocketlists.List = function ($list_wrapper, options) {
             request_in_action = true;
 
             $.pocketlists.scrollToTop(200, 80);
+
+            $('#pl-item-details').trigger('hide.pl2');
+
             $wrapper.html($.pocketlists.$loading).show().animate({
                 'right': '0%'
             }, 200, function() {
