@@ -4,6 +4,9 @@ class pocketlistsListModel extends waModel
 {
     protected $table = 'pocketlists_list';
 
+    // todo: save lists
+    // private lists = [];
+
     public function getById($id)
     {
         if (!$id) {
@@ -20,7 +23,9 @@ class pocketlistsListModel extends waModel
             FROM {$this->table} l
             LEFT JOIN pocketlists_item i ON i.key_list_id = l.id
             LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
-            WHERE l.id IN (i:id)",
+            WHERE 
+              l.id IN (i:id)
+            ORDER BY l.sort, l.id DESC",
             array('id' => $id, 'contact_id' => wa()->getUser()->getId())
         )->fetchAll();
 
@@ -99,11 +104,8 @@ class pocketlistsListModel extends waModel
         $available_lists = array();
 
         if ($check_access) {
-            if ($available_lists = pocketlistsRBAC::getAccessListForContact()) {
-                $accessed_lists = " WHERE l.id IN (i:list_ids)";
-            } else {
-                $accessed_lists = " WHERE l.id IS NULL";
-            }
+            $available_lists = pocketlistsRBAC::getAccessListForContact();
+            $accessed_lists = $available_lists ? " WHERE l.id IN (i:list_ids)" : " WHERE l.id IS NULL";
         }
 
         $sql = "SELECT
@@ -136,22 +138,30 @@ class pocketlistsListModel extends waModel
     public function getArchivedLists($check_access = true)
     {
         $lists = $this->getAllLists($check_access);
-        foreach ($lists as $id => &$list) {
-            if (!$list['archived']) {
-                unset($lists[$id]);
-            }
-        }
-        return $lists;
+        return $this->filterArchive($lists, true);
     }
 
     /**
      * Get only active lists and its items that are accessible for current user
      * @return array
      */
-    public function getAllActiveLists($check_access = true) {
+    public function getAllActiveLists($check_access = true)
+    {
         $lists = $this->getAllLists($check_access);
-        foreach ($lists as $id => &$list) {
-            if ($list['archived']) {
+        return $this->filterArchive($lists);
+    }
+
+    public function filterArchive($lists, $archive = false)
+    {
+        $is_array = !isset($lists['id']);
+        if (!$is_array) {
+            $lists = array($lists['id'] => $lists);
+        }
+        foreach ($lists as $id => $list) {
+            if (!$archive && (int) $list['archived'] > 0) {
+                unset($lists[$id]);
+            }
+            if ($archive && (int) $list['archived'] === 0) {
                 unset($lists[$id]);
             }
         }

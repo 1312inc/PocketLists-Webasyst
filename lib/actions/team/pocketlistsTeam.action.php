@@ -20,7 +20,7 @@ class pocketlistsTeamAction extends waViewAction
 
                 $list_ids = pocketlistsRBAC::getAccessListForContact($id);
                 $lm = new pocketlistsListModel();
-                $lists = $lm->getById($list_ids);
+                $lists = $lm->filterArchive($lm->getById($list_ids));
             } else {
                 $id = reset($teammates);
                 $id = $id['id'];
