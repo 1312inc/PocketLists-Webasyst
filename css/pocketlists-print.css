@@ -71,11 +71,11 @@ label.pl-done-label i.icon16.userpic20 {
 /* Items
 -------- */
 
-.pl-empty-list { margin: 0 60px 20px; padding-top: 70px; text-align: center; }
-.pl-empty-list .pl-jumbodone { width: 180px; height: 180px; margin: 0 auto; background: transparent url('../img/pl-jumbodone.png') no-repeat; background-size: 180px 180px; opacity: 0.13; }
-.pl-empty-list h2 { margin-top: 20px; color: #333; }
-.pl-empty-list p { color: #888; font-size: 0.9em; }
-.pl-empty-list.top-padded { padding-top: 100px; }
+.pl-welcome { margin: 0 60px 20px; padding-top: 70px; text-align: center; }
+.pl-welcome .pl-jumbodone { width: 180px; height: 180px; margin: 0 auto; background: transparent url('../img/pl-jumbodone.png') no-repeat; background-size: 180px 180px; opacity: 0.13; }
+.pl-welcome h2 { margin-top: 20px; color: #333; }
+.pl-welcome p { color: #888; font-size: 0.9em; }
+.pl-welcome.top-padded { padding-top: 100px; }
 
 #pl-item-add { display: none; }
 #pl-item-add-wrapper-hover {

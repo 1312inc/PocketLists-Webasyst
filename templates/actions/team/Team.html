@@ -12,34 +12,38 @@
 
 
 
-{if empty($teammates)}
-{if !$print}
-<main class="pl-inner-content pl-items shadowed" id="pl-list-content">
-    <div class="pl-empty-list top-padded" id="pl-empty-list-msg">
-    <img class="userpic" src="{$current_teammate.photo_url}" alt="{$current_teammate.name}" title="{$current_teammate.name}" />
-    <h2>[`Invite your teammates!`]</h2>
-    <p>[`Use <strong>Contacts app</strong> to add your teammates to Pocket Lists and to start collaborating on to-do lists together.`]</p>
-</main>
-{/if}
-{else}
+{if !empty($teammates)}
 
 {if !$print}
 <!-- TEAM -->
 <nav class="pl-inner-sidebar" data-pl="uho">
     <div class="block double-padded">
-        <h5 class="heading">[`Access rights`]</h5>
 
-        <ul class="menu-v with-icons" data-pl-sidebar-block="lists">
-            {foreach $lists as $l}
-            <li>
-                <a href="#/list/{$l.id}/">
-                    <i class="icon16 listicon16" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l.icon|default:'li-list@2x.png'});"></i>{if $l.color != 'none'}<span class="pl-{$l.color}">{$l.name|escape}</span>{else}{$l.name|escape}{/if}
-                </a>
-            </li>
-            {/foreach}
-        </ul>
+        <div class="align-center">
+            <a href="{$wa_backend_url}team/u/{$current_teammate.login}/">
+                <img src="{$current_teammate.photo_url}" class="userpic pl-teammate-userpic">
+            </a>
+        </div>
 
-        <p class="hint">[`Use Contacts app to customize access rights for pockets.`]</p>
+        {if count($lists)}
+            <h5 class="heading">[`Access to lists`]</h5>
+            <ul class="menu-v with-icons" data-pl-sidebar-block="lists">
+                {foreach $lists as $l}
+                <li>
+                    <a href="#/list/{$l.id}/">
+                        <i class="icon16 listicon16" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l.icon|default:'li-list@2x.png'});"></i>{if $l.color != 'none'}<span class="pl-{$l.color}">{$l.name|escape}</span>{else}{$l.name|escape}{/if}
+                    </a>
+                </li>
+                {/foreach}
+            </ul>
+            <p class="hint">[`Use Team app to customize user access rights to lists.`]</p>
+        {else}
+            <p class="gray align-center italic">{sprintf('[`%s does not have access to any to-do list.`]',$current_teammate.name|default:' '|escape)}</p>
+        {/if}
+
+
+
+        <hr>
 
         <ul class="menu-v with-icons">
             <li><a href="#" data-pl-action="list-email"><i class="icon16 email"></i> [`Email list`]</a></li>
@@ -63,11 +67,6 @@
     </header>
 
     <div class="pl-list-items" id="pl-list-items">
-        <div class="pl-empty-list" id="pl-empty-list-msg" {if !empty($items)}style="display:none;"{/if}>
-            <img class="userpic" src="{$current_teammate.photo_url}" alt="{$current_teammate.name|escape}" title="{$current_teammate.name|escape}" />
-            <h2>{sprintf('[`%s’s to-do list is empty`]',$current_teammate.name|escape)}</h2>
-            <p>[`To assign a to-do to a user, either select him in to-do item details or add a to-do item above.`]</p>
-        </div>
 
         <section id="pl-undone-items" data-pl-items="undone">
             <ul class="menu-v">

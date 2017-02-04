@@ -7,6 +7,20 @@
             <h6 class="heading"><i class="icon16 userpic20" style="background-image: url({$wa->user()->getPhoto(20)});"></i> [`My personal settings`]</h6>
             <br>
             <div class="field-group">
+
+              <div class="field">
+                <div class="name nowrap">
+                  [`Natural input`]
+                </div>
+                <div class="value no-shift">
+                  <label>
+                      <input type="checkbox" name="natural_input_on" {if !empty($settings.natural_input_on)}checked="checked"{/if}/> [`Understand “Meeting tomorrow at 10” input (recommended)`]
+                      <p class="hint">[`When enabled, the app will automatically parse to-do name and set due date and time if it was typed.<br> Examples: “Meeting tomorrow morning”, “Call James next friday 5pm”, “Pay electricity bill in a week”, “Update working schedule April 25”.`]</p>
+                  </label>
+                </div>
+              </div>
+
+
               <div class="field">
                 <div class="name nowrap">
                   [`App icon counter`]
@@ -41,18 +55,6 @@
                 </div>
               </div>
               *}
-
-              <div class="field">
-                <div class="name nowrap">
-                  [`Natural input`]
-                </div>
-                <div class="value no-shift">
-                    <label>
-                        <input type="checkbox" name="natural_input_on" {if !empty($settings.natural_input_on)}checked="checked"{/if}/> [`Set due date and time according to to-do name`]
-                        <p class="hint">[`When enabled, Pocket Lists will automatically parse to-do name and set due date and time if it was typed.<br> E.g. “meeting tomorrow morning”, “call James next friday 5pm”.`]</p>
-                    </label>
-                </div>
-              </div>
 
               <div class="field">
                 <div class="name">

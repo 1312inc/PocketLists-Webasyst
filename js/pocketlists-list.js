@@ -155,7 +155,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
                         });
                     return false;
                 }) // save
-                .on('click', '#pl-list-details-cancel', function (e) {
+                .on('click', '.pl-list-details-cancel', function (e) {
                     e.preventDefault();
                     hideListDetails();
                 })

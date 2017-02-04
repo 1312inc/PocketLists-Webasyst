@@ -7,7 +7,7 @@
 .shadowed { background: #fff; }
 .pl-sidebar-core { margin-top: 28px; }
 
-.pl-inner-sidebar { background: #f3f3f3; float: right; width: 340px; margin-top: 17px; margin-right: 10px; position: relative; z-index: 10; }
+.pl-inner-sidebar { background: #f3f3f3; float: right; width: 340px; margin-top: 17px; margin-right: 10px; position: relative; z-index: 10; box-shadow: 0 3px 5px -2px #ccc; }
 .pl-inner-content { position: relative; min-height: 530px; margin-right: 350px; z-index: 11; }
 
 /* Misc
@@ -40,13 +40,16 @@
 
 .pl-list-placeholder { background-color: #fff !important; }
 
-.pl-alert { margin: 0; background: #ffffe0; padding: 15px 20px; border-bottom: 1px solid #eed; line-height: 1.3em; font-size: 0.9em; color: #555; }
-.pl-alert .pl-alert-close { margin: -2px -2px 0 12px; float: right; color: #333; font-size: 1.4em; }
+.pl-alert { margin: 0; background: #ffffdd; padding: 15px 20px; border-bottom: 1px solid #eed; line-height: 1.3em; font-size: 0.9em; color: #555; }
+.pl-alert .pl-alert-close { margin: -2px -2px 0 12px; float: right; color: rgba(0,0,0,0.4); font-size: 1.4em; }
+.pl-alert .pl-alert-close.bigger { font-size: 2em; }
 
 .dialog p i.icon16 { margin-top: 0.1em; }
 
 .pl-link-box { display: block; padding: 18px 20px; background: rgba(0,0,0,0.04); }
 .pl-link-box.pl-delete-box:hover { background: #ffe3e3; }
+
+.pl-teammate-userpic { width: 144px; height: 144px; border: 3px solid #fff; margin-bottom: 20px; }
 
 /* Pocket
 --------- */
@@ -83,9 +86,9 @@ ul.pl-lists li span { display: inline-block; overflow: hidden; text-overflow: el
 /* Calendar
 ----------- */
 
-table.pl-calendar { width: 100%; margin: 20px 0 25px; }
+table.pl-calendar { width: 100%; margin: 5px 0; }
 table.pl-calendar th { color: #d3d3d3; font-weight: normal; padding-bottom: 5px; font-size: 0.9em; }
-table.pl-calendar td { background: #f9f9f9; padding: 10px 7px; width: 14.28%; min-height: 30px; vertical-align: top; line-height: 1em; text-align: center; }
+table.pl-calendar td { background: #f9f9f9; padding: 10px 7px; width: 14.28%; height: 25px; vertical-align: top; line-height: 1em; text-align: center; }
 table.pl-calendar td:hover { background: #ffffee; cursor: pointer; }
 table.pl-calendar td.pl-selected { background: #fffaba; }
 table.pl-calendar td.pl-today { border: 3px solid #fdda3b; }
@@ -95,6 +98,8 @@ table.pl-calendar td.pl-not-this-month:hover { background: #e2e2e2; }
 table.pl-calendar td .pl-date { color: #aaa; font-size: 0.8em; }
 table.pl-calendar td .pl-dots { font-size: 0.8em; line-height: 0; letter-spacing: 0; margin-top: 0.2em; white-space: nowrap;}
 table.pl-calendar td .pl-dots i.icon10 { margin-top: 0.2em; margin-right: 0.2em; }
+
+.pl-calendar-nav { padding: 20px; }
 
 /* Team
 ------- */
@@ -154,11 +159,12 @@ label.pl-done-label i.icon16.userpic20 {
 /* Items
 -------- */
 
-.pl-empty-list { margin: 0 60px 20px; padding-top: 70px; text-align: center; }
-.pl-empty-list .pl-jumbodone { width: 180px; height: 180px; margin: 0 auto; background: transparent url('../img/pl-jumbodone.png') no-repeat; background-size: 180px 180px; opacity: 0.13; }
-.pl-empty-list h2 { margin-top: 20px; color: #333; }
-.pl-empty-list p { color: #888; font-size: 0.9em; }
-.pl-empty-list.top-padded { padding-top: 100px; }
+.pl-welcome { margin: 0 60px 25px; padding-top: 30px; text-align: center; }
+.pl-welcome .pl-jumbodone { width: 180px; height: 180px; margin: 0 auto; background: transparent url('../img/pl-jumbodone.png') no-repeat; background-size: 180px 180px; opacity: 0.13; }
+.pl-welcome h2 { margin-top: 20px; color: #333; }
+.pl-welcome p { color: #888; font-size: 0.9em; }
+.pl-welcome.top-padded { padding-top: 70px; }
+.pl-welcome.bottom-padded { padding-bottom: 40px; }
 
 #pl-item-add { display: none; }
 #pl-item-add-wrapper-hover {
@@ -354,7 +360,7 @@ input#pl-new-list-input:focus,
 .pl-details .fields.form .field .value { margin-left: 0 !important; }
 .pl-details .fields.form input.long { width: 95% !important; min-width: 0 !important; }
 .pl-details .fields.form textarea { width: 98% !important; min-width: 0 !important; }
-.pl-details i.icon16.color { width: 32px; height: 32px; }
+.pl-details i.icon16.color { width: 24px; height: 24px; }
 
 .pl-close,
 .pl-close:visited { font-size: 2em; color: rgba(0,0,0,0.3) !important; text-decoration: none; float: right; position: relative; z-index: 1; margin-right: 10px; }
