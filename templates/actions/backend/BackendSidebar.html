@@ -2,8 +2,6 @@
 <div class="block pl-sidebar-core">
 
     <ul class="menu-v with-icons">
-        {*  *}
-
         <li data-pl-sidebar="todo">
             {if $sidebar_todo_count}<span class="count indicator red">{$sidebar_todo_count}</span>{/if}
             <a href="#/todo/"><i class="icon16 pl todo"></i>[`My to-dos`]</a>
@@ -12,12 +10,6 @@
             <span class="count" data-pl-sidebar="favorites-count">{$favorites_count.undone}</span>
             <a href="#/favorites/"><i class="icon16 star"></i>[`Favorites`]</a>
         </li>
-        {* <li>
-        <a href="#tags"><i class="icon16 calendar"></i>[`Calendar`]</a>
-    </li> *}
-        {* <li>
-        <a href="#/team/"><i class="icon16 contact"></i>[`Team`]</a>
-    </li> *}
         <li>
             <a href="#/logbook/"><i class="icon16 pl logbook"></i>[`Logbook`]</a>
         </li>
@@ -66,20 +58,23 @@
     <h5 class="heading">
         [`Team`]
     </h5>
-
-    <ul class="menu-v with-icons collapsible" data-pl-sidebar-block="team">
-        {foreach $team as $team_id => $teammate}
-        <li data-pl-team-id="{$teammate.id}">
-            <a href="#/team/{$teammate.login|escape}/">
-                <span class="count{if $teammate.items_info.max_priority == 1} indicator green{elseif $teammate.items_info.max_priority == 2} indicator yellow{elseif $teammate.items_info.max_priority == 3} indicator red{/if}">{$teammate.items_info.count}</span>
-                <i class="icon16 userpic20" style="background-image: url({$teammate.photo_url})" alt="{$teammate.name|escape}" data-pl-contact-id="{$team_id}"></i>{$teammate.name|escape}
-                {if $teammate.status == 'online'}
-                    <i class="icon10 online no-overhanging" title="[`Online`]"></i>
-                {/if}
-            </a>
-        </li>
-        {/foreach}
-    </ul>
+    {if count($team)}
+        <ul class="menu-v with-icons collapsible" data-pl-sidebar-block="team">
+            {foreach $team as $team_id => $teammate}
+            <li data-pl-team-id="{$teammate.id}">
+                <a href="#/team/{$teammate.login|escape}/">
+                    <span class="count{if $teammate.items_info.max_priority == 1} indicator green{elseif $teammate.items_info.max_priority == 2} indicator yellow{elseif $teammate.items_info.max_priority == 3} indicator red{/if}">{$teammate.items_info.count}</span>
+                    <i class="icon16 userpic20" style="background-image: url({$teammate.photo_url})" alt="{$teammate.name|escape}" data-pl-contact-id="{$team_id}"></i>{$teammate.name|escape}
+                    {if $teammate.status == 'online'}
+                        <i class="icon10 online no-overhanging" title="[`Online`]"></i>
+                    {/if}
+                </a>
+            </li>
+            {/foreach}
+        </ul>
+    {else}
+        <p class="hint align-center"><br>[`Use <strong>Team app</strong> to invite your teammates.`]</p>
+    {/if}
 </div>
 {/if}
 

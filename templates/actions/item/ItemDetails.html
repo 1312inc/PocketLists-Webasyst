@@ -36,6 +36,7 @@
 
             </div>
         </div>
+        {if $contacts}
         <div class="field" id="pl-assigned-contact">
             <div class="name">[`Assigned to`]</div>
             <div class="value no-shift">
@@ -45,16 +46,15 @@
                     <i class="icon16 userpic20" style="background-image: url({$contact.userpic}); {if (!empty($item.assigned_contact_id) && $contact_id == $item.assigned_contact_id)}{else}display: none;{/if}" alt="{$contact.username|escape}" data-pl-contact-id="{$contact_id}"></i>
                     {/foreach}
                 </span>
-                {if $contacts}
                 <select name="item[assigned_contact_id]">
                     <option value="0" {if !$item.assigned_contact_id}selected="selected"{/if}>[`Nobody`]</option>
                     {foreach $contacts as $contact_id => $contact}
                     <option value="{$contact_id}" {if isset($item.assigned_contact_id) && $item.assigned_contact_id == $contact_id}selected="selected"{/if}>{$contact.username|escape|truncate:64}{if $contact_id == $wa->user()->getId()} ([`me`]){/if}</option>
                     {/foreach}
                 </select>
-                {/if}
             </div>
         </div>
+        {/if}
         <div class="field">
             <div class="name">[`Created`]</div>
             <div class="value no-shift">

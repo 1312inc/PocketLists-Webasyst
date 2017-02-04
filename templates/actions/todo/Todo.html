@@ -1,10 +1,8 @@
 <nav class="pl-inner-sidebar" data-pl="uho">
-    <div class="block double-padded align-center">
-        <a href="#" data-pl-todo-calendar-action="next" class="float-right" title="[`Next`]"><i class="icon16 rarr"></i></a>
-        <a href="#" data-pl-todo-calendar-action="prev" class="float-left" title="[`Previous`]"><i class="icon16 larr"></i></a>
-        <div data-pl-todo-calendar>
-            {$calendar_html}
-        </div>
+    <a href="#" data-pl-todo-calendar-action="next" class="float-right pl-calendar-nav" title="[`Next`]"><i class="icon16 rarr"></i></a>
+    <a href="#" data-pl-todo-calendar-action="prev" class="float-left pl-calendar-nav" title="[`Previous`]"><i class="icon16 larr"></i></a>
+    <div data-pl-todo-calendar>
+        {$calendar_html}
     </div>
     {include '../../include/itemdetails.html' inline}
 </nav>

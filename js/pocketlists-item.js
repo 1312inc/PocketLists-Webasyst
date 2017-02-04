@@ -15,7 +15,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
         item_selector = '[data-parent-id]',
         // $add_item_link = $('#pl-item-add-link'),
         $show_logbook_items = $('#pl-complete-log-link'),
-        $empty_list_msg = $list_items_wrapper.find('#pl-empty-list-msg'),
+        $empty_list_msg = $list_items_wrapper.find('#pl-welcome-msg'),
         $current_item = null,
         o = $.extend({}, {
             enableAddLinkOnHover: true,

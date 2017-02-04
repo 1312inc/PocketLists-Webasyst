@@ -14,14 +14,12 @@
 <main class="blank bordered-right pl-inner-content pl-items pl-list-items pl-todo shadowed" id="pl-list-content">
 
     <div id="pl-stream-notice" class="pl-alert" style="display: none;">
-        <a href="javascript:void(0)" class="close pl-alert-close">&times;</a>
-        [`This is <strong>To-do Stream</strong> — your personal dynamic to-do list that automatically collects all important to-dos from all of your lists and presents them in the priority &amp; due order. Most important to-dos are on top. Since this is your personal list, to-do items assigned to your teammates won’t be listed on this list.`]
-        <br><br>
-        {if isset($stream_list)}
-            {sprintf('[`To-dos added to this list directly will be automatically added to <strong>%s</strong> list and thus will be available to your teammates who can access this list. <a href="%s">Configure</a>`]',$stream_list['name']|escape,'#/settings/')}
-        {else}
-            <i class="icon10 lock-bw"></i> {sprintf('[`To-dos added to the stream directly will be <em>your private to-dos</em> unless you manually assign them to any to-do list or <a href="%s">select the default stream inbox list</a> in the app settings.`]','#/settings/')}
-        {/if}
+        <a href="javascript:void(0)" class="close pl-alert-close bigger">&times;</a>
+        <div class="pl-welcome" id="pl-welcome-msg">
+            <div class="pl-jumbodone" title="[`Welcome to To-dos app!`]"></div>
+            <h2>[`Welcome to To-dos app!`]</h2>
+            <p>[`Use To-dos app to keep track on what you need to do up next, to assign to-dos to your teammates, and to collaborate on shared to-do lists.`]</p>
+        </div>
     </div>
 
     <header class="pl-title">
@@ -39,13 +37,6 @@
     </header>
 
     <div class="pl-list-items" id="pl-list-items">
-        {if !$date}
-        <div class="pl-empty-list" id="pl-empty-list-msg" {if !empty($undone_items)}style="display:none;"{/if}>
-            <div class="pl-jumbodone" title="[`To-do stream is empty`]"></div>
-            <h2>[`To-do stream is empty`]</h2>
-            <p>[`To-do stream automatically collects all important to-dos created by you and your teammates, and shows you what to do next.`]</p>
-        </div>
-        {/if}
 
         <section id="pl-undone-items" data-pl-items="undone">
             <ul class="menu-v">

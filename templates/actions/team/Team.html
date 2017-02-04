@@ -12,16 +12,7 @@
 
 
 
-{if empty($teammates)}
-{if !$print}
-<main class="pl-inner-content pl-items shadowed" id="pl-list-content">
-    <div class="pl-empty-list top-padded" id="pl-empty-list-msg">
-    <img class="userpic" src="{$current_teammate.photo_url}" alt="{$current_teammate.name}" title="{$current_teammate.name}" />
-    <h2>[`Invite your teammates!`]</h2>
-    <p>[`Use <strong>Contacts app</strong> to add your teammates to Pocket Lists and to start collaborating on to-do lists together.`]</p>
-</main>
-{/if}
-{else}
+{if !empty($teammates)}
 
 {if !$print}
 <!-- TEAM -->
@@ -39,7 +30,7 @@
             {/foreach}
         </ul>
 
-        <p class="hint">[`Use Contacts app to customize access rights for pockets.`]</p>
+        <p class="hint">[`Use Team app to configure access rights: select a user or a group of users and provide access to particular lists.`]</p>
 
         <ul class="menu-v with-icons">
             <li><a href="#" data-pl-action="list-email"><i class="icon16 email"></i> [`Email list`]</a></li>
@@ -63,7 +54,7 @@
     </header>
 
     <div class="pl-list-items" id="pl-list-items">
-        <div class="pl-empty-list" id="pl-empty-list-msg" {if !empty($items)}style="display:none;"{/if}>
+        <div class="pl-welcome" id="pl-welcome-msg" {if !empty($items)}style="display:none;"{/if}>
             <img class="userpic" src="{$current_teammate.photo_url}" alt="{$current_teammate.name|escape}" title="{$current_teammate.name|escape}" />
             <h2>{sprintf('[`%s’s to-do list is empty`]',$current_teammate.name|escape)}</h2>
             <p>[`To assign a to-do to a user, either select him in to-do item details or add a to-do item above.`]</p>

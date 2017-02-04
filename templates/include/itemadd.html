@@ -9,8 +9,12 @@
         </label>
         <label class="pl-select-label">
             <input type="checkbox" class="pl-is-selected">
-            <textarea rows="1" placeholder="[`New to-do`]"></textarea>
-            {* {if isset($this_is_stream) && !isset($stream_list)}<i class="icon16 lock-bw"></i>{/if} *}
+            {$_placeholder = '[`New to-do`]'}
+            {if isset($this_is_stream) && empty($undone_items) && !$count_done_items && !$date}
+                {* a tiny friendly hack that promotes app Natural Input feature on the very empty launch *}
+                {$_placeholder = '[`Meeting tomorrow at 10`]'}
+            {/if}
+            <textarea rows="1" placeholder="{$_placeholder}"></textarea>
         </label>
     </div>
 </div>
