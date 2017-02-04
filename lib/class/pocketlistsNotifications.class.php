@@ -277,7 +277,7 @@ class pocketlistsNotifications
                             $filtered_items[$item['id']]['contact_name'] = $c->getName();
                         }
                     }
-                    if ($filtered_items) {
+                    if ($filtered_items && $list) {
                         self::sendMail(
                             array(
                                 'contact_id' => $user_id,
@@ -311,7 +311,7 @@ class pocketlistsNotifications
                             $filtered_items[$item['id']]['contact_name'] = $c->getName();
                         }
                     }
-                    if ($filtered_items) {
+                    if ($filtered_items && $list) {
                         self::sendMail(
                             array(
                                 'contact_id' => $user_id,
