@@ -27,7 +27,7 @@ class pocketlistsListEmailDialogAction extends waViewAction
             if ($id) {
                 $items = $im->getAssignedOrCompletesByContactItems($id['id']);
                 $this->view->assign('teammate', $teammate);
-                $this->view->assign('items', $items[0]);
+                $this->view->assign('items', $im->getProperSort($im->extendItemData($items[0], true))); // undone
             }
         }
     }

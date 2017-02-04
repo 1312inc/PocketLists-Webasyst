@@ -29,8 +29,8 @@ class pocketlistsTeamAction extends waViewAction
 
             $im = new pocketlistsItemModel();
             $items = $im->getAssignedOrCompletesByContactItems($id);
-            $this->view->assign('items', $items[0]);
-            $this->view->assign('items_done', $items[1]);
+            $this->view->assign('items', $im->getProperSort($im->extendItemData($items[0])));
+            $this->view->assign('items_done', $im->extendItemData($items[1]));
             $this->view->assign('count_done_items', count($items[1]));
             $contact = new waContact($id);
             $this->view->assign('current_teammate', array(

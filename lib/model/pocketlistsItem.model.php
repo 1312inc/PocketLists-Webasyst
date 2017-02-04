@@ -461,7 +461,7 @@ class pocketlistsItemModel extends waModel
         }
     }
 
-    private function getProperSort($items)
+    public function getProperSort($items)
     {
         usort($items, array($this, 'compare_for_proper_sort'));
         return $items;
@@ -649,10 +649,10 @@ class pocketlistsItemModel extends waModel
             1 => array()
         );
         foreach ($items as $id => $item) {
-            $results[$item['status']][$id] = $this->extendItemData($item);
+            $results[$item['status']][$id] = $item;
         }
         return array(
-            0 => $this->getProperSort($results[0]),
+            0 => $results[0],
             1 => $results[1]
         );
     }
