@@ -58,7 +58,7 @@ class pocketlistsLogAction
             ),
             self::NEW_ITEMS       => array(
                 'name' => /*_w*/
-                    ('added new items to'),
+                    ('added new to-dos to'),
             ),
             self::ITEM_COMPLETED  => array(
                 'name' => /*_w*/
@@ -66,11 +66,11 @@ class pocketlistsLogAction
             ),
             self::ITEM_COMMENT    => array(
                 'name' => /*_w*/
-                    ('commented item in'),
+                    ('commented on a to-do in'),
             ),
             self::ITEM_ASSIGN     => array(
                 'name' => /*_w*/
-                    ('assigned list item to'),
+                    ('assigned a to-do to'),
             ),
         );
     }

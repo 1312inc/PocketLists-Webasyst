@@ -26,18 +26,18 @@
 
                 <div class="profile image32px">
                     <div class="image">
-                        <img class="userpic" src="{$list_access_contact.userpic}">
+                        <a href="{$wa_backend_url}pocketlists/#/{if $list_access_contact.me}todo{else}team/{$list_access_contact.login}{/if}/"><img class="userpic" src="{$list_access_contact.photo_url}"></a>
                     </div>
                     <div class="details">
                         <span class="pl-username">
-                            <a href="/{$backend_url}/team/u/{$list_access_contact.login}/">{$list_access_contact.username|default:'%username%'|escape} {if $list_access_contact.me}([`me`]){/if}</a>
+                            <a href="{$wa_backend_url}pocketlists/#/{if $list_access_contact.me}todo{else}team/{$list_access_contact.login}{/if}/">{$list_access_contact.username|default:'%username%'|escape} {if $list_access_contact.me}([`me`]){/if}</a>
                             <span class="bold">
                                 {if $list_access_contact.status == 'online'}
                                     <i class="icon10 online" title="[`Online`]"></i>
                                 {/if}
                             </span>
                         </span>
-                        {if !empty($list_access_contact.teamrole)}<div class="hint">{$list_access_contact.teamrole|escape}</div>{/if}
+                        <div class="hint">{$list_access_contact.teamrole|escape}</div>
                     </div>
                 </div>
 

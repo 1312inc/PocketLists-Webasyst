@@ -49,6 +49,8 @@
 .pl-link-box { display: block; padding: 18px 20px; background: rgba(0,0,0,0.04); }
 .pl-link-box.pl-delete-box:hover { background: #ffe3e3; }
 
+.pl-teammate-userpic { width: 144px; height: 144px; border: 3px solid #fff; margin-bottom: 20px; }
+
 /* Pocket
 --------- */
 

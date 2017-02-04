@@ -5,7 +5,34 @@
             {if !empty($activities)}
                 <ul class="menu-v">
                     {foreach $activities as $activity}
-                        <li>{$activity|print_r}<hr></li>
+                        <li>
+
+                            <div class="pl-item">
+                                <div class="pl-meta">
+                                    <span class="hint">Сегодня 00:26</span>
+                                </div>
+                                <label class="pl-done-label">
+                                    <input class="pl-done" checked="checked" type="checkbox">
+                                    <span class="pl-add-todo"></span>
+                                </label>
+                                <label class="pl-select-label">
+                                    <input class="pl-is-selected" type="checkbox">
+                                    <span class="pl-item-name">
+                                        <i class="icon16 userpic20" style="background-image: url(/wa-data/public/contacts/photos/01/00/1/871671158.20x20@2x.jpg)" alt="Владимир Владимирович Тупоршин"></i>
+                                                        <a href="#">Владимир Владимирович Тупоршин</a>
+                                                        {$activity.action}
+
+                                                </span>
+
+                                    {if !empty($activity.pocketlists_ext.item)}
+                                        <strong>{$activity.pocketlists_ext.item.name}</strong>
+                                    {/if}
+                                    <span class="hint">Сегодня 00:26</span>
+                                </label>
+                            </div>
+
+                            {* <p class="hint">{$activity|print_r}</p> *}
+                        </li>
                     {/foreach}
                 </ul>
             {/if}
