@@ -66,6 +66,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
         };
         var updateList = function (data) {
             $list_wrapper.find('#pl-list-name').text(data.name); // update name
+            debugger;
             if (data.due_date || data.due_datetime) {
                 var due_class = 'pl-due-someday';
                 if (data.calc_priority == 1) {
@@ -75,9 +76,17 @@ $.pocketlists.List = function ($list_wrapper, options) {
                 } else if (data.calc_priority == 3) {
                     due_class = 'pl-due-overdue';
                 }
-                $uho.find('.pl-list-due').removeClass().addClass('pl-list-due ' + due_class).text(data.due_datetime ? data.due_datetime : data.due_date).show();
+                $list_wrapper
+                    .find('.pl-list-due[data-pl-action="list-edit"]')
+                        .show()
+                    .find('[data-pl-list="due-date"]')
+                        .removeClass()
+                        .addClass('bold ' + due_class)
+                        .text(data.due_datetime ? data.due_datetime : data.due_date);
+                $list_wrapper.find('.inline-link[data-pl-action="list-edit"]').hide();
             } else {
-                $uho.find('.pl-list-due').hide();
+                $list_wrapper.find('.pl-list-due[data-pl-action="list-edit"]').hide();
+                $list_wrapper.find('.inline-link[data-pl-action="list-edit"]').show();
             }
         };
         var afterLoad = function () {
