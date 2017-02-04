@@ -25,7 +25,7 @@ class pocketlistsItemDataAction extends waViewAction
                 }
 
                 pocketlistsHelper::getDueDatetime($item_new_data);
-                $item_new_data['assigned_contact_id'] = $item_new_data['assigned_contact_id'] ? $item_new_data['assigned_contact_id'] : null;
+                $item_new_data['assigned_contact_id'] = !empty($item_new_data['assigned_contact_id']) ? (int) $item_new_data['assigned_contact_id'] : null;
                 $item_new_data['update_datetime'] = date("Y-m-d H:i:s");
                 $im->addCalculatedPriorityData($item_new_data['id'], $item_new_data);
 

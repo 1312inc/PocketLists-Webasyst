@@ -43,7 +43,7 @@
 
         <ul class="menu-v with-icons">
             <li><a href="#" data-pl-action="list-email"><i class="icon16 email"></i> [`Email list`]</a></li>
-            <li><a href="?module=team&amp;teammate={$current_teammate.name}&amp;print=true" target="_blank"><i class="icon16 print"></i> [`Print list`]</a></li>
+            <li><a href="?module=team&amp;teammate={$current_teammate.login|escape}&amp;print=true" target="_blank"><i class="icon16 print"></i> [`Print list`]</a></li>
         </ul>
 
     </div>
@@ -121,7 +121,7 @@
         e.preventDefault();
         e.stopPropagation();
         $('<div>').waDialog({
-            'url': '?module=list&action=emailDialog&teammate={$current_teammate.name|default:""|escape}',
+            'url': '?module=list&action=emailDialog&teammate={$current_teammate.login|escape}',
             onLoad: function () {
             },
             onSubmit: function (d) {

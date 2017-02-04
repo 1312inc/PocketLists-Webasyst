@@ -191,7 +191,10 @@ class pocketlistsNotifications
                     if ($filtered_items) {
                         $item = reset($filtered_items);
                         $list = $lm->getById($item['list_id']);
-                        $items_left = count($im->getUndoneByList($list['id'], false));
+                        $items_left = 0;
+                        if ($list) {
+                            $items_left = count($im->getUndoneByList($list['id'], false));
+                        }
                         self::sendMail(
                             array(
                                 'contact_id' => $user_id,
