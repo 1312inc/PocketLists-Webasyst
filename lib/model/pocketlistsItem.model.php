@@ -92,11 +92,16 @@ class pocketlistsItemModel extends waModel
     {
         // get to-do items only from accessed pockets
         $lists = pocketlistsRBAC::getAccessListForContact($contact_id);
-        $list_sql = $lists ? " AND (l.id IN (i:list_ids) OR l.id IS NULL) /* ONLY items from accessed pockets or NULL-list items */" : " AND l.id IS NULL /* ONLY items from NULL-list items */";
-        $due_date_or_mine = "AND (i.assigned_contact_id = i:contact_id OR i.assigned_contact_id IS NULL OR i.assigned_contact_id = 0) /* ONLY assigned to me or noone */";
-        if ($date) {
-            $due_date_or_mine = "AND ((i.status = 0 AND (i.due_date = s:date OR DATE(i.due_datetime) = s:date)) OR (i.status > 0 AND DATE(i.complete_datetime) = s:date)) /* with due date or completed this day */";
-        }
+        $list_sql = $lists ?
+            " AND (l.id IN (i:list_ids) OR l.id IS NULL) /* ONLY items from accessed pockets or NULL-list items */" :
+            " AND l.id IS NULL /* ONLY items from NULL-list items */";
+
+        $due_date_or_mine = $date ?
+            "AND ((i.status = 0 AND (i.due_date = s:date OR DATE(i.due_datetime) = s:date)) OR (i.status > 0 AND DATE(i.complete_datetime) = s:date)) /* with due date or completed this day */" :
+            "AND (i.assigned_contact_id = i:contact_id OR i.assigned_contact_id IS NULL OR i.assigned_contact_id = 0) /* ONLY assigned to me or noone */";
+
+//        $items_from_others_null_list = pocketlistsRBAC::canAssign($contact_id) ? " 1" : " IF(i.list_id IS NULL AND i.key_list_id IS NULL, i.contact_id = i:contact_id, i.contact_id > 0) /* + and if item is from NULL-list check contact_id */";
+
         $sql = "SELECT
                   i.id id,
                   i.parent_id parent_id,
@@ -131,9 +136,10 @@ class pocketlistsItemModel extends waModel
                     /*((i.due_date IS NOT NULL OR i.due_datetime IS NOT NULL) AND i.list_id IS NULL AND i.key_list_id IS NULL AND i.contact_id = 7)
                     OR
                     ((i.due_date IS NOT NULL OR i.due_datetime IS NOT NULL) AND (i.list_id IS NOT NULL OR i.key_list_id IS NOT NULL)) */
-                    (i.due_date IS NOT NULL OR i.due_datetime IS NOT NULL) /* + items with due */
-                    AND
-                    IF(i.list_id IS NULL AND i.key_list_id IS NULL, i.contact_id = i:contact_id, i.contact_id > 0) /* + and if item is from NULL-list check contact_id */
+                    (
+                      i.due_date IS NOT NULL OR i.due_datetime IS NOT NULL) /* + items with due */
+                      AND
+                      IF(i.list_id IS NULL AND i.key_list_id IS NULL, i.contact_id = i:contact_id, i.contact_id > 0) /* + and if item is from NULL-list check contact_id */
                   )
                   OR (i.complete_contact_id = i:contact_id) /* + items completed by me */
                   OR (i.contact_id = i:contact_id AND i.list_id IS NULL AND i.key_list_id IS NULL) /* + my items from NULL-list */
@@ -622,8 +628,9 @@ class pocketlistsItemModel extends waModel
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:user_contact_id AND uf.item_id = i.id
                 WHERE
                   (
-                    i.assigned_contact_id = i:contact_id AND i.status = 0
-                    OR i.complete_contact_id = i:contact_id AND i.status > 0
+                    i.assigned_contact_id = i:contact_id AND i.status >= 0 /* assigned to contact no matter who it completed */
+                    OR i.contact_id = i:contact_id AND i.status >= 0 /* created by contact (completed and not) */
+                    OR i.complete_contact_id = i:contact_id AND i.status > 0 /* completed by contact */
                   )
                   AND (
                     l.archived = 0
