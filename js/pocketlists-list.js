@@ -44,11 +44,12 @@ $.pocketlists.List = function ($list_wrapper, options) {
 
             $.pocketlists.scrollToTop(200, 80);
 
-            $('#pl-item-details').trigger('hide.pl2');
-
+            var $itemDetails = $('#pl-item-details');
+            $itemDetails.length && $itemDetails.after($wrapper);
             $wrapper.html($.pocketlists.$loading).show().animate({
                 'right': '0%'
             }, 200, function() {
+                $itemDetails.length && $itemDetails.trigger('hide.pl2');
                 $.pocketlists.stickyDetailsSidebar();
             });
 

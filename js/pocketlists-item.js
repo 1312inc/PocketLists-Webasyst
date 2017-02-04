@@ -884,10 +884,11 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
             id = id_item;
             //$wrapper.html($.pocketlists.$loading).show();
             $(window).scrollTop();
-            o.list && o.list.list_details.isVisible() && o.list.list_details.trigger('hide.pl2');
+            o.list && o.list.list_details.isVisible() && o.list.list_details.$el.after($wrapper);
             $wrapper.html($.pocketlists.$loading).show().animate({
                 'right': '0%'
             }, 200, function() {
+                o.list && o.list.list_details.isVisible() && o.list.list_details.trigger('hide.pl2');
                 $.pocketlists.stickyDetailsSidebar();
             });
             $.post('?module=item&action=details',{ id: id }, function (html) {
