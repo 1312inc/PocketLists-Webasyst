@@ -338,10 +338,7 @@ class pocketlistsNotifications
             $by_username = wa()->getUser()->getName();
         }
         $lm = new pocketlistsListModel();
-        $list = array(
-            'url' => wa()->getConfig()->getRootUrl(true) . '/' . wa()->getConfig()->getBackendUrl() . 'pocketlists/#/todo/',
-            'name' => _('Stream')
-        );
+        $list = array();
         if ($item['list_id'] && pocketlistsRBAC::canAccessToList($item['list_id'], $item['assigned_contact_id'])) {
             $list_ = $lm->getById($item['list_id']);
             $list = array(
