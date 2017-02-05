@@ -313,16 +313,18 @@ input#pl-new-list-input:focus,
 .pl-item-selected .pl-chat { display: block; }
 .pl-chat .pl-cue { margin-bottom: 13px; width: 100%; }
 .pl-chat .pl-cue .pl-cue-inner { width: 70%; font-size: 0.95em; }
-.pl-chat .pl-cue .pl-bubble { background: rgba(255,255,222,0.7); border-radius: 5px; padding: 8px; margin-bottom: 8px; position: relative; border: 1px solid rgba(0,0,0,0.1); line-height: 1.1em; }
+.pl-chat .pl-cue .pl-bubble { background: rgba(0,0,0,0.07); border-radius: 5px; padding: 10px; margin-bottom: 8px; position: relative; line-height: 1.1em; }
 .pl-chat .pl-cue .pl-bubble .pl-bubble-arrow { background: rgba(0,0,0,0.05); transform: rotate(45deg); width: 10px; height: 10px; display: block; position: absolute; left: 15px; bottom: -4px; border: 1px solid rgba(0,0,0,0.1); }
 .pl-chat .pl-cue .pl-bubble .pl-bubble-arrow:after { content: ''; border-top: 1px solid red;}
 .pl-chat .pl-cue.pl-my-cue .pl-cue-inner { margin-left: 30%; }
 .pl-chat .pl-cue.pl-my-cue .pl-bubble,
-.pl-chat .pl-cue.pl-my-cue .pl-bubble .pl-bubble-arrow { background: #e7f7ff; }
+.pl-chat .pl-cue.pl-my-cue .pl-bubble .pl-bubble-arrow { background: #48b7f0; color: #fff; }
+.pl-chat .pl-cue.pl-my-cue .pl-bubble a { color: #fff !important; text-decoration: underline; }
 .pl-chat .userpic20 { margin-left: 10px; margin-top: 1px; }
 .pl-chat .pl-reply { margin-top: 20px; }
 .pl-chat .pl-reply .userpic20 { margin-top: 1px; }
 .pl-chat .pl-delete-comment { color: #579; float: right; font-size: 1.2em; position: relative; top: -2px; right: 3px; }
+.pl-chat .pl-cue.pl-new-comment .pl-bubble { background: #ffd; }
 
 .pl-is-selected { display: none; }
 
