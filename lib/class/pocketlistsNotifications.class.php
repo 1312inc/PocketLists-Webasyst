@@ -332,8 +332,11 @@ class pocketlistsNotifications
         }
     }
 
-    public static function notifyAboutNewAssign($item, $by_username)
+    public static function notifyAboutNewAssign($item, $by_username = '')
     {
+        if (!$by_username) {
+            $by_username = wa()->getUser()->getName();
+        }
         $lm = new pocketlistsListModel();
         $list = array(
             'url' => wa()->getConfig()->getRootUrl(true) . '/' . wa()->getConfig()->getBackendUrl() . 'pocketlists/#/todo/',
@@ -354,7 +357,7 @@ class pocketlistsNotifications
                 'body' => wa()->getAppPath('templates/mails/newassignitem.html'),
                 'variables' => array(
                     'item_name' => $item['name'],
-                    'due_date' => $item['due_datetime'] ? waDateTime::format('humandatetime', $item['due_datetime'], $contact->getTimezone()) : ($item['due_date'] ? waDateTime::format('humandate', $item['due_date'], $contact->getTimezone()) : false),
+                    'due_date' => !empty($item['due_datetime']) ? waDateTime::format('humandatetime', $item['due_datetime'], $contact->getTimezone()) : (!empty($item['due_date']) ? waDateTime::format('humandate', $item['due_date'], $contact->getTimezone()) : false),
                     'list' => $list,
                     'by_username' => $by_username
                 )
