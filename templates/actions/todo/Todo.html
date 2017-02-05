@@ -62,16 +62,14 @@
                 })
                 .on('mouseenter', '[data-pl-todo-date]', function () {
                     var date = $(this).data('pl-todo-date'),
-                            $items = $items_wrapper.find('.pl-item-wrapper[data-pl-due-date="' + date + '"]');
-                    debugger;
+                        $items = $items_wrapper.find('.pl-item-wrapper[data-pl-due-date="' + date + '"]');
                     if ($items.length) {
                         $items.addClass('highlighted-background');
                     }
                 })
                 .on('mouseleave', '[data-pl-todo-date]', function () {
                     var date = $(this).data('pl-todo-date'),
-                            $items = $items_wrapper.find('.pl-item-wrapper[data-pl-due-date="' + date + '"]');
-                    debugger;
+                        $items = $items_wrapper.find('.pl-item-wrapper[data-pl-due-date="' + date + '"]');
                     if ($items.length) {
                         $items.removeClass('highlighted-background');
                     }

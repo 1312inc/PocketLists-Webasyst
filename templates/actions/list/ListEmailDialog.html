@@ -15,7 +15,19 @@
                     <div class="field">
                         <div class="name">[`Subject`]</div>
                         <div class="value">
-                            <input type="text" value="{if !empty($list)}{$list.name}{/if}{if !empty($date)}{$date|wa_date:'humandate'}{else}{if !empty($teammate)}{$teammate}{else}[`My to-dos`]{/if}{/if}" name="mail[subject]"  class="long bold" />
+                            <input type="text" value="{strip}
+                            {if !empty($list)}{$list.name}{/if}
+                            {if !empty($favorite)}
+                                [`Favorites`]
+                                {if !empty($date)} - {$date|wa_date:'humandate'}{/if}
+                            {elseif !empty($date)}
+                                {$date|wa_date:'humandate'}
+                            {elseif !empty($teammate)}
+                                {$teammate}
+                            {else}
+                                [`My to-dos`]
+                            {/if}
+                            {/strip}" name="mail[subject]"  class="long bold" />
                         </div>
                     </div>
                     <div class="field">

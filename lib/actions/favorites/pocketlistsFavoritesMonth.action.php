@@ -26,6 +26,7 @@ class pocketlistsFavoritesMonthAction extends waViewAction
         $this->view->assign('today', waDateTime::date('j', null, $timezone));
         $this->view->assign('today_month', waDateTime::date('n', null, $timezone));
 
+        $this->view->assign('type', 'favorites');
         $this->setTemplate('templates/include/monthcalendar.html');
     }
 }

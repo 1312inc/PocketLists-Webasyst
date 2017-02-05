@@ -6,6 +6,7 @@ class pocketlistsListEmailDialogAction extends waViewAction
     {
         $id = waRequest::get('id', false, waRequest::TYPE_INT);
         $date = waRequest::get('date', '');
+        $favorite = waRequest::get('favorite', '');
         $teammate = waRequest::get('teammate', '');
         $lm = new pocketlistsListModel();
         $im = new pocketlistsItemModel();
@@ -14,6 +15,14 @@ class pocketlistsListEmailDialogAction extends waViewAction
 
             $this->view->assign('list', $list);
             $this->view->assign('items', $im->getUndoneByList($list['id']));
+        } elseif ($favorite) {
+            if ($date === 'today') {
+                $date = false;
+            }
+            $items = $im->getFavorites(wa()->getUser()->getId(), $date);
+            $this->view->assign('date', $date);
+            $this->view->assign('items', $im->getProperSort($im->extendItemData($items[0], true)));
+            $this->view->assign('favorite', true);
         } elseif ($date) {
             if ($date === 'today') {
                 $date = false;
