@@ -1,6 +1,6 @@
 <?php
 
-class pocketlistsTodoMonthAction extends waViewAction
+class pocketlistsFavoritesMonthAction extends waViewAction
 {
     public function execute()
     {
@@ -10,7 +10,7 @@ class pocketlistsTodoMonthAction extends waViewAction
         // get pocket dots
         $im = new pocketlistsItemModel();
         // get all due or priority or assigned to me items
-        $items = $im->getToDo(wa()->getUser()->getId(), $show_month);
+        $items = $im->getFavorites(wa()->getUser()->getId(), $show_month);
 
         $monthData = pocketlistsHelper::getMonthData($items, $show_month);
 

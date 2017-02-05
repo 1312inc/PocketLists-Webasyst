@@ -60,12 +60,20 @@
                     setPrintLink(date);
                     getStream(date);
                 })
-                .on('mouseenter mouseleave', '[data-pl-todo-date]', function () {
+                .on('mouseenter', '[data-pl-todo-date]', function () {
                     var date = $(this).data('pl-todo-date'),
-                        $items = $items_wrapper.find('.pl-item-wrapper[data-pl-due-date="' + date + '"]');
-
+                            $items = $items_wrapper.find('.pl-item-wrapper[data-pl-due-date="' + date + '"]');
+                    debugger;
                     if ($items.length) {
-                        $items.toggleClass('highlighted-background');
+                        $items.addClass('highlighted-background');
+                    }
+                })
+                .on('mouseleave', '[data-pl-todo-date]', function () {
+                    var date = $(this).data('pl-todo-date'),
+                            $items = $items_wrapper.find('.pl-item-wrapper[data-pl-due-date="' + date + '"]');
+                    debugger;
+                    if ($items.length) {
+                        $items.removeClass('highlighted-background');
                     }
                 });
 

@@ -368,4 +368,101 @@ class pocketlistsHelper
 
         return $teammates;
     }
+
+    public static function getMonthData($items, $show_month, $month_count = 1)
+    {
+        $timezone = wa()->getUser()->getTimezone();
+        $month_date = waDateTime::date('Y-m', null, $timezone);
+        if ($show_month) {
+            $month_date = date('Y-m', strtotime(date('Y-m-01') . ' ' . ($show_month . ' month')));
+        }
+        $month_date = strtotime($month_date);
+
+        $list_colors = array();
+        // completed items
+        foreach ($items[1] as $item) {
+            $list_colors[date('Y-m-d', strtotime($item['complete_datetime']))]['gray'][] = $item['id'];
+        }
+        foreach ($items[0] as $item) {
+            if ($item['due_datetime'] || $item['due_date']) {
+                $due_date = date('Y-m-d', strtotime($item['due_date'] ? $item['due_date'] : $item['due_datetime']));
+                $item['list_color'] = $item['list_color'] ? $item['list_color'] : 'blue';
+                $list_colors[$due_date]['color'][$item['list_color']][] = $item['id'];
+            }
+        }
+
+        $days = array();
+        for ($i = 0; $i < $month_count; $i++) { // 3 month
+            $days_count = date('t', $month_date);
+            $first_day = date('w', $month_date);
+            $last_day = date('w', strtotime(date('Y-m-{$days_count}', $month_date)));
+
+            // first day is 'Sunday'
+            if (waLocale::getFirstDay() === 7) {
+                $first_day += 1;
+                $last_day += 1;
+            }
+            $first_day = ($first_day === 0) ? 6 : $first_day - 1;
+            $last_day = ($last_day === 0) ? 0 : 7 - $last_day;
+            $date_start = strtotime('-' . $first_day . ' days', $month_date);
+            $date_end = strtotime('+' . ($days_count + $last_day) . ' days', $month_date);
+
+            $current_date_start = $date_start;
+            $year = date('Y', $month_date);
+            $month_name = date('F', $month_date);
+            $month_num = (int)date('n', $month_date);
+            $days[$year][$month_name] = array(
+                'weeks' => array(),
+                'num' => $month_num
+            );
+
+            do {
+                $week = (int)date('W', $current_date_start);
+                $day = (int)date('w', $current_date_start);
+
+                if (waLocale::getFirstDay() == 7 && $day == 0) {
+                    $week = (int)date('W', strtotime('+1 week', $current_date_start));
+                }
+
+                if (!isset($days[$year][$month_name]['weeks'][$week])) {
+                    $days[$year][$month_name]['days'][$week] = array();
+                }
+                $date_date = date('Y-m-d', $current_date_start);
+                $hide_other_month_date = false;
+                $current_month = date('n', $current_date_start);
+                if ($month_num != $current_month) { // hide other month days
+                    $hide_other_month_date = true;
+                }
+                if ($i == 0 && $current_date_start < $month_date) { // but show dates before first month
+                    $hide_other_month_date = false;
+                }
+                if ($i == ($month_count - 1) && $current_date_start > $month_date) { // and after last month
+                    $hide_other_month_date = false;
+                }
+                $days[$year][$month_name]['weeks'][$week][$day] = array(
+                    'date' => array(
+                        'day' => date('j', $current_date_start),
+                        'month' => $current_month,
+                        'date' => $date_date,
+                    ),
+                    'hide' => $hide_other_month_date,
+                    'lists' => array(
+                        'color' => isset($list_colors[$date_date]['color']) ?
+                            $list_colors[$date_date]['color'] : array(),
+                        'gray' => isset($list_colors[$date_date]['gray']) ?
+                            $list_colors[$date_date]['gray'] : array()
+                    ),
+//                        isset($list_colors[$date_date]) ? array_keys($list_colors[$date_date]) : array()
+                );
+                $current_date_start = strtotime('+1 days', $current_date_start);
+            } while ($date_end > $current_date_start);
+
+            $month_date = strtotime('+1 month', $month_date);
+        }
+
+        return array(
+            'days' => $days,
+            'month_date' => $month_date
+        );
+    }
 }

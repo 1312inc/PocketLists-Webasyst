@@ -194,7 +194,7 @@ class pocketlistsItemModel extends waModel
         ))->fetch();
     }
 
-    public function getFavorites($contact_id = false)
+    public function getFavorites($contact_id = false, $date = false)
     {
         if (!$contact_id) {
             $contact_id = wa()->getUser()->getId();
@@ -202,6 +202,10 @@ class pocketlistsItemModel extends waModel
         // get to-do items only from accessed pockets
         $lists = pocketlistsRBAC::getAccessListForContact($contact_id);
         $lists_sql = $lists ? " AND (l.id IN (i:list_ids) OR l.id IS NULL) /* ONLY items from accessed pockets or NULL-list items */" : " AND l.id IS NULL /* ONLY items from NULL-list items */";
+
+        $due_date = $date ?
+            "AND ((i.status = 0 AND (i.due_date = s:date OR DATE(i.due_datetime) = s:date)) OR (i.status > 0 AND DATE(i.complete_datetime) = s:date)) /* with due date or completed this day */" :
+            "";
         $sql = "SELECT
                   i.id id,
                   i.parent_id parent_id,
@@ -230,6 +234,7 @@ class pocketlistsItemModel extends waModel
                 WHERE
                 uf.item_id IS NOT NULL
                 AND (l.archived = 0 OR l.archived IS NULL) /* ONLY not archived items */
+                {$due_date}
                 {$lists_sql}
                 ORDER BY
                   i.status,
@@ -237,6 +242,7 @@ class pocketlistsItemModel extends waModel
 
         $items = $this->query($sql, array(
             'list_ids' => $lists,
+            'date' => $date,
             'contact_id' => $contact_id))->fetchAll();
 
         $result = array(
