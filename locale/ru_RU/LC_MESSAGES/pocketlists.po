@@ -194,7 +194,7 @@ msgstr "Сортировать"
 
 #: /wa-apps/pocketlists/templates/actions/list/List.html:21
 msgid "Email list"
-msgstr "Отправить список по почте"
+msgstr "Отправить по почте"
 
 #: /wa-apps/pocketlists/templates/actions/list/List.html:27
 msgid "Print list"

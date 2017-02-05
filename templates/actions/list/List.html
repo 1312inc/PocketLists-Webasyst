@@ -11,7 +11,7 @@
 {/if}
 
 {if !$print}
-<nav class="pl-inner-sidebar" data-pl="uho">
+<nav class="pl-inner-sidebar pl-{$list.color|default:'none'}" data-pl="uho">
 {if isset($list.id)}
     {if !$archive}
     <a class="pl-link-box bold" href="#" data-pl-action="list-sort">
@@ -49,9 +49,6 @@
         {/if}
 
         <ul class="menu-v with-icons">
-            {* <li class="pl-list-sort-dropdown">
-                <a href="#" data-pl-action="list-sort"><i class="icon16 update"></i> [`Sort`]</a>
-            </li> *}
             <li>
                 <a href="#" data-pl-action="list-email"><i class="icon16 email"></i>[`Email list`]</a>
             </li>
@@ -92,7 +89,10 @@
     <div class="pl-inner-content pl-items shadowed pl-{$list.color|default:'none'}">
     <header class="pl-list-title pl-title">
 
+        <div class="float-right block half-padded">
+        <ul class="menu-h">
         {if !$new && !$archive}
+            <li>
             <a href="#" class="pl-edit pl-list-due" title="[`Due`]" data-pl-action="list-edit" {if empty($list.due_date) && empty($list.due_datetime)}style="display:none"{/if}>
 
                 <i class="icon16 exclamation"></i>
@@ -107,7 +107,13 @@
             </a>
 
             <a href="#" class="pl-edit inline-link" data-pl-action="list-edit" {if !empty($list.due_date) || !empty($list.due_datetime)}style="display:none"{/if}><b><i>[`Edit`]</i></b></a>
+            </li>
         {/if}
+        <li class="pl-list-favorite">
+                   <a href="#" data-pl-action="list-favorite"><i class="icon16 star{if !$list.favorite}-empty{/if}"></i></a>
+               </li>
+        </ul>
+        </div>
 
         <h1>
             <input type="hidden" value="{$list.id|default:-1}" id="pl-list-id">
