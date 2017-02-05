@@ -19,6 +19,8 @@ class pocketlistsTeamAction extends waViewAction
                 $id = $id['id'];
 
                 $list_ids = pocketlistsRBAC::getAccessListForContact($id);
+                $list_accessed = pocketlistsRBAC::getAccessListForContact();
+                $list_ids = array_intersect($list_ids, $list_accessed);
                 $lm = new pocketlistsListModel();
                 $lists = $lm->filterArchive($lm->getById($list_ids));
             } else {
