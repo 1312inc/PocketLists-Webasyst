@@ -9,7 +9,7 @@ class pocketlistsItemModel extends waModel
         return $this->getLogbookItems($contact_id, $date_range);
     }
 
-    public function getLogbookItems($contact_id = false, $date_range = false, $completed = false)
+    public function getLogbookItems($contact_id = false, $date_range = false, $completed = false, $start = 0, $limit = 50)
     {
         $by_user = '';
         if ($contact_id) {
@@ -61,7 +61,8 @@ class pocketlistsItemModel extends waModel
                   {$only_completed}
                   {$by_user}
                   {$by_date_range}
-                ORDER BY i.complete_datetime DESC";
+                ORDER BY i.complete_datetime DESC
+                LIMIT {$start}, {$limit}";
 
         $items = $this->query(
             $sql,
@@ -70,17 +71,19 @@ class pocketlistsItemModel extends waModel
                 'list_ids' => $lists,
                 'date_after' => !empty($date_range['after']) ? $date_range['after'] : '',
                 'date_before' => !empty($date_range['before']) ? $date_range['before'] : '',
+                'start' => $start,
+                'limit' => $limit
             )
         )->fetchAll();
 
-        $activities = $this->getLastActivities();
+//        $activities = $this->getLastActivities();
         $result = array();
-        foreach ($activities as $id => $item) {
-            if (isset($items[$id])) {
-                $result[$id] = $this->extendItemData($items[$id]);
-                unset($items[$id]);
-            }
-        }
+//        foreach ($activities as $id => $item) {
+//            if (isset($items[$id])) {
+//                $result[$id] = $this->extendItemData($items[$id]);
+//                unset($items[$id]);
+//            }
+//        }
         foreach ($items as $id => $item) {
             $result[$id] = $this->extendItemData($items[$id]);
         }
