@@ -1,35 +1,37 @@
 <div class="pl-item{if !empty($item.assigned_contact_id) && $item.assigned_contact_id != $wa->user()->getId() && $item.status != 1} pl-item-assigned{/if}{if $item.status == 1} gray{/if}" {if $item.assigned_contact_id}data-pl-assigned-contact="{$item.assigned_contact_id}"{/if}>
     {if !$item.status && empty($item.key_list_id) && !(isset($archive) && $archive)}<div class="pl-item-drag-handle" title="[`Sort`]" data-pl-action="item-sort"></div>{/if}
-    {if empty($item.key_list_id)}
+
     <div class="pl-meta">
         {if !(isset($archive) && $archive)}
             <a href="#" class="pl-favorite" data-pl-action="item-favorite" title="[`Favorite`]"><i class="icon16 star{if empty($item.favorite)}-empty{/if}"></i></a>
         {/if}
-        {if $item.status == 1}
-            {* completed by *}
-            <span class="pl-author" title="{sprintf('[`Completed by %s`]', $item.complete_username|default:'%username%'|escape)}">
-                {if isset($item.complete_userpic)}
-                    <span class="hint">{$item.complete_datetime|wa_datetime:'humandatetime'}</span>
-                    <i class="icon16 userpic20" style="background-image: url({$item.complete_userpic})" alt="{$item.complete_username|escape}"></i>
-                {else}
-                    <i class="icon16 userpic20"></i>
-                {/if}
-            </span>
-        {else}
-            {* item author userpic *}
-            {* {if $item.contact_id != $wa->user()->getId()}
-                <span class="pl-author" title="{sprintf('%s by %s', $item.create_datetime|wa_datetime:'humandatetime', $item.username|default:'%username%'|escape)}"><i class="icon16 userpic20" style="background-image: url({$item.userpic})" alt="{$item.username|escape}"></i></span>
-            {/if} *}
+        {if empty($item.key_list_id)}
+            {if $item.status == 1}
+                {* completed by *}
+                <span class="pl-author" title="{sprintf('[`Completed by %s`]', $item.complete_username|default:'%username%'|escape)}">
+                    {if isset($item.complete_userpic)}
+                        <span class="hint">{$item.complete_datetime|wa_datetime:'humandatetime'}</span>
+                        <i class="icon16 userpic20" style="background-image: url({$item.complete_userpic})" alt="{$item.complete_username|escape}"></i>
+                    {else}
+                        <i class="icon16 userpic20"></i>
+                    {/if}
+                </span>
+            {else}
+                {* item author userpic *}
+                {* {if $item.contact_id != $wa->user()->getId()}
+                    <span class="pl-author" title="{sprintf('%s by %s', $item.create_datetime|wa_datetime:'humandatetime', $item.username|default:'%username%'|escape)}"><i class="icon16 userpic20" style="background-image: url({$item.userpic})" alt="{$item.username|escape}"></i></span>
+                {/if} *}
 
-            {* assigned to *}
-            {if !empty($item.assigned_contact_id)}<span class="pl-assignee"><i class="icon16 userpic20" style="background-image: url({$item.assigned_userpic})" alt="{$item.assigned_username|escape}" title="{sprintf('[`Assigned to %s`]', $item.assigned_username|escape)}"></i></span>{/if}
+                {* assigned to *}
+                {if !empty($item.assigned_contact_id)}<span class="pl-assignee"><i class="icon16 userpic20" style="background-image: url({$item.assigned_userpic})" alt="{$item.assigned_username|escape}" title="{sprintf('[`Assigned to %s`]', $item.assigned_username|escape)}"></i></span>{/if}
 
-        {/if}
-        {if !(isset($archive) && $archive == true)}
-            <a href="#" class="pl-edit inline-link"><b><i>[`Edit`]</i></b></a>
+            {/if}
+            {if !(isset($archive) && $archive == true)}
+                <a href="#" class="pl-edit inline-link"><b><i>[`Edit`]</i></b></a>
+            {/if}
         {/if}
     </div>
-    {/if}
+
     <label class="pl-done-label">
         {if !empty($item.key_list_id)}
             <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$item.list_icon|default:'li-list@2x.png'});"></i>

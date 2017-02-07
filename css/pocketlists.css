@@ -8,7 +8,7 @@
 .pl-sidebar-core { margin-top: 28px; }
 
 .pl-inner-sidebar { background: #f3f3f3; float: right; width: 340px; margin-top: 17px; margin-right: 10px; position: relative; z-index: 10; box-shadow: 0 3px 5px -2px #ccc; }
-.pl-inner-content { position: relative; min-height: 530px; margin-right: 350px; z-index: 11; }
+.pl-inner-content { position: relative; min-height: 700px; margin-right: 350px; z-index: 11; }
 
 /* Misc
 ------- */
@@ -419,6 +419,7 @@ ul.pl-icon-library li i.listicon48 { background-size: 48px 48px; width: 48px; he
 .icon16.pl.archive { background-position:-48px 0; }
 .icon16.pl.todo-bw { background-position:-64px 0; }
 .icon16.pl.logbook { background-position:-80px 0; }
+.icon16.pl.comments { background-position:-96px 0; }
 .icon16.pl.add { background-position:0 -16px; }
 .icon16.pl.darr { background-position:-16px -16px; }
 

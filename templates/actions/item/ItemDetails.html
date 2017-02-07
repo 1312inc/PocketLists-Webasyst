@@ -10,11 +10,8 @@
         <div class="field">
             <div class="value"><input type="text" class="bold large long" name="item[name]" placeholder="[`Title`]" value="{$item.name|escape}"{if $item.status == 1} disabled="disabled"{/if} /></div>
             <div class="value"><textarea name="item[note]" placeholder="[`Optional text note`]"{if $item.status == 1} disabled="disabled"{/if}>{$item.note|escape}</textarea></div>
-        </div>
-        <div class="field">
-            <div class="name">[`Attachments`]</div>
             {*$wa->csrf()*}
-            <div class="value no-shift" data-pl-item-details-attachments>
+            <div class="value" data-pl-item-details-attachments>
 
                 <div class="block double-padded pl-add-attachment-dropbox" data-pl-item-details-fileupload>
 
