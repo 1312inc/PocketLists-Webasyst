@@ -1,4 +1,5 @@
-<div class="pl-details-form">
+<div class="pl-details-form pl-{$list.color|default:'none'}">
+<div class="pl-details-form-shader">
 <div class="fields form">
 <form method="post" id="pl-item-details-form" action="?module=item&amp;action=data" target="pl-item-details-form-iframe" enctype="multipart/form-data">
     {* <a href="#" class="pl-item-details-cancel" class="pl-close" title="[`Close`]">&times;</a> *}
@@ -9,11 +10,8 @@
         <div class="field">
             <div class="value"><input type="text" class="bold large long" name="item[name]" placeholder="[`Title`]" value="{$item.name|escape}"{if $item.status == 1} disabled="disabled"{/if} /></div>
             <div class="value"><textarea name="item[note]" placeholder="[`Optional text note`]"{if $item.status == 1} disabled="disabled"{/if}>{$item.note|escape}</textarea></div>
-        </div>
-        <div class="field">
-            <div class="name">[`Attachments`]</div>
             {*$wa->csrf()*}
-            <div class="value no-shift" data-pl-item-details-attachments>
+            <div class="value" data-pl-item-details-attachments>
 
                 <div class="block double-padded pl-add-attachment-dropbox" data-pl-item-details-fileupload>
 
@@ -179,7 +177,8 @@
 </div>
 <div class="clear-both"></div>
 </div>
-<a class="pl-link-box pl-delete-box" href="#" data-pl-action="item-delete">
+</div>
+<a class="pl-link-box pl-delete-box align-center" href="#" data-pl-action="item-delete">
     <i class="icon16 delete"></i> [`Delete to-do`]
 </a>
 {include '../../include/deleteitemdialog.html' inline}

@@ -11,7 +11,7 @@
 {/if}
 
 {if !$print}
-<nav class="pl-inner-sidebar pl-{$list.color|default:'none'}" data-pl="uho">
+<nav class="pl-inner-sidebar" data-pl="uho">
 {if isset($list.id)}
     {if !$archive}
     <a class="pl-link-box bold" href="#" data-pl-action="list-sort">
@@ -42,12 +42,13 @@
                 </div>
 
             {/foreach}
-            <p class="hint">[`Use Team app to configure shared access: select a user or a group of users and enable access to this particular list.`]</p>
+            <p class="hint">[`Use Team app to configure access to this to-do list: select a user or a group of users and enable access to this particular list.`]</p>
         </div>
 
         <hr>
         {/if}
 
+        <h5 class="heading">[`To-do list`]</h5>
         <ul class="menu-v with-icons">
             <li>
                 <a href="#" data-pl-action="list-email"><i class="icon16 email"></i>[`Email list`]</a>
@@ -59,7 +60,7 @@
                 <a href="#" data-pl-action="list-archive"><i class="icon16 pl archive"></i>[`Archive list`]</a>
             </li>
             <li>
-                <a href="#" data-pl-action="list-edit"><i class="icon16 edit"></i>[`Edit list`]</a>
+                <a href="#" data-pl-action="list-edit"><i class="icon16 edit"></i>[`Edit list details`]</a>
             </li>
         </ul>
     </div>
@@ -89,29 +90,29 @@
     <div class="pl-inner-content pl-items shadowed pl-{$list.color|default:'none'}">
     <header class="pl-list-title pl-title">
 
-        <div class="float-right block half-padded">
+        <div class="float-right">
         <ul class="menu-h">
-        {if !$new && !$archive}
-            <li>
-            <a href="#" class="pl-edit pl-list-due" title="[`Due`]" data-pl-action="list-edit" {if empty($list.due_date) && empty($list.due_datetime)}style="display:none"{/if}>
+            {if !$new && !$archive}
+                <li>
+                    <a href="#" class="pl-edit pl-list-due" title="{sprintf('[`Due %s`]', $list.due_date|wa_date:'humandate')}" data-pl-action="list-edit" {if empty($list.due_date) && empty($list.due_datetime)}style="display:none"{/if}>
 
-                <i class="icon16 exclamation"></i>
-                <span class="bold {if $list.calc_priority == 0}pl-due-someday{elseif $list.calc_priority == 1}pl-due-tomorrow{elseif $list.calc_priority == 2}pl-due-today{elseif $list.calc_priority == 3}pl-due-overdue{/if}" data-pl-list="due-date">
-                    {if !empty($list.due_datetime)}
-                        {$list.due_datetime|wa_datetime:'humandatetime'}
-                    {else if !empty($list.due_date)}
-                        {$list.due_date|wa_date:'humandate'}
-                    {/if}
-                </span>
+                        <i class="icon16 exclamation"></i>
+                        <span class="bold {if $list.calc_priority == 0}pl-due-someday{elseif $list.calc_priority == 1}pl-due-tomorrow{elseif $list.calc_priority == 2}pl-due-today{elseif $list.calc_priority == 3}pl-due-overdue{/if}" data-pl-list="due-date">
+                            {if !empty($list.due_datetime)}
+                                {$list.due_datetime|wa_datetime:'humandatetime'}
+                            {else if !empty($list.due_date)}
+                                {$list.due_date|wa_date:'humandate'}
+                            {/if}
+                        </span>
 
-            </a>
+                    </a>
 
-            <a href="#" class="pl-edit inline-link" data-pl-action="list-edit" {if !empty($list.due_date) || !empty($list.due_datetime)}style="display:none"{/if}><b><i>[`Edit`]</i></b></a>
-            </li>
-        {/if}
-        <li class="pl-list-favorite">
-                   <a href="#" data-pl-action="list-favorite"><i class="icon16 star{if !$list.favorite}-empty{/if}"></i></a>
-               </li>
+                    <a href="#" class="pl-edit inline-link" data-pl-action="list-edit" {if !empty($list.due_date) || !empty($list.due_datetime)}style="display:none"{/if}><b><i>[`Edit`]</i></b></a>
+                </li>
+            {/if}
+            <li class="pl-list-favorite">
+               <a href="#" data-pl-action="list-favorite" title="[`Favorite`]"><i class="icon16 star{if !$list.favorite}-empty{/if}"></i></a>
+           </li>
         </ul>
         </div>
 

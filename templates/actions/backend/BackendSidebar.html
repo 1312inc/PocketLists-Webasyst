@@ -11,7 +11,7 @@
             <a href="#/favorites/"><i class="icon16 star"></i>[`Favorites`]</a>
         </li>
         <li>
-            <a href="#/comments/"><i class="icon16 comments"></i>[`Comments`]{if $new_comments_count} <span class="highlighted bold small black" title="{$last_activity|wa_datetime}">+{$new_comments_count}</span>{/if}</a>
+            <a href="#/comments/"><i class="icon16 pl comments"></i>[`Comments`]{if $new_comments_count} <span class="highlighted bold small black" title="{$last_activity|wa_datetime}">+{$new_comments_count}</span>{/if}</a>
         </li>
         <li>
             <a href="#/logbook/"><i class="icon16 pl logbook"></i>[`Logbook`]</a>
@@ -44,8 +44,9 @@
         {foreach $lists as $l}
         <li data-pl-list-id="{$l.id}">
             <a href="#/list/{$l.id}/">
-                <span class="count{if $l.calc_priority == 1} indicator green{elseif $l.calc_priority == 2} indicator yellow{elseif $l.calc_priority == 3} indicator red{/if}">{$l.count}</span>
+                <span class="count{if $l.calc_priority == 1} indicator green{elseif $l.calc_priority == 2} indicator yellow{elseif $l.calc_priority == 3} indicator red{/if}">{if !empty($l.due_date)}<i class="icon10 exclamation no-overhanging" title="{sprintf('[`Due %s`]', $l.due_date|wa_date:'humandate')}"></i> {/if}{$l.count}</span>
                 <i class="icon16 listicon16" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l.icon|default:'li-list@2x.png'});"></i>{if $l.color != 'none'}<span class="pl-{$l.color}">{$l.name|escape}</span>{else}{$l.name|escape}{/if}
+
             </a>
         </li>
         {/foreach}
