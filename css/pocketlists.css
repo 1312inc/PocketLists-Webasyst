@@ -21,18 +21,18 @@
 .pl-red { background: #ffe0dc; }
 .pl-yellow { background: #fbfbcc; }
 
-.pl-dark-gray { background: #aaa !important; }
+.pl-dark-gray { background: #777 !important; }
 .pl-dark-green { background: #7ac33c !important; }
-.pl-dark-blue { background: #5da5f5 !important; }
-.pl-dark-purple { background: #bc7cf5 !important; }
+.pl-dark-blue { background: #3da5ff !important; }
+.pl-dark-purple { background: #bc7cdd !important; }
 .pl-dark-red { background: #f7696d !important; }
 .pl-dark-yellow { background: #f5cf24 !important; }
-.pl-dark-none { background: #ddd !important; }
+.pl-dark-none { background: #bbb !important; }
 
-.icon10.color { border: none; border-radius: 50%; width: 5px; height: 5px; }
+.icon10.color { border: none; border-radius: 50%; width: 6px; height: 6px; }
 .icon16.color { border: none; }
 .icon16.color.white,
-.icon16.color.pl-white { border: 1px solid rgba(0,0,0,0.2); }
+.icon16.color.pl-white { border: 1px solid rgba(0,0,0,0.1); }
 .field .value a.selected .icon16.color { border: 3px solid rgba(0,0,0,0.8); }
 
 .indicator.yellow { background-color: #da3; color: #fff; }
@@ -148,8 +148,8 @@ label.pl-done-label i.icon16.userpic20 {
 .pl-done.pl-yellow + span { background: #f5cf24; }
 .pl-done.pl-red + span { background: #f7696d; }
 
-.pl-done:checked + span, .pl-done:disabled:checked + span {background: transparent url('../img/pl-done-checkbox.png') no-repeat !important;background-size: 14px 14px !important; border: none; border-radius: 0; opacity: 0.3;}
-.pl-done + span.pl-add-todo {background: transparent url('../img/pl-add-todo.png') no-repeat !important;background-size: 13px 13px !important; border: none; border-radius: 0; opacity: 0.3; left: 19px; cursor: default; }
+.pl-done:checked + span, .pl-done:disabled:checked + span {background: transparent url('../img/pl-done-checkbox.png') no-repeat !important;background-size: 16px 16px !important; border: none; border-radius: 0; opacity: 0.3;}
+.pl-done + span.pl-add-todo {background: transparent url('../img/pl-add-todo.png') no-repeat !important;background-size: 13px 13px !important; border: none; border-radius: 0; opacity: 0.3; left: 20px; top: 15px; cursor: default; }
 
 /* Discussions
 -------------- */
@@ -217,14 +217,20 @@ input#pl-new-list-input:hover,
 #pl-item-add textarea:hover { background: rgba(0,0,0,0.04); }
 input#pl-new-list-input:focus,
 #pl-item-add textarea:focus { background: rgba(0,0,0,0.06); }
-.pl-chat textarea { background: #fff; margin-left: 0px; border-radius: 5px; border: 1px solid rgba(0,0,0,0.1); padding-left: 8px; width: 70%; }
-.pl-unsaved { background: rgba(183,0,0,0.06) !important; color: #f55 !important; }
+.pl-chat textarea { background: #fff; margin-left: 0px; border-radius: 5px; border: 1px solid rgba(0,0,0,0.1); padding-left: 8px; width: 70%; min-width: 150px; }
+.pl-unsaved { background: rgba(183,0,0,0.06) !impo2px 3px 0nt; color: #f55 !important; }
 
 .pl-title { padding: 25px 5px 15px 20px; }
 .pl-title h1 { padding-left: 29px; margin-bottom: 0.2em; line-height: 1.1em; padding-right: 22px; }
-.pl-title h1 .pl-done + span {left: -34px; top: 4px; width: 22px; height: 22px; position: absolute; z-index: 1;}
+.pl-title h1 .pl-done + span {left: -34px; top: 2px; width: 22px; height: 22px; position: absolute; z-index: 1;}
+.pl-title h1 .pl-done:checked + span,
+.pl-title h1 .pl-done:disabled:checked + span { background-size: 24px 24px !important; }
 .pl-title h1 .loading { margin-left: 3px; margin-top: 8px; opacity: 0.5; }
 .pl-title h1.not-padded { padding-left: 0; }
+
+.pl-title ul.menu-h li { margin: 2px 3px 0 !important; padding: 0 !important; vertical-align: middle; }
+.pl-title ul.menu-h li a.pl-edit { margin-top: -3px !important; }
+.pl-title ul.menu-h li.pl-list-favorite a { margin: 0 !important; }
 
 /*.pl-title ul.menu-h { position: relative; z-index: 2; }
 .pl-title ul.menu-h li:hover { background: transparent; }
@@ -305,21 +311,32 @@ input#pl-new-list-input:focus,
 .pl-attachments li i.icon16 { margin-left: -4px; }
 .pl-attachments li label { background: #eee; border-radius: 10px; padding: 4px 6px; font-size: 0.9em; color: #aaa; }
 .pl-attachments li label input[type="checkbox"] { margin-top: -4px; }
-.pl-add-attachment-dropbox { border: 2px dashed #ccc; padding: 20px; }
+.pl-add-attachment-dropbox { border: 2px dashed rgba(0,0,0,0.2); padding: 20px; }
 .pl-add-attachment-dropbox .pl-attachments { padding-top: 0; }
 
 .pl-chat { padding: 13px 25px 15px 0px;}
 .pl-item-selected .pl-chat { display: block; }
 .pl-chat .pl-cue { margin-bottom: 13px; width: 100%; }
 .pl-chat .pl-cue .pl-cue-inner { width: 70%; font-size: 0.95em; }
-.pl-chat .pl-cue .pl-bubble { background: rgba(0,0,0,0.07); border-radius: 5px; padding: 10px; margin-bottom: 8px; position: relative; line-height: 1.1em; }
-.pl-chat .pl-cue .pl-bubble .pl-bubble-arrow { background: rgba(0,0,0,0.05); transform: rotate(45deg); width: 10px; height: 10px; display: block; position: absolute; left: 15px; bottom: -4px; border: 1px solid rgba(0,0,0,0.1); }
+.pl-chat .pl-cue .pl-bubble { background: rgba(0,0,0,0.07); border-radius: 5px; padding: 6px 10px 7px; position: relative; line-height: 1.1em; }
+.pl-chat .pl-cue .pl-bubble-arrow {
+  display: block;
+  margin-top: 0;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid rgba(0,0,0,0.07);
+  vertical-align: top;
+  margin-left: 10px;
+  margin-bottom: 3px;
+ }
 .pl-chat .pl-cue .pl-bubble .pl-bubble-arrow:after { content: ''; border-top: 1px solid red;}
 .pl-chat .pl-cue.pl-my-cue .pl-cue-inner { margin-left: 30%; }
-.pl-chat .pl-cue.pl-my-cue .pl-bubble,
-.pl-chat .pl-cue.pl-my-cue .pl-bubble .pl-bubble-arrow { background: #48b7f0; color: #fff; }
+.pl-chat .pl-cue.pl-my-cue .pl-bubble { background: #48b7f0; color: #fff; }
+.pl-chat .pl-cue.pl-my-cue .pl-bubble-arrow { border-top-color: #48b7f0; }
 .pl-chat .pl-cue.pl-my-cue .pl-bubble a { color: #fff !important; text-decoration: underline; }
-.pl-chat .userpic20 { margin-left: 10px; margin-top: 1px; }
+.pl-chat .userpic20 { margin-left: 7px; margin-top: 1px; }
 .pl-chat .pl-reply { margin-top: 20px; }
 .pl-chat .pl-reply .userpic20 { margin-top: 1px; }
 .pl-chat .pl-delete-comment { color: #579; float: right; font-size: 1.2em; position: relative; top: -2px; right: 3px; }
@@ -338,8 +355,10 @@ input#pl-new-list-input:focus,
 .pl-logbook .pl-item.gray .pl-due-today,
 .pl-logbook .pl-item.gray .pl-due-tomorrow,
 .pl-logbook .pl-item.gray .pl-due-someday { display: none; }
-.pl-logbook .pl-item.gray .pl-edit,
-.pl-logbook .pl-item.gray .pl-comment { display: none !important; }
+.pl-logbook .pl-item.gray .pl-edit { display: none !important; }
+.pl-logbook .pl-item.gray .pl-chat { display: none; }
+.pl-logbook .pl-item.gray .pl-comment { display: none; }
+.pl-logbook .pl-item.gray .pl-comment-count { display: inline-block; }
 .pl-logbook .pl-item.gray .pl-favorite,
 .pl-logbook .pl-item.gray .pl-assignee { opacity: 1 !important; }
 
@@ -350,11 +369,15 @@ input#pl-new-list-input:focus,
 /* Item & List details
 ---------------------- */
 
-.pl-details { display: none; padding: 0; position: absolute; top: 0; bottom: 0; right: 100%; width: 340px; background: #eed; box-shadow: -10px 0 20px -10px rgba(0,0,0,0.1);z-index: 9; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+.pl-details { display: none; padding: 0; position: absolute; top: 0; bottom: 0; right: 100%; width: 340px; box-shadow: -10px 0 20px -10px rgba(0,0,0,0.1);z-index: 9; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
 .pl-details.sticky,
 .pl-details.sticky { position: fixed; right: 0; width: 350px; overflow-y: scroll; }
+.pl-details .pl-details-form { /* wrapper */ }
+.pl-details .pl-details-form.pl-none { background: #fff; }
+.pl-details-form-shader { background: rgba(0,0,0,0.1); padding: 15px 10px 15px 15px; }
+.pl-details.sticky .pl-details-form,
+.pl-details.sticky .pl-details-form-shader { position: absolute; top: 0; bottom: 0; left: 0; right: 0; }
 
-.pl-details .pl-details-form { background: #eed; padding: 15px 10px 15px 15px; }
 .pl-details .fields.form { width: 100%; }
 .pl-details .fields.form .field-group { margin-top: 0; }
 .pl-details .fields.form .field .name { float: none; padding-bottom: 5px; }

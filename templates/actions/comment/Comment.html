@@ -3,12 +3,12 @@
         <div class="pl-bubble">
             {if $comment.my && $comment.can_be_deleted}<a href="#" class="pl-delete-comment" data-pl-action="comment-delete" title="[`Delete`]">&times;</a>{/if}
             {$comment.comment|nl2br}
-            <!-- <span class="pl-bubble-arrow"></span> -->
-        </div>
+
+        </div><span class="pl-bubble-arrow"></span>
 
         {if isset($comment_page)}
         <div class="float-right">
-            <a href="#" class="bold" data-pl-action="comment-reply">[`Reply`]</a>
+            <a href="#" class="inline-link" data-pl-action="comment-reply"><b><i><strong>[`Reply`]</strong></i></b></a>
             <div class="pl-reply" style="display:none;">
                 <i class="icon16 userpic20" style="background-image: url({$wa->user()->getPhoto(20)})" alt="{$wa->user()->getName()|escape}"></i>
                 <textarea rows="1" placeholder="[`Add comment`]"></textarea>
@@ -18,8 +18,8 @@
 
         <i class="icon16 userpic20" style="background-image: url({$comment.userpic})" alt="{$comment.username|escape}"></i> {$comment.username|escape}
         {if isset($comment_page)}
-        on
-        <a href="{if $comment.list_id}#/list/{$comment.list_id}/{else}#/team/{$comment.login}{/if}">{$comment.item_name|escape}</a>
+        [`on`]
+        <a href="{if $comment.list_id}#/list/{$comment.list_id}/{else}#/team/{$comment.login}{/if}">{$comment.item_name|truncate:64|escape}</a>
         {/if}
         <span class="hint nowrap">{$comment.create_datetime|wa_datetime:'humandatetime'}</span>
     </div>
