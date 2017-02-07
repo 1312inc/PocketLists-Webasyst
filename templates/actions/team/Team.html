@@ -26,7 +26,7 @@
         </div>
 
         {if count($lists)}
-            <h5 class="heading">[`Access to lists`]</h5>
+            <h5 class="heading">[`Access`]</h5>
             <ul class="menu-v with-icons" data-pl-sidebar-block="lists">
                 {foreach $lists as $l}
                 <li>
@@ -45,6 +45,7 @@
 
         <hr>
 
+        <h5 class="heading">{sprintf('[`%s’s to-dos`]', $current_teammate.name|default:' '|escape)}</h5>
         <ul class="menu-v with-icons">
             <li><a href="#" data-pl-action="list-email"><i class="icon16 email"></i> [`Email list`]</a></li>
             <li><a href="?module=team&amp;teammate={$current_teammate.login|escape}&amp;print=true" target="_blank"><i class="icon16 print"></i> [`Print list`]</a></li>

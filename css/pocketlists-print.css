@@ -18,6 +18,14 @@ i.icon16.userpic20 { display: none; }
     .pl-print-button { display: none; }
 }
 
+.pl-white { background: #fff; }
+.pl-gray { background: #eee; }
+.pl-green { background: #e8fcce; }
+.pl-blue { background: #d2f3ff; }
+.pl-purple { background: #feeaff; }
+.pl-red { background: #ffe0dc; }
+.pl-yellow { background: #fbfbcc; }
+
 .pl-dark-gray { background: #aaa !important; }
 .pl-dark-green { background: #7ac33c !important; }
 .pl-dark-blue { background: #5da5f5 !important; }
@@ -168,7 +176,6 @@ input#pl-new-list-input,
 .pl-list-items ul.menu-v li .pl-item .pl-meta { display: none; }
 .pl-list-items ul.menu-v li .pl-item p { margin-bottom: 0; margin-top: 4px; line-height: 1.2em; }
 .pl-list-items ul.menu-v li .pl-item i.icon10 { margin-top: 5px; }
-.pl-list-items ul.menu-v li .pl-item.pl-item-assigned .pl-item-name { font-style: italic; }
 .pl-list-items ul.menu-v li .pl-item:hover .pl-edit,
 .pl-list-items ul.menu-v li .pl-item:hover .pl-comment { opacity: 1; transition: opacity 0.1s ease-in; transition-delay: 0.5s; }
 

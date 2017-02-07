@@ -339,7 +339,7 @@ input#pl-new-list-input:focus,
 .pl-chat .userpic20 { margin-left: 7px; margin-top: 1px; }
 .pl-chat .pl-reply { margin-top: 20px; }
 .pl-chat .pl-reply .userpic20 { margin-top: 1px; }
-.pl-chat .pl-delete-comment { color: #579; float: right; font-size: 1.2em; position: relative; top: -2px; right: 3px; }
+.pl-chat .pl-delete-comment { color: #579; float: right; font-size: 1.2em; position: relative; top: -2px; right: 3px; text-decoration: none !important; }
 .pl-chat .pl-cue.pl-new-comment .pl-bubble { background: #ffd; }
 
 .pl-is-selected { display: none; }
@@ -376,7 +376,8 @@ input#pl-new-list-input:focus,
 .pl-details .pl-details-form.pl-none { background: #fff; }
 .pl-details-form-shader { background: rgba(0,0,0,0.1); padding: 15px 10px 15px 15px; }
 .pl-details.sticky .pl-details-form,
-.pl-details.sticky .pl-details-form-shader { position: absolute; top: 0; bottom: 0; left: 0; right: 0; }
+.pl-details.sticky .pl-details-form-shader,
+#pl-list-details .pl-details-form-shader { position: absolute; top: 0; bottom: 0; left: 0; right: 0; }
 
 .pl-details .fields.form { width: 100%; }
 .pl-details .fields.form .field-group { margin-top: 0; }
