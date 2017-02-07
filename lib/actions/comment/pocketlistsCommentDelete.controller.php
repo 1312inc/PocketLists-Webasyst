@@ -10,8 +10,15 @@ class pocketlistsCommentDeleteController extends waJsonController
             $cm = new pocketlistsCommentModel();
             $comment = $cm->getById($comment_id);
             if ($comment) {
-                if ($comment['contact_id'] === wa()->getUser()->getId()
-                    && (time() - strtotime($comment['create_datetime']) < 60 * 60 * 24)
+                $im = new pocketlistsItemModel();
+                $item = $im->getById($comment['item_id']);
+
+                if (!empty($item['list_id']) && !pocketlistsRBAC::canAccessToList($item['list_id'])) {
+                    throw new waException('Access denied.', 403);
+                }
+
+                if ((time() - strtotime($comment['create_datetime']) < 60 * 60 * 24)
+                    && $comment['contact_id'] === wa()->getUser()->getId()
                     && $cm->deleteById($comment_id)
                 ) {
                     $this->response = 'ok';

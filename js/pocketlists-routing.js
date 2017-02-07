@@ -215,6 +215,11 @@
                 $('#content').html(result);
             });
         },
+        commentsAction: function () {
+            this.load('?module=comments', function (result) {
+                $('#content').html(result);
+            });
+        },
         favoritesAction: function () {
             this.load('?module=favorites', function (result) {
                 $('#content').html(result);

@@ -21,8 +21,55 @@ class pocketlistsCommentModel extends waModel
         return $comment + array(
             'my'             => $comment['contact_id'] == wa()->getUser()->getId() ? true : false,
             'username'       => $comment_user->getName(),
+            'login'          => $comment_user->get('login'),
             'userpic'        => $comment_user->getPhoto('20'),
             'can_be_deleted' => (time() - strtotime($comment['create_datetime']) < 60 * 60 * 24),
         );
+    }
+
+    public function getComments($start = 0, $limit = 50)
+    {
+        $lists = pocketlistsRBAC::getAccessListForContact();
+        $list_sql = $lists ? " AND (l.id IN (i:list_ids) OR l.id IS NULL) /* only accessed pockets or null list */" : " AND l.id IS NULL /* only null list */";
+
+        $q = "SELECT 
+                c.id id,
+                c.item_id item_id,
+                i.name item_name,
+                l.id list_id,
+                c.contact_id contact_id,
+                c.comment comment,
+                c.create_datetime create_datetime
+            FROM {$this->table} c
+            LEFT JOIN pocketlists_item as i ON i.id = c.item_id
+            JOIN pocketlists_list as l ON l.id = i.list_id {$list_sql}
+            ORDER BY id DESC
+            LIMIT {$start}, {$limit}";
+
+        $comments = $this->query($q, array(
+            'list_ids' => $lists,
+            'start'    => $start,
+            'limit'    => $limit,
+        ))->fetchAll();
+
+        return array_map(array('pocketlistsCommentModel', 'extendData'), $comments);
+    }
+
+    public function getLastActivityComments($user_last_activity)
+    {
+        $lists = pocketlistsRBAC::getAccessListForContact();
+        $list_sql = $lists ? " AND (l.id IN (i:list_ids) OR l.id IS NULL) /* only accessed pockets or null list */" : " AND l.id IS NULL /* only null list */";
+
+        $q = "SELECT 
+                c.id
+            FROM {$this->table} c
+            LEFT JOIN pocketlists_item as i ON i.id = c.item_id
+            JOIN pocketlists_list as l ON l.id = i.list_id {$list_sql}
+            WHERE c.create_datetime > s:user_last_activity";
+
+        return $this->query($q, array(
+            'list_ids'           => $lists,
+            'user_last_activity' => $user_last_activity,
+        ))->count();
     }
 }

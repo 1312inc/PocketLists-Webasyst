@@ -13,9 +13,10 @@ class pocketlistsBackendSidebarAction extends waViewAction
         $this->view->assign('team', $teammates);
 
         $last_activity = pocketlistsActivity::getUserActivity();
-        $pactions = new pocketlistsLogAction();
-        $last_logs  = $pactions->getLogsForUser($last_activity);
-        $this->view->assign('new_items_count', count($last_logs));
+
+        $comment_model = new pocketlistsCommentModel();
+
+        $this->view->assign('new_comments_count', $comment_model->getLastActivityComments($last_activity));
         $this->view->assign('last_activity', $last_activity);
 
         $item_model = new pocketlistsItemModel();
