@@ -11,9 +11,6 @@ class pocketlistsListDetailsAction extends waViewAction
             $user_name  = new waContact($list['contact_id']);
             $list['username'] = $user_name->getName();
             $this->view->assign('list', $list);
-
-            // get icons
-            $this->view->assign('list_icons', pocketlistsHelper::getListIcons());
         }
     }
 }

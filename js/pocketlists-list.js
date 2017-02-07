@@ -70,7 +70,6 @@ $.pocketlists.List = function ($list_wrapper, options) {
         };
         var updateList = function (data) {
             $list_wrapper.find('#pl-list-name').text(data.name); // update name
-            debugger;
             if (data.due_date || data.due_datetime) {
                 var due_class = 'pl-due-someday';
                 if (data.calc_priority == 1) {
@@ -118,7 +117,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
             };
 
             $wrapper.find('#pl-list-due-datetime').datepicker(datepicker_options);
-            icon_path = $wrapper.find('#pl-list-icon-dialog').find('ul').data('pl-icons-path');
+            icon_path = $('#pl-list-icon-dialog').find('ul').data('pl-icons-path');
             list_color = getListColor(); // color before save
         };
 

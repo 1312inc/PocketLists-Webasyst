@@ -85,6 +85,10 @@
 </nav>
 {/if}
 
+{if !$print && isset($list.id) && $list.id > 0}
+{include '../../include/listiconsdialog.html' inline}
+{/if}
+
 <main id="pl-list-content" class="pl-list-content">
 
     <div class="pl-inner-content pl-items shadowed pl-{$list.color|default:'none'}">
