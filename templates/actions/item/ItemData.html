@@ -52,7 +52,7 @@
             {/if}
         </span>
 
-        {if empty($item.key_list_id) && !(isset($archive) && $archive == true)}<a href="#" class="pl-comment{if !empty($item.chat.comments)} pl-comment-count{/if}" title="[`Comment`]"><i class="icon16 comments"></i>{if !empty($item.chat.comments)}{count($item.chat.comments)}{/if}</a>{/if}
+        {if empty($item.key_list_id) && !(isset($archive) && $archive == true)}<a href="#" class="pl-comment{if !empty($item.chat.comments)} pl-comment-count{/if}" title="[`Comment`]"><i class="icon16 pl comments"></i>{if !empty($item.chat.comments)}{count($item.chat.comments)}{/if}</a>{/if}
 
         {if !empty($item.due_datetime)}
         <br>

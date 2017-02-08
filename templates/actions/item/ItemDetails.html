@@ -106,6 +106,9 @@
                     <a href="#" id="pl-item-due-datetime-set" class="small inline-link nowrap" {if empty($item.due_date) || !empty($item.due_datetime)}style="display: none;"{/if}><b><i>[`Set time`]</i></b></a>
                     <a href="#" id="pl-item-due-datetime-clear" class="small inline-link nowrap" {if empty($item.due_datetime)}style="display: none;"{/if}><b><i>[`Clear time`]</i></b></a>
                 </span>
+                {if $item.due_date}
+                    <p class="hint">[`When due is set, it may automatically increase the manually set priority color.`]</p>
+                {/if}
             </div>
         </div>
         {else}

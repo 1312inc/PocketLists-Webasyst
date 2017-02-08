@@ -18,38 +18,8 @@
         <i class="icon16 update"></i> [`Re-sort list`]
     </a>
     <div class="block double-padded">
-        {if pocketlistsRBAC::canAssign()}
-        <div class="pl-list-access">
 
-            <h5 class="heading">[`Access`]</h5>
-            {foreach $list_access_contacts as $list_access_contact_id => $list_access_contact}
-
-                <div class="profile image32px">
-                    <div class="image">
-                        <a href="{$wa_backend_url}pocketlists/#/{if $list_access_contact.me}todo{else}team/{$list_access_contact.login}{/if}/"><img class="userpic" src="{$list_access_contact.photo_url}"></a>
-                    </div>
-                    <div class="details">
-                        <span class="pl-username">
-                            <a href="{$wa_backend_url}pocketlists/#/{if $list_access_contact.me}todo{else}team/{$list_access_contact.login}{/if}/">{$list_access_contact.username|default:'%username%'|escape} {if $list_access_contact.me}([`me`]){/if}</a>
-                            <span class="bold">
-                                {if $list_access_contact.status == 'online'}
-                                    <i class="icon10 online" title="[`Online`]"></i>
-                                {/if}
-                            </span>
-                        </span>
-                        <div class="hint">{$list_access_contact.teamrole|escape}</div>
-                    </div>
-                </div>
-
-            {/foreach}
-            <p class="hint">[`Use Team app to configure access to this to-do list: select a user or a group of users and enable access to this particular list.`]</p>
-        </div>
-
-        <hr>
-        {/if}
-
-        <h5 class="heading">[`To-do list`]</h5>
-        <ul class="menu-v with-icons">
+        <ul class="menu-v with-icons" style="margin-top: -5px;">
             <li>
                 <a href="#" data-pl-action="list-email"><i class="icon16 email"></i>[`Email list`]</a>
             </li>
@@ -63,6 +33,35 @@
                 <a href="#" data-pl-action="list-edit"><i class="icon16 edit"></i>[`Edit list details`]</a>
             </li>
         </ul>
+
+        {if pocketlistsRBAC::canAssign()}
+        <div class="pl-list-access">
+
+            <h5 class="heading">[`Access`]</h5>
+            {foreach $list_access_contacts as $list_access_contact_id => $list_access_contact}
+
+                <div class="profile image32px">
+                    <div class="image">
+                        <a href="{$wa_backend_url}pocketlists/#/{if $list_access_contact.me}todo{else}team/{$list_access_contact.login}{/if}/"><img class="userpic" src="{$list_access_contact.photo_url}"></a>
+                    </div>
+                    <div class="details">
+                        <span class="pl-username">
+                            <a href="{$wa_backend_url}pocketlists/#/{if $list_access_contact.me}todo{else}team/{$list_access_contact.login}{/if}/">{$list_access_contact.username|default:'%username%'|escape} {if $list_access_contact.me}([`me`]){else if $list_access_contact.id == $list.contact_id}([`author`]){/if}</a>
+                            <span class="bold">
+                                {if $list_access_contact.status == 'online'}
+                                    <i class="icon10 online" title="[`Online`]"></i>
+                                {/if}
+                            </span>
+                        </span>
+                        <div class="hint">{$list_access_contact.teamrole|escape}</div>
+                    </div>
+                </div>
+
+            {/foreach}
+            <p class="hint">{sprintf('[`Use <a href="%s">Team app</a> to configure access to this to-do list: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/')}</p>
+        </div>
+        {/if}
+
     </div>
 
     <a class="pl-link-box pl-delete-box" href="#" data-pl-action="list-delete">
