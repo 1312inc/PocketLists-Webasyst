@@ -4,6 +4,8 @@ class pocketlistsCommentModel extends waModel
 {
     protected $table = 'pocketlists_comment';
 
+    private $lists = array();
+
     public function getAllByItems($item_ids)
     {
         if (!is_array($item_ids)) {
@@ -27,10 +29,29 @@ class pocketlistsCommentModel extends waModel
         );
     }
 
+    private function filterAccess($user_id)
+    {
+        $list_sql = null;
+        $this->lists[$user_id] = array();
+        if (!pocketlistsRBAC::isAdmin($user_id)) {
+            if ($this->lists[$user_id] = pocketlistsRBAC::getAccessListForContact($user_id)) {
+                $list_sql[] = "l.id IN (i:list_ids) /* accessed lists*/";
+            }
+            if (pocketlistsRBAC::canAssign($user_id)) {
+                $list_sql[] = "l.id IS NULL /* null list */";
+            }
+        } else {
+            $list_sql = '1';
+        }
+        $list_sql = '(' . (is_array($list_sql) ? implode(' OR ', $list_sql) : $list_sql) . ')';
+
+        return $list_sql;
+    }
+
     public function getComments($start = 0, $limit = 50)
     {
-        $lists = pocketlistsRBAC::getAccessListForContact();
-        $list_sql = $lists ? "(l.id IN (i:list_ids) OR l.id IS NULL) /* only accessed pockets or null list */" : "l.id IS NULL /* only null list */";
+        $user_id = wa()->getUser()->getId();
+        $list_sql = $this->filterAccess($user_id);
 
         $q = "SELECT 
                 c.id id,
@@ -48,7 +69,7 @@ class pocketlistsCommentModel extends waModel
             LIMIT {$start}, {$limit}";
 
         $comments = $this->query($q, array(
-            'list_ids' => $lists,
+            'list_ids' => $this->lists[$user_id],
             'start'    => $start,
             'limit'    => $limit,
         ))->fetchAll();
@@ -58,18 +79,20 @@ class pocketlistsCommentModel extends waModel
 
     public function getLastActivityComments($user_last_activity)
     {
-        $lists = pocketlistsRBAC::getAccessListForContact();
-        $list_sql = $lists ? " AND (l.id IN (i:list_ids) OR l.id IS NULL) /* only accessed pockets or null list */" : " AND l.id IS NULL /* only null list */";
+        $user_id = wa()->getUser()->getId();
+        $list_sql = $this->filterAccess($user_id);
 
         $q = "SELECT 
                 c.id
             FROM {$this->table} c
             LEFT JOIN pocketlists_item as i ON i.id = c.item_id
-            JOIN pocketlists_list as l ON l.id = i.list_id {$list_sql}
-            WHERE c.create_datetime > s:user_last_activity";
+            left JOIN pocketlists_list as l ON l.id = i.list_id 
+            WHERE
+              {$list_sql} 
+              AND c.create_datetime > s:user_last_activity";
 
         return $this->query($q, array(
-            'list_ids'           => $lists,
+            'list_ids'           => $this->lists[$user_id],
             'user_last_activity' => $user_last_activity,
         ))->count();
     }

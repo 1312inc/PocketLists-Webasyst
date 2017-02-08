@@ -1,5 +1,6 @@
 <?php
 
+//todo: save state
 class pocketlistsRBAC
 {
     const ADMIN_VALUE = 2;
