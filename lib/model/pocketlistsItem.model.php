@@ -133,7 +133,7 @@ class pocketlistsItemModel extends waModel
                 WHERE
                 (
                   (i.assigned_contact_id = i:contact_id) /* + items assigned to me */
-                  OR i.priority > 0 /* + items with priority */
+                  OR (i.priority > 0 AND (i.list_id IS NOT NULL OR i.key_list_id IS NOT NULL)) /* + items with priority */
                   OR
                   (
                     /*((i.due_date IS NOT NULL OR i.due_datetime IS NOT NULL) AND i.list_id IS NULL AND i.key_list_id IS NULL AND i.contact_id = 7)
