@@ -261,6 +261,38 @@
                 }
             });
         },
+        enable_prevent_close_browser: function ($el, msg) {
+            var self = this;
+            self.$core_sidebar.find('a').each(function (e) {
+                 if (!$(this).data('pl2-onbeforeunload')) {
+                     $(this).on('click.pl2', function(e) {
+                         var msg = msg || $_('Leave?');
+                         if ($el) {
+                             $el.data('can_blur', false);
+                         }
+                         if (!confirm(msg)) {
+                             e.preventDefault();
+                             e.stopPropagation();
+                         } else {
+                             self.disable_prevent_close_browser();
+                         }
+                     });
+                 }
+            }).data('pl2-onbeforeunload', true);
+
+            msg = msg || $_('Close?');
+            window.onbeforeunload = function(e) {
+                if ($el) {
+                    $el.data('can_blur', false);
+                }
+                return msg;
+            };
+        },
+        disable_prevent_close_browser: function () {
+            var self = this;
+            self.$core_sidebar.find('a').off('click.pl2').removeData('pl2-onbeforeunload');
+            window.onbeforeunload = function(e) {};
+        },
         init: function (o) {
             $.pocketlists_routing.init();
 

@@ -680,19 +680,6 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
         );
     };
 
-    var enable_prevent_close_browser = function ($el) {
-        window.onbeforeunload = function(e) {
-            if ($el) {
-                $el.data('can_blur', false);
-            }
-            return $_('Close?');
-        };
-    };
-
-    var disable_prevent_close_browser = function () {
-        window.onbeforeunload = function(e) {};
-    };
-
     /**
      * for new item dom manipulating
      */
@@ -737,13 +724,13 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                 })
                 .on('keydown', function (e) {
                     var $this = $(this);
-                    enable_prevent_close_browser($this);
+                    $.pocketlists.enable_prevent_close_browser($this);
                     $this
                         .data('can_blur', true)
                         .removeClass('pl-unsaved');
                     if (!e.shiftKey && e.which === 13) {
                         e.preventDefault();
-                        disable_prevent_close_browser();
+                        $.pocketlists.disable_prevent_close_browser();
                         var parent_id = $this.closest('.menu-v').find(item_selector).first().data('parent-id'),
                             name = $this.val().trim();
                         if (name) {
@@ -754,7 +741,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                         }
                     } else if (e.which === 27) {
                         $this.data('can_blur', false);
-                        disable_prevent_close_browser();
+                        $.pocketlists.disable_prevent_close_browser();
                         hide_new_item_wrapper();
                     }
                 })
@@ -783,7 +770,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                 })
                 .on('focus', function () {
                     var $this = $(this);
-
+                    $.pocketlists.disable_prevent_close_browser();
                     $this
                         .data('can_blur', true)
                         .removeClass('pl-unsaved');
@@ -795,10 +782,10 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
 
                     if (can_blur) {
                         if (name) {
-                            enable_prevent_close_browser($this);
+                            $.pocketlists.enable_prevent_close_browser($this);
                             $this.addClass('pl-unsaved');
                         } else {
-                            disable_prevent_close_browser();
+                            $.pocketlists.disable_prevent_close_browser();
                             hide_new_item_wrapper();
                         }
                     }
@@ -1243,13 +1230,13 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                     comment = $this.val().trim();
                 if (comment) {
                     $this.addClass('pl-unsaved');
-                    enable_prevent_close_browser();
+                    $.pocketlists.enable_prevent_close_browser();
                 }
             })
             .on('focus', '.pl-chat .pl-reply textarea', function(e) {
                 var $this = $(this);
                 $this.removeClass('pl-unsaved');
-                disable_prevent_close_browser();
+                $.pocketlists.disable_prevent_close_browser();
             })
             .on('click', '[data-pl-action="comment-delete"]', function (e) {
                 e.preventDefault();
