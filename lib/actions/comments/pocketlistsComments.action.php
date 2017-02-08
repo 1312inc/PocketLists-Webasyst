@@ -14,15 +14,17 @@ class pocketlistsCommentsAction extends waViewAction
 
         $comment_model = new pocketlistsCommentModel();
         $comments = $comment_model->getComments($offset * self::DEFAULT_OFFSET, self::DEFAULT_OFFSET);
-        $comments = array_map(array($this, 'markAsNew'), $comments);
+        $comments = array_map(array($this, 'markAsNewAndMatchLinks'), $comments);
         $this->view->assign('comments', $comments);
 
 //        pocketlistsActivity::setUserActivity(wa()->getUser()->getId(), true);
     }
 
-    private function markAsNew($comment)
+    private function markAsNewAndMatchLinks($comment)
     {
         $comment['new'] = strtotime($comment['create_datetime']) > strtotime($this->last_activity);
+        $comment['comment'] = pocketlistsNaturalInput::matchLinks($comment['comment']);
+
         return $comment;
     }
 }
