@@ -4,11 +4,11 @@
     </div>
 
     <div class="block" data-pl-comments="latest-discussions">
-        {foreach $comments as $comment}
         <div class="pl-chat">
+        {foreach $comments as $comment}
             {include '../comment/Comment.html' comment=$comment comment_page=true inline}
-        </div>
         {/foreach}
+        </div>
     </div>
     <div class="block lazyloading" style="display: none;">
         [`Loading...`] <i class="icon16 loading"></i>
@@ -98,7 +98,7 @@
             $(this).closest('.pl-reply').hide();
         };
 
-        $('[data-pl="comments"]')
+        $w
                 .on('click', '[data-pl-action="comment-reply"]', function (e) {
                     e.preventDefault();
                     var $comment_wrapper = $(this).closest('[data-pl-comment-id]'),

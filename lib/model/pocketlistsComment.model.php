@@ -30,7 +30,7 @@ class pocketlistsCommentModel extends waModel
     public function getComments($start = 0, $limit = 50)
     {
         $lists = pocketlistsRBAC::getAccessListForContact();
-        $list_sql = $lists ? " AND (l.id IN (i:list_ids) OR l.id IS NULL) /* only accessed pockets or null list */" : " AND l.id IS NULL /* only null list */";
+        $list_sql = $lists ? "(l.id IN (i:list_ids) OR l.id IS NULL) /* only accessed pockets or null list */" : "l.id IS NULL /* only null list */";
 
         $q = "SELECT 
                 c.id id,
@@ -42,7 +42,8 @@ class pocketlistsCommentModel extends waModel
                 c.create_datetime create_datetime
             FROM {$this->table} c
             LEFT JOIN pocketlists_item as i ON i.id = c.item_id
-            JOIN pocketlists_list as l ON l.id = i.list_id {$list_sql}
+            LEFT JOIN pocketlists_list as l ON l.id = i.list_id
+            WHERE {$list_sql}
             ORDER BY id DESC
             LIMIT {$start}, {$limit}";
 
