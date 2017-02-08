@@ -1,7 +1,7 @@
 {if isset($current_teammate.name) && $print}
 <html>
 <head>
-    <title>{$list.name} &mdash; {$wa->accountName()}</title>
+    <title>{$current_teammate.name|default:' '|escape} &mdash; {$wa->accountName()}</title>
     <link type="text/css" rel="stylesheet" href="{$wa_app_static_url}css/pocketlists-print.css">
 </head>
 <body>

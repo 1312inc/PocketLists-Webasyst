@@ -135,10 +135,7 @@ input#pl-new-list-input,
 .pl-title h1 .loading { margin-left: 3px; margin-top: 8px; opacity: 0.5; }
 .pl-title h1.not-padded { padding-left: 0; }
 .pl-title h1 .pl-list-due { font-size: 1rem; display: block; margin-bottom: -10px; }
-.pl-title ul.menu-h { position: relative; z-index: 2; }
-.pl-title ul.menu-h li:hover { background: transparent; }
-.pl-title ul.menu-h li ul.menu-v { top: 75%; }
-.pl-title ul.menu-h li ul.menu-v li:hover { background: rgba(0,0,0,0.07); }
+.pl-title ul.menu-h { display: none; }
 
 .pl-list-favorite { margin-right: 0 !important; padding-right: 3px !important; }
 .pl-list-sort { display: inline-block !important; }
@@ -181,6 +178,7 @@ input#pl-new-list-input,
 
 .pl-label { font-size: 0.9em; border-radius: 4px; background: #aaa; color: #fff !important; padding: 1px 4px 2px !important; margin-right: 2px !important; line-height: 1.4em; vertical-align: top; margin-top: 1px; display: inline !important; font-weight: bold; text-decoration: none; }
 .pl-label:hover { color: #ffa !important; }
+.pl-list-content .pl-item-name .pl-label.pl-item-list-name { display: none !important; }
 
 .pl-attachments { padding-left: 0; }
 .pl-attachments li { padding-top: 10px !important; margin-bottom: 3px !important; list-style: none; word-break: break-all; }
