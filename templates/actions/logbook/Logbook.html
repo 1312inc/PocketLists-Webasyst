@@ -43,7 +43,7 @@
             this_is_the_end = false,
             html_selector = '[data-pl-items="undone"] > .menu-v';
 
-        $(window).on('scroll', function () {
+        $(window).on('scroll.pl2', function () {
             if (this_is_the_end) {
                 return;
             }

@@ -147,7 +147,7 @@
             this.dispatch();
         },
         preExecute: function () {
-
+            $(window).off('scroll.pl2');
         },
         postExecute: function () {
             $.pocketlists.reloadSidebar();
