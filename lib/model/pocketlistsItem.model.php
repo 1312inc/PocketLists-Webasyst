@@ -9,8 +9,13 @@ class pocketlistsItemModel extends waModel
         return $this->getLogbookItems($contact_id, $date_range);
     }
 
-    public function getLogbookItems($contact_id = false, $date_range = false, $completed = false, $start = 0, $limit = 50)
-    {
+    public function getLogbookItems(
+        $contact_id = false,
+        $date_range = false,
+        $completed = false,
+        $start = 0,
+        $limit = 50
+    ) {
         $by_user = '';
         if ($contact_id) {
             $by_user = 'AND i.complete_contact_id = i:contact_id';
@@ -67,12 +72,12 @@ class pocketlistsItemModel extends waModel
         $items = $this->query(
             $sql,
             array(
-                'contact_id' => wa()->getUser()->getId(),
-                'list_ids' => $lists,
-                'date_after' => !empty($date_range['after']) ? $date_range['after'] : '',
+                'contact_id'  => wa()->getUser()->getId(),
+                'list_ids'    => $lists,
+                'date_after'  => !empty($date_range['after']) ? $date_range['after'] : '',
                 'date_before' => !empty($date_range['before']) ? $date_range['before'] : '',
-                'start' => $start,
-                'limit' => $limit
+                'start'       => $start,
+                'limit'       => $limit,
             )
         )->fetchAll();
 
@@ -155,9 +160,10 @@ class pocketlistsItemModel extends waModel
                   (i.complete_datetime IS NULL), i.complete_datetime DESC";
 
         $items = $this->query($sql, array(
-            'list_ids' => $lists,
+            'list_ids'   => $lists,
             'contact_id' => $contact_id,
-            'date' => $date))->fetchAll();
+            'date'       => $date,
+        ))->fetchAll();
 
         $result = array(
             0 => array(),
@@ -168,7 +174,7 @@ class pocketlistsItemModel extends waModel
         }
         return array(
             0 => $this->getProperSort($result[0]),
-            1 => $result[1]
+            1 => $result[1],
         );
 //        return $this->getTree($items, true);
     }
@@ -244,9 +250,10 @@ class pocketlistsItemModel extends waModel
                   (i.complete_datetime IS NULL), i.complete_datetime DESC";
 
         $items = $this->query($sql, array(
-            'list_ids' => $lists,
-            'date' => $date,
-            'contact_id' => $contact_id))->fetchAll();
+            'list_ids'   => $lists,
+            'date'       => $date,
+            'contact_id' => $contact_id,
+        ))->fetchAll();
 
         $result = array(
             0 => array(),
@@ -257,7 +264,7 @@ class pocketlistsItemModel extends waModel
         }
         return array(
             0 => $this->getProperSort($result[0]),
-            1 => $result[1]
+            1 => $result[1],
         );
 //        return $this->getTree($items, true);
     }
@@ -272,7 +279,7 @@ class pocketlistsItemModel extends waModel
         }
 //        $items = parent::getById($id);
         $items = $this->query(
-            $this->getQuery()."WHERE i.id IN (i:id)",
+            $this->getQuery() . "WHERE i.id IN (i:id)",
             array('contact_id' => $user_id, 'id' => $ids)
         )->fetchAll();
 //        $items = $this->getItems($this->getQuery(), null, false);
@@ -458,9 +465,9 @@ class pocketlistsItemModel extends waModel
         $item['chat'] = array(
             'current_user' => array(
                 'username' => wa()->getUser()->getName(),
-                'userpic' => wa()->getUser()->getPhoto(20),
+                'userpic'  => wa()->getUser()->getPhoto(20),
             ),
-            'comments' => array()
+            'comments'     => array(),
         );
         if (empty($chat[$item['id']])) {
             return;
@@ -508,7 +515,7 @@ class pocketlistsItemModel extends waModel
 
     public function sortItems($list_id)
     {
-        $sql = $this->getQuery()."WHERE
+        $sql = $this->getQuery() . "WHERE
                   i.list_id = i:id
                   AND i.status = 0
                   ORDER BY i.id DESC
@@ -523,7 +530,7 @@ class pocketlistsItemModel extends waModel
                 $item['id'],
                 array(
                     'update_datetime' => date("Y-m-d H:i:s"),
-                    'sort' => $sort++
+                    'sort'            => $sort++,
                 )
             );
         }
@@ -650,19 +657,20 @@ class pocketlistsItemModel extends waModel
                   i.status,
                   (i.complete_datetime IS NULL), i.complete_datetime DESC";
         $items = $this->query($q, array(
-            'contact_id' => $contact_id,
-            'list_ids' => $lists,
-            'user_contact_id' => wa()->getUser()->getId()))->fetchAll();
+            'contact_id'      => $contact_id,
+            'list_ids'        => $lists,
+            'user_contact_id' => wa()->getUser()->getId(),
+        ))->fetchAll();
         $results = array(
             0 => array(),
-            1 => array()
+            1 => array(),
         );
         foreach ($items as $id => $item) {
             $results[$item['status']][$id] = $item;
         }
         return array(
             0 => $results[0],
-            1 => $results[1]
+            1 => $results[1],
         );
     }
 
@@ -712,7 +720,7 @@ class pocketlistsItemModel extends waModel
 
         $items = $this->query($q, array(
             'contact_id' => $contact_id,
-            'list_ids' => $lists
+            'list_ids'   => $lists,
         ))->fetchAll();
         foreach ($items as $id => $item) {
             $items[$id] = $this->extendItemData($item);
@@ -788,7 +796,7 @@ class pocketlistsItemModel extends waModel
         if ($icon !== false && $icon != pocketlistsUserSettings::ICON_NONE) {
             $count = $this->query($q, array(
                 'contact_id' => wa()->getUser()->getId(),
-                'list_ids'   => $lists
+                'list_ids'   => $lists,
             ))->count();
             return $count;
         } else {
