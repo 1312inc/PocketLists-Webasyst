@@ -266,7 +266,7 @@
             self.$core_sidebar.find('a').each(function (e) {
                  if (!$(this).data('pl2-onbeforeunload')) {
                      $(this).on('click.pl2', function(e) {
-                         var msg = msg || $_('Leave?');
+                         var msg = msg || $_('You are about to leave this page without saving your input. Are you sure?');
                          if ($el) {
                              $el.data('can_blur', false);
                          }

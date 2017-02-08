@@ -217,8 +217,8 @@ input#pl-new-list-input:hover,
 #pl-item-add textarea:hover { background: rgba(0,0,0,0.04); }
 input#pl-new-list-input:focus,
 #pl-item-add textarea:focus { background: rgba(0,0,0,0.06); }
-.pl-chat textarea { background: #fff; margin-left: 0px; border-radius: 5px; border: 1px solid rgba(0,0,0,0.1); padding-left: 8px; width: 70%; min-width: 150px; }
-.pl-unsaved { background: rgba(183,0,0,0.06) !impo2px 3px 0nt; color: #f55 !important; }
+.pl-chat textarea { background: #fff; margin-left: 0px; border-radius: 5px; border: 1px solid rgba(0,0,0,0.1); padding-left: 8px; width: 80%; min-width: 150px; }
+.pl-unsaved { background: rgba(183,0,0,0.06) !important; 2px 3px 0nt; color: #f55 !important; }
 
 .pl-title { padding: 25px 5px 15px 20px; }
 .pl-title h1 { padding-left: 29px; margin-bottom: 0.2em; line-height: 1.1em; padding-right: 22px; }
@@ -245,6 +245,7 @@ input#pl-new-list-input:focus,
 .pl-list-access h5 { margin-bottom: 10px; }
 .pl-list-access .profile { margin-bottom: 5px; }
 .pl-list-access .profile img { width: 32px; height: 32px; }
+.pl-list-access .profile .hint { line-height: 1.3em; }
 
 .pl-due-overdue { color: red; }
 .pl-due-today { color: #ca0; }
@@ -314,11 +315,9 @@ input#pl-new-list-input:focus,
 .pl-add-attachment-dropbox { border: 2px dashed rgba(0,0,0,0.2); padding: 20px; }
 .pl-add-attachment-dropbox .pl-attachments { padding-top: 0; }
 
-.pl-chat { padding: 13px 25px 15px 0px;}
-.pl-item-selected .pl-chat { display: block; }
-.pl-chat .pl-cue { margin-bottom: 13px; width: 100%; }
-.pl-chat .pl-cue .pl-cue-inner { width: 70%; font-size: 0.95em; }
-.pl-chat .pl-cue .pl-bubble { background: rgba(0,0,0,0.07); border-radius: 5px; padding: 6px 10px 7px; position: relative; line-height: 1.1em; }
+.pl-chat .pl-cue { margin-bottom: 23px; width: 100%; }
+.pl-chat .pl-cue .pl-cue-inner { width: 70%; }
+.pl-chat .pl-cue .pl-bubble { background: rgba(0,0,0,0.07); border-radius: 5px; padding: 10px; position: relative; line-height: 1.4em; }
 .pl-chat .pl-cue .pl-bubble-arrow {
   display: block;
   margin-top: 0;
@@ -337,10 +336,17 @@ input#pl-new-list-input:focus,
 .pl-chat .pl-cue.pl-my-cue .pl-bubble-arrow { border-top-color: #48b7f0; }
 .pl-chat .pl-cue.pl-my-cue .pl-bubble a { color: #fff !important; text-decoration: underline; }
 .pl-chat .userpic20 { margin-left: 7px; margin-top: 1px; }
-.pl-chat .pl-reply { margin-top: 20px; }
+.pl-chat .pl-reply { margin-top: 20px; margin-left: 30%; width: 70%; margin-bottom: 30px; }
 .pl-chat .pl-reply .userpic20 { margin-top: 1px; }
 .pl-chat .pl-delete-comment { color: #579; float: right; font-size: 1.2em; position: relative; top: -2px; right: 3px; text-decoration: none !important; }
 .pl-chat .pl-cue.pl-new-comment .pl-bubble { background: #ffd; }
+.pl-item .pl-chat { padding: 13px 25px 15px 0px; }
+.pl-item-selected .pl-chat { display: block; }
+.pl-item .pl-chat .pl-reply { margin-bottom: 0; }
+.pl-item .pl-chat textarea { font-size: 0.95em; }
+.pl-item .pl-chat .pl-cue { margin-bottom: 13px; }
+.pl-item .pl-chat .pl-cue .pl-cue-inner { font-size: 0.95em; }
+.pl-item .pl-chat .pl-cue .pl-bubble { padding: 7px 10px; }
 
 .pl-is-selected { display: none; }
 
