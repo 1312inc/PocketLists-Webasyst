@@ -37,9 +37,10 @@
 <div class="block">
     <h5 class="heading">
         {if pocketlistsRBAC::canCreateLists()}<a href="#/list/new/" class="count"><i class="icon16 add"></i></a>{/if}
-        [`Lists`]
+        <i class="icon16 darr"></i>[`Lists`]
     </h5>
 
+    {if count($lists)}
     <ul class="menu-v with-icons collapsible" data-pl-sidebar-block="lists">
         {foreach $lists as $l}
         <li data-pl-list-id="{$l.id}">
@@ -51,6 +52,11 @@
         </li>
         {/foreach}
     </ul>
+    {else}
+        <div class="block">
+            <p class="hint align-center">[`Create a to-do list and share it with your teammates.`]</p>
+        </div>
+    {/if}
 </div>
 {/if}
 
@@ -58,7 +64,7 @@
 {if pocketlistsRBAC::canAssign()}
 <div class="block">
     <h5 class="heading">
-        [`Team`]
+        <i class="icon16 darr"></i>[`Team`]
     </h5>
     {if count($team)}
         <ul class="menu-v with-icons collapsible" data-pl-sidebar-block="team">
@@ -75,7 +81,9 @@
             {/foreach}
         </ul>
     {else}
-        <p class="hint align-center"><br>[`Use <strong>Team app</strong> to invite your teammates.`]</p>
+        <div class="block">
+            <p class="hint align-center">{sprintf('[`Use <a href="%s">Team app</a> to invite teammates and to collaborate using the To-dos app: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/')}</p>
+        </div>
     {/if}
 </div>
 {/if}

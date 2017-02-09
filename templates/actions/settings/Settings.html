@@ -42,8 +42,24 @@
                   [`My to-dos`]
                 </div>
                 <div class="value no-shift">
+                    <label><input type="checkbox" disabled checked> [`To-dos I created`]</label>
+                    <br>
+                    <label class="small" style="margin-left: 20px;">
+                        <input type="checkbox"> [`Only important to-dos with manual priority or due date set`]
+                    </label>
+                </div>
+                <div class="value no-shift">
+                    <label><input type="checkbox" disabled checked> [`To-dos assigned to me by other users`]</label>
+                </div>
+
+                <div class="value no-shift">
+                    <label><input type="checkbox" checked> [`Important unassigned to-dos with manual priority or due date set (even if they were created by other users)`]</label>
+                </div>
+                {* <div class="value no-shift">
                     <label><input type="checkbox" disabled checked> [`Show important and scheduled to-dos that were not assigned to anyone`]</label>
-                    <p class="hint">[`My to-dos is your personal dynamic to-do list that automatically collects all to-dos assigned to you by either your teammates or yourself. Most important and urgent to-dos are on top. Additionally you can include all important and scheduled unassigned to-dos to be shown on your My to-dos list too — just to be sure not to miss any important to-do.`]<br><em>[`This setting is temporary unavailable in version 2.0. Coming soon.`]</em></p>
+                </div> *}
+                <div class="value no-shift">
+                    <p class="hint">[`My to-dos is your personal dynamic to-do list that automatically collects all to-dos which you are about to do up next: either to-dos you created yourself or to-dos assigned to you by your teammates. Most important and urgent to-dos are on top. Additionally you can choose to include all important and scheduled unassigned to-dos to be shown on your My to-dos list too — just to be sure not to miss any important to-do.`]</p>
                 </div>
               </div>
 

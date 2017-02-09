@@ -25,8 +25,15 @@
             </a>
         </div>
 
+        <h5 class="heading">{sprintf('[`%s’s to-dos (%d)`]', $current_teammate.name|default:' '|escape, count($items))}</h5>
+        <ul class="menu-v with-icons">
+            <li><a href="#" data-pl-action="list-email"><i class="icon16 email"></i> [`Email list`]</a></li>
+            <li><a href="?module=team&amp;teammate={$current_teammate.login|escape}&amp;print=true" target="_blank"><i class="icon16 print"></i> [`Print list`]</a></li>
+        </ul>
+
         {if count($lists)}
-            <h5 class="heading">[`Access`]</h5>
+            <br><br>
+            <h5 class="heading">[`Shared lists`] ({count($lists)})</h5>
             <ul class="menu-v with-icons" data-pl-sidebar-block="lists">
                 {foreach $lists as $l}
                 <li>
@@ -36,20 +43,14 @@
                 </li>
                 {/foreach}
             </ul>
-            <p class="hint">[`Use Team app to customize user access rights to lists.`]</p>
+            <p class="hint">{sprintf('[`Use Team app to <a href="%s">configure %s’s access</a> to shared lists: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/u/'|cat:$current_teammate.login|cat:'/', $current_teammate.name|default:' '|escape)}</p>
         {else}
-            <p class="gray align-center italic">{sprintf('[`%s does not have access to any to-do list.`]',$current_teammate.name|default:' '|escape)}</p>
+            <hr>
+            <p class="gray align-center">
+                {sprintf('[`You have no lists that you would share with %s in common. Use Team`]', $current_teammate.name|default:' '|escape)}
+                {sprintf('[`Use Team app to <a href="%s">configure %s’s access</a> to shared lists: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/u/'|cat:$current_teammate.login|cat:'/', $current_teammate.name|default:' '|escape)}
+            </p>
         {/if}
-
-
-
-        <hr>
-
-        <h5 class="heading">{sprintf('[`%s’s to-dos`]', $current_teammate.name|default:' '|escape)}</h5>
-        <ul class="menu-v with-icons">
-            <li><a href="#" data-pl-action="list-email"><i class="icon16 email"></i> [`Email list`]</a></li>
-            <li><a href="?module=team&amp;teammate={$current_teammate.login|escape}&amp;print=true" target="_blank"><i class="icon16 print"></i> [`Print list`]</a></li>
-        </ul>
 
     </div>
     {include '../../include/itemdetails.html' inline}

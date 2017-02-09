@@ -7,9 +7,9 @@ class pocketlistsRightConfig extends waRightConfig
 
     public function init()
     {
-        $this->addItem('cancreatetodos', _w('Can create to-dos'), 'always_enabled');
-        $this->addItem('cancreatelists', _w('Can create lists'), 'checkbox');
-        $this->addItem('canassign', _w('Can assign to-dos to teammates'), 'checkbox');
+        $this->addItem('cancreatetodos', _w('Can create to-dos to self'), 'always_enabled');
+        $this->addItem('cancreatelists', _w('Can create shared to-do lists'), 'checkbox');
+        $this->addItem('canassign', _w('Can see other users personal to-dos and assign to-dos to teammates'), 'checkbox');
 
         $list_model = new pocketlistsListModel();
         $items = array();
@@ -19,7 +19,7 @@ class pocketlistsRightConfig extends waRightConfig
         }
         $this->addItem(
             'list',
-            _w('Lists'),
+            _w('Shared lists'),
             'selectlist',
             array(
                 'items'    => $items,
