@@ -444,9 +444,11 @@ class pocketlistsItemModel extends waModel
             $item[$param] = pocketlistsNaturalInput::matchLinks($item[$param]);
         }
 
-        foreach ($item['chat']['comments'] as &$comment) {
-            $comment['comment_original'] = $comment['comment'];
-            $comment['comment'] = pocketlistsNaturalInput::matchLinks($comment['comment']);
+        if (isset($item['chat']['comments']) && is_array($item['chat']['comments'])) {
+            foreach ($item['chat']['comments'] as &$comment) {
+                $comment['comment_original'] = $comment['comment'];
+                $comment['comment'] = pocketlistsNaturalInput::matchLinks($comment['comment']);
+            }
         }
 
         return $item;

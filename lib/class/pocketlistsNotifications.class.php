@@ -408,6 +408,7 @@ class pocketlistsNotifications
                     case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_ITEM:
                         $im = new pocketlistsItemModel();
                         $item = $im->getById($comment['item_id']);
+                        $im->prepareOutput($item);
                         if ($item['list_id']) {
                             $list_ = $lm->getById($item['list_id']);
                             $list = array(
@@ -427,7 +428,7 @@ class pocketlistsNotifications
                             self::sendMail(
                                 array(
                                     'contact_id' => $user_id,
-                                    'subject' => 'string:💬 {sprintf("[`New comment on %s`]", str_replace(array("\r", "\n"), " ", $item.name)|truncate:32)}',
+                                    'subject' => 'string:💬 {sprintf("[`New comment on %s`]", str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:32)}',
                                     'body' => wa()->getAppPath('templates/mails/newcomment.html'),
                                     'variables' => array(
                                         'item' => $item,
@@ -443,6 +444,7 @@ class pocketlistsNotifications
                     case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_FAVORITE_ITEM:
                         $im = new pocketlistsItemModel();
                         $item = $im->getById($comment['item_id'], $user_id);
+                        $im->prepareOutput($item);
                         if ($item['list_id']) {
                             $list_ = $lm->getById($item['list_id']);
                             $list = array(
@@ -462,7 +464,7 @@ class pocketlistsNotifications
                             self::sendMail(
                                 array(
                                     'contact_id' => $user_id,
-                                    'subject' => 'string:💬 {sprintf("[`New comment on %s`]", str_replace(array("\r", "\n"), " ", $item.name)|truncate:32)}',
+                                    'subject' => 'string:💬 {sprintf("[`New comment on %s`]", str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:32)}',
                                     'body' => wa()->getAppPath('templates/mails/newcomment.html'),
                                     'variables' => array(
                                         'item' => $item,
@@ -478,6 +480,7 @@ class pocketlistsNotifications
                     case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_ANY_LIST_ITEM:
                         $im = new pocketlistsItemModel();
                         $item = $im->getById($comment['item_id']);
+                        $im->prepareOutput($item);
                         if ($item['list_id']) {
                             $list_ = $lm->getById($item['list_id']);
                             $list = array(
@@ -497,7 +500,7 @@ class pocketlistsNotifications
                             self::sendMail(
                                 array(
                                     'contact_id' => $user_id,
-                                    'subject' => 'string:💬 {sprintf("[`New comment on %s`]", str_replace(array("\r", "\n"), " ", $item.name)|truncate:32)}',
+                                    'subject' => 'string:💬 {sprintf("[`New comment on %s`]", str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:32)}',
                                     'body' => wa()->getAppPath('templates/mails/newcomment.html'),
                                     'variables' => array(
                                         'item' => $item,

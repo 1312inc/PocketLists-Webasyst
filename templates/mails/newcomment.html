@@ -1,4 +1,4 @@
-{sprintf('[`%s commented on <a href="%s">%s</a>`]', $by_username|escape, $backend_url|cat:$list.url, $item.name|truncate:64)}
+{sprintf('[`%s commented on <a href="%s">%s</a>`]', $by_username|escape, $backend_url|cat:$list.url, $item.name_original|escape|truncate:64)}
 <br>
 <blockquote style="background: #ffd; padding: 10px; border-radius: 5px; border: 1px solid #ddb; margin-left: 0; display: inline-block;">
 {$comment.comment|nl2br}
