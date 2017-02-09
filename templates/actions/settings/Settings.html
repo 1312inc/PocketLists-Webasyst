@@ -20,6 +20,46 @@
                 </div>
               </div>
 
+              <div class="field">
+                <div class="name nowrap">
+                  [`My to-dos`]
+                </div>
+                <div class="value no-shift">
+                    <label><input type="checkbox" disabled checked> [`My to-dos to self`]</label>
+                </div>
+                <div class="value no-shift">
+                    <label><input type="checkbox" disabled checked> [`To-dos assigned to me by other users`]</label>
+                </div>
+                {* <div class="value no-shift">
+                    <label><input type="checkbox" checked> [`All to-dos I added to shared lists`]</label>
+                </div>
+                <div class="value no-shift">
+                    <label><input type="checkbox" checked> [`All Green/Yellow/Red to-dos (even created by other users)`]</label>
+                </div> *}
+
+
+
+                <div class="value no-shift">
+                    <label><input type="checkbox" checked> [`To-dos created by me in shared lists`]</label>
+                    <select>
+                        <option>[`in just any list`]</option>
+                        <option>[`only in lists which I marked as favorite`]</option>
+                    </select>
+                </div>
+                <div class="value no-shift">
+                    <label><input type="checkbox" checked> [`To-dos created by other users in shared lists`]</label>
+                    <select>
+                        <option>[`only in lists which I marked as favorite`]</option>
+                        <option>[`all Green, Yellow, and Red to-dos from all lists`]</option>
+                    </select>
+                </div>
+
+                <div class="value no-shift">
+                    <p class="hint">[`My to-dos is your personal dynamic to-do list that automatically collects all to-dos which you are about to do up next. To-dos to self and to-dos assigned to you by your teammates are included in this list automatically. Most important and urgent to-dos are on top.`]</p>
+                    <p class="hint">[`Additionally, you can include other users’s to-dos to be shown on your My to-dos list , which is handy if you want to be sure not to miss any important to-do item, either it is an urgent to-do or a to-do list you follow.`]</p>
+                    <p class="hint">[`To-dos assigned to other users will be automatically hidden from your My to-dos list.`]</p>
+                </div>
+              </div>
 
               <div class="field">
                 <div class="name nowrap">
@@ -33,33 +73,7 @@
                         <option value="3" {if !empty($settings.app_icon) && $settings.app_icon == 3}selected="selected"{/if}>[`Reds + Yellows + Greens`]</option>
                         <option value="0" {if !empty($settings.app_icon) && $settings.app_icon == 0}selected="selected"{/if}>[`None`]</option>
                     </select>
-                    <p class="hint">[`Only unassigned to-dos and to-dos assigned to you will be counted in the app icon counter.`]</p>
-                </div>
-              </div>
-
-              <div class="field">
-                <div class="name nowrap">
-                  [`My to-dos`]
-                </div>
-                <div class="value no-shift">
-                    <label><input type="checkbox" disabled checked> [`To-dos I created`]</label>
-                    <br>
-                    <label class="small" style="margin-left: 20px;">
-                        <input type="checkbox"> [`Only important to-dos with manual priority or due date set`]
-                    </label>
-                </div>
-                <div class="value no-shift">
-                    <label><input type="checkbox" disabled checked> [`To-dos assigned to me by other users`]</label>
-                </div>
-
-                <div class="value no-shift">
-                    <label><input type="checkbox" checked> [`Important unassigned to-dos with manual priority or due date set (even if they were created by other users)`]</label>
-                </div>
-                {* <div class="value no-shift">
-                    <label><input type="checkbox" disabled checked> [`Show important and scheduled to-dos that were not assigned to anyone`]</label>
-                </div> *}
-                <div class="value no-shift">
-                    <p class="hint">[`My to-dos is your personal dynamic to-do list that automatically collects all to-dos which you are about to do up next: either to-dos you created yourself or to-dos assigned to you by your teammates. Most important and urgent to-dos are on top. Additionally you can choose to include all important and scheduled unassigned to-dos to be shown on your My to-dos list too — just to be sure not to miss any important to-do.`]</p>
+                    <p class="hint">[`The counter will count to-dos of the specified colors on your My to-dos list.`]</p>
                 </div>
               </div>
 
@@ -107,7 +121,7 @@
                 </div>
                 <div class="value no-shift">
                     <label>
-                        <input value="1" type="checkbox" name="email_assign_me" {if !empty($settings.email_assign_me)}checked="checked"{/if}> [`When someone assigns me a to-do`]
+                        <input value="1" type="checkbox" name="email_assign_me" {if !empty($settings.email_assign_me)}checked="checked"{/if}> [`When someone sends me a to-do`]
                     </label>
                 </div>
                 <div class="value no-shift">
