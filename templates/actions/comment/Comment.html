@@ -2,7 +2,7 @@
     <div class="pl-cue{if !empty($comment.my)} pl-my-cue{/if}{if !empty($comment.new) && empty($comment.my)} pl-new-comment{/if}">
         <div class="pl-cue-inner">
             <div class="pl-bubble">
-                {if $comment.my && $comment.can_be_deleted}<a href="#" class="pl-delete-comment" data-pl-action="comment-delete" title="[`Delete`]">&times;</a>{/if}
+                {if $comment.my && $comment.can_be_deleted && !(isset($archive) && $archive)}<a href="#" class="pl-delete-comment" data-pl-action="comment-delete" title="[`Delete`]">&times;</a>{/if}
                 {$comment.comment|nl2br}
 
             </div><span class="pl-bubble-arrow"></span>

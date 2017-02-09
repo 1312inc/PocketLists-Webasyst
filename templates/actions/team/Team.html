@@ -46,8 +46,8 @@
             <p class="hint">{sprintf('[`Use Team app to <a href="%s">configure %s’s access</a> to shared lists: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/u/'|cat:$current_teammate.login|cat:'/', $current_teammate.name|default:' '|escape)}</p>
         {else}
             <hr>
-            <p class="gray align-center">
-                {sprintf('[`You have no lists that you would share with %s in common. Use Team`]', $current_teammate.name|default:' '|escape)}
+            <p class="pl-teammate-nolists-disclaimer">
+                {sprintf('[`You have no lists that you would share with %s in common.`]', $current_teammate.name|default:' '|escape)}
                 {sprintf('[`Use Team app to <a href="%s">configure %s’s access</a> to shared lists: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/u/'|cat:$current_teammate.login|cat:'/', $current_teammate.name|default:' '|escape)}
             </p>
         {/if}

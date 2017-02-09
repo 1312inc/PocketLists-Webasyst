@@ -166,7 +166,7 @@
 
                 <input type="submit" class="button green" value="[`Save`]"  id="pl-item-details-save"/>
                 [`or`]
-                <a href="#" class="pl-item-details-cancel inline-link"><b><i>[`cancel`]</i></b></a>
+                <a href="#" class="pl-item-details-cancel">[`cancel`]</a>
 
                 <span class="error" style="display: none;">[`error`]</span>
                 <span class="success" style="display: none;">[`saved`]</span>
@@ -175,14 +175,15 @@
 
         </div>
     </div>
-    <a class="pl-link-box pl-delete-box align-center" href="#" data-pl-action="item-delete">
-        <i class="icon16 delete"></i> [`Delete to-do`]
-    </a>
+
 </form>
 <iframe id="pl-item-details-form-iframe" name="pl-item-details-form-iframe" style="display:none;"></iframe>
 </div>
 <div class="clear-both"></div>
 </div>
+<a class="pl-link-box pl-delete-box align-center" href="#" data-pl-action="item-delete">
+    <i class="icon16 delete"></i> [`Delete to-do`]
+</a>
 </div>
 
 {include '../../include/deleteitemdialog.html' inline}

@@ -50,6 +50,10 @@
 .pl-link-box.pl-delete-box:hover { background: #ffe3e3; }
 
 .pl-teammate-userpic { width: 144px; height: 144px; border: 3px solid #fff; margin-bottom: 20px; }
+.pl-teammate-nolists-disclaimer { font-size: 0.9em; color: #aaa; text-align: center; }
+.pl-teammate-nolists-disclaimer a { color: #888; }
+
+ul.menu-v.with-icons i.icon10.online { margin-top: 3px; }
 
 /* Pocket
 --------- */
@@ -383,8 +387,7 @@ input#pl-new-list-input:focus,
 .pl-details .pl-details-form.pl-none { background: #fff; }
 .pl-details-form-shader { background: rgba(0,0,0,0.1); padding: 15px 10px 15px 15px; }
 .pl-details.sticky .pl-details-form,
-.pl-details.sticky .pl-details-form-shader,
-#pl-list-details .pl-details-form-shader { position: absolute; top: 0; bottom: 0; left: 0; right: 0; }
+.pl-details.sticky .pl-details-form-shader { position: absolute; top: 0; bottom: 0; left: 0; right: 0; }
 
 .pl-details .fields.form { width: 100%; }
 .pl-details .fields.form .field-group { margin-top: 0; }

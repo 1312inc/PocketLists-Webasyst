@@ -62,7 +62,7 @@
         <span class="small bold {if $item.calc_priority == 0}pl-due-someday{elseif $item.calc_priority == 1}pl-due-tomorrow{elseif $item.calc_priority == 2}pl-due-today{elseif $item.calc_priority == 3}pl-due-overdue{/if}">{$item.due_date|wa_date:'humandate'}</span>
         {/if}
         {if $item.status != 1}
-            {if !empty($item.assigned_contact_id)}<strong class="hint"><br>{sprintf('[`Assigned to %s`]', $item.assigned_username|escape)}</strong>{/if}
+            {if !empty($item.assigned_contact_id)}<strong class="hint"><br>{$item.username|escape} &rarr; {$item.assigned_username|escape}</strong>{/if}
             {* <i class="icon16 userpic20" style="background-image: url({$item.assigned_userpic})" alt="{$item.assigned_username|escape}"></i> *}
             {if !empty($item.note)}<p class="hint">{$item.note|nl2br}</p>{/if}
             {if !empty($item.attachments)}
