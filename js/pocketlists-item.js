@@ -228,9 +228,9 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                     priority = Math.max(priority, this.priority);
                 });
                 // don't forget about list priority
-                var $list_due = o.list.$el.find('.pl-list-due');
-                if ($list_due.length) {
-                    list_priority = priority_class[$list_due.attr('class').match(/pl-list-due\s(pl-.*)/)[1]];
+                var $list_due = o.list.$el.find('[data-pl-list="due-date"]');
+                if ($list_due.length && $list_due.is(':visible')) {
+                    list_priority = priority_class[$list_due.attr('class').match(/bold\s(pl-.*)/)[1]];
                 }
 
                 $list_count.removeClass().addClass('count' + class_priority[Math.max(priority, list_priority)]);
