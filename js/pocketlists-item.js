@@ -747,12 +747,13 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                 })
                 .on('paste', function () {
                     var self = this,
-                        parent_id = $(this).closest('.menu-v').find(item_selector).first().data('parent-id');
+                        $self = $(self),
+                        parent_id = $self.closest('.menu-v').find(item_selector).first().data('parent-id');
 
-                    if (!$(this).val().length) {
+                    if (!$self.val().length) {
                         setTimeout(function () {
-                            var items = $textarea.val().split(/\n/);
-                            var data = [];
+                            var items = $self.val().split(/\n/),
+                                data = [];
                             if (items.length > 1) {
                                 for (var i = 0; i < items.length; i++) {
                                     var name = $.trim(items[i]);
