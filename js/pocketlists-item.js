@@ -980,7 +980,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                     var $dialog_confirm = $('#pl-dialog-delete-item-confirm');
 
                     if ($dialog_confirm.hasClass('dialog')) {
-                        $dialog_confirm.show();
+                        $('body').append($dialog_confirm.show());
                     } else {
                         $dialog_confirm.waDialog({
                             'height': '140px',
@@ -989,6 +989,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                             onLoad: function () {
                                 //var $d = $(this);
                                 //$d.find('h1').text($wrapper.find('input[name="item[name]"]').val());
+                                $('body').append($(this));
                             },
                             onSubmit: function (d) {
                                 if (request_in_action) {
@@ -1009,6 +1010,9 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                                     request_in_action = false;
                                 }, 'json');
                                 return false;
+                            },
+                            onClose: function() {
+                                $wrapper.append($(this));
                             }
                         });
                     }
