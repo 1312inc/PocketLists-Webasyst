@@ -18,7 +18,8 @@ class pocketlistsTodoDateAction extends waViewAction
         $this->view->assign('count_done_items', count($items[1]));
 
         $this->view->assign('date', $date);
-        $this->view->assign('timestamp', $date ? strtotime($date) : time());
+//        $this->view->assign('timestamp', $date ? strtotime($date) : (time() + 60 * 60 * 24));
+        $this->view->assign('timestamp', $date ? strtotime($date) : waDateTime::date('U', time() + 60 * 60 * 24, wa()->getUser()->getTimezone()));
 
         $us = new pocketlistsUserSettings();
         $stream_list_id = $us->getStreamInboxList();
