@@ -29,7 +29,6 @@ class pocketlistsCommentAddAction extends waViewAction
                 $last_id = $cm->insert($insert_data);
                 if ($last_id) {
                     $comment = $cm->getById($last_id);
-                    $comment['comment'] = pocketlistsNaturalInput::removeTags($comment['comment']);
                     $comment['comment'] = pocketlistsNaturalInput::matchLinks($comment['comment']);
 
                     $comment = pocketlistsCommentModel::extendData($comment);

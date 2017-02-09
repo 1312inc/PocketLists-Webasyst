@@ -440,7 +440,7 @@ class pocketlistsNaturalInput
         }
     }
 
-    public static function matchLinks($string)
+    public static function matchLinks($string, $encode = true)
     {
         $pattern = '(?i)\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:\'".,<>?«»“”‘’]))';
         $replace = array();
@@ -456,6 +456,9 @@ class pocketlistsNaturalInput
             $replace_key = "###{$i}1312{$now}WILLBEREPLACEDWITHLINK{$now}1312{$i}###";
             $string = str_replace($matches[1], $replace_key, $string);
             $replace[$replace_key] = self::replaceWithLink($matches[1]);
+        }
+        if ($encode) {
+            $string = htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
         }
         $string = str_replace(array_keys($replace), $replace,$string);
 

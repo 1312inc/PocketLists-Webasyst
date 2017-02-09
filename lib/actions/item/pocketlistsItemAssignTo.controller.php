@@ -27,6 +27,7 @@ class pocketlistsItemAssignToController extends waJsonController
                 if ($im->updateById($item['id'], $data)
                 ) {
                     $item = array_merge($item, $data);
+                    $item = $im->prepareOutput($item);
                     pocketlistsNotifications::notifyAboutNewAssign($item, wa()->getUser()->getName());
                     $this->response = $contact->getName();
                 } else {

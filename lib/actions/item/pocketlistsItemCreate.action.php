@@ -82,14 +82,6 @@ class pocketlistsItemCreateAction extends waViewAction
             }
 
             if ($inserted) {
-                pocketlistsNotifications::notifyAboutNewItems($inserted_items, $list);
-
-                if ($assign_contact) {
-                    foreach ($inserted_items as $item) {
-                        pocketlistsNotifications::notifyAboutNewAssign($item);
-                    }
-                }
-
                 switch ($filter) {
                     case 'favorites':
                         $ufm = new pocketlistsUserFavoritesModel();
@@ -106,6 +98,13 @@ class pocketlistsItemCreateAction extends waViewAction
                 $items = $im->extendItemData($items);
                 if (isset($items['id'])) {
                     $items = array($items);
+                }
+
+                pocketlistsNotifications::notifyAboutNewItems($items, $list);
+                if ($assign_contact) {
+                    foreach ($items as $item) {
+                        pocketlistsNotifications::notifyAboutNewAssign($item);
+                    }
                 }
 
                 // log this action

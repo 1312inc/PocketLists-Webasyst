@@ -1,8 +1,8 @@
-{sprintf('[`There are new items on <a href="%s">%s</a> to-do list:`]', $backend_url|cat:$list_url, $list_name|escape)}
+{sprintf('[`There are new items on <a href="%s">%s</a> to-do list:`]', $backend_url|cat:$list_url, $list_name)}
 <br>
 <br>
 {foreach $items as $item}
-{sprintf('[`<strong>%s</strong> by %s`]', $item.name|escape|nl2br, $item.contact_name|escape)}<br>
+{sprintf('[`<strong>%s</strong> by %s`]', $item.name|nl2br, $item.contact_name|escape)}<br>
 {/foreach}
 <br>
 --<br>

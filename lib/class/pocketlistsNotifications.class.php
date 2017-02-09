@@ -44,7 +44,7 @@ class pocketlistsNotifications
         $lm = new pocketlistsListModel();
         $im = new pocketlistsItemModel();
 
-        $subject = 'string:{if !$complete}❌{else}✅{/if} {str_replace(array("\r", "\n"), " ", $item.name)|truncate:64}';
+        $subject = 'string:{if !$complete}❌{else}✅{/if} {str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:64}';
         // todo: refactor
         foreach ($users as $user_id => $user) { // foreach user
             $filtered_items = array();
@@ -94,7 +94,7 @@ class pocketlistsNotifications
                         "SELECT item_id FROM {$ufm->getTableName()} WHERE contact_id = {$user_id}"
                     )->fetchAll('item_id');
                     foreach ($items as $item) {
-                        if (in_array($item['id'], array_keys($user_items)) &&
+                        if (array_key_exists($item['id'], $user_items) &&
                             $item['complete_contact_id'] != $user_id && (
                                 ($item['list_id'] && pocketlistsRBAC::canAccessToList($item['list_id'], $user_id)) || ( // not from NULL-list
                                     $item['list_id'] == null && ( // OR from NULL-list,
@@ -136,7 +136,7 @@ class pocketlistsNotifications
                         "SELECT i.key_list_id FROM {$ufm->getTableName()} uf JOIN pocketlists_item i ON uf.item_id = i.id AND i.key_list_id > 0 WHERE uf.contact_id = {$user_id}"
                     )->fetchAll('key_list_id');
                     foreach ($items as $item) {
-                        if (in_array($item['list_id'], array_keys($user_lists)) &&
+                        if (array_key_exists($item['list_id'], $user_lists) &&
                             $item['complete_contact_id'] != $user_id && (
                                 ($item['list_id'] && pocketlistsRBAC::canAccessToList($item['list_id'], $user_id)) || ( // not from NULL-list
                                     $item['list_id'] == null && ( // OR from NULL-list,
@@ -281,7 +281,7 @@ class pocketlistsNotifications
                         self::sendMail(
                             array(
                                 'contact_id' => $user_id,
-                                'subject' => 'string:⚪ {str_replace(array("\r", "\n"), " ", $item.name)|truncate:64}',
+                                'subject' => 'string:⚪ {str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:64}',
                                 'body' => wa()->getAppPath('templates/mails/newfavoritelistitem.html'),
                                 'variables' => array(
                                     'list_name' => $list ? $list['name'] : false,
@@ -315,7 +315,7 @@ class pocketlistsNotifications
                         self::sendMail(
                             array(
                                 'contact_id' => $user_id,
-                                'subject' => 'string:⚪ {str_replace(array("\r", "\n"), " ", $item.name)|truncate:64}',
+                                'subject' => 'string:⚪ {str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:64}',
                                 'body' => wa()->getAppPath('templates/mails/newitem.html'),
                                 'variables' => array(
                                     'list_name' => $list ? $list['name'] : false,
@@ -350,10 +350,10 @@ class pocketlistsNotifications
         self::sendMail(
             array(
                 'contact_id' => $contact->getId(),
-                'subject' => 'string:✊ {str_replace(array("\r", "\n"), " ", $item_name)|truncate:64}',
+                'subject' => 'string:✊ {str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:64}',
                 'body' => wa()->getAppPath('templates/mails/newassignitem.html'),
                 'variables' => array(
-                    'item_name' => $item['name'],
+                    'item' => $item,
                     'due_date' => !empty($item['due_datetime']) ? waDateTime::format('humandatetime', $item['due_datetime'], $contact->getTimezone()) : (!empty($item['due_date']) ? waDateTime::format('humandate', $item['due_date'], $contact->getTimezone()) : false),
                     'list' => $list,
                     'by_username' => $by_username
@@ -427,7 +427,7 @@ class pocketlistsNotifications
                             self::sendMail(
                                 array(
                                     'contact_id' => $user_id,
-                                    'subject' => 'string:💬 {sprintf("[`New comment on %s`]", str_replace(array("\r", "\n"), " ", $item.name)|escape|truncate:32)}',
+                                    'subject' => 'string:💬 {sprintf("[`New comment on %s`]", str_replace(array("\r", "\n"), " ", $item.name)|truncate:32)}',
                                     'body' => wa()->getAppPath('templates/mails/newcomment.html'),
                                     'variables' => array(
                                         'item' => $item,
@@ -462,7 +462,7 @@ class pocketlistsNotifications
                             self::sendMail(
                                 array(
                                     'contact_id' => $user_id,
-                                    'subject' => 'string:💬 {sprintf("[`New comment on %s`]", str_replace(array("\r", "\n"), " ", $item.name)|escape|truncate:32)}',
+                                    'subject' => 'string:💬 {sprintf("[`New comment on %s`]", str_replace(array("\r", "\n"), " ", $item.name)|truncate:32)}',
                                     'body' => wa()->getAppPath('templates/mails/newcomment.html'),
                                     'variables' => array(
                                         'item' => $item,
@@ -497,7 +497,7 @@ class pocketlistsNotifications
                             self::sendMail(
                                 array(
                                     'contact_id' => $user_id,
-                                    'subject' => 'string:💬 {sprintf("[`New comment on %s`]", str_replace(array("\r", "\n"), " ", $item.name)|escape|truncate:32)}',
+                                    'subject' => 'string:💬 {sprintf("[`New comment on %s`]", str_replace(array("\r", "\n"), " ", $item.name)|truncate:32)}',
                                     'body' => wa()->getAppPath('templates/mails/newcomment.html'),
                                     'variables' => array(
                                         'item' => $item,

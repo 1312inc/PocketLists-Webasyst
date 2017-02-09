@@ -305,7 +305,7 @@ class pocketlistsItemModel extends waModel
                 $item['assigned_contact_id'] != wa()->getUser()->getId() && // do not email if I assign myself
                 $item['assigned_contact_id'] != $old_item['assigned_contact_id']
             ) { // assigned id is updated
-                pocketlistsNotifications::notifyAboutNewAssign($item, wa()->getUser()->getName());
+                pocketlistsNotifications::notifyAboutNewAssign($this->prepareOutput($item), wa()->getUser()->getName());
             }
             return true;
         }
@@ -437,17 +437,19 @@ class pocketlistsItemModel extends waModel
         return ($is_array || !$items) ? $items : reset($items);
     }
 
-    private function prepareOutput(&$item)
+    public function prepareOutput(&$item)
     {
         foreach (array('name', 'note') as $param) {
-            $item[$param] = pocketlistsNaturalInput::removeTags($item[$param]);
+            $item[$param . '_original'] = $item[$param];
             $item[$param] = pocketlistsNaturalInput::matchLinks($item[$param]);
         }
 
         foreach ($item['chat']['comments'] as &$comment) {
-            $comment['comment'] = pocketlistsNaturalInput::removeTags($comment['comment']);
+            $comment['comment_original'] = $comment['comment'];
             $comment['comment'] = pocketlistsNaturalInput::matchLinks($comment['comment']);
         }
+
+        return $item;
     }
 
     private function addPriorityData(&$item)
