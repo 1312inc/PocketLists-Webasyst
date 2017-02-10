@@ -970,7 +970,7 @@ msgstr "Мои задачи — это ваш персональный филь�
 
 #: /wa-apps/pocketlists/templates/actions/settings/Settings.html:59
 msgid "Additionally, you can include other users’s to-dos to be shown on your My to-dos list , which is handy if you want to be sure not to miss any important to-do item, either it is an urgent to-do or a to-do list you follow."
-msgstr "Дополнительно вы можете включить в фильтр задачи, созданных другими пользователями. Это удобно, если вы следите за выполнением важных запланированных задач или задач из отдельных избранных списков."
+msgstr "Дополнительно вы можете включить в фильтр задачи, созданные другими пользователями. Это удобно, если вы следите за выполнением важных запланированных задач или задач из отдельных избранных списков."
 
 #: /wa-apps/pocketlists/templates/actions/settings/Settings.html:60
 msgid "To-dos assigned to other users will be automatically hidden from your My to-dos list."
@@ -1071,7 +1071,7 @@ msgstr "отправил задачу пользователю"
 
 #: /wa-apps/pocketlists/lib/config/app.php:3
 msgid "To-dos"
-msgstr "Задачи"
+msgstr "Дела"
 
 #: /wa-apps/pocketlists/lib/config/pocketlistsRightConfig.class.php:10
 msgid "Can create to-dos to self"
@@ -1084,3 +1084,14 @@ msgstr "Создание новых общих списков дел"
 #: /wa-apps/pocketlists/lib/config/pocketlistsRightConfig.class.php:12
 msgid "Can see other users personal to-dos and assign to-dos to teammates"
 msgstr "Просмотр персональных задач других пользователей, назначение задач другим пользователям"
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:36
+msgid "in any to-do list"
+msgstr "в любых списках"
+
+#: /wa-apps/pocketlists/templates/actions/team/Team.html:42
+msgid "%d to-do"
+msgid_plural "%d to-dos"
+msgstr[0] "%d задача"
+msgstr[1] "%d задачи"
+msgstr[2] "%d задач"

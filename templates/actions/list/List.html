@@ -69,13 +69,10 @@
     </a>
 
     {else}
-    <div class="block">
-        <div>
-            <a href="#" data-pl-action="list-unarchive" class="bold"><i class="icon16 pl archive"></i> [`Unarchive list`]</a>
-        </div>
-        <div>
-            <a href="#" data-pl-action="list-delete"><i class="icon16 delete"></i> [`Delete`]</a>
-        </div>
+
+        {* you are not supposed to be here! making a rogue redirect to #/archive/ using JS *}
+        <script>window.location='#/archive/'+{$list.id}+'/';</script>
+
     {/if}
     </div>
 {/if}

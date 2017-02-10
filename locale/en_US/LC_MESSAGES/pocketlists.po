@@ -1083,3 +1083,13 @@ msgstr ""
 #: /wa-apps/pocketlists/lib/config/pocketlistsRightConfig.class.php:12
 msgid "Can see other users personal to-dos and assign to-dos to teammates"
 msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:36
+msgid "in any to-do list"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/team/Team.html:42
+msgid "%d to-do"
+msgid_plural "%d to-dos"
+msgstr[0] ""
+msgstr[1] ""
