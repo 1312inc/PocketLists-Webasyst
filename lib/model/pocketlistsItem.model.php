@@ -737,20 +737,10 @@ class pocketlistsItemModel extends waModel
         $us = new pocketlistsUserSettings();
         $icon = $us->appIcon();
 
-        $list_sql = "";
         $lists = array();
         // if user is admin - show all completed items
         // else only items user has access and null list items
-        if (!pocketlistsRBAC::isAdmin()) {
-            $lists = pocketlistsRBAC::getAccessListForContact();
-            // only accessed pockets or null list items which are created or completed by user
-//            $pocket_rights = "AND (
-//                    p.id IN (i:pocket_ids)
-//                    OR (p.id IS NULL AND (i.contact_id = i:contact_id OR i.complete_contact_id = i:contact_id)
-//                  )";
-            // only accessed pockets or null list items
-            $list_sql = $lists ? " AND (l.id IN (i:list_ids) OR l.id IS NULL) " : " AND l.id IS NULL ";
-        }
+        $list_sql = pocketlistsRBAC::filterListAccess($lists);
 
         $now = @waDateTime::parse('Y-m-d H:i:s', waDateTime::date('Y-m-d H:i:s'));
         $today = date("Y-m-d");
@@ -795,7 +785,7 @@ class pocketlistsItemModel extends waModel
             AND i.status = 0
             AND (i.assigned_contact_id = i:contact_id OR i.assigned_contact_id IS NULL OR i.assigned_contact_id = 0) /* ONLY assigned to me or noone */
             {$colors} /* selected option */
-            {$list_sql}";
+            AND {$list_sql}";
 
         if ($icon !== false && $icon != pocketlistsUserSettings::ICON_NONE) {
             $count = $this->query($q, array(

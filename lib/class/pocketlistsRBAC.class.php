@@ -7,6 +7,7 @@ class pocketlistsRBAC
     const ACCESS_VALUE = 1;
 
     private static $access_rights = array();
+    private static $lists = array();
 
     /**
      * Return all list ids accessible for given user
@@ -128,5 +129,36 @@ class pocketlistsRBAC
     {
         $user = $user_id ? new waContact($user_id) : wa()->getUser();
         return $user->getRights(pocketlistsHelper::APP_ID, 'backend') === 1 || $user->getRights(pocketlistsHelper::APP_ID, 'cancreatetodos');
+    }
+
+    // todo: криво (sql код)
+    public static function filterListAccess(&$lists, $user_id = false)
+    {
+        $user_id = $user_id ? (int) $user_id : wa()->getUser()->getId();
+        $list_sql = null;
+        self::$lists[$user_id] = array();
+        if (!self::isAdmin($user_id)) {
+//            if (self::canAccess()) {
+//            }
+            if (self::$lists[$user_id] = self::getAccessListForContact($user_id)) {
+                $list_sql[] = "l.id IN (i:list_ids) /* accessed lists*/";
+            }
+            if (self::canAssign($user_id)) {
+                $list_sql[] = "(l.id IS NULL /* null list */";
+            }
+        } else {
+            $list_sql = '1';
+        }
+
+        if (is_array($list_sql)) {
+            $list_sql = '(' . implode(' OR ', $list_sql) . ')';
+        } elseif ($list_sql) {
+            $list_sql = '(' . $list_sql . ')';
+        } else {
+            $list_sql = "(l.id IS NULL /* null list */ AND i.contact_id = {$user_id} /* other null lists */)";
+        }
+
+        $lists = self::$lists[$user_id];
+        return $list_sql;
     }
 }
