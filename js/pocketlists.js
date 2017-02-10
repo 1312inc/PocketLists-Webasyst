@@ -132,6 +132,7 @@
 
             $.get("?module=backend&action=sidebar", function (result) {
                 $('#pl-sidebar-core').html(result);
+                self.initCollapse();
                 self.highlightSidebar();
                 self.sortLists();
             });
@@ -293,6 +294,39 @@
             self.$core_sidebar.find('a').off('click.pl2').removeData('pl2-onbeforeunload');
             window.onbeforeunload = function(e) {};
         },
+        collapse: function (action) {
+            var $this = $(this),
+                data = $this.data('pl-collapsible'),
+                $wrapper = $('[data-pl-collapsible-wrapper="' + data + '"]');
+
+            if ($wrapper.length && action) {
+                action = action === true ? ($wrapper.is(':visible') ? 'hide' : 'show') : action;
+                if (action == 'show') {
+                    $wrapper.show();
+                    $this.addClass('darr').removeClass('uarr');
+                } else if (action == 'hide') {
+                    $wrapper.hide();
+                    $this.addClass('uarr').removeClass('darr');
+                }
+                $.storage.set('pocketlists/collapsible/' + data, action);
+            }
+        },
+        initCollapse: function () {
+            var self = this;
+            $('[data-pl-collapsible]')
+                .off('click.pl2')
+                .on('click.pl2', function (e) {
+                    e.preventDefault();
+                    self.collapse.call(this, true);
+                })
+                .each(function () {
+                    var $this = $(this),
+                        data = $this.data('pl-collapsible'),
+                        action = $.storage.get('pocketlists/collapsible/' + data);
+
+                    self.collapse.call(this, action);
+                });
+        },
         init: function (o) {
             $.pocketlists_routing.init();
 
@@ -301,10 +335,11 @@
             self.$core_sidebar = $('#pl-sidebar-core');
             self.options = $.extend({}, self.defaults, o);
 
+            self.initCollapse();
             // self.highlightSidebar();
             // self.sortLists();
 
-            $('#wa-app').on('click', '[data-pl-scroll-to-top] a', function () {
+            $('#wa-app').on('click.pl2', '[data-pl-scroll-to-top] a', function () {
                 self.scrollToTop(0, 80);
             });
         }

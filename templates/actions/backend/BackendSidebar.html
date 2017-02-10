@@ -37,11 +37,11 @@
 <div class="block">
     <h5 class="heading">
         {if pocketlistsRBAC::canCreateLists()}<a href="#/list/new/" class="count"><i class="icon16 add"></i></a>{/if}
-        <i class="icon16 darr"></i>[`Lists`]
+        {if $lists && count($lists) > 10}<i class="icon16 darr" data-pl-collapsible="lists"></i>{/if}[`Lists`]
     </h5>
 
     {if count($lists)}
-    <ul class="menu-v with-icons collapsible" data-pl-sidebar-block="lists">
+    <ul class="menu-v with-icons collapsible" data-pl-sidebar-block="lists" data-pl-collapsible-wrapper="lists">
         {foreach $lists as $l}
         <li data-pl-list-id="{$l.id}">
             <a href="#/list/{$l.id}/">
@@ -64,10 +64,10 @@
 {if pocketlistsRBAC::canAssign()}
 <div class="block">
     <h5 class="heading">
-        <i class="icon16 darr"></i>[`Team`]
+        {if $team && count($team) > 10}<i class="icon16 darr" data-pl-collapsible="team"></i>{/if}[`Team`]
     </h5>
     {if count($team)}
-        <ul class="menu-v with-icons collapsible" data-pl-sidebar-block="team">
+        <ul class="menu-v with-icons collapsible" data-pl-sidebar-block="team" data-pl-collapsible-wrapper="team">
             {foreach $team as $team_id => $teammate}
             <li data-pl-team-id="{$teammate.id}">
                 <a href="#/team/{$teammate.login|escape}/">
