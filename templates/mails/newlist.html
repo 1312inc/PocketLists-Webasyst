@@ -1,4 +1,4 @@
-{sprintf('[`%s have just created a new to-do list <strong><a href="%s">%s</a></strong>`]', $by|escape, $backend_url|cat:$list_url, $list_name)}
+{sprintf('[`%s have just created a new to-do list <strong><a href="%s">%s</a></strong>`]', $by|escape, $backend_url|cat:$list_url, $list_name|escape:'html')}
 <br><br>
 --<br>
 {$wa->accountName()}<br>

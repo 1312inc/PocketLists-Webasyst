@@ -1,4 +1,4 @@
-{sprintf('[`There are new items on <a href="%s">%s</a> to-do list:`]', $backend_url|cat:$list_url, $list_name)}
+{sprintf('[`There are new items on <a href="%s">%s</a> to-do list:`]', $backend_url|cat:$list_url, $list_name|escape:'html')}
 <br>
 <br>
 {foreach $items as $item}
