@@ -7,7 +7,7 @@ class pocketlistsBackendSidebarAction extends waViewAction
         $this->view->assign('sidebar_todo_count', wa('pocketlists')->getConfig()->onCount());
 
         $list_model = new pocketlistsListModel();
-        $this->view->assign('lists', $list_model->getAllActiveLists());
+        $this->view->assign('lists', $list_model->getLists());
 
         $teammates = pocketlistsHelper::getTeammates(pocketlistsRBAC::getAccessContacts());
         $this->view->assign('team', $teammates);

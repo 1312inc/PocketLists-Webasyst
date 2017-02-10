@@ -88,6 +88,12 @@ class pocketlistsListModel extends waModel
     public function getLists($check_access = true)
     {
         $lists = $this->getAllActiveLists($check_access);
+        $lists = $this->calculatePriority($lists);
+        return $lists;
+    }
+
+    public function calculatePriority($lists)
+    {
         foreach ($lists as $id => &$list) {
             $lists[$id]['calc_priority'] = max(pocketlistsHelper::calcPriorityOnDueDate($list['min_due_date'], $list['min_due_datetime']), $list['max_priority']);
         }
