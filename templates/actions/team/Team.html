@@ -39,6 +39,7 @@
                 <li>
                     <a href="#/list/{$l.id}/">
                         <i class="icon16 listicon16" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l.icon|default:'li-list@2x.png'});"></i>{if $l.color != 'none'}<span class="pl-{$l.color}">{$l.name|escape}</span>{else}{$l.name|escape}{/if}
+                        <span class="count indicator" {if empty($l.assigned_items_count)}style="display:none"{/if}>{$l.assigned_items_count} to-dos</span>
                     </a>
                 </li>
                 {/foreach}

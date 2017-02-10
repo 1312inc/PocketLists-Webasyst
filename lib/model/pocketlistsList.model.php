@@ -32,6 +32,38 @@ class pocketlistsListModel extends waModel
         return count($id) === 1 ? reset($lists) : $lists;
     }
 
+    public function getTeamLists($id = false)
+    {
+        if (!$id) {
+            $id = wa()->getUser()->getId();
+        }
+        $list_ids = pocketlistsRBAC::getAccessListForContact($id);
+        $list_accessed = pocketlistsRBAC::getAccessListForContact();
+        $list_ids = array_intersect($list_ids, $list_accessed);
+
+        $lists = $this->query(
+            "SELECT
+              i.*,
+              l.*,
+              uf.contact_id favorite,
+              COUNT(i2.id) assigned_items_count
+            FROM {$this->table} l
+            LEFT JOIN pocketlists_item i ON i.key_list_id = l.id
+            LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
+            LEFT JOIN pocketlists_item i2 ON i2.list_id = l.id AND i2.assigned_contact_id = i:contact_id           
+            WHERE 
+              l.id IN (i:list_ids)
+            GROUP BY l.id
+            ORDER BY assigned_items_count DESC, l.sort, l.id DESC",
+            array(
+                'list_ids'   => $list_ids,
+                'contact_id' => $id,
+            )
+        )->fetchAll();
+
+        return $lists;
+    }
+
     public function add($data, $type = 0)
     {
         if ($inserted_list_id = $this->insert($data, $type)) {
