@@ -150,6 +150,10 @@ class pocketlistsRBAC
             $list_sql = '1';
         }
 
+        if (is_array($lists)) {
+            $lists = array_intersect(self::$lists[$user_id], $lists);
+        }
+
         if (is_array($list_sql)) {
             $list_sql = '(' . implode(' OR ', $list_sql) . ')';
         } elseif ($list_sql) {
