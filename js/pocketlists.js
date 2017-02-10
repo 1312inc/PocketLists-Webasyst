@@ -303,10 +303,10 @@
                 action = action === true ? ($wrapper.is(':visible') ? 'hide' : 'show') : action;
                 if (action == 'show') {
                     $wrapper.show();
-                    $this.addClass('darr').removeClass('uarr');
+                    $this.addClass('darr').removeClass('rarr');
                 } else if (action == 'hide') {
                     $wrapper.hide();
-                    $this.addClass('uarr').removeClass('darr');
+                    $this.addClass('rarr').removeClass('darr');
                 }
                 $.storage.set('pocketlists/collapsible/' + data, action);
             }
