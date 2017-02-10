@@ -46,8 +46,8 @@ class pocketlistsListModel extends waModel
               i.*,
               l.*,
               uf.contact_id favorite,
-              SUM(i2.contact_id = i:contact_id) created_items_count,
-              SUM(i2.assigned_contact_id = i:contact_id) assigned_items_count
+              SUM(i2.contact_id = i:contact_id AND i2.status = 0) created_items_count,
+              SUM(i2.assigned_contact_id = i:contact_id AND i2.status = 0) assigned_items_count
             FROM {$this->table} l
             LEFT JOIN pocketlists_item i ON i.key_list_id = l.id
             LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
