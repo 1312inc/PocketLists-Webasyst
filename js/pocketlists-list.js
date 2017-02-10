@@ -333,6 +333,10 @@ $.pocketlists.List = function ($list_wrapper, options) {
         }
     };
     var archiveList = function ($dialog) {
+        if (!$dialog && !confirm($_("Archiving the list will temporarily make this list and all it's items invisible. When you need this list in the future, simply unarchive it and continue from just where you stopped. Archive the list?"))) {
+            return;
+        }
+
         if (request_in_action) {
             return;
         }

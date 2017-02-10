@@ -23,6 +23,7 @@ class pocketlistsBackendLocAction extends waViewAction
                      'Are you sure you want to delete this file?',
                      'This will permanently delete this comment. Are you sure?',
                      'Assigned to',
+                     "Archiving the list will temporarily make this list and all it's items invisible. When you need this list in the future, simply unarchive it and continue from just where you stopped. Archive the list?",
                  ) as $s) {
             $strings[$s] = _w($s);
         }
