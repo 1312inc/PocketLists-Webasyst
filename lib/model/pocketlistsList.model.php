@@ -40,7 +40,7 @@ class pocketlistsListModel extends waModel
 //        $list_ids = pocketlistsRBAC::getAccessListForContact($id);
         $list_accessed = pocketlistsRBAC::getAccessListForContact();
 //        $list_ids = array_intersect($list_ids, $list_accessed);
-        $list_sql = pocketlistsRBAC::filterListAccess($list_accessed, $id);
+        $list_sql = pocketlistsRBAC::filterListAccess($list_accessed);
 
         $lists = $this->query(
             "SELECT
