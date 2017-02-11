@@ -141,10 +141,10 @@ class pocketlistsRBAC
 //            if (self::canAccess()) {
 //            }
             if (self::$lists[$user_id] = self::getAccessListForContact($user_id)) {
-                $list_sql[] = "l.id IN (i:list_ids) /* accessed lists*/";
+                $list_sql[] = "(l.id IN (i:list_ids) /* accessed lists*/)";
             }
             if (self::canAssign($user_id)) {
-                $list_sql[] = "(l.id IS NULL /* null list */";
+                $list_sql[] = "(l.id IS NULL /* null list */)";
             }
         } else {
             $list_sql = '1';
