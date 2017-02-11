@@ -47,8 +47,10 @@ class pocketlistsListModel extends waModel
               i.*,
               l.*,
               uf.contact_id favorite,
-              SUM(i2.contact_id = i:contact_id AND i2.status = 0) created_items_count,
-              SUM(i2.assigned_contact_id = i:contact_id AND i2.status = 0) assigned_items_count
+              SUM(
+                (i2.contact_id = i:contact_id OR i2.assigned_contact_id = i:contact_id) 
+                AND i2.status = 0 
+              ) items_count
             FROM {$this->table} l
             LEFT JOIN pocketlists_item i ON i.key_list_id = l.id
             LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
@@ -56,7 +58,7 @@ class pocketlistsListModel extends waModel
             WHERE 
               {$list_sql}
             GROUP BY l.id
-            ORDER BY assigned_items_count DESC, l.sort, l.id DESC",
+            ORDER BY items_count DESC, l.sort, l.id DESC",
             array(
                 'list_ids'   => $list_accessed,
                 'contact_id' => $id,
@@ -206,5 +208,56 @@ class pocketlistsListModel extends waModel
             }
         }
         return $lists;
+    }
+
+    public function getLastActivitiesList($contact_ids = array())
+    {
+        $by_contact = "";
+        if ($contact_ids && !is_array($contact_ids)) {
+            $contact_ids = array($contact_ids);
+            $by_contact = " WHERE t.contact_id IN (i:contact_id)";
+        }
+
+        // ох что-то я сомневаюсь
+        $q = "SELECT
+                t.last_date last_date,
+                t.contact_id contact_id,
+                t.list_id list_id
+              FROM (
+                  SELECT
+                    i.complete_contact_id contact_id,
+                    MAX(i.complete_datetime) last_date,
+                    i.list_id
+                  FROM pocketlists_item i
+                  GROUP BY i.list_id
+    
+                  UNION
+    
+                  SELECT
+                    i.contact_id contact_id,
+                    MAX(i.create_datetime) last_date,
+                    i.list_id
+                  FROM pocketlists_item i
+                  GROUP BY i.list_id
+                  
+                  UNION
+    
+                  SELECT
+                    c.contact_id contact_id,
+                    MAX(c.create_datetime) last_date,
+                    i.list_id
+                  FROM pocketlists_comment c
+                  JOIN pocketlists_item i ON c.item_id = i.id
+                  GROUP BY i.list_id
+              ) t
+              {$by_contact}
+              GROUP BY list_id
+              HAVING list_id IS NOT NULL
+              ORDER BY last_date desc";
+
+        return $this->query(
+            $q,
+            array('contact_id' => $contact_ids)
+        )->fetchAll('list_id', 1);
     }
 }

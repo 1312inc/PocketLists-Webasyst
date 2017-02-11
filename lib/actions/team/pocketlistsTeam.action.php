@@ -20,6 +20,14 @@ class pocketlistsTeamAction extends waViewAction
 
                 $lm = new pocketlistsListModel();
                 $lists = $lm->filterArchive($lm->getTeamLists($id));
+                $list_activities = $lm->getLastActivitiesList($id);
+                foreach ($lists as $list_id => $list) {
+                    $lists[$list_id]['last_contact_ativity'] = 0;
+                    if (isset($list_activities[$list_id])) {
+                        $lists[$list_id]['last_contact_ativity'] = $list_activities[$list_id]['last_date'];
+                    }
+                }
+                usort($lists, array($this, 'sort_by_activity'));
             } else {
                 $id = reset($teammates);
                 $id = $id['id'];
@@ -43,5 +51,10 @@ class pocketlistsTeamAction extends waViewAction
         $this->view->assign('teammates', $teammates);
         $this->view->assign('attachments_path', wa()->getDataUrl('attachments/', true));
         $this->view->assign('print', waRequest::get('print', false));
+    }
+
+    private function sort_by_activity($a, $b)
+    {
+        return strtotime($a['last_contact_ativity']) < strtotime($b['last_contact_ativity']);
     }
 }
