@@ -11,11 +11,13 @@ class pocketlistsListAction extends waViewAction
             $list = $lm->getById($list_id);
 
             if (!$list) {
+                $this->setTemplate('templates/include/error.html');
                 return;
             }
 
             if (!pocketlistsRBAC::canAccessToList($list['id'])) {
-                throw new waException('Access denied.', 403);
+                $this->setTemplate('templates/include/error.html');
+                return;
             }
             $list_access_contacts = pocketlistsHelper::getTeammates(pocketlistsRBAC::getAccessContacts($list['id']), true, false);
 
@@ -48,7 +50,8 @@ class pocketlistsListAction extends waViewAction
             $this->view->assign('list_icons', pocketlistsHelper::getListIcons());
         } else {
             if (!pocketlistsRBAC::canCreateLists()) {
-                throw new waException('Access denied.', 403);
+                $this->setTemplate('templates/include/error.html');
+                return;
             }
             $this->view->assign('archive', $archived);
             $this->view->assign('new', true);

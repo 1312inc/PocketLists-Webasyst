@@ -16,7 +16,8 @@ class pocketlistsArchiveAction extends waViewAction
         $list = $lm->getById($list_id);
         if ($list_id !== null && $list && $list['archived']) {
             if (!pocketlistsRBAC::canAccessToList($list['id'])) {
-                throw new waException('Access denied.', 403);
+                $this->setTemplate('templates/include/error.html');
+                return;
             }
             $list_access_contacts = pocketlistsHelper::getTeammates(pocketlistsRBAC::getAccessContacts($list['id']),
                 true, false);

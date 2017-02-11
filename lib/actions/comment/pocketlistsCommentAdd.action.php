@@ -13,7 +13,8 @@ class pocketlistsCommentAddAction extends waViewAction
             if ($item && $item['status'] == 0) {
 
                 if ($item['list_id'] && !pocketlistsRBAC::canAccessToList($item['list_id'])) {
-                    throw new waException('Access denied.', 403);
+                    $this->setTemplate('templates/include/error.html');
+                    return;
                 }
 
                 $cm = new pocketlistsCommentModel();

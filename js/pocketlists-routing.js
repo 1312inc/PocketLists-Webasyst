@@ -244,7 +244,7 @@
             var r = Math.random();
             this.random = r;
             var self = this;
-            return $.get(url, function (result) {
+            return $.get(url, function (result, textStatus, jqXHR) {
                 if ((typeof options.check === 'undefined' || options.check) && self.random != r) {
                     // too late: user clicked something else.
                     return;
