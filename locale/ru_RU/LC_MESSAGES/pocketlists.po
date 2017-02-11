@@ -909,7 +909,7 @@ msgstr "я"
 
 #: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:110
 msgid "When due is set, it may automatically increase the manually set priority color."
-msgstr "При приближении срока приоритет (цвет) задачи обновляется автоматически возрастает и может быть выше выставленного вручную."
+msgstr "При приближении срока приоритет (цвет) задачи автоматически возрастает и может стать выше выставленного вручную."
 
 #: /wa-apps/pocketlists/templates/actions/list/List.html:18
 msgid "Re-sort list"
@@ -954,7 +954,7 @@ msgstr "Задачи, добавленные в общие списки мной
 #: /wa-apps/pocketlists/templates/actions/settings/Settings.html:46
 #: /wa-apps/pocketlists/templates/actions/settings/Settings.html:52
 msgid "only in lists which I marked as favorite"
-msgstr "только в списках, которые я добавил в избранные"
+msgstr "только в списки, которые я добавил в избранные"
 
 #: /wa-apps/pocketlists/templates/actions/settings/Settings.html:50
 msgid "To-dos created by other users in shared lists"
@@ -1009,7 +1009,7 @@ msgstr "Добро пожаловать!"
 
 #: /wa-apps/pocketlists/templates/actions/todo/TodoDate.html:21
 msgid "Use To-dos app to keep track on what you need to do up next, to assign to-dos to your teammates, and to collaborate on shared to-do lists."
-msgstr "Приложение «Дела» позволит вашей команде эффективно работать совместно: вести общие списки дел, планировать работу, назначать задачи друг другу и не пропускать ни одного важного запланированного события."
+msgstr "Приложение «Дела» позволит вашей команде эффективно работать совместно: вести общие списки дел, планировать работу, назначать задачи друг другу и не пропустить ни одного важного запланированного события."
 
 #: /wa-apps/pocketlists/templates/include/itemadd.html:15
 msgid "Meeting tomorrow at 10"
@@ -1087,7 +1087,7 @@ msgstr "Просмотр персональных задач других пол
 
 #: /wa-apps/pocketlists/templates/actions/settings/Settings.html:36
 msgid "in any to-do list"
-msgstr "в любых списках"
+msgstr "в любые списки"
 
 #: /wa-apps/pocketlists/templates/actions/team/Team.html:42
 msgid "%d to-do"

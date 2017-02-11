@@ -1,14 +1,17 @@
 <main data-pl="comments">
     <div class="block">
         <h1>[`Comments`]</h1>
-    </div>
 
-    <div class="block" data-pl-comments="latest-discussions">
-        <div class="pl-chat">
-        {foreach $comments as $comment}
-            {include '../comment/Comment.html' comment=$comment comment_page=true inline}
-        {/foreach}
+        <div data-pl-comments="latest-discussions">
+            <div class="pl-chat">
+            {foreach $comments as $comment}
+                {include '../comment/Comment.html' comment=$comment comment_page=true inline}
+            {foreachelse}
+                <p class="gray">[`<strong>No comments yet.</strong> This page will display a plain list of all to-do item comments posted by you and your teammates. Keep track on this page to make sure not to miss a single discussion.`]</p>
+            {/foreach}
+            </div>
         </div>
+        
     </div>
     <div class="block lazyloading" style="display: none;">
         [`Loading...`] <i class="icon16 loading"></i>
