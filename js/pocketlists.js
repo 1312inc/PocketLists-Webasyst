@@ -328,7 +328,9 @@
                 });
         },
         init: function (o) {
-            $.pocketlists_routing.init();
+            $.pocketlists_routing.init({
+                user_id: o.userId
+            });
 
             var self = this;
             self.$app_menu_pocket = $('#wa-app-pocketlists');

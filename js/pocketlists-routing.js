@@ -3,7 +3,9 @@
 
     $.storage = new $.store();
     $.pocketlists_routing = {
-        options: {},
+        options: {
+            user_id: 0
+        },
         init: function (options) {
             var that = this;
             that.options = options;
@@ -15,7 +17,7 @@
 
             var hash = window.location.hash;
             if (hash === '#/' || !hash) {
-                hash = $.storage.get('pocketlists/hash');
+                hash = $.storage.get('/pocketlists/hash/' + that.options.user_id);
                 if (hash && hash != null) {
                     $.wa.setHash('#/' + hash);
                 } else {
@@ -126,7 +128,7 @@
                     if (typeof(this[actionName + 'Action']) == 'function') {
                         console.info('dispatch', [actionName + 'Action', attr]);
                         this[actionName + 'Action'].apply(this, attr);
-                        $.storage.set('pocketlists/hash', hash.join('/'));
+                        $.storage.set('/pocketlists/hash/' + this.options.user_id, hash.join('/'));
                     } else {
                         console.info('Invalid action name:', actionName + 'Action');
                     }

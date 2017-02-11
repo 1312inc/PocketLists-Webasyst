@@ -45,7 +45,8 @@
 <script type="text/javascript">
     $.pocketlists.init({
         account_name: '{$wa->accountName()|escape}',
-        isAdmin: {$isAdmin}
+        isAdmin: {$isAdmin},
+        userId: {$wa->user()->get('id')}
     });
 </script>
 </body>
