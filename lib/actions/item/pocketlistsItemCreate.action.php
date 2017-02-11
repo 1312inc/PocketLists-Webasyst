@@ -100,6 +100,8 @@ class pocketlistsItemCreateAction extends waViewAction
                     $items = array($items);
                 }
 
+                $list['name'] = pocketlistsNaturalInput::matchLinks($list['name']);
+
                 pocketlistsNotifications::notifyAboutNewItems($items, $list);
                 if ($assign_contact) {
                     foreach ($items as $item) {

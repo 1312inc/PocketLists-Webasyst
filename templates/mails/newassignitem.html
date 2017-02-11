@@ -1,4 +1,4 @@
-{if !empty($list)}{sprintf('[`%s assigned you to a to-do on <a href="%s">%s</a>`]', $by_username|escape, $backend_url|cat:$list.url, $list.name|escape:'html')}
+{if !empty($list)}{sprintf('[`%s assigned you to a to-do on <a href="%s">%s</a>`]', $by_username|escape, $backend_url|cat:$list.url, $list.name)}
 {else}{sprintf('[`%s sent you <a href="%s">a new to-do</a>`]', $by_username|escape, $backend_url|cat:'#/todo/')}
 {/if}
 <br><br>

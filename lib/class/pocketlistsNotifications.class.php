@@ -343,7 +343,7 @@ class pocketlistsNotifications
             $list_ = $lm->getById($item['list_id']);
             $list = array(
                 'url' => wa()->getConfig()->getRootUrl(true) . '/' . wa()->getConfig()->getBackendUrl() . 'pocketlists/#/list/' . $list_['id'] . '/',
-                'name' => $list_['name']
+                'name' => pocketlistsNaturalInput::matchLinks($list_['name'])
             );
         }
         $contact = new waContact($item['assigned_contact_id']);
@@ -413,7 +413,7 @@ class pocketlistsNotifications
                             $list_ = $lm->getById($item['list_id']);
                             $list = array(
                                 'url' => wa()->getConfig()->getRootUrl(true) . '/' . wa()->getConfig()->getBackendUrl() . 'pocketlists/#/list/' . $list_['id'] . '/',
-                                'name' => $list_['name']
+                                'name' => pocketlistsNaturalInput::matchLinks($list_['name'])
                             );
                         }
                         if ($item['contact_id'] == $user_id && (
@@ -449,7 +449,7 @@ class pocketlistsNotifications
                             $list_ = $lm->getById($item['list_id']);
                             $list = array(
                                 'url' => '#/list/' . $list_['id'] . '/',
-                                'name' => $list_['name']
+                                'name' => pocketlistsNaturalInput::matchLinks($list_['name'])
                             );
                         }
                         if ($item['favorite'] && (
@@ -485,7 +485,7 @@ class pocketlistsNotifications
                             $list_ = $lm->getById($item['list_id']);
                             $list = array(
                                 'url' => '#/list/' . $list_['id'] . '/',
-                                'name' => $list_['name']
+                                'name' => pocketlistsNaturalInput::matchLinks($list_['name'])
                             );
                         }
                         if ($item && (

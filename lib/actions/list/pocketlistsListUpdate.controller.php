@@ -27,6 +27,7 @@ class pocketlistsListUpdateController extends waJsonController
 
         $data = $lm->add($data, 1);
         if ($data) {
+            $data['name'] = pocketlistsNaturalInput::matchLinks($data['name']);
             // add access for user
             if (!pocketlistsRBAC::isAdmin()) {
                 $rm = new waContactRightsModel();
