@@ -40,7 +40,7 @@
                     <a href="#/list/{$l.id}/">
                         <i class="icon16 listicon16" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l.icon|default:'li-list@2x.png'});"></i>{if $l.color != 'none'}<span class="pl-{$l.color}">{$l.name|escape}</span>{else}{$l.name|escape}{/if}
                         <span class="hint nowrap" {if empty($l.items_count)}style="display:none"{/if}>{_w('%d to-do', '%d to-dos', $l.items_count)}</span>
-                        <span class="hint highlighted" {if empty($l.last_contact_ativity)}style="display:none"{/if}>{$l.last_contact_ativity|wa_datetime}</span>
+                        {* <span class="hint nowrap" {if empty($l.last_contact_ativity)}style="display:none"{/if}>{$l.last_contact_ativity|wa_datetime:'humandatetime'}</span> *}
                     </a>
                 </li>
                 {/foreach}
