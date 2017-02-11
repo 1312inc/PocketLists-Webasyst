@@ -31,17 +31,17 @@
                     <label><input type="checkbox" disabled checked> [`To-dos assigned to me by other users`]</label>
                 </div>
                 <div class="value no-shift">
-                    <label><input type="checkbox" checked> [`To-dos created by me in shared lists`]</label>
-                    <select>
-                        <option>[`in any to-do list`]</option>
-                        <option>[`only in lists which I marked as favorite`]</option>
+                    <label><input type="checkbox" name="created_by_me_in_shared_on" {if !empty($settings.created_by_me_in_shared_on)}checked="checked"{/if}> [`To-dos created by me in shared lists`]</label>
+                    <select name="created_by_me_in_shared">
+                        <option value="0" {if !empty($settings.created_by_me_in_shared) && $settings.created_by_me_in_shared == 0}selected="selected"{/if}>[`in any to-do list`]</option>
+                        <option value="1" {if !empty($settings.created_by_me_in_shared) && $settings.created_by_me_in_shared == 1}selected="selected"{/if}>[`only in lists which I marked as favorite`]</option>
                     </select>
                 </div>
                 <div class="value no-shift">
-                    <label><input type="checkbox" checked> [`To-dos created by other users in shared lists`]</label>
-                    <select>
-                        <option>[`only in lists which I marked as favorite`]</option>
-                        <option>[`all Green, Yellow, and Red to-dos from all lists`]</option>
+                    <label><input type="checkbox" name="created_by_others_in_shared_on" {if !empty($settings.created_by_others_in_shared_on)}checked="checked"{/if}> [`To-dos created by other users in shared lists`]</label>
+                    <select name="created_by_others_in_shared">
+                        <option value="0" {if !empty($settings.created_by_others_in_shared) && $settings.created_by_others_in_shared == 0}selected="selected"{/if}>[`only in lists which I marked as favorite`]</option>
+                        <option value="1" {if !empty($settings.created_by_others_in_shared) && $settings.created_by_others_in_shared == 1}selected="selected"{/if}>[`all Green, Yellow, and Red to-dos from all lists`]</option>
                     </select>
                 </div>
 

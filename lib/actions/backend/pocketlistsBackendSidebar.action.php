@@ -4,7 +4,9 @@ class pocketlistsBackendSidebarAction extends waViewAction
 {
     public function execute()
     {
-        $this->view->assign('sidebar_todo_count', wa('pocketlists')->getConfig()->onCount());
+        $im = new pocketlistsItemModel();
+        $todo = $im->getToDo();
+        $this->view->assign('sidebar_todo_count', count($todo[0]));
 
         $list_model = new pocketlistsListModel();
         $this->view->assign('lists', $list_model->getLists());

@@ -76,6 +76,8 @@ class pocketlistsItemCreateAction extends waViewAction
                     }
                 }
 
+                $im->addPriorityData($data[$i]);
+
                 $last_id = $im->insert($data[$i], 1);
                 $inserted[] = $last_id;
                 $inserted_items[] = $data[$i] + array('id' => $last_id);
@@ -100,7 +102,9 @@ class pocketlistsItemCreateAction extends waViewAction
                     $items = array($items);
                 }
 
-                $list['name'] = pocketlistsNaturalInput::matchLinks($list['name']);
+                if ($list) {
+                    $list['name'] = pocketlistsNaturalInput::matchLinks($list['name']);
+                }
 
                 pocketlistsNotifications::notifyAboutNewItems($items, $list);
                 if ($assign_contact) {
@@ -108,6 +112,13 @@ class pocketlistsItemCreateAction extends waViewAction
                         pocketlistsNotifications::notifyAboutNewAssign($item);
                     }
                 }
+
+                if ($canAssign) {
+                    $cache = new waVarExportCache(pocketlistsHelper::APP_ID . '_todoItems' . $assign_contact->getId());
+                    $cache->delete();
+                }
+                $cache = new waVarExportCache(pocketlistsHelper::APP_ID . '_todoItems' . $user_id);
+                $cache->delete();
 
                 // log this action
                 $this->logAction(pocketlistsLogAction::NEW_ITEMS, array('list_id' => $list ? $list['id'] : null));

@@ -29,10 +29,17 @@ class pocketlistsUserSettings
     const EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_FAVORITE_ITEM = 1;
     const EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_ANY_LIST_ITEM = 2;
 
+    const MY_TO_DOS_CREATED_BY_ME_IN_SHARED_ANY_LIST = 0;
+    const MY_TO_DOS_CREATED_BY_ME_IN_SHARED_FAVORITE_LISTS = 1;
+
+    const MY_TO_DOS_CREATED_BY_OTHER_IN_SHARED_LISTS_FAVORITE_LISTS = 0;
+    const MY_TO_DOS_CREATED_BY_OTHER_IN_SHARED_LISTS_GREEN_YELLOW_RED_ALL_LISTS = 1;
+
     public function __construct($contact_id = false)
     {
         $this->csm = new waContactSettingsModel();
         $this->contact_id = $contact_id ? $contact_id : wa()->getUser()->getId();
+        //TODO: cache
         $this->settings = $this->csm->get($this->contact_id, $this->app_id);
     }
 
@@ -58,7 +65,11 @@ class pocketlistsUserSettings
             'email_comment_item' => self::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_ANY_LIST_ITEM,
             'email_create_list_on' => 1,
             'stream_inbox_list' => 0,
-            'natural_input_on' => 1
+            'natural_input_on' => 1,
+            'created_by_others_in_shared_on' => 1,
+            'created_by_others_in_shared' => self::MY_TO_DOS_CREATED_BY_OTHER_IN_SHARED_LISTS_GREEN_YELLOW_RED_ALL_LISTS,
+            'created_by_me_in_shared_on' => 1,
+            'created_by_me_in_shared' => self::MY_TO_DOS_CREATED_BY_ME_IN_SHARED_ANY_LIST,
         );
     }
 
@@ -76,7 +87,8 @@ class pocketlistsUserSettings
             'email_comment_item_on' => 0,
             'email_create_list_on' => 0,
             'stream_inbox_list' => 0,
-            'natural_input_on' => 0
+            'created_by_others_in_shared_on' => 0,
+            'created_by_me_in_shared_on' => 0,
         );
     }
 
@@ -161,5 +173,21 @@ class pocketlistsUserSettings
     public function getNaturalInput()
     {
         return !empty($this->settings['natural_input_on']) ? $this->settings['natural_input_on'] : false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function myToDosCreatedByOthers()
+    {
+        return !empty($this->settings['created_by_others_in_shared_on']) ? $this->settings['created_by_others_in_shared'] : -1;
+    }
+
+    /**
+     * @return bool
+     */
+    public function myToDosCreatedByMe()
+    {
+        return !empty($this->settings['created_by_me_in_shared_on']) ? $this->settings['created_by_me_in_shared'] : -1;
     }
 }

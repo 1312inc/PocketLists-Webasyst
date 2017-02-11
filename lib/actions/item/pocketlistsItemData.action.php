@@ -34,7 +34,13 @@ class pocketlistsItemDataAction extends waViewAction
                         'list_id' => $item_new_data['list_id'],
                         'assigned_to' => $item_new_data['assigned_contact_id']
                     ));
+
+                    $cache = new waVarExportCache(pocketlistsHelper::APP_ID . '_todoItems' . $item_new_data['assigned_contact_id']);
+                    $cache->delete();
                 }
+
+                $cache = new waVarExportCache(pocketlistsHelper::APP_ID . '_todoItems' . $item_from_db['contact_id']);
+                $cache->delete();
 
                 $this->view->assign('attachments_path', wa()->getDataUrl('attachments/', true));
                 $item = $im->getById($item_new_data['id']);

@@ -96,65 +96,95 @@ class pocketlistsItemModel extends waModel
 //        return $this->getTree($items, $tree);
     }
 
-    public function getToDo($contact_id, $date = false)
+    public function getToDo($contact_id = false, $date = false)
     {
-        // get to-do items only from accessed pockets
-        $lists = pocketlistsRBAC::getAccessListForContact($contact_id);
-        $list_sql = $lists ?
-            " AND (l.id IN (i:list_ids) OR l.id IS NULL) /* ONLY items from accessed pockets or NULL-list items */" :
-            " AND l.id IS NULL /* ONLY items from NULL-list items */";
+        if (!$contact_id) {
+            $contact_id = wa()->getUser()->getId();
+        }
 
-        $due_date_or_mine = $date ?
-            "AND ((i.status = 0 AND (i.due_date = s:date OR DATE(i.due_datetime) = s:date)) OR (i.status > 0 AND DATE(i.complete_datetime) = s:date)) /* with due date or completed this day */" :
-            "AND (i.assigned_contact_id = i:contact_id OR i.assigned_contact_id IS NULL OR i.assigned_contact_id = 0) /* ONLY assigned to me or noone */";
+        $cache = new waVarExportCache(pocketlistsHelper::APP_ID . '_todoItems' . $contact_id, 60 * 3);
+        if (!$date && $cache->isCached()) {
+            return $cache->get();
+        }
 
-//        $items_from_others_null_list = pocketlistsRBAC::canAssign($contact_id) ? " 1" : " IF(i.list_id IS NULL AND i.key_list_id IS NULL, i.contact_id = i:contact_id, i.contact_id > 0) /* + and if item is from NULL-list check contact_id */";
+        $select_sql = array(
+            "i.id id",
+            "i.parent_id parent_id",
+            "i.has_children has_children",
+            "i.name name",
+            "i.note note",
+            "i.status status",
+            "i.priority priority",
+            "i.contact_id contact_id",
+            "i.create_datetime create_datetime",
+            "i.due_date due_date",
+            "i.due_datetime due_datetime",
+            "i.complete_datetime complete_datetime",
+            "i.complete_contact_id complete_contact_id",
+            "i.assigned_contact_id assigned_contact_id",
+            "i.key_list_id key_list_id",
+            "l.id list_id",
+            "l.icon list_icon",
+            "l.color list_color",
+            "i2.name list_name",
+            "IF(uf.contact_id, 1, 0) favorite",
+        );
+        $join_sql = array(
+            "",
+            "pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id",
+            "pocketlists_list l ON (l.id = i.list_id  OR l.id = i.key_list_id)",
+            "pocketlists_item i2 ON i2.key_list_id = i.list_id",
+        );
+        $and_sql = array(
+            pocketlistsRBAC::filterListAccess($lists, $contact_id), // get to-do items only from accessed pockets
+        );
+        $or_sql = array(
+            "(i.list_id IS NULL AND i.key_list_id IS NULL AND i.contact_id = i:contact_id) /* My to-dos to self */",
+            "(i.key_list_id IS NULL AND i.assigned_contact_id = i:contact_id) /* To-dos assigned to me by other users */"
+        );
+
+        if ($date) {
+            $and_sql[] = "((i.status = 0 AND (i.due_date = s:date OR DATE(i.due_datetime) = s:date)) OR (i.status > 0 AND DATE(i.complete_datetime) = s:date)) /* with due date or completed this day */";
+        }
+
+        $us = new pocketlistsUserSettings($contact_id);
+        switch ($us->myToDosCreatedByMe()) {
+            case pocketlistsUserSettings::MY_TO_DOS_CREATED_BY_ME_IN_SHARED_ANY_LIST:
+                $or_sql[] = "(i.list_id IS NOT NULL AND i.key_list_id IS NULL AND i.contact_id = i:contact_id) /* To-dos created by me in shared lists in just any list */";
+                break;
+            case pocketlistsUserSettings::MY_TO_DOS_CREATED_BY_ME_IN_SHARED_FAVORITE_LISTS:
+                $or_sql[]  = "(i.list_id IS NOT NULL AND i.key_list_id IS NULL AND i.contact_id <> i:contact_id AND uf2.contact_id = i:contact_id) /* To-dos created BY other users IN shared lists only in lists which I marked as favorite*/";
+                break;
+        }
+
+        switch ($us->myToDosCreatedByOthers()) {
+            case pocketlistsUserSettings::MY_TO_DOS_CREATED_BY_OTHER_IN_SHARED_LISTS_FAVORITE_LISTS:
+                $or_sql[] = "(i.list_id IS NOT NULL AND i.key_list_id IS NULL AND i.contact_id <> i:contact_id AND uf2.contact_id = i:contact_id) /* To-dos created BY other users IN shared lists only in lists which I marked as favorite*/";
+                break;
+            case pocketlistsUserSettings::MY_TO_DOS_CREATED_BY_OTHER_IN_SHARED_LISTS_GREEN_YELLOW_RED_ALL_LISTS:
+                $or_sql[] = "(i.list_id IS NOT NULL AND i.key_list_id IS NULL AND i.contact_id <> i:contact_id AND i.calc_priority > 0) /* To-dos created BY other users IN shared lists all Green, Yellow, and Red to-dos from all lists*/";
+                break;
+        }
+
+        if ($us->myToDosCreatedByOthers() == pocketlistsUserSettings::MY_TO_DOS_CREATED_BY_OTHER_IN_SHARED_LISTS_FAVORITE_LISTS
+            || $us->myToDosCreatedByMe() == pocketlistsUserSettings::MY_TO_DOS_CREATED_BY_ME_IN_SHARED_FAVORITE_LISTS) {
+            $join_sql[] = "pocketlists_user_favorites uf2 ON uf2.contact_id = 9 AND uf2.item_id = i2.id";
+            $select_sql[] = "IF(uf2.contact_id, 1, 0) favorite_list";
+        }
+
+        $or_sql = implode(' OR ', $or_sql);
+        $and_sql = implode(' AND ', $and_sql);
+        $join_sql = implode(' LEFT JOIN ', $join_sql);
+        $select_sql = implode(',', $select_sql);
 
         $sql = "SELECT
-                  i.id id,
-                  i.parent_id parent_id,
-                  i.has_children has_children,
-                  i.name name,
-                  i.note note,
-                  i.status status,
-                  i.priority priority,
-                  i.contact_id contact_id,
-                  i.create_datetime create_datetime,
-                  i.due_date due_date,
-                  i.due_datetime due_datetime,
-                  i.complete_datetime complete_datetime,
-                  i.complete_contact_id complete_contact_id,
-                  i.assigned_contact_id assigned_contact_id,
-                  i.key_list_id key_list_id,
-                  l.id list_id,
-                  l.icon list_icon,
-                  l.color list_color,
-                  i2.name list_name,
-                  IF(uf.contact_id, 1, 0) favorite
+                  {$select_sql}
                 FROM {$this->table} i
-                LEFT JOIN pocketlists_list l ON (l.id = i.list_id  OR l.id = i.key_list_id)
-                LEFT JOIN pocketlists_item i2 ON i2.key_list_id = i.list_id 
-                LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
+                {$join_sql}
                 WHERE
-                (
-                  (i.assigned_contact_id = i:contact_id) /* + items assigned to me */
-                  OR (i.priority > 0 AND (i.list_id IS NOT NULL OR i.key_list_id IS NOT NULL)) /* + items with priority */
-                  OR
-                  (
-                    /*((i.due_date IS NOT NULL OR i.due_datetime IS NOT NULL) AND i.list_id IS NULL AND i.key_list_id IS NULL AND i.contact_id = 7)
-                    OR
-                    ((i.due_date IS NOT NULL OR i.due_datetime IS NOT NULL) AND (i.list_id IS NOT NULL OR i.key_list_id IS NOT NULL)) */
-                    (
-                      i.due_date IS NOT NULL OR i.due_datetime IS NOT NULL) /* + items with due */
-                      AND
-                      IF(i.list_id IS NULL AND i.key_list_id IS NULL, i.contact_id = i:contact_id, i.contact_id > 0) /* + and if item is from NULL-list check contact_id */
-                  )
-                  OR (i.complete_contact_id = i:contact_id) /* + items completed by me */
-                  OR (i.contact_id = i:contact_id AND i.list_id IS NULL AND i.key_list_id IS NULL) /* + my items from NULL-list */
-                )
-                AND (l.archived = 0 OR l.archived IS NULL) /* ONLY not archived items */
-                {$list_sql}
-                {$due_date_or_mine}
+                  ({$or_sql}) 
+                  AND 
+                  {$and_sql}
                 ORDER BY
                   i.status,
                   (i.complete_datetime IS NULL), i.complete_datetime DESC";
@@ -172,10 +202,16 @@ class pocketlistsItemModel extends waModel
         foreach ($items as $id => $item) {
             $result[$item['status']][$id] = $this->extendItemData($item);
         }
-        return array(
+
+        $result = array(
             0 => $this->getProperSort($result[0]),
             1 => $result[1],
         );
+
+        $cache->set($result);
+
+        return $result;
+
 //        return $this->getTree($items, true);
     }
 
@@ -454,12 +490,14 @@ class pocketlistsItemModel extends waModel
         return $item;
     }
 
-    private function addPriorityData(&$item)
+    public function addPriorityData(&$item)
     {
         $item['calc_priority'] = max(
-            pocketlistsHelper::calcPriorityOnDueDate($item['due_date'], $item['due_datetime']),
+            pocketlistsHelper::calcPriorityOnDueDate(ifempty($item['due_date']), ifempty($item['due_datetime'])),
             isset($item['priority']) ? $item['priority'] : 0
         );
+
+        return $item;
     }
 
     private function addChatData(&$item)
