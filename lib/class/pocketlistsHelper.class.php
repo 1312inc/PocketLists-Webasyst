@@ -36,7 +36,7 @@ class pocketlistsHelper
         if ($timezone && $timezone != $default_timezone) {
             $date_time = new DateTime(date('Y-m-d H:i:s', $timestamp), new DateTimeZone($timezone));
             $date_time->setTimezone(new DateTimeZone($default_timezone));
-            $timestamp = (int) $date_time->format('U');
+            $timestamp = (int)$date_time->format('U');
         }
         return $timestamp;
     }
@@ -310,7 +310,7 @@ class pocketlistsHelper
         );
         $icons = array();
         foreach ($icon_ids as $icon_id) {
-            $icons[$icon_id] = 'li-'.$icon_id.'@2x.png';
+            $icons[$icon_id] = 'li-' . $icon_id . '@2x.png';
         }
 
         return $icons;
@@ -337,26 +337,21 @@ class pocketlistsHelper
                 continue;
             }
             $mate = new waContact($tid);
-            $teammates[$tid]['name'] = $mate->getName();
-            $teammates[$tid]['username'] = $teammates[$tid]['name'];
-            $teammates[$tid]['id'] = $mate->getId();
-            $teammates[$tid]['photo_url'] = $mate->getPhoto();
-            $teammates[$tid]['userpic'] = $mate->getPhoto(20);
-            $teammates[$tid]['login'] = $mate->get('login');
-            $teammates[$tid]['status'] = $mate->getStatus();
-            $teammates[$tid]['teamrole'] = $mate->get('jobtitle');
-            $teammates[$tid]['me'] = ($tid == wa()->getUser()->getId());
+//            if (!$mate) {
+//                continue;
+//            }
+            $teammates[$tid] = self::getContactData($mate);
 
             $teammates[$tid]['last_activity'] = isset($last_activities[$tid]) ? $last_activities[$tid] : 0;
             $teammates[$tid]['items_info'] = array(
-                'count' => 0,
-                'names' => "",
+                'count'        => 0,
+                'names'        => "",
                 'max_priority' => 0,
             );
             if (isset($items_count_names[$tid])) {
                 $teammates[$tid]['items_info'] = array(
-                    'count' => count($items_count_names[$tid]['item_names']),
-                    'names' => implode(', ', $items_count_names[$tid]['item_names']),
+                    'count'        => count($items_count_names[$tid]['item_names']),
+                    'names'        => implode(', ', $items_count_names[$tid]['item_names']),
                     'max_priority' => $items_count_names[$tid]['item_max_priority'],
                 );
             }
@@ -413,7 +408,7 @@ class pocketlistsHelper
             $month_num = (int)date('n', $month_date);
             $days[$year][$month_name] = array(
                 'weeks' => array(),
-                'num' => $month_num
+                'num'   => $month_num,
             );
 
             do {
@@ -440,17 +435,17 @@ class pocketlistsHelper
                     $hide_other_month_date = false;
                 }
                 $days[$year][$month_name]['weeks'][$week][$day] = array(
-                    'date' => array(
-                        'day' => date('j', $current_date_start),
+                    'date'  => array(
+                        'day'   => date('j', $current_date_start),
                         'month' => $current_month,
-                        'date' => $date_date,
+                        'date'  => $date_date,
                     ),
-                    'hide' => $hide_other_month_date,
+                    'hide'  => $hide_other_month_date,
                     'lists' => array(
                         'color' => isset($list_colors[$date_date]['color']) ?
                             $list_colors[$date_date]['color'] : array(),
-                        'gray' => isset($list_colors[$date_date]['gray']) ?
-                            $list_colors[$date_date]['gray'] : array()
+                        'gray'  => isset($list_colors[$date_date]['gray']) ?
+                            $list_colors[$date_date]['gray'] : array(),
                     ),
 //                        isset($list_colors[$date_date]) ? array_keys($list_colors[$date_date]) : array()
                 );
@@ -461,8 +456,42 @@ class pocketlistsHelper
         }
 
         return array(
-            'days' => $days,
-            'month_date' => $month_date
+            'days'       => $days,
+            'month_date' => $month_date,
+        );
+    }
+
+    /**
+     * @param $contact waContact
+     */
+    public static function getContactData($contact)
+    {
+        $default = array(
+            'name'      => 'DELETED',
+            'username'  => 'DELETED',
+            'id'        => 0,
+            'photo_url' => '/wa-content/img/userpic96@2x.jpg',
+            'userpic'   => '/wa-content/img/userpic20@2x.jpg',
+            'status'    => false,
+            'teamrole'  => '',
+            'login'     => 'deleted',
+            'me'        => false,
+        );
+
+        if (!$contact->exists()) {
+            return $default;
+        }
+
+        return array(
+            'name'      => $contact->getName(),
+            'username'  => $contact->getName(),
+            'id'        => $contact->getId(),
+            'photo_url' => $contact->getPhoto(),
+            'login'     => $contact->get('login'),
+            'userpic'   => $contact->getPhoto(20),
+            'status'    => $contact->getStatus(),
+            'teamrole'  => $contact->get('jobtitle'),
+            'me'        => ($contact->getId() == wa()->getUser()->getId()),
         );
     }
 }

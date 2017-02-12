@@ -9,7 +9,7 @@ class pocketlistsListDetailsAction extends waViewAction
         if ($id) {
             $list = $im->getById($id);
             $user_name  = new waContact($list['contact_id']);
-            $list['username'] = $user_name->getName();
+            $list['contact'] = pocketlistsHelper::getContactData($user_name);
             $this->view->assign('list', $list);
         }
     }

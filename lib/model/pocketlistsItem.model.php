@@ -444,18 +444,15 @@ class pocketlistsItemModel extends waModel
         foreach ($items as &$item) {
             if ($item['contact_id']) {
                 $user = new waContact($item['contact_id']);
-                $item['username'] = $user->getName();
-                $item['userpic'] = $user->getPhoto('20');
+                $item['contact'] = pocketlistsHelper::getContactData($user);
             }
             if ($item['assigned_contact_id']) {
                 $user = new waContact($item['assigned_contact_id']);
-                $item['assigned_username'] = $user->getName();
-                $item['assigned_userpic'] = $user->getPhoto('20');
+                $item['assigned_contact'] = pocketlistsHelper::getContactData($user);
             }
             if ($item['complete_contact_id']) {
                 $user = new waContact($item['complete_contact_id']);
-                $item['complete_username'] = $user->getName();
-                $item['complete_userpic'] = $user->getPhoto('20');
+                $item['complete_contact'] = pocketlistsHelper::getContactData($user);
             }
 
             $am = new pocketlistsAttachmentModel();

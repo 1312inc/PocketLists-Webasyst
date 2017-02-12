@@ -20,9 +20,7 @@ class pocketlistsCommentModel extends waModel
         $comment_user = new waContact($comment['contact_id']);
         return $comment + array(
             'my'             => $comment['contact_id'] == wa()->getUser()->getId() ? true : false,
-            'username'       => $comment_user->getName(),
-            'login'          => $comment_user->get('login'),
-            'userpic'        => $comment_user->getPhoto('20'),
+            'contact'        => pocketlistsHelper::getContactData($comment_user),
             'can_be_deleted' => (time() - strtotime($comment['create_datetime']) < 60 * 60 * 24),
         );
     }

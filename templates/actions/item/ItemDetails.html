@@ -56,9 +56,9 @@
         <div class="field">
             <div class="name">[`Created`]</div>
             <div class="value no-shift">
-                <i class="icon16 userpic20" style="background-image: url({$item.userpic})" alt="{$item.username|escape}"></i>
+                <i class="icon16 userpic20" style="background-image: url({$item.contact.userpic})" alt="{$item.contact.username|escape}"></i>
 
-                {$item.username|escape}
+                {$item.contact.username|escape}
                 <span class="hint nowrap">{$item.create_datetime|wa_datetime:'humandatetime'}</span>
             </div>
         </div>
@@ -66,8 +66,8 @@
             <div class="field">
                 <div class="name">[`Completed`]</div>
                 <div class="value no-shift">
-                    <i class="icon16 userpic20" style="background-image: url({$item.complete_userpic|default:'/wa-content/img/userpic20@2x.jpg'})" alt="{$item.complete_username|escape}"></i>
-                    {$item.complete_username|default:''|escape}
+                    <i class="icon16 userpic20" style="background-image: url({$item.complete_userpic|default:'/wa-content/img/userpic20@2x.jpg'})" alt="{$item.complete_contact.username|escape}"></i>
+                    {$item.complete_contact.username|default:''|escape}
                     <span class="hint nowrap">{$item.complete_datetime|wa_datetime:'humandatetime'}</span>
                 </div>
             </div>

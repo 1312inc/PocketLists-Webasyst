@@ -13,10 +13,10 @@
             </div>
             {/if}
 
-            <i class="icon16 userpic20" style="background-image: url({$comment.userpic})" alt="{$comment.username|escape}"></i> {$comment.username|escape}
+            <i class="icon16 userpic20" style="background-image: url({$comment.contact.userpic})" alt="{$comment.contact.username|escape}"></i> {$comment.contact.username|escape}
             {if isset($comment_page)}
             [`on`]
-            <a href="{if $comment.list_id}#/list/{$comment.list_id}/{else}#/team/{$comment.login}{/if}">{$comment.item_name|truncate:64|escape}</a>
+            <a href="{if $comment.list_id}#/list/{$comment.list_id}/{else}#/team/{$comment.contact.login}{/if}">{$comment.item_name|truncate:64|escape}</a>
             {/if}
             <span class="hint nowrap">{$comment.create_datetime|wa_datetime:'humandatetime'}</span>
         </div>
