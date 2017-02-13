@@ -1093,3 +1093,19 @@ msgid "%d to-do"
 msgid_plural "%d to-dos"
 msgstr[0] ""
 msgstr[1] ""
+
+#: /wa-apps/pocketlists/templates/actions/comments/Comments.html:10
+msgid "<strong>No comments yet.</strong> This page will display a plain list of all to-do item comments posted by you and your teammates. Keep track on this page to make sure not to miss a single discussion."
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/include/error.html:4
+msgid "Sorry. You are not allowed to see anything on this page."
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/actions/archive/pocketlistsArchive.action.php:21
+#: /wa-apps/pocketlists/lib/actions/comment/pocketlistsCommentAdd.action.php:18
+#: /wa-apps/pocketlists/lib/actions/list/pocketlistsList.action.php:16
+#: /wa-apps/pocketlists/lib/actions/list/pocketlistsList.action.php:25
+#: /wa-apps/pocketlists/lib/actions/list/pocketlistsList.action.php:63
+msgid "Access denied"
+msgstr ""

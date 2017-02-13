@@ -165,6 +165,8 @@ label.pl-done-label i.icon16.userpic20 {
 
 .pl-welcome { margin: 0 60px 25px; padding-top: 30px; text-align: center; }
 .pl-welcome .pl-jumbodone { width: 180px; height: 180px; margin: 0 auto; background: transparent url('../img/pl-jumbodone.png') no-repeat; background-size: 180px 180px; opacity: 0.13; }
+.pl-welcome .pl-forbidden { width: 180px; height: 180px; margin: 0 auto; background: transparent url('../img/pl-forbidden.png') no-repeat; background-size: 180px 180px; opacity: 0.13; }
+.pl-welcome h1,
 .pl-welcome h2 { margin-top: 20px; color: #333; }
 .pl-welcome p { color: #888; font-size: 0.9em; }
 .pl-welcome.top-padded { padding-top: 70px; }
