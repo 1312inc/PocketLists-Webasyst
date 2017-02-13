@@ -11,11 +11,19 @@ class pocketlistsListAction extends waViewAction
             $list = $lm->getById($list_id);
 
             if (!$list) {
+                $this->view->assign('error', array(
+                    'code' => 403,
+                    'message' => _w('Access denied')
+                ));
                 $this->setTemplate('templates/include/error.html');
                 return;
             }
 
             if (!pocketlistsRBAC::canAccessToList($list['id'])) {
+                $this->view->assign('error', array(
+                    'code' => 403,
+                    'message' => _w('Access denied')
+                ));
                 $this->setTemplate('templates/include/error.html');
                 return;
             }
@@ -50,6 +58,10 @@ class pocketlistsListAction extends waViewAction
             $this->view->assign('list_icons', pocketlistsHelper::getListIcons());
         } else {
             if (!pocketlistsRBAC::canCreateLists()) {
+                $this->view->assign('error', array(
+                    'code' => 403,
+                    'message' => _w('Access denied')
+                ));
                 $this->setTemplate('templates/include/error.html');
                 return;
             }

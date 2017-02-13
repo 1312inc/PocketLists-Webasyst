@@ -16,6 +16,10 @@ class pocketlistsArchiveAction extends waViewAction
         $list = $lm->getById($list_id);
         if ($list_id !== null && $list && $list['archived']) {
             if (!pocketlistsRBAC::canAccessToList($list['id'])) {
+                $this->view->assign('error', array(
+                    'code' => 403,
+                    'message' => _w('Access denied')
+                ));
                 $this->setTemplate('templates/include/error.html');
                 return;
             }
