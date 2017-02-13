@@ -14,8 +14,10 @@ class pocketlistsRightConfig extends waRightConfig
         $list_model = new pocketlistsListModel();
         $items = array();
         // todo: только активные? или все подряд?
-        foreach ($list_model->getAllLists(false) as $list) {
-            $items[$list['id']] = $list['name'];
+        $all_lists = $list_model->getAllLists(false);
+        usort($all_lists, array($this, 'sort_archive'));
+        foreach ($all_lists as $list) {
+            $items[$list['id']] = $list['name'] . ($list['archived'] ? " (". _w('archived') . ")" : "");
         }
         $this->addItem(
             'list',
@@ -26,6 +28,11 @@ class pocketlistsRightConfig extends waRightConfig
 //                'hint1' => 'all_checkbox',
             )
         );
+    }
+
+    private function sort_archive($a, $b)
+    {
+        return $a['archived'] > $b['archived'];
     }
 
     public function setDefaultRights($contact_id)
