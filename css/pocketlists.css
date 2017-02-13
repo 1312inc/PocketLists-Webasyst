@@ -6,6 +6,7 @@
 
 .shadowed { background: #fff; }
 .pl-sidebar-core { margin-top: 28px; }
+.pl-sidebar-core .pl-online { position: absolute; left: 8px; top: 6px; }
 
 .pl-inner-sidebar { background: #f3f3f3; float: right; width: 340px; margin-top: 17px; margin-right: 10px; position: relative; z-index: 10; box-shadow: 0 3px 5px -2px #ccc; }
 .pl-inner-content { position: relative; min-height: 700px; margin-right: 350px; z-index: 11; }
@@ -53,39 +54,19 @@
 .pl-teammate-nolists-disclaimer { font-size: 0.9em; color: #aaa; text-align: center; }
 .pl-teammate-nolists-disclaimer a { color: #888; }
 
+.pl-droppable {
+    background-color: #fff;
+    -webkit-transition: background-color 0.4s;
+    -moz-transition: background-color 0.4s;
+    -ms-transition: background-color 0.4s;
+    -o-transition: background-color 0.4s;
+    transition: background-color 0.4s;
+}
+.pl-drop-success { background-color: greenyellow; }
+.pl-drop-fail { background-color: indianred; }
+
 ul.menu-v.with-icons i.icon10.online { margin-top: 3px; }
-
-/* Pocket
---------- */
-
-/*.pl-pocket { background: #5da5f5; text-align: center; padding: 0; position: relative; }
-.pl-pocket a.count { padding: 21px; position: absolute; right: 0; }
-.pl-pocket ul.menu-h { margin: 0;  }
-.pl-pocket ul.menu-h li { margin: 0; display: inline-block; position: static; }
-.pl-pocket ul.menu-h li h5 { margin: 0; }
-.pl-pocket ul.menu-h li h5 a { color: #fff; text-align: center; font-size: 1.3em; padding: 15px 35px 13px; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 220px; }
-.pl-pocket ul.menu-h li h5 a i.icon16 { margin-top: 0em; }
-.pl-pocket ul.menu-h li h5 a:hover { color: #ff3 !important; }
-.pl-pocket ul.menu-h li ul.menu-v { border: none; box-shadow: 0 4px 15px -8px rgba(0,0,0,0.4); top: 90%; margin-left: 0; left: 0; max-height: 0; overflow: hidden; display: block; }
-.pl-pocket ul.menu-h li ul.menu-v li { padding-right: 4px; padding-top: 6px; }
-.pl-pocket ul.menu-h li ul.menu-v li a { padding-top: 10px; padding-bottom: 10px; padding-left: 30px; }
-.pl-pocket ul.menu-h li ul.menu-v li a i.icon16.color { margin-right: 8px; margin-top: 0; }
-.pl-pocket ul.menu-h li ul.menu-v li .count { margin-top: 4px; margin-right: 6px; }
-.pl-pocket ul.menu-h li:hover { background: transparent; }
-.pl-pocket ul.menu-h li:hover ul.menu-v { max-height: 500px; transition: max-height 0.25s ease-in; transition-delay: 0.4s; }*/
-
-/* Lists
--------- */
-
-/*ul.pl-lists { background: #fff; padding: 0; margin: 0; }
-ul.pl-lists li { list-style: none; }
-ul.pl-lists li a { border-bottom: 1px solid rgba(0,0,0,0.1); padding: 20px 15px 5px; font-size: 1.15em; display: block; }
-ul.pl-lists li a .count { font-size: 0.8em; }
-ul.pl-lists li a .indicator { padding: 3px 7px 2px; margin-top: -1px; line-height: 1em; }
-ul.pl-lists li a i.listicon48 { position: relative; top: -7px; margin-right: 10px; }
-ul.pl-lists li a.pl-is-selected, ul.pl-lists li a:hover { color: red !important; background: rgba(0,0,0,0.025); }
-ul.pl-lists li.selected a { color: #000 !important; }
-ul.pl-lists li span { display: inline-block; overflow: hidden; text-overflow: ellipsis; height: 1.1em; max-width: 190px; white-space: nowrap; }*/
+.highlighted-background { background-color: #fffaba !important; }
 
 /* Calendar
 ----------- */
@@ -104,14 +85,6 @@ table.pl-calendar td .pl-dots { font-size: 0.8em; line-height: 0; letter-spacing
 table.pl-calendar td .pl-dots i.icon10 { margin-top: 0.2em; margin-right: 0.2em; }
 
 .pl-calendar-nav { padding: 20px; }
-
-/* Team
-------- */
-
-/*ul.pl-team li .count { font-size: 1em; padding: 3px 7px 4px; margin-top: -1px; }
-ul.pl-team li .indicator {  }
-ul.pl-team li .pl-username { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 195px; font-size: 1.2em; margin-top: 2px; }
-ul.pl-team li .pl-active-items { max-height: 2.4em; overflow: hidden; margin: 3px 25px 0 0; line-height: 1.2em; font-size: 0.9em; color: #aaa; }*/
 
 /* Settings
 ----------- */
@@ -237,15 +210,6 @@ input#pl-new-list-input:focus,
 .pl-title ul.menu-h li { margin: 2px 3px 0 !important; padding: 0 !important; vertical-align: middle; }
 .pl-title ul.menu-h li a.pl-edit { margin-top: -3px !important; }
 .pl-title ul.menu-h li.pl-list-favorite a { margin: 0 3px !important; }
-
-/*.pl-title ul.menu-h { position: relative; z-index: 2; }
-.pl-title ul.menu-h li:hover { background: transparent; }
-.pl-title ul.menu-h li ul.menu-v { top: 75%; }
-.pl-title ul.menu-h li ul.menu-v li:hover { background: rgba(0,0,0,0.07); }*/
-
-/*.pl-list-favorite { margin-right: 0 !important; padding-right: 3px !important; }
-.pl-list-sort { display: inline-block !important; }
-.pl-list-sort-dropdown { display: none !important; }*/
 
 .pl-list-access { line-height: 1.2em; margin: 20px 0 10px; }
 .pl-list-access h5 { margin-bottom: 10px; }
@@ -492,31 +456,4 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
     .pl-details { width: 390px; }
     .pl-details.sticky { width: 400px; }
 
-}
-
-
-
-.highlighted-background { background-color: #fffaba !important; }
-
-
-#pl-sidebar-core .pl-online {
-    position: absolute;
-    left: 8px;
-    top: 6px;
-}
-
-
-.pl-droppable {
-    background-color: #fff;
-    -webkit-transition: background-color 1s;
-    -moz-transition: background-color 1s;
-    -ms-transition: background-color 1s;
-    -o-transition: background-color 1s;
-    transition: background-color 1s;
-}
-.pl-drop-success {
-    background-color: greenyellow;
-}
-.pl-drop-fail {
-    background-color: indianred;
 }
