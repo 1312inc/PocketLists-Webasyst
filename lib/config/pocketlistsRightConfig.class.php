@@ -17,7 +17,7 @@ class pocketlistsRightConfig extends waRightConfig
         $all_lists = $list_model->getAllLists(false);
         usort($all_lists, array($this, 'sort_archive'));
         foreach ($all_lists as $list) {
-            $items[$list['id']] = $list['name'] . ($list['archived'] ? " (". _w('archived') . ")" : "");
+            $items[$list['id']] = $list['name'] . ($list['archived'] ? " (". _w('archive') . ")" : "");
         }
         $this->addItem(
             'list',

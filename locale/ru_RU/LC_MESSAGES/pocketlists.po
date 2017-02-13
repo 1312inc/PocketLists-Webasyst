@@ -1111,3 +1111,7 @@ msgstr "Извините, но у вас нет доступа к данным �
 #: /wa-apps/pocketlists/lib/actions/list/pocketlistsList.action.php:63
 msgid "Access denied"
 msgstr "Доступ запрещен"
+
+#: /wa-apps/pocketlists/lib/config/pocketlistsRightConfig.class.php:21
+msgid "archive"
+msgstr "архив"

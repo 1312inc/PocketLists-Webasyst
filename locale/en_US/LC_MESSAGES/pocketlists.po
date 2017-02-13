@@ -1109,3 +1109,7 @@ msgstr ""
 #: /wa-apps/pocketlists/lib/actions/list/pocketlistsList.action.php:63
 msgid "Access denied"
 msgstr ""
+
+#: /wa-apps/pocketlists/lib/config/pocketlistsRightConfig.class.php:21
+msgid "archive"
+msgstr ""
