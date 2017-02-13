@@ -20,14 +20,10 @@ class pocketlistsRightConfig extends waRightConfig
         $this->addItem(
             'list',
             _w('Shared lists'),
-            'selectlist',
+            'list',
             array(
                 'items'    => $items,
-                'position' => 'right',
-                'options'  => array(
-                    self::RIGHT_NONE => _w('No access'),
-                    self::RIGHT_FULL => _w('Full access'),
-                ),
+//                'hint1' => 'all_checkbox',
             )
         );
     }
