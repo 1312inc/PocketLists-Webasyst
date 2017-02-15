@@ -17,6 +17,11 @@ class pocketlistsSettingsSaveController extends waJsonController
         foreach ($data as $name => $value) {
             $us->set($name, $value);
         }
+
+        // flush cache
+        $cache = new waVarExportCache(pocketlistsHelper::APP_ID . '_todoItems' . wa()->getUser()->getId());
+        $cache->delete();
+
         $this->response = 'ok';
     }
 }

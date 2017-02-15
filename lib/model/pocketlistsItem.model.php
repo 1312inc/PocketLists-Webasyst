@@ -103,7 +103,7 @@ class pocketlistsItemModel extends waModel
         }
 
         $cache = new waVarExportCache(pocketlistsHelper::APP_ID . '_todoItems' . $contact_id, 60 * 3);
-        if (!$date && $cache->isCached()) {
+        if (!wa()->getConfig()->isDebug() && !$date && $cache->isCached()) {
             return $cache->get();
         }
 
@@ -132,7 +132,7 @@ class pocketlistsItemModel extends waModel
         $join_sql = array(
             "",
             "pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id",
-            "pocketlists_list l ON (l.id = i.list_id  OR l.id = i.key_list_id)",
+            "pocketlists_list l ON (l.id = i.list_id  OR l.id = i.key_list_id) AND l.archived = 0",
             "pocketlists_item i2 ON i2.key_list_id = i.list_id",
         );
         $and_sql = array(
@@ -153,7 +153,7 @@ class pocketlistsItemModel extends waModel
                 $or_sql[] = "(i.list_id IS NOT NULL AND i.key_list_id IS NULL AND i.contact_id = i:contact_id) /* To-dos created by me in shared lists in just any list */";
                 break;
             case pocketlistsUserSettings::MY_TO_DOS_CREATED_BY_ME_IN_SHARED_FAVORITE_LISTS:
-                $or_sql[]  = "(i.list_id IS NOT NULL AND i.key_list_id IS NULL AND i.contact_id <> i:contact_id AND uf2.contact_id = i:contact_id) /* To-dos created BY other users IN shared lists only in lists which I marked as favorite*/";
+                $or_sql[]  = "(i.list_id IS NOT NULL AND i.key_list_id IS NULL AND i.contact_id = i:contact_id AND uf2.contact_id = i:contact_id) /* To-dos created BY other users IN shared lists only in lists which I marked as favorite*/";
                 break;
         }
 
@@ -162,20 +162,24 @@ class pocketlistsItemModel extends waModel
                 $or_sql[] = "(i.list_id IS NOT NULL AND i.key_list_id IS NULL AND i.contact_id <> i:contact_id AND uf2.contact_id = i:contact_id) /* To-dos created BY other users IN shared lists only in lists which I marked as favorite*/";
                 break;
             case pocketlistsUserSettings::MY_TO_DOS_CREATED_BY_OTHER_IN_SHARED_LISTS_GREEN_YELLOW_RED_ALL_LISTS:
-                $or_sql[] = "(i.list_id IS NOT NULL AND i.key_list_id IS NULL AND i.contact_id <> i:contact_id AND i.calc_priority > 0) /* To-dos created BY other users IN shared lists all Green, Yellow, and Red to-dos from all lists*/";
+                $tomorrow = date("Y-m-d", strtotime("+1 day"));
+                $day_after_tomorrow = date("Y-m-d", strtotime("+2 day"));
+                $or_sql[] = "(i.list_id IS NOT NULL AND i.key_list_id IS NULL AND i.contact_id <> i:contact_id AND (i.due_date <= '" . $tomorrow . "' OR i.due_datetime < '" . $day_after_tomorrow . "' OR i.priority IN (1, 2, 3))) /* To-dos created BY other users IN shared lists all Green, Yellow, and Red to-dos from all lists*/";
                 break;
         }
 
         if ($us->myToDosCreatedByOthers() == pocketlistsUserSettings::MY_TO_DOS_CREATED_BY_OTHER_IN_SHARED_LISTS_FAVORITE_LISTS
             || $us->myToDosCreatedByMe() == pocketlistsUserSettings::MY_TO_DOS_CREATED_BY_ME_IN_SHARED_FAVORITE_LISTS) {
-            $join_sql[] = "pocketlists_user_favorites uf2 ON uf2.contact_id = 9 AND uf2.item_id = i2.id";
+            $join_sql[] = "pocketlists_user_favorites uf2 ON uf2.contact_id = i:contact_id AND uf2.item_id = i2.id";
             $select_sql[] = "IF(uf2.contact_id, 1, 0) favorite_list";
         }
 
-        $or_sql = implode(' OR ', $or_sql);
-        $and_sql = implode(' AND ', $and_sql);
-        $join_sql = implode(' LEFT JOIN ', $join_sql);
-        $select_sql = implode(',', $select_sql);
+        $and_sql[] = "(i.assigned_contact_id = i:contact_id OR i.assigned_contact_id = 0 OR i.assigned_contact_id IS NULL)";
+
+        $or_sql = implode("\n OR ", $or_sql);
+        $and_sql = implode("\n AND ", $and_sql);
+        $join_sql = implode("\n LEFT JOIN ", $join_sql);
+        $select_sql = implode(",\n", $select_sql);
 
         $sql = "SELECT
                   {$select_sql}
