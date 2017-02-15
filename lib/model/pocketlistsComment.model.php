@@ -66,9 +66,9 @@ class pocketlistsCommentModel extends waModel
             FROM {$this->table} c
             LEFT JOIN pocketlists_item as i ON i.id = c.item_id
             left JOIN pocketlists_list as l ON l.id = i.list_id 
-            WHERE "
-            . ($list_sql ? $list_sql . " AND" : "")
-            . " c.create_datetime > s:user_last_activity";
+            WHERE 
+              {$list_sql}
+              AND c.create_datetime > s:user_last_activity";
 
         return $this->query($q, array(
             'list_ids'           => $lists,

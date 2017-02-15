@@ -132,7 +132,7 @@ class pocketlistsItemModel extends waModel
         $join_sql = array(
             "",
             "pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id",
-            "pocketlists_list l ON (l.id = i.list_id  OR l.id = i.key_list_id) AND l.archived = 0",
+            "pocketlists_list l ON (l.id = i.list_id  OR l.id = i.key_list_id) AND (l.archived = 0 OR l.archived IS NULL)",
             "pocketlists_item i2 ON i2.key_list_id = i.list_id",
         );
         $and_sql = array(
@@ -852,4 +852,51 @@ class pocketlistsItemModel extends waModel
         ))->fetch();
     }
 
+    public function getLastActivityItems($user_last_activity)
+    {
+        $user_id = wa()->getUser()->getId();
+        $lists = array();
+        $list_sql = pocketlistsRBAC::filterListAccess($lists);
+        $q = "SELECT 
+                     i.id item_id,
+                     i.list_id list_id,
+                     i.contact_id contact_id,
+                     i.assigned_contact_id assigned_contact_id,
+                     l.archived list_archived
+                FROM pocketlists_item i
+                LEFT JOIN pocketlists_list l ON l.id = i.key_list_id
+                WHERE 
+                    {$list_sql}
+                    AND i.create_datetime > s:user_last_activity";
+
+        $items = $this->query($q, array(
+            'list_ids'           => $lists,
+            'user_last_activity' => $user_last_activity,
+        ))->fetchAll();
+
+        $result = array(
+            'list' => array(),
+            'team' => array(),
+            'archive' => 0,
+        );
+        foreach ($items as $item) {
+            if ($item['list_id'] && $item['contact_id'] != $user_id) {
+                if (!isset($result['list'][$item['list_id']])) {
+                    $result['list'][$item['list_id']] = 0;
+                }
+                $result['list'][$item['list_id']]++;
+            }
+            if ($item['assigned_contact_id'] && $item['assigned_contact_id'] != $user_id) {
+                if (!isset($result['team'][$item['assigned_contact_id']])) {
+                    $result['team'][$item['assigned_contact_id']] = 0;
+                }
+                $result['team'][$item['assigned_contact_id']]++;
+            }
+            if ($item['list_archived']) {
+                $result['archive']++;
+            }
+        }
+
+        return $result;
+    }
 }
