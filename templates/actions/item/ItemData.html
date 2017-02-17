@@ -10,7 +10,7 @@
                 {* completed by *}
                 <span class="pl-author" title="{sprintf('[`Completed by %s`]', $item.complete_contact.username|default:'%username%'|escape)}">
                     {if isset($item.complete_contact.userpic)}
-                        <span class="hint">{$item.complete_datetime|wa_datetime:'humandatetime'}</span>
+                        <span class="hint">{waDateTime::date(waDateTime::getFormat('humandatetime'), $item.complete_datetime)}</span>
                         <i class="icon16 userpic20" style="background-image: url({$item.complete_contact.userpic})" alt="{$item.complete_contact.username|escape}"></i>
                     {else}
                         <i class="icon16 userpic20"></i>
@@ -19,7 +19,7 @@
             {else}
                 {* item author userpic *}
                 {* {if $item.contact_id != $wa->user()->getId()}
-                    <span class="pl-author" title="{sprintf('%s by %s', $item.create_datetime|wa_datetime:'humandatetime', $item.contact.username|default:'%username%'|escape)}"><i class="icon16 userpic20" style="background-image: url({$item.contact.userpic})" alt="{$item.contact.username|escape}"></i></span>
+                    <span class="pl-author" title="{sprintf('%s by %s', {waDateTime::date(waDateTime::getFormat('humandatetime'), $item.create_datetime), $item.contact.username|default:'%username%'|escape)}"><i class="icon16 userpic20" style="background-image: url({$item.contact.userpic})" alt="{$item.contact.username|escape}"></i></span>
                 {/if} *}
 
                 {* assigned to *}
@@ -56,10 +56,10 @@
 
         {if !empty($item.due_datetime)}
         <br>
-        <span class="small bold {if $item.calc_priority == 0}pl-due-someday{elseif $item.calc_priority == 1}pl-due-tomorrow{elseif $item.calc_priority == 2}pl-due-today{elseif $item.calc_priority == 3}pl-due-overdue{/if}">{$item.due_datetime|wa_datetime:'humandatetime'}</span>
+        <span class="small bold {if $item.calc_priority == 0}pl-due-someday{elseif $item.calc_priority == 1}pl-due-tomorrow{elseif $item.calc_priority == 2}pl-due-today{elseif $item.calc_priority == 3}pl-due-overdue{/if}">{waDateTime::date(waDateTime::getFormat('humandatetime'), $item.due_datetime)}</span>
         {else if !empty($item.due_date)}
         <br>
-        <span class="small bold {if $item.calc_priority == 0}pl-due-someday{elseif $item.calc_priority == 1}pl-due-tomorrow{elseif $item.calc_priority == 2}pl-due-today{elseif $item.calc_priority == 3}pl-due-overdue{/if}">{$item.due_date|wa_date:'humandate'}</span>
+        <span class="small bold {if $item.calc_priority == 0}pl-due-someday{elseif $item.calc_priority == 1}pl-due-tomorrow{elseif $item.calc_priority == 2}pl-due-today{elseif $item.calc_priority == 3}pl-due-overdue{/if}">{waDateTime::date(waDateTime::getFormat('humandate'), $item.due_date)}</span>
         {/if}
         {if $item.status != 1}
             {if !empty($item.assigned_contact_id)}<strong class="hint"><br>{$item.contact.username|escape} &rarr; {$item.assigned_contact.username|escape}</strong>{/if}
