@@ -1113,3 +1113,7 @@ msgstr ""
 #: /wa-apps/pocketlists/lib/config/pocketlistsRightConfig.class.php:21
 msgid "archive"
 msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/team/Team.html:36
+msgid "Access to lists"
+msgstr ""

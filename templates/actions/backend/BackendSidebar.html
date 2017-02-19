@@ -46,9 +46,7 @@
         <li data-pl-list-id="{$l.id}">
             <a href="#/list/{$l.id}/">
                 <span class="count{if $l.calc_priority == 1} indicator green{elseif $l.calc_priority == 2} indicator yellow{elseif $l.calc_priority == 3} indicator red{/if}">{if !empty($l.due_date)}<i class="icon10 exclamation no-overhanging" title="{sprintf('[`Due %s`]', $l.due_date|wa_date:'humandate')}"></i> {/if}{$l.count}</span>
-                <i class="icon16 listicon16" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l.icon|default:'li-list@2x.png'});"></i>
-                <span{if $l.color != 'none'} class="pl-{$l.color}"{/if}>
-                    {$l.name|escape}
+                <i class="icon16 listicon16" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l.icon|default:'li-list@2x.png'});"></i><span{if $l.color != 'none'} class="pl-{$l.color}"{/if}>{$l.name|escape}
                     {if !empty($new_items_count.list[$l.id])} <span class="highlighted bold small black">+{$new_items_count.list[$l.id]}</span>{/if}
                 </span>
 

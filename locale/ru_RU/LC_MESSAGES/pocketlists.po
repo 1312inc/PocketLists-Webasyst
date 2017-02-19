@@ -913,7 +913,7 @@ msgstr "При приближении срока приоритет (цвет) �
 
 #: /wa-apps/pocketlists/templates/actions/list/List.html:18
 msgid "Re-sort list"
-msgstr "Обновить сортировку"
+msgstr "Пересортировать"
 
 #: /wa-apps/pocketlists/templates/actions/list/List.html:33
 msgid "Edit list details"
@@ -1115,3 +1115,7 @@ msgstr "Доступ запрещен"
 #: /wa-apps/pocketlists/lib/config/pocketlistsRightConfig.class.php:21
 msgid "archive"
 msgstr "архив"
+
+#: /wa-apps/pocketlists/templates/actions/team/Team.html:36
+msgid "Access to lists"
+msgstr "Доступ ко спискам"
