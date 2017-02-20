@@ -13,20 +13,9 @@
             var setIcon = function (count) {
                 count = parseInt(count, 10) || '';
                 var counter = self.$app_menu_pocket.find('.indicator');
-                var sidebar_todo_counter = self.$core_sidebar.find('[data-pl-sidebar="todo"] .count');
                 if (!counter.length) {
                     self.$app_menu_pocket.find('a').append('<span class="indicator" style="display:none;">');
                     counter = self.$app_menu_pocket.find('.indicator');
-                }
-                if (!sidebar_todo_counter.length) {
-                    sidebar_todo_counter = $('<span class="count indicator red" style="display:none;">');
-                    self.$core_sidebar.find('[data-pl-sidebar="todo"]').prepend(sidebar_todo_counter);
-                }
-                counter.add(sidebar_todo_counter).text(count);
-                if (count) {
-                    counter.add(sidebar_todo_counter).show();
-                } else {
-                    counter.add(sidebar_todo_counter).hide();
                 }
             };
 
