@@ -83,7 +83,7 @@ class pocketlistsRBAC
             . ($list_id ? self::haveAccessToListSQL($list_id) : self::haveAccessSQL());
         $contact_ids = $wcr->query($query)->fetchAll();
 
-        $contact_ids = self::getContactIds($contact_ids);
+        $contact_ids = array_unique(self::getContactIds($contact_ids));
         return $contact_ids;
     }
 

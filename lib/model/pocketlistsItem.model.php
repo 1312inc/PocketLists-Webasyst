@@ -585,29 +585,18 @@ class pocketlistsItemModel extends waModel
         if (!is_array($contact_ids)) {
             $contact_ids = array($contact_ids);
         }
-        $q = "SELECT
-                i.id id,
-                i.assigned_contact_id assigned_contact_id,
-                i.name name,
-                i.priority priority,
-                i.due_date due_date,
-                i.due_datetime due_datetime
-              FROM {$this->table} i
-              LEFT JOIN pocketlists_list l ON l.id = i.list_id
-              WHERE
-                i.assigned_contact_id IN (i:contact_id)
-                AND i.status = 0
-                AND (l.archived = 0 OR l.archived IS NULL) /*archived is NULL when item is in null-list*/";
-        $items = $this->query($q, array('contact_id' => $contact_ids))->fetchAll('id');
         $result = array();
-        foreach ($items as $assigned_item_id => $assigned_item) {
-            $this->addPriorityData($assigned_item);
-            $result[$assigned_item['assigned_contact_id']]['item_names'][] = $assigned_item['name'];
-            $result[$assigned_item['assigned_contact_id']]['item_max_priority'] = max(
-                isset($result[$assigned_item['assigned_contact_id']]['item_max_priority']) ?
-                    $result[$assigned_item['assigned_contact_id']]['item_max_priority'] : 0,
-                $assigned_item['calc_priority']
-            );
+        foreach ($contact_ids as $contact_id) {
+            $items = $this->getAssignedOrCompletesByContactItems($contact_id);
+            foreach ($items[0] as $item) {
+                $this->addPriorityData($item);
+                $result[$contact_id]['item_names'][] = $item['name'];
+                $result[$contact_id]['item_max_priority'] = max(
+                    isset($result[$contact_id]['item_max_priority']) ?
+                        $result[$contact_id]['item_max_priority'] : 0,
+                    $item['calc_priority']
+                );
+            }
         }
         return $result;
     }
@@ -658,8 +647,8 @@ class pocketlistsItemModel extends waModel
 
     public function getAssignedOrCompletesByContactItems($contact_id)
     {
-        $lists = pocketlistsRBAC::getAccessListForContact();
-        $list_sql = $lists ? " AND (l.id IN (i:list_ids) OR l.id IS NULL) /* only accessed pockets or null list */" : " AND l.id IS NULL /* only null list */";
+        $lists = array();
+        $list_sql = pocketlistsRBAC::filterListAccess($lists, $contact_id);
         $q = "SELECT
                   i.id id,
                   i.parent_id parent_id,
@@ -695,7 +684,7 @@ class pocketlistsItemModel extends waModel
                     l.archived = 0
                     OR l.archived IS NULL
                   )
-                  {$list_sql}
+                  AND {$list_sql}
                 ORDER BY
                   i.status,
                   (i.complete_datetime IS NULL), i.complete_datetime DESC";

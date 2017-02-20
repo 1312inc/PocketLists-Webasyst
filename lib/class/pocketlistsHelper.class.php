@@ -361,6 +361,7 @@ class pocketlistsHelper
             usort($teammates, array('pocketlistsHelper', "compare_last_activity"));
         }
 
+        // todo: cache
         return $teammates;
     }
 
