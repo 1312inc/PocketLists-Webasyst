@@ -132,11 +132,12 @@ class pocketlistsItemModel extends waModel
         $join_sql = array(
             "",
             "pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id",
-            "pocketlists_list l ON (l.id = i.list_id  OR l.id = i.key_list_id) AND (l.archived = 0 OR l.archived IS NULL)",
+            "pocketlists_list l ON (l.id = i.list_id  OR l.id = i.key_list_id)",
             "pocketlists_item i2 ON i2.key_list_id = i.list_id",
         );
         $and_sql = array(
             pocketlistsRBAC::filterListAccess($lists, $contact_id), // get to-do items only from accessed pockets
+            "(l.archived = 0 OR l.archived IS NULL)"
         );
         $or_sql = array(
             "(i.list_id IS NULL AND i.key_list_id IS NULL AND i.contact_id = i:contact_id) /* My to-dos to self */",
