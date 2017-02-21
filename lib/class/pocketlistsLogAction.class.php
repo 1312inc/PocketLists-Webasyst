@@ -7,11 +7,14 @@ class pocketlistsLogAction
     const LIST_ARCHIVED = 'list_archived';
     const LIST_UNARCHIVED = 'list_unarchived';
     const NEW_ITEMS = 'new_items';
+    const NEW_SELF_ITEM = 'new_self_item';
     const ITEM_ASSIGN = 'item_assign';
+    const ITEM_ASSIGN_TEAM = 'item_assign_team';
     const ITEM_COMPLETED = 'item_completed';
     const ITEM_COMMENT = 'item_comment';
 
     private static $ext;
+    private static $cache = array();
 
     private $app_url;
     private $logs;
@@ -19,6 +22,13 @@ class pocketlistsLogAction
     /** @var  pocketlistsWaLogModel */
     private $logModel;
     private $lists;
+
+    /** @var pocketlistsListModel */
+    private $lm;
+    /** @var pocketlistsItemModel */
+    private $im;
+    /** @var pocketlistsCommentModel */
+    private $cm;
 
     public $user_id;
     private $use_last_user_activity;
@@ -33,6 +43,9 @@ class pocketlistsLogAction
         $this->app_url = wa()->getConfig()->getBackendUrl(true) . 'pocketlists/';
         $this->logModel = new pocketlistsWaLogModel();
         $this->logs = false;
+        $this->lm = new pocketlistsListModel();
+        $this->im = new pocketlistsItemModel();
+        $this->cm = new pocketlistsCommentModel();
 
         self::$ext = pocketlistsHelper::APP_ID . '_ext';
     }
@@ -40,37 +53,45 @@ class pocketlistsLogAction
     public static function getActions()
     {
         return array(
-            self::LIST_CREATED    => array(
+            self::LIST_CREATED     => array(
                 'name' => /*_w*/
                     ('created new list'),
             ),
-            self::LIST_DELETED    => array(
+            self::LIST_DELETED     => array(
                 'name' => /*_w*/
                     ('deleted a list'),
             ),
-            self::LIST_ARCHIVED   => array(
+            self::LIST_ARCHIVED    => array(
                 'name' => /*_w*/
                     ('archived'),
             ),
-            self::LIST_UNARCHIVED => array(
+            self::LIST_UNARCHIVED  => array(
                 'name' => /*_w*/
                     ('unarchived'),
             ),
-            self::NEW_ITEMS       => array(
+            self::NEW_ITEMS        => array(
                 'name' => /*_w*/
                     ('added new to-dos to'),
             ),
-            self::ITEM_COMPLETED  => array(
+            self::NEW_SELF_ITEM    => array(
+                'name' => /*_w*/
+                    ('added a to-do to self'),
+            ),
+            self::ITEM_COMPLETED   => array(
                 'name' => /*_w*/
                     ('completed'),
             ),
-            self::ITEM_COMMENT    => array(
+            self::ITEM_COMMENT     => array(
                 'name' => /*_w*/
                     ('commented on a to-do in'),
             ),
-            self::ITEM_ASSIGN     => array(
+            self::ITEM_ASSIGN      => array(
                 'name' => /*_w*/
                     ('assigned a to-do to'),
+            ),
+            self::ITEM_ASSIGN_TEAM => array(
+                'name' => /*_w*/
+                    ('sent a new to-do'),
             ),
         );
     }
@@ -124,11 +145,17 @@ class pocketlistsLogAction
         }
     }
 
+    private function new_self_item($id)
+    {
+        $item = $this->getItemData($this->ext_logs[$id]['params']['item_id']);
+        return $item['name'];
+    }
+
     private function item_completed($id)
     {
         $im = new pocketlistsItemModel();
         $item = $im->getById($this->ext_logs[$id]['params']['item_id']);
-        return htmlspecialchars($item['name']);
+        return htmlspecialchars($item['name_original']);
     }
 
     private function item_comment($id)
@@ -140,6 +167,14 @@ class pocketlistsLogAction
     {
         $contact = new waContact($this->ext_logs[$id]['params']['assigned_to']);
         return $contact->getName() . ": " . self::getListUrlHtml($id);
+    }
+
+    private function item_assign_team($id)
+    {
+        $contact = new waContact($this->ext_logs[$id]['params']['assigned_to']);
+        $team_url = $this->app_url . '#/team/' . $contact->get('login') . '/';
+        $item = $this->getItemData($this->ext_logs[$id]['params']['item_id']);
+        return htmlspecialchars($item['name_original']) . " " . _w("to") . " <a href=\"{$team_url}\">" . $contact->getName() . "</a>";
     }
 
     private function getListUrlHtml($id)
@@ -197,7 +232,16 @@ class pocketlistsLogAction
     private function canAccess($log)
     {
         $list = $log[self::$ext]['list'];
-        // todo: ability to see others
+
+        if (in_array($log['action'], array(
+                self::ITEM_ASSIGN,
+                self::ITEM_ASSIGN_TEAM,
+                self::NEW_SELF_ITEM,
+            )) && !pocketlistsRBAC::canAssign()
+        ) {
+            return false;
+        }
+
         if (pocketlistsRBAC::isAdmin() || ($list && $this->lists && in_array($list['id'], $this->lists))) {
             return true;
         }
@@ -232,7 +276,7 @@ class pocketlistsLogAction
         }
 
         if (!empty($log['params']['item_id'])) {
-            $log[self::$ext]['item'] = $this->getItemData($log['params']['item_id'], false);
+            $log[self::$ext]['item'] = $this->getItemData($log['params']['item_id']);
             if ($log[self::$ext]['item'] && !$log[self::$ext]['list']) {
                 $log[self::$ext]['list'] = $this->getListData($log[self::$ext]['item']['list_id']);
             }
@@ -251,21 +295,27 @@ class pocketlistsLogAction
 
     private function getListData($id)
     {
-        $m = new pocketlistsListModel();
-        return $m->getById($id);
+        if (!isset(self::$cache['list_' . $id])) {
+            self::$cache['list_' . $id] = $this->lm->getById($id);
+        }
+        return self::$cache['list_' . $id];
     }
 
     private function getItemData($id)
     {
-        $m = new pocketlistsItemModel();
-        $item = $m->getById($id);
-        return $m->extendItemData($item);
+        if (!isset(self::$cache['item_' . $id])) {
+            $item = $this->im->getById($id);
+            self::$cache['item_' . $id] = $this->im->extendItemData($item);;
+        }
+        return self::$cache['item_' . $id];
     }
 
     private function getCommentData($id)
     {
-        $m = new pocketlistsListModel();
-        return $m->getById($id);
+        if (!isset(self::$cache['comment_' . $id])) {
+            self::$cache['comment_' . $id] = $this->lm->getById($id);
+        }
+        return self::$cache['comment_' . $id];
     }
 
 }

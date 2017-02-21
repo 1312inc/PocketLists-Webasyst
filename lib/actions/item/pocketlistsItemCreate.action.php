@@ -107,14 +107,29 @@ class pocketlistsItemCreateAction extends waViewAction
                 }
 
                 pocketlistsNotifications::notifyAboutNewItems($items, $list);
-                if ($assign_contact) {
-                    foreach ($items as $item) {
+
+                // log this action
+                foreach ($items as $item) {
+                    if (!$list && !$assign_contact) {
+                        $this->logAction(pocketlistsLogAction::NEW_SELF_ITEM, array(
+                            'item_id' => $item['id']
+                        ));
+                    }
+
+                    if ($assign_contact) {
                         pocketlistsNotifications::notifyAboutNewAssign($item);
+
+                        $this->logAction(pocketlistsLogAction::ITEM_ASSIGN_TEAM, array(
+                            'list_id' => $item['list_id'],
+                            'item_id' => $item['id'],
+                            'assigned_to' => $item['assigned_contact_id']
+                        ));
                     }
                 }
 
-                // log this action
-                $this->logAction(pocketlistsLogAction::NEW_ITEMS, array('list_id' => $list ? $list['id'] : null));
+                if ($list) {
+                    $this->logAction(pocketlistsLogAction::NEW_ITEMS, array('list_id' => $list['id']));
+                }
             }
         }
 
