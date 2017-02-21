@@ -102,11 +102,6 @@ class pocketlistsItemModel extends waModel
             $contact_id = wa()->getUser()->getId();
         }
 
-        $cache = new waVarExportCache(pocketlistsHelper::APP_ID . '_todoItems' . $contact_id, 60 * 3);
-        if (!wa()->getConfig()->isDebug() && !$date && $cache->isCached()) {
-            return $cache->get();
-        }
-
         $select_sql = array(
             "i.id id",
             "i.parent_id parent_id",
@@ -212,8 +207,6 @@ class pocketlistsItemModel extends waModel
             0 => $this->getProperSort($result[0]),
             1 => $result[1],
         );
-
-        $cache->set($result);
 
         return $result;
 

@@ -113,13 +113,6 @@ class pocketlistsItemCreateAction extends waViewAction
                     }
                 }
 
-                if ($canAssign) {
-                    $cache = new waVarExportCache(pocketlistsHelper::APP_ID . '_todoItems' . $assign_contact->getId());
-                    $cache->delete();
-                }
-                $cache = new waVarExportCache(pocketlistsHelper::APP_ID . '_todoItems' . $user_id);
-                $cache->delete();
-
                 // log this action
                 $this->logAction(pocketlistsLogAction::NEW_ITEMS, array('list_id' => $list ? $list['id'] : null));
             }

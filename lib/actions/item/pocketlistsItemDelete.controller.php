@@ -24,9 +24,6 @@ class pocketlistsItemDeleteController extends waJsonController
             $am = new pocketlistsAttachmentModel();
             $am->delete($delete_ids);
 
-            $cache = new waVarExportCache(pocketlistsHelper::APP_ID . '_todoItems' . wa()->getUser()->getId());
-            $cache->delete();
-
             $this->response = array('id' => $item['id']);
         } else {
             $this->errors = 'no item error';

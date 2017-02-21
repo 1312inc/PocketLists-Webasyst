@@ -28,13 +28,6 @@ class pocketlistsComplete extends waJsonController
             } else {
                 $item = array_merge($item, $data);
                 $this->completed_items[] = $im->prepareOutput($item);
-
-                $cache = new waVarExportCache(pocketlistsHelper::APP_ID . '_todoItems' . $item['contact_id']);
-                $cache->delete();
-                if (!empty($item['assigned_contact_id'])) {
-                    $cache = new waVarExportCache(pocketlistsHelper::APP_ID . '_todoItems' . $item['contact_id']);
-                    $cache->delete();
-                }
             };
         }
         foreach ($item['childs'] as $i) {

@@ -8,9 +8,6 @@ class pocketlistsListArchiveController extends waJsonController
         $archive = waRequest::post('archive', null, waRequest::TYPE_INT);
 
         if ($list_id) {
-            $cache = new waVarExportCache(pocketlistsHelper::APP_ID . '_todoItems' . wa()->getUser()->getId());
-            $cache->delete();
-
             $lm = new pocketlistsListModel();
             if ($lm->update($list_id, array('archived' => $archive))) {
                 $this->response = 'ok';

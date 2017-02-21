@@ -8,9 +8,6 @@ class pocketlistsItemFavoriteController extends waJsonController
         $status = waRequest::post('status', false);
 
         if ($id) {
-            $cache = new waVarExportCache(pocketlistsHelper::APP_ID . '_todoItems' . wa()->getUser()->getId());
-            $cache->delete();
-
             $ufm = new pocketlistsUserFavoritesModel();
             if ($status) {
                 $ufm->insert(array('contact_id' => wa()->getUser()->getId(), 'item_id' => $id));

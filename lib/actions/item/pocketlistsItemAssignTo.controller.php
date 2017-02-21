@@ -30,9 +30,6 @@ class pocketlistsItemAssignToController extends waJsonController
                     $item = $im->prepareOutput($item);
                     pocketlistsNotifications::notifyAboutNewAssign($item, wa()->getUser()->getName());
                     $this->response = $contact->getName();
-
-                    $cache = new waVarExportCache(pocketlistsHelper::APP_ID . '_todoItems' . $contact->getId());
-                    $cache->delete();
                 } else {
                     $this->errors = 'db error';
                 }
