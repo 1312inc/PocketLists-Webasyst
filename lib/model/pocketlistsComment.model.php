@@ -36,12 +36,15 @@ class pocketlistsCommentModel extends waModel
                 c.item_id item_id,
                 i.name item_name,
                 l.id list_id,
+                i2.name list_name,
+                l.color list_color,
                 c.contact_id contact_id,
                 c.comment comment,
                 c.create_datetime create_datetime
             FROM {$this->table} c
             LEFT JOIN pocketlists_item as i ON i.id = c.item_id
             LEFT JOIN pocketlists_list as l ON l.id = i.list_id
+            LEFT JOIN pocketlists_item as i2 ON i2.key_list_id = l.id
             WHERE {$list_sql}
             ORDER BY id DESC
             LIMIT {$start}, {$limit}";
