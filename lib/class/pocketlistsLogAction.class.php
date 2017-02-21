@@ -155,7 +155,7 @@ class pocketlistsLogAction
     {
         $im = new pocketlistsItemModel();
         $item = $im->getById($this->ext_logs[$id]['params']['item_id']);
-        return htmlspecialchars($item['name_original']);
+        return htmlspecialchars($item['name']);
     }
 
     private function item_comment($id)
@@ -174,7 +174,7 @@ class pocketlistsLogAction
         $contact = new waContact($this->ext_logs[$id]['params']['assigned_to']);
         $team_url = $this->app_url . '#/team/' . $contact->get('login') . '/';
         $item = $this->getItemData($this->ext_logs[$id]['params']['item_id']);
-        return htmlspecialchars($item['name_original']) . " " . _w("to") . " <a href=\"{$team_url}\">" . $contact->getName() . "</a>";
+        return htmlspecialchars($item['name']) . " " . _w("to") . " <a href=\"{$team_url}\">" . $contact->getName() . "</a>";
     }
 
     private function getListUrlHtml($id)
