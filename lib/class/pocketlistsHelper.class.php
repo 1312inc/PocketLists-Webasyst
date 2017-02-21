@@ -382,7 +382,7 @@ class pocketlistsHelper
         foreach ($items[0] as $item) {
             if ($item['due_datetime'] || $item['due_date']) {
                 $due_date = date('Y-m-d', strtotime($item['due_date'] ? $item['due_date'] : $item['due_datetime']));
-                $item['list_color'] = $item['list_color'] ? $item['list_color'] : 'blue';
+                $item['list_color'] = $item['list_color'] ? $item['list_color'] : 'gray';
                 $list_colors[$due_date]['color'][$item['list_color']][] = $item['id'];
             }
         }

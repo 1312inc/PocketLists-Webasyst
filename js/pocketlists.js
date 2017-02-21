@@ -72,9 +72,6 @@
         },
         stickyDetailsSidebar: function() {
 
-            //return;
-            // DEPRECATED FEB 2017. MUST USE SMART BOTTOM/TOP SCROLL FIXED MODE.
-
             var $list = $('#pl-list-content');
             if ($list.length) {
                 var list_top_offset = $list.offset().top,
