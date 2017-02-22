@@ -642,7 +642,8 @@ class pocketlistsItemModel extends waModel
     public function getAssignedOrCompletesByContactItems($contact_id)
     {
         $lists = array();
-        $list_sql = pocketlistsRBAC::filterListAccess($lists, $contact_id);
+        pocketlistsRBAC::filterListAccess($lists, $contact_id);
+        $list_sql = pocketlistsRBAC::filterListAccess($lists);
         $q = "SELECT
                   i.id id,
                   i.parent_id parent_id,
