@@ -102,11 +102,6 @@ class pocketlistsItemModel extends waModel
             $contact_id = wa()->getUser()->getId();
         }
 
-        $cache = new waVarExportCache(pocketlistsHelper::APP_ID . '_todoItems' . $contact_id, 60 * 3);
-        if (!wa()->getConfig()->isDebug() && !$date && $cache->isCached()) {
-            return $cache->get();
-        }
-
         $select_sql = array(
             "i.id id",
             "i.parent_id parent_id",
@@ -136,7 +131,7 @@ class pocketlistsItemModel extends waModel
             "pocketlists_item i2 ON i2.key_list_id = i.list_id",
         );
         $and_sql = array(
-            "(" . pocketlistsRBAC::filterListAccess($lists, $contact_id) . " OR l.id IS NULL)", // get to-do items only from accessed pockets
+            "(" . pocketlistsRBAC::filterListAccess($lists, $contact_id) . " OR l.id IS NULL)", // get to-do items only from accмфп essed pockets
             "(l.archived = 0 OR l.archived IS NULL)"
         );
         $or_sql = array(
@@ -212,8 +207,6 @@ class pocketlistsItemModel extends waModel
             0 => $this->getProperSort($result[0]),
             1 => $result[1],
         );
-
-        $cache->set($result);
 
         return $result;
 
