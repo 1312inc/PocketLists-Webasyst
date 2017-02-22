@@ -127,7 +127,7 @@ label.pl-done-label i.icon16.userpic20 {
 
 .pl-done:checked + span, .pl-done:disabled:checked + span {background: transparent url('../img/pl-done-checkbox.png') no-repeat !important;background-size: 16px 16px !important; border: none; border-radius: 0; opacity: 0.3;}
 .pl-done + span.pl-add-todo {background: transparent url('../img/pl-add-todo.png') no-repeat !important;background-size: 13px 13px !important; border: none; border-radius: 0; opacity: 0.3; left: 20px; top: 15px; cursor: default; }
-.pl-done + span.pl-add-todo.transparent { opacity: 1; }
+.pl-done + span.pl-add-todo.transparent { background: none !important; }
 
 /* Discussions
 -------------- */

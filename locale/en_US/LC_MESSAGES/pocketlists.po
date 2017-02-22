@@ -1117,3 +1117,31 @@ msgstr ""
 #: /wa-apps/pocketlists/templates/actions/team/Team.html:36
 msgid "Access to lists"
 msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/list/ListEmailDialog.html:38
+msgid "No to-dos :)"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/class/pocketlistsLogAction.class.php:181
+msgid "to"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/class/pocketlistsLogAction.class.php:78
+msgid "added a to-do to self"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/class/pocketlistsLogAction.class.php:94
+msgid "sent a new to-do"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/class/pocketlistsLogAction.class.php:171
+msgid "in"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/class/pocketlistsLogAction.class.php:181
+msgid "to user"
+msgstr "to"
+
+#: /wa-apps/pocketlists/lib/class/pocketlistsLogAction.class.php:171
+msgid "in list"
+msgstr "in"

@@ -16,8 +16,9 @@
                         <div class="name">[`Subject`]</div>
                         <div class="value">
                             <input type="text" value="{strip}
-                            {if !empty($list)}{$list.name}{/if}
-                            {if !empty($favorite)}
+                            {if !empty($list)}
+                                {$list.name}
+                            {elseif !empty($favorite)}
                                 [`Favorites`]
                                 {if !empty($date)} - {$date|wa_date:'humandate'}{/if}
                             {elseif !empty($date)}
@@ -25,7 +26,7 @@
                             {elseif !empty($teammate)}
                                 {$teammate}
                             {else}
-                                [`My to-dos`]
+                                [`My to-dos`] - {$smarty.now|wa_datetime:'humandate'}
                             {/if}
                             {/strip}" name="mail[subject]"  class="long bold" />
                         </div>
@@ -34,6 +35,7 @@
                         <div class="name">[`Message`]</div>
                         <div class="value">
                             <textarea name="mail[body]" style="height: 170px;">{foreach $items as $item}&#9675; {$item.name}
+{foreachelse}[`No to-dos :)`]
 {/foreach}
 
 via Webasyst</textarea>

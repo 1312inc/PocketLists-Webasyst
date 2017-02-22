@@ -1119,3 +1119,31 @@ msgstr "архив"
 #: /wa-apps/pocketlists/templates/actions/team/Team.html:36
 msgid "Access to lists"
 msgstr "Доступ ко спискам"
+
+#: /wa-apps/pocketlists/templates/actions/list/ListEmailDialog.html:38
+msgid "No to-dos :)"
+msgstr "Совсем нет задач :)"
+
+#: /wa-apps/pocketlists/lib/class/pocketlistsLogAction.class.php:181
+msgid "to"
+msgstr "к"
+
+#: /wa-apps/pocketlists/lib/class/pocketlistsLogAction.class.php:78
+msgid "added a to-do to self"
+msgstr "поставил себе новую задачу"
+
+#: /wa-apps/pocketlists/lib/class/pocketlistsLogAction.class.php:94
+msgid "sent a new to-do"
+msgstr "поставил новую задачу"
+
+#: /wa-apps/pocketlists/lib/class/pocketlistsLogAction.class.php:171
+msgid "in"
+msgstr "в"
+
+#: /wa-apps/pocketlists/lib/class/pocketlistsLogAction.class.php:181
+msgid "to user"
+msgstr "пользователю"
+
+#: /wa-apps/pocketlists/lib/class/pocketlistsLogAction.class.php:171
+msgid "in list"
+msgstr "в списке"

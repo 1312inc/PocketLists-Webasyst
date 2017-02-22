@@ -166,7 +166,11 @@ class pocketlistsLogAction
     private function item_assign($id)
     {
         $contact = new waContact($this->ext_logs[$id]['params']['assigned_to']);
-        return $contact->getName() . ": " . self::getListUrlHtml($id);
+        $list_html = self::getListUrlHtml($id);
+        if ($list_html)
+            return $contact->getName() . ' ' . _w('in list') . ' ' . $list_html;
+        else
+            return $contact->getName();
     }
 
     private function item_assign_team($id)
@@ -174,7 +178,7 @@ class pocketlistsLogAction
         $contact = new waContact($this->ext_logs[$id]['params']['assigned_to']);
         $team_url = $this->app_url . '#/team/' . $contact->get('login') . '/';
         $item = $this->getItemData($this->ext_logs[$id]['params']['item_id']);
-        return htmlspecialchars($item['name']) . " " . _w("to") . " <a href=\"{$team_url}\">" . $contact->getName() . "</a>";
+        return htmlspecialchars($item['name']) . " " . _w("to user") . " <a href=\"{$team_url}\">" . $contact->getName() . "</a>";
     }
 
     private function getListUrlHtml($id)
