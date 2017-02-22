@@ -20,7 +20,7 @@ class pocketlistsTodoDateAction extends waViewAction
 //        $this->view->assign('date', $date ? waDateTime::date(waDateTime::getFormat('humandate'), $date) : false);
         $this->view->assign('date', $date);
 //        $this->view->assign('timestamp', $date ? strtotime($date) : (time() + 60 * 60 * 24));
-        $this->view->assign('timestamp', $date ? strtotime($date) : waDateTime::date('U', time() + 60 * 60 * 24, wa()->getUser()->getTimezone()));
+        $this->view->assign('timestamp', waDateTime::date('U', ($date ? strtotime($date) : time()) + 60 * 60 * 24, wa()->getUser()->getTimezone()));
 
         $us = new pocketlistsUserSettings();
         $stream_list_id = $us->getStreamInboxList();

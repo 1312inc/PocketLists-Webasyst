@@ -24,7 +24,7 @@
         {else}
         <h1 class="not-padded" pl-todo-stream="date">
             {if !$print} <a href="#" class="back">&larr; [`All favorites`]</a>{/if}
-            <span>{$date|wa_date:'humandate'}</span>
+            <span>{waDateTime::date(waDateTime::getFormat('humandate'), $date)}</span>
         </h1>
         {/if}
     </header>
