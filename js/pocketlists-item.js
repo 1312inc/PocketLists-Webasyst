@@ -151,17 +151,19 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                 if (!o.list && $calendar.length) {
                     $.get('?module=json&action=getItemsPocketColor&id=' + parseInt($html.data('id')), function (r) {
                         if (r.status === 'ok') {
-                            var $selected_date = $calendar.find('.pl-selected').length ? $calendar.find('.pl-selected') : $calendar.find('.pl-today'),
-                                $dots_wrapper = $selected_date.find('.pl-dots'),
-                                $new_dot = $('<i class="icon10 color pl-dark-' + r.data + '">');
+                            var $selected_date = $calendar.find('.pl-selected').length ? $calendar.find('.pl-selected') : ($calendar.find('.pl-today').next().length ? $calendar.find('.pl-today').next() : false);
+                            if ($selected_date) {
+                                var $dots_wrapper = $selected_date.find('.pl-dots'),
+                                    $new_dot = $('<i class="icon10 color pl-dark-gray">');
 
-                            if (!$dots_wrapper.length) {
-                                $dots_wrapper = $('<div class="pl-dots">');
-                                $selected_date.append($dots_wrapper);
-                            }
+                                if (!$dots_wrapper.length) {
+                                    $dots_wrapper = $('<div class="pl-dots">');
+                                    $selected_date.append($dots_wrapper);
+                                }
 
-                            if ($dots_wrapper.find('i').not('.pl-dark-none').length < 3) {
-                                $dots_wrapper.append($new_dot);
+                                if ($dots_wrapper.find('i').not('.pl-dark-none').length < 3) {
+                                    $dots_wrapper.append($new_dot);
+                                }
                             }
                         }
                     }, 'json');
