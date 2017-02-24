@@ -6,8 +6,8 @@ class pocketlistsListAction extends waViewAction
     {
         $list_id = isset($this->params['list_id']) ? $this->params['list_id'] : waRequest::get('id', false, waRequest::TYPE_INT);
         $archived = isset($this->params['archive'])  ? true : false;
+        $lm = new pocketlistsListModel();
         if ($list_id > 0) { // existing list
-            $lm = new pocketlistsListModel();
             $list = $lm->getById($list_id);
 
             if (!$list) {
@@ -65,9 +65,11 @@ class pocketlistsListAction extends waViewAction
                 $this->setTemplate('templates/include/error.html');
                 return;
             }
+            $last_list_id = $lm->getLastListId();
             $this->view->assign('archive', $archived);
             $this->view->assign('new', true);
             $this->view->assign('empty', true);
+            $this->view->assign('new_list_id', $last_list_id ? $last_list_id + 1 : 1);
         }
         $this->view->assign('backend_url', wa()->getConfig()->getBackendUrl());
         $this->view->assign('print', waRequest::get('print', false));

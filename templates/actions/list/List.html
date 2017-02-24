@@ -123,7 +123,7 @@
             </label>
             {/if}
             {if $new && !$archive}
-                <input type="text" placeholder="[`New list`]" id="pl-new-list-input" class="bold" />
+                <input type="text" placeholder="{sprintf('[`List #%d`]', $new_list_id)}" id="pl-new-list-input" class="bold" />
             {else}
                 <span id="pl-list-name">{$list.name|default:' '|escape}</span>
             {/if}

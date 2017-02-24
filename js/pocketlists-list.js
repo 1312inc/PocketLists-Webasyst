@@ -233,9 +233,10 @@ $.pocketlists.List = function ($list_wrapper, options) {
         request_in_action = true;
 
         var name = $new_list_input.val().trim();
+        name = name || $new_list_input.attr('placeholder');
         if (name.length) {
             var data = {
-                name: $new_list_input.val().trim(),
+                name: name,
                 type: 'checklist'
             };
             if (data.name) {
