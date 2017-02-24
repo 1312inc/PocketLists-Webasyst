@@ -18,11 +18,6 @@
             [`on`]
             {if $comment.list_id}<a href="#/list/{$comment.list_id}/" class="pl-label pl-dark-{$comment.list_color|default:'none'}">{$comment.list_name|truncate:32|escape}</a>{/if}
             <a href="{if $comment.list_id}#/list/{$comment.list_id}/{else}#/team/{$comment.contact.login}{/if}">{$comment.item_name|truncate:64|escape}</a>
-            {if $comment.list_id}
-            {$comment.list_id},
-            {$comment.list_name},
-            {$comment.list_color}
-            {/if}
             {/if}
             <span class="hint nowrap">{$comment.create_datetime|wa_datetime:'humandatetime'}</span>
         </div>

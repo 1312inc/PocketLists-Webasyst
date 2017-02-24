@@ -468,8 +468,8 @@ class pocketlistsHelper
     public static function getContactData($contact)
     {
         $default = array(
-            'name'      => 'DELETED',
-            'username'  => 'DELETED',
+            'name'      => '(DELETED USER)',
+            'username'  => '(DELETED USER)',
             'id'        => 0,
             'photo_url' => '/wa-content/img/userpic96@2x.jpg',
             'userpic'   => '/wa-content/img/userpic20@2x.jpg',
