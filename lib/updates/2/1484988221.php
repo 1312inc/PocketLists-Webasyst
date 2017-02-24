@@ -19,7 +19,7 @@ foreach ($current_pocket_rights as $current_pocket_right) {
             $rights_model->insert(array(
                 'group_id' => $current_pocket_right['group_id'],
                 'app_id'   => $current_pocket_right['app_id'],
-                'name'     => 'lists.' . $list['id'],
+                'name'     => 'list.' . $list['id'],
                 'value'    => $current_pocket_right['value'],
             ));
         }
