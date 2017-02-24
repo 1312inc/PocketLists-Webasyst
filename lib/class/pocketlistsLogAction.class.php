@@ -167,17 +167,22 @@ class pocketlistsLogAction
     {
         $contact = new waContact($this->ext_logs[$id]['params']['assigned_to']);
         $list_html = self::getListUrlHtml($id);
+        $team_url = $this->app_url . '#/team/' . $contact->get('login') . '/';
         if ($list_html)
-            return $contact->getName() . ' ' . _w('in list') . ' ' . $list_html;
+            return '<a hre="{$team_url}"> ' . $contact->getName() . '</a> ' . _w('in list') . ' ' . $list_html;
         else
-            return $contact->getName();
+            return '<a hre="{$team_url}"> ' . $contact->getName() . '</a>';
     }
 
     private function item_assign_team($id)
     {
         $contact = new waContact($this->ext_logs[$id]['params']['assigned_to']);
         $team_url = $this->app_url . '#/team/' . $contact->get('login') . '/';
-        $item = $this->getItemData($this->ext_logs[$id]['params']['item_id']);
+        if (!empty($this->ext_logs[$id]['params']['item_id'])) {
+            $item = $this->getItemData($this->ext_logs[$id]['params']['item_id']);
+        } else {
+            $item = array('name' => '');
+        }
         return htmlspecialchars($item['name']) . " " . _w("to user") . " <a href=\"{$team_url}\">" . $contact->getName() . "</a>";
     }
 
@@ -236,17 +241,21 @@ class pocketlistsLogAction
     private function canAccess($log)
     {
         $list = $log[self::$ext]['list'];
+        /** @var waContact $assigned */
+        $assigned = $log[self::$ext]['assigned'];
 
         if (in_array($log['action'], array(
                 self::ITEM_ASSIGN,
                 self::ITEM_ASSIGN_TEAM,
-                self::NEW_SELF_ITEM,
             )) && !pocketlistsRBAC::canAssign()
+            && $assigned && $assigned->getId() != wa()->getUser()->getId()
         ) {
             return false;
         }
 
-        if (pocketlistsRBAC::isAdmin() || ($list && $this->lists && in_array($list['id'], $this->lists))) {
+        if (pocketlistsRBAC::isAdmin()
+            || ($list && $this->lists && in_array($list['id'], $this->lists))
+            || (!$list)) {
             return true;
         }
 
@@ -257,7 +266,7 @@ class pocketlistsLogAction
     {
         $log['params_html'] = '';
 
-        if (intval($log['params'])) {
+        if ((int) $log['params']) {
         } else {
             $log['params'] = json_decode($log['params'], true);
         }
