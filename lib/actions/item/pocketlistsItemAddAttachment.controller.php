@@ -13,7 +13,7 @@ class pocketlistsItemAddAttachmentController extends waJsonController
             $file_path = wa()->getTempPath('shop/upload/') . $name;
             $append_file = is_file($file_path) && $size > filesize($file_path);
             clearstatcache();
-            file_put_contents($file_path, fopen('php://input', 'r'), $append_file ? FILE_APPEND : 0);
+            file_put_contents($file_path, fopen('php://input', 'rb'), $append_file ? FILE_APPEND : 0);
             $file = new waRequestFile(array(
                 'name'     => $name,
                 'type'     => waRequest::server('HTTP_X_FILE_TYPE'),

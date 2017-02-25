@@ -6,7 +6,7 @@ class pocketlistsActivity
     private static $instance;
     private static $app_id = 'pocketlists';
 
-    private function __construct($time = null)
+    protected function __construct($time = null)
     {
         $this->data = wa()->getStorage()->get(__CLASS__);
         if (!$this->data) {
