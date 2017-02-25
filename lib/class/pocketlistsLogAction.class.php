@@ -343,7 +343,7 @@ class pocketlistsLogAction
         if (!isset(self::$cache['list_' . $id])) {
             $list = $this->lm->getById($id);
             if (!$list) {
-                $list['name'] = _w('Deleted');
+                $list['name'] = _w('DELETED LIST');
                 $list['deleted'] = true;
             }
             self::$cache['list_' . $id] = $list;

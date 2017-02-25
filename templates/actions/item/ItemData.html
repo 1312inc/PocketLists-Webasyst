@@ -20,11 +20,13 @@
                 </span>
             {else}
 
-                {* assigned to *}
-                {* {if !empty($item.assigned_contact_id)}<span class="pl-userpic">&rarr; <i class="icon16 userpic20" style="background-image: url({$item.assigned_contact.userpic})" alt="{$item.assigned_contact.username|escape}" title="{sprintf('[`Assigned to %s`]', $item.assigned_contact.username|escape)}"></i></span>{/if} *}
 
-                {* item author userpic *}
-                {if $item.contact_id != $wa->user()->getId()}
+                {if !empty($item.assigned_contact_id)}
+                    {* assigned to *}
+                    <span class="pl-userpic"><i class="icon16 userpic20" style="background-image: url({$item.assigned_contact.userpic})" alt="{$item.assigned_contact.username|escape}" title="{sprintf('[`Assigned to %s`]', $item.assigned_contact.username|escape)}"></i></span>
+                {else}
+                    {* DEPRECATED if $item.contact_id != $wa->user()->getId() *}
+                    {* item author userpic *}
                     <span class="pl-userpic" title="{sprintf('%s by %s', $item.create_datetime|wa_date:'humandatetime', $item.contact.username|default:'%username%'|escape)}"><i class="icon16 userpic20" style="background-image: url({$item.contact.userpic})" alt="{$item.contact.username|escape}"></i></span>
                 {/if}
 

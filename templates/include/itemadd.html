@@ -12,7 +12,7 @@
             {$_placeholder = '[`New to-do`]'}
             {if isset($this_is_stream) && empty($undone_items) && !$count_done_items && !$date}
                 {* a tiny friendly hack that promotes app Natural Input feature on the very empty launch *}
-                {$_placeholder = '[`Meeting tomorrow at 10`]'}
+                {$_placeholder = '[`New to-do (e.g. “meeting tomorrow at 10”)`]'}
             {/if}
             <textarea rows="1" placeholder="{$_placeholder}"></textarea>
         </label>

@@ -1149,3 +1149,15 @@ msgstr "in"
 #: /wa-apps/pocketlists/templates/actions/list/List.html:126
 msgid "List #%d"
 msgstr ""
+
+#: /wa-apps/pocketlists/templates/include/itemadd.html:15
+msgid "New to-do (e.g. “meeting tomorrow at 10”)"
+msgstr ""
+
+#: /wa-apps/pocketlists/js/pocketlists-item.js:381
+msgid "Show all %d completed to-dos"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/class/pocketlistsLogAction.class.php:354
+msgid "DELETED LIST"
+msgstr ""
