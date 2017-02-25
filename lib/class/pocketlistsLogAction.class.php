@@ -191,7 +191,11 @@ class pocketlistsLogAction
         if (!$this->ext_logs[$id][self::$ext]['list']) {
             return "";
         }
-        $list_url = $this->app_url . '#/list/' . $this->ext_logs[$id][self::$ext]['list']['id'] . '/';
+        if (!empty($this->ext_logs[$id][self::$ext]['list']['id'])) {
+            $list_url = $this->app_url . '#/list/' . $this->ext_logs[$id][self::$ext]['list']['id'] . '/';
+        } else {
+            $list_url = $this->app_url;
+        }
         $list_name = htmlspecialchars($this->ext_logs[$id][self::$ext]['list']['name'], ENT_QUOTES);
         return "<a href=\"{$list_url}\">{$list_name}</a>";
     }
@@ -253,13 +257,31 @@ class pocketlistsLogAction
             return false;
         }
 
-        if (pocketlistsRBAC::isAdmin()
-            || ($list && $this->lists && in_array($list['id'], $this->lists))
-            || (!$list)) {
-            return true;
+        // показывать только админам, иначе пользователи без прав будут видеть в логах названия таких удаленных списков, хотя до этого ничего о них не слышали
+        if (in_array($log['action'], array(
+                self::LIST_DELETED,
+            )) && !pocketlistsRBAC::isAdmin()
+        ) {
+            return false;
         }
 
-        return false;
+        // в случае "после удаления" показывать записи NEW LIST только админам.
+        if (empty($list['id']) &&
+            in_array($log['action'], array(
+                self::LIST_CREATED,
+            )) && !pocketlistsRBAC::isAdmin()
+        ) {
+            return false;
+        }
+
+        if (!empty($list['id'])
+            && !pocketlistsRBAC::isAdmin()
+            && !in_array($list['id'], $this->lists)
+        ) {
+            return false;
+        }
+
+        return true;
     }
 
     private function extendLog($log)
@@ -309,7 +331,11 @@ class pocketlistsLogAction
     private function getListData($id)
     {
         if (!isset(self::$cache['list_' . $id])) {
-            self::$cache['list_' . $id] = $this->lm->getById($id);
+            $list = $this->lm->getById($id);
+            if (!$list) {
+                $list['name'] = _w('Deleted');
+            }
+            self::$cache['list_' . $id] = $list;
         }
         return self::$cache['list_' . $id];
     }
