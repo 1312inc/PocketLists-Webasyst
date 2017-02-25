@@ -167,11 +167,13 @@ class pocketlistsLogAction
     {
         $contact = new waContact($this->ext_logs[$id]['params']['assigned_to']);
         $list_html = self::getListUrlHtml($id);
-        $team_url = $this->app_url . '#/team/' . $contact->get('login') . '/';
-        if ($list_html)
-            return '<a hre="{$team_url}"> ' . $contact->getName() . '</a> ' . _w('in list') . ' ' . $list_html;
-        else
-            return '<a hre="{$team_url}"> ' . $contact->getName() . '</a>';
+        $team_url = $this->app_url . '#/team/' . htmlspecialchars($contact->get('login')) . '/';
+        $team_name = htmlspecialchars($contact->getName());
+        if ($list_html) {
+            return '<a hre="' . $team_url . '"> ' . $team_name . '</a> ' . _w('in list') . ' ' . $list_html;
+        } else {
+            return '<a hre="' . $team_url . '"> ' . $team_name . '</a>';
+        }
     }
 
     private function item_assign_team($id)
@@ -183,7 +185,7 @@ class pocketlistsLogAction
         } else {
             $item = array('name' => '');
         }
-        return htmlspecialchars($item['name']) . " " . _w("to user") . " <a href=\"{$team_url}\">" . $contact->getName() . "</a>";
+        return $item['name'] . " " . _w("to user") . " <a href=\"{$team_url}\">" . htmlspecialchars($contact->getName()) . "</a>";
     }
 
     private function getListUrlHtml($id)
@@ -266,14 +268,22 @@ class pocketlistsLogAction
         }
 
         // в случае "после удаления" показывать записи NEW LIST только админам.
-        if (empty($list['id']) &&
+        if (isset($list['deleted']) &&
             in_array($log['action'], array(
                 self::LIST_CREATED,
+                self::LIST_DELETED,
+                self::LIST_ARCHIVED,
+                self::LIST_UNARCHIVED,
+                self::NEW_ITEMS,
+                self::ITEM_ASSIGN,
+                self::ITEM_COMPLETED,
+                self::ITEM_COMMENT,
             )) && !pocketlistsRBAC::isAdmin()
         ) {
             return false;
         }
 
+        // доступ к списку
         if (!empty($list['id'])
             && !pocketlistsRBAC::isAdmin()
             && !in_array($list['id'], $this->lists)
@@ -288,7 +298,7 @@ class pocketlistsLogAction
     {
         $log['params_html'] = '';
 
-        if ((int) $log['params']) {
+        if ((int)$log['params']) {
         } else {
             $log['params'] = json_decode($log['params'], true);
         }
@@ -334,6 +344,7 @@ class pocketlistsLogAction
             $list = $this->lm->getById($id);
             if (!$list) {
                 $list['name'] = _w('Deleted');
+                $list['deleted'] = true;
             }
             self::$cache['list_' . $id] = $list;
         }
