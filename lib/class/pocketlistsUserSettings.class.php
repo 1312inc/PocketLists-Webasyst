@@ -38,8 +38,12 @@ class pocketlistsUserSettings
     public function __construct($contact_id = false)
     {
         $this->csm = new waContactSettingsModel();
+        $this->setContact($contact_id);
+    }
+
+    public function setContact($contact_id = false)
+    {
         $this->contact_id = $contact_id ? $contact_id : wa()->getUser()->getId();
-        //TODO: cache
         $this->settings = $this->csm->get($this->contact_id, $this->app_id);
     }
 
