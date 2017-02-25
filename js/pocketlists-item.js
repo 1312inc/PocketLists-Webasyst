@@ -378,8 +378,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
 
                             // always update list count icon
                             updateListCountBadge();
-
-                            $show_logbook_items.show().find('i').text($_('Show all ' + $done_items_wrapper.find('[data-id]').length + ' completed to-dos')); // update "complete items" heading
+                            $show_logbook_items.show().find('i').text($_('Show all %d completed to-dos').replace('%d', $done_items_wrapper.find('[data-id]').length)); // update "complete items" heading
 
                             $.pocketlists.reloadSidebar();
 

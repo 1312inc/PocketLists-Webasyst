@@ -11,7 +11,6 @@ class pocketlistsBackendLocAction extends waViewAction
 
         // Application locale strings
         foreach (array(
-                     'Show all %d completed to-dos',
                      'This to-do is assigned to another person. Are you sure you want to mark this item as complete?',
                      'ALL TO-DO LISTS AND ITEMS FROM THIS PROJECT WILL BE DELETED PERMANENTLY. ARE YOU SURE?',
                      'My personal settings',
@@ -27,6 +26,10 @@ class pocketlistsBackendLocAction extends waViewAction
                  ) as $s) {
             $strings[$s] = _w($s);
         }
+
+        $n = 5;
+        // plural forms hack
+        $strings['Show all %d completed to-dos'] = str_replace($n, '%d', _w('Show all %d completed to-do', 'Show all %d completed to-dos', $n));
 
         $this->view->assign('strings',
             $strings ? $strings : new stdClass()); // stdClass is used to show {} instead of [] when there's no strings
