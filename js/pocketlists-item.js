@@ -472,14 +472,15 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
             function (r) {
                 if (r.status === 'ok') {
                     var $favorites_count = $('[data-pl-sidebar="favorites-count"]'),
-                        current_favorites_count = parseInt($favorites_count.text());
+                        current_favorites_count = $favorites_count.text();
 
+                    current_favorites_count = current_favorites_count.length && parseInt(current_favorites_count) ? parseInt(current_favorites_count) : 0;
                     if (status && current_favorites_count >= 0) {
                         current_favorites_count++;
                     } else if (!status && current_favorites_count > 0) {
                         current_favorites_count--;
                     }
-                    $favorites_count.text(current_favorites_count);
+                    $favorites_count.text(current_favorites_count == 0 ? '' : current_favorites_count);
                     $star.toggleClass('star-empty star');
                 } else {
                     alert(r.errors);
