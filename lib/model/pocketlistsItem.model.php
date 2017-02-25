@@ -844,14 +844,19 @@ class pocketlistsItemModel extends waModel
         $q = "SELECT 
                      i.id item_id,
                      i.list_id list_id,
+                     i.status status,
                      i.contact_id contact_id,
                      i.assigned_contact_id assigned_contact_id,
+                     i.complete_contact_id complete_contact_id,
                      l.archived list_archived
                 FROM pocketlists_item i
-                LEFT JOIN pocketlists_list l ON l.id = i.key_list_id
+                LEFT JOIN pocketlists_list l ON l.id = i.list_id
                 WHERE 
                     {$list_sql}
-                    AND i.create_datetime > s:user_last_activity";
+                    AND (
+                      i.create_datetime > s:user_last_activity 
+                      OR i.complete_datetime > s:user_last_activity
+                    )";
 
         $items = $this->query($q, array(
             'list_ids'           => $lists,
@@ -862,22 +867,26 @@ class pocketlistsItemModel extends waModel
             'list' => array(),
             'team' => array(),
             'archive' => 0,
+            'logbook' => 0,
         );
         foreach ($items as $item) {
-            if ($item['list_id'] && $item['contact_id'] != $user_id) {
+            if ($item['list_id'] && $item['contact_id'] != $user_id && $item['status'] == 0) {
                 if (!isset($result['list'][$item['list_id']])) {
                     $result['list'][$item['list_id']] = 0;
                 }
                 $result['list'][$item['list_id']]++;
             }
-            if ($item['assigned_contact_id'] && $item['assigned_contact_id'] != $user_id) {
+            if ($item['assigned_contact_id'] && $item['assigned_contact_id'] != $user_id && $item['status'] == 0) {
                 if (!isset($result['team'][$item['assigned_contact_id']])) {
                     $result['team'][$item['assigned_contact_id']] = 0;
                 }
                 $result['team'][$item['assigned_contact_id']]++;
             }
-            if ($item['list_archived']) {
+            if ($item['list_archived'] && $item['status'] == 0) {
                 $result['archive']++;
+            }
+            if ($item['status'] && $item['complete_contact_id'] != $user_id) {
+                $result['logbook']++;
             }
         }
 

@@ -14,7 +14,7 @@
             <a href="#/comments/"><i class="icon16 pl comments"></i>[`Comments`]{if $new_comments_count} <span class="highlighted bold small black" title="{$last_activity|wa_datetime}">+{$new_comments_count}</span>{/if}</a>
         </li>
         <li>
-            <a href="#/logbook/"><i class="icon16 pl logbook"></i>[`Logbook`]</a>
+            <a href="#/logbook/"><i class="icon16 pl logbook"></i>[`Logbook`]{if $new_items_count.logbook} <span class="highlighted bold small black">+{$new_items_count.logbook}</span>{/if}</a>
         </li>
 
 
