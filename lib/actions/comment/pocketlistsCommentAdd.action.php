@@ -10,7 +10,7 @@ class pocketlistsCommentAddAction extends waViewAction
         if ($item_id && $comment != '') {
             $im = new pocketlistsItemModel();
             $item = $im->getById($item_id);
-            if ($item && $item['status'] == 0) {
+            if ($item) {
 
                 if ($item['list_id'] && !pocketlistsRBAC::canAccessToList($item['list_id'])) {
                     $this->view->assign('error', array(
