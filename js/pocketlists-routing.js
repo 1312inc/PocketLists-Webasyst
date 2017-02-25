@@ -144,7 +144,7 @@
                 this.postExecute();
             }
         },
-        redispatch: function() {
+        redispatch: function () {
             this.prevHash = null;
             this.dispatch();
         },
@@ -156,7 +156,7 @@
             this.heartbeat();
         },
 
-        heartbeat: function() {
+        heartbeat: function () {
             $.post('?module=json&action=heartbeat');
         },
 
@@ -164,7 +164,7 @@
         defaultAction: function () {
             this.todoAction();
         },
-        listsAction: function() {
+        listsAction: function () {
             //var self = this;
             var list_id = decodeURIComponent(this.getHash().substr(('#/pocket/' + id + '/list/').length).replace('/', '')) || 0;
             //var load_list = this.getHash().indexOf('list') > 0;
@@ -186,7 +186,7 @@
                 //load_list && self.listAction(list_id);
             });
         },
-        listAction: function(id) {
+        listAction: function (id) {
             this.load('?module=list&id=' + id, function (result) {
                 $('#content').html(result);
             });

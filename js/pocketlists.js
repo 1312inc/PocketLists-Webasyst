@@ -34,7 +34,7 @@
                 $('html,body').animate({scrollTop: offset + 'px'}, speed);
             }
         },
-        highlightSidebar: function($li) {
+        highlightSidebar: function ($li) {
             var self = this;
 
             var $all_li = self.$core_sidebar.find('li');
@@ -58,7 +58,7 @@
                 }
             }
         },
-        setTitle: function(title) {
+        setTitle: function (title) {
             var self = this;
             var $h1 = $('#wa-app .content h1').first();
             if ($h1.length && !title) {
@@ -70,7 +70,7 @@
                 $('title').html(title + " &mdash; " + self.options.account_name);
             }
         },
-        stickyDetailsSidebar: function() {
+        stickyDetailsSidebar: function () {
 
             var $list = $('#pl-list-content');
             if ($list.length) {
@@ -102,10 +102,10 @@
                 $textarea.css('height', ($textarea.get(0).scrollHeight - parseInt($textarea.css('padding-top')) - parseInt($textarea.css('padding-bottom'))) + 'px');
             }
         },
-        initNotice: function(wrapper_selector) {
+        initNotice: function (wrapper_selector) {
             var $wrapper = $(wrapper_selector);
             if (!$.storage.get('pocketlists/notice/' + wrapper_selector)) {
-                $wrapper.show().one('click', '.close', function() {
+                $wrapper.show().one('click', '.close', function () {
                     $.storage.set('pocketlists/notice/' + wrapper_selector, 1);
                     $wrapper.slideUp();
                 });
@@ -123,7 +123,7 @@
                 self.sortLists();
             });
         },
-        sortLists: function() {
+        sortLists: function () {
             var self = this;
             if (!self.options.isAdmin) {
                 return;
@@ -140,13 +140,13 @@
                 classes: {
                     'ui-droppable': 'pl-droppable'
                 },
-                over: function( event, ui ) {
+                over: function (event, ui) {
                     $(this).addClass('highlighted-background');
                 },
-                out: function( event, ui ) {
+                out: function (event, ui) {
                     $(this).removeClass('highlighted-background');
                 },
-                drop: function(event, ui) {
+                drop: function (event, ui) {
                     var $item = ui.draggable,
                         $list = $(event.target),
                         list_id = $list.data('pl-list-id');
@@ -164,13 +164,13 @@
                 classes: {
                     'ui-droppable': 'pl-droppable'
                 },
-                over: function( event, ui ) {
+                over: function (event, ui) {
                     $(this).addClass('highlighted-background');
                 },
-                out: function( event, ui ) {
+                out: function (event, ui) {
                     $(this).removeClass('highlighted-background');
                 },
-                drop: function(event, ui) {
+                drop: function (event, ui) {
                     var $item = ui.draggable,
                         $list = $(event.target),
                         team_id = $list.data('pl-team-id');
@@ -210,7 +210,7 @@
                 classes: {
                     'ui-sortable-helper': 'shadowed'
                 },
-                start: function(e, ui ){
+                start: function (e, ui) {
                     ui.placeholder.height(ui.helper.outerHeight());
                 },
                 stop: function (event, ui) {
@@ -218,7 +218,7 @@
                         var data = [];
                         $lists_wrapper.find('[data-pl-list-id]').each(function (i) {
                             var $this = $(this);
-                                // color = $this.attr('class').match(/pl-(.*)/);
+                            // color = $this.attr('class').match(/pl-(.*)/);
                             data.push({
                                 id: $this.data('pl-list-id'),
                                 sort: i
@@ -251,24 +251,24 @@
         enable_prevent_close_browser: function ($el, msg) {
             var self = this;
             self.$core_sidebar.find('a').each(function (e) {
-                 if (!$(this).data('pl2-onbeforeunload')) {
-                     $(this).on('click.pl2', function(e) {
-                         var msg = msg || $_('You are about to leave this page without saving your input. Are you sure?');
-                         if ($el) {
-                             $el.data('can_blur', false);
-                         }
-                         if (!confirm(msg)) {
-                             e.preventDefault();
-                             e.stopPropagation();
-                         } else {
-                             self.disable_prevent_close_browser();
-                         }
-                     });
-                 }
+                if (!$(this).data('pl2-onbeforeunload')) {
+                    $(this).on('click.pl2', function (e) {
+                        var msg = msg || $_('You are about to leave this page without saving your input. Are you sure?');
+                        if ($el) {
+                            $el.data('can_blur', false);
+                        }
+                        if (!confirm(msg)) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                        } else {
+                            self.disable_prevent_close_browser();
+                        }
+                    });
+                }
             }).data('pl2-onbeforeunload', true);
 
             msg = msg || $_('Close?');
-            window.onbeforeunload = function(e) {
+            window.onbeforeunload = function (e) {
                 if ($el) {
                     $el.data('can_blur', false);
                 }
@@ -278,7 +278,8 @@
         disable_prevent_close_browser: function () {
             var self = this;
             self.$core_sidebar.find('a').off('click.pl2').removeData('pl2-onbeforeunload');
-            window.onbeforeunload = function(e) {};
+            window.onbeforeunload = function (e) {
+            };
         },
         collapse: function (action) {
             var $this = $(this),

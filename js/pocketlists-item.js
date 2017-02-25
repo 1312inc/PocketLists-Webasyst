@@ -7,7 +7,7 @@
  * - replace
  * - drag
  */
-$.pocketlists.Items = function($list_items_wrapper, options) {
+$.pocketlists.Items = function ($list_items_wrapper, options) {
     var $undone_items_wrapper = $list_items_wrapper.find('[data-pl-items="undone"] > ul.menu-v'),
         $sortable_items = $('[data-pl-items="undone"]').find('ul.menu-v'),
         $done_items = $list_items_wrapper.find('#pl-complete-log'),
@@ -46,7 +46,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                 // connectWith: '[data-pl-items="done"] ul.menu-v',
                 placeholder: 'pl-item-placeholder',
                 tolerance: 'pointer',
-                start: function(e, ui ){
+                start: function (e, ui) {
                     ui.placeholder.height(ui.helper.outerHeight());
                 },
                 classes: {
@@ -99,10 +99,10 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
             isTopAdd = $this.closest('[data-pl-item-add-top]').length;
 
         if (o.dueDate) {
-             $.each(data, function(i) {
-                  data[i]['due_date'] = o.dueDate;
-             });
-         }
+            $.each(data, function (i) {
+                data[i]['due_date'] = o.dueDate;
+            });
+        }
         var $pl_done = $this.closest('.pl-item').find('.pl-done-label span').addClass('transparent').html($.pocketlists.$loading);
         $.post(
             '?module=item&action=create',
@@ -129,7 +129,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                 _itemAdd.textarea.data('can_blur', false);
                 if ($li.length) {
                     if (!$li.parents(item_selector).length || // not root item
-                            //$li.prev(item_selector).length || // not first item in subs
+                        //$li.prev(item_selector).length || // not first item in subs
                         _itemAdd.wrapper.prev('.pl-item').length) { // new item wrapper is after item
                         $li.after($html);
                     } else {
@@ -185,7 +185,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
             item_list_id = $form.find('#pl-item-list-id').val(),
             item_list_id_new = $form.find('[name="item\[list_id\]"]').val();
 
-        var afterUpdateItem = function(html, callback) {
+        var afterUpdateItem = function (html, callback) {
             $.pocketlists.updateAppCounter();
             $.pocketlists.reloadSidebar();
             $.pocketlists.$loading.remove();
@@ -200,7 +200,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                         'green': 1, 'pl-green': 1, 'pl-due-tomorrow': 1,
                         'yellow': 2, 'pl-yellow': 2, 'pl-due-today': 2,
                         'red': 3, 'pl-red': 3, 'pl-due-overdue': 3,
-                        'none': 0, 'pl-none':0, 'pl-due-someday': 0, 'undefined': 0
+                        'none': 0, 'pl-none': 0, 'pl-due-someday': 0, 'undefined': 0
                     },
                     class_priority = {
                         1: ' indicator green', 2: ' indicator yellow', 3: ' indicator red', 0: ''
@@ -453,7 +453,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
         }
     };
     // favorite item
-    var favoriteItem = function($item) {
+    var favoriteItem = function ($item) {
         if (request_in_action) {
             return;
         }
@@ -491,7 +491,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
         );
     };
     // select clicked item
-    var selectItem = function($item) {
+    var selectItem = function ($item) {
         $current_item = $item;
         if ($current_item) {
             var $item_data_wrapper = $current_item.find('.pl-item').first();
@@ -502,7 +502,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
         }
     };
     // deselect clicked item
-    var deselectItem = function() {
+    var deselectItem = function () {
         if ($current_item) {
             $list_items_wrapper.find('.pl-item').removeClass('pl-item-selected');
             $current_item.prop('checked', false);
@@ -510,45 +510,45 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
         }
     };
     // remove item row
-    var removeItem = function(id) {
+    var removeItem = function (id) {
         $list_items_wrapper.find('[data-id="' + id + '"]').remove();
     };
-    var replaceItem = function(data) {
+    var replaceItem = function (data) {
         if ($current_item) {
             $current_item.find('.pl-item').first().replaceWith($(data).addClass('pl-item-selected'));
         }
     };
-    var updateListCountBadge = function() {
+    var updateListCountBadge = function () {
         if (o.list && o.list.list_id) {
             $('#pl-lists')
                 .find('[data-pl-list-id="' + o.list.list_id + '"]')
                 .find('.count').text($undone_items_wrapper.find('[data-id]').length);
         }
     };
-    var isEmptyList = function() {
+    var isEmptyList = function () {
         return getItems().length ? false : true;
     };
     var isNewList = function () {
         return o.list && o.list.list_id < 0;
     };
-    var showEmptyListMessage = function() {
+    var showEmptyListMessage = function () {
         if (isEmptyList() && o.showMessageOnEmptyList) {
             $empty_list_msg.show();
             //$('.pl-title h1').css('opacity','0.25');
         }
     };
-    var hideEmptyListMessage = function() {
-        if (o.showMessageOnEmptyList)  {
+    var hideEmptyListMessage = function () {
+        if (o.showMessageOnEmptyList) {
             $empty_list_msg.hide();
             //$('.pl-title h1').css('opacity','1');
         }
     };
-    var showChatCommentInput = function() {
+    var showChatCommentInput = function () {
         if ($current_item.length) {
             $current_item.find('.pl-chat').show().find('textarea').trigger('focus');
         }
     };
-    var hideChatCommentInput = function() {
+    var hideChatCommentInput = function () {
         if ($current_item.length) {
             var $comments_wrapper = $current_item.find('.pl-chat'),
                 $comment_input = $comments_wrapper.find('textarea');
@@ -558,7 +558,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
             }
         }
     };
-    var addComment = function(data) {
+    var addComment = function (data) {
         if (request_in_action) {
             return;
         }
@@ -593,7 +593,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
             }
         );
     };
-    var deleteComment = function() {
+    var deleteComment = function () {
         if (!confirm($_('You are about to permanently delete this comment. Delete?'))) {
             return;
         }
@@ -641,7 +641,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
             function (r) {
                 // $.pocketlists.$loading.removeAttr('style').remove();
                 if (r.status === 'ok') {
-                    $this.hide(200, function() {
+                    $this.hide(200, function () {
                         $this.remove();
                     });
                 }
@@ -685,7 +685,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
     /**
      * for new item dom manipulating
      */
-    var NewItemWrapper = (function($new_item_wrapper) {
+    var NewItemWrapper = (function ($new_item_wrapper) {
         var $new_item_wrapper_hover = $('<div id="pl-item-add-wrapper-hover" style="display: none;">'),
             $top_new_item_wrapper = $new_item_wrapper.clone(),
             $textarea = $new_item_wrapper.find('textarea'),
@@ -859,7 +859,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
         var hideItemDetails = function () {
             $wrapper.animate({
                 'right': '100%'
-            }, 200, function() {
+            }, 200, function () {
                 $wrapper.hide().empty()
             });
             id = 0;
@@ -877,17 +877,17 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
             o.list && o.list.list_details.isVisible() && o.list.list_details.$el.after($wrapper);
             $wrapper.html($.pocketlists.$loading).show().animate({
                 'right': '0%'
-            }, 200, function() {
+            }, 200, function () {
                 o.list && o.list.list_details.isVisible() && o.list.list_details.trigger('hide.pl2');
                 $.pocketlists.stickyDetailsSidebar();
             });
-            $.post('?module=item&action=details',{ id: id }, function (html) {
+            $.post('?module=item&action=details', {id: id}, function (html) {
                 $wrapper.html(html);
                 afterLoad();
                 request_in_action = false;
             });
         };
-        var afterLoad = function() {
+        var afterLoad = function () {
             var datepicker_options = {
                 changeMonth: true,
                 changeYear: true,
@@ -900,7 +900,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                 gotoCurrent: true,
                 constrainInput: false,
                 dateFormat: "yy-mm-dd",
-                onClose: function() {
+                onClose: function () {
                     if ($wrapper.find('#pl-item-due-datetime').val()) {
                         if (!$wrapper.find('#pl-item-due-datetime-clear').is(':visible')) {
                             $wrapper.find('#pl-item-due-datetime-set').show();
@@ -953,7 +953,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                     //e.preventDefault();
                     var $this = $(this);
                     $this.find('#pl-item-details-save').after($.pocketlists.$loading);
-                    updateItem($this, function() {
+                    updateItem($this, function () {
                         $this.find('#pl-item-details-save').removeClass('yellow');
                         hideItemDetails();
                     });
@@ -1014,7 +1014,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                                 }, 'json');
                                 return false;
                             },
-                            onClose: function() {
+                            onClose: function () {
                                 $wrapper.append($(this));
                             }
                         });
@@ -1031,11 +1031,11 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                 .on('change paste keyup', ':input', function () {
                     $wrapper.find('#pl-item-details-save').addClass('yellow');
                 })
-                .on('show.pl2', function(e, id){
+                .on('show.pl2', function (e, id) {
                     showItemDetails(id);
                 })
                 .on('hide.pl2', hideItemDetails)
-                .on('change', '#pl-item-pocket', function() {
+                .on('change', '#pl-item-pocket', function () {
                     if (request_in_action) {
                         return;
                     }
@@ -1057,7 +1057,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                         request_in_action = false;
                     }, 'json');
                 })
-                .on('change', '#pl-item-list', function() {
+                .on('change', '#pl-item-list', function () {
                     var item_id = $(this).find(':selected').val();
                     $wrapper.find('input[name="item\[list_id\]"]').val(item_id);
                     if (item_id) {
@@ -1090,7 +1090,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                     }, 'json');
                 });
 
-            $(window).scroll(function() {
+            $(window).scroll(function () {
                 $.pocketlists.stickyDetailsSidebar();
             });
         };
@@ -1099,17 +1099,17 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
 
         return {
             $el: $wrapper,
-            trigger: function(event, data) {
+            trigger: function (event, data) {
                 this.$el && this.$el.trigger(event, data);
             },
-            isVisible: function() {
+            isVisible: function () {
                 return this.$el ? this.$el.is(':visible') : false;
             }
         };
     }($('#pl-item-details')));
 
 
-    var init = function() {
+    var init = function () {
         //if ($.pocketlists_routing.getHash() == '#/todo/' &&
         //    $.pocketlists_routing.getHash().indexOf('/team/') > 0) {
         //    $new_item_wrapper.prependTo($undone_items_wrapper).slideDown(200).wrap('<li class="pl-new-item-wrapper">');
@@ -1135,16 +1135,16 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                     status = $this.prop('checked') ? 1 : 0;
 
                 $this.prop('disabled', true);
-                completeItem.call(this, $item, status, function() {
+                completeItem.call(this, $item, status, function () {
                     if (ItemDetails.isVisible()) {
                         ItemDetails.trigger('hide.pl2');
                     }
                     $this.prop('disabled', false);
                 });
             })
-        /**
-         * select/deselect item
-         */
+            /**
+             * select/deselect item
+             */
             // todo: do we really need checkbox?
             .on('change', '.pl-is-selected', function (e) {
                 var $this = $(this),
@@ -1191,24 +1191,24 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                 ItemDetails.trigger('show.pl2', [parseInt($item.data('id'))]); // show item details
                 selectItem($item);
             })
-            .on('click', '[data-pl-action="item-favorite"]', function(e) {
+            .on('click', '[data-pl-action="item-favorite"]', function (e) {
                 e.preventDefault();
                 var $this = $(this),
                     $item = $this.closest(item_selector);
 
                 favoriteItem($item);
             }) // action: favorite item
-            .on('increaseSelectedItem.pl2', function(e) {
+            .on('increaseSelectedItem.pl2', function (e) {
                 increaseItem(e);
             })
-            .on('decreaseSelectedItem.pl2', function(e) {
+            .on('decreaseSelectedItem.pl2', function (e) {
                 decreaseItem(e);
             })
             .on('deselectItem.pl2', deselectItem)
-            .on('removeItem.pl2', function(e, id) {
+            .on('removeItem.pl2', function (e, id) {
                 removeItem(id);
             })
-            .on('replaceSelectedItem.pl2', function(e, data) {
+            .on('replaceSelectedItem.pl2', function (e, data) {
                 replaceItem(data);
             })
             .on('change cut keydown drop paste', '.pl-chat .pl-reply textarea', function () {
@@ -1217,7 +1217,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                     $.pocketlists.resizeTextarea($textarea)
                 }, 0);
             })
-            .on('keydown', '.pl-chat .pl-reply textarea', function(e) {
+            .on('keydown', '.pl-chat .pl-reply textarea', function (e) {
                 var $this = $(this);
                 if (!e.shiftKey && e.which === 13) {
                     e.preventDefault();
@@ -1232,7 +1232,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                     deselectItem();
                 }
             })
-            .on('blur', '.pl-chat .pl-reply textarea', function(e) {
+            .on('blur', '.pl-chat .pl-reply textarea', function (e) {
                 var $this = $(this),
                     comment = $this.val().trim();
                 if (comment) {
@@ -1240,7 +1240,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
                     $.pocketlists.enable_prevent_close_browser();
                 }
             })
-            .on('focus', '.pl-chat .pl-reply textarea', function(e) {
+            .on('focus', '.pl-chat .pl-reply textarea', function (e) {
                 var $this = $(this);
                 $this.removeClass('pl-unsaved');
                 $.pocketlists.disable_prevent_close_browser();
@@ -1250,7 +1250,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
 
                 deleteComment.call(this);
             })
-            .on('click', '.pl-chat .pl-reply textarea', function(e) {
+            .on('click', '.pl-chat .pl-reply textarea', function (e) {
                 e.preventDefault();
 
                 selectItem($(this).closest(item_selector));
@@ -1309,7 +1309,7 @@ $.pocketlists.Items = function($list_items_wrapper, options) {
 
     return {
         $el: $list_items_wrapper,
-        trigger: function(event, data) {
+        trigger: function (event, data) {
             this.$el && this.$el.trigger(event, data);
         }
     };

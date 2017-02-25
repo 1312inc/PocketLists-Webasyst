@@ -48,7 +48,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
             $itemDetails.length && $itemDetails.after($wrapper);
             $wrapper.html($.pocketlists.$loading).show().animate({
                 'right': '0%'
-            }, 200, function() {
+            }, 200, function () {
                 $itemDetails.length && $itemDetails.trigger('hide.pl2');
                 $.pocketlists.stickyDetailsSidebar();
             });
@@ -56,7 +56,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
             $.post('?module=list&action=details', {id: list_id}, function (html) {
                 $wrapper.html(html);
                 afterLoad();
-            }).always(function() {
+            }).always(function () {
                 request_in_action = false;
             });
         };
@@ -81,11 +81,11 @@ $.pocketlists.List = function ($list_wrapper, options) {
                 }
                 $list_wrapper
                     .find('.pl-list-due[data-pl-action="list-edit"]')
-                        .show()
+                    .show()
                     .find('[data-pl-list="due-date"]')
-                        .removeClass()
-                        .addClass('bold ' + due_class)
-                        .text(data.due_datetime ? data.due_datetime : data.due_date);
+                    .removeClass()
+                    .addClass('bold ' + due_class)
+                    .text(data.due_datetime ? data.due_datetime : data.due_date);
                 $list_wrapper.find('.inline-link[data-pl-action="list-edit"]').hide();
             } else {
                 $list_wrapper.find('.pl-list-due[data-pl-action="list-edit"]').hide();
@@ -149,7 +149,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
                             $wrapper.find('.error').show().delay(3000).hide();
                         }
                     }, 'json')
-                        .always(function() {
+                        .always(function () {
                             request_in_action = false;
                         });
                     return false;
@@ -266,7 +266,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
                         }
                     },
                     'json'
-                ).always(function() {
+                ).always(function () {
                     request_in_action = false;
                 });
             }
@@ -324,7 +324,8 @@ $.pocketlists.List = function ($list_wrapper, options) {
                                 $.wa.setHash('#/todo/');
                             }
                             $.pocketlists_routing.redispatch();
-                        } else {}
+                        } else {
+                        }
                         d.trigger('close');
                         request_in_action = false;
                     }, 'json');
@@ -355,7 +356,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
             request_in_action = false;
         }, 'json');
     };
-    var completeAllItems = function($dialog) {
+    var completeAllItems = function ($dialog) {
         if (request_in_action) {
             return;
         }
@@ -373,7 +374,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
             request_in_action = false;
         }, 'json');
     };
-    var unarchiveList = function() {
+    var unarchiveList = function () {
         if (request_in_action) {
             return;
         }
@@ -422,11 +423,11 @@ $.pocketlists.List = function ($list_wrapper, options) {
                         $new_list_input.data('pl-can-add', false).val('').removeClass('pl-unsaved');
                     }
                 }).on('blur', function () {
-                    // $new_list_input.data('pl-can-add') && addNewList(list_id);
-                    $new_list_input.addClass('pl-unsaved');
-                }).on('focus', function () {
-                    $new_list_input.removeClass('pl-unsaved');
-                });
+                // $new_list_input.data('pl-can-add') && addNewList(list_id);
+                $new_list_input.addClass('pl-unsaved');
+            }).on('focus', function () {
+                $new_list_input.removeClass('pl-unsaved');
+            });
         }
 
         if (o.archive) {
@@ -477,11 +478,11 @@ $.pocketlists.List = function ($list_wrapper, options) {
                         var $this = $(this);
 
                         $this.after($.pocketlists.$loading);
-                        $.post('?module=list&action=email', $this.serialize(), function(r) {
+                        $.post('?module=list&action=email', $this.serialize(), function (r) {
                             $.pocketlists.$loading.remove();
                             if (r.status === 'ok') {
                                 d.trigger('close');
-                            }  else {
+                            } else {
                                 alert(r.errors);
                             }
                         }, 'json');
