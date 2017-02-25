@@ -1147,3 +1147,7 @@ msgstr "пользователю"
 #: /wa-apps/pocketlists/lib/class/pocketlistsLogAction.class.php:171
 msgid "in list"
 msgstr "в списке"
+
+#: /wa-apps/pocketlists/templates/actions/list/List.html:126
+msgid "List #%d"
+msgstr "Список №%d"

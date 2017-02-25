@@ -1,6 +1,8 @@
 <div class="pl-item{if !empty($item.assigned_contact_id) && $item.assigned_contact_id != $wa->user()->getId() && $item.status != 1} pl-item-assigned{/if}{if $item.status == 1} gray{/if}" {if $item.assigned_contact_id}data-pl-assigned-contact="{$item.assigned_contact_id}"{/if}>
     {if !$item.status && empty($item.key_list_id) && !(isset($archive) && $archive)}<div class="pl-item-drag-handle" title="[`Sort`]" data-pl-action="item-sort"></div>{/if}
 
+    {if !empty($item.assigned_contact_id)}<div class="pl-assignee">{$item.contact.username|escape} &rarr; {$item.assigned_contact.username|escape}</div>{/if}
+
     <div class="pl-meta">
         {if !(isset($archive) && $archive)}
             <a href="#" class="pl-favorite" data-pl-action="item-favorite" title="[`Favorite`]"><i class="icon16 star{if empty($item.favorite)}-empty{/if}"></i></a>
@@ -17,13 +19,14 @@
                     {/if}
                 </span>
             {else}
-                {* item author userpic *}
-                {* {if $item.contact_id != $wa->user()->getId()}
-                    <span class="pl-author" title="{sprintf('%s by %s', $item.complete_datetime|wa_date:'humandatetime', $item.contact.username|default:'%username%'|escape)}"><i class="icon16 userpic20" style="background-image: url({$item.contact.userpic})" alt="{$item.contact.username|escape}"></i></span>
-                {/if} *}
 
                 {* assigned to *}
-                {if !empty($item.assigned_contact_id)}<span class="pl-assignee"><i class="icon16 userpic20" style="background-image: url({$item.assigned_contact.userpic})" alt="{$item.assigned_contact.username|escape}" title="{sprintf('[`Assigned to %s`]', $item.assigned_contact.username|escape)}"></i></span>{/if}
+                {* {if !empty($item.assigned_contact_id)}<span class="pl-userpic">&rarr; <i class="icon16 userpic20" style="background-image: url({$item.assigned_contact.userpic})" alt="{$item.assigned_contact.username|escape}" title="{sprintf('[`Assigned to %s`]', $item.assigned_contact.username|escape)}"></i></span>{/if} *}
+
+                {* item author userpic *}
+                {if $item.contact_id != $wa->user()->getId()}
+                    <span class="pl-userpic" title="{sprintf('%s by %s', $item.create_datetime|wa_date:'humandatetime', $item.contact.username|default:'%username%'|escape)}"><i class="icon16 userpic20" style="background-image: url({$item.contact.userpic})" alt="{$item.contact.username|escape}"></i></span>
+                {/if}
 
             {/if}
             {if !(isset($archive) && $archive == true)}
@@ -62,7 +65,7 @@
         <span class="small bold {if $item.calc_priority == 0}pl-due-someday{elseif $item.calc_priority == 1}pl-due-tomorrow{elseif $item.calc_priority == 2}pl-due-today{elseif $item.calc_priority == 3}pl-due-overdue{/if}">{waDateTime::date(waDateTime::getFormat('humandate'), $item.due_date)}</span>
         {/if}
         {if $item.status != 1}
-            {if !empty($item.assigned_contact_id)}<strong class="hint"><br>{$item.contact.username|escape} &rarr; {$item.assigned_contact.username|escape}</strong>{/if}
+            {* {if !empty($item.assigned_contact_id)}<strong class="hint italic"><br>{$item.contact.username|escape} &rarr; {$item.assigned_contact.username|escape}</strong>{/if} *}
             {* <i class="icon16 userpic20" style="background-image: url({$item.assigned_contact.userpic})" alt="{$item.assigned_contact.username|escape}"></i> *}
             {if !empty($item.note)}<p class="hint">{$item.note|nl2br}</p>{/if}
             {if !empty($item.attachments)}
