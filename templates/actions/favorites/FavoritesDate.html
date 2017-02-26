@@ -71,7 +71,7 @@
             enableSortItems: false,
 //            assignUser: parseInt('{$wa->user()->getId()}'),
             showMessageOnEmptyList: {if $date}false{else}true{/if},
-            dueDate: '{if $timestamp}{$timestamp|wa_date}{/if}',
+            dueDate: '{if $timestamp}{$timestamp}{/if}',
             filter: 'favorites',
             current_user_id: {$wa->user()->get('id')}
         });
