@@ -12,7 +12,7 @@
     <main class="blank bordered-right pl-inner-content pl-items pl-list-items pl-todo shadowed" id="pl-list-content">
         <header class="pl-title">
             <h1 class="not-padded">
-                [`My to-dos`]
+                [`My to-dos`] <i class="icon16 loading"></i>
             </h1>
             <span></span>
         </header>
@@ -27,7 +27,7 @@
             month = 0,
             $items_wrapper = $('#pl-list-todo-items');
 
-        $.pocketlists.setTitle('[`To-do stream`]');
+        $.pocketlists.setTitle('[`My to-dos`]');
 
         $('[data-pl-todo-calendar-action]').on('click', function (e) {
             e.preventDefault();
