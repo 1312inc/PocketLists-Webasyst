@@ -17,14 +17,21 @@ class pocketlistsRBAC
     public static function getAccessListForContact($contact_id = false)
     {
         $user = $contact_id ? new waContact($contact_id) : wa()->getUser();
+        $user_id = $user->getId();
+
+        if (isset(self::$lists[$user_id])) {
+            return self::$lists[$user_id];
+        }
+
         if (self::isAdmin($contact_id)) {
             $list_model = new pocketlistsListModel();
-            $lists = $list_model->getAll('id');
+            self::$lists[$user_id] = $list_model->getAll('id');
         } else {
-            $lists = $user->getRights('pocketlists', 'list.%');
+            self::$lists[$user_id] = $user->getRights('pocketlists', 'list.%');
         }
         // todo: может сразу возвращать модели?
-        return $lists ? array_keys($lists) : array();
+        self::$lists[$user_id] = self::$lists[$user_id] ? array_keys(self::$lists[$user_id]) : array();
+        return self::$lists[$user_id];
     }
 
 
@@ -136,11 +143,11 @@ class pocketlistsRBAC
     {
         $user_id = $user_id ? (int) $user_id : wa()->getUser()->getId();
         $list_sql = null;
-        self::$lists[$user_id] = array();
+        $lists_user = self::getAccessListForContact($user_id);
         if (!self::isAdmin($user_id)) {
 //            if (self::canAccess()) {
 //            }
-            if (self::$lists[$user_id] = self::getAccessListForContact($user_id)) {
+            if ($lists_user) {
                 $list_sql[] = "(l.id IN (i:list_ids) /* accessed lists*/)";
             }
             if (self::canAssign($user_id)) {
@@ -150,8 +157,10 @@ class pocketlistsRBAC
             $list_sql = '1';
         }
 
-        if (is_array($lists)) {
-            $lists = array_intersect(self::$lists[$user_id], $lists);
+        if (is_array($lists) && !empty($lists)) {
+            $lists = array_intersect($lists_user, $lists);
+        } else {
+            $lists = self::$lists[$user_id];
         }
 
         if (is_array($list_sql)) {
@@ -162,7 +171,6 @@ class pocketlistsRBAC
             $list_sql = "(l.id IS NULL /* null list */ AND i.contact_id = {$user_id} /* other null lists */)";
         }
 
-        $lists = self::$lists[$user_id];
         return $list_sql;
     }
 }

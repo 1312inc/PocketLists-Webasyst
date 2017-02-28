@@ -38,9 +38,11 @@ class pocketlistsListModel extends waModel
             $id = wa()->getUser()->getId();
         }
 //        $list_ids = pocketlistsRBAC::getAccessListForContact($id);
-        $list_accessed = pocketlistsRBAC::getAccessListForContact();
+//        $list_accessed = pocketlistsRBAC::getAccessListForContact();
+        $list_accessed = array();
 //        $list_ids = array_intersect($list_ids, $list_accessed);
         $list_sql = pocketlistsRBAC::filterListAccess($list_accessed);
+        $list_sql2 = pocketlistsRBAC::filterListAccess($list_accessed, $id);
 
         $lists = $this->query(
             "SELECT
@@ -57,6 +59,7 @@ class pocketlistsListModel extends waModel
             LEFT JOIN pocketlists_item i2 ON i2.list_id = l.id AND (i2.assigned_contact_id = i:contact_id OR i2.contact_id = i:contact_id)            
             WHERE 
               {$list_sql}
+              AND {$list_sql2}
             GROUP BY l.id
             ORDER BY items_count DESC, l.sort, l.id DESC",
             array(
