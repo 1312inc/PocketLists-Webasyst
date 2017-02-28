@@ -163,6 +163,10 @@ class pocketlistsRBAC
             $lists = self::$lists[$user_id];
         }
 
+        if (empty($lists)) {
+            $lists = array(-1);
+        }
+
         if (is_array($list_sql)) {
             $list_sql = '(' . implode(' OR ', $list_sql) . ')';
         } elseif ($list_sql) {
