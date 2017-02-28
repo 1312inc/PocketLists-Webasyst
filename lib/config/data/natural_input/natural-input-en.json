@@ -1,0 +1,402 @@
+{
+    "smartparse": {
+        "week": [
+            ["monday", 2],
+            ["mon", 2, "(?=\\W|\\z)"],
+            ["tuesday", 3],
+            ["tue", 3, "(?=\\W|\\z)"],
+            ["wednesday", 4],
+            ["wed", 4, "(?=\\W|\\z)"],
+            ["thursday", 5],
+            ["thu", 5, "(?=\\W|\\z)"],
+            ["friday", 6],
+            ["fri", 6, "(?=\\W|\\z)"],
+            ["saturday", 7],
+            ["sat", 7, "(?=\\W|\\z)"],
+            ["sunday", 1],
+            ["sun", 1, "(?=\\W|\\z)"]
+        ],
+        "month": [
+            ["january", 1],
+            ["jan", 1, "(?=\\W|\\z)"],
+            ["february", 2],
+            ["feb", 2, "(?=\\W|\\z)"],
+            ["march", 3],
+            ["march", 3, "(?=\\W|\\z)"],
+            ["april", 4],
+            ["apr", 4, "(?=\\W|\\z)"],
+            ["may", 5, "(?=\\W|\\z)"],
+            ["june", 6],
+            ["jun", 6, "(?=\\W|\\z)"],
+            ["july", 7],
+            ["jul", 7, "(?=\\W|\\z)"],
+            ["august", 8],
+            ["aug", 8, "(?=\\W|\\z)"],
+            ["september", 9],
+            ["sep", 9, "(?=\\W|\\z)"],
+            ["october", 10],
+            ["oct", 10, "(?=\\W|\\z)"],
+            ["november", 11],
+            ["nov", 11, "(?=\\W|\\z)"],
+            ["december", 12],
+            ["dec", 12, "(?=\\W|\\z)"]
+        ],
+        "numeric": [
+            ["a", 1],
+            ["one", 1],
+            ["two", 2],
+            ["three", 3],
+            ["four", 4],
+            ["five", 5],
+            ["six", 6],
+            ["seven", 7],
+            ["eight", 8],
+            ["nine", 9],
+            ["ten", 10],
+            ["20", 20],
+            ["21", 21],
+            ["22", 22],
+            ["23", 23],
+            ["24", 24],
+            ["10", 10],
+            ["11", 11],
+            ["12", 12],
+            ["13", 13],
+            ["14", 14],
+            ["15", 15],
+            ["16", 16],
+            ["17", 17],
+            ["18", 18],
+            ["19", 19],
+            ["1", 1],
+            ["2", 2],
+            ["3", 3],
+            ["4", 4],
+            ["5", 5],
+            ["6", 6],
+            ["7", 7],
+            ["8", 8],
+            ["9", 9]
+        ],
+        "relday": [
+            ["tomorrow", 1],
+            ["tmrw", 1, "(?=\\W|\\z)"],
+            ["today", 3]
+        ],
+        "reltime": [
+            ["in the morning", 1],
+            ["morning", 1],
+            ["mrng", 1, "(?=\\W|\\z)"],
+            ["midday", 2],
+            ["afternoon", 2],
+            ["aftrn", 2, "(?=\\W|\\z)"],
+            ["in the evening", 3],
+            ["evening", 3],
+            ["evnng", 3, "(?=\\W|\\z)"],
+            ["night", 3],
+            ["nght", 3, "(?=\\W|\\z)"]
+        ],
+        "repitrs": [
+            ["day", 2],
+            ["week", 3],
+            ["month", 5],
+            ["year", 7]
+        ],
+        "lookup_rules": [{
+                "comment": "use one block for each rule..."
+            }
+
+            , {
+                "regex": ["(in (\\numeric) day\\w*)", "(in() a day)(?:\\W|\\z)"],
+                "example": "cinema in two days",
+                "script": "local res=getNow2()+24*60*60*getNumeric(getMatch(2,1));return {ts=res,timed=0};",
+                "rules": {
+                    "1": "numeric|days"
+                },
+                "relative": 1
+            }
+
+            , {
+                "regex": ["(in (\\numeric) hour\\w*)", "(in() an hour)(?:\\W|\\z)", "(in() a hour)(?:\\W|\\z)"],
+                "example": "cinema in two hours",
+                "script": "local res=getNow2()+60*60*getNumeric(getMatch(2,1));return {ts=res,timed=1};",
+                "rules": {
+                    "1": "numeric|hours"
+                },
+                "relative": 1
+            }
+
+            , {
+                "regex": ["(in (\\numeric) week\\w*)", "(in() a week)(?:\\W|\\z)"],
+                "script": "local res=getNow2()+7*24*60*60*getNumeric(getMatch(2,1));return {ts=res,timed=0};",
+                "rules": {
+                    "1": "numeric|weeks"
+                },
+                "relative": 1
+            }
+
+            , {
+                "regex": ["(in (\\numeric) month\\w*)", "(in() a month)(?:\\W|\\z)"],
+                "script": "local res=getNow2();res=addMonth(res,getNumeric(getMatch(2,1)));return {ts=res,timed=0};",
+                "rules": {
+                    "1": "numeric|months"
+                },
+                "relative": 1
+            }
+
+            , {
+                "regex": ["(in (\\numeric) year\\w*)", "(in() a year)(?:\\W|\\z)"],
+                "script": "local res=getNow2();res=addMonth(res,12*getNumeric(getMatch(2,1)));return {ts=res,timed=0};",
+                "rules": {
+                    "1": "numeric|years"
+                },
+                "relative": 1
+            }
+
+            , {
+                "regex": ["((\\d+) (\\month) (\\d\\d\\d\\d))"],
+                "script": "local res=getNow2();res=replaceYear(res,getMatch(4));res=replaceMonth(res,getMatch(3));res=replaceDate(res,getMatch(2));if res<getNow() then res=addMonth(res,12);res=replaceMonth(res,getMatch(3));res=replaceDate(res,getMatch(2)); end;return {ts=res,timed=0};",
+                "rules": {
+                    "3": "year",
+                    "2": "numeric|month",
+                    "1": "days"
+                }
+            }
+
+            , {
+                "regex": ["((\\d+) (\\month))"],
+                "example": "meeting 27 september",
+                "note": "replacing date/month twice because of 29 feb",
+                "script": "local res=getNow2();res=replaceMonth(res,getMatch(3));res=replaceDate(res,getMatch(2));if res<getNow() then res=addMonth(res,12);res=replaceMonth(res,getMatch(3));res=replaceDate(res,getMatch(2)); end;return {ts=res,timed=0};",
+                "rules": {
+                    "2": "month",
+                    "1": "days"
+                },
+                "checkpasttime": "year"
+            }
+
+            , {
+                "regex": ["(every (\\week))"],
+                "script": "local res=getNow2();res=replaceWeekDay(res,getMatch(2)); setFastF(7*24*60*60); res = checkFastF(res); return {ts=res,timed=0,rept=3};"
+            }
+
+            , {
+                "regex": ["(every (\\repitrs))"],
+                "script": "local repitr=getRepitr(getMatch(2)); local res=-1;if getNow2() == getNow() then res = getNow(); end; return {ts=res,rept=repitr};"
+            }
+
+            , {
+                "regex": ["(\\relday)"],
+                "example": "tomorrow food shopping",
+                "script": "local res=getNow2();res=addRelday(res,getMatch(1));return {ts=res,timed=0};",
+                "rules": {
+                    "0": "relday"
+                }
+            }
+
+            , {
+                "regex": ["(next (\\week))"],
+                "script": "local res=getNow2();res=replaceWeekDay(res,getMatch(2));res=res+7*24*60*60;return {ts=res,timed=0};",
+                "rules": {
+                    "1": "week|next"
+                }
+            }
+
+            , {
+                "regex": ["(on (\\week))", "((\\week))"],
+                "example": "work on friday",
+                "script": "local res=getNow2();res=replaceWeekDay(res,getMatch(2)); setFastF(7*24*60*60); res = checkFastF(res); return {ts=res,timed=0};",
+                "rules": {
+                    "1": "week"
+                },
+                "checkpasttime": "week"
+            }
+
+            , {
+                "regex": ["(at (\\d+)[:\\.](\\d\\d)(?:pm| pm|p.m.| p.m.))(?:\\W|\\z)", "((\\d+)[:\\.](\\d\\d)(?:pm| pm|p.m.| p.m.))(?:\\W|\\z)"],
+                "script": "local res=getNow2();local hr=tonumber(getMatch(2,-1));if hr>=0 and hr<12 then hr=hr+12; end; res=replaceHour(res,hr);res=replaceMinutes(res,getMatch(3,-1)); res = checkFastF(res); return {ts=res,timed=1};",
+                "rules": {
+                    "1": "hours",
+                    "2": "minutes",
+                    "3": "pm"
+                },
+                "checkpasttime": "day"
+            }
+
+            , {
+                "regex": ["(at (\\d+)(?:pm| pm|p.m.| p.m.))(?:\\W|\\z)", "((\\d+)(?:pm| pm|p.m.| p.m.))(?:\\W|\\z)"],
+                "script": "local res=getNow2();local hr=tonumber(getMatch(2,-1));if hr>=0 and hr<12 then hr=hr+12; end; res=replaceHour(res,hr);res=replaceMinutes(res,0); res = checkFastF(res); return {ts=res,timed=1};",
+                "rules": {
+                    "1": "hours",
+                    "2": "pm"
+                },
+                "checkpasttime": "day"
+            }
+
+            , {
+                "regex": ["(at (\\d+)[:\\.](\\d\\d)(?:am| am|a.m.| a.m.))(?:\\W|\\z)", "((\\d+)[:\\.](\\d\\d)(?:am| am|a.m.| a.m.))(?:\\W|\\z)"],
+                "script": "shareddata.force_pm = 0;local res=getNow2();local hr=tonumber(getMatch(2,-1));if hr>=12 then hr=hr-12; end; res=replaceHour(res,hr);res=replaceMinutes(res,getMatch(3,-1)); res = checkFastF(res); return {ts=res,timed=1};",
+                "rules": {
+                    "1": "hours",
+                    "2": "minutes",
+                    "3": "am"
+                },
+                "checkpasttime": "day"
+            }
+
+            , {
+                "regex": ["(at (\\d+)(?:am| am|a.m.| a.m.))(?:\\W|\\z)", "((\\d+)(?:am| am|a.m.| a.m.))(?:\\W|\\z)"],
+                "script": "shareddata.force_pm = 0;local res=getNow2();local hr=tonumber(getMatch(2,-1));if hr>=12 then hr=hr-12; end;res=replaceHour(res,hr);res=replaceMinutes(res,0); res = checkFastF(res); return {ts=res,timed=1};",
+                "rules": {
+                    "1": "hours",
+                    "2": "am"
+                },
+                "checkpasttime": "day"
+            }
+
+            , {
+                "regex": ["(at (\\d+)[:\\.](\\d\\d))(?:\\W|\\z)"],
+                "script": "local res=getNow2();res=replaceHour(res,getMatch(2));res=replaceMinutes(res,getMatch(3)); res = checkFastF(res); return {ts=res,timed=1};",
+                "rules": {
+                    "1": "hours",
+                    "2": "minutes"
+                },
+                "checkpasttime": "day"
+            }
+
+            , {
+                "regex": ["(at (\\d+))(?:\\W|\\z)"],
+                "example": "gym tomorrow at 13",
+                "script": "local res=getNow2();res=replaceHour(res,getMatch(2));res=replaceMinutes(res,0); res = checkFastF(res); return {ts=res,timed=1};",
+                "rules": {
+                    "1": "hours"
+                },
+                "checkpasttime": "day"
+            }
+
+            , {
+                "regex": ["((\\month) (\\d+))"],
+                "example": "friends wedding may 20",
+                "script": "local res=getNow2();res=replaceMonth(res,getMatch(2));local dater=getMatch(3);if tonumber(dater)>2011 then res=replaceYear(res,dater); else res=replaceDate(res,dater); end; setFastF(365*24*60*60); res = checkFastF(res); return {ts=res,timed=0};",
+                "rules": {
+                    "1": "month",
+                    "2": "days"
+                },
+                "checkpasttime": "year"
+            }
+
+            , {
+                "regex": ["(\\reltime)"],
+                "script": "local res=getNow2();res=addReltime(res,getMatch(1));res=checkFastF(res);return {ts=res,timed=1};",
+                "rules": {
+                    "0": "reltime"
+                },
+                "checkpasttime": "day"
+            }
+
+        ]
+    },
+    "task_categs": {
+        "flag-argentina": ["argentin"],
+        "flag-australia": ["australia", "sydney", "melbourne", "perth"],
+        "flag-belarus": ["belarus"],
+        "flag-belgium": ["belgium"],
+        "flag-brazil": ["brazil", "rio"],
+        "flag-canada": ["canada", "toronto"],
+        "flag-china": ["china"],
+        "flag-colombia": ["colombia"],
+        "flag-cuba": ["chile"],
+        "flag-denmark": ["denmark"],
+        "flag-eu": ["eu"],
+        "flag-finland": ["finland", "suomi"],
+        "flag-france": ["franc", "french", "paris"],
+        "flag-germany": ["german", "berlin", "deutch"],
+        "flag-greece": ["greec"],
+        "flag-hongkong": ["hong", "kong"],
+        "flag-india": ["india", "hindi", "goa"],
+        "flag-israel": ["israel"],
+        "flag-italy": ["italy", "rome"],
+        "flag-jamaica": ["jamaica"],
+        "flag-japan": ["japan", "tokyo"],
+        "flag-kenya": ["kenya"],
+        "flag-korea": ["korea"],
+        "flag-mexico": ["mexic"],
+        "flag-netherlands": ["netherland", "holland", "amsterdam"],
+        "flag-new-zealand": ["zealand", "kiwi"],
+        "flag-norway": ["norway"],
+        "flag-south-africa": ["africa"],
+        "flag-russia": ["russ", "moscow", "petersburg"],
+        "flag-portugal": ["portug"],
+        "flag-spain": ["spain", "madrid", "barcelona"],
+        "flag-sweden": ["swed", "stockholm"],
+        "flag-switzerland": ["switzerland", "swiss"],
+        "flag-thailand": ["thai", "bangkog"],
+        "flag-turkey": ["turkey", "istanbul"],
+        "flag-uk": ["england", "london", "britan"],
+        "flag-ukraine": ["ukrain", "kiev", "crimea"],
+        "flag-usa": ["usa", "united", "states", "new york", "los angeles", "francisco", "california", "miami", "florida", "america"],
+        "flag-vietnam": ["vietnam"],
+        "travel": ["travel", "trip", "luggage", "pack", "errand"],
+        "books": ["read", "book", "literature"],
+        "gym": ["training", "workout", "work-out", "sport", "gym"],
+        "tools": ["repair", "service", "tool"],
+        "recipe": ["recipe"],
+        "vacations": ["vacation", "recreation", "sea", "spot"],
+        "video": ["film", "movie", "watch", "video", "show"],
+        "plane": ["plane", "air"],
+        "pencil": ["blog", "write", "post", "site", "essay"],
+        "money": ["money", "credit", "borrow", "loan", "pay", "invest"],
+        "medicine": ["medicine", "cure", "heal", "doctor", "hospital"],
+        "idea": ["idea", "quote", "thought"],
+        "grocery": ["buy", "grocer", "food", "fruit", "vegetabl", "market"],
+        "bag": ["shop", "order", "purchase"],
+        "calendar": ["calendar", "congrat", "event", "date"],
+        "construction": ["job"],
+        "contact": ["contact", "invite", "mail"],
+        "star": ["wedding", "remind", "favor", "personal", "opportunit"],
+        "passport": ["passport", "document", "legal", "council", "application"],
+        "invoice": ["tax", "invoice", "bill", "insurance", "paper"],
+        "gift": ["gift", "present"],
+        "delivery": ["car", "auto", "vehicl"],
+        "home": ["home", "apartment", "house", "rent", "famil"],
+        "lock": ["lock", "secret", "privat"],
+        "palette": ["design", "art", "interior", "exhibit"],
+        "phone": ["call", "phone"],
+        "paid-education": ["school", "teach", "study", "learn", "universit", "college", "stud", "dissertat", "diplom", "math", "physic", "science"],
+        "paid-christmas": ["christmas", "new year", "santa"],
+        "paid-baby": ["child", "kinder", "baby"],
+        "paid-apple": ["apple"],
+        "paid-dogcat": ["dog", "cat", "feed"],
+        "paid-diskette": ["download", "software", "app"],
+        "paid-discount": ["sale"],
+        "paid-cocktail": ["party", "friend", "alco", "drink"],
+        "paid-birthday": ["birth", "anniversar", "celebr"],
+        "paid-flower": ["flower"],
+        "paid-map": ["visit", "place"],
+        "paid-music": ["music", "song", "itunes"],
+        "paid-notepad": ["note", "memo", "remember"],
+        "achtung": ["important", "forget", "today"],
+        "award": ["goal", "achiev", "champion", "award", "compet", "review"],
+        "cart": ["cart", "shopping"],
+        "paid-saturn": ["space", "dream"],
+        "paid-tie": ["work", "lead", "deal", "client", "customer", "project", "meeting", "office"],
+        "paid-tv": ["tv"],
+        "paid-starbucks": ["coff", "facebook", "twitter", "hipster"],
+        "piggy": ["save", "collect", "keep"],
+        "paid-snow": ["snow"],
+        "paid2-iphone": ["iphone"],
+        "paid2-santa": ["santa"],
+        "paid2-clock": ["schedule"],
+        "paid2-crab": ["putin", "sea", "beach"],
+        "paid2-boxes": ["shipment", "packag", "stock", "warehous"],
+        "paid2-hotspot": ["wifi", "wi-fi"],
+        "paid2-camera": ["camera", "photo", "lens"],
+        "paid2-guitar": ["guitar", "piano"],
+        "paid2-tent": ["tent", "camping", "campfire", "backpack", "outdoor", "adventur"],
+        "paid2-arrow": ["change", "switch", "replace"],
+        "paid2-checkmark": ["todo", "to-do", "to do", "things"],
+        "paid-imac": ["mac", "computer", "upgrad"]
+
+
+    }
+}

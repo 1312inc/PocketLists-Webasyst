@@ -4,12 +4,17 @@ class pocketlistsListSortController extends waJsonController
 {
     public function execute()
     {
-        $list_id = waRequest::post('list_id', 0, waRequest::TYPE_INT);
+        if (!wa()->getUser()->isAdmin() && !wa()->getUser()->isAdmin('pocketlists')) {
+            throw new waRightsException('403');
+        }
 
-        if ($list_id) {
+        $data = waRequest::post('data', false);
 
-            $im = new pocketlistsItemModel();
-            $items = $im->sortItems($list_id);
+        if ($data) {
+            $lm = new pocketlistsListModel();
+            foreach ($data as $list) {
+                $lm->updateById($list['id'], array('sort' => $list['sort']));
+            }
         }
     }
 }

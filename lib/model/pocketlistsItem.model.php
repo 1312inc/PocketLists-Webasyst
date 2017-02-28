@@ -4,27 +4,18 @@ class pocketlistsItemModel extends waModel
 {
     protected $table = 'pocketlists_item';
 
-
-    public function getCompleted($contact_id = false, $date_range = false)
+    public function getCompletedItems($contact_id = false, $date_range = false)
     {
-        $pocket_rights = "";
-        $pockets = array();
-        // if user is admin - show all completed items
-        // else only items user has access and null list items
-        if (!pocketlistsHelper::isAdmin()) {
-            $pockets = pocketlistsHelper::getAccessPocketForContact($contact_id);
-            // only accessed pockets or null list items which are created or completed by user
-//            $pocket_rights = "AND (
-//                    p.id IN (i:pocket_ids)
-//                    OR (p.id IS NULL AND (i.contact_id = i:contact_id OR i.complete_contact_id = i:contact_id)
-//                  )";
-            // only accessed pockets or null list items
-            $pocket_rights = "AND (
-                    p.id IN (i:pocket_ids)
-                    OR p.id IS NULL
-                  )";
-        }
+        return $this->getLogbookItems($contact_id, $date_range);
+    }
 
+    public function getLogbookItems(
+        $contact_id = false,
+        $date_range = false,
+        $completed = false,
+        $start = 0,
+        $limit = 50
+    ) {
         $by_user = '';
         if ($contact_id) {
             $by_user = 'AND i.complete_contact_id = i:contact_id';
@@ -39,6 +30,13 @@ class pocketlistsItemModel extends waModel
             }
         }
 
+        $only_completed = '';
+        if ($completed) {
+            $only_completed = " AND i.status > 0";
+        }
+
+        $lists = pocketlistsRBAC::getAccessListForContact();
+        $list_sql = $lists ? "AND (l.id IN (i:list_ids) OR (l.id IS NULL AND i.contact_id = i:contact_id))" : "AND (l.id IS NULL AND i.contact_id = i:contact_id)";
         $sql = "SELECT
                   i.id id,
                   i.parent_id parent_id,
@@ -54,47 +52,203 @@ class pocketlistsItemModel extends waModel
                   i.complete_contact_id complete_contact_id,
                   i.assigned_contact_id assigned_contact_id,
                   l.id list_id,
-                  /*l.name list_name,*/
-                  p.id pocket_id,
-                  p.name pocket_name,
-                  p.color pocket_color,
+                  l.icon list_icon,
+                  l.color list_color,
+                  i2.name list_name,
                   IF(uf.contact_id, 1, 0) favorite
                 FROM {$this->table} i
                 LEFT JOIN pocketlists_list l ON l.id = i.list_id
-                LEFT JOIN pocketlists_pocket p ON p.id = l.pocket_id
+                LEFT JOIN pocketlists_item i2 ON i2.key_list_id = i.list_id
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
                 WHERE
-                  i.status > 0
-                  {$pocket_rights}
+                  i.key_list_id IS NULL
+                  {$list_sql}
+                  {$only_completed}
                   {$by_user}
                   {$by_date_range}
-                ORDER BY i.complete_datetime DESC";
+                ORDER BY i.complete_datetime DESC
+                LIMIT {$start}, {$limit}";
 
         $items = $this->query(
             $sql,
             array(
-                'contact_id' => wa()->getUser()->getId(),
-                'pocket_ids' => $pockets,
-                'date_after' => !empty($date_range['after']) ? $date_range['after'] : '',
+                'contact_id'  => wa()->getUser()->getId(),
+                'list_ids'    => $lists,
+                'date_after'  => !empty($date_range['after']) ? $date_range['after'] : '',
                 'date_before' => !empty($date_range['before']) ? $date_range['before'] : '',
+                'start'       => $start,
+                'limit'       => $limit,
             )
         )->fetchAll();
+
+//        $activities = $this->getLastActivities();
+        $result = array();
+//        foreach ($activities as $id => $item) {
+//            if (isset($items[$id])) {
+//                $result[$id] = $this->extendItemData($items[$id]);
+//                unset($items[$id]);
+//            }
+//        }
         foreach ($items as $id => $item) {
-            $items[$id] = $this->updateItem($item);
+            $result[$id] = $this->extendItemData($items[$id]);
         }
-        return $items;
+        return $result;
 //        return $this->getTree($items, $tree);
     }
 
-    public function getToDo($contact_id, $date = false)
+    public function getToDo($contact_id = false, $date = false)
     {
-        // get to-do items only from accessed pockets
-        $pockets = pocketlistsHelper::getAccessPocketForContact($contact_id);
-        $due_date_or_mine = " AND (i.assigned_contact_id = i:contact_id OR i.assigned_contact_id IS NULL OR i.assigned_contact_id = 0)";
-        if ($date) {
-//            $mine = "";
-            $due_date_or_mine = "AND ((i.status = 0 AND (i.due_date = s:date OR DATE(i.due_datetime) = s:date)) OR (i.status > 0 AND DATE(i.complete_datetime) = s:date))";
+        if (!$contact_id) {
+            $contact_id = wa()->getUser()->getId();
         }
+
+        $select_sql = array(
+            "i.id id",
+            "i.parent_id parent_id",
+            "i.has_children has_children",
+            "i.name name",
+            "i.note note",
+            "i.status status",
+            "i.priority priority",
+            "i.contact_id contact_id",
+            "i.create_datetime create_datetime",
+            "i.due_date due_date",
+            "i.due_datetime due_datetime",
+            "i.complete_datetime complete_datetime",
+            "i.complete_contact_id complete_contact_id",
+            "i.assigned_contact_id assigned_contact_id",
+            "i.key_list_id key_list_id",
+            "l.id list_id",
+            "l.icon list_icon",
+            "l.color list_color",
+            "i2.name list_name",
+            "IF(uf.contact_id, 1, 0) favorite",
+        );
+        $join_sql = array(
+            "",
+            "pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id",
+            "pocketlists_list l ON (l.id = i.list_id  OR l.id = i.key_list_id)",
+            "pocketlists_item i2 ON i2.key_list_id = i.list_id",
+        );
+        $and_sql = array(
+            "(" . pocketlistsRBAC::filterListAccess($lists, $contact_id) . " OR l.id IS NULL)", // get to-do items only from accмфп essed pockets
+            "(l.archived = 0 OR l.archived IS NULL)"
+        );
+        $or_sql = array(
+            "(i.list_id IS NULL AND i.key_list_id IS NULL AND i.contact_id = i:contact_id) /* My to-dos to self */",
+            "(i.key_list_id IS NULL AND i.assigned_contact_id = i:contact_id) /* To-dos assigned to me by other users */"
+        );
+
+        if ($date) {
+            $and_sql[] = "((i.status = 0 AND (i.due_date = s:date OR DATE(i.due_datetime) = s:date)) OR (i.status > 0 AND DATE(i.complete_datetime) = s:date)) /* with due date or completed this day */";
+        }
+
+        $us = new pocketlistsUserSettings($contact_id);
+        switch ($us->myToDosCreatedByMe()) {
+            case pocketlistsUserSettings::MY_TO_DOS_CREATED_BY_ME_IN_SHARED_ANY_LIST:
+                $or_sql[] = "(i.list_id IS NOT NULL AND i.key_list_id IS NULL AND i.contact_id = i:contact_id) /* To-dos created by me in shared lists in just any list */";
+                break;
+            case pocketlistsUserSettings::MY_TO_DOS_CREATED_BY_ME_IN_SHARED_FAVORITE_LISTS:
+                $or_sql[]  = "(i.list_id IS NOT NULL AND i.key_list_id IS NULL AND i.contact_id = i:contact_id AND uf2.contact_id = i:contact_id) /* To-dos created BY other users IN shared lists only in lists which I marked as favorite*/";
+                break;
+        }
+
+        switch ($us->myToDosCreatedByOthers()) {
+            case pocketlistsUserSettings::MY_TO_DOS_CREATED_BY_OTHER_IN_SHARED_LISTS_FAVORITE_LISTS:
+                $or_sql[] = "(i.list_id IS NOT NULL AND i.key_list_id IS NULL AND i.contact_id <> i:contact_id AND uf2.contact_id = i:contact_id) /* To-dos created BY other users IN shared lists only in lists which I marked as favorite*/";
+                break;
+            case pocketlistsUserSettings::MY_TO_DOS_CREATED_BY_OTHER_IN_SHARED_LISTS_GREEN_YELLOW_RED_ALL_LISTS:
+                $tomorrow = date("Y-m-d", strtotime("+1 day"));
+                $day_after_tomorrow = date("Y-m-d", strtotime("+2 day"));
+                $or_sql[] = "(i.list_id IS NOT NULL AND i.key_list_id IS NULL AND i.contact_id <> i:contact_id AND (i.due_date <= '" . $tomorrow . "' OR i.due_datetime < '" . $day_after_tomorrow . "' OR i.priority IN (1, 2, 3))) /* To-dos created BY other users IN shared lists all Green, Yellow, and Red to-dos from all lists*/";
+                break;
+        }
+
+        if ($us->myToDosCreatedByOthers() == pocketlistsUserSettings::MY_TO_DOS_CREATED_BY_OTHER_IN_SHARED_LISTS_FAVORITE_LISTS
+            || $us->myToDosCreatedByMe() == pocketlistsUserSettings::MY_TO_DOS_CREATED_BY_ME_IN_SHARED_FAVORITE_LISTS) {
+            $join_sql[] = "pocketlists_user_favorites uf2 ON uf2.contact_id = i:contact_id AND uf2.item_id = i2.id";
+            $select_sql[] = "IF(uf2.contact_id, 1, 0) favorite_list";
+        }
+
+        $and_sql[] = "(i.assigned_contact_id = i:contact_id OR i.assigned_contact_id = 0 OR i.assigned_contact_id IS NULL)";
+
+        $or_sql = implode("\n OR ", $or_sql);
+        $and_sql = implode("\n AND ", $and_sql);
+        $join_sql = implode("\n LEFT JOIN ", $join_sql);
+        $select_sql = implode(",\n", $select_sql);
+
+        $sql = "SELECT
+                  {$select_sql}
+                FROM {$this->table} i
+                {$join_sql}
+                WHERE
+                  ({$or_sql}) 
+                  AND 
+                  {$and_sql}
+                ORDER BY
+                  i.status,
+                  (i.complete_datetime IS NULL), i.complete_datetime DESC";
+
+        $items = $this->query($sql, array(
+            'list_ids'   => $lists,
+            'contact_id' => $contact_id,
+            'date'       => $date,
+        ))->fetchAll();
+
+        $result = array(
+            0 => array(),
+            1 => array(),
+        );
+        foreach ($items as $id => $item) {
+            $result[$item['status']][$id] = $this->extendItemData($item);
+        }
+
+        $result = array(
+            0 => $this->getProperSort($result[0]),
+            1 => $result[1],
+        );
+
+        return $result;
+
+//        return $this->getTree($items, true);
+    }
+
+    public function getFavoritesCount($contact_id = false)
+    {
+        if (!$contact_id) {
+            $contact_id = wa()->getUser()->getId();
+        }
+
+        $lists = pocketlistsRBAC::getAccessListForContact($contact_id);
+        $lists_sql = $lists ? " AND (l.id IN (i:list_ids) OR l.id IS NULL) /* ONLY items from accessed pockets or NULL-list items */" : " AND l.id IS NULL /* ONLY items from accessed pockets or NULL-list items */";
+        $sql = "SELECT
+                  SUM(i.status > 0) done,
+                  SUM(i.status = 0) undone
+                FROM {$this->table} i
+                LEFT JOIN pocketlists_list l ON (l.id = i.list_id  OR l.id = i.key_list_id)
+                LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
+                WHERE
+                  uf.item_id IS NOT NULL
+                  AND (l.archived = 0 OR l.archived IS NULL) /* ONLY not archived items */
+                  {$lists_sql}";
+        return $this->query($sql, array(
+            'list_ids'   => $lists,
+            'contact_id' => $contact_id,
+        ))->fetch();
+    }
+
+    public function getFavorites($contact_id = false, $date = false)
+    {
+        if (!$contact_id) {
+            $contact_id = wa()->getUser()->getId();
+        }
+        // get to-do items only from accessed pockets
+        $lists = pocketlistsRBAC::getAccessListForContact($contact_id);
+        $lists_sql = $lists ? " AND (l.id IN (i:list_ids) OR l.id IS NULL) /* ONLY items from accessed pockets or NULL-list items */" : " AND l.id IS NULL /* ONLY items from NULL-list items */";
+
+        $due_date = $date ?
+            "AND ((i.status = 0 AND (i.due_date = s:date OR DATE(i.due_datetime) = s:date)) OR (i.status > 0 AND DATE(i.complete_datetime) = s:date)) /* with due date or completed this day */" :
+            "";
         $sql = "SELECT
                   i.id id,
                   i.parent_id parent_id,
@@ -113,114 +267,109 @@ class pocketlistsItemModel extends waModel
                   i.key_list_id key_list_id,
                   l.id list_id,
                   l.icon list_icon,
-                  /*l.name list_name,*/
-                  p.id pocket_id,
-                  p.name pocket_name,
-                  p.color pocket_color,
+                  l.color list_color,
+                  i2.name list_name,
                   IF(uf.contact_id, 1, 0) favorite
                 FROM {$this->table} i
                 LEFT JOIN pocketlists_list l ON (l.id = i.list_id  OR l.id = i.key_list_id)
-                LEFT JOIN pocketlists_pocket p ON p.id = l.pocket_id
+                LEFT JOIN pocketlists_item i2 ON i2.key_list_id = i.list_id
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
                 WHERE
-                  (
-                    (
-                      i.contact_id = i:contact_id
-                      AND (
-                        i.priority > 0
-                        OR i.due_date IS NOT NULL
-                        OR i.due_datetime IS NOT NULL
-                      )
-                      OR i.assigned_contact_id = i:contact_id
-                      OR i.complete_contact_id = i:contact_id
-                    )
-                    AND (
-                      l.archived = 0
-                      OR l.archived IS NULL
-                    )
-                    AND ( /* items from accessed pockets or null list items */
-                      p.id IN (i:pocket_ids)
-                      OR p.id IS NULL
-                    )
-                    OR (i.list_id IS NULL AND i.key_list_id IS NULL)
-                  )
-                  {$due_date_or_mine}
+                uf.item_id IS NOT NULL
+                AND (l.archived = 0 OR l.archived IS NULL) /* ONLY not archived items */
+                {$due_date}
+                {$lists_sql}
                 ORDER BY
                   i.status,
                   (i.complete_datetime IS NULL), i.complete_datetime DESC";
 
         $items = $this->query($sql, array(
-            'pocket_ids' => $pockets,
+            'list_ids'   => $lists,
+            'date'       => $date,
             'contact_id' => $contact_id,
-            'date' => $date))->fetchAll();
+        ))->fetchAll();
 
         $result = array(
             0 => array(),
             1 => array(),
         );
         foreach ($items as $id => $item) {
-            $result[$item['status']][$id] = $this->updateItem($item);
+            $result[$item['status']][$id] = $this->extendItemData($item);
         }
         return array(
             0 => $this->getProperSort($result[0]),
-            1 => $result[1]
+            1 => $result[1],
         );
 //        return $this->getTree($items, true);
     }
 
-    public function getById($ids)
+    public function getById($ids, $user_id = false)
     {
+        if (!$user_id) {
+            $user_id = wa()->getUser()->getId();
+        }
         if (!is_array($ids)) {
             $ids = array($ids);
         }
 //        $items = parent::getById($id);
         $items = $this->query(
-            $this->getQuery()."WHERE id IN (i:id)",
-            array('contact_id' => wa()->getUser()->getId(), 'id' => $ids)
+            $this->getQuery() . "WHERE i.id IN (i:id)",
+            array('contact_id' => $user_id, 'id' => $ids)
         )->fetchAll();
 //        $items = $this->getItems($this->getQuery(), null, false);
-        foreach ($items as $id => $item) {
-            $items[$id] = $this->updateItem($item);
-        }
 //        return $items;
         return count($ids) > 1 ? $items : reset($items);
     }
 
-    public function updateWithCalcPriority($id, $item, $silent = false)
+    public function addCalculatedPriorityData($id, $item, $silent = false)
     {
-        $us = new pocketlistsUserSettings();
-        $email_me = $us->emailWhenNewAssignToMe();
-        if (!$silent && $email_me) {
-            $old_item = $this->getById($id);
+        $email_to_assigned_contact = false;
+        $old_item = array('assigned_contact_id' => false);
+        if (!$silent && $item['assigned_contact_id']) {
+            $us = new pocketlistsUserSettings($item['assigned_contact_id']);
+            $email_to_assigned_contact = $us->emailWhenNewAssignToMe();
+            if ($email_to_assigned_contact) {
+                $old_item = $this->getById($id);
+            }
         }
 
-        $this->updatePriority($item);
+        $this->addPriorityData($item);
         if ($this->updateById($id, $item)) {
-            if ($silent && $email_me && // settings are set
-                $item['assigned_contact_id'] && // assigned to me is set
-                $item['assigned_contact_id'] == wa()->getUser()->getId() && // assigned id is mine
+            if (!$silent && $email_to_assigned_contact && // settings are set
+                $item['assigned_contact_id'] != wa()->getUser()->getId() && // do not email if I assign myself
                 $item['assigned_contact_id'] != $old_item['assigned_contact_id']
             ) { // assigned id is updated
-                pocketlistsNotifications::notifyAboutNewAssign($item);
+                pocketlistsNotifications::notifyAboutNewAssign($this->prepareOutput($item), wa()->getUser()->getName());
             }
             return true;
         }
+        return false;
     }
 
     private function getQuery()
     {
         return "SELECT
                   i.*,
-                  IF(uf.contact_id, 1, 0) favorite
+                  IF(uf.contact_id, 1, 0) favorite,
+                  pi2.name list_name,
+                  pl.sort list_sort,
+                  pl.type list_type,
+                  pl.icon list_icon,
+                  pl.archived list_archived,
+                  pl.hash list_hash,
+                  pl.color list_color
                 FROM {$this->table} i
-                LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id ";
+                LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
+                LEFT JOIN pocketlists_list pl ON pl.id = i.list_id
+                LEFT JOIN pocketlists_item pi2 ON pi2.key_list_id = i.list_id
+                ";
     }
 
     public function getAllByList($list_id, $tree = true)
     {
         $sql = $this->getQuery() . "
-                WHERE list_id = i:lid
-                ORDER BY parent_id, sort ASC";
+                WHERE i.list_id = i:lid
+                ORDER BY i.parent_id, i.sort ASC, i.id DESC";
 
         return $this->getItems($sql, $list_id, $tree);
     }
@@ -228,8 +377,8 @@ class pocketlistsItemModel extends waModel
     public function getUndoneByList($list_id, $tree = true)
     {
         $sql = $this->getQuery() . "
-                WHERE list_id = i:lid AND status = 0
-                ORDER BY parent_id, sort ASC";
+                WHERE i.list_id = i:lid AND i.status = 0
+                ORDER BY i.parent_id, i.sort ASC, i.id DESC";
 
         return $this->getItems($sql, $list_id, $tree);
     }
@@ -237,8 +386,8 @@ class pocketlistsItemModel extends waModel
     public function getDoneByList($list_id, $tree = true)
     {
         $sql = $this->getQuery() . "
-                WHERE list_id = i:lid AND status > 0
-                ORDER BY complete_datetime DESC, parent_id, sort ASC";
+                WHERE i.list_id = i:lid AND i.status > 0
+                ORDER BY i.complete_datetime DESC, i.parent_id, i.sort ASC, i.id DESC";
 
         return $this->getItems($sql, $list_id, $tree);
     }
@@ -246,18 +395,17 @@ class pocketlistsItemModel extends waModel
     public function getArchiveByList($list_id, $tree = true)
     {
         $sql = $this->getQuery() . "
-                WHERE list_id = i:lid AND status < 0
-                ORDER BY parent_id, sort ASC";
+                WHERE i.list_id = i:lid AND i.status < 0
+                ORDER BY i.parent_id, i.sort ASC, i.id DESC";
 
         return $this->getItems($sql, $list_id, $tree);
     }
 
     private function getItems($sql, $list_id, $tree)
     {
-        $items = $this->query($sql, array('lid' => $list_id, 'contact_id' => wa()->getUser()->getId()))->fetchAll();
-        foreach ($items as $id => $item) {
-            $items[$id] = $this->updateItem($item);
-        }
+        $items = $this->query($sql, array('lid' => $list_id, 'contact_id' => wa()->getUser()->getId()))->fetchAll('id');
+        $items = $this->extendItemData($items);
+
         return $tree ? $this->getTree($items, $tree) : $items;
     }
 
@@ -280,39 +428,93 @@ class pocketlistsItemModel extends waModel
         return $result;
     }
 
-    private function updateItem($item)
+    public function extendItemData($items, $edit = false)
     {
-        // todo: bulk update?
-        if ($item['contact_id']) {
-            $user = new waContact($item['contact_id']);
-            $item['username'] = $user->getName();
-            $item['userpic'] = $user->getPhoto('20');
-        }
-        if ($item['assigned_contact_id']) {
-            $user = new waContact($item['assigned_contact_id']);
-            $item['assigned_username'] = $user->getName();
-            $item['assigned_userpic'] = $user->getPhoto('20');
-        }
-        if ($item['complete_contact_id']) {
-            $user = new waContact($item['complete_contact_id']);
-            $item['complete_username'] = $user->getName();
-            $item['complete_userpic'] = $user->getPhoto('20');
+        if (!is_array($items)) {
+            return false;
         }
 
-        $this->updatePriority($item);
+        $is_array = true;
+        if (isset($items['id'])) {
+            $is_array = false;
+            $items = array($items);
+        }
+        foreach ($items as &$item) {
+            if ($item['contact_id']) {
+                $user = new waContact($item['contact_id']);
+                $item['contact'] = pocketlistsHelper::getContactData($user);
+            }
+            if ($item['assigned_contact_id']) {
+                $user = new waContact($item['assigned_contact_id']);
+                $item['assigned_contact'] = pocketlistsHelper::getContactData($user);
+            }
+            if ($item['complete_contact_id']) {
+                $user = new waContact($item['complete_contact_id']);
+                $item['complete_contact'] = pocketlistsHelper::getContactData($user);
+            }
+
+            $am = new pocketlistsAttachmentModel();
+            $item['attachments'] = $am->getByField('item_id', $item['id'], true);
+
+            $this->addChatData($item);
+
+            $this->addPriorityData($item);
+
+            if (!$edit) {
+                $this->prepareOutput($item);
+            }
+        }
+
+        return ($is_array || !$items) ? $items : reset($items);
+    }
+
+    public function prepareOutput(&$item)
+    {
+        foreach (array('name', 'note') as $param) {
+            $item[$param . '_original'] = $item[$param];
+            $item[$param] = pocketlistsNaturalInput::matchLinks($item[$param]);
+        }
+
+        if (isset($item['chat']['comments']) && is_array($item['chat']['comments'])) {
+            foreach ($item['chat']['comments'] as &$comment) {
+                $comment['comment_original'] = $comment['comment'];
+                $comment['comment'] = pocketlistsNaturalInput::matchLinks($comment['comment']);
+            }
+        }
 
         return $item;
     }
 
-    private function updatePriority(&$item)
+    public function addPriorityData(&$item)
     {
         $item['calc_priority'] = max(
-            pocketlistsHelper::calcPriorityOnDueDate($item['due_date'], $item['due_datetime']),
+            pocketlistsHelper::calcPriorityOnDueDate(ifempty($item['due_date']), ifempty($item['due_datetime'])),
             isset($item['priority']) ? $item['priority'] : 0
         );
+
+        return $item;
     }
 
-    private function getProperSort($items)
+    private function addChatData(&$item)
+    {
+        $cm = new pocketlistsCommentModel();
+        $chat = $cm->getAllByItems($item['id']);
+        $item['chat'] = array(
+            'current_user' => array(
+                'username' => wa()->getUser()->getName(),
+                'userpic'  => wa()->getUser()->getPhoto(20),
+            ),
+            'comments'     => array(),
+        );
+        if (empty($chat[$item['id']])) {
+            return;
+        }
+        foreach ($chat[$item['id']] as $comment) {
+            $item['chat']['comments'][$comment['id']] = pocketlistsCommentModel::extendData($comment);
+        }
+    }
+
+    public function getProperSort($items)
     {
         usort($items, array($this, 'compare_for_proper_sort'));
         return $items;
@@ -350,9 +552,10 @@ class pocketlistsItemModel extends waModel
 
     public function sortItems($list_id)
     {
-        $sql = $this->getQuery()."WHERE
+        $sql = $this->getQuery() . "WHERE
                   i.list_id = i:id
                   AND i.status = 0
+                  ORDER BY i.id DESC
                 /*GROUP BY i.parent_id, i.id*/";
 //        $items = $this->getItems($sql, $list_id, false);
         $items = $this->query($sql, array('id' => $list_id, 'contact_id' => wa()->getUser()->getId()))->fetchAll();
@@ -364,7 +567,7 @@ class pocketlistsItemModel extends waModel
                 $item['id'],
                 array(
                     'update_datetime' => date("Y-m-d H:i:s"),
-                    'sort' => $sort++
+                    'sort'            => $sort++,
                 )
             );
         }
@@ -376,35 +579,39 @@ class pocketlistsItemModel extends waModel
         if (!is_array($contact_ids)) {
             $contact_ids = array($contact_ids);
         }
-        $q = "SELECT
-                i.assigned_contact_id,
-                i.name item_name
-              FROM {$this->table} i
-              LEFT JOIN pocketlists_list l ON l.id = i.list_id
-              WHERE
-                i.assigned_contact_id IN (i:contact_id)
-                AND i.status = 0
-                AND (l.archived = 0 OR l.archived IS NULL) /*archived is NULL when item is in null-list*/";
-        return $this->query($q, array('contact_id' => $contact_ids))->fetchAll('assigned_contact_id', 2);
+        $result = array();
+        foreach ($contact_ids as $contact_id) {
+            $items = $this->getAssignedOrCompletesByContactItems($contact_id);
+            foreach ($items[0] as $item) {
+                $this->addPriorityData($item);
+                $result[$contact_id]['item_names'][] = $item['name'];
+                $result[$contact_id]['item_max_priority'] = max(
+                    isset($result[$contact_id]['item_max_priority']) ?
+                        $result[$contact_id]['item_max_priority'] : 0,
+                    $item['calc_priority']
+                );
+            }
+        }
+        return $result;
     }
 
-    public function getContactLastActivity($contact_ids)
+    public function getLastActivities($contact_ids = array())
     {
-        if (!is_array($contact_ids)) {
+        $by_contact = "";
+        if ($contact_ids && !is_array($contact_ids)) {
             $contact_ids = array($contact_ids);
+            $by_contact = " WHERE t.contact_id IN (i:contact_id)";
         }
+
         // ох что-то я сомневаюсь
         $q = "SELECT
               MAX(t.last_date) last_activity_datetime,
               t.contact_id contact_id
-            FROM
-              (
+            FROM (
                   SELECT
                     i.complete_contact_id contact_id,
                     max(i.complete_datetime) last_date
                   FROM {$this->table} i
-                  WHERE
-                    i.complete_contact_id IN (i:contact_id)
                   GROUP BY i.complete_contact_id
 
                   UNION
@@ -413,18 +620,30 @@ class pocketlistsItemModel extends waModel
                     i.contact_id contact_id,
                     max(i.create_datetime) last_date
                   FROM {$this->table} i
-                  WHERE
-                    i.contact_id IN (i:contact_id)
                   GROUP BY i.contact_id
+                  
+                  UNION
+
+                  SELECT
+                    c.contact_id contact_id,
+                    max(c.create_datetime) last_date
+                  FROM pocketlists_comment c
+                  GROUP BY c.contact_id
               ) t
-            GROUP BY t.contact_id ";
-        return $this->query($q, array('contact_id' => $contact_ids))->fetchAll('contact_id', 1);
+            {$by_contact}
+            GROUP BY t.contact_id";
+
+        return $this->query(
+            $q,
+            array('contact_id' => $contact_ids)
+        )->fetchAll('contact_id', 1);
     }
 
     public function getAssignedOrCompletesByContactItems($contact_id)
     {
-        $pockets = pocketlistsHelper::getAccessPocketForContact($contact_id);
-
+        $lists = array();
+        pocketlistsRBAC::filterListAccess($lists, $contact_id);
+        $list_sql = pocketlistsRBAC::filterListAccess($lists);
         $q = "SELECT
                   i.id id,
                   i.parent_id parent_id,
@@ -443,109 +662,95 @@ class pocketlistsItemModel extends waModel
                   i.key_list_id key_list_id,
                   l.id list_id,
                   l.icon list_icon,
-                  /*l.name list_name,*/
-                  p.id pocket_id,
-                  p.name pocket_name,
-                  p.color pocket_color,
+                  l.color list_color,
+                  i2.name list_name,
                   IF(uf.contact_id, 1, 0) favorite
                 FROM {$this->table} i
                 LEFT JOIN pocketlists_list l ON (l.id = i.list_id  OR l.id = i.key_list_id)
-                LEFT JOIN pocketlists_pocket p ON p.id = l.pocket_id
-                LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
+                LEFT JOIN pocketlists_item i2 ON i2.key_list_id = i.list_id
+                LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:user_contact_id AND uf.item_id = i.id
                 WHERE
                   (
-                    i.assigned_contact_id = i:contact_id AND i.status = 0
-                    OR i.complete_contact_id = i:contact_id AND i.status > 0
+                    i.assigned_contact_id = i:contact_id AND i.status >= 0 /* assigned to contact no matter who it completed */
+                    OR i.contact_id = i:contact_id AND i.status >= 0 /* created by contact (completed and not) */
+                    OR i.complete_contact_id = i:contact_id AND i.status > 0 /* completed by contact */
                   )
                   AND (
                     l.archived = 0
                     OR l.archived IS NULL
                   )
-                  AND ( /* only accessed pockets or null list */
-                    p.id IN (i:pocket_ids)
-                    OR p.id IS NULL
-                  )
+                  AND {$list_sql}
                 ORDER BY
                   i.status,
                   (i.complete_datetime IS NULL), i.complete_datetime DESC";
-        $items = $this->query($q, array('contact_id' => $contact_id, 'pocket_ids' => $pockets))->fetchAll();
+        $items = $this->query($q, array(
+            'contact_id'      => $contact_id,
+            'list_ids'        => $lists,
+            'user_contact_id' => wa()->getUser()->getId(),
+        ))->fetchAll();
         $results = array(
             0 => array(),
-            1 => array()
+            1 => array(),
         );
         foreach ($items as $id => $item) {
-            $results[$item['status']][$id] = $this->updateItem($item);
+            $results[$item['status']][$id] = $item;
         }
         return array(
-            0 => $this->getProperSort($results[0]),
-            1 => $results[1]
+            0 => $results[0],
+            1 => $results[1],
         );
     }
 
     public function getDailyRecapItems($contact_id, $when)
     {
-        $pocket_rights = "";
-        $pockets = array();
-        // if user is admin - show all completed items
-        // else only items user has access and null list items
-        if (!pocketlistsHelper::isAdmin()) {
-            $pockets = pocketlistsHelper::getAccessPocketForContact($contact_id);
-            // only accessed pockets or null list items which are created or completed by user
-//            $pocket_rights = "AND (
-//                    p.id IN (i:pocket_ids)
-//                    OR (p.id IS NULL AND (i.contact_id = i:contact_id OR i.complete_contact_id = i:contact_id)
-//                  )";
-            // only accessed pockets or null list items
-            $pocket_rights = "AND (
-                    p.id IN (i:pocket_ids)
-                    OR p.id IS NULL
-                  )";
-        }
-
         $now = time();
         $today = date("Y-m-d");
         $tomorrow = date("Y-m-d", strtotime("+1 day", $now));
         $seven_days = date("Y-m-d", strtotime("+7 days", $now));
         switch ($when) {
             case pocketlistsUserSettings::DAILY_RECAP_FOR_TODAY:
-                $when = " AND (i.due_date = '" . $today . "' OR (i.due_datetime >= " .
-                    strtotime($today) . " AND i.due_datetime < " . strtotime($tomorrow) . "))";
+                $when = " AND (i.due_date <= '" . $today . "')";
                 break;
             case pocketlistsUserSettings::DAILY_RECAP_FOR_TODAY_AND_TOMORROW:
-                $when = " AND (i.due_date = '" . $today . "' OR i.due_date = '" . $tomorrow . "' OR (i.due_datetime >= " .
-                    strtotime($today) . " AND i.due_datetime < " . (strtotime($tomorrow) + 60 * 60 * 24) . "))";
+                $when = " AND (i.due_date <= '" . $tomorrow . "')";
                 break;
             case pocketlistsUserSettings::DAILY_RECAP_FOR_NEXT_7_DAYS:
-                $when = " AND (i.due_date >= '" . $today . "' AND i.due_date <= '" . $seven_days . "' OR (i.due_datetime >= " .
-                    strtotime($today) . " AND i.due_datetime < " . (strtotime($seven_days) + 60 * 60 * 24) . "))";
+                $when = " AND (i.due_date <= '" . $seven_days . "')";
                 break;
         }
+        $lists = pocketlistsRBAC::getAccessListForContact($contact_id);
+        $list_sql = $lists ? " AND (l.id IN (i:list_ids) OR l.id IS NULL) " : " AND l.id IS NULL ";
         $q = "SELECT
                 i.*
               FROM {$this->table} i
               LEFT JOIN pocketlists_list l ON (l.id = i.list_id  OR l.id = i.key_list_id)
-              LEFT JOIN pocketlists_pocket p ON p.id = l.pocket_id
               WHERE
-                i.status = 0
-                AND (
+                (
+                  (i.assigned_contact_id = i:contact_id) /* + items assigned to me */
+                  OR i.priority > 0 /* + items with priority */
+                  OR
                   (
-                    i.contact_id = i:contact_id
-                    OR i.assigned_contact_id = i:contact_id
-                    OR i.complete_contact_id = i:contact_id
+                    /*((i.due_date IS NOT NULL OR i.due_datetime IS NOT NULL) AND i.list_id IS NULL AND i.key_list_id IS NULL AND i.contact_id = 7)
+                    OR
+                    ((i.due_date IS NOT NULL OR i.due_datetime IS NOT NULL) AND (i.list_id IS NOT NULL OR i.key_list_id IS NOT NULL)) */
+                    (i.due_date IS NOT NULL OR i.due_datetime IS NOT NULL) /* + items with due */
+                    AND
+                    IF(i.list_id IS NULL AND i.key_list_id IS NULL, i.contact_id = i:contact_id, i.contact_id > 0) /* + and if item is from NULL-list check contact_id */
                   )
-                  AND (
-                    l.archived = 0
-                    OR l.archived IS NULL
-                   )
-                  OR (i.list_id IS NULL AND i.key_list_id IS NULL)
+                  OR (i.contact_id = i:contact_id AND i.list_id IS NULL AND i.key_list_id IS NULL) /* + my items from NULL-list */
                 )
-                AND (i.assigned_contact_id = i:contact_id OR i.assigned_contact_id IS NULL OR i.assigned_contact_id = 0) /* only mine */
-                {$pocket_rights}
+                AND i.status = 0 /* ONLY not completed items */
+                AND (l.archived = 0 OR l.archived IS NULL) /* ONLY not archived items */
+                AND (i.assigned_contact_id = i:contact_id OR i.assigned_contact_id IS NULL OR i.assigned_contact_id = 0) /* ONLY assigned to me or noone */
+                {$list_sql}
                 {$when}";
 
-        $items = $this->query($q, array('contact_id' => $contact_id, 'pocket_ids' => $pockets))->fetchAll();
+        $items = $this->query($q, array(
+            'contact_id' => $contact_id,
+            'list_ids'   => $lists,
+        ))->fetchAll();
         foreach ($items as $id => $item) {
-            $items[$id] = $this->updateItem($item);
+            $items[$id] = $this->extendItemData($item);
         }
         return $items;
     }
@@ -555,23 +760,10 @@ class pocketlistsItemModel extends waModel
         $us = new pocketlistsUserSettings();
         $icon = $us->appIcon();
 
-        $pocket_rights = "";
-        $pockets = array();
+        $lists = array();
         // if user is admin - show all completed items
         // else only items user has access and null list items
-        if (!pocketlistsHelper::isAdmin()) {
-            $pockets = pocketlistsHelper::getAccessPocketForContact();
-            // only accessed pockets or null list items which are created or completed by user
-//            $pocket_rights = "AND (
-//                    p.id IN (i:pocket_ids)
-//                    OR (p.id IS NULL AND (i.contact_id = i:contact_id OR i.complete_contact_id = i:contact_id)
-//                  )";
-            // only accessed pockets or null list items
-            $pocket_rights = "AND (
-                    p.id IN (i:pocket_ids)
-                    OR p.id IS NULL
-                  )";
-        }
+        $list_sql = pocketlistsRBAC::filterListAccess($lists);
 
         $now = @waDateTime::parse('Y-m-d H:i:s', waDateTime::date('Y-m-d H:i:s'));
         $today = date("Y-m-d");
@@ -597,32 +789,107 @@ class pocketlistsItemModel extends waModel
             i.id
           FROM {$this->table} i
           LEFT JOIN pocketlists_list l ON (l.id = i.list_id  OR l.id = i.key_list_id)
-          LEFT JOIN pocketlists_pocket p ON p.id = l.pocket_id
           WHERE
             (
+              (i.assigned_contact_id = i:contact_id) /* + items assigned to me */
+              OR i.priority > 0 /* + items with priority */
+              OR
               (
-                i.contact_id = i:contact_id
-                OR i.assigned_contact_id = i:contact_id
-                OR i.complete_contact_id = i:contact_id
+                /*((i.due_date IS NOT NULL OR i.due_datetime IS NOT NULL) AND i.list_id IS NULL AND i.key_list_id IS NULL AND i.contact_id = 7)
+                OR
+                ((i.due_date IS NOT NULL OR i.due_datetime IS NOT NULL) AND (i.list_id IS NOT NULL OR i.key_list_id IS NOT NULL)) */
+                (i.due_date IS NOT NULL OR i.due_datetime IS NOT NULL) /* + items with due */
+                AND
+                IF(i.list_id IS NULL AND i.key_list_id IS NULL, i.contact_id = i:contact_id, i.contact_id > 0) /* + and if item is from NULL-list check contact_id */
               )
-              AND (
-                l.archived = 0
-                OR l.archived IS NULL
-              )
-              OR (i.list_id IS NULL AND i.key_list_id IS NULL)
+              OR (i.contact_id = i:contact_id AND i.list_id IS NULL AND i.key_list_id IS NULL) /* + my items from NULL-list */
             )
+            AND (l.archived = 0 OR l.archived IS NULL) /* ONLY not completed items */
             AND i.status = 0
+            AND (i.assigned_contact_id = i:contact_id OR i.assigned_contact_id IS NULL OR i.assigned_contact_id = 0) /* ONLY assigned to me or noone */
             {$colors} /* selected option */
-            AND (i.assigned_contact_id = i:contact_id OR i.assigned_contact_id IS NULL OR i.assigned_contact_id = 0) /* only mine */
-            {$pocket_rights}";
+            AND {$list_sql}";
 
         if ($icon !== false && $icon != pocketlistsUserSettings::ICON_NONE) {
             $count = $this->query($q, array(
                 'contact_id' => wa()->getUser()->getId(),
-                'pocket_ids' => $pockets))->count();
+                'list_ids'   => $lists,
+            ))->count();
             return $count;
         } else {
             return null;
         }
+    }
+
+    /**
+     * @param $name
+     * @param $datetime
+     * @return array
+     */
+    public function getItemByNameAndCreatedDatetime($name, $datetime)
+    {
+        return $this->query("SELECT * FROM {$this->table} WHERE name = s:name AND 
+ create_datetime BETWEEN (s:d1, s:d2) LIMIT 1", array(
+            'name' => $name,
+            'd1'   => date('Y-m-d H:i:s', strtotime($datetime) - 60),
+            'd2'   => date('Y-m-d H:i:s', strtotime($datetime) + 60),
+        ))->fetch();
+    }
+
+    public function getLastActivityItems($user_last_activity)
+    {
+        $user_id = wa()->getUser()->getId();
+        $lists = array();
+        $list_sql = pocketlistsRBAC::filterListAccess($lists);
+        $q = "SELECT 
+                     i.id item_id,
+                     i.list_id list_id,
+                     i.status status,
+                     i.contact_id contact_id,
+                     i.assigned_contact_id assigned_contact_id,
+                     i.complete_contact_id complete_contact_id,
+                     l.archived list_archived
+                FROM pocketlists_item i
+                LEFT JOIN pocketlists_list l ON l.id = i.list_id
+                WHERE 
+                    {$list_sql}
+                    AND (
+                      i.create_datetime > s:user_last_activity 
+                      OR i.complete_datetime > s:user_last_activity
+                    )";
+
+        $items = $this->query($q, array(
+            'list_ids'           => $lists,
+            'user_last_activity' => $user_last_activity,
+        ))->fetchAll();
+
+        $result = array(
+            'list' => array(),
+            'team' => array(),
+            'archive' => 0,
+            'logbook' => 0,
+        );
+        foreach ($items as $item) {
+            if ($item['list_id'] && $item['contact_id'] != $user_id && $item['status'] == 0) {
+                if (!isset($result['list'][$item['list_id']])) {
+                    $result['list'][$item['list_id']] = 0;
+                }
+                $result['list'][$item['list_id']]++;
+            }
+            if ($item['assigned_contact_id'] && $item['assigned_contact_id'] != $user_id && $item['status'] == 0) {
+                if (!isset($result['team'][$item['assigned_contact_id']])) {
+                    $result['team'][$item['assigned_contact_id']] = 0;
+                }
+                $result['team'][$item['assigned_contact_id']]++;
+            }
+            if ($item['list_archived'] && $item['status'] == 0) {
+                $result['archive']++;
+            }
+            if ($item['status'] && $item['complete_contact_id'] != $user_id) {
+                $result['logbook']++;
+            }
+        }
+
+        return $result;
     }
 }

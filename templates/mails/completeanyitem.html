@@ -1,14 +1,20 @@
-{sprintf('[`%s have just completed a to-do <strong>%s</strong>`]', $item.complete_contact_name|escape, $item.name|escape)}
+{if $complete}
+{sprintf('[`%s has just completed <strong>%s</strong>`]', $item.complete_contact_name|escape, $item.name)}
+{else}
+{sprintf('[`The following to-do has just been uncompleted and rolled back to active status: <strong>%s</strong>`]', $item.name)}
+{/if}
 <br>
 <br>
 {*if ITEM BELONGS TO SOME LIST*}
 {if $list}
 {if $n > 0}
-<em>{sprintf('[`Just %d more items left on <a href="%s">%s</a>`]', $n, $list_url, $list.name|escape)}</em>
+<em>{sprintf('[`Just %d more items left on <a href="%s">%s</a>`]', $n, $backend_url|cat:$list_url, $list.name|escape:'html')}</em>
 {else}
-<em>{sprintf('[`Woohoo, <a href="%s">%s</a> to-do list has been completed :)`]', $list_url, $list.name|escape)}</em>
-{/if}
+<em>{sprintf('[`Woohoo, <a href="%s">%s</a> to-do list has been completed :)`]', $backend_url|cat:$list_url, $list.name|escape:'html')}</em>
 {/if}
 <br>
 <br>
-via Pocket Lists app
+{/if}
+--<br>
+{$wa->accountName()}<br>
+<a href="{$backend_url}{$email_settings_url}" style="color:#aaa;">[`Manage my subscription`]</a>

@@ -1,0 +1,105 @@
+<!-- CORE FILTERS -->
+<div class="block pl-sidebar-core">
+
+    <ul class="menu-v with-icons">
+        <li data-pl-sidebar="todo">
+            {if $sidebar_todo_count}<span class="count">{$sidebar_todo_count}</span>{/if}
+            <a href="#/todo/"><i class="icon16 pl todo"></i>[`My to-dos`]</a>
+        </li>
+        <li>
+            <span class="count" data-pl-sidebar="favorites-count">{$favorites_count.undone}</span>
+            <a href="#/favorites/"><i class="icon16 star"></i>[`Favorites`]</a>
+        </li>
+        <li>
+            <a href="#/comments/"><i class="icon16 pl comments"></i>[`Comments`]{if $new_comments_count} <span class="highlighted bold small black" title="{$last_activity|wa_datetime}">+{$new_comments_count}</span>{/if}</a>
+        </li>
+        <li>
+            <a href="#/logbook/"><i class="icon16 pl logbook"></i>[`Logbook`]{if $new_items_count.logbook} <span class="highlighted bold small black">+{$new_items_count.logbook}</span>{/if}</a>
+        </li>
+
+
+        {* <li class="top-padded">
+        <a href="#/"><i class="icon16 "></i>CRM</a>
+    </li>
+        <li>
+            <a href="#/"><i class="icon16 "></i>Tasks</a>
+        </li>
+        <li>
+            <a href="#/"><i class="icon16 "></i>Blog</a>
+        </li> *}
+
+    </ul>
+
+</div>
+
+<!-- LISTS -->
+{if $lists || pocketlistsRBAC::canCreateLists()}
+<div class="block">
+    <h5 class="heading">
+        {if pocketlistsRBAC::canCreateLists()}<a href="#/list/new/" class="count"><i class="icon16 add"></i></a>{/if}
+        {if $lists && count($lists) > 10}<i class="icon16 darr" data-pl-collapsible="lists"></i>{/if}[`Lists`]
+    </h5>
+
+    {if count($lists)}
+    <ul class="menu-v with-icons collapsible" data-pl-sidebar-block="lists" data-pl-collapsible-wrapper="lists">
+        {foreach $lists as $l}
+        <li data-pl-list-id="{$l.id}">
+            <a href="#/list/{$l.id}/">
+                <span class="count{if $l.calc_priority == 1} indicator green{elseif $l.calc_priority == 2} indicator yellow{elseif $l.calc_priority == 3} indicator red{/if}">{if !empty($l.due_date)}<i class="icon10 exclamation no-overhanging" title="{sprintf('[`Due %s`]', $l.due_date|wa_date:'humandate')}"></i> {/if}{$l.count}</span>
+                <i class="icon16 listicon16" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l.icon|default:'li-list@2x.png'});"></i><span{if $l.color != 'none'} class="pl-{$l.color}"{/if}>{$l.name|escape}
+                    {if !empty($new_items_count.list[$l.id])} <span class="highlighted bold small black">+{$new_items_count.list[$l.id]}</span>{/if}
+                </span>
+
+            </a>
+        </li>
+        {/foreach}
+    </ul>
+    {else}
+        <div class="block">
+            <p class="hint align-center">[`Create a to-do list and share it with your teammates.`]</p>
+        </div>
+    {/if}
+</div>
+{/if}
+
+<!-- TEAM -->
+{if pocketlistsRBAC::canAssign()}
+<div class="block">
+    <h5 class="heading">
+        {if $team && count($team) > 10}<i class="icon16 darr" data-pl-collapsible="team"></i>{/if}[`Team`]
+    </h5>
+    {if count($team)}
+        <ul class="menu-v with-icons collapsible" data-pl-sidebar-block="team" data-pl-collapsible-wrapper="team">
+            {foreach $team as $team_id => $teammate}
+            <li data-pl-team-id="{$teammate.id}">
+                <a href="#/team/{$teammate.login|escape}/">
+                    <span class="count{if $teammate.items_info.max_priority == 1} indicator green{elseif $teammate.items_info.max_priority == 2} indicator yellow{elseif $teammate.items_info.max_priority == 3} indicator red{/if}">{$teammate.items_info.count}</span>
+                    <i class="icon16 userpic20" style="background-image: url({$teammate.photo_url})" alt="{$teammate.name|escape}" data-pl-contact-id="{$team_id}"></i>{$teammate.name|escape}
+                    {if !empty($new_items_count.team[$teammate.id])} <span class="highlighted bold small black">+{$new_items_count.team[$teammate.id]}</span>{/if}
+                    {if $teammate.status == 'online'}
+                        <i class="icon10 online no-overhanging" title="[`Online`]"></i>
+                    {/if}
+                </a>
+            </li>
+            {/foreach}
+        </ul>
+    {else}
+        <div class="block">
+            <p class="hint align-center">{sprintf('[`Use <a href="%s">Team app</a> to invite teammates and to collaborate using the To-dos app: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/')}</p>
+        </div>
+    {/if}
+</div>
+{/if}
+
+<!-- SYSTEM -->
+<div class="hr"></div>
+<div class="block">
+    <ul class="menu-v with-icons">
+        <li>
+            <a href="#/archive/"><i class="icon16 pl archive"></i>[`Archive`]{if $new_items_count.archive} <span class="highlighted bold small black">+{$new_items_count.archive}</span>{/if}</a>
+        </li>
+        <li>
+            <a href="#/settings/"><i class="icon16 settings"></i>[`Settings`]</a>
+        </li>
+    </ul>
+</div>

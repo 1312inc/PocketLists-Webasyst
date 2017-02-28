@@ -1,6 +1,5 @@
-{sprintf('[`Hi %s,`]', $name|escape)}
-<br>
-<br>
-{sprintf('[`%s have just created a new to-do list <strong>%s</strong>', $by|escape, $list_name|escape)}
+{sprintf('[`%s have just created a new to-do list <strong><a href="%s">%s</a></strong>`]', $by|escape, $backend_url|cat:$list_url, $list_name)}
 <br><br>
-via Pocket Lists app
+--<br>
+{$wa->accountName()}<br>
+<a href="{$backend_url}{$email_settings_url}" style="color:#aaa;">[`Manage my subscription`]</a>

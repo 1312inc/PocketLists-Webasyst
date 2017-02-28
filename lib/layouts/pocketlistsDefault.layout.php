@@ -8,6 +8,9 @@ class pocketlistsDefaultLayout extends waLayout
         if ($us->appIcon() === false) {
             $us->saveDefaults();
         }
-        $this->view->assign('sidebar_todo_count', wa('pocketlists')->getConfig()->onCount());
+        $this->executeAction('sidebar', new pocketlistsBackendSidebarAction());
+        $this->view->assign('isAdmin', wa()->getUser()->isAdmin() || wa()->getUser()->isAdmin('pocketlists') ? 1 : 0);
+
+//        pocketlistsActivity::setUserActivity();
     }
 }

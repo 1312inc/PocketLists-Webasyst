@@ -1,8 +1,8 @@
 <div class="shadowed">
 
     {if empty($lists)}
-        <main class="content  blank pl-items" id="pl-list-content">
-            <div class="pl-empty-list top-padded">
+        <main class="content blank pl-items" id="pl-list-content">
+            <div class="pl-welcome top-padded bottom-padded">
                 <h2>[`Archive is empty`]</h2>
                 <p>[`Archiving is a handy way to hide a to-do list instead of deleting it permanently. To archive a list, tap on it’s big checkmark or click <em>Archive list</em> in the list action menu.`]</p>
             </div>
@@ -12,7 +12,7 @@
             <ul class="menu-v with-icons stack top-padded">
                 {foreach $lists as $l_id => $l}
                 <li data-pl-list-id="{$l.id}" {if $l.id == $list_id}class="selected"{/if}>
-                    <a href="#"><i class="icon16" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l.icon|default:'li-list@2x.png'}); background-size: 16px 16px;"></i>{$l.name|escape}</a>
+                    <a href="#/archive/{$l.id}/"><i class="icon16" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l.icon|default:'li-list@2x.png'}); background-size: 16px 16px;"></i>{$l.name|escape}</a>
                 </li>
                 {foreachelse}
                 {/foreach}
@@ -21,25 +21,82 @@
                 <p class="hint">[`To archive an active list, tap on it’s checkmark.`]</p>
             </div>
         </nav>
-        <main class="content left200px blank bordered-left pl-items pl-archive" id="pl-list-content">
-            {$lists_html|default:""}
+        <main class="content left200px blank bordered-left pl-list-content pl-archive" id="pl-list-content">
+            <div class="pl-inner-content pl-items pl-{$list.color|default:'none'}">
+                <header class="pl-list-title pl-title">
+                    <div class="float-right block half-padded">
+                        {if isset($list.id)}
+                        <ul class="menu-h">
+                            <li>
+                                <a href="#" data-pl-action="list-unarchive" class="bold"><i class="icon16 pl archive"></i> [`Unarchive list`]</a>
+                            </li>
+                            <li>
+                                <a href="#" data-pl-action="list-delete"><i class="icon16 delete"></i> [`Delete`]</a>
+                            </li>
+                        </ul>
+                        {/if}
+                    </div>
+                    <h1>
+                        <input type="hidden" value="{$list.id|default:-1}" id="pl-list-id">
+                        <span id="pl-list-name">{$list.name|default:' '|escape}</span>
+
+                        <span class="pl-list-due {if $list.calc_priority == 0}pl-due-someday{elseif $list.calc_priority == 1}pl-due-tomorrow{elseif $list.calc_priority == 2}pl-due-today{elseif $list.calc_priority == 3}pl-due-overdue{/if}" {if empty($list.due_datetime) && empty($list.due_date)}style="display: none;"{/if}>
+                        {if !empty($list.due_datetime)}
+                        {$list.due_datetime|wa_datetime:'humandatetime'}
+                        {else if !empty($list.due_date)}
+                        {$list.due_date|wa_date:'humandate'}
+                        {/if}
+                        </span>
+                    </h1>
+                </header>
+                <div class="pl-list-items" id="pl-list-items">
+
+                    <section id="pl-undone-items" data-pl-items="undone">
+                        <ul class="menu-v">
+                            {if !empty($items)}
+                            {include '../item/Item.html' parent_id=0 items=$items}
+                            {/if}
+                        </ul>
+                    </section>
+
+                    <!-- completed to-dos log -->
+                    <section id="pl-complete-log1" class="pl-logbook">
+                        <ul class="menu-v">
+                            {if !empty($items_done)}
+                            {include '../item/Item.html' items=$items_done}
+                            {/if}
+                        </ul>
+                    </section>
+
+                </div>
+                <div class="clear-both"></div>
+
+                {include '../../include/archivelistdialog.html' inline}
+
+                {include '../../include/deletelistdialog.html' inline}
+
+            </div>
+
+            <script type="text/javascript">
+                new $.pocketlists.Items($('#pl-list-items'), {
+                    enableChangeLevel: false,
+                    archive: true,
+                    list: new $.pocketlists.List(
+                            $('.pl-list-title'),
+                            {
+                                archive: true
+                            }
+                    ),
+                    current_user_id: "{$wa->user()->get('id')}"
+                });
+                $.pocketlists.setTitle('{$list.name|default:" "|escape}');
+            </script>
+
+
+
         </main>
     {/if}
 </div>
 <script text="text/javascript">
-    var $all_items_wrapper = $('#pl-list-items');
     $.pocketlists.setTitle('[`Archive`]');
-
-    $('[data-pl-list-id]').on('click', 'a', function (e) {
-        e.preventDefault();
-
-        var $this = $(this),
-            $wrapper = $this.closest('[data-pl-list-id]'),
-            list_id = parseInt($wrapper.data('pl-list-id'));
-
-        $.post('?module=list&id=' + list_id, function (result) {
-            $wrapper.addClass('selected').siblings().removeClass('selected');
-            $('#pl-list-content').html(result);
-        });
-    });
 </script>

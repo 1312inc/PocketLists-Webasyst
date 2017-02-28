@@ -1,89 +1,137 @@
-<div class="pl-items pl-{$list.color|default:'none'}">
-    <header class="pl-list-title pl-title">
-        <div class="float-right block half-padded">
-            {if isset($list.id)}
-            <ul class="menu-h dropdown">
-                {if !$archive}
-                <li>
-                    <a href="#" class="inline-link gray"><b><i>[`More`]</i></b></a>
-                    <ul class="menu-v with-icons" style="width: 230px;">
-                        {*
-                        <li>
-                            <a href="#" onClick="alert('Coming soon');"><i class="icon16 link"></i> [`Get public link`]</a>
-                        </li>
-                        *}
-                        <li class="pl-list-sort-dropdown">
-                            <a href="#" data-pl-action="list-sort"><i class="icon16 update"></i> [`Sort`]</a>
-                        </li>
-                        {*
-                        <li>
-                            <a href="#" onClick="alert('waDialog для ввода email-адреса, куда отправлять список');"><i class="icon16 email"></i> [`Email list`]</a>
-                        </li>
-                        <li>
-                            <a href="#" onClick="alert('открывается новое окно с содержимым данного списка и кнопкой Print. см. как в ШС сделана печать информации о заказе.');"><i class="icon16 print"></i> [`Print list`]</a>
-                        </li>
-                        *}
-                        <li>
-                            <a href="#" data-pl-action="list-archive"><i class="icon16 pl archive"></i> [`Archive list`]</a>
-                        </li>
-                        <li class="bordered-top">
-                            <a href="#" data-pl-action="list-edit"><i class="icon16 edit"></i> [`Edit list`]</a>
-                        </li>
-                        <li>
-                            <a href="#" data-pl-action="list-delete"><i class="icon16 delete"></i> [`Delete list`]</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="pl-list-sort">
-                    <a href="#" data-pl-action="list-sort"><i class="icon16 update"></i> [`Sort`]</a>
-                </li>
-                <li>
-                    <a href="#" id="pl-item-add-link" class="bold"><i class="icon16 add"></i> [`New to-do`]</a>
-                </li>
-                {* <li class="pl-list-favorite">
-                    <a href="#" data-pl-action="list-favorite"><i class="icon16 star{if !$list.favorite}-empty{/if}"></i></a>
-                </li> *}
-                {else}
-                <li>
-                    <a href="#" data-pl-action="list-unarchive" class="bold"><i class="icon16 pl archive"></i> [`Unarchive list`]</a>
-                    {*<div class="small hint">[`Acrhived on`] </div>  надо добавить поля в БД *}
-                </li>
-                <li>
-                    <a href="#" data-pl-action="list-delete"><i class="icon16 delete"></i> [`Delete`]</a>
-                </li>
-                {/if}
-            </ul>
-            {/if}
+{if isset($list.id) && $print}
+<html>
+<head>
+    <title>{$list.name} &mdash; {$wa->accountName()}</title>
+    <link type="text/css" rel="stylesheet" href="{$wa_app_static_url}css/pocketlists-print.css">
+</head>
+<body>
+    <div class="pl-print-button">
+        <button onclick="window.print();">[`Print`]</button>
+    </div>
+{/if}
+
+{if !$print}
+<nav class="pl-inner-sidebar" data-pl="uho">
+{if isset($list.id)}
+    {if !$archive}
+    <a class="pl-link-box bold" href="#" data-pl-action="list-sort">
+        <i class="icon16 update"></i> [`Re-sort list`]
+    </a>
+    <div class="block double-padded">
+
+        <ul class="menu-v with-icons" style="margin-top: -5px;">
+            <li>
+                <a href="#" data-pl-action="list-email"><i class="icon16 email"></i>[`Email list`]</a>
+            </li>
+            <li>
+                <a href="?module=list&amp;id={$list.id}&amp;print=true" target="_blank"><i class="icon16 print"></i>[`Print list`]</a>
+            </li>
+            <li>
+                <a href="#" data-pl-action="list-archive"><i class="icon16 pl archive"></i>[`Archive list`]</a>
+            </li>
+            <li>
+                <a href="#" data-pl-action="list-edit"><i class="icon16 edit"></i>[`Edit list details`]</a>
+            </li>
+        </ul>
+
+        {if pocketlistsRBAC::canAssign()}
+        <div class="pl-list-access">
+
+            <h5 class="heading">[`Access`]</h5>
+            {foreach $list_access_contacts as $list_access_contact_id => $list_access_contact}
+
+                <div class="profile image32px">
+                    <div class="image">
+                        <a href="{$wa_backend_url}pocketlists/#/{if $list_access_contact.me}todo{else}team/{$list_access_contact.login}{/if}/"><img class="userpic" src="{$list_access_contact.photo_url}"></a>
+                    </div>
+                    <div class="details">
+                        <span class="pl-username">
+                            <a href="{$wa_backend_url}pocketlists/#/{if $list_access_contact.me}todo{else}team/{$list_access_contact.login}{/if}/">{$list_access_contact.username|default:'%username%'|escape} {if $list_access_contact.me}([`me`]){/if}{if $list_access_contact.id == $list.contact_id} <span class="pl-label pl-hint">[`author`]</span>{/if}</a>
+                            {if $list_access_contact.status == 'online' && !$list_access_contact.me}
+                                <i class="icon10 online" title="[`Online`]"></i>
+                            {/if}
+                        </span>
+                        <div class="hint">{$list_access_contact.teamrole|escape}</div>
+                    </div>
+                </div>
+
+            {/foreach}
+            <p class="hint">{sprintf('[`Use <a href="%s">Team app</a> to configure access to this to-do list: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/')}</p>
         </div>
+        {/if}
+
+    </div>
+
+    <a class="pl-link-box pl-delete-box" href="#" data-pl-action="list-delete">
+        <i class="icon16 delete"></i> [`Delete list`]
+    </a>
+
+    {else}
+
+        {* you are not supposed to be here! making a rogue redirect to #/archive/ using JS *}
+        <script>window.location='#/archive/'+{$list.id}+'/';</script>
+
+    {/if}
+    </div>
+{/if}
+{include '../../include/listdetails.html' inline}
+{include '../../include/itemdetails.html' inline}
+</nav>
+{/if}
+
+{if !$print && isset($list.id) && $list.id > 0}
+{include '../../include/listiconsdialog.html' inline}
+{/if}
+
+<main id="pl-list-content" class="pl-list-content">
+
+    <div class="pl-inner-content pl-items shadowed pl-{$list.color|default:'none'}">
+    <header class="pl-list-title pl-title">
+
+        <div class="float-right">
+        <ul class="menu-h">
+            {if !$new && !$archive}
+                <li>
+                    <a href="#" class="pl-edit pl-list-due" title="{sprintf('[`Due %s`]', $list.due_date|wa_date:'humandate')}" data-pl-action="list-edit" {if empty($list.due_date) && empty($list.due_datetime)}style="display:none"{/if}>
+
+                        <i class="icon16 exclamation"></i>
+                        <span class="bold {if $list.calc_priority == 0}pl-due-someday{elseif $list.calc_priority == 1}pl-due-tomorrow{elseif $list.calc_priority == 2}pl-due-today{elseif $list.calc_priority == 3}pl-due-overdue{/if}" data-pl-list="due-date">
+                            {if !empty($list.due_datetime)}
+                                {$list.due_datetime|wa_datetime:'humandatetime'}
+                            {else if !empty($list.due_date)}
+                                {$list.due_date|wa_date:'humandate'}
+                            {/if}
+                        </span>
+
+                    </a>
+
+                    <a href="#" class="pl-edit inline-link" data-pl-action="list-edit" {if !empty($list.due_date) || !empty($list.due_datetime)}style="display:none"{/if}><b><i>[`Edit`]</i></b></a>
+                </li>
+                <li class="pl-list-favorite">
+                   <a href="#" data-pl-action="list-favorite" title="[`Favorite`]"><i class="icon16 star{if !$list.favorite}-empty{/if}"></i></a>
+                </li>
+            {/if}
+        </ul>
+        </div>
+
         <h1>
             <input type="hidden" value="{$list.id|default:-1}" id="pl-list-id">
             {if !$archive}
             <label class="pl-done-label">
-                <input type="checkbox" class="pl-done" id="pl-list-complete">
+                <input type="checkbox" class="pl-done" id="pl-list-complete"{if $print} disabled="disabled"{/if}>
                 <span></span>
             </label>
             {/if}
             {if $new && !$archive}
-                <input type="text" placeholder="[`New list`]" id="pl-new-list-input" class="bold" />
+                <input type="text" placeholder="{sprintf('[`List #%d`]', $new_list_id)}" id="pl-new-list-input" class="bold" />
             {else}
-                {if isset($list.pocket_id)}
-                <input type="hidden" value="{$list.pocket_id}" id="pl-pocket-id">
-                {/if}
                 <span id="pl-list-name">{$list.name|default:' '|escape}</span>
-
-                <span class="pl-list-due {if $list.calc_priority == 0}pl-due-someday{elseif $list.calc_priority == 1}pl-due-tomorrow{elseif $list.calc_priority == 2}pl-due-today{elseif $list.calc_priority == 3}pl-due-overdue{/if}" {if empty($list.due_datetime) && empty($list.due_date)}style="display: none;"{/if}>
-                {if !empty($list.due_datetime)}
-                    {$list.due_datetime|wa_datetime:'humandatetime'}
-                {else if !empty($list.due_date)}
-                    {$list.due_date|wa_date:'humandate'}
-                {/if}
-                </span>
             {/if}
         </h1>
     </header>
     <div class="pl-list-items" id="pl-list-items">
 
-        <section id="pl-undone-items">
+        <section id="pl-undone-items" data-pl-items="undone">
             <ul class="menu-v">
             {if !empty($items)}
                 {include '../item/Item.html' parent_id=0 items=$items}
@@ -105,18 +153,21 @@
     </div>
     <div class="clear-both"></div>
 
-    {include '../../include/archivelistdialog.html' inline}
+    {if !$print}
 
-    {include '../../include/deletelistdialog.html' inline}
+        {include '../../include/archivelistdialog.html' inline}
+        {include '../../include/deletelistdialog.html' inline}
+        {include '../../include/itemadd.html' inline}
 
-    {include '../../include/deleteitemdialog.html' inline}
-
-    {include '../../include/listdetails.html' inline}
-
-    {include '../../include/itemdetails.html' inline}
-
-    {include '../../include/itemadd.html' inline}
+    {/if}
 </div>
+
+</main>
+
+{if isset($list.id) && $print}
+</body>
+</html>
+{else}
 <script type="text/javascript">
     new $.pocketlists.Items($('#pl-list-items'), {
         enableChangeLevel: false,
@@ -125,7 +176,9 @@
                 $('.pl-list-title'),
                 {
                     archive: {if $archive}true{else}false{/if}
-                })
+                }),
+        current_user_id: {$wa->user()->get('id')}
     });
     $.pocketlists.setTitle('{if isset($list.name)}{$list.name|default:" "|escape}{else}[`New list`]{/if}');
 </script>
+{/if}

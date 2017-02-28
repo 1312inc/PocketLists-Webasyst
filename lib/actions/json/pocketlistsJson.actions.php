@@ -19,16 +19,39 @@ class pocketlistsJsonActions extends waJsonActions
 
     public function GetListsAction()
     {
-        $pocket_id = waRequest::get('id', false, waRequest::TYPE_INT);
-        if ($pocket_id) {
-            if ($this->getRights('pocket.'.$pocket_id) > 0) {
-                $il = new pocketlistsListModel();
-                $this->response = $il->getLists($pocket_id);
+        if ($this->getRights('list.%') > 0) {
+            $il = new pocketlistsListModel();
+            $this->response = $il->getLists();
+        } else {
+            $this->errors = '403 error';
+        }
+    }
+
+    public function GetItemsPocketColorAction()
+    {
+        $item_id = waRequest::get('id', false, waRequest::TYPE_INT);
+        if ($item_id) {
+            $im = new pocketlistsItemModel();
+            $item = $im->getById($item_id);
+
+            if ($item['list_id']) {
+                $lm = new pocketlistsListModel();
+                $list = $lm->getById($item['list_id']);
+                if ($this->getRights('list.' . $list['id']) > 0) {
+                    $this->response = $list['color'];
+                } else {
+                    $this->errors = '403 error';
+                }
             } else {
-                $this->errors = '403 error';
+                $this->response = pocketlistsHelper::COLOR_DEFAULT;
             }
         } else {
-            $this->errors = 'no pocket id';
+            $this->errors = 'no item id';
         }
+    }
+
+    public function heartbeatAction()
+    {
+        pocketlistsActivity::setUserActivity(wa()->getUser()->getId());
     }
 }

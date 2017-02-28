@@ -1,22 +1,77 @@
-<div class="fields form width100px">
-<form method="post">
+<div class="pl-details-form pl-{$list.color|default:'none'}">
+<div class="pl-details-form-shader">
+<div class="fields form">
+<form method="post" id="pl-item-details-form" action="?module=item&amp;action=data" target="pl-item-details-form-iframe" enctype="multipart/form-data">
+    {* <a href="#" class="pl-item-details-cancel" class="pl-close" title="[`Close`]">&times;</a> *}
     <input type="hidden" name="item[id]" value="{$item.id}"/>
+    <input type="hidden" id="pl-item-list-id" value="{$item.list_id}"/>
     <!-- core -->
     <div class="field-group">
         <div class="field">
-            <div class="name">[`Title`]</div>
-            <div class="value"><input type="text" class="bold large long" name="item[name]" value="{$item.name|escape}"{if $item.status == 1} disabled="disabled"{/if} /></div>
-        </div>
-        <div class="field">
-            <div class="name">[`Note`]</div>
+            <div class="value"><input type="text" class="bold large long" name="item[name]" placeholder="[`Title`]" value="{$item.name|escape}"{if $item.status == 1} disabled="disabled"{/if} /></div>
             <div class="value"><textarea name="item[note]" placeholder="[`Optional text note`]"{if $item.status == 1} disabled="disabled"{/if}>{$item.note|escape}</textarea></div>
+            {*$wa->csrf()*}
+            <div class="value" data-pl-item-details-attachments>
+
+                <div class="block double-padded pl-add-attachment-dropbox" data-pl-item-details-fileupload>
+
+                    <ul class="pl-attachments" {if empty($attachments)}style="display:none"{/if}>
+                    {foreach $attachments as $attachment}
+                        <li>
+                            <a href="{$attachments_path}{$attachment.filename}" target="_blank">{$attachment.filename|truncate:128}</a>
+                            <a href="#" class="gray" data-pl-attachment-name="{$attachment.filename}" style="margin-left: 10px;">&times;</a>
+                        </li>
+                    {/foreach}
+                    </ul>
+                    <input type="file" name="files[]" multiple="">
+
+                </div>
+
+                <div id="progress" class="progress" style="width: 100%; height: 2px;">
+                    <div class="progress-bar progress-bar-success" style="background-color: #00aa00"></div>
+                </div>
+
+
+            </div>
         </div>
-        {*
+        {if $contacts}
+        <div class="field" id="pl-assigned-contact">
+            <div class="name">[`Assigned to`]</div>
+            <div class="value no-shift">
+                <span>
+                    <i class="icon16 userpic20" data-pl-contact-id="0" style="display: none;"></i>
+                    {foreach $contacts as $contact}
+                    <i class="icon16 userpic20" style="background-image: url({$contact.userpic}); {if (!empty($item.assigned_contact_id) && $contact.id == $item.assigned_contact_id)}{else}display: none;{/if}" alt="{$contact.username|escape}" data-pl-contact-id="{$contact.id}"></i>
+                    {/foreach}
+                </span>
+                <select name="item[assigned_contact_id]">
+                    <option value="0" {if !$item.assigned_contact_id}selected="selected"{/if}>[`Nobody`]</option>
+                    {foreach $contacts as $contact}
+                    <option value="{$contact.id}" {if isset($item.assigned_contact_id) && $item.assigned_contact_id == $contact.id}selected="selected"{/if}>{$contact.username|escape|truncate:64}{if $contact.id == $wa->user()->getId()} ([`me`]){/if}</option>
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+        {/if}
         <div class="field">
-            <div class="name">[`Attachment`]</div>
-            <div class="value no-shift"><input name="item[attachment]" type="file" /></div>
+            <div class="name">[`Created`]</div>
+            <div class="value no-shift">
+                <i class="icon16 userpic20" style="background-image: url({$item.contact.userpic})" alt="{$item.contact.username|escape}"></i>
+
+                {$item.contact.username|escape}
+                <span class="hint nowrap">{$item.create_datetime|wa_datetime:'humandatetime'}</span>
+            </div>
         </div>
-        *}
+        {if $item.status == 1 && $item.complete_datetime}
+            <div class="field">
+                <div class="name">[`Completed`]</div>
+                <div class="value no-shift">
+                    <i class="icon16 userpic20" style="background-image: url({$item.complete_userpic|default:'/wa-content/img/userpic20@2x.jpg'})" alt="{$item.complete_contact.username|escape}"></i>
+                    {$item.complete_contact.username|default:''|escape}
+                    <span class="hint nowrap">{$item.complete_datetime|wa_datetime:'humandatetime'}</span>
+                </div>
+            </div>
+        {/if}
     </div>
 
     <!-- notifications -->
@@ -37,7 +92,7 @@
             <div class="name">[`Due`]</div>
 
             <div class="value">
-                <input name="item[due_date]" class="pl-due-date-input" type="text" id="pl-item-due-datetime" value="{$item.due_date|default:''|wa_date}" />
+                <input name="item[due_date]" class="pl-due-date-input" type="text" id="pl-item-due-datetime" value="{$item.due_date|default:''}" />
                 <a href="#"><i class="icon16 calendar"></i></a>
                 <span id="pl-item-due-datetime-time">
                     {$hour = $item.due_datetime|default:''|wa_datetime:'H'}
@@ -48,9 +103,12 @@
                     <select name="item[due_datetime_minutes]" class="pl-due-date-input" type="text" id="pl-item-due-datetime-minutes" value="{$minutes}" {if empty($item.due_datetime)}style="display: none;" disabled="disabled"{/if}>
                         {for $i=0 to 59 step 5}{$m = "%02d"|sprintf:$i}<option value="{$m}" {if $m == $minutes}selected="selected"{/if}>{$m}</option>{/for}
                     </select>
-                    <a href="#" id="pl-item-due-datetime-set" class="small inline-link" {if !empty($item.due_datetime)}style="display: none;"{/if}><b><i>[`Set time`]</i></b></a>
-                    <a href="#" id="pl-item-due-datetime-clear" class="small inline-link" {if empty($item.due_datetime)}style="display: none;"{/if}><b><i>[`Clear time`]</i></b></a>
+                    <a href="#" id="pl-item-due-datetime-set" class="small inline-link nowrap" {if empty($item.due_date) || !empty($item.due_datetime)}style="display: none;"{/if}><b><i>[`Set time`]</i></b></a>
+                    <a href="#" id="pl-item-due-datetime-clear" class="small inline-link nowrap" {if empty($item.due_datetime)}style="display: none;"{/if}><b><i>[`Clear time`]</i></b></a>
                 </span>
+                {if $item.due_date}
+                    <p class="hint">[`When due is set, it may automatically increase the manually set priority color.`]</p>
+                {/if}
             </div>
         </div>
         {else}
@@ -58,6 +116,25 @@
             <div class="value"><p class="hint">[`This item is <strong>marked as completed</strong>. Setting priority and due date won’t be visible within the to-do list.`]</p></div>
         </div>
         {/if}
+
+        <div class="field">
+            <div class="name nowrap">
+                [`List`]
+            </div>
+            <div class="value no-shift">
+                <select id="pl-item-list">
+                {if !$list || $item.contact_id == $wa->user()->get('id')}<option value=""{if !$list} selected="selected"{/if}>[`None`]</option>{/if}
+                {foreach $lists as $l}
+                    <option value="{$l.id}" {if $item.list_id == $l.id}selected="selected"{/if}>{$l.name|escape|truncate:32}</option>
+                {/foreach}
+                </select>
+                <input type="hidden" name="item[list_id]" value="{$item.list_id}"/>
+                {* DEPRECATED FEB 2017 <div id="pl-null-list-msg"{if $list} style="display: none;"{/if}>
+                    <span class="hint"><i class="icon10 lock-bw"></i>[`Removing to-do item from a list makes it <strong>your private to-do item</strong> hidden from your teammates, and available on your To-do Stream only.`]</span>
+                </div> *}
+            </div>
+        </div>
+
         {*
         <div class="field">
             <div class="name">[`Repeat`]</div>
@@ -83,66 +160,30 @@
         *}
     </div>
 
-
-    <div class="field-group" id="pl-assigned-contact">
-        <div class="field">
-            <div class="name">[`Assigned to`]</div>
-            <div class="value no-shift">
-                <span>
-                    <i class="icon16 userpic20" data-pl-contact-id="0" style="{if (!empty($item.assigned_contact_id))}display: none;{/if}"></i>
-                    {foreach $contacts as $contact_id => $contact}
-                    <i class="icon16 userpic20" style="background-image: url({$contact.userpic}); {if (!empty($item.assigned_contact_id) && $contact_id == $item.assigned_contact_id)}{else}display: none;{/if}" alt="{$contact.username|escape}" data-pl-contact-id="{$contact_id}"></i>
-                    {/foreach}
-                </span>
-                <select name="item[assigned_contact_id]">
-                    <option value="0" {if !$item.assigned_contact_id}selected="selected"{/if}>[`Nobody`]</option>
-                    {foreach $contacts as $contact_id => $contact}
-                    <option value="{$contact_id}" {if isset($item.assigned_contact_id) && $item.assigned_contact_id == $contact_id}selected="selected"{/if}>{$contact.username|escape|truncate:64}</option>
-                    {/foreach}
-                </select>
-            </div>
-        </div>
-        <div class="field">
-            <div class="name">[`Created`]</div>
-            <div class="value no-shift">
-                <i class="icon16 userpic20" style="background-image: url({$item.userpic})" alt="{$item.username|escape}"></i>
-
-                {$item.username|escape}
-                <span class="hint">{$item.create_datetime|wa_datetime:'humandatetime'}</span>
-            </div>
-        </div>
-        {if $item.status == 1 && $item.complete_datetime}
-            <div class="field">
-                <div class="name">[`Completed`]</div>
-                <div class="value no-shift">
-                    <i class="icon16 userpic20" style="background-image: url({$item.complete_userpic|default:'/wa-content/img/userpic20@2x.jpg'})" alt="{$item.complete_username|escape}"></i>
-                    {$item.complete_username|default:''|escape}
-                    <span class="hint">{$item.complete_datetime|wa_datetime:'humandatetime'}</span>
-                </div>
-            </div>
-        {/if}
-    </div>
-
-    <div class="field-group">
+    <div class="field-group" style="margin-bottom: 0;">
         <div class="field">
             <div class="value">
 
-                <div class="float-right block half-padded">
-                    <ul class="menu-h ">
-                        <li>
-                            <a data-pl-action="item-delete" href="#"><i class="icon16 delete"></i>[`Delete to-do`]</a>
-                        </li>
-                    </ul>
-                </div>
-
                 <input type="submit" class="button green" value="[`Save`]"  id="pl-item-details-save"/>
                 [`or`]
-                <a href="#" id="pl-item-details-cancel">[`cancel`]</a>
+                <a href="#" class="pl-item-details-cancel">[`cancel`]</a>
 
                 <span class="error" style="display: none;">[`error`]</span>
                 <span class="success" style="display: none;">[`saved`]</span>
+
             </div>
+
         </div>
     </div>
+
 </form>
+<iframe id="pl-item-details-form-iframe" name="pl-item-details-form-iframe" style="display:none;"></iframe>
 </div>
+<div class="clear-both"></div>
+</div>
+<a class="pl-link-box pl-delete-box align-center" href="#" data-pl-action="item-delete">
+    <i class="icon16 delete"></i> [`Delete to-do`]
+</a>
+</div>
+
+{include '../../include/deleteitemdialog.html' inline}

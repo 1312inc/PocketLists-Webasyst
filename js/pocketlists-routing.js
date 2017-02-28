@@ -3,7 +3,9 @@
 
     $.storage = new $.store();
     $.pocketlists_routing = {
-        options: {},
+        options: {
+            user_id: 0
+        },
         init: function (options) {
             var that = this;
             that.options = options;
@@ -15,7 +17,7 @@
 
             var hash = window.location.hash;
             if (hash === '#/' || !hash) {
-                hash = $.storage.get('pocketlists/hash');
+                hash = $.storage.get('/pocketlists/hash/' + that.options.user_id);
                 if (hash && hash != null) {
                     $.wa.setHash('#/' + hash);
                 } else {
@@ -126,7 +128,7 @@
                     if (typeof(this[actionName + 'Action']) == 'function') {
                         console.info('dispatch', [actionName + 'Action', attr]);
                         this[actionName + 'Action'].apply(this, attr);
-                        $.storage.set('pocketlists/hash', hash.join('/'));
+                        $.storage.set('/pocketlists/hash/' + this.options.user_id, hash.join('/'));
                     } else {
                         console.info('Invalid action name:', actionName + 'Action');
                     }
@@ -142,30 +144,27 @@
                 this.postExecute();
             }
         },
-        redispatch: function() {
+        redispatch: function () {
             this.prevHash = null;
             this.dispatch();
         },
         preExecute: function () {
-
+            $(window).off('scroll.pl2');
         },
         postExecute: function () {
+            $.pocketlists.reloadSidebar();
+            this.heartbeat();
+        },
 
+        heartbeat: function () {
+            $.post('?module=json&action=heartbeat');
         },
 
         // actions
         defaultAction: function () {
-            this.pocketAction();
+            this.todoAction();
         },
-        listsAction: function() {
-            this.pocketAction();
-        },
-        listAction: function(id) {
-            this.load('?module=list&id=' + id, function (result) {
-                $('#pl-list-content').html(result);
-            });
-        },
-        pocketAction: function (id) {
+        listsAction: function () {
             //var self = this;
             var list_id = decodeURIComponent(this.getHash().substr(('#/pocket/' + id + '/list/').length).replace('/', '')) || 0;
             //var load_list = this.getHash().indexOf('list') > 0;
@@ -180,15 +179,20 @@
                 $list_name.after('<i class="icon16 loading">');
             }
             // todo: load list separetly
-            this.load('?module=pocket&id=' + id + '&list_id=' + list_id, function (result) {
+            this.load('?module=list&id=' + list_id, function (result) {
                 // show pockets
                 $('#content').html(result);
                 // and load selected list
                 //load_list && self.listAction(list_id);
             });
         },
+        listAction: function (id) {
+            this.load('?module=list&id=' + id, function (result) {
+                $('#content').html(result);
+            });
+        },
         archiveAction: function (id) {
-            var id = id || 0;
+            id = id || 0;
             this.load('?module=archive&id=' + id, function (result) {
                 $('#content').html(result);
             });
@@ -208,8 +212,23 @@
                 $('#content').html(result);
             });
         },
+        activityAction: function () {
+            this.load('?module=activity', function (result) {
+                $('#content').html(result);
+            });
+        },
+        commentsAction: function () {
+            this.load('?module=comments', function (result) {
+                $('#content').html(result);
+            });
+        },
+        favoritesAction: function () {
+            this.load('?module=favorites', function (result) {
+                $('#content').html(result);
+            });
+        },
         teamAction: function (teammate) {
-            var teammate = teammate || 0;
+            teammate = teammate || 0;
             this.load('?module=team&teammate=' + teammate, function (result) {
                 $('#content').html(result);
             });
@@ -225,7 +244,7 @@
             var r = Math.random();
             this.random = r;
             var self = this;
-            return $.get(url, function (result) {
+            return $.get(url, function (result, textStatus, jqXHR) {
                 if ((typeof options.check === 'undefined' || options.check) && self.random != r) {
                     // too late: user clicked something else.
                     return;

@@ -4,7 +4,7 @@ class pocketlistsSettingsSaveController extends waJsonController
 {
     public function execute()
     {
-//        if (!pocketlistsHelper::isAdmin()) {
+//        if (!pocketlistsRBAC::isAdmin()) {
 //            throw new waException('Access denied.', 403);
 //        }
 
@@ -17,6 +17,7 @@ class pocketlistsSettingsSaveController extends waJsonController
         foreach ($data as $name => $value) {
             $us->set($name, $value);
         }
+
         $this->response = 'ok';
     }
 }

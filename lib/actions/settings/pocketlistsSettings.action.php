@@ -8,14 +8,11 @@ class pocketlistsSettingsAction extends waViewAction
         $settings = $us->getAllSettings();
         $this->view->assign('settings', $settings);
 
-        $pm = new pocketlistsPocketModel();
-        $this->view->assign('pockets', $pm->getAllPockets(wa()->getUser()->getId()));
-
         $inbox_list_id = $us->getStreamInboxList();
         if ($inbox_list_id) {
             $lm = new pocketlistsListModel();
             $inbox_list = $lm->getById($inbox_list_id);
-            $this->view->assign('inbox_lists', $lm->getLists($inbox_list['pocket_id']));
+            $this->view->assign('inbox_lists', $lm->getLists());
             $this->view->assign('inbox_list', $inbox_list);
         }
 
@@ -24,7 +21,8 @@ class pocketlistsSettingsAction extends waViewAction
             'last_recap_cron_time',
             $asp->get(wa()->getApp(), 'last_recap_cron_time')
         );
-        $this->view->assign('cron_command', 'php '.wa()->getConfig()->getRootPath().'/cli.php '.wa()->getApp().' recap');
-        $this->view->assign('admin', pocketlistsHelper::isAdmin());
+
+        $this->view->assign('cron_command', $this->getConfig()->getCronJob('recap_mail'));
+        $this->view->assign('admin', pocketlistsRBAC::isAdmin());
     }
 }

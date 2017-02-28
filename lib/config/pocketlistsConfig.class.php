@@ -25,9 +25,23 @@ class pocketlistsConfig extends waAppConfig
 
     public function explainLogs($logs)
     {
-        $logs = parent::explainLogs($logs);
-        $app_url = wa()->getConfig()->getBackendUrl(true).$this->getApplication().'/';
-
+        $log_action = new pocketlistsLogAction();
+        $logs = $log_action->explainLogs($logs);
         return $logs;
+    }
+
+    public function getCronJob($name = null)
+    {
+        static $tasks;
+        if (!isset($tasks)) {
+            $tasks = array();
+            $path = $this->getAppConfigPath('cron');
+            if (file_exists($path)) {
+                $tasks = include($path);
+            } else {
+                $tasks = array();
+            }
+        }
+        return $name ? (isset($tasks[$name]) ? $tasks[$name] : null) : $tasks;
     }
 }

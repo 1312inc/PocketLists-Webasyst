@@ -1,8 +1,10 @@
-{sprintf('[`Hi %s,`]', $name|escape)}
-<br>
-<br>
-[`You’ve been assigned a new to-do`]:<br><br>
-<strong>{$item_name|escape}</strong>
+{if !empty($list)}{sprintf('[`%s assigned you to a to-do on <a href="%s">%s</a>`]', $by_username|escape, $backend_url|cat:$list.url, $list.name)}
+{else}{sprintf('[`%s sent you <a href="%s">a new to-do</a>`]', $by_username|escape, $backend_url|cat:'#/todo/')}
+{/if}
 <br><br>
-{if $due_date}[`Due`]: {$due_date}<br><br>{/if}
-via Pocket Lists app
+<strong>{$item.name|nl2br}</strong>
+<br><br>
+{if $due_date}<em>[`Due`]: {$due_date}</em><br><br>{/if}
+--<br>
+{$wa->accountName()}<br>
+<a href="{$backend_url}{$email_settings_url}" style="color:#aaa;">[`Manage my subscription`]</a>

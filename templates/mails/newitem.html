@@ -1,11 +1,10 @@
-{sprintf('[`Hi %s,`]', $name|escape)}
-<br>
-<br>
-{sprintf('[`There are new items on <strong>%s</strong> to-do list:`]', $list_name|escape)}
+{sprintf('[`There are new items on <a href="%s">%s</a> to-do list:`]', $backend_url|cat:$list_url, $list_name)}
 <br>
 <br>
 {foreach $items as $item}
-— {sprintf('[`<strong>%s</strong> by %s`]', $item.name|escape, $item.contact_name|escape)}<br>
+{sprintf('[`<strong>%s</strong> by %s`]', $item.name|nl2br, $item.contact_name|escape)}<br>
 {/foreach}
 <br>
-via Pocket Lists app
+--<br>
+{$wa->accountName()}<br>
+<a href="{$backend_url}{$email_settings_url}" style="color:#aaa;">[`Manage my subscription`]</a>

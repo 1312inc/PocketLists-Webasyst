@@ -1,10 +1,12 @@
-<div class="fields form width100px">
+<div class="pl-details-form pl-{$list.color|default:'none'}">
+<div class="pl-details-form-shader">
+<div class="fields form">
 <form method="post">
+    {* <a href="#" class="pl-list-details-cancel" class="pl-close" title="[`Close`]">&times;</a> *}
     <input type="hidden" name="list[id]" value="{$list.id}"/>
     <!-- core -->
     <div class="field-group">
         <div class="field">
-            <div class="name">[`Title`]</div>
             <div class="value"><input type="text" class="bold large long" name="list[name]" value="{$list.name|escape}" /></div>
         </div>
         <div class="field" id="pl-list-icon-change">
@@ -44,7 +46,7 @@
                     <select name="list[due_datetime_minutes]" class="pl-due-date-input" type="text" id="pl-list-due-datetime-minutes" value="{$minutes}" {if empty($list.due_datetime)}style="display: none;" disabled="disabled"{/if}>
                         {for $i=0 to 59 step 5}{$m = "%02d"|sprintf:$i}<option value="{$m}" {if $m == $minutes}selected="selected"{/if}>{$m}</option>{/for}
                     </select>
-                    <a href="#" id="pl-list-due-datetime-set" class="small inline-link" {if !empty($list.due_datetime)}style="display: none;"{/if}><b><i>[`Set time`]</i></b></a>
+                    <a href="#" id="pl-list-due-datetime-set" class="small inline-link" {if empty($list.due_date) || !empty($list.due_datetime)}style="display: none;"{/if}><b><i>[`Set time`]</i></b></a>
                     <a href="#" id="pl-list-due-datetime-clear" class="small inline-link" {if empty($list.due_datetime)}style="display: none;"{/if}><b><i>[`Clear time`]</i></b></a>
                 </span>
             </div>
@@ -56,8 +58,8 @@
             <div class="name">[`Created`]</div>
             <div class="value no-shift">
                 <i class="icon16 userpic20"></i>
-                {$list.username|escape}
-                <span class="hint">{$list.create_datetime|wa_datetime:'humandatetime'}</span>
+                {$list.contact.username|escape}
+                <span class="hint nowrap">{$list.create_datetime|wa_datetime:'humandatetime'}</span>
             </div>
         </div>
     </div>
@@ -66,17 +68,9 @@
         <div class="field">
             <div class="value">
 
-                <div class="float-right block half-padded">
-                    <ul class="menu-h ">
-                        <li>
-                            <a data-pl-action="list-delete" href="#"><i class="icon16 delete"></i>[`Delete list`]</a>
-                        </li>
-                    </ul>
-                </div>
-
                 <input type="submit" class="button green" value="[`Save`]"  id="pl-list-details-save"/>
                 [`or`]
-                <a href="#" id="pl-list-details-cancel">[`cancel`]</a>
+                <a href="#" class="pl-list-details-cancel">[`cancel`]</a>
 
                 <span class="error" style="display: none;">[`error`]</span>
                 <span class="success" style="display: none;">[`saved`]</span>
@@ -85,27 +79,6 @@
     </div>
 </form>
 </div>
-
-<div id="pl-list-icon-dialog" class="dialog large">
-    <div class="dialog-background"></div>
-    <div class="dialog-window">
-        <div class="dialog-content">
-            <div class="dialog-content-indent">
-                <h1>{$list.name|default:'[`Choose list icon`]'|escape}</h1>
-                <ul data-pl-icons-path="{$wa_url}wa-apps/pocketlists/img/listicons/" class="pl-icon-library">
-                    {foreach $list_icons as $icon}
-                    <li><a href="#" data-pl-list-icon="{$icon}" {if $icon== $list.icon}class="selected" {/if}><i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$icon});"></i></a>
-                    </li>
-                    {/foreach}
-                </ul>
-            </div>
-        </div>
-        <div class="dialog-buttons">
-            <div class="dialog-buttons-gradient">
-                <div class="block">
-                    <a class="cancel gray" href="#">[`Cancel`]</a>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="clear-both"></div>
+</div>
 </div>

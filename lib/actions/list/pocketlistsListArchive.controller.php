@@ -11,6 +11,10 @@ class pocketlistsListArchiveController extends waJsonController
             $lm = new pocketlistsListModel();
             if ($lm->update($list_id, array('archived' => $archive))) {
                 $this->response = 'ok';
+
+                // log this action
+                $this->logAction($archive ? pocketlistsLogAction::LIST_ARCHIVED : pocketlistsLogAction::LIST_UNARCHIVED
+                    , array('list_id' => $list_id));
             } else {
                 $this->errors = 'error while deleting list and his items';
             }

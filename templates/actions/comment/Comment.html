@@ -1,0 +1,31 @@
+<div data-pl-comment-id="{$comment.id}" {if isset($comment_page) && !empty($comment.item_id)}data-pl-item-id="{$comment.item_id}"{/if}>
+    <div class="pl-cue{if !empty($comment.my)} pl-my-cue{/if}{if !empty($comment.new) && empty($comment.my)} pl-new-comment{/if}">
+        <div class="pl-cue-inner">
+            <div class="pl-bubble">
+                {if $comment.my && $comment.can_be_deleted && !(isset($archive) && $archive)}<a href="#" class="pl-delete-comment" data-pl-action="comment-delete" title="[`Delete`]">&times;</a>{/if}
+                {$comment.comment|nl2br}
+
+            </div><span class="pl-bubble-arrow"></span>
+
+            {if isset($comment_page)}
+            <div class="pl-reply-link">
+                <a href="#" class="inline-link" data-pl-action="comment-reply"><b><i><strong>[`Reply`]</strong></i></b></a>
+            </div>
+            {/if}
+
+            <i class="icon16 userpic20" style="background-image: url({$comment.contact.userpic})" alt="{$comment.contact.username|escape}"></i> {$comment.contact.username|escape}
+            {if isset($comment_page)}
+            [`on`]
+            {if $comment.list_id}<a href="#/list/{$comment.list_id}/" class="pl-label pl-dark-{$comment.list_color|default:'none'}">{$comment.list_name|truncate:32|escape}</a>{/if}
+            <a href="{if $comment.list_id}#/list/{$comment.list_id}/{else if $comment.contact.id == $wa->user()->getId()}#/todo/{else}#/team/{$comment.contact.login}{/if}">{$comment.item_name|truncate:64|escape}</a>
+            {/if}
+            <span class="hint nowrap">{$comment.create_datetime|wa_datetime:'humandatetime'}</span>
+        </div>
+    </div>
+    {if isset($comment_page)}
+    <div class="pl-reply" style="display:none;">
+        <i class="icon16 userpic20" style="background-image: url({$wa->user()->getPhoto(20)})" alt="{$wa->user()->getName()|escape}"></i>
+        <textarea rows="1" placeholder="[`Add comment`]"></textarea>
+    </div>
+    {/if}
+</div>

@@ -11,6 +11,7 @@ class pocketlistsItemCompleteController extends pocketlistsComplete
 
         if ($id > 0) { // complete item/items
             $item = $im->getById($id);
+            // todo: use pocketlistsHelper::getItemChildIds ???
             if ($item['has_children']) {
                 $tree = $im->getAllByList($item['list_id'], $id);
                 $this->changeComplete($item['id'], $tree[$item['id']], $status, $im);
@@ -20,6 +21,12 @@ class pocketlistsItemCompleteController extends pocketlistsComplete
             pocketlistsNotifications::notifyAboutCompleteItems($this->completed_items);
 
             $this->response = $id;
+
+            // log this action
+            foreach ($this->completed_items as $complete_item) {
+                $this->logAction(pocketlistsLogAction::ITEM_COMPLETED, array('item_id' => $complete_item['id']));
+            }
+
         } else {
             $this->errors = 'no id';
         }

@@ -1,25 +1,81 @@
 <div class="shadowed">
     <main class="content pl-items pl-logbook" id="pl-list-content">
     {if !empty($items)}
-        <div class="pl-list-items" id="pl-complete-log" style="display: block;">
+        <div class="pl-list-items" id="pl-complete-log" style="display: block;" data-pl-items="undone">
             <ul class="menu-v">
                 {include '../item/Item.html' items=$items}
             </ul>
         </div>
     {else}
-        <div class="pl-empty-list top-padded">
+        <div class="pl-welcome top-padded bottom-padded">
             <div class="pl-jumbodone" title="[`To-do stream is empty`]"></div>
             <h2>[`Logbook is empty`]</h2>
             <p>[`Logbook will automatically collect all to-do items completed by you and your teammates.`]</p>
         </div>
     {/if}
+
+    <div class="block lazyloading" style="display: none;">
+        [`Loading...`] <i class="icon16 loading"></i>
+    </div>
+
+    <div class="clear-both"></div>
+
+    {include '../../include/itemdetails.html' inline}
+
     </main>
 </div>
 <script type="text/javascript">
-    new $.pocketlists.Items($('#pl-list-content'), {
-        enableAddLinkOnHover: false,
-        enableChangeLevel: false,
-        enableSortItems: false
-    });
-    $.pocketlists.setTitle($_('Logbook'));
+    (function () {
+        new $.pocketlists.Items($('#pl-list-content'), {
+            enableAddLinkOnHover: false,
+            enableChangeLevel: false,
+            enableSortItems: false,
+            current_user_id: {$wa->user()->get('id')}
+        });
+        $.pocketlists.setTitle($_('Logbook'));
+
+
+        var $loading = $('#pl-list-content .lazyloading'),
+            is_bottom = false,
+            request_in_action = false,
+            prev_scroll_pos = 0,
+            offset = 1,
+            this_is_the_end = false,
+            html_selector = '[data-pl-items="undone"] > .menu-v';
+
+        $(window).on('scroll.pl2', function () {
+            if (this_is_the_end) {
+                return;
+            }
+
+            var scroll_pos = $(document).scrollTop() + $(window).outerHeight(),
+                doc_h = $(document).outerHeight() - 20;
+
+            if (prev_scroll_pos < scroll_pos) {
+                if (!is_bottom && scroll_pos >= doc_h) {
+                    is_bottom = true;
+                    if (request_in_action) {
+                        return;
+                    }
+                    $loading.show();
+                    request_in_action = true;
+
+                    $.get('?module=logbook&offset=' + offset, function (html) {
+                        $loading.hide();
+                        var html = $(html).find(html_selector).html();
+                        if ($.trim(html).length) {
+                            offset++;
+                        } else {
+                            this_is_the_end = true;
+                        }
+                        $(html_selector).append(html);
+                        request_in_action = false;
+                    });
+                } else {
+                    is_bottom = false;
+                }
+            }
+            prev_scroll_pos = scroll_pos;
+        });
+    }());
 </script>

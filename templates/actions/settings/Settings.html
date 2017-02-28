@@ -7,6 +7,51 @@
             <h6 class="heading"><i class="icon16 userpic20" style="background-image: url({$wa->user()->getPhoto(20)});"></i> [`My personal settings`]</h6>
             <br>
             <div class="field-group">
+
+              <div class="field">
+                <div class="name nowrap">
+                  [`Natural input`]
+                </div>
+                <div class="value no-shift">
+                  <label>
+                      <input type="checkbox" name="natural_input_on" {if !empty($settings.natural_input_on)}checked="checked"{/if}/> [`Understand “Meeting tomorrow at 10” input (recommended)`]
+                      <p class="hint">[`When enabled, the app will automatically parse to-do name and set due date and time if it was typed.<br> Examples: “Meeting tomorrow morning”, “Call James next friday 5pm”, “Pay electricity bill in a week”, “Update working schedule April 25”.`]</p>
+                  </label>
+                </div>
+              </div>
+
+              <div class="field">
+                <div class="name nowrap">
+                  [`My to-dos`]
+                </div>
+                <div class="value no-shift">
+                    <label><input type="checkbox" disabled checked> [`My to-dos to self`]</label>
+                </div>
+                <div class="value no-shift">
+                    <label><input type="checkbox" disabled checked> [`To-dos assigned to me by other users`]</label>
+                </div>
+                <div class="value no-shift">
+                    <label><input type="checkbox" name="created_by_me_in_shared_on" {if !empty($settings.created_by_me_in_shared_on)}checked="checked"{/if}> [`To-dos created by me in shared lists`]</label>
+                    <select name="created_by_me_in_shared">
+                        <option value="0" {if !empty($settings.created_by_me_in_shared) && $settings.created_by_me_in_shared == 0}selected="selected"{/if}>[`in any to-do list`]</option>
+                        <option value="1" {if !empty($settings.created_by_me_in_shared) && $settings.created_by_me_in_shared == 1}selected="selected"{/if}>[`only in lists which I marked as favorite`]</option>
+                    </select>
+                </div>
+                <div class="value no-shift">
+                    <label><input type="checkbox" name="created_by_others_in_shared_on" {if !empty($settings.created_by_others_in_shared_on)}checked="checked"{/if}> [`To-dos created by other users in shared lists`]</label>
+                    <select name="created_by_others_in_shared">
+                        <option value="0" {if !empty($settings.created_by_others_in_shared) && $settings.created_by_others_in_shared == 0}selected="selected"{/if}>[`only in lists which I marked as favorite`]</option>
+                        <option value="1" {if !empty($settings.created_by_others_in_shared) && $settings.created_by_others_in_shared == 1}selected="selected"{/if}>[`all Green, Yellow, and Red to-dos from all lists`]</option>
+                    </select>
+                </div>
+
+                <div class="value no-shift">
+                    <p class="hint">[`My to-dos is your personal dynamic to-do list that automatically collects all to-dos which you are about to do up next. To-dos to self and to-dos assigned to you by your teammates are included in this list automatically. Most important and urgent to-dos are on top.`]</p>
+                    <p class="hint">[`Additionally, you can include other users’s to-dos to be shown on your My to-dos list , which is handy if you want to be sure not to miss any important to-do item, either it is an urgent to-do or a to-do list you follow.`]</p>
+                    <p class="hint">[`To-dos assigned to other users will be automatically hidden from your My to-dos list.`]</p>
+                </div>
+              </div>
+
               <div class="field">
                 <div class="name nowrap">
                   [`App icon counter`]
@@ -19,21 +64,16 @@
                         <option value="3" {if !empty($settings.app_icon) && $settings.app_icon == 3}selected="selected"{/if}>[`Reds + Yellows + Greens`]</option>
                         <option value="0" {if !empty($settings.app_icon) && $settings.app_icon == 0}selected="selected"{/if}>[`None`]</option>
                     </select>
-                    <p class="hint">[`Only unassigned to-dos and to-dos assigned to you will be counted in the app icon counter.`]</p>
+                    <p class="hint">[`The counter will count to-dos of the specified colors on your My to-dos list.`]</p>
                 </div>
               </div>
 
+              {* DEPRECATED FEB 2017
               <div class="field">
                 <div class="name nowrap">
-                  [`To-do stream inbox`]
+                  [`To-do Stream inbox`]
                 </div>
                 <div class="value no-shift">
-                    <select id="pl-inbox-pocket">
-                        <option value="0">[`None`]</option>
-                        {foreach $pockets as $pocket}
-                        <option value="{$pocket.id}" {if isset($inbox_list) && $inbox_list.pocket_id == $pocket.id}selected="selected"{/if}>{$pocket.name|escape|truncate:32}</option>
-                        {/foreach}
-                    </select>
                     <select id="pl-inbox-list" {if empty($settings.stream_inbox_list)}style="display:none;"{/if}>
                     {if $inbox_lists}
                         {foreach $inbox_lists as $list}
@@ -42,9 +82,10 @@
                     {/if}
                     </select>
                     <input type="hidden" name="stream_inbox_list" value="{$settings.stream_inbox_list|default:0}"/>
-                    <p class="hint">[`When you add to-dos to your To-do stream directly, they will be added into the specified to-do list.`]</p>
+                    <p class="hint">[`When you add to-dos to your To-do Stream directly, they will be added into the specified to-do list and thus will be available to your teammates who can access this list. If you want such to-dos be your private to-dos by default, select None.`]</p>
                 </div>
               </div>
+              *}
 
               <div class="field">
                 <div class="name">
@@ -60,18 +101,18 @@
                         <option value="2" {if !empty($settings.daily_recap) && $settings.daily_recap == 2}selected="selected"{/if}>[`for next 7 days`]</option>
                     </select>
 
-                    <div class="pl-cron-msg" {if empty($settings.daily_recap_on)}style="display: none;"{/if}>
+                    <div class="pl-cron-msg" style="{if empty($settings.daily_recap_on)}display: none;{/if}">
                     {if !$last_recap_cron_time}
                         <p class="small"><br><em><i class="icon10 exclamation"></i> [`Daily recap notifications require CRON to be configured, which is not the case for your Pocket Lists app. Cron the following command to run daily:`]</em></p>
                         <p class="small"><span class="highlighted">{$cron_command}</span></p>
                     {else}
-                        <p class="small"><br><em><i class="icon10 yes"></i> [`We’ll keep you up to date! And when there is nothing planned for the upcoming period, no alerts will be sent.`]</em></p>
+                        <p class="small"><br><em><i class="icon10 yes"></i> [`We’ll keep you up to date and notify you on what’s up next! And when there is nothing planned for the upcoming period, no alerts will be sent.`] <span class="gray">{sprintf('[`Last Cron execution time: %s`]', $last_recap_cron_time|wa_datetime:'humandatetime')}</span></em></p>
                     {/if}
                     </div>
                 </div>
                 <div class="value no-shift">
                     <label>
-                        <input value="1" type="checkbox" name="email_assign_me" {if !empty($settings.email_assign_me)}checked="checked"{/if}> [`When someone assigns me a to-do`]
+                        <input value="1" type="checkbox" name="email_assign_me" {if !empty($settings.email_assign_me)}checked="checked"{/if}> [`When someone sends me a to-do`]
                     </label>
                 </div>
                 <div class="value no-shift">
@@ -80,8 +121,8 @@
                     </label>
                     <select name="email_complete_item">
                         <option value="0" {if isset($settings.email_complete_item) && $settings.email_complete_item == 0}selected="selected"{/if}>[`only items I created`]</option>
-                        {*<option value="1" {if isset($settings.email_complete_item) && $settings.email_complete_item == 1}selected="selected"{/if}>[`only items I marked as favorite`]</option>*}
-                        {*<option value="2" {if isset($settings.email_complete_item) && $settings.email_complete_item == 2}selected="selected"{/if}>[`only items on to-do lists I previously marked as favorite`]</option>*}
+                        <option value="1" {if isset($settings.email_complete_item) && $settings.email_complete_item == 1}selected="selected"{/if}>[`only items I marked as favorite`]</option>
+                        <option value="2" {if isset($settings.email_complete_item) && $settings.email_complete_item == 2}selected="selected"{/if}>[`only items on to-do lists I previously marked as favorite`]</option>
                         <option value="3" {if isset($settings.email_complete_item) && $settings.email_complete_item == 3}selected="selected"{/if}>[`any item on any list`]</option>
                     </select>
                 </div>
@@ -90,11 +131,10 @@
                         <input value="1" type="checkbox" name="email_add_item_on" {if !empty($settings.email_add_item_on)}checked="checked"{/if}> [`When someone adds a to-do item`]
                     </label>
                     <select name="email_add_item">
-                        {*<option value="0" {if isset($settings.email_add_item) && $settings.email_add_item == 0}selected="selected"{/if}>[`to any list I previously marked as favorite`]</option>*}
+                        <option value="0" {if isset($settings.email_add_item) && $settings.email_add_item == 0}selected="selected"{/if}>[`to any list I previously marked as favorite`]</option>
                         <option value="1" {if isset($settings.email_add_item) && $settings.email_add_item == 1}selected="selected"{/if}>[`to just any list`]</option>
                     </select>
                 </div>
-                {*
                 <div class="value no-shift">
                     <label>
                         <input value="1" type="checkbox" name="email_comment_item_on" {if !empty($settings.email_comment_item_on)}checked="checked"{/if}> [`When someone comments a to-do item`]
@@ -105,47 +145,22 @@
                         <option value="2" {if isset($settings.email_comment_item) && $settings.email_comment_item == 2}selected="selected"{/if}>[`in just any list`]</option>
                     </select>
                 </div>
-                *}
                 <div class="value no-shift">
                     <label>
                         <input value="1" type="checkbox" name="email_create_list_on" {if !empty($settings.email_create_list_on)}checked="checked"{/if}> [`When someone creates a new to-do list`]
                     </label>
                 </div>
               </div>
+
               <div class="field">
                 <div class="value no-shift submit">
                     <br>
                     <input type="submit" value="[`Save`]" id="pl-save-settings" class="button green" />
                     <i class="icon16 yes" style="display: none;"></i>
                 </div>
-
               </div>
             </div>
-
             </form>
-
-        {if $admin}
-            <h6 class="heading">[`Access rights`]</h6>
-            <div class="field-group">
-                <div class="field">
-                    <div class="name">
-                        [`Pockets`]
-                    </div>
-                    <div class="value">
-                        <ul class="zebra menu-v with-icons pl-pocket-settings" style="max-width: 250px;">
-                            {foreach $pockets as $p}
-                            <li>
-                                <a href="#" data-pl-pocket-id="{$p.id}"><i class="icon16 color pl-dark-{$p.color|default:'none'}"></i><span>{$p.name|escape}</span></a>
-                            </li>
-                            {/foreach}
-                            <li class="top-padded" style="background: #fff;">
-                                <a href="#" class="small"><i class="icon10 add"></i>[`New pocket`]</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        {/if}
         </div>
 
         <div class="clear-both"></div>
@@ -154,13 +169,10 @@
 
 </div>
 
-<div id="pl-pocket-dialog" style="display: none;">
-
-
-</div>
-
 <script type="text/javascript">
     (function(){
+        $.pocketlists.setTitle($_('My personal settings'));
+
         var $loading = $('<i class="icon16 loading">');
         $('#pl-save-settings').on('click', function(e) {
             var $this = $(this);
@@ -181,121 +193,11 @@
             $('.pl-cron-msg').toggle(200);
         });
 
-        $('#pl-inbox-pocket').on('change', function() {
-            var pocket_id =  $(this).find(':selected').val();
-            if (pocket_id > 0) {
-                $(this).after($loading);
-                $.get('?module=json&action=getLists&id=' + pocket_id, function (r) {
-                    $loading.remove();
-                    if (r.status === 'ok') {
-                        var options = '';
-                        $.each(r.data, function () {
-                            options += '<option value="' + this.id + '">' + this.name + '</option>';
-                        });
-                        $('#pl-inbox-list').show().html(options).trigger('change');
-                    }
-                }, 'json')
-            } else {
-                $('#pl-inbox-list').hide()
-                $('[name="stream_inbox_list"]').val('0');
+        $('#pl-inbox-list').on('change', function() {
+            var list_id = $(this).find(':selected').val();
+            if (list_id) {
+                $('[name="stream_inbox_list"]').val(list_id);
             }
         });
-        $('#pl-inbox-list').on('change', function() {
-            $('[name="stream_inbox_list"]').val($(this).find(':selected').val());
-        });
     }());
 </script>
-
-{if $admin}
-<script type="text/javascript">
-    (function(){
-        $.pocketlists.setTitle($_('My personal settings'));
-
-        $('.pl-pocket-settings').on('click', 'a', function() {
-            var $loading = $('<i class="icon16 loading">');
-            var $this = $(this);
-            $('#pl-pocket-dialog').waDialog({
-                'buttons': '<input type="submit" value="[`Save`]" class="button green" /> [`or`] <a class="cancel" href="#">[`cancel`]</a>',
-                'height': '250px',
-                'width': '600px',
-                'url': '?module=pocket&action=settingsDialog&pocket_id=' + $this.data('pl-pocket-id'),
-                onLoad: function () {
-                    var $this = $(this);
-
-                    $('#pl-pocket-color').on('click', 'a', function (e) {
-                        e.preventDefault();
-                        $('#pl-pocket-color').find('input').val($(this).data('pl-pocket-color'));
-                        $(this).addClass('selected')
-                                .siblings().removeClass('selected')
-                    });
-
-                    var $autocomplete = $this.find(':input[name="new_user"]').autocomplete({
-                        source: backend_url + 'contacts/?action=autocomplete&type=person',
-                        minLength: 2,
-                        appendTo: '#pl-pocket-dialog',
-                        delay: 300,
-                        select: function (event, ui) {
-                            debugger;
-                            this.value = '';
-                            var $table = $(this).closest('table');
-                            var exist = $table.find('[data-pl-selected-user="' +  ui.item.value + '"]').length;
-
-                            if (exist) {
-                                $autocomplete.autocomplete('close');
-                            } else {
-                                var $row = $table.find('tr').first().clone();
-                                $row.data('pl-selected-user', ui.item.value);
-                                $row.find(':input').val(ui.item.value);
-                                $row.find('.pl-selected-users-name').text(ui.item.name);
-                                $(this).closest('tr').before($row);
-                                $autocomplete.autocomplete('close');
-                            }
-
-                            return false;
-                        },
-                        focus: function (event, ui) {
-                            this.value = ui.item.name;
-                            return false;
-                        }
-                    }).autocomplete('instance')._renderItem = function( ul, item ) {
-                        return $("<li>")
-                                .html( item.label )
-                                .appendTo( ul );
-                    };
-                    $this.find('[data-pl-selected-user]').on('click', 'a', function (e) {
-                        e.preventDefault();
-                        $(this).closest('[data-pl-selected-user]').remove();
-                    });
-                },
-                onSubmit: function (d) {
-                    d.find('.dialog-buttons input[type="button"]').after($loading);
-                    $.post('?module=pocket&action=save', d.find('form').serialize(), function(r) {
-                        $loading.remove();
-                        if (r.status === 'ok') {
-                            var $new_pocket = null;
-                            if (r.data.new) {
-                                $new_pocket = $('.pl-pocket-settings li').first().clone();
-                            } else {
-                                $new_pocket = $('.pl-pocket-settings a[data-pl-pocket-id="' + r.data.id + '"]').closest('li');
-                            }
-                            $new_pocket
-                                    .find('a').data('pl-pocket-id', r.data.id)
-                                    .find('.color').removeClass().addClass('icon16 color pl-dark-' + $('#pl-pocket-color').find('input').val())
-                                    .end()
-                                    .find('span').text(d.find('input[name="pocket\[name\]"]').val());
-
-                            r.data.new && $('.pl-pocket-settings li').last().before($new_pocket);
-                            d.trigger('close');
-                        } else {
-
-                        }
-                    }, 'json');
-                    return false;
-                }
-            });
-
-            return false;
-        });
-    }());
-</script>
-{/if}
