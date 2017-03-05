@@ -120,7 +120,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
                 var $li = $this.closest(item_selector),
                     $html = $('' + html + ''),
-                    _itemAdd = isTopAdd ? NewItemWrapper.top_new_item : NewItemWrapper.new_item;
+                    _itemAdd = isTopAdd ? NewItemWrapper.top_new_item : NewItemWrapper.new_item,
+                    due_date = $html.data('pl-due-date');
 
                 if (!o.enableSortItems) {
                     $html.find('[data-pl-action="item-sort"]').hide();
@@ -151,7 +152,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 if (!o.list && $calendar.length) {
                     $.get('?module=json&action=getItemsPocketColor&id=' + parseInt($html.data('id')), function (r) {
                         if (r.status === 'ok') {
-                            var $selected_date = $calendar.find('.pl-selected').length ? $calendar.find('.pl-selected') : ($calendar.find('.pl-today').next().length ? $calendar.find('.pl-today').next() : false);
+                            var $selected_date = $calendar.find('[data-pl-todo-date="' + due_date + '"]').length ? $calendar.find('[data-pl-todo-date="' + due_date + '"]') : ($calendar.find('.pl-today').next().length ? $calendar.find('.pl-today').next() : false);
                             if ($selected_date) {
                                 var $dots_wrapper = $selected_date.find('.pl-dots'),
                                     $new_dot = $('<i class="icon10 color pl-dark-gray">');
