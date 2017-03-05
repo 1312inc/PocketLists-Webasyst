@@ -20,7 +20,7 @@ class pocketlistsTodoDateAction extends waViewAction
 //        $this->view->assign('date', $date ? waDateTime::date(waDateTime::getFormat('humandate'), $date) : false);
         $this->view->assign('date', $date);
 //        $this->view->assign('timestamp', $date ? strtotime($date) : (time() + 60 * 60 * 24));
-        $timestamp = $date ? waDateTime::date('Y-m-d', strtotime($date)) : waDateTime::date('Y-m-d', time() + 60 * 60 * 24);
+        $timestamp = $date ? waDateTime::date('Y-m-d', strtotime($date)) : waDateTime::date('Y-m-d', time() + 60 * 60 * 24, wa()->getUser()->getTimezone());
         $this->view->assign('timestamp', $timestamp);
 
         $us = new pocketlistsUserSettings();

@@ -18,7 +18,7 @@ class pocketlistsFavoritesDateAction extends waViewAction
         $this->view->assign('count_done_items', count($items[1]));
 
         $this->view->assign('date', $date);
-        $timestamp = $date ? waDateTime::date('Y-m-d', strtotime($date)) : waDateTime::date('Y-m-d', time() + 60 * 60 * 24);
+        $timestamp = $date ? waDateTime::date('Y-m-d', strtotime($date)) : waDateTime::date('Y-m-d', time() + 60 * 60 * 24, wa()->getUser()->getTimezone());
         $this->view->assign('timestamp', $timestamp);
 
         $us = new pocketlistsUserSettings();
