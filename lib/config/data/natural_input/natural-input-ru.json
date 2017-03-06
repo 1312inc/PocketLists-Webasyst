@@ -276,7 +276,7 @@
             }
 
             , {
-                "regex": ["(след (\\week))", "(следующая (\\week))", "(следующую (\\week))", "(следующий (\\week))"],
+                "regex": ["(в след (\\week))", "(в следующая (\\week))", "(в следующую (\\week))", "(в следующий (\\week))", "(в следующее (\\week))"],
                 "script": "local res=getNow2();res=replaceWeekDay(res,getMatch(2));res=res+7*24*60*60;return {ts=res,timed=0};",
                 "rules": {
                     "1": "week|next"
