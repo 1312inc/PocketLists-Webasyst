@@ -248,6 +248,7 @@
                 }
             });
         },
+        enabled_prevent_close_browser: false,
         enable_prevent_close_browser: function ($el, msg) {
             var self = this;
             self.$core_sidebar.find('a').each(function (e) {
@@ -267,16 +268,20 @@
                 }
             }).data('pl2-onbeforeunload', true);
 
-            msg = msg || $_('Close?');
-            window.onbeforeunload = function (e) {
-                if ($el) {
-                    $el.data('can_blur', false);
-                }
-                return msg;
-            };
+            if (!self.enabled_prevent_close_browser) {
+                self.enabled_prevent_close_browser = true;
+                msg = msg || ($_('Close') + '?');
+                window.onbeforeunload = function (e) {
+                    if ($el) {
+                        $el.data('can_blur', false);
+                    }
+                    return msg;
+                };
+            }
         },
         disable_prevent_close_browser: function () {
             var self = this;
+            self.enabled_prevent_close_browser = false;
             self.$core_sidebar.find('a').off('click.pl2').removeData('pl2-onbeforeunload');
             window.onbeforeunload = function (e) {
             };
