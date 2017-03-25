@@ -63,15 +63,16 @@
 {/if}
 
 <!-- TEAM -->
+{$max_visible_in_team = 10}
 {if pocketlistsRBAC::canAssign()}
 <div class="block">
     <h5 class="heading">
-        {if $team && count($team) > 10}<i class="icon16 darr" data-pl-collapsible="team"></i>{/if}[`Team`]
+        {if $team && count($team) > $max_visible_in_team}<i class="icon16 darr" data-pl-collapsible="team"></i>{/if}[`Team`]
     </h5>
     {if count($team)}
         <ul class="menu-v with-icons collapsible" data-pl-sidebar-block="team" data-pl-collapsible-wrapper="team">
             {foreach $team as $team_id => $teammate}
-            <li data-pl-team-id="{$teammate.id}">
+            <li data-pl-team-id="{$teammate.id}" {if $teammate@iteration > $max_visible_in_team}style="display: none;"{/if}>
                 <a href="#/team/{$teammate.login|escape}/">
                     <span class="count{if $teammate.items_info.max_priority == 1} indicator green{elseif $teammate.items_info.max_priority == 2} indicator yellow{elseif $teammate.items_info.max_priority == 3} indicator red{/if}">{$teammate.items_info.count}</span>
                     <i class="icon16 userpic20" style="background-image: url({$teammate.photo_url})" alt="{$teammate.name|escape}" data-pl-contact-id="{$team_id}"></i>{$teammate.name|escape}
@@ -83,6 +84,9 @@
             </li>
             {/foreach}
         </ul>
+        {if $max_visible_in_team < count($team)}
+        <a class="hint" data-pl-action="show-all-team">Показать всех ({count($team)})</a>
+        {/if}
     {else}
         <div class="block">
             <p class="hint align-center">{sprintf('[`Use <a href="%s">Team app</a> to invite teammates and to collaborate using the To-dos app: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/')}</p>

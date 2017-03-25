@@ -336,6 +336,13 @@
             $('#wa-app').on('click.pl2', '[data-pl-scroll-to-top] a', function () {
                 self.scrollToTop(0, 80);
             });
+
+            self.$core_sidebar.on('click', '[data-pl-action="show-all-team"]', function (e) {
+                e.preventDefault();
+
+                self.$core_sidebar.find('[data-pl-sidebar-block="team"] li').show();
+                $(this).hide();
+            });
         }
     };
 }(jQuery));
