@@ -15,7 +15,7 @@
 
                 <div class="block double-padded pl-add-attachment-dropbox" data-pl-item-details-fileupload>
 
-                    <ul class="pl-attachments" {if empty($attachments)}style="display:none"{/if}>
+                    <ul class="pl-attachments">
                     {foreach $attachments as $attachment}
                         <li>
                             <a href="{$attachments_path}{$attachment.filename}" target="_blank">{$attachment.filename|truncate:128}</a>
