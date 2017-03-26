@@ -1161,3 +1161,11 @@ msgstr ""
 #: /wa-apps/pocketlists/lib/class/pocketlistsLogAction.class.php:354
 msgid "DELETED LIST"
 msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:88
+msgid "Show everyone"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/actions/item/pocketlistsItemAddAttachment.controller.php:61
+msgid "Files with extension .%s are not allowed to security considerations."
+msgstr ""

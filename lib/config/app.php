@@ -6,7 +6,7 @@ return array(
             48 => 'img/pocketlists48.png',
             96 => 'img/pocketlists96.png',
         ),
-    'version'        => '2.0.0',
+    'version'        => '2.0.1',
     'vendor'         => '1021997',
     'frontend'       => true,
     'routing_params' => array(

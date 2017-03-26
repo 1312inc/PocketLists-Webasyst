@@ -21,6 +21,7 @@ class pocketlistsBackendLocAction extends waViewAction
                      'delete',
                      'Are you sure you want to delete this file?',
                      'This will permanently delete this comment. Are you sure?',
+                     'You are about to permanently delete this comment. Delete?',
                      'Assigned to',
                      "Archiving the list will temporarily make this list and all it's items invisible. When you need this list in the future, simply unarchive it and continue from just where you stopped. Archive the list?",
                      'You are about to leave this page without saving your input. Are you sure?'

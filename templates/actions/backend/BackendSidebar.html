@@ -83,10 +83,12 @@
                 </a>
             </li>
             {/foreach}
+            {if $max_visible_in_team < count($team)}
+                <li>
+                    <a class="pl-team-showall-link inline-link" data-pl-action="show-all-team" href="#"><b><i>[`Show everyone`] ({count($team)})</i></b></a>
+                </li>
+            {/if}
         </ul>
-        {if $max_visible_in_team < count($team)}
-        <a class="hint" data-pl-action="show-all-team">Показать всех ({count($team)})</a>
-        {/if}
     {else}
         <div class="block">
             <p class="hint align-center">{sprintf('[`Use <a href="%s">Team app</a> to invite teammates and to collaborate using the To-dos app: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/')}</p>
