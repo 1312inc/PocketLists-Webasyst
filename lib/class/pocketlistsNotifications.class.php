@@ -263,11 +263,11 @@ class pocketlistsNotifications
                     )->fetchAll('key_list_id');
                     $user_lists = array_keys($user_lists);
                     foreach ($items as $item) {
-                        if (in_array($item['list_id'], $user_lists) && (
+                        if ($item['contact_id'] != $user_id &&
+                            in_array($item['list_id'], $user_lists) && (
                                 ($item['list_id'] && pocketlistsRBAC::canAccessToList($item['list_id'], $user_id)) || ( // not from NULL-list
                                     $item['list_id'] == null && ( // OR from NULL-list,
-                                        isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id || // but assigned to this user
-                                        $item['contact_id'] == $user_id // OR created by user
+                                        isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id // but assigned to this user
                                     )
                                 )
                             )
