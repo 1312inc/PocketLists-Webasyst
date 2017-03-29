@@ -104,7 +104,7 @@ class pocketlistsItemAddAttachmentController extends waJsonController
                             'filetype' => $type,
                         ));
 
-                        $this->errors = [];
+                        $this->errors = array();
                         return array(
                             'path' => wa()->getDataUrl('attachments/' . $item['id'] . '/', true),
                             'name' => $file->name,

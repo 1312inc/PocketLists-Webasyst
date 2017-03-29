@@ -10,12 +10,7 @@ class pocketlistsListEmailDialogAction extends waViewAction
         $teammate = waRequest::get('teammate', '');
         $lm = new pocketlistsListModel();
         $im = new pocketlistsItemModel();
-        $email = wa()->getUser()->get('email');
-        if ($email) {
-            $email = $email[0]['value'];
-        } else {
-            $email = '';
-        }
+        $email = wa()->getUser()->get('email', 'default');
         $this->view->assign('email', $email);
         if ($id) {
             $list = $lm->getById($id);
