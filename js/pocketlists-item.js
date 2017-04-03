@@ -924,6 +924,10 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 },
                 done: function (e, data) {
                     var $attachments = $wrapper.find('[data-pl-item-details-attachments]');
+                    if (data.result.errors) {
+                        alert(data.result.errors[0]);
+                        return;
+                    }
                     $.each(data.result.data.files, function (index, file) {
                         $attachments.find('ul').append('<li>' +
                             '<a href="' + file.path + '/' + file.name + '" target="_blank">' + file.name + '</a> ' +
