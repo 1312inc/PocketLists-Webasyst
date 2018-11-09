@@ -66,6 +66,7 @@
 .pl-drop-fail { background-color: indianred; }
 
 ul.menu-v.with-icons i.icon10.online { margin-top: 3px; }
+ul.menu-v.with-icons i.icon16.color { margin: 2px 7px 1px -18px; width: 12px; height: 12px; }
 .highlighted-background { background-color: #fffaba !important; }
 
 .pl-team-showall-link { font-size: 0.95em; color: #aaa !important; }

@@ -1,5 +1,33 @@
 <!-- CORE FILTERS -->
 <div class="block pl-sidebar-core">
+<ul class="menu-v with-icons">
+    {* <li data-pl-sidebar="todo" class="bottom-padded">
+        {if $sidebar_todo_count}<span class="count">{$sidebar_todo_count}</span>{/if}
+        <a href="#/todo/"><i class="icon16 star"></i>[`My to-dos`]</a>
+    </li> *}
+    <li>
+        <span class="count">7</span>
+        <a href="#/pocket/1"><i class="icon16 color pl-dark-blue"></i>Pocket Lists 2</a>
+    </li>
+    <li>
+        <span class="count">15</span>
+        <a href="#/pocket/1"><i class="icon16 color pl-dark-green"></i>Shop-Script 8</a>
+    </li>
+    <li>
+        <span class="count">13</span>
+        <a href="#/pocket/1"><i class="icon16 color pl-dark-yellow"></i>1312 Inc.</a>
+    </li>
+    <li class="small">
+        <a href="#"><i class="icon10 add"></i>[`New pocket`]</a>
+    </li>
+</div>
+
+<div class="hr"></div>
+
+<div class="block">
+    {* <h5 class="heading">
+        [`To-dos`]
+    </h5> *}
 
     <ul class="menu-v with-icons">
         <li data-pl-sidebar="todo">
@@ -10,12 +38,16 @@
             <span class="count" data-pl-sidebar="favorites-count">{$favorites_count.undone}</span>
             <a href="#/favorites/"><i class="icon16 star"></i>[`Favorites`]</a>
         </li>
+        {if 1||$wa->shop}
+            <li>
+                <span class="count">3</span>
+                <a href="#/shopscript/"><i class="icon16" style="background-image: url('https://www.shop-script.ru/favicon.ico'); background-size: 16px 16px;"></i>[`Store`]</a>
+            </li>
+        {/if}
         <li>
-            <a href="#/comments/"><i class="icon16 pl comments"></i>[`Comments`]{if $new_comments_count} <span class="highlighted bold small black" title="{$last_activity|wa_datetime}">+{$new_comments_count}</span>{/if}</a>
+            <a href="#/comments/"><i class="icon16 pl comments"></i>[`Discussions`]{if $new_comments_count} <span class="highlighted bold small black" title="{$last_activity|wa_datetime}">+{$new_comments_count}</span>{/if}</a>
         </li>
-        <li>
-            <a href="#/logbook/"><i class="icon16 pl logbook"></i>[`Logbook`]{if $new_items_count.logbook} <span class="highlighted bold small black">+{$new_items_count.logbook}</span>{/if}</a>
-        </li>
+
 
 
         {* <li class="top-padded">
@@ -28,12 +60,15 @@
             <a href="#/"><i class="icon16 "></i>Blog</a>
         </li> *}
 
-    </ul>
+        <li>
+            <a href="#/logbook/"><i class="icon16 pl logbook"></i>[`Completed`]{if $new_items_count.logbook} <span class="highlighted bold small black">+{$new_items_count.logbook}</span>{/if}</a>
+        </li>
 
+    </ul>
 </div>
 
 <!-- LISTS -->
-{if $lists || pocketlistsRBAC::canCreateLists()}
+{* {if $lists || pocketlistsRBAC::canCreateLists()}
 <div class="block">
     <h5 class="heading">
         {if pocketlistsRBAC::canCreateLists()}<a href="#/list/new/" class="count"><i class="icon16 add"></i></a>{/if}
@@ -60,17 +95,17 @@
         </div>
     {/if}
 </div>
-{/if}
+{/if} *}
 
 <!-- TEAM -->
-{$max_visible_in_team = 10}
+{$max_visible_in_team = 2}
 {if pocketlistsRBAC::canAssign()}
 <div class="block">
     <h5 class="heading">
         {if $team && count($team) > $max_visible_in_team}<i class="icon16 darr" data-pl-collapsible="team"></i>{/if}[`Team`]
     </h5>
     {if count($team)}
-        <ul class="menu-v with-icons collapsible" data-pl-sidebar-block="team" data-pl-collapsible-wrapper="team">
+        <ul class="menu-v with-icons collapsible123" data-pl-sidebar-block="team" data-pl-collapsible-wrapper="team">
             {foreach $team as $team_id => $teammate}
             <li data-pl-team-id="{$teammate.id}" {if $teammate@iteration > $max_visible_in_team}style="display: none;"{/if}>
                 <a href="#/team/{$teammate.login|escape}/">
@@ -96,6 +131,7 @@
     {/if}
 </div>
 {/if}
+
 
 <!-- SYSTEM -->
 <div class="hr"></div>

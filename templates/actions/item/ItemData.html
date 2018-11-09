@@ -1,7 +1,8 @@
 <div class="pl-item{if !empty($item.assigned_contact_id) && $item.assigned_contact_id != $wa->user()->getId() && $item.status != 1} pl-item-assigned{/if}{if $item.status == 1} gray{/if}" {if $item.assigned_contact_id}data-pl-assigned-contact="{$item.assigned_contact_id}"{/if}>
     {if !$item.status && empty($item.key_list_id) && !(isset($archive) && $archive)}<div class="pl-item-drag-handle" title="[`Sort`]" data-pl-action="item-sort"></div>{/if}
 
-    {if !empty($item.assigned_contact_id)}<div class="pl-assignee">{$item.contact.username|escape} &rarr; {$item.assigned_contact.username|escape}</div>{/if}
+    {if $item.list_id != NULL}<div class="pl-assignee pl-{$item.list_color} ">{$item.list_name|truncate:32|escape}</div>{/if}
+    {* {if !empty($item.assigned_contact_id)}<div class="pl-assignee">{$item.contact.username|escape} &rarr; {$item.assigned_contact.username|escape}</div>{/if} *}
 
     <div class="pl-meta">
         {if !(isset($archive) && $archive)}
@@ -52,6 +53,7 @@
                 <a href="#/list/{$item.list_id}/"><span class="pl-{$item.list_color}">{$item.name|default:' '|nl2br}</span></a>
             {else}
                 {if $item.list_id != NULL}<a href="#/list/{$item.list_id}" class="pl-label pl-dark-{$item.list_color} pl-item-list-name">{$item.list_name|truncate:32|escape}</a>{/if}
+                <a href="#" class="pl-label pl-dark-purple pl-item-list-name">STATUS</a>
                 {$item.name|default:' '|nl2br}
                 {* if $item.list_id == NULL && (empty($item.assigned_contact_id) || $item.assigned_contact_id == $wa->user()->getId())}<i class="icon10 lock-bw" title="[`Only you can see this item`]"></i>{/if *}
             {/if}
