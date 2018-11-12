@@ -16,12 +16,13 @@ return array(
         'create_datetime' => array('datetime'),
         ':keys' => array(
             'PRIMARY' => 'id',
+            'item_id' => 'item_id',
         ),
     ),
     'pocketlists_item' => array(
         'id' => array('int', 11, 'null' => 0, 'autoincrement' => 1),
         'list_id' => array('int', 11),
-        'contact_id' => array('int', 11),
+        'contact_id' => array('int', 11, 'null' => 0),
         'parent_id' => array('int', 11, 'null' => 0, 'default' => '0'),
         'sort' => array('int', 11, 'null' => 0, 'default' => '0'),
         'has_children' => array('tinyint', 1, 'null' => 0, 'default' => '0'),
@@ -42,19 +43,37 @@ return array(
         'assigned_contact_id' => array('int', 11),
         'repeat' => array('int', 11),
         'key_list_id' => array('int', 11),
+        'create_location_id' => array('int', 11),
+        'repeat_frequency' => array('enum', "'daily','weekly','monthly','yearly'", 'null' => 0, 'default' => 'daily'),
+        'repeat_interval' => array('int', 11, 'null' => 0, 'default' => '1'),
+        'external_source_id' => array('varchar', 255, 'default' => ''),
         ':keys' => array(
             'PRIMARY' => 'id',
             'parent' => 'parent_id',
             'list_id' => 'list_id',
             'sort' => array('parent_id', 'sort'),
+            'create_location_id' => 'create_location_id',
+            'key_list_id' => 'key_list_id',
+        ),
+    ),
+    'pocketlists_item_location' => array(
+        'id' => array('int', 11, 'unsigned' => 1, 'null' => 0, 'autoincrement' => 1),
+        'item_id' => array('int', 11, 'null' => 0),
+        'alert_location_id' => array('int', 11),
+        'alert_location_type' => array('enum', "'arrive','leave'", 'null' => 0, 'default' => 'arrive'),
+        ':keys' => array(
+            'PRIMARY' => 'id',
+            'item_id' => 'item_id',
+            'alert_location_id' => 'alert_location_id',
         ),
     ),
     'pocketlists_item_sort' => array(
         'list_id' => array('int', 11, 'null' => 0),
-        'Item_id' => array('int', 11, 'null' => 0),
+        'item_id' => array('int', 11, 'null' => 0),
         'sort' => array('int', 11),
         ':keys' => array(
-            'PRIMARY' => array('list_id', 'Item_id'),
+            'PRIMARY' => array('list_id', 'item_id'),
+            'Item_id' => 'item_id',
         ),
     ),
     'pocketlists_item_tags' => array(
@@ -62,6 +81,7 @@ return array(
         'tag_id' => array('int', 11, 'null' => 0),
         ':keys' => array(
             'PRIMARY' => array('item_id', 'tag_id'),
+            'tag_id' => 'tag_id',
         ),
     ),
     'pocketlists_list' => array(
@@ -74,8 +94,20 @@ return array(
         'color' => array('enum', "'none','red','green','blue','yellow','purple'", 'default' => 'none'),
         'passcode' => array('varchar', 32),
         'key_item_id' => array('int', 11),
+        'subtitle' => array('text'),
+        'external_source_id' => array('varchar', 255),
+        'is_private' => array('tinyint', 3, 'null' => 0, 'default' => '0'),
+        'public_link' => array('varchar', 255),
         ':keys' => array(
             'PRIMARY' => 'id',
+            'key_item_id' => 'key_item_id',
+        ),
+    ),
+    'pocketlists_list_contacts' => array(
+        'list_id' => array('int', 11, 'null' => 0, 'default' => '0'),
+        'contact_id' => array('int', 11, 'null' => 0),
+        ':keys' => array(
+            'PRIMARY' => 'list_id',
         ),
     ),
     'pocketlists_list_sort' => array(
@@ -88,18 +120,67 @@ return array(
     ),
     'pocketlists_location' => array(
         'id' => array('int', 11, 'null' => 0, 'autoincrement' => 1),
-        'location_latitude' => array('decimal', "10,0"),
-        'location_longitude' => array('decimal', "10,0"),
-        'location_radius' => array('decimal', "10,0"),
+        'location_latitude' => array('decimal', "10,4"),
+        'location_longitude' => array('decimal', "10,4"),
+        'location_radius' => array('decimal', "10,4"),
         ':keys' => array(
             'PRIMARY' => 'id',
         ),
     ),
-    'pocketlists_tag' => array(
+    'pocketlists_pocket' => array(
         'id' => array('int', 11, 'null' => 0, 'autoincrement' => 1),
-        'text' => array('varchar', 255, 'null' => 0),
+        'type' => array('varchar', 32, 'null' => 0, 'default' => ''),
+        'owner_contact_id' => array('int', 11, 'null' => 0),
+        'name' => array('varchar', 255, 'null' => 0, 'default' => ''),
+        'color' => array('varchar', 32),
+        'logo' => array('varchar', 255),
+        'passcode' => array('int', 32),
         ':keys' => array(
-            'PRIMARY' => array('id', 'text'),
+            'PRIMARY' => 'id',
+        ),
+    ),
+    'pocketlists_pocket_lists' => array(
+        'pocket_id' => array('int', 11, 'null' => 0),
+        'list_id' => array('int', 11, 'null' => 0),
+        'sort_order' => array('int', 11),
+        ':keys' => array(
+            'PRIMARY' => array('pocket_id', 'list_id'),
+            'list_id' => 'list_id',
+        ),
+    ),
+    'pocketlists_pocket_users' => array(
+        'pocket_id' => array('int', 11, 'null' => 0),
+        'contact_id' => array('int', 11, 'null' => 0),
+        'role' => array('enum', "'owner','admin','member','guest'", 'null' => 0, 'default' => 'guest'),
+        'last_activity_datetime' => array('int', 11),
+        ':keys' => array(
+            'PRIMARY' => array('pocket_id', 'contact_id'),
+        ),
+    ),
+    'pocketlists_tag' => array(
+        'id' => array('int', 11, 'unsigned' => 1, 'null' => 0),
+        'text' => array('varchar', 255),
+        'text_md5' => array('varchar', 32, 'null' => 0, 'default' => ''),
+        ':keys' => array(
+            'PRIMARY' => array('id', 'text_md5'),
+        ),
+    ),
+    'pocketlists_user' => array(
+        'contact_id' => array('int', 11, 'unsigned' => 1, 'null' => 0, 'autoincrement' => 1),
+        'pocket_id' => array('int', 11),
+        'last_activity_datetime' => array('int', 11),
+        'username' => array('varchar', 64),
+        'is_team' => array('tinyint', 1),
+        ':keys' => array(
+            'PRIMARY' => 'contact_id',
+            'pocket_id' => 'pocket_id',
+        ),
+    ),
+    'pocketlists_user_contacts' => array(
+        'contact_id' => array('int', 11, 'null' => 0),
+        'friend_contact_id' => array('int', 11, 'null' => 0),
+        ':keys' => array(
+            'PRIMARY' => array('contact_id', 'friend_contact_id'),
         ),
     ),
     'pocketlists_user_favorites' => array(

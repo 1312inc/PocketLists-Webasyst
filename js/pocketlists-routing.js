@@ -186,6 +186,12 @@
                 //load_list && self.listAction(list_id);
             });
         },
+        fromAction: function (app, id) {
+            app = app.charAt(0).toUpperCase() + app.slice(1);
+            this.load('?module=from' + app + '&id=' + id, function (result) {
+                $('#content').html(result);
+            });
+        },
         listAction: function (id) {
             this.load('?module=list&id=' + id, function (result) {
                 $('#content').html(result);
