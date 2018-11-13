@@ -93,7 +93,7 @@ class pocketlistsItemDataAction extends waViewAction
         $to_delete = waRequest::post('attachment_delete', false);
         if ($to_delete) {
             $am = new pocketlistsAttachmentModel();
-            $am->delete($item['id'], $to_delete);
+            $am->remove($item['id'], $to_delete);
         }
     }
 }

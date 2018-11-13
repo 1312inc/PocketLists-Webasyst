@@ -495,4 +495,96 @@ class pocketlistsHelper
             'me'        => ($contact->getId() == wa()->getUser()->getId()),
         );
     }
+
+    public static function getAccessContactsForPocket($pocket_id = false, $photo_size = 20)
+    {
+        $wcr = new waContactRightsModel();
+        // select users
+        $query = "SELECT DISTINCT
+                group_id
+            FROM wa_contact_rights
+            WHERE
+              (app_id = 'pocketlists' AND ((name LIKE s:id AND value = 1) OR (name = 'backend' AND value = 2))
+              OR
+              (app_id = 'webasyst' AND name = 'backend' AND value = 1))";
+        $contact_ids = $wcr->query(
+            $query,
+            array(
+                'id' => 'pocket.' . ($pocket_id ? $pocket_id : '%')
+            )
+        )->fetchAll();
+        $contacts = array();
+        $groups = array();
+        $gm = new waUserGroupsModel();
+        foreach ($contact_ids as $id) {
+            if ($id['group_id'] < 0) {
+                $contact = new waContact(-$id['group_id']);
+                $contacts[$contact->getId()] = array(
+                    'username' => $contact->getName(),
+                    'userpic' => $contact->getPhoto($photo_size)
+                );
+            } else {
+                $groups[] = $id['group_id'];
+            }
+        }
+        $contact_ids = array();
+        foreach ($groups as $group_id) {
+            $contact_ids = array_merge($contact_ids, $gm->getContactIds($group_id));
+        }
+        foreach ($contact_ids as $id) {
+            $contact = new waContact($id);
+            if (!isset($contacts[$contact->getId()])) {
+                $contacts[$contact->getId()] = array(
+                    'username' => $contact->getName(),
+                    'userpic' => $contact->getPhoto($photo_size)
+                );
+            }
+        }
+        return $contacts;
+    }
+
+    public static function getAccessPocketForContact($contact_id = false)
+    {
+        $user = $contact_id ? new waContact($contact_id) : wa()->getUser();
+        if ($user->isAdmin() || $user->isAdmin('pocketlists')) {
+            $pm = new pocketlistsPocketModel();
+            $pockets = $pm->getAll('id');
+        } else {
+            $pockets = $user->getRights('pocketlists', 'pocket.%');
+
+        }
+        return $pockets ? array_keys($pockets) : false;
+    }
+
+    public static function getAllPocketListsContacts()
+    {
+        $wcr = new waContactRightsModel();
+        $query = "SELECT DISTINCT
+                group_id
+            FROM wa_contact_rights
+            WHERE
+              (app_id = 'pocketlists' AND name = 'backend' AND value > 0)
+              OR
+              (app_id = 'webasyst' AND name = 'backend' AND value > 0)
+            ORDER BY group_id ASC";
+        $contact_ids = $wcr->query($query)->fetchAll();
+        $contacts = array();
+        $groups = array();
+        $gm = new waUserGroupsModel();
+        foreach ($contact_ids as $id) {
+            if ($id['group_id'] < 0) { // user
+                $contacts[-$id['group_id']] = -$id['group_id'];
+            } else { // group
+                $groups[] = $id['group_id'];
+            }
+        }
+        $contact_ids = array();
+        foreach ($groups as $group_id) {
+            $contact_ids = array_merge($contact_ids, $gm->getContactIds($group_id));
+        }
+        foreach ($contact_ids as $id) {
+            $contacts[$id] = $id;
+        }
+        return $contacts;
+    }
 }

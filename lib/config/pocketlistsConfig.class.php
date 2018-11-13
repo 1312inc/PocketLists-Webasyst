@@ -2,6 +2,28 @@
 
 class pocketlistsConfig extends waAppConfig
 {
+    public function init()
+    {
+        parent::init();
+
+        $customClasses = [
+            'wa-apps/pocketlists/lib/vendor/km/' => [
+                'kmStorage',
+                'kmModelExt',
+                'kmModelStorage',
+                'kmStatistics',
+            ],
+        ];
+
+        foreach ($customClasses as $path => $classes) {
+            foreach ($classes as $class) {
+                $file = wa()->getAppPath('lib/vendor/km/'.$class.'.class.php', 'pocketlists');
+                if (!class_exists($class, false) && file_exists($file)) {
+                    waAutoload::getInstance()->add($class, $path.$class.'.class.php');
+                }
+            }
+        }
+    }
 
     public function onInit()
     {
@@ -15,6 +37,7 @@ class pocketlistsConfig extends waAppConfig
     public function onCount()
     {
         $pi = new pocketlistsItemModel();
+
         return $pi->getAppCountForUser();
     }
 
@@ -27,6 +50,7 @@ class pocketlistsConfig extends waAppConfig
     {
         $log_action = new pocketlistsLogAction();
         $logs = $log_action->explainLogs($logs);
+
         return $logs;
     }
 
@@ -34,14 +58,15 @@ class pocketlistsConfig extends waAppConfig
     {
         static $tasks;
         if (!isset($tasks)) {
-            $tasks = array();
+            $tasks = [];
             $path = $this->getAppConfigPath('cron');
             if (file_exists($path)) {
                 $tasks = include($path);
             } else {
-                $tasks = array();
+                $tasks = [];
             }
         }
+
         return $name ? (isset($tasks[$name]) ? $tasks[$name] : null) : $tasks;
     }
 }
