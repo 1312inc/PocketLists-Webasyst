@@ -39,9 +39,11 @@ class pocketlistsPocketModel extends kmModelExt
     }
 
     /**
-     * @param int $id
+     * @param $id
      *
-     * @return bool
+     * @return bool|waDbResultDelete|waDbResultInsert|waDbResultReplace|waDbResultSelect|waDbResultUpdate
+     * @throws waDbException
+     * @throws waException
      */
     public function deleteAll($id)
     {
@@ -71,5 +73,18 @@ class pocketlistsPocketModel extends kmModelExt
               WHERE p.id = i:pocket_id";
 
         return $this->query($q, ['pocket_id' => $id]);
+    }
+
+    /**
+     * @return int
+     */
+    public function countLists()
+    {
+        return (int)$this
+            ->query(
+                "SELECT COUNT(*) count_lists FROM pocketlists_list WHERE pocket_id = i:pocket_id AND archived = 0",
+                ['pocket_id' => $this->pk]
+            )
+            ->fetchField('count_lists');
     }
 }

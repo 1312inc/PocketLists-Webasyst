@@ -3,7 +3,7 @@
 <ul class="menu-v with-icons">
     {foreach $pockets as $pocket}
         <li>
-            <span class="count">7</span>
+            <span class="count">{$pocket->countLists()}</span>
             <a href="#/pocket/{$pocket->pk}"><i class="icon16 color pl-dark-{$pocket->color}"></i>{$pocket->name|escape}</a>
         </li>
     {/foreach}
