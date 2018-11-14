@@ -19,6 +19,7 @@ class pocketlistsRightConfig extends waRightConfig
         foreach ($all_lists as $list) {
             $items[$list['id']] = $list['name'] . ($list['archived'] ? " (". _w('archive') . ")" : "");
         }
+
         $this->addItem(
             'list',
             _w('Shared lists'),
@@ -28,6 +29,26 @@ class pocketlistsRightConfig extends waRightConfig
 //                'hint1' => 'all_checkbox',
             )
         );
+
+        $items = array();
+        foreach (pocketlistsPocketModel::model()->getAllPockets() as $pocket) {
+            $items[$pocket['id']] = $pocket['name'];
+        }
+
+        $this->addItem(
+            'pocketlists',
+            _w('Pockets'),
+            'selectlist',
+            array(
+                'items' => $items,
+                'position' => 'right',
+                'options' => array(
+                    self::RIGHT_NONE => _w('No access'),
+                    self::RIGHT_FULL => _w('Full access'),
+                ),
+            )
+        );
+
     }
 
     private function sort_archive($a, $b)

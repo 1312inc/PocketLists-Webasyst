@@ -51,10 +51,10 @@ return array(
     ),
     'pocketlists_item_sort' => array(
         'list_id' => array('int', 11, 'null' => 0),
-        'Item_id' => array('int', 11, 'null' => 0),
+        'item_id' => array('int', 11, 'null' => 0),
         'sort' => array('int', 11),
         ':keys' => array(
-            'PRIMARY' => array('list_id', 'Item_id'),
+            'PRIMARY' => array('list_id', 'item_id'),
         ),
     ),
     'pocketlists_item_tags' => array(
@@ -66,6 +66,7 @@ return array(
     ),
     'pocketlists_list' => array(
         'id' => array('int', 11, 'null' => 0, 'autoincrement' => 1),
+        'pocket_id' => array('int', 11, 'null' => 0, 'default' => '0'),
         'sort' => array('int', 11, 'null' => 0, 'default' => '0'),
         'type' => array('enum', "'checklist','notes'"),
         'icon' => array('varchar', 64),
@@ -76,6 +77,7 @@ return array(
         'key_item_id' => array('int', 11),
         ':keys' => array(
             'PRIMARY' => 'id',
+            'pocket_id' => 'pocket_id',
         ),
     ),
     'pocketlists_list_sort' => array(
@@ -96,21 +98,14 @@ return array(
         ),
     ),
     'pocketlists_pocket' => array(
-        'id' => array('int', 11, 'null' => 0, 'autoincrement' => 1),
+        'id' => array('int', 11, 'unsigned' => 1, 'null' => 0, 'autoincrement' => 1),
         'sort' => array('int', 11, 'null' => 0, 'default' => '0'),
-        'name' => array('varchar', 255),
-        'color' => array('enum', "'none','red','green','blue','yellow','purple'", 'default' => 'blue'),
+        'name' => array('varchar', 255, 'null' => 0, 'default' => ''),
+        'color' => array('enum', "'none','red','green','blue','yellow','purple'", 'null' => 0, 'default' => 'blue'),
         'passcode' => array('varchar', 32),
         ':keys' => array(
             'PRIMARY' => 'id',
-        ),
-    ),
-    'pocketlists_pocket_rights' => array(
-        'pocket_id' => array('int', 11, 'unsigned' => 1, 'null' => 0),
-        'contact_id' => array('int', 11, 'unsigned' => 1, 'null' => 0),
-        'right' => array('smallint', 11, 'unsigned' => 1, 'null' => 0, 'default' => '0'),
-        ':keys' => array(
-            'PRIMARY' => array('contact_id', 'pocket_id'),
+            'sort' => 'sort',
         ),
     ),
     'pocketlists_tag' => array(

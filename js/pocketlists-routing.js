@@ -163,6 +163,17 @@
         // actions
         defaultAction: function () {
             this.todoAction();
+            // this.pocketAction();
+        },
+        pocketAction: function (id) {
+            var list = decodeURIComponent(this.getHash().substr(('#/pocket/' + id + '/list/').length).replace('/', '')) || '';
+            if (list) {
+                list = '&list=' + list;
+            }
+            var id = id || false;
+            this.load('?module=pocket&id=' + id + list, function (result) {
+                $('#content').html(result);
+            });
         },
         listsAction: function () {
             //var self = this;

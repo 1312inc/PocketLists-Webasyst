@@ -1,6 +1,12 @@
 <!-- CORE FILTERS -->
 <div class="block pl-sidebar-core">
 <ul class="menu-v with-icons">
+    {foreach $pockets as $pocket}
+        <li>
+            <span class="count">7</span>
+            <a href="#/pocket/{$pocket->pk}"><i class="icon16 color pl-dark-{$pocket->color}"></i>{$pocket->name|escape}</a>
+        </li>
+    {/foreach}
     {* <li data-pl-sidebar="todo" class="bottom-padded">
         {if $sidebar_todo_count}<span class="count">{$sidebar_todo_count}</span>{/if}
         <a href="#/todo/"><i class="icon16 star"></i>[`My to-dos`]</a>
