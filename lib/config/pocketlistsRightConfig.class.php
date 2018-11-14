@@ -32,7 +32,7 @@ class pocketlistsRightConfig extends waRightConfig
 
         $items = array();
         foreach (pocketlistsPocketModel::model()->getAllPockets() as $pocket) {
-            $items[$pocket['id']] = $pocket['name'];
+            $items[$pocket->pk] = $pocket->name;
         }
 
         $this->addItem(
