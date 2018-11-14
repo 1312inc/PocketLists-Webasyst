@@ -13,9 +13,9 @@ class pocketlistsPocketModel extends kmModelExt
     protected $table = 'pocketlists_pocket';
 
     /**
-     * @param $contact_id int
+     * @param bool|int $contact_id
      *
-     * @return array
+     * @return null|pocketlistsPocketModel|pocketlistsPocketModel[]
      */
     public function getAllPockets($contact_id = false)
     {
@@ -28,12 +28,14 @@ class pocketlistsPocketModel extends kmModelExt
 
         $sql = "SELECT * FROM {$this->table} {$where_ids} ORDER BY sort ASC ";
 
-        return $this->query(
+        $q = $this->query(
             $sql,
             [
                 'access_id' => $accessed_pockets,
             ]
-        )->fetchAll();
+        );
+
+        return $this->findByQuery($q, false);
     }
 
     /**
