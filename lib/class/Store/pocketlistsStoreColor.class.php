@@ -15,7 +15,7 @@ final class pocketlistsStoreColor
     /**
      * @return array
      */
-    public function getColors()
+    public static function getColors()
     {
         return [
             self::NONE   => _w(self::NONE),
