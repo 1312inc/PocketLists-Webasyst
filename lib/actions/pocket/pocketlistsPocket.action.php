@@ -1,106 +1,76 @@
 <?php
 
+/**
+ * Class pocketlistsPocketAction
+ */
 class pocketlistsPocketAction extends waViewAction
 {
+    /**
+     * @throws waDbException
+     * @throws waException
+     */
     public function execute()
     {
-        $this->view->assign(
-            'pocket',
-            ['id' => 1, 'name' => 'Personal', 'class' => 'pl-dark-blue', 'indicator' => ['count' => 1, 'color' => '']]
-        );
+        $id = waRequest::get('id', 0, waRequest::TYPE_INT);
+        $list_id = waRequest::get('list_id', false, waRequest::TYPE_INT);
 
-        $this->view->assign(
-            'pockets',
-            [
-                [
-                    'id'        => 1,
-                    'name'      => 'Personal',
-                    'class'     => 'pl-dark-blue',
-                    'indicator' => ['count' => 1, 'color' => ''],
-                ],
-                [
-                    'id'        => 2,
-                    'name'      => 'Errands',
-                    'class'     => 'pl-dark-green',
-                    'indicator' => ['count' => 2, 'color' => 'red'],
-                ],
-                ['id' => 3, 'name' => 'Msk', 'class' => 'pl-dark-red', 'indicator' => ['count' => 0, 'color' => '']],
-                [
-                    'id'        => 4,
-                    'name'      => 'Krasnodar',
-                    'class'     => 'pl-dark-yellow',
-                    'indicator' => ['count' => 0, 'color' => ''],
-                ],
-            ]
-        );
+        $available_pockets = pocketlistsHelper::getAccessPocketForContact();
+        if ($id && !in_array($id, $available_pockets)) {
+            throw new waException('Access denied.', 403);
+        }
+
+        $us = new pocketlistsUserSettings();
+        $pm = new pocketlistsPocketModel();
+        $lm = new pocketlistsListModel();
+
+        $last_pocket_list_id = $us->getLastPocketList();
+
+        if (!$id) {
+            if (isset($last_pocket_list_id['pocket_id'])) { // last visited pocket
+                $id = $last_pocket_list_id['pocket_id'];
+            } else { // first of available pockets
+                $id = reset($available_pockets);
+            }
+        }
+
+        // check if user have access to this pocket/list
+        if (!in_array($id, $available_pockets) ||
+            (isset($last_pocket_list_id['pocket_id']) &&
+            !in_array($last_pocket_list_id['pocket_id'], $available_pockets))
+        ) {
+            $id = reset($available_pockets);
+        }
+
+        /** @var pocketlistsPocketModel $pocket */
+        $pocket = $pm->findByPk($id);
 
         // get all lists for this pocket
-        $this->view->assign(
-            'lists',
-            [
-                [
-                    'id'        => 1,
-                    'name'      => 'Goals',
-                    'class'     => 'pl-red',
-                    'indicator' => ['count' => 14, 'color' => ''],
-                    'icon'      => 'li-award@2x.png',
-                ],
-                [
-                    'id'        => 2,
-                    'name'      => 'Groceries',
-                    'class'     => 'pl-blue',
-                    'indicator' => ['count' => 0, 'color' => 'red'],
-                    'amount'    => 5130,
-                    'icon'      => 'li-grocery@2x.png',
-                ],
-                [
-                    'id'        => 3,
-                    'name'      => 'Books to read',
-                    'class'     => 'pl-green',
-                    'indicator' => ['count' => 2, 'color' => 'red'],
-                    'icon'      => 'li-books@2x.png',
-                ],
-                [
-                    'id'        => 4,
-                    'name'      => 'Places to visit',
-                    'class'     => '',
-                    'indicator' => ['count' => 13, 'color' => 'yellow'],
-                    'icon'      => 'li-travel@2x.png',
-                ],
-                [
-                    'id'        => 5,
-                    'name'      => 'Europe trip',
-                    'class'     => 'pl-yellow',
-                    'indicator' => ['count' => 2, 'color' => 'green'],
-                    'icon'      => 'li-flag-eu@2x.png',
-                ],
-                [
-                    'id'        => 5,
-                    'name'      => 'Movies to watch',
-                    'class'     => '',
-                    'indicator' => ['count' => 1, 'color' => ''],
-                    'icon'      => 'li-video@2x.png',
-                ],
-                [
-                    'id'        => 6,
-                    'name'      => 'Party secret list',
-                    'class'     => 'pl-purple',
-                    'indicator' => ['count' => 5, 'color' => 'yellow'],
-                    'icon'      => 'li-lock@2x.png',
-                ],
-                [
-                    'id'        => 7,
-                    'name'      => 'Gift list',
-                    'class'     => '',
-                    'indicator' => ['count' => 2, 'color' => '', 'lock' => true],
-                    'icon'      => 'li-gift@2x.png',
-                ],
-            ]
-        );
+        $lists = $lm->getLists($pocket['id']);
 
-        // get selected list items
-        $list = waRequest::get('list', false, waRequest::TYPE_INT);
-        if ($list) {
+        if (!$list_id) {
+            if ($list_id < 0 && isset($last_pocket_list_id['list_id']) && $last_pocket_list_id['pocket_id'] == $pocket['id']) {
+                $list_id = $last_pocket_list_id['list_id'];
+            } else {
+                if ($lists) {
+                    $list_id = $lists[0]['id'];
+                    $last_pocket_list_id = ["pocket_id" => $id, "list_id" => $list_id];
+                } else {
+                    $last_pocket_list_id = ["pocket_id" => $id];
+                }
+            }
+        } else {
+            $last_pocket_list_id = ["pocket_id" => $id, "list_id" => $list_id];
         }
+
+        if ($list_id != -1) {
+            $us->set('last_pocket_list_id', json_encode($last_pocket_list_id));
+        }
+
+        $lists_html = wao(new pocketlistsListAction(['list_id' => $list_id]))->display();
+        $this->view->assign('lists_html', $lists_html);
+
+        $this->view->assign('lists', $lists);
+        $this->view->assign('list_id', $list_id);
+        $this->view->assign('pocket', $pocket);
     }
 }

@@ -5,7 +5,7 @@
  *
  * @property integer|array $pk
  */
-class kmModelExt extends waModel
+class kmModelExt extends waModel implements ArrayAccess
 {
     const INSERT_DELAYED = true;
 
@@ -13,7 +13,10 @@ class kmModelExt extends waModel
      * @var kmModelStorage for holding values
      */
     protected $attributes;
-    protected $_dirty;
+    /**
+     * @var kmModelStorage
+     */
+    protected $virtualAttributes;
     protected $_pk;
     protected $_required_attributes = [];
     protected $_errors;
@@ -46,8 +49,7 @@ class kmModelExt extends waModel
 //        }
 
         $this->isNewRecord = true;
-        $this->_dirty = [];
-
+        $this->virtualAttributes = new kmModelStorage();
         $this->attributes = new kmModelStorage();
 
         $this->fillAttributes();
@@ -69,7 +71,8 @@ class kmModelExt extends waModel
     }
 
     public function init()
-    {}
+    {
+    }
 
     /**
      * @return array
@@ -92,6 +95,7 @@ class kmModelExt extends waModel
 
     /**
      * Returns table primary key value (only non-composite pk)
+     *
      * @return mixed|null
      * @throws waDbException
      */
@@ -140,6 +144,7 @@ class kmModelExt extends waModel
 
     /**
      * Fills internal attributes array with table fields names.
+     *
      * @return kmModelStorage
      */
     protected function fillAttributes()
@@ -148,7 +153,7 @@ class kmModelExt extends waModel
         if ($this->fields) {
 //            foreach ($this->fields as $field) {
 //                $this->attributes=
-                $this->attributes->fillData(array_fill_keys(array_keys($this->fields), ''));
+            $this->attributes->fillData(array_fill_keys(array_keys($this->fields), ''));
 //            }
         }
 
@@ -165,6 +170,18 @@ class kmModelExt extends waModel
     public function hasAttribute($name)
     {
         return $this->attributes->offsetExists($name);
+    }
+
+    /**
+     * Checks if model has such attribute
+     *
+     * @param $name
+     *
+     * @return bool
+     */
+    public function hasVirtualAttribute($name)
+    {
+        return $this->virtualAttributes->offsetExists($name);
     }
 
     protected function castPopulated($field, $value)
@@ -210,6 +227,8 @@ class kmModelExt extends waModel
 //                } else {
                 if ($this->hasAttribute($attribute_key)) {
                     $this->attributes[$attribute_key] = $this->castPopulated($attribute_key, $attribute_value);
+                } else {
+                    $this->virtualAttributes[$attribute_key] = $attribute_value;
                 }
 //                elseif (property_exists($this, $attribute_key)) {
 //                    $this->$attribute_key = $attribute_value;
@@ -231,18 +250,27 @@ class kmModelExt extends waModel
         if ($this->hasAttribute($name)) {
             return $this->attributes[$name];
         }
-        throw new waDbException('No attribute ' . $name);
+
+        if ($this->hasVirtualAttribute($name)) {
+            return $this->virtualAttributes[$name];
+        }
+
+        throw new waDbException('No attribute '.$name);
     }
 
     public function __isset($name)
     {
-        return $this->hasAttribute($name);
+        return $this->hasAttribute($name) || $this->hasVirtualAttribute($name);
     }
 
     public function __unset($name)
     {
         if ($this->hasAttribute($name)) {
             unset($this->attributes[$name]);
+        }
+
+        if ($this->hasVirtualAttribute($name)) {
+            unset($this->virtualAttributes[$name]);
         }
     }
 
@@ -261,6 +289,10 @@ class kmModelExt extends waModel
             }
         }
 
+        foreach ($this->virtualAttributes as $name => $attr) {
+            $attrs[$name] = $this->$name;
+        }
+
         return $attrs;
     }
 
@@ -272,6 +304,14 @@ class kmModelExt extends waModel
         return $this->attributes;
     }
 
+    /**
+     * @return kmModelStorage
+     */
+    public function getVirtualAttributesObject()
+    {
+        return $this->virtualAttributes;
+    }
+
     protected function formatMethodName($name)
     {
         return str_replace(' ', '', ucwords($name, '_'));
@@ -279,14 +319,20 @@ class kmModelExt extends waModel
 
     protected function setMethodName($name)
     {
-        return 'set' . $this->formatMethodName($name);
+        return 'set'.$this->formatMethodName($name);
     }
 
     protected function getMethodName($name)
     {
-        return 'get' . $this->formatMethodName($name);
+        return 'get'.$this->formatMethodName($name);
     }
 
+    /**
+     * @param $name
+     * @param $value
+     *
+     * @throws waDbException
+     */
     public function setAttribute($name, $value)
     {
         $method = $this->setMethodName($name);
@@ -294,10 +340,9 @@ class kmModelExt extends waModel
             $this->$method($value);
         } elseif ($this->hasAttribute($name)) {
             $this->attributes[$name] = $value;
+        } else {
+            $this->virtualAttributes[$name] = $value; //todo: hm.. sure?
         }
-//        else {
-//            $this->_dirty[$name] = $value; //todo: hm.. sure?
-//        }
     }
 
     /**
@@ -312,13 +357,16 @@ class kmModelExt extends waModel
         if (method_exists($this, $method)) {
             return $this->$method();
         }
+
         if ($this->hasAttribute($name)) {
             return $this->attributes[$name]; //todo: cast to $this->fields[$name]['type']
         }
-        if (array_key_exists($name, $this->_dirty)) {
-            return $this->_dirty[$name];
+
+        if ($this->hasVirtualAttribute($name)) {
+            return $this->virtualAttributes[$name];
         }
-        throw new waDbException('Invalid attribute: ' . $name);
+
+        throw new waDbException('Invalid attribute: '.$name);
     }
 
     public function __set($name, $value)
@@ -342,7 +390,7 @@ class kmModelExt extends waModel
 
     public static function generateModel($vals)
     {
-       return self::generateModels([$vals], true);
+        return self::generateModels([$vals], true);
     }
 
     public static function generateModels($vals, $one = false)
@@ -359,7 +407,7 @@ class kmModelExt extends waModel
      * Return model/models
      *
      * @param $query waDbQuery|waDbResultSelect
-     * @param $one bool will return only first model
+     * @param $one   bool will return only first model
      *
      * @return static|static[]|null
      */
@@ -377,7 +425,7 @@ class kmModelExt extends waModel
      * Return model/models
      *
      * @param $query waDbQuery|waDbResultSelect
-     * @param $one bool will return only first model
+     * @param $one   bool will return only first model
      *
      * @return static|static[]|null
      */
@@ -488,9 +536,9 @@ class kmModelExt extends waModel
     /**
      * @param array $attributes
      * @param int   $type Execution mode for SQL query INSERT:
-     *     0: query is executed without additional conditions (default mode)
-     *     1: query is executed with condition ON DUPLICATE KEY UPDATE
-     *     2: query is executed with key word IGNORE
+     *                    0: query is executed without additional conditions (default mode)
+     *                    1: query is executed with condition ON DUPLICATE KEY UPDATE
+     *                    2: query is executed with key word IGNORE
      *
      * @return bool|int|null|resource|waDbResultUpdate
      * @throws waDbException
@@ -564,9 +612,10 @@ class kmModelExt extends waModel
         foreach ($this->_required_attributes as $required_attribute) {
             if (empty($save_attributes[$required_attribute])
                 || ($attributes && !array_key_exists($required_attribute, $attributes))) {
-                throw new waDbException('no required attribute ' . $required_attribute);
+                throw new waDbException('no required attribute '.$required_attribute);
             }
         }
+
         return true;
     }
 
@@ -583,11 +632,11 @@ class kmModelExt extends waModel
         if (!$data) {
             return true;
         }
-        $values = array();
-        $fields = array();
+        $values = [];
+        $fields = [];
         if (isset($data[0])) {
             foreach ($data as $row) {
-                $row_values = array();
+                $row_values = [];
                 foreach ($row as $field => $value) {
                     if (isset($this->fields[$field])) {
                         $row_values[$this->escapeField($field)] = $this->getFieldValue($field, $value);
@@ -600,7 +649,7 @@ class kmModelExt extends waModel
             }
         } else {
             $multi_field = false;
-            $row_values = array();
+            $row_values = [];
             foreach ($data as $field => $value) {
                 if (isset($this->fields[$field])) {
                     if (is_array($value) && !$multi_field) {
@@ -623,9 +672,9 @@ class kmModelExt extends waModel
         }
         if ($values) {
             $sql = "INSERT "
-                . ($delayed === true ? "DELAYED " : "")
-                . ($type === 2 ? "IGNORE " : "") . " INTO {$this->table} ("
-                . implode(',', $fields) . ") VALUES (" . implode('), (', $values) . ")";
+                .($delayed === true ? "DELAYED " : "")
+                .($type === 2 ? "IGNORE " : "")." INTO {$this->table} ("
+                .implode(',', $fields).") VALUES (".implode('), (', $values).")";
             if ($type == 1) {
                 $sql .= " ON DUPLICATE KEY UPDATE ";
                 $comma = false;
@@ -635,7 +684,7 @@ class kmModelExt extends waModel
                     } else {
                         $comma = true;
                     }
-                    $sql .= $v . " = VALUES(" . $v . ")";
+                    $sql .= $v." = VALUES(".$v.")";
                 }
             }
 
@@ -643,5 +692,68 @@ class kmModelExt extends waModel
         }
 
         return true;
+    }
+
+    /**
+     * @param mixed $offset
+     *
+     * @return bool
+     */
+    public function offsetExists($offset)
+    {
+        $attribute = $this->getSystemFieldsMapping($offset);
+
+        return $this->hasAttribute($attribute) || $this->hasVirtualAttribute($attribute);
+    }
+
+    /**
+     * @param mixed $offset
+     *
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        $attribute = $this->getSystemFieldsMapping($offset);
+
+        return $this->$attribute;
+    }
+
+    /**
+     * @param mixed $offset
+     * @param mixed $value
+     */
+    public function offsetSet($offset, $value)
+    {
+        $attribute = $this->getSystemFieldsMapping($offset);
+
+        $this->$attribute = $value;
+    }
+
+    /**
+     * @param mixed $offset
+     */
+    public function offsetUnset($offset)
+    {
+        $attribute = $this->getSystemFieldsMapping($offset);
+
+        unset($this->$attribute);
+    }
+
+    /**
+     * @param $field
+     *
+     * @return mixed
+     */
+    protected function getSystemFieldsMapping($field)
+    {
+        $mapping = [
+            'id' => 'pk',
+        ];
+
+        if (isset($mapping[$field])) {
+            return $mapping[$field];
+        }
+
+        return $field;
     }
 }

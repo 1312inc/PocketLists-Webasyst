@@ -529,7 +529,14 @@ class pocketlistsItemModel extends kmModelExt
      */
     private function getItems($sql, $list_id, $tree)
     {
-        $items = $this->query($sql, ['lid' => $list_id, 'contact_id' => wa()->getUser()->getId()])->fetchAll('id');
+        $items = $this->query(
+            $sql,
+            [
+                'lid'        => $list_id,
+                'contact_id' => wa()->getUser()->getId(),
+            ]
+        )->fetchAll('id');
+
         $items = $this->extendItemData($items);
 
         return $tree ? $this->getTree($items, $tree) : $items;

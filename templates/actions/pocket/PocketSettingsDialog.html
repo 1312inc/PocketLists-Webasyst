@@ -1,0 +1,112 @@
+<input type="hidden" name="pocket[id]" value="{$pocket.id|default:0}"/>
+
+{if isset($pocket.id)}
+    <div class="block half-padded float-right">
+        <ul class="menu-h">
+            <li>
+                <a href="#" data-action="pl-delete-pocket"><i class="icon16 delete"></i> [`Delete pocket`]</a>
+            </li>
+        </ul>
+    </div>
+    <h1>{$pocket.name|default:'[`(unnamed pocket)`]'|escape|truncate:32}</h1>
+{else}
+    <h1>[`New pocket`]</h1>
+{/if}
+
+<div class="fields form">
+    <div class="field-group">
+        <div class="field">
+            <div class="name nowrap">
+                [`Pocket name`]
+            </div>
+            <div class="value">
+                <input type="text" class="large bold" name="pocket[name]" value="{$pocket.name|default:''|escape}"/>
+            </div>
+        </div>
+        <div class="field">
+            <div class="name nowrap">
+                [`Color`]
+            </div>
+            <div class="value no-shift" id="pl-pocket-color">
+                <input type="hidden" name="pocket[color]" value="{$pocket.color|default:'blue'}"/>
+                <a href="#" {if $pocket.color == 'red'}class="selected"{/if} data-pl-pocket-color="red"><i
+                            class="icon16 color pl-dark-red"></i></a>
+                <a href="#" {if $pocket.color == 'green'}class="selected"{/if} data-pl-pocket-color="green"><i
+                            class="icon16 color pl-dark-green"></i></a>
+                <a href="#" {if $pocket.color == 'blue'}class="selected"{/if} data-pl-pocket-color="blue"><i
+                            class="icon16 color pl-dark-blue"></i></a>
+                <a href="#" {if $pocket.color == 'yellow'}class="selected"{/if} data-pl-pocket-color="yellow"><i
+                            class="icon16 color pl-dark-yellow"></i></a>
+                <a href="#" {if $pocket.color == 'purple'}class="selected"{/if} data-pl-pocket-color="purple"><i
+                            class="icon16 color pl-dark-purple"></i></a>
+            </div>
+        </div>
+        <div class="field">
+            <div class="name">
+                [`Access rights`]
+            </div>
+            <div class="value no-shift">
+                <span style="font-size: 0.9em;">[`Use Contacts app to customize access rights for pockets.`]</span>
+            </div>
+            {*
+            <div class="value no-shift">
+                <label>
+                    <input type="radio" checked="checked"> [`Everyone`]
+                </label>
+                <span class="hint">[`Every user who can access Pocket Lists app will see lists and to-dos in this pocket.`]</span>
+            </div>
+            <div class="value no-shift">
+                <label>
+                    <input type="radio"> [`Limited`]
+                </label>
+                <span class="hint">[`Only selected users will be able to access lists and to-dos in this pocket.`]</span>
+
+                <div class="pl-pocket-access">
+
+                    <label>
+                        <input type="checkbox"> admins
+                    </label>
+                    <br>
+                    <label>
+                        <input type="checkbox"> support team
+                    </label>
+                    <br>
+                    <label>
+                        <input type="checkbox"> [`Selected users`]
+                    </label>
+
+                    <table class="zebra">
+                        <tr data-pl-selected-user="1">
+                            <td class="min-width">
+                                <!--<i class="icon16 userpic20"></i>-->
+                            </td>
+                            <td class="pl-selected-users-name">Kirill Maramygin</td>
+                            <td>
+                                <input type="hidden" name="users[]" value="1"/>
+                                <a href="#"><i class="icon16 delete"></i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="min-width"><i class="icon16 userpic20"></i></td>
+                            <td>Vladimir V. Tuporshin</td>
+                            <td>
+                                <input type="hidden" name="users[]" value="2"/>
+                                <a href="#"><i class="icon16 delete"></i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="min-width"><i class="icon16 add"></i></td>
+                            <td><input type="text" name="new_user" placeholder="[`Start typing name...`]"></td>
+                            <td></td>
+                        </tr>
+                    </table>
+
+                </div>
+
+            </div>
+            *}
+        </div>
+
+    </div>
+
+</div>

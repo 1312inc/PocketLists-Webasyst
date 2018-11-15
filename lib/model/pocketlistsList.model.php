@@ -15,26 +15,72 @@
 class pocketlistsListModel extends kmModelExt
 {
     const TYPE_CHECKLIST = 'checklist';
-    const TYPE_NOTES = 'notes';
+    const TYPE_NOTES     = 'notes';
 
     protected $table = 'pocketlists_list';
 
-    // todo: save lists
-    // private lists = [];
+    /**
+     * @var pocketlistsItemModel
+     */
+    protected $item;
+
+    public function __get($name)
+    {
+        $method = $this->getMethodName($name);
+        if (method_exists($this, $method)) {
+            return $this->$method();
+        }
+
+        if (parent::hasAttribute($name)) {
+            return $this->attributes[$name]; //todo: cast to $this->fields[$name]['type']
+        }
+
+        if ($this->item instanceof pocketlistsItemModel && $this->item->hasAttribute($name)) {
+            return $this->item->$name;
+        }
+
+        if ($this->hasVirtualAttribute($name)) {
+            return $this->virtualAttributes[$name];
+        }
+
+        throw new waDbException('Invalid attribute: '.$name);
+    }
+
+    public function setAttribute($name, $value)
+    {
+        $method = $this->setMethodName($name);
+        if (method_exists($this, $method)) {
+            $this->$method($value);
+        } elseif (parent::hasAttribute($name)) {
+            $this->attributes[$name] = $value;
+        } elseif ($this->item instanceof pocketlistsItemModel) {
+            $this->item->setAttribute($name, $value);
+        } else {
+            $this->virtualAttributes[$name] = $value; //todo: hm.. sure?
+        }
+    }
+
+    public function hasAttribute($name)
+    {
+        return parent::hasAttribute($name) || ($this->item && $this->item->hasAttribute($name));
+    }
 
     /**
      * @param array|int $id
      *
-     * @return array|mixed|null
+     * @return pocketlistsListModel[]|pocketlistsListModel|null
+     * @throws waDbException
      */
     public function getById($id)
     {
         if (!$id) {
             return [];
         }
+
         if (!is_array($id)) {
             $id = [$id];
         }
+
         $lists = $this->query(
             "SELECT
               i.*,
@@ -55,7 +101,7 @@ class pocketlistsListModel extends kmModelExt
     /**
      * @param int|bool $id
      *
-     * @return array
+     * @return pocketlistsListModel[]|pocketlistsListModel|null
      */
     public function getTeamLists($id = false)
     {
@@ -69,7 +115,7 @@ class pocketlistsListModel extends kmModelExt
         $list_sql = pocketlistsRBAC::filterListAccess($list_accessed);
         $list_sql2 = pocketlistsRBAC::filterListAccess($list_accessed, $id);
 
-        $lists = $this->query(
+        $lists_data = $this->query(
             "SELECT
               i.*,
               l.*,
@@ -92,6 +138,8 @@ class pocketlistsListModel extends kmModelExt
                 'contact_id' => $id,
             ]
         )->fetchAll();
+
+        $lists = $this->generateWithItem($lists_data);
 
         return $lists;
     }
@@ -190,8 +238,8 @@ class pocketlistsListModel extends kmModelExt
      */
     public function calculatePriority($lists)
     {
-        foreach ($lists as $id => &$list) {
-            $lists[$id]['calc_priority'] = max(
+        foreach ($lists as $list) {
+            $list['calc_priority'] = max(
                 pocketlistsHelper::calcPriorityOnDueDate($list['min_due_date'], $list['min_due_datetime']),
                 $list['max_priority']
             );
@@ -203,7 +251,9 @@ class pocketlistsListModel extends kmModelExt
     /**
      * Get all lists (including archived) that are accessible for current user
      *
-     * @return array
+     * @param bool $check_access
+     *
+     * @return null|pocketlistsListModel|pocketlistsListModel[]
      */
     public function getAllLists($check_access = true)
     {
@@ -229,14 +279,14 @@ class pocketlistsListModel extends kmModelExt
                 GROUP BY l.id
                 ORDER BY l.sort, l.id DESC";
 
-        $lists = $this->query(
+        $lists_data = $this->query(
             $sql,
             [
                 'list_ids' => $available_lists,
             ]
         )->fetchAll();
 
-        return $lists;
+        return $this->generateWithItem($lists_data);
     }
 
     /**
@@ -264,17 +314,22 @@ class pocketlistsListModel extends kmModelExt
     }
 
     /**
-     * @param      $lists
-     * @param bool $archive
+     * @param pocketlistsListModel|pocketlistsListModel[] $lists
+     * @param bool                                        $archive
      *
      * @return array
      */
     public function filterArchive($lists, $archive = false)
     {
-        $is_array = !isset($lists['id']);
+        $is_array = isset($lists[0]);
         if (!$is_array) {
             $lists = [$lists['id'] => $lists];
         }
+
+        /**
+         * @var int                  $id
+         * @var pocketlistsListModel $list
+         */
         foreach ($lists as $id => $list) {
             if (!$archive && (int)$list['archived'] > 0) {
                 unset($lists[$id]);
@@ -351,5 +406,59 @@ class pocketlistsListModel extends kmModelExt
         $r = $this->query("SELECT id FROM {$this->table} ORDER BY id DESC")->fetch();
 
         return $r['id'];
+    }
+
+    /**
+     * @param array|int $pk
+     *
+     * @return pocketlistsListModel|null
+     * @throws waDbException
+     */
+    public function findByPk($pk)
+    {
+        /** @var pocketlistsListModel $list */
+        $list = parent::findByPk($pk);
+
+        if (!$list) {
+            return null;
+        }
+
+        $list->getItem();
+
+        return $list;
+    }
+
+    protected function generateWithItem($listsData)
+    {
+        $lists = [];
+        $one = false;
+
+        if (!isset($listsData[0])) {
+            $listsData = [$listsData];
+            $one = true;
+        }
+
+        foreach ($listsData as $listsDatum) {
+            $list = new static($listsDatum);
+            $list->item = new pocketlistsItemModel($listsDatum);
+            $lists[] = $list;
+        }
+
+        return $one ? reset($lists) : $lists;
+    }
+
+    /**
+     * @return null|pocketlistsItemModel
+     * @throws waDbException
+     */
+    public function getItem()
+    {
+        if ($this->item === null) {
+            if (!$this->isNewRecord) {
+                $this->item = pocketlistsItemModel::model()->findByPk($this->key_item_id);
+            }
+        }
+
+        return $this->item;
     }
 }

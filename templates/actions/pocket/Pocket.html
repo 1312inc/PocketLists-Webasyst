@@ -1,0 +1,133 @@
+<div class="shadowed">
+    <nav class="sidebar left300px">
+
+        <!-- LISTS -->
+        <div class="pl-inner-sidebar" id="pl-lists" data-pl-scroll-to-top>
+            {if !empty($lists)}
+                <ul class="pl-lists">
+                    {foreach $lists as $l}
+                        <li class="pl-{$l->color|default:'none'}" data-pl-list-id="{$l->pk}">
+                            <a href="#/pocket/{$pocket->pk}/list/{$l->pk}/"{if $l->pk == $list_id} class="pl-is-selected"{/if}>
+                                <span class="count{if $l->calc_priority == 1} indicator green{elseif $l->calc_priority == 2} indicator yellow{elseif $l->calc_priority == 3} indicator red{/if}">{$l->count}</span>
+                                <i class="listicon48"
+                                   style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l->icon|default:'li-list@2x.png'});"></i>
+                                <span class="pl-list-name">{$l->name|escape}</span>
+                            </a>
+                        </li>
+                    {/foreach}
+                </ul>
+            {else}
+                <div class="block double-padded align-center">
+                    <p class="gray">[`This pocket is empty. Start by creating a to-do list.`]</p>
+                </div>
+            {/if}
+        </div>
+
+        {*<div class="pl-inner-sidebar">
+            <ul class="pl-lists">
+                <li class="pl-red">
+                    <a href="#">
+                        <span class="count">14</span>
+                        <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/li-award@2x.png);"></i> Goals
+                    </a>
+                </li>
+                <li class="selected pl-blue">
+                    <a href="#">
+                        <span class="count indicator red">5130 <span class="ruble">Р</span></span>
+                        <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/li-grocery@2x.png);"></i> Groceries
+                    </a>
+                </li>
+                <li class="pl-green">
+                    <a href="#">
+                        <span class="count indicator red">2</span>
+                        <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/li-books@2x.png);"></i> Books to read
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="count indicator yellow">10</span>
+                        <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/li-travel@2x.png);"></i> Places to visit
+                    </a>
+                </li>
+                <li class="pl-yellow">
+                    <a href="#">
+                        <span class="count indicator green">2</span>
+                        <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/li-flag-eu@2x.png);"></i> Europe trip
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="count">2</span>
+                        <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/li-video@2x.png);"></i> Movies to watch
+                    </a>
+                </li>
+                <li class="pl-purple">
+                    <a href="#">
+                        <span class="count indicator yellow">5</span>
+                        <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/li-lock@2x.png);"></i> Party secret list
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="count">2 <i class="icon16 lock-bw"></i></span>
+                        <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/li-gift@2x.png);"></i> Gift list
+                    </a>
+                </li>
+            </ul>
+        </div>*}
+
+    </nav>
+
+    <!-- ITEMS -->
+    <main class="content left300px blank bordered-left" id="pl-list-content">
+        {$lists_html|default:""}
+    </main>
+
+</div>
+<script>
+    (function () {
+        var $lists_wrapper = $('#pl-lists').find('.pl-lists');
+        $lists_wrapper.sortable({
+            item: '[data-pl-list-id]',
+            distance: 5,
+            placeholder: 'pl-list-placeholder',
+            tolerance: 'pointer',
+            start: function (e, ui) {
+                ui.placeholder.height(ui.helper.outerHeight());
+            },
+            stop: function (event, ui) {
+                var getLists = function () {
+                    var data = [];
+                    $lists_wrapper.find('[data-pl-list-id]').each(function (i) {
+                        var $this = $(this),
+                            color = $this.attr('class').match(/pl-(.*)/);
+                        data.push({
+                            id: $this.data('pl-list-id'),
+                            sort: i,
+                            color: color[1]
+                        });
+                    });
+                    return data;
+                };
+
+                var updateSort = function () {
+                    $.post(
+                        '?module=list&action=sort',
+                        {
+                            data: getLists()
+                        },
+                        function (r) {
+                            if (r.status === 'ok') {
+                            } else {
+                                alert(r.errors);
+                            }
+                        },
+                        'json'
+                    );
+                };
+
+                updateSort();
+            }
+        });
+    }());
+</script>

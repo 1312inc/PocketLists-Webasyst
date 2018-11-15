@@ -166,16 +166,6 @@
             // this.pocketAction();
         },
         pocketAction: function (id) {
-            var list = decodeURIComponent(this.getHash().substr(('#/pocket/' + id + '/list/').length).replace('/', '')) || '';
-            if (list) {
-                list = '&list=' + list;
-            }
-            var id = id || false;
-            this.load('?module=pocket&id=' + id + list, function (result) {
-                $('#content').html(result);
-            });
-        },
-        listsAction: function () {
             //var self = this;
             var list_id = decodeURIComponent(this.getHash().substr(('#/pocket/' + id + '/list/').length).replace('/', '')) || 0;
             //var load_list = this.getHash().indexOf('list') > 0;
@@ -190,16 +180,19 @@
                 $list_name.after('<i class="icon16 loading">');
             }
             // todo: load list separetly
-            this.load('?module=list&id=' + list_id, function (result) {
+            this.load('?module=pocket&id=' + id + '&list_id=' + list_id, function (result) {
                 // show pockets
                 $('#content').html(result);
                 // and load selected list
                 //load_list && self.listAction(list_id);
             });
         },
+        listsAction: function () {
+            this.pocketAction();
+        },
         listAction: function (id) {
             this.load('?module=list&id=' + id, function (result) {
-                $('#content').html(result);
+                $('#pl-list-content').html(result);
             });
         },
         archiveAction: function (id) {

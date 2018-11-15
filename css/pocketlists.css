@@ -329,7 +329,7 @@ input#pl-new-list-input:focus,
 .pl-item .pl-chat .pl-cue .pl-cue-inner { font-size: 0.95em; }
 .pl-item .pl-chat .pl-cue .pl-bubble { padding: 7px 10px; }
 
-.pl-is-selected { display: none; }
+/*.pl-is-selected { display: none; }*/
 
 .pl-list-items .pl-item-placeholder { background: rgba(0,0,0,0.05); min-height: 5px; }
 
