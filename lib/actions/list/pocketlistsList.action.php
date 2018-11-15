@@ -18,27 +18,36 @@ class pocketlistsListAction extends waViewAction
                 false,
                 waRequest::TYPE_INT
             );
+        $pocket_id = isset($this->params['pocket_id'])
+            ? $this->params['pocket_id']
+            : waRequest::get(
+                'pocket_id',
+                false,
+                waRequest::TYPE_INT
+            );
 
         $archived = isset($this->params['archive']) ? true : false;
 
         $lm = new pocketlistsListModel();
 
+        $pocket = pocketlistsPocketModel::model()->findByPk($pocket_id);
+
         if ($list_id > 0) { // existing list
             /** @var pocketlistsListModel $list */
             $list = $lm->findByPk($list_id);
 
-            if (!$list) {
-                $this->view->assign(
-                    'error',
-                    [
-                        'code'    => 403,
-                        'message' => _w('Access denied'),
-                    ]
-                );
-                $this->setTemplate('templates/include/error.html');
-
-                return;
-            }
+//            if (!$list) {
+//                $this->view->assign(
+//                    'error',
+//                    [
+//                        'code'    => 403,
+//                        'message' => _w('Access denied'),
+//                    ]
+//                );
+//                $this->setTemplate('templates/include/error.html');
+//
+//                return;
+//            }
 
             if (!pocketlistsRBAC::canAccessToList($list->pk)) {
                 $this->view->assign(
@@ -121,6 +130,7 @@ class pocketlistsListAction extends waViewAction
             [
                 'backend_url' => wa()->getConfig()->getBackendUrl(),
                 'print'       => waRequest::get('print', false),
+                'pocket'      => $pocket
             ]
         );
     }

@@ -1,4 +1,4 @@
-(function ($) {
+new(function ($) {
     'use strict';
 
     $.storage = new $.store();

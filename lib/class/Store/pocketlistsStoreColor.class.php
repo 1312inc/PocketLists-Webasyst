@@ -11,4 +11,19 @@ final class pocketlistsStoreColor
     const BLUE   = 'blue';
     const YELLOW = 'yellow';
     const PURPLE = 'purple';
+
+    /**
+     * @return array
+     */
+    public function getColors()
+    {
+        return [
+            self::NONE   => _w(self::NONE),
+            self::RED    => _w(self::RED),
+            self::GREEN  => _w(self::GREEN),
+            self::BLUE   => _w(self::BLUE),
+            self::YELLOW => _w(self::YELLOW),
+            self::PURPLE => _w(self::PURPLE),
+        ];
+    }
 }

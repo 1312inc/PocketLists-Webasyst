@@ -45,7 +45,7 @@ class pocketlistsPocketAction extends waViewAction
         $pocket = $pm->findByPk($id);
 
         // get all lists for this pocket
-        $lists = $lm->getLists($pocket['id']);
+        $lists = $lm->getLists(true, $pocket['id']);
 
         if (!$list_id) {
             if ($list_id < 0 && isset($last_pocket_list_id['list_id']) && $last_pocket_list_id['pocket_id'] == $pocket['id']) {
@@ -66,7 +66,7 @@ class pocketlistsPocketAction extends waViewAction
             $us->set('last_pocket_list_id', json_encode($last_pocket_list_id));
         }
 
-        $lists_html = wao(new pocketlistsListAction(['list_id' => $list_id]))->display();
+        $lists_html = wao(new pocketlistsListAction(['list_id' => $list_id, 'pocket_id' => $pocket->pk]))->display();
         $this->view->assign('lists_html', $lists_html);
 
         $this->view->assign('lists', $lists);

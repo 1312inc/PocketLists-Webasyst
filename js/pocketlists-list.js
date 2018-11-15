@@ -12,6 +12,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
     var $new_list_input = $list_wrapper.find('#pl-new-list-input'),
         $uho = $('[data-pl="uho"]'),
         list_id = parseInt($list_wrapper.find('#pl-list-id').val()),
+        pocket_id = parseInt($list_wrapper.find('input[name="pocket_id"]').val()),
         o = $.extend({}, {
             archive: false
         }, options),
@@ -237,7 +238,8 @@ $.pocketlists.List = function ($list_wrapper, options) {
         if (name.length) {
             var data = {
                 name: name,
-                type: 'checklist'
+                type: 'checklist',
+                pocket_id: pocket_id
             };
             if (data.name) {
                 var $pl_done = $new_list_input.closest('.pl-list-title').find('.pl-done-label span').addClass('transparent').html($.pocketlists.$loading.css({
