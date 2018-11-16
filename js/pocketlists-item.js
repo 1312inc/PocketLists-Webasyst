@@ -683,6 +683,188 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         );
     };
 
+    var autocomplete = function ($textarea) {
+        var term = '',
+            hasAt = false,
+            itemText = $textarea.val(),
+            $wrapper = $('<div data-pl2-autocomplete class="pl2-autocomplete"></div>'),
+            isOpen = false,
+            $loading = $('<i class="icon16 loading"></i>'),
+            random = 0;
+
+        if ($textarea.data('pl2-autocomplete')) {
+            return;
+        }
+
+        $textarea.data('pl2-autocomplete', true);
+
+        debugger;
+
+        var log = function (msg) {
+            window.console && console.log('pl2 autocomplete', msg);
+        }
+
+        function doGetCaretPosition(oField) {
+            // Initialize
+            var iCaretPos = 0;
+
+            // IE Support
+            if (document.selection) {
+                // Set focus on the element
+                oField.focus();
+
+                // To get cursor position, get empty selection range
+                var oSel = document.selection.createRange();
+
+                // Move selection start to 0 position
+                oSel.moveStart('character', -oField.value.length);
+
+                // The caret position is selection length
+                iCaretPos = oSel.text.length;
+            }
+
+            // Firefox support
+            else if (oField.selectionStart || oField.selectionStart == '0') {
+                iCaretPos = oField.selectionStart;
+            }
+
+            // Return results
+            return iCaretPos;
+        }
+
+        var canShowAutocomplete = function () {
+            log('canShowAutocomplete');
+
+            if (!itemText) {
+                log('no text');
+
+                return false;
+            }
+
+            if (!/@\w/.test(itemText)) {
+                log('no @');
+
+                return false;
+            }
+
+            // var cursorPos = doGetCaretPosition($textarea[0]);
+            var cursorPos = $textarea.prop("selectionStart");
+
+            for (var i = cursorPos; itemText[i] != '@' && i >= 0; i--) {
+                if (itemText[i] == ' ') {
+                    return false;
+                }
+            }
+
+            for (var j = cursorPos; itemText[j] != ' ' && j < itemText.length; j++) {
+            }
+
+            var term = itemText.slice(i + 1, j);
+
+            return term;
+        }
+
+        var showWrapper = function () {
+            log('showWrapper');
+
+            if (isOpen) {
+                log('isOpen');
+
+                return;
+            }
+
+            isOpen = true;
+
+            $wrapper.insertAfter($textarea);
+        }
+
+        var hideWrapper = function () {
+            log('hideWrapper');
+
+            isOpen = false;
+
+            $wrapper.empty().remove();
+        }
+
+        var showLoading = function () {
+            log('showLoading');
+
+            $wrapper.prepend($loading);
+        }
+
+        var hideLoading = function () {
+            log('hideLoading');
+
+            $loading.remove();
+        }
+
+        var updateResults = function (results) {
+            log('updateResults');
+
+            var html = '';
+
+            $.each(results, function () {
+                log('Result:' + this);
+
+                html += '<div class="pl-autocomplete-result">' + this + '</div>';
+            })
+
+            $wrapper.html(html);
+        }
+
+        var getAutocomplete = function () {
+            var already_clicked = random = Math.random();
+            itemText = $textarea.val();
+            debugger;
+            if (term = canShowAutocomplete()) {
+                showWrapper();
+                showLoading();
+
+                $.get('?module=item&action=linkAutocomplete&term=' + term, function (r) {
+                    log('getAutocomplete');
+                    log(r);
+
+                    if (already_clicked !== random) {
+                        log('too late');
+
+                        return;
+                    }
+
+                    hideLoading();
+
+                    if (r.status === 'ok') {
+                        updateResults(r.data);
+                    }
+                }, 'json')
+            } else {
+                hideWrapper();
+            }
+        }
+
+        $textarea
+            .on('keyup', function (e) {
+                if (e.which !== 16) {
+                    getAutocomplete();
+                }
+            })
+            // .on('paste', function () {
+            //     getAutocomplete()
+            // })
+            .on('focus click', function () {
+                setTimeout(function () {
+                    log('textarea focus');
+
+                    getAutocomplete();
+                }, 100)
+            })
+            .on('blur', function (e) {
+                log('textarea blur');
+
+                hideWrapper();
+            })
+        ;
+    };
+
     /**
      * for new item dom manipulating
      */
@@ -690,9 +872,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         var $new_item_wrapper_hover = $('<div id="pl-item-add-wrapper-hover" style="display: none;">'),
             $top_new_item_wrapper = $new_item_wrapper.clone(),
             $textarea = $new_item_wrapper.find('textarea'),
-            $top_textarea = $top_new_item_wrapper.find('textarea'),
-            item_text = '',
-            was_at = false;
+            $top_textarea = $top_new_item_wrapper.find('textarea');
 
         var hide_new_item_wrapper = function () {
             $new_item_wrapper.slideUp(200, function () {
@@ -700,27 +880,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 $('.pl-new-item-wrapper').remove();
                 $textarea.val('').removeClass('pl-unsaved');
                 showEmptyListMessage();
+                autocomplete($textarea);
             });
-        };
-
-        var autocomplete = function(text, e) {
-            item_text = text;
-
-            if (!item_text) {
-                //hide
-            }
-
-            if (e.which === 32) {
-                was_at = false;
-                // hide
-            }
-
-            if (was_at) {
-                var term = text.indexOf('@');
-                if (item_text[item_text.length - 1]) {
-                    $.get('?module=link&action=autocomplete&term=' +)
-                }
-            }
         };
 
         var init = function () {
@@ -732,6 +893,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 setTimeout(function () {
                     if (isEmptyList()/* && !o.showMessageOnEmptyList*/) {
                         $top_textarea.val('').trigger('focus');
+                        autocomplete($top_textarea);
                     }
                 }, 500);
             };

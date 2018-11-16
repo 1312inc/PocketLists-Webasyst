@@ -3,6 +3,11 @@
 interface pocketlistsItemLinkInterface
 {
     /**
+     * @return string
+     */
+    public function getApp();
+
+    /**
      * @return array
      */
     public function getTypes();
@@ -13,5 +18,5 @@ interface pocketlistsItemLinkInterface
      *
      * @return array
      */
-    public function autocomplete($type, $term, $count = 10);
+    public function autocomplete($term, $type = '', $count = 10);
 }
