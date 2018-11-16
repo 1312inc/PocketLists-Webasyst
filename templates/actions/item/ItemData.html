@@ -1,7 +1,7 @@
 <div class="pl-item{if !empty($item.assigned_contact_id) && $item.assigned_contact_id != $wa->user()->getId() && $item.status != 1} pl-item-assigned{/if}{if $item.status == 1} gray{/if}" {if $item.assigned_contact_id}data-pl-assigned-contact="{$item.assigned_contact_id}"{/if}>
     {if !$item.status && empty($item.key_list_id) && !(isset($archive) && $archive)}<div class="pl-item-drag-handle" title="[`Sort`]" data-pl-action="item-sort"></div>{/if}
 
-    {if $item.list_id != NULL}<div class="pl-assignee pl-{$item.list_color} ">{$item.list_name|truncate:32|escape}</div>{/if}
+    {if $item.list_id != NULL}<div class="pl-item-list-name pl-dark-{$item.list_color}-label">{$item.list_name|truncate:32|escape}</div>{/if}
     {* {if !empty($item.assigned_contact_id)}<div class="pl-assignee">{$item.contact.username|escape} &rarr; {$item.assigned_contact.username|escape}</div>{/if} *}
 
     <div class="pl-meta">
@@ -10,6 +10,7 @@
         {/if}
         {if empty($item.key_list_id)}
             {if $item.status == 1}
+
                 {* completed by *}
                 <span class="pl-author" title="{sprintf('[`Completed by %s`]', $item.complete_contact.username|default:'%username%'|escape)}">
                     {if isset($item.complete_contact.userpic)}
@@ -21,6 +22,10 @@
                 </span>
             {else}
 
+                <span class="hint">
+                    {* TODO: replace with timediff *}
+                    {if !empty($item.update_datetime)}{$item.update_datetime|wa_date:'humandatetime'}{else}{$item.create_datetime|wa_date:'humandatetime'}{/if}
+                </span>
 
                 {if !empty($item.assigned_contact_id)}
                     {* assigned to *}
@@ -32,9 +37,7 @@
                 {/if}
 
             {/if}
-            {if !(isset($archive) && $archive == true)}
-                <a href="#" class="pl-edit inline-link"><b><i>[`Edit`]</i></b></a>
-            {/if}
+            {if empty($item.key_list_id) && !(isset($archive) && $archive == true)}<a href="#" class="pl-comment{if !empty($item.chat.comments)} pl-comment-count{/if}" title="[`Comment`]"><i class="icon16 pl comments"></i>{if !empty($item.chat.comments)}{count($item.chat.comments)}{/if}</a>{/if}
         {/if}
     </div>
 
@@ -52,14 +55,15 @@
             {if !empty($item.key_list_id)}
                 <a href="#/list/{$item.list_id}/"><span class="pl-{$item.list_color}">{$item.name|default:' '|nl2br}</span></a>
             {else}
-                {if $item.list_id != NULL}<a href="#/list/{$item.list_id}" class="pl-label pl-dark-{$item.list_color} pl-item-list-name">{$item.list_name|truncate:32|escape}</a>{/if}
-                <a href="#" class="pl-label pl-dark-purple pl-item-list-name">STATUS</a>
+                {* <a href="#" class="pl-label pl-dark-purple">STATUS</a> *}
                 {$item.name|default:' '|nl2br}
                 {* if $item.list_id == NULL && (empty($item.assigned_contact_id) || $item.assigned_contact_id == $wa->user()->getId())}<i class="icon10 lock-bw" title="[`Only you can see this item`]"></i>{/if *}
             {/if}
         </span>
 
-        {if empty($item.key_list_id) && !(isset($archive) && $archive == true)}<a href="#" class="pl-comment{if !empty($item.chat.comments)} pl-comment-count{/if}" title="[`Comment`]"><i class="icon16 pl comments"></i>{if !empty($item.chat.comments)}{count($item.chat.comments)}{/if}</a>{/if}
+        {if !(isset($archive) && $archive == true)}
+            <a href="#" class="pl-edit inline-link"><b><i>[`Edit`]</i></b></a>
+        {/if}
 
         {if !empty($item.due_datetime)}
         <br>
@@ -76,7 +80,7 @@
               <ul class="pl-attachments">
                 {foreach $item.attachments as $attachment}
                   {if $attachment.filetype == 'image'}<li><a href="{$attachments_path}/{$item.id}/{$attachment.filename}" target="_blank"><img src="{$attachments_path}/{$item.id}/{$attachment.filename}"></a></li>
-                  {else}<li><a href="{$attachments_path}/{$item.id}/{$attachment.filename}" target="_blank"><i class="icon16 download"></i>{$attachment.filename|truncate:128}</a></li>
+                  {else}<li class="pl-no-preview"><a href="{$attachments_path}/{$item.id}/{$attachment.filename}" target="_blank"><i class="icon16 download"></i>{$attachment.filename|truncate:128}</a></li>
                   {/if}
                 {/foreach}
               </ul>

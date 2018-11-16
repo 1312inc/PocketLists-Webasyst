@@ -110,13 +110,10 @@
                         {if $teammate@iteration > $max_visible_in_team}style="display: none;"{/if}>
                         <a href="#/team/{$teammate.login|escape}/">
                             <span class="count{if $teammate.items_info.max_priority == 1} indicator green{elseif $teammate.items_info.max_priority == 2} indicator yellow{elseif $teammate.items_info.max_priority == 3} indicator red{/if}">{$teammate.items_info.count}</span>
-                            <i class="icon16 userpic20" style="background-image: url({$teammate.photo_url})"
+                            <i class="icon16 userpic20{if $teammate.status == 'online'} pl-user-online{/if}" style="background-image: url({$teammate.photo_url})"
                                alt="{$teammate.name|escape}" data-pl-contact-id="{$team_id}"></i>{$teammate.name|escape}
                             {if !empty($new_items_count.team[$teammate.id])} <span
                                     class="highlighted bold small black">+{$new_items_count.team[$teammate.id]}</span>{/if}
-                            {if $teammate.status == 'online'}
-                                <i class="icon10 online no-overhanging" title="[`Online`]"></i>
-                            {/if}
                         </a>
                     </li>
                 {/foreach}
