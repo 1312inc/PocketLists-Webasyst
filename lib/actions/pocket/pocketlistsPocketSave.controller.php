@@ -2,21 +2,32 @@
 
 class pocketlistsPocketSaveController extends waJsonController
 {
+    /**
+     * @throws waDbException
+     */
     public function execute()
     {
-        $pocket = waRequest::post('pocket', [], waRequest::TYPE_ARRAY);
-        $pm = new pocketlistsPocketModel();
-        if (!$pocket['id']) {
-            unset($pocket['id']);
+        $pocketData = waRequest::post('pocket', [], waRequest::TYPE_ARRAY);
+        if (!$pocketData['id']) {
+            unset($pocketData['id']);
         }
-        $id = $pm->insert($pocket, 1);
-        // add full rights for this pocket
-        $rm = new waContactRightsModel();
-        $rm->save(wa()->getUser()->getId(), wa()->getApp(), 'pocket.'.$id, 1);
-        // todo: update access rights for others
-        $this->response = [
-            'id'  => isset($pocket['id']) ? $pocket['id'] : $id,
-            'new' => isset($pocket['id']) ? 0 : 1,
-        ];
+
+        $pocket = new pocketlistsPocketModel($pocketData);
+
+        if ($pocket->save()) {
+
+            // add full rights for this pocket
+            (new waContactRightsModel())->save(
+                wa()->getUser()->getId(),
+                wa()->getApp(),
+                'pocket.'.$pocket->pk,
+                1
+            );
+            // todo: update access rights for others
+
+            $this->response = $pocket->getAttributes();
+        } else {
+            $this->setError('some error on save pocket');
+        }
     }
 }

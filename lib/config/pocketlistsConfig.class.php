@@ -69,4 +69,9 @@ class pocketlistsConfig extends waAppConfig
 
         return $name ? (isset($tasks[$name]) ? $tasks[$name] : null) : $tasks;
     }
+
+    public function getLinkedApps()
+    {
+        return ['shop'];
+    }
 }

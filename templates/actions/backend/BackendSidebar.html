@@ -1,15 +1,19 @@
 <!-- CORE FILTERS -->
 <div class="block pl-sidebar-core">
-<ul class="menu-v with-icons">
-    {foreach $pockets as $pocket}
-        <li>
-            <span class="count">{$pocket->countLists()}</span>
-            <a href="#/pocket/{$pocket->pk}"><i class="icon16 color pl-dark-{$pocket->color}"></i>{$pocket->name|escape}</a>
+    <ul class="menu-v with-icons" data-pl2-sidebar-wrapper="pockets">
+        {foreach $pockets as $pocket}
+            <li>
+                <span class="count">{$pocket->countLists()}</span>
+                <a href="#/pocket/{$pocket->pk}"><i
+                            class="icon16 color pl-dark-{$pocket->color}"></i>{$pocket->name|escape}</a>
+            </li>
+        {/foreach}
+    </ul>
+    <ul class="menu-v with-icons">
+        <li class="small">
+            <a href="#" data-pl2-action="add-pocket"><i class="icon10 add"></i>[`New pocket`]</a>
         </li>
-    {/foreach}
-    <li class="small">
-        <a href="#"><i class="icon10 add"></i>[`New pocket`]</a>
-    </li>
+    </ul>
 </div>
 
 <div class="hr"></div>
@@ -31,13 +35,15 @@
         {if 1||$wa->shop}
             <li>
                 <span class="count">3</span>
-                <a href="#/shopscript/"><i class="icon16" style="background-image: url('https://www.shop-script.ru/favicon.ico'); background-size: 16px 16px;"></i>[`Store`]</a>
+                <a href="#/shopscript/"><i class="icon16"
+                                           style="background-image: url('https://www.shop-script.ru/favicon.ico'); background-size: 16px 16px;"></i>[`Store`]</a>
             </li>
         {/if}
         <li>
-            <a href="#/comments/"><i class="icon16 pl comments"></i>[`Discussions`]{if $new_comments_count} <span class="highlighted bold small black" title="{$last_activity|wa_datetime}">+{$new_comments_count}</span>{/if}</a>
+            <a href="#/comments/"><i class="icon16 pl comments"></i>[`Discussions`]{if $new_comments_count} <span
+                        class="highlighted bold small black"
+                        title="{$last_activity|wa_datetime}">+{$new_comments_count}</span>{/if}</a>
         </li>
-
 
 
         {* <li class="top-padded">
@@ -51,7 +57,8 @@
         </li> *}
 
         <li>
-            <a href="#/logbook/"><i class="icon16 pl logbook"></i>[`Completed`]{if $new_items_count.logbook} <span class="highlighted bold small black">+{$new_items_count.logbook}</span>{/if}</a>
+            <a href="#/logbook/"><i class="icon16 pl logbook"></i>[`Completed`]{if $new_items_count.logbook} <span
+                        class="highlighted bold small black">+{$new_items_count.logbook}</span>{/if}</a>
         </li>
 
     </ul>
@@ -90,36 +97,42 @@
 <!-- TEAM -->
 {$max_visible_in_team = 2}
 {if pocketlistsRBAC::canAssign()}
-<div class="block">
-    <h5 class="heading">
-        {if $team && count($team) > $max_visible_in_team}<i class="icon16 darr" data-pl-collapsible="team"></i>{/if}[`Team`]
-    </h5>
-    {if count($team)}
-        <ul class="menu-v with-icons collapsible123" data-pl-sidebar-block="team" data-pl-collapsible-wrapper="team">
-            {foreach $team as $team_id => $teammate}
-            <li data-pl-team-id="{$teammate.id}" {if $teammate@iteration > $max_visible_in_team}style="display: none;"{/if}>
-                <a href="#/team/{$teammate.login|escape}/">
-                    <span class="count{if $teammate.items_info.max_priority == 1} indicator green{elseif $teammate.items_info.max_priority == 2} indicator yellow{elseif $teammate.items_info.max_priority == 3} indicator red{/if}">{$teammate.items_info.count}</span>
-                    <i class="icon16 userpic20" style="background-image: url({$teammate.photo_url})" alt="{$teammate.name|escape}" data-pl-contact-id="{$team_id}"></i>{$teammate.name|escape}
-                    {if !empty($new_items_count.team[$teammate.id])} <span class="highlighted bold small black">+{$new_items_count.team[$teammate.id]}</span>{/if}
-                    {if $teammate.status == 'online'}
-                        <i class="icon10 online no-overhanging" title="[`Online`]"></i>
-                    {/if}
-                </a>
-            </li>
-            {/foreach}
-            {if $max_visible_in_team < count($team)}
-                <li>
-                    <a class="pl-team-showall-link inline-link" data-pl-action="show-all-team" href="#"><b><i>[`Show everyone`] ({count($team)})</i></b></a>
-                </li>
-            {/if}
-        </ul>
-    {else}
-        <div class="block">
-            <p class="hint align-center">{sprintf('[`Use <a href="%s">Team app</a> to invite teammates and to collaborate using the To-dos app: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/')}</p>
-        </div>
-    {/if}
-</div>
+    <div class="block">
+        <h5 class="heading">
+            {if $team && count($team) > $max_visible_in_team}<i class="icon16 darr"
+                                                                data-pl-collapsible="team"></i>{/if}[`Team`]
+        </h5>
+        {if count($team)}
+            <ul class="menu-v with-icons collapsible123" data-pl-sidebar-block="team"
+                data-pl-collapsible-wrapper="team">
+                {foreach $team as $team_id => $teammate}
+                    <li data-pl-team-id="{$teammate.id}"
+                        {if $teammate@iteration > $max_visible_in_team}style="display: none;"{/if}>
+                        <a href="#/team/{$teammate.login|escape}/">
+                            <span class="count{if $teammate.items_info.max_priority == 1} indicator green{elseif $teammate.items_info.max_priority == 2} indicator yellow{elseif $teammate.items_info.max_priority == 3} indicator red{/if}">{$teammate.items_info.count}</span>
+                            <i class="icon16 userpic20" style="background-image: url({$teammate.photo_url})"
+                               alt="{$teammate.name|escape}" data-pl-contact-id="{$team_id}"></i>{$teammate.name|escape}
+                            {if !empty($new_items_count.team[$teammate.id])} <span
+                                    class="highlighted bold small black">+{$new_items_count.team[$teammate.id]}</span>{/if}
+                            {if $teammate.status == 'online'}
+                                <i class="icon10 online no-overhanging" title="[`Online`]"></i>
+                            {/if}
+                        </a>
+                    </li>
+                {/foreach}
+                {if $max_visible_in_team < count($team)}
+                    <li>
+                        <a class="pl-team-showall-link inline-link" data-pl-action="show-all-team"
+                           href="#"><b><i>[`Show everyone`] ({count($team)})</i></b></a>
+                    </li>
+                {/if}
+            </ul>
+        {else}
+            <div class="block">
+                <p class="hint align-center">{sprintf('[`Use <a href="%s">Team app</a> to invite teammates and to collaborate using the To-dos app: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/')}</p>
+            </div>
+        {/if}
+    </div>
 {/if}
 
 
@@ -128,10 +141,61 @@
 <div class="block">
     <ul class="menu-v with-icons">
         <li>
-            <a href="#/archive/"><i class="icon16 pl archive"></i>[`Archive`]{if $new_items_count.archive} <span class="highlighted bold small black">+{$new_items_count.archive}</span>{/if}</a>
+            <a href="#/archive/"><i class="icon16 pl archive"></i>[`Archive`]{if $new_items_count.archive} <span
+                        class="highlighted bold small black">+{$new_items_count.archive}</span>{/if}</a>
         </li>
         <li>
             <a href="#/settings/"><i class="icon16 settings"></i>[`Settings`]</a>
         </li>
     </ul>
 </div>
+
+
+<script>
+    'use strict';
+    (function () {
+        var $sidebarPocketsWrapper = $('[data-pl2-sidebar-wrapper="pockets"]'),
+            $loading = $('<i class="icon16 loading"></i>');
+
+        $('[data-pl2-action="add-pocket"]').on('click', function (e) {
+            e.preventDefault();
+
+            $('#pl-pocket-dialog').waDialog({
+                'height': '250px',
+                'width': '600px',
+                'url': '?module=pocket&action=settingsDialog',
+                onLoad: function() {
+                    var $dialogWrapper = $(this);
+
+                    $dialogWrapper.on('click', '#pl-pocket-color a', function (e) {
+                        e.preventDefault();
+
+                        $dialogWrapper.find('#pl-pocket-color input').val($(this).data('pl-pocket-color'));
+                        $(this).addClass('selected')
+                            .siblings().removeClass('selected')
+                    });
+                },
+                onSubmit: function (d) {
+                    d.find('.dialog-buttons input[type="button"]').after($loading);
+                    $.post('?module=pocket&action=save', d.find('form').serialize(), function (r) {
+                        $loading.remove();
+                        if (r.status === 'ok') {
+                            var $new_pocket = '<li>' +
+                                '<span class="count">0</span>' +
+                                '<a href="#/pocket/' + r.data.id + '">' +
+                                '<i class="icon16 color pl-dark-' + r.data.color + '"></i>' + r.data.name +
+                                '</a>' +
+                                '</li>';
+
+                            $sidebarPocketsWrapper.append($new_pocket);
+                            d.trigger('close');
+                        } else {
+
+                        }
+                    }, 'json');
+                    return false;
+                }
+            });
+        })
+    }());
+</script>

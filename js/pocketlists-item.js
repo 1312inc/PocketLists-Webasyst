@@ -690,7 +690,9 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         var $new_item_wrapper_hover = $('<div id="pl-item-add-wrapper-hover" style="display: none;">'),
             $top_new_item_wrapper = $new_item_wrapper.clone(),
             $textarea = $new_item_wrapper.find('textarea'),
-            $top_textarea = $top_new_item_wrapper.find('textarea');
+            $top_textarea = $top_new_item_wrapper.find('textarea'),
+            item_text = '',
+            was_at = false;
 
         var hide_new_item_wrapper = function () {
             $new_item_wrapper.slideUp(200, function () {
@@ -699,6 +701,26 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 $textarea.val('').removeClass('pl-unsaved');
                 showEmptyListMessage();
             });
+        };
+
+        var autocomplete = function(text, e) {
+            item_text = text;
+
+            if (!item_text) {
+                //hide
+            }
+
+            if (e.which === 32) {
+                was_at = false;
+                // hide
+            }
+
+            if (was_at) {
+                var term = text.indexOf('@');
+                if (item_text[item_text.length - 1]) {
+                    $.get('?module=link&action=autocomplete&term=' +)
+                }
+            }
         };
 
         var init = function () {
@@ -747,6 +769,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                         $.pocketlists.disable_prevent_close_browser();
                         hide_new_item_wrapper();
                     }
+
+
                 })
                 .on('paste', function () {
                     var self = this,

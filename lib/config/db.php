@@ -49,6 +49,18 @@ return array(
             'sort' => array('parent_id', 'sort'),
         ),
     ),
+    'pocketlists_item_link' => array(
+        'id' => array('int', 11, 'unsigned' => 1, 'null' => 0, 'autoincrement' => 1),
+        'item_id' => array('int', 11, 'null' => 0),
+        'app' => array('varchar', 50, 'null' => 0, 'default' => ''),
+        'entity_type' => array('varchar', 50, 'null' => 0, 'default' => ''),
+        'entity_id' => array('int', 11, 'null' => 0),
+        'data' => array('text'),
+        ':keys' => array(
+            'PRIMARY' => 'id',
+            'item_id' => 'item_id',
+        ),
+    ),
     'pocketlists_item_sort' => array(
         'list_id' => array('int', 11, 'null' => 0),
         'item_id' => array('int', 11, 'null' => 0),

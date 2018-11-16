@@ -261,7 +261,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
                         if (r.status === 'ok') {
                             $.pocketlists.reloadSidebar();
                             if (list_id === -1) {
-                                $.wa.setHash('#/list/' + r.data.id + '/');
+                                $.wa.setHash('#/pocket/'+pocket_id+'/list/' + r.data.id + '/');
                             }
                         } else {
 
