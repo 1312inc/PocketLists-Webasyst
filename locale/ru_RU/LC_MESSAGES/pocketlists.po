@@ -1071,7 +1071,7 @@ msgstr "отправил задачу пользователю"
 
 #: /wa-apps/pocketlists/lib/config/app.php:3
 msgid "To-dos"
-msgstr "Дела"
+msgstr "Задачи"
 
 #: /wa-apps/pocketlists/lib/config/pocketlistsRightConfig.class.php:10
 msgid "Can create to-dos to self"
