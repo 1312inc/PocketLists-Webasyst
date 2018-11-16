@@ -3,15 +3,15 @@
 /**
  * Class pocketlistsItemLink
  */
-class pocketlistsItemLink
+abstract class pocketlistsItemLink
 {
-    protected $app = 'system';
-
     /**
      * pocketlistsItemLink constructor.
      */
     public function __construct()
     {
-        wa($this->app);
+        wa($this->getApp());
     }
+
+    abstract function getApp();
 }

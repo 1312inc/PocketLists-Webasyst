@@ -15,27 +15,46 @@ class pocketlistsItemLinkShop extends pocketlistsItemLink implements pocketlists
     }
 
     /**
+     * @return string
+     */
+    public function getApp()
+    {
+        return 'shop';
+    }
+
+    /**
      * @param        $type
      * @param string $term
      * @param int    $count
      *
      * @return array
      */
-    public function autocomplete($type, $term, $count = 10)
+    public function autocomplete($term, $type = '', $count = 10)
     {
         $result = [];
 
-        switch ($type) {
-            case self::TYPE_ORDER:
-                $orders = (new shopOrderModel())
-                    ->select('*')
-                    ->where("id like '%s:term%'", ['term' => $term])
-                    ->limit($count)
-                    ->fetchAll();
+        foreach ($this->getTypes() as $type) {
+            $method = sprintf('autocomplete%s', ucfirst($type));
+            if (method_exists($this, $method)) {
+                $result[$type] = $this->$method($term, $count);
+            }
+        }
 
-                foreach ($orders as $order) {
-                    $result[] = 'Order '. shopHelper::encodeOrderId($order['id']);
-                }
+        return $result;
+    }
+
+    protected function autocompleteOrder($term, $count)
+    {
+        $result = [];
+
+        $orders = (new shopOrderModel())
+            ->select('*')
+            ->where("id like :term", ['term' => $term.'%'])
+            ->limit($count)
+            ->fetchAll();
+
+        foreach ($orders as $order) {
+            $result[] = 'Order '.shopHelper::encodeOrderId($order['id']);
         }
 
         return $result;
