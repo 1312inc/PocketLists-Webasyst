@@ -84,7 +84,7 @@
 
 <main id="pl-list-content" class="pl-list-content">
 
-    <div class="pl-items pl-{$list.color|default:'none'}">
+    <div class="pl-items">
         <header class="pl-list-title pl-title">
             <input type="hidden" name="pocket_id" value="{$pocket->pk}">
 
@@ -116,16 +116,16 @@
 
             <h1>
                 <input type="hidden" value="{$list.id|default:-1}" id="pl-list-id">
-                {if !$archive}
+                {* MOVED TO DROPDOWN if !$archive}
                 <label class="pl-done-label">
                     <input type="checkbox" class="pl-done" id="pl-list-complete"{if $print} disabled="disabled"{/if}>
                     <span></span>
                 </label>
-                {/if}
+                {/if *}
                 {if $new && !$archive}
                     <input type="text" placeholder="{sprintf('[`List #%d`]', $new_list_id)}" id="pl-new-list-input" class="bold" />
                 {else}
-                    <span id="pl-list-name">{$list.name|default:' '|escape}</span>
+                    <span id="pl-list-name"{if isset($list.color) && {$list.color}!='none'} class="pl-dark-{$list.color}-label"{/if}>{$list.name|default:' '|escape}</span>
                 {/if}
             </h1>
         </header>
