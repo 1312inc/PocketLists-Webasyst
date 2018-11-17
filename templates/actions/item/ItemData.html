@@ -45,13 +45,13 @@
         {if !empty($item.key_list_id)}
             <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$item.list_icon|default:'li-list@2x.png'});"></i>
         {else}
-            <input type="checkbox" class="pl-done{if isset($item.calc_priority)}{if $item.calc_priority == 1} pl-green{elseif $item.calc_priority == 2} pl-yellow{elseif $item.calc_priority == 3} pl-red{/if}{/if}" {if $item.status == 1}checked="checked"{/if}{if isset($archive) && $archive == true}disabled{/if}>
+            <input type="checkbox" class="pl-done{if isset($item.calc_priority)}{if $item.calc_priority == 1} pl-priority-green{elseif $item.calc_priority == 2} pl-priority-yellow{elseif $item.calc_priority == 3} pl-priority-red{elseif $item.calc_priority == 4} pl-priority-black{elseif $item.calc_priority == 5} pl-priority-fire{/if}{/if}" {if $item.status == 1}checked="checked"{/if}{if isset($archive) && $archive == true}disabled{/if}>
             <span></span>
         {/if}
     </label>
     <label class="pl-select-label">
         <input type="checkbox" class="pl-is-selected" {if isset($archive) && $archive == true || !empty($item.key_list_id)}disabled{/if}>
-        <span class="pl-item-name">
+        <span class="pl-item-name{if isset($item.calc_priority) && $item.calc_priority == 5} bold red{/if}">
             {if !empty($item.key_list_id)}
                 <a href="#/list/{$item.list_id}/"><span class="pl-{$item.list_color}">{$item.name|default:' '|nl2br}</span></a>
             {else}
@@ -67,10 +67,10 @@
 
         {if !empty($item.due_datetime)}
         <br>
-        <span class="small bold {if $item.calc_priority == 0}pl-due-someday{elseif $item.calc_priority == 1}pl-due-tomorrow{elseif $item.calc_priority == 2}pl-due-today{elseif $item.calc_priority == 3}pl-due-overdue{/if}">{$item.due_datetime|wa_date:'humandatetime'}</span>
+        <span class="small bold {if $item.calc_priority == 0}pl-due-someday{elseif $item.calc_priority == 1}pl-due-tomorrow{elseif $item.calc_priority == 2}pl-due-today{elseif $item.calc_priority >= 3}pl-due-overdue{/if}">{$item.due_datetime|wa_date:'humandatetime'}</span>
         {else if !empty($item.due_date)}
         <br>
-        <span class="small bold {if $item.calc_priority == 0}pl-due-someday{elseif $item.calc_priority == 1}pl-due-tomorrow{elseif $item.calc_priority == 2}pl-due-today{elseif $item.calc_priority == 3}pl-due-overdue{/if}">{waDateTime::date(waDateTime::getFormat('humandate'), $item.due_date)}</span>
+        <span class="small bold {if $item.calc_priority == 0}pl-due-someday{elseif $item.calc_priority == 1}pl-due-tomorrow{elseif $item.calc_priority == 2}pl-due-today{elseif $item.calc_priority >= 3}pl-due-overdue{/if}">{waDateTime::date(waDateTime::getFormat('humandate'), $item.due_date)}</span>
         {/if}
         {if $item.status != 1}
             {* {if !empty($item.assigned_contact_id)}<strong class="hint italic"><br>{$item.contact.username|escape} &rarr; {$item.assigned_contact.username|escape}</strong>{/if} *}

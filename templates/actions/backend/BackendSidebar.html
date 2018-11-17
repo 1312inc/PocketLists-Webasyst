@@ -95,15 +95,15 @@
 {/if} *}
 
 <!-- TEAM -->
-{$max_visible_in_team = 2}
+{$max_visible_in_team = 5}
 {if pocketlistsRBAC::canAssign()}
     <div class="block">
         <h5 class="heading">
-            {if $team && count($team) > $max_visible_in_team}<i class="icon16 darr"
-                                                                data-pl-collapsible="team"></i>{/if}[`Team`]
+            {* if $team && count($team) > $max_visible_in_team}<i class="icon16 darr" data-pl-collapsible="team"></i>{/if *}
+            [`Team`]
         </h5>
         {if count($team)}
-            <ul class="menu-v with-icons collapsible123" data-pl-sidebar-block="team"
+            <ul class="menu-v with-icons" data-pl-sidebar-block="team"
                 data-pl-collapsible-wrapper="team">
                 {foreach $team as $team_id => $teammate}
                     <li data-pl-team-id="{$teammate.id}"

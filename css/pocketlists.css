@@ -90,9 +90,9 @@ ul.pl-lists li a .pl-list-name { display: block; padding: 9px 10px 11px; margin-
 ul.pl-lists li a .count { font-size: 14px; margin-top: 10px; margin-right: 8px; }
 ul.pl-lists li a .count.indicator { font-weight: bolder; padding: 2px 6px 4px; margin-top: 8px; margin-right: 3px; }
 ul.pl-lists li a:hover { background: rgba(0,0,0,0.03); }
-ul.pl-lists .indicator.red { background-color: #dd1713; }
-ul.pl-lists .indicator.yellow { background-color: #ffa71a; color: #fff; }
-ul.pl-lists .indicator.green { background-color: #64b320; color: #fff; }
+.indicator.red { background-color: #dd1713; }
+.indicator.yellow { background-color: #ffa71a; color: #fff; }
+.indicator.green { background-color: #64b320; color: #fff; }
 
 
 /* ul.pl-lists { background: #fff; padding: 0; margin: 0; list-style: none; }
@@ -178,14 +178,17 @@ label.pl-done-label i.icon16.userpic20 {
 }
 
 .pl-done { display: none; }
-.pl-done + span { display: block; float:left; width:16px; height:16px; background: rgba(255,255,255,0.2); border: 1px solid rgba(0,0,0,0.2); border-radius: 50%; position: relative; top: 2px; left: 17px; cursor: pointer; }
+.pl-done + span { display: block; float:left; width:16px; height:16px; background: rgba(255,255,255,0.2); border: 2px solid rgba(0,0,0,0.2); border-radius: 50%; position: relative; top: 1px; left: 16px; cursor: pointer; }
 .pl-done + span.transparent { border-color: transparent;background: none; }
-.pl-done.pl-green + span { background: #7ac33c; }
-.pl-done.pl-yellow + span { background: #f5cf24; }
-.pl-done.pl-red + span { background: #f7696d; }
+.pl-done.pl-priority-green + span, .pl-done.pl-priority-yellow + span, .pl-done.pl-priority-red + span, .pl-done.pl-priority-black + span { background: url('../img/item-bullets-priorities.png') no-repeat; background-size: 80px 20px; border: none; width: 20px; height: 20px; }
+.pl-done.pl-priority-red + span { background-position: 0 0; }
+.pl-done.pl-priority-yellow + span { background-position: -20px 0; }
+.pl-done.pl-priority-green + span { background-position: -40px 0; }
+.pl-done.pl-priority-black + span { background-position: -60px 0; }
+.pl-done.pl-priority-fire + span { background: url('../img/item-bullets-priority-fire.gif') no-repeat; background-size: 30px 30px; border: none; width: 30px; height: 30px; top: -9px; left: 12px; }
 
-.pl-done:checked + span, .pl-done:disabled:checked + span {background: transparent url('../img/pl-done-checkbox.png') no-repeat !important;background-size: 16px 16px !important; border: none; border-radius: 0; opacity: 0.3;}
-.pl-done + span.pl-add-todo {background: transparent url('../img/pl-add-todo.png') no-repeat !important;background-size: 13px 13px !important; border: none; border-radius: 0; opacity: 0.3; left: 20px; top: 1px; cursor: default; }
+.pl-done:checked + span, .pl-done:disabled:checked + span {background: transparent url('../img/pl-done-checkbox.png') no-repeat !important;background-size: 16px 16px !important; border: none; border-radius: 0; opacity: 0.2; top: 3px; left: 19px; }
+.pl-done + span.pl-add-todo {background: transparent url('../img/pl-add-todo.png') no-repeat !important; background-size: 13px 13px !important; border: none; border-radius: 0; opacity: 0.3; left: 20px; top: 4px; cursor: default; }
 .pl-done + span.pl-add-todo.transparent { background: none !important; }
 
 /* Discussions
@@ -278,9 +281,9 @@ input#pl-new-list-input:focus,
 .pl-list-access .profile img { width: 32px; height: 32px; }
 .pl-list-access .profile .hint { line-height: 1.3em; }
 
-.pl-due-overdue { color: red; }
-.pl-due-today { color: #ca0; }
-.pl-due-tomorrow { color: green; }
+.pl-due-overdue { color: #dd1713; }
+.pl-due-today { color: #ffa71a; }
+.pl-due-tomorrow { color: #64b320; }
 .pl-due-someday { color: #aaa; }
 .gray .pl-due-overdue,
 .gray .pl-due-today,
@@ -306,7 +309,7 @@ input#pl-new-list-input:focus,
 .pl-list-items ul.menu-v li ul li ul li ul li ul li ul li ul li ul li ul li .pl-item { padding-left: 212px; }
 .pl-list-items ul.menu-v li ul li ul li ul li ul li ul li ul li ul li ul li ul li .pl-item { padding-left: 238px; }
 
-.pl-list-items ul.menu-v li .pl-item .pl-item-list-name { font-size: 0.8em; color: rgba(0,0,0,0.4); font-weight: bold; padding-left: 49px; margin-bottom: 3px; }
+.pl-list-items ul.menu-v li .pl-item .pl-item-list-name { font-size: 0.8em; color: rgba(0,0,0,0.4); font-weight: bold; padding-left: 49px; margin-bottom: 0px; }
 .pl-list-items ul.menu-v li .pl-item .pl-item-list-name.pl-dark-none-label { color: #aaa !important; }
 .pl-list-items ul.menu-v li .pl-item .pl-assignee { font-size: 0.8em; font-style: italic; color: rgba(0,0,0,0.4); font-weight: bold; padding-left: 49px; margin-bottom: 3px; }
 .pl-list-items ul.menu-v li .pl-item .pl-meta { display: inline-block; float: right; margin: 0 0 0 20px; padding: 2px 16px 16px; position: relative; z-index: 1; }
@@ -432,7 +435,15 @@ input#pl-new-list-input:focus,
 .pl-details .fields.form .field .value { margin-left: 0 !important; }
 .pl-details .fields.form input.long { width: 95% !important; min-width: 0 !important; }
 .pl-details .fields.form textarea { width: 98% !important; min-width: 0 !important; }
-.pl-details i.icon16.color { width: 24px; height: 24px; }
+/* .pl-details i.icon16.color { width: 24px; height: 24px; } */
+.pl-details .pl-done + span { margin-left: 6px; left: 0; top: 8px; }
+.pl-details .pl-done.pl-priority-fire + span { top: -2px; }
+.pl-details .selected .pl-done + span { background-size: 120px 30px; width: 24px; height: 24px; border-width: 3px; top: 3px; }
+.pl-details .selected .pl-done.pl-priority-green + span { background-position-x: -60px; width: 30px; height: 30px; }
+.pl-details .selected .pl-done.pl-priority-yellow + span { background-position-x: -30px; width: 30px; height: 30px; }
+.pl-details .selected .pl-done.pl-priority-red + span { width: 30px; height: 30px; }
+.pl-details .selected .pl-done.pl-priority-black + span { background-position-x: -90px; width: 30px; height: 30px; }
+.pl-details .selected .pl-done.pl-priority-fire + span { background-size: 40px 40px; top: -8px; width: 40px; height: 40px; }
 
 .pl-close,
 .pl-close:visited { font-size: 2em; color: rgba(0,0,0,0.3) !important; text-decoration: none; float: right; position: relative; z-index: 1; margin-right: 10px; }
@@ -454,6 +465,7 @@ input.pl-due-date-input { width: 130px !important; min-width: 130px !important; 
 .icon16.pl.comments { background-position:-96px 0; }
 .icon16.pl.add { background-position:0 -16px; }
 .icon16.pl.darr { background-position:-16px -16px; }
+.icon16.pl-user-online:after { cont}
 
 a:hover .icon16.pl.add { background-position:0 -32px; }
 a:hover .icon16.pl.darr { background-position:-16px -32px; }

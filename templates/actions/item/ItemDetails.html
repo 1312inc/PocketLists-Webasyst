@@ -81,10 +81,12 @@
             <div class="name">[`Priority`]</div>
             <div class="value no-shift" id="pl-item-priority">
                 <input type="hidden" name="item[priority]" value="{$item.priority|default:0}"/>
-                <a href="#" {if $item.priority == 0}class="selected"{/if} data-pl-item-priority="0"><i class="icon16 color pl-white"></i></a>
-                <a href="#" {if $item.priority == 1}class="selected"{/if} data-pl-item-priority="1"><i class="icon16 color pl-dark-green"></i></a>
-                <a href="#" {if $item.priority == 2}class="selected"{/if} data-pl-item-priority="2"><i class="icon16 color pl-dark-yellow"></i></a>
-                <a href="#" {if $item.priority == 3}class="selected"{/if} data-pl-item-priority="3"><i class="icon16 color pl-dark-red"></i></a>
+                <a href="#" {if $item.priority == 0}class="selected"{/if} data-pl-item-priority="0"><input type="checkbox" class="pl-done"><span></span></a>
+                <a href="#" {if $item.priority == 1}class="selected"{/if} data-pl-item-priority="1"><input type="checkbox" class="pl-done pl-priority-green"><span></span></a>
+                <a href="#" {if $item.priority == 2}class="selected"{/if} data-pl-item-priority="2"><input type="checkbox" class="pl-done pl-priority-yellow"><span></span></a>
+                <a href="#" {if $item.priority == 3}class="selected"{/if} data-pl-item-priority="3"><input type="checkbox" class="pl-done pl-priority-red"><span></span></a>
+                <a href="#" {if $item.priority == 4}class="selected"{/if} data-pl-item-priority="4"><input type="checkbox" class="pl-done pl-priority-black"><span></span></a>
+                <a href="#" {if $item.priority == 5}class="selected"{/if} data-pl-item-priority="5"><input type="checkbox" class="pl-done pl-priority-fire"><span></span></a>
 
             </div>
         </div>
