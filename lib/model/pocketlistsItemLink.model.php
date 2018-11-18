@@ -52,7 +52,7 @@ class pocketlistsItemLinkModel extends kmModelExt
     public function renderAutocomplete()
     {
         $template = wa()->getAppPath(
-            sprintf('templates/include/item_linked_entities/autocomplete/%s.%s.html', $this->app, $this->entity_type),
+            sprintf('templates/include/item_linked_entities/%s.%s.autocomplete.html', $this->app, $this->entity_type),
             pocketlistsHelper::APP_ID
         );
 
@@ -76,7 +76,7 @@ class pocketlistsItemLinkModel extends kmModelExt
     public function renderPreview()
     {
         $template = wa()->getAppPath(
-            sprintf('templates/include/item_linked_entities/%s.%s.html', $this->app, $this->entity_type),
+            sprintf('templates/include/item_linked_entities/%s.%s.preview.html', $this->app, $this->entity_type),
             pocketlistsHelper::APP_ID
         );
 
