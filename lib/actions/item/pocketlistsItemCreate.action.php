@@ -79,6 +79,15 @@ class pocketlistsItemCreateAction extends waViewAction
                 $im->addPriorityData($data[$i]);
 
                 $last_id = $im->insert($data[$i], 1);
+
+                if (!empty($data[$i]['links'])) {
+                    foreach ($data[$i]['links'] as $link) {
+                        $itemLink = new pocketlistsItemLinkModel($link['model']);
+                        $itemLink->item_id = $last_id;
+                        $itemLink->save();
+                    }
+                }
+
                 $inserted[] = $last_id;
                 $inserted_items[] = $data[$i] + array('id' => $last_id);
             }

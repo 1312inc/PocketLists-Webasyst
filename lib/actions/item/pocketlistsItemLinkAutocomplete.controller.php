@@ -13,7 +13,7 @@ class pocketlistsItemLinkAutocompleteController extends waJsonController
             return;
         }
 
-        $result = (new pocketlistsItemLinkAutocompleter())->process($term)->getFlattenResult();
+        $result = (new pocketlistsItemLinkAutocompleter())->process($term)->getResult();
 
         $this->response = $result;
     }

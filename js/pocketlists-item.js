@@ -683,57 +683,53 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         );
     };
 
-    var autocomplete = function ($textarea) {
-        var term = '',
-            hasAt = false,
-            itemText = $textarea.val(),
+    var itemLinkerCache = (function () {
+        var cache = [],
+            ttl = 100;
+
+        var now = function () {
+            return Date.now() / 1000 | 0;
+        };
+
+        return {
+            get: function (key, f) {
+                if (cache[key] && (cache[key]['time'] + ttl > now())) {
+                    return cache[key]['value'];
+                }
+                return null;
+            },
+            set: function (key, value) {
+                cache[key] = {
+                    time: now(),
+                    value: value
+                };
+            }
+        }
+    }());
+
+    var ItemLinker = function ($textarea) {
+        var itemText = $textarea.val(),
             $wrapper = $('<div data-pl2-autocomplete class="pl2-autocomplete"></div>'),
+            $preview = $('<div data-pl2-item-link-preview class="pl2-item-link-preview"></div>'),
             isOpen = false,
             $loading = $('<i class="icon16 loading"></i>'),
-            random = 0;
+            random = 0,
+            fetchedLinks = [];
 
-        if ($textarea.data('pl2-autocomplete')) {
+        if ($textarea.data('pl2-itemlinker')) {
             return;
         }
 
-        $textarea.data('pl2-autocomplete', true);
-
-        debugger;
+        $textarea.data('pl2-itemlinker', true);
 
         var log = function (msg) {
             window.console && console.log('pl2 autocomplete', msg);
-        }
-
-        function doGetCaretPosition(oField) {
-            // Initialize
-            var iCaretPos = 0;
-
-            // IE Support
-            if (document.selection) {
-                // Set focus on the element
-                oField.focus();
-
-                // To get cursor position, get empty selection range
-                var oSel = document.selection.createRange();
-
-                // Move selection start to 0 position
-                oSel.moveStart('character', -oField.value.length);
-
-                // The caret position is selection length
-                iCaretPos = oSel.text.length;
-            }
-
-            // Firefox support
-            else if (oField.selectionStart || oField.selectionStart == '0') {
-                iCaretPos = oField.selectionStart;
-            }
-
-            // Return results
-            return iCaretPos;
-        }
+        };
 
         var canShowAutocomplete = function () {
             log('canShowAutocomplete');
+
+            itemText = $textarea.val();
 
             if (!itemText) {
                 log('no text');
@@ -762,7 +758,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             var term = itemText.slice(i + 1, j);
 
             return term;
-        }
+        };
 
         var showWrapper = function () {
             log('showWrapper');
@@ -776,7 +772,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             isOpen = true;
 
             $wrapper.insertAfter($textarea);
-        }
+        };
 
         var hideWrapper = function () {
             log('hideWrapper');
@@ -784,40 +780,50 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             isOpen = false;
 
             $wrapper.empty().remove();
-        }
+        };
 
         var showLoading = function () {
             log('showLoading');
 
             $wrapper.prepend($loading);
-        }
+        };
 
         var hideLoading = function () {
             log('hideLoading');
 
             $loading.remove();
-        }
+        };
 
-        var updateResults = function (results) {
+        var fetchResults = function (results) {
             log('updateResults');
 
             var html = '';
+            $.each(results, function (i, typeResults) {
+                log(typeResults);
 
-            $.each(results, function () {
-                log('Result:' + this);
+                if (!typeResults) {
+                    return;
+                }
 
-                html += '<div class="pl-autocomplete-result">' + this + '</div>';
-            })
+                $.each(typeResults.entities, function (i, entity) {
+                    var $item = $('<div class="pl-autocomplete-result" data-pl2-item-link>' + entity.autocomplete + '</div>');
 
-            $wrapper.html(html);
-        }
+                    $item.data('pl2-item-link', entity);
 
-        var getAutocomplete = function () {
-            var already_clicked = random = Math.random();
-            itemText = $textarea.val();
-            debugger;
-            if (term = canShowAutocomplete()) {
-                showWrapper();
+                    $wrapper.append($item);
+                });
+            });
+
+            showWrapper();
+        };
+
+        var getAutocomplete = function (term) {
+            var already_clicked = random = Math.random(),
+                autocompleteData = itemLinkerCache.get(term);
+
+            if (autocompleteData) {
+                fetchResults(autocompleteData);
+            } else {
                 showLoading();
 
                 $.get('?module=item&action=linkAutocomplete&term=' + term, function (r) {
@@ -833,18 +839,24 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     hideLoading();
 
                     if (r.status === 'ok') {
-                        updateResults(r.data);
+                        fetchResults(r.data);
+
+                        itemLinkerCache.set(term, r.data);
                     }
                 }, 'json')
-            } else {
-                hideWrapper();
             }
-        }
+        };
 
         $textarea
             .on('keyup', function (e) {
                 if (e.which !== 16) {
-                    getAutocomplete();
+                    var term = canShowAutocomplete();
+
+                    if (term) {
+                        getAutocomplete(term);
+                    } else {
+                        hideWrapper();
+                    }
                 }
             })
             // .on('paste', function () {
@@ -857,12 +869,43 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     getAutocomplete();
                 }, 100)
             })
-            .on('blur', function (e) {
-                log('textarea blur');
-
-                hideWrapper();
-            })
+        // .on('blur', function (e) {
+        //     log('textarea blur');
+        //
+        //     hideWrapper();
+        // })
         ;
+
+        $(document).on('click', function (e) {
+            var $target = $(e.target);
+
+            if (!$target.is($textarea) && !$target.is($wrapper) && !$target.closest('[data-pl2-autocomplete]').length && !$target.is('.pl-is-selected')) {
+                hideWrapper();
+            }
+        });
+
+        var showLinkedPreview = function (link) {
+            var $linkPreview = $('<div data-pl2-link-preview></div>');
+
+            $linkPreview.html(link.preview);
+
+            $preview.append($linkPreview);
+        };
+
+        $list_items_wrapper.on('click', '[data-pl2-item-link]', function (e) {
+            e.stopPropagation();
+
+            var linked = $textarea.data('pl2-linked-entities') || {},
+                $link = $(this),
+                link = $link.data('pl2-item-link'),
+                hash = link.model.app + link.model.entity_type + link.model.entity_id;
+
+            if (linked[hash] === undefined) {
+                linked[hash] = link;
+                showLinkedPreview(link);
+                $textarea.data('pl2-linked-entities', linked);
+            }
+        });
     };
 
     /**
@@ -880,7 +923,6 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 $('.pl-new-item-wrapper').remove();
                 $textarea.val('').removeClass('pl-unsaved');
                 showEmptyListMessage();
-                autocomplete($textarea);
             });
         };
 
@@ -893,7 +935,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 setTimeout(function () {
                     if (isEmptyList()/* && !o.showMessageOnEmptyList*/) {
                         $top_textarea.val('').trigger('focus');
-                        autocomplete($top_textarea);
+                        itemLinker($top_textarea);
                     }
                 }, 500);
             };
@@ -923,6 +965,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                         if (name) {
                             addItem.call(this, [{
                                 name: name,
+                                links: $this.data('pl2-linked-entities'),
                                 parent_id: parent_id
                             }]);
                         }
@@ -949,6 +992,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                                     if (name) {
                                         data.push({
                                             name: name,
+                                            links: [],
                                             parent_id: parent_id
                                         });
                                     }
@@ -1018,6 +1062,9 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     $textarea.focus();
                 });
             }
+
+            ItemLinker($textarea);
+            ItemLinker($top_textarea);
         };
 
         init();

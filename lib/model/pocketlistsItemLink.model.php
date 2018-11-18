@@ -3,10 +3,10 @@
 /**
  * Class pocketlistsItemLinkModel
  *
- * @property int $item_id
+ * @property int    $item_id
  * @property string $app
  * @property string $entity_type
- * @property int $entity_id
+ * @property int    $entity_id
  * @property string $data
  */
 class pocketlistsItemLinkModel extends kmModelExt
@@ -44,22 +44,8 @@ class pocketlistsItemLinkModel extends kmModelExt
     /**
      * @return string
      */
-    public function renderLinkedItem()
+    public function __toString()
     {
-        $template = wa()->getAppPath(
-            sprintf('templates/include/item_linked_entities/%s.%s.html', $this->app, $this->entity_type),
-            pocketlistsHelper::APP_ID
-        );
-
-        $render = wa()->event('item.render_linked', $this);
-
-        if (!$render && file_exists($template)) {
-            $this->getView()->clearAllAssign();
-            $this->getView()->assign('link', $this);
-
-            $render = $this->getView()->fetch($template);
-        }
-
-        return $render;
+        return ucfirst($this->entity_type).' #'.$this->entity_id;
     }
 }

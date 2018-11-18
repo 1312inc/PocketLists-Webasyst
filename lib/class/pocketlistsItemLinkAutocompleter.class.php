@@ -28,7 +28,7 @@ class pocketlistsItemLinkAutocompleter
         $this->linkEntities = wa()->getConfig()->getLinkedApps();
 
         if (empty($this->linkEntities)) {
-            return false;
+            return;
         }
 
         $this->linkers = [];
@@ -53,12 +53,12 @@ class pocketlistsItemLinkAutocompleter
     {
         $this->result = [];
 
-        foreach ($this->linkers as $type => $linker) {
-            if ($types && !in_array($type, $types)) {
+        foreach ($this->linkers as $app => $linker) {
+            if ($types && !in_array($app, $types)) {
                 continue;
             }
 
-            $this->result[$type] = $linker->autocomplete($term);
+            $this->result = array_merge($this->result, $linker->autocomplete($term));
         }
 
         return $this;

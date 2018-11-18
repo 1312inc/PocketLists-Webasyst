@@ -5,7 +5,7 @@
  *
  * @property integer|array $pk
  */
-class kmModelExt extends waModel implements ArrayAccess
+class kmModelExt extends waModel implements ArrayAccess, JsonSerializable
 {
     const INSERT_DELAYED = true;
 
@@ -755,5 +755,22 @@ class kmModelExt extends waModel implements ArrayAccess
         }
 
         return $field;
+    }
+
+    /**
+     * @return false|mixed|string
+     * @throws waDbException
+     */
+    public function jsonSerialize()
+    {
+        return json_encode($this->getAttributes(), JSON_UNESCAPED_UNICODE);
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return __CLASS__;
     }
 }

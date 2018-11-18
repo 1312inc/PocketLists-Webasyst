@@ -33,10 +33,14 @@ class pocketlistsItemLinkShop extends pocketlistsItemLink implements pocketlists
     {
         $result = [];
 
-        foreach ($this->getTypes() as $type) {
-            $method = sprintf('autocomplete%s', ucfirst($type));
+        foreach ($this->getTypes() as $entityType) {
+            $method = sprintf('autocomplete%s', ucfirst($entityType));
             if (method_exists($this, $method)) {
-                $result[$type] = $this->$method($term, $count);
+                $result[] = [
+                    'app'      => $this->getApp(),
+                    'type'     => $entityType,
+                    'entities' => $this->$method($term, $count),
+                ];
             }
         }
 
@@ -54,9 +58,28 @@ class pocketlistsItemLinkShop extends pocketlistsItemLink implements pocketlists
             ->fetchAll();
 
         foreach ($orders as $order) {
-            $result[] = 'Order '.shopHelper::encodeOrderId($order['id']);
+            $linkEntity = new pocketlistsItemLinkModel(
+                [
+                    'app'         => $this->getApp(),
+                    'entity_type' => 'order',
+                    'entity_id'   => $order['id'],
+                ]
+            );
+            $this->setItemLinkModel($linkEntity);
+
+            $result[] = [
+                'model'        => $linkEntity->getAttributes(),
+                'autocomplete' => $this->renderAutocompleteItemLink(),
+                'preview'      => $this->renderPreviewItemLink(),
+            ];
         }
 
         return $result;
     }
+
+    public function getLink()
+    {
+        // TODO: Implement getLink() method.
+    }
+
 }

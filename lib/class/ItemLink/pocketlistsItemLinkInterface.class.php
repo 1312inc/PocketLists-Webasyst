@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Interface pocketlistsItemLinkInterfacez
+ */
 interface pocketlistsItemLinkInterface
 {
     /**
@@ -19,4 +22,35 @@ interface pocketlistsItemLinkInterface
      * @return array
      */
     public function autocomplete($term, $type = '', $count = 10);
+
+    /**
+     * @param pocketlistsItemLinkModel $model
+     *
+     * @return pocketlistsItemLinkInterface
+     */
+    public function setItemLinkModel(pocketlistsItemLinkModel $model);
+
+    /**
+     * @return pocketlistsItemLinkModel
+     */
+    public function getItemLinkModel();
+
+    /**
+     * @return string
+     */
+    public function getLink();
+
+    /**
+     * @param pocketlistsItemLinkModel $link
+     *
+     * @return string
+     */
+    public function renderAutocompleteItemLink();
+
+    /**
+     * @param pocketlistsItemLinkModel $link
+     *
+     * @return string
+     */
+    public function renderPreviewItemLink();
 }
