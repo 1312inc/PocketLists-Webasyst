@@ -69,7 +69,7 @@
 .pl-link-box { display: block; padding: 18px 20px; background: rgba(0,0,0,0.04); }
 .pl-link-box.pl-delete-box:hover { background: #ffe3e3; }
 
-.pl-teammate-userpic { width: 144px; height: 144px; border: 3px solid #fff; margin-bottom: 20px; }
+.pl-teammate-userpic { width: 96px; height: 96px; border: 3px solid #fff; margin-bottom: 20px; }
 .pl-teammate-nolists-disclaimer { font-size: 0.9em; color: #aaa; text-align: center; }
 .pl-teammate-nolists-disclaimer a { color: #888; }
 
@@ -90,6 +90,10 @@ ul.menu-v.with-icons i.icon16.color { margin: 2px 7px 1px -18px; width: 12px; he
 
 .pl-team-showall-link { font-size: 0.95em; color: #aaa !important; }
 
+.indicator.red { background-color: #dd1713; }
+.indicator.yellow { background-color: #ffa71a; color: #fff; }
+.indicator.green { background-color: #64b320; color: #fff; }
+
 /* Lists
 -------- */
 
@@ -100,10 +104,12 @@ ul.pl-lists li a .pl-list-name { display: block; padding: 9px 10px 11px; margin-
 ul.pl-lists li a .count { font-size: 14px; margin-top: 10px; margin-right: 8px; }
 ul.pl-lists li a .count.indicator { font-weight: bolder; padding: 2px 6px 4px; margin-top: 8px; margin-right: 3px; }
 ul.pl-lists li a:hover { background: rgba(0,0,0,0.03); }
-.indicator.red { background-color: #dd1713; }
-.indicator.yellow { background-color: #ffa71a; color: #fff; }
-.indicator.green { background-color: #64b320; color: #fff; }
-
+ul.pl-lists li a.pl-is-selected { background: rgba(0,0,0,0.02); }
+.pl-lists-header { padding: 13px; }
+    /* .pl-lists-add { display: block; padding: 15px 10px 16px 58px; position: relative; cursor: pointer; }
+    .pl-lists-add i { background: transparent url('../img/pl-add-todo.png') no-repeat !important; background-size: 13px 13px !important; border: none; border-radius: 0; opacity: 0.3; left: 21px; top: 15px; position: absolute; display: block; width: 13px; height: 13px; }
+    .pl-lists-add span { color: #aaa; }
+    .pl-lists-add:hover { background: rgba(0,0,0,0.03); } */
 
 /* ul.pl-lists { background: #fff; padding: 0; margin: 0; list-style: none; }
 ul.pl-lists li { display: block; }
@@ -279,10 +285,10 @@ input#pl-new-list-input:focus,
 .pl-title h1 .pl-done:disabled:checked + span { background-size: 24px 24px !important; }
 .pl-title h1 .loading { margin-left: 3px; margin-top: 8px; opacity: 0.5; }
 .pl-title h1.not-padded { padding-left: 0; }
-
 .pl-title ul.menu-h li { margin: 2px 3px 0 !important; padding: 0 !important; vertical-align: middle; }
 .pl-title ul.menu-h li a.pl-edit { margin-top: -3px !important; }
 .pl-title ul.menu-h li.pl-list-favorite a { margin: 0 3px !important; }
+.pl-title p { max-width: 80%; }
 
 .pl-list-access { line-height: 1.2em; margin: 20px 0 10px; }
 .pl-list-access h5 { margin-bottom: 10px; }
@@ -328,7 +334,7 @@ input#pl-new-list-input:focus,
 .pl-item .pl-userpic { display: inline-block; float: right; margin-left: 5px; margin-top: 1px; }
 .pl-item .pl-userpic i.icon16 { margin-left: 5px; }
 .pl-item .pl-comment { opacity: 0; margin-top: -4px; display: inline-block; float: right; }
-.pl-item .pl-comment.pl-comment-count { opacity: 1; color: #0071e2; font-weight: bold; background: rgba(0,0,0,0.07); margin-left: 4px !important; border-radius: 13px; padding: 3px 6px 3px 6px; font-size: 0.9em; margin-top: -3px; margin-right: 7px; }
+.pl-item .pl-comment.pl-comment-count { opacity: 1; color: #0071e2; font-weight: bold; background: rgba(0,0,0,0.07); margin-left: 4px !important; border-radius: 13px; padding: 3px 7px 3px 6px; font-size: 0.9em; margin-top: -3px; margin-right: 7px; }
 .pl-item .pl-comment.pl-comment-count i.icon16 { margin-top: -1px; margin-right: 2px; }
 /* .pl-item .pl-item .pl-comment { margin-left: 1px; } */
 .pl-item .pl-lastaction-datetime { float: right; }
@@ -352,7 +358,8 @@ input#pl-new-list-input:focus,
 .pl-label.pl-dark-none { background: #bbb !important; }
 .pl-item .pl-label { margin-left: -4px !important; }
 
-.pl-edit { opacity: 0; display: inline-block; font-size: 0.9em; }
+.pl-edit { opacity: 0; display: inline-block; font-size: 0.9em; position: absolute; }
+.pl-edit i.icon16 { margin-left: 4px; }
 .pl-list-title .pl-edit.pl-list-due { opacity: 1; font-weight: bold; font-size: 1em; }
 .pl-list-title:hover .pl-edit,
 .pl-item:hover .pl-edit,
@@ -372,7 +379,7 @@ input#pl-new-list-input:focus,
 .pl-chat { padding: 13px 25px 15px 0px; max-width: 700px; margin: 0 auto; }
 .pl-chat .pl-cue { margin-bottom: 23px; width: 100%; }
 .pl-chat .pl-cue .pl-cue-inner { width: 70%; }
-.pl-chat .pl-cue .pl-bubble { background: rgba(0,0,0,0.07); border-radius: 18px; padding: 7px 13px; position: relative; line-height: 1.4em; }
+.pl-chat .pl-cue .pl-bubble { background: rgba(0,0,0,0.07); border-radius: 18px; padding: 5px 13px; position: relative; line-height: 1.4em; }
 .pl-chat .pl-cue .pl-bubble-arrow {
   display: block;
   margin-top: 0;

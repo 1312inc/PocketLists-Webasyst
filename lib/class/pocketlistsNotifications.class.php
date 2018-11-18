@@ -428,7 +428,8 @@ class pocketlistsNotifications
                             self::sendMail(
                                 array(
                                     'contact_id' => $user_id,
-                                    'subject' => 'string:💬 {sprintf("[`New comment on %s`]", str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:32)}',
+                                    //'subject' => 'string:💬 {sprintf("[`New comment on %s`]", str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:32)}',
+                                    'subject' => 'string:💬 {str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:64}',
                                     'body' => wa()->getAppPath('templates/mails/newcomment.html'),
                                     'variables' => array(
                                         'item' => $item,
@@ -464,7 +465,8 @@ class pocketlistsNotifications
                             self::sendMail(
                                 array(
                                     'contact_id' => $user_id,
-                                    'subject' => 'string:💬 {sprintf("[`New comment on %s`]", str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:32)}',
+                                    //'subject' => 'string:💬 {sprintf("[`New comment on %s`]", str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:32)}',
+                                    'subject' => 'string:💬 {str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:64}',
                                     'body' => wa()->getAppPath('templates/mails/newcomment.html'),
                                     'variables' => array(
                                         'item' => $item,
@@ -500,7 +502,8 @@ class pocketlistsNotifications
                             self::sendMail(
                                 array(
                                     'contact_id' => $user_id,
-                                    'subject' => 'string:💬 {sprintf("[`New comment on %s`]", str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:32)}',
+                                    //'subject' => 'string:💬 {sprintf("[`New comment on %s`]", str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:32)}',
+                                    'subject' => 'string:💬 {str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:64}',
                                     'body' => wa()->getAppPath('templates/mails/newcomment.html'),
                                     'variables' => array(
                                         'item' => $item,

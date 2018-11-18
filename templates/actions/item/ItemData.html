@@ -1,8 +1,10 @@
+{if empty($item.key_list_id)} {* stating Nov 2018, we don't show lists as items; TODO: clean up .key_list_id check in the code with time *}
+
 <div class="pl-item{if !empty($item.assigned_contact_id) && $item.assigned_contact_id != $wa->user()->getId() && $item.status != 1} pl-item-assigned{/if}{if $item.status == 1} gray{/if}" {if $item.assigned_contact_id}data-pl-assigned-contact="{$item.assigned_contact_id}"{/if}>
     {if !$item.status && empty($item.key_list_id) && !(isset($archive) && $archive)}<div class="pl-item-drag-handle" title="[`Sort`]" data-pl-action="item-sort"></div>{/if}
 
     {if $item.list_id != NULL}<div class="pl-item-list-name pl-dark-{$item.list_color}-label">{$item.list_name|truncate:32|escape}</div>{/if}
-    {* {if !empty($item.assigned_contact_id)}<div class="pl-assignee">{$item.contact.username|escape} &rarr; {$item.assigned_contact.username|escape}</div>{/if} *}
+    {if !empty($item.assigned_contact_id)}<div class="pl-assignee">{* {$item.contact.username|escape} &rarr; *}@ {$item.assigned_contact.username|escape}</div>{/if}
 
     <div class="pl-meta">
         {if !(isset($archive) && $archive)}
@@ -22,7 +24,7 @@
 
             {else}
 
-                {if !empty($item.assigned_contact_id)}
+                {if 0&& !empty($item.assigned_contact_id)}
                     {* assigned to *}
                     <span class="pl-userpic"><i class="icon16 userpic20" style="background-image: url({$item.assigned_contact.userpic})" alt="{$item.assigned_contact.username|escape}" title="{sprintf('[`Assigned to %s`]', $item.assigned_contact.username|escape)}"></i></span>
                 {else}
@@ -62,7 +64,8 @@
         </span>
 
         {if !(isset($archive) && $archive == true)}
-            <a href="#" class="pl-edit inline-link"><b><i>[`Edit`]</i></b></a>
+            {* <a href="#" class="pl-edit inline-link"><b><i>[`Edit`]</i></b></a> *}
+            <a href="#" class="pl-edit inline-link"><i class="icon16 edit"></i></a>
         {/if}
 
         {if !empty($item.due_datetime)}
@@ -97,3 +100,5 @@
         </div>
     </label>
 </div>
+
+{/if}
