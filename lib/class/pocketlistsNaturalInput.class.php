@@ -440,38 +440,65 @@ class pocketlistsNaturalInput
         }
     }
 
-    public static function matchLinks($string, $encode = true)
+    /**
+     * @param string $string
+     *
+     * @return mixed
+     */
+    public static function matchLinks($string)
     {
-        $pattern = '(?i)\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:\'".,<>?«»“”‘’]))';
-        $replace = array();
+        $links = self::getLinks($string);
 
-        $i = 0;
-        while (preg_match(
-            '/' . $pattern . '/miu',
-            $string,
-            $matches)
-        ) {
-            $i++;
-            $now = time();
-            $replace_key = "###{$i}1312{$now}WILLBEREPLACEDWITHLINK{$now}1312{$i}###";
-            $string = str_replace($matches[1], $replace_key, $string);
-            $replace[$replace_key] = self::replaceWithLink($matches[1]);
+        foreach ($links as $link) {
+            $href = self::replaceWithLink($link);
+            $string = str_replace($link, $href, $string);
         }
-        if ($encode) {
-            $string = htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
-        }
-        $string = str_replace(array_keys($replace), $replace,$string);
 
         return $string;
     }
 
-    private static function replaceWithLink($url)
+    /**
+     * @param string $string
+     *
+     * @return array
+     */
+    public static function getLinks($string)
     {
-        if (strpos($url, 'http') === 0) {
-            return '<a href="' . $url . '" target="_blank">' . $url . '</a>';
-        } else {
-            return '<a href="http://' . $url . '" target="_blank">' . $url . '</a>';
+        $pattern = '(?i)\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:\'".,<>?«»“”‘’]))';
+
+        $matchedLinks = [];
+
+        while (preg_match('/' . $pattern . '/miu', $string, $matches)) {
+            $string = str_replace($matches[1], '', $string);
+            $matchedLinks[] = $matches[1];
         }
+
+        return $matchedLinks;
+    }
+
+    /**
+     * @param string $url
+     *
+     * @return string
+     */
+    public static function replaceWithLink($url)
+    {
+        static $linkDeterminator;
+        if ($linkDeterminator === null) {
+            $linkDeterminator = new pocketlistsLinkDeterminer();
+        }
+
+        $icon = '';
+        $linkData = $linkDeterminator->getAppTypeId($url);
+        if ($linkData) {
+            $icon = $linkDeterminator->getAppIcon($linkData['app']) . ' ';
+        }
+
+        if (strpos($url, 'http') === 0) {
+            return '<a href="' . $url . '" target="_blank">' . $icon . $url . '</a>';
+        }
+
+        return '<a href="http://' . $url . '" target="_blank">' . $icon . $url . '</a>';
     }
 
     public static function removeTags($string)

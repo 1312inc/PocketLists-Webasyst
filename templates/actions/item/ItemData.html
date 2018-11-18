@@ -99,6 +99,15 @@
             </div>
         </div>
     </label>
+
+    <div data-pl2-item-links>
+    {foreach $item->getLinkedEntities() as $linkedEntity}
+        <div data-pl2-link-preview>
+            {$linkedEntity->getAttributes()|print_r}
+            {$linkedEntity->renderPreview()}
+        </div>
+    {/foreach}
+    </div>
 </div>
 
 {/if}

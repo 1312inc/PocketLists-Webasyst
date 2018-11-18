@@ -2,6 +2,34 @@
 
 class pocketlistsConfig extends waAppConfig
 {
+    /**
+     * @var
+     */
+    protected $factories;
+
+    /**
+     * @param $factory
+     *
+     * @return pocketlistsFactoryItemLink
+     * @throws waException
+     */
+    public function getModelFactory($factory)
+    {
+        if (isset($this->factories[$factory])) {
+            return $this->factories[$factory];
+        }
+
+        $factoryClass = sprintf('pocketlistsFactory%s', $factory);
+
+        if (!class_exists($factoryClass) ) {
+            throw new waException(sprintf('No factory class for %s', $factory));
+        }
+
+        $this->factories[$factory] = new $factoryClass();
+
+        return $this->factories[$factory];
+    }
+
     public function init()
     {
         parent::init();

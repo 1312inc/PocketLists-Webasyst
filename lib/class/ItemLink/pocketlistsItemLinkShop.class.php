@@ -69,8 +69,8 @@ class pocketlistsItemLinkShop extends pocketlistsItemLink implements pocketlists
 
             $result[] = [
                 'model'        => $linkEntity->getAttributes(),
-                'autocomplete' => $this->renderAutocompleteItemLink(),
-                'preview'      => $this->renderPreviewItemLink(),
+                'autocomplete' => $linkEntity->renderAutocomplete(),
+                'preview'      => $linkEntity->renderPreview(),
             ];
         }
 

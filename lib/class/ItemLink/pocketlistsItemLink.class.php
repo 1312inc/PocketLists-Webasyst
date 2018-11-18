@@ -16,6 +16,11 @@ abstract class pocketlistsItemLink
     protected $view;
 
     /**
+     * @return string
+     */
+    abstract public function getApp();
+
+    /**
      * @return waSmarty3View
      */
     public function getView()
@@ -55,55 +60,4 @@ abstract class pocketlistsItemLink
     {
         wa($this->getApp());
     }
-
-    abstract function getApp();
-
-    /**
-     * @return string
-     */
-    public function renderAutocompleteItemLink()
-    {
-        $link = $this->getItemLinkModel();
-        $template = wa()->getAppPath(
-            sprintf('templates/include/item_linked_entities/autocomplete/%s.%s.html', $link->app, $link->entity_type),
-            pocketlistsHelper::APP_ID
-        );
-
-//        $render = wa()->event('item.render_autocomplete', $this);
-
-        if (file_exists($template)) {
-            $this->getView()->clearAllAssign();
-            $this->getView()->assign('link', $link);
-
-            $render = $this->getView()->fetch($template);
-        } else {
-            $render = (string)$link;
-        }
-
-        return $render;
-    }
-
-    /**
-     * @return string
-     */
-    public function renderPreviewItemLink()
-    {
-        $link = $this->getItemLinkModel();
-        $template = wa()->getAppPath(
-            sprintf('templates/include/item_linked_entities/%s.%s.html', $link->app, $link->entity_type),
-            pocketlistsHelper::APP_ID
-        );
-
-        $render = wa()->event('item.render_linked', $link);
-
-        if (!$render && file_exists($template)) {
-            $this->getView()->clearAllAssign();
-            $this->getView()->assign('link', $link);
-
-            $render = $this->getView()->fetch($template);
-        }
-
-        return $render;
-    }
-
 }

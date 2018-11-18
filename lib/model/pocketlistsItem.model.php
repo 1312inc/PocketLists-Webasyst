@@ -31,6 +31,11 @@ class pocketlistsItemModel extends kmModelExt
     protected $table = 'pocketlists_item';
 
     /**
+     * @var pocketlistsItemLinkModel[]|[]
+     */
+    protected $linkedEntities;
+
+    /**
      * @param bool $contact_id
      * @param bool $date_range
      *
@@ -537,6 +542,8 @@ class pocketlistsItemModel extends kmModelExt
             ]
         )->fetchAll('id');
 
+        $items = self::generateModels($items);
+
         $items = $this->extendItemData($items);
 
         return $tree ? $this->getTree($items, $tree) : $items;
@@ -551,6 +558,11 @@ class pocketlistsItemModel extends kmModelExt
     private function getTree($items, $tree)
     {
         $result = [];
+
+        if (!$items) {
+            return $result;
+        }
+
         foreach ($items as $id => $item) {
             $result[$item['id']] = $item;
             $result[$item['id']]['childs'] = [];
@@ -629,9 +641,9 @@ class pocketlistsItemModel extends kmModelExt
         }
 
         if (isset($item['chat']['comments']) && is_array($item['chat']['comments'])) {
-            foreach ($item['chat']['comments'] as &$comment) {
-                $comment['comment_original'] = $comment['comment'];
-                $comment['comment'] = pocketlistsNaturalInput::matchLinks($comment['comment']);
+            foreach ($item['chat']['comments'] as $i => $comment) {
+                $item['chat']['comments'][$i]['comment_original'] = $comment['comment'];
+                $item['chat']['comments'][$i]['comment'] = pocketlistsNaturalInput::matchLinks($comment['comment']);
             }
         }
 
@@ -645,8 +657,11 @@ class pocketlistsItemModel extends kmModelExt
      */
     public function addPriorityData(&$item)
     {
+        $item['due_date'] = isset($item['due_date']) ? $item['due_date'] : 0;
+        $item['due_datetime'] = isset($item['due_datetime']) ? $item['due_datetime'] : 0;
+
         $item['calc_priority'] = max(
-            pocketlistsHelper::calcPriorityOnDueDate(ifempty($item['due_date']), ifempty($item['due_datetime'])),
+            pocketlistsHelper::calcPriorityOnDueDate($item['due_date'], $item['due_datetime']),
             isset($item['priority']) ? $item['priority'] : 0
         );
 
@@ -1124,5 +1139,21 @@ class pocketlistsItemModel extends kmModelExt
         }
 
         return $result;
+    }
+
+    /**
+     * @return array|pocketlistsItemLinkModel[]
+     * @throws waException
+     */
+    public function getLinkedEntities()
+    {
+        if ($this->linkedEntities === null) {
+            /** @var pocketlistsFactoryItemLink $factory */
+            $factory = wa()->getConfig()->getModelFactory('ItemLink');
+
+            $this->linkedEntities = $factory->getForItem($this) ?: [];
+        }
+
+        return $this->linkedEntities;
     }
 }

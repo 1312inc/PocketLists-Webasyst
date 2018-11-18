@@ -465,7 +465,7 @@ class kmModelExt extends waModel implements ArrayAccess, JsonSerializable
             return null;
         }
 
-        if ($one) {
+        if ($one || (is_array($pk) && count($pk) === 1)) {
             $vals = [$vals];
         }
 

@@ -39,18 +39,4 @@ interface pocketlistsItemLinkInterface
      * @return string
      */
     public function getLink();
-
-    /**
-     * @param pocketlistsItemLinkModel $link
-     *
-     * @return string
-     */
-    public function renderAutocompleteItemLink();
-
-    /**
-     * @param pocketlistsItemLinkModel $link
-     *
-     * @return string
-     */
-    public function renderPreviewItemLink();
 }

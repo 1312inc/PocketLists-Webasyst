@@ -708,17 +708,17 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
     }());
 
     var ItemLinker = function ($textarea) {
-        var itemText = $textarea.val(),
-            $wrapper = $('<div data-pl2-autocomplete class="pl2-autocomplete"></div>'),
-            $preview = $('<div data-pl2-item-link-preview class="pl2-item-link-preview"></div>'),
-            isOpen = false,
-            $loading = $('<i class="icon16 loading"></i>'),
-            random = 0,
-            fetchedLinks = [];
-
         if ($textarea.data('pl2-itemlinker')) {
             return;
         }
+
+        var itemText = $textarea.val(),
+            $autocompleteWrapper = $('<div data-pl2-autocomplete class="pl2-autocomplete"></div>'),
+            $parent = $textarea.closest('[data-pl-item-add]') || $textarea.closest('[data-id]'),
+            $previewWrapper = $parent.find('[data-pl2-item-links]'),
+            isOpen = false,
+            $loading = $('<i class="icon16 loading"></i>'),
+            random = 0;
 
         $textarea.data('pl2-itemlinker', true);
 
@@ -771,7 +771,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
             isOpen = true;
 
-            $wrapper.insertAfter($textarea);
+            $autocompleteWrapper.insertAfter($textarea);
         };
 
         var hideWrapper = function () {
@@ -779,13 +779,13 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
             isOpen = false;
 
-            $wrapper.empty().remove();
+            $autocompleteWrapper.empty().remove();
         };
 
         var showLoading = function () {
             log('showLoading');
 
-            $wrapper.prepend($loading);
+            $autocompleteWrapper.prepend($loading);
         };
 
         var hideLoading = function () {
@@ -810,7 +810,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
                     $item.data('pl2-item-link', entity);
 
-                    $wrapper.append($item);
+                    $autocompleteWrapper.append($item);
                 });
             });
 
@@ -879,7 +879,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         $(document).on('click', function (e) {
             var $target = $(e.target);
 
-            if (!$target.is($textarea) && !$target.is($wrapper) && !$target.closest('[data-pl2-autocomplete]').length && !$target.is('.pl-is-selected')) {
+            if (!$target.is($textarea) && !$target.is($autocompleteWrapper) && !$target.closest('[data-pl2-autocomplete]').length && !$target.is('.pl-is-selected')) {
                 hideWrapper();
             }
         });
@@ -889,10 +889,10 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
             $linkPreview.html(link.preview);
 
-            $preview.append($linkPreview);
+            $previewWrapper.append($linkPreview);
         };
 
-        $list_items_wrapper.on('click', '[data-pl2-item-link]', function (e) {
+        $parent.on('click', '[data-pl2-item-link]', function (e) {
             e.stopPropagation();
 
             var linked = $textarea.data('pl2-linked-entities') || {},
