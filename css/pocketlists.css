@@ -52,7 +52,7 @@
 .pl-dark-yellow-border { border-color: #ffcc00 !important; }
 .pl-dark-brown-border { border-color: #996e4d !important; }
 .pl-dark-orange-border { border-color: #ff9400 !important; }
-.pl-dark-none-border { border-color: #222 !important; }
+.pl-dark-none-border { border-color: #aaa !important; }
 
 .icon10.color { border: none; border-radius: 50%; width: 6px; height: 6px; }
 .icon16.color { border: none; }
@@ -101,9 +101,9 @@ ul.menu-v.with-icons i.icon16.color { margin: 2px 7px 1px -18px; width: 12px; he
 /* Lists
 -------- */
 
-.pl-lists-header { padding: 13px 15px 13px 13px; }
+.pl-lists-header { padding: 14px 14px 12px 13px; }
 .pl-lists-header h5 { font-size: 1.3em; }
-.pl-lists-header .count { margin-right: 0px; margin-top: 4px; }
+.pl-lists-header .count { margin-top: 4px; }
 
 .pl-lists-empty p { font-size: 0.9em; color: #aaa; }
 
@@ -223,9 +223,11 @@ label.pl-done-label i.icon16.userpic20 {
 .pl-welcome { margin: 0 60px 25px; padding-top: 30px; text-align: center; font-size: 110%; }
 .pl-welcome .pl-jumbodone { width: 180px; height: 180px; margin: 0 auto; background: transparent url('../img/pl-jumbodone.png') no-repeat; background-size: 180px 180px; opacity: 0.13; }
 .pl-welcome .pl-forbidden { width: 180px; height: 180px; margin: 0 auto; background: transparent url('../img/pl-forbidden.png') no-repeat; background-size: 180px 180px; opacity: 0.13; }
+.pl-welcome .pl-shopscript { width: 180px; height: 180px; margin: 0 auto; background: transparent url('../img/pl-shopscript.png') no-repeat; background-size: 180px 180px; opacity: 0.13; }
 .pl-welcome h1,
 .pl-welcome h2 { margin-top: 20px; color: #333; }
 .pl-welcome p { color: #888; font-size: 0.9em; }
+.pl-welcome p a { text-decoration: none; }
 .pl-welcome.top-padded { padding-top: 70px; }
 .pl-welcome.bottom-padded { padding-bottom: 40px; }
 
@@ -359,8 +361,18 @@ input#pl-new-list-input:focus,
 .pl-item p.hint { margin-bottom: 0; margin-top: 4px; line-height: 1.2em; color: rgba(0,0,0,0.3); }
 .pl-item i.icon10 { margin-top: 5px; }
 .pl-item .pl-item-drag-handle { display: none; position: absolute; top: 4px; bottom: 4px; left: 0; width: 6px; padding: 0 4px; background: url('../img/pl-drag-handle.png') repeat-y; background-size: 14px 20px; opacity: 0.1; z-index: 3; cursor: move; }
+
 .pl-list-items ul.menu-v li .pl-item:hover .pl-item-drag-handle { display: block; }
 .pl-list-items ul.menu-v li #pl-item-add .pl-item:hover { background: transparent; }
+
+.pl-link-preview { margin-left: 49px; padding: 5px 15px 5px 5px; margin-bottom: 15px; display: inline-block; line-height: 1.3em; position: relative; border-radius: 5px; min-width: 250px; }
+.pl-link-preview:hover { background: #fea; }
+.pl-link-preview-image { display: inline-block; width: 36px; float: left; }
+.pl-link-preview-image img { max-width: 32px; margin-top: 3px; }
+.pl-link-preview-details { display: block; margin-left: 40px; }
+.pl-link-preview-details p { margin-bottom: 0; line-height: 1em; margin-top: 4px; }
+.pl-link-preview-details a .pl-label { margin-left: 0px !important; }
+.pl-link-preview-details a:hover .pl-label { background-color: red !important; color: white !important; }
 
 .pl-list-content { position: relative; }
 .pl-list-content .pl-item-list-name { display: none !important; }
