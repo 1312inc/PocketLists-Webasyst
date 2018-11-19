@@ -6,7 +6,7 @@
             <div class="pl-lists-header">
                 <a href="#/pocket/{$pocket->pk}/list/new/" class="count" title="[`New list`]"><i class="icon16 add"></i></a>
                 <!-- <i class="icon16 search"></i> Search -->
-                <h5 class="heading">{$pocket->name|escape}</h5>
+                <h5 class="pl-dark-{$pocket->color|default:'none'}-label">{$pocket->name|escape}</h5>
             </div>
             {if !empty($lists)}
                 <ul class="pl-lists">
@@ -22,8 +22,8 @@
                     {/foreach}
                 </ul>
             {else}
-                <div class="block double-padded align-center">
-                    <p class="hint">[`This pocket is empty. Start by creating a to-do list.`]</p>
+                <div class="block double-padded align-center pl-lists-empty">
+                    <p>[`This pocket is empty. Start by creating a to-do list.`]</p>
                 </div>
             {/if}
             <!-- <a href="#/pocket/{$pocket->pk}/list/new/" class="pl-lists-add">
