@@ -33,7 +33,9 @@ $.pocketlists.List = function ($list_wrapper, options) {
         };
         var setListColor = function (color) {
             color = color || list_color;
-            $('.pl-items').removeClass().addClass('pl-inner-content pl-items shadowed pl-' + color);
+            //$('.pl-items').removeClass().addClass('pl-items pl-' + color);
+            $('#pl-list-name').removeClass().addClass('pl-items pl-dark-' + color + '-label');
+            $('.pl-item-wrapper .pl-done-label span').removeClass().addClass('pl-items pl-dark-' + color + '-border');
 
         };
         // show list details container and load html with list details from server
@@ -48,7 +50,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
             var $itemDetails = $('#pl-item-details');
             $itemDetails.length && $itemDetails.after($wrapper);
             $wrapper.html($.pocketlists.$loading).show().animate({
-                'right': '0%'
+                'right': '0'
             }, 200, function () {
                 $itemDetails.length && $itemDetails.trigger('hide.pl2');
                 $.pocketlists.stickyDetailsSidebar();
@@ -64,7 +66,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
         var hideListDetails = function () {
             setListColor();
             $wrapper.animate({
-                'right': '100%'
+                'right': '-300px'
             }, 200, function () {
                 $wrapper.hide().empty()
             });

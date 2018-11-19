@@ -1,7 +1,7 @@
-<div class="pl-details-form pl-{$list.color|default:'none'}">
+<div class="pl-details-form">
 <div class="pl-details-form-container">
 <div class="fields form">
-<form method="post" id="pl-item-details-form" action="?module=item&amp;action=data" target="pl-item-details-form-iframe" enctype="multipart/form-data">
+    <form method="post" id="pl-item-details-form" action="?module=item&amp;action=data" target="pl-item-details-form-iframe" enctype="multipart/form-data">
     {* <a href="#" class="pl-item-details-cancel" class="pl-close" title="[`Close`]">&times;</a> *}
     <input type="hidden" name="item[id]" value="{$item.id}"/>
     <input type="hidden" id="pl-item-list-id" value="{$item.list_id}"/>
@@ -178,14 +178,19 @@
         </div>
     </div>
 
-</form>
-<iframe id="pl-item-details-form-iframe" name="pl-item-details-form-iframe" style="display:none;"></iframe>
+    </form>
+    <iframe id="pl-item-details-form-iframe" name="pl-item-details-form-iframe" style="display:none;"></iframe>
 </div>
-<div class="clear-both"></div>
+<hr>
+<ul class="menu-v with-icons">
+    <li>
+        <a href="#" data-pl-action="item-delete">
+            <i class="icon16 delete"></i> [`Delete to-do`]
+        </a>
+    </li>
+</ul>
+
 </div>
-<a class="pl-link-box pl-delete-box align-center" href="#" data-pl-action="item-delete">
-    <i class="icon16 delete"></i> [`Delete to-do`]
-</a>
 </div>
 
 {include '../../include/deleteitemdialog.html' inline}

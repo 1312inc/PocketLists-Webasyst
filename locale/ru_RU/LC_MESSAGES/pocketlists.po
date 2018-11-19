@@ -913,7 +913,7 @@ msgstr "При приближении срока приоритет (цвет) �
 
 #: /wa-apps/pocketlists/templates/actions/list/List.html:18
 msgid "Re-sort list"
-msgstr "Пересортировать"
+msgstr "Обновить сортировку"
 
 #: /wa-apps/pocketlists/templates/actions/list/List.html:33
 msgid "Edit list details"

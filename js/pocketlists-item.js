@@ -1172,7 +1172,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
         var hideItemDetails = function () {
             $wrapper.animate({
-                'right': '100%'
+                'right': '-300px'
             }, 200, function () {
                 $wrapper.hide().empty()
             });
@@ -1190,7 +1190,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             $(window).scrollTop();
             o.list && o.list.list_details.isVisible() && o.list.list_details.$el.after($wrapper);
             $wrapper.html($.pocketlists.$loading).show().animate({
-                'right': '0%'
+                'right': '0'
             }, 200, function () {
                 o.list && o.list.list_details.isVisible() && o.list.list_details.trigger('hide.pl2');
                 $.pocketlists.stickyDetailsSidebar();

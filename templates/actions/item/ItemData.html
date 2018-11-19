@@ -29,7 +29,7 @@
                     <i class="icon16 userpic20" style="background-image: url({$item.contact.userpic})" alt="{$item.contact.username|escape}"></i>
 
                     {* &rarr; ASSIGNED TO *}
-                    {if !empty($item.assigned_contact_id)}
+                    {if !empty($item.assigned_contact_id) && $item.assigned_contact_id != $item.contact_id}
                          <span class="pl-assignee-arrow">&#9658;</span>
                          <i class="icon16 userpic20" style="background-image: url({$item.assigned_contact.userpic})" alt="{$item.assigned_contact.username|escape}" title="{sprintf('[`Assigned to %s`]', $item.assigned_contact.username|escape)}"></i>
                     {/if}

@@ -4,6 +4,8 @@
 /* Layout
 --------- */
 
+#wa-app { overflow: visible; }
+
 .shadowed { background: #fff; }
 .pl-sidebar-core { margin-top: 17px; }
 .pl-sidebar-core .pl-online { position: absolute; left: 8px; top: 6px; }
@@ -66,10 +68,12 @@
 
 .dialog p i.icon16 { margin-top: 0.1em; }
 
-.pl-link-box { display: block; padding: 18px 20px; background: rgba(0,0,0,0.04); }
-.pl-link-box.pl-delete-box:hover { background: #ffe3e3; }
+    /* .pl-link-box { display: block; padding: 18px 20px; background: rgba(0,0,0,0.04); }
+    .pl-link-box.pl-delete-box:hover { background: #ffe3e3; } */
 
 .pl-teammate-userpic { width: 96px; height: 96px; border: 3px solid #fff; margin-bottom: 20px; }
+.pl-teammate-lists li a { font-weight: 500; }
+.pl-teammate-lists li a:hover span { color: red !important; }
 .pl-teammate-nolists-disclaimer { font-size: 0.9em; color: #aaa; text-align: center; }
 .pl-teammate-nolists-disclaimer a { color: #888; }
 
@@ -280,17 +284,27 @@ input#pl-new-list-input:focus,
 .pl-chat textarea { background: #fff; margin-left: 0px; border-radius: 5px; border: 1px solid rgba(0,0,0,0.1); padding-left: 8px; width: 80%; min-width: 150px; }
 .pl-unsaved { background: rgba(183,0,0,0.06) !important; 2px 3px 0nt; color: #f55 !important; }
 
-.pl-title { padding: 25px 5px 15px 20px; }
+.pl-title { padding: 25px 5px 15px 17px; }
 .pl-title h1 { margin-bottom: 0.2em; line-height: 1.1em; padding-right: 22px; }
 .pl-title h1 .pl-done + span {left: -34px; top: 2px; width: 22px; height: 22px; position: absolute; z-index: 1;}
 .pl-title h1 .pl-done:checked + span,
 .pl-title h1 .pl-done:disabled:checked + span { background-size: 24px 24px !important; }
 .pl-title h1 .loading { margin-left: 3px; margin-top: 8px; opacity: 0.5; }
 .pl-title h1.not-padded { padding-left: 0; }
-.pl-title ul.menu-h li { margin: 2px 3px 0 !important; padding: 0 !important; vertical-align: middle; }
+/* .pl-title ul.menu-h li { margin: 2px 3px 0 !important; padding: 0 !important; vertical-align: middle; }
 .pl-title ul.menu-h li a.pl-edit { margin-top: -3px !important; }
-.pl-title ul.menu-h li.pl-list-favorite a { margin: 0 3px !important; }
-.pl-title p { max-width: 80%; }
+.pl-title ul.menu-h li.pl-list-favorite a { margin: 0 3px !important; } */
+.pl-title p { max-width: 80%; font-size: 0.9em; }
+
+/* .pl-userpic { border-radius: 50%; width: 2rem; height: 2rem; background-color: #eee; display: inline-block; background-size: 2rem 2rem; }
+.pl-userpic.pl-userpic-dummy { background-color: transparent; background-image: url('/static/img/pocketlists/pl-userpic-dummy.png'); } */
+.pl-userpic-bundle { display: inline-block; vertical-align: top; }
+.pl-userpic-bundle .userpic { display: inline-block; width: 32px; height: 32px; background-size: 32px 32px; background-color: #eee; border: 2px solid white; margin-left: -0.7em; margin-top: 0rem; transition: 0.1s; position: relative; overflow: hidden; }
+.pl-userpic-bundle .userpic span { position: absolute; text-decoration: none; color: #777; top: 9px; left: 0; right: 2px; text-align: center; font-style: normal; font-weight: bold; font-size: 13px; }
+.pl-userpic-bundle:hover .userpic { position: relative; margin-right: 0.3em; }
+.pl-list-details-helper { display: inline-block; width: 16px; height: 16px; border-radius: 50%; padding: 8px; margin-top: 2px; margin-right: 8px; }
+.pl-list-details-helper i.icon16 { position: relative; top: 1px; }
+.pl-list-details-helper:hover { background: #eee; }
 
 .pl-list-access { line-height: 1.2em; margin: 20px 0 10px; }
 .pl-list-access h5 { margin-bottom: 10px; }
@@ -371,7 +385,7 @@ input#pl-new-list-input:focus,
 .pl-attachments { padding: 15px 0 0; margin: 0; }
 .pl-attachments li { display: inline-block !important; padding-top: 0px !important; margin-bottom: 13px !important; list-style: none; word-break: break-all; }
 .pl-attachments li a { display: block !important; }
-.pl-attachments li img { max-width: 100%; max-height: 200px; }
+.pl-attachments li img { max-width: 100%; max-height: 200px; margin-right: 10px; border-radius: 3px; }
 .pl-attachments li i.icon16 { margin-left: -4px; }
 .pl-attachments li label { background: #eee; border-radius: 10px; padding: 4px 6px; font-size: 0.9em; color: #aaa; }
 .pl-attachments li label input[type="checkbox"] { margin-top: -4px; }
@@ -442,17 +456,15 @@ input#pl-new-list-input:focus,
 /* Item & List details
 ---------------------- */
 
-.pl-details { display: none; padding: 0; position: absolute; top: 0; bottom: 0; right: 100%; width: 340px; box-shadow: -10px 0 20px -10px rgba(0,0,0,0.1); z-index: 99; background: #def; }
-.pl-details.sticky,
-.pl-details.sticky { position: fixed; right: 0; width: 350px; overflow-y: scroll; }
-.pl-details .pl-details-form { /* wrapper */ }
-.pl-details .pl-details-form.pl-none { background: #fff; }
-.pl-details-form-container { background: #fea; padding: 15px 10px 15px 15px; }
-.pl-details.sticky .pl-details-form,
-.pl-details.sticky .pl-details-form-container { position: absolute; top: 0; bottom: 0; left: 0; right: 0; }
+.pl-details { display: none; padding: 0; position: absolute; top: 0; bottom: 0; right: 0; width: 340px; box-shadow: -10px 0 50px -10px rgba(0,0,0,0.2); z-index: 99; background: #fff; overflow-x: hidden; overflow-y: scroll; }
+    /* .pl-details.sticky,
+    .pl-details.sticky { position: fixed; right: 0; width: 350px; overflow-y: scroll; } */
+.pl-details-form-container { background: #fff; padding: 15px 10px 15px 15px; }
+    /* .pl-details.sticky .pl-details-form,
+    .pl-details.sticky .pl-details-form-container { position: absolute; top: 0; bottom: 0; left: 0; right: 0; } */
 
 .pl-details .fields.form { width: 100%; }
-.pl-details .fields.form .field-group { margin-top: 0; }
+.pl-details .fields.form .field-group { margin-top: 0; margin-bottom: 15px; }
 .pl-details .fields.form .field .name { float: none; padding-bottom: 5px; }
 .pl-details .fields.form .field .value { margin-left: 0 !important; }
 .pl-details .fields.form input.long { width: 95% !important; min-width: 0 !important; }
