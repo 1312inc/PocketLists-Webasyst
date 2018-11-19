@@ -16,7 +16,7 @@ class pocketlistsItemLinkModel extends kmModelExt
     /**
      * @var pocketlistsItemLinkInterface
      */
-    protected static $thisApp;
+    protected $linkedClass;
 
     /**
      * @var waSmarty3View
@@ -84,12 +84,32 @@ class pocketlistsItemLinkModel extends kmModelExt
 
         if (!$render && file_exists($template)) {
             $this->getView()->clearAllAssign();
-            $this->getView()->assign('link', $this);
+            $vars = [
+                'link'  => $this,
+                'extra' => $this->getEntityClass()->getExtraData(),
+            ];
+            $this->getView()->assign($vars);
 
             $render = $this->getView()->fetch($template);
         }
 
         return $render;
+    }
+
+    /**
+     * @return pocketlistsItemLinkInterface
+     */
+    public function getEntityClass()
+    {
+        if ($this->linkedClass === null) {
+            $class = sprintf('pocketlistsItemLink%s', ucfirst($this->app));
+            if (class_exists($class)) {
+                $this->linkedClass = new $class();
+                $this->linkedClass->setItemLinkModel($this);
+            }
+        }
+
+        return $this->linkedClass;
     }
 
     /**

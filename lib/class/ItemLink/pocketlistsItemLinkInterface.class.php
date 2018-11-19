@@ -38,5 +38,12 @@ interface pocketlistsItemLinkInterface
     /**
      * @return string
      */
-    public function getLink();
+    public function getLinkUrl();
+
+    /**
+     * @return waModel|shopOrder
+     */
+    public function getEntity();
+
+    public function getExtraData();
 }

@@ -77,9 +77,34 @@ class pocketlistsItemLinkShop extends pocketlistsItemLink implements pocketlists
         return $result;
     }
 
-    public function getLink()
+    /**
+     * @return string
+     */
+    public function getLinkUrl()
     {
-        // TODO: Implement getLink() method.
+        return sprintf('%s#/orders/id=%s/', wa()->getAppUrl('shop'), $this->getItemLinkModel()->entity_id);
     }
 
+    /**
+     * @return shopOrder
+     */
+    public function getEntity()
+    {
+        return new shopOrder($this->getItemLinkModel()->entity_id);
+    }
+
+    public function getExtraData()
+    {
+        $order = new shopOrder($this->getItemLinkModel()->entity_id);
+
+        $order_data_array = $order->dataArray();
+        $order_data_array['contact'] = $order->contact_essentials;
+        $order_data_array['state'] = $order['state'];
+
+        return [
+            'order'                => $order_data_array,
+            'last_action_datetime' => $order->last_action_datetime,
+            'link'                 => $this->getLinkUrl(),
+        ];
+    }
 }

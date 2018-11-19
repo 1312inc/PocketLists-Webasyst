@@ -105,25 +105,7 @@
 
     <div data-pl2-item-links>
     {foreach $item->getLinkedEntities() as $linkedEntity}
-        <div class="pl-link-preview">
-            <div class="pl-link-preview-image">
-                <img src="/wa-apps/shop/img/shop96.png" class="userpic">
-            </div>
-            <div class="pl-link-preview-details">
-                <a href="#" class="bold" style="color: gold;">
-                    <strong class="float-right">$11.99</strong>
-                    #1001
-                    <span class="pl-label small" style="background: gold; color: white;">Новый</span>
-                </a>
-
-                <p>
-                    <span class="small black">Username Vladimirovich</span>
-                    <span class="hint">Today at 13:00</span>
-                </p>
-            </div>
-        </div>
         <div data-pl2-link-preview>
-            {$linkedEntity->getAttributes()|print_r}
             {$linkedEntity->renderPreview()}
         </div>
     {/foreach}
