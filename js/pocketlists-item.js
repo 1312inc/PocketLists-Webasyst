@@ -847,28 +847,108 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             }
         };
 
-        $textarea
-            .on('keyup', function (e) {
-                if (e.which !== 16) {
-                    var term = canShowAutocomplete();
+        $textarea.autocomplete({
+            html:true,
+            source: function( request, response ) {
+                var term = canShowAutocomplete();
 
-                    if (term) {
-                        getAutocomplete(term);
-                    } else {
-                        hideWrapper();
-                    }
+                if (!term) {
+                    return [];
                 }
-            })
-            // .on('paste', function () {
-            //     getAutocomplete()
-            // })
-            .on('focus click', function () {
-                setTimeout(function () {
-                    log('textarea focus');
 
-                    getAutocomplete();
-                }, 100)
-            })
+                var plresponse = function(data) {
+                    if (data.status != 'ok') {
+                        return [];
+                    }
+
+                    var results = [];
+
+                    $.each(data.data, function (i, typeResults) {
+                        log(typeResults);
+
+                        if (!typeResults) {
+                            return;
+                        }
+
+                        $.each(typeResults.entities, function (i, entity) {
+                            // var $item = $('<div class="pl-autocomplete-result" data-pl2-item-link>' + entity.autocomplete + '</div>');
+                            //
+                            // $item.data('pl2-item-link', entity);
+                            //
+                            // $autocompleteWrapper.append($item);
+
+                            results.push({
+                                label: entity.autocomplete,
+                                value: term,
+                                data: entity
+                            })
+
+                        });
+                    });
+
+                    return response(results)
+                }
+
+                $.getJSON( "?module=item&action=linkAutocomplete", {
+                    term: term
+                }, plresponse);
+            },
+            // search: function() {
+            //     debugger;
+            //     // custom minLength
+            //     var term = canShowAutocomplete();
+            //
+            //     // var term = extractLast( this.value );
+            //     if ( !term ) {
+            //         return false;
+            //     }
+            // },
+            focus: function() {
+                // prevent value inserted on focus
+                return false;
+            },
+            select: function( event, ui ) {
+                var linked = $textarea.data('pl2-linked-entities') || {},
+                    link = ui.item.data,
+                    hash = link.model.app + link.model.entity_type + link.model.entity_id;
+
+                if (linked[hash] === undefined) {
+                    linked[hash] = link;
+                    showLinkedPreview(link);
+                    $textarea.data('pl2-linked-entities', linked);
+                }
+
+                return false;
+            },
+            delay: 300,
+        }).data( "ui-autocomplete" )._renderItem = function( ul, item ) {
+            return $( "<li>" )
+                .append( item.data.autocomplete )
+                .appendTo( ul );
+        };
+
+        // $textarea
+        //     .on('keyup', function (e) {
+        //         if (e.which !== 16) {
+        //             var term = canShowAutocomplete();
+        //
+        //             if (term) {
+        //                 getAutocomplete(term);
+        //             } else {
+        //                 hideWrapper();
+        //             }
+        //         }
+        //     })
+        //     // .on('paste', function () {
+        //     //     getAutocomplete()
+        //     // })
+        //     .on('focus click', function () {
+        //         setTimeout(function () {
+        //             log('textarea focus');
+        //
+        //             getAutocomplete();
+        //         }, 100)
+        //     })
         // .on('blur', function (e) {
         //     log('textarea blur');
         //
