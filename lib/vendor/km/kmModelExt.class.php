@@ -701,9 +701,7 @@ class kmModelExt extends waModel implements ArrayAccess, JsonSerializable
      */
     public function offsetExists($offset)
     {
-        $attribute = $this->getSystemFieldsMapping($offset);
-
-        return $this->hasAttribute($attribute) || $this->hasVirtualAttribute($attribute);
+        return $this->offsetGet($offset);
     }
 
     /**

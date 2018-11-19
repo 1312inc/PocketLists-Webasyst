@@ -68,9 +68,12 @@ class pocketlistsItemLinkShop extends pocketlistsItemLink implements pocketlists
             $this->setItemLinkModel($linkEntity);
 
             $result[] = [
-                'model'        => $linkEntity->getAttributes(),
-                'autocomplete' => $linkEntity->renderAutocomplete(),
-                'preview'      => $linkEntity->renderPreview(),
+                'label' => $linkEntity->renderAutocomplete(),
+                'value' => shopHelper::encodeOrderId($order['id']),
+                'data'  => [
+                    'model'   => $linkEntity->getAttributes(),
+                    'preview' => $linkEntity->renderPreview(),
+                ],
             ];
         }
 
@@ -86,13 +89,18 @@ class pocketlistsItemLinkShop extends pocketlistsItemLink implements pocketlists
     }
 
     /**
-     * @return shopOrder
+     * @return shopOrder|waModel
+     * @throws waException
      */
     public function getEntity()
     {
         return new shopOrder($this->getItemLinkModel()->entity_id);
     }
 
+    /**
+     * @return array
+     * @throws waException
+     */
     public function getExtraData()
     {
         $order = new shopOrder($this->getItemLinkModel()->entity_id);
@@ -106,5 +114,27 @@ class pocketlistsItemLinkShop extends pocketlistsItemLink implements pocketlists
             'last_action_datetime' => $order->last_action_datetime,
             'link'                 => $this->getLinkUrl(),
         ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getLinkRegexs()
+    {
+        return [
+            'order' => [
+                '.*/shop/\?action=orders.*id=(\d+).*',
+                '.*/shop/\?action=orders#/orders/edit/(\d+)/',
+                '.*/shop/#/orders/.*id=(\d+).*',
+            ],
+        ];
+    }
+
+    /**
+     * @return string
+     */
+    public function getAppIcon()
+    {
+        return '<i class="icon16" style="background-image: url(https://www.shop-script.ru/favicon.ico); background-size: 16px 16px;"></i>';
     }
 }

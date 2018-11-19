@@ -25,6 +25,8 @@
  * @property int    $assigned_contact_id
  * @property int    $repeat
  * @property int    $key_list_id
+ * @property array  $chat
+ * @property array  $attachments
  */
 class pocketlistsItemModel extends kmModelExt
 {
@@ -45,6 +47,23 @@ class pocketlistsItemModel extends kmModelExt
     {
         return $this->getLogbookItems($contact_id, $date_range);
     }
+
+//    public function getDefaultAttributes()
+//    {
+//        return array_merge(
+//            parent::getDefaultAttributes(),
+//            [
+//                'chat'        => [
+//                    'current_user' => [
+//                        'username' => wa()->getUser()->getName(),
+//                        'userpic'  => wa()->getUser()->getPhoto(20),
+//                    ],
+//                    'comments'     => [],
+//                ],
+//                'attachments' => [],
+//            ]
+//        );
+//    }
 
     /**
      * @param bool $contact_id
@@ -255,6 +274,8 @@ class pocketlistsItemModel extends kmModelExt
                 'date'       => $date,
             ]
         )->fetchAll();
+
+        $items = self::generateModels($items);
 
         $result = [
             0 => [],
@@ -590,7 +611,7 @@ class pocketlistsItemModel extends kmModelExt
      */
     public function extendItemData($items, $edit = false)
     {
-        if (!is_array($items)) {
+        if (!is_array($items) && !$items instanceof pocketlistsItemModel) {
             return false;
         }
 
@@ -640,10 +661,10 @@ class pocketlistsItemModel extends kmModelExt
             $item[$param] = pocketlistsNaturalInput::matchLinks($item[$param]);
         }
 
-        if (isset($item['chat']['comments']) && is_array($item['chat']['comments'])) {
+        if (isset($item->chat['comments']) && is_array($item->chat['comments'])) {
             foreach ($item['chat']['comments'] as $i => $comment) {
-                $item['chat']['comments'][$i]['comment_original'] = $comment['comment'];
-                $item['chat']['comments'][$i]['comment'] = pocketlistsNaturalInput::matchLinks($comment['comment']);
+                $item->chat['comments'][$i]['comment_original'] = $comment['comment'];
+                $item->chat['comments'][$i]['comment'] = pocketlistsNaturalInput::matchLinks($comment['comment']);
             }
         }
 
@@ -668,8 +689,15 @@ class pocketlistsItemModel extends kmModelExt
         return $item;
     }
 
+    public $chat = [
+        'current_user' => [],
+        'comments'     => [],
+    ];
+
+    public $childs = [];
+
     /**
-     * @param $item
+     * @param pocketlistsItemModel $item
      *
      * @throws waDbException
      * @throws waException
@@ -678,19 +706,26 @@ class pocketlistsItemModel extends kmModelExt
     {
         $cm = new pocketlistsCommentModel();
         $chat = $cm->getAllByItems($item['id']);
-        $item['chat'] = [
-            'current_user' => [
-                'username' => wa()->getUser()->getName(),
-                'userpic'  => wa()->getUser()->getPhoto(20),
-            ],
-            'comments'     => [],
-        ];
         if (empty($chat[$item['id']])) {
             return;
         }
         foreach ($chat[$item['id']] as $comment) {
-            $item['chat']['comments'][$comment['id']] = pocketlistsCommentModel::extendData($comment);
+            $item->setChatComment($comment);
         }
+    }
+
+    public function setChatComment($comment)
+    {
+        $comments = $this->virtualAttributes['chat']['comments'];
+        $comments[$comment['id']] = pocketlistsCommentModel::extendData($comment);
+
+        $this->chat = [
+            'current_user' => [
+                'username' => wa()->getUser()->getName(),
+                'userpic'  => wa()->getUser()->getPhoto(20),
+            ],
+            'comments'     => $comments,
+        ];
     }
 
     /**
@@ -715,34 +750,42 @@ class pocketlistsItemModel extends kmModelExt
     {
         if ($i1['calc_priority'] < $i2['calc_priority']) {
             return 1;
-        } elseif ($i1['calc_priority'] > $i2['calc_priority']) {
-            return -1;
-        } else {
-            $date1 = !empty($i1['due_datetime'])
-                ? strtotime($i1['due_datetime'])
-                :
-                (!empty($i1['due_date']) ? strtotime($i1['due_date']) : null);
-            $date2 = !empty($i2['due_datetime'])
-                ? strtotime($i2['due_datetime'])
-                :
-                (!empty($i2['due_date']) ? strtotime($i2['due_date']) : null);
-            // check due_date
-            if ($date1 && $date2) { // check both dates
-                if ($date1 < $date2) {
-                    return -1;
-                } elseif ($date1 > $date2) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            } elseif ($date1 && !$date2) {
-                return -1;
-            } elseif (!$date1 && $date2) {
-                return 1;
-            } else {
-                return 0;
-            }
         }
+
+        if ($i1['calc_priority'] > $i2['calc_priority']) {
+            return -1;
+        }
+
+        $date1 = !empty($i1['due_datetime'])
+            ? strtotime($i1['due_datetime'])
+            : (!empty($i1['due_date']) ? strtotime($i1['due_date']) : null);
+
+        $date2 = !empty($i2['due_datetime'])
+            ? strtotime($i2['due_datetime'])
+            : (!empty($i2['due_date']) ? strtotime($i2['due_date']) : null);
+
+        // check due_date
+        if ($date1 && $date2) { // check both dates
+            if ($date1 < $date2) {
+                return -1;
+            }
+
+            if ($date1 > $date2) {
+                return 1;
+            }
+
+            return 0;
+        }
+
+        if ($date1 && !$date2) {
+            return -1;
+        }
+
+        if (!$date1 && $date2) {
+            return 1;
+        }
+
+        return 0;
     }
 
     /**

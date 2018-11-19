@@ -8,52 +8,20 @@ class pocketlistsItemLinkAutocompleter
     /**
      * @var array
      */
-    protected $linkEntities;
-
-    /**
-     * @var pocketlistsItemLinkInterface[]
-     */
-    protected $linkers;
-
-    /**
-     * @var array
-     */
     protected $result;
-
-    /**
-     * pocketlistsItemLinkAutocompleter constructor.
-     */
-    public function __construct()
-    {
-        $this->linkEntities = wa()->getConfig()->getLinkedApps();
-
-        if (empty($this->linkEntities)) {
-            return;
-        }
-
-        $this->linkers = [];
-        foreach ($this->linkEntities as $entity) {
-            $class = sprintf('pocketlistsItemLink%s', ucfirst($entity));
-            if (class_exists($class)) {
-                $class = new $class();
-                if ($class instanceof pocketlistsItemLinkInterface) {
-                    $this->linkers[$entity] = $class;
-                }
-            }
-        }
-    }
 
     /**
      * @param       $term
      * @param array $types
      *
-     * @return pocketlistsItemLinkAutocompleter
+     * @return $this
+     * @throws waException
      */
     public function process($term, $types = [])
     {
         $this->result = [];
 
-        foreach ($this->linkers as $app => $linker) {
+        foreach (wa()->getConfig()->getLinkedClass() as $app => $linker) {
             if ($types && !in_array($app, $types)) {
                 continue;
             }

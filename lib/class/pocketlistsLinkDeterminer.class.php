@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class pocketlistsLinkDeterminer
+ */
 class pocketlistsLinkDeterminer
 {
     protected $link;
@@ -27,27 +30,23 @@ class pocketlistsLinkDeterminer
     /**
      * @param $link
      *
-     * @return array|false
+     * @return array|bool
+     * @throws waException
+     *
      */
     public function getAppTypeId($link)
     {
         $this->setLink($link);
 
-        $apps = [
-            'shop' => [
-                'order' => [
-                    '.*/shop/\?action=orders.*id=(\d+).*',
-                    '.*/shop/\?action=orders#/orders/edit/(\d+)/',
-                ],
-            ],
-        ];
+        $linkers = wa()->getConfig()->getLinkedClass();
 
-        foreach ($apps as $app => $types) {
+        foreach ($linkers as $app) {
+            $types = $app->getLinkRegexs();
             foreach ($types as $type => $regexs) {
                 foreach ($regexs as $regex) {
                     if (preg_match('|'.$regex.'|iu', $link, $matches)) {
                         return [
-                            'app'         => $app,
+                            'app'         => $app->getApp(),
                             'entity_type' => $type,
                             'entity_id'   => $matches[1],
                         ];
@@ -59,19 +58,14 @@ class pocketlistsLinkDeterminer
         return false;
     }
 
-
     /**
      * @param $app
      *
      * @return string
+     * @throws waException
      */
     public function getAppIcon($app)
     {
-        switch ($app) {
-            case 'shop':
-                return '<i class="icon16" style="background-image: url(https://www.shop-script.ru/favicon.ico); background-size: 16px 16px;"></i>';
-        }
-
-        return '';
+        return wa()->getConfig()->getLinkedClass($app)->getAppIcon();
     }
 }

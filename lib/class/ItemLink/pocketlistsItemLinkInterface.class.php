@@ -45,5 +45,19 @@ interface pocketlistsItemLinkInterface
      */
     public function getEntity();
 
+    /**
+     * @return array
+     * @throws waException
+     */
     public function getExtraData();
+
+    /**
+     * @return array
+     */
+    public function getLinkRegexs();
+
+    /**
+     * @return string
+     */
+    public function getAppIcon();
 }

@@ -8,6 +8,11 @@ class pocketlistsConfig extends waAppConfig
     protected $factories;
 
     /**
+     * @var pocketlistsItemLinkInterface[]
+     */
+    protected $linkers;
+
+    /**
      * @param $factory
      *
      * @return pocketlistsFactoryItemLink
@@ -101,5 +106,32 @@ class pocketlistsConfig extends waAppConfig
     public function getLinkedApps()
     {
         return ['shop'];
+    }
+
+    /**
+     * @param string $app
+     *
+     * @return pocketlistsItemLinkInterface|pocketlistsItemLinkInterface[]
+     * @throws waException
+     */
+    public function getLinkedClass($app = '')
+    {
+        if ($this->linkers === null) {
+            foreach ($this->getLinkedApps() as $entity) {
+                $class = sprintf('pocketlistsItemLink%s', ucfirst($entity));
+                if (class_exists($class)) {
+                    $class = new $class();
+                    if ($class instanceof pocketlistsItemLinkInterface) {
+                        $this->linkers[$entity] = $class;
+                    }
+                }
+            }
+        }
+
+        if (!empty($app) && !isset($this->linkers[$app])) {
+            throw new waException('No linked class for app ' . $app);
+        }
+
+        return empty($app) ? $this->linkers : $this->linkers[$app];
     }
 }
