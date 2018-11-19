@@ -15,24 +15,7 @@ class pocketlistsRightConfig extends waRightConfig
             'checkbox'
         );
 
-        $list_model = new pocketlistsListModel();
-        $items = [];
-        // todo: только активные? или все подряд?
-        $all_lists = $list_model->getAllLists(false);
-        usort($all_lists, [$this, 'sort_archive']);
-        foreach ($all_lists as $list) {
-            $items[$list['id']] = $list['name'].($list['archived'] ? " ("._w('archive').")" : "");
-        }
-
-        $this->addItem(
-            'list',
-            _w('Shared lists'),
-            'list',
-            [
-                'items' => $items,
-                //                'hint1' => 'all_checkbox',
-            ]
-        );
+        // POCKETS
 
         $items = [];
         foreach (pocketlistsPocketModel::model()->getAllPockets() as $pocket) {
@@ -48,8 +31,30 @@ class pocketlistsRightConfig extends waRightConfig
                 'position' => 'right',
                 'options' => [
                     self::RIGHT_NONE => _w('No access'),
+                    //self::RIGHT_LIMITED => _w('Limited access'),
                     self::RIGHT_FULL => _w('Full access'),
                 ],
+            ]
+        );
+
+        // LISTS
+
+        $list_model = new pocketlistsListModel();
+        $items = [];
+        // todo: только активные? или все подряд?
+        $all_lists = $list_model->getAllLists(false);
+        usort($all_lists, [$this, 'sort_archive']);
+        foreach ($all_lists as $list) {
+            $items[$list['id']] = ($list['archived'] ? "("._w('archive').") " : "").$list['name'];
+        }
+
+        $this->addItem(
+            'list',
+            _w('Lists'),
+            'list',
+            [
+                'items' => $items,
+                //                'hint1' => 'all_checkbox',
             ]
         );
 
