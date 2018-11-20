@@ -845,6 +845,14 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 .appendTo( ul );
         };
 
+        $textarea
+            .on("autocompleteopen", function (event, ui) {
+                $textarea.data('pl2-autocomplete-isopen', true);
+            })
+            .on("autocompleteclose", function (event, ui) {
+                $textarea.data('pl2-autocomplete-isopen', false);
+            });
+
         var showLinkedPreview = function (link) {
             var $linkPreview = $('<div data-pl2-link-preview></div>');
 
@@ -903,7 +911,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     $this
                         .data('can_blur', true)
                         .removeClass('pl-unsaved');
-                    if (!e.shiftKey && e.which === 13) {
+                    if (!e.shiftKey && e.which === 13 && !$this.data('pl2-autocomplete-isopen')) {
                         e.preventDefault();
                         $.pocketlists.disable_prevent_close_browser();
                         var parent_id = $this.closest('.menu-v').find(item_selector).first().data('parent-id'),
@@ -915,7 +923,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                                 parent_id: parent_id
                             }]);
                         }
-                    } else if (e.which === 27) {
+                    } else if (e.which === 27 && !$this.data('pl2-autocomplete-isopen')) {
                         $this.data('can_blur', false);
                         $.pocketlists.disable_prevent_close_browser();
                         hide_new_item_wrapper();
