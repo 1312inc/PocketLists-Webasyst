@@ -1019,6 +1019,7 @@ class pocketlistsItemModel extends kmModelExt
                     OR l.archived IS NULL
                   )
                   AND {$list_sql}
+                GROUP BY id
                 ORDER BY
                   i.status,
                   (i.complete_datetime IS NULL), i.complete_datetime DESC";
