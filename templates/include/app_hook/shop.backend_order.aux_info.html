@@ -1,0 +1,51 @@
+<script type="template/pl2" data-pl2-template="itemadd">
+    <main class="pl-items pl-list-items pl-todo shadowed" id="pl-list-content">
+        <div class="pl-list-items" id="pl-list-items">
+            <section id="pl-undone-items" data-pl-items="undone">
+                <ul class="menu-v">
+                </ul>
+            </section>
+        </div>
+        {include '../../include/itemadd.html' inline}
+    </main>
+</script>
+<script type="text/javascript" src="{$params.wa_app_static_url}js/pocketlists.js?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
+<script type="text/javascript" src="{$params.wa_app_static_url}js/pocketlists-item.js?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
+<link type="text/css" rel="stylesheet" href="{$params.wa_app_static_url}css/pocketlists.css?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}">
+
+<script>
+    (function(){
+        var $order_info_wrapper = $('#s-split-order-wrapper'),
+            item_add_html = $('[data-pl2-template="itemadd"]').html(),
+            $toggle_link = $('[data-pl2-action="show-add-item"]');
+debugger;
+        $order_info_wrapper.prepend(item_add_html);
+
+        var $list_wrapper = $('#pl-list-content');
+
+        $toggle_link.on('click', function (e) {
+            e.preventDefault();
+
+            $list_wrapper.slideToggle();
+        });
+
+        var Items = new $.pocketlists.Items($list_wrapper, {
+            enableAddLinkOnHover: false,
+            enableChangeLevel: false,
+            enableSortItems: false,
+            current_user_id: {$wa->user()->getId()},
+            standAloneItemAdd: 1,
+            defaultLinkedEntity: {
+                app: '{$params.app->getApp()}',
+                entity_type: 'order',
+                entity_id: {$params.order.id}
+            },
+            appUrl: '{$params.plurl}'
+        });
+
+        setTimeout(function() {
+            $list_wrapper.find('[data-pl-item-add]').show();
+        }, 1000);
+        debugger;
+    }());
+</script>

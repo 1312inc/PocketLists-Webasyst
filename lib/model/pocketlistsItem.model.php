@@ -281,14 +281,17 @@ class pocketlistsItemModel extends kmModelExt
             0 => [],
             1 => [],
         ];
-        foreach ($items as $id => $item) {
-            $result[$item['status']][$id] = $this->extendItemData($item);
-        }
 
-        $result = [
-            0 => $this->getProperSort($result[0]),
-            1 => $result[1],
-        ];
+        if ($items) {
+            foreach ($items as $id => $item) {
+                $result[$item['status']][$id] = $this->extendItemData($item);
+            }
+
+            $result = [
+                0 => $this->getProperSort($result[0]),
+                1 => $result[1],
+            ];
+        }
 
         return $result;
 

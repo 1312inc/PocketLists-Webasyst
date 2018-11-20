@@ -29,7 +29,9 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             archive: false,
             allowChat: true,
             current_user_id: 0,
-            defaultLinkedEntity: false
+            defaultLinkedEntity: false,
+            standAloneItemAdd: false,
+            appUrl: '',
         }, options),
         request_in_action = false;
 
@@ -115,7 +117,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
         var $pl_done = $this.closest('.pl-item').find('.pl-done-label span').addClass('transparent').html($.pocketlists.$loading);
         $.post(
-            '?module=item&action=create',
+            o.appUrl + '?module=item&action=create',
             {
                 list_id: o.list ? o.list.list_id : 0,
                 data: data,
@@ -123,9 +125,12 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 filter: o.filter
             },
             function (html) {
-                $.pocketlists.updateAppCounter();
-                $.pocketlists.reloadSidebar();
-                $.pocketlists.$loading.remove();
+                if (!o.standAloneItemAdd) {
+                    $.pocketlists.updateAppCounter();
+                    $.pocketlists.reloadSidebar();
+                    $.pocketlists.$loading.remove();
+                }
+
                 $pl_done.removeClass('transparent');
 
                 var $li = $this.closest(item_selector),
@@ -159,8 +164,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
                 // update calendar date with new dot
                 var $calendar = $('.pl-calendar');
-                if (!o.list && $calendar.length) {
-                    $.get('?module=json&action=getItemsPocketColor&id=' + parseInt($html.data('id')), function (r) {
+                if (!o.list && $calendar.length && !o.standAloneItemAdd) {
+                    $.get(o.appUrl + '?module=json&action=getItemsPocketColor&id=' + parseInt($html.data('id')), function (r) {
                         if (r.status === 'ok') {
                             var $selected_date = $calendar.find('[data-pl-todo-date="' + due_date + '"]').length ? $calendar.find('[data-pl-todo-date="' + due_date + '"]') : ($calendar.find('.pl-today').next().length ? $calendar.find('.pl-today').next() : false);
                             if ($selected_date) {
@@ -185,9 +190,11 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
                 $previewWrapper.empty();
 
-                hideEmptyListMessage();
-                updateListCountBadge();
-                updateSort();
+                if (!o.standAloneItemAdd) {
+                    hideEmptyListMessage();
+                    updateListCountBadge();
+                    updateSort();
+                }
 
                 request_in_action = false;
 
@@ -329,7 +336,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             request_in_action = true;
 
             $.post(
-                '?module=item&action=sort',
+                o.appUrl + '?module=item&action=sort',
                 {
                     list_id: o.list.list_id,
                     item_id: id ? id : 0,
@@ -366,7 +373,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         $item_data_wrapper.toggleClass('gray');
         $assigned_user_icon.hide();
         $.post(
-            '?module=item&action=complete',
+            o.appUrl + '?module=item&action=complete',
             {
                 id: id,
                 status: status
@@ -479,7 +486,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             id = parseInt($item.data('id')),
             status = $star.hasClass('star-empty') ? 1 : 0;
         $.post(
-            '?module=item&action=favorite',
+            o.appUrl + '?module=item&action=favorite',
             {
                 id: id,
                 status: status
@@ -591,7 +598,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             'margin-left': 12
         }));
         $.post(
-            '?module=comment&action=add',
+            o.appUrl + '?module=comment&action=add',
             {
                 item_id: item_id,
                 comment: data.comment
@@ -624,7 +631,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             comment_id = $comment_wrapper.data('pl-comment-id');
 
         $.post(
-            '?module=comment&action=delete',
+            o.appUrl + '?module=comment&action=delete',
             {
                 id: comment_id
             },
@@ -649,7 +656,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         var $this = $(this);
 
         return $.post(
-            '?module=item&action=moveToList',
+            o.appUrl + '?module=item&action=moveToList',
             {
                 id: parseInt($this.data('id')),
                 list_id: list_id
@@ -676,7 +683,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         var $this = $(this);
 
         return $.post(
-            '?module=item&action=assignTo',
+            o.appUrl + '?module=item&action=assignTo',
             {
                 id: parseInt($this.data('id')),
                 team_id: team_id
@@ -810,7 +817,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 if (results) {
                     response(results);
                 } else {
-                    $.getJSON("?module=item&action=linkAutocomplete", {
+                    $.getJSON(o.appUrl + '?module=item&action=linkAutocomplete', {
                         term: term
                     }, plresponse);
                 }
@@ -839,11 +846,14 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 return false;
             },
             delay: 300,
-        }).data( "ui-autocomplete" )._renderItem = function( ul, item ) {
-            return $( "<li>" )
-                .append( item.label )
-                .appendTo( ul );
-        };
+        });
+
+        debugger;
+        // $textarea.data( "ui-autocomplete" )._renderItem = function( ul, item ) {
+        //     return $( "<li>" )
+        //         .append( item.label )
+        //         .appendTo( ul );
+        // };
 
         $textarea
             .on("autocompleteopen", function (event, ui) {
@@ -866,6 +876,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
      * for new item dom manipulating
      */
     var NewItemWrapper = (function ($new_item_wrapper) {
+        debugger;
         var $new_item_wrapper_hover = $('<div id="pl-item-add-wrapper-hover" style="display: none;">'),
             $top_new_item_wrapper = $new_item_wrapper.clone(),
             $textarea = $new_item_wrapper.find('textarea'),
@@ -881,8 +892,10 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         };
 
         var init = function () {
-            $new_item_wrapper.detach();
-
+            // if (!o.standAloneItemAdd) {
+                $new_item_wrapper.detach();
+            // }
+debugger;
             var show_new_item_wrapper = function () {
                 // hideEmptyListMessage();
                 $top_new_item_wrapper.prependTo($undone_items_wrapper).show().wrap('<li data-pl-item-add-top>');
@@ -907,13 +920,18 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 })
                 .on('keydown', function (e) {
                     var $this = $(this);
-                    $.pocketlists.enable_prevent_close_browser($this);
+                    if (!o.standAloneItemAdd) {
+                        $.pocketlists.enable_prevent_close_browser($this);
+                    }
                     $this
                         .data('can_blur', true)
                         .removeClass('pl-unsaved');
                     if (!e.shiftKey && e.which === 13 && !$this.data('pl2-autocomplete-isopen')) {
                         e.preventDefault();
-                        $.pocketlists.disable_prevent_close_browser();
+                        if (!o.standAloneItemAdd) {
+                            $.pocketlists.disable_prevent_close_browser();
+                        }
+
                         var parent_id = $this.closest('.menu-v').find(item_selector).first().data('parent-id'),
                             name = $this.val().trim();
                         if (name) {
@@ -925,8 +943,11 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                         }
                     } else if (e.which === 27 && !$this.data('pl2-autocomplete-isopen')) {
                         $this.data('can_blur', false);
-                        $.pocketlists.disable_prevent_close_browser();
-                        hide_new_item_wrapper();
+
+                        if (!o.standAloneItemAdd) {
+                            $.pocketlists.disable_prevent_close_browser();
+                            hide_new_item_wrapper();
+                        }
                     }
 
 
@@ -958,7 +979,9 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 })
                 .on('focus', function () {
                     var $this = $(this);
-                    $.pocketlists.disable_prevent_close_browser();
+                    if (!o.standAloneItemAdd) {
+                        $.pocketlists.disable_prevent_close_browser();
+                    }
                     $this
                         .data('can_blur', true)
                         .removeClass('pl-unsaved');
@@ -970,10 +993,14 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
                     if (can_blur) {
                         if (name) {
-                            $.pocketlists.enable_prevent_close_browser($this);
+                            if (!o.standAloneItemAdd) {
+                                $.pocketlists.enable_prevent_close_browser($this);
+                            }
                             $this.addClass('pl-unsaved');
                         } else {
-                            $.pocketlists.disable_prevent_close_browser();
+                            if (!o.standAloneItemAdd) {
+                                $.pocketlists.disable_prevent_close_browser();
+                            }
                             hide_new_item_wrapper();
                         }
                     }
@@ -1069,7 +1096,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 o.list && o.list.list_details.isVisible() && o.list.list_details.trigger('hide.pl2');
                 $.pocketlists.stickyDetailsSidebar();
             });
-            $.post('?module=item&action=details', {id: id}, function (html) {
+            $.post(o.appUrl + '?module=item&action=details', {id: id}, function (html) {
                 $wrapper.html(html);
                 afterLoad();
                 request_in_action = false;
@@ -1192,7 +1219,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                                 }
                                 request_in_action = true;
 
-                                $.post('?module=item&action=delete', {id: id}, function (r) {
+                                $.post(o.appUrl + '?module=item&action=delete', {id: id}, function (r) {
                                     if (r.status === 'ok') {
                                         removeItem(r.data.id);
                                         $list_items_wrapper.find('[data-id="' + r.data.id + '"]').remove();
@@ -1234,7 +1261,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     request_in_action = true;
 
                     $(this).after($.pocketlists.$loading);
-                    $.get('?module=json&action=getLists', function (r) {
+                    $.get(o.appUrl + '?module=json&action=getLists', function (r) {
                         $.pocketlists.$loading.remove();
                         var $pocket_lists = $('#pl-item-list');
                         $pocket_lists.empty();
@@ -1270,7 +1297,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     var $this = $(this),
                         attachment_name = $this.data('pl-attachment-name'),
                         $w = $this.closest('li');
-                    $.post('?module=item&action=deleteAttachment', {
+                    $.post(o.appUrl + '?module=item&action=deleteAttachment', {
                         attachment: attachment_name,
                         item_id: id
                     }, function (r) {
@@ -1429,13 +1456,17 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     comment = $this.val().trim();
                 if (comment) {
                     $this.addClass('pl-unsaved');
-                    $.pocketlists.enable_prevent_close_browser();
+                    if (!o.standAloneItemAdd) {
+                        $.pocketlists.enable_prevent_close_browser();
+                    }
                 }
             })
             .on('focus', '.pl-chat .pl-reply textarea', function (e) {
                 var $this = $(this);
                 $this.removeClass('pl-unsaved');
-                $.pocketlists.disable_prevent_close_browser();
+                if (!o.standAloneItemAdd) {
+                    $.pocketlists.disable_prevent_close_browser();
+                }
             })
             .on('click', '[data-pl-action="comment-delete"]', function (e) {
                 e.preventDefault();
