@@ -367,13 +367,20 @@ input#pl-new-list-input:focus,
 .pl-list-items ul.menu-v li .pl-item:hover .pl-item-drag-handle { display: block; }
 .pl-list-items ul.menu-v li #pl-item-add .pl-item:hover { background: transparent; }
 
-.pl-link-preview { margin-left: 40px; padding: 5px 15px 5px 7px; margin-bottom: 12px; display: inline-block; line-height: 1.3em; position: relative; border-radius: 5px; min-width: 300px; }
-.pl-link-preview:hover { background: rgba(0,0,0,0.05); }
+.pl-link-preview { margin-left: 49px; padding: 5px 10px 5px 7px; margin-bottom: 15px; margin-top: -5px; display: inline-block; line-height: 1.3em; position: relative; border-radius: 5px; min-width: 300px;
+background: -moz-linear-gradient(-45deg, rgba(0,0,0,0.07) 0%, rgba(0,0,0,0.07) 1%, rgba(0,0,0,0.03) 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(-45deg, rgba(0,0,0,0.07) 0%,rgba(0,0,0,0.07) 1%,rgba(0,0,0,0.03) 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(135deg, rgba(0,0,0,0.07) 0%,rgba(0,0,0,0.07) 1%,rgba(0,0,0,0.03) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#12000000', endColorstr='#05000000',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */ }
+.pl-link-preview:hover { background: -moz-linear-gradient(-45deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.07) 1%, rgba(0,0,0,0.05) 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(-45deg, rgba(0,0,0,0.07) 0%,rgba(0,0,0,0.08) 1%,rgba(0,0,0,0.05) 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(135deg, rgba(0,0,0,0.07) 0%,rgba(0,0,0,0.08) 1%,rgba(0,0,0,0.05) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#12000000', endColorstr='#05000000',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */ }
 .pl-link-preview-image { display: inline-block; width: 36px; float: left; }
 .pl-link-preview-image img { max-width: 32px; margin-top: 3px; }
 .pl-link-preview-details { display: block; margin-left: 40px; }
 .pl-link-preview-details p { margin-bottom: 0; line-height: 1em; margin-top: 2px; }
-.pl-link-preview-details a .pl-label { margin-left: 0px !important; }
+.pl-link-preview-details a .pl-label { margin-left: 0px !important; font-size: 12px; }
 .pl-link-preview-details a:hover .pl-label { background-color: red !important; color: white !important; }
 
 .pl-list-content { position: relative; }
