@@ -135,7 +135,7 @@ class pocketlistsItemLinkShop extends pocketlistsItemLink implements pocketlists
      */
     public function getAppIcon()
     {
-        return '<i class="icon16" style="background-image: url(https://www.shop-script.ru/favicon.ico); background-size: 16px 16px;"></i>';
+        return '<i class="icon16 pl-wa-app-icon" style="background-image: url('.wa()->getAppStaticUrl('shop').'img/shop.png); background-size: 16px 16px;"></i>';
     }
 
     public function getName()
