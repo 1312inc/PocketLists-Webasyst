@@ -51,11 +51,23 @@ class pocketlistsItemLinkShop extends pocketlistsItemLink implements pocketlists
     {
         $result = [];
 
-        $orders = (new shopOrderModel())
-            ->select('*')
-            ->where("id like :term", ['term' => $term.'%'])
-            ->limit($count)
-            ->fetchAll();
+        if (!wa()->getUser()->getRights('shop', 'orders')) {
+            return $result;
+        }
+
+        // @see shopBackendAutocompleteController::ordersAutocomplete
+
+        // first, assume $q is encoded $order_id, so decode
+        $dq = shopHelper::decodeOrderId($term);
+        if (!$dq) {
+            $dq = shopBackendAutocompleteController::decodeOrderId($term);
+        }
+
+        $orders = $dq ? $this->getOrders($dq, $count) : [];
+        $cnt = count($orders);
+        if ($cnt < $count) {
+            $orders = array_merge($orders, $this->getOrders($term, $count - $cnt));
+        }
 
         foreach ($orders as $order) {
             $linkEntity = new pocketlistsItemLinkModel(
@@ -135,11 +147,32 @@ class pocketlistsItemLinkShop extends pocketlistsItemLink implements pocketlists
      */
     public function getAppIcon()
     {
-        return '<i class="icon16 pl-wa-app-icon" style="background-image: url('.wa()->getAppStaticUrl('shop').'img/shop.png); background-size: 16px 16px;"></i>';
+        return '<i class="icon16 pl-wa-app-icon" style="background-image: url('.wa()->getAppStaticUrl(
+                'shop'
+            ).'img/shop.png); background-size: 16px 16px;"></i>';
     }
 
     public function getName()
     {
         return 'Shop-Script';
+    }
+
+    /**
+     * @param      $q
+     * @param null $limit
+     *
+     * @return array
+     */
+    private function getOrders($q, $limit = null)
+    {
+        $order_model = new shopOrderModel();
+        $limit = $limit ? $limit : self::LIMIT;
+
+        $orders = $order_model->autocompleteById($q, $limit);
+        if (!$orders) {
+            return $order_model->autocompleteById($q, $limit, true);
+        }
+
+        return $orders;
     }
 }

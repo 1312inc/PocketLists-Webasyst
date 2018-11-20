@@ -5,6 +5,8 @@
  */
 abstract class pocketlistsItemLink
 {
+    const LIMIT = 10;
+
     /**
      * @var pocketlistsItemLinkModel
      */
