@@ -21,7 +21,7 @@ class pocketlistsItemLinkAutocompleter
     {
         $this->result = [];
 
-        foreach (wa()->getConfig()->getLinkedClass() as $app => $linker) {
+        foreach (wa()->getConfig()->getLinkedApp() as $app => $linker) {
             if ($types && !in_array($app, $types)) {
                 continue;
             }

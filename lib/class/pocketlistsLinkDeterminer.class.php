@@ -38,7 +38,7 @@ class pocketlistsLinkDeterminer
     {
         $this->setLink($link);
 
-        $linkers = wa()->getConfig()->getLinkedClass();
+        $linkers = wa()->getConfig()->getLinkedApp();
 
         foreach ($linkers as $app) {
             $types = $app->getLinkRegexs();
@@ -66,6 +66,6 @@ class pocketlistsLinkDeterminer
      */
     public function getAppIcon($app)
     {
-        return wa()->getConfig()->getLinkedClass($app)->getAppIcon();
+        return wa()->getConfig()->getLinkedApp($app)->getAppIcon();
     }
 }

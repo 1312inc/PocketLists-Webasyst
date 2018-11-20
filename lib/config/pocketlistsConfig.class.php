@@ -114,7 +114,7 @@ class pocketlistsConfig extends waAppConfig
      * @return pocketlistsItemLinkInterface|pocketlistsItemLinkInterface[]
      * @throws waException
      */
-    public function getLinkedClass($app = '')
+    public function getLinkedApp($app = '')
     {
         if ($this->linkers === null) {
             foreach ($this->getLinkedApps() as $entity) {

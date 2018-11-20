@@ -60,4 +60,14 @@ interface pocketlistsItemLinkInterface
      * @return string
      */
     public function getAppIcon();
+
+    /**
+     * @return string
+     */
+    public function getName();
+
+    /**
+     * @return int
+     */
+    public function countItems();
 }

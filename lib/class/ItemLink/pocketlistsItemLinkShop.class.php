@@ -137,4 +137,9 @@ class pocketlistsItemLinkShop extends pocketlistsItemLink implements pocketlists
     {
         return '<i class="icon16" style="background-image: url(https://www.shop-script.ru/favicon.ico); background-size: 16px 16px;"></i>';
     }
+
+    public function getName()
+    {
+        return 'Shop-Script';
+    }
 }

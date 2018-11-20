@@ -28,7 +28,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             filter: false,
             archive: false,
             allowChat: true,
-            current_user_id: 0
+            current_user_id: 0,
+            defaultLinkedEntity: false
         }, options),
         request_in_action = false;
 
@@ -103,6 +104,15 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 data[i]['due_date'] = o.dueDate;
             });
         }
+
+        if (o.defaultLinkedEntity !== false) {
+            $.each(data, function (i) {
+                if (data[i]['links'] === undefined) {
+                    data[i]['links'] = [{model: o.defaultLinkedEntity}];
+                }
+            });
+        }
+
         var $pl_done = $this.closest('.pl-item').find('.pl-done-label span').addClass('transparent').html($.pocketlists.$loading);
         $.post(
             '?module=item&action=create',

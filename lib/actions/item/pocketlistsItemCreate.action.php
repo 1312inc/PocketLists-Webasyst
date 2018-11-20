@@ -102,6 +102,12 @@ class pocketlistsItemCreateAction extends waViewAction
 
                 if (!empty($data[$i]['links'])) {
                     foreach ($data[$i]['links'] as $link) {
+                        foreach ($link['model'] as $key => $value) {
+                            if ($value === '') {
+                                $link['model'][$key] = null;
+                            }
+                        }
+
                         $itemLink = new pocketlistsItemLinkModel($link['model']);
                         $itemLink->item_id = $last_id;
                         try {

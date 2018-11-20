@@ -54,10 +54,11 @@ return array(
         'item_id' => array('int', 11, 'null' => 0),
         'app' => array('varchar', 50, 'null' => 0, 'default' => ''),
         'entity_type' => array('varchar', 50, 'null' => 0, 'default' => ''),
-        'entity_id' => array('int', 11, 'null' => 0),
+        'entity_id' => array('int', 11),
         'data' => array('text'),
         ':keys' => array(
             'PRIMARY' => 'id',
+            'item_id_2' => array('item_id', 'app', 'entity_type', 'entity_id', 'unique' => 1),
             'item_id' => 'item_id',
         ),
     ),

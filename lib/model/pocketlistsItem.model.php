@@ -951,12 +951,97 @@ class pocketlistsItemModel extends kmModelExt
                 'user_contact_id' => wa()->getUser()->getId(),
             ]
         )->fetchAll();
+
+        $items = self::generateModels($items);
+
         $results = [
             0 => [],
             1 => [],
         ];
-        foreach ($items as $id => $item) {
-            $results[$item['status']][$id] = $item;
+
+        if ($items) {
+            foreach ($items as $id => $item) {
+                $results[$item['status']][$id] = $item;
+            }
+        }
+
+        return [
+            0 => $results[0],
+            1 => $results[1],
+        ];
+    }
+
+    /**
+     * @param $contact_id
+     *
+     * @return array
+     */
+    public function getAppItems($app)
+    {
+        $lists = [];
+        $contact_id = wa()->getUser()->getId();
+        pocketlistsRBAC::filterListAccess($lists, $contact_id);
+        $list_sql = pocketlistsRBAC::filterListAccess($lists);
+        $q = "SELECT
+                  i.id id,
+                  i.parent_id parent_id,
+                  i.has_children has_children,
+                  i.name name,
+                  i.note note,
+                  i.status status,
+                  i.priority priority,
+                  i.contact_id contact_id,
+                  i.create_datetime create_datetime,
+                  i.due_date due_date,
+                  i.due_datetime due_datetime,
+                  i.complete_datetime complete_datetime,
+                  i.complete_contact_id complete_contact_id,
+                  i.assigned_contact_id assigned_contact_id,
+                  i.key_list_id key_list_id,
+                  l.id list_id,
+                  l.icon list_icon,
+                  l.color list_color,
+                  i2.name list_name,
+                  IF(uf.contact_id, 1, 0) favorite
+                FROM {$this->table} i
+                LEFT JOIN pocketlists_list l ON (l.id = i.list_id  OR l.id = i.key_list_id)
+                LEFT JOIN pocketlists_item i2 ON i2.key_list_id = i.list_id
+                LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:user_contact_id AND uf.item_id = i.id
+                JOIN pocketlists_item_link pil ON pil.item_id = i.id
+                WHERE
+                  (
+                    i.assigned_contact_id = i:contact_id AND i.status >= 0 /* assigned to contact no matter who it completed */
+                    OR i.contact_id = i:contact_id AND i.status >= 0 /* created by contact (completed and not) */
+                    OR i.complete_contact_id = i:contact_id AND i.status > 0 /* completed by contact */
+                  )
+                  AND (
+                    l.archived = 0
+                    OR l.archived IS NULL
+                  )
+                  AND {$list_sql}
+                ORDER BY
+                  i.status,
+                  (i.complete_datetime IS NULL), i.complete_datetime DESC";
+        $items = $this->query(
+            $q,
+            [
+                'contact_id'      => $contact_id,
+                'list_ids'        => $lists,
+                'user_contact_id' => wa()->getUser()->getId(),
+            ]
+        )->fetchAll();
+
+        $items = self::generateModels($items);
+
+        $results = [
+            0 => [],
+            1 => [],
+        ];
+
+        if ($items) {
+            foreach ($items as $id => $item) {
+                $results[$item['status']][$id] = $item;
+            }
         }
 
         return [

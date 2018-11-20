@@ -237,6 +237,12 @@ new(function ($) {
                 $('#content').html(result);
             });
         },
+        appAction: function (app) {
+            app = app || 0;
+            this.load('?module=app&id=' + app, function (result) {
+                $('#content').html(result);
+            });
+        },
         /** Helper to load data into main content area. */
         load: function (url, options, fn) {
             if (typeof options === 'function') {

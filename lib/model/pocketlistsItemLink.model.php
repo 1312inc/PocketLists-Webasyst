@@ -75,6 +75,10 @@ class pocketlistsItemLinkModel extends kmModelExt
      */
     public function renderPreview()
     {
+        if (!$this->entity_id || !$this->entity_type) {
+            return '';
+        }
+
         $template = wa()->getAppPath(
             sprintf('templates/include/item_linked_entities/%s.%s.preview.html', $this->app, $this->entity_type),
             pocketlistsHelper::APP_ID

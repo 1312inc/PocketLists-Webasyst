@@ -52,12 +52,21 @@ abstract class pocketlistsItemLink
         return $this->itemLinkModel;
     }
 
-
     /**
      * pocketlistsItemLink constructor.
      */
     public function __construct()
     {
         wa($this->getApp());
+    }
+
+    /**
+     * @return int
+     * @throws waDbException
+     * @throws waException
+     */
+    public function countItems()
+    {
+        return pocketlistsItemLinkModel::model()->countByField('app', $this->getApp());
     }
 }
