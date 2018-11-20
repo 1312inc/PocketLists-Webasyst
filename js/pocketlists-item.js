@@ -128,8 +128,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 if (!o.standAloneItemAdd) {
                     $.pocketlists.updateAppCounter();
                     $.pocketlists.reloadSidebar();
-                    $.pocketlists.$loading.remove();
                 }
+                $.pocketlists.$loading.remove();
 
                 $pl_done.removeClass('transparent');
 
@@ -141,6 +141,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 if (!o.enableSortItems) {
                     $html.find('[data-pl-action="item-sort"]').hide();
                 }
+
+                _itemAdd.textarea.removeData('pl2-linked-entities');
 
                 _itemAdd.textarea.data('can_blur', false);
                 if ($li.length) {
@@ -845,15 +847,22 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
                 return false;
             },
+            open: function(){
+                $textarea.autocomplete('widget').css('z-index', 100);
+                return false;
+            },
             delay: 300,
         });
 
         debugger;
-        // $textarea.data( "ui-autocomplete" )._renderItem = function( ul, item ) {
-        //     return $( "<li>" )
-        //         .append( item.label )
-        //         .appendTo( ul );
-        // };
+
+        if ($textarea.data( "ui-autocomplete") !== undefined) {
+            $textarea.data("ui-autocomplete")._renderItem = function (ul, item) {
+                return $("<li>")
+                    .append(item.label)
+                    .appendTo(ul);
+            };
+        }
 
         $textarea
             .on("autocompleteopen", function (event, ui) {
