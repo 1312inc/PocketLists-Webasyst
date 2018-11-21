@@ -761,7 +761,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 return false;
             }
 
-            if (!/@\w/.test(itemText)) {
+            if (!/(^| )@/.test(itemText)) {
                 log('no @');
 
                 return false;
@@ -790,8 +790,11 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             source: function( request, response ) {
                 var term = canShowAutocomplete();
 
-                if (!term) {
-                    return [];
+                if (term === '') {
+                    return response([{
+                        'value': '',
+                        'label': '<em>[Find order by ID]</em>'
+                    }]);
                 }
 
                 var plresponse = function(data) {
@@ -860,6 +863,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
         debugger;
 
+        // old jq ui hack
         if ($textarea.data( "ui-autocomplete") !== undefined) {
             $textarea.data("ui-autocomplete")._renderItem = function (ul, item) {
                 return $("<li>")

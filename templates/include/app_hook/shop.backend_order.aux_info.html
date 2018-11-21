@@ -1,5 +1,5 @@
 <script type="template/pl2" data-pl2-template="itemadd">
-    <main class="pl-items pl-list-items pl-todo" id="pl-list-content">
+    <main class="pl-items pl-list-items pl-todo pl-shop-order" id="pl-list-content">
         <div class="pl-list-items" id="pl-list-items">
             <section id="pl-undone-items" data-pl-items="undone">
                 <ul class="menu-v">
@@ -44,6 +44,12 @@
         $order_info_wrapper.prepend(item_add_html);
 
         var $list_wrapper = $('#pl-list-content');
+
+        //{if empty($params.items_undone)}
+
+        $list_wrapper.hide();
+
+        //{/if}
 
         $toggle_link.on('click', function (e) {
             e.preventDefault();
