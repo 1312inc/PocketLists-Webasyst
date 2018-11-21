@@ -44,7 +44,7 @@ class pocketlistsNotifications
         $lm = new pocketlistsListModel();
         $im = new pocketlistsItemModel();
 
-        $subject = 'string:{if !$complete}❌{else}✅{/if} {str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:64}';
+        $subject = 'string:{if !$complete}🚫{else}✅{/if} {str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:64}';
         // todo: refactor
         foreach ($users as $user_id => $user) { // foreach user
             $filtered_items = array();
@@ -281,7 +281,7 @@ class pocketlistsNotifications
                         self::sendMail(
                             array(
                                 'contact_id' => $user_id,
-                                'subject' => 'string:⚪ {str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:64}',
+                                'subject' => 'string:{str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:64}',
                                 'body' => wa()->getAppPath('templates/mails/newfavoritelistitem.html'),
                                 'variables' => array(
                                     'list_name' => $list ? $list['name'] : false,
@@ -315,7 +315,7 @@ class pocketlistsNotifications
                         self::sendMail(
                             array(
                                 'contact_id' => $user_id,
-                                'subject' => 'string:⚪ {str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:64}',
+                                'subject' => 'string:{str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:64}',
                                 'body' => wa()->getAppPath('templates/mails/newitem.html'),
                                 'variables' => array(
                                     'list_name' => $list ? $list['name'] : false,
