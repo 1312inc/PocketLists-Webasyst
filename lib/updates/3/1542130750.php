@@ -2,7 +2,7 @@
 
 $m = new waModel();
 
-$name = wa()->accountName() ? wa()->accountName() : _w('Pocketlists');
+$name = wa()->accountName() ? wa()->accountName() : _w('Pocket Lists');
 $m->query("INSERT INTO pocketlists_pocket (name) VALUES (s:name)", ['name' => $name]);
 
 $m->exec(

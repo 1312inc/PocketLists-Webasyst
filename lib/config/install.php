@@ -2,7 +2,7 @@
 
 (new pocketlistsPocketModel(
     [
-        'name' => wa()->accountName() ? wa()->accountName() : _w('Pocketlists'),
+        'name' => wa()->accountName() ? wa()->accountName() : _w('Pocket Lists'),
     ]
 ))->save();
 
