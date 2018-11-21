@@ -8,7 +8,7 @@ class pocketlistsShopBackend_orderHandler extends waEventHandler
     /**
      * @param $params
      *
-     * @return array|void
+     * @return array
      * @throws waException
      */
     public function execute(&$params)
@@ -28,21 +28,29 @@ class pocketlistsShopBackend_orderHandler extends waEventHandler
             ]
         );
 
-        $items = wa(pocketlistsHelper::APP_ID)->getConfig()
-            ->getModelFactory('Item')
-            ->findForLinkedEntity($itemLinkModel);
-
-        $im = new pocketlistsItemModel();
-
         $viewParams = [
             'wa_app_static_url' => wa()->getAppStaticUrl(pocketlistsHelper::APP_ID),
             'app'               => $app,
             'order'             => $params,
             'plurl'             => wa()->getAppUrl(pocketlistsHelper::APP_ID),
-            'items_undone'      => $im->getProperSort($im->extendItemData($items[0])),
-            'items_done'        => $im->extendItemData($items[1]),
-            'count_done_items'  => count($items[1]),
+            'items_undone'      => [],
+            'items_done'        => [],
+            'count_done_items'  => 0,
         ];
+
+        if ($itemLinkModel) {
+            $items = wa(pocketlistsHelper::APP_ID)->getConfig()
+                ->getModelFactory('Item')
+                ->findForLinkedEntity($itemLinkModel);
+
+            $im = new pocketlistsItemModel();
+
+            if ($items) {
+                $viewParams['items_undone'] = $im->getProperSort($im->extendItemData($items[0]));
+                $viewParams['items_done'] = $im->extendItemData($items[1]);
+                $viewParams['count_done_items'] = count($items[1]);
+            }
+        }
 
         foreach (['aux_info', 'action_link', 'info_section', 'title_suffix', 'action_button'] as $hook) {
             $template = wa()->getAppPath(

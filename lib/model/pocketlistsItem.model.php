@@ -154,8 +154,13 @@ class pocketlistsItemModel extends kmModelExt
 //                unset($items[$id]);
 //            }
 //        }
-        foreach ($items as $id => $item) {
-            $result[$id] = $this->extendItemData($items[$id]);
+
+        $items = self::generateModels($items);
+
+        if ($items) {
+            foreach ($items as $id => $item) {
+                $result[$id] = $this->extendItemData($items[$id]);
+            }
         }
 
         return $result;
@@ -398,8 +403,13 @@ class pocketlistsItemModel extends kmModelExt
             0 => [],
             1 => [],
         ];
-        foreach ($items as $id => $item) {
-            $result[$item['status']][$id] = $this->extendItemData($item);
+
+        $items = self::generateModels($items);
+
+        if ($items) {
+            foreach ($items as $id => $item) {
+                $result[$item['status']][$id] = $this->extendItemData($item);
+            }
         }
 
         return [
