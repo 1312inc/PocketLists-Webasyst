@@ -135,7 +135,7 @@ class pocketlistsItemCreateAction extends waViewAction
                         break;
                 }
 
-                $items = $im->findByPk($inserted);
+                $items = $im->getById($inserted);
                 $items = $im->extendItemData($items);
                 if (isset($items['id'])) {
                     $items = array($items);
