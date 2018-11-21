@@ -4,6 +4,7 @@
 /* Layout
 --------- */
 
+#wa { overflow: hidden; }
 #wa-app { overflow: visible; }
 
 .shadowed { background: #fff; }
@@ -448,7 +449,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#12000000', e
 
 .pl-details { display: none; padding: 0; position: absolute; top: 0; bottom: 0; right: 0; width: 340px; box-shadow: -10px 0 50px -10px rgba(0,0,0,0.2); z-index: 99; background: #fff; overflow-x: hidden; overflow-y: scroll; }
 .pl-details-form-container { background: #fff; padding: 15px 10px 15px 15px; }
-
 .pl-details .fields.form { width: 100%; }
 .pl-details .fields.form .field-group { margin-top: 0; margin-bottom: 15px; }
 .pl-details .fields.form .field .name { float: none; padding-bottom: 5px; }
@@ -463,6 +463,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#12000000', e
 .pl-details .selected .pl-done.pl-priority-red + span { width: 30px; height: 30px; }
 .pl-details .selected .pl-done.pl-priority-black + span { background-position-x: -90px; width: 30px; height: 30px; }
 .pl-details .selected .pl-done.pl-priority-fire + span { background-size: 40px 40px; top: -8px; width: 40px; height: 40px; }
+
+.pl-details.sticky { position: fixed; right: 0; width: 350px; overflow-y: scroll; }
+.pl-details.sticky .pl-details-form-container { position: absolute; top: 0; bottom: 0; left: 0; right: 0; }
 
 .pl-close,
 .pl-close:visited { font-size: 2em; color: rgba(0,0,0,0.3) !important; text-decoration: none; float: right; position: relative; z-index: 1; margin-right: 10px; }
@@ -508,7 +511,15 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 /* Shop-Script embedded interface
 --------------------------------- */
 
-.s-order .pl-items { display: block; z-index: 1000; margin-bottom: 20px; }
+.s-order .pl-items { display: block; z-index: 1000; background: #f4f9ff; box-shadow: 0 -10px 20px -15px rgba(0,0,0,0.1) inset; transition: background-color 0.2s;
+margin-bottom: 20px;
+margin-left: -20px;
+margin-right: -32px;
+margin-top: -16px;
+padding-left: 20px;
+padding-top: 10px;
+padding-right: 20px;
+padding-bottom: 10px; }
 .s-order .pl-items .pl-link-preview { display: none; }
 .s-order .pl-items .pl-item-drag-handle { display: none !important; }
 
