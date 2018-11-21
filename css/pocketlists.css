@@ -542,6 +542,13 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 .ui-autocomplete .ui-menu-item-wrapper { padding: 8px !important; display: block; }
 .ui-autocomplete .ui-menu-item-wrapper.ui-state-active { background: #58a8f8; }
 
+/* Shop-Script embedded interface
+--------------------------------- */
+
+.s-order .pl-items { z-index: 1000; margin-bottom: 20px; }
+.s-order .pl-items .pl-link-preview { display: none; }
+.s-order .pl-items .pl-item-drag-handle { display: none !important; }
+
 /* @2x
 ------ */
 
