@@ -36,13 +36,15 @@
             <h5 class="heading">[`Access to lists`] ({count($lists)})</h5>
             <ul class="menu-v with-icons pl-teammate-lists" data-pl-sidebar-block="lists">
                 {foreach $lists as $l}
-                <li>
-                    <a href="#/list/{$l.id}/">
-                        <i class="icon16 listicon16" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l.icon|default:'li-list@2x.png'});"></i>{if $l.color != 'non1e'}<span class="pl-dark-{$l.color}-label">{$l.name|escape}</span>{else}{$l.name|escape}{/if}
-                        <span class="hint nowrap" {if empty($l.items_count)}style="display:none"{/if}>{_w('%d to-do', '%d to-dos', $l.items_count)}</span>
-                        {* <span class="hint nowrap" {if empty($l.last_contact_ativity)}style="display:none"{/if}>{$l.last_contact_ativity|wa_datetime:'humandatetime'}</span> *}
-                    </a>
-                </li>
+                    {if !empty($l.id)}
+                        <li>
+                            <a href="#/list/{$l.id}/">
+                                <i class="icon16 listicon16" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l.icon|default:'li-list@2x.png'});"></i>{if !empty($l.color)}<span class="pl-dark-{$l.color}-label">{$l.name|escape}</span>{else}{$l.name|escape|default:'(no name)'}{/if}
+                                <span class="hint nowrap" {if empty($l.items_count)}style="display:none"{/if}>{_w('%d to-do', '%d to-dos', $l.items_count)}</span>
+                                {* <span class="hint nowrap" {if empty($l.last_contact_ativity)}style="display:none"{/if}>{$l.last_contact_ativity|wa_datetime:'humandatetime'}</span> *}
+                            </a>
+                        </li>
+                    {/if}
                 {/foreach}
             </ul>
             <p class="hint">{sprintf('[`Use Team app to <a href="%s">configure %s’s access</a> to shared lists: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/u/'|cat:$current_teammate.login|cat:'/', $current_teammate.name|default:' '|escape)}</p>
