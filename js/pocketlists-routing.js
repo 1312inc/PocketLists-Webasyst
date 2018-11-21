@@ -1,4 +1,4 @@
-new(function ($) {
+(function ($) {
     'use strict';
 
     $.storage = new $.store();
@@ -239,7 +239,7 @@ new(function ($) {
         },
         appAction: function (app) {
             app = app || 0;
-            this.load('?module=app&id=' + app, function (result) {
+            this.load('?module=app&app=' + app, function (result) {
                 $('#content').html(result);
             });
         },

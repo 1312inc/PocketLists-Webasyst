@@ -440,6 +440,9 @@ class pocketlistsItemModel extends kmModelExt
         )->fetchAll();
 //        $items = $this->getItems($this->getQuery(), null, false);
 //        return $items;
+
+        $items = pocketlistsItemModel::generateModels($items);
+
         return count($ids) > 1 ? $items : reset($items);
     }
 
@@ -991,7 +994,7 @@ class pocketlistsItemModel extends kmModelExt
      *
      * @return array
      */
-    public function getAppItems($app = false, $entity_type = false, $entity_id = false)
+    public function getAppItems($app = false, $entity_type = false, $entity_id = false, $date = false)
     {
         $lists = [];
         $contact_id = wa()->getUser()->getId();
@@ -1011,6 +1014,11 @@ class pocketlistsItemModel extends kmModelExt
         $entityIdSql = '';
         if ($entity_type !== false) {
             $entityIdSql = 'AND pil.entity_id = i:entity_id';
+        }
+
+        $dateSql = '';
+        if ($date) {
+            $dateSql = "AND ((i.status = 0 AND (i.due_date = s:date OR DATE(i.due_datetime) = s:date)) OR (i.status > 0 AND DATE(i.complete_datetime) = s:date)) /* with due date or completed this day */";
         }
 
         $q = "SELECT
@@ -1041,16 +1049,12 @@ class pocketlistsItemModel extends kmModelExt
                 JOIN pocketlists_item_link pil ON pil.item_id = i.id {$appSql} {$appTypeSql} {$entityIdSql}
                 WHERE
                   (
-                    i.assigned_contact_id = i:contact_id AND i.status >= 0 /* assigned to contact no matter who it completed */
-                    OR i.contact_id = i:contact_id AND i.status >= 0 /* created by contact (completed and not) */
-                    OR i.complete_contact_id = i:contact_id AND i.status > 0 /* completed by contact */
-                  )
-                  AND (
                     l.archived = 0
                     OR l.archived IS NULL
                   )
                   AND {$list_sql}
-                GROUP BY id
+                  {$dateSql}
+                GROUP BY i.id
                 ORDER BY
                   i.status,
                   (i.complete_datetime IS NULL), i.complete_datetime DESC";
@@ -1064,6 +1068,7 @@ class pocketlistsItemModel extends kmModelExt
                 'app'             => $app,
                 'type'            => $entity_type,
                 'entity_id'       => $entity_id,
+                'date'            => $date,
             ]
         )->fetchAll();
 
@@ -1075,6 +1080,8 @@ class pocketlistsItemModel extends kmModelExt
         ];
 
         if ($items) {
+            $items = $this->extendItemData($items);
+
             foreach ($items as $id => $item) {
                 $results[$item['status']][$id] = $item;
             }

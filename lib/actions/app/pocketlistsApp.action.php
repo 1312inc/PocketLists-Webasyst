@@ -11,25 +11,11 @@ class pocketlistsAppAction extends waViewAction
      */
     public function execute()
     {
-        $app_id = waRequest::get('id');
-        if ($app_id) {
-            $im = new pocketlistsItemModel();
-            $items = $im->getAppItems($app_id);
-            $this->view->assign(
-                [
-                    'items_undone'     => $im->getProperSort($im->extendItemData($items[0])),
-                    'items_done'       => $im->extendItemData($items[1]),
-                    'count_done_items' => count($items[1]),
-                ]
-            );
-        }
+        $app_id = waRequest::get('app');
 
-        $this->view->assign(
-            [
-                'attachments_path' => wa()->getDataUrl('attachments/', true),
-                'print'            => waRequest::get('print', false),
-                'app'              => wa(pocketlistsHelper::APP_ID)->getConfig()->getLinkedApp($app_id),
-            ]
-        );
+        $calendar_html = wao(new pocketlistsAppMonthAction())->display();
+        $this->view->assign('calendar_html', $calendar_html);
+
+        $this->view->assign('app', wa(pocketlistsHelper::APP_ID)->getConfig()->getLinkedApp($app_id));
     }
 }
