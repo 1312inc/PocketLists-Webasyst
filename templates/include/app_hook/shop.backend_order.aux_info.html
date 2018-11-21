@@ -54,7 +54,11 @@
         $toggle_link.on('click', function (e) {
             e.preventDefault();
 
-            $list_wrapper.slideToggle();
+            $list_wrapper.slideToggle(200, function () {
+                if ($list_wrapper.is(':visible')) {
+                    $list_wrapper.find('#pl-item-add textarea').trigger('focus');
+                }
+            });
         });
 
         var Items = new $.pocketlists.Items($list_wrapper, {

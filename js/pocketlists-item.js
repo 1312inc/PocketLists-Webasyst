@@ -793,7 +793,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 if (term === '') {
                     return response([{
                         'value': '',
-                        'label': '<em>[Find order by ID]</em>'
+                        'label': '<em>'+$_('Find order by ID') + '</em>'
                     }]);
                 }
 
@@ -861,8 +861,6 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             delay: 300,
         });
 
-        debugger;
-
         // old jq ui hack
         if ($textarea.data( "ui-autocomplete") !== undefined) {
             $textarea.data("ui-autocomplete")._renderItem = function (ul, item) {
@@ -893,7 +891,6 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
      * for new item dom manipulating
      */
     var NewItemWrapper = (function ($new_item_wrapper) {
-        debugger;
         var $new_item_wrapper_hover = $('<div id="pl-item-add-wrapper-hover" style="display: none;">'),
             $top_new_item_wrapper = $new_item_wrapper.clone(),
             $textarea = $new_item_wrapper.find('textarea'),
@@ -912,7 +909,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             // if (!o.standAloneItemAdd) {
                 $new_item_wrapper.detach();
             // }
-debugger;
+
             var show_new_item_wrapper = function () {
                 // hideEmptyListMessage();
                 $top_new_item_wrapper.prependTo($undone_items_wrapper).show().wrap('<li data-pl-item-add-top>');
