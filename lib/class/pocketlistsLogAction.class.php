@@ -40,7 +40,7 @@ class pocketlistsLogAction
 
     public function __construct()
     {
-        $this->app_url = wa()->getConfig()->getBackendUrl(true) . 'pocketlists/';
+        $this->app_url = wa(pocketlistsHelper::APP_ID)->getConfig()->getBackendUrl(true) . 'pocketlists/';
         $this->logModel = new pocketlistsWaLogModel();
         $this->logs = false;
         $this->lm = new pocketlistsListModel();
@@ -98,7 +98,7 @@ class pocketlistsLogAction
 
     public function explainLogs($logs)
     {
-        $this->logs = wa()->getConfig()->explainLogs($logs);
+        $this->logs = wa(pocketlistsHelper::APP_ID)->getConfig()->explainLogs($logs);
 
         $this->ext_logs = $this->filter();
 

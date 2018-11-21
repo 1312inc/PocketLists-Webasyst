@@ -15,7 +15,7 @@ class pocketlistsConfig extends waAppConfig
     /**
      * @param $factory
      *
-     * @return pocketlistsFactoryItemLink
+     * @return pocketlistsFactoryItemLink|pocketlistsFactoryItem
      * @throws waException
      */
     public function getModelFactory($factory)

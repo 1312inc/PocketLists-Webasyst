@@ -975,16 +975,34 @@ class pocketlistsItemModel extends kmModelExt
     }
 
     /**
-     * @param $contact_id
+     * @param string|bool $app
+     * @param string|bool $entity_type
+     * @param int|bool $entity_id
      *
      * @return array
      */
-    public function getAppItems($app)
+    public function getAppItems($app = false, $entity_type = false, $entity_id = false)
     {
         $lists = [];
         $contact_id = wa()->getUser()->getId();
         pocketlistsRBAC::filterListAccess($lists, $contact_id);
         $list_sql = pocketlistsRBAC::filterListAccess($lists);
+
+        $appSql = '';
+        if ($app !== false) {
+            $appSql = 'AND pil.app = s:app';
+        }
+
+        $appTypeSql = '';
+        if ($entity_type !== false) {
+            $appTypeSql = 'AND pil.entity_type = s:type';
+        }
+
+        $entityIdSql = '';
+        if ($entity_type !== false) {
+            $entityIdSql = 'AND pil.entity_id = i:entity_id';
+        }
+
         $q = "SELECT
                   i.id id,
                   i.parent_id parent_id,
@@ -1010,7 +1028,7 @@ class pocketlistsItemModel extends kmModelExt
                 LEFT JOIN pocketlists_list l ON (l.id = i.list_id  OR l.id = i.key_list_id)
                 LEFT JOIN pocketlists_item i2 ON i2.key_list_id = i.list_id
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:user_contact_id AND uf.item_id = i.id
-                JOIN pocketlists_item_link pil ON pil.item_id = i.id
+                JOIN pocketlists_item_link pil ON pil.item_id = i.id {$appSql} {$appTypeSql} {$entityIdSql}
                 WHERE
                   (
                     i.assigned_contact_id = i:contact_id AND i.status >= 0 /* assigned to contact no matter who it completed */
@@ -1026,12 +1044,16 @@ class pocketlistsItemModel extends kmModelExt
                 ORDER BY
                   i.status,
                   (i.complete_datetime IS NULL), i.complete_datetime DESC";
+
         $items = $this->query(
             $q,
             [
                 'contact_id'      => $contact_id,
                 'list_ids'        => $lists,
                 'user_contact_id' => wa()->getUser()->getId(),
+                'app'             => $app,
+                'type'            => $entity_type,
+                'entity_id'       => $entity_id,
             ]
         )->fetchAll();
 
@@ -1281,7 +1303,7 @@ class pocketlistsItemModel extends kmModelExt
     {
         if ($this->linkedEntities === null) {
             /** @var pocketlistsFactoryItemLink $factory */
-            $factory = wa()->getConfig()->getModelFactory('ItemLink');
+            $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getModelFactory('ItemLink');
 
             $this->linkedEntities = $factory->getForItem($this) ?: [];
         }

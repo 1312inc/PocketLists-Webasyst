@@ -41,7 +41,7 @@ class pocketlistsBackendSidebarAction extends waViewAction
 //        pocketlistsActivity::setUserActivity();
 
         $pockets = pocketlistsPocketModel::model()->getAllPockets();
-        $linkedApps = wa()->getConfig()->getLinkedApp();
+        $linkedApps = wa(pocketlistsHelper::APP_ID)->getConfig()->getLinkedApp();
 
         $this->view->assign(compact('pockets', 'linkedApps'));
     }

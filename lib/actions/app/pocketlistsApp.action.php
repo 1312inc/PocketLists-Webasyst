@@ -17,7 +17,7 @@ class pocketlistsAppAction extends waViewAction
             $items = $im->getAppItems($app_id);
             $this->view->assign(
                 [
-                    'items_undone'            => $im->getProperSort($im->extendItemData($items[0])),
+                    'items_undone'     => $im->getProperSort($im->extendItemData($items[0])),
                     'items_done'       => $im->extendItemData($items[1]),
                     'count_done_items' => count($items[1]),
                 ]
@@ -28,7 +28,7 @@ class pocketlistsAppAction extends waViewAction
             [
                 'attachments_path' => wa()->getDataUrl('attachments/', true),
                 'print'            => waRequest::get('print', false),
-                'app'              => wa()->getConfig()->getLinkedApp($app_id),
+                'app'              => wa(pocketlistsHelper::APP_ID)->getConfig()->getLinkedApp($app_id),
             ]
         );
     }

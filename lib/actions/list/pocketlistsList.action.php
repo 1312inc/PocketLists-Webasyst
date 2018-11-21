@@ -128,7 +128,7 @@ class pocketlistsListAction extends waViewAction
 
         $this->view->assign(
             [
-                'backend_url' => wa()->getConfig()->getBackendUrl(),
+                'backend_url' => wa(pocketlistsHelper::APP_ID)->getConfig()->getBackendUrl(),
                 'print'       => waRequest::get('print', false),
                 'pocket'      => $pocket
             ]

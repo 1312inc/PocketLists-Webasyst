@@ -1,11 +1,28 @@
 <script type="template/pl2" data-pl2-template="itemadd">
-    <main class="pl-items pl-list-items pl-todo shadowed" id="pl-list-content" style="z-index: 1000">
+    <main class="pl-items pl-list-items pl-todo shadowed pl-shop-order" id="pl-list-content" style="z-index: 1000">
         <div class="pl-list-items" id="pl-list-items">
             <section id="pl-undone-items" data-pl-items="undone">
                 <ul class="menu-v">
+                    {if !empty($params.items_undone)}
+                    {include '../../actions/item/Item.html' parent_id=0 items=$params.items_undone}
+                    {/if}
                 </ul>
             </section>
+
+            <section id="pl-complete-log" class="pl-logbook">
+                <h5 class="heading">[`Logbook`]</h5>
+                <ul class="menu-v">
+                    {if $params.count_done_items}
+                    {include '../../actions/item/Item.html' parent_id=0 items=$params.items_done}
+                    {/if}
+                </ul>
+            </section>
+
+            <a href="#" id="pl-complete-log-link" class="inline-link gray" {if !$params.count_done_items}style="display:none;"{/if}><b><i>{_w('Show all %d completed to-do', 'Show all %d completed to-dos', $params.count_done_items)}</i></b></a>
         </div>
+
+        <div class="clear-both"></div>
+
         {include '../../include/itemadd.html' inline}
         {include '../../include/itemdetails.html' inline}
     </main>
@@ -19,7 +36,7 @@
         var $order_info_wrapper = $('#s-split-order-wrapper'),
             item_add_html = $('[data-pl2-template="itemadd"]').html(),
             $toggle_link = $('[data-pl2-action="show-add-item"]');
-debugger;
+
         $order_info_wrapper.prepend(item_add_html);
 
         var $list_wrapper = $('#pl-list-content');
@@ -43,10 +60,5 @@ debugger;
             },
             appUrl: '{$params.plurl}'
         });
-
-        setTimeout(function() {
-            $list_wrapper.find('[data-pl-item-add]').show();
-        }, 1000);
-        debugger;
     }());
 </script>
