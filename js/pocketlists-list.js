@@ -455,6 +455,11 @@ $.pocketlists.List = function ($list_wrapper, options) {
 
                 deleteList();
             })
+            .on('click', '[data-pl-action="list-complete"]', function (e) {
+                e.preventDefault();
+
+                alert('TODO: execute .on(click, #pl-list-complete here ');
+            })
             .on('click', '[data-pl-action="list-archive"]', function (e) {
                 e.preventDefault();
 

@@ -49,12 +49,7 @@
 
             <h1>
                 <input type="hidden" value="{$list.id|default:-1}" id="pl-list-id">
-                {* MOVED TO DROPDOWN if !$archive}
-                <label class="pl-done-label">
-                    <input type="checkbox" class="pl-done" id="pl-list-complete"{if $print} disabled="disabled"{/if}>
-                    <span></span>
-                </label>
-                {/if *}
+                
                 {if $new && !$archive}
                     <input type="text" placeholder="{sprintf('[`List #%d`]', $new_list_id)}" id="pl-new-list-input" class="bold" />
                 {else}
