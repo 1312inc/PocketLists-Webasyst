@@ -98,7 +98,7 @@ class pocketlistsLogAction
 
     public function explainLogs($logs)
     {
-        $this->logs = wa(pocketlistsHelper::APP_ID)->getConfig()->explainLogs($logs);
+        $this->logs = wa()->getConfig()->explainLogs($logs);
 
         $this->ext_logs = $this->filter();
 
@@ -355,6 +355,7 @@ class pocketlistsLogAction
     {
         if (!isset(self::$cache['item_' . $id])) {
             $item = $this->im->getById($id);
+            $item = pocketlistsItemModel::generateModel($item);
             self::$cache['item_' . $id] = $this->im->extendItemData($item);;
         }
         return self::$cache['item_' . $id];
