@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class pocketlistsItemLinkShop
+ */
 class pocketlistsItemLinkShop extends pocketlistsItemLink implements pocketlistsItemLinkInterface
 {
     const TYPE_ORDER = 'order';
@@ -152,6 +155,9 @@ class pocketlistsItemLinkShop extends pocketlistsItemLink implements pocketlists
             ).'img/shop.png); background-size: 16px 16px;"></i>';
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return 'Shop-Script';

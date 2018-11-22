@@ -1343,4 +1343,25 @@ class pocketlistsItemModel extends kmModelExt
 
         return $this->linkedEntities;
     }
+
+    /**
+     * @param string $app
+     *
+     * @return int
+     */
+    public function getCountForApp($app)
+    {
+        $count = (int)$this->query(
+            "SELECT COUNT(lid) cnt
+             FROM (
+                SELECT l.item_id lid 
+                FROM {$this->table} i 
+                JOIN pocketlists_item_link l ON i.id = l.item_id AND i.status = 0
+                WHERE app = s:app 
+                GROUP BY l.item_id) t",
+            ['app' => $app]
+        )->fetchField('cnt');
+
+        return $count;
+    }
 }

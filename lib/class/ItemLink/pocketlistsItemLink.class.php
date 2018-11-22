@@ -76,7 +76,7 @@ abstract class pocketlistsItemLink
      */
     public function countItems()
     {
-        return pocketlistsItemLinkModel::model()->countByField('app', $this->getApp());
+        return pocketlistsItemModel::model()->getCountForApp($this->getApp());
     }
 
     /**
