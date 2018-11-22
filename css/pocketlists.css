@@ -270,7 +270,7 @@ input#pl-new-list-input:focus,
 .pl-title h1 .pl-done:disabled:checked + span { background-size: 24px 24px !important; }
 .pl-title h1 .loading { margin-left: 3px; margin-top: 8px; opacity: 0.5; }
 .pl-title h1.not-padded { padding-left: 0; }
-.pl-title p { max-width: 80%; font-size: 0.9em; }
+.pl-disclaimer { max-width: 80%; font-size: 0.9em; color: #aaa; }
 
 .pl-userpic-bundle { display: inline-block; vertical-align: top; margin-top: -3px; }
 .pl-userpic-bundle .userpic { display: inline-block; width: 32px; height: 32px; background-size: 32px 32px; background-color: #eee; border: 2px solid white; margin-left: -0.7em; margin-top: 0rem; transition: 0.1s; position: relative; overflow: hidden; }
@@ -509,20 +509,16 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 .ui-autocomplete .ui-menu-item-wrapper { padding: 8px !important; display: block; }
 .ui-autocomplete .ui-menu-item-wrapper.ui-state-active { background: #58a8f8; }
 
-/* Shop-Script embedded interface
---------------------------------- */
+/* Embedded interface
+--------------------- */
 
-.s-order .pl-items { display: block; z-index: 1000; background: #f4f9ff; box-shadow: 0 -10px 20px -15px rgba(0,0,0,0.1) inset; transition: background-color 0.2s;
-margin-bottom: 20px;
-margin-left: -20px;
-margin-right: -32px;
-margin-top: -16px;
-padding-left: 20px;
-padding-top: 10px;
-padding-right: 20px;
-padding-bottom: 10px; }
+.s-order .pl-items { display: block; z-index: 1000; background: #f5faff; box-shadow: 0 -8px 20px -15px rgba(0,0,0,0.1) inset; margin: -20px -32px 20px -20px;  }
 .s-order .pl-items .pl-link-preview { display: none; }
 .s-order .pl-items .pl-item-drag-handle { display: none !important; }
+.s-order .pl-items .pl-item { border-bottom: none; border-top: 1px solid rgba(0,0,0,0.1); }
+.s-order #pl-item-add { display: block; }
+.s-order #pl-item-add .pl-item { border-top: none; padding-top: 21px; }
+.s-order #pl-item-add .pl-item .pl-select-label { padding-bottom: 18px; }
 
 /* @2x
 ------ */
@@ -569,8 +565,4 @@ padding-bottom: 10px; }
     .pl-details { width: 390px; }
     .pl-details.sticky { width: 400px; }
 
-}
-
-.pl-shop-order #pl-item-add {
-    display: block;
 }

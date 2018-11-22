@@ -1221,3 +1221,7 @@ msgstr "Ограниченный доступ"
 #: /wa-apps/pocketlists/lib/updates/3/1542130750.php:5
 msgid "Pocket Lists"
 msgstr "Pocket Lists"
+
+#: /wa-apps/pocketlists/js/pocketlists-item.js:796
+msgid "Find order by ID"
+msgstr "Введите номер заказа"
