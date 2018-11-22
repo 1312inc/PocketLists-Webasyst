@@ -3,24 +3,24 @@
 class pocketlistsNaturalInput
 {
     private static $instance;
-    private static $json_rules = array();
-    private static $numeric_entities = array(
+    private static $json_rules       = [];
+    private static $numeric_entities = [
         "minutes",
         "hours",
         "days",
         "months",
         "weeks",
-        "years"
-    );
+        "years",
+    ];
 
 
     protected function __construct()
     {
         $files_path = wa()->getAppPath('/lib/config/data/natural_input/', 'pocketlists');
-        $files = array(
-            $files_path . 'natural-input-en.json',
-            $files_path . 'natural-input-ru.json'
-        );
+        $files = [
+            $files_path.'natural-input-en.json',
+            $files_path.'natural-input-ru.json',
+        ];
         foreach ($files as $file) {
             if (file_exists($file)) {
                 self::$json_rules[] = json_decode(file_get_contents($file), true);
@@ -37,6 +37,7 @@ class pocketlistsNaturalInput
         if (!self::$instance) {
             self::$instance = new self();
         }
+
         return self::$instance;
     }
 
@@ -55,35 +56,39 @@ class pocketlistsNaturalInput
                 }
             }
         }
+
         return false;
     }
 
     public static function matchPriority($item_name)
     {
-        $matches = array();
+        $matches = [];
         if (preg_match('/(!{1,3})/isu', $item_name, $matches)) {
-            $priority = array(
-                '!' => 1,
-                '!!' => 2,
-                '!!!' => 3
-            );
-            return array(
-                'name' => trim(str_replace($matches[1], '', $item_name)),
-                'priority' => $priority[$matches[1]]
-            );
+            $priority = [
+                '!'   => 1,
+                '!!'  => 2,
+                '!!!' => 3,
+            ];
+
+            return [
+                'name'     => trim(str_replace($matches[1], '', $item_name)),
+                'priority' => $priority[$matches[1]],
+            ];
         }
+
         return false;
     }
 
     public static function matchNote($item_name)
     {
-        $matches = array();
+        $matches = [];
         if (preg_match('/^(.+?)\s\/{2}(.+?)$/isu', $item_name, $matches)) {
-            return array(
+            return [
                 'name' => trim($matches[1]),
-                'note' => trim($matches[2])
-            );
+                'note' => trim($matches[2]),
+            ];
         }
+
         return false;
     }
 
@@ -115,19 +120,21 @@ class pocketlistsNaturalInput
 
             }
         }
+
         return false;
     }
 
     private static function combineSmartparse($smartprases)
     {
-        $smartphrase_long_regexes = array();
+        $smartphrase_long_regexes = [];
         foreach ($smartprases as $smartphrase_name => $smartphrase_value) {
-            $tmp = array();
+            $tmp = [];
             foreach ($smartphrase_value as $v) {
-                $tmp[] = $v[0] . (isset($v[2]) ? $v[2] : '');
+                $tmp[] = $v[0].(isset($v[2]) ? $v[2] : '');
             }
             $smartphrase_long_regexes[$smartphrase_name] = join('|', $tmp);
         }
+
         return $smartphrase_long_regexes;
     }
 
@@ -148,7 +155,7 @@ class pocketlistsNaturalInput
                 // replace smart placeholders (\number, \week, etc) by combined long regexes
                 foreach ($smartphrase_long_regexes as $smartphrase_long_name => $smartphrase_long_regex) {
                     $lookup_rules[$lookup_rule_id]['regex'][$regex_in_rule_id] = str_replace(
-                        "\\" . $smartphrase_long_name,
+                        "\\".$smartphrase_long_name,
                         $smartphrase_long_regex,
                         $lookup_rules[$lookup_rule_id]['regex'][$regex_in_rule_id]
                     );
@@ -157,17 +164,17 @@ class pocketlistsNaturalInput
             foreach ($lookup_rule['rules'] as $rule_in_rule_id => $rule_in_rule) {
                 $tmp = explode('|', $rule_in_rule); // smartparse group name
                 if (in_array($rule_in_rule[0], self::$numeric_entities)) {
-                    $lookup_rules[$lookup_rule_id]['rules'][$rule_in_rule_id] = array(
-                        $rule_in_rule => &$smartphrases['numeric']
-                    );
+                    $lookup_rules[$lookup_rule_id]['rules'][$rule_in_rule_id] = [
+                        $rule_in_rule => &$smartphrases['numeric'],
+                    ];
                 } elseif (isset($smartphrases[$tmp[0]])) {
-                    $lookup_rules[$lookup_rule_id]['rules'][$rule_in_rule_id] = array(
-                        $rule_in_rule => &$smartphrases[$tmp[0]]
-                    );
+                    $lookup_rules[$lookup_rule_id]['rules'][$rule_in_rule_id] = [
+                        $rule_in_rule => &$smartphrases[$tmp[0]],
+                    ];
                 } else {
-                    $lookup_rules[$lookup_rule_id]['rules'][$rule_in_rule_id] = array(
-                        $rule_in_rule => false
-                    );
+                    $lookup_rules[$lookup_rule_id]['rules'][$rule_in_rule_id] = [
+                        $rule_in_rule => false,
+                    ];
                 }
             }
         }
@@ -184,7 +191,7 @@ class pocketlistsNaturalInput
         foreach ($lookup_rules as $lookup_rule) {
             foreach ($lookup_rule['regex'] as $regex_in_rule_id => $regex_in_rule) {
                 // found something!!!
-                if (preg_match("/" . $regex_in_rule . "/imu", $item_name, $matches)) {
+                if (preg_match("/".$regex_in_rule."/imu", $item_name, $matches)) {
                     $time_after_rules = $instance->proceedFoundRegex($matches, $lookup_rule, $time_after_rules);
                     if ($time_after_rules) {
                         // trim found date from item's name
@@ -200,11 +207,12 @@ class pocketlistsNaturalInput
                             );
                         }
                     }
-                    $due = array(
-                        'due_date' => date("Y-m-d", $time_after_rules['now']),
+                    $due = [
+                        'due_date'     => date("Y-m-d", $time_after_rules['now']),
                         'due_datetime' => $time_after_rules['usetime'] ?
                             date("Y-m-d H:i:s", $time_after_rules['now']) : null,
-                    );
+                    ];
+
                     return $due;
                 }
             }
@@ -217,22 +225,22 @@ class pocketlistsNaturalInput
     {
         $instance = self::getInstance();
 
-        $reltime_hours = array(
+        $reltime_hours = [
             1 => 9,
             2 => 12,
-            3 => 18
-        );
-        $relday_days = array(
+            3 => 18,
+        ];
+        $relday_days = [
             1 => 1, // tomorrow
             2 => 2, // after tomorrow
             3 => 0 // today
-        );
+        ];
 
-        $settings = array(
-            'rules' => ifset($lookup_rule['rules'], false), // time is calculated based not on current time
-            'relative' => ifset($lookup_rule['relative'], false),
+        $settings = [
+            'rules'         => ifset($lookup_rule['rules'], false), // time is calculated based not on current time
+            'relative'      => ifset($lookup_rule['relative'], false),
             'checkpasttime' => ifset($lookup_rule['checkpasttime'], false) // check if calculated time is in the past
-        );
+        ];
 
         $datetime_now = time();
         $date_now = strtotime(date("Y-m-d 00:00:00"), $datetime_now);
@@ -240,12 +248,12 @@ class pocketlistsNaturalInput
         $now = !empty($time_after_rules['now']) ?
             $time_after_rules['now'] : ($settings['relative'] ? $datetime_now : $date_now);
 
-        $current = array(
-            'day_number' => date('j', $datetime_now), // current month day number
+        $current = [
+            'day_number'         => date('j', $datetime_now), // current month day number
             'day_of_week_number' => $instance->getCurrentWeekDay(date('N', $datetime_now)), // current week day number
-            'month_number' => date('n', $datetime_now), // current month number
-            'seconds_passed' => (time() - $date_now),
-        );
+            'month_number'       => date('n', $datetime_now), // current month number
+            'seconds_passed'     => (time() - $date_now),
+        ];
 
         // if user passed hour or minute it will be true
         $time_was_set_by_user = !empty($time_after_rules['usetime']) ? $time_after_rules['usetime'] : false;
@@ -271,33 +279,33 @@ class pocketlistsNaturalInput
                 if ($smartparses) {
                     // for each regex in group
                     foreach ($smartparses as $regex_group) {
-                        $time_regex = $regex_group[0] . (isset($regex_group[2]) ? $regex_group[2] : '');
+                        $time_regex = $regex_group[0].(isset($regex_group[2]) ? $regex_group[2] : '');
                         // try to determine time multiplier from suitable smartphrase regex
-                        if (preg_match("/" . $time_regex . "/imu", $matches[$true_index])) {
+                        if (preg_match("/".$time_regex."/imu", $matches[$true_index])) {
                             $smartphrase_regex_value = $regex_group[1];
                             break;
                         }
                     }
                 } else {
-                    $smartphrase_regex_value = (int) $matches[$true_index];
+                    $smartphrase_regex_value = (int)$matches[$true_index];
                 }
                 if ($matches[$true_index] === "") {
                     $smartphrase_regex_value = 1;
                 }
-                if (!$settings['relative'] && !in_array($rule_mod, array("hours", "weeks", "minutes"))) {
+                if (!$settings['relative'] && !in_array($rule_mod, ["hours", "weeks", "minutes"])) {
                     $smartphrase_regex_value--;
                 }
-                $now = strtotime("+ " . $smartphrase_regex_value . " " . $rule_mod, $now);
+                $now = strtotime("+ ".$smartphrase_regex_value." ".$rule_mod, $now);
                 // way to tell futher rules, that time was set by user in item's name
-                if (in_array($rule_mod, array("hours", "minutes"))) {
+                if (in_array($rule_mod, ["hours", "minutes"])) {
                     $time_was_set_by_user = true;
                 }
             } elseif ($rule_mod == "week") {
                 // for each regex in group
                 foreach ($smartparses as $regex_group) {
-                    $time_regex = $regex_group[0] . (isset($regex_group[2]) ? $regex_group[2] : '');
+                    $time_regex = $regex_group[0].(isset($regex_group[2]) ? $regex_group[2] : '');
                     // try to determine time multiplier from suitable smartphrase regex
-                    if (preg_match("/" . $time_regex . "/imu", $matches[$true_index])) {
+                    if (preg_match("/".$time_regex."/imu", $matches[$true_index])) {
                         $smartphrase_regex_value = $regex_group[1];
                         break;
                     }
@@ -307,30 +315,30 @@ class pocketlistsNaturalInput
                 if ($days < 0) {
                     $days = 7 + $days;
                 }
-                $now = strtotime("+" . $days . " days", $now);
+                $now = strtotime("+".$days." days", $now);
                 // and reset to the beging of the day
                 $now = strtotime(date("Y-m-d 00:00:00", $now));
 //                    $now -= $current['seconds_passed'];
             } elseif ($rule_mod == "next") { // only week for now
                 // for each regex in group
                 foreach ($smartparses as $regex_group) {
-                    $time_regex = $regex_group[0] . (isset($regex_group[2]) ? $regex_group[2] : '');
+                    $time_regex = $regex_group[0].(isset($regex_group[2]) ? $regex_group[2] : '');
                     // try to determine time multiplier from suitable smartphrase regex
-                    if (preg_match("/" . $time_regex . "/imu", $matches[$true_index])) {
+                    if (preg_match("/".$time_regex."/imu", $matches[$true_index])) {
                         $smartphrase_regex_value = $regex_group[1];
                         break;
                     }
                 }
                 // determine current week day number
                 $days = abs($current['day_of_week_number'] - $smartphrase_regex_value) + 7;
-                $now = strtotime("+" . $days . " days", $now);
+                $now = strtotime("+".$days." days", $now);
 //                $now += abs($current['day_of_week_number'] - $smartphrase_regex_value) * $secs_in['day'] + $secs_in['week'];
             } elseif ($rule_mod == "month") {
                 // for each regex in group
                 foreach ($smartparses as $regex_group) {
-                    $time_regex = $regex_group[0] . (isset($regex_group[2]) ? $regex_group[2] : '');
+                    $time_regex = $regex_group[0].(isset($regex_group[2]) ? $regex_group[2] : '');
                     // try to determine time multiplier from suitable smartphrase regex
-                    if (preg_match("/" . $time_regex . "/imu", $matches[$true_index])) {
+                    if (preg_match("/".$time_regex."/imu", $matches[$true_index])) {
                         $smartphrase_regex_value = $regex_group[1];
                         break;
                     }
@@ -342,18 +350,18 @@ class pocketlistsNaturalInput
 //                    if (!$lookup_rule_settings['relative']) {
 //                        $month_to_add = $month_to_add - 1;
 //                    }
-                $now = strtotime("+ " . $month_to_add . " months", $now);
+                $now = strtotime("+ ".$month_to_add." months", $now);
                 // will substruct all days in month to get first day in month
                 $now = strtotime(date("Y-m-1", $now));
 //              $now -= strtotime("+ " . $current['day_number'] . " days", $now);($current['day_number'] * $secs_in['day']);
             } elseif ($rule_mod == "year") {
-                $now = strtotime("01.01." . $matches[$true_index]);
+                $now = strtotime("01.01.".$matches[$true_index]);
             } elseif ($rule_mod == "reltime") {
 // for each regex in group
                 foreach ($smartparses as $regex_group) {
-                    $time_regex = $regex_group[0] . (isset($regex_group[2]) ? $regex_group[2] : '');
+                    $time_regex = $regex_group[0].(isset($regex_group[2]) ? $regex_group[2] : '');
                     // try to determine time multiplier from suitable smartphrase regex
-                    if (preg_match("/" . $time_regex . "/imu", $matches[$true_index])) {
+                    if (preg_match("/".$time_regex."/imu", $matches[$true_index])) {
                         $smartphrase_regex_value = $regex_group[1];
                         break;
                     }
@@ -364,28 +372,28 @@ class pocketlistsNaturalInput
                         $smartphrase_regex_value === 2 ||
                         $smartphrase_regex_value === 3
                     ) { // day, evening
-                        $now = strtotime("+". ($reltime_hours[$smartphrase_regex_value] + 12) . " hours", $now);
+                        $now = strtotime("+".($reltime_hours[$smartphrase_regex_value] + 12)." hours", $now);
                     }
                 } else { // if not
                     // reset to the begining of the day
                     $now = strtotime(date("Y-m-d 00:00:00", $now));
                     // and just add predefined hours
-                    $now = strtotime("+". $reltime_hours[$smartphrase_regex_value] . " hours", $now);
+                    $now = strtotime("+".$reltime_hours[$smartphrase_regex_value]." hours", $now);
                 }
                 $time_was_set_by_user = true;
             } elseif ($rule_mod == "relday") {
                 // for each regex in group
                 foreach ($smartparses as $regex_group) {
-                    $time_regex = $regex_group[0] . (isset($regex_group[2]) ? $regex_group[2] : '');
+                    $time_regex = $regex_group[0].(isset($regex_group[2]) ? $regex_group[2] : '');
                     // try to determine time multiplier from suitable smartphrase regex
-                    if (preg_match("/" . $time_regex . "/imu", $matches[$true_index])) {
+                    if (preg_match("/".$time_regex."/imu", $matches[$true_index])) {
                         $smartphrase_regex_value = $regex_group[1];
                         // break will broke "послезавтра" matching - it will match "завтра"
 //                        break;
                     }
                 }
                 if (isset($relday_days[$smartphrase_regex_value])) {
-                    $now = strtotime("+" . $relday_days[$smartphrase_regex_value] . " days", $now);
+                    $now = strtotime("+".$relday_days[$smartphrase_regex_value]." days", $now);
                     if (!$settings['relative']) { // reset day time
                         $now = strtotime(date("Y-m-d 00:00:00", $now));
                     }
@@ -408,10 +416,11 @@ class pocketlistsNaturalInput
                 $now = strtotime("+1 ".$settings['checkpasttime'], $now);
             }
         }
-        return array(
+
+        return [
             'usetime' => $time_was_set_by_user,
-            'now' => $now,
-        );
+            'now'     => $now,
+        ];
     }
 
     private static function getCurrentWeekDay($day)
@@ -420,39 +429,55 @@ class pocketlistsNaturalInput
         if (waLocale::getFirstDay() != 7) {
             $day += 1;
         }
+
         return ($day > 7) ? 1 : $day;
     }
 
     public static function testMatchDueDate($strings)
     {
         if (!is_array($strings)) {
-            $strings = array($strings);
+            $strings = [$strings];
         }
         foreach ($strings as $string) {
             print_r(
-                array(
-                    'string' => $string,
-                    'server_date' => date("Y-m-d H:i:s")
-                ) +
+                [
+                    'string'      => $string,
+                    'server_date' => date("Y-m-d H:i:s"),
+                ] +
                 self::matchDueDate($string) +
-                array('string_after' => $string)
+                ['string_after' => $string]
             );
         }
     }
 
     /**
-     * @param string $string
+     * @param      $string
+     * @param bool $encode
      *
-     * @return mixed
+     * @return mixed|string
+     * @throws waException
      */
-    public static function matchLinks($string)
+    public static function matchLinks($string, $encode = true)
     {
-        $links = self::getLinks($string);
+        $pattern = '(?i)\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:\'".,<>?«»“”‘’]))';
+        $replace = array();
 
-        foreach ($links as $link) {
-            $href = self::replaceWithLink($link);
-            $string = str_replace($link, $href, $string);
+        $i = 0;
+        while (preg_match(
+            '/' . $pattern . '/miu',
+            $string,
+            $matches)
+        ) {
+            $i++;
+            $now = time();
+            $replace_key = "###{$i}1312{$now}WILLBEREPLACEDWITHLINK{$now}1312{$i}###";
+            $string = str_replace($matches[1], $replace_key, $string);
+            $replace[$replace_key] = self::replaceWithLink($matches[1]);
         }
+        if ($encode) {
+            $string = htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
+        }
+        $string = str_replace(array_keys($replace), $replace,$string);
 
         return $string;
     }
@@ -468,7 +493,7 @@ class pocketlistsNaturalInput
 
         $matchedLinks = [];
 
-        while (preg_match('/' . $pattern . '/miu', $string, $matches)) {
+        while (preg_match('/'.$pattern.'/miu', $string, $matches)) {
             $string = str_replace($matches[1], '', $string);
             $matchedLinks[] = $matches[1];
         }
@@ -480,6 +505,7 @@ class pocketlistsNaturalInput
      * @param string $url
      *
      * @return string
+     * @throws waException
      */
     public static function replaceWithLink($url)
     {
@@ -491,16 +517,21 @@ class pocketlistsNaturalInput
         $icon = '';
         $linkData = $linkDeterminator->getAppTypeId($url);
         if ($linkData) {
-            $icon = $linkDeterminator->getAppIcon($linkData['app']) . ' ';
+            $icon = $linkDeterminator->getAppIcon($linkData['app']).' ';
         }
 
         if (strpos($url, 'http') === 0) {
-            return '<a href="' . $url . '" target="_blank">' . $icon . $url . '</a>';
+            return '<a href="'.$url.'" target="_blank">'.$icon.$url.'</a>';
         }
 
-        return '<a href="http://' . $url . '" target="_blank">' . $icon . $url . '</a>';
+        return '<a href="http://'.$url.'" target="_blank">'.$icon.$url.'</a>';
     }
 
+    /**
+     * @param $string
+     *
+     * @return string
+     */
     public static function removeTags($string)
     {
         return strip_tags($string);
