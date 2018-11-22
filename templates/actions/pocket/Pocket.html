@@ -5,8 +5,10 @@
         <div id="pl-lists" data-pl-scroll-to-top>
             <div class="pl-lists-header">
                 <a href="#/pocket/{$pocket->pk}/list/new/" class="count" title="[`New list`]"><i class="icon16 add"></i></a>
-                <!-- <i class="icon16 search"></i> Search -->
-                <h5 class="pl-dark-{$pocket->color|default:'none'}-label">{$pocket->name|escape}</h5>
+                <h5 class="pl-dark-{$pocket->color|default:'none'}-label">
+                    {$pocket->name|escape}
+                    <a href="#" title="[`Pocket settings`]"><i class="icon16 settings pl-pocket-settings"></i></a>
+                </h5>
             </div>
             {if !empty($lists)}
                 <ul class="pl-lists">
