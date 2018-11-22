@@ -7,6 +7,8 @@ abstract class pocketlistsItemLink
 {
     const LIMIT = 10;
 
+    protected $enabled = false;
+
     /**
      * @var pocketlistsItemLinkModel
      */
@@ -59,7 +61,12 @@ abstract class pocketlistsItemLink
      */
     public function __construct()
     {
-        wa($this->getApp());
+        try {
+            wa($this->getApp());
+            $this->enabled = true;
+        } catch (waException $ex) {
+            $this->enabled = false;
+        }
     }
 
     /**
@@ -70,5 +77,13 @@ abstract class pocketlistsItemLink
     public function countItems()
     {
         return pocketlistsItemLinkModel::model()->countByField('app', $this->getApp());
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEnabled()
+    {
+        return $this->enabled;
     }
 }

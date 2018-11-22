@@ -70,4 +70,9 @@ interface pocketlistsItemLinkInterface
      * @return int
      */
     public function countItems();
+
+    /**
+     * @return bool
+     */
+    public function isEnabled();
 }

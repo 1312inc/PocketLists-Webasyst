@@ -84,9 +84,10 @@ class pocketlistsItemLinkModel extends kmModelExt
             pocketlistsHelper::APP_ID
         );
 
-        $render = wa()->event('item.render_linked', $this);
+        $pluginRender = wa()->event('item.render_linked', $this);
+        $render = !empty($pluginRender['preview']) ? $pluginRender['preview'] : '';
 
-        if (!$render && file_exists($template)) {
+        if ($this->getEntityClass()->isEnabled() && !$render && file_exists($template)) {
             $this->getView()->clearAllAssign();
             $vars = [
                 'link'  => $this,
@@ -102,18 +103,11 @@ class pocketlistsItemLinkModel extends kmModelExt
 
     /**
      * @return pocketlistsItemLinkInterface
+     * @throws waException
      */
     public function getEntityClass()
     {
-        if ($this->linkedClass === null) {
-            $class = sprintf('pocketlistsItemLink%s', ucfirst($this->app));
-            if (class_exists($class)) {
-                $this->linkedClass = new $class();
-                $this->linkedClass->setItemLinkModel($this);
-            }
-        }
-
-        return $this->linkedClass;
+        return wa(pocketlistsHelper::APP_ID)->getConfig()->getLinkedApp($this->app);
     }
 
     /**
