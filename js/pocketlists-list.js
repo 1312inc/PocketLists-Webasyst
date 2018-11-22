@@ -56,7 +56,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
                 $.pocketlists.stickyDetailsSidebar();
             });
 
-            $.post('?module=list&action=details', {id: list_id}, function (html) {
+            $.post('?module=list&action=' + $wrapper.data('pl2-list-edit-action'), {id: list_id}, function (html) {
                 $wrapper.html(html);
                 afterLoad();
             }).always(function () {
@@ -448,6 +448,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
 
                 $.pocketlists.scrollToTop(200, 80);
 
+                ListDetails.$el.data('pl2-list-edit-action', $(this).data('pl2-list-edit-action'));
                 ListDetails.trigger('show.pl2');
             })
             .on('click', '[data-pl-action="list-delete"]', function (e) {

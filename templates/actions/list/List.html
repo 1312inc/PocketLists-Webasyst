@@ -23,7 +23,7 @@
             {if !$new && !$archive}
                 {if pocketlistsRBAC::canAssign()}
                     <div class="float-right">
-                        <a data-pl-action="list-edit" href="#" class="pl-userpic-bundle">
+                        <a data-pl-action="list-edit" href="#" class="pl-userpic-bundle" data-pl2-list-edit-action="accesses">
                             {$max_visible_in_bundle = 5}
                             {foreach $list_access_contacts as $list_access_contact_id => $list_access_contact}
                                 {if $list_access_contact@iteration > $max_visible_in_bundle}{break}{/if}
@@ -33,14 +33,14 @@
                                 <i class="userpic" title="{$list_access_contact.name|escape}"><span>+{count($list_access_contacts) - $max_visible_in_bundle}</span></i>
                             {/if}
                         </a>
-                        <a data-pl-action="list-edit" href="#" class="pl-list-details-helper"><i class="icon16 pl ellipsis"></i></a>
+                        <a data-pl-action="list-edit" href="#" class="pl-list-details-helper" data-pl2-list-edit-action="details"><i class="icon16 pl ellipsis"></i></a>
                     </div>
                 {/if}
             {/if}
 
             <h1>
                 <input type="hidden" value="{$list.id|default:-1}" id="pl-list-id">
-                
+
                 {if $new && !$archive}
                     <input type="text" placeholder="{sprintf('[`List #%d`]', $new_list_id)}" id="pl-new-list-input" class="bold" />
                 {else}

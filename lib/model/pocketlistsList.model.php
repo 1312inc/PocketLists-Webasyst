@@ -128,7 +128,11 @@ class pocketlistsListModel extends kmModelExt
     {
         $lists = $this->getById($pk);
 
-        return !is_array($pk) ? self::generateModel($lists) : self::generateModels($lists);
+        $lists = is_array($pk) ? $lists : [$lists];
+
+        $lists = pocketlistsListModel::generateModels($lists, !is_array($pk));
+
+        return $this->extendListData($lists);
     }
 
     /**
@@ -503,5 +507,34 @@ class pocketlistsListModel extends kmModelExt
         }
 
         return $this->item;
+    }
+
+    /**
+     * @param      $items
+     * @param bool $edit
+     *
+     * @return array|bool|mixed
+     * @throws waDbException
+     * @throws waException
+     */
+    public function extendListData($lists, $edit = false)
+    {
+        if (!is_array($lists) && !$lists instanceof pocketlistsListModel) {
+            return false;
+        }
+
+        $is_array = true;
+        if (isset($lists['id']) || $lists instanceof pocketlistsListModel) {
+            $is_array = false;
+            $lists = [$lists];
+        }
+        foreach ($lists as &$list) {
+            if ($list['contact_id']) {
+                $user = new waContact($list['contact_id']);
+                $list['contact'] = pocketlistsHelper::getContactData($user);
+            }
+        }
+
+        return ($is_array || !$lists) ? $lists : reset($lists);
     }
 }
