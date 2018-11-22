@@ -32,6 +32,8 @@ class pocketlistsListAction extends waViewAction
 
         $pocket = pocketlistsPocketModel::model()->findByPk($pocket_id);
 
+        $list_access_contacts = [];
+
         if ($list_id > 0) { // existing list
             /** @var pocketlistsListModel $list */
             $list = $lm->findByPk($list_id);
@@ -88,17 +90,16 @@ class pocketlistsListAction extends waViewAction
             $done = $im->getDoneByList($list->pk);
             $this->view->assign(
                 [
-                    'list'                 => $list,
-                    'archive'              => $archived || $list->archived,
-                    'items'                => $undone,
-                    'empty'                => count($undone),
-                    'items_done'           => $done,
-                    'count_items_done'     => $count_done,
-                    'count_items_undone'   => $count_undone,
-                    'new'                  => false,
-                    'attachments_path'     => wa()->getDataUrl('attachments/', true),
-                    'list_access_contacts' => $list_access_contacts,
-                    'list_icons'           => pocketlistsHelper::getListIcons(),            // get icons
+                    'list'               => $list,
+                    'archive'            => $archived || $list->archived,
+                    'items'              => $undone,
+                    'empty'              => count($undone),
+                    'items_done'         => $done,
+                    'count_items_done'   => $count_done,
+                    'count_items_undone' => $count_undone,
+                    'new'                => false,
+                    'attachments_path'   => wa()->getDataUrl('attachments/', true),
+                    'list_icons'         => pocketlistsHelper::getListIcons(),            // get icons
                 ]
             );
         } else {
@@ -128,9 +129,10 @@ class pocketlistsListAction extends waViewAction
 
         $this->view->assign(
             [
-                'backend_url' => wa(pocketlistsHelper::APP_ID)->getConfig()->getBackendUrl(),
-                'print'       => waRequest::get('print', false),
-                'pocket'      => $pocket
+                'backend_url'          => wa(pocketlistsHelper::APP_ID)->getConfig()->getBackendUrl(),
+                'print'                => waRequest::get('print', false),
+                'pocket'               => $pocket,
+                'list_access_contacts' => $list_access_contacts ?: [],
             ]
         );
     }
