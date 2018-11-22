@@ -6,7 +6,7 @@ class pocketlistsComplete extends waJsonController
 
     /**
      * @param $item_id int
-     * @param $item array
+     * @param pocketlistsItemModel $item
      * @param $status int
      * @param $im pocketlistsItemModel
      */
@@ -26,7 +26,9 @@ class pocketlistsComplete extends waJsonController
             if (!$im->updateById($item['id'], $data, null, true)) {
                 $this->errors[] = 'error while updating parent id: ' . $item['id'];
             } else {
-                $item = array_merge($item, $data);
+                foreach ($data as $key => $datum) {
+                    $item->$key = $datum;
+                }
                 $this->completed_items[] = $im->prepareOutput($item);
             };
         }
