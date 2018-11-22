@@ -52,7 +52,8 @@ class pocketlistsPocketAction extends waViewAction
                 $list_id = $last_pocket_list_id['list_id'];
             } else {
                 if ($lists) {
-                    $list_id = $lists[0]['id'];
+                    $firtsList = reset($lists);
+                    $list_id = $firtsList['id'];
                     $last_pocket_list_id = ["pocket_id" => $id, "list_id" => $list_id];
                 } else {
                     $last_pocket_list_id = ["pocket_id" => $id];

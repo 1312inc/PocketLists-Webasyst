@@ -10,15 +10,6 @@
     </div>
 {/if}
 
-{if !$print}
-<nav class="pl-inner-sidebar" data-pl="uho">
-{if isset($list.id)}
-
-{/if}
-
-</nav>
-{/if}
-
 {if !$print && isset($list.id) && $list.id > 0}
 {include '../../include/listiconsdialog.html' inline}
 {/if}
