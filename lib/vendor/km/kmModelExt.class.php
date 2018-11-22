@@ -70,6 +70,15 @@ class kmModelExt extends waModel implements ArrayAccess, JsonSerializable
         return self::$cached[$key];
     }
 
+    protected function getCacheKey($key)
+    {
+        list(, $caller) = debug_backtrace(false);
+        $class = isset($caller['class']) ? $caller['class'] : 'NO_CLASS';
+        $function = isset($caller['function']) ? $caller['function'] : 'NO_FUNCTION';
+
+        return sprintf('%s.%s.%s', $class, $function, md5($key));
+    }
+
     public function init()
     {
     }

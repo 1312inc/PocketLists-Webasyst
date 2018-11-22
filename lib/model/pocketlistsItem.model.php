@@ -427,23 +427,30 @@ class pocketlistsItemModel extends kmModelExt
      */
     public function getById($ids, $user_id = false)
     {
-        if (!$user_id) {
-            $user_id = wa()->getUser()->getId();
-        }
-        if (!is_array($ids)) {
-            $ids = [$ids];
-        }
+        $key = $this->getCacheKey(serialize($ids).$user_id);
+
+        return $this->getFromCache(
+            $key,
+            function () use ($key, $ids, $user_id) {
+                if (!$user_id) {
+                    $user_id = wa()->getUser()->getId();
+                }
+                if (!is_array($ids)) {
+                    $ids = [$ids];
+                }
 //        $items = parent::getById($id);
-        $items = $this->query(
-            $this->getQuery()."WHERE i.id IN (i:id)",
-            ['contact_id' => $user_id, 'id' => $ids]
-        )->fetchAll();
+                $items = $this->query(
+                    $this->getQuery()."WHERE i.id IN (i:id)",
+                    ['contact_id' => $user_id, 'id' => $ids]
+                )->fetchAll();
 //        $items = $this->getItems($this->getQuery(), null, false);
 //        return $items;
 
-        $items = pocketlistsItemModel::generateModels($items);
+                self::$cached[$key] = pocketlistsItemModel::generateModels($items, count($ids) == 1);
 
-        return count($ids) > 1 ? $items : reset($items);
+                return self::$cached[$key];
+            }
+        );
     }
 
     /**
@@ -571,19 +578,28 @@ class pocketlistsItemModel extends kmModelExt
      */
     private function getItems($sql, $list_id, $tree)
     {
-        $items = $this->query(
-            $sql,
-            [
-                'lid'        => $list_id,
-                'contact_id' => wa()->getUser()->getId(),
-            ]
-        )->fetchAll('id');
+        $key = $this->getCacheKey($sql.$list_id.$tree);
 
-        $items = self::generateModels($items);
+        return $this->getFromCache(
+            $key,
+            function () use ($key, $sql, $list_id, $tree) {
+                $items = $this->query(
+                    $sql,
+                    [
+                        'lid'        => $list_id,
+                        'contact_id' => wa()->getUser()->getId(),
+                    ]
+                )->fetchAll('id');
 
-        $items = $this->extendItemData($items);
+                $items = self::generateModels($items);
 
-        return $tree ? $this->getTree($items, $tree) : $items;
+                $items = $this->extendItemData($items);
+
+                self::$cached[$key] = $tree ? $this->getTree($items, $tree) : $items;
+
+                return self::$cached[$key];
+            }
+        );
     }
 
     /**
@@ -632,7 +648,7 @@ class pocketlistsItemModel extends kmModelExt
         }
 
         $is_array = true;
-        if (isset($items['id'])) {
+        if (isset($items['id']) || $items instanceof pocketlistsItemModel) {
             $is_array = false;
             $items = [$items];
         }

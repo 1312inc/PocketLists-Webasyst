@@ -155,6 +155,7 @@ class pocketlistsLogAction
     {
         $im = new pocketlistsItemModel();
         $item = $im->getById($this->ext_logs[$id]['params']['item_id']);
+
         return htmlspecialchars($item['name']);
     }
 
@@ -356,7 +357,7 @@ class pocketlistsLogAction
         if (!isset(self::$cache['item_' . $id])) {
             $item = $this->im->getById($id);
             $item = pocketlistsItemModel::generateModel($item);
-            self::$cache['item_' . $id] = $this->im->extendItemData($item);;
+            self::$cache['item_' . $id] = $this->im->extendItemData($item);
         }
         return self::$cache['item_' . $id];
     }
