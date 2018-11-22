@@ -17,25 +17,25 @@ class pocketlistsRightConfig extends waRightConfig
 
         // POCKETS
 
-        $items = [];
-        foreach (pocketlistsPocketModel::model()->getAllPockets() as $pocket) {
-            $items[$pocket->pk] = $pocket->name;
-        }
-
-        $this->addItem(
-            'pocketlists',
-            _w('Pockets'),
-            'selectlist',
-            [
-                'items' => $items,
-                'position' => 'right',
-                'options' => [
-                    self::RIGHT_NONE => _w('No access'),
-                    //self::RIGHT_LIMITED => _w('Limited access'),
-                    self::RIGHT_FULL => _w('Full access'),
-                ],
-            ]
-        );
+        // $items = [];
+        // foreach (pocketlistsPocketModel::model()->getAllPockets() as $pocket) {
+        //     $items[$pocket->pk] = $pocket->name;
+        // }
+        //
+        // $this->addItem(
+        //     'pocketlists',
+        //     _w('Pockets'),
+        //     'selectlist',
+        //     [
+        //         'items' => $items,
+        //         'position' => 'right',
+        //         'options' => [
+        //             self::RIGHT_NONE => _w('No access'),
+        //             //self::RIGHT_LIMITED => _w('Limited access'),
+        //             self::RIGHT_FULL => _w('Full access'),
+        //         ],
+        //     ]
+        // );
 
         // LISTS
 

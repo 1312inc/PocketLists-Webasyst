@@ -26,8 +26,8 @@ final class pocketlistsStoreColor
             self::BLUE   => _w(self::BLUE),
             self::RED    => _w(self::RED),
             self::PURPLE => _w(self::PURPLE),
-            self::BROWN  => _w(self::BROWN),
-            self::ORANGE => _w(self::ORANGE),
+            //self::BROWN  => _w(self::BROWN),
+            //self::ORANGE => _w(self::ORANGE),
         ];
     }
 }
