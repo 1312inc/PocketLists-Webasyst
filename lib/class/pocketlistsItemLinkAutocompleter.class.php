@@ -20,8 +20,13 @@ class pocketlistsItemLinkAutocompleter
     public function process($term, $types = [])
     {
         $this->result = [];
+        $linked = wa(pocketlistsHelper::APP_ID)->getConfig()->getLinkedApp();
 
-        foreach (wa(pocketlistsHelper::APP_ID)->getConfig()->getLinkedApp() as $app => $linker) {
+        if (!$linked) {
+            return $this;
+        }
+
+        foreach ($linked as $app => $linker) {
             if ($types && !in_array($app, $types)) {
                 continue;
             }

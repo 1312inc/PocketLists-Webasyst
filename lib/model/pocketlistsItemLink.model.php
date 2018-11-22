@@ -107,7 +107,13 @@ class pocketlistsItemLinkModel extends kmModelExt
      */
     public function getEntityClass()
     {
-        return wa(pocketlistsHelper::APP_ID)->getConfig()->getLinkedApp($this->app);
+        if ($this->linkedClass === null) {
+            $app = wa(pocketlistsHelper::APP_ID)->getConfig()->getLinkedApp($this->app);
+            $this->linkedClass = $app;
+            $this->linkedClass->setItemLinkModel($this);
+        }
+
+        return $this->linkedClass;
     }
 
     /**
