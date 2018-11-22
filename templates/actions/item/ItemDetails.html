@@ -95,7 +95,6 @@
 
             <div class="value">
                 <input name="item[due_date]" class="pl-due-date-input" type="text" id="pl-item-due-datetime" value="{$item.due_date|default:''}" />
-                <a href="#"><i class="icon16 calendar"></i></a>
                 <span id="pl-item-due-datetime-time">
                     {$hour = $item.due_datetime|default:''|wa_datetime:'H'}
                     <select name="item[due_datetime_hours]" class="pl-due-date-input" id="pl-item-due-datetime-hours" value="{$hour}" {if empty($item.due_datetime)}style="display: none;" disabled="disabled"{/if}>

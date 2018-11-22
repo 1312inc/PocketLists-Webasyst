@@ -12,7 +12,7 @@
 .pl-sidebar-core .pl-online { position: absolute; left: 8px; top: 6px; }
 
 .pl-inner-sidebar { background: #f3f3f3; float: right; width: 340px; margin-top: 17px; margin-right: 10px; position: relative; z-index: 10; box-shadow: 0 3px 5px -2px #ccc; }
-.pl-inner-content { position: relative; min-height: 700px; margin-right: 350px; z-index: 11; }
+.pl-inner-content { position: relative; min-height: 700px; margin-right: 350px; z-index: 11; overflow: hidden; }
 
 /* Misc
 ------- */
@@ -523,6 +523,8 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 .s-order #pl-item-add { display: block; }
 .s-order #pl-item-add .pl-item { border-top: none; padding-top: 21px; }
 .s-order #pl-item-add .pl-item .pl-select-label { padding-bottom: 18px; }
+.s-order #pl-complete-log li:first-child .pl-item { border-top: none; }
+.s-order .pl-details.sticky { top: 83px; }
 
 /* @2x
 ------ */

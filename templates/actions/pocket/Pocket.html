@@ -7,7 +7,7 @@
                 <a href="#/pocket/{$pocket->pk}/list/new/" class="count" title="[`New list`]"><i class="icon16 add"></i></a>
                 <h5 class="pl-dark-{$pocket->color|default:'none'}-label">
                     {$pocket->name|escape}
-                    <a href="#" title="[`Pocket settings`]"><i class="icon16 settings pl-pocket-settings"></i></a>
+                    <a href="#" title="[`Pocket settings`]"><i class="icon16 pl ellipsis pl-pocket-settings"></i></a>
                 </h5>
             </div>
             {if !empty($lists)}
