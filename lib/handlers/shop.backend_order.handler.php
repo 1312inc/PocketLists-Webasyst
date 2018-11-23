@@ -20,6 +20,10 @@ class pocketlistsShopBackend_orderHandler extends waEventHandler
 
         $app = wa(pocketlistsHelper::APP_ID)->getConfig()->getLinkedApp('shop');
 
+        if (!$app->isEnabled()) {
+            return $return;
+        }
+
         $itemLinkModel = pocketlistsItemLinkModel::model()->findByFields(
             [
                 'app'         => 'shop',

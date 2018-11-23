@@ -63,7 +63,7 @@ abstract class pocketlistsItemLink
     {
         try {
             wa($this->getApp());
-            $this->enabled = true;
+            $this->enabled = wa()->appExists($this->getApp());
         } catch (waException $ex) {
             $this->enabled = false;
         }

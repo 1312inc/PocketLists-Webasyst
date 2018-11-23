@@ -211,6 +211,11 @@
                 $('#content').html(result);
             });
         },
+        debugAction: function () {
+            this.load('?module=debug', function (result) {
+                $('#content').html(result);
+            });
+        },
         todoAction: function () {
             this.load('?module=todo', function (result) {
                 $('#content').html(result);

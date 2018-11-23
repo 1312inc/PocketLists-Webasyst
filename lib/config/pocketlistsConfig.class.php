@@ -108,9 +108,29 @@ class pocketlistsConfig extends waAppConfig
         return $name ? (isset($tasks[$name]) ? $tasks[$name] : null) : $tasks;
     }
 
+    public function getLinkedAppConfigPath()
+    {
+        return wa()->getAppPath('lib/config/linked_apps.php', pocketlistsHelper::APP_ID);
+    }
+
     public function getLinkedApps()
     {
-        return ['shop'];
+        $apps = require_once $this->getLinkedAppConfigPath();
+        $linked = [];
+
+        if (!is_array($apps)) {
+            return $linked;
+        }
+
+        foreach ($apps as $app => $info) {
+            if (!is_array($info)) {
+                $linked[] = $app;
+            } elseif (!empty($info['enable'])) {
+                $linked[] = $app;
+            }
+        }
+
+        return $linked;
     }
 
     /**
