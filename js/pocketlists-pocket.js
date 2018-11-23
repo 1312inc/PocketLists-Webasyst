@@ -1,6 +1,5 @@
 "use strict";
 
-
 /**
  * object to work with list
  * - add
@@ -11,9 +10,11 @@
  */
 $.pocketlists.Pocket = function ($pocket_wrapper, options) {
     var $sidebarPocketsWrapper = $('[data-pl2-sidebar-wrapper="pockets"]'),
-        $loading = $('<i class="icon16 loading"></i>');
+        $loading = $('<i class="icon16 loading"></i>'),
+        pocket_id = 0,
+        request_in_action = false;
 
-    var settingDialog = function () {
+    var _settingDialog = function () {
         var pocketId = $(this).data('pl2-pocket-id') || 0;
 
         $('#pl-pocket-dialog').waDialog({
@@ -21,15 +22,23 @@ $.pocketlists.Pocket = function ($pocket_wrapper, options) {
             'width': '600px',
             'url': '?module=pocket&action=settingsDialog&id=' + pocketId,
             onLoad: function () {
-                var $dialogWrapper = $(this);
+                var d = this,
+                    $dialogWrapper = $(d);
 
-                $dialogWrapper.on('click', '#pl-pocket-color a', function (e) {
-                    e.preventDefault();
+                $dialogWrapper
+                    .on('click', '#pl-pocket-color a', function (e) {
+                        e.preventDefault();
 
-                    $dialogWrapper.find('#pl-pocket-color input').val($(this).data('pl-pocket-color'));
-                    $(this).addClass('selected')
-                        .siblings().removeClass('selected')
-                });
+                        $dialogWrapper.find('#pl-pocket-color input').val($(this).data('pl-pocket-color'));
+                        $(this).addClass('selected')
+                            .siblings().removeClass('selected')
+                    })
+                    .on('click', '[data-pl2-action="delete-pocket"]', function (e) {
+                        e.preventDefault();
+
+                        _deletePocket.call(d, pocketId);
+                    })
+                ;
             },
             onSubmit: function (d) {
                 d.find('.dialog-buttons input[type="button"]').after($loading);
@@ -47,7 +56,15 @@ $.pocketlists.Pocket = function ($pocket_wrapper, options) {
         });
     };
 
-    var initSortList = function ($lists_wrapper) {
+    var _sidebarHandlers = function () {
+        $sidebarPocketsWrapper.on('click', '[data-pl2-action="add-pocket"]', function (e) {
+            e.preventDefault();
+
+            _settingDialog();
+        });
+    }
+
+    var _initSortList = function ($lists_wrapper) {
         $lists_wrapper.sortable({
             item: '[data-pl-list-id]',
             distance: 5,
@@ -93,27 +110,51 @@ $.pocketlists.Pocket = function ($pocket_wrapper, options) {
     };
 
     function init() {
-        addHandlers();
+        pocket_id = $pocket_wrapper.data('pl2-pocket-wrapper');
+        _addHandlers();
     }
 
-    function addHandlers() {
+    var _deletePocket = function (id) {
+        id = id || pocket_id;
+        var d = this;
 
-        $sidebarPocketsWrapper.on('click', '[data-pl2-action="add-pocket"]', function (e) {
-            e.preventDefault();
+        if (!confirm($_('pocket delete. sure?'))) {
+            return false;
+        }
 
-            settingDialog.call(this);
+        if (request_in_action) {
+            return;
+        }
+        request_in_action = true;
+
+        $.post('?module=pocket&action=delete', {id: id}, function (r) {
+            if (r.status === 'ok') {
+                $(d).trigger('close');
+                $.wa.setHash('#/todo/');
+                $.pocketlists_routing.redispatch();
+            }
+        }, 'json').always(function () {
+            request_in_action = false;
         });
+    }
 
+    function _addHandlers() {
         $pocket_wrapper.on('click', '[data-pl2-action="edit-pocket"]', function (e) {
             e.preventDefault();
 
-            settingDialog.call(this);
+            _settingDialog.call(this);
         });
 
         var $lists_wrapper = $('#pl-lists').find('.pl-lists');
 
-        initSortList($lists_wrapper);
+        _initSortList($lists_wrapper);
     }
 
-    init();
+    if ($pocket_wrapper) {
+        init();
+    }
+
+    return {
+        showSettingsDoalog: _settingDialog
+    }
 };

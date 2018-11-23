@@ -1,6 +1,6 @@
 <!-- CORE FILTERS -->
-<div class="block pl-sidebar-core">
-    <ul class="menu-v with-icons" data-pl2-sidebar-wrapper="pockets">
+<div class="block pl-sidebar-core" data-pl2-sidebar-wrapper="pockets">
+    <ul class="menu-v with-icons">
         {foreach $pockets as $pocket}
             <li>
                 <span class="count">{$pocket->countLists()}</span>
@@ -152,6 +152,12 @@
 <script>
     'use strict';
     (function () {
+        var pocket = $.pocketlists.Pocket();
 
+        $('[data-pl2-sidebar-wrapper="pockets"]').on('click', '[data-pl2-action="add-pocket"]', function (e) {
+            e.preventDefault();
+
+            pocket.showSettingsDoalog.call(this);
+        });
     }());
 </script>

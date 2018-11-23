@@ -43,7 +43,7 @@
                 $li.addClass('selected');
             } else {
                 var hash = $.pocketlists_routing.getHash(),
-                    $a = self.$core_sidebar.find('a[hre="' + hash + '"]');
+                    $a = self.$core_sidebar.find('a[href="' + hash + '"]');
 
                 if (hash) {
                     $all_li.removeClass('selected');
