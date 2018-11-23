@@ -1223,3 +1223,11 @@ msgstr ""
 #: /wa-apps/pocketlists/js/pocketlists-item.js:796
 msgid "Find order by ID"
 msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/pocket/Pocket.html:10
+msgid "Pocket settings"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/config/pocketlistsRightConfig.class.php:15
+msgid "Can see Shop-Script to-dos, other users personal to-dos, and assign to-dos to teammates"
+msgstr ""

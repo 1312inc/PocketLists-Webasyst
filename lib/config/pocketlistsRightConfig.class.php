@@ -11,7 +11,8 @@ class pocketlistsRightConfig extends waRightConfig
         $this->addItem('cancreatelists', _w('Can create shared to-do lists'), 'checkbox');
         $this->addItem(
             'canassign',
-            _w('Can see other users personal to-dos and assign to-dos to teammates'),
+            //_w('Can see other users personal to-dos and assign to-dos to teammates'),
+            _w('Can see Shop-Script to-dos, other users personal to-dos, and assign to-dos to teammates'),
             'checkbox'
         );
 
