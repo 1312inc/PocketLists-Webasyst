@@ -112,4 +112,12 @@ class pocketlistsItemLinkFake implements pocketlistsItemLinkInterface
     {
         return false;
     }
+
+    /**
+     * @return string
+     */
+    public function getBannerHtml()
+    {
+        return '';
+    }
 }

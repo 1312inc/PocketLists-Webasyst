@@ -75,4 +75,9 @@ interface pocketlistsItemLinkInterface
      * @return bool
      */
     public function isEnabled();
+
+    /**
+     * @return string
+     */
+    public function getBannerHtml();
 }

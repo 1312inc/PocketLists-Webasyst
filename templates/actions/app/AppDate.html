@@ -1,13 +1,6 @@
 <main class="blank bordered-right pl-inner-content pl-items pl-list-items pl-todo shadowed" id="pl-list-content">
 
-    <div id="pl-stream-notice" class="pl-alert" style="display: none;">
-        <a href="javascript:void(0)" class="close pl-alert-close bigger">&times;</a>
-        <div class="pl-welcome" id="pl-welcome-msg">
-            <div class="pl-shopscript"></div>
-            <h2>[`Better order processing`]</h2>
-            <p>{sprintf('[`Pocket Lists integrates with Shop-Script and allows you to process orders even better: quickly set reminders linked to Shop-Script orders, assign tasks to sales managers, schedule follow-ups for the future. Pocket Lists will gather all such to-dos in one place and ensure you have your sales under complete control. Learn more about <a href="%s" target="_blank">integration with Shop-Script</a>.`]','[`https://www.webasyst.com/store/app/pocketlists/shop-script/`]')}</p>
-        </div>
-    </div>
+    {$app->getBannerHtml()}
 
     <header class="pl-title">
          {*<div class="float-right">*}
@@ -62,7 +55,7 @@
 
 <script type="text/javascript">
     (function(){
-        $.pocketlists.initNotice('#pl-stream-notice');
+        $.pocketlists.initNotice('#pl-{$app->getApp()}-notice');
 
         new $.pocketlists.Items($('#pl-list-items'), {
             enableAddLinkOnHover: false,

@@ -86,4 +86,24 @@ abstract class pocketlistsItemLink
     {
         return $this->enabled;
     }
+
+    /**
+     * @return string
+     */
+    public function getBannerHtml()
+    {
+       $template = wa()->getAppPath(
+            sprintf('templates/include/item_linked_entities/%s.banner.html', $this->getApp()),
+            pocketlistsHelper::APP_ID
+        );
+
+        $render = '';
+
+        if ($this->isEnabled() && file_exists($template)) {
+            $this->getView()->assign('app', $this);
+            $render = $this->getView()->fetch($template);
+        }
+
+        return $render;
+    }
 }
