@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class pocketlistsPocketSaveController
+ */
 class pocketlistsPocketSaveController extends waJsonController
 {
     /**
@@ -12,22 +15,41 @@ class pocketlistsPocketSaveController extends waJsonController
             unset($pocketData['id']);
         }
 
-        $pocket = new pocketlistsPocketModel($pocketData);
+        if ($pocketData['id']) {
+            $pocket = pocketlistsPocketModel::model()->findByPk($pocketData['id']);
+            if (!$pocket) {
+                $this->setError('no pocket');
 
-        if ($pocket->save()) {
+                return;
+            }
+            unset($pocketData['id']);
 
-            // add full rights for this pocket
-            (new waContactRightsModel())->save(
-                wa()->getUser()->getId(),
-                wa()->getApp(),
-                'pocket.'.$pocket->pk,
-                1
-            );
-            // todo: update access rights for others
+            $pocket->setAttributes($pocketData);
+            if (!$pocket->save()) {
+                $this->setError('some error on save pocket');
 
-            $this->response = $pocket->getAttributes();
+                return;
+            }
         } else {
-            $this->setError('some error on save pocket');
+            $pocket = new pocketlistsPocketModel($pocketData);
+
+            if ($pocket->save()) {
+                // add full rights for this pocket
+                (new waContactRightsModel())->save(
+                    wa()->getUser()->getId(),
+                    wa()->getApp(),
+                    'pocket.'.$pocket->pk,
+                    1
+                );
+                // todo: update access rights for others
+            } else {
+                $this->setError('some error on save pocket');
+
+                return;
+            }
         }
+
+        $this->response = $pocket->getAttributes();
     }
 }
+

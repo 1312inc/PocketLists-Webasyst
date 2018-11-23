@@ -1,6 +1,6 @@
 <!-- CORE FILTERS -->
-<div class="block pl-sidebar-core">
-    <ul class="menu-v with-icons" data-pl2-sidebar-wrapper="pockets">
+<div class="block pl-sidebar-core" data-pl2-sidebar-wrapper="pockets">
+    <ul class="menu-v with-icons">
         {foreach $pockets as $pocket}
             <li>
                 <span class="count">{$pocket->countLists()}</span>
@@ -152,48 +152,12 @@
 <script>
     'use strict';
     (function () {
-        var $sidebarPocketsWrapper = $('[data-pl2-sidebar-wrapper="pockets"]'),
-            $loading = $('<i class="icon16 loading"></i>');
+        var pocket = $.pocketlists.Pocket();
 
-        $('[data-pl2-action="add-pocket"]').on('click', function (e) {
+        $('[data-pl2-sidebar-wrapper="pockets"]').on('click', '[data-pl2-action="add-pocket"]', function (e) {
             e.preventDefault();
 
-            $('#pl-pocket-dialog').waDialog({
-                'height': '250px',
-                'width': '600px',
-                'url': '?module=pocket&action=settingsDialog',
-                onLoad: function() {
-                    var $dialogWrapper = $(this);
-
-                    $dialogWrapper.on('click', '#pl-pocket-color a', function (e) {
-                        e.preventDefault();
-
-                        $dialogWrapper.find('#pl-pocket-color input').val($(this).data('pl-pocket-color'));
-                        $(this).addClass('selected')
-                            .siblings().removeClass('selected')
-                    });
-                },
-                onSubmit: function (d) {
-                    d.find('.dialog-buttons input[type="button"]').after($loading);
-                    $.post('?module=pocket&action=save', d.find('form').serialize(), function (r) {
-                        $loading.remove();
-                        if (r.status === 'ok') {
-                            var $new_pocket = '<li>' +
-                                '<span class="count">0</span>' +
-                                '<a href="#/pocket/' + r.data.id + '">' +
-                                '<i class="icon16 color pl-dark-' + r.data.color + '"></i>' + r.data.name +
-                                '</a>' +
-                                '</li>';
-
-                            $sidebarPocketsWrapper.append($new_pocket);
-                            d.trigger('close');
-                        } else {
-
-                        }
-                    }, 'json');
-                    return false;
-                }
-            });
-        })
+            pocket.showSettingsDoalog.call(this);
+        });
     }());
 </script>
