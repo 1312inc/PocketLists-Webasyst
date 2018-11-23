@@ -1231,3 +1231,7 @@ msgstr ""
 #: /wa-apps/pocketlists/lib/config/pocketlistsRightConfig.class.php:15
 msgid "Can see Shop-Script to-dos, other users personal to-dos, and assign to-dos to teammates"
 msgstr ""
+
+#: /wa-apps/pocketlists/js/pocketlists-pocket.js:121
+msgid "DANGER! Pocket will be deleted with all its content including lists and to-dos. There will be no way to restore this data. Are you sure?"
+msgstr ""
