@@ -1,4 +1,4 @@
-<div class="shadowed">
+<div class="shadowed" data-pl2-pocket-wrapper="{$pocket->pk}">
     <nav class="sidebar left300px">
 
         <!-- LISTS -->
@@ -7,7 +7,7 @@
                 <a href="#/pocket/{$pocket->pk}/list/new/" class="count" title="[`New list`]"><i class="icon16 add"></i></a>
                 <h5 class="pl-dark-{$pocket->color|default:'none'}-label">
                     {$pocket->name|escape}
-                    <a href="#" title="[`Pocket settings`]"><i class="icon16 pl ellipsis pl-pocket-settings"></i></a>
+                    <a href="#" title="[`Pocket settings`]" data-pl2-action="edit-pocket" data-pl2-pocket-id="{$pocket->pk}"><i class="icon16 pl ellipsis pl-pocket-settings"></i></a>
                 </h5>
             </div>
             {if !empty($lists)}
@@ -44,48 +44,12 @@
 </div>
 <script>
     (function () {
-        var $lists_wrapper = $('#pl-lists').find('.pl-lists');
-        $lists_wrapper.sortable({
-            item: '[data-pl-list-id]',
-            distance: 5,
-            placeholder: 'pl-list-placeholder',
-            tolerance: 'pointer',
-            start: function (e, ui) {
-                ui.placeholder.height(ui.helper.outerHeight());
-            },
-            stop: function (event, ui) {
-                var getLists = function () {
-                    var data = [];
-                    $lists_wrapper.find('[data-pl-list-id]').each(function (i) {
-                        var $this = $(this),
-                            color = $this.attr('class').match(/pl-(.*)/);
-                        data.push({
-                            id: $this.data('pl-list-id'),
-                            sort: i,
-                            color: color[1]
-                        });
-                    });
-                    return data;
-                };
 
-                var updateSort = function () {
-                    $.post(
-                        '?module=list&action=sort',
-                        {
-                            data: getLists()
-                        },
-                        function (r) {
-                            if (r.status === 'ok') {
-                            } else {
-                                alert(r.errors);
-                            }
-                        },
-                        'json'
-                    );
-                };
-
-                updateSort();
-            }
+        new $.pocketlists.Pocket($('[data-pl2-pocket-wrapper]'), {
+            current_user_id: {$wa->user()->get('id')}
         });
+
+        $.pocketlists.setTitle('{if isset($pocket.name)}{$pocket.name|default:" "|escape}{else}{/if}');
+
     }());
 </script>
