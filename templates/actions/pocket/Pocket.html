@@ -4,7 +4,7 @@
         <!-- LISTS -->
         <div id="pl-lists" data-pl-scroll-to-top>
             <div class="pl-lists-header">
-                <a href="#/pocket/{$pocket->pk}/list/new/" class="count" title="[`New list`]"><i class="icon16 add"></i></a>
+                {if pocketlistsRBAC::canCreateLists()}<a href="#/pocket/{$pocket->pk}/list/new/" class="count" title="[`New list`]"><i class="icon16 add"></i></a>{/if}
                 <h5 class="pl-dark-{$pocket->color|default:'none'}-label">
                     {$pocket->name|escape}
                     <a href="#" title="[`Pocket settings`]" data-pl2-action="edit-pocket" data-pl2-pocket-id="{$pocket->pk}"><i class="icon16 pl ellipsis pl-pocket-settings"></i></a>

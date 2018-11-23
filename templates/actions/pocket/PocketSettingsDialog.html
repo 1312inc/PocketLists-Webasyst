@@ -5,13 +5,6 @@
             <input type="hidden" name="pocket[id]" value="{$pocket.id|default:0}"/>
 
             {if isset($pocket.id)}
-                <div class="block half-padded float-right">
-                    <ul class="menu-h">
-                        <li>
-                            <a href="#" data-pl2-action="delete-pocket"><i class="icon16 delete"></i> [`Delete pocket`]</a>
-                        </li>
-                    </ul>
-                </div>
                 <h1>{$pocket.name|default:'[`(unnamed pocket)`]'|escape|truncate:32}</h1>
             {else}
                 <h1>[`New pocket`]</h1>
@@ -57,6 +50,15 @@
     </div>
 
     <div class="dialog-buttons">
+        {if isset($pocket.id)}
+            <div class="block half-padded float-right">
+                <ul class="menu-h">
+                    <li>
+                        <a href="#" data-pl2-action="delete-pocket"><i class="icon16 delete"></i> [`Delete pocket`]</a>
+                    </li>
+                </ul>
+            </div>
+        {/if}
         <input type="submit" value="[`Save`]" class="button green"/> [`or`] <a class="cancel" href="#">[`cancel`]</a>
     </div>
 </section>

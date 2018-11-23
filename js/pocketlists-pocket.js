@@ -118,7 +118,7 @@ $.pocketlists.Pocket = function ($pocket_wrapper, options) {
         id = id || pocket_id;
         var d = this;
 
-        if (!confirm($_('pocket delete. sure?'))) {
+        if (!confirm($_('DANGER! Pocket will be deleted with all its content including lists and to-dos. There will be no way to restore this data. Are you sure?'))) {
             return false;
         }
 
