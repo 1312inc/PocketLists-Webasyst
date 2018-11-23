@@ -15,7 +15,7 @@ class pocketlistsPocketSaveController extends waJsonController
             unset($pocketData['id']);
         }
 
-        if ($pocketData['id']) {
+        if (!empty($pocketData['id'])) {
             $pocket = pocketlistsPocketModel::model()->findByPk($pocketData['id']);
             if (!$pocket) {
                 $this->setError('no pocket');

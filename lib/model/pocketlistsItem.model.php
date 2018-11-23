@@ -596,7 +596,7 @@ class pocketlistsItemModel extends kmModelExt
      */
     private function getItems($sql, $list_id, $tree)
     {
-        $key = $this->getCacheKey($sql.$list_id.$tree);
+        $key = $this->getCacheKey($sql.serialize($list_id).$tree);
 
         return $this->getFromCache(
             $key,
@@ -759,7 +759,7 @@ class pocketlistsItemModel extends kmModelExt
 
     public function setChatComment($comment)
     {
-        $comments = $this->virtualAttributes['chat']['comments'];
+        $comments = $this->chat['comments'];
         $comments[$comment['id']] = pocketlistsCommentModel::extendData($comment);
 
         $this->chat = [
