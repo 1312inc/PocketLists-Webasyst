@@ -41,8 +41,15 @@ class pocketlistsPocketAction extends waViewAction
             $id = reset($available_pockets);
         }
 
-        /** @var pocketlistsPocketModel $pocket */
-        $pocket = $pm->findByPk($id);
+        if (!$id) {
+            $allPockets = $pm->getAllPockets();
+            $pocket = reset($allPockets);
+        } else {
+            /** @var pocketlistsPocketModel $pocket */
+            $pocket = $pm->findByPk($id);
+        }
+
+        $id = $pocket->pk;
 
         // get all lists for this pocket
         $lists = $lm->getLists(true, $pocket['id']);

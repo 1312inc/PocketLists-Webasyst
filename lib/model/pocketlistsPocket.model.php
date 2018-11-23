@@ -21,10 +21,10 @@ class pocketlistsPocketModel extends kmModelExt
     {
         $where_ids = '';
         $accessed_pockets = [];
-        if ($contact_id) {
-            $accessed_pockets = pocketlistsHelper::getAccessPocketForContact($contact_id);
-            $where_ids = 'WHERE id IN (i:access_id)';
-        }
+//        if ($contact_id) {
+//            $accessed_pockets = pocketlistsHelper::getAccessPocketForContact($contact_id);
+//            $where_ids = 'WHERE id IN (i:access_id)';
+//        }
 
         $sql = "SELECT * FROM {$this->table} {$where_ids} ORDER BY sort ASC ";
 
