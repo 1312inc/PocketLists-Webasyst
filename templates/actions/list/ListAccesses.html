@@ -4,6 +4,8 @@
     {if pocketlistsRBAC::canAssign()}
     <div class="pl-list-access">
 
+        <a href="#" class="pl-list-details-cancel pl-close" title="[`Close`]">&times;</a>
+
         <h5 class="heading">[`Access`]</h5>
         {foreach $list_access_contacts as $list_access_contact_id => $list_access_contact}
 
@@ -26,6 +28,7 @@
         <p class="hint">{sprintf('[`Use <a href="%s">Team app</a> to configure access to this to-do list: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/')}</p>
     </div>
 
+    <div class="fields form">
     <div class="field-group">
         <div class="field">
             <div class="name">[`List created`]</div>
@@ -36,7 +39,8 @@
             </div>
         </div>
     </div>
+    </div>
+
     {/if}
-    <a href="#" class="pl-list-details-cancel">отмена</a>
 </div>
 </div>

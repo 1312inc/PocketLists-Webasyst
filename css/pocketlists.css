@@ -282,8 +282,8 @@ input#pl-new-list-input:focus,
 .pl-list-details-helper i.icon16 { position: relative; top: 1px; }
 .pl-list-details-helper:hover { background: #eee; }
 
-.pl-list-access { line-height: 1.2em; margin: 20px 0 10px; }
-.pl-list-access h5 { margin-bottom: 10px; }
+.pl-list-access { line-height: 1.2em; margin: 2px 0 10px; }
+.pl-list-access h5 { margin-bottom: 20px; }
 .pl-list-access p { margin-bottom: 0; }
 .pl-list-access .profile { margin-bottom: 5px; }
 .pl-list-access .profile img { width: 32px; height: 32px; }
@@ -473,7 +473,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#12000000', e
 .pl-details.sticky .pl-details-form-container { position: absolute; top: 0; bottom: 0; left: 0; right: 0; }
 
 .pl-close,
-.pl-close:visited { font-size: 2em; color: rgba(0,0,0,0.3) !important; text-decoration: none; float: right; position: relative; z-index: 1; margin-right: 10px; }
+.pl-close:visited { font-size: 1.75em; color: rgba(0,0,0,0.3) !important; text-decoration: none; float: right; position: relative; z-index: 1; margin-right: 10px; position: relative; top: -4px; }
 
 input.pl-due-date-input { width: 130px !important; min-width: 130px !important; }
 
