@@ -38,18 +38,18 @@ class pocketlistsListAction extends waViewAction
             /** @var pocketlistsListModel $list */
             $list = $lm->findByPk($list_id);
 
-//            if (!$list) {
-//                $this->view->assign(
-//                    'error',
-//                    [
-//                        'code'    => 403,
-//                        'message' => _w('Access denied'),
-//                    ]
-//                );
-//                $this->setTemplate('templates/include/error.html');
-//
-//                return;
-//            }
+            if (!$list) {
+                $this->view->assign(
+                    'error',
+                    [
+                        'code'    => 404,
+                        'message' => _w('Not found'),
+                    ]
+                );
+                $this->setTemplate('templates/include/error.html');
+
+                return;
+            }
 
             if (!pocketlistsRBAC::canAccessToList($list->pk)) {
                 $this->view->assign(
