@@ -37,6 +37,24 @@ class pocketlistsItemModel extends kmModelExt
      */
     protected $linkedEntities;
 
+    public $chat = [
+        'current_user' => [],
+        'comments'     => [],
+    ];
+
+    public $childs = [];
+
+    public function init()
+    {
+        $this->chat = [
+            'current_user' => [
+                'username' => wa()->getUser()->getName(),
+                'userpic'  => wa()->getUser()->getPhoto(20),
+            ],
+            'comments'     => [],
+        ];
+    }
+
     /**
      * @param bool $contact_id
      * @param bool $date_range
@@ -720,13 +738,6 @@ class pocketlistsItemModel extends kmModelExt
 
         return $item;
     }
-
-    public $chat = [
-        'current_user' => [],
-        'comments'     => [],
-    ];
-
-    public $childs = [];
 
     /**
      * @param pocketlistsItemModel $item
