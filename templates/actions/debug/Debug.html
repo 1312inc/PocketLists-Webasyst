@@ -4,25 +4,26 @@
 
         <div class="fields form">
             <form method="post" id="pl-settings-form">
-                <h6 class="heading"><i class="icon16 userpic20"
-                                       style="background-image: url({$wa->user()->getPhoto(20)});"></i> [`Debug`]</h6>
+                <h6 class="heading">[`Debug`]</h6>
                 <br>
                 <div class="field-group">
 
                     <div class="field">
                         <div class="name nowrap">
-                            [`Shop`]
+                            Shop-Script integration
                         </div>
                         <div class="value no-shift">
                             <label>
                                 <input type="radio" name="apps[shop][enable]" value="1"
-                                       {if !empty($apps['shop']['enable'])}checked="checked"{/if}/> [`on`]
+                                       {if !empty($apps['shop']['enable'])}checked="checked"{/if}/> ON
                             </label>
                             <label>
                                 <input type="radio" name="apps[shop][enable]" value="0"
-                                       {if empty($apps['shop']['enable'])}checked="checked"{/if}/> [`off`]
-                                <p class="hint"></p>
+                                       {if empty($apps['shop']['enable'])}checked="checked"{/if}/> OFF
                             </label>
+                        </div>
+                        <div class="value no-shift">
+                            <p class="hint">Disable integration in case of conflicts with third-party plugins.</p>
                         </div>
                     </div>
 
