@@ -809,7 +809,7 @@ class pocketlistsHelper
             $pockets = $user->getRights('pocketlists', 'pocket.%');
 
         }
-        return $pockets ? array_keys($pockets) : false;
+        return $pockets ? array_keys($pockets) : [];
     }
 
     public static function getAllPocketListsContacts()
