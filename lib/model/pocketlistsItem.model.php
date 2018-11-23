@@ -728,8 +728,8 @@ class pocketlistsItemModel extends kmModelExt
      */
     public function addPriorityData(&$item)
     {
-        $item['due_date'] = isset($item['due_date']) ? $item['due_date'] : 0;
-        $item['due_datetime'] = isset($item['due_datetime']) ? $item['due_datetime'] : 0;
+        $item['due_date'] = isset($item['due_date']) ? $item['due_date'] : null;
+        $item['due_datetime'] = isset($item['due_datetime']) ? $item['due_datetime'] : null;
 
         $item['calc_priority'] = max(
             pocketlistsHelper::calcPriorityOnDueDate($item['due_date'], $item['due_datetime']),
