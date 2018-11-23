@@ -525,7 +525,7 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 .s-order #pl-item-add .pl-item { border-top: none; padding-top: 21px; }
 .s-order #pl-item-add .pl-item .pl-select-label { padding-bottom: 18px; }
 .s-order #pl-complete-log li:first-child .pl-item { border-top: none; }
-.s-order .pl-details .pl-add-attachment-dropbox { display: none; }
+/*.s-order .pl-details .pl-add-attachment-dropbox { display: none; }*/
 .s-order .pl-details.sticky { top: 83px; }
 
 /* @2x
