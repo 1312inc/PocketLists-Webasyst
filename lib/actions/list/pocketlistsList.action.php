@@ -133,6 +133,7 @@ class pocketlistsListAction extends waViewAction
                 'print'                => waRequest::get('print', false),
                 'pocket'               => $pocket,
                 'list_access_contacts' => $list_access_contacts ?: [],
+                'fileupload'           => 1
             ]
         );
     }

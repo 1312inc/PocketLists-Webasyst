@@ -45,8 +45,11 @@ $.pocketlists.Pocket = function ($pocket_wrapper, options) {
                 $.post('?module=pocket&action=save', d.find('form').serialize(), function (r) {
                     $loading.remove();
                     if (r.status === 'ok') {
-                        $.pocketlists_routing.redispatch();
                         d.trigger('close');
+                        if (!pocketId) {
+                            window.location.hash = '#/pocket/' + r.data.id;
+                        }
+                        $.pocketlists_routing.redispatch();
                     } else {
 
                     }
