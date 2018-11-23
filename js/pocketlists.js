@@ -53,7 +53,16 @@
                 } else { // more complex hash
                     hash = hash.split("/");
                     if (hash[1]) {
-                        self.$core_sidebar.find('a[href^="' + hash[0] + '/' + hash[1] + '"]').first().closest('li').addClass('selected');
+                        while(hash.length) {
+                            hash.pop();
+                            var href = hash.join('/');
+
+                            var $found_li = self.$core_sidebar.find('a[href^="' + href + '"]').first().closest('li');
+                            if ($found_li.length) {
+                                $found_li.addClass('selected');
+                                break;
+                            }
+                        }
                     }
                 }
             }
