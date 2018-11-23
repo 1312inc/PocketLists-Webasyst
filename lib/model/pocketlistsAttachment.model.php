@@ -26,7 +26,7 @@ class pocketlistsAttachmentModel extends kmModelExt
             }
             $this->deleteByField('item_id', $item_ids);
             foreach ($item_ids as $item_id) {
-                waFiles::delete(wa()->getDataPath('attachments/'.$item_id.'/', true));
+                waFiles::delete(wa()->getDataPath('attachments/'.$item_id.'/', true, pocketlistsHelper::APP_ID));
             }
         } else { // delete item attchments by names
             if (!is_array(($names))) {
@@ -40,7 +40,7 @@ class pocketlistsAttachmentModel extends kmModelExt
                 ]
             );
             foreach ($names as $name) {
-                waFiles::delete(wa()->getDataPath('attachments/'.$item_ids.'/'.$name, true));
+                waFiles::delete(wa()->getDataPath('attachments/'.$item_ids.'/'.$name, true, pocketlistsHelper::APP_ID));
             }
         }
 

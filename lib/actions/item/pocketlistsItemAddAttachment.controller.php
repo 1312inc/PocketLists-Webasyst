@@ -71,7 +71,7 @@ class pocketlistsItemAddAttachmentController extends waJsonController
         $filevalid = $this->validFile($file);
         if ($filevalid === true) {
             $item = $im->getById($item_id);
-            $path_public = wa()->getDataPath('attachments/' . $item['id'] . '/', true);
+            $path_public = wa()->getDataPath('attachments/' . $item['id'] . '/', true, pocketlistsHelper::APP_ID);
             if ($item && is_writable($path_public)) {
                 $name = $file->name;
 
@@ -106,7 +106,7 @@ class pocketlistsItemAddAttachmentController extends waJsonController
 
                         $this->errors = array();
                         return array(
-                            'path' => wa()->getDataUrl('attachments/' . $item['id'] . '/', true),
+                            'path' => wa()->getDataUrl('attachments/' . $item['id'] . '/', true, pocketlistsHelper::APP_ID),
                             'name' => $file->name,
                             'type' => $file->type,
                             'size' => $file->size,

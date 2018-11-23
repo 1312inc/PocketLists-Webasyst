@@ -36,6 +36,7 @@ class pocketlistsShopBackend_orderHandler extends waEventHandler
             'items_undone'      => [],
             'items_done'        => [],
             'count_done_items'  => 0,
+            'fileupload'        => 0
         ];
 
         if ($itemLinkModel) {
@@ -60,6 +61,7 @@ class pocketlistsShopBackend_orderHandler extends waEventHandler
 
             if (file_exists($template)) {
                 $view->assign('params', $viewParams);
+                $view->assign('pl2_attachments_path', wa()->getDataUrl('attachments/'.$item['id'].'/', true, pocketlistsHelper::APP_ID));
                 $return[$hook] = $view->fetch($template);
             }
         }

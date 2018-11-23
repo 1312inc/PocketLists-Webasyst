@@ -72,7 +72,9 @@
                 entity_type: 'order',
                 entity_id: {$params.order.id}
             },
-            appUrl: '{$params.plurl}'
+            appUrl: '{$params.plurl}',
+            wa_url: '{$wa_url}',
+            fileUpload: {$params.fileupload}
         });
     }());
 </script>

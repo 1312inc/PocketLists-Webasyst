@@ -33,7 +33,7 @@ class pocketlistsTodoDateAction extends waViewAction
 
         $this->view->assign('filter', $filter);
 
-        $this->view->assign('attachments_path', wa()->getDataUrl('attachments/', true));
+        $this->view->assign('pl2_attachments_path', wa()->getDataUrl('attachments/', true, pocketlistsHelper::APP_ID));
         $this->view->assign('this_is_stream', true);
         $this->view->assign('print', waRequest::get('print', false));
     }

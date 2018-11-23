@@ -85,8 +85,8 @@
             {if !empty($item.attachments)}
               <ul class="pl-attachments">
                 {foreach $item.attachments as $attachment}
-                  {if $attachment.filetype == 'image'}<li><a href="{$attachments_path}/{$item.id}/{$attachment.filename}" target="_blank"><img src="{$attachments_path}/{$item.id}/{$attachment.filename}"></a></li>
-                  {else}<li class="pl-no-preview"><a href="{$attachments_path}/{$item.id}/{$attachment.filename}" target="_blank"><i class="icon16 download"></i>{$attachment.filename|truncate:128}</a></li>
+                  {if $attachment.filetype == 'image'}<li><a href="{$pl2_attachments_path}/{$item.id}/{$attachment.filename}" target="_blank"><img src="{$pl2_attachments_path}/{$item.id}/{$attachment.filename}"></a></li>
+                  {else}<li class="pl-no-preview"><a href="{$pl2_attachments_path}/{$item.id}/{$attachment.filename}" target="_blank"><i class="icon16 download"></i>{$attachment.filename|truncate:128}</a></li>
                   {/if}
                 {/foreach}
               </ul>

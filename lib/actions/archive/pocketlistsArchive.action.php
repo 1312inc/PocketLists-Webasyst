@@ -46,7 +46,7 @@ class pocketlistsArchiveAction extends waViewAction
             $this->view->assign('count_items_done', $count_done);
             $this->view->assign('count_items_undone', $count_undone);
             $this->view->assign('new', false);
-            $this->view->assign('attachments_path', wa()->getDataUrl('attachments/', true));
+            $this->view->assign('pl2_attachments_path', wa()->getDataUrl('attachments/', true, pocketlistsHelper::APP_ID));
             $this->view->assign('list_access_contacts', $list_access_contacts);
             $this->view->assign('list_id', $list_id);
             $this->view->assign('lists', $lists);

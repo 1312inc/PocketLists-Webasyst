@@ -97,7 +97,8 @@
                 {
                     archive: {if $archive}true{else}false{/if}
                 }),
-        current_user_id: {$wa->user()->get('id')}
+        current_user_id: {$wa->user()->get('id')},
+        fileUpload: {$fileupload}
     });
     $.pocketlists.setTitle('{if isset($list.name)}{$list.name|default:" "|escape}{else}[`New list`]{/if}');
 </script>

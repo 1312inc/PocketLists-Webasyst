@@ -36,7 +36,7 @@ class pocketlistsItemDataAction extends waViewAction
                     ));
                 }
 
-                $this->view->assign('attachments_path', wa()->getDataUrl('attachments/', true));
+                $this->view->assign('pl2_attachments_path', wa()->getDataUrl('attachments/', true, pocketlistsHelper::APP_ID));
                 $item = $im->getById($item_new_data['id']);
                 $item = $im->extendItemData($item);
                 $this->view->assign('item', $item);
@@ -46,7 +46,7 @@ class pocketlistsItemDataAction extends waViewAction
 
     private function saveAttachment($item)
     {
-        $path_public = wa()->getDataPath('attachments/'.$item['id'].'/', true);
+        $path_public = wa()->getDataPath('attachments/'.$item['id'].'/', true, pocketlistsHelper::APP_ID);
         if (is_writable($path_public)) {
             $errors = array();
             $f = waRequest::file('attachment');

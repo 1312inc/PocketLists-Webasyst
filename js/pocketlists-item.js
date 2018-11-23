@@ -32,6 +32,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             defaultLinkedEntity: false,
             standAloneItemAdd: false,
             appUrl: '',
+            wa_url: '',
+            fileUpload: 1
         }, options),
         request_in_action = false;
 
@@ -211,8 +213,11 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             item_list_id_new = $form.find('[name="item\[list_id\]"]').val();
 
         var afterUpdateItem = function (html, callback) {
-            $.pocketlists.updateAppCounter();
-            $.pocketlists.reloadSidebar();
+            if (!o.standAloneItemAdd) {
+                $.pocketlists.updateAppCounter();
+                $.pocketlists.reloadSidebar();
+            }
+
             $.pocketlists.$loading.remove();
             replaceItem(html);
             // update indicator color
@@ -1142,36 +1147,53 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
             $wrapper.find('#pl-item-due-datetime').datepicker(datepicker_options);
 
-            $wrapper.find('[data-pl-item-details-fileupload]').fileupload({
-                url: '?module=item&action=addAttachment',
-                dataType: 'json',
-                autoUpload: true,
-                dropZone: '[data-pl-item-details-fileupload]',
-                formData: {
-                    item_id: id
-                },
-                done: function (e, data) {
-                    var $attachments = $wrapper.find('[data-pl-item-details-attachments]');
-                    if (data.result.errors) {
-                        alert(data.result.errors[0]);
-                        return;
+            var initFileUpload = function () {
+                $wrapper.find('[data-pl-item-details-fileupload]').fileupload({
+                    url: o.appUrl + '?module=item&action=addAttachment',
+                    dataType: 'json',
+                    autoUpload: true,
+                    dropZone: '[data-pl-item-details-fileupload]',
+                    formData: {
+                        item_id: id
+                    },
+                    done: function (e, data) {
+                        var $attachments = $wrapper.find('[data-pl-item-details-attachments]');
+                        if (data.result.errors) {
+                            alert(data.result.errors[0]);
+                            return;
+                        }
+                        $.each(data.result.data.files, function (index, file) {
+                            $attachments.find('ul').append('<li>' +
+                                '<a href="' + file.path + '/' + file.name + '" target="_blank">' + file.name + '</a> ' +
+                                '<a href="#" class="gray" data-pl-attachment-name="' + file.name + '" style="margin-left: 10px;" title="' + $_('Delete') + '" style="margin-left: 10px;">&times;</a>' +
+                                '</li>');
+                        });
+                    },
+                    progressall: function (e, data) {
+                        var progress = parseInt(data.loaded / data.total * 100, 10);
+                        $wrapper.find('#progress .progress-bar').css(
+                            'width',
+                            progress + '%'
+                        );
                     }
-                    $.each(data.result.data.files, function (index, file) {
-                        $attachments.find('ul').append('<li>' +
-                            '<a href="' + file.path + '/' + file.name + '" target="_blank">' + file.name + '</a> ' +
-                            '<a href="#" class="gray" data-pl-attachment-name="' + file.name + '" style="margin-left: 10px;" title="' + $_('Delete') + '" style="margin-left: 10px;">&times;</a>' +
-                            '</li>');
-                    });
-                },
-                progressall: function (e, data) {
-                    var progress = parseInt(data.loaded / data.total * 100, 10);
-                    $wrapper.find('#progress .progress-bar').css(
-                        'width',
-                        progress + '%'
-                    );
-                }
-            });
+                });
+            };
 
+            if (o.fileUpload) {
+                if (!$.fn.fileupload) {
+                    $.when(
+                        $.getScript(o.wa_url + "wa-content/js/jquery-plugins/fileupload/jquery.iframe-transport.js"),
+                        $.getScript(o.wa_url + "wa-content/js/jquery-plugins/fileupload/jquery.fileupload.js"),
+                        $.Deferred(function (deferred) {
+                            $(deferred.resolve);
+                        })
+                    ).done(function () {
+                        initFileUpload();
+                    });
+                } else {
+                    initFileUpload();
+                }
+            }
         };
 
         var init = function () {
