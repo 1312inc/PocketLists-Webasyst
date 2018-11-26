@@ -1,8 +1,9 @@
-<div class="pl-details-form pl-{$list.color|default:'none'}">
-<div class="pl-details-form-shader">
+<div class="pl-details-form">
+<div class="pl-details-form-container">
 <div class="fields form">
-<form method="post" id="pl-item-details-form" action="?module=item&amp;action=data" target="pl-item-details-form-iframe" enctype="multipart/form-data">
+    <form method="post" id="pl-item-details-form" action="{$plurl}?module=item&amp;action=data" target="pl-item-details-form-iframe" enctype="multipart/form-data">
     {* <a href="#" class="pl-item-details-cancel" class="pl-close" title="[`Close`]">&times;</a> *}
+    {$wa->csrf()}
     <input type="hidden" name="item[id]" value="{$item.id}"/>
     <input type="hidden" id="pl-item-list-id" value="{$item.list_id}"/>
     <!-- core -->
@@ -13,24 +14,26 @@
             {*$wa->csrf()*}
             <div class="value" data-pl-item-details-attachments>
 
-                <div class="block double-padded pl-add-attachment-dropbox" data-pl-item-details-fileupload>
+                <div class="block double-padded{if $fileupload} pl-add-attachment-dropbox{/if}"{if $fileupload} data-pl-item-details-fileupload{/if}>
 
                     <ul class="pl-attachments">
                     {foreach $attachments as $attachment}
                         <li>
-                            <a href="{$attachments_path}{$attachment.filename}" target="_blank">{$attachment.filename|truncate:128}</a>
+                            <a href="{$pl2_attachments_path}{$attachment.filename}" target="_blank">{$attachment.filename|truncate:128}</a>
                             <a href="#" class="gray" data-pl-attachment-name="{$attachment.filename}" style="margin-left: 10px;">&times;</a>
                         </li>
                     {/foreach}
                     </ul>
+                    {if $fileupload}
                     <input type="file" name="files[]" multiple="">
-
+                    {/if}
                 </div>
 
+                {if $fileupload}
                 <div id="progress" class="progress" style="width: 100%; height: 2px;">
                     <div class="progress-bar progress-bar-success" style="background-color: #00aa00"></div>
                 </div>
-
+                {/if}
 
             </div>
         </div>
@@ -81,10 +84,12 @@
             <div class="name">[`Priority`]</div>
             <div class="value no-shift" id="pl-item-priority">
                 <input type="hidden" name="item[priority]" value="{$item.priority|default:0}"/>
-                <a href="#" {if $item.priority == 0}class="selected"{/if} data-pl-item-priority="0"><i class="icon16 color pl-white"></i></a>
-                <a href="#" {if $item.priority == 1}class="selected"{/if} data-pl-item-priority="1"><i class="icon16 color pl-dark-green"></i></a>
-                <a href="#" {if $item.priority == 2}class="selected"{/if} data-pl-item-priority="2"><i class="icon16 color pl-dark-yellow"></i></a>
-                <a href="#" {if $item.priority == 3}class="selected"{/if} data-pl-item-priority="3"><i class="icon16 color pl-dark-red"></i></a>
+                <a href="#" {if $item.priority == 0}class="selected"{/if} data-pl-item-priority="0"><input type="checkbox" class="pl-done"><span></span></a>
+                <a href="#" {if $item.priority == 1}class="selected"{/if} data-pl-item-priority="1"><input type="checkbox" class="pl-done pl-priority-green"><span></span></a>
+                <a href="#" {if $item.priority == 2}class="selected"{/if} data-pl-item-priority="2"><input type="checkbox" class="pl-done pl-priority-yellow"><span></span></a>
+                <a href="#" {if $item.priority == 3}class="selected"{/if} data-pl-item-priority="3"><input type="checkbox" class="pl-done pl-priority-red"><span></span></a>
+                <a href="#" {if $item.priority == 4}class="selected"{/if} data-pl-item-priority="4"><input type="checkbox" class="pl-done pl-priority-black"><span></span></a>
+                <a href="#" {if $item.priority == 5}class="selected"{/if} data-pl-item-priority="5"><input type="checkbox" class="pl-done pl-priority-fire"><span></span></a>
 
             </div>
         </div>
@@ -93,7 +98,6 @@
 
             <div class="value">
                 <input name="item[due_date]" class="pl-due-date-input" type="text" id="pl-item-due-datetime" value="{$item.due_date|default:''}" />
-                <a href="#"><i class="icon16 calendar"></i></a>
                 <span id="pl-item-due-datetime-time">
                     {$hour = $item.due_datetime|default:''|wa_datetime:'H'}
                     <select name="item[due_datetime_hours]" class="pl-due-date-input" id="pl-item-due-datetime-hours" value="{$hour}" {if empty($item.due_datetime)}style="display: none;" disabled="disabled"{/if}>
@@ -176,14 +180,19 @@
         </div>
     </div>
 
-</form>
-<iframe id="pl-item-details-form-iframe" name="pl-item-details-form-iframe" style="display:none;"></iframe>
+    </form>
+    <iframe id="pl-item-details-form-iframe" name="pl-item-details-form-iframe" style="display:none;"></iframe>
 </div>
-<div class="clear-both"></div>
+<hr>
+<ul class="menu-v with-icons">
+    <li>
+        <a href="#" data-pl-action="item-delete">
+            <i class="icon16 delete"></i> [`Delete to-do`]
+        </a>
+    </li>
+</ul>
+
 </div>
-<a class="pl-link-box pl-delete-box align-center" href="#" data-pl-action="item-delete">
-    <i class="icon16 delete"></i> [`Delete to-do`]
-</a>
 </div>
 
 {include '../../include/deleteitemdialog.html' inline}

@@ -22,7 +22,7 @@ class pocketlistsItemDeleteController extends waJsonController
 
             // delete all attachments
             $am = new pocketlistsAttachmentModel();
-            $am->delete($delete_ids);
+            $am->remove($delete_ids);
 
             $this->response = array('id' => $item['id']);
         } else {

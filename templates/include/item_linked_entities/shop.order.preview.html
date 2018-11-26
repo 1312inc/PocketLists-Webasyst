@@ -1,0 +1,24 @@
+<div class="pl-link-preview">
+    <div class="pl-link-preview-image">
+        <a href="{$extra.link}" target="_blank"><img src="{$wa_url}wa-apps/shop/img/shop96.png" class="userpic"></a>
+    </div>
+
+    <div class="pl-link-preview-details">
+        <a href="{$extra.link}" class="bold" style="{$extra.order.state->getStyle()}" target="_blank">
+            <strong class="float-right">{wa_currency_html($extra.order.total, $extra.order.currency)}</strong>
+            {shopHelper::encodeOrderId($link.entity_id)}
+            {if $extra.order.state}
+            <span class="pl-label small" style="{str_replace('color:','background-color:',$extra.order.state->getStyle())}">{$extra.order.state->getName()|escape}</span>
+            {else}
+                <span class="pl-label small" style="background-color: gray; color: white;">[`Unknown state`]: {$extra.order.state_id}</span>
+            {/if}
+        </a>
+
+        <p>
+            <span class="small black" title="{$extra.order.contact.name}">{$extra.order.contact.name|escape|truncate:32}</span>
+            {if $extra.last_action_datetime}
+            <span class="hint">{$extra.last_action_datetime|wa_datetime:'humandatetime'}</span>
+            {/if}
+        </p>
+    </div>
+</div>

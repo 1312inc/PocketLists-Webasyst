@@ -40,7 +40,7 @@ class pocketlistsLogAction
 
     public function __construct()
     {
-        $this->app_url = wa()->getConfig()->getBackendUrl(true) . 'pocketlists/';
+        $this->app_url = wa(pocketlistsHelper::APP_ID)->getConfig()->getBackendUrl(true) . 'pocketlists/';
         $this->logModel = new pocketlistsWaLogModel();
         $this->logs = false;
         $this->lm = new pocketlistsListModel();
@@ -155,6 +155,7 @@ class pocketlistsLogAction
     {
         $im = new pocketlistsItemModel();
         $item = $im->getById($this->ext_logs[$id]['params']['item_id']);
+
         return htmlspecialchars($item['name']);
     }
 
@@ -355,7 +356,8 @@ class pocketlistsLogAction
     {
         if (!isset(self::$cache['item_' . $id])) {
             $item = $this->im->getById($id);
-            self::$cache['item_' . $id] = $this->im->extendItemData($item);;
+            $item = pocketlistsItemModel::generateModel($item);
+            self::$cache['item_' . $id] = $this->im->extendItemData($item);
         }
         return self::$cache['item_' . $id];
     }

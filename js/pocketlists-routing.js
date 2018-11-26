@@ -163,8 +163,9 @@
         // actions
         defaultAction: function () {
             this.todoAction();
+            // this.pocketAction();
         },
-        listsAction: function () {
+        pocketAction: function (id) {
             //var self = this;
             var list_id = decodeURIComponent(this.getHash().substr(('#/pocket/' + id + '/list/').length).replace('/', '')) || 0;
             //var load_list = this.getHash().indexOf('list') > 0;
@@ -179,16 +180,19 @@
                 $list_name.after('<i class="icon16 loading">');
             }
             // todo: load list separetly
-            this.load('?module=list&id=' + list_id, function (result) {
+            this.load('?module=pocket&id=' + id + '&list_id=' + list_id, function (result) {
                 // show pockets
                 $('#content').html(result);
                 // and load selected list
                 //load_list && self.listAction(list_id);
             });
         },
+        listsAction: function () {
+            this.pocketAction();
+        },
         listAction: function (id) {
             this.load('?module=list&id=' + id, function (result) {
-                $('#content').html(result);
+                $('#pl-list-content').html(result);
             });
         },
         archiveAction: function (id) {
@@ -204,6 +208,11 @@
         },
         settingsAction: function () {
             this.load('?module=settings', function (result) {
+                $('#content').html(result);
+            });
+        },
+        debugAction: function () {
+            this.load('?module=debug', function (result) {
                 $('#content').html(result);
             });
         },
@@ -230,6 +239,12 @@
         teamAction: function (teammate) {
             teammate = teammate || 0;
             this.load('?module=team&teammate=' + teammate, function (result) {
+                $('#content').html(result);
+            });
+        },
+        appAction: function (app) {
+            app = app || 0;
+            this.load('?module=app&app=' + app, function (result) {
                 $('#content').html(result);
             });
         },

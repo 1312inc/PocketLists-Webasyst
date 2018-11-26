@@ -1,7 +1,14 @@
 <?php
 
+/**
+ * Class pocketlistsListUpdateController
+ */
 class pocketlistsListUpdateController extends waJsonController
 {
+    /**
+     * @throws waDbException
+     * @throws waException
+     */
     public function execute()
     {
         if (!pocketlistsRBAC::canCreateLists()) {
@@ -11,11 +18,25 @@ class pocketlistsListUpdateController extends waJsonController
         $list_id = waRequest::post('id', false, waRequest::TYPE_INT);
         $data = waRequest::post('data', false, waRequest::TYPE_ARRAY);
 
+        if (empty($data['pocket_id'])) {
+            $this->setError('no pocket id');
+
+            return;
+        }
+
+        $pocket = pocketlistsPocketModel::model()->findByPk($data['pocket_id']);
+        if (!$pocket) {
+            $this->setError('no pocket ');
+
+            return;
+        }
+
         $lm = new pocketlistsListModel();
         if ($list_id > 0) {
             $data['id'] = $list_id;
         } else {
             $data['create_datetime'] = date("Y-m-d H:i:s");
+            $data['color'] = $pocket->color;
         }
         $data['contact_id'] = wa()->getUser()->getId();
 
@@ -31,14 +52,23 @@ class pocketlistsListUpdateController extends waJsonController
             // add access for user
             if (!pocketlistsRBAC::isAdmin()) {
                 $rm = new waContactRightsModel();
-                $rm->save($data['contact_id'], pocketlistsHelper::APP_ID, 'list.' . $data['id'], pocketlistsRBAC::ACCESS_VALUE);
+                $rm->save(
+                    $data['contact_id'],
+                    pocketlistsHelper::APP_ID,
+                    'list.'.$data['id'],
+                    pocketlistsRBAC::ACCESS_VALUE
+                );
             }
             // log this action
-            $this->logAction(pocketlistsLogAction::LIST_CREATED, array(
-                'list_id' => $data['id']));
+            $this->logAction(
+                pocketlistsLogAction::LIST_CREATED,
+                [
+                    'list_id' => $data['id'],
+                ]
+            );
             pocketlistsNotifications::notifyAboutNewList($data);
         }
 
-        $this->response = array('id' => $data['id']);
+        $this->response = ['id' => $data['id']];
     }
 }

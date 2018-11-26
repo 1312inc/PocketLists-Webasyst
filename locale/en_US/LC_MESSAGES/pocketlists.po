@@ -1169,3 +1169,69 @@ msgstr ""
 #: /wa-apps/pocketlists/lib/actions/item/pocketlistsItemAddAttachment.controller.php:61
 msgid "Files with extension .%s are not allowed to security considerations."
 msgstr ""
+
+#: /wa-apps/pocketlists/templates/include/item_linked_entities/shop.order.preview.html:14
+msgid "Unknown state"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/app/App.html:18
+msgid "Better order processing"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/app/App.html:19
+msgid "Pocket Lists integrates with Shop-Script and allows you to process orders even better: quickly set reminders linked to Shop-Script orders, assign tasks to sales managers, schedule follow-ups for the future. Pocket Lists will gather all such to-dos in one place and ensure you have your sales under complete control. Learn more about <a href=\"%s\" target=\"_blank\">integration with Shop-Script</a>."
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/app/App.html:19
+msgid "https://www.webasyst.com/store/app/pocketlists/shop-script/"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/logbook/Logbook.html:6
+msgid "To return a to-do back to work, simply unclick its checkmark."
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:39
+msgid "Store"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:44
+msgid "Discussions"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/todo/TodoDate.html:20
+msgid "Your daily routine"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/todo/TodoDate.html:21
+msgid "<a href=\"%s\">Use Settings</a> page to configure your custom “My To-dos” filter behaviour."
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/list/ListAccess.html:31
+msgid "List created"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/config/pocketlistsRightConfig.class.php:34
+msgid "Limited access"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/config/app.php:3
+#: /wa-apps/pocketlists/lib/config/install.php:5
+#: /wa-apps/pocketlists/lib/updates/3/1542130750.php:5
+msgid "Pocket Lists"
+msgstr ""
+
+#: /wa-apps/pocketlists/js/pocketlists-item.js:796
+msgid "Find order by ID"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/pocket/Pocket.html:10
+msgid "Pocket settings"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/config/pocketlistsRightConfig.class.php:15
+msgid "Can see Shop-Script to-dos, other users personal to-dos, and assign to-dos to teammates"
+msgstr ""
+
+#: /wa-apps/pocketlists/js/pocketlists-pocket.js:121
+msgid "DANGER! Pocket will be deleted with all its content including lists and to-dos. There will be no way to restore this data. Are you sure?"
+msgstr ""

@@ -1,0 +1,46 @@
+<div class="pl-details-form">
+<div class="pl-details-form-container">
+
+    {if pocketlistsRBAC::canAssign()}
+    <div class="pl-list-access">
+
+        <a href="#" class="pl-list-details-cancel pl-close" title="[`Close`]">&times;</a>
+
+        <h5 class="heading">[`Access`]</h5>
+        {foreach $list_access_contacts as $list_access_contact_id => $list_access_contact}
+
+            <div class="profile image32px">
+                <div class="image">
+                    <a href="{$wa_backend_url}pocketlists/#/{if $list_access_contact.me}todo{else}team/{$list_access_contact.login}{/if}/"><img class="userpic" src="{$list_access_contact.photo_url}"></a>
+                </div>
+                <div class="details">
+                    <span class="pl-username">
+                        <a href="{$wa_backend_url}pocketlists/#/{if $list_access_contact.me}todo{else}team/{$list_access_contact.login}{/if}/">{$list_access_contact.username|default:'%username%'|escape} {if $list_access_contact.me}([`me`]){/if}{* if $list_access_contact.id == $list.contact_id} <span class="pl-label pl-hint">[`author`]</span>{/if *}</a>
+                        {* if $list_access_contact.status == 'online' && !$list_access_contact.me}
+                            <i class="icon10 online" title="[`Online`]"></i>
+                        {/if *}
+                    </span>
+                    <div class="hint">{$list_access_contact.teamrole|escape}</div>
+                </div>
+            </div>
+
+        {/foreach}
+        <p class="hint">{sprintf('[`Use <a href="%s">Team app</a> to configure access to this to-do list: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/')}</p>
+    </div>
+
+    <div class="fields form">
+    <div class="field-group">
+        <div class="field">
+            <div class="name">[`List created`]</div>
+            <div class="value no-shift">
+                <i class="icon16 userpic20"></i>
+                {$list.contact.username|escape}
+                <span class="hint nowrap">{$list.create_datetime|wa_datetime:'humandatetime'}</span>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    {/if}
+</div>
+</div>

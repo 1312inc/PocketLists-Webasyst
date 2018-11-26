@@ -1,0 +1,68 @@
+<div class="shadowed">
+
+    <main class="block double-padded">
+
+        <div class="fields form">
+            <form method="post" id="pl-settings-form">
+                <h6 class="heading">[`Debug`]</h6>
+                <br>
+                <div class="field-group">
+
+                    <div class="field">
+                        <div class="name nowrap">
+                            Shop-Script integration
+                        </div>
+                        <div class="value no-shift">
+                            <label>
+                                <input type="radio" name="apps[shop][enable]" value="1"
+                                       {if !empty($apps['shop']['enable'])}checked="checked"{/if}/> ON
+                            </label>
+                            <label>
+                                <input type="radio" name="apps[shop][enable]" value="0"
+                                       {if empty($apps['shop']['enable'])}checked="checked"{/if}/> OFF
+                            </label>
+                        </div>
+                        <div class="value no-shift">
+                            <p class="hint">Disable integration in case of conflicts with third-party plugins.</p>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="value no-shift submit">
+                            <br>
+                            <input type="submit" value="[`Save`]" id="pl-save-settings" class="button green"/>
+                            <i class="icon16 yes" style="display: none;"></i>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="clear-both"></div>
+
+    </main>
+
+</div>
+
+<script type="text/javascript">
+    (function () {
+        $.pocketlists.setTitle($_('Debug'));
+
+        var $loading = $('<i class="icon16 loading">');
+        $('#pl-save-settings').on('click', function (e) {
+            var $this = $(this);
+            e.preventDefault();
+            $this.after($loading);
+            $.post('?module=debug&action=save', $('#pl-settings-form').serialize(), function (r) {
+                $loading.remove();
+                if (r.status === 'ok') {
+                    $this.next('.icon16.yes').show(200, function () {
+                        $.pocketlists_routing.redispatch();
+                    }).delay(3000).hide(200);
+                } else {
+                    alert('error while saving');
+                }
+            }, 'json')
+        });
+    }());
+</script>

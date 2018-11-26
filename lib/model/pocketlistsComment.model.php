@@ -1,34 +1,61 @@
 <?php
 
-class pocketlistsCommentModel extends waModel
+/**
+ * Class pocketlistsCommentModel
+ *
+ * @property int    $item_id
+ * @property int    $contact_id
+ * @property string $comment
+ * @property string $create_datetime
+ */
+class pocketlistsCommentModel extends kmModelExt
 {
     protected $table = 'pocketlists_comment';
 
+    /**
+     * @param array|int $item_ids
+     *
+     * @return array
+     */
     public function getAllByItems($item_ids)
     {
         if (!is_array($item_ids)) {
-            $item_ids = array($item_ids);
+            $item_ids = [$item_ids];
         }
+
         return $this->query(
             "SELECT * FROM {$this->table} WHERE item_id IN (i:ids) ORDER BY item_id, id",
-            array('ids' => $item_ids)
+            ['ids' => $item_ids]
         )->fetchAll('item_id', 2);
     }
 
+    /**
+     * @param array $comment
+     *
+     * @return array
+     * @throws waException
+     */
     public static function extendData($comment)
     {
         $comment_user = new waContact($comment['contact_id']);
-        return $comment + array(
-            'my'             => $comment['contact_id'] == wa()->getUser()->getId() ? true : false,
-            'contact'        => pocketlistsHelper::getContactData($comment_user),
-            'can_be_deleted' => (time() - strtotime($comment['create_datetime']) < 60 * 60 * 24),
-        );
+
+        return $comment + [
+                'my'             => $comment['contact_id'] == wa()->getUser()->getId() ? true : false,
+                'contact'        => pocketlistsHelper::getContactData($comment_user),
+                'can_be_deleted' => (time() - strtotime($comment['create_datetime']) < 60 * 60 * 24),
+            ];
     }
 
+    /**
+     * @param int $start
+     * @param int $limit
+     *
+     * @return array
+     */
     public function getComments($start = 0, $limit = 50)
     {
         $user_id = wa()->getUser()->getId();
-        $lists = array();
+        $lists = [];
         $list_sql = pocketlistsRBAC::filterListAccess($lists, $user_id);
 
         $q = "SELECT 
@@ -49,19 +76,27 @@ class pocketlistsCommentModel extends waModel
             ORDER BY id DESC
             LIMIT {$start}, {$limit}";
 
-        $comments = $this->query($q, array(
-            'list_ids' => $lists,
-            'start'    => $start,
-            'limit'    => $limit,
-        ))->fetchAll();
+        $comments = $this->query(
+            $q,
+            [
+                'list_ids' => $lists,
+                'start'    => $start,
+                'limit'    => $limit,
+            ]
+        )->fetchAll();
 
-        return array_map(array('pocketlistsCommentModel', 'extendData'), $comments);
+        return array_map(['pocketlistsCommentModel', 'extendData'], $comments);
     }
 
+    /**
+     * @param int $user_last_activity
+     *
+     * @return int
+     */
     public function getLastActivityComments($user_last_activity)
     {
         $user_id = wa()->getUser()->getId();
-        $lists = array();
+        $lists = [];
         $list_sql = pocketlistsRBAC::filterListAccess($lists, $user_id);
 
         $q = "SELECT 
@@ -73,9 +108,12 @@ class pocketlistsCommentModel extends waModel
               {$list_sql}
               AND c.create_datetime > s:user_last_activity";
 
-        return $this->query($q, array(
-            'list_ids'           => $lists,
-            'user_last_activity' => $user_last_activity,
-        ))->count();
+        return $this->query(
+            $q,
+            [
+                'list_ids'           => $lists,
+                'user_last_activity' => $user_last_activity,
+            ]
+        )->count();
     }
 }

@@ -1,0 +1,64 @@
+<section>
+    <div class="dialog-content">
+        <div data-pl2-wrapper="pocket-settings-dialog">
+
+            <input type="hidden" name="pocket[id]" value="{$pocket.id|default:0}"/>
+
+            {if isset($pocket.id)}
+                <h1>{$pocket.name|default:'[`(unnamed pocket)`]'|escape|truncate:32}</h1>
+            {else}
+                <h1>[`New pocket`]</h1>
+            {/if}
+
+            <div class="fields form">
+                <div class="field-group">
+                    <div class="field">
+                        <div class="name nowrap">
+                            [`Pocket name`]
+                        </div>
+                        <div class="value">
+                            <input type="text" class="large bold" name="pocket[name]"
+                                   value="{$pocket.name|default:''|escape}"/>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="name nowrap">
+                            [`Color`]
+                        </div>
+                        <div class="value no-shift" id="pl-pocket-color">
+                            <input type="hidden" name="pocket[color]" value="{$pocket.color|default:'blue'}"/>
+                            {foreach pocketlistsStoreColor::getColors() as $color => $name}
+                                <a href="#" {if $pocket.color == $color}class="selected"{/if}
+                                   data-pl-pocket-color="{$color}"><i
+                                            class="icon16 color pl-dark-{$color}"></i></a>
+                            {/foreach}
+                        </div>
+                    </div>
+                    <!-- <div class="field">
+                        <div class="name">
+                            [`Access rights`]
+                        </div>
+                        <div class="value no-shift">
+                            <span style="font-size: 0.9em;">[`Use Contacts app to customize access rights for pockets.`]</span>
+                        </div>
+                    </div> -->
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="dialog-buttons">
+        {if isset($pocket.id)}
+            <div class="block half-padded float-right">
+                <ul class="menu-h">
+                    <li>
+                        <a href="#" data-pl2-action="delete-pocket"><i class="icon16 delete"></i> [`Delete pocket`]</a>
+                    </li>
+                </ul>
+            </div>
+        {/if}
+        <input type="submit" value="[`Save`]" class="button green"/> [`or`] <a class="cancel" href="#">[`cancel`]</a>
+    </div>
+</section>

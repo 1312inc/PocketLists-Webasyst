@@ -15,5 +15,5 @@ return array(
     ),
     'plugins'        => false,
     'rights'         => true,
-    'sash_color'     => '#48b7f0',
+    'sash_color'     => '#58a8f8',
 );

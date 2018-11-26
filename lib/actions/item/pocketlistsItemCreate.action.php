@@ -79,6 +79,45 @@ class pocketlistsItemCreateAction extends waViewAction
                 $im->addPriorityData($data[$i]);
 
                 $last_id = $im->insert($data[$i], 1);
+
+                $links = pocketlistsNaturalInput::getLinks($data[$i]['name']);
+
+                if ($links) {
+                    $linkDeterminer = new pocketlistsLinkDeterminer();
+                    foreach ($links as $link) {
+                        $linkAppTypeId = $linkDeterminer->getAppTypeId($link);
+                        if ($link === false) {
+                            continue;
+                        }
+
+                        $itemLink = new pocketlistsItemLinkModel($linkAppTypeId);
+                        $itemLink->item_id = $last_id;
+                        try {
+                            $itemLink->save();
+                        } catch (waException $ex) {
+                            // silence
+                        }
+                    }
+                }
+
+                if (!empty($data[$i]['links'])) {
+                    foreach ($data[$i]['links'] as $link) {
+                        foreach ($link['model'] as $key => $value) {
+                            if ($value === '') {
+                                $link['model'][$key] = null;
+                            }
+                        }
+
+                        $itemLink = new pocketlistsItemLinkModel($link['model']);
+                        $itemLink->item_id = $last_id;
+                        try {
+                            $itemLink->save();
+                        } catch (waException $ex) {
+                            // silence
+                        }
+                    }
+                }
+
                 $inserted[] = $last_id;
                 $inserted_items[] = $data[$i] + array('id' => $last_id);
             }

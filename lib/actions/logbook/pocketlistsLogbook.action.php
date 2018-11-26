@@ -12,6 +12,6 @@ class pocketlistsLogbookAction extends waViewAction
 
         $this->view->assign('items', $im->getLogbookItems(false, false, true, $offset * self::DEFAULT_OFFSET, self::DEFAULT_OFFSET));
 
-        $this->view->assign('attachments_path', wa()->getDataUrl('attachments/', true));
+        $this->view->assign('pl2_attachments_path', wa()->getDataUrl('attachments/', true, pocketlistsHelper::APP_ID));
     }
 }

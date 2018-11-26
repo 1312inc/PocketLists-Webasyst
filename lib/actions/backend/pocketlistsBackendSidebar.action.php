@@ -1,7 +1,13 @@
 <?php
 
+/**
+ * Class pocketlistsBackendSidebarAction
+ */
 class pocketlistsBackendSidebarAction extends waViewAction
 {
+    /**
+     * @throws waDbException
+     */
     public function execute()
     {
         $im = new pocketlistsItemModel();
@@ -24,7 +30,7 @@ class pocketlistsBackendSidebarAction extends waViewAction
         $comment_model = new pocketlistsCommentModel();
         $item_model = new pocketlistsItemModel();
 
-        $new_items_count= $item_model->getLastActivityItems($last_activity);
+        $new_items_count = $item_model->getLastActivityItems($last_activity);
         $this->view->assign('new_comments_count', $comment_model->getLastActivityComments($last_activity));
         $this->view->assign('new_items_count', $new_items_count);
         $this->view->assign('last_activity', $last_activity);
@@ -33,5 +39,10 @@ class pocketlistsBackendSidebarAction extends waViewAction
         $this->view->assign('favorites_count', $item_model->getFavoritesCount());
 
 //        pocketlistsActivity::setUserActivity();
+
+        $pockets = pocketlistsPocketModel::model()->getAllPockets();
+        $linkedApps = wa(pocketlistsHelper::APP_ID)->getConfig()->getLinkedApp();
+
+        $this->view->assign(compact('pockets', 'linkedApps'));
     }
 }

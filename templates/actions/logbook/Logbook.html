@@ -1,6 +1,10 @@
 <div class="shadowed">
     <main class="content pl-items pl-logbook" id="pl-list-content">
     {if !empty($items)}
+        <header class="pl-title">
+            <h1 style="margin-bottom: 8px;">[`Logbook`]</h1>
+            <p class="pl-disclaimer">[`Logbook will automatically collect all to-do items completed by you and your teammates.`] [`To return a to-do back to work, simply unclick its checkmark.`]</p>
+        </header>
         <div class="pl-list-items" id="pl-complete-log" style="display: block;" data-pl-items="undone">
             <ul class="menu-v">
                 {include '../item/Item.html' items=$items}

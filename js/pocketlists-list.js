@@ -12,6 +12,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
     var $new_list_input = $list_wrapper.find('#pl-new-list-input'),
         $uho = $('[data-pl="uho"]'),
         list_id = parseInt($list_wrapper.find('#pl-list-id').val()),
+        pocket_id = parseInt($list_wrapper.find('input[name="pocket_id"]').val()),
         o = $.extend({}, {
             archive: false
         }, options),
@@ -32,7 +33,9 @@ $.pocketlists.List = function ($list_wrapper, options) {
         };
         var setListColor = function (color) {
             color = color || list_color;
-            $('.pl-items').removeClass().addClass('pl-inner-content pl-items shadowed pl-' + color);
+            //$('.pl-items').removeClass().addClass('pl-items pl-' + color);
+            $('#pl-list-name').removeClass().addClass('pl-items pl-dark-' + color + '-label');
+            $('.pl-item-wrapper .pl-done-label span').removeClass().addClass('pl-items pl-dark-' + color + '-border');
 
         };
         // show list details container and load html with list details from server
@@ -47,13 +50,13 @@ $.pocketlists.List = function ($list_wrapper, options) {
             var $itemDetails = $('#pl-item-details');
             $itemDetails.length && $itemDetails.after($wrapper);
             $wrapper.html($.pocketlists.$loading).show().animate({
-                'right': '0%'
+                'right': '0'
             }, 200, function () {
                 $itemDetails.length && $itemDetails.trigger('hide.pl2');
                 $.pocketlists.stickyDetailsSidebar();
             });
 
-            $.post('?module=list&action=details', {id: list_id}, function (html) {
+            $.post('?module=list&action=' + $wrapper.data('pl2-list-edit-action'), {id: list_id}, function (html) {
                 $wrapper.html(html);
                 afterLoad();
             }).always(function () {
@@ -63,7 +66,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
         var hideListDetails = function () {
             setListColor();
             $wrapper.animate({
-                'right': '100%'
+                'right': '-300px'
             }, 200, function () {
                 $wrapper.hide().empty()
             });
@@ -237,7 +240,8 @@ $.pocketlists.List = function ($list_wrapper, options) {
         if (name.length) {
             var data = {
                 name: name,
-                type: 'checklist'
+                type: 'checklist',
+                pocket_id: pocket_id
             };
             if (data.name) {
                 var $pl_done = $new_list_input.closest('.pl-list-title').find('.pl-done-label span').addClass('transparent').html($.pocketlists.$loading.css({
@@ -259,7 +263,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
                         if (r.status === 'ok') {
                             $.pocketlists.reloadSidebar();
                             if (list_id === -1) {
-                                $.wa.setHash('#/list/' + r.data.id + '/');
+                                $.wa.setHash('#/pocket/'+pocket_id+'/list/' + r.data.id + '/');
                             }
                         } else {
 
@@ -444,12 +448,18 @@ $.pocketlists.List = function ($list_wrapper, options) {
 
                 $.pocketlists.scrollToTop(200, 80);
 
+                ListDetails.$el.data('pl2-list-edit-action', $(this).data('pl2-list-edit-action'));
                 ListDetails.trigger('show.pl2');
             })
             .on('click', '[data-pl-action="list-delete"]', function (e) {
                 e.preventDefault();
 
                 deleteList();
+            })
+            .on('click', '[data-pl-action="list-complete"]', function (e) {
+                e.preventDefault();
+
+                alert('TODO: execute .on(click, #pl-list-complete here ');
             })
             .on('click', '[data-pl-action="list-archive"]', function (e) {
                 e.preventDefault();

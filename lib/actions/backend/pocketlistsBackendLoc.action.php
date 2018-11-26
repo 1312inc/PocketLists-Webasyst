@@ -24,7 +24,8 @@ class pocketlistsBackendLocAction extends waViewAction
                      'You are about to permanently delete this comment. Delete?',
                      'Assigned to',
                      "Archiving the list will temporarily make this list and all it's items invisible. When you need this list in the future, simply unarchive it and continue from just where you stopped. Archive the list?",
-                     'You are about to leave this page without saving your input. Are you sure?'
+                     'You are about to leave this page without saving your input. Are you sure?',
+                     'Find order by ID'
                  ) as $s) {
             $strings[$s] = _w($s);
         }

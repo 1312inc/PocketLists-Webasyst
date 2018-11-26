@@ -1,15 +1,18 @@
 <?php
 
+/**
+ * Class pocketlistsListDetailsAction
+ */
 class pocketlistsListDetailsAction extends waViewAction
 {
+    /**
+     * @throws waDbException
+     */
     public function execute()
     {
         $id = waRequest::post('id', false, waRequest::TYPE_INT);
-        $im = new pocketlistsListModel();
         if ($id) {
-            $list = $im->getById($id);
-            $user_name  = new waContact($list['contact_id']);
-            $list['contact'] = pocketlistsHelper::getContactData($user_name);
+            $list = pocketlistsListModel::model()->findByPk($id);
             $this->view->assign('list', $list);
         }
     }

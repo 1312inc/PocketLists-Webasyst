@@ -23,12 +23,15 @@ class pocketlistsItemDetailsAction extends waViewAction
             }
 
             $this->view->assign('item', $item);
-            $this->view->assign('attachments_path', wa()->getDataUrl('attachments/'.$item['id'].'/', true));
+            $this->view->assign('pl2_attachments_path', wa()->getDataUrl('attachments/'.$item['id'].'/', true, pocketlistsHelper::APP_ID));
             $this->view->assign('attachments', $attachments);
             $this->view->assign('contacts', $contacts);
 
             $this->view->assign('list', $list);
             $this->view->assign('lists', $lm->getLists());
+
+            $this->view->assign('plurl', wa()->getAppUrl(pocketlistsHelper::APP_ID));
+            $this->view->assign('fileupload', 1);
         }
     }
 }

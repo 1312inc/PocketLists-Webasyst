@@ -7,7 +7,7 @@
     <h5 class="heading">
         {_ws($month_name)} {$year}
     </h5>
-</div>
+
 
 <table class="pl-calendar">
     <thead>
@@ -42,10 +42,11 @@
     </tbody>
 
 </table>
-
+</div>
 {/foreach} {*month*}
 {/foreach} {*year*}
 
+{if $type != 'app'}
 <div class="block double-padded">
     <h5 class="heading">[`My to-dos`]</h5>
     <ul class="menu-v with-icons">
@@ -53,3 +54,4 @@
         <li><a href="?module={$type}&amp;action=date&amp;print=true&amp;date=" data-pl-action="list-print" target="_blank"><i class="icon16 print"></i>[`Print list`]</a></li>
     </ul>
 </div>
+{/if}

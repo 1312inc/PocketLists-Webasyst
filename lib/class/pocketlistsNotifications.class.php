@@ -44,7 +44,7 @@ class pocketlistsNotifications
         $lm = new pocketlistsListModel();
         $im = new pocketlistsItemModel();
 
-        $subject = 'string:{if !$complete}❌{else}✅{/if} {str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:64}';
+        $subject = 'string:{if !$complete}🚫{else}✅{/if} {str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:64}';
         // todo: refactor
         foreach ($users as $user_id => $user) { // foreach user
             $filtered_items = array();
@@ -281,7 +281,7 @@ class pocketlistsNotifications
                         self::sendMail(
                             array(
                                 'contact_id' => $user_id,
-                                'subject' => 'string:⚪ {str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:64}',
+                                'subject' => 'string:{str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:64}',
                                 'body' => wa()->getAppPath('templates/mails/newfavoritelistitem.html'),
                                 'variables' => array(
                                     'list_name' => $list ? $list['name'] : false,
@@ -315,7 +315,7 @@ class pocketlistsNotifications
                         self::sendMail(
                             array(
                                 'contact_id' => $user_id,
-                                'subject' => 'string:⚪ {str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:64}',
+                                'subject' => 'string:{str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:64}',
                                 'body' => wa()->getAppPath('templates/mails/newitem.html'),
                                 'variables' => array(
                                     'list_name' => $list ? $list['name'] : false,
@@ -342,7 +342,7 @@ class pocketlistsNotifications
         if ($item['list_id'] && pocketlistsRBAC::canAccessToList($item['list_id'], $item['assigned_contact_id'])) {
             $list_ = $lm->getById($item['list_id']);
             $list = array(
-                'url' => wa()->getConfig()->getRootUrl(true) . '/' . wa()->getConfig()->getBackendUrl() . 'pocketlists/#/list/' . $list_['id'] . '/',
+                'url' => wa(pocketlistsHelper::APP_ID)->getConfig()->getRootUrl(true) . '/' . wa(pocketlistsHelper::APP_ID)->getConfig()->getBackendUrl() . 'pocketlists/#/list/' . $list_['id'] . '/',
                 'name' => pocketlistsNaturalInput::matchLinks($list_['name'])
             );
         }
@@ -399,7 +399,7 @@ class pocketlistsNotifications
         $comment_user = new waUser($comment['contact_id']);
         $lm = new pocketlistsListModel();
         $list = array(
-            'url' => wa()->getConfig()->getRootUrl(true) . '/' . wa()->getConfig()->getBackendUrl() . 'pocketlists/#/todo/',
+            'url' => wa(pocketlistsHelper::APP_ID)->getConfig()->getRootUrl(true) . '/' . wa(pocketlistsHelper::APP_ID)->getConfig()->getBackendUrl() . 'pocketlists/#/todo/',
             'name' => _('Stream')
         );
         foreach ($users as $user_id => $user) { // foreach user
@@ -412,7 +412,7 @@ class pocketlistsNotifications
                         if ($item['list_id']) {
                             $list_ = $lm->getById($item['list_id']);
                             $list = array(
-                                'url' => wa()->getConfig()->getRootUrl(true) . '/' . wa()->getConfig()->getBackendUrl() . 'pocketlists/#/list/' . $list_['id'] . '/',
+                                'url' => wa(pocketlistsHelper::APP_ID)->getConfig()->getRootUrl(true) . '/' . wa(pocketlistsHelper::APP_ID)->getConfig()->getBackendUrl() . 'pocketlists/#/list/' . $list_['id'] . '/',
                                 'name' => pocketlistsNaturalInput::matchLinks($list_['name'])
                             );
                         }
@@ -428,7 +428,8 @@ class pocketlistsNotifications
                             self::sendMail(
                                 array(
                                     'contact_id' => $user_id,
-                                    'subject' => 'string:💬 {sprintf("[`New comment on %s`]", str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:32)}',
+                                    //'subject' => 'string:💬 {sprintf("[`New comment on %s`]", str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:32)}',
+                                    'subject' => 'string:💬 {str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:64}',
                                     'body' => wa()->getAppPath('templates/mails/newcomment.html'),
                                     'variables' => array(
                                         'item' => $item,
@@ -464,7 +465,8 @@ class pocketlistsNotifications
                             self::sendMail(
                                 array(
                                     'contact_id' => $user_id,
-                                    'subject' => 'string:💬 {sprintf("[`New comment on %s`]", str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:32)}',
+                                    //'subject' => 'string:💬 {sprintf("[`New comment on %s`]", str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:32)}',
+                                    'subject' => 'string:💬 {str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:64}',
                                     'body' => wa()->getAppPath('templates/mails/newcomment.html'),
                                     'variables' => array(
                                         'item' => $item,
@@ -500,7 +502,8 @@ class pocketlistsNotifications
                             self::sendMail(
                                 array(
                                     'contact_id' => $user_id,
-                                    'subject' => 'string:💬 {sprintf("[`New comment on %s`]", str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:32)}',
+                                    //'subject' => 'string:💬 {sprintf("[`New comment on %s`]", str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:32)}',
+                                    'subject' => 'string:💬 {str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:64}',
                                     'body' => wa()->getAppPath('templates/mails/newcomment.html'),
                                     'variables' => array(
                                         'item' => $item,
@@ -659,7 +662,7 @@ class pocketlistsNotifications
         }
 
         $absolute_backend_url = $backend_url ?
-            $backend_url : wa()->getConfig()->getRootUrl(true) . wa()->getConfig()->getBackendUrl();
+            $backend_url : wa(pocketlistsHelper::APP_ID)->getConfig()->getRootUrl(true) . wa(pocketlistsHelper::APP_ID)->getConfig()->getBackendUrl();
         $view->assign('backend_url', $absolute_backend_url . 'pocketlists/');
         if (isset($data['variables'])) {
             foreach ($data['variables'] as $var_name => $var_value) {

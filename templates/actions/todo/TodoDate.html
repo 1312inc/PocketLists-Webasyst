@@ -17,19 +17,19 @@
         <a href="javascript:void(0)" class="close pl-alert-close bigger">&times;</a>
         <div class="pl-welcome" id="pl-welcome-msg">
             <div class="pl-jumbodone" title="[`Welcome to To-dos app!`]"></div>
-            <h2>[`Welcome to To-dos app!`]</h2>
-            <p>[`Use To-dos app to keep track on what you need to do up next, to assign to-dos to your teammates, and to collaborate on shared to-do lists.`]</p>
+            <h2>[`Your daily routine`]</h2>
+            <p>[`My to-dos is your personal dynamic to-do list that automatically collects all to-dos which you are about to do up next. To-dos to self and to-dos assigned to you by your teammates are included in this list automatically. Most important and urgent to-dos are on top.`] {sprintf('[`<a href="%s">Use Settings</a> page to configure your custom “My To-dos” filter behaviour.`]','#/settings/')}</p>
         </div>
     </div>
 
     <header class="pl-title">
-        <div class="float-right">
-        <ul class="menu-h">
-            <li class="pl-list-favorite">
-               <a href="#/settings/" title="[`Settings`]"><i class="icon16 settings"></i></a>
-            </li>
-        </ul>
-        </div>
+        {* <div class="float-right">
+            <ul class="menu-h">
+                <li class="pl-list-favorite">
+                   <a href="#/settings/" title="[`Settings`]"><i class="icon16 settings"></i></a>
+                </li>
+            </ul>
+        </div> *}
         {if !$date}
         <h1 class="not-padded">
             [`My to-dos`]
@@ -73,6 +73,8 @@
     {if !$print}
         {include '../../include/itemadd.html' inline}
     {/if}
+
+    {include '../../include/itemdetails.html' inline}
 </main>
 {if !$print}
 <script type="text/javascript">

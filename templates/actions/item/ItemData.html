@@ -1,8 +1,9 @@
+{if empty($item.key_list_id)} {* stating Nov 2018, we don't show lists as items; TODO: clean up .key_list_id check in the code with time *}
+
 <div class="pl-item{if !empty($item.assigned_contact_id) && $item.assigned_contact_id != $wa->user()->getId() && $item.status != 1} pl-item-assigned{/if}{if $item.status == 1} gray{/if}" {if $item.assigned_contact_id}data-pl-assigned-contact="{$item.assigned_contact_id}"{/if}>
     {if !$item.status && empty($item.key_list_id) && !(isset($archive) && $archive)}<div class="pl-item-drag-handle" title="[`Sort`]" data-pl-action="item-sort"></div>{/if}
 
-    {if $item.list_id != NULL}<div class="pl-assignee pl-{$item.list_color} ">{$item.list_name|truncate:32|escape}</div>{/if}
-    {* {if !empty($item.assigned_contact_id)}<div class="pl-assignee">{$item.contact.username|escape} &rarr; {$item.assigned_contact.username|escape}</div>{/if} *}
+    {if $item.list_id != NULL}<div class="pl-item-list-name pl-dark-{$item.list_color}-label">{$item.list_name|truncate:32|escape}</div>{/if}
 
     <div class="pl-meta">
         {if !(isset($archive) && $archive)}
@@ -10,31 +11,38 @@
         {/if}
         {if empty($item.key_list_id)}
             {if $item.status == 1}
-                {* completed by *}
-                <span class="pl-author" title="{sprintf('[`Completed by %s`]', $item.complete_contact.username|default:'%username%'|escape)}">
+
+                {* COMPLETED BY *}
+                <span class="pl-userpic" title="{sprintf('[`Completed by %s`]', $item.complete_contact.username|default:'%username%'|escape)}">
                     {if isset($item.complete_contact.userpic)}
-                        <span class="hint">{$item.complete_datetime|wa_date:'humandatetime'}</span>
                         <i class="icon16 userpic20" style="background-image: url({$item.complete_contact.userpic})" alt="{$item.complete_contact.username|escape}"></i>
-                    {else}
-                        <i class="icon16 userpic20"></i>
                     {/if}
                 </span>
+
+                <span class="pl-lastaction-datetime hint">{$item.complete_datetime|wa_date:'humandatetime'}</span>
+
             {else}
 
+                <span class="pl-userpic" title="{sprintf('%s by %s', $item.create_datetime|wa_date:'humandatetime', $item.contact.username|default:'%username%'|escape)}">
 
-                {if !empty($item.assigned_contact_id)}
-                    {* assigned to *}
-                    <span class="pl-userpic"><i class="icon16 userpic20" style="background-image: url({$item.assigned_contact.userpic})" alt="{$item.assigned_contact.username|escape}" title="{sprintf('[`Assigned to %s`]', $item.assigned_contact.username|escape)}"></i></span>
-                {else}
-                    {* DEPRECATED if $item.contact_id != $wa->user()->getId() *}
-                    {* item author userpic *}
-                    <span class="pl-userpic" title="{sprintf('%s by %s', $item.create_datetime|wa_date:'humandatetime', $item.contact.username|default:'%username%'|escape)}"><i class="icon16 userpic20" style="background-image: url({$item.contact.userpic})" alt="{$item.contact.username|escape}"></i></span>
-                {/if}
+                    {* AUTHOR / LAST ACTOR *}
+                    <i class="icon16 userpic20" style="background-image: url({$item.contact.userpic})" alt="{$item.contact.username|escape}"></i>
+
+                    {* &rarr; ASSIGNED TO *}
+                    {if !empty($item.assigned_contact_id) && $item.assigned_contact_id != $item.contact_id}
+                         <span class="pl-assignee-arrow">&#9658;</span>
+                         <i class="icon16 userpic20" style="background-image: url({$item.assigned_contact.userpic})" alt="{$item.assigned_contact.username|escape}" title="{sprintf('[`Assigned to %s`]', $item.assigned_contact.username|escape)}"></i>
+                    {/if}
+
+                </span>
+
+                <span class="pl-lastaction-datetime hint">
+                    {* TODO: replace with timediff *}
+                    {if !empty($item.update_datetime)}{$item.update_datetime|wa_date:'humandatetime'}{else}{$item.create_datetime|wa_date:'humandatetime'}{/if}
+                </span>
 
             {/if}
-            {if !(isset($archive) && $archive == true)}
-                <a href="#" class="pl-edit inline-link"><b><i>[`Edit`]</i></b></a>
-            {/if}
+            {if empty($item.key_list_id) && !(isset($archive) && $archive == true)}<a href="#" class="pl-comment{if !empty($item.chat.comments)} pl-comment-count{/if}" title="[`Comment`]"><i class="icon16 pl comments"></i>{if !empty($item.chat.comments)}{count($item.chat.comments)}{/if}</a>{/if}
         {/if}
     </div>
 
@@ -42,31 +50,33 @@
         {if !empty($item.key_list_id)}
             <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$item.list_icon|default:'li-list@2x.png'});"></i>
         {else}
-            <input type="checkbox" class="pl-done{if isset($item.calc_priority)}{if $item.calc_priority == 1} pl-green{elseif $item.calc_priority == 2} pl-yellow{elseif $item.calc_priority == 3} pl-red{/if}{/if}" {if $item.status == 1}checked="checked"{/if}{if isset($archive) && $archive == true}disabled{/if}>
-            <span></span>
+            <input type="checkbox" class="pl-done{if isset($item.calc_priority)}{if $item.calc_priority == 1} pl-priority-green{elseif $item.calc_priority == 2} pl-priority-yellow{elseif $item.calc_priority == 3} pl-priority-red{elseif $item.calc_priority == 4} pl-priority-black{elseif $item.calc_priority == 5} pl-priority-fire{/if}{/if}" {if $item.status == 1}checked="checked"{/if}{if isset($archive) && $archive == true}disabled{/if}>
+            <span{if isset($item.list_color) && {$item.list_color}!='none'} class="pl-dark-{$item.list_color}-border"{/if} title="[`Completed`]"></span>
         {/if}
     </label>
     <label class="pl-select-label">
         <input type="checkbox" class="pl-is-selected" {if isset($archive) && $archive == true || !empty($item.key_list_id)}disabled{/if}>
-        <span class="pl-item-name">
+        <span class="pl-item-name{if isset($item.calc_priority) && $item.calc_priority == 5} bold red{/if}">
             {if !empty($item.key_list_id)}
-                <a href="#/list/{$item.list_id}/"><span class="pl-{$item.list_color}">{$item.name|default:' '|nl2br}</span></a>
+                <a href="#/list/{$item.list_id}/"><strong class="pl-dark-{$item.list_color}-label">{$item.name|default:' '|nl2br}</strong></a>
             {else}
-                {if $item.list_id != NULL}<a href="#/list/{$item.list_id}" class="pl-label pl-dark-{$item.list_color} pl-item-list-name">{$item.list_name|truncate:32|escape}</a>{/if}
-                <a href="#" class="pl-label pl-dark-purple pl-item-list-name">STATUS</a>
+                {* <a href="#" class="pl-label pl-dark-purple">STATUS</a> *}
                 {$item.name|default:' '|nl2br}
                 {* if $item.list_id == NULL && (empty($item.assigned_contact_id) || $item.assigned_contact_id == $wa->user()->getId())}<i class="icon10 lock-bw" title="[`Only you can see this item`]"></i>{/if *}
             {/if}
         </span>
 
-        {if empty($item.key_list_id) && !(isset($archive) && $archive == true)}<a href="#" class="pl-comment{if !empty($item.chat.comments)} pl-comment-count{/if}" title="[`Comment`]"><i class="icon16 pl comments"></i>{if !empty($item.chat.comments)}{count($item.chat.comments)}{/if}</a>{/if}
+        {if !(isset($archive) && $archive == true)}
+            {* <a href="#" class="pl-edit inline-link"><b><i>[`Edit`]</i></b></a> *}
+            <a href="#" class="pl-edit inline-link"><i class="icon16 pl ellipsis"></i></a>
+        {/if}
 
         {if !empty($item.due_datetime)}
         <br>
-        <span class="small bold {if $item.calc_priority == 0}pl-due-someday{elseif $item.calc_priority == 1}pl-due-tomorrow{elseif $item.calc_priority == 2}pl-due-today{elseif $item.calc_priority == 3}pl-due-overdue{/if}">{$item.due_datetime|wa_date:'humandatetime'}</span>
+        <span class="small bold {if $item.calc_priority == 0}pl-due-someday{elseif $item.calc_priority == 1}pl-due-tomorrow{elseif $item.calc_priority == 2}pl-due-today{elseif $item.calc_priority >= 3}pl-due-overdue{/if}">{$item.due_datetime|wa_date:'humandatetime'}</span>
         {else if !empty($item.due_date)}
         <br>
-        <span class="small bold {if $item.calc_priority == 0}pl-due-someday{elseif $item.calc_priority == 1}pl-due-tomorrow{elseif $item.calc_priority == 2}pl-due-today{elseif $item.calc_priority == 3}pl-due-overdue{/if}">{waDateTime::date(waDateTime::getFormat('humandate'), $item.due_date)}</span>
+        <span class="small bold {if $item.calc_priority == 0}pl-due-someday{elseif $item.calc_priority == 1}pl-due-tomorrow{elseif $item.calc_priority == 2}pl-due-today{elseif $item.calc_priority >= 3}pl-due-overdue{/if}">{waDateTime::date(waDateTime::getFormat('humandate'), $item.due_date)}</span>
         {/if}
         {if $item.status != 1}
             {* {if !empty($item.assigned_contact_id)}<strong class="hint italic"><br>{$item.contact.username|escape} &rarr; {$item.assigned_contact.username|escape}</strong>{/if} *}
@@ -75,13 +85,20 @@
             {if !empty($item.attachments)}
               <ul class="pl-attachments">
                 {foreach $item.attachments as $attachment}
-                  {if $attachment.filetype == 'image'}<li><a href="{$attachments_path}/{$item.id}/{$attachment.filename}" target="_blank"><img src="{$attachments_path}/{$item.id}/{$attachment.filename}"></a></li>
-                  {else}<li><a href="{$attachments_path}/{$item.id}/{$attachment.filename}" target="_blank"><i class="icon16 download"></i>{$attachment.filename|truncate:128}</a></li>
+                  {if $attachment.filetype == 'image'}<li><a href="{$pl2_attachments_path}/{$item.id}/{$attachment.filename}" target="_blank"><img src="{$pl2_attachments_path}/{$item.id}/{$attachment.filename}"></a></li>
+                  {else}<li class="pl-no-preview"><a href="{$pl2_attachments_path}/{$item.id}/{$attachment.filename}" target="_blank"><i class="icon16 download"></i>{$attachment.filename|truncate:128}</a></li>
                   {/if}
                 {/foreach}
               </ul>
             {/if}
         {/if}
+        <div data-pl2-item-links>
+        {foreach $item->getLinkedEntities() as $linkedEntity}
+            <div data-pl2-link-preview>
+                {$linkedEntity->renderPreview()}
+            </div>
+        {/foreach}
+        </div>
         <div class="pl-chat" {if empty($item.chat.comments)} style="display:none;"{/if}>
             {foreach $item.chat.comments as $comment}
                 {include '../comment/Comment.html' comment=$comment inline}
@@ -92,4 +109,8 @@
             </div>
         </div>
     </label>
+
+
 </div>
+
+{/if}

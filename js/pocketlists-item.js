@@ -28,7 +28,12 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             filter: false,
             archive: false,
             allowChat: true,
-            current_user_id: 0
+            current_user_id: 0,
+            defaultLinkedEntity: false,
+            standAloneItemAdd: false,
+            appUrl: '',
+            wa_url: '',
+            fileUpload: 1
         }, options),
         request_in_action = false;
 
@@ -103,9 +108,18 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 data[i]['due_date'] = o.dueDate;
             });
         }
+
+        if (o.defaultLinkedEntity !== false) {
+            $.each(data, function (i) {
+                if (data[i]['links'] === undefined) {
+                    data[i]['links'] = [{model: o.defaultLinkedEntity}];
+                }
+            });
+        }
+
         var $pl_done = $this.closest('.pl-item').find('.pl-done-label span').addClass('transparent').html($.pocketlists.$loading);
         $.post(
-            '?module=item&action=create',
+            o.appUrl + '?module=item&action=create',
             {
                 list_id: o.list ? o.list.list_id : 0,
                 data: data,
@@ -113,9 +127,12 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 filter: o.filter
             },
             function (html) {
-                $.pocketlists.updateAppCounter();
-                $.pocketlists.reloadSidebar();
+                if (!o.standAloneItemAdd) {
+                    $.pocketlists.updateAppCounter();
+                    $.pocketlists.reloadSidebar();
+                }
                 $.pocketlists.$loading.remove();
+
                 $pl_done.removeClass('transparent');
 
                 var $li = $this.closest(item_selector),
@@ -126,6 +143,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 if (!o.enableSortItems) {
                     $html.find('[data-pl-action="item-sort"]').hide();
                 }
+
+                _itemAdd.textarea.removeData('pl2-linked-entities');
 
                 _itemAdd.textarea.data('can_blur', false);
                 if ($li.length) {
@@ -149,8 +168,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
                 // update calendar date with new dot
                 var $calendar = $('.pl-calendar');
-                if (!o.list && $calendar.length) {
-                    $.get('?module=json&action=getItemsPocketColor&id=' + parseInt($html.data('id')), function (r) {
+                if (!o.list && $calendar.length && !o.standAloneItemAdd) {
+                    $.get(o.appUrl + '?module=json&action=getItemsPocketColor&id=' + parseInt($html.data('id')), function (r) {
                         if (r.status === 'ok') {
                             var $selected_date = $calendar.find('[data-pl-todo-date="' + due_date + '"]').length ? $calendar.find('[data-pl-todo-date="' + due_date + '"]') : ($calendar.find('.pl-today').next().length ? $calendar.find('.pl-today').next() : false);
                             if ($selected_date) {
@@ -170,9 +189,16 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     }, 'json');
                 }
 
-                hideEmptyListMessage();
-                updateListCountBadge();
-                updateSort();
+                var $textarea_parent = _itemAdd.textarea.closest('[data-pl-item-add]') || _itemAdd.textarea.closest('[data-id]'),
+                    $previewWrapper = $textarea_parent.find('[data-pl2-item-links]');
+
+                $previewWrapper.empty();
+
+                if (!o.standAloneItemAdd) {
+                    hideEmptyListMessage();
+                    updateListCountBadge();
+                    updateSort();
+                }
 
                 request_in_action = false;
 
@@ -187,8 +213,11 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             item_list_id_new = $form.find('[name="item\[list_id\]"]').val();
 
         var afterUpdateItem = function (html, callback) {
-            $.pocketlists.updateAppCounter();
-            $.pocketlists.reloadSidebar();
+            if (!o.standAloneItemAdd) {
+                $.pocketlists.updateAppCounter();
+                $.pocketlists.reloadSidebar();
+            }
+
             $.pocketlists.$loading.remove();
             replaceItem(html);
             // update indicator color
@@ -314,7 +343,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             request_in_action = true;
 
             $.post(
-                '?module=item&action=sort',
+                o.appUrl + '?module=item&action=sort',
                 {
                     list_id: o.list.list_id,
                     item_id: id ? id : 0,
@@ -351,14 +380,16 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         $item_data_wrapper.toggleClass('gray');
         $assigned_user_icon.hide();
         $.post(
-            '?module=item&action=complete',
+            o.appUrl + '?module=item&action=complete',
             {
                 id: id,
                 status: status
             },
             function (r) {
                 if (r.status === 'ok') {
-                    $.pocketlists.updateAppCounter();
+                    if (!o.standAloneItemAdd) {
+                        $.pocketlists.updateAppCounter();
+                    }
                     // remove from undone list
                     $checkbox.prop('checked', status); // check nesting items
                     setTimeout(function () {
@@ -381,7 +412,9 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                             updateListCountBadge();
                             $show_logbook_items.show().find('i').text($_('Show all %d completed to-dos').replace('%d', $done_items_wrapper.find('[data-id]').length)); // update "complete items" heading
 
-                            $.pocketlists.reloadSidebar();
+                            if (!o.standAloneItemAdd) {
+                                $.pocketlists.reloadSidebar();
+                            }
 
                             showEmptyListMessage();
 
@@ -464,7 +497,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             id = parseInt($item.data('id')),
             status = $star.hasClass('star-empty') ? 1 : 0;
         $.post(
-            '?module=item&action=favorite',
+            o.appUrl + '?module=item&action=favorite',
             {
                 id: id,
                 status: status
@@ -576,7 +609,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             'margin-left': 12
         }));
         $.post(
-            '?module=comment&action=add',
+            o.appUrl + '?module=comment&action=add',
             {
                 item_id: item_id,
                 comment: data.comment
@@ -609,7 +642,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             comment_id = $comment_wrapper.data('pl-comment-id');
 
         $.post(
-            '?module=comment&action=delete',
+            o.appUrl + '?module=comment&action=delete',
             {
                 id: comment_id
             },
@@ -634,7 +667,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         var $this = $(this);
 
         return $.post(
-            '?module=item&action=moveToList',
+            o.appUrl + '?module=item&action=moveToList',
             {
                 id: parseInt($this.data('id')),
                 list_id: list_id
@@ -661,7 +694,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         var $this = $(this);
 
         return $.post(
-            '?module=item&action=assignTo',
+            o.appUrl + '?module=item&action=assignTo',
             {
                 id: parseInt($this.data('id')),
                 team_id: team_id
@@ -683,6 +716,182 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         );
     };
 
+    var itemLinkerCache = (function () {
+        var cache = [],
+            ttl = 100;
+
+        var now = function () {
+            return Date.now() / 1000 | 0;
+        };
+
+        return {
+            get: function (key, f) {
+                if (cache[key] && (cache[key]['time'] + ttl > now())) {
+                    return cache[key]['value'];
+                }
+                return null;
+            },
+            set: function (key, value) {
+                cache[key] = {
+                    time: now(),
+                    value: value
+                };
+            }
+        }
+    }());
+
+    var ItemLinker = function ($textarea) {
+        if ($textarea.data('pl2-itemlinker')) {
+            return;
+        }
+
+        var itemText = $textarea.val(),
+            $parent = $textarea.closest('[data-pl-item-add]') || $textarea.closest('[data-id]'),
+            $previewWrapper = $parent.find('[data-pl2-item-links]');
+
+        $textarea.data('pl2-itemlinker', true);
+
+        var log = function (msg) {
+            window.console && console.log('pl2 autocomplete', msg);
+        };
+
+        var canShowAutocomplete = function () {
+            log('canShowAutocomplete');
+
+            itemText = $textarea.val();
+
+            if (!itemText) {
+                log('no text');
+
+                return false;
+            }
+
+            if (!/(^| )@/.test(itemText)) {
+                log('no @');
+
+                return false;
+            }
+
+            // var cursorPos = doGetCaretPosition($textarea[0]);
+            var cursorPos = $textarea.prop("selectionStart");
+
+            for (var i = cursorPos; itemText[i] != '@' && i >= 0; i--) {
+                if (itemText[i] == ' ') {
+                    return false;
+                }
+            }
+
+            for (var j = cursorPos; itemText[j] != ' ' && j < itemText.length; j++) {
+            }
+
+            var term = itemText.slice(i + 1, j);
+
+            return term;
+        };
+
+        $textarea.autocomplete({
+            // html:true,
+            // autoFocus: true,
+            source: function( request, response ) {
+                var term = canShowAutocomplete();
+
+                if (term === '') {
+                    return response([{
+                        'value': '',
+                        'label': '<em>'+$_('Find order by ID') + '</em>'
+                    }]);
+                }
+
+                var plresponse = function(data) {
+                    if (data.status != 'ok') {
+                        return [];
+                    }
+
+                    var results = [];
+
+                    $.each(data.data, function (i, typeResults) {
+                        log(typeResults);
+
+                        if (!typeResults) {
+                            return;
+                        }
+
+                        $.each(typeResults.entities, function (i, entity) {
+                            results.push(entity)
+                        });
+                    });
+
+                    itemLinkerCache.set(term, results);
+
+                    return response(results)
+                };
+
+                var results = itemLinkerCache.get(term);
+
+                if (results) {
+                    response(results);
+                } else {
+                    $.getJSON(o.appUrl + '?module=item&action=linkAutocomplete', {
+                        term: term
+                    }, plresponse);
+                }
+            },
+            focus: function() {
+                // prevent value inserted on focus
+                return false;
+            },
+            select: function( event, ui ) {
+                var linked = $textarea.data('pl2-linked-entities') || {},
+                    link = ui.item.data,
+                    hash = link.model.app + link.model.entity_type + link.model.entity_id;
+
+                if (linked[hash] === undefined) {
+                    linked[hash] = link;
+                    showLinkedPreview(link);
+                    $textarea.data('pl2-linked-entities', linked);
+                }
+
+                var term = canShowAutocomplete(),
+                    text = $textarea.val(),
+                    new_text = text.replace('@' + term, ui.item.value);
+
+                $textarea.val(new_text);
+
+                return false;
+            },
+            open: function(){
+                $textarea.autocomplete('widget').css('z-index', 100);
+                return false;
+            },
+            delay: 300,
+        });
+
+        // old jq ui hack
+        if ($textarea.data( "ui-autocomplete") !== undefined) {
+            $textarea.data("ui-autocomplete")._renderItem = function (ul, item) {
+                return $("<li>")
+                    .append(item.label)
+                    .appendTo(ul);
+            };
+        }
+
+        $textarea
+            .on("autocompleteopen", function (event, ui) {
+                $textarea.data('pl2-autocomplete-isopen', true);
+            })
+            .on("autocompleteclose", function (event, ui) {
+                $textarea.data('pl2-autocomplete-isopen', false);
+            });
+
+        var showLinkedPreview = function (link) {
+            var $linkPreview = $('<div data-pl2-link-preview></div>');
+
+            $linkPreview.html(link.preview);
+
+            $previewWrapper.append($linkPreview);
+        };
+    };
+
     /**
      * for new item dom manipulating
      */
@@ -702,7 +911,9 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         };
 
         var init = function () {
-            $new_item_wrapper.detach();
+            // if (!o.standAloneItemAdd) {
+                $new_item_wrapper.detach();
+            // }
 
             var show_new_item_wrapper = function () {
                 // hideEmptyListMessage();
@@ -710,6 +921,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 setTimeout(function () {
                     if (isEmptyList()/* && !o.showMessageOnEmptyList*/) {
                         $top_textarea.val('').trigger('focus');
+                        ItemLinker($top_textarea);
                     }
                 }, 500);
             };
@@ -727,26 +939,37 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 })
                 .on('keydown', function (e) {
                     var $this = $(this);
-                    $.pocketlists.enable_prevent_close_browser($this);
+                    if (!o.standAloneItemAdd) {
+                        $.pocketlists.enable_prevent_close_browser($this);
+                    }
                     $this
                         .data('can_blur', true)
                         .removeClass('pl-unsaved');
-                    if (!e.shiftKey && e.which === 13) {
+                    if (!e.shiftKey && e.which === 13 && !$this.data('pl2-autocomplete-isopen')) {
                         e.preventDefault();
-                        $.pocketlists.disable_prevent_close_browser();
+                        if (!o.standAloneItemAdd) {
+                            $.pocketlists.disable_prevent_close_browser();
+                        }
+
                         var parent_id = $this.closest('.menu-v').find(item_selector).first().data('parent-id'),
                             name = $this.val().trim();
                         if (name) {
                             addItem.call(this, [{
                                 name: name,
+                                links: $this.data('pl2-linked-entities'),
                                 parent_id: parent_id
                             }]);
                         }
-                    } else if (e.which === 27) {
+                    } else if (e.which === 27 && !$this.data('pl2-autocomplete-isopen')) {
                         $this.data('can_blur', false);
-                        $.pocketlists.disable_prevent_close_browser();
-                        hide_new_item_wrapper();
+
+                        if (!o.standAloneItemAdd) {
+                            $.pocketlists.disable_prevent_close_browser();
+                            hide_new_item_wrapper();
+                        }
                     }
+
+
                 })
                 .on('paste', function () {
                     var self = this,
@@ -763,6 +986,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                                     if (name) {
                                         data.push({
                                             name: name,
+                                            links: [],
                                             parent_id: parent_id
                                         });
                                     }
@@ -774,7 +998,9 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 })
                 .on('focus', function () {
                     var $this = $(this);
-                    $.pocketlists.disable_prevent_close_browser();
+                    if (!o.standAloneItemAdd) {
+                        $.pocketlists.disable_prevent_close_browser();
+                    }
                     $this
                         .data('can_blur', true)
                         .removeClass('pl-unsaved');
@@ -786,10 +1012,14 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
                     if (can_blur) {
                         if (name) {
-                            $.pocketlists.enable_prevent_close_browser($this);
+                            if (!o.standAloneItemAdd) {
+                                $.pocketlists.enable_prevent_close_browser($this);
+                            }
                             $this.addClass('pl-unsaved');
                         } else {
-                            $.pocketlists.disable_prevent_close_browser();
+                            if (!o.standAloneItemAdd) {
+                                $.pocketlists.disable_prevent_close_browser();
+                            }
                             hide_new_item_wrapper();
                         }
                     }
@@ -832,6 +1062,9 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     $textarea.focus();
                 });
             }
+
+            ItemLinker($textarea);
+            ItemLinker($top_textarea);
         };
 
         init();
@@ -859,7 +1092,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
         var hideItemDetails = function () {
             $wrapper.animate({
-                'right': '100%'
+                'right': '-300px'
             }, 200, function () {
                 $wrapper.hide().empty()
             });
@@ -877,12 +1110,12 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             $(window).scrollTop();
             o.list && o.list.list_details.isVisible() && o.list.list_details.$el.after($wrapper);
             $wrapper.html($.pocketlists.$loading).show().animate({
-                'right': '0%'
+                'right': '0'
             }, 200, function () {
                 o.list && o.list.list_details.isVisible() && o.list.list_details.trigger('hide.pl2');
                 $.pocketlists.stickyDetailsSidebar();
             });
-            $.post('?module=item&action=details', {id: id}, function (html) {
+            $.post(o.appUrl + '?module=item&action=details', {id: id}, function (html) {
                 $wrapper.html(html);
                 afterLoad();
                 request_in_action = false;
@@ -914,36 +1147,53 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
             $wrapper.find('#pl-item-due-datetime').datepicker(datepicker_options);
 
-            $wrapper.find('[data-pl-item-details-fileupload]').fileupload({
-                url: '?module=item&action=addAttachment',
-                dataType: 'json',
-                autoUpload: true,
-                dropZone: '[data-pl-item-details-fileupload]',
-                formData: {
-                    item_id: id
-                },
-                done: function (e, data) {
-                    var $attachments = $wrapper.find('[data-pl-item-details-attachments]');
-                    if (data.result.errors) {
-                        alert(data.result.errors[0]);
-                        return;
+            var initFileUpload = function () {
+                $wrapper.find('[data-pl-item-details-fileupload]').fileupload({
+                    url: o.appUrl + '?module=item&action=addAttachment',
+                    dataType: 'json',
+                    autoUpload: true,
+                    dropZone: '[data-pl-item-details-fileupload]',
+                    formData: {
+                        item_id: id
+                    },
+                    done: function (e, data) {
+                        var $attachments = $wrapper.find('[data-pl-item-details-attachments]');
+                        if (data.result.errors) {
+                            alert(data.result.errors[0]);
+                            return;
+                        }
+                        $.each(data.result.data.files, function (index, file) {
+                            $attachments.find('ul').append('<li>' +
+                                '<a href="' + file.path + '/' + file.name + '" target="_blank">' + file.name + '</a> ' +
+                                '<a href="#" class="gray" data-pl-attachment-name="' + file.name + '" style="margin-left: 10px;" title="' + $_('Delete') + '" style="margin-left: 10px;">&times;</a>' +
+                                '</li>');
+                        });
+                    },
+                    progressall: function (e, data) {
+                        var progress = parseInt(data.loaded / data.total * 100, 10);
+                        $wrapper.find('#progress .progress-bar').css(
+                            'width',
+                            progress + '%'
+                        );
                     }
-                    $.each(data.result.data.files, function (index, file) {
-                        $attachments.find('ul').append('<li>' +
-                            '<a href="' + file.path + '/' + file.name + '" target="_blank">' + file.name + '</a> ' +
-                            '<a href="#" class="gray" data-pl-attachment-name="' + file.name + '" style="margin-left: 10px;" title="' + $_('Delete') + '" style="margin-left: 10px;">&times;</a>' +
-                            '</li>');
-                    });
-                },
-                progressall: function (e, data) {
-                    var progress = parseInt(data.loaded / data.total * 100, 10);
-                    $wrapper.find('#progress .progress-bar').css(
-                        'width',
-                        progress + '%'
-                    );
-                }
-            });
+                });
+            };
 
+            if (o.fileUpload) {
+                if (!$.fn.fileupload) {
+                    $.when(
+                        $.getScript(o.wa_url + "wa-content/js/jquery-plugins/fileupload/jquery.iframe-transport.js"),
+                        $.getScript(o.wa_url + "wa-content/js/jquery-plugins/fileupload/jquery.fileupload.js"),
+                        $.Deferred(function (deferred) {
+                            $(deferred.resolve);
+                        })
+                    ).done(function () {
+                        initFileUpload();
+                    });
+                } else {
+                    initFileUpload();
+                }
+            }
         };
 
         var init = function () {
@@ -1005,7 +1255,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                                 }
                                 request_in_action = true;
 
-                                $.post('?module=item&action=delete', {id: id}, function (r) {
+                                $.post(o.appUrl + '?module=item&action=delete', {id: id}, function (r) {
                                     if (r.status === 'ok') {
                                         removeItem(r.data.id);
                                         $list_items_wrapper.find('[data-id="' + r.data.id + '"]').remove();
@@ -1047,7 +1297,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     request_in_action = true;
 
                     $(this).after($.pocketlists.$loading);
-                    $.get('?module=json&action=getLists', function (r) {
+                    $.get(o.appUrl + '?module=json&action=getLists', function (r) {
                         $.pocketlists.$loading.remove();
                         var $pocket_lists = $('#pl-item-list');
                         $pocket_lists.empty();
@@ -1083,7 +1333,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     var $this = $(this),
                         attachment_name = $this.data('pl-attachment-name'),
                         $w = $this.closest('li');
-                    $.post('?module=item&action=deleteAttachment', {
+                    $.post(o.appUrl + '?module=item&action=deleteAttachment', {
                         attachment: attachment_name,
                         item_id: id
                     }, function (r) {
@@ -1242,13 +1492,17 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     comment = $this.val().trim();
                 if (comment) {
                     $this.addClass('pl-unsaved');
-                    $.pocketlists.enable_prevent_close_browser();
+                    if (!o.standAloneItemAdd) {
+                        $.pocketlists.enable_prevent_close_browser();
+                    }
                 }
             })
             .on('focus', '.pl-chat .pl-reply textarea', function (e) {
                 var $this = $(this);
                 $this.removeClass('pl-unsaved');
-                $.pocketlists.disable_prevent_close_browser();
+                if (!o.standAloneItemAdd) {
+                    $.pocketlists.disable_prevent_close_browser();
+                }
             })
             .on('click', '[data-pl-action="comment-delete"]', function (e) {
                 e.preventDefault();

@@ -16,7 +16,7 @@ class pocketlistsItemCompleteController extends pocketlistsComplete
                 $tree = $im->getAllByList($item['list_id'], $id);
                 $this->changeComplete($item['id'], $tree[$item['id']], $status, $im);
             } else {
-                $this->changeComplete($item['id'], $item + array('childs' => array()), $status, $im);
+                $this->changeComplete($item['id'], $item, $status, $im);
             }
             pocketlistsNotifications::notifyAboutCompleteItems($this->completed_items);
 
