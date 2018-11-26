@@ -572,55 +572,6 @@ class pocketlistsHelper
         return $icons;
     }
 
-    private static function compare_last_activity($a, $b)
-    {
-        $delta = strtotime($b['last_activity']) - strtotime($a['last_activity']);
-        if (!$delta) {
-            $delta = $a['id'] - $b['id'];
-        }
-        return $delta;
-    }
-
-    public static function getTeammates($teammates_ids, $sort_by_last_activity = true, $exclude_me = true)
-    {
-        $teammates = array();
-
-        $im = new pocketlistsItemModel();
-        $items_count_names = $im->getAssignedItemsCountAndNames($teammates_ids);
-        $last_activities = $sort_by_last_activity ? $im->getLastActivities($teammates_ids) : array();
-        foreach ($teammates_ids as $tid) {
-            if ($exclude_me && $tid == wa()->getUser()->getId()) {
-                continue;
-            }
-            $mate = new waContact($tid);
-//            if (!$mate) {
-//                continue;
-//            }
-            $teammates[$tid] = self::getContactData($mate);
-
-            $teammates[$tid]['last_activity'] = isset($last_activities[$tid]) ? $last_activities[$tid] : 0;
-            $teammates[$tid]['items_info'] = array(
-                'count'        => 0,
-                'names'        => "",
-                'max_priority' => 0,
-            );
-            if (isset($items_count_names[$tid])) {
-                $teammates[$tid]['items_info'] = array(
-                    'count'        => count($items_count_names[$tid]['item_names']),
-                    'names'        => implode(', ', $items_count_names[$tid]['item_names']),
-                    'max_priority' => $items_count_names[$tid]['item_max_priority'],
-                );
-            }
-        }
-
-        if ($sort_by_last_activity) {
-            usort($teammates, array('pocketlistsHelper', "compare_last_activity"));
-        }
-
-        // todo: cache
-        return $teammates;
-    }
-
     public static function getMonthData($items, $show_month, $month_count = 1)
     {
         $timezone = wa()->getUser()->getTimezone();
