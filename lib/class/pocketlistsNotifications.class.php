@@ -400,7 +400,7 @@ class pocketlistsNotifications
         $lm = new pocketlistsListModel();
         $list = array(
             'url' => wa(pocketlistsHelper::APP_ID)->getConfig()->getRootUrl(true) . '/' . wa(pocketlistsHelper::APP_ID)->getConfig()->getBackendUrl() . 'pocketlists/#/todo/',
-            'name' => _('Stream')
+            'name' => _w('Stream')
         );
         foreach ($users as $user_id => $user) { // foreach user
             if ($comment['contact_id'] != $user_id) {

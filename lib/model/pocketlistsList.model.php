@@ -333,7 +333,9 @@ class pocketlistsListModel extends kmModelExt
             ]
         )->fetchAll();
 
-        return self::generateModels($lists_data);
+        $lists = self::generateModels($lists_data);
+
+        return $lists ?: [];
     }
 
     /**

@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Class pocketlistsFactoryItemLink
+ * Class pocketlistsItemLinkFactory
  */
-class pocketlistsFactoryItemLink
+class pocketlistsItemLinkFactory
 {
     /**
      * @var pocketlistsItemLinkModel

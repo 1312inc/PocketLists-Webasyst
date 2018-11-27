@@ -16,14 +16,23 @@ class pocketlistsItemDetailsAction extends waViewAction
 
             $list = $lm->getById($item['list_id']);
             // get contact that have access to this pocket
-            $contacts = array();
+            $contacts = [];
             if (pocketlistsRBAC::canAssign()) {
                 // if this item is from list - select only available contacts for this list
-                $contacts = pocketlistsHelper::getTeammates(pocketlistsRBAC::getAccessContacts($list ? $list['id'] : 0), true, false);
+                /** @var pocketlistsTeammateFactory $factory */
+                $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getModelFactory('Teammate');
+                $contacts = $factory->getTeammates(
+                    pocketlistsRBAC::getAccessContacts($list ? $list['id'] : 0),
+                    true,
+                    false
+                );
             }
 
             $this->view->assign('item', $item);
-            $this->view->assign('pl2_attachments_path', wa()->getDataUrl('attachments/'.$item['id'].'/', true, pocketlistsHelper::APP_ID));
+            $this->view->assign(
+                'pl2_attachments_path',
+                wa()->getDataUrl('attachments/'.$item['id'].'/', true, pocketlistsHelper::APP_ID)
+            );
             $this->view->assign('attachments', $attachments);
             $this->view->assign('contacts', $contacts);
 

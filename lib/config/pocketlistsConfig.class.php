@@ -20,7 +20,7 @@ class pocketlistsConfig extends waAppConfig
     /**
      * @param $factory
      *
-     * @return pocketlistsFactoryItemLink|pocketlistsFactoryItem
+     * @return pocketlistsItemLinkFactory|pocketlistsItemFactory|pocketlistsTeammateFactory
      * @throws waException
      */
     public function getModelFactory($factory)
@@ -29,7 +29,7 @@ class pocketlistsConfig extends waAppConfig
             return $this->factories[$factory];
         }
 
-        $factoryClass = sprintf('pocketlistsFactory%s', $factory);
+        $factoryClass = sprintf('pocketlists%sFactory', $factory);
 
         if (!class_exists($factoryClass) ) {
             throw new waException(sprintf('No factory class for %s', $factory));
