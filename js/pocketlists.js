@@ -3,6 +3,7 @@
 
     $.pocketlists = {
         $loading: $('<i class="icon16 loading">'),
+        $wa: null,
         defaults: {
             isAdmin: false
         },
@@ -337,6 +338,7 @@
             self.$app_menu_pocket = $('#wa-app-pocketlists');
             self.$core_sidebar = $('#pl-sidebar-core');
             self.options = $.extend({}, self.defaults, o);
+            self.$wa = $('#wa');
 
             self.initCollapse();
             // self.highlightSidebar();
@@ -352,6 +354,27 @@
                 self.$core_sidebar.find('[data-pl-sidebar-block="team"] li').show();
                 $(this).hide();
             });
+
+            $(document)
+                .on('keydown', function (e) {
+                    switch (true) {
+                        case e.which === 18:
+                            self.$wa.addClass('pl-keypress-alt');
+                            break;
+                        case e.which === 16:
+                            self.$wa.addClass('pl-keypress-shift');
+                            break;
+                    }
+                }).on('keyup', function (e) {
+                    switch (true) {
+                        case e.which === 18:
+                            self.$wa.removeClass('pl-keypress-alt');
+                            break;
+                        case e.which === 16:
+                            self.$wa.removeClass('pl-keypress-shift');
+                            break;
+                    }
+                });
         }
     };
 }(jQuery));
