@@ -577,87 +577,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             //$('.pl-title h1').css('opacity','1');
         }
     };
-    var showChatCommentInput = function () {
-        if ($current_item.length) {
-            $current_item.find('.pl-chat').show().find('textarea').trigger('focus');
-        }
-    };
-    var hideChatCommentInput = function () {
-        if ($current_item.length) {
-            var $comments_wrapper = $current_item.find('.pl-chat'),
-                $comment_input = $comments_wrapper.find('textarea');
-            $comment_input.trigger('blur');
-            if (!$current_item.find('.pl-cue').length) {
-                $comments_wrapper.hide();
-            }
-        }
-    };
-    var addComment = function (data) {
-        if (request_in_action) {
-            return;
-        }
-        request_in_action = true;
 
-        var $this = $(this),
-            item_id = $this.closest(item_selector).data('id'),
-            $reply_wrapper = $this.closest('.pl-reply'),
-            $userpic = $reply_wrapper.find('.icon16');
-
-        $userpic.hide();
-        $reply_wrapper.prepend($.pocketlists.$loading.css({
-            'margin-top': 1,
-            'margin-left': 12
-        }));
-        $.post(
-            o.appUrl + '?module=comment&action=add',
-            {
-                item_id: item_id,
-                comment: data.comment
-            },
-            function (html) {
-                $.pocketlists.$loading.removeAttr('style').remove();
-                $userpic.show();
-
-                $this.closest('.pl-reply').before(html);
-
-                $this.val('').trigger('focus');
-                $.pocketlists.resizeTextarea($this);
-
-                request_in_action = false;
-            }
-        );
-    };
-    var deleteComment = function () {
-        if (!confirm($_('You are about to permanently delete this comment. Delete?'))) {
-            return;
-        }
-
-        if (request_in_action) {
-            return;
-        }
-        request_in_action = true;
-
-        var $this = $(this),
-            $comment_wrapper = $this.closest('[data-pl-comment-id]'),
-            comment_id = $comment_wrapper.data('pl-comment-id');
-
-        $.post(
-            o.appUrl + '?module=comment&action=delete',
-            {
-                id: comment_id
-            },
-            function (r) {
-                $.pocketlists.$loading.removeAttr('style').remove();
-                if (r.status === 'ok') {
-                    $comment_wrapper.slideUp(200, function () {
-                        $comment_wrapper.remove();
-                    });
-                }
-                request_in_action = false;
-            },
-            'json'
-        );
-    };
     var moveToList = function (list_id, drop) {
         if (request_in_action) {
             return;
@@ -1087,8 +1007,9 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
      * - show/hide (p)
      * - change details
      */
-    var ItemDetails = (function ($wrapper) {
-        var id = 0;
+    var ItemDetails = (function () {
+        var id = 0,
+            $wrapper;
 
         var hideItemDetails = function () {
             $wrapper.animate({
@@ -1099,6 +1020,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             id = 0;
             $list_items_wrapper.trigger('deselectItem.pl2');
         };
+
         var showItemDetails = function (id_item) {
             if (request_in_action) {
                 return;
@@ -1107,7 +1029,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
             id = id_item;
             //$wrapper.html($.pocketlists.$loading).show();
-            $(window).scrollTop();
+            // $(window).scrollTop();
             o.list && o.list.list_details.isVisible() && o.list.list_details.$el.after($wrapper);
             $wrapper.html($.pocketlists.$loading).show().animate({
                 'right': '0'
@@ -1121,6 +1043,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 request_in_action = false;
             });
         };
+
         var afterLoad = function () {
             var datepicker_options = {
                 changeMonth: true,
@@ -1196,7 +1119,9 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             }
         };
 
-        var init = function () {
+        var init = function ($itemDetailsWrapper) {
+            $wrapper = $itemDetailsWrapper;
+
             if ($wrapper.data('pl-ItemDetails')) {
                 return;
             }
@@ -1345,23 +1270,257 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     }, 'json');
                 });
 
+            // $(window).scroll(function () {
+            //     $.pocketlists.stickyDetailsSidebar();
+            // });
+        };
+
+        var _getWrapper = function () {
+            return $wrapper;
+        };
+
+        // init();
+
+        return {
+            init: init,
+            getWrapper: _getWrapper,
+            trigger: function (event, data) {
+                this.getWrapper() && this.getWrapper().trigger(event, data);
+            },
+            isVisible: function () {
+                return this.getWrapper() ? this.getWrapper().is(':visible') : false;
+            }
+        };
+    }());
+
+    var ItemComments = (function ($w) {
+        var id = 0,
+            $wrapper = $w;
+
+        var showChatCommentInput = function () {
+            if ($current_item.length) {
+                $current_item.find('.pl-chat').show().find('textarea').trigger('focus');
+            }
+        };
+
+        var hideChatCommentInput = function () {
+            if ($current_item.length) {
+                var $comments_wrapper = $current_item.find('.pl-chat'),
+                    $comment_input = $comments_wrapper.find('textarea');
+                $comment_input.trigger('blur');
+                if (!$current_item.find('.pl-cue').length) {
+                    $comments_wrapper.hide();
+                }
+            }
+        };
+
+        var addComment = function (data) {
+            if (request_in_action) {
+                return;
+            }
+            request_in_action = true;
+
+            var $this = $(this),
+                item_id = $this.closest(item_selector).data('id'),
+                $reply_wrapper = $this.closest('.pl-reply'),
+                $userpic = $reply_wrapper.find('.icon16');
+
+            $userpic.hide();
+            $reply_wrapper.prepend($.pocketlists.$loading.css({
+                'margin-top': 1,
+                'margin-left': 12
+            }));
+            $.post(
+                o.appUrl + '?module=comment&action=add',
+                {
+                    item_id: item_id,
+                    comment: data.comment
+                },
+                function (html) {
+                    $.pocketlists.$loading.removeAttr('style').remove();
+                    $userpic.show();
+
+                    $this.closest('.pl-reply').before(html);
+
+                    $this.val('').trigger('focus');
+                    $.pocketlists.resizeTextarea($this);
+
+                    request_in_action = false;
+                }
+            );
+        };
+
+        var deleteComment = function () {
+            if (!confirm($_('You are about to permanently delete this comment. Delete?'))) {
+                return;
+            }
+
+            if (request_in_action) {
+                return;
+            }
+            request_in_action = true;
+
+            var $this = $(this),
+                $comment_wrapper = $this.closest('[data-pl-comment-id]'),
+                comment_id = $comment_wrapper.data('pl-comment-id');
+
+            $.post(
+                o.appUrl + '?module=comment&action=delete',
+                {
+                    id: comment_id
+                },
+                function (r) {
+                    $.pocketlists.$loading.removeAttr('style').remove();
+                    if (r.status === 'ok') {
+                        $comment_wrapper.slideUp(200, function () {
+                            $comment_wrapper.remove();
+                        });
+                    }
+                    request_in_action = false;
+                },
+                'json'
+            );
+        };
+
+        var hideItemComments = function () {
+            $wrapper.animate({
+                'right': '-300px'
+            }, 200, function () {
+                $wrapper.hide().empty()
+            });
+            id = 0;
+            $list_items_wrapper.trigger('deselectItem.pl2');
+        };
+
+        var showItemComments = function (id_item) {
+            if (request_in_action) {
+                return;
+            }
+            request_in_action = true;
+
+            id = id_item;
+            //$wrapper.html($.pocketlists.$loading).show();
+            $(window).scrollTop();
+            o.list && o.list.list_details.isVisible() && o.list.list_details.$el.after($wrapper);
+            $wrapper.html($.pocketlists.$loading).show().animate({
+                'right': '0'
+            }, 200, function () {
+                o.list && o.list.list_details.isVisible() && o.list.list_details.trigger('hide.pl2');
+                $.pocketlists.stickyDetailsSidebar();
+            });
+            $.post(o.appUrl + '?module=item&action=comments', {id: id}, function (html) {
+                $wrapper.html(html);
+                afterLoad();
+                request_in_action = false;
+            });
+        };
+
+        var afterLoad = function () {
+            // var item_id = parseInt($item.data('id'));
+            //
+            // if (item_id) {
+            //     if (!$wrapper.find('.pl-chat').is(':visible') || // if no comments - show input and focus
+            //         ($wrapper.find('.pl-chat').is(':visible') && $wrapper.find('.pl-cue').length)) { // OR if already visible (there are some comments) - focus
+            //         // selectItem($item);
+            //         $wrapper.find('.pl-chat').show().find('textarea').trigger('focus');
+            //     } else { // hide if no comments
+            //         hideChatCommentInput();
+            //         deselectItem();
+            //     }
+            // }
+        };
+
+        var init = function () {
+            if ($wrapper.data('pl-ItemComments')) {
+                return;
+            }
+            $wrapper.data('pl-ItemComments', true);
+
+            //id = parseInt($wrapper.find('input[name="item\[id\]"]').val());
+            $wrapper
+                .on('submit', 'form', function () {
+                    //e.preventDefault();
+                    var $this = $(this);
+                    $this.find('#pl-item-details-save').after($.pocketlists.$loading);
+                    updateItem($this, function () {
+                        $this.find('#pl-item-details-save').removeClass('yellow');
+                        hideItemDetails();
+                    });
+                })
+                .on('click', '.pl-item-details-cancel', function (e) {
+                    e.preventDefault();
+
+                    hideItemDetails();
+                })
+                .on('keydown', '.pl-chat .pl-reply textarea', function (e) {
+                    var $this = $(this);
+                    if (!e.shiftKey && e.which === 13) {
+                        e.preventDefault();
+                        var comment = $this.val().trim();
+                        if (comment) {
+                            addComment.call(this, {
+                                comment: comment
+                            });
+                        }
+                    } else if (e.which === 27) {
+                        // hideChatCommentInput();
+                        // deselectItem();
+                    }
+                })
+                .on('blur', '.pl-chat .pl-reply textarea', function (e) {
+                    var $this = $(this),
+                        comment = $this.val().trim();
+                    if (comment) {
+                        $this.addClass('pl-unsaved');
+                        if (!o.standAloneItemAdd) {
+                            $.pocketlists.enable_prevent_close_browser();
+                        }
+                    }
+                })
+                .on('focus', '.pl-chat .pl-reply textarea', function (e) {
+                    var $this = $(this);
+                    $this.removeClass('pl-unsaved');
+                    if (!o.standAloneItemAdd) {
+                        $.pocketlists.disable_prevent_close_browser();
+                    }
+                })
+                .on('click', '[data-pl-action="comment-delete"]', function (e) {
+                    e.preventDefault();
+
+                    deleteComment.call(this);
+                })
+                .on('click', '.pl-chat .pl-reply textarea', function (e) {
+                    e.preventDefault();
+
+                    selectItem($(this).closest(item_selector));
+                })
+                .on('showcomments.pl2', function (e, id) {
+                    showItemComments(id);
+                })
+                .on('hidecomments.pl2', hideItemComments)
+            ;
+
             $(window).scroll(function () {
                 $.pocketlists.stickyDetailsSidebar();
             });
         };
 
+        var _getWrapper = function () {
+            return $wrapper;
+        };
+
         init();
 
         return {
-            $el: $wrapper,
+            getWrapper: _getWrapper,
             trigger: function (event, data) {
-                this.$el && this.$el.trigger(event, data);
+                this.getWrapper() && this.getWrapper().trigger(event, data);
             },
             isVisible: function () {
-                return this.$el ? this.$el.is(':visible') : false;
+                return this.getWrapper() ? this.getWrapper().is(':visible') : false;
             }
         };
-    }($('#pl-item-details')));
+    }($('#pl2-item-comments')));
 
 
     var init = function () {
@@ -1414,38 +1573,20 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                         ItemDetails.trigger('hide.pl2');
                         selectItem($item);
                     } else { // on third
-                        ItemDetails.trigger('hide.pl2');
-                        deselectItem();
+                        // ItemDetails.trigger('hide.pl2');
+                        // deselectItem();
                     }
                 }
             }) // action: select item
-            .on('click', '.pl-comment', function (e) {
-                e.preventDefault();
-
-                var $this = $(this),
-                    $item = $this.closest(item_selector),
-                    item_id = parseInt($item.data('id'));
-
-                if (item_id) {
-                    if (!$item.find('.pl-chat').is(':visible') || // if no comments - show input and focus
-                        ($item.find('.pl-chat').is(':visible') && $item.find('.pl-cue').length)) { // OR if already visible (there are some comments) - focus
-                        selectItem($item);
-                        showChatCommentInput();
-                    } else { // hide if no comments
-                        hideChatCommentInput();
-                        deselectItem();
-                    }
-                }
-            })
-            .on('click', '.pl-edit', function (e) {
-                e.preventDefault();
-
-                var $this = $(this),
-                    $item = $this.closest(item_selector);
-
-                ItemDetails.trigger('show.pl2', [parseInt($item.data('id'))]); // show item details
-                selectItem($item);
-            })
+            // .on('click', '.pl-edit', function (e) {
+            //     e.preventDefault();
+            //
+            //     var $this = $(this),
+            //         $item = $this.closest(item_selector);
+            //
+            //     ItemDetails.trigger('show.pl2', [parseInt($item.data('id'))]); // show item details
+            //     selectItem($item);
+            // })
             .on('click', '[data-pl-action="item-favorite"]', function (e) {
                 e.preventDefault();
                 var $this = $(this),
@@ -1472,48 +1613,6 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     $.pocketlists.resizeTextarea($textarea)
                 }, 0);
             })
-            .on('keydown', '.pl-chat .pl-reply textarea', function (e) {
-                var $this = $(this);
-                if (!e.shiftKey && e.which === 13) {
-                    e.preventDefault();
-                    var comment = $this.val().trim();
-                    if (comment) {
-                        addComment.call(this, {
-                            comment: comment
-                        });
-                    }
-                } else if (e.which === 27) {
-                    hideChatCommentInput();
-                    deselectItem();
-                }
-            })
-            .on('blur', '.pl-chat .pl-reply textarea', function (e) {
-                var $this = $(this),
-                    comment = $this.val().trim();
-                if (comment) {
-                    $this.addClass('pl-unsaved');
-                    if (!o.standAloneItemAdd) {
-                        $.pocketlists.enable_prevent_close_browser();
-                    }
-                }
-            })
-            .on('focus', '.pl-chat .pl-reply textarea', function (e) {
-                var $this = $(this);
-                $this.removeClass('pl-unsaved');
-                if (!o.standAloneItemAdd) {
-                    $.pocketlists.disable_prevent_close_browser();
-                }
-            })
-            .on('click', '[data-pl-action="comment-delete"]', function (e) {
-                e.preventDefault();
-
-                deleteComment.call(this);
-            })
-            .on('click', '.pl-chat .pl-reply textarea', function (e) {
-                e.preventDefault();
-
-                selectItem($(this).closest(item_selector));
-            })
             /* calendar day highlight */
             .on('mouseenter mouseleave', '.pl-item-wrapper[data-pl-due-date]', function () {
                 var $calendar = $('.pl-calendar');
@@ -1529,7 +1628,23 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             })
             .on('assignTo.pl2', item_selector, function (e, data) {
                 assignTo.call(this, data.id, data.drop);
-            });
+            })
+            .on('click', '.pl-edit', function (e) {
+                e.preventDefault();
+                var $item = $(this).closest('.pl-item-wrapper[data-id]'),
+                    $itemDetailsWrapper = $item.find('[data-pl2-item-details]');
+
+                ItemDetails.init($itemDetailsWrapper);
+                ItemDetails.trigger('show.pl2', [parseInt($item.data('id'))]);
+                selectItem($item);
+            })
+            .on('click', '.pl-comment', function (e) {
+                e.preventDefault();
+                var $item = $(this).closest('.pl-item-wrapper[data-id]');
+
+                ItemComments.trigger('showcomments.pl2', [parseInt($item.data('id'))])
+            })
+        ;
 
         // keyboard
         $(document).on('keydown', function (e) {

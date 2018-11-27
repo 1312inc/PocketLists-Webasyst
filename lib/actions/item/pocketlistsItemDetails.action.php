@@ -1,5 +1,6 @@
 <?php
 
+
 class pocketlistsItemDetailsAction extends waViewAction
 {
     public function execute()

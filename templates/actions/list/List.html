@@ -81,7 +81,8 @@
         {/if}
     </div>
     {include '../../include/listdetails.html' inline list_access_contacts=$list_access_contacts}
-    {include '../../include/itemdetails.html' inline}
+    {*{include '../../include/itemdetails.html' inline}*}
+    {include '../../include/itemcomments.html' inline}
 </main>
 
 {if isset($list.id) && $print}

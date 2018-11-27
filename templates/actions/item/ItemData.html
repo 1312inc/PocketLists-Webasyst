@@ -99,15 +99,7 @@
             </div>
         {/foreach}
         </div>
-        <div class="pl-chat" {if empty($item.chat.comments)} style="display:none;"{/if}>
-            {foreach $item.chat.comments as $comment}
-                {include '../comment/Comment.html' comment=$comment inline}
-            {/foreach}
-            <div class="pl-reply"{if $item.status} style="display:none;"{/if}>
-                <i class="icon16 userpic20" style="background-image: url({$item.chat.current_user.userpic})" alt="{$item.chat.current_user.username|escape}"></i>
-                <textarea rows="1" placeholder="[`Add comment`]"></textarea>
-            </div>
-        </div>
+        <div data-pl2-item-details></div>
     </label>
 
 
