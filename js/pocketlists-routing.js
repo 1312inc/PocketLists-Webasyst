@@ -191,9 +191,7 @@
             this.pocketAction();
         },
         listAction: function (id) {
-            this.load('?module=list&id=' + id, function (result) {
-                $('#pl-list-content').html(result);
-            });
+            this.todoAction();
         },
         archiveAction: function (id) {
             id = id || 0;
