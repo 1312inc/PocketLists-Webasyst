@@ -1297,21 +1297,12 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         var id = 0,
             $wrapper = $w;
 
-        var showChatCommentInput = function () {
-            if ($current_item.length) {
-                $current_item.find('.pl-chat').show().find('textarea').trigger('focus');
-            }
+        var countComments = function () {
+            return $wrapper.find('[data-pl-comment-id]').length;
         };
 
-        var hideChatCommentInput = function () {
-            if ($current_item.length) {
-                var $comments_wrapper = $current_item.find('.pl-chat'),
-                    $comment_input = $comments_wrapper.find('textarea');
-                $comment_input.trigger('blur');
-                if (!$current_item.find('.pl-cue').length) {
-                    $comments_wrapper.hide();
-                }
-            }
+        var updateCommentsCount = function () {
+            $list_items_wrapper.find('.pl-item-wrapper[data-id="'+id+'"] .pl-comment-count').html('<i class="icon16 pl comments"></i>' + countComments());
         };
 
         var addComment = function (data) {
@@ -1321,7 +1312,6 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             request_in_action = true;
 
             var $this = $(this),
-                item_id = $this.closest(item_selector).data('id'),
                 $reply_wrapper = $this.closest('.pl-reply'),
                 $userpic = $reply_wrapper.find('.icon16');
 
@@ -1333,7 +1323,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             $.post(
                 o.appUrl + '?module=comment&action=add',
                 {
-                    item_id: item_id,
+                    item_id: id,
                     comment: data.comment
                 },
                 function (html) {
@@ -1341,6 +1331,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     $userpic.show();
 
                     $this.closest('.pl-reply').before(html);
+
+                    updateCommentsCount();
 
                     $this.val('').trigger('focus');
                     $.pocketlists.resizeTextarea($this);
@@ -1374,6 +1366,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     if (r.status === 'ok') {
                         $comment_wrapper.slideUp(200, function () {
                             $comment_wrapper.remove();
+
+                            updateCommentsCount();
                         });
                     }
                     request_in_action = false;
@@ -1401,7 +1395,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             id = id_item;
             //$wrapper.html($.pocketlists.$loading).show();
             $(window).scrollTop();
-            o.list && o.list.list_details.isVisible() && o.list.list_details.$el.after($wrapper);
+            // o.list && o.list.list_details.isVisible() && o.list.list_details.$el.after($wrapper);
             $wrapper.html($.pocketlists.$loading).show().animate({
                 'right': '0'
             }, 200, function () {
@@ -1438,15 +1432,6 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
             //id = parseInt($wrapper.find('input[name="item\[id\]"]').val());
             $wrapper
-                .on('submit', 'form', function () {
-                    //e.preventDefault();
-                    var $this = $(this);
-                    $this.find('#pl-item-details-save').after($.pocketlists.$loading);
-                    updateItem($this, function () {
-                        $this.find('#pl-item-details-save').removeClass('yellow');
-                        hideItemDetails();
-                    });
-                })
                 .on('click', '.pl-item-details-cancel', function (e) {
                     e.preventDefault();
 
@@ -1494,10 +1479,10 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
                     selectItem($(this).closest(item_selector));
                 })
-                .on('showcomments.pl2', function (e, id) {
+                .on('show.pl2', function (e, id) {
                     showItemComments(id);
                 })
-                .on('hidecomments.pl2', hideItemComments)
+                .on('hide.pl2', hideItemComments)
             ;
 
             $(window).scroll(function () {
@@ -1642,7 +1627,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 e.preventDefault();
                 var $item = $(this).closest('.pl-item-wrapper[data-id]');
 
-                ItemComments.trigger('showcomments.pl2', [parseInt($item.data('id'))])
+                ItemComments.trigger('show.pl2', [parseInt($item.data('id'))])
             })
         ;
 
@@ -1666,7 +1651,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 //    break;
                 case 27: // esc
                     //($current_item.length && $current_item.find('.pl-chat').is(':visible')) && hideChatCommentInput();
-                    ItemDetails.isVisible() && ItemDetails.trigger('hide.pl2');
+                    ItemComments.isVisible() && ItemComments.trigger('hide.pl2');
                     break;
             }
         });

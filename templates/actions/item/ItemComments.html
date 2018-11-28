@@ -1,7 +1,4 @@
-<div class="pl-details-form">
-<div class="pl-details-form-container">
-<div class="fields form">
-    <form method="post" id="pl-item-details-form" action="{$plurl}?module=item&amp;action=data" target="pl-item-details-form-iframe" enctype="multipart/form-data">
+<div class="pl-details-form pl-comments-form" data-pl2-item-id="{$item.id}">
     {* <a href="#" class="pl-item-details-cancel" class="pl-close" title="[`Close`]">&times;</a> *}
     {$wa->csrf()}
     <input type="hidden" name="item[id]" value="{$item.id}"/>
@@ -13,30 +10,9 @@
             {include '../comment/Comment.html' comment=$comment inline}
         {/foreach}
         <div class="pl-reply"{if $item.status} style="display:none;"{/if}>
-            <i class="icon16 userpic20" style="background-image: url({$item.chat.current_user.userpic})" alt="{$item.chat.current_user.username|escape}"></i>
+            <i class="icon16 userpic20" style="background-image: url({$item.chat.current_user.userpic})"
+               alt="{$item.chat.current_user.username|escape}"></i>
             <textarea rows="1" placeholder="[`Add comment`]"></textarea>
         </div>
     </div>
-
-    <div class="field-group" style="margin-bottom: 0;">
-        <div class="field">
-            <div class="value">
-
-                <input type="submit" class="button green" value="[`Save`]"  id="pl-item-details-save"/>
-                [`or`]
-                <a href="#" class="pl-item-details-cancel">[`cancel`]</a>
-
-                <span class="error" style="display: none;">[`error`]</span>
-                <span class="success" style="display: none;">[`saved`]</span>
-
-            </div>
-
-        </div>
-    </div>
-
-    </form>
-    <iframe id="pl-item-details-form-iframe" name="pl-item-details-form-iframe" style="display:none;"></iframe>
-</div>
-<hr>
-</div>
 </div>
