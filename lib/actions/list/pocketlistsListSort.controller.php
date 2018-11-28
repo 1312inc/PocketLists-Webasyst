@@ -1,7 +1,14 @@
 <?php
 
+/**
+ * Class pocketlistsListSortController
+ */
 class pocketlistsListSortController extends waJsonController
 {
+    /**
+     * @throws waDbException
+     * @throws waRightsException
+     */
     public function execute()
     {
         if (!wa()->getUser()->isAdmin() && !wa()->getUser()->isAdmin('pocketlists')) {
@@ -13,7 +20,7 @@ class pocketlistsListSortController extends waJsonController
         if ($data) {
             $lm = new pocketlistsListModel();
             foreach ($data as $list) {
-                $lm->updateById($list['id'], array('sort' => $list['sort']));
+                $lm->updateById($list['id'], ['sort' => $list['sort']]);
             }
         }
     }

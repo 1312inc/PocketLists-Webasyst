@@ -84,8 +84,7 @@ $.pocketlists.Pocket = function ($pocket_wrapper, options) {
                             color = $this.attr('class').match(/pl-(.*)/);
                         data.push({
                             id: $this.data('pl-list-id'),
-                            sort: i,
-                            color: color[1]
+                            sort: i
                         });
                     });
                     return data;
