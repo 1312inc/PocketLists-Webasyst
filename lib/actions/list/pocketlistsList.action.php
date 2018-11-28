@@ -101,7 +101,7 @@ class pocketlistsListAction extends waViewAction
                     'count_items_undone'   => $count_undone,
                     'new'                  => false,
                     'pl2_attachments_path' => wa()->getDataUrl('attachments/', true, pocketlistsHelper::APP_ID),
-                    'list_icons'           => pocketlistsHelper::getListIcons(),            // get icons
+                    'list_icons'           => (new pocketlistsListIcon())->getAll(),            // get icons
                 ]
             );
         } else {

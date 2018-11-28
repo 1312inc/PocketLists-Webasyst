@@ -40,10 +40,14 @@ class pocketlistsListUpdateController extends waJsonController
         }
         $data['contact_id'] = wa()->getUser()->getId();
 
-        $list_icons = pocketlistsHelper::getListIcons();
+        $list_icons = (new pocketlistsListIcon())->getAll();
         $matched_icon = pocketlistsNaturalInput::matchCategory($data['name']);
-        if ($matched_icon && isset($list_icons[$matched_icon])) {
-            $data['icon'] = $list_icons[$matched_icon];
+        if ($matched_icon) {
+            foreach ($list_icons as $listIconGroup => $icon) {
+                if (isset($list_icons[$listIconGroup][$matched_icon])) {
+                    $data['icon'] = $list_icons[$listIconGroup][$matched_icon];
+                }
+            }
         }
 
         $data = $lm->add($data, 1);
