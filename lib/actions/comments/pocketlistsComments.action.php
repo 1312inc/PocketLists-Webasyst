@@ -1,10 +1,13 @@
 <?php
 
+/**
+ * Class pocketlistsCommentsAction
+ */
 class pocketlistsCommentsAction extends waViewAction
 {
-    private $last_activity;
     const DEFAULT_OFFSET = 50;
 
+    private $last_activity;
 
     public function execute()
     {
@@ -14,7 +17,7 @@ class pocketlistsCommentsAction extends waViewAction
 
         $comment_model = new pocketlistsCommentModel();
         $comments = $comment_model->getComments($offset * self::DEFAULT_OFFSET, self::DEFAULT_OFFSET);
-        $comments = array_map(array($this, 'markAsNewAndMatchLinks'), $comments);
+        $comments = array_map([$this, 'markAsNewAndMatchLinks'], $comments);
         $this->view->assign('comments', $comments);
 
 //        pocketlistsActivity::setUserActivity(wa()->getUser()->getId(), true);
