@@ -133,6 +133,7 @@
                 self.sortLists();
             });
         },
+
         sortLists: function () {
             var self = this;
             if (!self.options.isAdmin) {
@@ -140,7 +141,8 @@
             }
 
             var $lists_wrapper = self.$core_sidebar.find('[data-pl-sidebar-block="lists"]'),
-                $team_wrapper = self.$core_sidebar.find('[data-pl-sidebar-block="team"]');
+                $team_wrapper = self.$core_sidebar.find('[data-pl-sidebar-block="team"]'),
+                $pocket_wrapper = self.$core_sidebar.find('[data-pl2-sidebar-wrapper="pockets"] ul:first');
 
             $('[data-pl-list-id]', $lists_wrapper).droppable({
                 accept: '[data-parent-id]',
@@ -166,6 +168,7 @@
                     $item.addClass('pl-dropped');
                 }
             });
+
             $('[data-pl-team-id]', $team_wrapper).droppable({
                 accept: '[data-parent-id]',
                 disabled: false,
@@ -191,7 +194,32 @@
                 }
             });
 
-            self.$core_sidebar.on('dropActionDone.pl2', '[data-pl-list-id], [data-pl-team-id]', function (e, data) {
+            $('[data-pl-pocket-id]', $pocket_wrapper).droppable({
+                accept: '[data-pl-list-id]',
+                disabled: false,
+                greedy: true,
+                tolerance: 'pointer',
+                classes: {
+                    'ui-droppable': 'pl-droppable'
+                },
+                over: function (event, ui) {
+                    $(this).addClass('highlighted-background');
+                },
+                out: function (event, ui) {
+                    $(this).removeClass('highlighted-background');
+                },
+                drop: function (event, ui) {
+                    var $list = ui.draggable,
+                        $pocket = $(event.target),
+                        pocket_id = $pocket.data('pl-pocket-id');
+
+                    $list.trigger('moveTo.pl2', {id: pocket_id, drop: this});
+                    $(this).removeClass('highlighted-background');
+                    $list.addClass('pl-dropped');
+                }
+            });
+
+            self.$core_sidebar.on('dropActionDone.pl2', '[data-pl-list-id], [data-pl-team-id], [data-pl-pocket-id]', function (e, data) {
                 var $this = $(this);
                 if (data.result) {
                     $this.addClass('pl-drop-success');

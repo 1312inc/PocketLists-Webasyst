@@ -2,7 +2,7 @@
 <div class="block pl-sidebar-core" data-pl2-sidebar-wrapper="pockets">
     <ul class="menu-v with-icons">
         {foreach $pockets as $pocket}
-            <li>
+            <li data-pl-pocket-id="{$pocket->pk}">
                 <span class="count">{$pocket->countLists()}</span>
                 <a href="#/pocket/{$pocket->pk}/"><i
                             class="icon16 color pl-dark-{$pocket->color}"></i>{$pocket->name|escape}</a>
