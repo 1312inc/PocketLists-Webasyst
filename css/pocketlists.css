@@ -7,6 +7,9 @@
 #wa { overflow: hidden; }
 #wa-app { overflow: visible; }
 
+/* #wa.pl-keypress-shift { background: red; }
+#wa.pl-keypress-alt { background: green; } */
+
 .shadowed { background: #fff; }
 .pl-sidebar-core { margin-top: 17px; }
 .pl-sidebar-core .pl-online { position: absolute; left: 8px; top: 6px; }
@@ -386,7 +389,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#12000000', e
 .pl-attachments li label { background: #eee; border-radius: 10px; padding: 4px 6px; font-size: 0.9em; color: #aaa; }
 .pl-attachments li label input[type="checkbox"] { margin-top: -4px; }
 .pl-add-attachment-dropbox { border: 2px dashed rgba(0,0,0,0.2); padding: 20px; }
-.pl-add-attachment-dropbox .pl-attachments { padding-top: 0; }
+.pl-add-attachment-dropbox ul.menu-v { margin-bottom: 15px !important; }
+.pl-add-attachment-dropbox ul.menu-v li { margin-bottom: 5px; }
+.pl-add-attachment-dropbox ul.menu-v li a { display: block; }
+.pl-add-attachment-dropbox ul.menu-v li a.gray { color: #aaa; }
 .pl-attachments li.pl-no-preview { display: block !important; }
 
 .pl-chat { padding: 13px 25px 15px 0px; max-width: 700px; margin: 0 auto; }
@@ -444,16 +450,37 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#12000000', e
 .pl-logbook .pl-item.gray .pl-comment-count { display: inline-block; }
 .pl-logbook .pl-item.gray .pl-favorite,
 .pl-logbook .pl-item.gray .pl-userpic { opacity: 1 !important; }
+.pl-logbook .pl-item.gray .pl-item-name { color: #aaa !important; }
 
 .pl-archive { background: #eee; }
 .pl-archive .pl-title h1 { padding-left: 0; }
 .pl-archive .pl-inner-content { margin-right: 0; }
 
-/* Item & List details
----------------------- */
+/* Item / List misc details form
+-------------------------------- */
+
+.pl-details-form {}
+.pl-details-form-container { background: transparent; padding: 15px 15px 15px 0; }
+.pl-details-form .fields { float: none; }
+.pl-details-form .fields form { overflow: visible; }
+.pl-details-form .name { width: 110px; }
+.pl-details-form .value { margin-left: 140px; }
+.pl-details-form .pl-done + span { margin-left: 6px; left: 0; top: 0; }
+.pl-details-form .pl-done.pl-priority-fire + span { top: -10px; }
+.pl-details-form ul.menu-v.with-icons li { padding: 5px 2px 5px 24px; margin-left: -4px; }
+.pl-details-form .selected .pl-done + span { background-size: 120px 30px; width: 24px; height: 24px; border-width: 3px; top: -5px; }
+.pl-details-form .selected .pl-done.pl-priority-green + span { background-position-x: -60px; width: 30px; height: 30px; }
+.pl-details-form .selected .pl-done.pl-priority-yellow + span { background-position-x: -30px; width: 30px; height: 30px; }
+.pl-details-form .selected .pl-done.pl-priority-red + span { width: 30px; height: 30px; }
+.pl-details-form .selected .pl-done.pl-priority-black + span { background-position-x: -90px; width: 30px; height: 30px; }
+.pl-details-form .selected .pl-done.pl-priority-fire + span { background-size: 40px 40px; top: -16px; width: 40px; height: 40px; }
+.pl-details-textarea { margin-bottom: 1rem; background: rgba(0,0,0,0.04); border-radius: 3px; border: none; -webkit-appearance: none; width: 100%; min-height: 1.3em; line-height: 1.3em; padding: 5px; }
+
+/* Item & List UHO-style sidebar
+-------------------------------- */
 
 .pl-details { display: none; padding: 0; position: absolute; top: 0; bottom: 0; right: 0; width: 340px; box-shadow: -10px 0 50px -10px rgba(0,0,0,0.2); z-index: 99; background: #fff; overflow-x: hidden; overflow-y: scroll; }
-.pl-details-form-container { background: #fff; padding: 15px 10px 15px 15px; }
+.pl-details .pl-details-form-container { padding-left: 15px; }
 .pl-details .fields.form { width: 100%; }
 .pl-details .fields.form .field-group { margin-top: 0; margin-bottom: 15px; }
 .pl-details .fields.form .field .name { float: none; padding-bottom: 5px; }
@@ -461,15 +488,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#12000000', e
 .pl-details .fields.form form { overflow: visible; }
 .pl-details .fields.form input.long { width: 95% !important; min-width: 0 !important; }
 .pl-details .fields.form textarea { width: 98% !important; min-width: 0 !important; }
-.pl-details .pl-done + span { margin-left: 6px; left: 0; top: 8px; }
-.pl-details .pl-done.pl-priority-fire + span { top: -2px; }
-.pl-details ul.menu-v.with-icons li { padding: 5px 2px 5px 24px; margin-left: -4px; }
-.pl-details .selected .pl-done + span { background-size: 120px 30px; width: 24px; height: 24px; border-width: 3px; top: 3px; }
-.pl-details .selected .pl-done.pl-priority-green + span { background-position-x: -60px; width: 30px; height: 30px; }
-.pl-details .selected .pl-done.pl-priority-yellow + span { background-position-x: -30px; width: 30px; height: 30px; }
-.pl-details .selected .pl-done.pl-priority-red + span { width: 30px; height: 30px; }
-.pl-details .selected .pl-done.pl-priority-black + span { background-position-x: -90px; width: 30px; height: 30px; }
-.pl-details .selected .pl-done.pl-priority-fire + span { background-size: 40px 40px; top: -8px; width: 40px; height: 40px; }
 
 .pl-details.sticky { position: fixed; right: 0; width: 350px; overflow-y: scroll; }
 .pl-details.sticky .pl-details-form-container { position: absolute; top: 0; bottom: 0; left: 0; right: 0; }
@@ -545,9 +563,6 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
     /*.pl-items.content.left300px { margin-left: 229px; }*/
     ul.pl-lists li span { max-width: 120px; }
     ul.pl-team li .pl-username { max-width: 120px; }
-    .pl-details { width: 240px; }
-    .pl-details input.long { min-width: 200px !important; width: 200px !important; }
-    .pl-details textarea { min-width: 250px !important; }
     .pl-list-sort { display: none !important; }
     .pl-list-sort-dropdown { display: block !important; }
     input#pl-new-list-input,
@@ -557,8 +572,14 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 
     .pl-inner-sidebar { width: 220px; }
     .pl-inner-content { margin-right: 230px; }
+
+    .pl-details input.long { min-width: 200px !important; width: 200px !important; }
+    .pl-details textarea { min-width: 250px !important; }
     .pl-details { width: 220px; }
     .pl-details.sticky { width: 230px; }
+
+    .pl-details-form .field .name { float: none; padding-bottom: 5px; }
+    .pl-details-form .fields.form .field .value { margin-left: 0 !important; }
 
     #pl-settings-form .field p { margin-right: 30px; }
 
