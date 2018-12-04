@@ -13,7 +13,7 @@ class pocketlistsListIcon
 //        $path = wa()->getAppPath('img/listicons/', wa()->getApp());
 
         $icon_ids = [
-            'group 1' => [
+            '' => [
                 "list",
                 "list2",
                 "list3",
@@ -35,7 +35,29 @@ class pocketlistsListIcon
                 "paid2-car",
                 "bomb",
             ],
-            2         => [
+            _w('Work & Office') => [
+                "chair",
+                "desk-printer",
+                "folders",
+                "scanner",
+                "service",
+                "calcuator",
+                "diagram",
+                "paid-notepad",
+                "paid-tie",
+                "team",
+                "notes1",
+                "invoice",
+                "construction",
+                "delivery",
+                "loudspeaker",
+                "paid2-boxes",
+                "pl201811-docs",
+                "pl201811-preza",
+                "pl201811-wheelbarrow",
+                "pl201811-toolkit",
+            ],
+            _w('Shopping') => [
                 "shopping2",
                 "bag",
                 "cart",
@@ -57,7 +79,7 @@ class pocketlistsListIcon
                 "pl201811-hanger",
                 "pl201811-online",
             ],
-            3         => [
+            _w('Home & Family') => [
                 "home",
                 "paid-flower",
                 "cleaning",
@@ -87,29 +109,7 @@ class pocketlistsListIcon
                 "pl201812-glove",
                 "pl201812-jacket",
             ],
-            4         => [
-                "chair",
-                "desk-printer",
-                "folders",
-                "scanner",
-                "service",
-                "calcuator",
-                "diagram",
-                "paid-notepad",
-                "paid-tie",
-                "team",
-                "notes1",
-                "invoice",
-                "construction",
-                "delivery",
-                "loudspeaker",
-                "paid2-boxes",
-                "pl201811-docs",
-                "pl201811-preza",
-                "pl201811-wheelbarrow",
-                "pl201811-toolkit",
-            ],
-            5         => [
+            _w('Travel & Vacations') => [
                 "hammok",
                 "plane",
                 "a-to-b",
@@ -131,7 +131,7 @@ class pocketlistsListIcon
                 "helicopter",
                 "cabin",
             ],
-            6         => [
+            _w('Nature & Outdoors') => [
                 "paid-sun",
                 "paid-umbrella",
                 "paid-rain",
@@ -157,7 +157,7 @@ class pocketlistsListIcon
                 "pl201811-solar",
                 "pl201811-plug",
             ],
-            7         => [
+            _w('Holidays & Events') => [
                 "pl201812-snowglobe",
                 "pl201812-giftcard",
                 "pl201812-snowwindow",
@@ -187,7 +187,7 @@ class pocketlistsListIcon
                 "pl201811-pumpkin",
                 "pl201811-cemetery",
             ],
-            8         => [
+            _w('School & Education') => [
                 "pl201811-school",
                 "pl201811-notebook",
                 "pl201811-books",
@@ -209,7 +209,7 @@ class pocketlistsListIcon
                 "glasses",
                 "schoolbus",
             ],
-            9         => [
+            _w('Hobbies & Games') => [
                 "paid3-goal",
                 "casino",
                 "puzzle",
@@ -231,7 +231,7 @@ class pocketlistsListIcon
                 "pl201811-speaker",
                 "pl201811-spray",
             ],
-            10        => [
+            _w('Food & Drink') => [
                 "paid-carrot",
                 "cheese",
                 "paid-chicken",
@@ -269,7 +269,7 @@ class pocketlistsListIcon
                 "pie",
                 "paid-starbucks",
             ],
-            11        => [
+            _w('Health & Medical') => [
                 "pl201811-pills",
                 "pl201811-herbal",
                 "pl201811-samples",
@@ -287,7 +287,7 @@ class pocketlistsListIcon
                 "water",
                 "paid-thermo",
             ],
-            12        => [
+            _w('Sports & Activities') => [
                 "first-prize-medal",
                 "award",
                 "paid-bicycle",
@@ -309,7 +309,7 @@ class pocketlistsListIcon
                 "pl201812-snowskates",
                 "pl201812-snowledge",
             ],
-            13        => [
+            _w('Toys & Babies') => [
                 "paid-baby",
                 "boy-child",
                 "paid-babybottle",
@@ -327,7 +327,7 @@ class pocketlistsListIcon
                 "paid-bear",
                 "poop",
             ],
-            14        => [
+            _w('Pets & Animals') => [
                 "cat",
                 "dog",
                 "collar",
@@ -349,7 +349,7 @@ class pocketlistsListIcon
                 "pl201811-penguin",
                 "pl201811-mouse",
             ],
-            15        => [
+            _w('Tech & Gadgets') => [
                 "pl201811-crypto",
                 "pl201811-bot",
                 "pl201811-trafficlight",
@@ -371,7 +371,7 @@ class pocketlistsListIcon
                 "twitter",
                 "facebook",
             ],
-            16        => [
+            _w('Signs & Symbols') => [
                 "translate",
                 "luck",
                 "achtung",
@@ -393,7 +393,7 @@ class pocketlistsListIcon
                 "shinto",
                 "om",
             ],
-            17        => [
+            _w('Flags') => [
                 "flag-abkhazia",
                 "flag-algeria",
                 "flag-argentina",

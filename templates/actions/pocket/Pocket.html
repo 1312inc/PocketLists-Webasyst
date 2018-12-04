@@ -14,7 +14,7 @@
                 <ul class="pl-lists">
                     {foreach $lists as $l}
                         <li data-pl-list-id="{$l->pk}">
-                            <a href="#/pocket/{$pocket->pk}/list/{$l->pk}/"{if $l->pk == $list_id} class="pl-is-selected"{/if}>
+                            <a href="#/pocket/{$pocket->pk}/list/{$l->pk}/"{if $l->pk == $list_id} class="pl-is-selected"{/if} title="{$l->name|escape}">
                                 <span class="count{if $l->calc_priority == 1} indicator green{elseif $l->calc_priority == 2} indicator yellow{elseif $l->calc_priority == 3} indicator red{/if}">{$l->count}</span>
                                 <i class="listicon36"
                                    style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l->icon|default:'li-list@2x.png'});"></i>

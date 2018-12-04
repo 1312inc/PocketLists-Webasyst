@@ -111,18 +111,19 @@ ul.pl-lists li a.pl-is-selected { background: rgba(0,0,0,0.02); }
 /* List icons
 ------------- */
 
-    i.listicon48 { background-repeat:no-repeat; height: 32px; width: 32px; background-size: 32px 32px; display:inline-block; text-indent:-9999px; text-decoration:none!important; }
-    * i.listicon48 { text-decoration:none!important; vertical-align:top; margin: -0.1em 0.25em 0 0; }
+i.listicon48 { background-repeat:no-repeat; height: 32px; width: 32px; background-size: 32px 32px; display:inline-block; text-indent:-9999px; text-decoration:none!important; }
+* i.listicon48 { text-decoration:none!important; vertical-align:top; margin: -0.1em 0.25em 0 0; }
 
-    ul.pl-icon-library { list-style: none; padding: 0; margin: 15px 0; height: 100%; }
-    ul.pl-icon-library li { float: left; margin: 0 7px 7px; padding: 0; }
-    ul.pl-icon-library li a { border: 4px solid transparent; border-radius: 4px; display: block; }
-    ul.pl-icon-library li a:hover { border-color: #eee;  }
-    ul.pl-icon-library li a.selected { border-color: #fdda3b; background: rgba(0,0,0,0.04); }
-    ul.pl-icon-library li i.listicon48 { background-size: 48px 48px; width: 48px; height: 48px; margin: 5px; }
+.pl-icon-library h5 { clear: left; padding-top: 1rem; }
+.pl-icon-library ul { list-style: none; padding: 0; margin: 15px 0; height: 100%; clear: left; }
+.pl-icon-library ul li { float: left; margin: 0 7px 7px; padding: 0; }
+.pl-icon-library ul li a { border: 4px solid transparent; border-radius: 4px; display: block; }
+.pl-icon-library ul li a:hover { border-color: #eee;  }
+.pl-icon-library ul li a.selected { border-color: #fdda3b; background: rgba(0,0,0,0.04); }
+.pl-icon-library ul li i.listicon48 { background-size: 48px 48px; width: 48px; height: 48px; margin: 5px; }
 
-    #pl-list-icon-change .value { width: 48px; text-align: center; }
-    #pl-list-icon-change i.listicon48 { background-size: 48px 48px; width: 48px; height: 48px; margin: 0; }
+#pl-list-icon-change .value { width: 48px; text-align: center; }
+#pl-list-icon-change i.listicon48 { background-size: 48px 48px; width: 48px; height: 48px; margin: 0; }
 
 /* Calendar
 ----------- */

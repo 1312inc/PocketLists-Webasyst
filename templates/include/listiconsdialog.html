@@ -6,7 +6,7 @@
                 <h1>{$list.name|default:'[`Choose list icon`]'|escape}</h1>
                 <div data-pl-icons-path="{$wa_url}wa-apps/pocketlists/img/listicons/" class="pl-icon-library">
                     {foreach $list_icons as $group => $icons}
-                        <div>{$group}</div>
+                        {if $group}<h5 class="heading">{$group}</h5>{/if}
                         <ul>
                             {foreach $icons as $group => $icon}
                                 <li>
