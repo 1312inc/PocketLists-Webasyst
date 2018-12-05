@@ -43,6 +43,7 @@ class pocketlistsNotifications
 
         $lm = new pocketlistsListModel();
         $im = new pocketlistsItemModel();
+        $pm = new pocketlistsPocketModel();
 
         $subject = 'string:{if !$complete}🚫{else}✅{/if} {str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:64}';
         // todo: refactor
@@ -56,7 +57,7 @@ class pocketlistsNotifications
                             (
                             ($item['list_id'] && pocketlistsRBAC::canAccessToList($item['list_id'], $user_id)) || ( // not from NULL-list
                                     $item['list_id'] == null && ( // OR from NULL-list,
-                                        isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id || // but assigned to this user
+                                        (isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id) || // but assigned to this user
                                         $item['contact_id'] == $user_id // OR created by user
                                     )
                                 )
@@ -79,7 +80,7 @@ class pocketlistsNotifications
                                 'variables' => array(
                                     'n' => $items_left,
                                     'list' => $list,
-                                    'list_url' => '#/list/' . $list['id'] . '/',
+                                    'list_url' => sprintf('#/pocket/%s/list/%s/', $list['pocket_id'], $list['id']),
                                     'complete' => $item['status'],
                                     'item' => $item
                                 ),
@@ -98,7 +99,7 @@ class pocketlistsNotifications
                             $item['complete_contact_id'] != $user_id && (
                                 ($item['list_id'] && pocketlistsRBAC::canAccessToList($item['list_id'], $user_id)) || ( // not from NULL-list
                                     $item['list_id'] == null && ( // OR from NULL-list,
-                                        isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id || // but assigned to this user
+                                        (isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id) || // but assigned to this user
                                         $item['contact_id'] == $user_id // OR created by user
                                     )
                                 )
@@ -121,7 +122,7 @@ class pocketlistsNotifications
                                 'variables' => array(
                                     'n' => $items_left,
                                     'list' => $list,
-                                    'list_url' => '#/list/' . $list['id'] . '/',
+                                    'list_url' => sprintf('#/pocket/%s/list/%s/', $list['pocket_id'], $list['id']),
                                     'complete' => $item['status'],
                                     'item' => $item
                                 ),
@@ -140,7 +141,7 @@ class pocketlistsNotifications
                             $item['complete_contact_id'] != $user_id && (
                                 ($item['list_id'] && pocketlistsRBAC::canAccessToList($item['list_id'], $user_id)) || ( // not from NULL-list
                                     $item['list_id'] == null && ( // OR from NULL-list,
-                                        isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id || // but assigned to this user
+                                        (isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id) || // but assigned to this user
                                         $item['contact_id'] == $user_id // OR created by user
                                     )
                                 )
@@ -163,7 +164,7 @@ class pocketlistsNotifications
                                 'variables' => array(
                                     'n' => $items_left,
                                     'list' => $list,
-                                    'list_url' => '#/list/' . $list['id'] . '/',
+                                    'list_url' => sprintf('#/pocket/%s/list/%s/', $list['pocket_id'], $list['id']),
                                     'complete' => $item['status'],
                                     'item' => $item
                                 ),
@@ -177,7 +178,7 @@ class pocketlistsNotifications
                         if ($item['complete_contact_id'] != $user_id && (
                                 ($item['list_id'] && pocketlistsRBAC::canAccessToList($item['list_id'], $user_id)) || ( // not from NULL-list
                                     $item['list_id'] == null && ( // OR from NULL-list,
-                                        isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id || // but assigned to this user
+                                        (isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id) || // but assigned to this user
                                         $item['contact_id'] == $user_id // OR created by user
                                     )
                                 )
@@ -203,7 +204,7 @@ class pocketlistsNotifications
                                 'variables' => array(
                                     'n' => $items_left,
                                     'list' => $list,
-                                    'list_url' => $list ? '#/list/' . $list['id'] . '/' : false,
+                                    'list_url' => $list ? sprintf('#/pocket/%s/list/%s/', $list['pocket_id'], $list['id']) : false,
                                     'complete' => $item['status'],
                                     'item' => $item
                                 ),
@@ -285,7 +286,7 @@ class pocketlistsNotifications
                                 'body' => wa()->getAppPath('templates/mails/newfavoritelistitem.html'),
                                 'variables' => array(
                                     'list_name' => $list ? $list['name'] : false,
-                                    'list_url' => '#/list/' . $list['id'] . '/',
+                                    'list_url' => $list ? sprintf('#/pocket/%s/list/%s/', $list['pocket_id'], $list['id']) : '',
                                     'items' => $filtered_items,
                                     'item' => reset($filtered_items)
                                 ),
@@ -300,7 +301,7 @@ class pocketlistsNotifications
                             (
                                 ($item['list_id'] && pocketlistsRBAC::canAccessToList($item['list_id'], $user_id)) || ( // not from NULL-list
                                     $item['list_id'] == null && ( // OR from NULL-list,
-                                        isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id || // but assigned to this user
+                                        (isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id) || // but assigned to this user
                                         $item['contact_id'] == $user_id // OR created by user
                                     )
                                 )
@@ -319,7 +320,7 @@ class pocketlistsNotifications
                                 'body' => wa()->getAppPath('templates/mails/newitem.html'),
                                 'variables' => array(
                                     'list_name' => $list ? $list['name'] : false,
-                                    'list_url' => '#/list/' . $list['id'] . '/',
+                                    'list_url' => $list ? sprintf('#/pocket/%s/list/%s/', $list['pocket_id'], $list['id']) : '',
                                     'items' => $filtered_items,
                                     'item' => reset($filtered_items)
                                 ),
@@ -403,7 +404,7 @@ class pocketlistsNotifications
             'name' => _w('Stream')
         );
         foreach ($users as $user_id => $user) { // foreach user
-            if ($comment['contact_id'] != $user_id) {
+//            if ($comment['contact_id'] != $user_id) {
                 switch ($user['setting']) {
                     case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_ITEM:
                         $im = new pocketlistsItemModel();
@@ -411,6 +412,7 @@ class pocketlistsNotifications
                         $im->prepareOutput($item);
                         if ($item['list_id']) {
                             $list_ = $lm->getById($item['list_id']);
+                            $pocket =
                             $list = array(
                                 'url' => wa(pocketlistsHelper::APP_ID)->getConfig()->getRootUrl(true) . '/' . wa(pocketlistsHelper::APP_ID)->getConfig()->getBackendUrl() . 'pocketlists/#/list/' . $list_['id'] . '/',
                                 'name' => pocketlistsNaturalInput::matchLinks($list_['name'])
@@ -419,7 +421,7 @@ class pocketlistsNotifications
                         if ($item['contact_id'] == $user_id && (
                                 ($item['list_id'] && pocketlistsRBAC::canAccessToList($item['list_id'], $user_id)) || ( // not from NULL-list
                                     $item['list_id'] == null && ( // OR from NULL-list,
-                                        isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id || // but assigned to this user
+                                        (isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id) || // but assigned to this user
                                         $item['contact_id'] == $user_id // OR created by user
                                     )
                                 )
@@ -456,7 +458,7 @@ class pocketlistsNotifications
                         if ($item['favorite'] && (
                                 ($item['list_id'] && pocketlistsRBAC::canAccessToList($item['list_id'], $user_id)) || ( // not from NULL-list
                                     $item['list_id'] == null && ( // OR from NULL-list,
-                                        isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id || // but assigned to this user
+                                        (isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id) || // but assigned to this user
                                         $item['contact_id'] == $user_id // OR created by user
                                     )
                                 )
@@ -493,7 +495,7 @@ class pocketlistsNotifications
                         if ($item && (
                             ($item['list_id'] && pocketlistsRBAC::canAccessToList($item['list_id'], $user_id)) || ( // not from NULL-list
                                     $item['list_id'] == null && ( // OR from NULL-list,
-                                        isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id || // but assigned to this user
+                                        (isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id) || // but assigned to this user
                                         $item['contact_id'] == $user_id // OR created by user
                                     )
                                 )
@@ -517,7 +519,7 @@ class pocketlistsNotifications
                         }
                         break;
                 }
-            }
+//            }
         }
     }
 
@@ -617,7 +619,7 @@ class pocketlistsNotifications
                         'body' => wa()->getAppPath('templates/mails/newlist.html'),
                         'variables' => array(
                             'list_name' => $list['name'],
-                            'list_url' => '#/list/' . $list['id'] . '/',
+                            'list_url' => sprintf('#/pocket/%s/list/%s/', $list['pocket_id'], $list['id']),
                             'by' => $create_contact_name,
                             'create_datetime' => $list['create_datetime'],
                         )
@@ -662,8 +664,10 @@ class pocketlistsNotifications
         }
 
         $absolute_backend_url = $backend_url ?
-            $backend_url : wa(pocketlistsHelper::APP_ID)->getConfig()->getRootUrl(true) . wa(pocketlistsHelper::APP_ID)->getConfig()->getBackendUrl();
-        $view->assign('backend_url', $absolute_backend_url . 'pocketlists/');
+            $backend_url
+            : wa(pocketlistsHelper::APP_ID)->getConfig()->getRootUrl(true) . wa(pocketlistsHelper::APP_ID)->getConfig()->getBackendUrl();
+
+        $view->assign('backend_url', rtrim($absolute_backend_url, '/') . '/pocketlists/');
         if (isset($data['variables'])) {
             foreach ($data['variables'] as $var_name => $var_value) {
                 $view->assign($var_name, $var_value);
