@@ -7,9 +7,6 @@
 #wa { overflow: hidden; }
 #wa-app { overflow: visible; }
 
-/* #wa.pl-keypress-shift { background: red; }
-#wa.pl-keypress-alt { background: green; } */
-
 .shadowed { background: #fff; }
 .pl-sidebar-core { margin-top: 17px; }
 .pl-sidebar-core .pl-online { position: absolute; left: 8px; top: 6px; }
@@ -70,26 +67,19 @@
 .pl-teammate-nolists-disclaimer { font-size: 0.9em; color: #aaa; text-align: center; }
 .pl-teammate-nolists-disclaimer a { color: #888; }
 
-.pl-droppable {
-    background-color: #fff;
-    -webkit-transition: background-color 0.4s;
-    -moz-transition: background-color 0.4s;
-    -ms-transition: background-color 0.4s;
-    -o-transition: background-color 0.4s;
-    transition: background-color 0.4s;
-}
-.pl-drop-success { background-color: greenyellow; }
-.pl-drop-fail { background-color: indianred; }
-
 ul.menu-v.with-icons i.icon10.online { margin-top: 3px; }
 ul.menu-v.with-icons i.icon16.color { margin: 2px 7px 1px -18px; width: 12px; height: 12px; }
-.highlighted-background { background-color: #fffaba !important; }
 
 .pl-team-showall-link { font-size: 0.95em; color: #aaa !important; }
 
 .indicator.red { background-color: #dd1713; }
 .indicator.yellow { background-color: #ffa71a; color: #fff; }
 .indicator.green { background-color: #64b320; color: #fff; }
+
+.pl-droppable { background-color: #fff; transition: background-color 0.4s; }
+.highlighted-background { background-color: #fffaba !important; }
+.pl-drop-success { background-color: greenyellow; }
+.pl-drop-fail { background-color: indianred; }
 
 /* Lists
 -------- */
@@ -213,26 +203,10 @@ label.pl-done-label i.icon16.userpic20 {
 .pl-welcome.top-padded { padding-top: 70px; }
 .pl-welcome.bottom-padded { padding-bottom: 40px; }
 
-#pl-item-add { display: none; }
-#pl-item-add-wrapper-hover {
-    display: NONE !important; /* TODO: replace with ALT keypress */
-    max-height: 10px;
-    height: 4px;
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -1px;
-    background: #fdda3b;
-    margin: 0;
-    cursor: pointer;
-    z-index: 3;
-    /* width: 100%; */
-}
-.pl-item-wrapper:hover #pl-item-add-wrapper-hover {
-    max-height: 99px;
-    transition: max-height 0.25s ease-in;
-    transition-delay: 0.4s;
-}
+/* #pl-item-add { display: none; } */
+
+.pl-inner-item-add-placeholder { opacity: 0; height: 0; background: #ddd; margin: 0; cursor: pointer; z-index: 3; transition: 0.2s; }
+#wa.pl-keypress-alt .pl-item-wrapper:hover .pl-inner-item-add-placeholder { opacity: 1; height: 10px; }
 
 input#pl-new-list-input,
 #pl-item-add textarea,
@@ -240,7 +214,6 @@ input#pl-new-list-input,
     background: transparent;
     min-width: 350px;
     width: 100%;
-    /* white-space: nowrap; */
     height: 1.3em;
     line-height: 1.3em;
     resize: none;
