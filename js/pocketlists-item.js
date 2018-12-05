@@ -227,13 +227,25 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     $list_count = $('#pl-lists').find('[data-pl-list-id="' + o.list.list_id + '"] span.count');
 
                 var priority_class = {
-                        'green': 1, 'pl-green': 1, 'pl-due-tomorrow': 1,
-                        'yellow': 2, 'pl-yellow': 2, 'pl-due-today': 2,
-                        'red': 3, 'pl-red': 3, 'pl-due-overdue': 3,
-                        'none': 0, 'pl-none': 0, 'pl-due-someday': 0, 'undefined': 0
+                        'green': 1,
+                        'pl-green': 1,
+                        'pl-due-tomorrow': 1,
+                        'yellow': 2,
+                        'pl-yellow': 2,
+                        'pl-due-today': 2,
+                        'red': 3,
+                        'pl-red': 3,
+                        'pl-due-overdue': 3,
+                        'none': 0,
+                        'pl-none': 0,
+                        'pl-due-someday': 0,
+                        'undefined': 0
                     },
                     class_priority = {
-                        1: ' indicator green', 2: ' indicator yellow', 3: ' indicator red', 0: ''
+                        1: ' indicator green',
+                        2: ' indicator yellow',
+                        3: ' indicator red',
+                        0: ''
                     };
 
                 // item moved to another
@@ -308,21 +320,9 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         var data = [];
         $items_wrapper.find(item_selector).each(function (i) {
             var $this = $(this),
-                color = $this.find('.pl-done').length ? $this.find('.pl-done').attr('class').match(/pl-done\s(pl-.*)/) : null,
-                priority = 0;
-            if (color && color.length > 0) {
-                switch (color[1]) {
-                    case 'pl-red':
-                        priority = 3;
-                        break;
-                    case 'pl-yellow':
-                        priority = 2;
-                        break;
-                    case 'pl-green':
-                        priority = 1;
-                        break;
-                }
-            }
+                $pldone = $this.find('.pl-done'),
+                priority = $pldone.length ? parseInt($pldone.data('pl2-item-priority')) : 0;
+
             data.push({
                 id: $this.data('id'),
                 parent_id: $this.data('parent-id'),
@@ -712,17 +712,17 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         $textarea.autocomplete({
             // html:true,
             // autoFocus: true,
-            source: function( request, response ) {
+            source: function (request, response) {
                 var term = canShowAutocomplete();
 
                 if (term === '') {
                     return response([{
                         'value': '',
-                        'label': '<em>'+$_('Find order by ID') + '</em>'
+                        'label': '<em>' + $_('Find order by ID') + '</em>'
                     }]);
                 }
 
-                var plresponse = function(data) {
+                var plresponse = function (data) {
                     if (data.status != 'ok') {
                         return [];
                     }
@@ -756,11 +756,11 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     }, plresponse);
                 }
             },
-            focus: function() {
+            focus: function () {
                 // prevent value inserted on focus
                 return false;
             },
-            select: function( event, ui ) {
+            select: function (event, ui) {
                 var linked = $textarea.data('pl2-linked-entities') || {},
                     link = ui.item.data,
                     hash = link.model.app + link.model.entity_type + link.model.entity_id;
@@ -779,7 +779,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
                 return false;
             },
-            open: function(){
+            open: function () {
                 $textarea.autocomplete('widget').css('z-index', 100);
                 return false;
             },
@@ -787,7 +787,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         });
 
         // old jq ui hack
-        if ($textarea.data( "ui-autocomplete") !== undefined) {
+        if ($textarea.data("ui-autocomplete") !== undefined) {
             $textarea.data("ui-autocomplete")._renderItem = function (ul, item) {
                 return $("<li>")
                     .append(item.label)
@@ -832,7 +832,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
         var init = function () {
             // if (!o.standAloneItemAdd) {
-                $new_item_wrapper.detach();
+            $new_item_wrapper.detach();
             // }
 
             var show_new_item_wrapper = function () {
@@ -1302,7 +1302,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         };
 
         var updateCommentsCount = function () {
-            $list_items_wrapper.find('.pl-item-wrapper[data-id="'+id+'"] .pl-comment-count').html('<i class="icon16 pl comments"></i>' + countComments());
+            $list_items_wrapper.find('.pl-item-wrapper[data-id="' + id + '"] .pl-comment-count').html('<i class="icon16 pl comments"></i>' + countComments());
         };
 
         var addComment = function (data) {
