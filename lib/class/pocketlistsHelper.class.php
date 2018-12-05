@@ -291,4 +291,52 @@ class pocketlistsHelper
         }
         return $contacts;
     }
+
+    /**
+     * @param $fullseconds
+     *
+     * @return string
+     */
+    public static function getDatetimeBySeconds($fullseconds)
+    {
+        $hour = 60 * 60;
+        $day = $hour * 24;
+        $week = $day * 7;
+        $month = $day * 31;
+        $year = $month * 12;
+
+        if ($fullseconds < 60) {
+            return sprintf(_w('%ds'), $fullseconds);
+        }
+
+        if ($fullseconds < 60 * 60) {
+            return sprintf(_w('%dm'), round(($fullseconds) / 60));
+        }
+
+        $minutes = round(($fullseconds / 60) % 60);
+        $hours = round(($fullseconds / $hour) % 24);
+        $days = round(($fullseconds / $day) % 31);
+        $months = round(($fullseconds / $month) % 12);
+        $years = round(($fullseconds / $year));
+
+        if ($fullseconds < $day) {
+            return sprintf(_w('%dh %dm'), $hours, $minutes);
+        }
+
+        if ($fullseconds < $week) {
+            return sprintf(_w('%dd %dh'), $days, $hours);
+        }
+
+        if ($fullseconds < $month) {
+            return sprintf(_w('%dd'), $days);
+        }
+
+        if ($fullseconds < $day * 365) {
+            return sprintf(_w('%dm %dd'), $months, $days);
+        }
+
+        $yearDays = round(($fullseconds / $day) % 365);
+
+        return sprintf(_w('%dy %dd'), $years, $yearDays);
+    }
 }

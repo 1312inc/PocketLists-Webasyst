@@ -27,6 +27,7 @@
  * @property int    $key_list_id
  * @property array  $chat
  * @property array  $attachments
+ * @property string $age_time
  */
 class pocketlistsItemModel extends kmModelExt
 {
@@ -691,6 +692,9 @@ class pocketlistsItemModel extends kmModelExt
 
             $this->addPriorityData($item);
 
+            $age_time = time() - max(strtotime($item['update_datetime']), strtotime($item['create_datetime']));
+            $item['age_time'] = $age_time < 60 ? '' : pocketlistsHelper::getDatetimeBySeconds($age_time);
+
             if (!$edit) {
                 $this->prepareOutput($item);
             }
@@ -1017,7 +1021,7 @@ class pocketlistsItemModel extends kmModelExt
     /**
      * @param string|bool $app
      * @param string|bool $entity_type
-     * @param int|bool $entity_id
+     * @param int|bool    $entity_id
      *
      * @return array
      */

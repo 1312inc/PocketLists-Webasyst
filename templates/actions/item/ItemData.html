@@ -38,7 +38,8 @@
 
                 <span class="pl-lastaction-datetime hint">
                     {* TODO: replace with timediff *}
-                    {if !empty($item.update_datetime)}{$item.update_datetime|wa_date:'humandatetime'}{else}{$item.create_datetime|wa_date:'humandatetime'}{/if}
+                    {$item.age_time}
+                    {*{if !empty($item.update_datetime)}{$item.update_datetime|wa_date:'humandatetime'}{else}{$item.create_datetime|wa_date:'humandatetime'}{/if}*}
                 </span>
 
             {/if}
