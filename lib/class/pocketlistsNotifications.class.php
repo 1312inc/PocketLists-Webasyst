@@ -444,9 +444,11 @@ class pocketlistsNotifications
         $comment_user = new waUser($comment['contact_id']);
         $lm = new pocketlistsListModel();
         $list = [
-            'url'  => wa(pocketlistsHelper::APP_ID)->getConfig()->getRootUrl(true).'/'.wa(
-                    pocketlistsHelper::APP_ID
-                )->getConfig()->getBackendUrl().'pocketlists/#/todo/',
+            'url' => sprintf(
+                '%s/%s/pocketlists/#/pocket/todo/',
+                wa(pocketlistsHelper::APP_ID)->getConfig()->getRootUrl(true),
+                wa(pocketlistsHelper::APP_ID)->getConfig()->getBackendUrl()
+            ),
             'name' => _w('Stream'),
         ];
         foreach ($users as $user_id => $user) { // foreach user
@@ -458,11 +460,14 @@ class pocketlistsNotifications
                     $im->prepareOutput($item);
                     if ($item['list_id']) {
                         $list_ = $lm->getById($item['list_id']);
-                        $pocket =
                         $list = [
-                            'url'  => wa(pocketlistsHelper::APP_ID)->getConfig()->getRootUrl(true).'/'.wa(
-                                    pocketlistsHelper::APP_ID
-                                )->getConfig()->getBackendUrl().'pocketlists/#/list/'.$list_['id'].'/',
+                            'url' => sprintf(
+                                '%s/%s/pocketlists/#/pocket/%s/list/%s/',
+                                wa(pocketlistsHelper::APP_ID)->getConfig()->getRootUrl(true),
+                                wa(pocketlistsHelper::APP_ID)->getConfig()->getBackendUrl(),
+                                $list_['pocket_id'],
+                                $list_['id']
+                            ),
                             'name' => pocketlistsNaturalInput::matchLinks($list_['name']),
                         ];
                     }
@@ -502,7 +507,11 @@ class pocketlistsNotifications
                     if ($item['list_id']) {
                         $list_ = $lm->getById($item['list_id']);
                         $list = [
-                            'url'  => '#/list/'.$list_['id'].'/',
+                            'url' => sprintf(
+                                '#/pocket/%s/list/%s/',
+                                $list_['pocket_id'],
+                                $list_['id']
+                            ),
                             'name' => pocketlistsNaturalInput::matchLinks($list_['name']),
                         ];
                     }
@@ -542,7 +551,11 @@ class pocketlistsNotifications
                     if ($item['list_id']) {
                         $list_ = $lm->getById($item['list_id']);
                         $list = [
-                            'url'  => '#/list/'.$list_['id'].'/',
+                            'url' => sprintf(
+                                '#/pocket/%s/list/%s/',
+                                $list_['pocket_id'],
+                                $list_['id']
+                            ),
                             'name' => pocketlistsNaturalInput::matchLinks($list_['name']),
                         ];
                     }
