@@ -266,6 +266,7 @@ input#pl-new-list-input:focus,
 .pl-list-access .profile img { width: 32px; height: 32px; }
 .pl-list-access .profile .hint { line-height: 1.3em; }
 
+.pl-due { font-size: 13px; font-weight: bold; margin-top: 3px; display: block; }
 .pl-due-overdue { color: #dd1713; }
 .pl-due-today { color: #ffa71a; }
 .pl-due-tomorrow { color: #64b320; }
@@ -297,19 +298,17 @@ input#pl-new-list-input:focus,
 
 .pl-item .pl-item-list-name { font-size: 0.8em; color: rgba(0,0,0,0.4); font-weight: bold; padding-left: 49px; margin-bottom: 0px; }
 .pl-item .pl-item-list-name.pl-dark-none-label { color: #aaa !important; }
-/* .pl-item .pl-assignee { font-size: 0.8em; font-style: italic; color: rgba(0,0,0,0.4); font-weight: bold; padding-left: 49px; margin-bottom: 3px; } */
 .pl-item .pl-meta { display: inline-block; float: right; margin: 0 0 0 20px; padding: 4px 16px 16px; position: relative; z-index: 1; }
 .pl-item .pl-favorite { display: inline-block; float: right; margin-left: 3px; margin-top: -6px; }
-/* .pl-item .pl-favorite { float: right; } */
 .pl-item .pl-userpic { display: inline-block; float: right; margin-left: 9px; }
 .pl-item .pl-userpic .pl-assignee-arrow { color: #ccc; font-weight: bold; font-size: 11px; position: relative; top: -1px; }
 .pl-item .pl-userpic i.icon16 { margin-left: 2px; }
 .pl-item .pl-comment { opacity: 0; margin-top: -4px; display: inline-block; float: right; }
 .pl-item .pl-comment.pl-comment-count { opacity: 1; color: #0071e2; font-weight: bold; background: rgba(0,0,0,0.07); margin-left: 4px !important; border-radius: 13px; padding: 3px 7px 3px 6px; font-size: 0.9em; margin-top: -3px; margin-right: 7px; }
 .pl-item .pl-comment.pl-comment-count i.icon16 { margin-top: -1px; margin-right: 4px; }
-/* .pl-item .pl-item .pl-comment { margin-left: 1px; } */
 .pl-item .pl-lastaction-datetime { float: right; }
 .pl-item .pl-item-name { font-weight: 500; font-size: 15px; }
+.pl-item .pl-item-note { font-size: 13px; line-height: 17px; color: #888; margin-top: 5px; }
 .pl-item p.hint { margin-bottom: 0; margin-top: 4px; line-height: 1.2em; color: rgba(0,0,0,0.3); }
 .pl-item i.icon10 { margin-top: 5px; }
 .pl-item .pl-item-drag-handle { display: none; position: absolute; top: 4px; bottom: 4px; left: 0; width: 6px; padding: 0 4px; background: url('../img/pl-drag-handle.png') repeat-y; background-size: 14px 20px; opacity: 0.1; z-index: 3; cursor: move; }
@@ -357,7 +356,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#12000000', e
 .pl-attachments { padding: 15px 0 0; margin: 0; }
 .pl-attachments li { display: inline-block !important; padding-top: 0px !important; margin-bottom: 13px !important; list-style: none; word-break: break-all; }
 .pl-attachments li a { display: block !important; }
-.pl-attachments li img { max-width: 100%; max-height: 200px; margin-right: 10px; border-radius: 3px; }
+.pl-attachments li img { max-width: 300px; max-height: 200px; margin-right: 10px; border-radius: 3px; }
 .pl-attachments li i.icon16 { margin-left: -4px; }
 .pl-attachments li label { background: #eee; border-radius: 10px; padding: 4px 6px; font-size: 0.9em; color: #aaa; }
 .pl-attachments li label input[type="checkbox"] { margin-top: -4px; }
