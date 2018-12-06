@@ -28,7 +28,8 @@ class kmModelExt extends waModel implements ArrayAccess, JsonSerializable
     /**
      * @var array
      */
-    protected static $cached = [];
+    protected static $cached    = [];
+    protected static $skipCache = false;
 
     /**
      * kmModelExt constructor.
@@ -60,11 +61,28 @@ class kmModelExt extends waModel implements ArrayAccess, JsonSerializable
         $this->init();
     }
 
+    /**
+     * @return $this
+     */
+    public function skipCache()
+    {
+        self::$skipCache = true;
+
+        return $this;
+    }
+
+    /**
+     * @param string   $key
+     * @param callable $callable
+     *
+     * @return mixed
+     */
     public function getFromCache($key, $callable)
     {
         $key = md5($key);
-        if (!array_key_exists($key, self::$cached)) {
+        if (!array_key_exists($key, self::$cached) || self::$skipCache === true) {
             self::$cached[$key] = $callable();
+            self::$skipCache = false;
         }
 
         return self::$cached[$key];

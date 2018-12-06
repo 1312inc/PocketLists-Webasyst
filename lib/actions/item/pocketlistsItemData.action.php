@@ -1,43 +1,64 @@
 <?php
 
+/**
+ * Class pocketlistsItemDataAction
+ */
 class pocketlistsItemDataAction extends waViewAction
 {
+    /**
+     * @throws waDbException
+     * @throws waException
+     */
     public function execute()
     {
         if (waRequest::getMethod() == 'post') {
-            $item_new_data = waRequest::post('item', array(), waRequest::TYPE_ARRAY);
+            $item_new_data = waRequest::post('item', [], waRequest::TYPE_ARRAY);
             $im = new pocketlistsItemModel();
             $item_from_db = $im->getById($item_new_data['id']);
             if ($item_new_data && $item_from_db) {
                 $item_new_data['id'] = $item_from_db['id'];
-                $item_new_data['list_id'] = $item_new_data['list_id'] === "" ?
-                    null : $item_new_data['list_id']; // do not update list_id for items from NULL-list
+                $item_new_data['list_id'] = $item_new_data['list_id'] === ''
+                    ? null
+                    : $item_new_data['list_id']; // do not update list_id for items from NULL-list
 
                 // move item's children to another list
-                $move_ids = array();
+                $move_ids = [];
                 if ($item_from_db['has_children'] && $item_from_db['list_id'] != $item_new_data['list_id']) {
                     $tree = $im->getAllByList($item_from_db['list_id'], true);
+
                     pocketlistsHelper::getItemChildIds($item_new_data['id'], $tree[$item_new_data['id']], $move_ids);
-                    $im->updateById($move_ids, array(
-                        'list_id' =>  $item_new_data['list_id'],
-                        'update_datetime' => date("Y-m-d H:i:s")
-                    ));
+
+                    $im->updateById(
+                        $move_ids,
+                        [
+                            'list_id'         => $item_new_data['list_id'],
+                            'update_datetime' => date("Y-m-d H:i:s"),
+                        ]
+                    );
                 }
 
                 pocketlistsHelper::getDueDatetime($item_new_data);
-                $item_new_data['assigned_contact_id'] = !empty($item_new_data['assigned_contact_id']) ? (int) $item_new_data['assigned_contact_id'] : null;
+                $item_new_data['assigned_contact_id'] = !empty($item_new_data['assigned_contact_id'])
+                    ? (int)$item_new_data['assigned_contact_id']
+                    : null;
                 $item_new_data['update_datetime'] = date("Y-m-d H:i:s");
                 $im->addCalculatedPriorityData($item_new_data['id'], $item_new_data);
 
                 if ($item_new_data['assigned_contact_id']) {
-                    $this->logAction(pocketlistsLogAction::ITEM_ASSIGN, array(
-                        'list_id' => $item_new_data['list_id'],
-                        'assigned_to' => $item_new_data['assigned_contact_id']
-                    ));
+                    $this->logAction(
+                        pocketlistsLogAction::ITEM_ASSIGN,
+                        [
+                            'list_id'     => $item_new_data['list_id'],
+                            'assigned_to' => $item_new_data['assigned_contact_id'],
+                        ]
+                    );
                 }
 
-                $this->view->assign('pl2_attachments_path', wa()->getDataUrl('attachments/', true, pocketlistsHelper::APP_ID));
-                $item = $im->getById($item_new_data['id']);
+                $this->view->assign(
+                    'pl2_attachments_path',
+                    wa()->getDataUrl('attachments/', true, pocketlistsHelper::APP_ID)
+                );
+                $item = $im->skipCache()->getById($item_new_data['id']);
                 $item = $im->extendItemData($item);
                 $this->view->assign('item', $item);
             }
@@ -48,7 +69,7 @@ class pocketlistsItemDataAction extends waViewAction
     {
         $path_public = wa()->getDataPath('attachments/'.$item['id'].'/', true, pocketlistsHelper::APP_ID);
         if (is_writable($path_public)) {
-            $errors = array();
+            $errors = [];
             $f = waRequest::file('attachment');
             $name = $f->name;
             if ($f->uploaded()) {
@@ -74,11 +95,13 @@ class pocketlistsItemDataAction extends waViewAction
                 }
                 if ($f->moveTo($path_public, $name)) {
                     $pa = new pocketlistsAttachmentModel();
-                    $pa->insert(array(
-                        'item_id' => $item['id'],
-                        'filename' => $name,
-                        'filetype' => $type
-                    ));
+                    $pa->insert(
+                        [
+                            'item_id'  => $item['id'],
+                            'filename' => $name,
+                            'filetype' => $type,
+                        ]
+                    );
                 } else {
                     $errors[] = sprintf(_w('Failed to upload file %s.'), $f->name);
                 }
