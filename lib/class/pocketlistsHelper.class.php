@@ -48,13 +48,13 @@ class pocketlistsHelper
 
         if (!empty($due_date) || !empty($due_datetime)) {
             if (!empty($due_datetime) && $now > strtotime($due_datetime)) { // overdue datetime
-                $due_status = 3;
+                $due_status = pocketlistsItemModel::PRIORITY_RED;
             } elseif (strtotime(date("Y-m-d")) > strtotime($due_date)) { // overdue date
-                $due_status = 3;
+                $due_status = pocketlistsItemModel::PRIORITY_RED;
             } elseif ($due_date == date("Y-m-d")) { // today
-                $due_status = 2;
+                $due_status = pocketlistsItemModel::PRIORITY_YELLOW;
             } elseif ($due_date == date("Y-m-d", $now + 60 * 60 * 24)) { // tomorrow
-                $due_status = 1;
+                $due_status = pocketlistsItemModel::PRIORITY_GREEN;
             }
         }
 
