@@ -24,6 +24,11 @@ class pocketlistsItemCompleteController extends pocketlistsComplete
 
             // log this action
             foreach ($this->completed_items as $complete_item) {
+                // 3.204: self tasks @timeline
+                if ($complete_item['list_id'] == null) {
+                    continue;
+                }
+
                 $this->logAction(pocketlistsLogAction::ITEM_COMPLETED, array('item_id' => $complete_item['id']));
             }
 
