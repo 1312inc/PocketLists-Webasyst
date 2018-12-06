@@ -1436,7 +1436,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 .on('click', '.pl-item-details-cancel', function (e) {
                     e.preventDefault();
 
-                    hideItemDetails();
+                    hideItemComments();
                 })
                 .on('keydown', '.pl-chat .pl-reply textarea', function (e) {
                     var $this = $(this);
