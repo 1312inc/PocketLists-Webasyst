@@ -1012,12 +1012,13 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             $wrapper;
 
         var hideItemDetails = function () {
-            $wrapper.animate({
-                'right': '-300px'
-            }, 200, function () {
+            $wrapper.slideToggle(200, function () {
                 $wrapper.hide().empty()
             });
+            $wrapper.closest('.pl-item').find('.pl-select-label').slideToggle(200);
+
             id = 0;
+
             $list_items_wrapper.trigger('deselectItem.pl2');
         };
 
@@ -1621,6 +1622,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
                 ItemDetails.init($itemDetailsWrapper);
                 ItemDetails.trigger('show.pl2', [parseInt($item.data('id'))]);
+                $item.find('.pl-select-label').slideToggle(200);
                 selectItem($item);
             })
             .on('click', '.pl-comment', function (e) {
