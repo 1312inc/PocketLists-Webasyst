@@ -66,6 +66,7 @@
                     {include '../item/Item.html' items=$items_done}
                 {/if}
                 </ul>
+                <i class="icon16 loading lazyloading" style="display: none;"></i>
             </section>
 
             <a href="#" id="pl-complete-log-link" class="inline-link gray" {if empty($items_done)}style="display:none;"{/if}><b><i>{_w('Show all %d completed to-do', 'Show all %d completed to-dos', $count_items_done)}</i></b></a>
@@ -90,17 +91,64 @@
 </html>
 {else}
 <script type="text/javascript">
-    new $.pocketlists.Items($('#pl-list-items'), {
-        enableChangeLevel: false,
-        archive: {if $archive}true{else}false{/if},
-        list: new $.pocketlists.List(
+    'use strict';
+    (function () {
+        new $.pocketlists.Items($('#pl-list-items'), {
+            enableChangeLevel: false,
+            archive: {if $archive}true{else}false{/if},
+            list: new $.pocketlists.List(
                 $('.pl-list-title'),
                 {
                     archive: {if $archive}true{else}false{/if}
                 }),
-        current_user_id: {$wa->user()->get('id')},
-        fileUpload: {$fileupload}
-    });
-    $.pocketlists.setTitle('{if isset($list.name)}{$list.name|default:" "|escape}{else}[`New list`]{/if}');
+            current_user_id: {$wa->user()->get('id')},
+            fileUpload: {$fileupload}
+        });
+        $.pocketlists.setTitle('{if isset($list.name)}{$list.name|default:" "|escape}{else}[`New list`]{/if}');
+
+
+        var $loading = $('#pl-list-content .lazyloading'),
+            is_bottom = false,
+            request_in_action = false,
+            prev_scroll_pos = 0,
+            offset = 1,
+            this_is_the_end = false,
+            html_selector = '#pl-complete-log > .menu-v';
+
+        $(window).on('scroll.pl2', function () {
+            if (this_is_the_end) {
+                return;
+            }
+
+            var scroll_pos = $(document).scrollTop() + $(window).outerHeight(),
+                doc_h = $(document).outerHeight() - 20;
+
+            if (prev_scroll_pos < scroll_pos) {
+                if (!is_bottom && scroll_pos >= doc_h) {
+                    is_bottom = true;
+                    if (request_in_action) {
+                        return;
+                    }
+                    $loading.show();
+                    request_in_action = true;
+
+                    $.get('?module=list&action=lazyDoneItems&offset=' + offset + '&id={$list.id}', function (html) {
+                        $loading.hide();
+                        html = $(html).find(html_selector).html();
+                        if ($.trim(html).length) {
+                            offset++;
+                        } else {
+                            this_is_the_end = true;
+                        }
+                        $(html_selector).append(html);
+                        request_in_action = false;
+                    });
+                } else {
+                    is_bottom = false;
+                }
+            }
+            prev_scroll_pos = scroll_pos;
+        });
+    }())
 </script>
 {/if}

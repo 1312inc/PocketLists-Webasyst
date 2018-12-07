@@ -567,15 +567,19 @@ class pocketlistsItemModel extends kmModelExt
 
     /**
      * @param      $list_id
+     * @param int  $offset
+     * @param int  $limit
      * @param bool $tree
      *
      * @return array|mixed
      */
-    public function getDoneByList($list_id, $tree = true)
+    public function getDoneByList($list_id, $offset = 0, $limit = 10, $tree = true)
     {
         $sql = $this->getQuery()."
                 WHERE i.list_id = i:lid AND i.status > 0
-                ORDER BY i.complete_datetime DESC, i.parent_id, i.sort ASC, i.id DESC";
+                ORDER BY i.complete_datetime DESC, i.parent_id, i.sort ASC, i.id DESC
+                LIMIT {$limit}
+                OFFSET {$offset}";
 
         return $this->getItems($sql, $list_id, $tree);
     }
@@ -682,6 +686,8 @@ class pocketlistsItemModel extends kmModelExt
             if ($item['contact_id']) {
                 $user = new waContact($item['contact_id']);
                 $item['contact'] = pocketlistsHelper::getContactData($user);
+            } else {
+                $item['contact'] = pocketlistsHelper::getContactData(new waContact());
             }
             if ($item['assigned_contact_id']) {
                 $user = new waContact($item['assigned_contact_id']);
@@ -994,6 +1000,7 @@ class pocketlistsItemModel extends kmModelExt
                     OR l.archived IS NULL
                   )
                   AND {$list_sql}
+                GROUP BY id
                 ORDER BY
                   i.status,
                   (i.complete_datetime IS NULL), i.complete_datetime DESC";
