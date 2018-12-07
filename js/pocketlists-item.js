@@ -578,7 +578,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         }
     };
 
-    var moveToList = function (list_id, drop) {
+    var moveToList = function (list_id, toList) {
         if (request_in_action) {
             return;
         }
@@ -594,12 +594,29 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             },
             function (r) {
                 // $.pocketlists.$loading.removeAttr('style').remove();
+                var $toList = $(toList);
+                var currentCount = parseInt($toList.find('.count').text());
                 if (r.status === 'ok') {
                     $this.hide(200, function () {
                         $this.remove();
                     });
+                    $toList.addClass('pl-drop-success');
+                    if (o.list && o.list.list_id) {
+                        var $fromList = $toList.parent().find('[data-pl-list-id="' + o.list.list_id + '"]'),
+                            currentCountOld = parseInt($fromList.find('.count').text());
+
+                        $toList.find('.count').text(currentCount + 1);
+                        $fromList.find('.count').text(currentCountOld - 1);
+                    }
+                } else {
+                    $this.addClass('pl-drop-fail');
                 }
-                $(drop).trigger('dropActionDone.pl2', {result: r.status === 'ok'});
+                // $(drop).trigger('dropActionDone.pl2', {result: r.status === 'ok'});
+
+                setTimeout(function () {
+                    $toList.removeClass('pl-drop-success pl-drop-fail');
+                }, 500);
+
                 request_in_action = false;
             },
             'json'
