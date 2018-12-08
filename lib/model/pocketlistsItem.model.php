@@ -293,6 +293,7 @@ class pocketlistsItemModel extends kmModelExt
                   ({$or_sql}) 
                   AND 
                   {$and_sql}
+                GROUP BY i.id
                 ORDER BY
                   i.status,
                   (i.complete_datetime IS NULL), i.complete_datetime DESC";

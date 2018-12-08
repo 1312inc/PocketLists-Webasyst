@@ -444,8 +444,8 @@ class pocketlistsNotifications
         $comment_user = new waUser($comment['contact_id']);
         $lm = new pocketlistsListModel();
         $list = [
-            'url' => sprintf(
-                '%s/%s/pocketlists/#/pocket/todo/',
+            'url'  => sprintf(
+                '%s%s/pocketlists/#/pocket/todo/',
                 wa(pocketlistsHelper::APP_ID)->getConfig()->getRootUrl(true),
                 wa(pocketlistsHelper::APP_ID)->getConfig()->getBackendUrl()
             ),
@@ -461,10 +461,8 @@ class pocketlistsNotifications
                     if ($item['list_id']) {
                         $list_ = $lm->getById($item['list_id']);
                         $list = [
-                            'url' => sprintf(
-                                '%s/%s/pocketlists/#/pocket/%s/list/%s/',
-                                wa(pocketlistsHelper::APP_ID)->getConfig()->getRootUrl(true),
-                                wa(pocketlistsHelper::APP_ID)->getConfig()->getBackendUrl(),
+                            'url'  => sprintf(
+                                '#/pocket/%s/list/%s/',
                                 $list_['pocket_id'],
                                 $list_['id']
                             ),
@@ -507,7 +505,7 @@ class pocketlistsNotifications
                     if ($item['list_id']) {
                         $list_ = $lm->getById($item['list_id']);
                         $list = [
-                            'url' => sprintf(
+                            'url'  => sprintf(
                                 '#/pocket/%s/list/%s/',
                                 $list_['pocket_id'],
                                 $list_['id']
@@ -551,7 +549,7 @@ class pocketlistsNotifications
                     if ($item['list_id']) {
                         $list_ = $lm->getById($item['list_id']);
                         $list = [
-                            'url' => sprintf(
+                            'url'  => sprintf(
                                 '#/pocket/%s/list/%s/',
                                 $list_['pocket_id'],
                                 $list_['id']
@@ -740,8 +738,8 @@ class pocketlistsNotifications
         $absolute_backend_url = $backend_url
             ?
             $backend_url
-            : wa(pocketlistsHelper::APP_ID)->getConfig()->getRootUrl(true).wa(pocketlistsHelper::APP_ID)->getConfig(
-            )->getBackendUrl();
+            : wa(pocketlistsHelper::APP_ID)->getConfig()->getRootUrl(true)
+                .wa(pocketlistsHelper::APP_ID)->getConfig()->getBackendUrl();
 
         $view->assign('backend_url', rtrim($absolute_backend_url, '/').'/pocketlists/');
         if (isset($data['variables'])) {
