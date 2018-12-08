@@ -703,8 +703,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 return false;
             }
 
-            if (!/(^| )@/.test(itemText)) {
-                log('no @');
+            if (!/(^| )(@|#|№)/.test(itemText)) {
+                log('no @|#|№');
 
                 return false;
             }
@@ -712,7 +712,11 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             // var cursorPos = doGetCaretPosition($textarea[0]);
             var cursorPos = $textarea.prop("selectionStart");
 
-            for (var i = cursorPos; itemText[i] != '@' && i >= 0; i--) {
+            var equalTrigger = function(text) {
+                return text === '@' || text === '#' || text === '№';
+            };
+
+            for (var i = cursorPos; !equalTrigger(itemText[i]) && i >= 0; i--) {
                 if (itemText[i] == ' ') {
                     return false;
                 }
