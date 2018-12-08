@@ -149,12 +149,6 @@ class pocketlistsItemCreateAction extends waViewAction
 
                 // log this action
                 foreach ($items as $item) {
-                    if (!$list && !$assign_contact) {
-                        $this->logAction(pocketlistsLogAction::NEW_SELF_ITEM, array(
-                            'item_id' => $item['id']
-                        ));
-                    }
-
                     if ($assign_contact) {
                         pocketlistsNotifications::notifyAboutNewAssign($item);
 
