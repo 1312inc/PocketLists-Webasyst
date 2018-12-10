@@ -320,23 +320,23 @@ class pocketlistsHelper
         $years = round(($fullseconds / $year));
 
         if ($fullseconds < $day) {
-            return sprintf(_w('%dh %dm'), $hours, $minutes);
+            return sprintf(_w('%d h'), $hours, $minutes);
         }
 
         if ($fullseconds < $week) {
-            return sprintf(_w('%dd %dh'), $days, $hours);
+            return sprintf(_w('%d d'), $days, $hours);
         }
 
         if ($fullseconds < $month) {
-            return sprintf(_w('%dd'), $days);
+            return sprintf(_w('%d d'), $days);
         }
 
         if ($fullseconds < $day * 365) {
-            return sprintf(_w('%dm %dd'), $months, $days);
+            return sprintf(_w('%d m'), $months, $days);
         }
 
         $yearDays = round(($fullseconds / $day) % 365);
 
-        return sprintf(_w('%dy %dd'), $years, $yearDays);
+        return sprintf(_w('%d y'), $years, $yearDays);
     }
 }

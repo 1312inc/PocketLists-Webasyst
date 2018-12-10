@@ -1237,3 +1237,22 @@ msgstr "Просмотр задач, связанных с заказами Shop
 #: /wa-apps/pocketlists/js/pocketlists-pocket.js:121
 msgid "DANGER! Pocket will be deleted with all its content including lists and to-dos. There will be no way to restore this data. Are you sure?"
 msgstr "СТОП, СТОП, СТОП! Проект будет удален вместе со всеми содержимым — списками и задачами. Возможности восстановить эти данные не будет. Вы уверены?"
+
+
+msgid "%d s"
+msgstr "%d с"
+
+msgid "%d m"
+msgstr "%d м"
+
+msgid "%d h"
+msgstr "%d ч"
+
+msgid "%d d"
+msgstr "%d д"
+
+msgid "%d m"
+msgstr "%d м"
+
+msgid "%d y"
+msgstr "%d г"
