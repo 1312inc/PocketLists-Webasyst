@@ -17,11 +17,26 @@ class pocketlistsItemMoveToListController extends waJsonController
 
             if ($item && $list && pocketlistsRBAC::canAccessToList($list_id)) {
                 // todo: childs??
-                if ($im->updateById($item['id'], array(
-                    'list_id'         => $list['id'],
-                    'update_datetime' => date('Y-m-d H:i:s'),
-                ))
+                if ($im->updateById(
+                    $item['id'],
+                    [
+                        'sort'            => 0,
+                        'list_id'         => $list['id'],
+                        'update_datetime' => date('Y-m-d H:i:s'),
+                    ]
+                )
                 ) {
+                    $listItems = $im->getUndoneByList($list_id);
+                    $curPos = 1;
+                    /** @var pocketlistsItemModel $listItem */
+                    foreach ($listItems as $listItem) {
+                        if ($listItem->pk === $item['id']) {
+                            continue;
+                        }
+
+                        $im->updateById($listItem->pk, ['sort' => $curPos++]);
+                    }
+
                     $this->response = $id;
                 } else {
                     $this->errors = 'db error';
