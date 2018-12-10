@@ -1329,7 +1329,9 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         };
 
         var updateCommentsCount = function () {
-            $list_items_wrapper.find('.pl-item-wrapper[data-id="' + id + '"] .pl-comment-count').html('<i class="icon16 pl comments"></i>' + countComments());
+            $list_items_wrapper.find('.pl-item-wrapper[data-id="' + id + '"] .pl-comment-count')
+                .addClass('pl-comment-count-show')
+                .html('<i class="icon16 pl comments"></i>' + countComments());
         };
 
         var addComment = function (data) {
@@ -1357,7 +1359,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     $.pocketlists.$loading.removeAttr('style').remove();
                     $userpic.show();
 
-                    $this.closest('.pl-reply').before(html);
+                    $wrapper.find('.pl-chat-contents').append(html);
 
                     updateCommentsCount();
 
