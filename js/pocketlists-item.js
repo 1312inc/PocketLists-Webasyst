@@ -127,6 +127,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 filter: o.filter
             },
             function (html) {
+                request_in_action = false;
+
                 if (!o.standAloneItemAdd) {
                     $.pocketlists.updateAppCounter();
                     $.pocketlists.reloadSidebar();
@@ -199,8 +201,6 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     updateListCountBadge();
                     updateSort();
                 }
-
-                request_in_action = false;
 
                 $.isFunction(callback) && callback.call($this);
             }
@@ -336,6 +336,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
     // update sort base on current positions
     var updateSort = function (id) {
         //this.find('label').first().append($.pocketlists.$loading);
+        debugger;
         if (o.enableSortItems && o.list) {
             if (request_in_action) {
                 return;
@@ -837,6 +838,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
      * for new item dom manipulating
      */
     var NewItemWrapper = (function ($new_item_wrapper) {
+        // var $new_item_wrapper_hover = $('<div class="pl-inner-item-add-placeholder"></div>'),
         var $new_item_wrapper_hover = $('<div id="pl-item-add-wrapper-hover" style="display: none;">'),
             $top_new_item_wrapper = $new_item_wrapper.clone(),
             $textarea = $new_item_wrapper.find('textarea'),
@@ -967,36 +969,20 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 });
 
             //$wrapper.on('hide.pl2', hide_new_item_wrapper);
-            var undone_items_wrapper_hover_timeout = null;
             if (o.enableAddLinkOnHover) {
-                $undone_items_wrapper
-                    .on('mouseenter', item_selector + ' > .pl-item', function (e) {
-                        e.stopPropagation();
-                        var $item = $(this);
-                        undone_items_wrapper_hover_timeout = setTimeout(function () {
-                            if (!$item.find($new_item_wrapper).length) { // if no placeholder here
-                                $item.find('.pl-chat').after($new_item_wrapper_hover.show());
-                            }
-                        }, 1312);
-                    })
-                    .on('mouseleave', item_selector + ' > .pl-item', function () {
-                        clearTimeout(undone_items_wrapper_hover_timeout);
-                        $new_item_wrapper_hover.detach();
-                    });
-
-                $new_item_wrapper_hover.on('click', function (e) {
+                $undone_items_wrapper.on('click', '.pl-inner-item-add-placeholder',function (e) {
                     e.preventDefault();
                     e.stopPropagation();
 
                     // if item has children - place it before first
-                    var $item = $(this);
-                    var $has_children = $item.closest(item_selector).find('.menu-v');
+                    var $this = $(this);
+                    var $has_children = $this.closest(item_selector).find('.menu-v');
 
                     $textarea.data('can_blur', false);
                     if ($has_children.length) { // if item has children - indent
                         $has_children.find('.pl-item').first().before($new_item_wrapper);
                     } else { // else on same level
-                        $item.closest(item_selector).find('.pl-item').first().after($new_item_wrapper);
+                        $this.closest(item_selector).find('.pl-item').first().after($new_item_wrapper);
                     }
                     $new_item_wrapper_hover.detach();
                     $new_item_wrapper.slideDown(200);
