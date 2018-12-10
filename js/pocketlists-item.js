@@ -1045,7 +1045,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             $list_items_wrapper.trigger('deselectItem.pl2');
         };
 
-        var showItemDetails = function (id_item) {
+        var showItemDetails = function (id_item, callback) {
             if (request_in_action) {
                 return;
             }
@@ -1066,6 +1066,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     $.pocketlists.stickyDetailsSidebar();
                 });
                 afterLoad();
+                $.isFunction(callback) && callback.apply();
                 request_in_action = false;
             });
         };
@@ -1237,8 +1238,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 .on('change paste keyup', ':input', function () {
                     $wrapper.find('#pl-item-details-save').addClass('yellow');
                 })
-                .on('show.pl2', function (e, id) {
-                    showItemDetails(id);
+                .on('show.pl2', function (e, id, callback) {
+                    showItemDetails(id, callback);
                 })
                 .on('hide.pl2', hideItemDetails)
                 .on('change', '#pl-item-pocket', function () {
@@ -1646,9 +1647,13 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     $itemDetailsWrapper = $item.find('[data-pl2-item-details]');
 
                 ItemDetails.init($itemDetailsWrapper);
-                ItemDetails.trigger('show.pl2', [parseInt($item.data('id'))]);
-                $item.find('.pl-select-label').slideToggle(200);
-                $item.find('.pl-meta').animate({'opacity': '0', 'height': 0},200,function(){ $(this).hide(); });
+                ItemDetails.trigger('show.pl2', [parseInt($item.data('id')), function () {
+                    $item.find('.pl-select-label').slideToggle(200);
+                    $item.find('.pl-meta').animate({'opacity': '0', 'height': 0}, 200, function () {
+                        $(this).hide();
+                    });
+                }]);
+
                 selectItem($item);
             })
             .on('click', '.pl-comment', function (e) {
