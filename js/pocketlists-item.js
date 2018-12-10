@@ -1300,6 +1300,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             // $(window).scroll(function () {
             //     $.pocketlists.stickyDetailsSidebar();
             // });
+
+            return this;
         };
 
         var _getWrapper = function () {
@@ -1536,7 +1538,6 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         };
     }($('#pl2-item-comments')));
 
-
     var init = function () {
         //if ($.pocketlists_routing.getHash() == '#/todo/' &&
         //    $.pocketlists_routing.getHash().indexOf('/team/') > 0) {
@@ -1552,6 +1553,23 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
         showEmptyListMessage();
         initSortable();
+
+        // ох сколько всего накручено =( vue плачет
+        var openItemDetailsWrapper = function() {
+            var $item = $(this).closest(item_selector),
+                $itemDetailsWrapper = $item.find('[data-pl2-item-details]');
+
+            ItemDetails
+                .init($itemDetailsWrapper)
+                .trigger('show.pl2', [parseInt($item.data('id')), function () {
+                    $item.find('.pl-select-label').slideToggle(200);
+                    $item.find('.pl-meta').animate({'opacity': '0', 'height': 0}, 200, function () {
+                        $(this).hide();
+                    });
+                }]);
+
+            selectItem($item);
+        };
 
         $list_items_wrapper
         /**
@@ -1607,7 +1625,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     $item = $this.closest(item_selector);
 
                 favoriteItem($item);
-            }) // action: favorite item
+            }) // action: favorite item`
             .on('increaseSelectedItem.pl2', function (e) {
                 increaseItem(e);
             })
@@ -1643,20 +1661,15 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             .on('assignTo.pl2', item_selector, function (e, data) {
                 assignTo.call(this, data.id, data.drop);
             })
+            .on('dblclick', '.pl-select-label', function (e) {
+                e.preventDefault();
+
+                openItemDetailsWrapper.call(this);
+            })
             .on('click', '.pl-edit', function (e) {
                 e.preventDefault();
-                var $item = $(this).closest('.pl-item-wrapper[data-id]'),
-                    $itemDetailsWrapper = $item.find('[data-pl2-item-details]');
 
-                ItemDetails.init($itemDetailsWrapper);
-                ItemDetails.trigger('show.pl2', [parseInt($item.data('id')), function () {
-                    $item.find('.pl-select-label').slideToggle(200);
-                    $item.find('.pl-meta').animate({'opacity': '0', 'height': 0}, 200, function () {
-                        $(this).hide();
-                    });
-                }]);
-
-                selectItem($item);
+                openItemDetailsWrapper.call(this);
             })
             .on('click', '.pl-comment', function (e) {
                 e.preventDefault();
