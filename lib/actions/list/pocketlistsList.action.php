@@ -89,7 +89,7 @@ class pocketlistsListAction extends waViewAction
                 ]
             );
             $undone = $im->getUndoneByList($list->pk);
-            $done = $im->getDoneByList($list->pk);
+            $done = $im->getDoneByList($list->pk, 0, pocketlistsListLazyDoneItemsAction::OFFSET);
             $this->view->assign(
                 [
                     'list'                 => $list,
