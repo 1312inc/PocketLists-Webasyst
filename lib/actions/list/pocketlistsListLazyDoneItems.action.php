@@ -5,7 +5,7 @@
  */
 class pocketlistsListLazyDoneItemsAction extends waViewAction
 {
-    const OFFSET = 10;
+    const OFFSET = 30;
 
     /**
      * @throws waDbException
