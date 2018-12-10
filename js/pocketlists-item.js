@@ -1685,6 +1685,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 case 27: // esc
                     //($current_item.length && $current_item.find('.pl-chat').is(':visible')) && hideChatCommentInput();
                     ItemComments.isVisible() && ItemComments.trigger('hide.pl2');
+                    ItemDetails.isVisible() && ItemDetails.trigger('hide.pl2');
                     break;
             }
         });
