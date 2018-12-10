@@ -62,7 +62,7 @@ class pocketlistsListLazyDoneItemsAction extends waViewAction
             $us = new pocketlistsUserSettings();
             $us->set('last_pocket_list_id', json_encode(['list_id' => $list->pk]));
 
-            $done = pocketlistsItemModel::model()->getDoneByList($list->pk, $offset * self::OFFSET);
+            $done = pocketlistsItemModel::model()->getDoneByList($list->pk, $offset * self::OFFSET, self::OFFSET);
 
             $pocket = pocketlistsPocketModel::model()->findByPk($list['pocket_id']);
 
