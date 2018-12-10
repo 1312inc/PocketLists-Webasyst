@@ -1053,6 +1053,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 afterLoad();
                 $.isFunction(callback) && callback.apply();
                 request_in_action = false;
+
+                $.pocketlists.flexHack();
             });
         };
 
@@ -1419,25 +1421,14 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 $.pocketlists.stickyDetailsSidebar();
             });
             $.post(o.appUrl + '?module=item&action=comments', {id: id}, function (html) {
+                request_in_action = false;
                 $wrapper.html(html);
                 afterLoad();
-                request_in_action = false;
             });
         };
 
         var afterLoad = function () {
-            // var item_id = parseInt($item.data('id'));
-            //
-            // if (item_id) {
-            //     if (!$wrapper.find('.pl-chat').is(':visible') || // if no comments - show input and focus
-            //         ($wrapper.find('.pl-chat').is(':visible') && $wrapper.find('.pl-cue').length)) { // OR if already visible (there are some comments) - focus
-            //         // selectItem($item);
-            //         $wrapper.find('.pl-chat').show().find('textarea').trigger('focus');
-            //     } else { // hide if no comments
-            //         hideChatCommentInput();
-            //         deselectItem();
-            //     }
-            // }
+            $.pocketlists.flexHack();
         };
 
         var init = function () {

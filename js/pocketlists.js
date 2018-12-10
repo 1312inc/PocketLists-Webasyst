@@ -329,6 +329,21 @@
                             break;
                     }
                 });
+        },
+        hasGlobalScrollbar: function () {
+            return $(document).height() > $(window).height();
+        },
+        log: function (msg) {
+            console.log('pocketlists log', msg);
+        },
+        flexHack: function () {
+            if (this.hasGlobalScrollbar()) {
+                $('#pl-chat-waapps-height-compensation').show();
+                this.log('pl-chat-waapps-height-compensation show');
+            } else {
+                $('#pl-chat-waapps-height-compensation').hide();
+                this.log('pl-chat-waapps-height-compensation hide');
+            }
         }
     };
 }(jQuery));
