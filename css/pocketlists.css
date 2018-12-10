@@ -150,8 +150,8 @@ table.pl-calendar td .pl-dots i.icon10 { margin-top: 0.2em; margin-right: 0.2em;
 /* Done checkbox
 ---------------- */
 
-label.pl-done-label { position: relative; z-index: 2;}
-label.pl-done-label .listicon48 {
+label.pl-done-label { position: absolute; z-index: 2;}
+/* label.pl-done-label .listicon48 {
     float: left;
     position: relative;
     top: 2px;
@@ -167,7 +167,7 @@ label.pl-done-label i.icon16.userpic20 {
     width: 20px;
     height: 20px;
     background-position: 0 0;
-}
+} */
 
 .pl-done { display: none; }
 .pl-done + span { display: block; float:left; width:16px; height:16px; background: rgba(255,255,255,0.2); border: 2px solid rgba(0,0,0,0.2); border-radius: 50%; position: relative; top: 1px; left: 16px; cursor: pointer; transition: background-color 0.2s; }
@@ -313,6 +313,8 @@ input#pl-new-list-input:focus,
 .pl-item i.icon10 { margin-top: 5px; }
 .pl-item .pl-item-drag-handle { display: none; position: absolute; top: 4px; bottom: 4px; left: 0; width: 6px; padding: 0 4px; background: url('../img/pl-drag-handle.png') repeat-y; background-size: 14px 20px; opacity: 0.1; z-index: 3; cursor: move; }
 
+.pl-item .pl-item-details { padding-left: 49px; padding-right: 13px; display: block; line-height: 1.3em; position: relative; cursor: auto; top: -16px; }
+
 .pl-list-items ul.menu-v li .pl-item:hover .pl-item-drag-handle { display: block; }
 .pl-list-items ul.menu-v li #pl-item-add .pl-item:hover { background: transparent; }
 
@@ -399,6 +401,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#12000000', e
 .pl-details-form-container { background: transparent; padding: 15px 15px 15px 0; }
 .pl-details-form .fields { float: none; }
 .pl-details-form .fields form { overflow: visible; }
+.pl-details-form .fields .field-group { float: left; width: 100%; }
 .pl-details-form .name { width: 110px; }
 .pl-details-form .value { margin-left: 140px; }
 .pl-details-form .pl-done + span { margin-left: 6px; left: 0; top: 0; }

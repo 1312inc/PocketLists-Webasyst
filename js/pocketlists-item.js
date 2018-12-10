@@ -1033,10 +1033,12 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             $wrapper;
 
         var hideItemDetails = function () {
-            $wrapper.slideToggle(200, function () {
+            $wrapper.slideToggle(0, function () {
                 $wrapper.hide().empty()
             });
-            $wrapper.closest('.pl-item').find('.pl-select-label').slideToggle(200);
+            $wrapper.closest('.pl-item').find('.pl-select-label').slideToggle(0);
+            $wrapper.closest('.pl-item').find('.pl-meta').css({'position': 'absolute' }).show().animate({'opacity': '1'},0,function() { $(this).css({'position': 'relative' })  });
+            $wrapper.closest('.pl-item').find('.pl-edit').html('<i class="icon16 pl ellipsis"></i>');
 
             id = 0;
 
@@ -1053,14 +1055,16 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             //$wrapper.html($.pocketlists.$loading).show();
             // $(window).scrollTop();
             o.list && o.list.list_details.isVisible() && o.list.list_details.$el.after($wrapper);
-            $wrapper.html($.pocketlists.$loading).show().animate({
-                'right': '0'
-            }, 200, function () {
-                o.list && o.list.list_details.isVisible() && o.list.list_details.trigger('hide.pl2');
-                $.pocketlists.stickyDetailsSidebar();
-            });
+            $wrapper.closest('.pl-item').find('.pl-edit').html($.pocketlists.$loading);
+
             $.post(o.appUrl + '?module=item&action=details', {id: id}, function (html) {
                 $wrapper.html(html);
+                $wrapper.show().animate({
+
+                }, 200, function () {
+                    o.list && o.list.list_details.isVisible() && o.list.list_details.trigger('hide.pl2');
+                    $.pocketlists.stickyDetailsSidebar();
+                });
                 afterLoad();
                 request_in_action = false;
             });
@@ -1644,6 +1648,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 ItemDetails.init($itemDetailsWrapper);
                 ItemDetails.trigger('show.pl2', [parseInt($item.data('id'))]);
                 $item.find('.pl-select-label').slideToggle(200);
+                $item.find('.pl-meta').animate({'opacity': '0', 'height': 0},200,function(){ $(this).hide(); });
                 selectItem($item);
             })
             .on('click', '.pl-comment', function (e) {
