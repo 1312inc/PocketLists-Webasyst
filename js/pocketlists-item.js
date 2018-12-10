@@ -336,7 +336,6 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
     // update sort base on current positions
     var updateSort = function (id) {
         //this.find('label').first().append($.pocketlists.$loading);
-        debugger;
         if (o.enableSortItems && o.list) {
             if (request_in_action) {
                 return;

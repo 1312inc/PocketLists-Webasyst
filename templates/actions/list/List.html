@@ -1,4 +1,4 @@
-{if isset($list.id) && $print}
+{if isset($list.id) && $print|default:0}
 <html>
 <head>
     <title>{$list.name} &mdash; {$wa->accountName()}</title>
@@ -10,7 +10,7 @@
     </div>
 {/if}
 
-{if !$print && isset($list.id) && $list.id > 0}
+{if !$print|default:0 && isset($list.id) && $list.id > 0}
 {include '../../include/listiconsdialog.html' inline}
 {/if}
 
@@ -69,11 +69,11 @@
                 <i class="icon16 loading lazyloading" style="display: none;"></i>
             </section>
 
-            <a href="#" id="pl-complete-log-link" class="inline-link gray" {if empty($items_done)}style="display:none;"{/if}><b><i>{_w('Show all %d completed to-do', 'Show all %d completed to-dos', $count_items_done)}</i></b></a>
+            <a href="#" id="pl-complete-log-link" class="inline-link gray" {if empty($items_done)}style="display:none;"{/if}><b><i>{_w('Show all %d completed to-do', 'Show all %d completed to-dos', $count_items_done|default:0)}</i></b></a>
         </div>
         <div class="clear-both"></div>
 
-        {if !$print}
+        {if !$print|default:0}
 
             {include '../../include/archivelistdialog.html' inline}
             {include '../../include/deletelistdialog.html' inline}
@@ -86,7 +86,7 @@
     {include '../../include/itemcomments.html' inline}
 </main>
 
-{if isset($list.id) && $print}
+{if isset($list.id) && $print|default:0}
 </body>
 </html>
 {else}
@@ -95,11 +95,11 @@
     (function () {
         new $.pocketlists.Items($('#pl-list-items'), {
             enableChangeLevel: false,
-            archive: {if $archive}true{else}false{/if},
+            archive: {if $archive|default:0}true{else}false{/if},
             list: new $.pocketlists.List(
                 $('.pl-list-title'),
                 {
-                    archive: {if $archive}true{else}false{/if}
+                    archive: {if $archive|default:0}true{else}false{/if}
                 }),
             current_user_id: {$wa->user()->get('id')},
             fileUpload: {$fileupload}
@@ -114,6 +114,8 @@
             offset = 1,
             this_is_the_end = false,
             html_selector = '#pl-complete-log > .menu-v';
+
+        // {if isset($list.id)}
 
         $(window).on('scroll.pl2', function () {
             if (this_is_the_end) {
@@ -149,6 +151,9 @@
             }
             prev_scroll_pos = scroll_pos;
         });
+
+        //{/if}
+
     }())
 </script>
 {/if}
