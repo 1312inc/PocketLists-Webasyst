@@ -329,6 +329,8 @@
                             break;
                     }
                 });
+
+            self.windowResize();
         },
         hasGlobalScrollbar: function () {
             return $(document).height() > $(window).height();
@@ -337,13 +339,35 @@
             console.log('pocketlists log', msg);
         },
         flexHack: function () {
-            if (this.hasGlobalScrollbar()) {
-                $('#pl-chat-waapps-height-compensation').show();
+            var $compensation = $('#pl-chat-waapps-height-compensation');
+            if (this.hasGlobalScrollbar() && !$compensation.is(':visible')) {
+                $compensation.show();
                 this.log('pl-chat-waapps-height-compensation show');
-            } else {
-                $('#pl-chat-waapps-height-compensation').hide();
+            } else if (!this.hasGlobalScrollbar() && $compensation.is(':visible')) {
+                $compensation.hide();
                 this.log('pl-chat-waapps-height-compensation hide');
             }
+        },
+        windowResize: function () {
+            var self = this,
+                delay = 500,
+                throttled = false;
+
+            function onResize() {
+                self.flexHack();
+            }
+
+            window.addEventListener('resize', function() {
+                if (!throttled) {
+                    onResize();
+                    throttled = true;
+                    setTimeout(function() {
+                        throttled = false;
+                    }, delay);
+                }
+            });
+
+            onResize();
         }
     };
 }(jQuery));
