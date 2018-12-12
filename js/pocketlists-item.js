@@ -1044,6 +1044,9 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
             $.post(o.appUrl + '?module=item&action=details', {id: id}, function (html) {
                 $wrapper.html(html);
+                //alert( $wrapper.closest('.pl-item').find('.pl-select-label').height() );
+                $wrapper.css({ 'max-height': $wrapper.closest('.pl-item').find('.pl-select-label').height()+18+'px' }, 200);
+                $wrapper.animate({ 'max-height': '999px' }, 200);
                 $wrapper.show().animate({
 
                 }, 200, function () {
@@ -1538,7 +1541,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             ItemDetails
                 .init($itemDetailsWrapper)
                 .trigger('show.pl2', [parseInt($item.data('id')), function () {
-                    $item.find('.pl-select-label').slideToggle(200);
+                    $item.find('.pl-select-label').hide();
                     $item.find('.pl-meta').animate({'opacity': '0', 'height': 0}, 200, function () {
                         $(this).hide();
                     });
