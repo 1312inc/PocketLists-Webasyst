@@ -15,8 +15,7 @@ class pocketlistsItemCommentsAction extends waViewAction
         if ($id) {
             $im = new pocketlistsItemModel();
             $item = $im->getById($id);
-            $item = $im->extendItemData($item, true);
-
+            $item = $im->extendItemData($item, false);
             $this->view->assign('item', $item);
             $this->view->assign(
                 'pl2_attachments_path',
@@ -25,5 +24,12 @@ class pocketlistsItemCommentsAction extends waViewAction
 
             $this->view->assign('plurl', wa()->getAppUrl(pocketlistsHelper::APP_ID));
         }
+    }
+
+    private function markAsNewAndMatchLinks($comment)
+    {
+        $comment['comment'] = pocketlistsNaturalInput::matchLinks($comment['comment']);
+
+        return $comment;
     }
 }
