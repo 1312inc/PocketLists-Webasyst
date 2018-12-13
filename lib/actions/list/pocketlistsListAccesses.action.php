@@ -20,7 +20,8 @@ class pocketlistsListAccessesAction extends waViewAction
             $list_access_contacts = $factory->getTeammates(
                 pocketlistsRBAC::getAccessContacts($list->pk),
                 true,
-                false
+                false,
+                true
             );
 
             $this->view->assign(compact('list', 'list_access_contacts'));

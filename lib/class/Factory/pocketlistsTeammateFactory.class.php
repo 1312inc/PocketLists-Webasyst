@@ -17,13 +17,18 @@ class pocketlistsTeammateFactory extends pocketlistsFactory
      * @param      $teammates_ids
      * @param bool $sort_by_last_activity
      * @param bool $exclude_me
+     * @param bool $exclude_deleted
      *
      * @return array
      * @throws waDbException
      * @throws waException
      */
-    public function getTeammates($teammates_ids, $sort_by_last_activity = true, $exclude_me = true)
-    {
+    public function getTeammates(
+        $teammates_ids,
+        $sort_by_last_activity = true,
+        $exclude_me = true,
+        $exclude_deleted = false
+    ) {
         $teammates = [];
 
         $im = new pocketlistsItemModel();
@@ -46,6 +51,10 @@ class pocketlistsTeammateFactory extends pocketlistsFactory
 
 //            $teammate = new pocketlistsTeammate($mate);
 //            $teammate->fillData(pocketlistsHelper::getContactData($mate));
+
+            if ($exclude_deleted && !$mate->exists()) {
+                continue;
+            }
 
             $teammates[$tid] = pocketlistsHelper::getContactData($mate);
 
@@ -85,6 +94,7 @@ class pocketlistsTeammateFactory extends pocketlistsFactory
         if (!$delta) {
             $delta = $a['id'] - $b['id'];
         }
+
         return $delta;
     }
 }

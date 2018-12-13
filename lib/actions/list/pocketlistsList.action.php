@@ -69,7 +69,8 @@ class pocketlistsListAction extends waViewAction
             $list_access_contacts = $factory->getTeammates(
                 pocketlistsRBAC::getAccessContacts($list->pk),
                 true,
-                false
+                false,
+                true
             );
 
             $us = new pocketlistsUserSettings();

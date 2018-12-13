@@ -19,7 +19,7 @@ class pocketlistsBackendSidebarAction extends waViewAction
 
         /** @var pocketlistsTeammateFactory $factory */
         $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getModelFactory('Teammate');
-        $teammates = $factory->getTeammates(pocketlistsRBAC::getAccessContacts());
+        $teammates = $factory->getTeammates(pocketlistsRBAC::getAccessContacts(), true, true, true);
         foreach ($teammates as $tid => $teammate) {
             if (!$teammate['id']) {
                 unset($teammates[$tid]);

@@ -25,7 +25,8 @@ class pocketlistsItemDetailsAction extends waViewAction
                 $contacts = $factory->getTeammates(
                     pocketlistsRBAC::getAccessContacts($list ? $list['id'] : 0),
                     true,
-                    false
+                    false,
+                    true
                 );
             }
 

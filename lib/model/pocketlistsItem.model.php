@@ -707,7 +707,7 @@ class pocketlistsItemModel extends kmModelExt
             $this->addPriorityData($item);
 
             $age_time = time() - max(strtotime($item['update_datetime']), strtotime($item['create_datetime']));
-            $item['age_time'] = $age_time < 60 ? '' : pocketlistsHelper::getDatetimeBySeconds($age_time);
+            $item['age_time'] = $age_time < 1 ? '' : pocketlistsHelper::getDatetimeBySeconds($age_time);
 
             if (!$edit) {
                 $this->prepareOutput($item);
@@ -846,6 +846,31 @@ class pocketlistsItemModel extends kmModelExt
             return 1;
         }
 
+        $date1 = !empty($i1['update_datetime']) ? strtotime($i1['update_datetime']) : null;
+
+        $date2 = !empty($i2['update_datetime']) ? strtotime($i2['update_datetime']) : null;
+
+        // check update_datetime
+        if ($date1 && $date2) { // check both dates
+            if ($date1 < $date2) {
+                return -1;
+            }
+
+            if ($date1 > $date2) {
+                return 1;
+            }
+
+            return 0;
+        }
+
+        if ($date1 && !$date2) {
+            return -1;
+        }
+
+        if (!$date1 && $date2) {
+            return 1;
+        }
+
         return 0;
     }
 
@@ -870,7 +895,7 @@ class pocketlistsItemModel extends kmModelExt
             $this->updateById(
                 $item['id'],
                 [
-                    'update_datetime' => date("Y-m-d H:i:s"),
+//                    'update_datetime' => date("Y-m-d H:i:s"),
                     'sort'            => $sort++,
                 ]
             );
