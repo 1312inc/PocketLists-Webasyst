@@ -314,7 +314,7 @@ input#pl-new-list-input:focus,
 .pl-item i.icon10 { margin-top: 5px; }
 .pl-item .pl-item-drag-handle { display: none; position: absolute; top: 4px; bottom: 4px; left: 0; width: 6px; padding: 0 4px; background: url('../img/pl-drag-handle.png') repeat-y; background-size: 14px 20px; opacity: 0.1; z-index: 3; cursor: move; }
 
-.pl-item .pl-item-details { padding-left: 44px; padding-right: 13px; display: block; line-height: 1.3em; position: relative; cursor: auto; top: -18px; max-height: 0px /* required for animate effect */; overflow: hidden;}
+.pl-item .pl-item-details #pl2-item-details { padding-left: 44px; padding-right: 13px; display: block; line-height: 1.3em; position: relative; cursor: auto; top: -18px; max-height: 0px /* required for animate effect */; overflow: hidden;}
 
 .pl-list-items ul.menu-v li .pl-item:hover .pl-item-drag-handle { display: block; }
 .pl-list-items ul.menu-v li #pl-item-add .pl-item:hover { background: transparent; }
@@ -354,7 +354,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#12000000', e
 .pl-list-title .pl-edit.pl-list-due { opacity: 1; font-weight: bold; font-size: 1em; }
 .pl-list-title:hover .pl-edit,
 .pl-item:hover .pl-edit,
-.pl-item:hover .pl-comment { opacity: 1 !important; transition: opacity 0.1s ease-in; transition-delay: 0.1s; }
+.pl-item:hover .pl-comment,
+.pl-non-opacity { opacity: 1 !important; transition: opacity 0.1s ease-in; transition-delay: 0.1s; }
 
 .pl-attachments { padding: 15px 0 0; margin: 0; }
 .pl-attachments li { display: inline-block !important; padding-top: 0px !important; margin-bottom: 13px !important; list-style: none; word-break: break-all; }
