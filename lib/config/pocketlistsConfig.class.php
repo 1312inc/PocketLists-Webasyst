@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class pocketlistsConfig
+ */
 class pocketlistsConfig extends waAppConfig
 {
     /**
@@ -16,6 +19,11 @@ class pocketlistsConfig extends waAppConfig
      * @var pocketlistsItemLinkInterface
      */
     protected $fakeLinker;
+
+    /**
+     * @var pocketlistsUser
+     */
+    protected $user;
 
     /**
      * @param $factory
@@ -115,7 +123,7 @@ class pocketlistsConfig extends waAppConfig
 
     public function getLinkedApps()
     {
-        $apps = require_once $this->getLinkedAppConfigPath();
+        $apps = require $this->getLinkedAppConfigPath();
         $linked = [];
 
         if (!is_array($apps)) {
@@ -163,5 +171,17 @@ class pocketlistsConfig extends waAppConfig
         }
 
         return empty($app) ? $this->linkers : $this->linkers[$app];
+    }
+
+    /**
+     * @return pocketlistsUser
+     */
+    public function getUser()
+    {
+        if ($this->user === null) {
+            $this->user = new pocketlistsUser(wa()->getUser());
+        }
+
+        return $this->user;
     }
 }

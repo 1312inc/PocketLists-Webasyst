@@ -1,13 +1,22 @@
 <?php
 
 //todo: save state
+
+/**
+ * Class pocketlistsRBAC
+ */
 class pocketlistsRBAC
 {
-    const ADMIN_VALUE = 2;
+    const ADMIN_VALUE  = 2;
     const ACCESS_VALUE = 1;
 
+    const CAN_CREATE_LISTS    = 'cancreatelists';
+    const CAN_ASSIGN          = 'canassign';
+    const CAN_CREATE_TODOS    = 'cancreatetodos';
+    const CAN_USE_SHOP_SCRIPT = 'canuseshopscript';
+
     private static $access_rights = [];
-    private static $lists = [];
+    private static $lists         = [];
 
     /**
      * Return all list ids accessible for given user
@@ -132,27 +141,74 @@ class pocketlistsRBAC
 
     }
 
-    public static function canCreateLists($user_id = false)
+    /**
+     * @param bool|int|pocketlistsUser $user
+     *
+     * @return bool
+     * @throws waException
+     */
+    public static function canCreateLists($user = false)
     {
-        $user = $user_id ? new waContact($user_id) : wa()->getUser();
+        if (!$user instanceof pocketlistsUser) {
+            $contact = is_int($user) ? new waContact($user) : wa()->getUser();
+        } else {
+            $contact = $user->getContact();
+        }
 
-        return $user->getRights(pocketlistsHelper::APP_ID, 'cancreatelists');
+        return $contact->getRights(pocketlistsHelper::APP_ID, self::CAN_CREATE_LISTS);
     }
 
-    public static function canAssign($user_id = false)
+    /**
+     * @param bool|int|pocketlistsUser $user
+     *
+     * @return bool
+     * @throws waException
+     */
+    public static function canAssign($user = false)
     {
-        $user = $user_id ? new waContact($user_id) : wa()->getUser();
+        if (!$user instanceof pocketlistsUser) {
+            $contact = is_int($user) ? new waContact($user) : wa()->getUser();
+        } else {
+            $contact = $user->getContact();
+        }
 
-        return $user->getRights(pocketlistsHelper::APP_ID, 'canassign');
+        return $contact->getRights(pocketlistsHelper::APP_ID, self::CAN_ASSIGN);
     }
 
-    public static function canAccess($user_id = false)
+    /**
+     * @param bool|int|pocketlistsUser $user
+     *
+     * @return bool
+     * @throws waException
+     */
+    public static function canUseShopScript($user = false)
     {
-        $user = $user_id ? new waContact($user_id) : wa()->getUser();
+        if (!$user instanceof pocketlistsUser) {
+            $contact = is_int($user) ? new waContact($user) : wa()->getUser();
+        } else {
+            $contact = $user->getContact();
+        }
 
-        return $user->getRights(pocketlistsHelper::APP_ID, 'backend') === 1 || $user->getRights(
+        return $contact->getRights(pocketlistsHelper::APP_ID, self::CAN_USE_SHOP_SCRIPT);
+    }
+
+    /**
+     * @param bool|int|pocketlistsUser $user
+     *
+     * @return bool
+     * @throws waException
+     */
+    public static function canAccess($user = false)
+    {
+        if (!$user instanceof pocketlistsUser) {
+            $contact = is_int($user) ? new waContact($user) : wa()->getUser();
+        } else {
+            $contact = $user->getContact();
+        }
+
+        return $contact->getRights(pocketlistsHelper::APP_ID, 'backend') === 1 || $contact->getRights(
                 pocketlistsHelper::APP_ID,
-                'cancreatetodos'
+                self::CAN_CREATE_TODOS
             );
     }
 

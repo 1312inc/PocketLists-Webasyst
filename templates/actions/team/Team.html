@@ -119,7 +119,8 @@
         assignUser: parseInt($('#pl-assigned-contact-id').val()),
         showMessageOnEmptyList: true,
 //        list: new $.pocketlists.List($('.pl-title')),
-        current_user_id: {$wa->user()->get('id')}
+        userHasLinkedApps: {$user->hasLinkedApps()},
+        current_user_id: {$user->getContact()->getId()}
     });
     $.pocketlists.setTitle('{$current_teammate.name|escape}');
 

@@ -40,7 +40,8 @@ class pocketlistsShopBackend_orderHandler extends waEventHandler
             'items_undone'      => [],
             'items_done'        => [],
             'count_done_items'  => 0,
-            'fileupload'        => 1
+            'fileupload'        => 1,
+            'user'              => wa(pocketlistsHelper::APP_ID)->getConfig()->getUser(),
         ];
 
         if ($itemLinkModel) {

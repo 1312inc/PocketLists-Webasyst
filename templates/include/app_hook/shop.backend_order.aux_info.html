@@ -27,7 +27,9 @@
             </i></b></a>
         </div>
 
-        {include '../../include/itemadd.html' inline}
+        {if $params.app->userCanAccess()}
+            {include '../../include/itemadd.html' inline}
+        {/if}
         {include '../../include/itemdetails.html' inline}
         {include '../../include/itemcomments.html' inline}
 
@@ -75,6 +77,7 @@
                 entity_id: {$params.order.id}
             },
             appUrl: '{$params.plurl}',
+            userHasLinkedApps: {$params.user->hasLinkedApps()},
             wa_url: '{$wa_url}',
             fileUpload: {$params.fileupload}
         });

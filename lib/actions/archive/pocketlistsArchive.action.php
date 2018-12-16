@@ -1,6 +1,9 @@
 <?php
 
-class pocketlistsArchiveAction extends waViewAction
+/**
+ * Class pocketlistsArchiveAction
+ */
+class pocketlistsArchiveAction extends pocketlistsViewAction
 {
     public function execute()
     {
@@ -67,6 +70,7 @@ class pocketlistsArchiveAction extends waViewAction
             $this->view->assign('list_access_contacts', $list_access_contacts);
             $this->view->assign('list_id', $list_id);
             $this->view->assign('lists', $lists);
+            $this->view->assign('user', $this->user);
         }
     }
 }

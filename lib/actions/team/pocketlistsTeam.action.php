@@ -1,6 +1,6 @@
 <?php
 
-class pocketlistsTeamAction extends waViewAction
+class pocketlistsTeamAction extends pocketlistsViewAction
 {
     public function execute()
     {
@@ -48,6 +48,7 @@ class pocketlistsTeamAction extends waViewAction
         $this->view->assign('teammates', $teammates);
         $this->view->assign('pl2_attachments_path', wa()->getDataUrl('attachments/', true, pocketlistsHelper::APP_ID));
         $this->view->assign('print', waRequest::get('print', false));
+        $this->view->assign('user', $this->user);
     }
 
     private function sort_by_activity($a, $b)

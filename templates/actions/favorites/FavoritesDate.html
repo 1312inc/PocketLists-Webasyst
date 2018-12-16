@@ -76,7 +76,8 @@
             showMessageOnEmptyList: {if $date}false{else}true{/if},
             dueDate: '{if $timestamp}{$timestamp}{/if}',
             filter: 'favorites',
-            current_user_id: {$wa->user()->get('id')}
+            userHasLinkedApps: {$user->hasLinkedApps()},
+            current_user_id: {$user->getContact()->getId()}
         });
     }());
 </script>

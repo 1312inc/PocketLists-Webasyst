@@ -33,7 +33,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             standAloneItemAdd: false,
             appUrl: '',
             wa_url: '',
-            fileUpload: 1
+            fileUpload: 1,
+            userHasLinkedApps: 0
         }, options),
         request_in_action = false;
 
@@ -686,6 +687,10 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
     }());
 
     var ItemLinker = function ($textarea) {
+        if (!o.userHasLinkedApps) {
+            return;
+        }
+
         if ($textarea.data('pl2-itemlinker')) {
             return;
         }
@@ -802,7 +807,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
                 var term = canShowAutocomplete(),
                     text = $textarea.val(),
-                    new_text = text.replace('@' + term, ui.item.value);
+                    new_text = text.replace(new RegExp('(@|#|№)' + term), ui.item.value);
 
                 $textarea.val(new_text);
 

@@ -1,6 +1,6 @@
 <?php
 
-class pocketlistsTodoDateAction extends waViewAction
+class pocketlistsTodoDateAction extends pocketlistsViewAction
 {
     public function execute()
     {
@@ -36,5 +36,6 @@ class pocketlistsTodoDateAction extends waViewAction
         $this->view->assign('pl2_attachments_path', wa()->getDataUrl('attachments/', true, pocketlistsHelper::APP_ID));
         $this->view->assign('this_is_stream', true);
         $this->view->assign('print', waRequest::get('print', false));
+        $this->view->assign('user', $this->user);
     }
 }

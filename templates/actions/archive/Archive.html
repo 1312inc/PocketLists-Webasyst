@@ -87,7 +87,8 @@
                                 archive: true
                             }
                     ),
-                    current_user_id: "{$wa->user()->get('id')}"
+                    current_user_id: "{$user->getContact()->getId()}",
+                    userHasLinkedApps: {$user->hasLinkedApps()}
                 });
                 $.pocketlists.setTitle('{$list.name|default:" "|escape}');
             </script>

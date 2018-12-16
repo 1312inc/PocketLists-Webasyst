@@ -3,7 +3,7 @@
 /**
  * Class pocketlistsListAction
  */
-class pocketlistsListAction extends waViewAction
+class pocketlistsListAction extends pocketlistsViewAction
 {
     /**
      * @throws waDbException
@@ -137,6 +137,7 @@ class pocketlistsListAction extends waViewAction
                 'pocket'               => $pocket,
                 'list_access_contacts' => $list_access_contacts ?: [],
                 'fileupload'           => 1,
+                'user'                 => $this->user
             ]
         );
     }

@@ -1,6 +1,9 @@
 <?php
 
-class pocketlistsAppDateAction extends waViewAction
+/**
+ * Class pocketlistsAppDateAction
+ */
+class pocketlistsAppDateAction extends pocketlistsViewAction
 {
     public function execute()
     {
@@ -8,6 +11,13 @@ class pocketlistsAppDateAction extends waViewAction
 
         if (!$app_id) {
             throw new waException('Not found');
+        }
+
+        /** @var pocketlistsItemLinkInterface $app */
+        $app = wa(pocketlistsHelper::APP_ID)->getConfig()->getLinkedApp($app_id);
+
+        if (!$app->userCanAccess()) {
+            throw new waException('Access denied.', 403);
         }
 
         $im = new pocketlistsItemModel();
@@ -47,6 +57,7 @@ class pocketlistsAppDateAction extends waViewAction
         $this->view->assign('this_is_stream', true);
         $this->view->assign('print', waRequest::get('print', false));
 
-        $this->view->assign('app', wa(pocketlistsHelper::APP_ID)->getConfig()->getLinkedApp($app_id));
+        $this->view->assign('app', $app);
+        $this->view->assign('user', $this->user);
     }
 }

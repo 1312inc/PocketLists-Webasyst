@@ -32,14 +32,14 @@
             <span class="count" data-pl-sidebar="favorites-count">{$favorites_count.undone}</span>
             <a href="#/favorites/"><i class="icon16 star"></i>[`Favorites`]</a>
         </li>
-        {if pocketlistsRBAC::canAssign()} {* TODO: create new access right level for other-app-related-todos *}
         {foreach $linkedApps as $app}
+            {if $app->userCanAccess()}
             <li>
                 <span class="count">{$app->countItems()}</span>
                 <a href="#/app/{$app->getApp()}/">{$app->getAppIcon()}[`Store`]</a>
             </li>
+            {/if}
         {/foreach}
-        {/if}
         <li>
             <a href="#/comments/"><i class="icon16 pl comments"></i>[`Discussions`]{if $new_comments_count} <span
                         class="highlighted bold small black"

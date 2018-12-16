@@ -3,7 +3,7 @@
 /**
  * Class pocketlistsAppAction
  */
-class pocketlistsAppAction extends waViewAction
+class pocketlistsAppAction extends pocketlistsViewAction
 {
     /**
      * @throws waDbException
@@ -13,9 +13,15 @@ class pocketlistsAppAction extends waViewAction
     {
         $app_id = waRequest::get('app');
 
-        $calendar_html = wao(new pocketlistsAppMonthAction())->display();
-        $this->view->assign('calendar_html', $calendar_html);
+        /** @var pocketlistsItemLinkInterface $app */
+        $app = wa(pocketlistsHelper::APP_ID)->getConfig()->getLinkedApp($app_id);
 
-        $this->view->assign('app', wa(pocketlistsHelper::APP_ID)->getConfig()->getLinkedApp($app_id));
+        if (!$app->userCanAccess()) {
+            throw new waException('Access denied.', 403);
+        }
+
+        $calendar_html = wao(new pocketlistsAppMonthAction())->display();
+        $this->view->assign(compact('calendar_html', 'app'));
+        $this->view->assign('user', $this->user);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-class pocketlistsTodoMonthAction extends waViewAction
+class pocketlistsTodoMonthAction extends pocketlistsViewAction
 {
     public function execute()
     {

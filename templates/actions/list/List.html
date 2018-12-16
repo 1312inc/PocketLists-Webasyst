@@ -101,8 +101,8 @@
                 {
                     archive: {if $archive|default:0}true{else}false{/if}
                 }),
-            current_user_id: {$wa->user()->get('id')},
-            fileUpload: {$fileupload}
+            userHasLinkedApps: {$user->hasLinkedApps()},
+            current_user_id: {$user->getContact()->getId()},                 fileUpload: {$fileupload}
         });
         $.pocketlists.setTitle('{if isset($list.name)}{$list.name|default:" "|escape}{else}[`New list`]{/if}');
 

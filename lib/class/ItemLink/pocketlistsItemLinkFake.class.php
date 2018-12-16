@@ -120,4 +120,14 @@ class pocketlistsItemLinkFake implements pocketlistsItemLinkInterface
     {
         return '';
     }
+
+    /**
+     * @param pocketlistsUser|null $user
+     *
+     * @return bool
+     */
+    public function userCanAccess(pocketlistsUser $user = null)
+    {
+        return false;
+    }
 }
