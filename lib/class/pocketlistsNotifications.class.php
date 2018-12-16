@@ -49,6 +49,11 @@ class pocketlistsNotifications
         $subject = 'string:{if !$complete}🚫{else}✅{/if} {str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:64}';
         // todo: refactor
         foreach ($users as $user_id => $user) { // foreach user
+            $contact = new waContact($user_id);
+            if (!self::canSend($contact)) {
+                continue;
+            }
+
             $filtered_items = [];
             switch ($user['setting']) {
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_COMPETES_ITEM_I_CREATED:
@@ -273,6 +278,11 @@ class pocketlistsNotifications
         )->fetchAll('contact_id');
 
         foreach ($users as $user_id => $user) { // foreach user
+            $contact = new waContact($user_id);
+            if (!self::canSend($contact)) {
+                continue;
+            }
+
             $filtered_items = [];
             switch ($user['setting']) {
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_ITEM_TO_FAVORITE_LIST:
@@ -382,6 +392,10 @@ class pocketlistsNotifications
             ];
         }
         $contact = new waContact($item['assigned_contact_id']);
+        if (!self::canSend($contact)) {
+            return;
+        }
+
         self::sendMail(
             [
                 'contact_id' => $contact->getId(),
@@ -448,6 +462,11 @@ class pocketlistsNotifications
             'name' => _w('Stream'),
         ];
         foreach ($users as $user_id => $user) { // foreach user
+            $contact = new waContact($user_id);
+            if (!self::canSend($contact)) {
+                continue;
+            }
+
 //            if ($comment['contact_id'] != $user_id) {
             switch ($user['setting']) {
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_ITEM:
@@ -630,6 +649,9 @@ class pocketlistsNotifications
         $im = new pocketlistsItemModel();
         foreach ($users as $user_id => $user) {
             $contact = new waContact($user_id);
+            if (!self::canSend($contact)) {
+                continue;
+            }
 
             if (wa()->getEnv() == 'cli') { // to load locale in cli
                 wa()->setLocale($contact->getLocale());
@@ -675,6 +697,11 @@ class pocketlistsNotifications
         $create_contact_name = $c->getName();
         $list['create_datetime'] = waDateTime::format('humandatetime', $list['create_datetime']);
         foreach ($users as $user_id => $user) { // foreach user
+            $contact = new waContact($user_id);
+            if (!self::canSend($contact)) {
+                continue;
+            }
+
             if ($list['contact_id'] != $user_id && pocketlistsRBAC::canAccessToList(
                     $list['id'],
                     $user_id
@@ -761,5 +788,10 @@ class pocketlistsNotifications
         $us = new waContactSettingsModel();
 
         return $us->getOne($user_id, 'webasyst', 'backend_url');
+    }
+
+    private static function canSend(waContact $contact)
+    {
+        return $contact->exists();
     }
 }
