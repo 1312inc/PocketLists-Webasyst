@@ -444,11 +444,7 @@ class pocketlistsNotifications
         $comment_user = new waUser($comment['contact_id']);
         $lm = new pocketlistsListModel();
         $list = [
-            'url'  => sprintf(
-                '%s%s/pocketlists/#/pocket/todo/',
-                wa(pocketlistsHelper::APP_ID)->getConfig()->getRootUrl(true),
-                wa(pocketlistsHelper::APP_ID)->getConfig()->getBackendUrl()
-            ),
+            'url'  => '#/pocket/todo/',
             'name' => _w('Stream'),
         ];
         foreach ($users as $user_id => $user) { // foreach user
