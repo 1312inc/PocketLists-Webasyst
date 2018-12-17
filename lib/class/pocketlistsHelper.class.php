@@ -306,11 +306,11 @@ class pocketlistsHelper
         $year = $month * 12;
 
         if ($fullseconds < 60) {
-            return sprintf(_w('%ds'), $fullseconds);
+            return sprintf(_w('%d s'), $fullseconds);
         }
 
         if ($fullseconds < 60 * 60) {
-            return sprintf(_w('%dm'), round(($fullseconds) / 60));
+            return sprintf(_w('%d min'), round(($fullseconds) / 60));
         }
 
         $minutes = round(($fullseconds / 60) % 60);
@@ -332,7 +332,7 @@ class pocketlistsHelper
         }
 
         if ($fullseconds < $day * 365) {
-            return sprintf(_w('%d m'), $months, $days);
+            return sprintf(_w('%d mo'), $months, $days);
         }
 
         $yearDays = round(($fullseconds / $day) % 365);
