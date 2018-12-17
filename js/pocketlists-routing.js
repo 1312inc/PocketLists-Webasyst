@@ -180,73 +180,46 @@
                 $list_name.after('<i class="icon16 loading">');
             }
             // todo: load list separetly
-            this.load('?module=pocket&id=' + id + '&list_id=' + list_id, function (result) {
-                // show pockets
-                $('#content').html(result);
-                // and load selected list
-                //load_list && self.listAction(list_id);
-            });
+            this.load('?module=pocket&id=' + id + '&list_id=' + list_id, this.setHtmlContent);
         },
         listsAction: function () {
             this.pocketAction();
         },
         listAction: function (id) {
-            this.load('?module=list&id=' + id, function (result) {
-                $('#pl-list-content').html(result);
-            });
+            this.todoAction();
         },
         archiveAction: function (id) {
             id = id || 0;
-            this.load('?module=archive&id=' + id, function (result) {
-                $('#content').html(result);
-            });
+            this.load('?module=archive&id=' + id, this.setHtmlContent);
         },
         logbookAction: function () {
-            this.load('?module=logbook', function (result) {
-                $('#content').html(result);
-            });
+            this.load('?module=logbook', this.setHtmlContent);
         },
         settingsAction: function () {
-            this.load('?module=settings', function (result) {
-                $('#content').html(result);
-            });
+            this.load('?module=settings', this.setHtmlContent);
         },
         debugAction: function () {
-            this.load('?module=debug', function (result) {
-                $('#content').html(result);
-            });
+            this.load('?module=debug', this.setHtmlContent);
         },
         todoAction: function () {
-            this.load('?module=todo', function (result) {
-                $('#content').html(result);
-            });
+            this.load('?module=todo', this.setHtmlContent);
         },
         activityAction: function () {
-            this.load('?module=activity', function (result) {
-                $('#content').html(result);
-            });
+            this.load('?module=activity', this.setHtmlContent);
         },
         commentsAction: function () {
-            this.load('?module=comments', function (result) {
-                $('#content').html(result);
-            });
+            this.load('?module=comments', this.setHtmlContent);
         },
         favoritesAction: function () {
-            this.load('?module=favorites', function (result) {
-                $('#content').html(result);
-            });
+            this.load('?module=favorites', this.setHtmlContent);
         },
         teamAction: function (teammate) {
             teammate = teammate || 0;
-            this.load('?module=team&teammate=' + teammate, function (result) {
-                $('#content').html(result);
-            });
+            this.load('?module=team&teammate=' + teammate, this.setHtmlContent);
         },
         appAction: function (app) {
             app = app || 0;
-            this.load('?module=app&app=' + app, function (result) {
-                $('#content').html(result);
-            });
+            this.load('?module=app&app=' + app, this.setHtmlContent);
         },
         /** Helper to load data into main content area. */
         load: function (url, options, fn) {
@@ -268,6 +241,9 @@
                     fn.call(this, result);
                 }
             });
+        },
+        setHtmlContent: function (html) {
+            $('#content').html(html);
         }
     }
 }(jQuery));

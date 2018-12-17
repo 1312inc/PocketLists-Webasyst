@@ -11,10 +11,10 @@
                 </h5>
             </div>
             {if !empty($lists)}
-                <ul class="pl-lists">
+                <ul class="pl-lists" data-pl2-wrapper="lists">
                     {foreach $lists as $l}
                         <li data-pl-list-id="{$l->pk}">
-                            <a href="#/pocket/{$pocket->pk}/list/{$l->pk}/"{if $l->pk == $list_id} class="pl-is-selected"{/if}>
+                            <a href="#/pocket/{$pocket->pk}/list/{$l->pk}/"{if $l->pk == $list_id} class="pl-is-selected"{/if} title="{$l->name|escape}">
                                 <span class="count{if $l->calc_priority == 1} indicator green{elseif $l->calc_priority == 2} indicator yellow{elseif $l->calc_priority == 3} indicator red{/if}">{$l->count}</span>
                                 <i class="listicon36"
                                    style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l->icon|default:'li-list@2x.png'});"></i>
@@ -44,12 +44,91 @@
 </div>
 <script>
     (function () {
+        var $pocketWrapper = $('[data-pl2-pocket-wrapper]');
 
-        new $.pocketlists.Pocket($('[data-pl2-pocket-wrapper]'), {
+        new $.pocketlists.Pocket($pocketWrapper, {
             current_user_id: {$wa->user()->get('id')}
         });
 
         $.pocketlists.setTitle('{if isset($pocket.name)}{$pocket.name|default:" "|escape}{else}{/if}');
 
+
+        var $lists_wrapper = $pocketWrapper.find('[data-pl2-wrapper="lists"]');
+
+        $('[data-pl-list-id]', $lists_wrapper).droppable({
+            accept: '[data-parent-id]',
+            disabled: false,
+            greedy: true,
+            tolerance: 'pointer',
+            classes: {
+                'ui-droppable': 'pl-droppable'
+            },
+            over: function (event, ui) {
+                $(this).addClass('highlighted-background');
+            },
+            out: function (event, ui) {
+                $(this).removeClass('highlighted-background');
+            },
+            drop: function (event, ui) {
+                var $item = ui.draggable,
+                    $list = $(event.target),
+                    list_id = $list.data('pl-list-id');
+
+                $item.trigger('moveToList.pl2', {
+                    id: list_id,
+                    drop: this
+                });
+                $(this).removeClass('highlighted-background');
+                $item.addClass('pl-dropped');
+            }
+        });
+
+        $lists_wrapper.sortable({
+            item: '[data-pl-list-id]',
+            placeholder: 'pl-list-placeholder',
+            opacity: 0.75,
+            distance: 5,
+            appendTo: 'body',
+            tolerance: 'pointer',
+            classes: {
+                'ui-sortable-helper': 'shadowed'
+            },
+            start: function (e, ui) {
+                ui.placeholder.height(ui.helper.outerHeight());
+            },
+            stop: function (event, ui) {
+                var getLists = function () {
+                    var data = [];
+                    $lists_wrapper.find('[data-pl-list-id]').each(function (i) {
+                        var $this = $(this);
+                        // color = $this.attr('class').match(/pl-(.*)/);
+                        data.push({
+                            id: $this.data('pl-list-id'),
+                            sort: i
+                            // color: color[1]
+                        });
+                    });
+                    return data;
+                };
+
+                var updateSort = function () {
+                    $.post(
+                        '?module=list&action=sort',
+                        {
+                            data: getLists()
+                        },
+                        function (r) {
+                            if (r.status === 'ok') {
+                            } else {
+                                alert(r.errors);
+                            }
+                        },
+                        'json'
+                    );
+                };
+
+                updateSort();
+            }
+        });
     }());
 </script>

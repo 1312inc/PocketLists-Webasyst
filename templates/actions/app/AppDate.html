@@ -49,8 +49,8 @@
     <div class="clear-both"></div>
 
     {include '../../include/itemadd.html' inline}
-
     {include '../../include/itemdetails.html' inline}
+    {include '../../include/itemcomments.html' inline}
 </main>
 
 <script type="text/javascript">
@@ -68,7 +68,8 @@
                 app: '{$app->getApp()}',
                 entity_type: null,
                 entity_id: null
-            }
+            },
+            userHasLinkedApps: {$user->hasLinkedApps()}
         });
     }());
 </script>

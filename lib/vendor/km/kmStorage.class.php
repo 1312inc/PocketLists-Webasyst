@@ -73,12 +73,12 @@ class kmStorage implements ArrayAccess, Iterator
      */
     public function &__get($name)
     {
-        $method = 'get'.implode('', array_map('ucfirst', explode('_', $name)));
-        if (method_exists($this, $method)) {
-            $value = $this->$method();
-
-            return $value;
-        }
+//        $method = 'get'.implode('', array_map('ucfirst', explode('_', $name)));
+//        if (method_exists($this, $method)) {
+//            $value = $this->$method();
+//
+//            return $value;
+//        }
 
         if (array_key_exists($name, $this->storage)) {
             return $this->storage[$name];
@@ -95,12 +95,12 @@ class kmStorage implements ArrayAccess, Iterator
      */
     public function __set($name, $value)
     {
-        $method = 'set'.implode('', array_map('ucfirst', explode('_', $name)));
-        if (method_exists($this, $method)) {
-            $this->$method($value);
-        } else {
+//        $method = 'set'.implode('', array_map('ucfirst', explode('_', $name)));
+//        if (method_exists($this, $method)) {
+//            $this->$method($value);
+//        } else {
             $this->storage[$name] = $value;
-        }
+//        }
 
         if (!in_array($name, $this->keys, true)) {
             $this->keys[] = $name;

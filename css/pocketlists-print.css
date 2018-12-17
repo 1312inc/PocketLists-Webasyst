@@ -106,25 +106,6 @@ label.pl-done-label i.icon16.userpic20 {
 .pl-welcome.top-padded { padding-top: 100px; }
 
 #pl-item-add { display: none; }
-#pl-item-add-wrapper-hover {
-    display: block;
-    max-height: 10px;
-    height: 4px;
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -1px;
-    background: #fdda3b;
-    margin: 0;
-    cursor: pointer;
-    z-index: 3;
-    /* width: 100%; */
-}
-.pl-item-wrapper:hover #pl-item-add-wrapper-hover {
-    max-height: 99px;
-    transition: max-height 0.25s ease-in;
-    transition-delay: 0.4s;
-}
 
 input#pl-new-list-input,
 #pl-item-add textarea,

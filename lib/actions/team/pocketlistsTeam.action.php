@@ -1,18 +1,20 @@
 <?php
 
-class pocketlistsTeamAction extends waViewAction
+class pocketlistsTeamAction extends pocketlistsViewAction
 {
     public function execute()
     {
         // get all pocketlists users
         // all admin
-        $teammates = array();
+        $teammates = [];
         $teammates_ids = pocketlistsRBAC::getAccessContacts();
         if ($teammates_ids) {
-            $teammates = pocketlistsHelper::getTeammates($teammates_ids);
+            /** @var pocketlistsTeammateFactory $factory */
+            $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getModelFactory('Teammate');
+            $teammates = $factory->getTeammates($teammates_ids);
 
             $selected_teammate = waRequest::get('teammate');
-            $lists = array();
+            $lists = [];
             if ($selected_teammate) {
                 $user_model = new waUserModel();
                 $id = $user_model->getByLogin($selected_teammate);
@@ -27,7 +29,7 @@ class pocketlistsTeamAction extends waViewAction
                         $lists[$list_id]['last_contact_ativity'] = $list_activities[$list_id]['last_date'];
                     }
                 }
-                usort($lists, array($this, 'sort_by_activity'));
+                usort($lists, [$this, 'sort_by_activity']);
             } else {
                 $id = reset($teammates);
                 $id = $id['id'];
@@ -46,6 +48,7 @@ class pocketlistsTeamAction extends waViewAction
         $this->view->assign('teammates', $teammates);
         $this->view->assign('pl2_attachments_path', wa()->getDataUrl('attachments/', true, pocketlistsHelper::APP_ID));
         $this->view->assign('print', waRequest::get('print', false));
+        $this->view->assign('user', $this->user);
     }
 
     private function sort_by_activity($a, $b)

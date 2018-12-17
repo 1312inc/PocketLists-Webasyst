@@ -80,4 +80,11 @@ interface pocketlistsItemLinkInterface
      * @return string
      */
     public function getBannerHtml();
+
+    /**
+     * @param pocketlistsUser|null $user
+     *
+     * @return bool
+     */
+    public function userCanAccess(pocketlistsUser $user = null);
 }

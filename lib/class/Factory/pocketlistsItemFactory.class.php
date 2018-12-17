@@ -3,7 +3,7 @@
 /**
  * Class pocketlistsFactoryItem
  */
-class pocketlistsFactoryItem
+class pocketlistsItemFactory
 {
     /**
      * @var pocketlistsItemModel

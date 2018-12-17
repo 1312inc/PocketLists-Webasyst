@@ -26,8 +26,16 @@ class pocketlistsItemLinkAutocompleter
             return $this;
         }
 
+        /**
+         * @var string                       $app
+         * @var pocketlistsItemLinkInterface $linker
+         */
         foreach ($linked as $app => $linker) {
             if ($types && !in_array($app, $types)) {
+                continue;
+            }
+
+            if (!$linker->userCanAccess()) {
                 continue;
             }
 

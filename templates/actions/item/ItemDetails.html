@@ -7,36 +7,40 @@
     <input type="hidden" name="item[id]" value="{$item.id}"/>
     <input type="hidden" id="pl-item-list-id" value="{$item.list_id}"/>
     <!-- core -->
-    <div class="field-group">
-        <div class="field">
-            <div class="value"><input type="text" class="bold large long" name="item[name]" placeholder="[`Title`]" value="{$item.name|escape}"{if $item.status == 1} disabled="disabled"{/if} /></div>
-            <div class="value"><textarea name="item[note]" placeholder="[`Optional text note`]"{if $item.status == 1} disabled="disabled"{/if}>{$item.note|escape}</textarea></div>
-            {*$wa->csrf()*}
-            <div class="value" data-pl-item-details-attachments>
 
-                <div class="block double-padded{if $fileupload} pl-add-attachment-dropbox{/if}"{if $fileupload} data-pl-item-details-fileupload{/if}>
 
-                    <ul class="pl-attachments">
-                    {foreach $attachments as $attachment}
-                        <li>
-                            <a href="{$pl2_attachments_path}{$attachment.filename}" target="_blank">{$attachment.filename|truncate:128}</a>
-                            <a href="#" class="gray" data-pl-attachment-name="{$attachment.filename}" style="margin-left: 10px;">&times;</a>
-                        </li>
-                    {/foreach}
-                    </ul>
-                    {if $fileupload}
-                    <input type="file" name="files[]" multiple="">
-                    {/if}
-                </div>
+        <textarea class="pl-details-textarea pl-item-name" name="item[name]" placeholder="[`Title`]" {if $item.status == 1} disabled="disabled"{/if}>{$item.name|escape}</textarea>
 
-                {if $fileupload}
-                <div id="progress" class="progress" style="width: 100%; height: 2px;">
-                    <div class="progress-bar progress-bar-success" style="background-color: #00aa00"></div>
-                </div>
-                {/if}
 
-            </div>
+        <textarea class="pl-details-textarea" name="item[note]" placeholder="[`Add note`]"{if $item.status == 1} disabled="disabled"{/if}>{$item.note|escape}</textarea>
+
+    {*$wa->csrf()*}
+    <div data-pl-item-details-attachments>
+
+        <div class="block double-padded{if $fileupload} pl-add-attachment-dropbox{/if}"{if $fileupload} data-pl-item-details-fileupload{/if}>
+
+            <ul class="menu-v">
+            {foreach $attachments as $attachment}
+                <li>
+                    <a href="#" class="gray float-right" data-pl-attachment-name="{$attachment.filename}" style="margin-left: 10px;">&times;</a>
+                    <a href="{$pl2_attachments_path}{$attachment.filename}" target="_blank">{$attachment.filename|truncate:128}</a>
+                </li>
+            {/foreach}
+            </ul>
+            {if $fileupload}
+            <input type="file" name="files[]" multiple="">
+            {/if}
         </div>
+
+        {if $fileupload}
+        <div id="progress" class="progress" style="width: 100%; height: 2px;">
+            <div class="progress-bar progress-bar-success" style="background-color: #00aa00"></div>
+        </div>
+        {/if}
+
+    </div>
+
+    <div class="field-group">
         {if $contacts}
         <div class="field" id="pl-assigned-contact">
             <div class="name">[`Assigned to`]</div>
@@ -75,6 +79,7 @@
                 </div>
             </div>
         {/if}
+        <div class="clear-both"></div>
     </div>
 
     <!-- notifications -->
@@ -114,6 +119,7 @@
                     <p class="hint">[`When due is set, it may automatically increase the manually set priority color.`]</p>
                 {/if}
             </div>
+            <div class="clear-both"></div>
         </div>
         {else}
         <div class="field">
@@ -166,7 +172,16 @@
 
     <div class="field-group" style="margin-bottom: 0;">
         <div class="field">
-            <div class="value">
+
+            <div class="float-right block half-padded">
+                <ul class="menu-v with-icons">
+                    <li>
+                        <a href="#" data-pl-action="item-delete" class="nowrap">
+                            <i class="icon16 delete"></i>[`Delete to-do`]
+                        </a>
+                    </li>
+                </ul>
+            </div>
 
                 <input type="submit" class="button green" value="[`Save`]"  id="pl-item-details-save"/>
                 [`or`]
@@ -175,22 +190,17 @@
                 <span class="error" style="display: none;">[`error`]</span>
                 <span class="success" style="display: none;">[`saved`]</span>
 
-            </div>
+
 
         </div>
     </div>
 
     </form>
     <iframe id="pl-item-details-form-iframe" name="pl-item-details-form-iframe" style="display:none;"></iframe>
+
+    <div class="clear-both"></div>
+
 </div>
-<hr>
-<ul class="menu-v with-icons">
-    <li>
-        <a href="#" data-pl-action="item-delete">
-            <i class="icon16 delete"></i> [`Delete to-do`]
-        </a>
-    </li>
-</ul>
 
 </div>
 </div>

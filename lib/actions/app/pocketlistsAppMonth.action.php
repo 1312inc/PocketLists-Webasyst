@@ -1,16 +1,27 @@
 <?php
 
-class pocketlistsAppMonthAction extends waViewAction
+/**
+ * Class pocketlistsAppMonthAction
+ */
+class pocketlistsAppMonthAction extends pocketlistsViewAction
 {
     public function execute()
     {
-        $timezone = wa()->getUser()->getTimezone();
-        $show_month = waRequest::get('month', 0, waRequest::TYPE_INT);
-        $app_id = waRequest::get('app');
+       $app_id = waRequest::get('app');
 
         if (!$app_id) {
             throw new waException('Not found');
         }
+
+        /** @var pocketlistsItemLinkInterface $app */
+        $app = wa(pocketlistsHelper::APP_ID)->getConfig()->getLinkedApp($app_id);
+
+        if (!$app->userCanAccess()) {
+            throw new waException('Access denied.', 403);
+        }
+
+        $timezone = wa()->getUser()->getTimezone();
+        $show_month = waRequest::get('month', 0, waRequest::TYPE_INT);
 
         $im = new pocketlistsItemModel();
 
@@ -32,7 +43,7 @@ class pocketlistsAppMonthAction extends waViewAction
 
         $this->view->assign('type', 'app');
 
-        $this->view->assign('app', wa(pocketlistsHelper::APP_ID)->getConfig()->getLinkedApp($app_id));
+        $this->view->assign('app', $app);
 
         $this->setTemplate('templates/include/monthcalendar.html');
     }

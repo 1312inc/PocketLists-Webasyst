@@ -3,7 +3,7 @@
 /**
  * Class pocketlistsListAction
  */
-class pocketlistsListAction extends waViewAction
+class pocketlistsListAction extends pocketlistsViewAction
 {
     /**
      * @throws waDbException
@@ -64,10 +64,13 @@ class pocketlistsListAction extends waViewAction
                 return;
             }
 
-            $list_access_contacts = pocketlistsHelper::getTeammates(
+            /** @var pocketlistsTeammateFactory $factory */
+            $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getModelFactory('Teammate');
+            $list_access_contacts = $factory->getTeammates(
                 pocketlistsRBAC::getAccessContacts($list->pk),
                 true,
-                false
+                false,
+                true
             );
 
             $us = new pocketlistsUserSettings();
@@ -87,19 +90,19 @@ class pocketlistsListAction extends waViewAction
                 ]
             );
             $undone = $im->getUndoneByList($list->pk);
-            $done = $im->getDoneByList($list->pk);
+            $done = $im->getDoneByList($list->pk, 0, pocketlistsListLazyDoneItemsAction::OFFSET);
             $this->view->assign(
                 [
-                    'list'               => $list,
-                    'archive'            => $archived || $list->archived,
-                    'items'              => $undone,
-                    'empty'              => count($undone),
-                    'items_done'         => $done,
-                    'count_items_done'   => $count_done,
-                    'count_items_undone' => $count_undone,
-                    'new'                => false,
-                    'pl2_attachments_path'   => wa()->getDataUrl('attachments/', true, pocketlistsHelper::APP_ID),
-                    'list_icons'         => pocketlistsHelper::getListIcons(),            // get icons
+                    'list'                 => $list,
+                    'archive'              => $archived || $list->archived,
+                    'items'                => $undone,
+                    'empty'                => count($undone),
+                    'items_done'           => $done,
+                    'count_items_done'     => $count_done,
+                    'count_items_undone'   => $count_undone,
+                    'new'                  => false,
+                    'pl2_attachments_path' => wa()->getDataUrl('attachments/', true, pocketlistsHelper::APP_ID),
+                    'list_icons'           => (new pocketlistsListIcon())->getAll(),            // get icons
                 ]
             );
         } else {
@@ -133,7 +136,8 @@ class pocketlistsListAction extends waViewAction
                 'print'                => waRequest::get('print', false),
                 'pocket'               => $pocket,
                 'list_access_contacts' => $list_access_contacts ?: [],
-                'fileupload'           => 1
+                'fileupload'           => 1,
+                'user'                 => $this->user
             ]
         );
     }

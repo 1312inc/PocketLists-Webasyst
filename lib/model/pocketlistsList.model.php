@@ -4,6 +4,7 @@
  * Class pocketlistsListModel
  *
  * @property int    $sort
+ * @property int    $pocket_id
  * @property string $type
  * @property string $icon
  * @property int    $archived

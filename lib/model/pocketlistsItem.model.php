@@ -27,9 +27,17 @@
  * @property int    $key_list_id
  * @property array  $chat
  * @property array  $attachments
+ * @property string $age_time
  */
 class pocketlistsItemModel extends kmModelExt
 {
+    const PRIORITY_NORM       = 0;
+    const PRIORITY_GREEN      = 1;
+    const PRIORITY_YELLOW     = 2;
+    const PRIORITY_RED        = 3;
+    const PRIORITY_BLACK      = 4;
+    const PRIORITY_BURNINHELL = 5;
+
     protected $table = 'pocketlists_item';
 
     /**
@@ -285,6 +293,7 @@ class pocketlistsItemModel extends kmModelExt
                   ({$or_sql}) 
                   AND 
                   {$and_sql}
+                GROUP BY i.id
                 ORDER BY
                   i.status,
                   (i.complete_datetime IS NULL), i.complete_datetime DESC";
@@ -559,15 +568,19 @@ class pocketlistsItemModel extends kmModelExt
 
     /**
      * @param      $list_id
+     * @param int  $offset
+     * @param int  $limit
      * @param bool $tree
      *
      * @return array|mixed
      */
-    public function getDoneByList($list_id, $tree = true)
+    public function getDoneByList($list_id, $offset = 0, $limit = 10, $tree = true)
     {
         $sql = $this->getQuery()."
                 WHERE i.list_id = i:lid AND i.status > 0
-                ORDER BY i.complete_datetime DESC, i.parent_id, i.sort ASC, i.id DESC";
+                ORDER BY i.complete_datetime DESC, i.parent_id, i.sort ASC, i.id DESC
+                LIMIT {$limit}
+                OFFSET {$offset}";
 
         return $this->getItems($sql, $list_id, $tree);
     }
@@ -674,6 +687,8 @@ class pocketlistsItemModel extends kmModelExt
             if ($item['contact_id']) {
                 $user = new waContact($item['contact_id']);
                 $item['contact'] = pocketlistsHelper::getContactData($user);
+            } else {
+                $item['contact'] = pocketlistsHelper::getContactData(new waContact());
             }
             if ($item['assigned_contact_id']) {
                 $user = new waContact($item['assigned_contact_id']);
@@ -690,6 +705,9 @@ class pocketlistsItemModel extends kmModelExt
             $this->addChatData($item);
 
             $this->addPriorityData($item);
+
+            $age_time = time() - max(strtotime($item['update_datetime']), strtotime($item['create_datetime']));
+            $item['age_time'] = $age_time < 1 ? '' : pocketlistsHelper::getDatetimeBySeconds($age_time);
 
             if (!$edit) {
                 $this->prepareOutput($item);
@@ -733,7 +751,7 @@ class pocketlistsItemModel extends kmModelExt
 
         $item['calc_priority'] = max(
             pocketlistsHelper::calcPriorityOnDueDate($item['due_date'], $item['due_datetime']),
-            isset($item['priority']) ? $item['priority'] : 0
+            isset($item['priority']) ? $item['priority'] : pocketlistsItemModel::PRIORITY_NORM
         );
 
         return $item;
@@ -828,6 +846,31 @@ class pocketlistsItemModel extends kmModelExt
             return 1;
         }
 
+        $date1 = !empty($i1['update_datetime']) ? strtotime($i1['update_datetime']) : null;
+
+        $date2 = !empty($i2['update_datetime']) ? strtotime($i2['update_datetime']) : null;
+
+        // check update_datetime
+        if ($date1 && $date2) { // check both dates
+            if ($date1 < $date2) {
+                return -1;
+            }
+
+            if ($date1 > $date2) {
+                return 1;
+            }
+
+            return 0;
+        }
+
+        if ($date1 && !$date2) {
+            return -1;
+        }
+
+        if (!$date1 && $date2) {
+            return 1;
+        }
+
         return 0;
     }
 
@@ -852,7 +895,7 @@ class pocketlistsItemModel extends kmModelExt
             $this->updateById(
                 $item['id'],
                 [
-                    'update_datetime' => date("Y-m-d H:i:s"),
+//                    'update_datetime' => date("Y-m-d H:i:s"),
                     'sort'            => $sort++,
                 ]
             );
@@ -879,7 +922,7 @@ class pocketlistsItemModel extends kmModelExt
                 $result[$contact_id]['item_names'][] = $item['name'];
                 $result[$contact_id]['item_max_priority'] = max(
                     isset($result[$contact_id]['item_max_priority']) ?
-                        $result[$contact_id]['item_max_priority'] : 0,
+                        $result[$contact_id]['item_max_priority'] : pocketlistsItemModel::PRIORITY_NORM,
                     $item['calc_priority']
                 );
             }
@@ -983,6 +1026,7 @@ class pocketlistsItemModel extends kmModelExt
                     OR l.archived IS NULL
                   )
                   AND {$list_sql}
+                GROUP BY id
                 ORDER BY
                   i.status,
                   (i.complete_datetime IS NULL), i.complete_datetime DESC";
@@ -1017,7 +1061,7 @@ class pocketlistsItemModel extends kmModelExt
     /**
      * @param string|bool $app
      * @param string|bool $entity_type
-     * @param int|bool $entity_id
+     * @param int|bool    $entity_id
      *
      * @return array
      */
@@ -1154,7 +1198,7 @@ class pocketlistsItemModel extends kmModelExt
               WHERE
                 (
                   (i.assigned_contact_id = i:contact_id) /* + items assigned to me */
-                  OR i.priority > 0 /* + items with priority */
+                  OR i.priority > ".pocketlistsItemModel::PRIORITY_NORM." /* + items with priority */
                   OR
                   (
                     /*((i.due_date IS NOT NULL OR i.due_datetime IS NOT NULL) AND i.list_id IS NULL AND i.key_list_id IS NULL AND i.contact_id = 7)
@@ -1207,13 +1251,13 @@ class pocketlistsItemModel extends kmModelExt
 
         switch ($icon) {
             case pocketlistsUserSettings::ICON_OVERDUE: // overdue
-                $colors = "AND ((i.due_date <= '{$today}' AND i.due_datetime < '{$now}') OR i.due_date < '{$today}' OR i.priority = 3)";
+                $colors = "AND ((i.due_date <= '{$today}' AND i.due_datetime < '{$now}') OR i.due_date < '{$today}' OR i.priority = ".pocketlistsItemModel::PRIORITY_RED.")";
                 break;
             case pocketlistsUserSettings::ICON_OVERDUE_TODAY: // overdue + today
-                $colors = "AND (i.due_date <= '".$today."' OR i.due_datetime < '".$tomorrow."' OR i.priority IN (2, 3))";
+                $colors = "AND (i.due_date <= '".$today."' OR i.due_datetime < '".$tomorrow."' OR i.priority IN (".pocketlistsItemModel::PRIORITY_YELLOW.", ".pocketlistsItemModel::PRIORITY_RED."))";
                 break;
             case pocketlistsUserSettings::ICON_OVERDUE_TODAY_AND_TOMORROW: // overdue + today + tomorrow
-                $colors = "AND (i.due_date <= '".$tomorrow."' OR i.due_datetime < '".$day_after_tomorrow."' OR i.priority IN (1, 2, 3))";
+                $colors = "AND (i.due_date <= '".$tomorrow."' OR i.due_datetime < '".$day_after_tomorrow."' OR i.priority IN (".pocketlistsItemModel::PRIORITY_GREEN.", ".pocketlistsItemModel::PRIORITY_YELLOW.", ".pocketlistsItemModel::PRIORITY_RED."))";
                 break;
             default:
                 return '';
@@ -1227,7 +1271,7 @@ class pocketlistsItemModel extends kmModelExt
           WHERE
             (
               (i.assigned_contact_id = i:contact_id) /* + items assigned to me */
-              OR i.priority > 0 /* + items with priority */
+              OR i.priority > ".pocketlistsItemModel::PRIORITY_NORM." /* + items with priority */
               OR
               (
                 /*((i.due_date IS NOT NULL OR i.due_datetime IS NOT NULL) AND i.list_id IS NULL AND i.key_list_id IS NULL AND i.contact_id = 7)
@@ -1346,7 +1390,7 @@ class pocketlistsItemModel extends kmModelExt
     public function getLinkedEntities()
     {
         if ($this->linkedEntities === null) {
-            /** @var pocketlistsFactoryItemLink $factory */
+            /** @var pocketlistsItemLinkFactory $factory */
             $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getModelFactory('ItemLink');
 
             $this->linkedEntities = $factory->getForItem($this) ?: [];

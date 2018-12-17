@@ -67,11 +67,14 @@ class pocketlistsCommentModel extends kmModelExt
                 l.color list_color,
                 c.contact_id contact_id,
                 c.comment comment,
-                c.create_datetime create_datetime
+                c.create_datetime create_datetime,
+                p.id pocket_id,
+                p.name pocket_name
             FROM {$this->table} c
             LEFT JOIN pocketlists_item as i ON i.id = c.item_id
             LEFT JOIN pocketlists_list as l ON l.id = i.list_id
             LEFT JOIN pocketlists_item as i2 ON i2.key_list_id = l.id
+            LEFT JOIN pocketlists_pocket p ON p.id = l.pocket_id
             WHERE {$list_sql}
             ORDER BY id DESC
             LIMIT {$start}, {$limit}";

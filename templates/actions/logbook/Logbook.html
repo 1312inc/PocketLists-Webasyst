@@ -34,8 +34,8 @@
             enableAddLinkOnHover: false,
             enableChangeLevel: false,
             enableSortItems: false,
-            current_user_id: {$wa->user()->get('id')}
-        });
+            userHasLinkedApps: {$user->hasLinkedApps()},
+            current_user_id: {$user->getContact()->getId()}                });
         $.pocketlists.setTitle($_('Logbook'));
 
 

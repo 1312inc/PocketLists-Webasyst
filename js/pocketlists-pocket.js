@@ -84,8 +84,7 @@ $.pocketlists.Pocket = function ($pocket_wrapper, options) {
                             color = $this.attr('class').match(/pl-(.*)/);
                         data.push({
                             id: $this.data('pl-list-id'),
-                            sort: i,
-                            color: color[1]
+                            sort: i
                         });
                     });
                     return data;
@@ -151,6 +150,40 @@ $.pocketlists.Pocket = function ($pocket_wrapper, options) {
         var $lists_wrapper = $('#pl-lists').find('.pl-lists');
 
         _initSortList($lists_wrapper);
+
+        $lists_wrapper.on('moveTo.pl2', '[data-pl-list-id]', function (e, data) {
+            // if (request_in_action) {
+            //     return;
+            // }
+            // request_in_action = true;
+
+            var $this = $(this),
+                pocket_id = data['id'],
+                drop = data['drop'];
+
+            return $.post(
+                '?module=list&action=moveTo',
+                {
+                    id: parseInt($this.data('pl-list-id')),
+                    pocket_id: pocket_id
+                },
+                function (r) {
+                    // $.pocketlists.$loading.removeAttr('style').remove();
+                    if (r.status === 'ok') {
+                        $this.remove();
+                        // if ($this.find('.pl-item').data('pl-assigned-contact') === undefined) {
+                        //     $this.find('.pl-item-name').after('<strong class="hint"><br>' + $_('Assigned to') + ' ' + r.data + '</strong>');
+                        // } else {
+                        //     $this.find('.pl-item-name + .hint').html('<br>' + $_('Assigned to') + ' ' + r.data);
+                        // }
+                        // $this.find('.pl-item').data('pl-assigned-contact', team_id);
+                    }
+                    $(drop).trigger('dropActionDone.pl2', {result: r.status === 'ok'});
+                    // request_in_action = false;
+                },
+                'json'
+            );
+        });
     }
 
     if ($pocket_wrapper) {

@@ -1,18 +1,29 @@
 <?php
 
+/**
+ * Class pocketlistsRightConfig
+ */
 class pocketlistsRightConfig extends waRightConfig
 {
     const RIGHT_NONE = 0;
     const RIGHT_FULL = 1;
 
+    /**
+     * @throws waDbException
+     */
     public function init()
     {
-        $this->addItem('cancreatetodos', _w('Can create to-dos to self'), 'always_enabled');
-        $this->addItem('cancreatelists', _w('Can create shared to-do lists'), 'checkbox');
+        $this->addItem(pocketlistsRBAC::CAN_CREATE_TODOS, _w('Can create to-dos to self'), 'always_enabled');
+        $this->addItem(pocketlistsRBAC::CAN_CREATE_LISTS, _w('Can create shared to-do lists'), 'checkbox');
         $this->addItem(
-            'canassign',
-            //_w('Can see other users personal to-dos and assign to-dos to teammates'),
-            _w('Can see Shop-Script to-dos, other users personal to-dos, and assign to-dos to teammates'),
+            pocketlistsRBAC::CAN_ASSIGN,
+            _w('Can see other users personal to-dos and assign to-dos to teammates'),
+            //_w('Can see Shop-Script to-dos, other users personal to-dos, and assign to-dos to teammates'),
+            'checkbox'
+        );
+        $this->addItem(
+            pocketlistsRBAC::CAN_USE_SHOP_SCRIPT,
+            _w('Can create and see to-dos linked with Shop-Script orders'),
             'checkbox'
         );
 
@@ -80,9 +91,10 @@ class pocketlistsRightConfig extends waRightConfig
     public function setDefaultRights($contact_id)
     {
         return [
-            'cancreatetodos' => 1,
-            'cancreatelists' => 1,
-            'canassign'      => 1,
+            pocketlistsRBAC::CAN_CREATE_TODOS    => 1,
+            pocketlistsRBAC::CAN_CREATE_LISTS    => 1,
+            pocketlistsRBAC::CAN_ASSIGN          => 1,
+            pocketlistsRBAC::CAN_USE_SHOP_SCRIPT => 1,
         ];
     }
 }

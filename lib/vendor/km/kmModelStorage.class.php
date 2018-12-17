@@ -28,12 +28,12 @@ class kmModelStorage extends kmStorage
             $this->storageOld[$name] = $this->storage[$name];
         }
 
-        $method = 'set'.implode('', array_map('ucfirst', explode('_', $name)));
-        if (method_exists($this, $method)) {
-            $this->$method($value);
-        } else {
+//        $method = 'set'.implode('', array_map('ucfirst', explode('_', $name)));
+//        if (method_exists($this, $method)) {
+//            $this->$method($value);
+//        } else {
             $this->storage[$name] = $value;
-        }
+//        }
 
         $this->updateKeys();
     }

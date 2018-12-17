@@ -3,6 +3,7 @@
 
     $.pocketlists = {
         $loading: $('<i class="icon16 loading">'),
+        $wa: null,
         defaults: {
             isAdmin: false
         },
@@ -132,39 +133,16 @@
                 self.sortLists();
             });
         },
+
         sortLists: function () {
             var self = this;
             if (!self.options.isAdmin) {
                 return;
             }
 
-            var $lists_wrapper = self.$core_sidebar.find('[data-pl-sidebar-block="lists"]'),
-                $team_wrapper = self.$core_sidebar.find('[data-pl-sidebar-block="team"]');
+            var $team_wrapper = self.$core_sidebar.find('[data-pl-sidebar-block="team"]'),
+                $pocket_wrapper = self.$core_sidebar.find('[data-pl2-sidebar-wrapper="pockets"] ul:first');
 
-            $('[data-pl-list-id]', $lists_wrapper).droppable({
-                accept: '[data-parent-id]',
-                disabled: false,
-                greedy: true,
-                tolerance: 'pointer',
-                classes: {
-                    'ui-droppable': 'pl-droppable'
-                },
-                over: function (event, ui) {
-                    $(this).addClass('highlighted-background');
-                },
-                out: function (event, ui) {
-                    $(this).removeClass('highlighted-background');
-                },
-                drop: function (event, ui) {
-                    var $item = ui.draggable,
-                        $list = $(event.target),
-                        list_id = $list.data('pl-list-id');
-
-                    $item.trigger('moveToList.pl2', {id: list_id, drop: this});
-                    $(this).removeClass('highlighted-background');
-                    $item.addClass('pl-dropped');
-                }
-            });
             $('[data-pl-team-id]', $team_wrapper).droppable({
                 accept: '[data-parent-id]',
                 disabled: false,
@@ -190,7 +168,32 @@
                 }
             });
 
-            self.$core_sidebar.on('dropActionDone.pl2', '[data-pl-list-id], [data-pl-team-id]', function (e, data) {
+            $('[data-pl-pocket-id]', $pocket_wrapper).droppable({
+                accept: '[data-pl-list-id]',
+                disabled: false,
+                greedy: true,
+                tolerance: 'pointer',
+                classes: {
+                    'ui-droppable': 'pl-droppable'
+                },
+                over: function (event, ui) {
+                    $(this).addClass('highlighted-background');
+                },
+                out: function (event, ui) {
+                    $(this).removeClass('highlighted-background');
+                },
+                drop: function (event, ui) {
+                    var $list = ui.draggable,
+                        $pocket = $(event.target),
+                        pocket_id = $pocket.data('pl-pocket-id');
+
+                    $list.trigger('moveTo.pl2', {id: pocket_id, drop: this});
+                    $(this).removeClass('highlighted-background');
+                    $list.addClass('pl-dropped');
+                }
+            });
+
+            self.$core_sidebar.on('dropActionDone.pl2', '[data-pl-team-id], [data-pl-pocket-id]', function (e, data) {
                 var $this = $(this);
                 if (data.result) {
                     $this.addClass('pl-drop-success');
@@ -207,54 +210,6 @@
                     }
                 }, 500);
 
-            });
-
-            $lists_wrapper.sortable({
-                item: '[data-pl-list-id]',
-                placeholder: 'pl-list-placeholder',
-                opacity: 0.75,
-                distance: 5,
-                appendTo: 'body',
-                tolerance: 'pointer',
-                classes: {
-                    'ui-sortable-helper': 'shadowed'
-                },
-                start: function (e, ui) {
-                    ui.placeholder.height(ui.helper.outerHeight());
-                },
-                stop: function (event, ui) {
-                    var getLists = function () {
-                        var data = [];
-                        $lists_wrapper.find('[data-pl-list-id]').each(function (i) {
-                            var $this = $(this);
-                            // color = $this.attr('class').match(/pl-(.*)/);
-                            data.push({
-                                id: $this.data('pl-list-id'),
-                                sort: i
-                                // color: color[1]
-                            });
-                        });
-                        return data;
-                    };
-
-                    var updateSort = function () {
-                        $.post(
-                            '?module=list&action=sort',
-                            {
-                                data: getLists()
-                            },
-                            function (r) {
-                                if (r.status === 'ok') {
-                                } else {
-                                    alert(r.errors);
-                                }
-                            },
-                            'json'
-                        );
-                    };
-
-                    updateSort();
-                }
             });
         },
         enabled_prevent_close_browser: false,
@@ -337,6 +292,7 @@
             self.$app_menu_pocket = $('#wa-app-pocketlists');
             self.$core_sidebar = $('#pl-sidebar-core');
             self.options = $.extend({}, self.defaults, o);
+            self.$wa = $('#wa');
 
             self.initCollapse();
             // self.highlightSidebar();
@@ -352,6 +308,66 @@
                 self.$core_sidebar.find('[data-pl-sidebar-block="team"] li').show();
                 $(this).hide();
             });
+
+            $(document)
+                .on('keydown', function (e) {
+                    switch (true) {
+                        case e.which === 18:
+                            self.$wa.addClass('pl-keypress-alt');
+                            break;
+                        case e.which === 16:
+                            self.$wa.addClass('pl-keypress-shift');
+                            break;
+                    }
+                }).on('keyup', function (e) {
+                    switch (true) {
+                        case e.which === 18:
+                            self.$wa.removeClass('pl-keypress-alt');
+                            break;
+                        case e.which === 16:
+                            self.$wa.removeClass('pl-keypress-shift');
+                            break;
+                    }
+                });
+
+            self.windowResize();
+        },
+        hasGlobalScrollbar: function () {
+            return $(document).height() > $(window).height();
+        },
+        log: function (msg) {
+            console.log('pocketlists log', msg);
+        },
+        flexHack: function () {
+            var $compensation = $('#pl-chat-waapps-height-compensation');
+            if (this.hasGlobalScrollbar() && !$compensation.is(':visible')) {
+                $compensation.show();
+                this.log('pl-chat-waapps-height-compensation show');
+            } else if (!this.hasGlobalScrollbar() && $compensation.is(':visible')) {
+                $compensation.hide();
+                this.log('pl-chat-waapps-height-compensation hide');
+            }
+        },
+        windowResize: function () {
+            var self = this,
+                delay = 500,
+                throttled = false;
+
+            function onResize() {
+                self.flexHack();
+            }
+
+            window.addEventListener('resize', function() {
+                if (!throttled) {
+                    onResize();
+                    throttled = true;
+                    setTimeout(function() {
+                        throttled = false;
+                    }, delay);
+                }
+            });
+
+            onResize();
         }
     };
 }(jQuery));

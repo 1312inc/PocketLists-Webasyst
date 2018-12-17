@@ -1,6 +1,9 @@
 <?php
 
-class pocketlistsItemCreateAction extends waViewAction
+/**
+ * Class pocketlistsItemCreateAction
+ */
+class pocketlistsItemCreateAction extends pocketlistsViewAction
 {
     public function execute()
     {
@@ -102,6 +105,13 @@ class pocketlistsItemCreateAction extends waViewAction
 
                 if (!empty($data[$i]['links'])) {
                     foreach ($data[$i]['links'] as $link) {
+                        /** @var pocketlistsItemLinkInterface $app */
+                        $app = wa(pocketlistsHelper::APP_ID)->getConfig()->getLinkedApp($link['model']['app']);
+
+                        if (!$app->userCanAccess()) {
+                            continue;
+                        }
+
                         foreach ($link['model'] as $key => $value) {
                             if ($value === '') {
                                 $link['model'][$key] = null;
@@ -149,12 +159,6 @@ class pocketlistsItemCreateAction extends waViewAction
 
                 // log this action
                 foreach ($items as $item) {
-                    if (!$list && !$assign_contact) {
-                        $this->logAction(pocketlistsLogAction::NEW_SELF_ITEM, array(
-                            'item_id' => $item['id']
-                        ));
-                    }
-
                     if ($assign_contact) {
                         pocketlistsNotifications::notifyAboutNewAssign($item);
 

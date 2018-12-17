@@ -181,4 +181,19 @@ class pocketlistsItemLinkShop extends pocketlistsItemLink implements pocketlists
 
         return $orders;
     }
+
+    /**
+     * @param pocketlistsUser|null $user
+     *
+     * @return bool
+     * @throws waException
+     */
+    public function userCanAccess(pocketlistsUser $user = null)
+    {
+        if ($user === null) {
+            $user = wa(pocketlistsHelper::APP_ID)->getConfig()->getUser();
+        }
+
+        return pocketlistsRBAC::canUseShopScript($user);
+    }
 }

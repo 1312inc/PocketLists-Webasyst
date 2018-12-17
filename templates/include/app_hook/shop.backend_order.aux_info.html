@@ -27,8 +27,12 @@
             </i></b></a>
         </div>
 
-        {include '../../include/itemadd.html' inline}
+        {if $params.app->userCanAccess()}
+            {include '../../include/itemadd.html' inline}
+        {/if}
         {include '../../include/itemdetails.html' inline}
+        {include '../../include/itemcomments.html' inline}
+
     </main>
 </script>
 <script type="text/javascript" src="{$params.wa_app_static_url}js/pocketlists.js?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
@@ -73,6 +77,7 @@
                 entity_id: {$params.order.id}
             },
             appUrl: '{$params.plurl}',
+            userHasLinkedApps: {$params.user->hasLinkedApps()},
             wa_url: '{$wa_url}',
             fileUpload: {$params.fileupload}
         });

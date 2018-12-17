@@ -143,11 +143,12 @@ $.pocketlists.List = function ($list_wrapper, options) {
                     $.post('?module=list&action=save', $this.serialize(), function (r) {
                         $.pocketlists.$loading.remove();
                         if (r.status === 'ok') {
-                            list_color = getListColor();
-                            updateList(r.data);
-                            $.pocketlists.updateAppCounter();
-                            $.pocketlists.reloadSidebar();
-                            hideListDetails();
+                            $.pocketlists_routing.redispatch();
+                            // list_color = getListColor();
+                            // updateList(r.data);
+                            // $.pocketlists.updateAppCounter();
+                            // $.pocketlists.reloadSidebar();
+                            // hideListDetails();
                         } else {
                             $wrapper.find('.error').show().delay(3000).hide();
                         }

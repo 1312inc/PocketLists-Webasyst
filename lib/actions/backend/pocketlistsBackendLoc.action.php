@@ -3,7 +3,7 @@
 /**
  * A list of localized strings to use in JS.
  */
-class pocketlistsBackendLocAction extends waViewAction
+class pocketlistsBackendLocAction extends pocketlistsViewAction
 {
     public function execute()
     {

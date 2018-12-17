@@ -33,7 +33,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             standAloneItemAdd: false,
             appUrl: '',
             wa_url: '',
-            fileUpload: 1
+            fileUpload: 1,
+            userHasLinkedApps: 0
         }, options),
         request_in_action = false;
 
@@ -127,6 +128,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 filter: o.filter
             },
             function (html) {
+                request_in_action = false;
+
                 if (!o.standAloneItemAdd) {
                     $.pocketlists.updateAppCounter();
                     $.pocketlists.reloadSidebar();
@@ -200,8 +203,6 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     updateSort();
                 }
 
-                request_in_action = false;
-
                 $.isFunction(callback) && callback.call($this);
             }
         );
@@ -227,13 +228,25 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     $list_count = $('#pl-lists').find('[data-pl-list-id="' + o.list.list_id + '"] span.count');
 
                 var priority_class = {
-                        'green': 1, 'pl-green': 1, 'pl-due-tomorrow': 1,
-                        'yellow': 2, 'pl-yellow': 2, 'pl-due-today': 2,
-                        'red': 3, 'pl-red': 3, 'pl-due-overdue': 3,
-                        'none': 0, 'pl-none': 0, 'pl-due-someday': 0, 'undefined': 0
+                        'green': 1,
+                        'pl-green': 1,
+                        'pl-due-tomorrow': 1,
+                        'yellow': 2,
+                        'pl-yellow': 2,
+                        'pl-due-today': 2,
+                        'red': 3,
+                        'pl-red': 3,
+                        'pl-due-overdue': 3,
+                        'none': 0,
+                        'pl-none': 0,
+                        'pl-due-someday': 0,
+                        'undefined': 0
                     },
                     class_priority = {
-                        1: ' indicator green', 2: ' indicator yellow', 3: ' indicator red', 0: ''
+                        1: ' indicator green',
+                        2: ' indicator yellow',
+                        3: ' indicator red',
+                        0: ''
                     };
 
                 // item moved to another
@@ -308,21 +321,9 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         var data = [];
         $items_wrapper.find(item_selector).each(function (i) {
             var $this = $(this),
-                color = $this.find('.pl-done').length ? $this.find('.pl-done').attr('class').match(/pl-done\s(pl-.*)/) : null,
-                priority = 0;
-            if (color && color.length > 0) {
-                switch (color[1]) {
-                    case 'pl-red':
-                        priority = 3;
-                        break;
-                    case 'pl-yellow':
-                        priority = 2;
-                        break;
-                    case 'pl-green':
-                        priority = 1;
-                        break;
-                }
-            }
+                $pldone = $this.find('.pl-done'),
+                priority = $pldone.length ? parseInt($pldone.data('pl2-item-priority')) : 0;
+
             data.push({
                 id: $this.data('id'),
                 parent_id: $this.data('parent-id'),
@@ -549,7 +550,15 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
     };
     var replaceItem = function (data) {
         if ($current_item) {
-            $current_item.find('.pl-item').first().replaceWith($(data).addClass('pl-item-selected'));
+            var setContent = function () {
+                $current_item.find('.pl-item').first().replaceWith($(data).addClass('pl-item-selected'));
+            };
+
+            if (ItemDetails.isVisible()) {
+                ItemDetails.trigger('hide.pl2', setContent);
+            } else {
+                setContent();
+            }
         }
     };
     var updateListCountBadge = function () {
@@ -577,88 +586,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             //$('.pl-title h1').css('opacity','1');
         }
     };
-    var showChatCommentInput = function () {
-        if ($current_item.length) {
-            $current_item.find('.pl-chat').show().find('textarea').trigger('focus');
-        }
-    };
-    var hideChatCommentInput = function () {
-        if ($current_item.length) {
-            var $comments_wrapper = $current_item.find('.pl-chat'),
-                $comment_input = $comments_wrapper.find('textarea');
-            $comment_input.trigger('blur');
-            if (!$current_item.find('.pl-cue').length) {
-                $comments_wrapper.hide();
-            }
-        }
-    };
-    var addComment = function (data) {
-        if (request_in_action) {
-            return;
-        }
-        request_in_action = true;
 
-        var $this = $(this),
-            item_id = $this.closest(item_selector).data('id'),
-            $reply_wrapper = $this.closest('.pl-reply'),
-            $userpic = $reply_wrapper.find('.icon16');
-
-        $userpic.hide();
-        $reply_wrapper.prepend($.pocketlists.$loading.css({
-            'margin-top': 1,
-            'margin-left': 12
-        }));
-        $.post(
-            o.appUrl + '?module=comment&action=add',
-            {
-                item_id: item_id,
-                comment: data.comment
-            },
-            function (html) {
-                $.pocketlists.$loading.removeAttr('style').remove();
-                $userpic.show();
-
-                $this.closest('.pl-reply').before(html);
-
-                $this.val('').trigger('focus');
-                $.pocketlists.resizeTextarea($this);
-
-                request_in_action = false;
-            }
-        );
-    };
-    var deleteComment = function () {
-        if (!confirm($_('You are about to permanently delete this comment. Delete?'))) {
-            return;
-        }
-
-        if (request_in_action) {
-            return;
-        }
-        request_in_action = true;
-
-        var $this = $(this),
-            $comment_wrapper = $this.closest('[data-pl-comment-id]'),
-            comment_id = $comment_wrapper.data('pl-comment-id');
-
-        $.post(
-            o.appUrl + '?module=comment&action=delete',
-            {
-                id: comment_id
-            },
-            function (r) {
-                $.pocketlists.$loading.removeAttr('style').remove();
-                if (r.status === 'ok') {
-                    $comment_wrapper.slideUp(200, function () {
-                        $comment_wrapper.remove();
-                    });
-                }
-                request_in_action = false;
-            },
-            'json'
-        );
-    };
-    var moveToList = function (list_id, drop) {
+    var moveToList = function (list_id, toList) {
         if (request_in_action) {
             return;
         }
@@ -674,12 +603,29 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             },
             function (r) {
                 // $.pocketlists.$loading.removeAttr('style').remove();
+                var $toList = $(toList);
+                var currentCount = parseInt($toList.find('.count').text());
                 if (r.status === 'ok') {
                     $this.hide(200, function () {
                         $this.remove();
                     });
+                    $toList.addClass('pl-drop-success');
+                    if (o.list && o.list.list_id) {
+                        var $fromList = $toList.parent().find('[data-pl-list-id="' + o.list.list_id + '"]'),
+                            currentCountOld = parseInt($fromList.find('.count').text());
+
+                        $toList.find('.count').text(currentCount + 1);
+                        $fromList.find('.count').text(currentCountOld - 1);
+                    }
+                } else {
+                    $this.addClass('pl-drop-fail');
                 }
-                $(drop).trigger('dropActionDone.pl2', {result: r.status === 'ok'});
+                // $(drop).trigger('dropActionDone.pl2', {result: r.status === 'ok'});
+
+                setTimeout(function () {
+                    $toList.removeClass('pl-drop-success pl-drop-fail');
+                }, 500);
+
                 request_in_action = false;
             },
             'json'
@@ -741,6 +687,10 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
     }());
 
     var ItemLinker = function ($textarea) {
+        if (!o.userHasLinkedApps) {
+            return;
+        }
+
         if ($textarea.data('pl2-itemlinker')) {
             return;
         }
@@ -766,8 +716,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 return false;
             }
 
-            if (!/(^| )@/.test(itemText)) {
-                log('no @');
+            if (!/(^| )(@|#|№)/.test(itemText)) {
+                log('no @|#|№');
 
                 return false;
             }
@@ -775,7 +725,11 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             // var cursorPos = doGetCaretPosition($textarea[0]);
             var cursorPos = $textarea.prop("selectionStart");
 
-            for (var i = cursorPos; itemText[i] != '@' && i >= 0; i--) {
+            var equalTrigger = function(text) {
+                return text === '@' || text === '#' || text === '№';
+            };
+
+            for (var i = cursorPos; !equalTrigger(itemText[i]) && i >= 0; i--) {
                 if (itemText[i] == ' ') {
                     return false;
                 }
@@ -792,17 +746,17 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         $textarea.autocomplete({
             // html:true,
             // autoFocus: true,
-            source: function( request, response ) {
+            source: function (request, response) {
                 var term = canShowAutocomplete();
 
                 if (term === '') {
                     return response([{
                         'value': '',
-                        'label': '<em>'+$_('Find order by ID') + '</em>'
+                        'label': '<em>' + $_('Find order by ID') + '</em>'
                     }]);
                 }
 
-                var plresponse = function(data) {
+                var plresponse = function (data) {
                     if (data.status != 'ok') {
                         return [];
                     }
@@ -836,11 +790,11 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     }, plresponse);
                 }
             },
-            focus: function() {
+            focus: function () {
                 // prevent value inserted on focus
                 return false;
             },
-            select: function( event, ui ) {
+            select: function (event, ui) {
                 var linked = $textarea.data('pl2-linked-entities') || {},
                     link = ui.item.data,
                     hash = link.model.app + link.model.entity_type + link.model.entity_id;
@@ -853,13 +807,13 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
                 var term = canShowAutocomplete(),
                     text = $textarea.val(),
-                    new_text = text.replace('@' + term, ui.item.value);
+                    new_text = text.replace(new RegExp('(@|#|№)' + term), ui.item.value);
 
                 $textarea.val(new_text);
 
                 return false;
             },
-            open: function(){
+            open: function () {
                 $textarea.autocomplete('widget').css('z-index', 100);
                 return false;
             },
@@ -867,7 +821,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         });
 
         // old jq ui hack
-        if ($textarea.data( "ui-autocomplete") !== undefined) {
+        if ($textarea.data("ui-autocomplete") !== undefined) {
             $textarea.data("ui-autocomplete")._renderItem = function (ul, item) {
                 return $("<li>")
                     .append(item.label)
@@ -896,6 +850,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
      * for new item dom manipulating
      */
     var NewItemWrapper = (function ($new_item_wrapper) {
+        // var $new_item_wrapper_hover = $('<div class="pl-inner-item-add-placeholder"></div>'),
         var $new_item_wrapper_hover = $('<div id="pl-item-add-wrapper-hover" style="display: none;">'),
             $top_new_item_wrapper = $new_item_wrapper.clone(),
             $textarea = $new_item_wrapper.find('textarea'),
@@ -912,7 +867,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
         var init = function () {
             // if (!o.standAloneItemAdd) {
-                $new_item_wrapper.detach();
+            $new_item_wrapper.detach();
             // }
 
             var show_new_item_wrapper = function () {
@@ -1026,36 +981,20 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 });
 
             //$wrapper.on('hide.pl2', hide_new_item_wrapper);
-            var undone_items_wrapper_hover_timeout = null;
             if (o.enableAddLinkOnHover) {
-                $undone_items_wrapper
-                    .on('mouseenter', item_selector + ' > .pl-item', function (e) {
-                        e.stopPropagation();
-                        var $item = $(this);
-                        undone_items_wrapper_hover_timeout = setTimeout(function () {
-                            if (!$item.find($new_item_wrapper).length) { // if no placeholder here
-                                $item.find('.pl-chat').after($new_item_wrapper_hover.show());
-                            }
-                        }, 1312);
-                    })
-                    .on('mouseleave', item_selector + ' > .pl-item', function () {
-                        clearTimeout(undone_items_wrapper_hover_timeout);
-                        $new_item_wrapper_hover.detach();
-                    });
-
-                $new_item_wrapper_hover.on('click', function (e) {
+                $undone_items_wrapper.on('click', '.pl-inner-item-add-placeholder',function (e) {
                     e.preventDefault();
                     e.stopPropagation();
 
                     // if item has children - place it before first
-                    var $item = $(this);
-                    var $has_children = $item.closest(item_selector).find('.menu-v');
+                    var $this = $(this);
+                    var $has_children = $this.closest(item_selector).find('.menu-v');
 
                     $textarea.data('can_blur', false);
                     if ($has_children.length) { // if item has children - indent
                         $has_children.find('.pl-item').first().before($new_item_wrapper);
                     } else { // else on same level
-                        $item.closest(item_selector).find('.pl-item').first().after($new_item_wrapper);
+                        $this.closest(item_selector).find('.pl-item').first().after($new_item_wrapper);
                     }
                     $new_item_wrapper_hover.detach();
                     $new_item_wrapper.slideDown(200);
@@ -1088,39 +1027,120 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
      * - change details
      */
     var ItemDetails = (function ($wrapper) {
-        var id = 0;
+        var itemId = 0,
+            $currentItem = null,
+            serializedForm = '';
 
-        var hideItemDetails = function () {
-            $wrapper.animate({
-                'right': '-300px'
-            }, 200, function () {
-                $wrapper.hide().empty()
-            });
-            id = 0;
-            $list_items_wrapper.trigger('deselectItem.pl2');
+        var showLoading = function ($item) {
+            $item.find('.pl-edit').addClass('pl-non-opacity').html($.pocketlists.$loading);
         };
-        var showItemDetails = function (id_item) {
+
+        var isOpen = function () {
+            return $currentItem !== null;
+        };
+
+        var setItem = function ($item) {
+            $currentItem = $item;
+            serializedForm = '';
+
+            if ($currentItem) {
+                itemId = parseInt($item.data('id'));
+            } else {
+                itemId = 0;
+            }
+        };
+
+        var hideItemDetails = function (e, callback) {
+            if ($currentItem) {
+                // $wrapper.slideToggle(0, function () {
+                $wrapper.hide().empty().detach();
+                // });
+
+                var $selectLabel = $currentItem.find('.pl-select-label');
+                if (!$selectLabel.is(':visible')) {
+                    $selectLabel.show();
+                }
+
+                $currentItem
+                    .find('.pl-meta')
+                    .css({'position': 'absolute'})
+                    .show()
+                    .animate({'opacity': '1'}, 0, function () {
+                        $(this).css({'position': 'relative'})
+                    })
+                    .end()
+                    .find('.pl-edit')
+                    .removeClass('pl-non-opacity')
+                    .html('<i class="icon16 pl ellipsis"></i>');
+
+                setItem(null);
+            }
+
+            if ($.isFunction(callback)) {
+                callback.call();
+            }
+
+            // $list_items_wrapper.trigger('deselectItem.pl2');
+        };
+
+        var listIsVisible = function () {
+            return o.list && o.list.list_details.isVisible();
+        };
+
+        var showItemDetails = function (e, $item, callback) {
             if (request_in_action) {
                 return;
             }
             request_in_action = true;
 
-            id = id_item;
-            //$wrapper.html($.pocketlists.$loading).show();
-            $(window).scrollTop();
-            o.list && o.list.list_details.isVisible() && o.list.list_details.$el.after($wrapper);
-            $wrapper.html($.pocketlists.$loading).show().animate({
-                'right': '0'
-            }, 200, function () {
-                o.list && o.list.list_details.isVisible() && o.list.list_details.trigger('hide.pl2');
-                $.pocketlists.stickyDetailsSidebar();
-            });
-            $.post(o.appUrl + '?module=item&action=details', {id: id}, function (html) {
-                $wrapper.html(html);
-                afterLoad();
-                request_in_action = false;
-            });
+            var loadDetails = function () {
+                setItem($item);
+
+                //$wrapper.html($.pocketlists.$loading).show();
+                // $(window).scrollTop();
+                // if (listIsVisible()) {
+                //     o.list.list_details.$el.after($wrapper);
+                // }
+
+                showLoading($currentItem);
+
+                $.post(o.appUrl + '?module=item&action=details', {id: itemId}, function (html) {
+                    $wrapper
+                        .html(html)
+                        .show();
+
+                    var labelH = $item.find('.pl-select-label').height();
+
+                    $wrapper
+                        .css({'max-height': labelH + 18 + 'px'}, 200)
+                        .animate({'max-height': 999 + 'px'}, 200)
+                        .animate({}, 200, function () {
+                            if (listIsVisible()) {
+                                o.list.list_details.trigger('hide.pl2');
+                            }
+
+                            $.pocketlists.stickyDetailsSidebar();
+                        });
+
+                    afterLoad();
+
+                    if ($.isFunction(callback)) {
+                        callback.apply();
+                    }
+
+                    request_in_action = false;
+
+                    $.pocketlists.flexHack();
+                });
+            };
+
+            if (isOpen()) {
+                hideItemDetails();
+            }
+
+            loadDetails();
         };
+
         var afterLoad = function () {
             var datepicker_options = {
                 changeMonth: true,
@@ -1154,7 +1174,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     autoUpload: true,
                     dropZone: '[data-pl-item-details-fileupload]',
                     formData: {
-                        item_id: id
+                        item_id: itemId
                     },
                     done: function (e, data) {
                         var $attachments = $wrapper.find('[data-pl-item-details-attachments]');
@@ -1194,24 +1214,27 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     initFileUpload();
                 }
             }
+
+            serializedForm = $wrapper.find('form').serialize();
+
+            $wrapper.find('textarea').trigger('change');
         };
 
         var init = function () {
             if ($wrapper.data('pl-ItemDetails')) {
                 return;
             }
-            $wrapper.data('pl-ItemDetails', true);
 
-            //id = parseInt($wrapper.find('input[name="item\[id\]"]').val());
             $wrapper
+                .data('pl-ItemDetails', true)
+                .on('show.pl2', showItemDetails)
+                .on('hide.pl2', hideItemDetails)
                 .on('submit', 'form', function () {
                     //e.preventDefault();
-                    var $this = $(this);
-                    $this.find('#pl-item-details-save').after($.pocketlists.$loading);
-                    updateItem($this, function () {
-                        $this.find('#pl-item-details-save').removeClass('yellow');
-                        hideItemDetails();
-                    });
+                    var $form = $(this);
+
+                    $form.find('#pl-item-details-save').after($.pocketlists.$loading);
+                    updateItem($form);
                 })
                 .on('click', '.pl-item-details-cancel', function (e) {
                     e.preventDefault();
@@ -1220,18 +1243,37 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 })
                 .on('click', '#pl-item-priority a', function (e) {
                     e.preventDefault();
-                    $('#pl-item-priority').find('input').val($(this).data('pl-item-priority')).trigger('change');
-                    $(this).addClass('selected').siblings().removeClass('selected')
+
+                    $wrapper
+                        .find('#pl-item-priority input')
+                            .val($(this).data('pl-item-priority'))
+                            .trigger('change');
+
+                    $(this)
+                        .addClass('selected')
+                        .siblings()
+                            .removeClass('selected')
                 })
                 .on('click', '#pl-item-due-datetime-set', function (e) {
                     e.preventDefault();
-                    var $this = $(this);
-                    $this.hide().siblings().show().filter('select').prop('disabled', false);
+
+                    $(this)
+                        .hide()
+                        .siblings()
+                            .show()
+                            .filter('select')
+                                .prop('disabled', false);
                 })
                 .on('click', '#pl-item-due-datetime-clear', function (e) {
                     e.preventDefault();
-                    var $this = $(this);
-                    $this.hide().siblings().show().filter('select').hide().prop('disabled', true);
+
+                    $(this)
+                        .hide()
+                        .siblings()
+                            .show()
+                            .filter('select')
+                                .hide()
+                                .prop('disabled', true);
                 })
                 .on('click', '[data-pl-action="item-delete"]', function (e) {
                     e.preventDefault();
@@ -1255,7 +1297,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                                 }
                                 request_in_action = true;
 
-                                $.post(o.appUrl + '?module=item&action=delete', {id: id}, function (r) {
+                                $.post(o.appUrl + '?module=item&action=delete', {id: itemId}, function (r) {
                                     if (r.status === 'ok') {
                                         removeItem(r.data.id);
                                         $list_items_wrapper.find('[data-id="' + r.data.id + '"]').remove();
@@ -1277,19 +1319,21 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 })
                 .on('change', '#pl-assigned-contact select', function () {
                     var assigned_contact_id = parseInt($(this).val());
+
                     if (assigned_contact_id) {
-                        $('#pl-assigned-contact').find('[data-pl-contact-id="' + assigned_contact_id + '"]').show().siblings().hide();
+                        $wrapper.find('#pl-assigned-contact [data-pl-contact-id="' + assigned_contact_id + '"]')
+                            .show()
+                            .siblings()
+                            .hide();
                     } else {
-                        $('#pl-assigned-contact').find('[data-pl-contact-id]').hide()
+                        $wrapper.find('#pl-assigned-contact [data-pl-contact-id]').hide()
                     }
                 })
                 .on('change paste keyup', ':input', function () {
-                    $wrapper.find('#pl-item-details-save').addClass('yellow');
+                    $wrapper.find('#pl-item-details-save')
+                        .removeClass('yellow green')
+                        .addClass($wrapper.find('form').serialize() !== serializedForm ? 'yellow' : 'green');
                 })
-                .on('show.pl2', function (e, id) {
-                    showItemDetails(id);
-                })
-                .on('hide.pl2', hideItemDetails)
                 .on('change', '#pl-item-pocket', function () {
                     if (request_in_action) {
                         return;
@@ -1343,11 +1387,16 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                             });
                         }
                     }, 'json');
+                })
+                .on('change cut keydown drop paste', 'textarea', function () {
+                    var $textarea = $(this);
+
+                    window.setTimeout(function () {
+                        $.pocketlists.resizeTextarea($textarea)
+                    }, 0);
                 });
 
-            $(window).scroll(function () {
-                $.pocketlists.stickyDetailsSidebar();
-            });
+            return this;
         };
 
         init();
@@ -1355,14 +1404,218 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         return {
             $el: $wrapper,
             trigger: function (event, data) {
-                this.$el && this.$el.trigger(event, data);
+                this.$el.trigger(event, data);
             },
             isVisible: function () {
-                return this.$el ? this.$el.is(':visible') : false;
+                return this.$el.is(':visible');
             }
         };
-    }($('#pl-item-details')));
+    }($('#pl2-item-details')));
 
+    var ItemComments = (function ($w) {
+        var id = 0,
+            $wrapper = $w;
+
+        var countComments = function () {
+            return $wrapper.find('[data-pl-comment-id]').length;
+        };
+
+        var updateCommentsCount = function () {
+            $list_items_wrapper.find('.pl-item-wrapper[data-id="' + id + '"] .pl-comment-count')
+                .addClass('pl-comment-count-show')
+                .html('<i class="icon16 pl comments"></i>' + countComments());
+        };
+
+        var addComment = function (data) {
+            if (request_in_action) {
+                return;
+            }
+            request_in_action = true;
+
+            var $this = $(this),
+                $reply_wrapper = $this.closest('.pl-reply'),
+                $userpic = $reply_wrapper.find('.icon16');
+
+            $userpic.hide();
+            $reply_wrapper.prepend($.pocketlists.$loading.css({
+                'margin-top': 1,
+                'margin-left': 12
+            }));
+            $.post(
+                o.appUrl + '?module=comment&action=add',
+                {
+                    item_id: id,
+                    comment: data.comment
+                },
+                function (html) {
+                    $.pocketlists.$loading.removeAttr('style').remove();
+                    $userpic.show();
+
+                    $wrapper.find('.pl-chat-contents').append(html);
+
+                    updateCommentsCount();
+
+                    $this.val('').trigger('focus');
+                    $.pocketlists.resizeTextarea($this);
+
+                    request_in_action = false;
+                }
+            );
+        };
+
+        var deleteComment = function () {
+            if (!confirm($_('You are about to permanently delete this comment. Delete?'))) {
+                return;
+            }
+
+            if (request_in_action) {
+                return;
+            }
+            request_in_action = true;
+
+            var $this = $(this),
+                $comment_wrapper = $this.closest('[data-pl-comment-id]'),
+                comment_id = $comment_wrapper.data('pl-comment-id');
+
+            $.post(
+                o.appUrl + '?module=comment&action=delete',
+                {
+                    id: comment_id
+                },
+                function (r) {
+                    $.pocketlists.$loading.removeAttr('style').remove();
+                    if (r.status === 'ok') {
+                        $comment_wrapper.slideUp(200, function () {
+                            $comment_wrapper.remove();
+
+                            updateCommentsCount();
+                        });
+                    }
+                    request_in_action = false;
+                },
+                'json'
+            );
+        };
+
+        var hideItemComments = function () {
+            $wrapper.animate({
+                'right': '-300px'
+            }, 200, function () {
+                $wrapper.hide().empty()
+            });
+            id = 0;
+            $list_items_wrapper.trigger('deselectItem.pl2');
+        };
+
+        var showItemComments = function (id_item) {
+            if (request_in_action) {
+                return;
+            }
+            request_in_action = true;
+
+            id = id_item;
+            //$wrapper.html($.pocketlists.$loading).show();
+            $(window).scrollTop();
+            // o.list && o.list.list_details.isVisible() && o.list.list_details.$el.after($wrapper);
+            $wrapper.html($.pocketlists.$loading).show().animate({
+                'right': '0'
+            }, 200, function () {
+                o.list && o.list.list_details.isVisible() && o.list.list_details.trigger('hide.pl2');
+                $.pocketlists.stickyDetailsSidebar();
+            });
+            $.post(o.appUrl + '?module=item&action=comments', {id: id}, function (html) {
+                request_in_action = false;
+                $wrapper.html(html);
+                afterLoad();
+            });
+        };
+
+        var afterLoad = function () {
+            $.pocketlists.flexHack();
+        };
+
+        var init = function () {
+            if ($wrapper.data('pl-ItemComments')) {
+                return;
+            }
+            $wrapper.data('pl-ItemComments', true);
+
+            //id = parseInt($wrapper.find('input[name="item\[id\]"]').val());
+            $wrapper
+                .on('click', '.pl-item-details-cancel', function (e) {
+                    e.preventDefault();
+
+                    hideItemComments();
+                })
+                .on('keydown', '.pl-chat .pl-reply textarea', function (e) {
+                    var $this = $(this);
+                    if (!e.shiftKey && e.which === 13) {
+                        e.preventDefault();
+                        var comment = $this.val().trim();
+                        if (comment) {
+                            addComment.call(this, {
+                                comment: comment
+                            });
+                        }
+                    } else if (e.which === 27) {
+                        // hideChatCommentInput();
+                        // deselectItem();
+                    }
+                })
+                .on('blur', '.pl-chat .pl-reply textarea', function (e) {
+                    var $this = $(this),
+                        comment = $this.val().trim();
+                    if (comment) {
+                        $this.addClass('pl-unsaved');
+                        if (!o.standAloneItemAdd) {
+                            $.pocketlists.enable_prevent_close_browser();
+                        }
+                    }
+                })
+                .on('focus', '.pl-chat .pl-reply textarea', function (e) {
+                    var $this = $(this);
+                    $this.removeClass('pl-unsaved');
+                    if (!o.standAloneItemAdd) {
+                        $.pocketlists.disable_prevent_close_browser();
+                    }
+                })
+                .on('click', '[data-pl-action="comment-delete"]', function (e) {
+                    e.preventDefault();
+
+                    deleteComment.call(this);
+                })
+                .on('click', '.pl-chat .pl-reply textarea', function (e) {
+                    e.preventDefault();
+
+                    selectItem($(this).closest(item_selector));
+                })
+                .on('show.pl2', function (e, id) {
+                    showItemComments(id);
+                })
+                .on('hide.pl2', hideItemComments)
+            ;
+
+            $(window).scroll(function () {
+                $.pocketlists.stickyDetailsSidebar();
+            });
+        };
+
+        var _getWrapper = function () {
+            return $wrapper;
+        };
+
+        init();
+
+        return {
+            getWrapper: _getWrapper,
+            trigger: function (event, data) {
+                this.getWrapper() && this.getWrapper().trigger(event, data);
+            },
+            isVisible: function () {
+                return this.getWrapper() ? this.getWrapper().is(':visible') : false;
+            }
+        };
+    }($('#pl2-item-comments')));
 
     var init = function () {
         //if ($.pocketlists_routing.getHash() == '#/todo/' &&
@@ -1379,6 +1632,24 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
         showEmptyListMessage();
         initSortable();
+
+        // ох сколько всего накручено =( vue плачет
+        var openItemDetailsWrapper = function() {
+            var $item = $(this).closest(item_selector);
+
+            ItemDetails.trigger('hide.pl2', function () {
+                ItemDetails.$el.appendTo($item.find('[data-pl2-item-details]'));
+
+                ItemDetails.trigger('show.pl2', [$item, function () {
+                    $item.find('.pl-select-label').hide();
+                    $item.find('.pl-meta').animate({'opacity': '0', 'height': 0}, 200, function () {
+                        $(this).hide();
+                    });
+                }]);
+
+                selectItem($item);
+            });
+        };
 
         $list_items_wrapper
         /**
@@ -1414,51 +1685,29 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                         ItemDetails.trigger('hide.pl2');
                         selectItem($item);
                     } else { // on third
-                        ItemDetails.trigger('hide.pl2');
-                        deselectItem();
+                        // ItemDetails.trigger('hide.pl2');
+                        // deselectItem();
                     }
                 }
             }) // action: select item
-            .on('click', '.pl-comment', function (e) {
-                e.preventDefault();
-
-                var $this = $(this),
-                    $item = $this.closest(item_selector),
-                    item_id = parseInt($item.data('id'));
-
-                if (item_id) {
-                    if (!$item.find('.pl-chat').is(':visible') || // if no comments - show input and focus
-                        ($item.find('.pl-chat').is(':visible') && $item.find('.pl-cue').length)) { // OR if already visible (there are some comments) - focus
-                        selectItem($item);
-                        showChatCommentInput();
-                    } else { // hide if no comments
-                        hideChatCommentInput();
-                        deselectItem();
-                    }
-                }
-            })
-            .on('click', '.pl-edit', function (e) {
-                e.preventDefault();
-
-                var $this = $(this),
-                    $item = $this.closest(item_selector);
-
-                ItemDetails.trigger('show.pl2', [parseInt($item.data('id'))]); // show item details
-                selectItem($item);
-            })
+            // .on('click', '.pl-edit', function (e) {
+            //     e.preventDefault();
+            //
+            //     var $this = $(this),
+            //         $item = $this.closest(item_selector);
+            //
+            //     ItemDetails.trigger('show.pl2', [parseInt($item.data('id'))]); // show item details
+            //     selectItem($item);
+            // })
             .on('click', '[data-pl-action="item-favorite"]', function (e) {
                 e.preventDefault();
                 var $this = $(this),
                     $item = $this.closest(item_selector);
 
                 favoriteItem($item);
-            }) // action: favorite item
-            .on('increaseSelectedItem.pl2', function (e) {
-                increaseItem(e);
-            })
-            .on('decreaseSelectedItem.pl2', function (e) {
-                decreaseItem(e);
-            })
+            }) // action: favorite item`
+            .on('increaseSelectedItem.pl2', increaseItem)
+            .on('decreaseSelectedItem.pl2', decreaseItem)
             .on('deselectItem.pl2', deselectItem)
             .on('removeItem.pl2', function (e, id) {
                 removeItem(id);
@@ -1471,48 +1720,6 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 window.setTimeout(function () {
                     $.pocketlists.resizeTextarea($textarea)
                 }, 0);
-            })
-            .on('keydown', '.pl-chat .pl-reply textarea', function (e) {
-                var $this = $(this);
-                if (!e.shiftKey && e.which === 13) {
-                    e.preventDefault();
-                    var comment = $this.val().trim();
-                    if (comment) {
-                        addComment.call(this, {
-                            comment: comment
-                        });
-                    }
-                } else if (e.which === 27) {
-                    hideChatCommentInput();
-                    deselectItem();
-                }
-            })
-            .on('blur', '.pl-chat .pl-reply textarea', function (e) {
-                var $this = $(this),
-                    comment = $this.val().trim();
-                if (comment) {
-                    $this.addClass('pl-unsaved');
-                    if (!o.standAloneItemAdd) {
-                        $.pocketlists.enable_prevent_close_browser();
-                    }
-                }
-            })
-            .on('focus', '.pl-chat .pl-reply textarea', function (e) {
-                var $this = $(this);
-                $this.removeClass('pl-unsaved');
-                if (!o.standAloneItemAdd) {
-                    $.pocketlists.disable_prevent_close_browser();
-                }
-            })
-            .on('click', '[data-pl-action="comment-delete"]', function (e) {
-                e.preventDefault();
-
-                deleteComment.call(this);
-            })
-            .on('click', '.pl-chat .pl-reply textarea', function (e) {
-                e.preventDefault();
-
-                selectItem($(this).closest(item_selector));
             })
             /* calendar day highlight */
             .on('mouseenter mouseleave', '.pl-item-wrapper[data-pl-due-date]', function () {
@@ -1529,7 +1736,24 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             })
             .on('assignTo.pl2', item_selector, function (e, data) {
                 assignTo.call(this, data.id, data.drop);
-            });
+            })
+            .on('dblclick', '.pl-select-label', function (e) {
+                e.preventDefault();
+
+                openItemDetailsWrapper.call(this);
+            })
+            .on('click', '.pl-edit', function (e) {
+                e.preventDefault();
+
+                openItemDetailsWrapper.call(this);
+            })
+            .on('click', '.pl-comment', function (e) {
+                e.preventDefault();
+                var $item = $(this).closest('.pl-item-wrapper[data-id]');
+
+                ItemComments.trigger('show.pl2', [parseInt($item.data('id'))])
+            })
+        ;
 
         // keyboard
         $(document).on('keydown', function (e) {
@@ -1551,6 +1775,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 //    break;
                 case 27: // esc
                     //($current_item.length && $current_item.find('.pl-chat').is(':visible')) && hideChatCommentInput();
+                    ItemComments.isVisible() && ItemComments.trigger('hide.pl2');
                     ItemDetails.isVisible() && ItemDetails.trigger('hide.pl2');
                     break;
             }

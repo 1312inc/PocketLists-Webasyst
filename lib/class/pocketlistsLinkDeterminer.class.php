@@ -41,6 +41,10 @@ class pocketlistsLinkDeterminer
         $linkers = wa(pocketlistsHelper::APP_ID)->getConfig()->getLinkedApp();
 
         foreach ($linkers as $app) {
+            if (!$app->userCanAccess()) {
+                continue;
+            }
+
             $types = $app->getLinkRegexs();
             foreach ($types as $type => $regexs) {
                 foreach ($regexs as $regex) {
