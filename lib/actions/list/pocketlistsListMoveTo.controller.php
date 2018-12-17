@@ -19,7 +19,7 @@ class pocketlistsListMoveToController extends waJsonController
         $pocket_id = waRequest::post('pocket_id', 0, waRequest::TYPE_INT);
 
         if (!$id || !$pocket_id) {
-            $this->setError(_w('No pocket id or list id params'));
+            $this->setError('No pocket id or list id params');
 
             return;
         }
@@ -30,7 +30,7 @@ class pocketlistsListMoveToController extends waJsonController
         $list = pocketlistsListModel::model()->findByPk($id);
 
         if (!$pocket || !$list) {
-            $this->setError(_w('No pocket or list found'));
+            $this->setError('No pocket or list found');
 
             return;
         }
@@ -41,7 +41,7 @@ class pocketlistsListMoveToController extends waJsonController
 
         $list->pocket_id = $pocket->pk;
         if (!$list->save(true, ['pocket_id'])) {
-            $this->setError(_w('List move error'));
+            $this->setError('List move error');
 
             return;
         }

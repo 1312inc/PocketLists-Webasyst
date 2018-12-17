@@ -1235,3 +1235,113 @@ msgstr ""
 #: /wa-apps/pocketlists/js/pocketlists-pocket.js:121
 msgid "DANGER! Pocket will be deleted with all its content including lists and to-dos. There will be no way to restore this data. Are you sure?"
 msgstr ""
+
+#: /wa-apps/pocketlists/templates/include/item_linked_entities/shop.order.autocomplete.html:1
+msgid "Order"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:15
+msgid "Add note"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/config/pocketlistsRightConfig.class.php:26
+msgid "Can create and see to-dos linked with Shop-Script orders"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/actions/list/pocketlistsList.action.php:46
+#: /wa-apps/pocketlists/lib/actions/list/pocketlistsListLazyDoneItems.action.php:33
+msgid "Not found"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/class/pocketlistsListIcon.class.php:38
+msgid "Work & Office"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/class/pocketlistsListIcon.class.php:60
+msgid "Shopping"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/class/pocketlistsListIcon.class.php:82
+msgid "Home & Family"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/class/pocketlistsListIcon.class.php:112
+msgid "Travel & Vacations"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/class/pocketlistsListIcon.class.php:134
+msgid "Nature & Outdoors"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/class/pocketlistsListIcon.class.php:160
+msgid "Holidays & Events"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/class/pocketlistsListIcon.class.php:190
+msgid "School & Education"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/class/pocketlistsListIcon.class.php:212
+msgid "Hobbies & Games"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/class/pocketlistsListIcon.class.php:234
+msgid "Food & Drink"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/class/pocketlistsListIcon.class.php:272
+msgid "Health & Medical"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/class/pocketlistsListIcon.class.php:290
+msgid "Sports & Activities"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/class/pocketlistsListIcon.class.php:312
+msgid "Toys & Babies"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/class/pocketlistsListIcon.class.php:330
+msgid "Pets & Animals"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/class/pocketlistsListIcon.class.php:352
+msgid "Tech & Gadgets"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/class/pocketlistsListIcon.class.php:374
+msgid "Signs & Symbols"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/class/pocketlistsListIcon.class.php:396
+msgid "Flags"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/class/pocketlistsNotifications.class.php:462
+msgid "Stream"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/class/pocketlistsHelper.class.php:309
+msgid "%d s"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/class/pocketlistsHelper.class.php:313
+msgid "%d min"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/class/pocketlistsHelper.class.php:323
+msgid "%d h"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/class/pocketlistsHelper.class.php:327
+#: /wa-apps/pocketlists/lib/class/pocketlistsHelper.class.php:331
+msgid "%d d"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/class/pocketlistsHelper.class.php:335
+msgid "%d mo"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/class/pocketlistsHelper.class.php:340
+msgid "%d y"
+msgstr ""
