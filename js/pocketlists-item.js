@@ -1216,6 +1216,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             }
 
             serializedForm = $wrapper.find('form').serialize();
+
+            $wrapper.find('textarea').trigger('change');
         };
 
         var init = function () {
