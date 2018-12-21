@@ -11,11 +11,11 @@
 
             <div class="profile image32px">
                 <div class="image">
-                    <a href="{$wa_backend_url}pocketlists/#/{if $list_access_contact.me}todo{else if $wa->team}team/{$list_access_contact.login}{/if}/"><img class="userpic" src="{$list_access_contact.photo_url}"></a>
+                    <a href="{$wa_backend_url}pocketlists/#/{if $list_access_contact.me}todo{else}team/{$list_access_contact.login}{/if}/"><img class="userpic" src="{$list_access_contact.photo_url}"></a>
                 </div>
                 <div class="details">
                     <span class="pl-username">
-                        <a href="{$wa_backend_url}pocketlists/#/{if $list_access_contact.me}todo{else if $wa->team}team/{$list_access_contact.login}{/if}/">{$list_access_contact.username|default:'%username%'|escape} {if $list_access_contact.me}([`me`]){/if}{* if $list_access_contact.id == $list.contact_id} <span class="pl-label pl-hint">[`author`]</span>{/if *}</a>
+                        <a href="{$wa_backend_url}pocketlists/#/{if $list_access_contact.me}todo{else}team/{$list_access_contact.login}{/if}/">{$list_access_contact.username|default:'%username%'|escape} {if $list_access_contact.me}([`me`]){/if}{* if $list_access_contact.id == $list.contact_id} <span class="pl-label pl-hint">[`author`]</span>{/if *}</a>
                         {* if $list_access_contact.status == 'online' && !$list_access_contact.me}
                             <i class="icon10 online" title="[`Online`]"></i>
                         {/if *}
@@ -25,7 +25,9 @@
             </div>
 
         {/foreach}
-        <p class="hint">{sprintf('[`Use <a href="%s">Team app</a> to configure access to this to-do list: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/')}</p>
+        {if $wa->team}
+            <p class="hint">{sprintf('[`Use <a href="%s">Team app</a> to configure access to this to-do list: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/')}</p>
+        {/if}
     </div>
 
     <div class="fields form">
