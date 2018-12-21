@@ -88,6 +88,10 @@ class pocketlistsItemLinkModel extends kmModelExt
         $render = !empty($pluginRender['preview']) ? $pluginRender['preview'] : '';
 
         if ($this->getEntityClass()->isEnabled() && !$render && file_exists($template)) {
+            if (!$this->getEntityClass()->getEntity()) {
+                return '';
+            }
+
             $this->getView()->clearAllAssign();
             $vars = [
                 'link'  => $this,

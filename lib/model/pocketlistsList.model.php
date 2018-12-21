@@ -372,7 +372,7 @@ class pocketlistsListModel extends kmModelExt
     public function filterArchive($lists, $archive = false)
     {
         $is_array = isset($lists[0]);
-        if (!$is_array) {
+        if (!$is_array && isset($lists['id'])) {
             $lists = [$lists['id'] => $lists];
         }
 
@@ -381,6 +381,10 @@ class pocketlistsListModel extends kmModelExt
          * @var pocketlistsListModel $list
          */
         foreach ($lists as $id => $list) {
+            if (!isset($list['archived'])) {
+                unset($lists[$id]);
+            }
+
             if (!$archive && (int)$list['archived'] > 0) {
                 unset($lists[$id]);
             }
