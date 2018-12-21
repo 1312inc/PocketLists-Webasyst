@@ -20,9 +20,13 @@
     <div class="block double-padded">
 
         <div class="align-center">
+            {if $wa->team}
             <a href="{$wa_backend_url}team/u/{$current_teammate.login}/">
                 <img src="{$current_teammate.photo_url}" class="userpic pl-teammate-userpic">
             </a>
+            {else}
+                <img src="{$current_teammate.photo_url}" class="userpic pl-teammate-userpic">
+            {/if}
         </div>
 
         <h5 class="heading">{sprintf('[`%s’s to-dos (%d)`]', $current_teammate.name|default:' '|escape, count($items))}</h5>
@@ -47,12 +51,16 @@
                     {/if}
                 {/foreach}
             </ul>
-            <p class="hint">{sprintf('[`Use Team app to <a href="%s">configure %s’s access</a> to shared lists: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/u/'|cat:$current_teammate.login|cat:'/', $current_teammate.name|default:' '|escape)}</p>
+            {if $wa->team}
+                <p class="hint">{sprintf('[`Use Team app to <a href="%s">configure %s’s access</a> to shared lists: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/u/'|cat:$current_teammate.login|cat:'/', $current_teammate.name|default:' '|escape)}</p>
+            {/if}
         {else}
             <hr>
             <p class="pl-teammate-nolists-disclaimer">
                 {sprintf('[`You have no lists that you would share with %s in common.`]', $current_teammate.name|default:' '|escape)}
-                {sprintf('[`Use Team app to <a href="%s">configure %s’s access</a> to shared lists: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/u/'|cat:$current_teammate.login|cat:'/', $current_teammate.name|default:' '|escape)}
+                {if $wa->team}
+                    {sprintf('[`Use Team app to <a href="%s">configure %s’s access</a> to shared lists: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/u/'|cat:$current_teammate.login|cat:'/', $current_teammate.name|default:' '|escape)}
+                {/if}
             </p>
         {/if}
 
