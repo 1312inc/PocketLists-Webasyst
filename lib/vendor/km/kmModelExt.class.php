@@ -774,7 +774,7 @@ class kmModelExt extends waModel implements ArrayAccess, JsonSerializable
     protected function getSystemFieldsMapping($field)
     {
         $mapping = [
-//            'id' => 'pk',
+            'id' => 'pk',
         ];
 
         if (isset($mapping[$field])) {

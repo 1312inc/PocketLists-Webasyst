@@ -6,14 +6,11 @@ class pocketlistsPocketSettingsDialogAction extends waViewAction
     {
         $id = waRequest::get('id', 0, waRequest::TYPE_INT);
         if ($id > 0) {
-            $pm = new pocketlistsPocketModel();
-            $this->view->assign('pocket', $pm->findByPk($id));
+            $this->view->assign('pocket', pocketlistsPocketModel::model()->findByPk($id));
         } else {
             $this->view->assign(
                 'pocket',
-                [
-                    'color' => 'blue',
-                ]
+                new pocketlistsPocketModel(['color' => 'blue',])
             );
         }
     }

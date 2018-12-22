@@ -371,6 +371,10 @@ class pocketlistsListModel extends kmModelExt
      */
     public function filterArchive($lists, $archive = false)
     {
+        if (empty($lists)) {
+            return [];
+        }
+
         $is_array = isset($lists[0]);
         if (!$is_array && isset($lists['id'])) {
             $lists = [$lists['id'] => $lists];

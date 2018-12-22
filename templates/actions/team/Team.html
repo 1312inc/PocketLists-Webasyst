@@ -40,7 +40,7 @@
             <h5 class="heading">[`Access to lists`] ({count($lists)})</h5>
             <ul class="menu-v with-icons pl-teammate-lists" data-pl-sidebar-block="lists">
                 {foreach $lists as $l}
-                    {if !empty($l.id)}
+                    {if $l->pk}
                         <li>
                             <a href="#/pocket/{$l.pocket_id}/list/{$l.id}/">
                                 <i class="icon16 listicon16" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l.icon|default:'li-list@2x.png'});"></i>{if !empty($l.color)}<span class="pl-dark-{$l.color}-label">{$l.name|escape}</span>{else}{$l.name|escape|default:'(no name)'}{/if}
