@@ -249,9 +249,11 @@ class pocketlistsNotifications
         if (!count($items)) {
             return;
         }
+
         if (!is_array($items)) {
             $items = [$items];
         }
+
         $csm = new waContactSettingsModel();
         $q = "SELECT
                 cs1.contact_id contact_id,
@@ -762,7 +764,7 @@ class pocketlistsNotifications
             ?
             $backend_url
             : wa(pocketlistsHelper::APP_ID)->getConfig()->getRootUrl(true)
-                .wa(pocketlistsHelper::APP_ID)->getConfig()->getBackendUrl();
+            .wa(pocketlistsHelper::APP_ID)->getConfig()->getBackendUrl();
 
         $view->assign('backend_url', rtrim($absolute_backend_url, '/').'/pocketlists/');
         if (isset($data['variables'])) {
