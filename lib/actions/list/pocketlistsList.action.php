@@ -126,6 +126,7 @@ class pocketlistsListAction extends pocketlistsViewAction
                     'new'         => true,
                     'empty'       => true,
                     'new_list_id' => $last_list_id ? $last_list_id + 1 : 1,
+                    'list'        => new pocketlistsListModel()
                 ]
             );
         }

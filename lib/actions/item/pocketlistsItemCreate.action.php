@@ -13,7 +13,7 @@ class pocketlistsItemCreateAction extends pocketlistsViewAction
         $assigned_contact_id = waRequest::post('assigned_contact_id', false, waRequest::TYPE_INT);
 
         $im = new pocketlistsItemModel();
-        $inserted = $inserted_items = $items = array();
+        $inserted = $inserted_items = $items = [];
         $assign_contact = null;
         $user_id = wa()->getUser()->getId();
         $canAssign = $assigned_contact_id && pocketlistsRBAC::canAssign();
@@ -29,7 +29,7 @@ class pocketlistsItemCreateAction extends pocketlistsViewAction
         if ($data) {
             $paste = false;
             if (!is_array($data)) {
-                $data = array($data);
+                $data = [$data];
             } else {
                 $paste = true;
             }
@@ -129,7 +129,7 @@ class pocketlistsItemCreateAction extends pocketlistsViewAction
                 }
 
                 $inserted[] = $last_id;
-                $inserted_items[] = $data[$i] + array('id' => $last_id);
+                $inserted_items[] = $data[$i] + ['id' => $last_id];
             }
 
             if ($inserted) {
@@ -137,18 +137,20 @@ class pocketlistsItemCreateAction extends pocketlistsViewAction
                     case 'favorites':
                         $ufm = new pocketlistsUserFavoritesModel();
                         foreach ($inserted_items as $item) {
-                            $ufm->insert(array(
-                                'item_id' => $item['id'],
-                                'contact_id' => $user_id
-                            ));
+                            $ufm->insert(
+                                [
+                                    'item_id'    => $item['id'],
+                                    'contact_id' => $user_id,
+                                ]
+                            );
                         }
                         break;
                 }
 
                 $items = $im->getById($inserted);
                 $items = $im->extendItemData($items);
-                if (isset($items['id'])) {
-                    $items = array($items);
+                if ($items instanceof pocketlistsItemModel) {
+                    $items = [$items];
                 }
 
                 if ($list) {
@@ -162,16 +164,19 @@ class pocketlistsItemCreateAction extends pocketlistsViewAction
                     if ($assign_contact) {
                         pocketlistsNotifications::notifyAboutNewAssign($item);
 
-                        $this->logAction(pocketlistsLogAction::ITEM_ASSIGN_TEAM, array(
-                            'list_id' => $item['list_id'],
-                            'item_id' => $item['id'],
-                            'assigned_to' => $item['assigned_contact_id']
-                        ));
+                        $this->logAction(
+                            pocketlistsLogAction::ITEM_ASSIGN_TEAM,
+                            [
+                                'list_id'     => $item['list_id'],
+                                'item_id'     => $item['id'],
+                                'assigned_to' => $item['assigned_contact_id'],
+                            ]
+                        );
                     }
                 }
 
                 if ($list) {
-                    $this->logAction(pocketlistsLogAction::NEW_ITEMS, array('list_id' => $list['id']));
+                    $this->logAction(pocketlistsLogAction::NEW_ITEMS, ['list_id' => $list['id']]);
                 }
             }
         }

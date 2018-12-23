@@ -1,4 +1,4 @@
-{if isset($list.id) && $print|default:0}
+{if !$list->isNewRecord && $print|default:0}
 <html>
 <head>
     <title>{$list.name} &mdash; {$wa->accountName()}</title>
@@ -10,7 +10,7 @@
     </div>
 {/if}
 
-{if !$print|default:0 && isset($list.id) && $list.id > 0}
+{if !$print|default:0 && !$list->isNewRecord}
 {include '../../include/listiconsdialog.html' inline}
 {/if}
 
@@ -39,7 +39,7 @@
             {/if}
 
             <h1>
-                <input type="hidden" value="{$list.id|default:-1}" id="pl-list-id">
+                <input type="hidden" value="{if $list->isNewRecord}-1{else}{$list->pk}{/if}" id="pl-list-id">
 
                 {if $new && !$archive}
                     <input type="text" placeholder="{sprintf('[`List #%d`]', $new_list_id)}" id="pl-new-list-input" class="bold" />
@@ -76,8 +76,11 @@
         {if !$print|default:0}
 
             {include '../../include/archivelistdialog.html' inline}
+
+            {if !$list->isNewRecord}
             {include '../../include/deletelistdialog.html' inline}
             {include '../../include/itemadd.html' inline}
+            {/if}
 
         {/if}
     </div>
@@ -86,7 +89,7 @@
     {include '../../include/itemcomments.html' inline}
 </main>
 
-{if isset($list.id) && $print|default:0}
+{if !$list->isNewRecord && $print|default:0}
 </body>
 </html>
 {else}
@@ -115,7 +118,7 @@
             this_is_the_end = false,
             html_selector = '#pl-complete-log > .menu-v';
 
-        // {if isset($list.id)}
+        // {if !$list->isNewRecord}
 
         $(window).on('scroll.pl2', function () {
             if (this_is_the_end) {

@@ -1,12 +1,7 @@
 "use strict";
 
 /**
- * object to work with list
- * - add
- * - print
- * - delete
- * - archive
- * - sort all
+ * object to work with pocket
  */
 $.pocketlists.Pocket = function ($pocket_wrapper, options) {
     var $sidebarPocketsWrapper = $('[data-pl2-sidebar-wrapper="pockets"]'),
@@ -65,7 +60,7 @@ $.pocketlists.Pocket = function ($pocket_wrapper, options) {
 
             _settingDialog();
         });
-    }
+    };
 
     var _initSortList = function ($lists_wrapper) {
         $lists_wrapper.sortable({
@@ -114,7 +109,7 @@ $.pocketlists.Pocket = function ($pocket_wrapper, options) {
     function init() {
         pocket_id = $pocket_wrapper.data('pl2-pocket-wrapper');
         _addHandlers();
-    }
+    };
 
     var _deletePocket = function (id) {
         id = id || pocket_id;
@@ -138,7 +133,7 @@ $.pocketlists.Pocket = function ($pocket_wrapper, options) {
         }, 'json').always(function () {
             request_in_action = false;
         });
-    }
+    };
 
     function _addHandlers() {
         $pocket_wrapper.on('click', '[data-pl2-action="edit-pocket"]', function (e) {

@@ -1637,6 +1637,10 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         var openItemDetailsWrapper = function() {
             var $item = $(this).closest(item_selector);
 
+            if ($item.data('pl-complete-datetime')) {
+                return;
+            }
+
             ItemDetails.trigger('hide.pl2', function () {
                 ItemDetails.$el.appendTo($item.find('[data-pl2-item-details]'));
 

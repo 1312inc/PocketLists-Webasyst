@@ -4,7 +4,7 @@
 
             <input type="hidden" name="pocket[id]" value="{$pocket.id|default:0}"/>
 
-            {if isset($pocket.id)}
+            {if !$pocket->isNewRecord}
                 <h1>{$pocket.name|default:'[`(unnamed pocket)`]'|escape|truncate:32}</h1>
             {else}
                 <h1>[`New pocket`]</h1>
@@ -50,7 +50,7 @@
     </div>
 
     <div class="dialog-buttons">
-        {if isset($pocket.id)}
+        {if !$pocket->isNewRecord}
             <div class="block half-padded float-right">
                 <ul class="menu-h">
                     <li>

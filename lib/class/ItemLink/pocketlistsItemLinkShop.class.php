@@ -104,12 +104,16 @@ class pocketlistsItemLinkShop extends pocketlistsItemLink implements pocketlists
     }
 
     /**
-     * @return shopOrder|waModel
+     * @return shopOrder|waModel|false
      * @throws waException
      */
     public function getEntity()
     {
-        return new shopOrder($this->getItemLinkModel()->entity_id);
+        try {
+            return new shopOrder($this->getItemLinkModel()->entity_id);
+        } catch (waException $ex) {
+            return false;
+        }
     }
 
     /**
@@ -118,7 +122,7 @@ class pocketlistsItemLinkShop extends pocketlistsItemLink implements pocketlists
      */
     public function getExtraData()
     {
-        $order = new shopOrder($this->getItemLinkModel()->entity_id);
+        $order = $this->getEntity();
 
         $order_data_array = $order->dataArray();
         $order_data_array['contact'] = $order->contact_essentials;
