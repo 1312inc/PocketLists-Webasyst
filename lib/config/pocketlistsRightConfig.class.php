@@ -5,8 +5,30 @@
  */
 class pocketlistsRightConfig extends waRightConfig
 {
-    const RIGHT_NONE = 0;
-    const RIGHT_FULL = 1;
+    /**
+     * @var waContact
+     */
+    private $user;
+
+    /**
+     * pocketlistsRightConfig constructor.
+     */
+    public function __construct()
+    {
+        $user_id = waRequest::post('user_id', waRequest::TYPE_INT, 0);
+
+        if (!$user_id) {
+            $user_id = waRequest::request('id', waRequest::TYPE_INT, 0);
+        }
+
+        if ($user_id) {
+            $this->user = new waContact(waRequest::post('user_id'));
+        } else {
+            $this->user = new waContact();
+        }
+
+        parent::__construct();
+    }
 
     /**
      * @throws waDbException
@@ -29,47 +51,58 @@ class pocketlistsRightConfig extends waRightConfig
 
         // POCKETS
 
-        // $items = [];
-        // foreach (pocketlistsPocketModel::model()->getAllPockets() as $pocket) {
-        //     $items[$pocket->pk] = $pocket->name;
-        // }
-        //
-        // $this->addItem(
-        //     'pocketlists',
-        //     _w('Pockets'),
-        //     'selectlist',
-        //     [
-        //         'items' => $items,
-        //         'position' => 'right',
-        //         'options' => [
-        //             self::RIGHT_NONE => _w('No access'),
-        //             //self::RIGHT_LIMITED => _w('Limited access'),
-        //             self::RIGHT_FULL => _w('Full access'),
-        //         ],
-        //     ]
-        // );
-
-        // LISTS
-
-        $list_model = new pocketlistsListModel();
         $items = [];
-        // todo: только активные? или все подряд?
-        $all_lists = $list_model->getAllLists(false);
-        usort($all_lists, [$this, 'sort_archive']);
-        foreach ($all_lists as $list) {
-            $items[$list['id']] = ($list['archived'] ? "("._w('archive').") " : "").$list['name'];
+        foreach (pocketlistsPocketModel::model()->getAllPockets() as $pocket) {
+            $items[$pocket->pk] = $pocket->name;
         }
 
         $this->addItem(
-            'list',
-            _w('Lists'),
-            'list',
+            pocketlistsRBAC::CAN_POCKETLISTS,
+            _w('Pockets'),
+            'selectlist',
             [
-                'items' => $items,
-                //                'hint1' => 'all_checkbox',
+                'items'    => $items,
+                'position' => 'right',
+                'options'  => [
+                    pocketlistsRBAC::RIGHT_NONE    => _w('No access'),
+                    pocketlistsRBAC::RIGHT_LIMITED => _w('Limited access'),
+                    pocketlistsRBAC::RIGHT_ADMIN   => _w('Full access'),
+                ],
             ]
         );
 
+        $currentRights = $this->user->getRights(pocketlistsHelper::APP_ID, pocketlistsRBAC::CAN_POCKETLISTS);
+
+        // LISTS
+
+        if ($currentRights === 0) {
+            $this->addItem(
+                'check_and_reload',
+                'Please check pocket above and then reload this dialog',
+                'header',
+                ['hint' => 'Подсказка']
+            );
+        } else {
+
+            $list_model = new pocketlistsListModel();
+            $items = [];
+            // todo: только активные? или все подряд?
+            $all_lists = $list_model->getAllLists(false);
+            usort($all_lists, [$this, 'sort_archive']);
+            foreach ($all_lists as $list) {
+                $items[$list['id']] = ($list['archived'] ? "("._w('archive').") " : "").$list['name'];
+            }
+
+            $this->addItem(
+                'list',
+                _w('Lists'),
+                'list',
+                [
+                    'items' => $items,
+                    //                'hint1' => 'all_checkbox',
+                ]
+            );
+        }
     }
 
     /**

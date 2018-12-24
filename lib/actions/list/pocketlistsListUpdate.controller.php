@@ -60,7 +60,7 @@ class pocketlistsListUpdateController extends waJsonController
                     $data['contact_id'],
                     pocketlistsHelper::APP_ID,
                     'list.'.$data['id'],
-                    pocketlistsRBAC::ACCESS_VALUE
+                    pocketlistsRBAC::RIGHT_ACCESS
                 );
             }
             // log this action

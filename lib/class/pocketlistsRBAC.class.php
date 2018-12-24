@@ -7,13 +7,17 @@
  */
 class pocketlistsRBAC
 {
-    const ADMIN_VALUE  = 2;
-    const ACCESS_VALUE = 1;
+    const RIGHT_NONE    = 0;
+    const RIGHT_ACCESS  = 1;
+    const RIGHT_ADMIN   = 2;
+    const RIGHT_LIMITED = 3;
 
     const CAN_CREATE_LISTS    = 'cancreatelists';
     const CAN_ASSIGN          = 'canassign';
     const CAN_CREATE_TODOS    = 'cancreatetodos';
     const CAN_USE_SHOP_SCRIPT = 'canuseshopscript';
+    const CAN_POCKETLISTS     = 'canpocketlists';
+
 
     private static $access_rights = [];
     private static $lists         = [];
