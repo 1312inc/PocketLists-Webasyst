@@ -36,6 +36,7 @@ class pocketlistsRightConfig extends waRightConfig
     public function init()
     {
         $this->addItem(pocketlistsRBAC::CAN_CREATE_TODOS, _w('Can create to-dos to self'), 'always_enabled');
+//        $this->addItem(pocketlistsRBAC::CAN_CREATE_LISTS, _w('Can create shared to-do lists'), 'checkbox');
         $this->addItem(
             pocketlistsRBAC::CAN_ASSIGN,
             _w('Can see other users personal to-dos and assign to-dos to teammates'),
@@ -133,6 +134,7 @@ class pocketlistsRightConfig extends waRightConfig
     {
         return [
             pocketlistsRBAC::CAN_CREATE_TODOS    => 1,
+            pocketlistsRBAC::CAN_CREATE_LISTS    => 1,
             pocketlistsRBAC::CAN_ASSIGN          => 1,
             pocketlistsRBAC::CAN_USE_SHOP_SCRIPT => 1,
         ];
