@@ -17,19 +17,20 @@ class pocketlistsRBAC
     const CAN_CREATE_TODOS    = 'cancreatetodos';
     const CAN_USE_SHOP_SCRIPT = 'canuseshopscript';
 
-    const POCKETLISTS = 'pocketlists';
-    const LISTS       = 'lists';
-
+    const POCKET_ITEM = 'pocket';
+    const LIST_ITEM   = 'list';
 
     private static $access_rights = [];
-    private static $lists         = [];
+    private static $lists = [];
 
     /**
      * Return all list ids accessible for given user
      *
-     * @param bool|integer $contact_id
+     * @param bool|int $contact_id
      *
-     * @return array
+     * @return mixed
+     * @throws waDbException
+     * @throws waException
      */
     public static function getAccessListForContact($contact_id = false)
     {
@@ -40,14 +41,44 @@ class pocketlistsRBAC
             return self::$lists[$user_id];
         }
 
+        self::$lists[$user_id] = [];
+
+        $listModel = new pocketlistsListModel();
+        $pocketModel = new pocketlistsPocketModel();
+
         if (self::isAdmin($contact_id)) {
-            $list_model = new pocketlistsListModel();
-            self::$lists[$user_id] = $list_model->getAll('id');
+            $lists = $listModel->getAll('id');
+            if ($lists) {
+                self::$lists[$user_id] = array_keys($lists);
+            }
         } else {
-            self::$lists[$user_id] = $user->getRights('pocketlists', 'list.%');
+            $pockets = $user->getRights(pocketlistsHelper::APP_ID, self::POCKET_ITEM.'.%');
+            foreach ($pockets as $pocketId => $rightValue) {
+                switch (true) {
+                    // полный доступ к покету - возьмем все листы
+                    case $rightValue == self::RIGHT_ADMIN:
+                        $lists = $listModel->getAllLists(false, $pocketId);
+                        foreach ($lists as $list) {
+                            self::$lists[$user_id][] = $list->pk;
+                        }
+
+                        break;
+                    // в другом случае либо нет доступа, либо доступ к листам сохраняется отдельно
+                    case $rightValue == self::RIGHT_NONE:
+                    case $rightValue == self::RIGHT_LIMITED:
+                    default:
+                        break;
+                }
+            }
+
+            // соберем все остальные листы
+            $accessedLists = $user->getRights('pocketlists', self::LIST_ITEM.'.%');
+            if ($accessedLists) {
+                self::$lists[$user_id] = array_keys($accessedLists);
+            }
+
+            self::$lists = array_unique(self::$lists);
         }
-        // todo: может сразу возвращать модели?
-        self::$lists[$user_id] = self::$lists[$user_id] ? array_keys(self::$lists[$user_id]) : [];
 
         return self::$lists[$user_id];
     }
@@ -119,9 +150,10 @@ class pocketlistsRBAC
     /**
      * Check if user is admin
      *
-     * @param bool|integer $contact_id
+     * @param bool|int $user_id
      *
      * @return bool
+     * @throws waException
      */
     public static function isAdmin($user_id = false)
     {
