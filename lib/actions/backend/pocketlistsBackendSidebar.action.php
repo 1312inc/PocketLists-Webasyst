@@ -43,6 +43,11 @@ class pocketlistsBackendSidebarAction extends pocketlistsViewAction
 //        pocketlistsActivity::setUserActivity();
 
         $pockets = pocketlistsPocketModel::model()->getAllPockets();
+        foreach ($pockets as $pocketId => $pocket) {
+            if (!pocketlistsRBAC::contactHasAccessToPocket($pocket->pk)) {
+                unset($pockets[$pocketId]);
+            }
+        }
         $linkedApps = wa(pocketlistsHelper::APP_ID)->getConfig()->getLinkedApp();
 
         $this->view->assign(compact('pockets', 'linkedApps'));

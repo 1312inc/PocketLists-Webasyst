@@ -1,7 +1,13 @@
 <?php
 
+/**
+ * Class pocketlistsItemMoveToListController
+ */
 class pocketlistsItemMoveToListController extends waJsonController
 {
+    /**
+     * @throws waDbException
+     */
     public function execute()
     {
         $id = waRequest::post('id', 0, waRequest::TYPE_INT);
@@ -13,9 +19,10 @@ class pocketlistsItemMoveToListController extends waJsonController
             $lm = new pocketlistsListModel();
 
             $item = $im->getById($id);
-            $list = $lm->getById($list_id);
+            /** @var pocketlistsListModel $list */
+            $list = $lm->findByPk($list_id);
 
-            if ($item && $list && pocketlistsRBAC::canAccessToList($list_id)) {
+            if ($item && $list && pocketlistsRBAC::canAccessToList($list)) {
                 // todo: childs??
                 if ($im->updateById(
                     $item['id'],

@@ -38,7 +38,7 @@ class pocketlistsListLazyDoneItemsAction extends waViewAction
                 return;
             }
 
-            if (!pocketlistsRBAC::canAccessToList($list->pk)) {
+            if (!pocketlistsRBAC::canAccessToList($list)) {
                 $this->view->assign(
                     'error',
                     [
@@ -54,7 +54,7 @@ class pocketlistsListLazyDoneItemsAction extends waViewAction
             /** @var pocketlistsTeammateFactory $factory */
             $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getModelFactory('Teammate');
             $list_access_contacts = $factory->getTeammates(
-                pocketlistsRBAC::getAccessContacts($list->pk),
+                pocketlistsRBAC::getAccessContacts($list),
                 true,
                 false,
                 true

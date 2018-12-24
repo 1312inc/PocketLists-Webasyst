@@ -16,9 +16,10 @@ class pocketlistsArchiveAction extends pocketlistsViewAction
             $list_id = $list_id['id'];
         }
 
-        $list = $lm->getById($list_id);
+        /** @var pocketlistsListModel $list */
+        $list = $lm->findByPk($list_id);
         if ($list_id !== null && $list && $list['archived']) {
-            if (!pocketlistsRBAC::canAccessToList($list['id'])) {
+            if (!pocketlistsRBAC::canAccessToList($list)) {
                 $this->view->assign(
                     'error',
                     [
@@ -34,7 +35,7 @@ class pocketlistsArchiveAction extends pocketlistsViewAction
             /** @var pocketlistsTeammateFactory $factory */
             $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getModelFactory('Teammate');
             $list_access_contacts = $factory->getTeammates(
-                pocketlistsRBAC::getAccessContacts($list['id']),
+                pocketlistsRBAC::getAccessContacts($list),
                 true,
                 false
             );

@@ -35,7 +35,7 @@ class pocketlistsListMoveToController extends waJsonController
             return;
         }
 
-        if (!pocketlistsRBAC::canAccessToList($list->pk)) {
+        if (!pocketlistsRBAC::canAccessToList($list)) {
             throw new waRightsException('403');
         }
 

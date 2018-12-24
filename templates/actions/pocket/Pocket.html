@@ -4,10 +4,10 @@
         <!-- LISTS -->
         <div id="pl-lists" data-pl-scroll-to-top>
             <div class="pl-lists-header">
-                {if pocketlistsRBAC::canCreateLists()}<a href="#/pocket/{$pocket->pk}/list/new/" class="count" title="[`New list`]"><i class="icon16 add"></i></a>{/if}
+                {if pocketlistsRBAC::contactHasAccessToPocket($pocket->pk) == pocketlistsRBAC::RIGHT_ADMIN}<a href="#/pocket/{$pocket->pk}/list/new/" class="count" title="[`New list`]"><i class="icon16 add"></i></a>{/if}
                 <h5 class="pl-dark-{$pocket->color|default:'none'}-label">
                     {$pocket->name|escape}
-                    {if pocketlistsRBAC::canCreateLists()}<a href="#" title="[`Pocket settings`]" data-pl2-action="edit-pocket" data-pl2-pocket-id="{$pocket->pk}"><i class="icon16 pl ellipsis pl-pocket-settings"></i></a>{/if}
+                    {if pocketlistsRBAC::contactHasAccessToPocket($pocket->pk) == pocketlistsRBAC::RIGHT_ADMIN}<a href="#" title="[`Pocket settings`]" data-pl2-action="edit-pocket" data-pl2-pocket-id="{$pocket->pk}"><i class="icon16 pl ellipsis pl-pocket-settings"></i></a>{/if}
                 </h5>
             </div>
             {if !empty($lists)}

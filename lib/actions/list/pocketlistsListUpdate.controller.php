@@ -11,10 +11,6 @@ class pocketlistsListUpdateController extends waJsonController
      */
     public function execute()
     {
-        if (!pocketlistsRBAC::canCreateLists()) {
-            throw new waException('Access denied.', 403);
-        }
-
         $list_id = waRequest::post('id', false, waRequest::TYPE_INT);
         $data = waRequest::post('data', false, waRequest::TYPE_ARRAY);
 
@@ -29,6 +25,10 @@ class pocketlistsListUpdateController extends waJsonController
             $this->setError('no pocket ');
 
             return;
+        }
+
+        if (pocketlistsRBAC::contactHasAccessToPocket($pocket->pk) != pocketlistsRBAC::RIGHT_ADMIN) {
+            throw new waException('Access denied.', 403);
         }
 
         $lm = new pocketlistsListModel();

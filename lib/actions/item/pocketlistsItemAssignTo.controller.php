@@ -1,7 +1,14 @@
 <?php
 
+/**
+ * Class pocketlistsItemAssignToController
+ */
 class pocketlistsItemAssignToController extends waJsonController
 {
+    /**
+     * @throws waDbException
+     * @throws waException
+     */
     public function execute()
     {
         $id = waRequest::post('id', 0, waRequest::TYPE_INT);
@@ -12,18 +19,22 @@ class pocketlistsItemAssignToController extends waJsonController
             $lm = new pocketlistsListModel();
 
             $item = $im->getById($id);
-            $list = $lm->getById($item['list_id']);
+            /** @var pocketlistsListModel $list */
+            $list = $lm->findByPk($item['list_id']);
             $contact = new waContact($team_id);
 
-            if ($item && $list && $contact && pocketlistsRBAC::canAccessToList($list['id']) && pocketlistsRBAC::canAccessToList($list['id'],
-                    $contact->getId())
+            if ($item
+                && $list
+                && $contact
+                && pocketlistsRBAC::canAccessToList($list)
+                && pocketlistsRBAC::canAccessToList($list['id'], $contact->getId())
             ) {
                 // todo: childs??
-                $data = array(
+                $data = [
                     'assigned_contact_id' => $contact->getId(),
                     'update_datetime'     => date('Y-m-d H:i:s'),
 
-                );
+                ];
                 if ($im->updateById($item['id'], $data)
                 ) {
                     $item = array_merge($item, $data);
