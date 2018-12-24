@@ -16,7 +16,9 @@ class pocketlistsRBAC
     const CAN_ASSIGN          = 'canassign';
     const CAN_CREATE_TODOS    = 'cancreatetodos';
     const CAN_USE_SHOP_SCRIPT = 'canuseshopscript';
-    const CAN_POCKETLISTS     = 'canpocketlists';
+
+    const POCKETLISTS = 'pocketlists';
+    const LISTS       = 'lists';
 
 
     private static $access_rights = [];

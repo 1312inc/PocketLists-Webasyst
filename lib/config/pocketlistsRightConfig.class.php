@@ -15,10 +15,10 @@ class pocketlistsRightConfig extends waRightConfig
      */
     public function __construct()
     {
-        $user_id = waRequest::post('user_id', waRequest::TYPE_INT, 0);
+        $user_id = waRequest::post('user_id', 0, waRequest::TYPE_INT);
 
         if (!$user_id) {
-            $user_id = waRequest::request('id', waRequest::TYPE_INT, 0);
+            $user_id = waRequest::request('id', 0, waRequest::TYPE_INT);
         }
 
         if ($user_id) {
@@ -52,12 +52,13 @@ class pocketlistsRightConfig extends waRightConfig
         // POCKETS
 
         $items = [];
-        foreach (pocketlistsPocketModel::model()->getAllPockets() as $pocket) {
+        $pm = new pocketlistsPocketModel();
+        foreach ($pm->getAllPockets() as $pocket) {
             $items[$pocket->pk] = $pocket->name;
         }
 
         $this->addItem(
-            pocketlistsRBAC::CAN_POCKETLISTS,
+            pocketlistsRBAC::POCKETLISTS,
             _w('Pockets'),
             'selectlist',
             [
@@ -71,37 +72,45 @@ class pocketlistsRightConfig extends waRightConfig
             ]
         );
 
-        $currentRights = $this->user->getRights(pocketlistsHelper::APP_ID, pocketlistsRBAC::CAN_POCKETLISTS);
+        $currentPocketRights = $this->user->getRights(pocketlistsHelper::APP_ID, pocketlistsRBAC::POCKETLISTS.'.%');
 
         // LISTS
 
-        if ($currentRights === 0) {
+        if (empty($currentPocketRights)) {
             $this->addItem(
-                'check_and_reload',
+                '',
                 'Please check pocket above and then reload this dialog',
                 'header',
-                ['hint' => 'Подсказка']
+                ['hint1' => 'Подсказка']
             );
         } else {
+            $lm = new pocketlistsListModel();
+            foreach ($currentPocketRights as $currentPocketId => $rightValue) {
+                if ($rightValue == pocketlistsRBAC::RIGHT_ADMIN) {
+                    continue;
+                }
 
-            $list_model = new pocketlistsListModel();
-            $items = [];
-            // todo: только активные? или все подряд?
-            $all_lists = $list_model->getAllLists(false);
-            usort($all_lists, [$this, 'sort_archive']);
-            foreach ($all_lists as $list) {
-                $items[$list['id']] = ($list['archived'] ? "("._w('archive').") " : "").$list['name'];
+                $pocket = $pm->findByPk($currentPocketId);
+                $lists = $lm->getLists(false, $currentPocketId);
+                $items = [];
+
+                if ($lists) {
+                    usort($lists, [$this, 'sort_archive']);
+                    foreach ($lists as $list) {
+                        $items[$list['id']] = ($list['archived'] ? "("._w('archive').") " : "").$list['name'];
+                    }
+
+                    $this->addItem(
+                        pocketlistsRBAC::LISTS,
+                        $pocket->name,
+                        'list',
+                        [
+                            'items' => $items,
+                            //                'hint1' => 'all_checkbox',
+                        ]
+                    );
+                }
             }
-
-            $this->addItem(
-                'list',
-                _w('Lists'),
-                'list',
-                [
-                    'items' => $items,
-                    //                'hint1' => 'all_checkbox',
-                ]
-            );
         }
     }
 
