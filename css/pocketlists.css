@@ -545,7 +545,10 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 .s-order #pl-item-add textarea:hover { background: #eaf1f9; }
 .s-order input#pl-new-list-input:focus,
 .s-order #pl-item-add textarea:focus { background: #e7eef3; z-index: 7; }
+.s-order .pl-details .pl-chat-reply { position: fixed; bottom: 0; width: 420px; padding: 0px 0 20px; background: #fff; }
+.s-order .pl-details .pl-chat-contents { margin-bottom: 120px; }
 .s-order .pl-details.sticky { top: 83px; }
+.s-order .pl-details.sticky .pl-chat-contents { margin-bottom: 30px; }
 
 /* @2x
 ------ */
@@ -576,7 +579,10 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
     .pl-details input.long { min-width: 200px !important; width: 200px !important; }
     .pl-details textarea { min-width: 250px !important; }
     .pl-details { width: 220px; }
+    .pl-details.pl-item-discussion { width: 320px;  }
     .pl-details.sticky { width: 230px; }
+    .pl-details.sticky.pl-item-discussion { width: 330px;  }
+    .s-order .pl-details .pl-chat-reply { width: 320px; }
 
     .pl-details-form .field .name { float: none; padding-bottom: 5px; }
     .pl-details-form .fields.form .field .value { margin-left: 0 !important; }
