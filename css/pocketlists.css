@@ -211,7 +211,7 @@ label.pl-done-label i.icon16.userpic20 {
 input#pl-new-list-input,
 #pl-item-add textarea,
 .pl-chat textarea {
-    background: transparent;
+    background: #fff;
     min-width: 350px;
     width: 100%;
     height: 1.3em;
@@ -227,6 +227,7 @@ input#pl-new-list-input,
     outline: 0 none;
     border-radius: 4px;
     font-weight: 500;
+    z-index: 9;
 }
 input#pl-new-list-input::-webkit-placeholder { color: rgba(0,0,0,0.4) !important; }
 #pl-item-add textarea::-webkit-placeholder { color: rgba(0,0,0,0.4) !important; }
@@ -235,10 +236,13 @@ input#pl-new-list-input::-moz-placeholder { color: rgba(0,0,0,0.4) !important; }
 input#pl-new-list-input:-moz-placeholder { color: rgba(0,0,0,0.4) !important; }
 #pl-item-add textarea:-moz-placeholder { color: rgba(0,0,0,0.4) !important; }
 input#pl-new-list-input:hover,
-#pl-item-add textarea:hover { background: rgba(0,0,0,0.04); }
+#pl-item-add textarea:hover { background: #f7f7f7; }
 input#pl-new-list-input:focus,
-#pl-item-add textarea:focus { background: rgba(0,0,0,0.06); }
+#pl-item-add textarea:focus { background: #f1f1f1; z-index: 7; }
 #pl-item-add .pl-link-preview { opacity: 0.5; }
+#pl-item-add .pl-item-add-shortcuts { display: block; position: absolute; right: 25px; top: 0; bottom: 0; padding-top: 8px; z-index: 8; }
+
+
 .pl-chat textarea { background: #fff; margin-left: 0px; border-radius: 5px; border: 1px solid rgba(0,0,0,0.1); padding-left: 8px; width: 80%; min-width: 150px; }
 .pl-unsaved { background: rgba(183,0,0,0.06) !important; 2px 3px 0nt; color: #f55 !important; }
 
@@ -535,7 +539,12 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 .s-order #pl-item-add .pl-item { border-top: none; padding-top: 21px; }
 .s-order #pl-item-add .pl-item .pl-select-label { padding-bottom: 18px; }
 .s-order #pl-complete-log li:first-child .pl-item { border-top: none; }
-/*.s-order .pl-details .pl-add-attachment-dropbox { display: none; }*/
+.s-order input#pl-new-list-input,
+.s-order #pl-item-add textarea { background: #f5faff; }
+.s-order input#pl-new-list-input:hover,
+.s-order #pl-item-add textarea:hover { background: #eaf1f9; }
+.s-order input#pl-new-list-input:focus,
+.s-order #pl-item-add textarea:focus { background: #e7eef3; z-index: 7; }
 .s-order .pl-details.sticky { top: 83px; }
 
 /* @2x
