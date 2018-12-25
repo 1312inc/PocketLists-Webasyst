@@ -391,7 +391,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#12000000', e
 .pl-logbook .pl-item.gray .pl-edit { display: none !important; }
 .pl-logbook .pl-item.gray .pl-chat { display: none; }
 .pl-logbook .pl-item.gray .pl-comment { display: none; }
-.pl-logbook .pl-item.gray .pl-comment-count { display: inline-block; }
+.pl-logbook .pl-item.gray .pl-comment-count-show { display: inline-block; }
 .pl-logbook .pl-item.gray .pl-favorite,
 .pl-logbook .pl-item.gray .pl-userpic { opacity: 1 !important; }
 .pl-logbook .pl-item.gray .pl-item-name { color: #aaa !important; }
