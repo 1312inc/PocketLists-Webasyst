@@ -13,18 +13,19 @@ class pocketlistsPocketModel extends kmModelExt
     protected $table = 'pocketlists_pocket';
 
     /**
-     * @param bool|int $contact_id
+     * @param bool $contact_id
      *
-     * @return null|pocketlistsPocketModel|pocketlistsPocketModel[]
+     * @return pocketlistsPocketModel|pocketlistsPocketModel[]|null
+     * @throws waException
      */
     public function getAllPockets($contact_id = false)
     {
         $where_ids = '';
         $accessed_pockets = [];
-//        if ($contact_id) {
-//            $accessed_pockets = pocketlistsHelper::getAccessPocketForContact($contact_id);
-//            $where_ids = 'WHERE id IN (i:access_id)';
-//        }
+        if ($contact_id) {
+            $accessed_pockets = pocketlistsRBAC::getAccessPocketForContact($contact_id);
+            $where_ids = 'WHERE id IN (i:access_id)';
+        }
 
         $sql = "SELECT * FROM {$this->table} {$where_ids} ORDER BY sort ASC ";
 

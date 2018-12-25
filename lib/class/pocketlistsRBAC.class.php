@@ -99,29 +99,32 @@ class pocketlistsRBAC
     public static function contactHasAccessToPocket($pocket_id, $contact_id = 0)
     {
         $user = self::getContact($contact_id);
-        $user_id = $user->getId();
 
-        if (isset(self::$pockets[$user_id][$pocket_id])) {
-            return self::$pockets[$user_id][$pocket_id];
+        if (isset(self::$pockets[$user->getId()][$pocket_id])) {
+            return self::$pockets[$user->getId()][$pocket_id];
         }
 
-        $pocketModel = new pocketlistsPocketModel();
+        self::fillPocketsForUser($user);
 
-        if (self::isAdmin($contact_id)) {
-            $pockets = $pocketModel->getAll('id');
-            if ($pockets) {
-                foreach ($pockets as $pocket) {
-                    self::addPocketUserRight($user_id, $pocket['id'], self::RIGHT_ADMIN);
-                }
-            }
-        } else {
-            $pockets = $user->getRights(pocketlistsHelper::APP_ID, self::POCKET_ITEM.'.%');
-            foreach ($pockets as $pocketId => $rightValue) {
-                self::addPocketUserRight($user_id, $pocketId, $rightValue);
-            }
+        return isset(self::$pockets[$user->getId()][$pocket_id]) ? self::$pockets[$user->getId()][$pocket_id] : false;
+    }
+
+    /**
+     * @param int $contact_id
+     *
+     * @return array
+     * @throws waDbException
+     * @throws waException
+     */
+    public static function getAccessPocketForContact($contact_id = 0)
+    {
+        $user = self::getContact($contact_id);
+
+        if (!isset(self::$pockets[$user->getId()])) {
+            self::fillPocketsForUser($user);
         }
 
-        return isset(self::$pockets[$user_id][$pocket_id]) ? self::$pockets[$user_id][$pocket_id] : false;
+        return array_keys(self::$pockets[$user->getId()]);
     }
 
     /**
@@ -277,6 +280,31 @@ class pocketlistsRBAC
         }
 
         return $list_sql;
+    }
+
+    /**
+     * @param waContact $user
+     *
+     * @throws waDbException
+     * @throws waException
+     */
+    private static function fillPocketsForUser(waContact $user)
+    {
+        $pocketModel = new pocketlistsPocketModel();
+
+        if (self::isAdmin($user->getId())) {
+            $pockets = $pocketModel->getAll('id');
+            if ($pockets) {
+                foreach ($pockets as $pocket) {
+                    self::addPocketUserRight($user->getId(), $pocket['id'], self::RIGHT_ADMIN);
+                }
+            }
+        } else {
+            $pockets = $user->getRights(pocketlistsHelper::APP_ID, self::POCKET_ITEM.'.%');
+            foreach ($pockets as $pocketId => $rightValue) {
+                self::addPocketUserRight($user->getId(), $pocketId, $rightValue);
+            }
+        }
     }
 
     /**
