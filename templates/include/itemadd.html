@@ -20,13 +20,14 @@
                 {$_placeholder = '[`New to-do (e.g. “meeting tomorrow at 10”)`]'}
             {/if}
             <textarea rows="1" placeholder="{$_placeholder}" data-pl2-item-textarea></textarea>
-            <a href="#" class="pl-item-add-shortcuts">
+            <a href="#" class="pl-item-add-shortcuts" data-pl2-action="edit-new-item">
                 <i class="icon16 pl ellipsis" title="[`Details`]"></i>
-                <i class="icon16 userpic20" style="background-image: url('{$wa_url}wa-content/img/userpic20@2x.jpg')"></i>
+                <i class="icon16 userpic20" style="background-image: url('{$assign_contact_photo|default:$wa->user()->getPhoto(20)}')" data-pl2-item-add="assign-contact"></i>
             </a>
         </label>
 
         <div data-pl2-item-links>
         </div>
     </div>
+    <div data-pl2-item-details class="pl-item-details"></div>
 </div>

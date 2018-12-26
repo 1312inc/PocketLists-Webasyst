@@ -487,7 +487,7 @@ class pocketlistsItemModel extends kmModelExt
      *
      * @return bool
      */
-    public function addCalculatedPriorityData($id, $item, $silent = false)
+    public function addCalculatedPriorityDataAndSave($id, $item, $silent = false)
     {
         $email_to_assigned_contact = false;
         $old_item = ['assigned_contact_id' => false];
@@ -500,7 +500,8 @@ class pocketlistsItemModel extends kmModelExt
         }
 
         $this->addPriorityData($item);
-        if ($this->updateById($id, $item)) {
+        $saved = $id ? $this->updateById($id, $item) : $this->insert($item);
+        if ($saved) {
             if (!$silent && $email_to_assigned_contact && // settings are set
                 $item['assigned_contact_id'] != wa()->getUser()->getId() && // do not email if I assign myself
                 $item['assigned_contact_id'] != $old_item['assigned_contact_id']

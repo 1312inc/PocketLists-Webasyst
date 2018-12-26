@@ -219,7 +219,7 @@ class pocketlistsListModel extends kmModelExt
         $im = new pocketlistsItemModel();
         unset($data['id']);
         $item = $im->getByField('key_list_id', $id);
-        if ($im->addCalculatedPriorityData($item['id'], array_merge($item, $data)) &&
+        if ($im->addCalculatedPriorityDataAndSave($item['id'], array_merge($item, $data)) &&
             $this->updateById($id, $data)
         ) {
             $list = $this->getById($id);

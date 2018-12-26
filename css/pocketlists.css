@@ -227,7 +227,7 @@ input#pl-new-list-input,
     outline: 0 none;
     border-radius: 4px;
     font-weight: 500;
-    z-index: 9;
+    z-index: 7;
 }
 input#pl-new-list-input::-webkit-placeholder { color: rgba(0,0,0,0.4) !important; }
 #pl-item-add textarea::-webkit-placeholder { color: rgba(0,0,0,0.4) !important; }
