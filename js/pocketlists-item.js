@@ -1049,15 +1049,16 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             $currentItem = $item;
             serializedForm = '';
 
-            if ($currentItem) {
-                itemId = parseInt($item.data('id'));
-            } else {
-                itemId = 0;
-            }
+            itemId = $currentItem ? parseInt($item.data('id')) || 0 : 0;
         };
 
         var hideItemDetails = function (e, callback) {
             if ($currentItem) {
+
+                if (!itemId) {
+                    $currentItem.find('[data-pl2-item-textarea]').val($wrapper.find('[name="item[name]"]').val());
+                }
+
                 // $wrapper.slideToggle(0, function () {
                 $wrapper.hide().empty().detach();
                 // });
@@ -1227,6 +1228,10 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             serializedForm = $wrapper.find('form').serialize();
 
             $wrapper.find('textarea').trigger('change');
+
+            if (!itemId) {
+                $wrapper.find('[name="item[name]"]').val($currentItem.find('[data-pl2-item-textarea]').val());
+            }
         };
 
         var init = function () {
@@ -1243,7 +1248,23 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     var $form = $(this);
 
                     $form.find('#pl-item-details-save').after($.pocketlists.$loading);
-                    updateItem($form);
+                    if (itemId) {
+                        updateItem($form);
+                    } else {
+                        var formValues = JSON.parse(JSON.stringify($form.serializeArray())),
+                            data = {};
+
+                        $.each(formValues, function () {
+                            data[this.name.replace('item[','').replace(']','')] = this.value;
+                        });
+
+                        addItem.call($currentItem.find('[data-pl2-item-textarea]').get(0), [data], function () {
+                            $form.trigger('reset');
+                            hideItemDetails();
+                        });
+
+                        return false;
+                    }
                 })
                 .on('click', '.pl-item-details-cancel', function (e) {
                     e.preventDefault();

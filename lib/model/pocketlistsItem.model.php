@@ -707,7 +707,10 @@ class pocketlistsItemModel extends kmModelExt
 
             $this->addPriorityData($item);
 
-            $age_time = time() - max(strtotime($item['update_datetime']), strtotime($item['create_datetime']));
+            $age_time = time() - max(
+                    !empty($item['update_datetime']) ? strtotime($item['update_datetime']) : 0,
+                    strtotime($item['create_datetime'])
+                );
             $item['age_time'] = $age_time < 1 ? '' : pocketlistsHelper::getDatetimeBySeconds($age_time);
 
             if (!$edit) {
