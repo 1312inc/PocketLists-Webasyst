@@ -242,9 +242,8 @@ input#pl-new-list-input:focus,
 #pl-item-add .pl-link-preview { opacity: 0.5; }
 #pl-item-add .pl-item-add-shortcuts { display: block; position: absolute; right: 25px; top: 0; bottom: 0; padding-top: 8px; z-index: 8; }
 
-
 .pl-chat textarea { background: #fff; margin-left: 0px; border-radius: 5px; border: 1px solid rgba(0,0,0,0.1); padding-left: 8px; width: 80%; min-width: 150px; }
-.pl-unsaved { background: rgba(183,0,0,0.06) !important; 2px 3px 0nt; color: #f55 !important; }
+/* .pl-unsaved { background: rgba(183,0,0,0.06) !important; 2px 3px 0nt; color: #f55 !important; } */
 
 .pl-title { padding: 25px 5px 15px 17px; }
 .pl-title h1 { margin-bottom: 0.2em; line-height: 1.1em; padding-right: 22px; }
@@ -288,6 +287,7 @@ input#pl-new-list-input:focus,
 .pl-item { display: block; border-bottom: 1px solid rgba(0,0,0,0.1); position: relative; padding-top: 12px; }
 .pl-list-items ul.menu-v li .pl-item:hover { background: rgba(0, 0, 0, 0.04); }
 .pl-list-items ul.menu-v li .pl-item.pl-item-selected { background: rgba(155, 155, 155, 0.13); }
+#pl-item-add .pl-item.pl-item-selected { background: transparent; }
 .pl-list-items ul.menu-v li label.pl-select-label { padding: 1px 25px 15px 49px; display: block; line-height: 1.3em; position: relative; cursor: auto; }
 .pl-list-items ul.menu-v li ul { padding-left: 0; margin: 0; }
 .pl-list-items ul.menu-v li ul li .pl-item { padding-left: 30px; }
@@ -394,6 +394,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#12000000', e
 .pl-logbook .pl-item.gray .pl-comment-count-show { display: inline-block; }
 .pl-logbook .pl-item.gray .pl-favorite,
 .pl-logbook .pl-item.gray .pl-userpic { opacity: 1 !important; }
+.pl-logbook .pl-item.gray .pl-item-list-name,
 .pl-logbook .pl-item.gray .pl-item-name { color: #aaa !important; }
 
 .pl-archive { background: #eee; }
@@ -420,6 +421,16 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#12000000', e
 .pl-details-form .selected .pl-done.pl-priority-black + span { background-position-x: -90px; width: 30px; height: 30px; }
 .pl-details-form .selected .pl-done.pl-priority-fire + span { background-size: 40px 40px; top: -16px; width: 40px; height: 40px; }
 .pl-details-textarea { margin-bottom: 1rem; background: rgba(0,0,0,0.04); border-radius: 3px; border: none; -webkit-appearance: none; width: 100%; min-height: 1.3em; line-height: 1.3em; padding: 5px; }
+
+#pl-item-add .pl-details-form { margin-top: -12px; padding-left: 49px; background: #f2f2f2; position: relative; border-bottom: 1px solid rgba(0,0,0,0.1); }
+#pl-item-add .pl-details-form .fields,
+#pl-item-add .pl-details-form .field-group,
+#pl-item-add .pl-details-form .field,
+#pl-item-add .pl-details-form .clear-both { float: none; clear: none; }
+#pl-item-add .pl-details-form #pl-item-priority { margin-bottom: 20px; }
+#pl-item-add .pl-details-form .pl-details-textarea { margin-bottom: 1rem; font-weight: normal; background: rgba(0,0,0,0.04); }
+#pl-item-add .pl-details-form .pl-details-textarea.pl-item-name { font-weight: 500; }
+#pl-item-add .pl-details-form .pl-already-saved-items-only { display: none; }
 
 /* UHO-style Item & List details sidebar
 ---------------------------------------- */
