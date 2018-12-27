@@ -41,9 +41,7 @@ class pocketlistsItemCreateAction extends pocketlistsViewAction
             $list = $lm->getById($list_id);
             foreach ($data as $i => $d) {
                 $data[$i]['create_datetime'] = date("Y-m-d H:i:s");
-                if (!empty($data[$i]['list_id'])) {
-                    $data[$i]['list_id'] = $list ? $list['id'] : null;
-                }
+                $data[$i]['list_id'] = $list ? $list['id'] : null;
                 $data[$i]['contact_id'] = $user_id;
 
                 if ($canAssign && ($assigned_contact_id || !empty($data[$i]['assigned_contact_id']))) {

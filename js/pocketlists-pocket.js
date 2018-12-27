@@ -7,7 +7,11 @@ $.pocketlists.Pocket = function ($pocket_wrapper, options) {
     var $sidebarPocketsWrapper = $('[data-pl2-sidebar-wrapper="pockets"]'),
         $loading = $('<i class="icon16 loading"></i>'),
         pocket_id = 0,
-        request_in_action = false;
+        request_in_action = false,
+        o = $.extend({}, {
+            current_user_id: 0,
+            listsWrapper: null
+        }, options);
 
     var _settingDialog = function () {
         var pocketId = $(this).data('pl2-pocket-id') || 0;
@@ -67,7 +71,12 @@ $.pocketlists.Pocket = function ($pocket_wrapper, options) {
             item: '[data-pl-list-id]',
             distance: 5,
             placeholder: 'pl-list-placeholder',
+            opacity: 0.75,
+            appendTo: 'body',
             tolerance: 'pointer',
+            classes: {
+                'ui-sortable-helper': 'shadowed'
+            },
             start: function (e, ui) {
                 ui.placeholder.height(ui.helper.outerHeight());
             },
@@ -75,11 +84,12 @@ $.pocketlists.Pocket = function ($pocket_wrapper, options) {
                 var getLists = function () {
                     var data = [];
                     $lists_wrapper.find('[data-pl-list-id]').each(function (i) {
-                        var $this = $(this),
-                            color = $this.attr('class').match(/pl-(.*)/);
+                        var $this = $(this);
+                        // color = $this.attr('class').match(/pl-(.*)/);
                         data.push({
                             id: $this.data('pl-list-id'),
                             sort: i
+                            // color: color[1]
                         });
                     });
                     return data;
@@ -105,6 +115,36 @@ $.pocketlists.Pocket = function ($pocket_wrapper, options) {
             }
         });
     };
+
+    var _initDropList = function ($lists_wrapper) {
+        $('[data-pl-list-id]', $lists_wrapper).droppable({
+            accept: '[data-parent-id]',
+            disabled: false,
+            greedy: true,
+            tolerance: 'pointer',
+            classes: {
+                'ui-droppable': 'pl-droppable'
+            },
+            over: function (event, ui) {
+                $(this).addClass('highlighted-background');
+            },
+            out: function (event, ui) {
+                $(this).removeClass('highlighted-background');
+            },
+            drop: function (event, ui) {
+                var $item = ui.draggable,
+                    $list = $(event.target),
+                    list_id = $list.data('pl-list-id');
+
+                $item.trigger('moveToList.pl2', {
+                    id: list_id,
+                    drop: this
+                });
+                $(this).removeClass('highlighted-background');
+                $item.addClass('pl-dropped');
+            }
+        });
+    }
 
     function init() {
         pocket_id = $pocket_wrapper.data('pl2-pocket-wrapper');
@@ -144,9 +184,10 @@ $.pocketlists.Pocket = function ($pocket_wrapper, options) {
 
         var $lists_wrapper = $('#pl-lists').find('.pl-lists');
 
-        _initSortList($lists_wrapper);
+        _initSortList(o.listsWrapper);
+        _initDropList(o.listsWrapper);
 
-        $lists_wrapper.on('moveTo.pl2', '[data-pl-list-id]', function (e, data) {
+        o.listsWrapper.on('moveTo.pl2', '[data-pl-list-id]', function (e, data) {
             // if (request_in_action) {
             //     return;
             // }

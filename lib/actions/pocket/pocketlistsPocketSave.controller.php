@@ -38,8 +38,8 @@ class pocketlistsPocketSaveController extends waJsonController
                 (new waContactRightsModel())->save(
                     wa()->getUser()->getId(),
                     wa()->getApp(),
-                    'pocket.'.$pocket->pk,
-                    1
+                    pocketlistsRBAC::POCKET_ITEM.'.'.$pocket->pk,
+                    pocketlistsRBAC::RIGHT_ADMIN
                 );
                 // todo: update access rights for others
             } else {
