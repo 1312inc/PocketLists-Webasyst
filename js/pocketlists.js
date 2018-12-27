@@ -368,6 +368,9 @@
             });
 
             onResize();
+        },
+        scrollToEl: function(el) {
+            el.scrollIntoView();
         }
     };
 }(jQuery));

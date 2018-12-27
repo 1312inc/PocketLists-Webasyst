@@ -1488,6 +1488,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     $this.val('').trigger('focus');
                     $.pocketlists.resizeTextarea($this);
 
+                    $.pocketlists.scrollToEl($wrapper.find('.pl-chat-contents [data-pl-comment-id]:last')[0]);
+
                     request_in_action = false;
                 }
             );
