@@ -15,7 +15,7 @@
         <textarea class="pl-details-textarea" name="item[note]" placeholder="[`Add note`]"{if $item.status == 1} disabled="disabled"{/if}>{$item.note|escape}</textarea>
 
     {*$wa->csrf()*}
-    <div data-pl-item-details-attachments>
+    <div data-pl-item-details-attachments class="pl-already-saved-items-only">
 
         <div class="block double-padded{if $fileupload} pl-add-attachment-dropbox{/if}"{if $fileupload} data-pl-item-details-fileupload{/if}>
 
@@ -60,7 +60,7 @@
             </div>
         </div>
         {/if}
-        <div class="field">
+        <div class="field pl-already-saved-items-only">
             <div class="name">[`Created`]</div>
             <div class="value no-shift">
                 <i class="icon16 userpic20" style="background-image: url({$item.contact.userpic})" alt="{$item.contact.username|escape}"></i>
@@ -69,6 +69,14 @@
                 <span class="hint nowrap">{$item.create_datetime|wa_datetime:'humandatetime'}</span>
             </div>
         </div>
+        {if $item.update_datetime && $item.update_datetime > $item.create_datetime}
+            <div class="field pl-already-saved-items-only">
+                <div class="name">[`Updated`]</div>
+                <div class="value no-shift">
+                    <span class="nowrap">{$item.update_datetime|wa_datetime:'humandatetime'}</span>
+                </div>
+            </div>
+        {/if}
         {if $item.status == 1 && $item.complete_datetime}
             <div class="field">
                 <div class="name">[`Completed`]</div>
@@ -127,7 +135,7 @@
         </div>
         {/if}
 
-        <div class="field">
+        <div class="field pl-already-saved-items-only">
             <div class="name nowrap">
                 [`List`]
             </div>
@@ -173,7 +181,7 @@
     <div class="field-group" style="margin-bottom: 0;">
         <div class="field">
 
-            <div class="float-right block half-padded">
+            <div class="float-right block half-padded pl-already-saved-items-only">
                 <ul class="menu-v with-icons">
                     <li>
                         <a href="#" data-pl-action="item-delete" class="nowrap">
@@ -183,14 +191,12 @@
                 </ul>
             </div>
 
-                <input type="submit" class="button green" value="[`Save`]"  id="pl-item-details-save"/>
-                [`or`]
-                <a href="#" class="pl-item-details-cancel">[`cancel`]</a>
+            <input type="submit" class="button green" value="[`Save`]"  id="pl-item-details-save"/>
+            [`or`]
+            <a href="#" class="pl-item-details-cancel">[`cancel`]</a>
 
-                <span class="error" style="display: none;">[`error`]</span>
-                <span class="success" style="display: none;">[`saved`]</span>
-
-
+            <span class="error" style="display: none;">[`error`]</span>
+            <span class="success" style="display: none;">[`saved`]</span>
 
         </div>
     </div>
