@@ -370,7 +370,12 @@
             onResize();
         },
         scrollToEl: function(el) {
-            el.scrollIntoView();
+            debugger;
+            el.scrollIntoView({
+                behavior: "smooth",
+                block: "end",
+                inline: "nearest"
+            });
         }
     };
 }(jQuery));
