@@ -81,10 +81,17 @@ class pocketlistsPocketModel extends kmModelExt
      */
     public function countLists()
     {
+        $accessedLists = pocketlistsRBAC::getAccessListForContact();
+
+        $listsSql = '';
+        if ($accessedLists) {
+            $listsSql = 'AND id IN (i:lists)';
+        }
+
         return (int)$this
             ->query(
-                "SELECT COUNT(*) count_lists FROM pocketlists_list WHERE pocket_id = i:pocket_id AND archived = 0",
-                ['pocket_id' => $this->pk]
+                "SELECT COUNT(*) count_lists FROM pocketlists_list WHERE pocket_id = i:pocket_id AND archived = 0 {$listsSql}",
+                ['pocket_id' => $this->pk, 'lists' => $accessedLists]
             )
             ->fetchField('count_lists');
     }

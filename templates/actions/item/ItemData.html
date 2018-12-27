@@ -58,7 +58,7 @@
         <input type="checkbox" class="pl-is-selected" {if isset($archive) && $archive == true || !empty($item.key_list_id)}disabled{/if}>
         <span class="pl-item-name{if isset($item.calc_priority) && $item.calc_priority == 5} bold red{/if}">
             {if !empty($item.key_list_id)}
-                <a href="#/list/{$item.list_id}/"><strong class="pl-dark-{$item.list_color}-label">{$item.name|default:'&nbsp;'|nl2br}</strong></a>
+                <a href="#/pocket/{$item.pocket_id}/list/{$item.list_id}/"><strong class="pl-dark-{$item.list_color}-label">{$item.name|default:'&nbsp;'|nl2br}</strong></a>
             {else}
                 {* <a href="#" class="pl-label pl-dark-purple">STATUS</a> *}
                 {$item.name|default:'&nbsp;'|nl2br}

@@ -20,7 +20,7 @@ class pocketlistsNotifications
      */
     protected static function getList($list_id)
     {
-        if (isset(self::$lists[$list_id])) {
+        if (!isset(self::$lists[$list_id])) {
             if (self::$lm === null) {
                 self::$lm = new pocketlistsListModel();
             }

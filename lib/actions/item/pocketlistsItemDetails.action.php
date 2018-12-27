@@ -42,7 +42,7 @@ class pocketlistsItemDetailsAction extends waViewAction
             $item = $im->extendItemData($item, true);
 
             if ($listId) {
-                $list = $lm->getById($listId);
+                $list = $lm->findByPk($listId);
             }
         }
 
