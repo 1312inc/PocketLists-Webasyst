@@ -21,14 +21,16 @@ class pocketlistsComplete extends waJsonController
             $data['complete_contact_id'] = wa()->getUser()->getId();
         } else {
             $data['complete_contact_id'] = null;
+            $data['complete_datetime'] = '';
         }
         if ($item['id']) {
             if (!$im->updateById($item['id'], $data, null, true)) {
                 $this->errors[] = 'error while updating parent id: ' . $item['id'];
             } else {
-                foreach ($data as $key => $datum) {
-                    $item->$key = $datum;
-                }
+                $item->setAttributes($data);
+//                foreach ($data as $key => $datum) {
+//                    $item->$key = $datum;
+//                }
                 $this->completed_items[] = $im->prepareOutput($item);
             };
         }
