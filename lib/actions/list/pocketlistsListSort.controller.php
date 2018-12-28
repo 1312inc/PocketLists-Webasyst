@@ -7,12 +7,26 @@ class pocketlistsListSortController extends waJsonController
 {
     /**
      * @throws waDbException
+     * @throws waException
      * @throws waRightsException
      */
     public function execute()
     {
-        if (!wa()->getUser()->isAdmin() && !wa()->getUser()->isAdmin('pocketlists')) {
-            throw new waRightsException('403');
+        $pocketId = waRequest::post('pocket_id', 0, waRequest::TYPE_INT);
+
+        if (!$pocketId) {
+            $this->setError(_w('Not found'));
+            return;
+        }
+
+        $pocket = pocketlistsPocketModel::model()->findByPk($pocketId);
+        if (!$pocket) {
+            $this->setError(_w('Not found'));
+            return;
+        }
+
+        if (!pocketlistsRBAC::contactHasAccessToPocket($pocket->pk)) {
+            throw new waRightsException(_w('Access denied'));
         }
 
         $data = waRequest::post('data', false);

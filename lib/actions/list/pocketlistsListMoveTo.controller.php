@@ -7,19 +7,16 @@ class pocketlistsListMoveToController extends waJsonController
 {
     /**
      * @throws waDbException
+     * @throws waException
      * @throws waRightsException
      */
     public function execute()
     {
-        if (!wa()->getUser()->isAdmin() && !wa()->getUser()->isAdmin('pocketlists')) {
-            throw new waRightsException('403');
-        }
-
         $id = waRequest::post('id', 0, waRequest::TYPE_INT);
         $pocket_id = waRequest::post('pocket_id', 0, waRequest::TYPE_INT);
 
         if (!$id || !$pocket_id) {
-            $this->setError('No pocket id or list id params');
+            $this->setError(_w('No pocket id or list id params'));
 
             return;
         }
@@ -30,18 +27,26 @@ class pocketlistsListMoveToController extends waJsonController
         $list = pocketlistsListModel::model()->findByPk($id);
 
         if (!$pocket || !$list) {
-            $this->setError('No pocket or list found');
+            $this->setError(_w('No pocket or list found'));
+
+            return;
+        }
+
+        if (pocketlistsRBAC::contactHasAccessToPocket($pocket->pk) != pocketlistsRBAC::RIGHT_ADMIN) {
+            $this->setError(_w('Access denied'));
 
             return;
         }
 
         if (!pocketlistsRBAC::canAccessToList($list)) {
-            throw new waRightsException('403');
+            $this->setError(_w('Access denied'));
+
+            return;
         }
 
         $list->pocket_id = $pocket->pk;
         if (!$list->save(true, ['pocket_id'])) {
-            $this->setError('List move error');
+            $this->setError(_w('List move error'));
 
             return;
         }

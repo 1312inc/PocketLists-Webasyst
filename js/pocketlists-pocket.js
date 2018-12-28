@@ -99,7 +99,8 @@ $.pocketlists.Pocket = function ($pocket_wrapper, options) {
                     $.post(
                         '?module=list&action=sort',
                         {
-                            data: getLists()
+                            data: getLists(),
+                            pocket_id: pocket_id
                         },
                         function (r) {
                             if (r.status === 'ok') {

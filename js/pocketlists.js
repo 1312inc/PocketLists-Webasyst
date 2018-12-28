@@ -136,9 +136,6 @@
 
         sortLists: function () {
             var self = this;
-            if (!self.options.isAdmin) {
-                return;
-            }
 
             var $team_wrapper = self.$core_sidebar.find('[data-pl-sidebar-block="team"]'),
                 $pocket_wrapper = self.$core_sidebar.find('[data-pl2-sidebar-wrapper="pockets"] ul:first');
@@ -211,6 +208,10 @@
                 }, 500);
 
             });
+
+            if (!self.options.isAdmin) {
+                return;
+            }
 
             $pocket_wrapper.sortable({
                 item: '[data-pl-pocket-id]',
