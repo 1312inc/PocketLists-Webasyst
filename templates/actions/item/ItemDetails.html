@@ -52,9 +52,10 @@
                     {/foreach}
                 </span>
                 <select name="item[assigned_contact_id]">
-                    <option value="0" {if !$item.assigned_contact_id}selected="selected"{/if}>[`Nobody`]</option>
+                    {$assignUserId = $assign_user_id|default:$item.assigned_contact_id}
+                    <option value="0" {if !$assignUserId}selected="selected"{/if}>[`Nobody`]</option>
                     {foreach $contacts as $contact}
-                    <option value="{$contact.id}" {if isset($item.assigned_contact_id) && $item.assigned_contact_id == $contact.id}selected="selected"{/if}>{$contact.username|escape|truncate:64}{if $contact.id == $wa->user()->getId()} ([`me`]){/if}</option>
+                    <option value="{$contact.id}" {if $assignUserId == $contact.id}selected="selected"{/if}>{$contact.username|escape|truncate:64}{if $contact.id == $wa->user()->getId()} ([`me`]){/if}</option>
                     {/foreach}
                 </select>
             </div>

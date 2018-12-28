@@ -1117,7 +1117,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
                 $.post(o.appUrl + '?module=item&action=details', {
                     id: itemId,
-                    list_id: o.list && o.list.list_id ? o.list.list_id : 0
+                    list_id: o.list && o.list.list_id ? o.list.list_id : 0,
+                    assign_user_id: o.assignUser || 0
                 }, function (html) {
                     $wrapper
                         .html(html)
@@ -1244,6 +1245,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             }
 
             $name.val('').val(nameValue);
+
+            $wrapper.find('#pl-assigned-contact select').trigger('change');
         };
 
         var init = function () {
