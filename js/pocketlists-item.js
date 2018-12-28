@@ -1233,10 +1233,17 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
             $wrapper.find('textarea').trigger('change');
 
+            var $name = $wrapper.find('[name="item[name]"]');
+
+            $name.trigger('focus');
+            var nameValue = $name.val();
+
             if (!itemId) {
-                $wrapper.find('[name="item[name]"]').val($currentItem.find('[data-pl2-item-textarea]').val());
+                nameValue = $currentItem.find('[data-pl2-item-textarea]').val();
                 $currentItem.find('[data-pl2-action="edit-new-item"] .loading').toggleClass('pl ellipsis loading');
             }
+
+            $name.val('').val(nameValue);
         };
 
         var init = function () {
