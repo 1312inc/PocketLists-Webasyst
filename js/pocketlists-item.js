@@ -1407,9 +1407,10 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     var $this = $(this),
                         attachment_name = $this.data('pl-attachment-name'),
                         $w = $this.closest('li');
+
                     $.post(o.appUrl + '?module=item&action=deleteAttachment', {
                         attachment: attachment_name,
-                        item_id: id
+                        item_id: itemId
                     }, function (r) {
                         if (r.status === 'ok') {
                             $w.hide(200, function () {
