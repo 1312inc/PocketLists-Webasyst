@@ -36,9 +36,11 @@ class pocketlistsItemDetailsAction extends waViewAction
                 wa()->getDataUrl('attachments/'.$item['id'].'/', true, pocketlistsHelper::APP_ID)
             );
         } else {
-            $item = new pocketlistsItemModel([
-                'contact_id' => wa()->getUser()->getId()
-            ]);
+            $item = new pocketlistsItemModel(
+                [
+                    'contact_id' => wa()->getUser()->getId(),
+                ]
+            );
             $item = $im->extendItemData($item, true);
 
             if ($listId) {
@@ -51,6 +53,8 @@ class pocketlistsItemDetailsAction extends waViewAction
 
         $this->view->assign('item', $item);
         $this->view->assign('list', $list);
+
+        $list = $list ?: null;
 
         // get contact that have access to this pocket
         $contacts = [];
