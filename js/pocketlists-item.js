@@ -1060,7 +1060,10 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             if ($currentItem) {
 
                 if (!itemId) {
-                    $currentItem.find('[data-pl2-item-textarea]').val($wrapper.find('[name="item[name]"]').val());
+                    $currentItem
+                        .find('[data-pl2-item-textarea]').val($wrapper.find('[name="item[name]"]').val())
+                        .end()
+                        .find('[data-pl2-item-links]').show();
                 }
 
                 // $wrapper.slideToggle(0, function () {
@@ -1241,7 +1244,10 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
             if (!itemId) {
                 nameValue = $currentItem.find('[data-pl2-item-textarea]').val();
-                $currentItem.find('[data-pl2-action="edit-new-item"] .loading').toggleClass('pl ellipsis loading');
+                $currentItem
+                    .find('[data-pl2-action="edit-new-item"] .loading').toggleClass('pl ellipsis loading')
+                    .end()
+                    .find('[data-pl2-item-links]').hide();
             }
 
             $name.val('').val(nameValue);
