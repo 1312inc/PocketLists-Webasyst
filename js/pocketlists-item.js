@@ -1038,7 +1038,11 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             serializedForm = '';
 
         var showLoading = function ($item) {
-            $item.find('.pl-edit').addClass('pl-non-opacity').html($.pocketlists.$loading);
+            if (itemId) {
+                $item.find('.pl-edit').addClass('pl-non-opacity').html($.pocketlists.$loading);
+            } else {
+                $item.find('[data-pl2-action="edit-new-item"] .ellipsis').toggleClass('pl ellipsis loading')
+            }
         };
 
         var isOpen = function () {
@@ -1231,6 +1235,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
             if (!itemId) {
                 $wrapper.find('[name="item[name]"]').val($currentItem.find('[data-pl2-item-textarea]').val());
+                $currentItem.find('[data-pl2-action="edit-new-item"] .loading').toggleClass('pl ellipsis loading');
             }
         };
 
