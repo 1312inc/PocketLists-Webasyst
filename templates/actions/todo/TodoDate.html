@@ -88,7 +88,6 @@
             enableSortItems: false,
 //            assignUser: parseInt('{$wa->user()->getId()}'),
             showMessageOnEmptyList: {if $date}false{else}true{/if},
-            dueDate: '{if $timestamp}{$timestamp}{/if}',
             userHasLinkedApps: {$user->hasLinkedApps()},
             current_user_id: {$user->getContact()->getId()}
         });
