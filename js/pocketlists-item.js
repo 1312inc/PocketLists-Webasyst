@@ -1350,11 +1350,12 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
                                 $.post(o.appUrl + '?module=item&action=delete', {id: itemId}, function (r) {
                                     if (r.status === 'ok') {
-                                        removeItem(r.data.id);
-                                        $list_items_wrapper.find('[data-id="' + r.data.id + '"]').remove();
                                         d.trigger('close');
-                                        hideItemDetails();
-                                        updateListCountBadge();
+                                        hideItemDetails(null, function () {
+                                            removeItem(r.data.id);
+                                            $list_items_wrapper.find('[data-id="' + r.data.id + '"]').remove();
+                                            updateListCountBadge();
+                                        });
                                     } else {
 
                                     }
