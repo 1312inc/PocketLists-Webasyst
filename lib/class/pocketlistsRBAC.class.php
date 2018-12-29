@@ -302,7 +302,7 @@ class pocketlistsRBAC
         } else {
             $pockets = $user->getRights(pocketlistsHelper::APP_ID, self::POCKET_ITEM.'.%');
             foreach ($pockets as $pocketId => $rightValue) {
-                self::addPocketUserRight($user->getId(), $pocketId, $rightValue);
+                self::addPocketUserRight($user->getId(), $pocketId, (int)$rightValue);
             }
         }
     }
@@ -318,7 +318,7 @@ class pocketlistsRBAC
             self::$pockets[$userId] = [];
         }
 
-        self::$pockets[$userId][$pocketId] = $rightValue;
+        self::$pockets[$userId][$pocketId] = (int)$rightValue;
     }
 
     /**
