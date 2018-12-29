@@ -78,7 +78,7 @@ class pocketlistsRightConfig extends waRightConfig
         if (empty($currentPocketRights)) {
             $this->addItem(
                 '',
-                'Please check pocket above and then reload this dialog',
+                _w('To setup access rights by pocket, set Limited access for at least one pocket'),
                 'header',
                 ['hint1' => 'Подсказка']
             );
