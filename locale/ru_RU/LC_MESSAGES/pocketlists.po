@@ -1371,3 +1371,7 @@ msgstr "Проект и список не найдены"
 #: /wa-apps/pocketlists/lib/actions/list/pocketlistsListMoveTo.controller.php:49
 msgid "List move error"
 msgstr "Не получилось переместить список"
+
+#: /wa-apps/pocketlists/lib/config/pocketlistsRightConfig.class.php:81
+msgid "To setup access rights by pocket, set Limited access for at least one pocket"
+msgstr "Для настройки доступа к спискам дел включите доступ хотя бы к одному проекту"
