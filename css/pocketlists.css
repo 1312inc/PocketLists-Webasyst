@@ -557,10 +557,10 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 .s-order input#pl-new-list-input:focus,
 .s-order #pl-item-add textarea:focus { background: #e7eef3; z-index: 7; }
 .s-order #pl-item-add .pl-details-form { background: transparent; border-bottom: none; }
-.s-order .pl-details .pl-chat-reply { position: fixed; bottom: 0; width: 420px; padding: 0px 0 20px; background: #fff; }
-.s-order .pl-details .pl-chat-contents { margin-bottom: 120px; }
+.s-order .pl-details .pl-chat-reply { position: fixed; bottom: 0; width: 420px; padding: 0px 0 17px; background: #fff; }
+.s-order .pl-details .pl-chat-contents { margin-bottom: 130px; }
 .s-order .pl-details.sticky { top: 83px; }
-.s-order .pl-details.sticky .pl-chat-contents { margin-bottom: 30px; }
+.s-order .pl-details.sticky .pl-chat-contents { margin-bottom: 40px; }
 
 /* @2x
 ------ */
@@ -580,9 +580,6 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
     ul.pl-team li .pl-username { max-width: 120px; }
     .pl-list-sort { display: none !important; }
     .pl-list-sort-dropdown { display: block !important; }
-    input#pl-new-list-input,
-    #pl-item-add textarea,
-    .pl-chat textarea { width: 80%; }
     table.pl-calendar { margin-left: -20px; }
 
     .pl-inner-sidebar { width: 220px; }

@@ -25,7 +25,13 @@
                 </ul>
             {else}
                 <div class="block double-padded align-center pl-lists-empty">
-                    <p>[`This pocket is empty. Start by creating a to-do list.`]</p>
+                    <p>
+                        {if pocketlistsRBAC::contactHasAccessToPocket($pocket->pk) == pocketlistsRBAC::RIGHT_ADMIN}
+                            [`This pocket is empty. Start by creating a to-do list.`]
+                        {else}
+                            [`You don’t have access to any list in the pocket. Please contact your admin to request access setup.`]
+                        {/if}
+                    </p>
                 </div>
             {/if}
             <!-- <a href="#/pocket/{$pocket->pk}/list/new/" class="pl-lists-add">
