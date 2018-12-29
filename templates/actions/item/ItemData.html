@@ -14,7 +14,7 @@
 
                 {* COMPLETED BY *}
                 <span class="pl-userpic" title="{sprintf('[`Completed by %s`]', $item.complete_contact.username|default:'%username%'|escape)}">
-                    {if isset($item.complete_contact.userpic)}
+                    {if $item.complete_contact.userpic}
                         <i class="icon16 userpic20" style="background-image: url({$item.complete_contact.userpic})" alt="{$item.complete_contact.username|escape}"></i>
                     {/if}
                 </span>
@@ -51,7 +51,7 @@
             <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$item.list_icon|default:'li-list@2x.png'});"></i>
         {else}
             <input type="checkbox" class="pl-done{if isset($item.calc_priority)}{if $item.calc_priority == 1} pl-priority-green{elseif $item.calc_priority == 2} pl-priority-yellow{elseif $item.calc_priority == 3} pl-priority-red{elseif $item.calc_priority == 4} pl-priority-black{elseif $item.calc_priority == 5} pl-priority-fire{/if}{/if}" {if $item.status == 1}checked="checked"{/if}{if isset($archive) && $archive == true}disabled{/if} data-pl2-item-priority="{$item.calc_priority|default:0}">
-            <span{if isset($item.list_color) && {$item.list_color}!='none'} class="pl-dark-{$item.list_color}-border"{/if} title="[`Completed`]"></span>
+            <span{if $item.list_color !='none'} class="pl-dark-{$item.list_color}-border"{/if} title="[`Completed`]"></span>
         {/if}
     </label>
     <label class="pl-select-label">
