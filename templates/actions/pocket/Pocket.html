@@ -55,6 +55,7 @@
 
         new $.pocketlists.Pocket($pocketWrapper, {
             current_user_id: {$wa->user()->get('id')},
+            isAdmin: {$isAdmin},
             listsWrapper: $lists_wrapper
         });
 

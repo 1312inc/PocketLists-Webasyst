@@ -36,7 +36,7 @@ class pocketlistsPocketAction extends pocketlistsViewAction
         // check if user have access to this pocket/list
         if (!in_array($id, $available_pockets) ||
             (isset($last_pocket_list_id['pocket_id']) &&
-            !in_array($last_pocket_list_id['pocket_id'], $available_pockets))
+                !in_array($last_pocket_list_id['pocket_id'], $available_pockets))
         ) {
             $id = reset($available_pockets);
         }
@@ -76,7 +76,10 @@ class pocketlistsPocketAction extends pocketlistsViewAction
 
         $lists_html = wao(new pocketlistsListAction(['list_id' => $list_id, 'pocket_id' => $pocket->pk]))->display();
         $this->view->assign('lists_html', $lists_html);
-
+        $this->view->assign(
+            'isAdmin',
+            pocketlistsRBAC::contactHasAccessToPocket($pocket->pk) == pocketlistsRBAC::RIGHT_ADMIN ? 1 : 0
+        );
         $this->view->assign('lists', $lists);
         $this->view->assign('list_id', $list_id);
         $this->view->assign('pocket', $pocket);

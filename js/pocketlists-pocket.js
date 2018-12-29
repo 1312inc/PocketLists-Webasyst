@@ -67,6 +67,10 @@ $.pocketlists.Pocket = function ($pocket_wrapper, options) {
     };
 
     var _initSortList = function ($lists_wrapper) {
+        if (!o.isAdmin) {
+            return;
+        }
+
         $lists_wrapper.sortable({
             item: '[data-pl-list-id]',
             distance: 5,

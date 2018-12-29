@@ -25,7 +25,7 @@ class pocketlistsListSortController extends waJsonController
             return;
         }
 
-        if (!pocketlistsRBAC::contactHasAccessToPocket($pocket->pk)) {
+        if (pocketlistsRBAC::contactHasAccessToPocket($pocket->pk) !== pocketlistsRBAC::RIGHT_ADMIN) {
             throw new waRightsException(_w('Access denied'));
         }
 
