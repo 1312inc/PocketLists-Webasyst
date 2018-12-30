@@ -1073,8 +1073,8 @@ class pocketlistsItemModel extends kmModelExt
     {
         $lists = [];
         $contact_id = wa()->getUser()->getId();
-        pocketlistsRBAC::filterListAccess($lists, $contact_id);
-        $list_sql = pocketlistsRBAC::filterListAccess($lists);
+//        pocketlistsRBAC::filterListAccess($lists, $contact_id);
+        $list_sql = 1;//pocketlistsRBAC::filterListAccess($lists);
 
         $appSql = '';
         if ($app !== false) {
