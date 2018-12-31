@@ -476,12 +476,14 @@ class pocketlistsListIcon
                 "flag-pirate",
             ],
         ];
+        $icon_ids_ret = [];
         foreach ($icon_ids as $group =>  $icons) {
+            $icon_ids_ret[$group] = [];
             foreach ($icons as $id => $icon_id) {
-                $icon_ids[$group][$id] = 'li-'.$icon_id.'@2x.png';
+                $icon_ids_ret[$group][$icon_id] = 'li-'.$icon_id.'@2x.png';
             }
         }
 
-        return $icon_ids;
+        return $icon_ids_ret;
     }
 }

@@ -15,7 +15,7 @@
         <textarea class="pl-details-textarea" name="item[note]" placeholder="[`Add note`]"{if $item.status == 1} disabled="disabled"{/if}>{$item.note|escape}</textarea>
 
     {*$wa->csrf()*}
-    <div data-pl-item-details-attachments>
+    <div data-pl-item-details-attachments class="pl-already-saved-items-only">
 
         <div class="block double-padded{if $fileupload} pl-add-attachment-dropbox{/if}"{if $fileupload} data-pl-item-details-fileupload{/if}>
 
@@ -52,15 +52,16 @@
                     {/foreach}
                 </span>
                 <select name="item[assigned_contact_id]">
-                    <option value="0" {if !$item.assigned_contact_id}selected="selected"{/if}>[`Nobody`]</option>
+                    {$assignUserId = $assign_user_id|default:$item.assigned_contact_id}
+                    <option value="0" {if !$assignUserId}selected="selected"{/if}>[`Nobody`]</option>
                     {foreach $contacts as $contact}
-                    <option value="{$contact.id}" {if isset($item.assigned_contact_id) && $item.assigned_contact_id == $contact.id}selected="selected"{/if}>{$contact.username|escape|truncate:64}{if $contact.id == $wa->user()->getId()} ([`me`]){/if}</option>
+                    <option value="{$contact.id}" {if $assignUserId == $contact.id}selected="selected"{/if}>{$contact.username|escape|truncate:64}{if $contact.id == $wa->user()->getId()} ([`me`]){/if}</option>
                     {/foreach}
                 </select>
             </div>
         </div>
         {/if}
-        <div class="field">
+        <div class="field pl-already-saved-items-only">
             <div class="name">[`Created`]</div>
             <div class="value no-shift">
                 <i class="icon16 userpic20" style="background-image: url({$item.contact.userpic})" alt="{$item.contact.username|escape}"></i>
@@ -69,6 +70,14 @@
                 <span class="hint nowrap">{$item.create_datetime|wa_datetime:'humandatetime'}</span>
             </div>
         </div>
+        {if $item.update_datetime && $item.update_datetime > $item.create_datetime}
+            <div class="field pl-already-saved-items-only">
+                <div class="name">[`Updated`]</div>
+                <div class="value no-shift">
+                    <span class="nowrap">{$item.update_datetime|wa_datetime:'humandatetime'}</span>
+                </div>
+            </div>
+        {/if}
         {if $item.status == 1 && $item.complete_datetime}
             <div class="field">
                 <div class="name">[`Completed`]</div>
@@ -127,7 +136,7 @@
         </div>
         {/if}
 
-        <div class="field">
+        <div class="field pl-already-saved-items-only">
             <div class="name nowrap">
                 [`List`]
             </div>
@@ -135,10 +144,10 @@
                 <select id="pl-item-list">
                 {if !$list || $item.contact_id == $wa->user()->get('id')}<option value=""{if !$list} selected="selected"{/if}>[`None`]</option>{/if}
                 {foreach $lists as $l}
-                    <option value="{$l.id}" {if $item.list_id == $l.id}selected="selected"{/if}>{$l.name|escape|truncate:32}</option>
+                    <option value="{$l.id}" {if ($item.id && $item.list_id == $l.id) || ($list && $list.id == $l.id)}selected="selected"{/if}>{$l.name|escape|truncate:32}</option>
                 {/foreach}
                 </select>
-                <input type="hidden" name="item[list_id]" value="{$item.list_id}"/>
+                <input type="hidden" name="item[list_id]" value="{if $list}{$list.id}{else}{$item.list_id}{/if}"/>
                 {* DEPRECATED FEB 2017 <div id="pl-null-list-msg"{if $list} style="display: none;"{/if}>
                     <span class="hint"><i class="icon10 lock-bw"></i>[`Removing to-do item from a list makes it <strong>your private to-do item</strong> hidden from your teammates, and available on your To-do Stream only.`]</span>
                 </div> *}
@@ -173,7 +182,7 @@
     <div class="field-group" style="margin-bottom: 0;">
         <div class="field">
 
-            <div class="float-right block half-padded">
+            <div class="float-right block half-padded pl-already-saved-items-only">
                 <ul class="menu-v with-icons">
                     <li>
                         <a href="#" data-pl-action="item-delete" class="nowrap">
@@ -183,14 +192,12 @@
                 </ul>
             </div>
 
-                <input type="submit" class="button green" value="[`Save`]"  id="pl-item-details-save"/>
-                [`or`]
-                <a href="#" class="pl-item-details-cancel">[`cancel`]</a>
+            <input type="submit" class="button green" value="[`Save`]"  id="pl-item-details-save"/>
+            [`or`]
+            <a href="#" class="pl-item-details-cancel">[`cancel`]</a>
 
-                <span class="error" style="display: none;">[`error`]</span>
-                <span class="success" style="display: none;">[`saved`]</span>
-
-
+            <span class="error" style="display: none;">[`error`]</span>
+            <span class="success" style="display: none;">[`saved`]</span>
 
         </div>
     </div>

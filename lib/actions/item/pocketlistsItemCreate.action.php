@@ -5,6 +5,10 @@
  */
 class pocketlistsItemCreateAction extends pocketlistsViewAction
 {
+    /**
+     * @throws waDbException
+     * @throws waException
+     */
     public function execute()
     {
         $data = waRequest::post('data', false, waRequest::TYPE_ARRAY);
@@ -16,8 +20,8 @@ class pocketlistsItemCreateAction extends pocketlistsViewAction
         $inserted = $inserted_items = $items = [];
         $assign_contact = null;
         $user_id = wa()->getUser()->getId();
-        $canAssign = $assigned_contact_id && pocketlistsRBAC::canAssign();
-        if ($canAssign) {
+        $canAssign = pocketlistsRBAC::canAssign();
+        if ($canAssign && $assigned_contact_id) {
             $assign_contact = new waContact($assigned_contact_id);
         }
 
@@ -40,8 +44,14 @@ class pocketlistsItemCreateAction extends pocketlistsViewAction
                 $data[$i]['list_id'] = $list ? $list['id'] : null;
                 $data[$i]['contact_id'] = $user_id;
 
-                if ($canAssign) {
-                    $data[$i]['assigned_contact_id'] = $assign_contact->getId();
+                if ($canAssign && ($assigned_contact_id || !empty($data[$i]['assigned_contact_id']))) {
+                    if (!empty($data[$i]['assigned_contact_id'])) {
+                        $assign_contact = new waContact($data[$i]['assigned_contact_id']);
+                    }
+
+                    if ($assign_contact->exists()) {
+                        $data[$i]['assigned_contact_id'] = $assign_contact->getId();
+                    }
                 }
 
                 if (!empty($data[$i]['due_date'])) {

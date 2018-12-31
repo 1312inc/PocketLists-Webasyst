@@ -105,7 +105,7 @@
     <div class="clear-both"></div>
 
     {if !$print}
-        {include '../../include/itemadd.html' inline}
+        {include '../../include/itemadd.html' assign_contact_photo=$current_teammate.userpic inline}
     {/if}
     {include '../../include/itemdetails.html' inline}
     {include '../../include/itemcomments.html' inline}

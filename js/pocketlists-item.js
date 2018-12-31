@@ -192,7 +192,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     }, 'json');
                 }
 
-                var $textarea_parent = _itemAdd.textarea.closest('[data-pl-item-add]') || _itemAdd.textarea.closest('[data-id]'),
+                var $textarea_parent = _itemAdd.textarea.closest('[data-pl-item-add]') || _itemAdd.textarea.closest(item_selector),
                     $previewWrapper = $textarea_parent.find('[data-pl2-item-links]');
 
                 $previewWrapper.empty();
@@ -696,7 +696,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         }
 
         var itemText = $textarea.val(),
-            $parent = $textarea.closest('[data-pl-item-add]') || $textarea.closest('[data-id]'),
+            $parent = $textarea.closest('[data-pl-item-add]') || $textarea.closest(item_selector),
             $previewWrapper = $parent.find('[data-pl2-item-links]');
 
         $textarea.data('pl2-itemlinker', true);
@@ -850,9 +850,15 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
      * for new item dom manipulating
      */
     var NewItemWrapper = (function ($new_item_wrapper) {
+        $new_item_wrapper.on('click', '[data-pl2-action="edit-new-item"]', function (e) {
+            e.preventDefault();
+
+            openItemDetailsWrapper.call(this, true);
+        });
+
         // var $new_item_wrapper_hover = $('<div class="pl-inner-item-add-placeholder"></div>'),
         var $new_item_wrapper_hover = $('<div id="pl-item-add-wrapper-hover" style="display: none;">'),
-            $top_new_item_wrapper = $new_item_wrapper.clone(),
+            $top_new_item_wrapper = $new_item_wrapper.clone(true),
             $textarea = $new_item_wrapper.find('textarea'),
             $top_textarea = $top_new_item_wrapper.find('textarea');
 
@@ -1032,7 +1038,11 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             serializedForm = '';
 
         var showLoading = function ($item) {
-            $item.find('.pl-edit').addClass('pl-non-opacity').html($.pocketlists.$loading);
+            if (itemId) {
+                $item.find('.pl-edit').addClass('pl-non-opacity').html($.pocketlists.$loading);
+            } else {
+                $item.find('[data-pl2-action="edit-new-item"] .ellipsis').toggleClass('pl ellipsis loading')
+            }
         };
 
         var isOpen = function () {
@@ -1043,15 +1053,19 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             $currentItem = $item;
             serializedForm = '';
 
-            if ($currentItem) {
-                itemId = parseInt($item.data('id'));
-            } else {
-                itemId = 0;
-            }
+            itemId = $currentItem ? parseInt($item.data('id')) || 0 : 0;
         };
 
         var hideItemDetails = function (e, callback) {
             if ($currentItem) {
+
+                if (!itemId) {
+                    $currentItem
+                        .find('[data-pl2-item-textarea]').val($wrapper.find('[name="item[name]"]').val())
+                        .end()
+                        .find('[data-pl2-item-links]').show();
+                }
+
                 // $wrapper.slideToggle(0, function () {
                 $wrapper.hide().empty().detach();
                 // });
@@ -1104,7 +1118,11 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
                 showLoading($currentItem);
 
-                $.post(o.appUrl + '?module=item&action=details', {id: itemId}, function (html) {
+                $.post(o.appUrl + '?module=item&action=details', {
+                    id: itemId,
+                    list_id: o.list && o.list.list_id ? o.list.list_id : 0,
+                    assign_user_id: o.assignUser || 0
+                }, function (html) {
                     $wrapper
                         .html(html)
                         .show();
@@ -1218,6 +1236,23 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             serializedForm = $wrapper.find('form').serialize();
 
             $wrapper.find('textarea').trigger('change');
+
+            var $name = $wrapper.find('[name="item[name]"]');
+
+            $name.trigger('focus');
+            var nameValue = $name.val();
+
+            if (!itemId) {
+                nameValue = $currentItem.find('[data-pl2-item-textarea]').val();
+                $currentItem
+                    .find('[data-pl2-action="edit-new-item"] .loading').toggleClass('pl ellipsis loading')
+                    .end()
+                    .find('[data-pl2-item-links]').hide();
+            }
+
+            $name.val('').val(nameValue);
+
+            $wrapper.find('#pl-assigned-contact select').trigger('change');
         };
 
         var init = function () {
@@ -1234,7 +1269,23 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     var $form = $(this);
 
                     $form.find('#pl-item-details-save').after($.pocketlists.$loading);
-                    updateItem($form);
+                    if (itemId) {
+                        updateItem($form);
+                    } else {
+                        var formValues = JSON.parse(JSON.stringify($form.serializeArray())),
+                            data = {};
+
+                        $.each(formValues, function () {
+                            data[this.name.replace('item[','').replace(']','')] = this.value;
+                        });
+
+                        addItem.call($currentItem.find('[data-pl2-item-textarea]').get(0), [data], function () {
+                            $form.trigger('reset');
+                            hideItemDetails();
+                        });
+
+                        return false;
+                    }
                 })
                 .on('click', '.pl-item-details-cancel', function (e) {
                     e.preventDefault();
@@ -1299,11 +1350,12 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
                                 $.post(o.appUrl + '?module=item&action=delete', {id: itemId}, function (r) {
                                     if (r.status === 'ok') {
-                                        removeItem(r.data.id);
-                                        $list_items_wrapper.find('[data-id="' + r.data.id + '"]').remove();
                                         d.trigger('close');
-                                        hideItemDetails();
-                                        updateListCountBadge();
+                                        hideItemDetails(null, function () {
+                                            removeItem(r.data.id);
+                                            $list_items_wrapper.find('[data-id="' + r.data.id + '"]').remove();
+                                            updateListCountBadge();
+                                        });
                                     } else {
 
                                     }
@@ -1377,9 +1429,10 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     var $this = $(this),
                         attachment_name = $this.data('pl-attachment-name'),
                         $w = $this.closest('li');
+
                     $.post(o.appUrl + '?module=item&action=deleteAttachment', {
                         attachment: attachment_name,
-                        item_id: id
+                        item_id: itemId
                     }, function (r) {
                         if (r.status === 'ok') {
                             $w.hide(200, function () {
@@ -1458,6 +1511,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     $this.val('').trigger('focus');
                     $.pocketlists.resizeTextarea($this);
 
+                    $.pocketlists.scrollToEl($wrapper.find('.pl-chat-contents [data-pl-comment-id]:last')[0]);
+
                     request_in_action = false;
                 }
             );
@@ -1532,6 +1587,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
         var afterLoad = function () {
             $.pocketlists.flexHack();
+            $.pocketlists.scrollToEl($wrapper.find('.pl-chat-contents [data-pl-comment-id]:last')[0]);
         };
 
         var init = function () {
@@ -1617,6 +1673,41 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         };
     }($('#pl2-item-comments')));
 
+    // ох сколько всего накручено =( vue плачет
+    var openItemDetailsWrapper = function(e, brandNew) {
+        var $this = $(this),
+            $item = null;
+
+        switch (true) {
+            case $this.closest('[data-pl-item-add]').length > 0:
+                $item = $this.closest('[data-pl-item-add]');
+                break;
+            // case $this.closest('[data-pl-item-add]').length:
+            //     $item = $this.closest('[data-pl-item-add]');
+            //     break;
+            case $this.closest(item_selector).length > 0:
+                $item = $this.closest(item_selector);
+                break;
+        }
+
+        if ($item.data('pl-complete-datetime')) {
+            return;
+        }
+
+        ItemDetails.trigger('hide.pl2', function () {
+            ItemDetails.$el.appendTo($item.find('[data-pl2-item-details]'));
+
+            ItemDetails.trigger('show.pl2', [$item, function () {
+                $item.find('.pl-select-label').hide();
+                $item.find('.pl-meta').animate({'opacity': '0', 'height': 0}, 200, function () {
+                    $(this).hide();
+                });
+            }]);
+
+            selectItem($item);
+        });
+    };
+
     var init = function () {
         //if ($.pocketlists_routing.getHash() == '#/todo/' &&
         //    $.pocketlists_routing.getHash().indexOf('/team/') > 0) {
@@ -1632,28 +1723,6 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
         showEmptyListMessage();
         initSortable();
-
-        // ох сколько всего накручено =( vue плачет
-        var openItemDetailsWrapper = function() {
-            var $item = $(this).closest(item_selector);
-
-            if ($item.data('pl-complete-datetime')) {
-                return;
-            }
-
-            ItemDetails.trigger('hide.pl2', function () {
-                ItemDetails.$el.appendTo($item.find('[data-pl2-item-details]'));
-
-                ItemDetails.trigger('show.pl2', [$item, function () {
-                    $item.find('.pl-select-label').hide();
-                    $item.find('.pl-meta').animate({'opacity': '0', 'height': 0}, 200, function () {
-                        $(this).hide();
-                    });
-                }]);
-
-                selectItem($item);
-            });
-        };
 
         $list_items_wrapper
         /**

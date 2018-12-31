@@ -1168,7 +1168,7 @@ msgstr ""
 
 #: /wa-apps/pocketlists/lib/actions/item/pocketlistsItemAddAttachment.controller.php:61
 msgid "Files with extension .%s are not allowed to security considerations."
-msgstr ""
+msgstr "Files with extension .%s are not allowed due to security considerations."
 
 #: /wa-apps/pocketlists/templates/include/item_linked_entities/shop.order.preview.html:14
 msgid "Unknown state"
@@ -1344,4 +1344,32 @@ msgstr ""
 
 #: /wa-apps/pocketlists/lib/class/pocketlistsHelper.class.php:340
 msgid "%d y"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/include/itemadd.html:24
+msgid "Details"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/pocket/Pocket.html:32
+msgid "You don’t have access to any list in the pocket. Please contact your admin to request access setup."
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:75
+msgid "Updated"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/actions/list/pocketlistsListMoveTo.controller.php:19
+msgid "No pocket/id and list/id params specified"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/actions/list/pocketlistsListMoveTo.controller.php:30
+msgid "Pocket and list not found"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/actions/list/pocketlistsListMoveTo.controller.php:49
+msgid "List move error"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/config/pocketlistsRightConfig.class.php:81
+msgid "To setup access rights by pocket, set Limited access for at least one pocket"
 msgstr ""

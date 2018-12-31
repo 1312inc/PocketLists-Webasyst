@@ -13,18 +13,19 @@ class pocketlistsPocketModel extends kmModelExt
     protected $table = 'pocketlists_pocket';
 
     /**
-     * @param bool|int $contact_id
+     * @param bool $contact_id
      *
-     * @return null|pocketlistsPocketModel|pocketlistsPocketModel[]
+     * @return pocketlistsPocketModel|pocketlistsPocketModel[]|null
+     * @throws waException
      */
     public function getAllPockets($contact_id = false)
     {
         $where_ids = '';
         $accessed_pockets = [];
-//        if ($contact_id) {
-//            $accessed_pockets = pocketlistsHelper::getAccessPocketForContact($contact_id);
-//            $where_ids = 'WHERE id IN (i:access_id)';
-//        }
+        if ($contact_id) {
+            $accessed_pockets = pocketlistsRBAC::getAccessPocketForContact($contact_id);
+            $where_ids = 'WHERE id IN (i:access_id)';
+        }
 
         $sql = "SELECT * FROM {$this->table} {$where_ids} ORDER BY sort ASC ";
 
@@ -80,10 +81,17 @@ class pocketlistsPocketModel extends kmModelExt
      */
     public function countLists()
     {
+        $accessedLists = pocketlistsRBAC::getAccessListForContact();
+
+        $listsSql = '';
+        if ($accessedLists) {
+            $listsSql = 'AND id IN (i:lists)';
+        }
+
         return (int)$this
             ->query(
-                "SELECT COUNT(*) count_lists FROM pocketlists_list WHERE pocket_id = i:pocket_id AND archived = 0",
-                ['pocket_id' => $this->pk]
+                "SELECT COUNT(*) count_lists FROM pocketlists_list WHERE pocket_id = i:pocket_id AND archived = 0 {$listsSql}",
+                ['pocket_id' => $this->pk, 'lists' => $accessedLists]
             )
             ->fetchField('count_lists');
     }

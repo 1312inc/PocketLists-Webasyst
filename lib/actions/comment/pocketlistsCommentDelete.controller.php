@@ -1,7 +1,14 @@
 <?php
 
+/**
+ * Class pocketlistsCommentDeleteController
+ */
 class pocketlistsCommentDeleteController extends waJsonController
 {
+    /**
+     * @throws waDbException
+     * @throws waException
+     */
     public function execute()
     {
         $comment_id = waRequest::post('id', 0, waRequest::TYPE_INT);
@@ -13,8 +20,17 @@ class pocketlistsCommentDeleteController extends waJsonController
                 $im = new pocketlistsItemModel();
                 $item = $im->getById($comment['item_id']);
 
-                if (!empty($item['list_id']) && !pocketlistsRBAC::canAccessToList($item['list_id'])) {
-                    throw new waException('Access denied.', 403);
+                if ($item['list_id']) {
+                    $list = pocketlistsListModel::model()->findByPk($item['list_id']);
+                    if (!$list) {
+                        throw new waException(_w('Not found'), 404);
+
+                    }
+
+                    if (!pocketlistsRBAC::canAccessToList($list)) {
+                        throw new waException(_w('Access denied'), 403);
+
+                    }
                 }
 
                 if ((time() - strtotime($comment['create_datetime']) < 60 * 60 * 24)

@@ -19,17 +19,33 @@ class pocketlistsCommentAddAction extends waViewAction
             $item = $im->getById($item_id);
 
             if ($item) {
-                if ($item['list_id'] && !pocketlistsRBAC::canAccessToList($item['list_id'])) {
-                    $this->view->assign(
-                        'error',
-                        [
-                            'code'    => 403,
-                            'message' => _w('Access denied'),
-                        ]
-                    );
-                    $this->setTemplate('templates/include/error.html');
+                if ($item['list_id']) {
+                    $list = pocketlistsListModel::model()->findByPk($item['list_id']);
+                    if (!$list) {
+                        $this->view->assign(
+                            'error',
+                            [
+                                'code'    => 404,
+                                'message' => _w('Not found'),
+                            ]
+                        );
+                        $this->setTemplate('templates/include/error.html');
 
-                    return;
+                        return;
+                    }
+
+                    if (!pocketlistsRBAC::canAccessToList($list)) {
+                        $this->view->assign(
+                            'error',
+                            [
+                                'code'    => 403,
+                                'message' => _w('Access denied'),
+                            ]
+                        );
+                        $this->setTemplate('templates/include/error.html');
+
+                        return;
+                    }
                 }
 
                 $cm = new pocketlistsCommentModel();

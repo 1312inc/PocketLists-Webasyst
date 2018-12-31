@@ -7,14 +7,14 @@
 
     <div class="pl-meta">
         {if !(isset($archive) && $archive)}
-            <a href="#" class="pl-favorite" data-pl-action="item-favorite" title="[`Favorite`]"><i class="icon16 star{if empty($item.favorite)}-empty{/if}"></i></a>
+            <a href="#" class="pl-favorite" data-pl-action="item-favorite" title="[`Favorite`]"><i class="icon16 star{if !$item.favorite}-empty{/if}"></i></a>
         {/if}
         {if empty($item.key_list_id)}
             {if $item.status == 1}
 
                 {* COMPLETED BY *}
                 <span class="pl-userpic" title="{sprintf('[`Completed by %s`]', $item.complete_contact.username|default:'%username%'|escape)}">
-                    {if isset($item.complete_contact.userpic)}
+                    {if $item.complete_contact.userpic}
                         <i class="icon16 userpic20" style="background-image: url({$item.complete_contact.userpic})" alt="{$item.complete_contact.username|escape}"></i>
                     {/if}
                 </span>
@@ -51,17 +51,17 @@
             <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$item.list_icon|default:'li-list@2x.png'});"></i>
         {else}
             <input type="checkbox" class="pl-done{if isset($item.calc_priority)}{if $item.calc_priority == 1} pl-priority-green{elseif $item.calc_priority == 2} pl-priority-yellow{elseif $item.calc_priority == 3} pl-priority-red{elseif $item.calc_priority == 4} pl-priority-black{elseif $item.calc_priority == 5} pl-priority-fire{/if}{/if}" {if $item.status == 1}checked="checked"{/if}{if isset($archive) && $archive == true}disabled{/if} data-pl2-item-priority="{$item.calc_priority|default:0}">
-            <span{if isset($item.list_color) && {$item.list_color}!='none'} class="pl-dark-{$item.list_color}-border"{/if} title="[`Completed`]"></span>
+            <span{if $item.list_color !='none'} class="pl-dark-{$item.list_color}-border"{/if} title="[`Completed`]"></span>
         {/if}
     </label>
     <label class="pl-select-label">
         <input type="checkbox" class="pl-is-selected" {if isset($archive) && $archive == true || !empty($item.key_list_id)}disabled{/if}>
         <span class="pl-item-name{if isset($item.calc_priority) && $item.calc_priority == 5} bold red{/if}">
             {if !empty($item.key_list_id)}
-                <a href="#/list/{$item.list_id}/"><strong class="pl-dark-{$item.list_color}-label">{$item.name|default:' '|nl2br}</strong></a>
+                <a href="#/pocket/{$item.pocket_id}/list/{$item.list_id}/"><strong class="pl-dark-{$item.list_color}-label">{$item.name|default:'&nbsp;'|nl2br}</strong></a>
             {else}
                 {* <a href="#" class="pl-label pl-dark-purple">STATUS</a> *}
-                {$item.name|default:' '|nl2br}
+                {$item.name|default:'&nbsp;'|nl2br}
                 {* if $item.list_id == NULL && (empty($item.assigned_contact_id) || $item.assigned_contact_id == $wa->user()->getId())}<i class="icon10 lock-bw" title="[`Only you can see this item`]"></i>{/if *}
             {/if}
         </span>
@@ -74,13 +74,13 @@
         {if !empty($item.due_datetime)}
             <br>
             <span class="pl-due {if $item.calc_priority == 0}pl-due-someday{elseif $item.calc_priority == 1}pl-due-tomorrow{elseif $item.calc_priority == 2}pl-due-today{elseif $item.calc_priority >= 3}pl-due-overdue{/if}">{$item.due_datetime|wa_date:'humandatetime'}</span>
-        {else if !empty($item.due_date)}
+        {elseif !empty($item.due_date)}
             <br>
             <span class="pl-due {if $item.calc_priority == 0}pl-due-someday{elseif $item.calc_priority == 1}pl-due-tomorrow{elseif $item.calc_priority == 2}pl-due-today{elseif $item.calc_priority >= 3}pl-due-overdue{/if}">{waDateTime::date(waDateTime::getFormat('humandate'), $item.due_date)}</span>
         {/if}
 
-        {if !empty($item.note)}<p class="pl-item-note">{$item.note|nl2br}</p>{/if}
-        {if !empty($item.attachments)}
+        {if $item.note}<p class="pl-item-note">{$item.note|nl2br}</p>{/if}
+        {if $item.attachments}
           <ul class="pl-attachments">
             {foreach $item.attachments as $attachment}
               {if $attachment.filetype == 'image'}<li><a href="{$pl2_attachments_path}/{$item.id}/{$attachment.filename}" target="_blank"><img src="{$pl2_attachments_path}/{$item.id}/{$attachment.filename}"></a></li>

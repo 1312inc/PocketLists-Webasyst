@@ -51,7 +51,7 @@ class pocketlistsListAction extends pocketlistsViewAction
                 return;
             }
 
-            if (!pocketlistsRBAC::canAccessToList($list->pk)) {
+            if (!pocketlistsRBAC::canAccessToList($list)) {
                 $this->view->assign(
                     'error',
                     [
@@ -67,7 +67,7 @@ class pocketlistsListAction extends pocketlistsViewAction
             /** @var pocketlistsTeammateFactory $factory */
             $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getModelFactory('Teammate');
             $list_access_contacts = $factory->getTeammates(
-                pocketlistsRBAC::getAccessContacts($list->pk),
+                pocketlistsRBAC::getAccessContacts($list),
                 true,
                 false,
                 true
@@ -106,7 +106,7 @@ class pocketlistsListAction extends pocketlistsViewAction
                 ]
             );
         } else {
-            if (!pocketlistsRBAC::canCreateLists()) {
+            if (pocketlistsRBAC::contactHasAccessToPocket($pocket->pk) != pocketlistsRBAC::RIGHT_ADMIN) {
                 $this->view->assign(
                     'error',
                     [

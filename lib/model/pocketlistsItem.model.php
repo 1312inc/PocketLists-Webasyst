@@ -487,7 +487,7 @@ class pocketlistsItemModel extends kmModelExt
      *
      * @return bool
      */
-    public function addCalculatedPriorityData($id, $item, $silent = false)
+    public function addCalculatedPriorityDataAndSave($id, $item, $silent = false)
     {
         $email_to_assigned_contact = false;
         $old_item = ['assigned_contact_id' => false];
@@ -500,7 +500,8 @@ class pocketlistsItemModel extends kmModelExt
         }
 
         $this->addPriorityData($item);
-        if ($this->updateById($id, $item)) {
+        $saved = $id ? $this->updateById($id, $item) : $this->insert($item);
+        if ($saved) {
             if (!$silent && $email_to_assigned_contact && // settings are set
                 $item['assigned_contact_id'] != wa()->getUser()->getId() && // do not email if I assign myself
                 $item['assigned_contact_id'] != $old_item['assigned_contact_id']
@@ -706,7 +707,10 @@ class pocketlistsItemModel extends kmModelExt
 
             $this->addPriorityData($item);
 
-            $age_time = time() - max(strtotime($item['update_datetime']), strtotime($item['create_datetime']));
+            $age_time = time() - max(
+                    !empty($item['update_datetime']) ? strtotime($item['update_datetime']) : 0,
+                    strtotime($item['create_datetime'])
+                );
             $item['age_time'] = $age_time < 1 ? '' : pocketlistsHelper::getDatetimeBySeconds($age_time);
 
             if (!$edit) {
@@ -1069,8 +1073,8 @@ class pocketlistsItemModel extends kmModelExt
     {
         $lists = [];
         $contact_id = wa()->getUser()->getId();
-        pocketlistsRBAC::filterListAccess($lists, $contact_id);
-        $list_sql = pocketlistsRBAC::filterListAccess($lists);
+//        pocketlistsRBAC::filterListAccess($lists, $contact_id);
+        $list_sql = 1;//pocketlistsRBAC::filterListAccess($lists);
 
         $appSql = '';
         if ($app !== false) {

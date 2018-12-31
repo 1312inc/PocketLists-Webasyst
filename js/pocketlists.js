@@ -136,9 +136,6 @@
 
         sortLists: function () {
             var self = this;
-            if (!self.options.isAdmin) {
-                return;
-            }
 
             var $team_wrapper = self.$core_sidebar.find('[data-pl-sidebar-block="team"]'),
                 $pocket_wrapper = self.$core_sidebar.find('[data-pl2-sidebar-wrapper="pockets"] ul:first');
@@ -210,6 +207,58 @@
                     }
                 }, 500);
 
+            });
+
+            if (!self.options.isAdmin) {
+                return;
+            }
+
+            $pocket_wrapper.sortable({
+                item: '[data-pl-pocket-id]',
+                distance: 5,
+                placeholder: 'pl-list-placeholder',
+                opacity: 0.75,
+                appendTo: 'body',
+                tolerance: 'pointer',
+                classes: {
+                    'ui-sortable-helper': 'shadowed'
+                },
+                start: function (e, ui) {
+                    ui.placeholder.height(ui.helper.outerHeight());
+                },
+                stop: function (event, ui) {
+                    var getPockets = function () {
+                        var data = [];
+                        $pocket_wrapper.find('[data-pl-pocket-id]').each(function (i) {
+                            var $this = $(this);
+                            // color = $this.attr('class').match(/pl-(.*)/);
+                            data.push({
+                                id: $this.data('pl-pocket-id'),
+                                sort: i
+                                // color: color[1]
+                            });
+                        });
+                        return data;
+                    };
+
+                    var updateSort = function () {
+                        $.post(
+                            '?module=pocket&action=sort',
+                            {
+                                data: getPockets()
+                            },
+                            function (r) {
+                                if (r.status === 'ok') {
+                                } else {
+                                    alert(r.errors);
+                                }
+                            },
+                            'json'
+                        );
+                    };
+
+                    updateSort();
+                }
             });
         },
         enabled_prevent_close_browser: false,
@@ -368,6 +417,14 @@
             });
 
             onResize();
+        },
+        scrollToEl: function(el) {
+            //debugger;
+            el.scrollIntoView({
+                behavior: "smooth",
+                block: "end",
+                inline: "nearest"
+            });
         }
     };
 }(jQuery));

@@ -1347,3 +1347,31 @@ msgstr "%d мес"
 #: /wa-apps/pocketlists/lib/class/pocketlistsHelper.class.php:340
 msgid "%d y"
 msgstr "%d г"
+
+#: /wa-apps/pocketlists/templates/include/itemadd.html:24
+msgid "Details"
+msgstr "Параметры"
+
+#: /wa-apps/pocketlists/templates/actions/pocket/Pocket.html:32
+msgid "You don’t have access to any list in the pocket. Please contact your admin to request access setup."
+msgstr "У вас нет доступа к спискам этого проекта. Попросите своего администратора открыть доступ."
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:75
+msgid "Updated"
+msgstr "Обновлено"
+
+#: /wa-apps/pocketlists/lib/actions/list/pocketlistsListMoveTo.controller.php:19
+msgid "No pocket/id and list/id params specified"
+msgstr "Не указаны ID проекта и списка"
+
+#: /wa-apps/pocketlists/lib/actions/list/pocketlistsListMoveTo.controller.php:30
+msgid "Pocket and list not found"
+msgstr "Проект и список не найдены"
+
+#: /wa-apps/pocketlists/lib/actions/list/pocketlistsListMoveTo.controller.php:49
+msgid "List move error"
+msgstr "Не получилось переместить список"
+
+#: /wa-apps/pocketlists/lib/config/pocketlistsRightConfig.class.php:81
+msgid "To setup access rights by pocket, set Limited access for at least one pocket"
+msgstr "Для настройки доступа к спискам дел включите доступ хотя бы к одному проекту"

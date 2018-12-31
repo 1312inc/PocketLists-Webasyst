@@ -24,6 +24,10 @@ class pocketlistsShopBackend_orderHandler extends waEventHandler
             return $return;
         }
 
+        if (!$app->userCanAccess()) {
+            return $return;
+        }
+
         $itemLinkModel = pocketlistsItemLinkModel::model()->findByFields(
             [
                 'app'         => 'shop',

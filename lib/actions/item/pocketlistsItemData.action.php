@@ -14,8 +14,11 @@ class pocketlistsItemDataAction extends waViewAction
         if (waRequest::getMethod() == 'post') {
             $item_new_data = waRequest::post('item', [], waRequest::TYPE_ARRAY);
             $im = new pocketlistsItemModel();
-            $item_from_db = $im->getById($item_new_data['id']);
-            if ($item_new_data && $item_from_db) {
+            $item_from_db = isset($item_new_data['id'])
+                ? $im->getById($item_new_data['id'])
+                : new pocketlistsItemModel($item_new_data);
+
+            if ($item_new_data) {
                 $item_new_data['id'] = $item_from_db['id'];
                 $item_new_data['list_id'] = $item_new_data['list_id'] === ''
                     ? null
@@ -42,7 +45,7 @@ class pocketlistsItemDataAction extends waViewAction
                     ? (int)$item_new_data['assigned_contact_id']
                     : null;
                 $item_new_data['update_datetime'] = date("Y-m-d H:i:s");
-                $im->addCalculatedPriorityData($item_new_data['id'], $item_new_data);
+                $im->addCalculatedPriorityDataAndSave($item_new_data['id'], $item_new_data);
 
                 if ($item_new_data['assigned_contact_id']) {
                     $this->logAction(

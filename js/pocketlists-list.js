@@ -120,7 +120,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
             };
 
             $wrapper.find('#pl-list-due-datetime').datepicker(datepicker_options);
-            icon_path = $('#pl-list-icon-dialog').find('ul').data('pl-icons-path');
+            icon_path = $('#pl-list-icon-dialog').find('[data-pl-icons-path]').data('pl-icons-path');
             list_color = getListColor(); // color before save
         };
 
