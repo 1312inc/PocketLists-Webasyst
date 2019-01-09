@@ -1,6 +1,6 @@
 <?php
 return array(
-    'name'           => _w('Pocket Lists'),
+    'name'           => /*_w*/('Pocket Lists'),
     'icon'           =>
         array(
             24 => 'img/pl2webasyst24.png',
