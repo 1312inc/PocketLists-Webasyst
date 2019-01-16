@@ -47,7 +47,8 @@ class pocketlistsItemDataAction extends waViewAction
                 $item_new_data['update_datetime'] = date("Y-m-d H:i:s");
                 $im->addCalculatedPriorityDataAndSave($item_new_data['id'], $item_new_data);
 
-                if ($item_new_data['assigned_contact_id']) {
+                if ($item_new_data['assigned_contact_id']
+                    && $item_new_data['assigned_contact_id'] != $item_from_db['assigned_contact_id']) {
                     $this->logAction(
                         pocketlistsLogAction::ITEM_ASSIGN,
                         [

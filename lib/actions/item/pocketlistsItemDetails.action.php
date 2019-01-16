@@ -13,7 +13,6 @@ class pocketlistsItemDetailsAction extends waViewAction
     {
         $id = waRequest::post('id', false, waRequest::TYPE_INT);
         $listId = waRequest::post('list_id', false, waRequest::TYPE_INT);
-        $assignUserId = waRequest::post('assign_user_id', 0, waRequest::TYPE_INT);
 
         $lm = new pocketlistsListModel();
         $im = new pocketlistsItemModel();
@@ -73,7 +72,10 @@ class pocketlistsItemDetailsAction extends waViewAction
 
         $this->view->assign('lists', $lm->getLists());
 
-        $this->view->assign('assign_user_id', $assignUserId);
+        $this->view->assign(
+            'assign_user_id',
+            waRequest::post('assign_user_id', 0, waRequest::TYPE_INT) ?: $item->assigned_contact_id
+        );
         $this->view->assign('contacts', $contacts);
         $this->view->assign('plurl', wa()->getAppUrl(pocketlistsHelper::APP_ID));
     }
