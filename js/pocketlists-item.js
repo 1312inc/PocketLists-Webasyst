@@ -1600,6 +1600,10 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         var afterLoad = function () {
             $.pocketlists.flexHack();
             $.pocketlists.scrollToEl($wrapper.find('.pl-chat-contents [data-pl-comment-id]:last')[0]);
+
+            setTimeout(function () {
+                $wrapper.find('.pl-chat .pl-reply textarea').trigger('focus');
+            }, 1);
         };
 
         var init = function () {
