@@ -1633,6 +1633,10 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                         // hideChatCommentInput();
                         // deselectItem();
                     }
+
+                    window.setTimeout(function () {
+                        $.pocketlists.resizeTextarea($this)
+                    }, 0);
                 })
                 .on('blur', '.pl-chat .pl-reply textarea', function (e) {
                     var $this = $(this),
