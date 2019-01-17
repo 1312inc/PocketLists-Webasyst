@@ -1160,30 +1160,42 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         };
 
         var afterLoad = function () {
-            var datepicker_options = {
-                changeMonth: true,
-                changeYear: true,
-                shortYearCutoff: 2,
-                dateShowWeek: false,
-                showOtherMonths: true,
-                selectOtherMonths: true,
-                stepMonths: 1,
-                numberOfMonths: 1,
-                gotoCurrent: true,
-                constrainInput: false,
-                dateFormat: "yy-mm-dd",
-                onClose: function () {
-                    if ($wrapper.find('#pl-item-due-datetime').val()) {
-                        if (!$wrapper.find('#pl-item-due-datetime-clear').is(':visible')) {
-                            $wrapper.find('#pl-item-due-datetime-set').show();
+            var initDatepicker = function () {
+                var datepicker_options = {
+                    changeMonth: true,
+                    changeYear: true,
+                    shortYearCutoff: 2,
+                    dateShowWeek: false,
+                    showOtherMonths: true,
+                    selectOtherMonths: true,
+                    stepMonths: 1,
+                    numberOfMonths: 1,
+                    gotoCurrent: true,
+                    constrainInput: false,
+                    dateFormat: "yy-mm-dd",
+                    onClose: function () {
+                        if ($wrapper.find('#pl-item-due-datetime').val()) {
+                            if (!$wrapper.find('#pl-item-due-datetime-clear').is(':visible')) {
+                                $wrapper.find('#pl-item-due-datetime-set').show();
+                            }
+                        } else {
+                            $wrapper.find('#pl-item-due-datetime-set, #pl-item-due-datetime-hours, #pl-item-due-datetime-minutes, #pl-item-due-datetime-clear').hide()
                         }
-                    } else {
-                        $wrapper.find('#pl-item-due-datetime-set, #pl-item-due-datetime-hours, #pl-item-due-datetime-minutes, #pl-item-due-datetime-clear').hide()
+                    },
+                    beforeShow: function() {
+                        var $this = $(this),
+                            dp = $this.datepicker('widget');
+
+                        setTimeout(function () {
+                            dp.css('z-index', 100);
+                        }, 0);
                     }
-                }
+                };
+
+                $wrapper.find('#pl-item-due-datetime').datepicker(datepicker_options);
             };
 
-            $wrapper.find('#pl-item-due-datetime').datepicker(datepicker_options);
+            initDatepicker();
 
             var initFileUpload = function () {
                 $wrapper.find('[data-pl-item-details-fileupload]').fileupload({
