@@ -8,6 +8,7 @@
             isAdmin: false
         },
         options: {},
+        reloadSidebarInAction: false,
         updateAppCounter: function (count) {
             var self = this;
 
@@ -126,16 +127,21 @@
         reloadSidebar: function () {
             var self = this;
 
+            self.reloadSidebarInAction = true;
+
             $.get("?module=backend&action=sidebar", function (result) {
                 $('#pl-sidebar-core').html(result);
                 self.initCollapse();
                 self.highlightSidebar();
                 self.sortLists();
+
+                self.reloadSidebarInAction = false;
             });
         },
 
         sortLists: function () {
-            var self = this;
+            var self = this,
+                dropInAction = false;
 
             var $team_wrapper = self.$core_sidebar.find('[data-pl-sidebar-block="team"]'),
                 $pocket_wrapper = self.$core_sidebar.find('[data-pl2-sidebar-wrapper="pockets"] ul:first');
@@ -149,9 +155,13 @@
                     'ui-droppable': 'pl-droppable'
                 },
                 over: function (event, ui) {
+                    dropInAction = true;
+
                     $(this).addClass('highlighted-background');
                 },
                 out: function (event, ui) {
+                    dropInAction = false;
+
                     $(this).removeClass('highlighted-background');
                 },
                 drop: function (event, ui) {
@@ -159,9 +169,12 @@
                         $list = $(event.target),
                         team_id = $list.data('pl-team-id');
 
+                    dropInAction = false;
+
                     $item.trigger('assignTo.pl2', {id: team_id, drop: this});
-                    $(this).removeClass('highlighted-background');
+                    // $(this).removeClass('highlighted-background');
                     $item.addClass('pl-dropped');
+                    $item.hide();
                 }
             });
 
@@ -174,9 +187,11 @@
                     'ui-droppable': 'pl-droppable'
                 },
                 over: function (event, ui) {
+                    dropInAction = true;
                     $(this).addClass('highlighted-background');
                 },
                 out: function (event, ui) {
+                    dropInAction = false;
                     $(this).removeClass('highlighted-background');
                 },
                 drop: function (event, ui) {
@@ -184,29 +199,35 @@
                         $pocket = $(event.target),
                         pocket_id = $pocket.data('pl-pocket-id');
 
+                    dropInAction = false;
+
                     $list.trigger('moveTo.pl2', {id: pocket_id, drop: this});
-                    $(this).removeClass('highlighted-background');
+                    // $(this).removeClass('highlighted-background');
                     $list.addClass('pl-dropped');
+                    $list.hide();
                 }
             });
 
             self.$core_sidebar.on('dropActionDone.pl2', '[data-pl-team-id], [data-pl-pocket-id]', function (e, data) {
                 var $this = $(this);
+
+                $this.removeClass('highlighted-background');
+
                 if (data.result) {
                     $this.addClass('pl-drop-success');
                 } else {
                     $this.addClass('pl-drop-fail');
+                    data.$obj.show();
                 }
+
                 setTimeout(function () {
                     $this.removeClass('pl-drop-success pl-drop-fail');
-                    // hell
-                    if (data.result) {
-                        setTimeout(function () {
-                            $.pocketlists.reloadSidebar();
-                        }, 1000);
-                    }
-                }, 500);
+                }, 1000);
 
+                // hell
+                if (!dropInAction && data.result && !self.reloadSidebarInAction) {
+                    $.pocketlists.reloadSidebar();
+                }
             });
 
             if (!self.options.isAdmin) {

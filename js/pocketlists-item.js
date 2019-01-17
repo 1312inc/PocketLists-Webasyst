@@ -655,7 +655,10 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     }
                     $this.find('.pl-item').data('pl-assigned-contact', team_id);
                 }
-                $(drop).trigger('dropActionDone.pl2', {result: r.status === 'ok'});
+                $(drop).trigger('dropActionDone.pl2', {
+                    $obj: $this,
+                    result: r.status === 'ok'
+                });
                 request_in_action = false;
             },
             'json'
