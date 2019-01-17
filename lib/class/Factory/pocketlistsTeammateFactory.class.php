@@ -53,7 +53,7 @@ class pocketlistsTeammateFactory extends pocketlistsFactory
                 continue;
             }
 
-            if ($mate->get('is_user') == -1) {
+            if ($mate->exists() && $mate->get('is_user') == -1) {
                 continue;
             }
 
