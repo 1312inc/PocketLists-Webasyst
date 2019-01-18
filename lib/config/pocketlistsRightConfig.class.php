@@ -11,6 +11,14 @@ class pocketlistsRightConfig extends waRightConfig
     private $user;
 
     /**
+     * @var array
+     */
+    private static $rightsCache = [
+        'lists'   => [],
+        'pockets' => [],
+    ];
+
+    /**
      * pocketlistsRightConfig constructor.
      */
     public function __construct()
@@ -22,7 +30,7 @@ class pocketlistsRightConfig extends waRightConfig
         }
 
         if ($user_id) {
-            $this->user = new waContact(waRequest::post('user_id'));
+            $this->user = new waContact($user_id);
         } else {
             $this->user = new waContact();
         }
@@ -136,5 +144,53 @@ class pocketlistsRightConfig extends waRightConfig
             pocketlistsRBAC::CAN_ASSIGN          => 1,
             pocketlistsRBAC::CAN_USE_SHOP_SCRIPT => 1,
         ];
+    }
+
+    /**
+     * @param int    $contact_id
+     * @param string $right
+     * @param null   $value
+     *
+     * @return bool
+     *
+     * @throws waDbException
+     */
+    public function setRights($contact_id, $right, $value = null)
+    {
+        $right_model = new waContactRightsModel();
+
+        if (strpos($right, pocketlistsRBAC::POCKET_ITEM.'.') === 0) {
+            $pocketId = (int)str_replace(pocketlistsRBAC::POCKET_ITEM.'.', '', $right);
+            if ($value == pocketlistsRBAC::RIGHT_NONE) {
+                $lists = pocketlistsListModel::model()->getLists(false, $pocketId);
+                /** @var pocketlistsListModel $list */
+                foreach ($lists as $list) {
+                    if ($right_model->save(
+                        $contact_id,
+                        pocketlistsHelper::APP_ID,
+                        pocketlistsRBAC::LIST_ITEM.'.'.$list->pk,
+                        $value
+                    )) {
+                        self::$rightsCache['lists'][$list->pk] = true;
+                    }
+                }
+            }
+        }
+
+        if (strpos($right, pocketlistsRBAC::LIST_ITEM.'.') === 0) {
+            $listId = (int)str_replace(pocketlistsRBAC::LIST_ITEM.'.', '', $right);
+            if (isset(self::$rightsCache['lists'][$listId])) {
+                return true;
+            }
+        }
+
+        $right_model->save(
+            $contact_id,
+            pocketlistsHelper::APP_ID,
+            $right,
+            $value
+        );
+
+        return true;
     }
 }
