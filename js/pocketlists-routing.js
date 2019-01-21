@@ -150,6 +150,7 @@
         },
         preExecute: function () {
             $(window).off('scroll.pl2');
+            $.pocketlists.highlightSidebar();
         },
         postExecute: function () {
             $.pocketlists.reloadSidebar();
