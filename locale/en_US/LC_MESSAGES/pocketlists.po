@@ -1377,3 +1377,19 @@ msgstr ""
 #: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:13
 msgid "Use @ or # symbols to link this to-do with a Shop-Script order."
 msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:108
+msgid "Webasyst Cloud"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:108
+msgid "launch the <a href=\"%s\">Cloud app</a>"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:108
+msgid "Add Cron job"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:111
+msgid "Own server"
+msgstr ""
