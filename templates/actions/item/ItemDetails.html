@@ -11,6 +11,13 @@
 
         <textarea class="pl-details-textarea pl-item-name" name="item[name]" placeholder="[`Title`]" {if $item.status == 1} disabled="disabled"{/if}>{$item.name|escape}</textarea>
 
+        <div data-pl2-item-links>
+            {foreach $item->getLinkedEntities() as $linkedEntity}
+                <div data-pl2-link-preview>
+                    {$linkedEntity->renderPreview()}
+                </div>
+            {/foreach}
+        </div>
 
         <textarea class="pl-details-textarea" name="item[note]" placeholder="[`Add note`]"{if $item.status == 1} disabled="disabled"{/if}>{$item.note|escape}</textarea>
 

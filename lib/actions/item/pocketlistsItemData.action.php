@@ -58,6 +58,31 @@ class pocketlistsItemDataAction extends waViewAction
                     );
                 }
 
+                if (!empty($item_new_data['links'])) {
+                    foreach ($item_new_data['links'] as $link) {
+                        /** @var pocketlistsItemLinkInterface $app */
+                        $app = wa(pocketlistsHelper::APP_ID)->getConfig()->getLinkedApp($link['model']['app']);
+
+                        if (!$app->userCanAccess()) {
+                            continue;
+                        }
+
+                        foreach ($link['model'] as $key => $value) {
+                            if ($value === '') {
+                                $link['model'][$key] = null;
+                            }
+                        }
+
+                        $itemLink = new pocketlistsItemLinkModel($link['model']);
+                        $itemLink->item_id = $item_from_db->pk;
+                        try {
+                            $itemLink->save();
+                        } catch (waException $ex) {
+                            // silence
+                        }
+                    }
+                }
+
                 $this->view->assign(
                     'pl2_attachments_path',
                     wa()->getDataUrl('attachments/', true, pocketlistsHelper::APP_ID)

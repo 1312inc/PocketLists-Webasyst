@@ -699,8 +699,28 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         }
 
         var itemText = $textarea.val(),
-            $parent = $textarea.closest('[data-pl-item-add]') || $textarea.closest(item_selector),
-            $previewWrapper = $parent.find('[data-pl2-item-links]');
+            $parent = findParent(),
+            $previewWrapper = $parent.find('[data-pl2-item-links]'),
+            linkedEntities = $textarea.data('pl2-linked-entities');
+
+        if (!$parent) {
+            log('no parent for linker preview');
+        }
+
+        function findParent() {
+            var $parents = [$textarea.closest('#pl-item-details-form'), $textarea.closest('[data-pl-item-add]'), $textarea.closest(item_selector)],
+                $parent = null;
+
+            for (var i = 0; i < $parents.length; i++) {
+                if ($parents[i].length) {
+                    $parent = $parents[i];
+
+                    break;
+                }
+            }
+
+            return $parent;
+        }
 
         $textarea.data('pl2-itemlinker', true);
 
@@ -845,8 +865,19 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
             $linkPreview.html(link.preview);
 
-            $previewWrapper.append($linkPreview);
+            $previewWrapper.append($linkPreview).show();
         };
+
+        function renderEntities() {
+            if (linkedEntities) {
+                for(var linkedEntity in linkedEntities) {
+                    showLinkedPreview(linkedEntities[linkedEntity]);
+                }
+            }
+        }
+        renderEntities();
+
+        $textarea.on('renderEntities.pl2', renderEntities);
     };
 
     /**
@@ -1067,6 +1098,11 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                         .find('[data-pl2-item-textarea]').val($wrapper.find('[name="item[name]"]').val())
                         .end()
                         .find('[data-pl2-item-links]').show();
+
+                    $currentItem.find('[data-pl2-item-textarea]')
+                        .removeData('pl2-linked-entities')
+                        .data('pl2-linked-entities', $wrapper.find('[name="item[name]"]').data('pl2-linked-entities'))
+                        .trigger('renderEntities.pl2');
                 }
 
                 // $wrapper.slideToggle(0, function () {
@@ -1268,6 +1304,10 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             $name.val('').val(nameValue);
 
             $wrapper.find('#pl-assigned-contact select').trigger('change');
+
+            $name.data('pl2-linked-entities', $currentItem.find('[data-pl2-item-textarea]').data('pl2-linked-entities'));
+
+            ItemLinker($name);
         };
 
         var init = function () {
@@ -1281,10 +1321,22 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 .on('hide.pl2', hideItemDetails)
                 .on('submit', 'form', function () {
                     //e.preventDefault();
-                    var $form = $(this);
+                    var $form = $(this),
+                        $name = $form.find('[name="item[name]"]'),
+                        links = $name.data('pl2-linked-entities');
 
-                    $form.find('#pl-item-details-save').after($.pocketlists.$loading);
+                        $form.find('#pl-item-details-save').after($.pocketlists.$loading);
                     if (itemId) {
+                        if (links) {
+                            var link_i = 0;
+                            for (var linked in links) {
+                                for (var key in links[linked]['model']) {
+                                    $form.append($('<input name="item[links]['+link_i+'][model]['+key+']" type="hidden">').val(links[linked]['model'][key]));
+                                }
+                                link_i++;
+                            }
+                        }
+
                         updateItem($form);
                     } else {
                         var formValues = JSON.parse(JSON.stringify($form.serializeArray())),
@@ -1293,6 +1345,10 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                         $.each(formValues, function () {
                             data[this.name.replace('item[','').replace(']','')] = this.value;
                         });
+
+                        if (links) {
+                            data['links'] = links;
+                        }
 
                         addItem.call($currentItem.find('[data-pl2-item-textarea]').get(0), [data], function () {
                             $form.trigger('reset');
