@@ -10,8 +10,9 @@
 
 
         <textarea class="pl-details-textarea pl-item-name" name="item[name]" placeholder="[`Title`]" {if $item.status == 1} disabled="disabled"{/if}>{$item.name|escape}</textarea>
+        <p class="hint">[`Use @ or # symbols to link this to-do with a Shop-Script order.`]</p>
 
-        <div data-pl2-item-links>
+        <div data-pl2-item-links class="pl-details-linked-entities">
             {foreach $item->getLinkedEntities() as $linkedEntity}
                 <div data-pl2-link-preview>
                     {$linkedEntity->renderPreview()}

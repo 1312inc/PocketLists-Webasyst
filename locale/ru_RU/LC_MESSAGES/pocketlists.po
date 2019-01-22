@@ -1375,3 +1375,7 @@ msgstr "Не получилось переместить список"
 #: /wa-apps/pocketlists/lib/config/pocketlistsRightConfig.class.php:81
 msgid "To setup access rights by pocket, set Limited access for at least one pocket"
 msgstr "Для настройки доступа к спискам дел включите доступ хотя бы к одному проекту"
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:13
+msgid "Use @ or # symbols to link this to-do with a Shop-Script order."
+msgstr "Используйте символы @, # или № для связи задачи с заказами Shop-Script."
