@@ -694,9 +694,9 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             return;
         }
 
-        if ($textarea.data('pl2-itemlinker')) {
-            return;
-        }
+        // if ($textarea.data('pl2-itemlinker')) {
+        //     return;
+        // }
 
         var itemText = $textarea.val(),
             $parent = findParent(),
@@ -722,7 +722,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             return $parent;
         }
 
-        $textarea.data('pl2-itemlinker', true);
+        // $textarea.data('pl2-itemlinker', true);
 
         var log = function (msg) {
             window.console && console.log('pl2 autocomplete', msg);
@@ -766,6 +766,10 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             return term;
         };
 
+        if ($textarea.data('autocomplete')) {
+            $textarea.autocomplete('destroy');
+            $textarea.removeData('autocomplete')
+        }
         $textarea.autocomplete({
             // html:true,
             // autoFocus: true,
@@ -853,10 +857,10 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         }
 
         $textarea
-            .on("autocompleteopen", function (event, ui) {
+            .off('autocompleteopen').on("autocompleteopen", function (event, ui) {
                 $textarea.data('pl2-autocomplete-isopen', true);
             })
-            .on("autocompleteclose", function (event, ui) {
+            .off('autocompleteclose').on("autocompleteclose", function (event, ui) {
                 $textarea.data('pl2-autocomplete-isopen', false);
             });
 
@@ -870,14 +874,15 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
         function renderEntities() {
             if (linkedEntities) {
+                $previewWrapper.empty();
+
                 for(var linkedEntity in linkedEntities) {
                     showLinkedPreview(linkedEntities[linkedEntity]);
                 }
             }
         }
         renderEntities();
-
-        $textarea.on('renderEntities.pl2', renderEntities);
+        // $textarea.on('renderEntities.pl2', renderEntities);
     };
 
     /**
@@ -1094,15 +1099,13 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             if ($currentItem) {
 
                 if (!itemId) {
-                    $currentItem
-                        .find('[data-pl2-item-textarea]').val($wrapper.find('[name="item[name]"]').val())
-                        .end()
-                        .find('[data-pl2-item-links]').show();
+                    var $addItemTextarea = $currentItem.find('[data-pl2-item-textarea]');
+                    $currentItem.find('[data-pl2-item-links]').show();
+                    $addItemTextarea.val($wrapper.find('[name="item[name]"]').val());
 
-                    $currentItem.find('[data-pl2-item-textarea]')
-                        .removeData('pl2-linked-entities')
-                        .data('pl2-linked-entities', $wrapper.find('[name="item[name]"]').data('pl2-linked-entities'))
-                        .trigger('renderEntities.pl2');
+                    $addItemTextarea.data('pl2-linked-entities', $wrapper.find('[name="item[name]"]').data('pl2-linked-entities'));
+                    // $addItemTextarea.trigger('renderEntities.pl2');
+                    ItemLinker($addItemTextarea);
                 }
 
                 // $wrapper.slideToggle(0, function () {
@@ -1337,6 +1340,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                             }
                         }
 
+                        $name.removeData('pl2-linked-entities');
+
                         updateItem($form);
                     } else {
                         var formValues = JSON.parse(JSON.stringify($form.serializeArray())),
@@ -1352,6 +1357,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
                         addItem.call($currentItem.find('[data-pl2-item-textarea]').get(0), [data], function () {
                             $form.trigger('reset');
+                            $currentItem.find('[data-pl2-item-textarea]').removeData('pl2-linked-entities');
+                            $name.removeData('pl2-linked-entities');
                             hideItemDetails();
                         });
 
