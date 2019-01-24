@@ -422,7 +422,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#12000000', e
 .pl-details-form .selected .pl-done.pl-priority-red + span { width: 30px; height: 30px; }
 .pl-details-form .selected .pl-done.pl-priority-black + span { background-position-x: -90px; width: 30px; height: 30px; }
 .pl-details-form .selected .pl-done.pl-priority-fire + span { background-size: 40px 40px; top: -16px; width: 40px; height: 40px; }
-.pl-details-textarea { margin-bottom: 0.25rem; background: rgba(0,0,0,0.04); border-radius: 4px; border: none; -webkit-appearance: none; width: 100%; min-height: 1.3em; line-height: 1.3em; padding: 5px; outline: 0 none; max-height: 195px; }
+.pl-details-textarea { margin-bottom: 0rem; background: rgba(0,0,0,0.04); border-radius: 4px; border: none; -webkit-appearance: none; width: 100%; min-height: 1.3em; line-height: 1.3em; padding: 5px; outline: 0 none; max-height: 195px; }
 .pl-details-textarea.pl-item-name { max-height: 170px; }
 
 #pl-item-add .pl-details-form { margin-top: -12px; padding-left: 49px; background: #f2f2f2; position: relative; border-bottom: 1px solid rgba(0,0,0,0.1); }
@@ -432,7 +432,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#12000000', e
 #pl-item-add .pl-details-form .clear-both { float: none; clear: none; }
 #pl-item-add .pl-details-form p.hint { margin-bottom: 1.5rem; }
 #pl-item-add .pl-details-form #pl-item-priority { margin-bottom: 24px; }
-#pl-item-add .pl-details-form .pl-details-textarea { margin-bottom: 0.25rem; font-weight: normal; background: rgba(0,0,0,0.04); }
+#pl-item-add .pl-details-form .pl-details-textarea { margin-bottom: 0.1rem; font-weight: normal; background: rgba(0,0,0,0.04); }
 #pl-item-add .pl-details-form .pl-details-textarea.pl-item-name { font-weight: 500; }
 #pl-item-add .pl-details-form .pl-details-linked-entities .pl-link-preview { margin-left: 0px; }
 #pl-item-add .pl-details-form .pl-already-saved-items-only { display: none; }

@@ -1379,3 +1379,19 @@ msgstr "Для настройки доступа к спискам дел вкл
 #: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:13
 msgid "Use @ or # symbols to link this to-do with a Shop-Script order."
 msgstr "Используйте символы @, # или № для связи задачи с заказами Shop-Script."
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:108
+msgid "Webasyst Cloud"
+msgstr "В облаке Webasyst"
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:108
+msgid "launch the <a href=\"%s\">Cloud app</a>"
+msgstr "запустите приложение «<a href=\"%s\">Облако</a>»"
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:108
+msgid "Add Cron job"
+msgstr "Добавить задание cron"
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:111
+msgid "Own server"
+msgstr "На своем сервере"
