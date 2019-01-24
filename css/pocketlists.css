@@ -617,3 +617,11 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
     .pl-details.sticky { width: 400px; }
 
 }
+
+[data-pl-sidebar="todo"] .indicator {
+    position: absolute;
+    top: 5px;
+    background: #f00;
+    color: #fff;
+    right: 20px;
+}

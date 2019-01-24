@@ -25,6 +25,7 @@
 
     <ul class="menu-v with-icons">
         <li data-pl-sidebar="todo">
+            {if $sidebar_todo_count_icon}<span class="indicator">{$sidebar_todo_count_icon}</span>{/if}
             {if $sidebar_todo_count}<span class="count">{$sidebar_todo_count}</span>{/if}
             <a href="#/todo/"><i class="icon16 pl todo"></i>[`My to-dos`]</a>
         </li>

@@ -73,7 +73,7 @@ class pocketlistsRBAC
             }
 
             // соберем все остальные листы
-            $accessedLists = $user->getRights('pocketlists', self::LIST_ITEM.'.%');
+            $accessedLists = $user->getRights(pocketlistsHelper::APP_ID, self::LIST_ITEM.'.%');
             if ($accessedLists) {
                 foreach ($accessedLists as $accessedListId => $rightValue) {
                     self::addListUserRight($user_id, $accessedListId, true);

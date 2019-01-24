@@ -201,10 +201,68 @@ class pocketlistsItemModel extends kmModelExt
      */
     public function getToDo($contact_id = false, $date = false)
     {
+        $date = $date ?: false;
+
         if (!$contact_id) {
             $contact_id = wa()->getUser()->getId();
         }
 
+        $key = $this->getCacheKey($contact_id.$date);
+
+        return $this->getFromCache(
+            $key,
+            function () use ($key, $contact_id, $date) {
+                $cache = wa()->getCache();
+                $result = false;
+
+                if ($cache) {
+                    $result = $cache->get($key);
+                }
+
+                if (!$result) {
+                    $items = $this->fetchTodo($contact_id, $date);
+
+                    $items = self::generateModels($items);
+
+                    $result = [
+                        0 => [],
+                        1 => [],
+                    ];
+
+                    if ($items) {
+                        foreach ($items as $id => $item) {
+                            $result[$item['status']][$id] = $this->extendItemData($item);
+                        }
+
+                        $result = [
+                            0 => $this->getProperSort($result[0]),
+                            1 => $result[1],
+                        ];
+                    }
+
+                    if ($cache) {
+                        $cache->set($key, $result, self::TTL);
+                    }
+                }
+
+                return $result;
+            }
+        );
+
+//        return $this->getTree($items, true);
+    }
+
+    /**
+     * @param $contact_id
+     * @param $date
+     *
+     * @return array
+     *
+     * @throws waDbException
+     * @throws waException
+     */
+    protected function fetchTodo($contact_id, $date)
+    {
         // get to-do items only from accessed pockets
 //        $lists = pocketlistsHelper::getAccessListForContact($contact_id);
 
@@ -267,7 +325,13 @@ class pocketlistsItemModel extends kmModelExt
             case pocketlistsUserSettings::MY_TO_DOS_CREATED_BY_OTHER_IN_SHARED_LISTS_GREEN_YELLOW_RED_ALL_LISTS:
                 $tomorrow = date("Y-m-d", strtotime("+1 day"));
                 $day_after_tomorrow = date("Y-m-d", strtotime("+2 day"));
-                $or_sql[] = "(i.list_id IS NOT NULL AND i.key_list_id IS NULL AND i.contact_id <> i:contact_id AND (i.due_date <= '".$tomorrow."' OR i.due_datetime < '".$day_after_tomorrow."' OR i.priority IN (1, 2, 3))) /* To-dos created BY other users IN shared lists all Green, Yellow, and Red to-dos from all lists*/";
+                $or_sql[] = "(i.list_id IS NOT NULL AND i.key_list_id IS NULL AND i.contact_id <> i:contact_id AND (i.due_date <= '".$tomorrow."' OR i.due_datetime < '".$day_after_tomorrow."' OR i.priority IN (".implode(',', [
+                        pocketlistsItemModel::PRIORITY_GREEN,
+                        pocketlistsItemModel::PRIORITY_YELLOW,
+                        pocketlistsItemModel::PRIORITY_RED,
+                        pocketlistsItemModel::PRIORITY_BLACK,
+                        pocketlistsItemModel::PRIORITY_BURNINHELL,
+                    ])."))) /* To-dos created BY other users IN shared lists all Green, Yellow, and Red to-dos from all lists*/";
                 break;
         }
 
@@ -307,27 +371,7 @@ class pocketlistsItemModel extends kmModelExt
             ]
         )->fetchAll();
 
-        $items = self::generateModels($items);
-
-        $result = [
-            0 => [],
-            1 => [],
-        ];
-
-        if ($items) {
-            foreach ($items as $id => $item) {
-                $result[$item['status']][$id] = $this->extendItemData($item);
-            }
-
-            $result = [
-                0 => $this->getProperSort($result[0]),
-                1 => $result[1],
-            ];
-        }
-
-        return $result;
-
-//        return $this->getTree($items, true);
+        return $items;
     }
 
     /**
@@ -1243,69 +1287,59 @@ class pocketlistsItemModel extends kmModelExt
         $us = new pocketlistsUserSettings();
         $icon = $us->appIcon();
 
-        $lists = [];
-        // if user is admin - show all completed items
-        // else only items user has access and null list items
-        $list_sql = pocketlistsRBAC::filterListAccess($lists);
+        /** @var pocketlistsItemModel[] $items */
+        $items = $this->getToDo();
 
-        $now = @waDateTime::parse('Y-m-d H:i:s', waDateTime::date('Y-m-d H:i:s'));
-        $today = date("Y-m-d");
-        $tomorrow = date("Y-m-d", strtotime("+1 day"));
-        $day_after_tomorrow = date("Y-m-d", strtotime("+2 day"));
+        $count = 0;
+        foreach ($items[0] as $item) {
+            switch ($icon) {
+                case pocketlistsUserSettings::ICON_OVERDUE: // overdue
+                    if (in_array(
+                        $item->calc_priority,
+                        [
+                            self::PRIORITY_RED,
+                            self::PRIORITY_BLACK,
+                            self::PRIORITY_BURNINHELL,
+                        ]
+                    )) {
+                        $count++;
+                    }
 
-        switch ($icon) {
-            case pocketlistsUserSettings::ICON_OVERDUE: // overdue
-                $colors = "AND ((i.due_date <= '{$today}' AND i.due_datetime < '{$now}') OR i.due_date < '{$today}' OR i.priority = ".pocketlistsItemModel::PRIORITY_RED.")";
-                break;
-            case pocketlistsUserSettings::ICON_OVERDUE_TODAY: // overdue + today
-                $colors = "AND (i.due_date <= '".$today."' OR i.due_datetime < '".$tomorrow."' OR i.priority IN (".pocketlistsItemModel::PRIORITY_YELLOW.", ".pocketlistsItemModel::PRIORITY_RED."))";
-                break;
-            case pocketlistsUserSettings::ICON_OVERDUE_TODAY_AND_TOMORROW: // overdue + today + tomorrow
-                $colors = "AND (i.due_date <= '".$tomorrow."' OR i.due_datetime < '".$day_after_tomorrow."' OR i.priority IN (".pocketlistsItemModel::PRIORITY_GREEN.", ".pocketlistsItemModel::PRIORITY_YELLOW.", ".pocketlistsItemModel::PRIORITY_RED."))";
-                break;
-            default:
-                return '';
+                    break;
+
+                case pocketlistsUserSettings::ICON_OVERDUE_TODAY: // overdue + today
+                    if (in_array(
+                        $item->calc_priority,
+                        [
+                            self::PRIORITY_YELLOW,
+                            self::PRIORITY_RED,
+                            self::PRIORITY_BLACK,
+                            self::PRIORITY_BURNINHELL,
+                        ]
+                    )) {
+                        $count++;
+                    }
+                    break;
+
+                case pocketlistsUserSettings::ICON_OVERDUE_TODAY_AND_TOMORROW: // overdue + today + tomorrow
+                    if (in_array(
+                        $item->calc_priority,
+                        [
+                            self::PRIORITY_GREEN,
+                            self::PRIORITY_YELLOW,
+                            self::PRIORITY_RED,
+                            self::PRIORITY_BLACK,
+                            self::PRIORITY_BURNINHELL,
+                        ]
+                    )) {
+                        $count++;
+                    }
+                    break;
+
+            }
         }
 
-        $q = "
-          SELECT
-            i.id
-          FROM {$this->table} i
-          LEFT JOIN pocketlists_list l ON (l.id = i.list_id  OR l.id = i.key_list_id)
-          WHERE
-            (
-              (i.assigned_contact_id = i:contact_id) /* + items assigned to me */
-              OR i.priority > ".pocketlistsItemModel::PRIORITY_NORM." /* + items with priority */
-              OR
-              (
-                /*((i.due_date IS NOT NULL OR i.due_datetime IS NOT NULL) AND i.list_id IS NULL AND i.key_list_id IS NULL AND i.contact_id = 7)
-                OR
-                ((i.due_date IS NOT NULL OR i.due_datetime IS NOT NULL) AND (i.list_id IS NOT NULL OR i.key_list_id IS NOT NULL)) */
-                (i.due_date IS NOT NULL OR i.due_datetime IS NOT NULL) /* + items with due */
-                AND
-                IF(i.list_id IS NULL AND i.key_list_id IS NULL, i.contact_id = i:contact_id, i.contact_id > 0) /* + and if item is from NULL-list check contact_id */
-              )
-              OR (i.contact_id = i:contact_id AND i.list_id IS NULL AND i.key_list_id IS NULL) /* + my items from NULL-list */
-            )
-            AND (l.archived = 0 OR l.archived IS NULL) /* ONLY not completed items */
-            AND i.status = 0
-            AND (i.assigned_contact_id = i:contact_id OR i.assigned_contact_id IS NULL OR i.assigned_contact_id = 0) /* ONLY assigned to me or noone */
-            {$colors} /* selected option */
-            AND {$list_sql}";
-
-        if ($icon !== false && $icon != pocketlistsUserSettings::ICON_NONE) {
-            $count = $this->query(
-                $q,
-                [
-                    'contact_id' => wa()->getUser()->getId(),
-                    'list_ids'   => $lists,
-                ]
-            )->count();
-
-            return $count;
-        } else {
-            return null;
-        }
+        return $count ?: null;
     }
 
     /**
