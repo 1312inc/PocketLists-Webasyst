@@ -10,7 +10,15 @@
 
 
         <textarea class="pl-details-textarea pl-item-name" name="item[name]" placeholder="[`Title`]" {if $item.status == 1} disabled="disabled"{/if}>{$item.name|escape}</textarea>
+        <p class="hint">[`Use @ or # symbols to link this to-do with a Shop-Script order.`]</p>
 
+        <div data-pl2-item-links class="pl-details-linked-entities">
+            {foreach $item->getLinkedEntities() as $linkedEntity}
+                <div data-pl2-link-preview>
+                    {$linkedEntity->renderPreview()}
+                </div>
+            {/foreach}
+        </div>
 
         <textarea class="pl-details-textarea" name="item[note]" placeholder="[`Add note`]"{if $item.status == 1} disabled="disabled"{/if}>{$item.note|escape}</textarea>
 
@@ -111,7 +119,7 @@
             <div class="name">[`Due`]</div>
 
             <div class="value">
-                <input name="item[due_date]" class="pl-due-date-input" type="text" id="pl-item-due-datetime" value="{$item.due_date|default:''}" />
+                <input name="item[due_date]" class="pl-due-date-input" type="text" id="pl-item-due-datetime" value="{$item.due_date|default:''}" autocomplete="off"/>
                 <span id="pl-item-due-datetime-time">
                     {$hour = $item.due_datetime|default:''|wa_datetime:'H'}
                     <select name="item[due_datetime_hours]" class="pl-due-date-input" id="pl-item-due-datetime-hours" value="{$hour}" {if empty($item.due_datetime)}style="display: none;" disabled="disabled"{/if}>

@@ -149,12 +149,12 @@ $.pocketlists.Pocket = function ($pocket_wrapper, options) {
                 $item.addClass('pl-dropped');
             }
         });
-    }
+    };
 
     function init() {
         pocket_id = $pocket_wrapper.data('pl2-pocket-wrapper');
         _addHandlers();
-    };
+    }
 
     var _deletePocket = function (id) {
         id = id || pocket_id;
@@ -219,7 +219,10 @@ $.pocketlists.Pocket = function ($pocket_wrapper, options) {
                         // }
                         // $this.find('.pl-item').data('pl-assigned-contact', team_id);
                     }
-                    $(drop).trigger('dropActionDone.pl2', {result: r.status === 'ok'});
+                    $(drop).trigger('dropActionDone.pl2', {
+                        $obj: $this,
+                        result: r.status === 'ok'
+                    });
                     // request_in_action = false;
                 },
                 'json'

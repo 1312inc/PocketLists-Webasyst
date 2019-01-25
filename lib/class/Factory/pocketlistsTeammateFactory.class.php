@@ -42,9 +42,6 @@ class pocketlistsTeammateFactory extends pocketlistsFactory
             /** @var waContact $mate */
             $mate = new waContact($tid);
 
-            if ($mate->get('is_user') == -1) {
-                continue;
-            }
 //            if (!$mate) {
 //                continue;
 //            }
@@ -53,6 +50,10 @@ class pocketlistsTeammateFactory extends pocketlistsFactory
 //            $teammate->fillData(pocketlistsHelper::getContactData($mate));
 
             if ($exclude_deleted && !$mate->exists()) {
+                continue;
+            }
+
+            if ($mate->exists() && $mate->get('is_user') == -1) {
                 continue;
             }
 

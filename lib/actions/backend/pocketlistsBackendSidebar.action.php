@@ -13,6 +13,7 @@ class pocketlistsBackendSidebarAction extends pocketlistsViewAction
         $im = new pocketlistsItemModel();
         $todo = $im->getToDo();
         $this->view->assign('sidebar_todo_count', count($todo[0]));
+        $this->view->assign('sidebar_todo_count_icon', $im->getAppCountForUser());
 
         $list_model = new pocketlistsListModel();
         $this->view->assign('lists', $list_model->getLists());

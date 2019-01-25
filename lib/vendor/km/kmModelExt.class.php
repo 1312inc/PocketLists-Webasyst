@@ -7,6 +7,8 @@
  */
 class kmModelExt extends waModel implements ArrayAccess, JsonSerializable
 {
+    const TTL = 120;
+
     const INSERT_DELAYED = true;
 
     /**
@@ -94,7 +96,7 @@ class kmModelExt extends waModel implements ArrayAccess, JsonSerializable
         $class = isset($caller['class']) ? $caller['class'] : 'NO_CLASS';
         $function = isset($caller['function']) ? $caller['function'] : 'NO_FUNCTION';
 
-        return sprintf('%s.%s.%s', $class, $function, md5($key));
+        return sprintf('%s.%s.%s.%s', 'pocketlists', $class, $function, md5($key));
     }
 
     public function init()

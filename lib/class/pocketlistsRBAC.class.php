@@ -73,7 +73,7 @@ class pocketlistsRBAC
             }
 
             // соберем все остальные листы
-            $accessedLists = $user->getRights('pocketlists', self::LIST_ITEM.'.%');
+            $accessedLists = $user->getRights(pocketlistsHelper::APP_ID, self::LIST_ITEM.'.%');
             if ($accessedLists) {
                 foreach ($accessedLists as $accessedListId => $rightValue) {
                     self::addListUserRight($user_id, $accessedListId, true);
@@ -138,16 +138,14 @@ class pocketlistsRBAC
     {
         $wcr = new waContactRightsModel();
         $query = sprintf(
-            "SELECT DISTINCT group_id
-            FROM wa_contact_rights
-            WHERE %s OR %s OR %s",
+            "SELECT DISTINCT group_id FROM wa_contact_rights WHERE %s OR %s OR %s %s",
             self::haveFullAdminSQL(),
             self::haveFullAccessSQL(),
-            $list ? self::haveAccessToListSQL($list) : self::haveAccessSQL()
+            $list ? self::haveAccessToListSQL($list) : self::haveAccessSQL(),
+            $list && $list->pocket_id ? ' OR '.self::havePocketFullAccessSQL($list->pocket_id) : ''
         );
 
         $contact_ids = $wcr->query($query)->fetchAll();
-
         $contact_ids = array_unique(self::getContactIds($contact_ids));
 
         return $contact_ids;
@@ -358,6 +356,20 @@ class pocketlistsRBAC
     /**
      * @return string
      */
+    private static function havePocketFullAccessSQL($pocket_id)
+    {
+        return sprintf(
+            " (app_id = '%s' AND name = '%s.%s' AND value = %s)",
+            pocketlistsHelper::APP_ID,
+            self::POCKET_ITEM,
+            $pocket_id,
+            self::RIGHT_ADMIN
+        );
+    }
+
+    /**
+     * @return string
+     */
     private static function haveAccessSQL()
     {
         return sprintf(
@@ -375,9 +387,10 @@ class pocketlistsRBAC
     private static function haveAccessToListSQL(pocketlistsListModel $list = null)
     {
         return sprintf(
-            " (app_id = '%s' AND name = '%s' AND value = %s)",
+            " (app_id = '%s' AND name = '%s.%s' AND value = %s)",
             pocketlistsHelper::APP_ID,
-            $list instanceOf pocketlistsListModel ? $list->pk : '.%',
+            self::LIST_ITEM,
+            $list instanceOf pocketlistsListModel ? $list->pk : '%',
             self::RIGHT_ACCESS
         );
     }

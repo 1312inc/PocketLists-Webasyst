@@ -655,7 +655,10 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     }
                     $this.find('.pl-item').data('pl-assigned-contact', team_id);
                 }
-                $(drop).trigger('dropActionDone.pl2', {result: r.status === 'ok'});
+                $(drop).trigger('dropActionDone.pl2', {
+                    $obj: $this,
+                    result: r.status === 'ok'
+                });
                 request_in_action = false;
             },
             'json'
@@ -691,15 +694,35 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             return;
         }
 
-        if ($textarea.data('pl2-itemlinker')) {
-            return;
-        }
+        // if ($textarea.data('pl2-itemlinker')) {
+        //     return;
+        // }
 
         var itemText = $textarea.val(),
-            $parent = $textarea.closest('[data-pl-item-add]') || $textarea.closest(item_selector),
-            $previewWrapper = $parent.find('[data-pl2-item-links]');
+            $parent = findParent(),
+            $previewWrapper = $parent.find('[data-pl2-item-links]'),
+            linkedEntities = $textarea.data('pl2-linked-entities');
 
-        $textarea.data('pl2-itemlinker', true);
+        if (!$parent) {
+            log('no parent for linker preview');
+        }
+
+        function findParent() {
+            var $parents = [$textarea.closest('#pl-item-details-form'), $textarea.closest('[data-pl-item-add]'), $textarea.closest(item_selector)],
+                $parent = null;
+
+            for (var i = 0; i < $parents.length; i++) {
+                if ($parents[i].length) {
+                    $parent = $parents[i];
+
+                    break;
+                }
+            }
+
+            return $parent;
+        }
+
+        // $textarea.data('pl2-itemlinker', true);
 
         var log = function (msg) {
             window.console && console.log('pl2 autocomplete', msg);
@@ -743,6 +766,10 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             return term;
         };
 
+        if ($textarea.data('autocomplete')) {
+            $textarea.autocomplete('destroy');
+            $textarea.removeData('autocomplete')
+        }
         $textarea.autocomplete({
             // html:true,
             // autoFocus: true,
@@ -830,10 +857,10 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         }
 
         $textarea
-            .on("autocompleteopen", function (event, ui) {
+            .off('autocompleteopen').on("autocompleteopen", function (event, ui) {
                 $textarea.data('pl2-autocomplete-isopen', true);
             })
-            .on("autocompleteclose", function (event, ui) {
+            .off('autocompleteclose').on("autocompleteclose", function (event, ui) {
                 $textarea.data('pl2-autocomplete-isopen', false);
             });
 
@@ -842,8 +869,20 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
             $linkPreview.html(link.preview);
 
-            $previewWrapper.append($linkPreview);
+            $previewWrapper.append($linkPreview).show();
         };
+
+        function renderEntities() {
+            if (linkedEntities) {
+                $previewWrapper.empty();
+
+                for(var linkedEntity in linkedEntities) {
+                    showLinkedPreview(linkedEntities[linkedEntity]);
+                }
+            }
+        }
+        renderEntities();
+        // $textarea.on('renderEntities.pl2', renderEntities);
     };
 
     /**
@@ -1060,10 +1099,13 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             if ($currentItem) {
 
                 if (!itemId) {
-                    $currentItem
-                        .find('[data-pl2-item-textarea]').val($wrapper.find('[name="item[name]"]').val())
-                        .end()
-                        .find('[data-pl2-item-links]').show();
+                    var $addItemTextarea = $currentItem.find('[data-pl2-item-textarea]');
+                    $currentItem.find('[data-pl2-item-links]').show();
+                    $addItemTextarea.val($wrapper.find('[name="item[name]"]').val());
+
+                    $addItemTextarea.data('pl2-linked-entities', $wrapper.find('[name="item[name]"]').data('pl2-linked-entities'));
+                    // $addItemTextarea.trigger('renderEntities.pl2');
+                    ItemLinker($addItemTextarea);
                 }
 
                 // $wrapper.slideToggle(0, function () {
@@ -1160,30 +1202,42 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         };
 
         var afterLoad = function () {
-            var datepicker_options = {
-                changeMonth: true,
-                changeYear: true,
-                shortYearCutoff: 2,
-                dateShowWeek: false,
-                showOtherMonths: true,
-                selectOtherMonths: true,
-                stepMonths: 1,
-                numberOfMonths: 1,
-                gotoCurrent: true,
-                constrainInput: false,
-                dateFormat: "yy-mm-dd",
-                onClose: function () {
-                    if ($wrapper.find('#pl-item-due-datetime').val()) {
-                        if (!$wrapper.find('#pl-item-due-datetime-clear').is(':visible')) {
-                            $wrapper.find('#pl-item-due-datetime-set').show();
+            var initDatepicker = function () {
+                var datepicker_options = {
+                    changeMonth: true,
+                    changeYear: true,
+                    shortYearCutoff: 2,
+                    dateShowWeek: false,
+                    showOtherMonths: true,
+                    selectOtherMonths: true,
+                    stepMonths: 1,
+                    numberOfMonths: 1,
+                    gotoCurrent: true,
+                    constrainInput: false,
+                    dateFormat: "yy-mm-dd",
+                    onClose: function () {
+                        if ($wrapper.find('#pl-item-due-datetime').val()) {
+                            if (!$wrapper.find('#pl-item-due-datetime-clear').is(':visible')) {
+                                $wrapper.find('#pl-item-due-datetime-set').show();
+                            }
+                        } else {
+                            $wrapper.find('#pl-item-due-datetime-set, #pl-item-due-datetime-hours, #pl-item-due-datetime-minutes, #pl-item-due-datetime-clear').hide()
                         }
-                    } else {
-                        $wrapper.find('#pl-item-due-datetime-set, #pl-item-due-datetime-hours, #pl-item-due-datetime-minutes, #pl-item-due-datetime-clear').hide()
+                    },
+                    beforeShow: function() {
+                        var $this = $(this),
+                            dp = $this.datepicker('widget');
+
+                        setTimeout(function () {
+                            dp.css('z-index', 100);
+                        }, 0);
                     }
-                }
+                };
+
+                $wrapper.find('#pl-item-due-datetime').datepicker(datepicker_options);
             };
 
-            $wrapper.find('#pl-item-due-datetime').datepicker(datepicker_options);
+            initDatepicker();
 
             var initFileUpload = function () {
                 $wrapper.find('[data-pl-item-details-fileupload]').fileupload({
@@ -1253,6 +1307,10 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             $name.val('').val(nameValue);
 
             $wrapper.find('#pl-assigned-contact select').trigger('change');
+
+            $name.data('pl2-linked-entities', $currentItem.find('[data-pl2-item-textarea]').data('pl2-linked-entities'));
+
+            ItemLinker($name);
         };
 
         var init = function () {
@@ -1266,10 +1324,24 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 .on('hide.pl2', hideItemDetails)
                 .on('submit', 'form', function () {
                     //e.preventDefault();
-                    var $form = $(this);
+                    var $form = $(this),
+                        $name = $form.find('[name="item[name]"]'),
+                        links = $name.data('pl2-linked-entities');
 
-                    $form.find('#pl-item-details-save').after($.pocketlists.$loading);
+                        $form.find('#pl-item-details-save').after($.pocketlists.$loading);
                     if (itemId) {
+                        if (links) {
+                            var link_i = 0;
+                            for (var linked in links) {
+                                for (var key in links[linked]['model']) {
+                                    $form.append($('<input name="item[links]['+link_i+'][model]['+key+']" type="hidden">').val(links[linked]['model'][key]));
+                                }
+                                link_i++;
+                            }
+                        }
+
+                        $name.removeData('pl2-linked-entities');
+
                         updateItem($form);
                     } else {
                         var formValues = JSON.parse(JSON.stringify($form.serializeArray())),
@@ -1279,8 +1351,14 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                             data[this.name.replace('item[','').replace(']','')] = this.value;
                         });
 
+                        if (links) {
+                            data['links'] = links;
+                        }
+
                         addItem.call($currentItem.find('[data-pl2-item-textarea]').get(0), [data], function () {
                             $form.trigger('reset');
+                            $currentItem.find('[data-pl2-item-textarea]').removeData('pl2-linked-entities');
+                            $name.removeData('pl2-linked-entities');
                             hideItemDetails();
                         });
 
@@ -1587,7 +1665,15 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
         var afterLoad = function () {
             $.pocketlists.flexHack();
-            $.pocketlists.scrollToEl($wrapper.find('.pl-chat-contents [data-pl-comment-id]:last')[0]);
+            var $last_comment = $wrapper.find('.pl-chat-contents [data-pl-comment-id]:last');
+
+            if ($last_comment.length) {
+                $.pocketlists.scrollToEl($wrapper.find('.pl-chat-contents [data-pl-comment-id]:last')[0]);
+            }
+
+            setTimeout(function () {
+                $wrapper.find('.pl-chat .pl-reply textarea').trigger('focus');
+            }, 1);
         };
 
         var init = function () {
@@ -1617,6 +1703,10 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                         // hideChatCommentInput();
                         // deselectItem();
                     }
+
+                    window.setTimeout(function () {
+                        $.pocketlists.resizeTextarea($this)
+                    }, 0);
                 })
                 .on('blur', '.pl-chat .pl-reply textarea', function (e) {
                     var $this = $(this),

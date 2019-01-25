@@ -47,7 +47,8 @@ class pocketlistsItemDataAction extends waViewAction
                 $item_new_data['update_datetime'] = date("Y-m-d H:i:s");
                 $im->addCalculatedPriorityDataAndSave($item_new_data['id'], $item_new_data);
 
-                if ($item_new_data['assigned_contact_id']) {
+                if ($item_new_data['assigned_contact_id']
+                    && $item_new_data['assigned_contact_id'] != $item_from_db['assigned_contact_id']) {
                     $this->logAction(
                         pocketlistsLogAction::ITEM_ASSIGN,
                         [
@@ -55,6 +56,31 @@ class pocketlistsItemDataAction extends waViewAction
                             'assigned_to' => $item_new_data['assigned_contact_id'],
                         ]
                     );
+                }
+
+                if (!empty($item_new_data['links'])) {
+                    foreach ($item_new_data['links'] as $link) {
+                        /** @var pocketlistsItemLinkInterface $app */
+                        $app = wa(pocketlistsHelper::APP_ID)->getConfig()->getLinkedApp($link['model']['app']);
+
+                        if (!$app->userCanAccess()) {
+                            continue;
+                        }
+
+                        foreach ($link['model'] as $key => $value) {
+                            if ($value === '') {
+                                $link['model'][$key] = null;
+                            }
+                        }
+
+                        $itemLink = new pocketlistsItemLinkModel($link['model']);
+                        $itemLink->item_id = $item_from_db->pk;
+                        try {
+                            $itemLink->save();
+                        } catch (waException $ex) {
+                            // silence
+                        }
+                    }
                 }
 
                 $this->view->assign(
