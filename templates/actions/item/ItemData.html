@@ -54,7 +54,7 @@
             <span{if $item.list_color !='none'} class="pl-dark-{$item.list_color}-border"{/if} title="[`Completed`]"></span>
         {/if}
     </label>
-    <label class="pl-select-label">{$item.id}
+    <label class="pl-select-label">
         <input type="checkbox" class="pl-is-selected" {if isset($archive) && $archive == true || !empty($item.key_list_id)}disabled{/if}>
         <span class="pl-item-name{if isset($item.calc_priority) && $item.calc_priority == 5} bold red{/if}">
             {if !empty($item.key_list_id)}
