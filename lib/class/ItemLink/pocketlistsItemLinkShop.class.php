@@ -8,6 +8,21 @@ class pocketlistsItemLinkShop extends pocketlistsItemLink implements pocketlists
     const TYPE_ORDER = 'order';
 
     /**
+     * @return bool
+     */
+    public function isEnabled()
+    {
+        $this->enabled = parent::isEnabled();
+        if ($this->enabled === false) {
+            return false;
+        }
+
+        $this->enabled = class_exists('shopOrder');
+
+        return $this->enabled;
+    }
+
+    /**
      * @return array
      */
     public function getTypes()

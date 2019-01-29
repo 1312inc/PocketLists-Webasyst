@@ -699,15 +699,20 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         // }
 
         var itemText = $textarea.val(),
-            $parent = findParent(),
-            $previewWrapper = $parent.find('[data-pl2-item-links]'),
-            linkedEntities = $textarea.data('pl2-linked-entities');
+            $parent = findParent();
 
         if (!$parent) {
-            log('no parent for linker preview');
+            window.console && console.log('error in ItemLinker parent find');
+
+            return;
         }
 
+        var $previewWrapper = $parent.find('[data-pl2-item-links]'),
+            linkedEntities = $textarea.data('pl2-linked-entities');
+
         function findParent() {
+            debugger;
+
             var $parents = [$textarea.closest('#pl-item-details-form'), $textarea.closest('[data-pl-item-add]'), $textarea.closest(item_selector)],
                 $parent = null;
 

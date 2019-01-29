@@ -7,7 +7,7 @@ abstract class pocketlistsItemLink
 {
     const LIMIT = 10;
 
-    protected $enabled = false;
+    protected $enabled = null;
 
     /**
      * @var pocketlistsItemLinkModel
@@ -63,7 +63,6 @@ abstract class pocketlistsItemLink
     {
         try {
             wa($this->getApp());
-            $this->enabled = wa()->appExists($this->getApp());
         } catch (waException $ex) {
             $this->enabled = false;
         }
@@ -84,6 +83,10 @@ abstract class pocketlistsItemLink
      */
     public function isEnabled()
     {
+        if ($this->enabled === null) {
+            $this->enabled = wa()->appExists($this->getApp());
+        }
+
         return $this->enabled;
     }
 

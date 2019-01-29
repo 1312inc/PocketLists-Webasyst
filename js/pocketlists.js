@@ -336,10 +336,6 @@
                 });
         },
         init: function (o) {
-            $.pocketlists_routing.init({
-                user_id: o.userId
-            });
-
             var self = this;
             self.$app_menu_pocket = $('#wa-app-pocketlists');
             self.$core_sidebar = $('#pl-sidebar-core');
@@ -405,6 +401,10 @@
                 });
 
             self.windowResize();
+
+            $.pocketlists_routing.init({
+                user_id: o.userId
+            });
         },
         hasGlobalScrollbar: function () {
             return $(document).height() > $(window).height();
