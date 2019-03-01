@@ -711,7 +711,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             linkedEntities = $textarea.data('pl2-linked-entities');
 
         function findParent() {
-            debugger;
+            // debugger;
 
             var $parents = [$textarea.closest('#pl-item-details-form'), $textarea.closest('[data-pl-item-add]'), $textarea.closest(item_selector)],
                 $parent = null;
