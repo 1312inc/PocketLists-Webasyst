@@ -6,9 +6,9 @@
 class pocketlistsRightConfig extends waRightConfig
 {
     /**
-     * @var waContact
+     * @var int
      */
-    private $user;
+    private $userId;
 
     /**
      * @var array
@@ -23,17 +23,17 @@ class pocketlistsRightConfig extends waRightConfig
      */
     public function __construct()
     {
-        $user_id = waRequest::post('user_id', 0, waRequest::TYPE_INT);
+        $this->userId = waRequest::post('user_id', 0, waRequest::TYPE_INT);
 
-        if (!$user_id) {
-            $user_id = waRequest::request('id', 0, waRequest::TYPE_INT);
+        if (!$this->userId) {
+            $this->userId = waRequest::request('id', 0, waRequest::TYPE_INT);
         }
 
-        if ($user_id) {
-            $this->user = new waContact($user_id);
-        } else {
-            $this->user = new waContact();
-        }
+//        if ($user_id > 0) {
+//            $this->contactRights = new waContact($user_id);
+//        } else {
+//            $this->contactRights = new waContact();
+//        }
 
         parent::__construct();
     }
@@ -79,11 +79,18 @@ class pocketlistsRightConfig extends waRightConfig
             ]
         );
 
-        $currentPocketRights = $this->user->getRights(pocketlistsHelper::APP_ID, pocketlistsRBAC::POCKET_ITEM.'.%');
+        $rights = (new waContactRightsModel())->get($this->userId, pocketlistsHelper::APP_ID);
+        $currentPocketRights = [];
+        foreach ($rights as $right => $rightValue) {
+            if (strpos($right, pocketlistsRBAC::POCKET_ITEM.'.') !== 0) {
+                continue;
+            }
 
+            $currentPocketRights[str_replace(pocketlistsRBAC::POCKET_ITEM.'.', '', $right)] = $rightValue;
+        }
         // LISTS
 
-        if (empty($currentPocketRights)) {
+        if (empty($rights)) {
             $this->addItem(
                 '',
                 _w('To setup access rights by pocket, set Limited access for at least one pocket'),

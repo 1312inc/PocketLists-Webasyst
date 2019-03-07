@@ -129,6 +129,7 @@ class pocketlistsNotifications
                         );
                     }
                     break;
+
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_COMPETES_ITEM_I_FAVORITE:
                     $ufm = new pocketlistsUserFavoritesModel();
                     $user_items = $ufm->query(
