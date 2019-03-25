@@ -63,6 +63,18 @@ class pocketlistsItemModel extends kmModelExt
         ];
     }
 
+    public static function getPriorities()
+    {
+        return [
+            'norm'       => self::PRIORITY_NORM,
+            'green'      => self::PRIORITY_GREEN,
+            'yellow'     => self::PRIORITY_YELLOW,
+            'red'        => self::PRIORITY_RED,
+            'black'      => self::PRIORITY_BLACK,
+            'burninhell' => self::PRIORITY_BURNINHELL,
+        ];
+    }
+
     /**
      * @param bool $contact_id
      * @param bool $date_range
@@ -325,13 +337,16 @@ class pocketlistsItemModel extends kmModelExt
             case pocketlistsUserSettings::MY_TO_DOS_CREATED_BY_OTHER_IN_SHARED_LISTS_GREEN_YELLOW_RED_ALL_LISTS:
                 $tomorrow = date("Y-m-d", strtotime("+1 day"));
                 $day_after_tomorrow = date("Y-m-d", strtotime("+2 day"));
-                $or_sql[] = "(i.list_id IS NOT NULL AND i.key_list_id IS NULL AND i.contact_id <> i:contact_id AND (i.due_date <= '".$tomorrow."' OR i.due_datetime < '".$day_after_tomorrow."' OR i.priority IN (".implode(',', [
-                        pocketlistsItemModel::PRIORITY_GREEN,
-                        pocketlistsItemModel::PRIORITY_YELLOW,
-                        pocketlistsItemModel::PRIORITY_RED,
-                        pocketlistsItemModel::PRIORITY_BLACK,
-                        pocketlistsItemModel::PRIORITY_BURNINHELL,
-                    ])."))) /* To-dos created BY other users IN shared lists all Green, Yellow, and Red to-dos from all lists*/";
+                $or_sql[] = "(i.list_id IS NOT NULL AND i.key_list_id IS NULL AND i.contact_id <> i:contact_id AND (i.due_date <= '".$tomorrow."' OR i.due_datetime < '".$day_after_tomorrow."' OR i.priority IN (".implode(
+                        ',',
+                        [
+                            self::PRIORITY_GREEN,
+                            self::PRIORITY_YELLOW,
+                            self::PRIORITY_RED,
+                            self::PRIORITY_BLACK,
+                            self::PRIORITY_BURNINHELL,
+                        ]
+                    )."))) /* To-dos created BY other users IN shared lists all Green, Yellow, and Red to-dos from all lists*/";
                 break;
         }
 
@@ -944,7 +959,7 @@ class pocketlistsItemModel extends kmModelExt
                 $item['id'],
                 [
 //                    'update_datetime' => date("Y-m-d H:i:s"),
-                    'sort'            => $sort++,
+                    'sort' => $sort++,
                 ]
             );
         }

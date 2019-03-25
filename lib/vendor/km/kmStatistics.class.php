@@ -29,6 +29,43 @@ class kmStatistics
     protected $timePrev;
 
     /**
+     * @var string
+     */
+    protected $uuid;
+
+    /**
+     * @var string
+     */
+    private $app;
+
+    /**
+     * @var array
+     */
+    private $queries = [];
+
+    /**
+     * @var array
+     */
+    private $statQueries = [];
+
+    /**
+     * @var string
+     */
+    private $statQueriesFileCache = '';
+
+    /**
+     * @param string $app
+     *
+     * @return kmStatistics
+     */
+    public function setApp($app)
+    {
+        $this->app = $app;
+
+        return $this;
+    }
+
+    /**
      * @return kmStatistics
      */
     public static function getInstance()
@@ -48,23 +85,62 @@ class kmStatistics
         $this->timeStart = microtime(true);
         $this->timePrev = $this->timeStart;
 
+        $this->uuid = microtime();
+
         $this->storage = new kmStorage(
             [
-                'queries' => [],
+                'queries' => $this->queries,
                 'timing'  => [
                     0 => [],
                 ],
             ]
         );
 
+        $this->statQueriesFileCache = __DIR__.'/kmstatqueries.php';
+        if (file_exists($this->statQueriesFileCache)) {
+            $this->statQueries = require($this->statQueriesFileCache);
+        }
+    }
+
+    public function exportStatQueries()
+    {
+        waUtils::varExportToFile($this->statQueries, $this->statQueriesFileCache);
     }
 
     /**
      * @param string $query
      */
-    protected function addQuery($query)
+    public function addQuery($query)
     {
-        $this->storage->queries[] = $query;
+        if ($this->app) {
+            $this->queries[$this->app][$this->getMethod()] = preg_replace('/\s+/', ' ', $query);
+        }
+    }
+
+    /**
+     * @param string $query
+     * @param float  $executionTime
+     */
+    public function addStatQuery($query, $executionTime)
+    {
+        if ($this->app) {
+            $method = $this->getMethod();
+            if (!isset($this->statQueries[$this->app][$method])) {
+                $this->statQueries[$this->app][$method] = [
+                    'total_time'     => 0,
+                    'count'          => 0,
+                    'last_query'     => [],
+                    'time_per_query' => 0,
+                ];
+            }
+
+            $query = preg_replace('/\s+/', ' ', $query);
+
+            $this->statQueries[$this->app][$method]['count']++;
+            $this->statQueries[$this->app][$method]['total_time'] += $executionTime;
+            $this->statQueries[$this->app][$method]['time_per_query'] = $this->statQueries[$this->app][$method]['total_time'] / $this->statQueries[$this->app][$method]['count'];
+            $this->statQueries[$this->app][$method]['last_query'][md5($query)] = $query;
+        }
     }
 
     /**
@@ -72,15 +148,27 @@ class kmStatistics
      */
     public function getQueriesCount()
     {
-        return count($this->storage->queries);
+        return count($this->queries);
     }
 
     /**
-     * @return mixed
+     * @param string $app
+     *
+     * @return array
      */
-    public function getQueries()
+    public function getQueries($app = '')
     {
-        return $this->storage->queries;
+        return isset($this->queries[$app]) ? $this->queries[$app] : $this->queries;
+    }
+
+    /**
+     * @param string $app
+     *
+     * @return array
+     */
+    public function getStatQueries($app = '')
+    {
+        return isset($this->statQueries[$app]) ? $this->statQueries[$app] : $this->statQueries;
     }
 
     /**
@@ -89,6 +177,21 @@ class kmStatistics
     public function getTimeStart()
     {
         return $this->timeStart;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getMethod()
+    {
+        $plitem = [];
+        foreach (debug_backtrace() as $i => $item) {
+            if (isset($item['class']) && strpos($item['class'], 'pocketlists') === 0) {
+                $plitem[] = sprintf('%s%s%s::%s', $item['class'], $item['type'], $item['function'], $item['line']);
+            }
+        }
+
+        return $plitem ? implode('|', array_reverse($plitem)) : '';
     }
 
     /**
@@ -103,9 +206,7 @@ class kmStatistics
         ];
 
         if ($method !== false) {
-            $key = ($method === true
-                    ? debug_backtrace()[2]['class'].debug_backtrace()[2]['type'].debug_backtrace()[2]['function']
-                    : $method).'::'.$key;
+            $key = ($method === true ? $this->getMethod() : $method).'::'.$key;
         }
 
         $timing = $this->storage['timing'];
@@ -145,5 +246,18 @@ class kmStatistics
 
             throw new waException(sprintf('No method %s found in %s', $name, __CLASS__));
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getUuid()
+    {
+        return $this->uuid;
+    }
+
+    public function __destruct()
+    {
+        $this->exportStatQueries();
     }
 }

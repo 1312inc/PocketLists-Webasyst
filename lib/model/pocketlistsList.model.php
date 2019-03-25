@@ -206,6 +206,21 @@ class pocketlistsListModel extends kmModelExt
         return $inserted_list_id ? $data : false;
     }
 
+    public function save($validate = true, $attributes = [], $type = 0)
+    {
+        if (parent::save($attributes, $attributes, $type)) {
+            $data = $this->getAttributes();
+            unset($data['id']);
+            $data['key_list_id'] = $this->getPk();
+            $im = new pocketlistsItemModel();
+            if ($inserted_item_id = $im->insert($data, $type)) {
+                $this->updateById($this->getPk(), ['key_item_id' => $inserted_item_id]);
+            } else {
+                $this->deleteById($this->getPk());
+            }
+        }
+    }
+
     /**
      * @param int   $id
      * @param array $data
