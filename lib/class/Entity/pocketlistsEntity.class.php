@@ -6,6 +6,21 @@
 abstract class pocketlistsEntity
 {
     /**
+     * @return array
+     */
+    public function prepareForDb()
+    {
+        return wa()->getConfig()
+            ->getHydrator()
+            ->extract($this, $this->getDbFields());
+    }
+
+    /**
+     * @return array
+     */
+    abstract protected function getDbFields();
+
+    /**
      * @var kmModelExt
      */
     protected $_model;

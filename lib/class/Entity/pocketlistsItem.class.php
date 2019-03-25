@@ -1,6 +1,6 @@
 <?php
 
-class pocketlistsItem
+class pocketlistsItem extends pocketlistsEntity
 {
     /**
      * @var int
@@ -121,6 +121,16 @@ class pocketlistsItem
      * @var int|null
      */
     private $key_list_id;
+
+    /**
+     * @return array
+     */
+    public function getDbFields()
+    {
+        return [
+            ''
+        ];
+    }
 
     /**
      * @return pocketlistsList
