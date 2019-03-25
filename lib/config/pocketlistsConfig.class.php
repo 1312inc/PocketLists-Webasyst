@@ -26,6 +26,24 @@ class pocketlistsConfig extends waAppConfig
     protected $user;
 
     /**
+     * @var pocketlistsHydratorInterface
+     */
+    protected $hydrator;
+
+    /**
+     * @return pocketlistsHydratorInterface
+     */
+    public function getHydrator()
+    {
+        if ($this->hydrator === null) {
+            $this->hydrator = new pocketlistsHydrator();
+        }
+
+        return $this->hydrator;
+    }
+
+
+    /**
      * @param $factory
      *
      * @return pocketlistsItemLinkFactory|pocketlistsItemFactory|pocketlistsTeammateFactory

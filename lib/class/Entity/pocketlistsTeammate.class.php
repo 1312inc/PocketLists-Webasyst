@@ -3,7 +3,7 @@
 /**
  * Class pocketlistsTeammate
  */
-class pocketlistsTeammate extends pocketlistsEntity
+class pocketlistsTeammate
 {
     /**
      * @var waContact
