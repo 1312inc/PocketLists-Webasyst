@@ -157,11 +157,12 @@ class pocketlistsItemModel extends kmModelExt
                   l.id list_id,
                   l.icon list_icon,
                   l.color list_color,
-                  i2.name list_name,
+                  l.name list_name,
                   IF(uf.contact_id, 1, 0) favorite
                 FROM {$this->table} i
-                LEFT JOIN pocketlists_list l ON l.id = i.list_id
-                LEFT JOIN pocketlists_item i2 ON i2.key_list_id = i.list_id
+                LEFT JOIN (select i2.name, l2.*
+                          from pocketlists_list l2
+                                 JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) l ON l.id = i.list_id
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
                 WHERE
                   i.key_list_id IS NULL
@@ -297,13 +298,15 @@ class pocketlistsItemModel extends kmModelExt
             "l.id list_id",
             "l.icon list_icon",
             "l.color list_color",
-            "i2.name list_name",
+            "l.name list_name",
             "IF(uf.contact_id, 1, 0) favorite",
         ];
         $join_sql = [
             "",
             "pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id",
-            "pocketlists_list l ON (l.id = i.list_id  OR l.id = i.key_list_id)",
+            "(select i2.name, l2.*
+                  from pocketlists_list l2
+                         JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) l ON l.id = i.list_id",
             "pocketlists_item i2 ON i2.key_list_id = i.list_id",
         ];
         $and_sql = [
@@ -461,11 +464,12 @@ class pocketlistsItemModel extends kmModelExt
                   l.id list_id,
                   l.icon list_icon,
                   l.color list_color,
-                  i2.name list_name,
+                  l.name list_name,
                   IF(uf.contact_id, 1, 0) favorite
                 FROM {$this->table} i
-                LEFT JOIN pocketlists_list l ON (l.id = i.list_id  OR l.id = i.key_list_id)
-                LEFT JOIN pocketlists_item i2 ON i2.key_list_id = i.list_id
+                LEFT JOIN (select i2.name, l2.*
+                          from pocketlists_list l2
+                                 JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) l ON l.id = i.list_id
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
                 WHERE
                 uf.item_id IS NOT NULL
@@ -582,7 +586,7 @@ class pocketlistsItemModel extends kmModelExt
         return "SELECT
                   i.*,
                   IF(uf.contact_id, 1, 0) favorite,
-                  pi2.name list_name,
+                  pl.name list_name,
                   pl.sort list_sort,
                   pl.type list_type,
                   pl.icon list_icon,
@@ -591,9 +595,9 @@ class pocketlistsItemModel extends kmModelExt
                   pl.color list_color
                 FROM {$this->table} i
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
-                LEFT JOIN pocketlists_list pl ON pl.id = i.list_id
-                LEFT JOIN pocketlists_item pi2 ON pi2.key_list_id = i.list_id
-                ";
+                LEFT JOIN (select i2.name, l2.*
+                  from pocketlists_list l2
+                         JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) pl ON pl.id = i.list_id                ";
     }
 
     /**
@@ -1072,11 +1076,12 @@ class pocketlistsItemModel extends kmModelExt
                   l.id list_id,
                   l.icon list_icon,
                   l.color list_color,
-                  i2.name list_name,
+                  l.name list_name,
                   IF(uf.contact_id, 1, 0) favorite
                 FROM {$this->table} i
-                LEFT JOIN pocketlists_list l ON (l.id = i.list_id  OR l.id = i.key_list_id)
-                LEFT JOIN pocketlists_item i2 ON i2.key_list_id = i.list_id
+                LEFT JOIN (select i2.name, l2.*
+                          from pocketlists_list l2
+                                 JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) l ON l.id = i.list_id
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:user_contact_id AND uf.item_id = i.id
                 WHERE
                   (
@@ -1102,7 +1107,7 @@ class pocketlistsItemModel extends kmModelExt
             ]
         )->fetchAll();
 
-        $items = self::generateModels($items);
+//        $items = self::generateModels($items);
 
         $results = [
             0 => [],
@@ -1174,11 +1179,12 @@ class pocketlistsItemModel extends kmModelExt
                   l.id list_id,
                   l.icon list_icon,
                   l.color list_color,
-                  i2.name list_name,
+                  l.name list_name,
                   IF(uf.contact_id, 1, 0) favorite
                 FROM {$this->table} i
-                LEFT JOIN pocketlists_list l ON (l.id = i.list_id  OR l.id = i.key_list_id)
-                LEFT JOIN pocketlists_item i2 ON i2.key_list_id = i.list_id
+                LEFT JOIN (select i2.name, l2.*
+                          from pocketlists_list l2
+                                 JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) l ON l.id = i.list_id
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:user_contact_id AND uf.item_id = i.id
                 JOIN pocketlists_item_link pil ON pil.item_id = i.id {$appSql} {$appTypeSql} {$entityIdSql}
                 WHERE
