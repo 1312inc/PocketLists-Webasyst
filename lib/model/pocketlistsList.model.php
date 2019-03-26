@@ -325,16 +325,14 @@ class pocketlistsListModel extends kmModelExt
             $pocketSql = ' AND l.pocket_id = i:pocket_id';
         }
 
-        $sql = "SELECT
-                  i2.*,
-                  l.*,
-                  SUM(IF(i.list_id IS NULL, 0, 1)) 'count',
-                  MAX(i.priority) 'max_priority',
-                  MIN(i.due_date) 'min_due_date',
-                  MIN(i.due_datetime) 'min_due_datetime'
+        $sql = "SELECT i.*,
+                       l.*,
+                       (select count(i2.id) from pocketlists_item i2 where i2.status = 0 and i2.list_id = l.id) 'count',
+                       MAX(i.priority)                  'max_priority',
+                       MIN(i.due_date)                  'min_due_date',
+                       MIN(i.due_datetime)              'min_due_datetime'
                 FROM pocketlists_list l
-                LEFT JOIN pocketlists_item i ON i.list_id = l.id AND i.status = 0
-                LEFT JOIN pocketlists_item i2 ON i2.key_list_id = l.id
+                       JOIN pocketlists_item i ON i.key_list_id = l.id
                 WHERE 1 
                 {$accessed_lists}
                 {$pocketSql}
