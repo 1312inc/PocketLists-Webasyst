@@ -307,7 +307,6 @@ class pocketlistsItemModel extends kmModelExt
             "(select i2.name, l2.*
                   from pocketlists_list l2
                          JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) l ON l.id = i.list_id",
-            "pocketlists_item i2 ON i2.key_list_id = i.list_id",
         ];
         $and_sql = [
             "(".pocketlistsRBAC::filterListAccess($lists, $contact_id)." OR l.id IS NULL)",

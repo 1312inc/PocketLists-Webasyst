@@ -105,7 +105,7 @@ class kmStatistics
     public function exportStatQueries()
     {
         foreach ($this->statQueries as &$statQuery) {
-            usort(
+            uasort(
                 $statQuery,
                 function ($v, $v2) {
                     return $v['time_per_query'] < $v2['time_per_query'] ? 1 : ($v['time_per_query'] > $v2['time_per_query'] ? -1 : 0);
@@ -137,7 +137,7 @@ class kmStatistics
             $method = $this->getMethod();
             if (!isset($this->statQueries[$this->app][$method])) {
                 $this->statQueries[$this->app][$method] = [
-                    'path'           => $method,
+//                    'path'           => $method,
                     'total_time'     => 0,
                     'count'          => 0,
                     'last_query'     => [],
