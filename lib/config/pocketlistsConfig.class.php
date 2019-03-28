@@ -6,9 +6,19 @@
 class pocketlistsConfig extends waAppConfig
 {
     /**
-     * @var
+     * @var array
      */
-    protected $factories;
+    protected $factories = [];
+
+    /**
+     * @var array
+     */
+    protected $models = [];
+
+    /**
+     * @var array
+     */
+    protected $repositories = [];
 
     /**
      * @var pocketlistsItemLinkInterface[]
@@ -42,28 +52,76 @@ class pocketlistsConfig extends waAppConfig
         return $this->hydrator;
     }
 
-
     /**
-     * @param $factory
+     * @param $entity
      *
-     * @return pocketlistsItemLinkFactory|pocketlistsItemFactory|pocketlistsTeammateFactory
+     * @return pocketlistsItemLinkFactory|pocketlistsItemFactory|pocketlistsListFactory|pocketlistsTeammateFactory
      * @throws waException
      */
-    public function getModelFactory($factory)
+    public function getEntityFactory($entity)
     {
-        if (isset($this->factories[$factory])) {
-            return $this->factories[$factory];
+        if (isset($this->factories[$entity])) {
+            return $this->factories[$entity];
         }
 
-        $factoryClass = sprintf('pocketlists%sFactory', $factory);
+        $factoryClass = sprintf('%sFactory', $entity);
 
         if (!class_exists($factoryClass) ) {
-            throw new waException(sprintf('No factory class for %s', $factory));
+            throw new waException(sprintf('No factory class for %s', $entity));
         }
 
-        $this->factories[$factory] = new $factoryClass();
+        $this->factories[$entity] = new $factoryClass();
 
-        return $this->factories[$factory];
+        return $this->factories[$entity];
+    }
+
+
+    /**
+     * @param $entity
+     *
+     * @return kmModelExt
+     * @throws waException
+     */
+    public function getModel($entity = false)
+    {
+        if ($entity === false) {
+            return $this->models[''];
+        }
+
+        if (isset($this->models[$entity])) {
+            return $this->models[$entity];
+        }
+
+        $factoryClass = sprintf('%sModel', $entity);
+
+        if (class_exists($factoryClass) ) {
+            throw new waException(sprintf('No model class for %s', $entity));
+        }
+
+        return $this->models[$entity];
+    }
+
+    /**
+     * @param $entity
+     *
+     * @return
+     * @throws waException
+     */
+    public function getEntityRepository($entity)
+    {
+        if (isset($this->repositories[$entity])) {
+            return $this->repositories[$entity];
+        }
+
+        $repositoryClass = sprintf('%sRepository', $entity);
+
+        if (!class_exists($repositoryClass) ) {
+            throw new waException(sprintf('No repository class for %s', $entity));
+        }
+
+        $this->repositories[$entity] = new $repositoryClass();
+
+        return $this->repositories[$entity];
     }
 
     public function init()
@@ -87,6 +145,8 @@ class pocketlistsConfig extends waAppConfig
                 }
             }
         }
+
+        $this->models[''] = new kmModelExt();
     }
 
     public function onInit()

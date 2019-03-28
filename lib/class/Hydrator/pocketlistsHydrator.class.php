@@ -23,12 +23,16 @@ class pocketlistsHydrator implements pocketlistsHydratorInterface
 
         $result = [];
 
+        if (empty($fields)) {
+            $fields = $reflection->getProperties();
+        }
+
         foreach ($fields as $name) {
             $methodName = 'set'.$this->getMethodName($name);
             $method = $reflection->getMethod($methodName);
 
             if ($method && $method->isPublic()) {
-                $result[$property->getName()] = $method->invoke($object);
+                $result[$name] = $method->invoke($object);
             }
         }
 
@@ -44,16 +48,20 @@ class pocketlistsHydrator implements pocketlistsHydratorInterface
      */
     public function hydrate($object, array $data)
     {
-        $reflection = $this->getReflectionClass($target);
+        $reflection = $this->getReflectionClass($object);
 
-        $object = is_object($target) ? $target : $reflection->newInstanceWithoutConstructor();
+        $object = is_object($object) ? $object : $reflection->newInstanceWithoutConstructor();
 
         foreach ($data as $name => $value) {
             $methodName = 'set'.$this->getMethodName($name);
-            $method = $reflection->getMethod($methodName);
+            try {
+                $method = $reflection->getMethod($methodName);
 
-            if ($method && $method->isPublic()) {
-                $method->invoke($object, $value);
+                if ($method && $method->isPublic()) {
+                    $method->invoke($object, $value);
+                }
+            } catch (Exception $ex) {
+
             }
         }
 
@@ -77,8 +85,13 @@ class pocketlistsHydrator implements pocketlistsHydratorInterface
         return $this->reflectionClassMap[$className];
     }
 
+    /**
+     * @param $name
+     *
+     * @return mixed
+     */
     private function getMethodName($name)
     {
-        $methodName = str_replace(' ', '', ucwords($name, '_'));
+        return str_replace('_', '', ucwords($name, '_'));
     }
 }

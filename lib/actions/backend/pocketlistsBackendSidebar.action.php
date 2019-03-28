@@ -19,7 +19,7 @@ class pocketlistsBackendSidebarAction extends pocketlistsViewAction
         $this->view->assign('lists', $list_model->getLists());
 
         /** @var pocketlistsTeammateFactory $factory */
-        $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getModelFactory('Teammate');
+        $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getEntityFactory('Teammate');
         $teammates = $factory->getTeammates(pocketlistsRBAC::getAccessContacts(), true, true, true);
         foreach ($teammates as $tid => $teammate) {
             if (!$teammate['id']) {

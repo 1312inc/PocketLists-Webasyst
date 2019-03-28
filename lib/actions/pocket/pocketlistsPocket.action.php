@@ -41,18 +41,27 @@ class pocketlistsPocketAction extends pocketlistsViewAction
             $id = reset($available_pockets);
         }
 
+        /** @var pocketlistsPocketModel $pocketModel */
+        $pocketModel = wa()->getConfig()->getModel(pocketlistsPocket::class);
+
         if (!$id) {
-            $allPockets = $pm->getAllPockets();
+            $allPockets = $pocketModel->getAllPockets();
             $pocket = reset($allPockets);
         } else {
-            /** @var pocketlistsPocketModel $pocket */
-            $pocket = $pm->findByPk($id);
+            /** @var pocketlistsPocket $pocket */
+            $pocket = wa()->getConfig()
+                ->getEntityFactory(pocketlistsPocket::class)
+                ->generateWithData($pocketModel->getById($id));
         }
 
-        $id = $pocket->pk;
+        /** @var pocketlistsListModel $listModel */
+        $listModel = wa()->getConfig()->getModel(pocketlistsList::class);
+        $lists = $listModel->getLists(true, $pocket->getId());
 
         // get all lists for this pocket
-        $lists = $lm->getLists(true, $pocket['id']);
+        $lists = wa()->getConfig()
+            ->getEntityFactory(pocketlistsList::class)
+            ->generateWithData($lists);
 
         if (!$list_id) {
             if ($list_id < 0 && isset($last_pocket_list_id['list_id']) && $last_pocket_list_id['pocket_id'] == $pocket['id']) {

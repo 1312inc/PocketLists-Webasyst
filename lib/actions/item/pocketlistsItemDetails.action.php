@@ -61,7 +61,7 @@ class pocketlistsItemDetailsAction extends waViewAction
         if (pocketlistsRBAC::canAssign()) {
             // if this item is from list - select only available contacts for this list
             /** @var pocketlistsTeammateFactory $factory */
-            $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getModelFactory('Teammate');
+            $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getEntityFactory('Teammate');
             $contacts = $factory->getTeammates(
                 pocketlistsRBAC::getAccessContacts($list),
                 true,

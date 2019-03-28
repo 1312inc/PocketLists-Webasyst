@@ -16,7 +16,7 @@ class pocketlistsListAccessesAction extends waViewAction
             $list = pocketlistsListModel::model()->findByPk($id);
 
             /** @var pocketlistsTeammateFactory $factory */
-            $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getModelFactory('Teammate');
+            $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getEntityFactory('Teammate');
             $list_access_contacts = $factory->getTeammates(
                 pocketlistsRBAC::getAccessContacts($list),
                 true,
