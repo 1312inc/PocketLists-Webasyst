@@ -31,6 +31,16 @@ class pocketlistsPocket
     private $passcode;
 
     /**
+     * @var pocketlistsList[]
+     */
+    private $lists;
+
+    /**
+     * @var pocketlistsList[]
+     */
+    private $userLists;
+
+    /**
      * @return int
      */
     public function getId()
@@ -128,5 +138,72 @@ class pocketlistsPocket
         $this->passcode = $passcode;
 
         return $this;
+    }
+
+    /**
+     * @param bool $checkAccess
+     *
+     * @return pocketlistsList[]
+     * @throws waException
+     */
+    public function getLists()
+    {
+        if ($this->lists === null) {
+            $this->lists = $this->fetchLists(false) ?: [];
+        }
+
+        return $this->lists;
+    }
+
+    /**
+     * @return pocketlistsList[]
+     */
+    public function getUserLists()
+    {
+        if ($this->userLists === null) {
+            $this->userLists = $this->fetchLists(true) ?: [];
+        }
+
+        return $this->userLists;
+    }
+
+    /**
+     * @param pocketlistsList[] $lists
+     *
+     * @return pocketlistsPocket
+     */
+    public function setLists($lists)
+    {
+        $this->lists = $lists;
+
+        return $this;
+    }
+
+    /**
+     * @param $checkAccess
+     *
+     * @return pocketlistsList|pocketlistsList[]
+     * @throws waException
+     */
+    protected function fetchLists($checkAccess)
+    {
+        /** @var pocketlistsListModel $listModel */
+        $listModel = wa()->getConfig()->getModel(pocketlistsList::class);
+        $lists = $listModel->getLists($checkAccess, $this->getId());
+
+        // get all lists for this pocket
+        $lists = wa()->getConfig()
+            ->getEntityFactory(pocketlistsList::class)
+            ->generateWithData($lists);
+
+        if ($checkAccess) {
+            $this->userLists = $lists;
+
+            return $this->userLists;
+        }
+
+        $this->lists = $lists;
+
+        return $this->lists;
     }
 }

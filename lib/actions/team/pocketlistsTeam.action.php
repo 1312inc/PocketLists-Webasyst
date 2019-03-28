@@ -10,7 +10,7 @@ class pocketlistsTeamAction extends pocketlistsViewAction
         $teammates_ids = pocketlistsRBAC::getAccessContacts();
         if ($teammates_ids) {
             /** @var pocketlistsTeammateFactory $factory */
-            $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getModelFactory('Teammate');
+            $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getEntityFactory('Teammate');
             $teammates = $factory->getTeammates($teammates_ids);
 
             $selected_teammate = waRequest::get('teammate');

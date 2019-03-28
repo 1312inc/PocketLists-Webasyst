@@ -1449,7 +1449,7 @@ class pocketlistsItemModel extends kmModelExt
     {
         if ($this->linkedEntities === null) {
             /** @var pocketlistsItemLinkFactory $factory */
-            $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getModelFactory('ItemLink');
+            $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getEntityFactory('ItemLink');
 
             $this->linkedEntities = $factory->getForItem($this) ?: [];
         }

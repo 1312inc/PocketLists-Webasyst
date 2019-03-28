@@ -50,7 +50,7 @@ class pocketlistsShopBackend_orderHandler extends waEventHandler
 
         if ($itemLinkModel) {
             $items = wa(pocketlistsHelper::APP_ID)->getConfig()
-                ->getModelFactory('Item')
+                ->getEntityFactory('Item')
                 ->findForLinkedEntity($itemLinkModel);
 
             $im = new pocketlistsItemModel();

@@ -286,6 +286,26 @@ class pocketlistsListModel extends kmModelExt
     }
 
     /**
+     * @param bool $check_access
+     * @param int  $pocket_id
+     *
+     * @return pocketlistsList|pocketlistsList[]
+     *
+     * @throws waException
+     */
+    public function findLists($check_access = true, $pocket_id = 0)
+    {
+        $lists = $this->getLists($check_access, $pocket_id);
+
+        // get all lists for this pocket
+        $lists = wa()->getConfig()
+            ->getEntityFactory(pocketlistsList::class)
+            ->generateWithData($lists);
+
+        return $lists;
+    }
+
+    /**
      * @param array $lists
      *
      * @return mixed
@@ -303,12 +323,13 @@ class pocketlistsListModel extends kmModelExt
     }
 
     /**
-     * Get all lists (including archived) that are accessible for current user
-     *
      * @param bool $check_access
      * @param int  $pocket_id
      *
-     * @return null|pocketlistsListModel|pocketlistsListModel[]
+     * @return array
+     *
+     * @throws waDbException
+     * @throws waException
      */
     public function getAllLists($check_access = true, $pocket_id = 0)
     {
@@ -347,9 +368,9 @@ class pocketlistsListModel extends kmModelExt
             ]
         )->fetchAll();
 
-        $lists = self::generateModels($lists_data);
+//        $lists = self::generateModels($lists_data);
 
-        return $lists ?: [];
+        return $lists_data ?: [];
     }
 
     /**
