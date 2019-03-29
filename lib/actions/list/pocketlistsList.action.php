@@ -28,15 +28,21 @@ class pocketlistsListAction extends pocketlistsViewAction
 
         $archived = isset($this->params['archive']) ? true : false;
 
-        $lm = new pocketlistsListModel();
+        /** @var pocketlistsListModel $listModel */
+        $listModel = wa(pocketlistsHelper::APP_ID)->getConfig()->getModel(pocketlistsList::class);
 
-        $pocket = pocketlistsPocketModel::model()->findByPk($pocket_id);
+        /** @var pocketlistsPocket $pocket */
+        $pocket = wa()->getConfig()
+            ->getEntityFactory(pocketlistsPocket::class)
+            ->findById($pocket_id);
 
         $list_access_contacts = [];
 
         if ($list_id > 0) { // existing list
-            /** @var pocketlistsListModel $list */
-            $list = $lm->findByPk($list_id);
+            /** @var pocketlistsList $list */
+            $list =  wa()->getConfig()
+                ->getEntityFactory(pocketlistsList::class)
+                ->findById($list_id);
 
             if (!$list) {
                 $this->view->assign(
@@ -74,27 +80,27 @@ class pocketlistsListAction extends pocketlistsViewAction
             );
 
             $us = new pocketlistsUserSettings();
-            $us->set('last_pocket_list_id', json_encode(['list_id' => $list->pk]));
+            $us->set('last_pocket_list_id', json_encode(['list_id' => $list->getId()]));
 
             $im = new pocketlistsItemModel();
             $count_undone = $im->countByField(
                 [
-                    'list_id' => $list->pk,
+                    'list_id' => $list->getId(),
                     'status'  => 0,
                 ]
             );
             $count_done = $im->countByField(
                 [
-                    'list_id' => $list->pk,
+                    'list_id' => $list->getId(),
                     'status'  => 1,
                 ]
             );
-            $undone = $im->getUndoneByList($list->pk);
-            $done = $im->getDoneByList($list->pk, 0, pocketlistsListLazyDoneItemsAction::OFFSET);
+            $undone = $im->getUndoneByList($list->getId());
+            $done = $im->getDoneByList($list->getId(), 0, pocketlistsListLazyDoneItemsAction::OFFSET);
             $this->view->assign(
                 [
                     'list'                 => $list,
-                    'archive'              => $archived || $list->archived,
+                    'archive'              => $archived || $list->isArchived(),
                     'items'                => $undone,
                     'empty'                => count($undone),
                     'items_done'           => $done,
@@ -106,7 +112,7 @@ class pocketlistsListAction extends pocketlistsViewAction
                 ]
             );
         } else {
-            if (pocketlistsRBAC::contactHasAccessToPocket($pocket->pk) != pocketlistsRBAC::RIGHT_ADMIN) {
+            if (pocketlistsRBAC::contactHasAccessToPocket($pocket->getId()) != pocketlistsRBAC::RIGHT_ADMIN) {
                 $this->view->assign(
                     'error',
                     [
@@ -118,7 +124,7 @@ class pocketlistsListAction extends pocketlistsViewAction
 
                 return;
             }
-            $last_list_id = $lm->getLastListId();
+            $last_list_id = $listModel->getLastListId();
 
             $this->view->assign(
                 [

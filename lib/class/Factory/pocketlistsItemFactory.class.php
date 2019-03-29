@@ -27,6 +27,8 @@ class pocketlistsItemFactory
      */
     public function findForLinkedEntity(pocketlistsItemLinkModel $itemLinkModel)
     {
-        return $this->model->getAppItems($itemLinkModel->app, $itemLinkModel->entity_type, $itemLinkModel->entity_id);
+        return wa()->getConfig()
+            ->getModel(pocketlistsItem::class)
+            ->getAppItems($itemLinkModel->app, $itemLinkModel->entity_type, $itemLinkModel->entity_id);
     }
 }

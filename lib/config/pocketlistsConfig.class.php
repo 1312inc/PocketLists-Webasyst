@@ -66,8 +66,8 @@ class pocketlistsConfig extends waAppConfig
 
         $factoryClass = sprintf('%sFactory', $entity);
 
-        if (!class_exists($factoryClass) ) {
-            throw new waException(sprintf('No factory class for %s', $entity));
+        if (!class_exists($factoryClass)) {
+            return $this->factories['']->setEntity($entity);
         }
 
         $this->factories[$entity] = new $factoryClass();
@@ -92,11 +92,13 @@ class pocketlistsConfig extends waAppConfig
             return $this->models[$entity];
         }
 
-        $factoryClass = sprintf('%sModel', $entity);
+        $modelClass = sprintf('%sModel', $entity);
 
-        if (class_exists($factoryClass) ) {
+        if (!class_exists($modelClass) ) {
             throw new waException(sprintf('No model class for %s', $entity));
         }
+
+        $this->models[$entity] = new $modelClass();
 
         return $this->models[$entity];
     }
@@ -147,6 +149,7 @@ class pocketlistsConfig extends waAppConfig
         }
 
         $this->models[''] = new kmModelExt();
+        $this->factories[''] = new pocketlistsFactory();
     }
 
     public function onInit()
