@@ -9,6 +9,9 @@ class pocketlistsItem extends pocketlistsEntity
     const PRIORITY_BLACK      = 4;
     const PRIORITY_BURNINHELL = 5;
 
+    const STATUS_UNDONE = 0;
+    const STATUS_DONE   = 1;
+
     /**
      * @var int
      */
@@ -155,6 +158,11 @@ class pocketlistsItem extends pocketlistsEntity
     private $completeContact;
 
     /**
+     * @var pocketlistsItemLinkModel[]
+     */
+    protected $linkedEntities;
+
+    /**
      * @throws waException
      */
     public function afterHydrate()
@@ -230,6 +238,21 @@ class pocketlistsItem extends pocketlistsEntity
         );
 
         return $this;
+    }
+
+    /**
+     * @return pocketlistsItemLinkModel[]
+     * @throws waException
+     */
+    public function getLinkedEntities()
+    {
+        if ($this->linkedEntities === null) {
+            /** @var pocketlistsItemLinkFactory $factory */
+            $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getEntityFactory(pocketlistsItemLink::class);
+            $this->linkedEntities = $factory->getForItem($this) ?: [];
+        }
+
+        return $this->linkedEntities;
     }
 
     /**
@@ -760,5 +783,13 @@ class pocketlistsItem extends pocketlistsEntity
         $this->key_list_id = $key_list_id;
 
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDone()
+    {
+        return $this->getStatus() == self::STATUS_DONE;
     }
 }
