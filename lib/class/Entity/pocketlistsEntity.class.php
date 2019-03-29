@@ -3,7 +3,7 @@
 /**
  * Class pocketlistsEntity
  */
-abstract class pocketlistsEntity
+abstract class pocketlistsEntity implements pocketlistsHydratableInterface
 {
     /**
      * @return array
@@ -18,7 +18,7 @@ abstract class pocketlistsEntity
     /**
      * @return array
      */
-    abstract protected function getDbFields();
+//    abstract protected function getDbFields();
 
     /**
      * @var kmModelExt
@@ -180,5 +180,13 @@ abstract class pocketlistsEntity
     public function getUuid()
     {
         return $this->_uuid;
+    }
+
+    public function afterHydrate()
+    {
+    }
+
+    public function beforeExtract()
+    {
     }
 }

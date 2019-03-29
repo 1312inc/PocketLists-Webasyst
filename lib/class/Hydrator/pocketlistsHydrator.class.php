@@ -11,13 +11,13 @@ class pocketlistsHydrator implements pocketlistsHydratorInterface
     private $reflectionClassMap = [];
 
     /**
-     * @param       $object
-     * @param array $fields
+     * @param pocketlistsHydratableInterface $object
+     * @param array                      $fields
      *
      * @return array
      * @throws ReflectionException
      */
-    public function extract($object, array $fields = [])
+    public function extract(pocketlistsHydratableInterface $object, array $fields = [])
     {
         $reflection = $this->getReflectionClass(get_class($object));
 
@@ -26,6 +26,8 @@ class pocketlistsHydrator implements pocketlistsHydratorInterface
         if (empty($fields)) {
             $fields = $reflection->getProperties();
         }
+
+        $object->beforeExtract();
 
         foreach ($fields as $name) {
             $methodName = 'set'.$this->getMethodName($name);
@@ -40,13 +42,13 @@ class pocketlistsHydrator implements pocketlistsHydratorInterface
     }
 
     /**
-     * @param object $object
-     * @param array  $data
+     * @param pocketlistsHydratableInterface $object
+     * @param array                      $data
      *
-     * @return object
+     * @return object|pocketlistsHydratableInterface
      * @throws ReflectionException
      */
-    public function hydrate($object, array $data)
+    public function hydrate(pocketlistsHydratableInterface $object, array $data)
     {
         $reflection = $this->getReflectionClass($object);
 
@@ -64,6 +66,8 @@ class pocketlistsHydrator implements pocketlistsHydratorInterface
 
             }
         }
+
+        $object->afterHydrate();
 
         return $object;
     }

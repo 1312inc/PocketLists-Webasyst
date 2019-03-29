@@ -40,10 +40,10 @@
             <h5 class="heading">[`Access to lists`] ({count($lists)})</h5>
             <ul class="menu-v with-icons pl-teammate-lists" data-pl-sidebar-block="lists">
                 {foreach $lists as $l}
-                    {if $l->pk}
+                    {if $l->getId()}
                         <li>
-                            <a href="#/pocket/{$l.pocket_id}/list/{$l.id}/">
-                                <i class="icon16 listicon16" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l.icon|default:'li-list@2x.png'});"></i>{if !empty($l.color)}<span class="pl-dark-{$l.color}-label">{$l.name|escape}</span>{else}{$l.name|escape|default:'(no name)'}{/if}
+                            <a href="#/pocket/{$l->getPocketId()}/list/{$l->getId()}/">
+                                <i class="icon16 listicon16" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l.icon|default:'li-list@2x.png'});"></i>{if $l->getColor()}<span class="pl-dark-{$l->getColor()}-label">{$l->getName()|escape}</span>{else}{$l->getName()|escape|default:'(no name)'}{/if}
                                 <span class="hint nowrap" {if empty($l.items_count)}style="display:none"{/if}>{_w('%d to-do', '%d to-dos', $l.items_count)}</span>
                                 {* <span class="hint nowrap" {if empty($l.last_contact_ativity)}style="display:none"{/if}>{$l.last_contact_ativity|wa_datetime:'humandatetime'}</span> *}
                             </a>

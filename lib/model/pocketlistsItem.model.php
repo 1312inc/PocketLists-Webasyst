@@ -591,12 +591,14 @@ class pocketlistsItemModel extends kmModelExt
                   pl.icon list_icon,
                   pl.archived list_archived,
                   pl.hash list_hash,
-                  pl.color list_color
+                  pl.color list_color,
+                  (select count(*) from pocketlists_attachments pa where pa.item_id = i.id) attachments_count  
+                  (select count(*) from pocketlists_comment pc where pc.item_id = i.id) comments_count  
                 FROM {$this->table} i
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
                 LEFT JOIN (select i2.name, l2.*
                   from pocketlists_list l2
-                         JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) pl ON pl.id = i.list_id                ";
+                         JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) pl ON pl.id = i.list_id";
     }
 
     /**
@@ -672,11 +674,11 @@ class pocketlistsItemModel extends kmModelExt
      */
     private function getItems($sql, $list_id, $tree)
     {
-        $key = $this->getCacheKey($sql.serialize($list_id).$tree);
-
-        return $this->getFromCache(
-            $key,
-            function () use ($key, $sql, $list_id, $tree) {
+//        $key = $this->getCacheKey($sql.serialize($list_id).$tree);
+//
+//        return $this->getFromCache(
+//            $key,
+//            function () use ($key, $sql, $list_id, $tree) {
                 $items = $this->query(
                     $sql,
                     [
@@ -685,15 +687,17 @@ class pocketlistsItemModel extends kmModelExt
                     ]
                 )->fetchAll('id');
 
-                $items = self::generateModels($items);
+//                $items = self::generateModels($items);
 
-                $items = $this->extendItemData($items);
+//                $items = $this->extendItemData($items);
 
-                self::$cached[$key] = $tree ? $this->getTree($items, $tree) : $items;
+//                self::$cached[$key] = $tree ? $this->getTree($items, $tree) : $items;
+//
+//                return self::$cached[$key];
+//            }
+//        );
 
-                return self::$cached[$key];
-            }
-        );
+        return $items;
     }
 
     /**
@@ -1449,8 +1453,7 @@ class pocketlistsItemModel extends kmModelExt
     {
         if ($this->linkedEntities === null) {
             /** @var pocketlistsItemLinkFactory $factory */
-            $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getEntityFactory('ItemLink');
-
+            $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getEntityFactory(pocketlistsItemLink::class);
             $this->linkedEntities = $factory->getForItem($this) ?: [];
         }
 

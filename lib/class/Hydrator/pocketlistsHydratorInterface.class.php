@@ -6,18 +6,18 @@
 interface pocketlistsHydratorInterface
 {
     /**
-     * @param       $object
-     * @param array $fields
+     * @param pocketlistsHydratableInterface $object
+     * @param array                          $fields
      *
-     * @return array
+     * @return mixed
      */
-    public function extract($object, array $fields = []);
+    public function extract(pocketlistsHydratableInterface $object, array $fields = []);
 
     /**
-     * @param object $object
-     * @param array  $data
+     * @param pocketlistsHydratableInterface $object
+     * @param array                          $data
      *
-     * @return object
+     * @return mixed
      */
-    public function hydrate($object, array $data);
+    public function hydrate(pocketlistsHydratableInterface $object, array $data);
 }

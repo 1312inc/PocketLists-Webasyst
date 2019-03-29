@@ -39,12 +39,12 @@
             {/if}
 
             <h1>
-                <input type="hidden" value="{if $list->isNewRecord}-1{else}{$list->getId()}{/if}" id="pl-list-id">
+                <input type="hidden" value="{if $list->getId()}-1{else}{$list->getId()}{/if}" id="pl-list-id">
 
                 {if $new && !$archive}
                     <input type="text" placeholder="{sprintf('[`List #%d`]', $new_list_id)}" id="pl-new-list-input" class="bold" />
                 {else}
-                    <span id="pl-list-name"{if isset($list.color) && {$list.color}!='none'} class="pl-dark-{$list.color}-label"{/if}>{$list.name|default:' '|escape}</span>
+                    <span id="pl-list-name"{if $list->getColor()!='none'} class="pl-dark-{$list->getColor()}-label"{/if}>{$list->getName()|default:' '|escape}</span>
                 {/if}
             </h1>
         </header>
@@ -77,7 +77,7 @@
 
             {include '../../include/archivelistdialog.html' inline}
 
-            {if !$list->isNewRecord}
+            {if !$list->getId()}
             {include '../../include/deletelistdialog.html' inline}
             {include '../../include/itemadd.html' inline}
             {/if}
@@ -89,7 +89,7 @@
     {include '../../include/itemcomments.html' inline}
 </main>
 
-{if !$list->isNewRecord && $print|default:0}
+{if !$list->getId() && $print|default:0}
 </body>
 </html>
 {else}
@@ -108,7 +108,7 @@
             current_user_id: {$user->getContact()->getId()},
             fileUpload: {$fileupload}
         });
-        $.pocketlists.setTitle('{if isset($list.name)}{$list.name|default:" "|escape}{else}[`New list`]{/if}');
+        $.pocketlists.setTitle('{$list->getName()|default:'`New list`'|escape}');
 
 
         var $loading = $('#pl-list-content .lazyloading'),
@@ -119,7 +119,7 @@
             this_is_the_end = false,
             html_selector = '#pl-complete-log > .menu-v';
 
-        // {if !$list->isNewRecord}
+        // {if !$list->getId()}
 
         $(window).on('scroll.pl2', function () {
             if (this_is_the_end) {

@@ -32,7 +32,7 @@ class pocketlistsListAction extends pocketlistsViewAction
         $listModel = wa(pocketlistsHelper::APP_ID)->getConfig()->getModel(pocketlistsList::class);
 
         /** @var pocketlistsPocket $pocket */
-        $pocket = wa()->getConfig()
+        $pocket = wa(pocketlistsHelper::APP_ID)->getConfig()
             ->getEntityFactory(pocketlistsPocket::class)
             ->findById($pocket_id);
 
@@ -40,7 +40,7 @@ class pocketlistsListAction extends pocketlistsViewAction
 
         if ($list_id > 0) { // existing list
             /** @var pocketlistsList $list */
-            $list =  wa()->getConfig()
+            $list =  wa(pocketlistsHelper::APP_ID)->getConfig()
                 ->getEntityFactory(pocketlistsList::class)
                 ->findById($list_id);
 
@@ -71,7 +71,7 @@ class pocketlistsListAction extends pocketlistsViewAction
             }
 
             /** @var pocketlistsTeammateFactory $factory */
-            $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getEntityFactory('Teammate');
+            $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getEntityFactory(pocketlistsTeammate::class);
             $list_access_contacts = $factory->getTeammates(
                 pocketlistsRBAC::getAccessContacts($list),
                 true,
@@ -95,6 +95,9 @@ class pocketlistsListAction extends pocketlistsViewAction
                     'status'  => 1,
                 ]
             );
+
+            $undone = $list->getUndoneItems();
+
             $undone = $im->getUndoneByList($list->getId());
             $done = $im->getDoneByList($list->getId(), 0, pocketlistsListLazyDoneItemsAction::OFFSET);
             $this->view->assign(

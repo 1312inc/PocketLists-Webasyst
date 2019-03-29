@@ -130,7 +130,7 @@ class pocketlistsRBAC
     /**
      * Return users for given list
      *
-     * @param pocketlistsListModel|null $list
+     * @param pocketlistsList|null $list
      *
      * @return array
      */
@@ -142,7 +142,7 @@ class pocketlistsRBAC
             self::haveFullAdminSQL(),
             self::haveFullAccessSQL(),
             $list ? self::haveAccessToListSQL($list) : self::haveAccessSQL(),
-            $list && $list->pocket_id ? ' OR '.self::havePocketFullAccessSQL($list->getPocketId()) : ''
+            $list && $list->getPocketId() ? ' OR '.self::havePocketFullAccessSQL($list->getPocketId()) : ''
         );
 
         $contact_ids = $wcr->query($query)->fetchAll();
@@ -380,17 +380,17 @@ class pocketlistsRBAC
     }
 
     /**
-     * @param pocketlistsListModel|null $list
+     * @param pocketlistsList|null $list
      *
      * @return string
      */
-    private static function haveAccessToListSQL(pocketlistsListModel $list = null)
+    private static function haveAccessToListSQL(pocketlistsList $list = null)
     {
         return sprintf(
             " (app_id = '%s' AND name = '%s.%s' AND value = %s)",
             pocketlistsHelper::APP_ID,
             self::LIST_ITEM,
-            $list instanceOf pocketlistsListModel ? $list->pk : '%',
+            $list ? $list->getId() : '%',
             self::RIGHT_ACCESS
         );
     }

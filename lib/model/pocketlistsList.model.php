@@ -348,7 +348,7 @@ class pocketlistsListModel extends kmModelExt
 
         $sql = "SELECT i.*,
                        l.*,
-                       (select count(i2.id) from pocketlists_item i2 where i2.status = 0 and i2.list_id = l.id) 'count',
+                       (select count(i2.id) from pocketlists_item i2 where i2.status = 0 and i2.list_id = l.id) 'items_count',
                        MAX(i.priority)                  'max_priority',
                        MIN(i.due_date)                  'min_due_date',
                        MIN(i.due_datetime)              'min_due_datetime'

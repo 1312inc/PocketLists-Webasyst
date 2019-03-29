@@ -51,6 +51,171 @@ class pocketlistsList extends pocketlistsItem
     private $pocket;
 
     /**
+     * @var int
+     */
+    private $items_count;
+
+    /**
+     * @var int
+     */
+    private $max_priority = 0;
+
+    /**
+     * @var string
+     */
+    private $min_due_date;
+
+    /**
+     * @var string
+     */
+    private $min_due_datetime;
+
+    /**
+     * @var pocketlistsItem[]
+     */
+    private $undoneItems;
+
+    /**
+     * @var pocketlistsItem[]
+     */
+    private $doneItems;
+
+    /**
+     * @return pocketlistsItem[]
+     * @throws waException
+     */
+    public function getUndoneItems()
+    {
+        if ($this->undoneItems === null) {
+            /** @var pocketlistsItemFactory $factory */
+            $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getEntityFactory(pocketlistsItem::class);
+
+            $this->undoneItems = $factory->findUndoneByList($this->getId());;
+        }
+
+        return $this->undoneItems;
+    }
+
+    /**
+     * @param pocketlistsItem[] $undoneItems
+     *
+     * @return pocketlistsList
+     */
+    public function setUndoneItems(array $undoneItems)
+    {
+        $this->undoneItems = $undoneItems;
+
+        return $this;
+    }
+
+    /**
+     * @return pocketlistsItem[]
+     * @throws waException
+     */
+    public function getDoneItems()
+    {
+        if ($this->doneItems === null) {
+            /** @var pocketlistsItemFactory $factory */
+            $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getEntityFactory(pocketlistsItem::class);
+
+            $this->doneItems = $factory->findUndoneByList($this->getId());
+        }
+        return $this->doneItems;
+    }
+
+    /**
+     * @param pocketlistsItem[] $doneItems
+     *
+     * @return pocketlistsList
+     */
+    public function setDoneItems(array $doneItems)
+    {
+        $this->doneItems = $doneItems;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMaxPriority()
+    {
+        return $this->max_priority;
+    }
+
+    /**
+     * @param int $max_priority
+     *
+     * @return pocketlistsList
+     */
+    public function setMaxPriority($max_priority)
+    {
+        $this->max_priority = $max_priority;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMinDueDate()
+    {
+        return $this->min_due_date;
+    }
+
+    /**
+     * @param string $min_due_date
+     *
+     * @return pocketlistsList
+     */
+    public function setMinDueDate($min_due_date)
+    {
+        $this->min_due_date = $min_due_date;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMinDueDatetime()
+    {
+        return $this->min_due_datetime;
+    }
+
+    /**
+     * @param string $min_due_datetime
+     *
+     * @return pocketlistsList
+     */
+    public function setMinDueDatetime($min_due_datetime)
+    {
+        $this->min_due_datetime = $min_due_datetime;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getItemsCount()
+    {
+        return $this->items_count;
+    }
+
+    /**
+     * @param int $items_count
+     *
+     * @return pocketlistsList
+     */
+    public function setItemsCount($items_count)
+    {
+        $this->items_count = $items_count;
+
+        return $this;
+    }
+
+    /**
      * @return int
      */
     public function getPocketId()

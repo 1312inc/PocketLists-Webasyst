@@ -2,6 +2,8 @@
 
 /**
  * Class pocketlistsFactoryItem
+ *
+ * @method pocketlistsListModel getModel()
  */
 class pocketlistsListFactory extends pocketlistsFactory
 {
@@ -32,5 +34,19 @@ class pocketlistsListFactory extends pocketlistsFactory
         return wa()->getConfig()
             ->getModel(pocketlistsList::class)
             ->getAppItems($itemLinkModel->app, $itemLinkModel->entity_type, $itemLinkModel->entity_id);
+    }
+
+    /**
+     * @param true $pocketId
+     * @param bool $checkAccess
+     *
+     * @return pocketlistsList[]
+     * @throws waException
+     */
+    public function findListsByPocketId($pocketId, $checkAccess)
+    {
+        $data = $this->getModel()->getLists($checkAccess, $pocketId);
+
+        return $this->generateWithData($data, true);
     }
 }

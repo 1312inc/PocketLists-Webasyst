@@ -16,7 +16,7 @@
                     {foreach $lists as $l}
                         <li data-pl-list-id="{$l->getId()}">
                             <a href="#/pocket/{$pocket->getId()}/list/{$l->getId()}/"{if $l->getId() == $list_id} class="pl-is-selected"{/if} title="{$l->getName()|escape}">
-                                <span class="count{if $l->getCalcPriority() == 1} indicator green{elseif $l->getCalcPriority() == 2} indicator yellow{elseif $l->getCalcPriority() == 3} indicator red{/if}">{$l->getCount()}</span>
+                                <span class="count{if $l->getCalcPriority() == 1} indicator green{elseif $l->getCalcPriority() == 2} indicator yellow{elseif $l->getCalcPriority() == 3} indicator red{/if}">{$l->getItemsCount()}</span>
                                 <i class="listicon36"
                                    style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l->getIcon()|default:'li-list@2x.png'});"></i>
                                 <span class="pl-list-name pl-dark-{$l->getColor()|default:'none'}-label">{$l->getName()|escape}</span>

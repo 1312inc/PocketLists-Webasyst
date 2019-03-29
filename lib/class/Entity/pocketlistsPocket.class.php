@@ -3,7 +3,7 @@
 /**
  * Class pocketlistsList
  */
-class pocketlistsPocket
+class pocketlistsPocket extends pocketlistsEntity
 {
     /**
      * @var int
@@ -147,7 +147,10 @@ class pocketlistsPocket
     public function getLists()
     {
         if ($this->lists === null) {
-            $this->lists = $this->fetchLists(false) ?: [];
+            /** @var pocketlistsListFactory $factory */
+            $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getEntityFactory(pocketlistsList::class);
+
+            $this->lists = $factory->findListsByPocketId($this->getId(), false);
         }
 
         return $this->lists;
@@ -160,7 +163,10 @@ class pocketlistsPocket
     public function getUserLists()
     {
         if ($this->userLists === null) {
-            $this->userLists = $this->fetchLists(true) ?: [];
+            /** @var pocketlistsListFactory $factory */
+            $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getEntityFactory(pocketlistsList::class);
+
+            $this->userLists = $factory->findListsByPocketId($this->getId(), true);
         }
 
         return $this->userLists;
@@ -176,33 +182,5 @@ class pocketlistsPocket
         $this->lists = $lists;
 
         return $this;
-    }
-
-    /**
-     * @param $checkAccess
-     *
-     * @return pocketlistsList|pocketlistsList[]
-     * @throws waException
-     */
-    protected function fetchLists($checkAccess)
-    {
-        /** @var pocketlistsListModel $listModel */
-        $listModel = wa()->getConfig()->getModel(pocketlistsList::class);
-        $lists = $listModel->getLists($checkAccess, $this->getId());
-
-        // get all lists for this pocket
-        $lists = wa()->getConfig()
-            ->getEntityFactory(pocketlistsList::class)
-            ->generateWithData($lists, true);
-
-        if ($checkAccess) {
-            $this->userLists = $lists;
-
-            return $this->userLists;
-        }
-
-        $this->lists = $lists;
-
-        return $this->lists;
     }
 }
