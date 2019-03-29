@@ -2,12 +2,19 @@
 
 class pocketlistsItem extends pocketlistsEntity
 {
+    const PRIORITY_NORM       = 0;
+    const PRIORITY_GREEN      = 1;
+    const PRIORITY_YELLOW     = 2;
+    const PRIORITY_RED        = 3;
+    const PRIORITY_BLACK      = 4;
+    const PRIORITY_BURNINHELL = 5;
+
     /**
      * @var int
      */
     protected $id;
 
-     /**
+    /**
      * @var int
      */
     protected $contact_id;
@@ -60,7 +67,7 @@ class pocketlistsItem extends pocketlistsEntity
     /**
      * @var int
      */
-    private $priority;
+    private $priority = self::PRIORITY_NORM;
 
     /**
      * @var int
@@ -123,12 +130,155 @@ class pocketlistsItem extends pocketlistsEntity
     private $key_list_id;
 
     /**
+     * @var int
+     */
+    private $comments_count = 0;
+
+    /**
+     * @var int
+     */
+    private $attachments_count = 0;
+
+    /**
+     * @var pocketlistsContact
+     */
+    private $contact;
+
+    /**
+     * @var pocketlistsContact
+     */
+    private $assignContact;
+
+    /**
+     * @var pocketlistsContact
+     */
+    private $completeContact;
+
+    /**
+     * @throws waException
+     */
+    public function afterHydrate()
+    {
+        if ($this->getAttachmentsCount()) {
+            //todo: надо ли сразу загружать?
+        }
+
+        $this->contact = new pocketlistsContact(new waContact($this->getContactId()));
+
+        if ($this->getAssignedContactId()) {
+            $this->assignContact = new pocketlistsContact(new waContact($this->getAssignedContactId()));
+        }
+
+        if ($this->getCompleteContactId()) {
+            $this->completeContact = new pocketlistsContact(new waContact($this->getCompleteContactId()));
+        }
+
+        $this->recalculatePriorityData();
+
+//        if (!$edit) {
+//            $this->prepareOutput($item);
+//        }
+    }
+
+    /**
+     * @return pocketlistsContact
+     */
+    public function getContact()
+    {
+        return $this->contact;
+    }
+
+    /**
+     * @return pocketlistsContact
+     */
+    public function getAssignContact()
+    {
+        return $this->assignContact;
+    }
+
+    /**
+     * @return pocketlistsContact
+     */
+    public function getCompleteContact()
+    {
+        return $this->completeContact;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAgeTime()
+    {
+        $age_time = time() - max(
+                $this->getUpdateDatetime() ? strtotime($this->getUpdateDatetime()) : 0,
+                strtotime($this->getCreateDatetime())
+            );
+
+        return $age_time < 1 ? '' : pocketlistsHelper::getDatetimeBySeconds($age_time);;
+    }
+
+    /**
+     * @return $this
+     */
+    public function recalculatePriorityData()
+    {
+        $this->setCalcPriority(
+            max(
+                pocketlistsHelper::calcPriorityOnDueDate($this->getDueDate(), $this->getDueDatetime()),
+                $this->getPriority()
+            )
+        );
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAttachmentsCount()
+    {
+        return $this->attachments_count;
+    }
+
+    /**
+     * @param int $attachments_count
+     *
+     * @return pocketlistsItem
+     */
+    public function setAttachmentsCount($attachments_count)
+    {
+        $this->attachments_count = $attachments_count;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCommentsCount()
+    {
+        return $this->comments_count;
+    }
+
+    /**
+     * @param int $comments_count
+     *
+     * @return pocketlistsItem
+     */
+    public function setCommentsCount($comments_count)
+    {
+        $this->comments_count = $comments_count;
+
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function getDbFields()
     {
         return [
-            ''
+            '',
         ];
     }
 
@@ -465,9 +615,9 @@ class pocketlistsItem extends pocketlistsEntity
      *
      * @return pocketlistsItem
      */
-    public function setDueDate($due_date)
+    public function setDueDate($due_date = null)
     {
-        $this->due_date = $due_date;
+        $this->due_date = !empty($due_date) ? $due_date : null;
 
         return $this;
     }
@@ -485,9 +635,9 @@ class pocketlistsItem extends pocketlistsEntity
      *
      * @return pocketlistsItem
      */
-    public function setDueDatetime($due_datetime)
+    public function setDueDatetime($due_datetime = null)
     {
-        $this->due_datetime = $due_datetime;
+        $this->due_datetime = !empty($due_datetime) ? $due_datetime : null;
 
         return $this;
     }

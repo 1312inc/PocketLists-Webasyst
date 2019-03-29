@@ -80,7 +80,7 @@ class pocketlistsPocketAction extends pocketlistsViewAction
         $this->view->assign('lists_html', $lists_html);
         $this->view->assign(
             'isAdmin',
-            pocketlistsRBAC::contactHasAccessToPocket($pocket->pk) == pocketlistsRBAC::RIGHT_ADMIN ? 1 : 0
+            pocketlistsRBAC::contactHasAccessToPocket($pocket->getId()) == pocketlistsRBAC::RIGHT_ADMIN ? 1 : 0
         );
         $this->view->assign('lists', $lists);
         $this->view->assign('list_id', $list_id);
