@@ -141,8 +141,6 @@ class pocketlistsPocket
     }
 
     /**
-     * @param bool $checkAccess
-     *
      * @return pocketlistsList[]
      * @throws waException
      */
@@ -157,6 +155,7 @@ class pocketlistsPocket
 
     /**
      * @return pocketlistsList[]
+     * @throws waException
      */
     public function getUserLists()
     {
@@ -194,7 +193,7 @@ class pocketlistsPocket
         // get all lists for this pocket
         $lists = wa()->getConfig()
             ->getEntityFactory(pocketlistsList::class)
-            ->generateWithData($lists);
+            ->generateWithData($lists, true);
 
         if ($checkAccess) {
             $this->userLists = $lists;

@@ -51,17 +51,10 @@ class pocketlistsPocketAction extends pocketlistsViewAction
             /** @var pocketlistsPocket $pocket */
             $pocket = wa()->getConfig()
                 ->getEntityFactory(pocketlistsPocket::class)
-                ->generateWithData($pocketModel->getById($id));
+                ->findById($id);
         }
 
-        /** @var pocketlistsListModel $listModel */
-        $listModel = wa()->getConfig()->getModel(pocketlistsList::class);
-        $lists = $listModel->getLists(true, $pocket->getId());
-
-        // get all lists for this pocket
-        $lists = wa()->getConfig()
-            ->getEntityFactory(pocketlistsList::class)
-            ->generateWithData($lists);
+        $lists = $pocket->getUserLists();
 
         if (!$list_id) {
             if ($list_id < 0 && isset($last_pocket_list_id['list_id']) && $last_pocket_list_id['pocket_id'] == $pocket['id']) {
@@ -83,7 +76,7 @@ class pocketlistsPocketAction extends pocketlistsViewAction
             $us->set('last_pocket_list_id', json_encode($last_pocket_list_id));
         }
 
-        $lists_html = wao(new pocketlistsListAction(['list_id' => $list_id, 'pocket_id' => $pocket->pk]))->display();
+        $lists_html = wao(new pocketlistsListAction(['list_id' => $list_id, 'pocket_id' => $pocket->getId()]))->display();
         $this->view->assign('lists_html', $lists_html);
         $this->view->assign(
             'isAdmin',

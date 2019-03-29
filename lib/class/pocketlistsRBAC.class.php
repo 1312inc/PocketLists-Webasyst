@@ -134,7 +134,7 @@ class pocketlistsRBAC
      *
      * @return array
      */
-    public static function getAccessContacts(pocketlistsListModel $list = null)
+    public static function getAccessContacts(pocketlistsList $list = null)
     {
         $wcr = new waContactRightsModel();
         $query = sprintf(
@@ -142,7 +142,7 @@ class pocketlistsRBAC
             self::haveFullAdminSQL(),
             self::haveFullAccessSQL(),
             $list ? self::haveAccessToListSQL($list) : self::haveAccessSQL(),
-            $list && $list->pocket_id ? ' OR '.self::havePocketFullAccessSQL($list->pocket_id) : ''
+            $list && $list->pocket_id ? ' OR '.self::havePocketFullAccessSQL($list->getPocketId()) : ''
         );
 
         $contact_ids = $wcr->query($query)->fetchAll();
@@ -166,7 +166,7 @@ class pocketlistsRBAC
         return $contact->isAdmin() || $contact->isAdmin(pocketlistsHelper::APP_ID);
     }
 
-    public static function canAccessToList(pocketlistsListModel $list, $user_id = false)
+    public static function canAccessToList(pocketlistsList $list, $user_id = false)
     {
 //        $user_id = $user_id ? $user_id : wa()->getUser()->getId();
 //        if (!isset(self::$access_rights[$user_id])) {
@@ -174,21 +174,21 @@ class pocketlistsRBAC
 //        }
         $user = self::getContact($user_id);
 
-        if (isset(self::$lists[$user->getId()][$list->pk])) {
-            return self::$lists[$user->getId()][$list->pk];
+        if (isset(self::$lists[$user->getId()][$list->getId()])) {
+            return self::$lists[$user->getId()][$list->getId()];
         }
 
         switch (true) {
-            case $user->getRights(pocketlistsHelper::APP_ID, self::LIST_ITEM.'.'.$list->pk):
-            case $list->pocket_id && $user->getRights(pocketlistsHelper::APP_ID, self::LIST_ITEM.'.'.$list->pocket_id):
-                self::$lists[$user_id][$list->pk] = true;
+            case $user->getRights(pocketlistsHelper::APP_ID, self::LIST_ITEM.'.'.$list->getId()):
+            case $list->getPocketId() && $user->getRights(pocketlistsHelper::APP_ID, self::LIST_ITEM.'.'.$list->getPocketId()):
+                self::$lists[$user_id][$list->getId()] = true;
                 break;
 
             default:
-                self::$lists[$user_id][$list->pk] = false;
+                self::$lists[$user_id][$list->getId()] = false;
         }
 
-        return self::$lists[$user_id][$list->pk];
+        return self::$lists[$user_id][$list->getId()];
     }
 
     /**
