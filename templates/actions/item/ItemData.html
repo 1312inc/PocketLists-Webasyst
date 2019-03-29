@@ -1,9 +1,10 @@
-{if empty($item.key_list_id)} {* stating Nov 2018, we don't show lists as items; TODO: clean up .key_list_id check in the code with time *}
+{* @var pocketlistsItem $item *}
+{if empty($item->getKeyListId())} {* stating Nov 2018, we don't show lists as items; TODO: clean up .key_list_id check in the code with time *}
 
-<div class="pl-item{if !empty($item.assigned_contact_id) && $item.assigned_contact_id != $wa->user()->getId() && $item.status != 1} pl-item-assigned{/if}{if $item.status == 1} gray{/if}" {if $item.assigned_contact_id}data-pl-assigned-contact="{$item.assigned_contact_id}"{/if}>
-    {if !$item.status && empty($item.key_list_id) && !(isset($archive) && $archive)}<div class="pl-item-drag-handle" title="[`Sort`]" data-pl-action="item-sort"></div>{/if}
+<div class="pl-item{if $item->getAssignedContactId() != $wa->user()->getId() && !$item->isDone()} pl-item-assigned{/if}{if $item->isDone()} gray{/if}" {if $item->getAssignedContactId()}data-pl-assigned-contact="{$item->getAssignedContactId()}"{/if}>
+    {if !$item->isDone() && empty($item->getKeyListId()) && !(isset($archive) && $archive)}<div class="pl-item-drag-handle" title="[`Sort`]" data-pl-action="item-sort"></div>{/if}
 
-    {if $item.list_id != NULL}<div class="pl-item-list-name pl-dark-{$item.list_color}-label">{$item.list_name|truncate:32|escape}</div>{/if}
+    {if $item->listId() != NULL}<div class="pl-item-list-name pl-dark-{$item.list_color}-label">{$item.list_name|truncate:32|escape}</div>{/if}
 
     <div class="pl-meta">
         {if !(isset($archive) && $archive)}

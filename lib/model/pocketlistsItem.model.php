@@ -592,7 +592,7 @@ class pocketlistsItemModel extends kmModelExt
                   pl.archived list_archived,
                   pl.hash list_hash,
                   pl.color list_color,
-                  (select count(*) from pocketlists_attachments pa where pa.item_id = i.id) attachments_count  
+                  (select count(*) from pocketlists_attachment pa where pa.item_id = i.id) attachments_count,
                   (select count(*) from pocketlists_comment pc where pc.item_id = i.id) comments_count  
                 FROM {$this->table} i
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id

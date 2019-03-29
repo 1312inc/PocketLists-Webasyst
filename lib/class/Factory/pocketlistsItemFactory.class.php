@@ -12,6 +12,8 @@ class pocketlistsItemFactory extends pocketlistsFactory
      */
     protected $model;
 
+    protected $entity = 'pocketlistsItem';
+
     /**
      * pocketlistsFactoryItem constructor.
      *
@@ -35,14 +37,14 @@ class pocketlistsItemFactory extends pocketlistsFactory
     }
 
     /**
-     * @param int $listId
+     * @param pocketlistsList $list
      *
      * @return pocketlistsItem[]
      * @throws waException
      */
-    public function findUndoneByList($listId)
+    public function findUndoneByList(pocketlistsList $list)
     {
-        $data = $this->getModel()->getUndoneByList($listId);
+        $data = $this->getModel()->getUndoneByList($list->getId());
         $all = true;
 
         return $this->generateWithData($data, $all);

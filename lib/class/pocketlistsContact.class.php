@@ -61,6 +61,20 @@ class pocketlistsContact
     private $exists = false;
 
     /**
+     * @var int
+     */
+    private $lastActivity = 0;
+
+    /**
+     * @var array
+     */
+    private $itemsInfo = [
+        'count'        => 0,
+        'names'        => '',
+        'max_priority' => 0,
+    ];
+
+    /**
      * pocketlistsContact constructor.
      *
      * @param waContact $contact
@@ -77,7 +91,7 @@ class pocketlistsContact
      */
     public function init()
     {
-        if ($this->contact->exists()) {
+        if ($this->contact->exists()/* && $this->contact->get('is_user') != -1*/) {
             $this->me = ($this->contact->getId() == wa()->getUser()->getId());
             $this->name = $this->contact->getName();
             $this->username = $this->contact->getName();
@@ -89,6 +103,46 @@ class pocketlistsContact
             $this->teamrole = $this->contact->get('jobtitle');
             $this->exists = true;
         }
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLastActivity()
+    {
+        return $this->lastActivity;
+    }
+
+    /**
+     * @param int $lastActivity
+     *
+     * @return pocketlistsContact
+     */
+    public function setLastActivity($lastActivity)
+    {
+        $this->lastActivity = $lastActivity;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getItemsInfo()
+    {
+        return $this->itemsInfo;
+    }
+
+    /**
+     * @param array $itemsInfo
+     *
+     * @return pocketlistsContact
+     */
+    public function setItemsInfo($itemsInfo)
+    {
+        $this->itemsInfo = $itemsInfo;
 
         return $this;
     }

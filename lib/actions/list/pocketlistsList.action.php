@@ -98,8 +98,9 @@ class pocketlistsListAction extends pocketlistsViewAction
 
             $undone = $list->getUndoneItems();
 
-            $undone = $im->getUndoneByList($list->getId());
-            $done = $im->getDoneByList($list->getId(), 0, pocketlistsListLazyDoneItemsAction::OFFSET);
+//            $undone = $im->getUndoneByList($list->getId());
+//            $done = $im->getDoneByList($list->getId(), 0, pocketlistsListLazyDoneItemsAction::OFFSET);
+            $done = $list->getDoneItems();
             $this->view->assign(
                 [
                     'list'                 => $list,

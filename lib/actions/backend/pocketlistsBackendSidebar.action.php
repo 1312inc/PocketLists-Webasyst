@@ -22,7 +22,7 @@ class pocketlistsBackendSidebarAction extends pocketlistsViewAction
         $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getEntityFactory('Teammate');
         $teammates = $factory->getTeammates(pocketlistsRBAC::getAccessContacts(), true, true, true);
         foreach ($teammates as $tid => $teammate) {
-            if (!$teammate['id']) {
+            if (!$teammate->getId()) {
                 unset($teammates[$tid]);
             }
         }
