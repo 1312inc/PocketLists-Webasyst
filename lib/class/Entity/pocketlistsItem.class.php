@@ -53,7 +53,7 @@ class pocketlistsItem extends pocketlistsEntity
     /**
      * @var string
      */
-    protected $name;
+    protected $name = '';
 
     /**
      * @var pocketlistsList

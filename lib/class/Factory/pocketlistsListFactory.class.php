@@ -50,7 +50,7 @@ class pocketlistsListFactory extends pocketlistsFactory
      */
     public function findListsByPocketId($pocketId, $checkAccess)
     {
-        $data = $this->getModel()->getLists($checkAccess, $pocketId);
+        $data = $this->getModel()->getAllLists($checkAccess, $pocketId);
 
         return $this->generateWithData($data, true);
     }
@@ -98,12 +98,12 @@ class pocketlistsListFactory extends pocketlistsFactory
      */
     public function findLists($check_access = true, $pocket_id = 0)
     {
-        $data = $this->getModel()->getLists($check_access, $pocket_id);
+        $data = $this->getModel()->getAllLists($check_access, $pocket_id);
         if (!$data) {
             return [];
         }
 
-        $lists = $this->generateWithData($data);
+        $lists = $this->generateWithData($data, true);
 
         return $lists;
     }
