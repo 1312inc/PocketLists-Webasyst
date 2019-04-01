@@ -33,7 +33,7 @@ class pocketlistsList extends pocketlistsItem
     /**
      * @var string
      */
-    private $color;
+    private $color = pocketlistsStoreColor::NONE;
 
     /**
      * @var string|null

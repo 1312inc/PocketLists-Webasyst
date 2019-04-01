@@ -38,11 +38,11 @@ class pocketlistsStrategyListFilter
         /** @var pocketlistsList $list */
         foreach ($lists as $i => $list) {
             if (!$archive && (int)$list->isArchived() === 0) {
-                $this->nonArchived = $lists[$i];
+                $this->nonArchived[] = $lists[$i];
             }
 
             if ($archive && (int)$list->isArchived() > 0) {
-                $this->archived = $lists[$i];
+                $this->archived[] = $lists[$i];
             }
         }
 
