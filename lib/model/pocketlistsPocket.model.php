@@ -15,7 +15,7 @@ class pocketlistsPocketModel extends kmModelExt
     /**
      * @param bool $contact_id
      *
-     * @return pocketlistsPocketModel|pocketlistsPocketModel[]|null
+     * @return array|null
      * @throws waException
      */
     public function getAllPockets($contact_id = false)
@@ -36,7 +36,7 @@ class pocketlistsPocketModel extends kmModelExt
             ]
         );
 
-        return $this->findByQuery($q, false);
+        return $q->fetchAll();
     }
 
     /**
@@ -77,9 +77,13 @@ class pocketlistsPocketModel extends kmModelExt
     }
 
     /**
+     * @param int $pocketId
+     *
      * @return int
+     * @throws waDbException
+     * @throws waException
      */
-    public function countLists()
+    public function countLists($pocketId)
     {
         $accessedLists = pocketlistsRBAC::getAccessListForContact();
 
@@ -91,7 +95,7 @@ class pocketlistsPocketModel extends kmModelExt
         return (int)$this
             ->query(
                 "SELECT COUNT(*) count_lists FROM pocketlists_list WHERE pocket_id = i:pocket_id AND archived = 0 {$listsSql}",
-                ['pocket_id' => $this->pk, 'lists' => $accessedLists]
+                ['pocket_id' => $pocketId, 'lists' => $accessedLists]
             )
             ->fetchField('count_lists');
     }

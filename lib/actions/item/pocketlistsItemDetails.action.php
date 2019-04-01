@@ -11,57 +11,41 @@ class pocketlistsItemDetailsAction extends waViewAction
      */
     public function execute()
     {
-        $id = waRequest::post('id', false, waRequest::TYPE_INT);
-        $listId = waRequest::post('list_id', false, waRequest::TYPE_INT);
-
-        $lm = new pocketlistsListModel();
-        $im = new pocketlistsItemModel();
+        $id = waRequest::request('id', false, waRequest::TYPE_INT);
+        $listId = waRequest::request('list_id', false, waRequest::TYPE_INT);
 
         $list = null;
-        $attachments = [];
+        /** @var pocketlistsListFactory $listFactory */
+        $listFactory = pl2()->getEntityFactory(pocketlistsList::class);
 
         if ($id) {
-            $am = new pocketlistsAttachmentModel();
+            /** @var pocketlistsItem $item */
+            $item = pl2()->getEntityFactory(pocketlistsItem::class)
+                ->findById($id);
 
-            $item = $im->getById($id);
-            $item = $im->extendItemData($item, true);
-
-            $attachments = $am->getByField('item_id', $item['id'], true);
-
-            /** @var pocketlistsListModel $list */
-            $list = $lm->findByPk($item['list_id']);
+            $list = $item->getList();
 
             $this->view->assign(
                 'pl2_attachments_path',
-                wa()->getDataUrl('attachments/'.$item['id'].'/', true, pocketlistsHelper::APP_ID)
+                wa()->getDataUrl('attachments/'.$item->getId().'/', true, pocketlistsHelper::APP_ID)
             );
         } else {
-            $item = new pocketlistsItemModel(
-                [
-                    'contact_id' => wa()->getUser()->getId(),
-                ]
-            );
-            $item = $im->extendItemData($item, true);
+            $item = new pocketlistsItem();
 
             if ($listId) {
-                $list = $lm->findByPk($listId);
+                /** @var pocketlistsList $list */
+                $list = wa(pocketlistsHelper::APP_ID)->getConfig()
+                    ->getEntityFactory(pocketlistsList::class)
+                    ->findById($id);
             }
         }
-
-        $this->view->assign('fileupload', $id);
-        $this->view->assign('attachments', $attachments);
-
-        $this->view->assign('item', $item);
-        $this->view->assign('list', $list);
-
-        $list = $list ?: null;
 
         // get contact that have access to this pocket
         $contacts = [];
         if (pocketlistsRBAC::canAssign()) {
             // if this item is from list - select only available contacts for this list
-            /** @var pocketlistsTeammateFactory $factory */
-            $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getEntityFactory('Teammate');
+            /** @var pocketlistsContactFactory $factory */
+            $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getEntityFactory(pocketlistsContact::class);
             $contacts = $factory->getTeammates(
                 pocketlistsRBAC::getAccessContacts($list),
                 true,
@@ -70,13 +54,17 @@ class pocketlistsItemDetailsAction extends waViewAction
             );
         }
 
-        $this->view->assign('lists', $lm->getLists());
-
         $this->view->assign(
-            'assign_user_id',
-            waRequest::post('assign_user_id', 0, waRequest::TYPE_INT) ?: $item->assigned_contact_id
+            [
+                'fileupload'     => $item->getId(),
+                'item'           => new pocketlistsItemOutputDecorator($item),
+                'list'           => $list,
+                'lists'          => $listFactory->findAllActive(),
+                'assign_user_id' => waRequest::post('assign_user_id', 0, waRequest::TYPE_INT)
+                    ?: $item->getAssignedContactId(),
+                'contacts'       => $contacts,
+                'plurl'          => wa()->getAppUrl(pocketlistsHelper::APP_ID),
+            ]
         );
-        $this->view->assign('contacts', $contacts);
-        $this->view->assign('plurl', wa()->getAppUrl(pocketlistsHelper::APP_ID));
     }
 }

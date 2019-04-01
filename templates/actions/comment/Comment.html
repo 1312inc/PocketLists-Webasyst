@@ -1,9 +1,9 @@
-<div data-pl-comment-id="{$comment.id}" {if isset($comment_page) && !empty($comment.item_id)}data-pl-item-id="{$comment.item_id}"{/if}>
-    <div class="pl-cue{if !empty($comment.my)} pl-my-cue{/if}{if !empty($comment.new) && empty($comment.my)} pl-new-comment{/if}">
+<div data-pl-comment-id="{$comment->getId()}" {if isset($comment_page) && !empty($comment->getItemId())}data-pl-item-id="{$comment->getItemId()}"{/if}>
+    <div class="pl-cue{if $comment->isMy()} pl-my-cue{/if}{if $comment->isRecentlyCreated() && !$comment->isMy()} pl-new-comment{/if}">
         <div class="pl-cue-inner">
             <div class="pl-bubble">
-                {if $comment.my && $comment.can_be_deleted && !(isset($archive) && $archive)}<a href="#" class="pl-delete-comment" data-pl-action="comment-delete" title="[`Delete`]">&times;</a>{/if}
-                {$comment.comment|nl2br|default:''}
+                {if $comment->isMy() && $comment->canBeDeleted() && !(isset($archive) && $archive)}<a href="#" class="pl-delete-comment" data-pl-action="comment-delete" title="[`Delete`]">&times;</a>{/if}
+                {$comment->getComment()|nl2br|default:''}
 
             </div><span class="pl-bubble-arrow"></span>
 
@@ -13,13 +13,12 @@
             </div>
             {/if}
 
-            <i class="icon16 userpic20" style="background-image: url({$comment.contact.userpic})" alt="{$comment.contact.username|escape}"></i> {$comment.contact.username|escape}
+            <i class="icon16 userpic20" style="background-image: url({$comment->getContact()->getUserpic()})" alt="{$comment->getContact()->getUsername()|escape}"></i> {$comment->getContact()->getUsername()|escape}
             {if isset($comment_page)}
             [`on`]
-            <!-- {if $comment.list_id}<a href="#/list/{$comment.list_id}/" class="pl-label pl-dark-{$comment.list_color|default:'none'}">{$comment.list_name|truncate:32|escape}</a>{/if} -->
-            <a href="{if $comment.list_id && $comment.pocket_id}#/pocket/{$comment.pocket_id}/list/{$comment.list_id}/{else if $comment.contact.id == $wa->user()->getId()}#/todo/{else}#/team/{$comment.contact.login}{/if}">{$comment.item_name|truncate:64|escape}</a>
+            <a href="{if $comment->getListId() && $comment->getPocketId()}#/pocket/{$comment->getPocketId()}/list/{$comment->getListId()}/{else if $comment->getContact()->isMe()}#/todo/{else}#/team/{$comment->gteContact()->getLogin()}{/if}">{$comment->getItemName()|truncate:64|escape}</a>
             {/if}
-            <span class="hint nowrap">{$comment.create_datetime|wa_datetime:'humandatetime'}</span>
+            <span class="hint nowrap">{$comment->getCreateDatetime()|wa_datetime:'humandatetime'}</span>
         </div>
     </div>
     {if isset($comment_page)}

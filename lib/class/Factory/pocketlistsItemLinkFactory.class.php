@@ -21,12 +21,12 @@ class pocketlistsItemLinkFactory
     }
 
     /**
-     * @param pocketlistsItemModel $item
+     * @param getForItem $item
      *
      * @return null|pocketlistsItemLinkModel[]
      */
-    public function getForItem(pocketlistsItemModel $item)
+    public function getForItem(pocketlistsItem $item)
     {
-        return $this->model->findByFields('item_id', $item->pk, true);
+        return $this->model->findByFields('item_id', $item->getId(), true);
     }
 }

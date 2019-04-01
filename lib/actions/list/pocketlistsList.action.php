@@ -70,8 +70,8 @@ class pocketlistsListAction extends pocketlistsViewAction
                 return;
             }
 
-            /** @var pocketlistsTeammateFactory $factory */
-            $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getEntityFactory(pocketlistsTeammate::class);
+            /** @var pocketlistsContactFactory $factory */
+            $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getEntityFactory(pocketlistsContact::class);
             $list_access_contacts = $factory->getTeammates(
                 pocketlistsRBAC::getAccessContacts($list),
                 true,

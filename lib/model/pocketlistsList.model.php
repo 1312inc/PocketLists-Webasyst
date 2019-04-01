@@ -273,6 +273,7 @@ class pocketlistsListModel extends kmModelExt
     }
 
     /**
+     * @deprecated
      * Get only active lists and its items with calculated priority that are accessible for current user
      *
      * @return array
@@ -280,7 +281,7 @@ class pocketlistsListModel extends kmModelExt
     public function getLists($check_access = true, $pocket_id = 0)
     {
         $lists = $this->getAllActiveLists($check_access, $pocket_id);
-        $lists = $this->calculatePriority($lists);
+//        $lists = $this->calculatePriority($lists);
 
         return $lists;
     }

@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class pocketlistsItem
+ */
 class pocketlistsItem extends pocketlistsEntity
 {
     const PRIORITY_NORM       = 0;
@@ -75,7 +78,7 @@ class pocketlistsItem extends pocketlistsEntity
     /**
      * @var int
      */
-    private $calc_priority;
+    protected $calc_priority;
 
     /**
      * @var int|null
@@ -138,6 +141,11 @@ class pocketlistsItem extends pocketlistsEntity
     private $comments_count = 0;
 
     /**
+     * @var pocketlistsComment[]
+     */
+    private $comments;
+
+    /**
      * @var int
      */
     private $attachments_count = 0;
@@ -145,12 +153,12 @@ class pocketlistsItem extends pocketlistsEntity
     /**
      * @var pocketlistsContact
      */
-    private $contact;
+    protected $contact;
 
     /**
      * @var pocketlistsContact
      */
-    private $assignContact;
+    private $assignedContact;
 
     /**
      * @var pocketlistsContact
@@ -158,9 +166,29 @@ class pocketlistsItem extends pocketlistsEntity
     private $completeContact;
 
     /**
+     * @var int
+     */
+    protected $linkedEntitiesCount = 0;
+
+    /**
      * @var pocketlistsItemLinkModel[]
      */
     protected $linkedEntities;
+
+    /**
+     * @var bool
+     */
+    private $favorite;
+
+    /**
+     * @var pocketlistsItem[]
+     */
+    private $childs = [];
+
+    /**
+     * @var pocketlistsAttachment[]
+     */
+    private $attachments;
 
     /**
      * @throws waException
@@ -170,22 +198,66 @@ class pocketlistsItem extends pocketlistsEntity
         if ($this->getAttachmentsCount()) {
             //todo: надо ли сразу загружать?
         }
+    }
 
-        $this->contact = new pocketlistsContact(new waContact($this->getContactId()));
-
-        if ($this->getAssignedContactId()) {
-            $this->assignContact = new pocketlistsContact(new waContact($this->getAssignedContactId()));
+    /**
+     * @return pocketlistsComment[]
+     * @throws waException
+     */
+    public function getComments()
+    {
+        if ($this->comments === null && $this->getCommentsCount()) {
+            /** @var pocketlistsCommentFactory $commentFactory */
+            $commentFactory = pl2()->getEntityFactory(pocketlistsComment::class);
+            $this->comments = $commentFactory->findForItem($this);
         }
 
-        if ($this->getCompleteContactId()) {
-            $this->completeContact = new pocketlistsContact(new waContact($this->getCompleteContactId()));
+        return $this->comments;
+    }
+
+    /**
+     * @param pocketlistsComment[] $comments
+     *
+     * @return pocketlistsItem
+     */
+    public function setComments($comments = null)
+    {
+        $this->comments = $comments;
+
+        return $this;
+    }
+
+    /**
+     * @return pocketlistsAttachment[]
+     * @throws waException
+     */
+    public function getAttachments()
+    {
+        if ($this->getAttachmentsCount() === 0) {
+            return [];
         }
 
-        $this->recalculatePriorityData();
+        if ($this->attachments === null) {
+            $this->attachments = pl2()->getEntityFactory(pocketlistsAttachment::class)->findByFields(
+                'item_id',
+                $this->getId(),
+                true
+            );
+        }
 
-//        if (!$edit) {
-//            $this->prepareOutput($item);
-//        }
+        return $this->attachments;
+    }
+
+    /**
+     * @param pocketlistsAttachment[]|null $attachments
+     *
+     * @return pocketlistsItem
+     */
+    public function setAttachments($attachments = null)
+    {
+        $this->attachments = $attachments;
+
+        return $this;
     }
 
     /**
@@ -193,15 +265,44 @@ class pocketlistsItem extends pocketlistsEntity
      */
     public function getContact()
     {
+        if ($this->contact === null) {
+            $this->contact = new pocketlistsContact(new waContact($this->getContactId()));
+        }
+
         return $this->contact;
     }
 
     /**
      * @return pocketlistsContact
      */
-    public function getAssignContact()
+    public function getAssignedContact()
     {
-        return $this->assignContact;
+        if ($this->assignedContact === null && $this->getAssignedContactId()) {
+            $this->assignedContact = new pocketlistsContact(new waContact($this->getAssignedContactId()));
+
+        }
+
+        return $this->assignedContact;
+    }
+
+    /**
+     * @return pocketlistsItem[]
+     */
+    public function getChilds()
+    {
+        return $this->childs;
+    }
+
+    /**
+     * @param pocketlistsItem[] $childs
+     *
+     * @return pocketlistsItem
+     */
+    public function setChilds($childs)
+    {
+        $this->childs = $childs;
+
+        return $this;
     }
 
     /**
@@ -209,6 +310,10 @@ class pocketlistsItem extends pocketlistsEntity
      */
     public function getCompleteContact()
     {
+        if ($this->completeContact === null && $this->getCompleteContactId()) {
+            $this->completeContact = new pocketlistsContact(new waContact($this->getCompleteContactId()));
+        }
+
         return $this->completeContact;
     }
 
@@ -226,16 +331,21 @@ class pocketlistsItem extends pocketlistsEntity
     }
 
     /**
-     * @return $this
+     * @return int
      */
-    public function recalculatePriorityData()
+    public function getLinkedEntitiesCount()
     {
-        $this->setCalcPriority(
-            max(
-                pocketlistsHelper::calcPriorityOnDueDate($this->getDueDate(), $this->getDueDatetime()),
-                $this->getPriority()
-            )
-        );
+        return $this->linkedEntitiesCount;
+    }
+
+    /**
+     * @param int $linkedEntitiesCount
+     *
+     * @return pocketlistsItem
+     */
+    public function setLinkedEntitiesCount($linkedEntitiesCount)
+    {
+        $this->linkedEntitiesCount = $linkedEntitiesCount;
 
         return $this;
     }
@@ -246,13 +356,33 @@ class pocketlistsItem extends pocketlistsEntity
      */
     public function getLinkedEntities()
     {
-        if ($this->linkedEntities === null) {
+        if ($this->linkedEntities === null && $this->getLinkedEntitiesCount() > 0) {
             /** @var pocketlistsItemLinkFactory $factory */
             $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getEntityFactory(pocketlistsItemLink::class);
             $this->linkedEntities = $factory->getForItem($this) ?: [];
         }
 
         return $this->linkedEntities;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFavorite()
+    {
+        return $this->favorite;
+    }
+
+    /**
+     * @param bool $favorite
+     *
+     * @return pocketlistsItem
+     */
+    public function setFavorite($favorite)
+    {
+        $this->favorite = $favorite;
+
+        return $this;
     }
 
     /**
@@ -306,10 +436,22 @@ class pocketlistsItem extends pocketlistsEntity
     }
 
     /**
-     * @return pocketlistsList
+     * @return pocketlistsList|pocketlistsNullList
+     * @throws waException
      */
     public function getList()
     {
+        if ($this->list === null) {
+            /** @var pocketlistsListFactory $factory */
+            $factory = pl2()->getEntityFactory(pocketlistsList::class);
+
+            if ($this->getListId()) {
+                $this->list = $factory->findById($this->getListId());
+            } else {
+                $this->list = $factory->createNewNullList();
+            }
+        }
+
         return $this->list;
     }
 
@@ -318,7 +460,7 @@ class pocketlistsItem extends pocketlistsEntity
      *
      * @return pocketlistsItem
      */
-    public function setList($list)
+    public function setList(pocketlistsList $list)
     {
         $this->list = $list;
 
@@ -790,6 +932,49 @@ class pocketlistsItem extends pocketlistsEntity
      */
     public function isDone()
     {
-        return $this->getStatus() == self::STATUS_DONE;
+        return $this->getStatus() == self::STATUS_DONE && $this->getCompleteDatetime();
+    }
+
+    /**
+     * @return string
+     */
+    public function getCssClass($type)
+    {
+        $classes = [
+            'priority'     => [
+                self::PRIORITY_BURNINHELL => 'pl-priority-fire',
+                self::PRIORITY_BLACK      => 'pl-priority-black',
+                self::PRIORITY_RED        => 'pl-priority-red',
+                self::PRIORITY_YELLOW     => 'pl-priority-yellow',
+                self::PRIORITY_GREEN      => 'pl-priority-green',
+                self::PRIORITY_NORM       => '',
+            ],
+            'due-datetime' => [
+                self::PRIORITY_BURNINHELL => '',
+                self::PRIORITY_BLACK      => '',
+                self::PRIORITY_RED        => 'pl-due-overdue',
+                self::PRIORITY_YELLOW     => 'pl-due-today',
+                self::PRIORITY_GREEN      => 'pl-due-tomorrow',
+                self::PRIORITY_NORM       => '',
+            ],
+            'due-date'     => [
+                self::PRIORITY_BURNINHELL => '',
+                self::PRIORITY_BLACK      => '',
+                self::PRIORITY_RED        => 'pl-due-overdue',
+                self::PRIORITY_YELLOW     => 'pl-due-today',
+                self::PRIORITY_GREEN      => 'pl-due-tomorrow',
+                self::PRIORITY_NORM       => 'pl-due-someday',
+            ],
+        ];
+
+        return isset($classes[$type][$this->getCalcPriority()]) ? $classes[$type][$this->getCalcPriority()] : '';
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAssignedtoSomeone()
+    {
+        return $this->getAssignedContact() && $this->getAssignedContactId() != $this->getContactId();
     }
 }

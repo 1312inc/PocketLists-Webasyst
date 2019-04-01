@@ -6,5 +6,6 @@
 interface pocketlistsHydratableInterface
 {
     public function afterHydrate();
+
     public function beforeExtract();
 }

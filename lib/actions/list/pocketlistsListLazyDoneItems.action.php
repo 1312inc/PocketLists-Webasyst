@@ -51,7 +51,7 @@ class pocketlistsListLazyDoneItemsAction extends waViewAction
                 return;
             }
 
-            /** @var pocketlistsTeammateFactory $factory */
+            /** @var pocketlistsContactFactory $factory */
             $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getEntityFactory('Teammate');
             $list_access_contacts = $factory->getTeammates(
                 pocketlistsRBAC::getAccessContacts($list),

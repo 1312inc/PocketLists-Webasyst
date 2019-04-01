@@ -45,25 +45,44 @@ class pocketlistsItemFactory extends pocketlistsFactory
     public function findUndoneByList(pocketlistsList $list)
     {
         $data = $this->getModel()->getUndoneByList($list->getId());
-        $all = true;
 
-        return $this->generateWithData($data, $all);
+        return $this->generateWithList($data, $list);
     }
 
     /**
-     * @param int  $listId
-     * @param int  $offset
-     * @param int  $limit
-     * @param bool $tree
+     * @param pocketlistsList $list
+     * @param int             $offset
+     * @param int             $limit
+     * @param bool            $tree
      *
-     * @return array|mixed
+     * @return pocketlistsItem[]
      * @throws waException
      */
-    public function findDoneByList($listId, $offset = 0, $limit = 10, $tree = true)
+    public function findDoneByList(pocketlistsList $list, $offset = 0, $limit = 10, $tree = true)
     {
-        $data = $this->getModel()->getDoneByList($listId, $offset, $limit, $tree);
-        $all = true;
+        $data = $this->getModel()->getDoneByList($list->getId(), $offset, $limit, $tree);
 
-        return $this->generateWithData($data, $all);
+        return $this->generateWithList($data, $list);
+    }
+
+    /**
+     * @param pocketlistsItem[] $items
+     * @param pocketlistsList    $list
+     *
+     * @return pocketlistsItem[]
+     */
+    private function generateWithList($items, pocketlistsList $list)
+    {
+        if (!$items) {
+            return [];
+        }
+
+        /** @var pocketlistsItem[] $items */
+        $items = $this->generateWithData($items, true);
+        foreach ($items as $item) {
+            $item->setList($list);
+        }
+
+        return $items;
     }
 }

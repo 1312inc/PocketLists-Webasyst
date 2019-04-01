@@ -219,48 +219,49 @@ class pocketlistsItemModel extends kmModelExt
         if (!$contact_id) {
             $contact_id = wa()->getUser()->getId();
         }
+//
+//        $key = $this->getCacheKey($contact_id.$date);
+//
+//        return $this->getFromCache(
+//            $key,
+//            function () use ($key, $contact_id, $date) {
+//                $cache = wa()->getCache();
+//                $result = false;
+//
+//                if ($cache) {
+//                    $result = $cache->get($key);
+//                }
 
-        $key = $this->getCacheKey($contact_id.$date);
+//                if (!$result) {
+                    $items = $this->fetchTodo($contact_id, $date, $calc_priority = []);
 
-        return $this->getFromCache(
-            $key,
-            function () use ($key, $contact_id, $date) {
-                $cache = wa()->getCache();
-                $result = false;
-
-                if ($cache) {
-                    $result = $cache->get($key);
-                }
-
-                if (!$result) {
-                    $items = $this->fetchTodo($contact_id, $date);
-
-                    $items = self::generateModels($items);
+//                    $items = self::generateModels($items);
 
                     $result = [
                         0 => [],
                         1 => [],
                     ];
 
-                    if ($items) {
-                        foreach ($items as $id => $item) {
-                            $result[$item['status']][$id] = $this->extendItemData($item);
-                        }
-
-                        $result = [
-                            0 => $this->getProperSort($result[0]),
-                            1 => $result[1],
-                        ];
-                    }
-
-                    if ($cache) {
-                        $cache->set($key, $result, self::TTL);
-                    }
-                }
-
-                return $result;
-            }
-        );
+//                    if ($items) {
+//                        foreach ($items as $id => $item) {
+//                            $result[$item['status']][$id] = $this->extendItemData($item);
+//                        }
+//
+//                        $result = [
+//                            0 => $this->getProperSort($result[0]),
+//                            1 => $result[1],
+//                        ];
+//                    }
+//
+//                    if ($cache) {
+//                        $cache->set($key, $result, self::TTL);
+//                    }
+//                }
+//
+                return $items;
+//                return $result;
+//            }
+//        );
 
 //        return $this->getTree($items, true);
     }
@@ -274,31 +275,13 @@ class pocketlistsItemModel extends kmModelExt
      * @throws waDbException
      * @throws waException
      */
-    protected function fetchTodo($contact_id, $date)
+    public function fetchTodo($contact_id, $date, array $calc_priority = [])
     {
         // get to-do items only from accessed pockets
 //        $lists = pocketlistsHelper::getAccessListForContact($contact_id);
 
         $select_sql = [
-            "i.id id",
-            "i.parent_id parent_id",
-            "i.has_children has_children",
-            "i.name name",
-            "i.note note",
-            "i.status status",
-            "i.priority priority",
-            "i.contact_id contact_id",
-            "i.create_datetime create_datetime",
-            "i.due_date due_date",
-            "i.due_datetime due_datetime",
-            "i.complete_datetime complete_datetime",
-            "i.complete_contact_id complete_contact_id",
-            "i.assigned_contact_id assigned_contact_id",
-            "i.key_list_id key_list_id",
-            "l.id list_id",
-            "l.icon list_icon",
-            "l.color list_color",
-            "l.name list_name",
+            "i.*",
             "IF(uf.contact_id, 1, 0) favorite",
         ];
         $join_sql = [
@@ -352,14 +335,17 @@ class pocketlistsItemModel extends kmModelExt
                 break;
         }
 
-        if ($us->myToDosCreatedByOthers(
-            ) == pocketlistsUserSettings::MY_TO_DOS_CREATED_BY_OTHER_IN_SHARED_LISTS_FAVORITE_LISTS
+        if ($us->myToDosCreatedByOthers() == pocketlistsUserSettings::MY_TO_DOS_CREATED_BY_OTHER_IN_SHARED_LISTS_FAVORITE_LISTS
             || $us->myToDosCreatedByMe() == pocketlistsUserSettings::MY_TO_DOS_CREATED_BY_ME_IN_SHARED_FAVORITE_LISTS) {
             $join_sql[] = "pocketlists_user_favorites uf2 ON uf2.contact_id = i:contact_id AND uf2.item_id = i2.id";
             $select_sql[] = "IF(uf2.contact_id, 1, 0) favorite_list";
         }
 
         $and_sql[] = "(i.assigned_contact_id = i:contact_id OR i.assigned_contact_id = 0 OR i.assigned_contact_id IS NULL)";
+
+        if ($calc_priority) {
+            $and_sql[] = '(i.calc_priority in (i:calc_priority))';
+        }
 
         $or_sql = implode("\n OR ", $or_sql);
         $and_sql = implode("\n AND ", $and_sql);
@@ -382,9 +368,10 @@ class pocketlistsItemModel extends kmModelExt
         $items = $this->query(
             $sql,
             [
-                'list_ids'   => $lists,
-                'contact_id' => $contact_id,
-                'date'       => $date,
+                'list_ids'      => $lists,
+                'contact_id'    => $contact_id,
+                'date'          => $date,
+                'calc_priority' => $calc_priority,
             ]
         )->fetchAll();
 
@@ -514,7 +501,7 @@ class pocketlistsItemModel extends kmModelExt
      *
      * @return array|mixed|null
      */
-    public function getById($ids, $user_id = false)
+   /* public function getById($ids, $user_id = false)
     {
         $key = $this->getCacheKey(serialize($ids).$user_id);
 
@@ -540,7 +527,7 @@ class pocketlistsItemModel extends kmModelExt
                 return self::$cached[$key];
             }
         );
-    }
+    }*/
 
     /**
      * @param      $id
@@ -585,20 +572,22 @@ class pocketlistsItemModel extends kmModelExt
         return "SELECT
                   i.*,
                   IF(uf.contact_id, 1, 0) favorite,
-                  pl.name list_name,
+                  /*pl.name list_name,
                   pl.sort list_sort,
                   pl.type list_type,
                   pl.icon list_icon,
                   pl.archived list_archived,
                   pl.hash list_hash,
-                  pl.color list_color,
+                  pl.color list_color,*/
                   (select count(*) from pocketlists_attachment pa where pa.item_id = i.id) attachments_count,
-                  (select count(*) from pocketlists_comment pc where pc.item_id = i.id) comments_count  
+                  (select count(*) from pocketlists_comment pc where pc.item_id = i.id) comments_count,  
+                  (select count(*) from pocketlists_item_link pil where pil.item_id = i.id) linked_entities_count  
                 FROM {$this->table} i
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
-                LEFT JOIN (select i2.name, l2.*
+                /*LEFT JOIN (select i2.name, l2.*
                   from pocketlists_list l2
-                         JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) pl ON pl.id = i.list_id";
+                         JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) pl ON pl.id = i.list_id*/
+                 ";
     }
 
     /**
@@ -1303,70 +1292,6 @@ class pocketlistsItemModel extends kmModelExt
     }
 
     /**
-     * @return int|null|string
-     * @throws waException
-     */
-    public function getAppCountForUser()
-    {
-        $us = new pocketlistsUserSettings();
-        $icon = $us->appIcon();
-
-        /** @var pocketlistsItemModel[] $items */
-        $items = $this->getToDo();
-
-        $count = 0;
-        foreach ($items[0] as $item) {
-            switch ($icon) {
-                case pocketlistsUserSettings::ICON_OVERDUE: // overdue
-                    if (in_array(
-                        $item->calc_priority,
-                        [
-                            self::PRIORITY_RED,
-                            self::PRIORITY_BLACK,
-                            self::PRIORITY_BURNINHELL,
-                        ]
-                    )) {
-                        $count++;
-                    }
-
-                    break;
-
-                case pocketlistsUserSettings::ICON_OVERDUE_TODAY: // overdue + today
-                    if (in_array(
-                        $item->calc_priority,
-                        [
-                            self::PRIORITY_YELLOW,
-                            self::PRIORITY_RED,
-                            self::PRIORITY_BLACK,
-                            self::PRIORITY_BURNINHELL,
-                        ]
-                    )) {
-                        $count++;
-                    }
-                    break;
-
-                case pocketlistsUserSettings::ICON_OVERDUE_TODAY_AND_TOMORROW: // overdue + today + tomorrow
-                    if (in_array(
-                        $item->calc_priority,
-                        [
-                            self::PRIORITY_GREEN,
-                            self::PRIORITY_YELLOW,
-                            self::PRIORITY_RED,
-                            self::PRIORITY_BLACK,
-                            self::PRIORITY_BURNINHELL,
-                        ]
-                    )) {
-                        $count++;
-                    }
-                    break;
-
-            }
-        }
-
-        return $count ?: null;
-    }
-
-    /**
      * @param $name
      * @param $datetime
      *
@@ -1496,5 +1421,39 @@ class pocketlistsItemModel extends kmModelExt
         );
 
         return $result->fetchAll('id');
+    }
+
+    /**
+     * обновляем приоритеты в зависимости от текущего времени
+     */
+    public function updateCalcPriority()
+    {
+        $itemsWithDue = $this->where('due_date is not null or due_datetime is not null')->fetchAll('id');
+        foreach ($itemsWithDue as $item) {
+            $newCalcPriority = max(
+                pocketlistsHelper::calcPriorityOnDueDate($item['due_date'], $item['due_datetime']),
+                $item['priority']
+            );
+
+            if ($item['calc_priority'] != $newCalcPriority) {
+                $this->updateById($item['id'], ['calc_priority' => $newCalcPriority]);
+            }
+        }
+    }
+
+    /**
+     * @param array|int $value
+     *
+     * @return array|mixed|null
+     */
+    public function getById($value)
+    {
+        $all = !is_array($this->id) && is_array($value);
+        $sql = $this->getQuery().'
+                WHERE i.id IN (i:ids)';
+
+        $items = $this->query($sql, ['contact_id' => pl2()->getUser()->getContact()->getId(), 'ids' => $value])->fetchAll('id');
+
+        return $all ? $items : reset($items);
     }
 }

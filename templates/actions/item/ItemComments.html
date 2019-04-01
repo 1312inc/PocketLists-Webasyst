@@ -1,25 +1,25 @@
-<div class="pl-comments-form pl-chat" data-pl2-item-id="{$item.id}">
+<div class="pl-comments-form pl-chat" data-pl2-item-id="{$item->getId()}">
     <div class="pl-chat-title">
         <div class="block">
             <a href="#" class="pl-item-details-cancel pl-close" title="[`Close`]">&times;</a>
-            <h5>{$item.name}</h5>
+            <h5>{$item->getName()|escape}</h5>
         </div>
     </div>
     <div class="pl-chat-contents">
 
         {$wa->csrf()}
-        <input type="hidden" name="item[id]" value="{$item.id}"/>
-        <input type="hidden" id="pl-item-list-id" value="{$item.list_id}"/>
+        <input type="hidden" name="item[id]" value="{$item->getId()}"/>
+        <input type="hidden" id="pl-item-list-id" value="{$item->getListId()}"/>
 
-        {foreach $item.chat.comments as $comment}
+        {foreach $item->getComments() as $comment}
             {include '../comment/Comment.html' comment=$comment inline}
         {/foreach}
 
     </div>
     <div class="pl-chat-reply">
-        <div class="pl-reply"{if $item.status} style="display:none;"{/if}>
-            <i class="icon16 userpic20" style="background-image: url({$item.chat.current_user.userpic})"
-               alt="{$item.chat.current_user.username|escape}"></i>
+        <div class="pl-reply"{if $item->isDone()} style="display:none;"{/if}>
+            <i class="icon16 userpic20" style="background-image: url({$current_user->getContact()->getPhoto(20)})"
+               alt="{$current_user->getContact()->getName()|escape}"></i>
             <textarea rows="1" placeholder="[`Add comment`]"></textarea>
         </div>
     </div>

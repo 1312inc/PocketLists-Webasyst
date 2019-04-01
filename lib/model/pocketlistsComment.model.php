@@ -23,8 +23,10 @@ class pocketlistsCommentModel extends kmModelExt
             $item_ids = [$item_ids];
         }
 
-        return $this->query(
-            "SELECT * FROM {$this->table} WHERE item_id IN (i:ids) ORDER BY item_id, id",
+        return $this->query("
+            {$this->getSql()}
+            WHERE item_id IN (i:ids)
+            ORDER BY item_id, id",
             ['ids' => $item_ids]
         )->fetchAll('item_id', 2);
     }
@@ -51,6 +53,8 @@ class pocketlistsCommentModel extends kmModelExt
      * @param int $limit
      *
      * @return array
+     * @throws waDbException
+     * @throws waException
      */
     public function getComments($start = 0, $limit = 50)
     {
@@ -58,23 +62,7 @@ class pocketlistsCommentModel extends kmModelExt
         $lists = [];
         $list_sql = pocketlistsRBAC::filterListAccess($lists, $user_id);
 
-        $q = "SELECT 
-                c.id id,
-                c.item_id item_id,
-                i.name item_name,
-                l.id list_id,
-                i2.name list_name,
-                l.color list_color,
-                c.contact_id contact_id,
-                c.comment comment,
-                c.create_datetime create_datetime,
-                p.id pocket_id,
-                p.name pocket_name
-            FROM {$this->table} c
-            LEFT JOIN pocketlists_item as i ON i.id = c.item_id
-            LEFT JOIN pocketlists_list as l ON l.id = i.list_id
-            LEFT JOIN pocketlists_item as i2 ON i2.key_list_id = l.id
-            LEFT JOIN pocketlists_pocket p ON p.id = l.pocket_id
+        $q = "{$this->getSql()}
             WHERE {$list_sql}
             ORDER BY id DESC
             LIMIT {$start}, {$limit}";
@@ -88,7 +76,7 @@ class pocketlistsCommentModel extends kmModelExt
             ]
         )->fetchAll();
 
-        return array_map(['pocketlistsCommentModel', 'extendData'], $comments);
+        return $comments;
     }
 
     /**
@@ -118,5 +106,26 @@ class pocketlistsCommentModel extends kmModelExt
                 'user_last_activity' => $user_last_activity,
             ]
         )->count();
+    }
+
+    private function getSql()
+    {
+        return "SELECT 
+                c.id id,
+                c.item_id item_id,
+                i.name item_name,
+                l.id list_id,
+                i2.name list_name,
+                l.color list_color,
+                c.contact_id contact_id,
+                c.comment comment,
+                c.create_datetime create_datetime,
+                p.id pocket_id,
+                p.name pocket_name
+            FROM {$this->table} c
+            LEFT JOIN pocketlists_item as i ON i.id = c.item_id
+            LEFT JOIN pocketlists_list as l ON l.id = i.list_id
+            LEFT JOIN pocketlists_item as i2 ON i2.key_list_id = l.id
+            LEFT JOIN pocketlists_pocket p ON p.id = l.pocket_id";
     }
 }

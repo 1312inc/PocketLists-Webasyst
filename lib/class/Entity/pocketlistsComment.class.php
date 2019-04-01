@@ -5,6 +5,8 @@
  */
 class pocketlistsComment extends pocketlistsEntity
 {
+    const ALLOWED_DELAY_FOR_DELETE = 86400; // 60 * 60 * 24
+
     /**
      * @var int
      */
@@ -14,6 +16,36 @@ class pocketlistsComment extends pocketlistsEntity
      * @var int
      */
     private $item_id;
+
+    /**
+     * @var string
+     */
+    private $item_name = '';
+
+    /**
+     * @var string
+     */
+    private $list_name = '';
+
+    /**
+     * @var string
+     */
+    private $list_color = '';
+
+    /**
+     * @var int
+     */
+    private $pocket_id = 0;
+
+    /**
+     * @var string
+     */
+    private $pocket_name = '';
+
+    /**
+     * @var int
+     */
+    private $list_id;
 
     /**
      * @var int
@@ -34,6 +66,85 @@ class pocketlistsComment extends pocketlistsEntity
      * @var pocketlistsContact
      */
     private $contact;
+
+    /**
+     * @var pocketlistsItem
+     */
+    private $item;
+
+    /**
+     * @var bool
+     */
+    private $recentlyCreated;
+
+    /**
+     * @return pocketlistsItem
+     * @throws waException
+     */
+    public function getItem()
+    {
+        if ($this->item === null && $this->item_id) {
+            $this->item = pl2()->getEntityFactory(pocketlistsItem::class)->findById($this->item_id);
+        }
+
+        return $this->item;
+    }
+
+    /**
+     * @param pocketlistsItem $item
+     *
+     * @return pocketlistsComment
+     */
+    public function setItem(pocketlistsItem $item)
+    {
+        $this->item = $item;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function canBeDeleted()
+    {
+        return (time() - strtotime($this->getCreateDatetime()) < self::ALLOWED_DELAY_FOR_DELETE);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isMy()
+    {
+        return $this->getContactId() === pl2()->getUser()->getContact()->getId();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNew()
+    {
+        return $this->getId() === null;
+    }
+
+    /**
+     * @param string $lastActivityTime
+     *
+     * @return $this
+     */
+    public function setRecentlyCreated($lastActivityTime = '')
+    {
+        $this->recentlyCreated = strtotime($this->getCreateDatetime()) > strtotime($lastActivityTime);
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRecentlyCreated()
+    {
+        return $this->recentlyCreated;
+    }
 
     /**
      * @return int
@@ -137,9 +248,14 @@ class pocketlistsComment extends pocketlistsEntity
 
     /**
      * @return pocketlistsContact
+     * @throws waException
      */
     public function getContact()
     {
+        if ($this->getContactId() && $this->contact === null) {
+            $this->contact = new pocketlistsContact(new waContact($this->getContactId()));
+        }
+
         return $this->contact;
     }
 
@@ -151,6 +267,126 @@ class pocketlistsComment extends pocketlistsEntity
     public function setContact($contact)
     {
         $this->contact = $contact;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getItemName()
+    {
+        return $this->item_name;
+    }
+
+    /**
+     * @param string $item_name
+     *
+     * @return pocketlistsComment
+     */
+    public function setItemName($item_name)
+    {
+        $this->item_name = $item_name;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getListName()
+    {
+        return $this->list_name;
+    }
+
+    /**
+     * @param string $list_name
+     *
+     * @return pocketlistsComment
+     */
+    public function setListName($list_name)
+    {
+        $this->list_name = $list_name;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getListColor()
+    {
+        return $this->list_color;
+    }
+
+    /**
+     * @param string $list_color
+     *
+     * @return pocketlistsComment
+     */
+    public function setListColor($list_color)
+    {
+        $this->list_color = $list_color;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPocketId()
+    {
+        return $this->pocket_id;
+    }
+
+    /**
+     * @param int $pocket_id
+     *
+     * @return pocketlistsComment
+     */
+    public function setPocketId($pocket_id)
+    {
+        $this->pocket_id = $pocket_id;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPocketName()
+    {
+        return $this->pocket_name;
+    }
+
+    /**
+     * @param string $pocket_name
+     *
+     * @return pocketlistsComment
+     */
+    public function setPocketName($pocket_name)
+    {
+        $this->pocket_name = $pocket_name;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getListId()
+    {
+        return $this->list_id;
+    }
+
+    /**
+     * @param int $list_id
+     *
+     * @return pocketlistsComment
+     */
+    public function setListId($list_id)
+    {
+        $this->list_id = $list_id;
 
         return $this;
     }

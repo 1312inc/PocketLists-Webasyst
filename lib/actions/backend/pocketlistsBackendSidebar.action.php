@@ -7,20 +7,27 @@ class pocketlistsBackendSidebarAction extends pocketlistsViewAction
 {
     /**
      * @throws waDbException
+     * @throws waException
      */
     public function execute()
     {
-        $im = new pocketlistsItemModel();
-        $todo = $im->getToDo();
-        $this->view->assign('sidebar_todo_count', count($todo[0]));
-        $this->view->assign('sidebar_todo_count_icon', $im->getAppCountForUser());
+        /** @var pocketlistsItemModel $itemModel */
+        $itemModel = pl2()->getModel(pocketlistsItem::class);
+        $items = $itemModel->fetchTodo(pl2()->getUser()->getContact()->getId(),false);
 
-        $list_model = new pocketlistsListModel();
-        $this->view->assign('lists', $list_model->getLists());
+        $sidebar_todo_count = (new pocketlistsStrategyItemFilter())->countUndone($items);
+        $sidebar_todo_count_icon = pl2()->getUser()->getAppCount();
 
-        /** @var pocketlistsTeammateFactory $factory */
-        $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getEntityFactory('Teammate');
-        $teammates = $factory->getTeammates(pocketlistsRBAC::getAccessContacts(), true, true, true);
+        $this->view->assign(compact('sidebar_todo_count', 'sidebar_todo_count_icon'));
+
+        /** @var pocketlistsListFactory $pocketFactory */
+        $pocketFactory = pl2()->getEntityFactory(pocketlistsList::class);
+        $this->view->assign('lists', $pocketFactory->findAllActive());
+
+        /** @var pocketlistsContactFactory $contactFactory */
+        $contactFactory = pl2()->getEntityFactory(pocketlistsContact::class);
+        $teammates = $contactFactory->getTeammates(pocketlistsRBAC::getAccessContacts(), true, true, true);
+
         foreach ($teammates as $tid => $teammate) {
             if (!$teammate->getId()) {
                 unset($teammates[$tid]);
@@ -30,26 +37,32 @@ class pocketlistsBackendSidebarAction extends pocketlistsViewAction
 
         $last_activity = pocketlistsActivity::getUserActivity();
 
-        $comment_model = new pocketlistsCommentModel();
-        $item_model = new pocketlistsItemModel();
+        /** @var pocketlistsCommentModel $commentModel */
+        $commentModel = pl2()->getModel(pocketlistsComment::class);
 
-        $new_items_count = $item_model->getLastActivityItems($last_activity);
-        $this->view->assign('new_comments_count', $comment_model->getLastActivityComments($last_activity));
-        $this->view->assign('new_items_count', $new_items_count);
-        $this->view->assign('last_activity', $last_activity);
+        /** @var pocketlistsItemModel $itemModel */
+        $itemModel = pl2()->getModel(pocketlistsItem::class);
 
-        $item_model = new pocketlistsItemModel();
-        $this->view->assign('favorites_count', $item_model->getFavoritesCount());
+        $this->view->assign(
+            [
+                'new_comments_count' => $commentModel->getLastActivityComments($last_activity),
+                'new_items_count'    => $itemModel->getLastActivityItems($last_activity),
+                'last_activity'      => $last_activity,
+                'favorites_count'    => $itemModel->getFavoritesCount(),
+            ]
+        );
 
-//        pocketlistsActivity::setUserActivity();
+        /** @var pocketlistsPocketFactory $listFactory */
+        $pocketFactory = pl2()->getEntityFactory(pocketlistsPocket::class);
+        $pockets = $pocketFactory->getAllPockets();
 
-        $pockets = pocketlistsPocketModel::model()->getAllPockets();
+        /** @var pocketlistsPocket $pocket */
         foreach ($pockets as $pocketId => $pocket) {
-            if (!pocketlistsRBAC::contactHasAccessToPocket($pocket->pk)) {
+            if (!pocketlistsRBAC::contactHasAccessToPocket($pocket->getId())) {
                 unset($pockets[$pocketId]);
             }
         }
-        $linkedApps = wa(pocketlistsHelper::APP_ID)->getConfig()->getLinkedApp();
+        $linkedApps = pl2()->getLinkedApp();
 
         $this->view->assign(compact('pockets', 'linkedApps'));
     }

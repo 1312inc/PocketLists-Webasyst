@@ -247,4 +247,16 @@ class pocketlistsHelper
 
         return sprintf(_w('%d y'), $years, $yearDays);
     }
+
+    /**
+     * @param string    $msg
+     * @param Throwable $ex
+     */
+    public static function logError($msg, $ex)
+    {
+        waLog::log(
+            sprintf("%s.\nException info: %s\n%s", $msg, $ex->getMessage(), $ex->getTraceAsString()),
+            'pocketlists/error.log'
+        );
+    }
 }
