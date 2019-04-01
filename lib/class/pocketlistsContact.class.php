@@ -36,9 +36,9 @@ class pocketlistsContact
     private $userPic = '/wa-content/img/userpic20@2x.jpg';
 
     /**
-     * @var bool
+     * @var string
      */
-    private $status = false;
+    private $status = '';
 
     /**
      * @var string
@@ -98,7 +98,7 @@ class pocketlistsContact
             $this->id = $this->contact->getId();
             $this->photoUrl = $this->contact->getPhoto();
             $this->login = $this->contact->get('login');
-            $this->userpic = $this->contact->getPhoto(20);
+            $this->userPic = $this->contact->getPhoto(20);
             $this->status = $this->contact->getStatus();
             $this->teamrole = $this->contact->get('jobtitle');
             $this->exists = true;
@@ -128,11 +128,13 @@ class pocketlistsContact
     }
 
     /**
-     * @return array
+     * @param string $key
+     *
+     * @return array|mixed
      */
-    public function getItemsInfo()
+    public function getItemsInfo($key = '')
     {
-        return $this->itemsInfo;
+        return isset($this->itemsInfo[$key]) ? $this->itemsInfo[$key] : $this->itemsInfo;
     }
 
     /**
@@ -196,9 +198,9 @@ class pocketlistsContact
     }
 
     /**
-     * @return bool
+     * @return string
      */
-    public function isStatus()
+    public function getStatus()
     {
         return $this->status;
     }

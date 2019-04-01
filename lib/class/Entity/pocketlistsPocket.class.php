@@ -36,6 +36,11 @@ class pocketlistsPocket extends pocketlistsEntity
     private $lists;
 
     /**
+     * @var
+     */
+    private $listsCount;
+
+    /**
      * @var pocketlistsList[]
      */
     private $userLists;
@@ -46,6 +51,30 @@ class pocketlistsPocket extends pocketlistsEntity
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getListsCount()
+    {
+        if ($this->listsCount === null) {
+            $this->listsCount = pl2()->getModel(self::class)->countLists($this->getId());
+        }
+
+        return $this->listsCount;
+    }
+
+    /**
+     * @param mixed $listsCount
+     *
+     * @return pocketlistsPocket
+     */
+    public function setListsCount($listsCount)
+    {
+        $this->listsCount = $listsCount;
+
+        return $this;
     }
 
     /**

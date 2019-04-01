@@ -41,7 +41,8 @@ class pocketlistsRBAC
             return array_keys(self::$lists[$user_id]);
         }
 
-        $listModel = new pocketlistsListModel();
+        /** @var pocketlistsListModel $listModel */
+        $listModel = pl2()->getModel(pocketlistsList::class);
 
         if (self::isAdmin($contact_id)) {
             $lists = $listModel->getAll('id');
@@ -60,7 +61,7 @@ class pocketlistsRBAC
                     case $rightValue == self::RIGHT_ADMIN:
                         $lists = $listModel->getAllLists(false, $pocketId);
                         foreach ($lists as $list) {
-                            self::addListUserRight($user_id, $list->pk, true);
+                            self::addListUserRight($user_id, $list['id'], true);
                         }
                         break;
 

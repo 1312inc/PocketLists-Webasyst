@@ -66,6 +66,27 @@ class pocketlistsFactory
         return $this->generateWithData($data, $all);
     }
 
+    /**
+     * @param      $field
+     * @param null $value
+     * @param bool $all
+     * @param bool $limit
+     *
+     * @return pocketlistsEntity[]|pocketlistsEntity
+     * @throws waException
+     */
+    public function findByFields($field, $value = null, $all = false, $limit = false)
+    {
+        if (is_array($field)) {
+            $limit = $all;
+            $all = $value;
+            $value = false;
+        }
+
+        $data = $this->getModel()->getByField($field, $value, $all, $limit);
+
+        return $this->generateWithData($data, $all);
+    }
 
     /**
      * @param array $data

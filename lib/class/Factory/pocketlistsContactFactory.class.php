@@ -3,7 +3,7 @@
 /**
  * Class pocketlistsTeammateFactory
  */
-class pocketlistsTeammateFactory extends pocketlistsFactory
+class pocketlistsContactFactory extends pocketlistsFactory
 {
     /**
      * @return kmModelExt
@@ -20,7 +20,6 @@ class pocketlistsTeammateFactory extends pocketlistsFactory
      * @param bool $exclude_deleted
      *
      * @return pocketlistsContact[]
-     * @throws waDbException
      * @throws waException
      */
     public function getTeammates(
@@ -31,9 +30,11 @@ class pocketlistsTeammateFactory extends pocketlistsFactory
     ) {
         $teammates = [];
 
-        $im = new pocketlistsItemModel();
-        $items_count_names = $im->getAssignedItemsCountAndNames($teammates_ids);
-        $last_activities = $sort_by_last_activity ? $im->getLastActivities($teammates_ids) : [];
+        /** @var pocketlistsItemModel $itemModel */
+        $itemModel = pl2()->getModel(pocketlistsItem::class);
+        $items_count_names = $itemModel->getAssignedItemsCountAndNames($teammates_ids);
+        $last_activities = $sort_by_last_activity ? $itemModel->getLastActivities($teammates_ids) : [];
+
         foreach ($teammates_ids as $tid) {
             if ($exclude_me && $tid == wa()->getUser()->getId()) {
                 continue;
@@ -59,7 +60,7 @@ class pocketlistsTeammateFactory extends pocketlistsFactory
             $mate->setLastActivity(isset($last_activities[$tid]) ? $last_activities[$tid] : 0);
 
             if (isset($items_count_names[$tid])) {
-                $mate->getItemsInfo([
+                $mate->setItemsInfo([
                     'count'        => count($items_count_names[$tid]['item_names']),
                     'names'        => implode(', ', $items_count_names[$tid]['item_names']),
                     'max_priority' => $items_count_names[$tid]['item_max_priority'],

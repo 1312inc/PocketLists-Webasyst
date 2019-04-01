@@ -55,7 +55,7 @@ class pocketlistsConfig extends waAppConfig
     /**
      * @param $entity
      *
-     * @return pocketlistsItemLinkFactory|pocketlistsItemFactory|pocketlistsListFactory|pocketlistsTeammateFactory
+     * @return pocketlistsItemLinkFactory|pocketlistsItemFactory|pocketlistsListFactory|pocketlistsContactFactory
      * @throws waException
      */
     public function getEntityFactory($entity)
@@ -94,7 +94,7 @@ class pocketlistsConfig extends waAppConfig
 
         $modelClass = sprintf('%sModel', $entity);
 
-        if (!class_exists($modelClass) ) {
+        if (!class_exists($modelClass)) {
             throw new waException(sprintf('No model class for %s', $entity));
         }
 
@@ -117,7 +117,7 @@ class pocketlistsConfig extends waAppConfig
 
         $repositoryClass = sprintf('%sRepository', $entity);
 
-        if (!class_exists($repositoryClass) ) {
+        if (!class_exists($repositoryClass)) {
             throw new waException(sprintf('No repository class for %s', $entity));
         }
 
@@ -150,6 +150,8 @@ class pocketlistsConfig extends waAppConfig
 
         $this->models[''] = new kmModelExt();
         $this->factories[''] = new pocketlistsFactory();
+
+        $this->registerGlobal();
     }
 
     public function onInit()
@@ -161,11 +163,24 @@ class pocketlistsConfig extends waAppConfig
         }
     }
 
+    /**
+     * @return int|null
+     * @throws waException
+     */
     public function onCount()
     {
-        $pi = new pocketlistsItemModel();
+        try {
+            /** @var pocketlistsItemModel $itemModel */
+            $itemModel = wa(pocketlistsHelper::APP_ID)->getConfig()->getModel(pocketlistsItem::class);
 
-        return $pi->getAppCountForUser();
+            $itemModel->updateCalcPriority();
+
+            return $this->getUser()->getAppCount();
+        } catch (Exception $ex) {
+            pocketlistsHelper::logError('onCount error', $ex);
+        }
+
+        return null;
     }
 
     public function checkRights($module, $action)
@@ -264,5 +279,15 @@ class pocketlistsConfig extends waAppConfig
         }
 
         return $this->user;
+    }
+
+    private function registerGlobal()
+    {
+        if (!function_exists('pl2')) {
+            function pl2()
+            {
+                return wa(pocketlistsHelper::APP_ID)->getConfig();
+            }
+        }
     }
 }
