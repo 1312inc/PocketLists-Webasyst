@@ -13,22 +13,22 @@ class pocketlistsNotifications
     private static $lm;
 
     /**
-     * @param $list_id
+     * @param pocketlistsItem $item
      *
-     * @return pocketlistsListModel
-     * @throws waDbException
+     * @return pocketlistsList
+     * @throws waException
      */
-    protected static function getList($list_id)
+    protected static function getList($item)
     {
-        if (!isset(self::$lists[$list_id])) {
-            if (self::$lm === null) {
-                self::$lm = new pocketlistsListModel();
+        if (!isset(self::$lists[$item->getListId()])) {
+            if ($item->getListId()) {
+                self::$lists[$item->getListId()] = new pocketlistsListOutputDecorator($item->getList());
+            } else {
+                self::$lists[$item->getListId()] = (new pocketlistsNullList())->setName(_w('Stream'));
             }
-
-            self::$lists[$list_id] = self::$lm->findByPk($list_id);
         }
 
-        return self::$lists[$list_id];
+        return self::$lists[$item->getListId()];
     }
 
     /**
@@ -476,7 +476,7 @@ class pocketlistsNotifications
         );
     }
 
-    public static function notifyAboutNewComment($comment)
+    public static function notifyAboutNewComment(pocketlistsCommentOutputDecorator $comment)
     {
         if (!$comment) {
             return;
@@ -500,7 +500,7 @@ class pocketlistsNotifications
         $users = $csm->query(
             $q,
             [
-                'app_id'  => wa()->getApp(),
+                'app_id'  => pocketlistsHelper::APP_ID,
                 'setting' => [
                     pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_ITEM,
                     pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_FAVORITE_ITEM,
@@ -509,162 +509,74 @@ class pocketlistsNotifications
             ]
         )->fetchAll('contact_id');
 
-        $comment_user = new waUser($comment['contact_id']);
-        $lm = new pocketlistsListModel();
-        $list = [
-            'url'  => '#/pocket/todo/',
-            'name' => _w('Stream'),
+        $comment_user = $comment->getContact()->getContact();
+
+        /** @var pocketlistsItem $item */
+        $item = new pocketlistsItemOutputDecorator($comment->getItem());
+        $listUrl = '#/pocket/todo/';
+        if ($item->getListId()) {
+            $list = self::getList($item);
+
+            $listUrl = sprintf(
+                '#/pocket/%s/list/%s/',
+                $list->getPocketId(),
+                $list->getId()
+            );
+        }
+
+        $mailParams = [
+            'body'       => wa()->getAppPath('templates/mails/newcomment.html'),
+            'variables'  => [
+                'item'        => $item,
+                'comment'     => $comment,
+                'by_username' => $comment_user->getName(),
+                'list'        => $list,
+                'listUrl'     => $listUrl,
+            ],
         ];
+
         foreach ($users as $user_id => $user) { // foreach user
             $contact = new waContact($user_id);
             if (!self::canSend($contact)) {
                 continue;
             }
 
+            // not from NULL-list
+            if ($item->getListId() === null) {
+                continue;
+            }
+
+            // from NULL-list, assigned to another user or created by another user
+            if ($item->getListId() === null && ($item->getAssignedContactId() != $user_id || $item->getContactId() == $user_id)) {
+                continue;
+            }
+
+            if ($item->getListId() && !pocketlistsRBAC::canAccessToList($list->getObject(), $user_id)) {
+                continue;
+            }
+
+            $mailParams['contact_id'] = $user_id;
+
 //            if ($comment['contact_id'] != $user_id) {
             switch ($user['setting']) {
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_ITEM:
-                    $im = new pocketlistsItemModel();
-                    $item = $im->getById($comment['item_id']);
-                    $im->prepareOutput($item);
-                    if ($item['list_id']) {
-                        $list_ = self::getList($item['list_id']);
-
-                        $list = [
-                            'url'  => sprintf(
-                                '#/pocket/%s/list/%s/',
-                                $list_['pocket_id'],
-                                $list_['id']
-                            ),
-                            'name' => pocketlistsNaturalInput::matchLinks($list_['name']),
-                        ];
-                    }
-
-                    if ($item['contact_id'] == $user_id
-                        &&
-                        (
-                            ($item['list_id'] && pocketlistsRBAC::canAccessToList($list_, $user_id))
-                            ||
-                            ( // not from NULL-list
-                                $item['list_id'] == null && ( // OR from NULL-list,
-                                    (isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id) || // but assigned to this user
-                                    $item['contact_id'] == $user_id // OR created by user
-                                )
-                            )
-                        )
-                    ) {
-                        self::sendMail(
-                            [
-                                'contact_id' => $user_id,
-                                //'subject' => 'string:💬 {sprintf("[`New comment on %s`]", str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:32)}',
-                                'subject'    => 'string:💬 {str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:64}',
-                                'body'       => wa()->getAppPath('templates/mails/newcomment.html'),
-                                'variables'  => [
-                                    'item'        => $item,
-                                    'comment'     => $comment,
-                                    'by_username' => $comment_user->getName(),
-                                    'list'        => $list,
-                                ],
-                            ],
-                            self::getBackendUrl($user_id)
-                        );
+                    if ($item->getContactId() == $user_id) {
+                        $mailParams['subject'] = 'string:💬 {str_replace(array("\r", "\n"), " ", $item->getName())|truncate:64}';
                     }
                     break;
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_FAVORITE_ITEM:
-                    $im = new pocketlistsItemModel();
-                    $item = $im->getById($comment['item_id'], $user_id);
-                    $im->prepareOutput($item);
-
-                    if ($item['list_id']) {
-                        $list_ = self::getList($item['list_id']);
-
-                        $list = [
-                            'url'  => sprintf(
-                                '#/pocket/%s/list/%s/',
-                                $list_['pocket_id'],
-                                $list_['id']
-                            ),
-                            'name' => pocketlistsNaturalInput::matchLinks($list_['name']),
-                        ];
-                    }
-
-                    if ($item['favorite']
-                        &&
-                        (
-                            ($item['list_id'] && pocketlistsRBAC::canAccessToList($list_, $user_id))
-                            ||
-                            ( // not from NULL-list
-                                $item['list_id'] == null && ( // OR from NULL-list,
-                                    (isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id) || // but assigned to this user
-                                    $item['contact_id'] == $user_id // OR created by user
-                                )
-                            )
-                        )
-                    ) {
-                        self::sendMail(
-                            [
-                                'contact_id' => $user_id,
-                                //'subject' => 'string:💬 {sprintf("[`New comment on %s`]", str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:32)}',
-                                'subject'    => 'string:💬 {str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:64}',
-                                'body'       => wa()->getAppPath('templates/mails/newcomment.html'),
-                                'variables'  => [
-                                    'item'        => $item,
-                                    'comment'     => $comment,
-                                    'by_username' => $comment_user->getName(),
-                                    'list'        => $list,
-                                ],
-                            ],
-                            self::getBackendUrl($user_id)
-                        );
+                    if ($item->isFavorite()) {
+                        $mailParams['subject']    = 'string:💬 {str_replace(array("\r", "\n"), " ", $item->getName())|truncate:64}';
                     }
                     break;
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_ANY_LIST_ITEM:
-                    $im = new pocketlistsItemModel();
-                    $item = $im->getById($comment['item_id']);
-                    $im->prepareOutput($item);
-                    if ($item['list_id']) {
-                        $list_ = self::getList($item['list_id']);
-
-                        $list = [
-                            'url'  => sprintf(
-                                '#/pocket/%s/list/%s/',
-                                $list_['pocket_id'],
-                                $list_['id']
-                            ),
-                            'name' => pocketlistsNaturalInput::matchLinks($list_['name']),
-                        ];
-                    }
-                    if ($item
-                        &&
-                        (
-                            ($item['list_id'] && pocketlistsRBAC::canAccessToList($list_, $user_id))
-                            ||
-                            ( // not from NULL-list
-                                $item['list_id'] == null && ( // OR from NULL-list,
-                                    (isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id) || // but assigned to this user
-                                    $item['contact_id'] == $user_id // OR created by user
-                                )
-                            )
-                        )
-                    ) {
-                        self::sendMail(
-                            [
-                                'contact_id' => $user_id,
-                                //'subject' => 'string:💬 {sprintf("[`New comment on %s`]", str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:32)}',
-                                'subject'    => 'string:💬 {str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:64}',
-                                'body'       => wa()->getAppPath('templates/mails/newcomment.html'),
-                                'variables'  => [
-                                    'item'        => $item,
-                                    'comment'     => $comment,
-                                    'by_username' => $comment_user->getName(),
-                                    'list'        => $list,
-                                ],
-                            ],
-                            self::getBackendUrl($user_id)
-                        );
+                    if ($item) {
+                        $mailParams['subject']    ='string:💬 {str_replace(array("\r", "\n"), " ", $item->getName())|truncate:64}';
                     }
                     break;
             }
+
+            self::sendMail($mailParams, self::getBackendUrl($user_id));
 //            }
         }
     }

@@ -5,6 +5,9 @@
  */
 class pocketlistsArchiveAction extends pocketlistsViewAction
 {
+    /**
+     * @throws waException
+     */
     public function execute()
     {
         /** @var pocketlistsListFactory $listFactory */

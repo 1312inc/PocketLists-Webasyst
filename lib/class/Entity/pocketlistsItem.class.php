@@ -426,16 +426,6 @@ class pocketlistsItem extends pocketlistsEntity
     }
 
     /**
-     * @return array
-     */
-    public function getDbFields()
-    {
-        return [
-            '',
-        ];
-    }
-
-    /**
      * @return pocketlistsList|pocketlistsNullList
      * @throws waException
      */

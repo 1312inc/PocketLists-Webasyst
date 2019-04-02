@@ -5,7 +5,15 @@
  */
 interface pocketlistsHydratableInterface
 {
+    /**
+     * @return mixed
+     */
     public function afterHydrate();
 
-    public function beforeExtract();
+    /**
+     * @param array $fields
+     *
+     * @return array
+     */
+    public function beforeExtract(array &$fields);
 }

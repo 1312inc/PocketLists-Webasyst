@@ -98,6 +98,7 @@ class pocketlistsComment extends pocketlistsEntity
     public function setItem(pocketlistsItem $item)
     {
         $this->item = $item;
+        $this->item_id = $this->item->getId();
 
         return $this;
     }

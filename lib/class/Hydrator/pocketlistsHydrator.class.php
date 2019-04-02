@@ -12,12 +12,13 @@ class pocketlistsHydrator implements pocketlistsHydratorInterface
 
     /**
      * @param pocketlistsHydratableInterface $object
-     * @param array                      $fields
+     * @param array                          $fields
+     * @param array                          $dbFields
      *
-     * @return array
+     * @return array|mixed
      * @throws ReflectionException
      */
-    public function extract(pocketlistsHydratableInterface $object, array $fields = [])
+    public function extract(pocketlistsHydratableInterface $object, array $fields = [], $dbFields = [])
     {
         $reflection = $this->getReflectionClass(get_class($object));
 
@@ -27,14 +28,24 @@ class pocketlistsHydrator implements pocketlistsHydratorInterface
             $fields = $reflection->getProperties();
         }
 
-        $object->beforeExtract();
+        $object->beforeExtract($fields);
 
         foreach ($fields as $name) {
-            $methodName = 'set'.$this->getMethodName($name);
-            $method = $reflection->getMethod($methodName);
+            $toExtractField = $name->getName();
+            if (!isset($dbFields[$toExtractField])) {
+                continue;
+            }
 
-            if ($method && $method->isPublic()) {
-                $result[$name] = $method->invoke($object);
+            $methodName = 'get'.$this->getMethodName($toExtractField);
+
+            try {
+                $method = $reflection->getMethod($methodName);
+
+                if ($method && $method->isPublic()) {
+                    $result[$toExtractField] = $method->invoke($object);
+                }
+            } catch (ReflectionException $ex) {
+
             }
         }
 
@@ -62,7 +73,7 @@ class pocketlistsHydrator implements pocketlistsHydratorInterface
                 if ($method && $method->isPublic()) {
                     $method->invoke($object, $value);
                 }
-            } catch (Exception $ex) {
+            } catch (ReflectionException $ex) {
 
             }
         }
