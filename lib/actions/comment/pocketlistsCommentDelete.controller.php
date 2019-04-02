@@ -14,14 +14,14 @@ class pocketlistsCommentDeleteController extends waJsonController
         $comment_id = waRequest::post('id', 0, waRequest::TYPE_INT);
 
         if ($comment_id) {
-            $cm = new pocketlistsCommentModel();
-            $comment = $cm->getById($comment_id);
-            if ($comment) {
-                $im = new pocketlistsItemModel();
-                $item = $im->getById($comment['item_id']);
+            /** @var pocketlistsCommentFactory $commentFactory */
+            $commentFactory = pl2()->getEntityFactory(pocketlistsComment::class);
+            $comment = $commentFactory->findById($comment_id);
+            if ($comment instanceof pocketlistsComment) {
+                $item = $comment->getItem();
 
-                if ($item['list_id']) {
-                    $list = pocketlistsListModel::model()->findByPk($item['list_id']);
+                if ($item->getListId()) {
+                    $list = $item->getList();
                     if (!$list) {
                         throw new waException(_w('Not found'), 404);
 
@@ -29,13 +29,12 @@ class pocketlistsCommentDeleteController extends waJsonController
 
                     if (!pocketlistsRBAC::canAccessToList($list)) {
                         throw new waException(_w('Access denied'), 403);
-
                     }
                 }
 
-                if ((time() - strtotime($comment['create_datetime']) < 60 * 60 * 24)
-                    && $comment['contact_id'] === wa()->getUser()->getId()
-                    && $cm->deleteById($comment_id)
+                if ((time() - strtotime($comment->getCreateDatetime()) < 60 * 60 * 24)
+                    && $comment->getContact()->isMe()
+                    && $commentFactory->delete($comment)
                 ) {
                     $this->response = 'ok';
                 } else {
