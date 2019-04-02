@@ -5,6 +5,9 @@
  */
 class pocketlistsFactory
 {
+    /**
+     * @var pocketlistsEntity
+     */
     protected $entity;
 
     /**
@@ -103,9 +106,29 @@ class pocketlistsFactory
         $lists = [];
 
         foreach ($data as $datum) {
-            $lists[] = wa()->getConfig()->getHydrator()->hydrate($this->createNew(), $datum);
+            $lists[] = pl2()->getHydrator()->hydrate($this->createNew(), $datum);
         }
 
         return $all === false ? reset($lists) : $lists;
+    }
+
+    public function insert(pocketlistsEntity $entity, $fields = [], $type = waModel::INSERT_ON_DUPLICATE_KEY_UPDATE)
+    {
+        $dbFields = $this->getModel()->getMetadata();
+
+        $data = pl2()->getHydrator()->extract($entity, $fields, $dbFields);
+        unset($data['id']);
+
+        $id = $this->getModel()->insert($data, $type);
+
+        if ($id) {
+            if (method_exists($entity, 'setId')) {
+                $entity->setId($id);
+            }
+
+            return true;
+        }
+
+        return false;
     }
 }

@@ -8,11 +8,11 @@ abstract class pocketlistsEntity implements pocketlistsHydratableInterface
     /**
      * @return array
      */
-    public function prepareForDb()
+    public function getDbFields()
     {
-        return wa()->getConfig()
-            ->getHydrator()
-            ->extract($this, $this->getDbFields());
+        $meta = $this->getModel()->getMetadata();
+
+        return $meta;
     }
 
     /**
@@ -167,7 +167,7 @@ abstract class pocketlistsEntity implements pocketlistsHydratableInterface
      *
      * @return pocketlistsEntity
      */
-    public function setUuid(string $uuid)
+    public function setUuid($uuid)
     {
         $this->_uuid = $uuid;
 
@@ -186,7 +186,7 @@ abstract class pocketlistsEntity implements pocketlistsHydratableInterface
     {
     }
 
-    public function beforeExtract()
+    public function beforeExtract(array &$fields)
     {
     }
 }

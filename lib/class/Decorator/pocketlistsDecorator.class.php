@@ -21,6 +21,14 @@ class pocketlistsDecorator
     }
 
     /**
+     * @return pocketlistsEntity
+     */
+    public function getObject()
+    {
+        return $this->object;
+    }
+
+    /**
      * @param $method
      * @param $args
      *

@@ -2,6 +2,9 @@
 
 /**
  * Class pocketlistsCommentOutputDecorator
+ *
+ * @method pocketlistsComment __construct(pocketlistsEntity $object)
+ * @method pocketlistsComment getObject()
  */
 class pocketlistsCommentOutputDecorator extends pocketlistsDecorator
 {
