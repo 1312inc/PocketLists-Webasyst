@@ -131,4 +131,19 @@ class pocketlistsFactory
 
         return false;
     }
+
+    /**
+     * @param pocketlistsEntity $entity
+     *
+     * @return bool
+     * @throws waException
+     */
+    public function delete(pocketlistsEntity $entity)
+    {
+        if (method_exists($entity, 'getId')) {
+            return $this->getModel()->deleteById($entity->getId());
+        }
+
+        throw new waException('No id in entity');
+    }
 }
