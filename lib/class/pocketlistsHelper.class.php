@@ -259,10 +259,10 @@ class pocketlistsHelper
      * @param string    $msg
      * @param Throwable $ex
      */
-    public static function logError($msg, $ex)
+    public static function logError($msg, $ex = null)
     {
         waLog::log(
-            sprintf("%s.\nException info: %s\n%s", $msg, $ex->getMessage(), $ex->getTraceAsString()),
+            sprintf("%s.\nException info: %s\n%s", $msg, $ex ? $ex->getMessage() : '', $ex ? $ex->getTraceAsString() : ''),
             'pocketlists/error.log'
         );
     }

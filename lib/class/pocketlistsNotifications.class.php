@@ -22,7 +22,7 @@ class pocketlistsNotifications
     {
         if (!isset(self::$lists[$item->getListId()])) {
             if ($item->getListId()) {
-                self::$lists[$item->getListId()] = new pocketlistsListOutputDecorator($item->getList());
+                self::$lists[$item->getListId()] = $item->getList();
             } else {
                 self::$lists[$item->getListId()] = (new pocketlistsNullList())->setName(_w('Stream'));
             }
@@ -34,16 +34,20 @@ class pocketlistsNotifications
     /**
      * Notify all related users about completed items (according to their settings)
      *
-     * @param $items array()
+     * @param pocketlistsItem[] $items
+     *
+     * @throws waException
      */
     public static function notifyAboutCompleteItems($items)
     {
-        if (!count($items)) {
+        if (!$items) {
             return;
         }
+
         if (!is_array($items)) {
             $items = [$items];
         }
+
         $csm = new waContactSettingsModel();
         $q = "SELECT
                 cs1.contact_id contact_id,
@@ -71,14 +75,13 @@ class pocketlistsNotifications
             ]
         )->fetchAll('contact_id');
 
-        $lm = new pocketlistsListModel();
-        $im = new pocketlistsItemModel();
-        $pm = new pocketlistsPocketModel();
+        /** @var pocketlistsUserFavoritesModel $ufm */
+        $ufm = pl2()->getModel('pocketlistsUserFavorites');
 
-        $subject = 'string:{if !$complete}🚫{else}✅{/if} {str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:64}';
+        $subject = 'string:{if !$complete}🚫{else}✅{/if} {str_replace(array("\r", "\n"), " ", $item->getName())|truncate:64}';
         // todo: refactor
         foreach ($users as $user_id => $user) { // foreach user
-            $contact = new waContact($user_id);
+            $contact = new pocketlistsContact(new waContact($user_id));
             if (!self::canSend($contact)) {
                 continue;
             }
@@ -87,194 +90,93 @@ class pocketlistsNotifications
             switch ($user['setting']) {
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_COMPLETES_ITEM_I_CREATED:
                     foreach ($items as $item) { // filter items according to settings
-                        $list = !empty($item['list_id']) ? self::getList($item['list_id']) : null;
-
-                        if ($item['contact_id'] == $user_id && // created by mine
-                            $item['complete_contact_id'] != $user_id && // completed not by me
-                            (
-                                ($list && pocketlistsRBAC::canAccessToList($list, $user_id))
-                                ||
-                                ( // not from NULL-list
-                                    $item['list_id'] == null && ( // OR from NULL-list,
-                                        (isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id) || // but assigned to this user
-                                        $item['contact_id'] == $user_id // OR created by user
-                                    )
-                                )
-                            )
-                        ) {
-                            $filtered_items[$item['id']] = $item;
-                            $c = new waContact($item['complete_contact_id']);
-                            $filtered_items[$item['id']]['complete_contact_name'] = $c->getName();
+                        // created NOT by user
+                        if ($item->getContactId() != $user_id) {
+                            continue;
                         }
-                    }
-                    if ($filtered_items) {
-                        $item = reset($filtered_items);
-                        $list = !empty($item['list_id']) ? self::getList($item['list_id']) : null;
 
-                        $items_left = count($im->getUndoneByList($list['id'], false));
-                        self::sendMail(
-                            [
-                                'contact_id' => $user_id,
-                                'subject'    => $subject,
-                                'body'       => wa()->getAppPath('templates/mails/completeanyitem.html'),
-                                'variables'  => [
-                                    'n'        => $items_left,
-                                    'list'     => $list,
-                                    'list_url' => sprintf('#/pocket/%s/list/%s/', $list['pocket_id'], $list['id']),
-                                    'complete' => $item['status'],
-                                    'item'     => $item,
-                                ],
-                            ],
-                            self::getBackendUrl($user_id)
-                        );
+                        if (!self::checkItem($item, $user_id)) {
+                            continue;
+                        }
+
+                        $filtered_items[$item->getId()] = $item;
                     }
+
                     break;
 
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_COMPETES_ITEM_I_FAVORITE:
-                    $ufm = new pocketlistsUserFavoritesModel();
                     $user_items = $ufm->query(
                         "SELECT item_id FROM {$ufm->getTableName()} WHERE contact_id = {$user_id}"
                     )->fetchAll('item_id');
-                    foreach ($items as $item) {
-                        $list = !empty($item['list_id']) ? self::getList($item['list_id']) : null;
 
-                        if (array_key_exists($item['id'], $user_items)
-                            && $item['complete_contact_id'] != $user_id
-                            &&
-                            (
-                                ($list && pocketlistsRBAC::canAccessToList($list, $user_id))
-                                ||
-                                ( // not from NULL-list
-                                    $item['list_id'] == null && ( // OR from NULL-list,
-                                        (isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id) || // but assigned to this user
-                                        $item['contact_id'] == $user_id // OR created by user
-                                    )
-                                )
-                            )
-                        ) {
-                            $filtered_items[$item['id']] = $item;
-                            $c = new waContact($item['complete_contact_id']);
-                            $filtered_items[$item['id']]['complete_contact_name'] = $c->getName();
+                    foreach ($items as $item) {
+                        if (!array_key_exists($item->getId(), $user_items)) {
+                            continue;
                         }
+
+                        if (!self::checkItem($item, $user_id)) {
+                            continue;
+                        }
+
+                        $filtered_items[$item->getId()] = $item;
                     }
-                    if ($filtered_items) {
-                        $item = reset($filtered_items);
-                        $list = !empty($item['list_id']) ? self::getList($item['list_id']) : null;
-                        $items_left = count($im->getUndoneByList($list['id'], false));
-                        self::sendMail(
-                            [
-                                'contact_id' => $user_id,
-                                'subject'    => $subject,
-                                'body'       => wa()->getAppPath('templates/mails/completeanyitem.html'),
-                                'variables'  => [
-                                    'n'        => $items_left,
-                                    'list'     => $list,
-                                    'list_url' => sprintf('#/pocket/%s/list/%s/', $list['pocket_id'], $list['id']),
-                                    'complete' => $item['status'],
-                                    'item'     => $item,
-                                ],
-                            ],
-                            self::getBackendUrl($user_id)
-                        );
-                    }
+
                     break;
+
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_COMPETES_ITEM_IN_FAVORITE_LIST:
-                    $ufm = new pocketlistsUserFavoritesModel();
                     $user_lists = $ufm->query(
                         "SELECT i.key_list_id FROM {$ufm->getTableName()} uf JOIN pocketlists_item i ON uf.item_id = i.id AND i.key_list_id > 0 WHERE uf.contact_id = {$user_id}"
                     )->fetchAll('key_list_id');
-                    foreach ($items as $item) {
-                        $list = !empty($item['list_id']) ? self::getList($item['list_id']) : null;
 
-                        if (array_key_exists($item['list_id'], $user_lists)
-                            && $item['complete_contact_id'] != $user_id
-                            &&
-                            (
-                                ($list && pocketlistsRBAC::canAccessToList($list, $user_id))
-                                ||
-                                ( // not from NULL-list
-                                    $item['list_id'] == null && ( // OR from NULL-list,
-                                        (isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id) || // but assigned to this user
-                                        $item['contact_id'] == $user_id // OR created by user
-                                    )
-                                )
-                            )
-                        ) {
-                            $filtered_items[$item['id']] = $item;
-                            $c = new waContact($item['complete_contact_id']);
-                            $filtered_items[$item['id']]['complete_contact_name'] = $c->getName();
+                    foreach ($items as $item) {
+                        if (!array_key_exists($item->getListId(), $user_lists)) {
+                            continue;
                         }
+
+                        if (!self::checkItem($item, $user_id)) {
+                            continue;
+                        }
+
+                        $filtered_items[$item->getId()] = $item;
                     }
-                    if ($filtered_items) {
-                        $item = reset($filtered_items);
-                        $list = !empty($item['list_id']) ? self::getList($item['list_id']) : null;
-                        $items_left = count($im->getUndoneByList($list['id'], false));
-                        self::sendMail(
-                            [
-                                'contact_id' => $user_id,
-                                'subject'    => $subject,
-                                'body'       => wa()->getAppPath('templates/mails/completeanyitem.html'),
-                                'variables'  => [
-                                    'n'        => $items_left,
-                                    'list'     => $list,
-                                    'list_url' => sprintf('#/pocket/%s/list/%s/', $list['pocket_id'], $list['id']),
-                                    'complete' => $item['status'],
-                                    'item'     => $item,
-                                ],
-                            ],
-                            self::getBackendUrl($user_id)
-                        );
-                    }
+
                     break;
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_COMPETES_ANY_ITEM:
                     foreach ($items as $item) { // filter items according to settings
-                        $list = !empty($item['list_id']) ? self::getList($item['list_id']) : null;
+                        if (!self::checkItem($item, $user_id)) {
+                            continue;
+                        }
 
-                        if ($item['complete_contact_id'] != $user_id
-                            && (
-                                ($item['list_id'] && pocketlistsRBAC::canAccessToList($list, $user_id))
-                                ||
-                                ( // not from NULL-list
-                                    $item['list_id'] == null && ( // OR from NULL-list,
-                                        (isset($item['assigned_contact_id']) && $item['assigned_contact_id'] == $user_id) || // but assigned to this user
-                                        $item['contact_id'] == $user_id // OR created by user
-                                    )
-                                )
-                            )
-                        ) { // completed not by me & not from NULL-list
-                            $filtered_items[$item['id']] = $item;
-                            $c = new waContact($item['complete_contact_id']);
-                            $filtered_items[$item['id']]['complete_contact_name'] = $c->getName();
-                        }
+                        $filtered_items[$item->getId()] = $item;
                     }
-                    if ($filtered_items) {
-                        $item = reset($filtered_items);
-                        $list = !empty($item['list_id']) ? self::getList($item['list_id']) : null;
-                        $items_left = 0;
-                        if ($list) {
-                            $items_left = count($im->getUndoneByList($list['id'], false));
-                        }
-                        self::sendMail(
-                            [
-                                'contact_id' => $user_id,
-                                'subject'    => $subject,
-                                'body'       => wa()->getAppPath('templates/mails/completeanyitem.html'),
-                                'variables'  => [
-                                    'n'        => $items_left,
-                                    'list'     => $list,
-                                    'list_url' => $list ? sprintf(
-                                        '#/pocket/%s/list/%s/',
-                                        $list['pocket_id'],
-                                        $list['id']
-                                    ) : false,
-                                    'complete' => $item['status'],
-                                    'item'     => $item,
-                                ],
-                            ],
-                            self::getBackendUrl($user_id)
-                        );
-                    }
+
                     break;
+            }
+
+            if ($filtered_items) {
+                $item = reset($filtered_items);
+                $list = self::getList($item);
+                $items_left = $item->getListId() ? count($list->getUndoneItems()) : 0;
+
+                self::sendMail(
+                    [
+                        'contact_id' => $user_id,
+                        'subject'    => $subject,
+                        'body'       => wa()->getAppPath('templates/mails/completeanyitem.html'),
+                        'variables'  => [
+                            'n'        => $items_left,
+                            'list'     => new pocketlistsListOutputDecorator($list),
+                            'list_url' => $list ? sprintf(
+                                '#/pocket/%s/list/%s/',
+                                $list->getPocketId(),
+                                $list->getId()
+                            ) : false,
+                            'complete' => $item->getStatus(),
+                            'item'     => new pocketlistsItemOutputDecorator($item),
+                        ],
+                    ],
+                    self::getBackendUrl($user_id)
+                );
             }
         }
     }
@@ -440,9 +342,8 @@ class pocketlistsNotifications
 
         if ($list && pocketlistsRBAC::canAccessToList($list->getObject(), $item->getAssignedContactId())) {
             $listUrl = sprintf(
-                '#/list/%s/',
-//                pl2()->getRootUrl(true),
-//                pl2()->getBackendUrl(),
+                '#/pocket/%s/list/%s/',
+                $list->getPocketId(),
                 $list->getId()
             );
         }
@@ -472,7 +373,7 @@ class pocketlistsNotifications
                             $item->getDueDate(),
                             $contact->getContact()->getTimezone()
                         ) : false),
-                    'list'        => $list,
+                    'list'        => new pocketlistsListOutputDecorator($list),
                     'listUrl'     => $listUrl,
                     'by_username' => $by_username,
                 ],
@@ -481,7 +382,12 @@ class pocketlistsNotifications
         );
     }
 
-    public static function notifyAboutNewComment(pocketlistsCommentOutputDecorator $comment)
+    /**
+     * @param pocketlistsComment $comment
+     *
+     * @throws waException
+     */
+    public static function notifyAboutNewComment(pocketlistsComment $comment)
     {
         if (!$comment) {
             return;
@@ -514,11 +420,12 @@ class pocketlistsNotifications
             ]
         )->fetchAll('contact_id');
 
-        $comment_user = $comment->getContact()->getContact();
+        $comment_user = $comment->getContact();
 
         /** @var pocketlistsItem $item */
         $item = new pocketlistsItemOutputDecorator($comment->getItem());
         $listUrl = '#/pocket/todo/';
+        $list = null;
         if ($item->getListId()) {
             $list = self::getList($item);
 
@@ -533,15 +440,15 @@ class pocketlistsNotifications
             'body'      => wa()->getAppPath('templates/mails/newcomment.html'),
             'variables' => [
                 'item'        => $item,
-                'comment'     => $comment,
+                'comment'     => new pocketlistsCommentOutputDecorator($comment),
                 'by_username' => $comment_user->getName(),
-                'list'        => $list,
+                'list'        => $list ? new pocketlistsListOutputDecorator($list) : false,
                 'listUrl'     => $listUrl,
             ],
         ];
 
         foreach ($users as $user_id => $user) { // foreach user
-            $contact = new waContact($user_id);
+            $contact = new pocketlistsContact(new waContact($user_id));
             if (!self::canSend($contact)) {
                 continue;
             }
@@ -570,11 +477,13 @@ class pocketlistsNotifications
                         $mailParams['subject'] = 'string:💬 {str_replace(array("\r", "\n"), " ", $item->getName())|truncate:64}';
                     }
                     break;
+
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_FAVORITE_ITEM:
                     if ($item->isFavorite()) {
                         $mailParams['subject'] = 'string:💬 {str_replace(array("\r", "\n"), " ", $item->getName())|truncate:64}';
                     }
                     break;
+
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_ANY_LIST_ITEM:
                     if ($item) {
                         $mailParams['subject'] = 'string:💬 {str_replace(array("\r", "\n"), " ", $item->getName())|truncate:64}';
@@ -714,53 +623,58 @@ class pocketlistsNotifications
      */
     public static function sendMail($data, $backend_url = false)
     {
-        $default_variables = [
-            'email_settings_url' => '#/settings/',
-        ];
+        try {
+            $default_variables = [
+                'email_settings_url' => '#/settings/',
+            ];
 
-        if (empty($data['variables'])) {
-            $data['variables'] = [];
-        }
-        $data['variables'] = array_merge($default_variables, $data['variables']);
-
-        $to = false;
-        $view = wa()->getView();
-        $view->clearAllAssign();
-        $view->clearAllCache();
-
-        if (isset($data['contact_id'])) {
-            $contact = new waContact($data['contact_id']);
-            $to = $contact->get('email', 'default'); // todo: add email option in settings
-            $view->assign('name', $contact->getName());
-            $view->assign('now', waDateTime::date("Y-m-d H:i:s", time(), $contact->getTimezone()));
-        } elseif (isset($data['to'])) {
-            $to = $data['to'];
-        }
-
-        if (!$to) {
-            return;
-        }
-
-        $absolute_backend_url = $backend_url
-            ? $backend_url
-            : pl2()->getRootUrl(true).pl2()->getBackendUrl();
-
-        $view->assign('backend_url', rtrim($absolute_backend_url, '/').'/pocketlists/');
-        if (isset($data['variables'])) {
-            foreach ($data['variables'] as $var_name => $var_value) {
-                $view->assign($var_name, $var_value);
+            if (empty($data['variables'])) {
+                $data['variables'] = [];
             }
-        }
+            $data['variables'] = array_merge($default_variables, $data['variables']);
 
-        $subject = $view->fetch($data['subject']);
-        $body = $view->fetch($data['body']);
+            $to = false;
+            $view = wa()->getView();
+            $view->clearAllAssign();
+            $view->clearAllCache();
 
-        $message = new waMailMessage($subject, $body);
-        $message->setTo($to);
+            if (isset($data['contact_id'])) {
+                $contact = new waContact($data['contact_id']);
+                $to = $contact->get('email', 'default'); // todo: add email option in settings
+                $view->assign('name', $contact->getName());
+                $view->assign('now', waDateTime::date("Y-m-d H:i:s", time(), $contact->getTimezone()));
+            } elseif (isset($data['to'])) {
+                $to = $data['to'];
+            }
+
+            if (!$to) {
+                return;
+            }
+
+            $absolute_backend_url = $backend_url
+                ? $backend_url
+                : pl2()->getRootUrl(true).pl2()->getBackendUrl();
+
+            $view->assign('backend_url', rtrim($absolute_backend_url, '/').'/pocketlists/');
+            if (isset($data['variables'])) {
+                foreach ($data['variables'] as $var_name => $var_value) {
+                    $view->assign($var_name, $var_value);
+                }
+            }
+
+            $subject = $view->fetch($data['subject']);
+            $body = $view->fetch($data['body']);
+
+            $message = new waMailMessage($subject, $body);
+            $message->setTo($to);
 // todo: settings?
 //        $message->setFrom('pocketlists@webasyst.ru', 'Pocketlists Notifier');
 
-        if ($message->send()) {
+            if (!$message->send()) {
+                pocketlistsHelper::logError(sprintf('Email send error to %s', $to));
+            }
+        } catch (waException $ex) {
+            pocketlistsHelper::logError(sprintf('Email send error to %s', $to), $ex);
         }
     }
 
@@ -779,5 +693,37 @@ class pocketlistsNotifications
     private static function canSend(pocketlistsContact $contact)
     {
         return $contact->isExists();
+    }
+
+    /**
+     * @param pocketlistsItem $item
+     * @param                 $user_id
+     *
+     * @return bool
+     * @throws waException
+     */
+    private static function checkItem(pocketlistsItem $item, $user_id)
+    {
+        // completed not by user
+        if ($item->getCompleteContactId() == $user_id) {
+            return false;
+        }
+
+        // not from NULL-list
+        if (!$item->getListId()) {
+            return false;
+        }
+
+        $list = self::getList($item);
+        if ($item->getListId() && !pocketlistsRBAC::canAccessToList($list, $user_id)) {
+            return false;
+        }
+
+        // from NULL-list but not assigned to this user nor created by user
+        if (!$item->getListId() && ($item->getAssignedContactId() != $user_id || $item->getContactId() != $user_id)) {
+            return false;
+        }
+
+        return true;
     }
 }

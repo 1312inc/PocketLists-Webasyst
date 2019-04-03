@@ -8,10 +8,14 @@ class pocketlistsJsonController extends waJsonController
     public function run($params = NULL)
     {
         try {
+            $this->preExecute();
             $this->execute();
+            $this->afterExecute();
         } catch (waException $ex) {
-            echo waUtils::jsonEncode(array('status' => 'fail', 'errors' => $ex->getMessage()));
+            $this->errors = $ex->getMessage();
         }
+
+        $this->display();
     }
 
     /**
