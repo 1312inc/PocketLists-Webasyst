@@ -114,9 +114,7 @@ class pocketlistsFactory
 
     public function insert(pocketlistsEntity $entity, $fields = [], $type = waModel::INSERT_ON_DUPLICATE_KEY_UPDATE)
     {
-        $dbFields = $this->getModel()->getMetadata();
-
-        $data = pl2()->getHydrator()->extract($entity, $fields, $dbFields);
+        $data = pl2()->getHydrator()->extract($entity, $fields, $this->getDbFields());
         unset($data['id']);
 
         $id = $this->getModel()->insert($data, $type);
@@ -145,5 +143,29 @@ class pocketlistsFactory
         }
 
         throw new waException('No id in entity');
+    }
+
+    /**
+     * @param pocketlistsEntity $entity
+     * @param array             $fields
+     *
+     * @return bool|waDbResultUpdate|null
+     * @throws waException
+     */
+    public function save(pocketlistsEntity $entity, $fields = [])
+    {
+        if (method_exists($entity, 'getId')) {
+            $data = pl2()->getHydrator()->extract($entity, $fields, $this->getDbFields());
+            unset($data['id']);
+
+            return $this->getModel()->updateById($entity->getId(), $data);
+        }
+
+        throw new waException('No id in entity');
+    }
+
+    protected function getDbFields()
+    {
+        return $this->getModel()->getMetadata();
     }
 }

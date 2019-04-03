@@ -15,7 +15,7 @@ class pocketlistsViewAction extends waViewAction
      */
     public function preExecute()
     {
-        $this->user = wa(pocketlistsHelper::APP_ID)->getConfig()->getUser();
+        $this->user = pl2()->getUser();
 
         if (!pocketlistsRBAC::canAccess()) {
             throw new waException('Access denied.', 403);

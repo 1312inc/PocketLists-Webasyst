@@ -1,37 +1,55 @@
 <?php
 
+/**
+ * Class pocketlistsFavoritesDateAction
+ */
 class pocketlistsFavoritesDateAction extends pocketlistsViewAction
 {
     // todo: almost same as ToDo
+    /**
+     * @throws waDbException
+     * @throws waException
+     */
     public function execute()
     {
-        // get pocket dots
-        $im = new pocketlistsItemModel();
-
         $date = waRequest::get('date', false);
 
-        // get all due or priority or assigned to me items
-        $items = $im->getFavorites(wa()->getUser()->getId(), $date);
+        /** @var pocketlistsItemFactory $itemFactory */
+        $itemFactory = pl2()->getEntityFactory(pocketlistsItem::class);
+        $items = $itemFactory->findFavoritesForUserAndDate($this->user, $date);
 
-        $this->view->assign('undone_items', $items[0]);
-        $this->view->assign('done_items', $items[1]);
-        $this->view->assign('count_done_items', count($items[1]));
+        $filter = (new pocketlistsStrategyItemFilterAndSort())->filterDoneUndone($items);
+        $itemsUndone = $filter->getProperSort($filter->getItemsUndone());
+        $itemsDone = $filter->getItemsDone();
 
-        $this->view->assign('date', $date);
-        $timestamp = $date ? waDateTime::date('Y-m-d', strtotime($date)) : waDateTime::date('Y-m-d', time() + 60 * 60 * 24, wa()->getUser()->getTimezone());
-        $this->view->assign('timestamp', $timestamp);
+        $timestamp = $date
+            ? waDateTime::date('Y-m-d', strtotime($date))
+            : waDateTime::date('Y-m-d', time() + 60 * 60 * 24, wa()->getUser()->getTimezone());
 
-        $us = new pocketlistsUserSettings();
-        $lm = new pocketlistsListModel();
-        $stream_list_id = $us->getStreamInboxList();
-        if ($stream_list_id && $stream_list = $lm->getById($stream_list_id)) {
-            $this->view->assign("stream_list_id", $stream_list_id);
-            $this->view->assign("stream_list", $stream_list);
+        /** @var pocketlistsListFactory $listFactory */
+        $listFactory = pl2()->getEntityFactory(pocketlistsList::class);
+        $stream_list_id = pl2()->getUser()->getSettings()->getStreamInboxList();
+        if ($stream_list_id && $stream_list = $listFactory->findById($stream_list_id)) {
+            $this->view->assign(
+                [
+                    'stream_list_id' => $stream_list_id,
+                    'stream_list'    => $stream_list,
+                ]
+            );
         }
 
-        $this->view->assign('pl2_attachments_path', wa()->getDataUrl('attachments/', true, pocketlistsHelper::APP_ID));
-        $this->view->assign('this_is_stream', true);
-        $this->view->assign('print', waRequest::get('print', false));
-        $this->view->assign('user', $this->user);
+        $this->view->assign(
+            [
+                'undone_items'         => $itemsUndone,
+                'done_items'           => $itemsDone,
+                'count_done_items'     => count($itemsDone),
+                'date'                 => $date,
+                'timestamp'            => $timestamp,
+                'pl2_attachments_path' => wa()->getDataUrl('attachments/', true, pocketlistsHelper::APP_ID),
+                'this_is_stream'       => true,
+                'print'                => waRequest::get('print', false),
+                'user'                 => $this->user,
+            ]
+        );
     }
 }

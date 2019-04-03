@@ -475,24 +475,26 @@ class pocketlistsItemModel extends kmModelExt
             ]
         )->fetchAll();
 
-        $result = [
-            0 => [],
-            1 => [],
-        ];
+//        $result = [
+//            0 => [],
+//            1 => [],
+//        ];
 
-        $items = self::generateModels($items);
+//        $items = self::generateModels($items);
 
-        if ($items) {
-            foreach ($items as $id => $item) {
-                $result[$item['status']][$id] = $this->extendItemData($item);
-            }
-        }
+//        if ($items) {
+//            foreach ($items as $id => $item) {
+//                $result[$item['status']][$id] = $this->extendItemData($item);
+//            }
+//        }
 
-        return [
-            0 => $this->getProperSort($result[0]),
-            1 => $result[1],
-        ];
+//        return [
+//            0 => $this->getProperSort($result[0]),
+//            1 => $result[1],
+//        ];
 //        return $this->getTree($items, true);
+
+        return $items;
     }
 
     /**

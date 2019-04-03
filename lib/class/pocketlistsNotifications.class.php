@@ -15,7 +15,7 @@ class pocketlistsNotifications
     /**
      * @param pocketlistsItem $item
      *
-     * @return pocketlistsList
+     * @return pocketlistsListOutputDecorator|pocketlistsNullList
      * @throws waException
      */
     protected static function getList($item)
@@ -422,57 +422,62 @@ class pocketlistsNotifications
         }
     }
 
-    public static function notifyAboutNewAssign($item, $by_username = '')
+    /**
+     * @param pocketlistsItem $item
+     * @param string          $by_username
+     *
+     * @throws waException
+     */
+    public static function notifyAboutNewAssign(pocketlistsItem $item, $by_username = '')
     {
         if (!$by_username) {
             $by_username = wa()->getUser()->getName();
         }
 
-        $list = [];
-        $list_ = !empty($item['list_id']) ? self::getList($item['list_id']) : null;
+        $list = self::getList($item);
 
-        if ($list_ && pocketlistsRBAC::canAccessToList($list_, $item['assigned_contact_id'])) {
-            $list = [
-                'url'  => sprintf(
-                    '%s/%spocketlists/#/list/%s/',
-                    wa(pocketlistsHelper::APP_ID)->getConfig()->getRootUrl(true),
-                    wa(pocketlistsHelper::APP_ID)->getConfig()->getBackendUrl(),
-                    $list_['id']
-                ),
-                'name' => pocketlistsNaturalInput::matchLinks($list_['name']),
-            ];
+        $listUrl = '';
+
+        if ($list && pocketlistsRBAC::canAccessToList($list->getObject(), $item->getAssignedContactId())) {
+            $listUrl = sprintf(
+                '#/list/%s/',
+//                pl2()->getRootUrl(true),
+//                pl2()->getBackendUrl(),
+                $list->getId()
+            );
         }
 
-        // это тихий ужас. я себя боюсь
-
-        $contact = new waContact($item['assigned_contact_id']);
+        $contact = $item->getAssignedContact();
         if (!self::canSend($contact)) {
             return;
         }
 
+        /** @var pocketlistsItem $item */
+        $item = new pocketlistsItemOutputDecorator($item);
         self::sendMail(
             [
                 'contact_id' => $contact->getId(),
-                'subject'    => 'string:✊ {str_replace(array("\r", "\n"), " ", $item.name_original)|truncate:64}',
+                'subject'    => 'string:✊ {str_replace(array("\r", "\n"), " ", $item->getName())|truncate:64}',
                 'body'       => wa()->getAppPath('templates/mails/newassignitem.html'),
                 'variables'  => [
                     'item'        => $item,
-                    'due_date'    => !empty($item['due_datetime'])
+                    'due_date'    => $item->getDueDatetime()
                         ? waDateTime::format(
                             'humandatetime',
-                            $item['due_datetime'],
-                            $contact->getTimezone()
+                            $item->getDueDatetime(),
+                            $contact->getContact()->getTimezone()
                         )
-                        : (!empty($item['due_date']) ? waDateTime::format(
+                        : ($item->getDueDate() ? waDateTime::format(
                             'humandate',
-                            $item['due_date'],
-                            $contact->getTimezone()
+                            $item->getDueDate(),
+                            $contact->getContact()->getTimezone()
                         ) : false),
                     'list'        => $list,
+                    'listUrl'     => $listUrl,
                     'by_username' => $by_username,
                 ],
             ],
-            self::getBackendUrl($item['assigned_contact_id'])
+            self::getBackendUrl($item->getAssignedContactId())
         );
     }
 
@@ -525,8 +530,8 @@ class pocketlistsNotifications
         }
 
         $mailParams = [
-            'body'       => wa()->getAppPath('templates/mails/newcomment.html'),
-            'variables'  => [
+            'body'      => wa()->getAppPath('templates/mails/newcomment.html'),
+            'variables' => [
                 'item'        => $item,
                 'comment'     => $comment,
                 'by_username' => $comment_user->getName(),
@@ -547,7 +552,8 @@ class pocketlistsNotifications
             }
 
             // from NULL-list, assigned to another user or created by another user
-            if ($item->getListId() === null && ($item->getAssignedContactId() != $user_id || $item->getContactId() == $user_id)) {
+            if ($item->getListId() === null && ($item->getAssignedContactId() != $user_id || $item->getContactId(
+                    ) == $user_id)) {
                 continue;
             }
 
@@ -566,12 +572,12 @@ class pocketlistsNotifications
                     break;
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_FAVORITE_ITEM:
                     if ($item->isFavorite()) {
-                        $mailParams['subject']    = 'string:💬 {str_replace(array("\r", "\n"), " ", $item->getName())|truncate:64}';
+                        $mailParams['subject'] = 'string:💬 {str_replace(array("\r", "\n"), " ", $item->getName())|truncate:64}';
                     }
                     break;
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_ANY_LIST_ITEM:
                     if ($item) {
-                        $mailParams['subject']    ='string:💬 {str_replace(array("\r", "\n"), " ", $item->getName())|truncate:64}';
+                        $mailParams['subject'] = 'string:💬 {str_replace(array("\r", "\n"), " ", $item->getName())|truncate:64}';
                     }
                     break;
             }
@@ -679,7 +685,10 @@ class pocketlistsNotifications
                 continue;
             }
 
-            if ($list['contact_id'] != $user_id && pocketlistsRBAC::canAccessToList($list_,$user_id)) { // created not by user
+            if ($list['contact_id'] != $user_id && pocketlistsRBAC::canAccessToList(
+                    $list_,
+                    $user_id
+                )) { // created not by user
                 self::sendMail(
                     [
                         'contact_id' => $user_id,
@@ -733,10 +742,8 @@ class pocketlistsNotifications
         }
 
         $absolute_backend_url = $backend_url
-            ?
-            $backend_url
-            : wa(pocketlistsHelper::APP_ID)->getConfig()->getRootUrl(true)
-            .wa(pocketlistsHelper::APP_ID)->getConfig()->getBackendUrl();
+            ? $backend_url
+            : pl2()->getRootUrl(true).pl2()->getBackendUrl();
 
         $view->assign('backend_url', rtrim($absolute_backend_url, '/').'/pocketlists/');
         if (isset($data['variables'])) {
@@ -764,8 +771,13 @@ class pocketlistsNotifications
         return $us->getOne($user_id, 'webasyst', 'backend_url');
     }
 
-    private static function canSend(waContact $contact)
+    /**
+     * @param pocketlistsContact $contact
+     *
+     * @return bool
+     */
+    private static function canSend(pocketlistsContact $contact)
     {
-        return $contact->exists();
+        return $contact->isExists();
     }
 }
