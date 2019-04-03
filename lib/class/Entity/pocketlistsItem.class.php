@@ -967,4 +967,30 @@ class pocketlistsItem extends pocketlistsEntity
     {
         return $this->getAssignedContact() && $this->getAssignedContactId() != $this->getContactId();
     }
+
+    /**
+     * @return $this
+     */
+    public function setDone()
+    {
+        $this
+            ->setStatus(1)
+            ->setCompleteDatetime(date("Y-m-d H:i:s"))
+            ->setCompleteContactId(wa()->getUser()->getId());
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function setUndone()
+    {
+        $this
+            ->setStatus(0)
+            ->setCompleteDatetime('')
+            ->setCompleteContactId(null);
+
+        return $this;
+    }
 }

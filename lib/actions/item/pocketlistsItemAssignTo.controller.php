@@ -11,10 +11,9 @@ class pocketlistsItemAssignToController extends pocketlistsJsonController
      */
     public function execute()
     {
-        $id = waRequest::post('id', 0, waRequest::TYPE_INT);
         $team_id = waRequest::post('team_id', 0, waRequest::TYPE_INT);
 
-        if ($id > 0 && $team_id > 0) {
+        if ($team_id > 0) {
             /** @var pocketlistsItemFactory $itemFactory */
             $itemFactory = pl2()->getEntityFactory(pocketlistsItem::class);
             /** @var pocketlistsItem $item */

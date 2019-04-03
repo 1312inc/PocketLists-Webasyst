@@ -62,8 +62,6 @@ class pocketlistsCommentAddAction extends waViewAction
                     ->setCreateDatetime(date('Y-m-d H:i:s'));
 
                 if ($commentFactory->insert($comment)) {
-                    $comment = new pocketlistsCommentOutputDecorator($comment);
-
                     $this->logAction(
                         pocketlistsLogAction::ITEM_COMMENT,
                         [
@@ -74,7 +72,7 @@ class pocketlistsCommentAddAction extends waViewAction
 
                     pocketlistsNotifications::notifyAboutNewComment($comment);
 
-                    $this->view->assign('comment', $comment);
+                    $this->view->assign('comment', new pocketlistsCommentOutputDecorator($comment));
                 } else {
 //                    $this->errors = 'error while adding new item comment';
                 }
