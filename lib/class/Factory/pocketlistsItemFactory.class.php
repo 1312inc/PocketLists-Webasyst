@@ -66,6 +66,32 @@ class pocketlistsItemFactory extends pocketlistsFactory
     }
 
     /**
+     * @param pocketlistsUser $user
+     *
+     * @return pocketlistsItem[]
+     * @throws waException
+     */
+    public function findFavoritesForUser(pocketlistsUser $user)
+    {
+        $data = $this->getModel()->getFavorites($user->getContact()->getId(), false);
+
+        return $this->generateWithData($data, true);
+    }
+
+    /**
+     * @param pocketlistsUser $user
+     *
+     * @return pocketlistsItem[]
+     * @throws waException
+     */
+    public function findFavoritesForUserAndDate(pocketlistsUser $user, $date)
+    {
+        $data = $this->getModel()->getFavorites($user->getContact()->getId(), $date);
+
+        return $this->generateWithData($data, true);
+    }
+
+    /**
      * @param pocketlistsItem[] $items
      * @param pocketlistsList    $list
      *

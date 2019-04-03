@@ -3,7 +3,7 @@
 /**
  * Class pocketlistsItemCommentsAction
  */
-class pocketlistsItemCommentsAction extends waViewAction
+class pocketlistsItemCommentsAction extends pocketlistsViewItemAction
 {
     /**
      * @throws waDbException
@@ -13,8 +13,7 @@ class pocketlistsItemCommentsAction extends waViewAction
     {
         $id = waRequest::request('id', false, waRequest::TYPE_INT);
         if ($id) {
-            /** @var pocketlistsItem $item */
-            $item = pl2()->getEntityFactory(pocketlistsItem::class)->findById($id);
+            $item = $this->getItem();
 
             $this->view->assign(
                 [

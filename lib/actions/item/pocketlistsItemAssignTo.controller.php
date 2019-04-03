@@ -3,7 +3,7 @@
 /**
  * Class pocketlistsItemAssignToController
  */
-class pocketlistsItemAssignToController extends waJsonController
+class pocketlistsItemAssignToController extends pocketlistsJsonController
 {
     /**
      * @throws waDbException
@@ -15,31 +15,31 @@ class pocketlistsItemAssignToController extends waJsonController
         $team_id = waRequest::post('team_id', 0, waRequest::TYPE_INT);
 
         if ($id > 0 && $team_id > 0) {
-            $im = new pocketlistsItemModel();
-            $lm = new pocketlistsListModel();
+            /** @var pocketlistsItemFactory $itemFactory */
+            $itemFactory = pl2()->getEntityFactory(pocketlistsItem::class);
+            /** @var pocketlistsItem $item */
+            $item = $this->getItem();
 
-            $item = $im->getById($id);
-            /** @var pocketlistsListModel $list */
-            $list = $lm->findByPk($item['list_id']);
-            $contact = new waContact($team_id);
+            $contact = new pocketlistsContact(new waContact($team_id));
+
+            if (!$contact->isExists()) {
+                throw new waException(_w('Contact not found'), 404);
+            }
 
             if ($item
-                && $list
-                && $contact
-                && pocketlistsRBAC::canAccessToList($list)
-                && pocketlistsRBAC::canAccessToList($list['id'], $contact->getId())
+                && $item->getListId()
+                && pocketlistsRBAC::canAccessToList($item->getList())
+                && pocketlistsRBAC::canAccessToList($item->getList(), $contact->getId())
             ) {
                 // todo: childs??
-                $data = [
-                    'assigned_contact_id' => $contact->getId(),
-                    'update_datetime'     => date('Y-m-d H:i:s'),
+                $item
+                    ->setAssignedContactId($contact->getId())
+                    ->setUpdateDatetime(date('Y-m-d H:i:s'));
+                $saved = $itemFactory->save($item);
 
-                ];
-                if ($im->updateById($item['id'], $data)
-                ) {
-                    $item = array_merge($item, $data);
-                    $item = $im->prepareOutput($item);
+                if ($saved) {
                     pocketlistsNotifications::notifyAboutNewAssign($item, wa()->getUser()->getName());
+
                     $this->response = $contact->getName();
                 } else {
                     $this->errors = 'db error';

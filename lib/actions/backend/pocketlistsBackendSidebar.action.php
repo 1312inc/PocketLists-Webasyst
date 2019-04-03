@@ -15,7 +15,7 @@ class pocketlistsBackendSidebarAction extends pocketlistsViewAction
         $itemModel = pl2()->getModel(pocketlistsItem::class);
         $items = $itemModel->fetchTodo(pl2()->getUser()->getContact()->getId(),false);
 
-        $sidebar_todo_count = (new pocketlistsStrategyItemFilter())->countUndone($items);
+        $sidebar_todo_count = (new pocketlistsStrategyItemFilterAndSort())->countUndone($items);
         $sidebar_todo_count_icon = pl2()->getUser()->getAppCount();
 
         $this->view->assign(compact('sidebar_todo_count', 'sidebar_todo_count_icon'));

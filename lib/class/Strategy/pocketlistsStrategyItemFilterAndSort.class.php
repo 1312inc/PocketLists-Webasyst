@@ -1,10 +1,91 @@
 <?php
 
 /**
- * Class pocketlistsStrategyItemSort
+ * Class pocketlistsStrategyItemFilter
  */
-class pocketlistsStrategyItemSort
+class pocketlistsStrategyItemFilterAndSort
 {
+    /**
+     * @var pocketlistsItem[]
+     */
+    private $itemsDone = [];
+
+    /**
+     * @var pocketlistsItem[]
+     */
+    private $itemsUndone = [];
+
+    /**
+     * @param pocketlistsItem[] $items
+     *
+     * @return $this
+     */
+    public function filterDoneUndone(array $items)
+    {
+        /** @var pocketlistsItem $item */
+        foreach ($items as $item) {
+            if ($item->isDone()) {
+                $this->itemsDone[$item->getId()] = $item;
+            } else {
+                $this->itemsUndone[$item->getId()] = $item;
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param array $items
+     *
+     * @return int
+     */
+    public function countUndone(array $items)
+    {
+        $count = 0;
+
+        foreach ($items as $item) {
+            if (!$this->isDone($item)) {
+                $count++;
+            }
+        }
+
+        return $count;
+    }
+
+    /**
+     * @return pocketlistsItem[]
+     */
+    public function getItemsDone()
+    {
+        return $this->itemsDone;
+    }
+
+    /**
+     * @return pocketlistsItem[]
+     */
+    public function getItemsUndone()
+    {
+        return $this->itemsUndone;
+    }
+
+    /**
+     * @param array $items
+     *
+     * @return int
+     */
+    public function countDone(array $items)
+    {
+        $count = 0;
+
+        foreach ($items as $item) {
+            if ($this->isDone($item)) {
+                $count++;
+            }
+        }
+
+        return $count;
+    }
+
     /**
      * @param $items
      *
@@ -87,5 +168,15 @@ class pocketlistsStrategyItemSort
         }
 
         return 0;
+    }
+
+    /**
+     * @param array|pocketlistsItem $item
+     *
+     * @return bool
+     */
+    protected function isDone($item)
+    {
+        return isset($item['id']) ? $item['status'] == 1 : $item->isDone();
     }
 }
