@@ -36,6 +36,10 @@ class pocketlistsNotificationAboutNewAssign extends pocketlistsNotification
             return;
         }
 
+        if ($contact->isMe()) {
+            return;
+        }
+
         /** @var pocketlistsItem $item */
         $item = new pocketlistsItemOutputDecorator($item);
         $this->sendMail(
