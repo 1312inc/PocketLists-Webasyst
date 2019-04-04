@@ -60,6 +60,10 @@ class pocketlistsFactory
     public function findById($id)
     {
         $data = $this->getModel()->getById($id);
+        if (!$data) {
+            return null;
+        }
+
         $all = false;
 
         if (is_array($id) && !is_array($this->getModel()->getTableId())) {
@@ -152,7 +156,7 @@ class pocketlistsFactory
      * @return bool|waDbResultUpdate|null
      * @throws waException
      */
-    public function save(pocketlistsEntity $entity, $fields = [])
+    public function update(pocketlistsEntity $entity, $fields = [])
     {
         if (method_exists($entity, 'getId')) {
             $data = pl2()->getHydrator()->extract($entity, $fields, $this->getDbFields());
@@ -164,6 +168,30 @@ class pocketlistsFactory
         throw new waException('No id in entity');
     }
 
+    /**
+     * @param pocketlistsEntity $entity
+     * @param array             $fields
+     *
+     * @return bool|waDbResultUpdate|null
+     * @throws waException
+     */
+    public function save(pocketlistsEntity $entity, $fields = [])
+    {
+        if (method_exists($entity, 'getId')) {
+            if ($entity->getId()) {
+                return $this->update($entity, $fields);
+            }
+
+            return $this->insert($entity, $fields);
+        }
+
+        throw new waException('No id in entity');
+    }
+
+    /**
+     * @return array
+     * @throws waException
+     */
     protected function getDbFields()
     {
         return $this->getModel()->getMetadata();

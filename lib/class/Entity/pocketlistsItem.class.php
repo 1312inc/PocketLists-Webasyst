@@ -15,6 +15,8 @@ class pocketlistsItem extends pocketlistsEntity
     const STATUS_UNDONE = 0;
     const STATUS_DONE   = 1;
 
+    const REPEAT_DEFAULT = 0;
+
     /**
      * @var int
      */
@@ -48,7 +50,7 @@ class pocketlistsItem extends pocketlistsEntity
     /**
      * @var int|null
      */
-    protected $complete_contact_id;
+    protected $complete_contact_id = 0;
 
     /**
      * @var string
@@ -63,12 +65,12 @@ class pocketlistsItem extends pocketlistsEntity
     /**
      * @var int
      */
-    protected $status;
+    protected $status = 0;
 
     /**
      * @var bool
      */
-    private $has_children;
+    private $has_children = 0;
 
     /**
      * @var int
@@ -113,7 +115,7 @@ class pocketlistsItem extends pocketlistsEntity
     /**
      * @var float|null
      */
-    private $amount;
+    private $amount = 0;
 
     /**
      * @var string|null
@@ -123,17 +125,17 @@ class pocketlistsItem extends pocketlistsEntity
     /**
      * @var int|null
      */
-    private $assigned_contact_id;
+    private $assigned_contact_id = 0;
 
     /**
      * @var string|null
      */
-    private $repeat;
+    private $repeat = self::REPEAT_DEFAULT;
 
     /**
      * @var int|null
      */
-    private $key_list_id;
+    private $key_list_id = 0;
 
     /**
      * @var int
@@ -821,6 +823,7 @@ class pocketlistsItem extends pocketlistsEntity
     public function setDueDate($due_date = null)
     {
         $this->due_date = !empty($due_date) ? $due_date : null;
+        $this->recalculatePriority();
 
         return $this;
     }
@@ -841,6 +844,7 @@ class pocketlistsItem extends pocketlistsEntity
     public function setDueDatetime($due_datetime = null)
     {
         $this->due_datetime = !empty($due_datetime) ? $due_datetime : null;
+        $this->recalculatePriority();
 
         return $this;
     }
