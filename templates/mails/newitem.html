@@ -2,7 +2,7 @@
 <br>
 <br>
 {foreach $items as $item}
-{sprintf('[`<strong>%s</strong> by %s`]', $item.name|nl2br, $item.contact_name|escape)}<br>
+{sprintf('[`<strong>%s</strong> by %s`]', $item->getName()|nl2br, $item->getContact()->getname()|escape)}<br>
 {/foreach}
 <br>
 --<br>
