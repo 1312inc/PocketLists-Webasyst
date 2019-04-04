@@ -386,6 +386,40 @@ class pocketlistsItem extends pocketlistsEntity
     }
 
     /**
+     * @param pocketlistsContact $contact
+     *
+     * @return pocketlistsItem
+     * @throws waException
+     */
+    public function makeFavorite(pocketlistsContact $contact)
+    {
+        if (pl2()->getModel('pocketlistsUserFavorites')->insert(
+            ['item_id' => $this->getId(), 'contact_id' => $contact->getId()]
+        )) {
+            $this->setFavorite(true);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param pocketlistsContact $contact
+     *
+     * @return pocketlistsItem
+     * @throws waException
+     */
+    public function removeFavorite(pocketlistsContact $contact)
+    {
+        if (pl2()->getModel('pocketlistsUserFavorites')->deleteByField(
+            ['item_id' => $this->getId(), 'contact_id' => $contact->getId()]
+        )) {
+            $this->setFavorite(false);
+        }
+
+        return $this;
+    }
+
+    /**
      * @return int
      */
     public function getAttachmentsCount()
@@ -453,6 +487,7 @@ class pocketlistsItem extends pocketlistsEntity
     public function setList(pocketlistsList $list)
     {
         $this->list = $list;
+        $this->setListId($this->list->getId());
 
         return $this;
     }
@@ -633,6 +668,19 @@ class pocketlistsItem extends pocketlistsEntity
     public function setCalcPriority($calc_priority)
     {
         $this->calc_priority = $calc_priority;
+
+        return $this;
+    }
+
+    /**
+     * @return pocketlistsItem
+     */
+    public function recalculatePriority()
+    {
+        $this->setCalcPriority(max(
+            pocketlistsHelper::calcPriorityOnDueDate($this->getDueDate(), $this->getDueDatetime()),
+            $this->getPriority()
+        ));
 
         return $this;
     }
@@ -878,6 +926,49 @@ class pocketlistsItem extends pocketlistsEntity
     }
 
     /**
+     * @param pocketlistsContact $contact
+     *
+     * @return pocketlistsItem
+     */
+    public function setContact(pocketlistsContact $contact)
+    {
+        $this->contact = $contact;
+        $this->setContactId($this->contact->getId());
+
+        return $this;
+    }
+
+    /**
+     * @param pocketlistsContact|null $assignedContact
+     *
+     * @return pocketlistsItem
+     */
+    public function setAssignedContact(pocketlistsContact $assignedContact = null)
+    {
+        $this->assignedContact = $assignedContact;
+        if ($this->assignedContact) {
+            $this->setAssignedContactId($this->assignedContact->getId());
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param pocketlistsContact|null $completeContact
+     *
+     * @return pocketlistsItem
+     */
+    public function setCompleteContact(pocketlistsContact $completeContact = null)
+    {
+        $this->completeContact = $completeContact;
+        if ($this->completeContact) {
+            $this->setCompleteContactId($this->completeContact->getId());
+        }
+
+        return $this;
+    }
+
+    /**
      * @return string|null
      */
     public function getRepeat()
@@ -969,7 +1060,7 @@ class pocketlistsItem extends pocketlistsEntity
     }
 
     /**
-     * @return $this
+     * @return pocketlistsItem
      */
     public function setDone()
     {
@@ -982,7 +1073,7 @@ class pocketlistsItem extends pocketlistsEntity
     }
 
     /**
-     * @return $this
+     * @return pocketlistsItem
      */
     public function setUndone()
     {

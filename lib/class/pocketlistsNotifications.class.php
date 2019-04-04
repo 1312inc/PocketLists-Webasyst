@@ -95,7 +95,7 @@ class pocketlistsNotifications
                             continue;
                         }
 
-                        if (!self::checkItem($item, $user_id)) {
+                        if (!self::checkCompleteItem($item, $user_id)) {
                             continue;
                         }
 
@@ -114,7 +114,7 @@ class pocketlistsNotifications
                             continue;
                         }
 
-                        if (!self::checkItem($item, $user_id)) {
+                        if (!self::checkCompleteItem($item, $user_id)) {
                             continue;
                         }
 
@@ -133,7 +133,7 @@ class pocketlistsNotifications
                             continue;
                         }
 
-                        if (!self::checkItem($item, $user_id)) {
+                        if (!self::checkCompleteItem($item, $user_id)) {
                             continue;
                         }
 
@@ -143,7 +143,7 @@ class pocketlistsNotifications
                     break;
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_COMPETES_ANY_ITEM:
                     foreach ($items as $item) { // filter items according to settings
-                        if (!self::checkItem($item, $user_id)) {
+                        if (!self::checkCompleteItem($item, $user_id)) {
                             continue;
                         }
 
@@ -184,11 +184,15 @@ class pocketlistsNotifications
     /**
      * Notify all related users about new items (according to their settings)
      *
-     * @param $items array()
+     * @param pocketlistsItem[]    $items
+     * @param pocketlistsList|null $list
+     *
+     * @throws waDbException
+     * @throws waException
      */
-    public static function notifyAboutNewItems($items, $list = false)
+    public static function notifyAboutNewItems($items, pocketlistsList $list = null)
     {
-        if (!count($items)) {
+        if (!$items) {
             return;
         }
 
@@ -221,8 +225,11 @@ class pocketlistsNotifications
             ]
         )->fetchAll('contact_id');
 
+        /** @var pocketlistsUserFavoritesModel $ufm */
+        $ufm = pl2()->getModel('pocketlistsUserFavorites');
+
         foreach ($users as $user_id => $user) { // foreach user
-            $contact = new waContact($user_id);
+            $contact = new pocketlistsContact(new waContact($user_id));
             if (!self::canSend($contact)) {
                 continue;
             }
@@ -230,13 +237,13 @@ class pocketlistsNotifications
             $filtered_items = [];
             switch ($user['setting']) {
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_ITEM_TO_FAVORITE_LIST:
-                    $ufm = new pocketlistsUserFavoritesModel();
                     $user_lists = $ufm->query(
                         "SELECT i.key_list_id FROM {$ufm->getTableName()} uf JOIN pocketlists_item i ON uf.item_id = i.id AND i.key_list_id > 0 WHERE uf.contact_id = {$user_id}"
                     )->fetchAll('key_list_id');
                     $user_lists = array_keys($user_lists);
+
                     foreach ($items as $item) {
-                        $list = self::getList($item['list_id']);
+                        $list = self::getList($item);
 
                         if ($item['contact_id'] != $user_id
                             && in_array($item['list_id'], $user_lists)
@@ -702,7 +709,7 @@ class pocketlistsNotifications
      * @return bool
      * @throws waException
      */
-    private static function checkItem(pocketlistsItem $item, $user_id)
+    private static function checkCompleteItem(pocketlistsItem $item, $user_id)
     {
         // completed not by user
         if ($item->getCompleteContactId() == $user_id) {
