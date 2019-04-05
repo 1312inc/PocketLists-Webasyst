@@ -1,26 +1,14 @@
 <?php
 
-class pocketlistsUser
+/**
+ * Class pocketlistsUser
+ */
+class pocketlistsUser extends pocketlistsContact
 {
-    /**
-     * @var waContact
-     */
-    private $contact;
-
     /**
      * @var pocketlistsUserSettings
      */
     private $settings;
-
-    /**
-     * pocketlistsUser constructor.
-     *
-     * @param waContact $contact
-     */
-    public function __construct(waContact $contact)
-    {
-        $this->contact = $contact;
-    }
 
     /**
      * @return pocketlistsUserSettings
@@ -44,14 +32,6 @@ class pocketlistsUser
         $this->settings = $settings;
 
         return $this;
-    }
-
-    /**
-     * @return waContact
-     */
-    public function getContact()
-    {
-        return $this->contact;
     }
 
     /**
