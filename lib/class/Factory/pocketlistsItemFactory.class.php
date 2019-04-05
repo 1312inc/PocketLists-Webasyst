@@ -8,23 +8,6 @@
 class pocketlistsItemFactory extends pocketlistsFactory
 {
     /**
-     * @var pocketlistsItemModel
-     */
-    protected $model;
-
-    protected $entity = 'pocketlistsItem';
-
-    /**
-     * pocketlistsFactoryItem constructor.
-     *
-     * @throws waDbException
-     */
-    public function __construct()
-    {
-        $this->model = new pocketlistsItemModel();
-    }
-
-    /**
      * @param pocketlistsItemLinkModel $itemLinkModel
      *
      * @return array

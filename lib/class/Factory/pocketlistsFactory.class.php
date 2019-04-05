@@ -48,7 +48,11 @@ class pocketlistsFactory
      */
     protected function getModel()
     {
-        return wa(pocketlistsHelper::APP_ID)->getConfig()->getModel($this->getEntity());
+        if ($this->model === null) {
+            $this->model = pl2()->getModel($this->getEntity());
+        }
+
+        return $this->model;
     }
 
     /**

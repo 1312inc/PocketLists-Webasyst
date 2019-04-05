@@ -71,6 +71,7 @@ class pocketlistsConfig extends waAppConfig
         }
 
         $this->factories[$entity] = new $factoryClass();
+        $this->factories[$entity]->setEntity($entity);
 
         return $this->factories[$entity];
     }

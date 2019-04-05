@@ -5,6 +5,9 @@
  */
 class pocketlistsJsonController extends waJsonController
 {
+    /**
+     * @param null $params
+     */
     public function run($params = NULL)
     {
         try {
