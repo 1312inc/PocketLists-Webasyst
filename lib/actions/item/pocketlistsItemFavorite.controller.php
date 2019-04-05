@@ -1,22 +1,23 @@
 <?php
 
-class pocketlistsItemFavoriteController extends waJsonController
+/**
+ * Class pocketlistsItemFavoriteController
+ */
+class pocketlistsItemFavoriteController extends pocketlistsJsonController
 {
+    /**
+     * @throws waException
+     */
     public function execute()
     {
-        $id = waRequest::post('id', 0, waRequest::TYPE_INT);
         $status = waRequest::post('status', false);
 
-        if ($id) {
-            $ufm = new pocketlistsUserFavoritesModel();
-            if ($status) {
-                $ufm->insert(array('contact_id' => wa()->getUser()->getId(), 'item_id' => $id));
-//                $im = new pocketlistsItemModel();
-//                pocketlistsNotifications::notifyAboutCompleteItems($im->getById($id));
-            } else {
-                $ufm->deleteByField(array('contact_id' => wa()->getUser()->getId(), 'item_id' => $id));
-            }
-        }
+        $item = $this->getItem();
 
+        if ($status) {
+            $item->makeFavorite(pl2()->getUser());
+        } else {
+            $item->removeFavorite(pl2()->getUser());
+        }
     }
 }

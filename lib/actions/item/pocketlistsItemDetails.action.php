@@ -3,7 +3,7 @@
 /**
  * Class pocketlistsItemDetailsAction
  */
-class pocketlistsItemDetailsAction extends waViewAction
+class pocketlistsItemDetailsAction extends pocketlistsViewItemAction
 {
     /**
      * @throws waDbException

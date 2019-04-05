@@ -396,7 +396,8 @@ class pocketlistsItem extends pocketlistsEntity
     public function makeFavorite(pocketlistsContact $contact)
     {
         if (pl2()->getModel('pocketlistsUserFavorites')->insert(
-            ['item_id' => $this->getId(), 'contact_id' => $contact->getId()]
+            ['item_id' => $this->getId(), 'contact_id' => $contact->getId()],
+            waModel::INSERT_IGNORE
         )) {
             $this->setFavorite(true);
         }
