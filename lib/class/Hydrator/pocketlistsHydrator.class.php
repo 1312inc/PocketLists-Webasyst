@@ -24,14 +24,17 @@ class pocketlistsHydrator implements pocketlistsHydratorInterface
 
         $result = [];
 
-        if (empty($fields)) {
-            $fields = $reflection->getProperties();
-        }
+        $objectFields = $reflection->getProperties();
 
         $object->beforeExtract($fields);
 
-        foreach ($fields as $name) {
+        foreach ($objectFields as $name) {
             $toExtractField = $name->getName();
+
+            if ($fields && !in_array($toExtractField, $fields)) {
+                continue;
+            }
+
             if (!isset($dbFields[$toExtractField])) {
                 continue;
             }

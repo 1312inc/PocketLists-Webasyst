@@ -3,56 +3,71 @@
 /**
  * Class pocketlistsItemMoveToListController
  */
-class pocketlistsItemMoveToListController extends waJsonController
+class pocketlistsItemMoveToListController extends pocketlistsJsonController
 {
     /**
-     * @throws waDbException
+     * @throws waException
      */
     public function execute()
     {
-        $id = waRequest::post('id', 0, waRequest::TYPE_INT);
         $list_id = waRequest::post('list_id', 0, waRequest::TYPE_INT);
 
+        $item = $this->getItem();
 
-        if ($id > 0 && $list_id > 0) {
-            $im = new pocketlistsItemModel();
-            $lm = new pocketlistsListModel();
+        if (!$list_id) {
+            $this->errors = 'no list id';
 
-            $item = $im->getById($id);
-            /** @var pocketlistsListModel $list */
-            $list = $lm->findByPk($list_id);
+            return;
+        }
 
-            if ($item && $list && pocketlistsRBAC::canAccessToList($list)) {
-                // todo: childs??
-                if ($im->updateById(
-                    $item['id'],
-                    [
-                        'sort'            => 0,
-                        'list_id'         => $list['id'],
-                        'update_datetime' => date('Y-m-d H:i:s'),
-                    ]
-                )
-                ) {
-                    $listItems = $im->getUndoneByList($list_id);
-                    $curPos = 1;
-                    /** @var pocketlistsItemModel $listItem */
-                    foreach ($listItems as $listItem) {
-                        if ($listItem->pk === $item['id']) {
-                            continue;
-                        }
+        if ($item->getListId() == $list_id) {
+            $this->response = $item->getId();
 
-                        $im->updateById($listItem->pk, ['sort' => $curPos++]);
-                    }
+            return;
+        }
 
-                    $this->response = $id;
-                } else {
-                    $this->errors = 'db error';
+        /** @var pocketlistsList $list */
+        $list = pl2()->getEntityFactory(pocketlistsList::class)
+            ->findById($list_id);
+
+        if (!$list) {
+            $this->errors = 'no list';
+
+            return;
+        }
+
+        if (!pocketlistsRBAC::canAccessToList($list)) {
+            $this->errors = 'no access';
+
+            return;
+        }
+
+        $item
+            ->setList($list)
+            ->setSort(0)
+            ->setUpdateDatetime(date('Y-m-d H:i:s'));
+
+        $updated = pl2()->getEntityFactory(pocketlistsItem::class)->save($item);
+
+        // todo: childs??
+        if ($updated) {
+            $listItems = $list->getUndoneItems();
+            $curPos = 1;
+            $itemFactory = pl2()->getEntityFactory(pocketlistsItem::class);
+            /** @var pocketlistsItem $listItem */
+            foreach ($listItems as $listItem) {
+                if ($listItem->getId() === $item->getId()) {
+                    continue;
                 }
-            } else {
-                $this->errors = 'no such item or list or access error';
+
+                // todo: this should be one update
+                $listItem->setSort($curPos++);
+                $itemFactory->save($listItem, ['sort']);
             }
+
+            $this->response = $item->getId();
         } else {
-            $this->errors = 'no id';
+            $this->errors = 'db error';
         }
     }
 }

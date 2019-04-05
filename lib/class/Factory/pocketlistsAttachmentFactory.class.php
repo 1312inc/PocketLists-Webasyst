@@ -5,8 +5,10 @@
  *
  * @method pocketlistsAttachmentModel getModel()
  */
-class pocketlistsAttachmentFactory extends pocketlistsFactory
+class pocketlistsAttachmentFactory extends pocketlistsFactory implements pocketlistsFactoryInterface
 {
+    private $entity;
+
     /**
      * @param pocketlistsItem $item
      *
