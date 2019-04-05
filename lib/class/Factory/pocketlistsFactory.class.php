@@ -16,7 +16,7 @@ class pocketlistsFactory
     protected $model;
 
     /**
-     * @param mixed $entity
+     * @param string $entity
      *
      * @return pocketlistsFactory
      */
@@ -35,6 +35,9 @@ class pocketlistsFactory
         return $this->entity;
     }
 
+    /**
+     * @return mixed
+     */
     public function createNew()
     {
         $entity = $this->getEntity();
@@ -48,11 +51,7 @@ class pocketlistsFactory
      */
     protected function getModel()
     {
-        if ($this->model === null) {
-            $this->model = pl2()->getModel($this->getEntity());
-        }
-
-        return $this->model;
+        return pl2()->getModel($this->getEntity());
     }
 
     /**

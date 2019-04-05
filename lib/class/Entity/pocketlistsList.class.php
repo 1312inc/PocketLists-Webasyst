@@ -88,7 +88,7 @@ class pocketlistsList extends pocketlistsItem
     {
         if ($this->undoneItems === null) {
             /** @var pocketlistsItemFactory $factory */
-            $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getEntityFactory(pocketlistsItem::class);
+            $factory = pl2()->getEntityFactory(pocketlistsItem::class);
 
             $this->undoneItems = $factory->findUndoneByList($this);;
         }
@@ -116,7 +116,7 @@ class pocketlistsList extends pocketlistsItem
     {
         if ($this->doneItems === null) {
             /** @var pocketlistsItemFactory $factory */
-            $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getEntityFactory(pocketlistsItem::class);
+            $factory = pl2()->getEntityFactory(pocketlistsItem::class);
 
             $this->doneItems = $factory->findDoneByList($this);
         }
