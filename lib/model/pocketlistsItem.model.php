@@ -1103,21 +1103,23 @@ class pocketlistsItemModel extends kmModelExt
 
 //        $items = self::generateModels($items);
 
-        $results = [
-            0 => [],
-            1 => [],
-        ];
+//        $results = [
+//            0 => [],
+//            1 => [],
+//        ];
+//
+//        if ($items) {
+//            foreach ($items as $id => $item) {
+//                $results[$item['status']][$id] = $item;
+//            }
+//        }
+//
+//        return [
+//            0 => $results[0],
+//            1 => $results[1],
+//        ];
 
-        if ($items) {
-            foreach ($items as $id => $item) {
-                $results[$item['status']][$id] = $item;
-            }
-        }
-
-        return [
-            0 => $results[0],
-            1 => $results[1],
-        ];
+        return $items;
     }
 
     /**

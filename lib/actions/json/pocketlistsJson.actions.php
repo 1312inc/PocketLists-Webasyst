@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class pocketlistsJsonActions
+ */
 class pocketlistsJsonActions extends waJsonActions
 {
     public function defaultAction()
@@ -27,26 +30,34 @@ class pocketlistsJsonActions extends waJsonActions
         }
     }
 
+    /**
+     * @throws waException
+     */
     public function GetItemsPocketColorAction()
     {
         $item_id = waRequest::get('id', false, waRequest::TYPE_INT);
-        if ($item_id) {
-            $im = new pocketlistsItemModel();
-            $item = $im->getById($item_id);
+        if (!$item_id) {
+            $this->errors = 'no item id';
 
-            if ($item['list_id']) {
-                $lm = new pocketlistsListModel();
-                $list = $lm->getById($item['list_id']);
-                if ($this->getRights('list.' . $list['id']) > 0) {
-                    $this->response = $list['color'];
-                } else {
-                    $this->errors = '403 error';
-                }
+            return;
+        }
+
+        /** @var pocketlistsItem $item */
+        $item = pl2()->getEntityFactory(pocketlistsItem::class)->findById($item_id);
+        if (!$item) {
+            $this->errors = 'no item id';
+
+            return;
+        }
+
+        if ($item->getListId()) {
+            if (pocketlistsRBAC::canAccessToList($item->getList())) {
+                $this->response = $item->getList()->getColor();
             } else {
-                $this->response = pocketlistsHelper::COLOR_DEFAULT;
+                $this->errors = '403 error';
             }
         } else {
-            $this->errors = 'no item id';
+            $this->response = pocketlistsStoreColor::NONE;
         }
     }
 

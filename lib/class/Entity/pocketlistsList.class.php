@@ -5,6 +5,8 @@
  */
 class pocketlistsList extends pocketlistsItem
 {
+    const DEFAULT_ICON = 'li-list@2x.png';
+
     /**
      * @var int
      */
@@ -73,12 +75,22 @@ class pocketlistsList extends pocketlistsItem
     /**
      * @var pocketlistsItem[]
      */
+    private $items;
+
+    /**
+     * @var pocketlistsItem[]
+     */
     private $undoneItems;
 
     /**
      * @var pocketlistsItem[]
      */
     private $doneItems;
+
+    /**
+     * @var pocketlistsItem
+     */
+    private $keyItem;
 
     /**
      * @return pocketlistsItem[]
@@ -120,6 +132,7 @@ class pocketlistsList extends pocketlistsItem
 
             $this->doneItems = $factory->findDoneByList($this);
         }
+
         return $this->doneItems;
     }
 
@@ -260,7 +273,7 @@ class pocketlistsList extends pocketlistsItem
      */
     public function getIcon()
     {
-        return $this->icon;
+        return $this->icon ?: self::DEFAULT_ICON;
     }
 
     /**
@@ -377,9 +390,14 @@ class pocketlistsList extends pocketlistsItem
 
     /**
      * @return pocketlistsPocket
+     * @throws waException
      */
     public function getPocket()
     {
+        if ($this->pocket) {
+            $this->setPocket(pl2()->getEntityFactory(pocketlistsPocket::class)->findById($this->getPocketId()));
+        }
+
         return $this->pocket;
     }
 
@@ -391,7 +409,47 @@ class pocketlistsList extends pocketlistsItem
     public function setPocket($pocket)
     {
         $this->pocket = $pocket;
+        $this->setPocketId($this->pocket->getId());
 
         return $this;
+    }
+
+    /**
+     * @param pocketlistsItem|null $keyItem
+     *
+     * @return pocketlistsList
+     */
+    public function setKeyItem(pocketlistsItem $keyItem = null)
+    {
+        $this->keyItem = $keyItem;
+        $this->setKeyItemId($this->keyItem instanceof pocketlistsItem ? $this->keyItem->getId() : 0);
+
+        return $this;
+    }
+
+    /**
+     * @return pocketlistsItem
+     * @throws waException
+     */
+    public function getKeyItem()
+    {
+        if ($this->keyItem === null) {
+            $this->setKeyItem(pl2()->getEntityFactory(pocketlistsItem::class)->findById($this->getKeyItemId()));
+        }
+
+        return $this->keyItem;
+    }
+
+    /**
+     * @return pocketlistsItem[]
+     * @throws waException
+     */
+    public function getItems()
+    {
+        if ($this->items === null) {
+            $this->items = pl2()->getEntityFactory(pocketlistsItem::class)->findByList($this);
+        }
+
+        return $this->items;
     }
 }

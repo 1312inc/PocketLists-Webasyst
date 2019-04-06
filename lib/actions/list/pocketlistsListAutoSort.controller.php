@@ -1,21 +1,25 @@
 <?php
 
-class pocketlistsListAutoSortController extends waJsonController
+/**
+ * Class pocketlistsListAutoSortController
+ */
+class pocketlistsListAutoSortController extends pocketlistsJsonController
 {
+    /**
+     * @throws waDbException
+     * @throws waException
+     * @throws waRightsException
+     */
     public function execute()
     {
-        $list_id = waRequest::post('list_id', false);
+        $list = $this->getList(waRequest::post('list_id', 0, waRequest::TYPE_INT));
 
-        if ($list_id) {
-            $lm = new pocketlistsListModel();
-            $list = $lm->getById($list_id);
-
-            if (!in_array($list['id'], pocketlistsRBAC::getAccessListForContact())) {
-                throw new waRightsException('403');
-            }
-
-            $im = new pocketlistsItemModel();
-            $im->sortItems($list['id']);
+        if (!in_array($list->getId(), pocketlistsRBAC::getAccessListForContact())) {
+            throw new waRightsException('403');
         }
+
+        /** @var pocketlistsItemModel $itemModel */
+        $itemModel = pl2()->getModel(pocketlistsItem::class);
+        $itemModel->sortItems($list->getId());
     }
 }

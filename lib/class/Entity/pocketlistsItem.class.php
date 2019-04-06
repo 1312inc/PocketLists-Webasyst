@@ -70,12 +70,12 @@ class pocketlistsItem extends pocketlistsEntity
     /**
      * @var bool
      */
-    private $has_children = 0;
+    protected $has_children = 0;
 
     /**
      * @var int
      */
-    private $priority = self::PRIORITY_NORM;
+    protected $priority = self::PRIORITY_NORM;
 
     /**
      * @var int
@@ -85,57 +85,57 @@ class pocketlistsItem extends pocketlistsEntity
     /**
      * @var int|null
      */
-    private $parent_id;
+    protected $parent_id;
 
     /**
      * @var int|null
      */
-    private $list_id;
+    protected $list_id;
 
     /**
      * @var string
      */
-    private $note;
+    protected $note;
 
     /**
      * @var DateTime|null
      */
-    private $due_date;
+    protected $due_date;
 
     /**
      * @var DateTime|null
      */
-    private $due_datetime;
+    protected $due_datetime;
 
     /**
      * @var int|null
      */
-    private $location_id;
+    protected $location_id;
 
     /**
      * @var float|null
      */
-    private $amount = 0;
+    protected $amount = 0;
 
     /**
      * @var string|null
      */
-    private $currency_iso3;
+    protected $currency_iso3;
 
     /**
      * @var int|null
      */
-    private $assigned_contact_id = 0;
+    protected $assigned_contact_id = 0;
 
     /**
      * @var string|null
      */
-    private $repeat = self::REPEAT_DEFAULT;
+    protected $repeat = self::REPEAT_DEFAULT;
 
     /**
      * @var int|null
      */
-    private $key_list_id = 0;
+    protected $key_list_id = 0;
 
     /**
      * @var int
@@ -150,7 +150,7 @@ class pocketlistsItem extends pocketlistsEntity
     /**
      * @var int
      */
-    private $attachments_count = 0;
+    protected $attachments_count = 0;
 
     /**
      * @var pocketlistsContact
@@ -180,7 +180,7 @@ class pocketlistsItem extends pocketlistsEntity
     /**
      * @var bool
      */
-    private $favorite;
+    protected $favorite;
 
     /**
      * @var pocketlistsItem[]
@@ -190,7 +190,7 @@ class pocketlistsItem extends pocketlistsEntity
     /**
      * @var pocketlistsAttachment[]
      */
-    private $attachments;
+    protected $attachments;
 
     /**
      * @throws waException
@@ -397,7 +397,7 @@ class pocketlistsItem extends pocketlistsEntity
     {
         if (pl2()->getModel('pocketlistsUserFavorites')->insert(
             ['item_id' => $this->getId(), 'contact_id' => $contact->getId()],
-            waModel::INSERT_IGNORE
+            waModel::INSERT_ON_DUPLICATE_KEY_UPDATE
         )) {
             $this->setFavorite(true);
         }

@@ -8,6 +8,11 @@ class pocketlistsStrategyItemFilterAndSort
     /**
      * @var pocketlistsItem[]
      */
+    private $items;
+
+    /**
+     * @var pocketlistsItem[]
+     */
     private $itemsDone = [];
 
     /**
@@ -16,14 +21,24 @@ class pocketlistsStrategyItemFilterAndSort
     private $itemsUndone = [];
 
     /**
+     * pocketlistsStrategyItemFilterAndSort constructor.
+     *
+     * @param array|null $items
+     */
+    public function __construct(array $items = null)
+    {
+        $this->items = $items;
+    }
+
+    /**
      * @param pocketlistsItem[] $items
      *
      * @return $this
      */
-    public function filterDoneUndone(array $items)
+    public function filterDoneUndone()
     {
         /** @var pocketlistsItem $item */
-        foreach ($items as $item) {
+        foreach ($this->items as $item) {
             if ($item->isDone()) {
                 $this->itemsDone[$item->getId()] = $item;
             } else {
@@ -39,11 +54,11 @@ class pocketlistsStrategyItemFilterAndSort
      *
      * @return int
      */
-    public function countUndone(array $items)
+    public function countUndone()
     {
         $count = 0;
 
-        foreach ($items as $item) {
+        foreach ($this->items as $item) {
             if (!$this->isDone($item)) {
                 $count++;
             }
@@ -73,11 +88,11 @@ class pocketlistsStrategyItemFilterAndSort
      *
      * @return int
      */
-    public function countDone(array $items)
+    public function countDone()
     {
         $count = 0;
 
-        foreach ($items as $item) {
+        foreach ($this->items as $item) {
             if ($this->isDone($item)) {
                 $count++;
             }
@@ -87,15 +102,63 @@ class pocketlistsStrategyItemFilterAndSort
     }
 
     /**
-     * @param $items
-     *
      * @return mixed
      */
-    public function getProperSort(array $items)
+    public function getProperSort()
     {
-        usort($items, [$this, 'compare_for_proper_sort']);
+        usort($this->items, [$this, 'compare_for_proper_sort']);
 
-        return $items;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProperSortUndone()
+    {
+        usort($this->itemsUndone, [$this, 'compare_for_proper_sort']);
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProperSortDone()
+    {
+        usort($this->itemsDone, [$this, 'compare_for_proper_sort']);
+
+        return $this;
+    }
+
+    /**
+     * @return pocketlistsItem[]
+     */
+    public function getItems()
+    {
+        return $this->items;
+    }
+
+    /**
+     * @param pocketlistsItem[] $items
+     *
+     * @return pocketlistsStrategyItemFilterAndSort
+     */
+    public function setItems($items)
+    {
+        $this->items = $items;
+
+        return $this;
+    }
+
+    /**
+     * @param array|pocketlistsItem $item
+     *
+     * @return bool
+     */
+    protected function isDone($item)
+    {
+        return isset($item['id']) ? $item['status'] == 1 : $item->isDone();
     }
 
     /**
@@ -168,15 +231,5 @@ class pocketlistsStrategyItemFilterAndSort
         }
 
         return 0;
-    }
-
-    /**
-     * @param array|pocketlistsItem $item
-     *
-     * @return bool
-     */
-    protected function isDone($item)
-    {
-        return isset($item['id']) ? $item['status'] == 1 : $item->isDone();
     }
 }

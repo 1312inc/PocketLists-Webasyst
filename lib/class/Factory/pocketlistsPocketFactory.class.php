@@ -7,7 +7,7 @@
  */
 class pocketlistsPocketFactory extends pocketlistsFactory
 {
-    protected $entity = 'pocketlistsPocket';
+    protected $entity;
 
     /**
      * @param pocketlistsUser|null $user

@@ -8,6 +8,11 @@
 class pocketlistsItemFactory extends pocketlistsFactory
 {
     /**
+     * @var
+     */
+    protected $entity;
+
+    /**
      * @param pocketlistsItemLinkModel $itemLinkModel
      *
      * @return array
@@ -28,6 +33,19 @@ class pocketlistsItemFactory extends pocketlistsFactory
     public function findUndoneByList(pocketlistsList $list)
     {
         $data = $this->getModel()->getUndoneByList($list->getId());
+
+        return $this->generateWithList($data, $list);
+    }
+
+    /**
+     * @param pocketlistsList $list
+     *
+     * @return pocketlistsItem[]
+     * @throws waException
+     */
+    public function findByList(pocketlistsList $list)
+    {
+        $data = $this->getModel()->getAllByList($list->getId());
 
         return $this->generateWithList($data, $list);
     }
@@ -70,6 +88,33 @@ class pocketlistsItemFactory extends pocketlistsFactory
     public function findFavoritesForUserAndDate(pocketlistsUser $user, $date)
     {
         $data = $this->getModel()->getFavorites($user->getContact()->getId(), $date);
+
+        return $this->generateWithData($data, true);
+    }
+
+    /**
+     * @param pocketlistsContact $contact
+     * @param bool            $date
+     *
+     * @return pocketlistsItem[]
+     * @throws waException
+     */
+    public function findToDo(pocketlistsContact $contact, $date = false)
+    {
+        $data = $this->getModel()->getToDo($contact->getId(), $date);
+
+        return $this->generateWithData($data, true);
+    }
+
+    /**
+     * @param pocketlistsContact $contact
+     *
+     * @return pocketlistsItem[]
+     * @throws waException
+     */
+    public function findAssignedOrCompletesByContact(pocketlistsContact $contact)
+    {
+        $data = $this->getModel()->getAssignedOrCompletesByContactItems($contact->getId());
 
         return $this->generateWithData($data, true);
     }

@@ -1,9 +1,18 @@
 <?php
 
-class pocketlistsListEmailController extends waJsonController
+/**
+ * Class pocketlistsListEmailController
+ */
+class pocketlistsListEmailController extends pocketlistsJsonController
 {
-    private $data = array();
+    /**
+     * @var array
+     */
+    private $data = [];
 
+    /**
+     *
+     */
     public function execute()
     {
         $mail = waRequest::post('mail', false);
@@ -12,18 +21,26 @@ class pocketlistsListEmailController extends waJsonController
         }
     }
 
+    /**
+     * @param $data
+     *
+     * @return bool
+     */
     private function prepare($data)
     {
         $ev = new waEmailValidator();
         if (!$ev->isValid($data['to'])) {
             $this->errors = 'wrong email';
+
             return false;
-        };
-        $this->data = array(
-            'to' => $data['to'],
-            'subject' => 'string:' . $data['subject'],
-            'body' => 'string:' . nl2br($data['body'])
-        );
+        }
+
+        $this->data = [
+            'to'      => $data['to'],
+            'subject' => 'string:'.$data['subject'],
+            'body'    => 'string:'.nl2br($data['body']),
+        ];
+
         return true;
     }
 }

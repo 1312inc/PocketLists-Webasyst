@@ -20,7 +20,7 @@ class pocketlistsFavoritesMonthAction extends pocketlistsViewAction
         /** @var pocketlistsItem[] $items */
         $items = $itemFactory->findFavoritesForUserAndDate($this->user, $month_date);
 
-        $filteredItems = (new pocketlistsStrategyItemFilterAndSort())->filterDoneUndone($items);
+        $filteredItems = (new pocketlistsStrategyItemFilterAndSort($items))->filterDoneUndone();
 
         $monthData = pocketlistsHelper::getMonthData($filteredItems, $show_month);
 

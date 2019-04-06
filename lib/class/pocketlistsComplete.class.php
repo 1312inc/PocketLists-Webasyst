@@ -11,12 +11,12 @@ class pocketlistsComplete extends pocketlistsJsonController
     protected $completed_items = [];
 
     /**
-     * @param pocketlistsItem $item
+     * @param pocketlistsItem|pocketlistsList $item
      * @param                 $status
      *
      * @throws waException
      */
-    protected function changeComplete(pocketlistsItem $item, $status)
+    protected function changeComplete($item, $status)
     {
         if ($status) {
             $item->setDone();
@@ -24,7 +24,7 @@ class pocketlistsComplete extends pocketlistsJsonController
             $item->setUndone();
         }
 
-        if (pl2()->getEntityFactory(pocketlistsItem::class)->save($item)) {
+        if (pl2()->getEntityFactory(get_class($item))->save($item)) {
             $this->completed_items[] = $item;
         } else {
             $this->errors[] = 'error while updating parent id: ' . $item->getId();

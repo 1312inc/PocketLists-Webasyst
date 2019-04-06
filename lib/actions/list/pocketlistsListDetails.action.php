@@ -3,17 +3,13 @@
 /**
  * Class pocketlistsListDetailsAction
  */
-class pocketlistsListDetailsAction extends waViewAction
+class pocketlistsListDetailsAction extends pocketlistsViewListAction
 {
     /**
-     * @throws waDbException
+     * @throws waException
      */
     public function execute()
     {
-        $id = waRequest::post('id', false, waRequest::TYPE_INT);
-        if ($id) {
-            $list = pocketlistsListModel::model()->findByPk($id);
-            $this->view->assign('list', $list);
-        }
+        $this->view->assign('list', new pocketlistsListOutputDecorator($this->getList()));
     }
 }

@@ -1,23 +1,33 @@
 <?php
 
-class pocketlistsListArchiveController extends waJsonController
+/**
+ * Class pocketlistsListArchiveController
+ */
+class pocketlistsListArchiveController extends pocketlistsJsonController
 {
+    /**
+     * @throws waException
+     */
     public function execute()
     {
-        $list_id = waRequest::post('list_id', 0, waRequest::TYPE_INT);
-        $archive = waRequest::post('archive', null, waRequest::TYPE_INT);
+        $list = $this->getList();
 
-        if ($list_id) {
-            $lm = new pocketlistsListModel();
-            if ($lm->update($list_id, array('archived' => $archive))) {
-                $this->response = 'ok';
+        $list
+            ->setArchived(waRequest::post('archive', null, waRequest::TYPE_INT))
+            ->setUpdateDatetime(date('Y-m-d H:i:s'));
 
-                // log this action
-                $this->logAction($archive ? pocketlistsLogAction::LIST_ARCHIVED : pocketlistsLogAction::LIST_UNARCHIVED
-                    , array('list_id' => $list_id));
-            } else {
-                $this->errors = 'error while deleting list and his items';
-            }
+        $updated = pl2()->getEntityFactory(pocketlistsList::class)->save($list, ['archived', 'update_datetime']);
+
+        if ($updated) {
+            $this->response = 'ok';
+
+            // log this action
+            $this->logAction(
+                $list->isArchived() ? pocketlistsLogAction::LIST_ARCHIVED : pocketlistsLogAction::LIST_UNARCHIVED,
+                ['list_id' => $list->getId()]
+            );
+        } else {
+            $this->errors = 'error while deleting list and his items';
         }
     }
 }
