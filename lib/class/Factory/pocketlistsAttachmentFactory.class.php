@@ -7,7 +7,7 @@
  */
 class pocketlistsAttachmentFactory extends pocketlistsFactory implements pocketlistsFactoryInterface
 {
-    private $entity;
+    protected $entity;
 
     /**
      * @param pocketlistsItem $item

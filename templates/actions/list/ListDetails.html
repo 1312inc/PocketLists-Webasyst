@@ -4,60 +4,30 @@
     <div class="fields form">
         <form method="post">
             {* <a href="#" class="pl-list-details-cancel" class="pl-close" title="[`Close`]">&times;</a> *}
-            <input type="hidden" name="list[id]" value="{$list.id}"/>
+            <input type="hidden" name="list[id]" value="{$list->getId()}"/>
             <!-- core -->
             <div class="field-group">
                 <div class="field">
-                    <div class="value"><input type="text" class="bold large long" name="list[name]" value="{$list.name|escape}" /></div>
+                    <div class="value"><input type="text" class="bold large long" name="list[name]" value="{$list->getName()|escape}" /></div>
                 </div>
                 <div class="field" id="pl-list-icon-change">
                     <div class="name"><br>[`Icon`]</div>
                     <div class="value">
-                        <input type="hidden" name="list[icon]" value="{$list.icon|default:'li-list@2x.png'}"/>
-                        <a href="#" class="small"><i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$list.icon|default:'li-list@2x.png'});"></i><br>
+                        <input type="hidden" name="list[icon]" value="{$list->getIcon()}"/>
+                        <a href="#" class="small"><i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$list->getIcon()});"></i><br>
                         [`Change`]</a>
                     </div>
                 </div>
                 <div class="field" id="pl-list-color">
                     <div class="name">[`Color`]</div>
                     <div class="value no-shift" id="pl-list-priority">
-                        <input type="hidden" name="list[color]" value="{$list.color|default:'none'}"/>
-                        <a href="#" {if $list.color == 'none'}class="selected"{/if} data-pl-list-color="none"><i class="icon16 color white"></i></a>
-                        <a href="#" {if $list.color == 'yellow'}class="selected"{/if} data-pl-list-color="yellow"><i class="icon16 color pl-dark-yellow"></i></a>
-                        <a href="#" {if $list.color == 'green'}class="selected"{/if} data-pl-list-color="green"><i class="icon16 color pl-dark-green"></i></a>
-                        <a href="#" {if $list.color == 'blue'}class="selected"{/if} data-pl-list-color="blue"><i class="icon16 color pl-dark-blue"></i></a>
-                        <a href="#" {if $list.color == 'red'}class="selected"{/if} data-pl-list-color="red"><i class="icon16 color pl-dark-red"></i></a>
-                        <a href="#" {if $list.color == 'purple'}class="selected"{/if} data-pl-list-color="purple"><i class="icon16 color pl-dark-purple"></i></a>
-                        <!-- <a href="#" {if $list.color == 'brown'}class="selected"{/if} data-pl-list-color="brown"><i class="icon16 color pl-dark-brown"></i></a>
-                        <a href="#" {if $list.color == 'orange'}class="selected"{/if} data-pl-list-color="orange"><i class="icon16 color pl-dark-orange"></i></a> -->
+                        <input type="hidden" name="list[color]" value="{$list->getColor()|default:pocketlistsStoreColor::NONE}"/>
+                        {foreach pocketlistsStoreColor::getColors() as $color => $name}
+                            <a href="#" {if $list->getColor() == $color}class="selected"{/if} data-pl-list-color="{$color}"><i class="icon16 color pl-dark-{$color}"></i></a>
+                        {/foreach}
                     </div>
                 </div>
             </div>
-
-
-            {* DEPRECATED Nov 2018 to match pl2ios functionality
-                <div class="field-group">
-                    <div class="field">
-                        <div class="name">[`Due`]</div>
-                        <div class="value">
-                            <input name="list[due_date]" class="pl-due-date-input" type="text" id="pl-list-due-datetime" value="{$list.due_date|default:''|wa_date}" />
-                            <a href="#"><i class="icon16 calendar"></i></a>
-                            <span id="pl-list-due-datetime-time">
-                                {$hour = $list.due_datetime|default:''|wa_datetime:'H'}
-                                <select name="list[due_datetime_hours]" class="pl-due-date-input" id="pl-list-due-datetime-hours" value="{$hour}" {if empty($list.due_datetime)}style="display: none;" disabled="disabled"{/if}>
-                                    {for $i=0 to 23}{$h = "%02d"|sprintf:$i}<option value="{$h}" {if $h == $hour}selected="selected"{/if}>{$h}</option>{/for}
-                                </select>
-                                {$minutes = $list.due_datetime|default:''|wa_datetime:'i'}
-                                <select name="list[due_datetime_minutes]" class="pl-due-date-input" type="text" id="pl-list-due-datetime-minutes" value="{$minutes}" {if empty($list.due_datetime)}style="display: none;" disabled="disabled"{/if}>
-                                    {for $i=0 to 59 step 5}{$m = "%02d"|sprintf:$i}<option value="{$m}" {if $m == $minutes}selected="selected"{/if}>{$m}</option>{/for}
-                                </select>
-                                <a href="#" id="pl-list-due-datetime-set" class="small inline-link" {if empty($list.due_date) || !empty($list.due_datetime)}style="display: none;"{/if}><b><i>[`Set time`]</i></b></a>
-                                <a href="#" id="pl-list-due-datetime-clear" class="small inline-link" {if empty($list.due_datetime)}style="display: none;"{/if}><b><i>[`Clear time`]</i></b></a>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            *}
 
             <div class="field-group">
                 <div class="field">
@@ -90,7 +60,7 @@
             <a href="#" data-pl-action="list-email"><i class="icon16 email"></i>[`Email list`]</a>
         </li>
         <li>
-            <a href="?module=list&amp;id={$list.id}&amp;print=true" target="_blank"><i class="icon16 print"></i>[`Print list`]</a>
+            <a href="?module=list&amp;id={$list->getId()}&amp;print=true" target="_blank"><i class="icon16 print"></i>[`Print list`]</a>
         </li>
         <li>
             <a href="#" data-pl-action="list-archive"><i class="icon16 pl archive"></i>[`Archive list`]</a>

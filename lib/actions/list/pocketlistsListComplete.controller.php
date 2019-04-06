@@ -1,22 +1,33 @@
 <?php
 
+/**
+ * Class pocketlistsListCompleteController
+ */
 class pocketlistsListCompleteController extends pocketlistsComplete
 {
+    /**
+     * @throws waException
+     */
     public function execute()
     {
-        $list_id = waRequest::post('list_id', 0, waRequest::TYPE_INT);
+        $list = $this->getList(waRequest::post('list_id', 0, waRequest::TYPE_INT));
         $status = waRequest::post('status', 0, waRequest::TYPE_INT);
 
-        $im = new pocketlistsItemModel();
+        if (!pocketlistsRBAC::canAccessToList($list)) {
+            $this->setError('forbidden');
 
-        if ($list_id) { // complete all list items
-            $tree = $im->getUndoneByList($list_id);
-            $this->changeComplete(0, array('id' => null, 'childs' => $tree), $status, $im);
-            pocketlistsNotifications::notifyAboutCompleteItems($this->completed_items);
-
-            $this->response = $list_id;
-        } else {
-            $this->errors = 'no id';
+            return;
         }
+
+        $items = $list->getUndoneItems();
+        foreach ($items as $item) {
+            $this->changeComplete($item, $status);
+        }
+        $this->changeComplete($list->getKeyItem(), $status);
+        array_pop($this->completed_items);
+
+        (new pocketlistsNotificationAboutCompleteItems())->notifyAboutCompleteItems($this->completed_items);
+
+        $this->response = $list->getId();
     }
 }

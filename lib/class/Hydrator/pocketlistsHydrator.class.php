@@ -39,16 +39,16 @@ class pocketlistsHydrator implements pocketlistsHydratorInterface
                 continue;
             }
 
-            $methodName = 'get'.$this->getMethodName($toExtractField);
+            $methodName = $this->getMethodName($toExtractField);
 
-            try {
-                $method = $reflection->getMethod($methodName);
+            foreach (['get', 'is'] as $methodPrefix) {
+                if ($reflection->hasMethod($methodPrefix.$methodName)) {
+                    $method = $reflection->getMethod($methodPrefix.$methodName);
 
-                if ($method && $method->isPublic()) {
-                    $result[$toExtractField] = $method->invoke($object);
+                    if ($method && $method->isPublic()) {
+                        $result[$toExtractField] = $method->invoke($object);
+                    }
                 }
-            } catch (ReflectionException $ex) {
-
             }
         }
 

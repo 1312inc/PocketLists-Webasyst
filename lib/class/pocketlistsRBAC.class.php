@@ -90,36 +90,38 @@ class pocketlistsRBAC
     }
 
     /**
-     * @param int $pocket_id
-     * @param int $contact_id
+     * @param pocketlistsPocket       $pocket
+     * @param pocketlistsContact|null $contact
      *
-     * @return bool|int
+     * @return bool
      * @throws waDbException
      * @throws waException
      */
-    public static function contactHasAccessToPocket($pocket_id, $contact_id = 0)
+    public static function contactHasAccessToPocket(pocketlistsPocket $pocket, pocketlistsContact $contact = null)
     {
-        $user = self::getContact($contact_id);
+        $user = self::getContact($contact);
 
-        if (isset(self::$pockets[$user->getId()][$pocket_id])) {
-            return self::$pockets[$user->getId()][$pocket_id];
+        if (isset(self::$pockets[$user->getId()][$pocket->getId()])) {
+            return self::$pockets[$user->getId()][$pocket->getId()];
         }
 
         self::fillPocketsForUser($user);
 
-        return isset(self::$pockets[$user->getId()][$pocket_id]) ? self::$pockets[$user->getId()][$pocket_id] : false;
+        return isset(self::$pockets[$user->getId()][$pocket->getId()])
+            ? self::$pockets[$user->getId()][$pocket->getId()]
+            : false;
     }
 
     /**
-     * @param int $contact_id
+     * @param pocketlistsContact|null $contact
      *
      * @return array
      * @throws waDbException
      * @throws waException
      */
-    public static function getAccessPocketForContact($contact_id = 0)
+    public static function getAccessPocketForContact(pocketlistsContact $contact = null)
     {
-        $user = self::getContact($contact_id);
+        $user = self::getContact($contact);
 
         if (!isset(self::$pockets[$user->getId()])) {
             self::fillPocketsForUser($user);
@@ -417,14 +419,14 @@ class pocketlistsRBAC
     }
 
     /**
-     * @param $user
+     * @param pocketlistsContact|int $user
      *
      * @return waAuthUser|waContact|waUser
      * @throws waException
      */
     private static function getContact($user)
     {
-        if (!$user instanceof pocketlistsUser) {
+        if (!$user instanceof pocketlistsContact) {
             $contact = $user && is_int($user) ? new waContact($user) : wa()->getUser();
         } else {
             $contact = $user->getContact();

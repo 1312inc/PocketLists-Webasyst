@@ -8,26 +8,11 @@
 class pocketlistsListFactory extends pocketlistsFactory
 {
     /**
-     * @var pocketlistsListModel
-     */
-    protected $model;
-
-    /**
      * @var pocketlistsNullList
      */
     protected $nullList;
 
     protected $entity = 'pocketlistsList';
-
-    /**
-     * pocketlistsFactoryItem constructor.
-     *
-     * @throws waDbException
-     */
-    public function __construct()
-    {
-        $this->model = new pocketlistsItemModel();
-    }
 
     /**
      * @param pocketlistsItemLinkModel $itemLinkModel
@@ -103,9 +88,75 @@ class pocketlistsListFactory extends pocketlistsFactory
             return [];
         }
 
-        $lists = $this->generateWithData($data, true);
+        return $this->generateWithData($data, true);
+    }
 
-        return $lists;
+    /**
+     * @param pocketlistsList $list
+     *
+     * @return bool
+     * @throws waException
+     */
+    public function remove(pocketlistsList $list)
+    {
+        $items = $list->getItems();
+
+        /** @var pocketlistsItemModel $itemModel */
+        pl2()->getModel(pocketlistsItem::class)->deleteByField('list_id', $list->getId());
+
+        /** @var pocketlistsItemFactory $itemFactory */
+        pl2()->getEntityFactory(pocketlistsItem::class)->delete($list->getKeyItem());
+
+        /** @var pocketlistsAttachmentFactory $attachmentFactory */
+        $attachmentFactory = pl2()->getEntityFactory(pocketlistsAttachment::class);
+        foreach ($items as $item) {
+            $attachmentFactory->deleteAllByItem($item);
+        }
+        $attachmentFactory->deleteAllByItem($list->getKeyItem());
+
+        return $this->delete($list);
+    }
+
+    /**
+     * @param pocketlistsList|pocketlistsEntity $list
+     * @param int             $type
+     *
+     * @return bool
+     * @throws waException
+     */
+    public function save(pocketlistsEntity $list, $type = 0)
+    {
+        $ok = false;
+        $new = $list->getId() === null;
+
+        if (parent::save($list)) {
+            $list->getKeyItem()->setKeyListId($list->getId());
+
+            // hack to save item
+            $listId = $list->getId();
+            $list
+                ->setId(null)
+                ->setKeyListId($listId);
+
+            if ($itemId = $list->getKeyItemId()) {
+                $list->setId($itemId);
+            }
+            $ok = pl2()->getEntityFactory(pocketlistsItem::class)->save($list);
+            $itemId = $list->getId();
+            $list->setId($listId);
+
+            if (!$ok && $new) {
+                $this->delete($list);
+            }
+
+            if ($ok && $new) {
+                $list->setKeyItemId($itemId);
+                $list->getKeyItem()->setId($itemId);
+                $this->update($list, ['key_item_id']);
+            }
+        }
+
+        return $ok;
     }
 
     /**

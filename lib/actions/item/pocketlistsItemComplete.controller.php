@@ -14,7 +14,7 @@ class pocketlistsItemCompleteController extends pocketlistsComplete
 
         $item = $this->getItem();
         $this->changeComplete($item, $status);
-        pocketlistsNotifications::notifyAboutCompleteItems($this->completed_items);
+        (new pocketlistsNotificationAboutCompleteItems())->notifyAboutCompleteItems($this->completed_items);
 
         $this->response = $item->getId();
 

@@ -3,52 +3,41 @@
 /**
  * Class pocketlistsListMoveToController
  */
-class pocketlistsListMoveToController extends waJsonController
+class pocketlistsListMoveToController extends pocketlistsJsonController
 {
     /**
+     * @throws pocketlistsForbiddenException
+     * @throws pocketlistsNotFoundException
      * @throws waDbException
      * @throws waException
-     * @throws waRightsException
      */
     public function execute()
     {
-        $id = waRequest::post('id', 0, waRequest::TYPE_INT);
         $pocket_id = waRequest::post('pocket_id', 0, waRequest::TYPE_INT);
-
-        if (!$id || !$pocket_id) {
-            $this->setError(_w('No pocket/id and list/id params specified'));
-
-            return;
+        if (!$pocket_id) {
+            throw new pocketlistsNotFoundException(_w('No pocket/id and list/id params specified'));
         }
 
-        /** @var pocketlistsPocketModel $pocket */
-        $pocket = pocketlistsPocketModel::model()->findByPk($pocket_id);
-        /** @var pocketlistsListModel $list */
-        $list = pocketlistsListModel::model()->findByPk($id);
+        $list = $this->getList();
 
-        if (!$pocket || !$list) {
-            $this->setError(_w('Pocket and list not found'));
+        /** @var pocketlistsPocket $pocket */
+        $pocket = pl2()->getEntityFactory(pocketlistsPocket::class)->findById($pocket_id);
 
-            return;
+        if (!$pocket) {
+            throw new pocketlistsNotFoundException(_w('Pocket and list not found'));
         }
 
-        if (pocketlistsRBAC::contactHasAccessToPocket($pocket->pk) != pocketlistsRBAC::RIGHT_ADMIN) {
-            $this->setError(_w('Access denied'));
-
-            return;
+        if (pocketlistsRBAC::contactHasAccessToPocket($pocket) != pocketlistsRBAC::RIGHT_ADMIN) {
+            throw new pocketlistsForbiddenException();
         }
 
         if (!pocketlistsRBAC::canAccessToList($list)) {
-            $this->setError(_w('Access denied'));
-
-            return;
+            throw new pocketlistsForbiddenException();
         }
 
-        $list->pocket_id = $pocket->pk;
-        if (!$list->save(true, ['pocket_id'])) {
+        $list->setPocket($pocket);
+        if (!pl2()->getEntityFactory(pocketlistsList::class)->update($list, ['pocket_id'])) {
             $this->setError(_w('List move error'));
-
-            return;
         }
     }
 }

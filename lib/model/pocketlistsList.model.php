@@ -496,9 +496,7 @@ class pocketlistsListModel extends kmModelExt
      */
     public function getLastListId()
     {
-        $r = $this->query("SELECT id FROM {$this->table} ORDER BY id DESC")->fetch();
-
-        return $r['id'];
+        return (int) $this->query("SELECT id FROM {$this->table} ORDER BY id DESC")->fetchField('id');
     }
 
     /**

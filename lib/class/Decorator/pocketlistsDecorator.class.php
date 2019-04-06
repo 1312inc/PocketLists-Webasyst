@@ -21,6 +21,21 @@ class pocketlistsDecorator
     }
 
     /**
+     * @param pocketlistsEntity[] $objects
+     *
+     * @return array
+     */
+    public static function decorate(array $objects)
+    {
+        $decorated = [];
+        foreach ($objects as $object) {
+            $decorated[] = new self($object);
+        }
+
+        return $decorated;
+    }
+
+    /**
      * @return pocketlistsEntity
      */
     public function getObject()
