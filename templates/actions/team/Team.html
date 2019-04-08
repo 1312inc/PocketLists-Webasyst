@@ -1,7 +1,7 @@
-{if isset($current_teammate.name) && $print}
+{if $current_teammate->getName() && $print}
 <html>
 <head>
-    <title>{$current_teammate.name|default:' '|escape} &mdash; {$wa->accountName()}</title>
+    <title>{$current_teammate->getName()|default:' '|escape} &mdash; {$wa->accountName()}</title>
     <link type="text/css" rel="stylesheet" href="{$wa_app_static_url}css/pocketlists-print.css">
 </head>
 <body>
@@ -21,18 +21,18 @@
 
         <div class="align-center">
             {if $wa->team}
-            <a href="{$wa_backend_url}team/u/{$current_teammate.login}/">
-                <img src="{$current_teammate.photo_url}" class="userpic pl-teammate-userpic">
+            <a href="{$wa_backend_url}team/u/{$current_teammate->getLogin()}/">
+                <img src="{$current_teammate->getPhotoUrl()}" class="userpic pl-teammate-userpic">
             </a>
             {else}
-                <img src="{$current_teammate.photo_url}" class="userpic pl-teammate-userpic">
+                <img src="{$current_teammate->getPhotoUrl()}" class="userpic pl-teammate-userpic">
             {/if}
         </div>
 
-        <h5 class="heading">{sprintf('[`%s’s to-dos (%d)`]', $current_teammate.name|default:' '|escape, count($items))}</h5>
+        <h5 class="heading">{sprintf('[`%s’s to-dos (%d)`]', $current_teammate->getName()|default:' '|escape, count($items))}</h5>
         <ul class="menu-v with-icons">
             <li><a href="#" data-pl-action="list-email"><i class="icon16 email"></i> [`Email list`]</a></li>
-            <li><a href="?module=team&amp;teammate={$current_teammate.login|escape}&amp;print=true" target="_blank"><i class="icon16 print"></i> [`Print list`]</a></li>
+            <li><a href="?module=team&amp;teammate={$current_teammate->getLogin()|escape}&amp;print=true" target="_blank"><i class="icon16 print"></i> [`Print list`]</a></li>
         </ul>
 
         {if count($lists)}
@@ -44,7 +44,7 @@
                         <li>
                             <a href="#/pocket/{$l->getPocketId()}/list/{$l->getId()}/">
                                 <i class="icon16 listicon16" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l.icon|default:'li-list@2x.png'});"></i>{if $l->getColor()}<span class="pl-dark-{$l->getColor()}-label">{$l->getName()|escape}</span>{else}{$l->getName()|escape|default:'(no name)'}{/if}
-                                <span class="hint nowrap" {if empty($l.items_count)}style="display:none"{/if}>{_w('%d to-do', '%d to-dos', $l.items_count)}</span>
+                                <span class="hint nowrap" {if empty($l->getItemsCount())}style="display:none"{/if}>{_w('%d to-do', '%d to-dos', $l->getItemsCount())}</span>
                                 {* <span class="hint nowrap" {if empty($l.last_contact_ativity)}style="display:none"{/if}>{$l.last_contact_ativity|wa_datetime:'humandatetime'}</span> *}
                             </a>
                         </li>
@@ -52,14 +52,14 @@
                 {/foreach}
             </ul>
             {if $wa->team}
-                <p class="hint">{sprintf('[`Use Team app to <a href="%s">configure %s’s access</a> to shared lists: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/u/'|cat:$current_teammate.login|cat:'/', $current_teammate.name|default:' '|escape)}</p>
+                <p class="hint">{sprintf('[`Use Team app to <a href="%s">configure %s’s access</a> to shared lists: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/u/'|cat:$current_teammate->getLogin()|cat:'/', $current_teammate->getName()|default:' '|escape)}</p>
             {/if}
         {else}
             <hr>
             <p class="pl-teammate-nolists-disclaimer">
-                {sprintf('[`You have no lists that you would share with %s in common.`]', $current_teammate.name|default:' '|escape)}
+                {sprintf('[`You have no lists that you would share with %s in common.`]', $current_teammate->getName()|default:' '|escape)}
                 {if $wa->team}
-                    {sprintf('[`Use Team app to <a href="%s">configure %s’s access</a> to shared lists: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/u/'|cat:$current_teammate.login|cat:'/', $current_teammate.name|default:' '|escape)}
+                    {sprintf('[`Use Team app to <a href="%s">configure %s’s access</a> to shared lists: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/u/'|cat:$current_teammate->getLogin()|cat:'/', $current_teammate->getName()|default:' '|escape)}
                 {/if}
             </p>
         {/if}
@@ -74,7 +74,7 @@
     <header class="pl-title">
         <input type="hidden" id="pl-list-id" value="{$current_teammate.id}"/>
         <h1 class="not-padded">
-            {$current_teammate.name|default:' '|escape}
+            {$current_teammate->getName()|default:' '|escape}
         </h1>
         <input type="hidden" id="pl-assigned-contact-id" value="{$current_teammate.id}"/>
     </header>
@@ -112,7 +112,7 @@
 </main>
 {/if}
 
-{if isset($current_teammate.name) && $print}
+{if $current_teammate->getName() && $print}
 </body>
 </html>
 {else}
@@ -130,13 +130,13 @@
         userHasLinkedApps: {$user->hasLinkedApps()},
         current_user_id: {$user->getContact()->getId()}
     });
-    $.pocketlists.setTitle('{$current_teammate.name|escape}');
+    $.pocketlists.setTitle('{$current_teammate->getName()|escape}');
 
     $('[data-pl="uho"]').on('click', '[data-pl-action="list-email"]', function (e) {
         e.preventDefault();
         e.stopPropagation();
         $('<div>').waDialog({
-            'url': '?module=list&action=emailDialog&teammate={$current_teammate.login|escape}',
+            'url': '?module=list&action=emailDialog&teammate={$current_teammate->getLogin()|escape}',
             onLoad: function () {
             },
             onSubmit: function (d) {

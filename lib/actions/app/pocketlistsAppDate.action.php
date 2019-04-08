@@ -5,19 +5,25 @@
  */
 class pocketlistsAppDateAction extends pocketlistsViewAction
 {
+    /**
+     * @throws pocketlistsForbiddenException
+     * @throws pocketlistsNotFoundException
+     * @throws waDbException
+     * @throws waException
+     */
     public function execute()
     {
         $app_id = waRequest::get('app');
 
         if (!$app_id) {
-            throw new waException('Not found');
+            throw new pocketlistsNotFoundException();
         }
 
         /** @var pocketlistsItemLinkInterface $app */
-        $app = wa(pocketlistsHelper::APP_ID)->getConfig()->getLinkedApp($app_id);
+        $app = pl2()->getLinkedApp($app_id);
 
         if (!$app->userCanAccess()) {
-            throw new waException('Access denied.', 403);
+            throw new pocketlistsForbiddenException();
         }
 
         $im = new pocketlistsItemModel();

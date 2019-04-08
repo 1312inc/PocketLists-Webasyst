@@ -94,7 +94,7 @@ class pocketlistsItemFactory extends pocketlistsFactory
 
     /**
      * @param pocketlistsContact $contact
-     * @param bool            $date
+     * @param bool               $date
      *
      * @return pocketlistsItem[]
      * @throws waException
@@ -120,8 +120,103 @@ class pocketlistsItemFactory extends pocketlistsFactory
     }
 
     /**
+     * @param array|int $contactIds
+     *
+     * @return array
+     * @throws waException
+     */
+    public function finAssignedItemsCountAndNames($contactIds)
+    {
+        if (!is_array($contactIds)) {
+            $contactIds = [$contactIds];
+        }
+
+        $result = [];
+
+        $filter = new pocketlistsStrategyItemFilterAndSort();
+
+        foreach ($contactIds as $contact_id) {
+            $contact = new pocketlistsContact(new waContact($contact_id));
+
+            $items = $this->findAssignedOrCompletesByContact($contact);
+
+            $filter->setItems($items)->filterDoneUndone();
+
+            foreach ($filter->getItemsUndone() as $item) {
+                $result[$contact_id]['item_names'][] = $item->getName();
+                $result[$contact_id]['item_max_priority'] = max(
+                    !empty($result[$contact_id]['item_max_priority']) ?
+                        $result[$contact_id]['item_max_priority'] : pocketlistsItem::PRIORITY_NORM,
+                    $item->getCalcPriority()
+                );
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param pocketlistsContact|null $contact
+     * @param bool                    $date_range
+     * @param bool                    $completed
+     * @param int                     $start
+     * @param int                     $limit
+     *
+     * @return array|mixed
+     * @throws waException
+     */
+    public function findLogbook(
+        pocketlistsContact $contact = null,
+        $date_range = false,
+        $completed = false,
+        $start = 0,
+        $limit = 50
+    ) {
+        $data = $this->getModel()
+            ->getLogbookItems($contact ? $contact->getId() : false, $date_range, $completed, $start, $limit);
+
+        return $this->generateWithData($data, true);
+    }
+
+    /**
+     * @param pocketlistsItem $item
+     *
+     * @return bool
+     * @throws waException
+     */
+    public function delete(pocketlistsEntity $item)
+    {
+        pl2()->getModel(pocketlistsComment::class)->deleteByField('item_id', $item->getId());
+        pl2()->getModel('pocketlistsUserFavorites')->deleteByField('item_id', $item->getId());
+        pl2()->getModel('pocketlistsItemTag')->deleteByField('item_id', $item->getId());
+        pl2()->getModel('pocketlistsItemLink')->deleteByField('item_id', $item->getId());
+        pl2()->getModel('pocketlistsItemSort')->deleteByField('item_id', $item->getId());
+
+        /** @var pocketlistsAttachmentFactory $attachmentFactory */
+        $attachmentFactory = pl2()->getEntityFactory(pocketlistsAttachment::class);
+        $attachmentFactory->deleteAllByItem($item);
+
+        return parent::delete($item);
+    }
+
+    /**
+     * @param pocketlistsContact $contact
+     * @param                    $settings
+     *
+     * @return pocketlistsItem[]
+     * @throws waDbException
+     * @throws waException
+     */
+    public function findForDayRecap(pocketlistsContact $contact, $settings)
+    {
+        $data = $this->getModel()->getDailyRecapItems($contact->getId(), $settings);
+
+        return $this->generateWithData($data, true);
+    }
+
+    /**
      * @param pocketlistsItem[] $items
-     * @param pocketlistsList    $list
+     * @param pocketlistsList   $list
      *
      * @return pocketlistsItem[]
      */

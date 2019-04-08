@@ -12,6 +12,9 @@ class pocketlistsListFactory extends pocketlistsFactory
      */
     protected $nullList;
 
+    /**
+     * @var string
+     */
     protected $entity = 'pocketlistsList';
 
     /**
@@ -70,7 +73,7 @@ class pocketlistsListFactory extends pocketlistsFactory
 
         $lists = $this->generateWithData($data, true);
 
-        return (new pocketlistsStrategyListFilter())->filterArchive($lists);
+        return (new pocketlistsStrategyListFilterAndSort($lists))->filter()->getNonArchived();
     }
 
     /**
@@ -97,24 +100,24 @@ class pocketlistsListFactory extends pocketlistsFactory
      * @return bool
      * @throws waException
      */
-    public function remove(pocketlistsList $list)
+    public function delete(pocketlistsEntity $list)
     {
-        $items = $list->getItems();
-
-        /** @var pocketlistsItemModel $itemModel */
-        pl2()->getModel(pocketlistsItem::class)->deleteByField('list_id', $list->getId());
-
         /** @var pocketlistsItemFactory $itemFactory */
-        pl2()->getEntityFactory(pocketlistsItem::class)->delete($list->getKeyItem());
+        $itemFactory = pl2()->getEntityFactory(pocketlistsItem::class);
+
+        $items = $list->getItems();
+        foreach ($items as $item) {
+            $itemFactory->delete($item);
+        }
+        $itemFactory->delete($list->getKeyItem());
 
         /** @var pocketlistsAttachmentFactory $attachmentFactory */
         $attachmentFactory = pl2()->getEntityFactory(pocketlistsAttachment::class);
-        foreach ($items as $item) {
-            $attachmentFactory->deleteAllByItem($item);
-        }
         $attachmentFactory->deleteAllByItem($list->getKeyItem());
 
-        return $this->delete($list);
+        pl2()->getModel('pocketlistsListSort')->deleteByField('list_id', $list->getId());
+
+        return parent::delete($list);
     }
 
     /**
@@ -157,6 +160,19 @@ class pocketlistsListFactory extends pocketlistsFactory
         }
 
         return $ok;
+    }
+
+    /**
+     * @param pocketlistsContact $teammate
+     *
+     * @return pocketlistsList[]
+     * @throws waException
+     */
+    public function findForTeammate(pocketlistsContact $teammate)
+    {
+        $data = $this->getModel()->getTeamLists($teammate->getId());
+
+        return $this->generateWithData($data, true);
     }
 
     /**

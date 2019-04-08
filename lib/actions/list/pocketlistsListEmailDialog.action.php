@@ -46,7 +46,7 @@ class pocketlistsListEmailDialogAction extends pocketlistsViewAction
             $items = $itemsFilter
                 ->setItems($items)
                 ->filterDoneUndone()
-                ->getProperSortUndone()
+                ->properSortUndone()
                 ->getItemsUndone();
 
             $this->view->assign(
@@ -85,7 +85,7 @@ class pocketlistsListEmailDialogAction extends pocketlistsViewAction
                 $items = $itemsFilter
                     ->setItems($items)
                     ->filterDoneUndone()
-                    ->getProperSortUndone()
+                    ->properSortUndone()
                     ->getItemsUndone();
 
                 $this->view->assign(

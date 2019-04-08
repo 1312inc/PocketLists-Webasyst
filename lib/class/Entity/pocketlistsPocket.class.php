@@ -13,17 +13,17 @@ class pocketlistsPocket extends pocketlistsEntity
     /**
      * @var int
      */
-    private $sort;
+    private $sort = 0;
 
     /**
      * @var string
      */
-    private $name;
+    private $name = '';
 
     /**
      * @var string
      */
-    private $color;
+    private $color = pocketlistsStoreColor::BLUE;
 
     /**
      * @var string

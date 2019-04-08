@@ -1,20 +1,27 @@
 <?php
 
-class pocketlistsPocketSortController extends waJsonController
+/**
+ * Class pocketlistsPocketSortController
+ */
+class pocketlistsPocketSortController extends pocketlistsJsonController
 {
+    /**
+     * @throws pocketlistsForbiddenException
+     * @throws waException
+     */
     public function execute()
     {
         if (!pocketlistsRBAC::isAdmin()) {
-            $this->setError(_w('Access denied'), 403);
-
-            return;
+            throw new pocketlistsForbiddenException();
         }
 
         $data = waRequest::post('data', false);
         if ($data) {
-            $pm = new pocketlistsPocketModel();
+            /** @var pocketlistsPocketModel $pocketModel */
+            $pocketModel = pl2()->getModel(pocketlistsPocket::class);
+
             foreach ($data as $pocket) {
-                $pm->updateById($pocket['id'], ['sort' => $pocket['sort']]);
+                $pocketModel->updateById($pocket['id'], ['sort' => $pocket['sort']]);
             }
         }
     }

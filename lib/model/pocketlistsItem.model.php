@@ -140,30 +140,10 @@ class pocketlistsItemModel extends kmModelExt
 
         $lists = pocketlistsRBAC::getAccessListForContact();
         $list_sql = $lists ? "AND (l.id IN (i:list_ids) OR (l.id IS NULL AND i.contact_id = i:contact_id))" : "AND (l.id IS NULL AND i.contact_id = i:contact_id)";
-        $sql = "SELECT
-                  i.id id,
-                  i.parent_id parent_id,
-                  i.has_children has_children,
-                  i.name name,
-                  i.note note,
-                  i.status status,
-                  i.priority priority,
-                  i.contact_id contact_id,
-                  i.due_date due_date,
-                  i.due_datetime due_datetime,
-                  i.complete_datetime complete_datetime,
-                  i.complete_contact_id complete_contact_id,
-                  i.assigned_contact_id assigned_contact_id,
-                  l.id list_id,
-                  l.icon list_icon,
-                  l.color list_color,
-                  l.name list_name,
-                  IF(uf.contact_id, 1, 0) favorite
-                FROM {$this->table} i
-                LEFT JOIN (select i2.name, l2.*
+        $sql = $this->getQuery().
+                "LEFT JOIN (select i2.name, l2.*
                           from pocketlists_list l2
                                  JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) l ON l.id = i.list_id
-                LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
                 WHERE
                   i.key_list_id IS NULL
                   {$list_sql}
@@ -186,7 +166,7 @@ class pocketlistsItemModel extends kmModelExt
         )->fetchAll();
 
 //        $activities = $this->getLastActivities();
-        $result = [];
+//        $result = [];
 //        foreach ($activities as $id => $item) {
 //            if (isset($items[$id])) {
 //                $result[$id] = $this->extendItemData($items[$id]);
@@ -194,16 +174,17 @@ class pocketlistsItemModel extends kmModelExt
 //            }
 //        }
 
-        $items = self::generateModels($items);
+//        $items = self::generateModels($items);
+//
+//        if ($items) {
+//            foreach ($items as $id => $item) {
+//                $result[$id] = $this->extendItemData($items[$id]);
+//            }
+//        }
 
-        if ($items) {
-            foreach ($items as $id => $item) {
-                $result[$id] = $this->extendItemData($items[$id]);
-            }
-        }
-
-        return $result;
+//        return $result;
 //        return $this->getTree($items, $tree);
+        return $items;
     }
 
     /**
@@ -557,7 +538,8 @@ class pocketlistsItemModel extends kmModelExt
                 $item['assigned_contact_id'] != wa()->getUser()->getId() && // do not email if I assign myself
                 $item['assigned_contact_id'] != $old_item['assigned_contact_id']
             ) { // assigned id is updated
-                pocketlistsNotifications::notifyAboutNewAssign($this->prepareOutput($item), wa()->getUser()->getName());
+                throw new waException('OLOLOL');
+//                pocketlistsNotifications::notifyAboutNewAssign($this->prepareOutput($item), wa()->getUser()->getName());
             }
 
             return true;
@@ -975,15 +957,24 @@ class pocketlistsItemModel extends kmModelExt
         if (!is_array($contact_ids)) {
             $contact_ids = [$contact_ids];
         }
+
         $result = [];
+
+        $filter = new pocketlistsStrategyItemFilterAndSort();
+
         foreach ($contact_ids as $contact_id) {
-            $items = $this->getAssignedOrCompletesByContactItems($contact_id);
+            $contact = new pocketlistsContact(new waContact($contact_id));
+
+            $items = pl2()->getEntityFactory(pocketlistsItem::class)->findAssignedOrCompletesByContact($contact);
+
+            $filter->setItems($items)->filterDoneUndone();
+
             foreach ($items[0] as $item) {
-                $this->addPriorityData($item);
+//                $this->addPriorityData($item);
                 $result[$contact_id]['item_names'][] = $item['name'];
                 $result[$contact_id]['item_max_priority'] = max(
-                    isset($result[$contact_id]['item_max_priority']) ?
-                        $result[$contact_id]['item_max_priority'] : pocketlistsItemModel::PRIORITY_NORM,
+                    !empty($result[$contact_id]['item_max_priority']) ?
+                        $result[$contact_id]['item_max_priority'] : pocketlistsItem::PRIORITY_NORM,
                     $item['calc_priority']
                 );
             }
@@ -1254,8 +1245,10 @@ class pocketlistsItemModel extends kmModelExt
                 $when = " AND (i.due_date <= '".$seven_days."')";
                 break;
         }
+
         $lists = pocketlistsRBAC::getAccessListForContact($contact_id);
         $list_sql = $lists ? " AND (l.id IN (i:list_ids) OR l.id IS NULL) " : " AND l.id IS NULL ";
+
         $q = "SELECT
                 i.*
               FROM {$this->table} i
@@ -1288,9 +1281,9 @@ class pocketlistsItemModel extends kmModelExt
                 'list_ids'   => $lists,
             ]
         )->fetchAll();
-        foreach ($items as $id => $item) {
-            $items[$id] = $this->extendItemData($item);
-        }
+//        foreach ($items as $id => $item) {
+//            $items[$id] = $this->extendItemData($item);
+//        }
 
         return $items;
     }

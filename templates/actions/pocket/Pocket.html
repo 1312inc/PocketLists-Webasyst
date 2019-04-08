@@ -5,10 +5,10 @@
         <!-- LISTS -->
         <div id="pl-lists" data-pl-scroll-to-top>
             <div class="pl-lists-header">
-                {if pocketlistsRBAC::contactHasAccessToPocket($pocket->getId()) == pocketlistsRBAC::RIGHT_ADMIN}<a href="#/pocket/{$pocket->getId()}/list/new/" class="count" title="[`New list`]"><i class="icon16 add"></i></a>{/if}
+                {if $isAdmin}<a href="#/pocket/{$pocket->getId()}/list/new/" class="count" title="[`New list`]"><i class="icon16 add"></i></a>{/if}
                 <h5 class="pl-dark-{$pocket->getColor()|default:'none'}-label">
                     {$pocket->getName()|escape}
-                    {if pocketlistsRBAC::contactHasAccessToPocket($pocket->getId()) == pocketlistsRBAC::RIGHT_ADMIN}<a href="#" title="[`Pocket settings`]" data-pl2-action="edit-pocket" data-pl2-pocket-id="{$pocket->getId()}"><i class="icon16 pl ellipsis pl-pocket-settings"></i></a>{/if}
+                    {if $isAdmin}<a href="#" title="[`Pocket settings`]" data-pl2-action="edit-pocket" data-pl2-pocket-id="{$pocket->getId()}"><i class="icon16 pl ellipsis pl-pocket-settings"></i></a>{/if}
                 </h5>
             </div>
             {if !empty($lists)}
@@ -27,7 +27,7 @@
             {else}
                 <div class="block double-padded align-center pl-lists-empty">
                     <p>
-                        {if pocketlistsRBAC::contactHasAccessToPocket($pocket->getId()) == pocketlistsRBAC::RIGHT_ADMIN}
+                        {if $isAdmin}
                             [`This pocket is empty. Start by creating a to-do list.`]
                         {else}
                             [`You don’t have access to any list in the pocket. Please contact your admin to request access setup.`]

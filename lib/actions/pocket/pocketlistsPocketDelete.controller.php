@@ -1,19 +1,25 @@
 <?php
 
-class pocketlistsPocketDeleteController extends waJsonController
+/**
+ * Class pocketlistsPocketDeleteController
+ */
+class pocketlistsPocketDeleteController extends pocketlistsJsonController
 {
+    /**
+     * @throws pocketlistsForbiddenException
+     * @throws pocketlistsNotFoundException
+     * @throws waDbException
+     * @throws waException
+     */
     public function execute()
     {
-        $pocket_id = waRequest::post('id', 0, waRequest::TYPE_INT);
-        if ($pocket_id) {
-            $pm = new pocketlistsPocketModel();
-            $available_pockets = pocketlistsRBAC::getAccessPocketForContact();
-            if (!in_array($pocket_id, $available_pockets)) {
-                throw new waException('Access denied.', 403);
-            }
-            $this->response = $pm->deleteAll($pocket_id);
-        } else {
-            $this->errors = 'no pocket id';
+        $pocket = $this->getPocket();
+
+        $available_pockets = pocketlistsRBAC::getAccessPocketForContact();
+        if (!in_array($pocket->getId(), $available_pockets)) {
+            throw new pocketlistsForbiddenException();
         }
+
+        $this->response = (int)pl2()->getEntityFactory(pocketlistsPocket::class)->delete($pocket);
     }
 }

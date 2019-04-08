@@ -70,7 +70,7 @@ class pocketlistsCommentAddAction extends waViewAction
                         ]
                     );
 
-                    pocketlistsNotifications::notifyAboutNewComment($comment);
+                    (new pocketlistsNotificationAboutNewComment())->notify($comment);
 
                     $this->view->assign('comment', new pocketlistsCommentOutputDecorator($comment));
                 } else {
