@@ -178,9 +178,9 @@ class pocketlistsListModel extends kmModelExt
         )->fetchAll();
 
 //        $lists = $this->generateWithItem($lists_data);
-        $lists = self::generateModels($lists_data);
+//        $lists = self::generateModels($lists_data);
 
-        return $lists;
+        return $lists_data;
     }
 
     /**

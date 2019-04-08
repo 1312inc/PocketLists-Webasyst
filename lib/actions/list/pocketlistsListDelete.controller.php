@@ -12,7 +12,7 @@ class pocketlistsListDeleteController extends pocketlistsJsonController
     {
         $list = $this->getList();
 
-        if (pl2()->getEntityFactory(pocketlistsList::class)->remove($list)) {
+        if (pl2()->getEntityFactory(pocketlistsList::class)->delete($list)) {
             $this->response = 'ok';
 
             // log this action

@@ -106,7 +106,7 @@ class pocketlistsStrategyItemFilterAndSort
      */
     public function getProperSort()
     {
-        usort($this->items, [$this, 'compare_for_proper_sort']);
+        usort($this->items, [$this, 'compareForProperSort']);
 
         return $this;
     }
@@ -114,9 +114,9 @@ class pocketlistsStrategyItemFilterAndSort
     /**
      * @return mixed
      */
-    public function getProperSortUndone()
+    public function properSortUndone()
     {
-        usort($this->itemsUndone, [$this, 'compare_for_proper_sort']);
+        usort($this->itemsUndone, [$this, 'compareForProperSort']);
 
         return $this;
     }
@@ -126,7 +126,7 @@ class pocketlistsStrategyItemFilterAndSort
      */
     public function getProperSortDone()
     {
-        usort($this->itemsDone, [$this, 'compare_for_proper_sort']);
+        usort($this->itemsDone, [$this, 'compareForProperSort']);
 
         return $this;
     }
@@ -158,7 +158,7 @@ class pocketlistsStrategyItemFilterAndSort
      */
     protected function isDone($item)
     {
-        return isset($item['id']) ? $item['status'] == 1 : $item->isDone();
+        return $item instanceOf pocketlistsItem ? $item->isDone() : $item['status'] == 1;
     }
 
     /**
@@ -167,7 +167,7 @@ class pocketlistsStrategyItemFilterAndSort
      *
      * @return int
      */
-    private function compare_for_proper_sort(pocketlistsItem $i1, pocketlistsItem $i2)
+    private function compareForProperSort(pocketlistsItem $i1, pocketlistsItem $i2)
     {
         if ($i1->getCalcPriority() < $i2->getCalcPriority()) {
             return 1;

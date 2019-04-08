@@ -11,11 +11,11 @@ class pocketlistsBackendSidebarAction extends pocketlistsViewAction
      */
     public function execute()
     {
-        /** @var pocketlistsItemModel $itemModel */
-        $itemModel = pl2()->getModel(pocketlistsItem::class);
-        $items = $itemModel->fetchTodo(pl2()->getUser()->getContact()->getId(),false);
+        /** @var pocketlistsItemFactory $itemFactory */
+        $itemFactory = pl2()->getEntityFactory(pocketlistsItem::class);
+        $items = $itemFactory->findToDo($this->user);
 
-        $sidebar_todo_count = (new pocketlistsStrategyItemFilterAndSort($items))->countUndone();
+        $sidebar_todo_count = (new pocketlistsStrategyItemFilterAndSort($items))->filterDoneUndone()->countUndone();
         $sidebar_todo_count_icon = pl2()->getUser()->getAppCount();
 
         $this->view->assign(compact('sidebar_todo_count', 'sidebar_todo_count_icon'));
@@ -52,13 +52,13 @@ class pocketlistsBackendSidebarAction extends pocketlistsViewAction
             ]
         );
 
-        /** @var pocketlistsPocketFactory $listFactory */
+        /** @var pocketlistsPocketFactory $pocketFactory */
         $pocketFactory = pl2()->getEntityFactory(pocketlistsPocket::class);
-        $pockets = $pocketFactory->getAllPockets();
+        $pockets = $pocketFactory->getAllPocketsForUser();
 
         /** @var pocketlistsPocket $pocket */
         foreach ($pockets as $pocketId => $pocket) {
-            if (!pocketlistsRBAC::contactHasAccessToPocket($pocket->getId())) {
+            if (!pocketlistsRBAC::contactHasAccessToPocket($pocket)) {
                 unset($pockets[$pocketId]);
             }
         }

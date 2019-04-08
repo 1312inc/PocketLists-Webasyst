@@ -68,25 +68,6 @@
                 </div>
               </div>
 
-              {* DEPRECATED FEB 2017
-              <div class="field">
-                <div class="name nowrap">
-                  [`To-do Stream inbox`]
-                </div>
-                <div class="value no-shift">
-                    <select id="pl-inbox-list" {if empty($settings.stream_inbox_list)}style="display:none;"{/if}>
-                    {if $inbox_lists}
-                        {foreach $inbox_lists as $list}
-                        <option value="{$list.id}" {if !empty($settings.stream_inbox_list) && $settings.stream_inbox_list == $list.id}selected="selected"{/if}>{$list.name|escape}</option>
-                        {/foreach}
-                    {/if}
-                    </select>
-                    <input type="hidden" name="stream_inbox_list" value="{$settings.stream_inbox_list|default:0}"/>
-                    <p class="hint">[`When you add to-dos to your To-do Stream directly, they will be added into the specified to-do list and thus will be available to your teammates who can access this list. If you want such to-dos be your private to-dos by default, select None.`]</p>
-                </div>
-              </div>
-              *}
-
               <div class="field">
                 <div class="name">
                   [`Email me`]

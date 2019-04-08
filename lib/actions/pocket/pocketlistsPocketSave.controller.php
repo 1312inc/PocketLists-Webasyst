@@ -3,10 +3,11 @@
 /**
  * Class pocketlistsPocketSaveController
  */
-class pocketlistsPocketSaveController extends waJsonController
+class pocketlistsPocketSaveController extends pocketlistsJsonController
 {
     /**
-     * @throws waDbException
+     * @throws pocketlistsNotFoundException
+     * @throws waException
      */
     public function execute()
     {
@@ -15,30 +16,32 @@ class pocketlistsPocketSaveController extends waJsonController
             unset($pocketData['id']);
         }
 
-        if (!empty($pocketData['id'])) {
-            $pocket = pocketlistsPocketModel::model()->findByPk($pocketData['id']);
-            if (!$pocket) {
-                $this->setError('no pocket');
+        /** @var pocketlistsPocketFactory $pocketFactory */
+        $pocketFactory = pl2()->getEntityFactory(pocketlistsPocket::class);
 
-                return;
-            }
+        if (!empty($pocketData['id'])) {
+            $pocket = $this->getPocket($pocketData['id']);
+
             unset($pocketData['id']);
 
-            $pocket->setAttributes($pocketData);
-            if (!$pocket->save()) {
+            pl2()->getHydrator()->hydrate($pocket, $pocketData);
+
+            if (!$pocketFactory->save($pocket)) {
                 $this->setError('some error on save pocket');
 
                 return;
             }
         } else {
-            $pocket = new pocketlistsPocketModel($pocketData);
+            /** @var pocketlistsPocket $pocket */
+            $pocket = $pocketFactory->createNew();
+            pl2()->getHydrator()->hydrate($pocket, $pocketData);
 
-            if ($pocket->save()) {
+            if ($pocketFactory->save($pocket)) {
                 // add full rights for this pocket
                 (new waContactRightsModel())->save(
                     wa()->getUser()->getId(),
                     wa()->getApp(),
-                    pocketlistsRBAC::POCKET_ITEM.'.'.$pocket->pk,
+                    pocketlistsRBAC::POCKET_ITEM.'.'.$pocket->getId(),
                     pocketlistsRBAC::RIGHT_ADMIN
                 );
                 // todo: update access rights for others
@@ -49,7 +52,7 @@ class pocketlistsPocketSaveController extends waJsonController
             }
         }
 
-        $this->response = $pocket->getAttributes();
+        $this->response = pl2()->getHydrator()->extract($pocket);
     }
 }
 

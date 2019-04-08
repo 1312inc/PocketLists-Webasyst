@@ -93,6 +93,11 @@ class pocketlistsList extends pocketlistsItem
     private $keyItem;
 
     /**
+     * @var int
+     */
+    private $lastContactActivity = 0;
+
+    /**
      * @return pocketlistsItem[]
      * @throws waException
      */
@@ -451,5 +456,25 @@ class pocketlistsList extends pocketlistsItem
         }
 
         return $this->items;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLastContactAtivity()
+    {
+        return $this->lastContactActivity;
+    }
+
+    /**
+     * @param int $lastContactActivity
+     *
+     * @return pocketlistsList
+     */
+    public function setLastContactAtivity($lastContactActivity)
+    {
+        $this->lastContactActivity = $lastContactActivity;
+
+        return $this;
     }
 }

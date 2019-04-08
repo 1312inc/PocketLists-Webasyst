@@ -68,6 +68,11 @@ class pocketlistsContact
     /**
      * @var array
      */
+    private $listActivities;
+
+    /**
+     * @var array
+     */
     private $itemsInfo = [
         'count'        => 0,
         'names'        => '',
@@ -235,5 +240,24 @@ class pocketlistsContact
     public function isExists()
     {
         return $this->exists;
+    }
+
+    /**
+     * @return array|int
+     * @throws waException
+     */
+    public function getListActivities(pocketlistsList $list = null)
+    {
+        if ($this->listActivities === null) {
+            /** @var pocketlistsListModel $listModel */
+            $listModel = pl2()->getModel(pocketlistsList::class);
+            $this->listActivities = $listModel->getLastActivitiesList($this->getId());
+        }
+
+        if ($list)  {
+            return isset($this->listActivities[$list->getId()]) ? $this->listActivities[$list->getId()] : 0;
+        }
+
+        return $this->listActivities;
     }
 }

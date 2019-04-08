@@ -30,22 +30,13 @@ class pocketlistsContactFactory extends pocketlistsFactory
     ) {
         $teammates = [];
 
-        /** @var pocketlistsItemModel $itemModel */
-        $itemModel = pl2()->getModel(pocketlistsItem::class);
-        $items_count_names = $itemModel->getAssignedItemsCountAndNames($teammates_ids);
-        $last_activities = $sort_by_last_activity ? $itemModel->getLastActivities($teammates_ids) : [];
+        $items_count_names = [];//pl2()->getEntityFactory(pocketlistsItem::class)->finAssignedItemsCountAndNames($teammates_ids);
+        $last_activities = $sort_by_last_activity ? pl2()->getModel(pocketlistsItem::class)->getLastActivities($teammates_ids) : [];
 
         foreach ($teammates_ids as $tid) {
             if ($exclude_me && $tid == wa()->getUser()->getId()) {
                 continue;
             }
-
-//            if (!$mate) {
-//                continue;
-//            }
-
-//            $teammate = new pocketlistsTeammate($mate);
-//            $teammate->fillData(pocketlistsHelper::getContactData($mate));
 
             $mate = new pocketlistsContact(new waContact($tid));
 
@@ -71,7 +62,7 @@ class pocketlistsContactFactory extends pocketlistsFactory
         }
 
         if ($sort_by_last_activity) {
-            usort($teammates, [$this, "compare_last_activity"]);
+            usort($teammates, [$this, 'compare_last_activity']);
         }
 
         // todo: cache

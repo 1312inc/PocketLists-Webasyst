@@ -15,7 +15,7 @@ class pocketlistsArchiveAction extends pocketlistsViewAction
 
         /** @var pocketlistsList[] $lists */
         $lists = $listFactory->findLists();
-        $lists = (new pocketlistsStrategyListFilter())->filterArchive($lists, true);
+        $lists = (new pocketlistsStrategyListFilterAndSort($lists))->filter()->getArchived();
 
         $list_id = waRequest::get('id', 0, waRequest::TYPE_INT);
         $list = null;

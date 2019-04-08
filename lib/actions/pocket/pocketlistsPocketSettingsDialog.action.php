@@ -1,17 +1,22 @@
 <?php
 
-class pocketlistsPocketSettingsDialogAction extends waViewAction
+/**
+ * Class pocketlistsPocketSettingsDialogAction
+ */
+class pocketlistsPocketSettingsDialogAction extends pocketlistsViewPocketAction
 {
+    /**
+     * @throws waException
+     */
     public function execute()
     {
-        $id = waRequest::get('id', 0, waRequest::TYPE_INT);
-        if ($id > 0) {
-            $this->view->assign('pocket', pocketlistsPocketModel::model()->findByPk($id));
-        } else {
-            $this->view->assign(
-                'pocket',
-                new pocketlistsPocketModel(['color' => 'blue',])
-            );
+        try {
+            $pocket = $this->getPocket();
+        } catch (pocketlistsNotFoundException $ex) {
+            /** @var pocketlistsPocket $pocket */
+            $pocket = pl2()->getEntityFactory(pocketlistsPocket::class)->createNew();
         }
+
+        $this->view->assign(compact('pocket'));
     }
 }

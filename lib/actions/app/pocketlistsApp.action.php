@@ -14,13 +14,14 @@ class pocketlistsAppAction extends pocketlistsViewAction
         $app_id = waRequest::get('app');
 
         /** @var pocketlistsItemLinkInterface $app */
-        $app = wa(pocketlistsHelper::APP_ID)->getConfig()->getLinkedApp($app_id);
+        $app = pl2()->getLinkedApp($app_id);
 
         if (!$app->userCanAccess()) {
-            throw new waException('Access denied.', 403);
+            throw new pocketlistsForbiddenException();
         }
 
-        $calendar_html = wao(new pocketlistsAppMonthAction())->display();
+        $calendar_html = (new pocketlistsAppMonthAction())->display();
+
         $this->view->assign(compact('calendar_html', 'app'));
         $this->view->assign('user', $this->user);
     }

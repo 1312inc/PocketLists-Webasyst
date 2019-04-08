@@ -19,7 +19,7 @@ class pocketlistsFavoritesDateAction extends pocketlistsViewAction
         $items = $itemFactory->findFavoritesForUserAndDate($this->user, $date);
 
         $filter = new pocketlistsStrategyItemFilterAndSort($items);
-        $itemsUndone = $filter->filterDoneUndone()->getProperSortUndone()->getItemsUndone();
+        $itemsUndone = $filter->filterDoneUndone()->properSortUndone()->getItemsUndone();
         $itemsDone = $filter->getItemsDone();
 
         $timestamp = $date
