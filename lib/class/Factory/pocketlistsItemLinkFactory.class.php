@@ -15,7 +15,7 @@ class pocketlistsItemLinkFactory extends pocketlistsFactory
      * @return pocketlistsItemLink[]
      * @throws waException
      */
-    public function getForItem(pocketlistsItem $item)
+    public function findForItem(pocketlistsItem $item)
     {
         $data = $this->getModel()->getByField('item_id', $item->getId(), true);
 
