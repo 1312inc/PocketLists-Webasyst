@@ -78,7 +78,7 @@ class pocketlistsListEmailDialogAction extends pocketlistsViewAction
             $user_model = new waUserModel();
             $id = $user_model->getByLogin($teammate);
             if ($id) {
-                $contact = new pocketlistsContact(new waContact($id));
+                $contact = pl2()->getEntityFactory(pocketlistsContact::class)->createNewWithId($id);
 
                 $items = $itemFactory->findAssignedOrCompletesByContact($contact);
 

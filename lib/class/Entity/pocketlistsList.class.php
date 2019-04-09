@@ -7,6 +7,9 @@ class pocketlistsList extends pocketlistsItem
 {
     const DEFAULT_ICON = 'li-list@2x.png';
 
+    const TYPE_CHECKLIST = 'checklist';
+    const TYPE_NOTES     = 'notes';
+
     /**
      * @var int
      */
@@ -15,7 +18,7 @@ class pocketlistsList extends pocketlistsItem
     /**
      * @var string
      */
-    private $type;
+    private $type = self::TYPE_CHECKLIST;
 
     /**
      * @var string
@@ -25,7 +28,7 @@ class pocketlistsList extends pocketlistsItem
     /**
      * @var bool
      */
-    private $archived;
+    private $archived = 0;
 
     /**
      * @var string

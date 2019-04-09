@@ -254,7 +254,7 @@ class pocketlistsComment extends pocketlistsEntity
     public function getContact()
     {
         if ($this->getContactId() && $this->contact === null) {
-            $this->contact = new pocketlistsContact(new waContact($this->getContactId()));
+            $this->contact = pl2()->getEntityFactory(pocketlistsContact::class)->createNewWithId($this->getContactId());
         }
 
         return $this->contact;

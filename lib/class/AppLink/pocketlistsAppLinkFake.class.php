@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Class pocketlistsItemLinkFake
+ * Class pocketlistsAppLinkFake
  */
-class pocketlistsItemLinkFake implements pocketlistsItemLinkInterface
+class pocketlistsAppLinkFake implements pocketlistsAppLinkInterface
 {
     /**
      * @return string
@@ -35,7 +35,7 @@ class pocketlistsItemLinkFake implements pocketlistsItemLinkInterface
     /**
      * @param pocketlistsItemLinkModel $model
      *
-     * @return pocketlistsItemLinkInterface
+     * @return pocketlistsAppLinkInterface
      */
     public function setItemLinkModel(pocketlistsItemLinkModel $model)
     {}
@@ -59,7 +59,7 @@ class pocketlistsItemLinkFake implements pocketlistsItemLinkInterface
     /**
      * @return waModel
      */
-    public function getEntity()
+    public function getAppEntity()
     {
         return null;
     }

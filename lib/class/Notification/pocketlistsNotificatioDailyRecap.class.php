@@ -56,9 +56,10 @@ class pocketlistsNotificatioDailyRecap extends pocketlistsNotification
 
         /** @var pocketlistsItemFactory $itemModel */
         $itemFactory = pl2()->getEntityFactory(pocketlistsItem::class);
+        $contactFactory = pl2()->getEntityFactory(pocketlistsContact::class);
 
         foreach ($users as $user_id => $user) {
-            $contact = new pocketlistsContact(new waContact($user_id));
+            $contact = $contactFactory->createNewWithId($user_id);
             if (!$this->canSend($contact)) {
                 continue;
             }

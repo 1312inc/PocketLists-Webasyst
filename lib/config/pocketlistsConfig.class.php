@@ -21,12 +21,12 @@ class pocketlistsConfig extends waAppConfig
     protected $repositories = [];
 
     /**
-     * @var pocketlistsItemLinkInterface[]
+     * @var pocketlistsAppLinkInterface[]
      */
     protected $linkers;
 
     /**
-     * @var pocketlistsItemLinkInterface
+     * @var pocketlistsAppLinkInterface
      */
     protected $fakeLinker;
 
@@ -55,7 +55,7 @@ class pocketlistsConfig extends waAppConfig
     /**
      * @param $entity
      *
-     * @return pocketlistsItemLinkFactory|pocketlistsItemFactory|pocketlistsListFactory|pocketlistsContactFactory|pocketlistsPocketFactory|pocketlistsCommentFactory|pocketlistsAttachmentFactory
+     * @return pocketlistsItemLinkFactory|pocketlistsItemFactory|pocketlistsListFactory|pocketlistsContactFactory|pocketlistsPocketFactory|pocketlistsCommentFactory|pocketlistsAttachmentFactory|pocketlistsItemLinkFactory
      * @throws waException
      */
     public function getEntityFactory($entity)
@@ -241,7 +241,7 @@ class pocketlistsConfig extends waAppConfig
     /**
      * @param string $app
      *
-     * @return pocketlistsItemLinkInterface|pocketlistsItemLinkInterface[]
+     * @return pocketlistsAppLinkInterface|pocketlistsAppLinkInterface[]
      * @throws waException
      */
     public function getLinkedApp($app = '')
@@ -251,7 +251,7 @@ class pocketlistsConfig extends waAppConfig
                 $class = sprintf('pocketlistsItemLink%s', ucfirst($entity));
                 if (class_exists($class)) {
                     $class = new $class();
-                    if ($class instanceof pocketlistsItemLinkInterface && $class->isEnabled()) {
+                    if ($class instanceof pocketlistsAppLinkInterface && $class->isEnabled()) {
                         $this->linkers[$entity] = $class;
                     }
                 }
@@ -260,7 +260,7 @@ class pocketlistsConfig extends waAppConfig
 
         if (!empty($app) && !isset($this->linkers[$app])) {
             if ($this->fakeLinker === null) {
-                $this->fakeLinker = new pocketlistsItemLinkFake();
+                $this->fakeLinker = new pocketlistsAppLinkFake();
             }
 
             return $this->fakeLinker;

@@ -138,7 +138,7 @@
                     $loading.show();
                     request_in_action = true;
 
-                    $.get('?module=list&action=lazyDoneItems&offset=' + offset + '&id={$list.id}', function (html) {
+                    $.get('?module=list&action=lazyDoneItems&offset=' + offset + '&id={$list->getId()}', function (html) {
                         $loading.hide();
                         html = $(html).find(html_selector).html();
                         if ($.trim(html).length) {

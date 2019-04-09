@@ -2,31 +2,42 @@
 
 /**
  * Class pocketlistsItemLinkFactory
+ *
+ * @method pocketlistsItemLinkModel getModel()
  */
-class pocketlistsItemLinkFactory
+class pocketlistsItemLinkFactory extends pocketlistsFactory
 {
-    /**
-     * @var pocketlistsItemLinkModel
-     */
-    protected $model;
+    protected $entity = 'pocketlistsItemLink';
 
     /**
-     * pocketlistsFactoryItemLink constructor.
+     * @param pocketlistsItem $item
      *
-     * @throws waDbException
-     */
-    public function __construct()
-    {
-        $this->model = new pocketlistsItemLinkModel();
-    }
-
-    /**
-     * @param getForItem $item
-     *
-     * @return null|pocketlistsItemLinkModel[]
+     * @return pocketlistsItemLink[]
+     * @throws waException
      */
     public function getForItem(pocketlistsItem $item)
     {
-        return $this->model->findByFields('item_id', $item->getId(), true);
+        $data = $this->getModel()->getByField('item_id', $item->getId(), true);
+
+        return $this->generateWithData($data);
+    }
+
+    /**
+     * @param string $app
+     * @param string $entityType
+     * @param int$entityId
+     *
+     * @return pocketlistsItemLink[]
+     * @throws waException
+     */
+    public function findWithAppEntityTypeAndId($app, $entityType, $entityId)
+    {
+        $data = $this->getModel()->getByField([
+            'app'         => $app,
+            'entity_type' => $entityType,
+            'entity_id'   => $entityId,
+        ]);
+
+        return $this->generateWithData($data, true);
     }
 }

@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Class pocketlistsItemLink
+ * Class pocketlistsAppLinkAbstract
  */
-abstract class pocketlistsItemLink
+abstract class pocketlistsAppLinkAbstract implements pocketlistsAppLinkInterface
 {
     const LIMIT = 10;
 
@@ -18,11 +18,6 @@ abstract class pocketlistsItemLink
      * @var waSmarty3View
      */
     protected $view;
-
-    /**
-     * @return string
-     */
-    abstract public function getApp();
 
     /**
      * @return waSmarty3View

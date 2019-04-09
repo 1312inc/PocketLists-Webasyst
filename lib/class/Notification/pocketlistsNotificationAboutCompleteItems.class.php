@@ -51,11 +51,12 @@ class pocketlistsNotificationAboutCompleteItems extends pocketlistsNotification
 
         /** @var pocketlistsUserFavoritesModel $ufm */
         $ufm = pl2()->getModel('pocketlistsUserFavorites');
+        $contactFactory = pl2()->getEntityFactory(pocketlistsContact::class);
 
         $subject = 'string:{if !$complete}🚫{else}✅{/if} {str_replace(array("\r", "\n"), " ", $item->getName())|truncate:64}';
         // todo: refactor
         foreach ($users as $user_id => $user) { // foreach user
-            $contact = new pocketlistsContact(new waContact($user_id));
+            $contact = $contactFactory->createNewWithId($user_id);
             if (!$this->canSend($contact)) {
                 continue;
             }

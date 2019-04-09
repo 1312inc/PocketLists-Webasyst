@@ -7,21 +7,19 @@
  */
 class pocketlistsItemFactory extends pocketlistsFactory
 {
-    /**
-     * @var
-     */
-    protected $entity;
+    protected $entity = 'pocketlistsItem';
 
     /**
-     * @param pocketlistsItemLinkModel $itemLinkModel
+     * @param pocketlistsItemLink $itemLink
      *
-     * @return array
+     * @return pocketlistsItem[]
+     * @throws waException
      */
-    public function findForLinkedEntity(pocketlistsItemLinkModel $itemLinkModel)
+    public function findForLinkedEntity(pocketlistsItemLink $itemLink)
     {
-        return wa()->getConfig()
-            ->getModel(pocketlistsItem::class)
-            ->getAppItems($itemLinkModel->app, $itemLinkModel->entity_type, $itemLinkModel->entity_id);
+        $data = $this->getModel()->getAppItems($itemLink->getApp(), $itemLink->getEntityType(), $itemLink->getEntityId());
+
+        return $this->generateWithData($data);
     }
 
     /**
@@ -125,7 +123,7 @@ class pocketlistsItemFactory extends pocketlistsFactory
      * @return array
      * @throws waException
      */
-    public function finAssignedItemsCountAndNames($contactIds)
+    public function findAssignedItemsCountAndNames($contactIds)
     {
         if (!is_array($contactIds)) {
             $contactIds = [$contactIds];
@@ -135,8 +133,9 @@ class pocketlistsItemFactory extends pocketlistsFactory
 
         $filter = new pocketlistsStrategyItemFilterAndSort();
 
+        $contactFactory = pl2()->getEntityFactory(pocketlistsContact::class);
         foreach ($contactIds as $contact_id) {
-            $contact = new pocketlistsContact(new waContact($contact_id));
+            $contact = $contactFactory->createNewWithId($contact_id);
 
             $items = $this->findAssignedOrCompletesByContact($contact);
 

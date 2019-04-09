@@ -33,7 +33,7 @@ class pocketlistsStrategyItemFilterAndSort
     /**
      * @param pocketlistsItem[] $items
      *
-     * @return $this
+     * @return pocketlistsStrategyItemFilterAndSort
      */
     public function filterDoneUndone()
     {
@@ -84,8 +84,6 @@ class pocketlistsStrategyItemFilterAndSort
     }
 
     /**
-     * @param array $items
-     *
      * @return int
      */
     public function countDone()
@@ -102,7 +100,7 @@ class pocketlistsStrategyItemFilterAndSort
     }
 
     /**
-     * @return mixed
+     * @return pocketlistsStrategyItemFilterAndSort
      */
     public function getProperSort()
     {
@@ -112,7 +110,7 @@ class pocketlistsStrategyItemFilterAndSort
     }
 
     /**
-     * @return mixed
+     * @return pocketlistsStrategyItemFilterAndSort
      */
     public function properSortUndone()
     {
@@ -122,11 +120,21 @@ class pocketlistsStrategyItemFilterAndSort
     }
 
     /**
-     * @return mixed
+     * @return pocketlistsStrategyItemFilterAndSort
      */
     public function getProperSortDone()
     {
         usort($this->itemsDone, [$this, 'compareForProperSort']);
+
+        return $this;
+    }
+
+    /**
+     * @return pocketlistsStrategyItemFilterAndSort
+     */
+    public function getProperSortUndone()
+    {
+        usort($this->itemsUndone, [$this, 'compareForProperSort']);
 
         return $this;
     }

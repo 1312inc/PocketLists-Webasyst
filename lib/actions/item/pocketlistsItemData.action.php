@@ -94,7 +94,7 @@ class pocketlistsItemDataAction extends pocketlistsViewItemAction
 
             if (!empty($item_new_data['links'])) {
                 foreach ($item_new_data['links'] as $link) {
-                    /** @var pocketlistsItemLinkInterface $app */
+                    /** @var pocketlistsAppLinkInterface $app */
                     $app = wa(pocketlistsHelper::APP_ID)->getConfig()->getLinkedApp($link['model']['app']);
 
                     if (!$app->userCanAccess()) {
