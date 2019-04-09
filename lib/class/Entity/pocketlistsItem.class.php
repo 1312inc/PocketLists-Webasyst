@@ -193,6 +193,11 @@ class pocketlistsItem extends pocketlistsEntity
     protected $attachments;
 
     /**
+     * @var pocketlistsItemLink[]
+     */
+    private $appLinks;
+
+    /**
      * @throws waException
      */
     public function afterHydrate()
@@ -225,6 +230,31 @@ class pocketlistsItem extends pocketlistsEntity
     public function setComments($comments = null)
     {
         $this->comments = $comments;
+
+        return $this;
+    }
+
+    /**
+     * @return pocketlistsItemLink[]
+     * @throws waException
+     */
+    public function getAppLinks()
+    {
+        if ($this->appLinks === null) {
+            $this->appLinks = pl2()->getEntityFactory(pocketlistsItemLink::class)->findForItem($this);
+        }
+
+        return $this->appLinks;
+    }
+
+    /**
+     * @param pocketlistsItemLink[] $appLinks
+     *
+     * @return pocketlistsItem
+     */
+    public function setAppLinks($appLinks)
+    {
+        $this->appLinks = $appLinks;
 
         return $this;
     }
@@ -367,7 +397,7 @@ class pocketlistsItem extends pocketlistsEntity
         if ($this->linkedEntities === null && $this->getLinkedEntitiesCount() > 0) {
             /** @var pocketlistsItemLinkFactory $factory */
             $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getEntityFactory(pocketlistsItemLink::class);
-            $this->linkedEntities = $factory->getForItem($this) ?: [];
+            $this->linkedEntities = $factory->findForItem($this) ?: [];
         }
 
         return $this->linkedEntities;
