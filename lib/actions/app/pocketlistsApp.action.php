@@ -13,7 +13,7 @@ class pocketlistsAppAction extends pocketlistsViewAction
     {
         $app_id = waRequest::get('app');
 
-        /** @var pocketlistsItemLinkInterface $app */
+        /** @var pocketlistsAppLinkInterface $app */
         $app = pl2()->getLinkedApp($app_id);
 
         if (!$app->userCanAccess()) {

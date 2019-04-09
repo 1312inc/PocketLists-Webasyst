@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Interface pocketlistsItemLinkInterfacez
+ * Interface pocketlistsAppLinkInterface
  */
-interface pocketlistsItemLinkInterface
+interface pocketlistsAppLinkInterface
 {
     /**
      * @return string
@@ -26,7 +26,7 @@ interface pocketlistsItemLinkInterface
     /**
      * @param pocketlistsItemLinkModel $model
      *
-     * @return pocketlistsItemLinkInterface
+     * @return pocketlistsAppLinkInterface
      */
     public function setItemLinkModel(pocketlistsItemLinkModel $model);
 
@@ -43,7 +43,7 @@ interface pocketlistsItemLinkInterface
     /**
      * @return waModel|shopOrder
      */
-    public function getEntity();
+    public function getAppEntity();
 
     /**
      * @return array

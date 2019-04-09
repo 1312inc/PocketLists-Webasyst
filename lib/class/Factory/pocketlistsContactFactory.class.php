@@ -6,11 +6,23 @@
 class pocketlistsContactFactory extends pocketlistsFactory
 {
     /**
-     * @return kmModelExt
+     * @var waContact[]
      */
-    public function getModel()
+    protected $contactsCache = [];
+
+    /**
+     * @param $contactId
+     *
+     * @return pocketlistsContact
+     * @throws waException
+     */
+    public function createNewWithId($contactId)
     {
-        return $this->model;
+        if (!isset($this->contactsCache[$contactId])) {
+            $this->contactsCache[$contactId] = new pocketlistsContact(new waContact($contactId));
+        }
+
+        return $this->contactsCache[$contactId];
     }
 
     /**
@@ -30,7 +42,7 @@ class pocketlistsContactFactory extends pocketlistsFactory
     ) {
         $teammates = [];
 
-        $items_count_names = [];//pl2()->getEntityFactory(pocketlistsItem::class)->finAssignedItemsCountAndNames($teammates_ids);
+        $items_count_names = pl2()->getEntityFactory(pocketlistsItem::class)->findAssignedItemsCountAndNames($teammates_ids);
         $last_activities = $sort_by_last_activity ? pl2()->getModel(pocketlistsItem::class)->getLastActivities($teammates_ids) : [];
 
         foreach ($teammates_ids as $tid) {
@@ -38,7 +50,7 @@ class pocketlistsContactFactory extends pocketlistsFactory
                 continue;
             }
 
-            $mate = new pocketlistsContact(new waContact($tid));
+            $mate = $this->createNewWithId($tid);
 
             if ($exclude_deleted && !$mate->isExists()) {
                 continue;

@@ -25,7 +25,7 @@ class pocketlistsTeamAction extends pocketlistsViewAction
             if ($selected_teammate) {
                 $user_model = new waUserModel();
                 $id = $user_model->getByLogin($selected_teammate);
-                $teammate = new pocketlistsContact(new waContact($id['id']));
+                $teammate = pl2()->getEntityFactory(pocketlistsContact::class)->createNewWithId($id['id']);
 
                 /** @var pocketlistsListFactory $listFactory */
                 $listFactory = pl2()->getEntityFactory(pocketlistsList::class);
@@ -41,8 +41,7 @@ class pocketlistsTeamAction extends pocketlistsViewAction
 
                 $lists = $listFilter->sortUnarchivedByActivity();
             } else {
-                $id = reset($teammates);
-                $teammate = new pocketlistsContact(new waContact($id['id']));
+                $teammate = reset($teammates);
             }
 
             /** @var pocketlistsItemFactory $itemFactory */

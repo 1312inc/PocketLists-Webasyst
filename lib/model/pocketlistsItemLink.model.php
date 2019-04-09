@@ -14,7 +14,7 @@ class pocketlistsItemLinkModel extends kmModelExt
     protected $table = 'pocketlists_item_link';
 
     /**
-     * @var pocketlistsItemLinkInterface
+     * @var pocketlistsAppLinkInterface
      */
     protected $linkedClass;
 
@@ -88,7 +88,7 @@ class pocketlistsItemLinkModel extends kmModelExt
         $render = !empty($pluginRender['preview']) ? $pluginRender['preview'] : '';
 
         if ($this->getEntityClass()->isEnabled() && !$render && file_exists($template)) {
-            if (!$this->getEntityClass()->getEntity()) {
+            if (!$this->getEntityClass()->getAppEntity()) {
                 return '';
             }
 
@@ -106,7 +106,7 @@ class pocketlistsItemLinkModel extends kmModelExt
     }
 
     /**
-     * @return pocketlistsItemLinkInterface
+     * @return pocketlistsAppLinkInterface
      * @throws waException
      */
     public function getEntityClass()

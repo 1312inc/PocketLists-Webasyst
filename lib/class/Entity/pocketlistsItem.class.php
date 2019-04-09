@@ -50,7 +50,7 @@ class pocketlistsItem extends pocketlistsEntity
     /**
      * @var int|null
      */
-    protected $complete_contact_id = 0;
+    protected $complete_contact_id;
 
     /**
      * @var string
@@ -125,7 +125,7 @@ class pocketlistsItem extends pocketlistsEntity
     /**
      * @var int|null
      */
-    protected $assigned_contact_id = 0;
+    protected $assigned_contact_id;
 
     /**
      * @var string|null
@@ -264,23 +264,27 @@ class pocketlistsItem extends pocketlistsEntity
 
     /**
      * @return pocketlistsContact
+     * @throws waException
      */
     public function getContact()
     {
         if ($this->contact === null) {
-            $this->contact = new pocketlistsContact(new waContact($this->getContactId()));
+            $this->contact = pl2()->getEntityFactory(pocketlistsContact::class)
+                ->createNewWithId($this->getContactId());
         }
 
         return $this->contact;
     }
 
     /**
-     * @return pocketlistsContact
+     * @return pocketlistsContact|null
+     * @throws waException
      */
     public function getAssignedContact()
     {
         if ($this->assignedContact === null && $this->getAssignedContactId()) {
-            $this->assignedContact = new pocketlistsContact(new waContact($this->getAssignedContactId()));
+            $this->assignedContact = pl2()->getEntityFactory(pocketlistsContact::class)
+                ->createNewWithId($this->getAssignedContactId());
 
         }
 
@@ -308,12 +312,14 @@ class pocketlistsItem extends pocketlistsEntity
     }
 
     /**
-     * @return pocketlistsContact
+     * @return pocketlistsContact|null
+     * @throws waException
      */
     public function getCompleteContact()
     {
         if ($this->completeContact === null && $this->getCompleteContactId()) {
-            $this->completeContact = new pocketlistsContact(new waContact($this->getCompleteContactId()));
+            $this->completeContact = pl2()->getEntityFactory(pocketlistsContact::class)
+                ->createNewWithId($this->getCompleteContactId());
         }
 
         return $this->completeContact;

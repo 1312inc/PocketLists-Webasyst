@@ -19,7 +19,7 @@ class pocketlistsAppDateAction extends pocketlistsViewAction
             throw new pocketlistsNotFoundException();
         }
 
-        /** @var pocketlistsItemLinkInterface $app */
+        /** @var pocketlistsAppLinkInterface $app */
         $app = pl2()->getLinkedApp($app_id);
 
         if (!$app->userCanAccess()) {

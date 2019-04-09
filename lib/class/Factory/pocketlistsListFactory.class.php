@@ -18,18 +18,6 @@ class pocketlistsListFactory extends pocketlistsFactory
     protected $entity = 'pocketlistsList';
 
     /**
-     * @param pocketlistsItemLinkModel $itemLinkModel
-     *
-     * @return array
-     */
-    public function findForLinkedEntity(pocketlistsItemLinkModel $itemLinkModel)
-    {
-        return wa()->getConfig()
-            ->getModel(pocketlistsList::class)
-            ->getAppItems($itemLinkModel->app, $itemLinkModel->entity_type, $itemLinkModel->entity_id);
-    }
-
-    /**
      * @param true $pocketId
      * @param bool $checkAccess
      *
@@ -133,8 +121,6 @@ class pocketlistsListFactory extends pocketlistsFactory
         $new = $list->getId() === null;
 
         if (parent::save($list)) {
-            $list->getKeyItem()->setKeyListId($list->getId());
-
             // hack to save item
             $listId = $list->getId();
             $list

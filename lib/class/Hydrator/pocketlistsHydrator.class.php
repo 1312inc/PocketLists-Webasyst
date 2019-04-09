@@ -11,6 +11,11 @@ class pocketlistsHydrator implements pocketlistsHydratorInterface
     private $reflectionClassMap = [];
 
     /**
+     * @var array
+     */
+    private $fieldMethodMap = [];
+
+    /**
      * @param pocketlistsHydratableInterface $object
      * @param array                          $fields
      * @param array                          $dbFields
@@ -39,7 +44,7 @@ class pocketlistsHydrator implements pocketlistsHydratorInterface
                 continue;
             }
 
-            $methodName = $this->getMethodName($toExtractField);
+            $methodName = $this->getMethodName($object, $toExtractField);
 
             foreach (['get', 'is'] as $methodPrefix) {
                 if ($reflection->hasMethod($methodPrefix.$methodName)) {
@@ -69,7 +74,7 @@ class pocketlistsHydrator implements pocketlistsHydratorInterface
         $object = is_object($object) ? $object : $reflection->newInstanceWithoutConstructor();
 
         foreach ($data as $name => $value) {
-            $methodName = 'set'.$this->getMethodName($name);
+            $methodName = 'set'.$this->getMethodName($object, $name);
             try {
                 $method = $reflection->getMethod($methodName);
 
@@ -104,12 +109,19 @@ class pocketlistsHydrator implements pocketlistsHydratorInterface
     }
 
     /**
+     * @param $target
      * @param $name
      *
      * @return mixed
      */
-    private function getMethodName($name)
+    private function getMethodName($target, $name)
     {
-        return str_replace('_', '', ucwords($name, '_'));
+        $className = is_object($target) ? get_class($target) : $target;
+
+        if (!isset($this->fieldMethodMap[$className][$name])) {
+            $this->fieldMethodMap[$className][$name] = str_replace('_', '', ucwords($name, '_'));
+        }
+
+        return $this->fieldMethodMap[$className][$name];
     }
 }

@@ -14,9 +14,9 @@
             {if $item->isDone()}
 
                 {* COMPLETED BY *}
-                <span class="pl-userpic" title="{sprintf('[`Completed by %s`]', $item->getCompleteContact->getUsername()|default:'%username%'|escape)}">
+                <span class="pl-userpic" title="{sprintf('[`Completed by %s`]', $item->getCompleteContact()->getUsername()|default:'%username%'|escape)}">
                     {if $item->getCompleteContact()->getUserpic()}
-                        <i class="icon16 userpic20" style="background-image: url({$item->getCompleteContact->getUserpic()})" alt="{$item->getCompleteContact->getUsername()|escape}"></i>
+                        <i class="icon16 userpic20" style="background-image: url({$item->getCompleteContact()->getUserpic()})" alt="{$item->getCompleteContact()->getUsername()|escape}"></i>
                     {/if}
                 </span>
 

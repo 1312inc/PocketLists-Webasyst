@@ -19,7 +19,7 @@ class pocketlistsItemAssignToController extends pocketlistsJsonController
             /** @var pocketlistsItem $item */
             $item = $this->getItem();
 
-            $contact = new pocketlistsContact(new waContact($team_id));
+            $contact = pl2()->getEntityFactory(pocketlistsContact::class)->createNewWithId($team_id);
 
             if (!$contact->isExists()) {
                 throw new waException(_w('Contact not found'), 404);

@@ -29,20 +29,16 @@ class pocketlistsListAction extends pocketlistsViewAction
         $archived = isset($this->params['archive']) ? true : false;
 
         /** @var pocketlistsListModel $listModel */
-        $listModel = wa(pocketlistsHelper::APP_ID)->getConfig()->getModel(pocketlistsList::class);
+        $listModel = pl2()->getModel(pocketlistsList::class);
 
         /** @var pocketlistsPocket $pocket */
-        $pocket = wa(pocketlistsHelper::APP_ID)->getConfig()
-            ->getEntityFactory(pocketlistsPocket::class)
-            ->findById($pocket_id);
+        $pocket = pl2()->getEntityFactory(pocketlistsPocket::class)->findById($pocket_id);
 
         $list_access_contacts = [];
 
         if ($list_id > 0) { // existing list
             /** @var pocketlistsList $list */
-            $list =  wa(pocketlistsHelper::APP_ID)->getConfig()
-                ->getEntityFactory(pocketlistsList::class)
-                ->findById($list_id);
+            $list = pl2()->getEntityFactory(pocketlistsList::class)->findById($list_id);
 
             if (!$list) {
                 $this->view->assign(
@@ -71,7 +67,7 @@ class pocketlistsListAction extends pocketlistsViewAction
             }
 
             /** @var pocketlistsContactFactory $factory */
-            $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getEntityFactory(pocketlistsContact::class);
+            $factory = pl2()->getEntityFactory(pocketlistsContact::class);
             $list_access_contacts = $factory->getTeammates(
                 pocketlistsRBAC::getAccessContacts($list),
                 true,
@@ -103,20 +99,18 @@ class pocketlistsListAction extends pocketlistsViewAction
             $done = $list->getDoneItems();
             $this->view->assign(
                 [
-                    'list'                 => $list,
-                    'archive'              => $archived || $list->isArchived(),
-                    'items'                => $undone,
-                    'empty'                => count($undone),
-                    'items_done'           => $done,
-                    'count_items_done'     => $count_done,
-                    'count_items_undone'   => $count_undone,
-                    'new'                  => false,
-                    'pl2_attachments_path' => wa()->getDataUrl('attachments/', true, pocketlistsHelper::APP_ID),
-                    'list_icons'           => (new pocketlistsListIcon())->getAll(),            // get icons
+                    'list'               => $list,
+                    'archive'            => $archived || $list->isArchived(),
+                    'items'              => $undone,
+                    'empty'              => count($undone),
+                    'items_done'         => $done,
+                    'count_items_done'   => $count_done,
+                    'count_items_undone' => $count_undone,
+                    'new'                => false,
                 ]
             );
         } else {
-            if (pocketlistsRBAC::contactHasAccessToPocket($pocket->getId()) != pocketlistsRBAC::RIGHT_ADMIN) {
+            if (pocketlistsRBAC::contactHasAccessToPocket($pocket) != pocketlistsRBAC::RIGHT_ADMIN) {
                 $this->view->assign(
                     'error',
                     [
@@ -136,19 +130,21 @@ class pocketlistsListAction extends pocketlistsViewAction
                     'new'         => true,
                     'empty'       => true,
                     'new_list_id' => $last_list_id ? $last_list_id + 1 : 1,
-                    'list'        => new pocketlistsListModel()
+                    'list'        => pl2()->getEntityFactory(pocketlistsList::class)->createNew(),
                 ]
             );
         }
 
         $this->view->assign(
             [
-                'backend_url'          => wa(pocketlistsHelper::APP_ID)->getConfig()->getBackendUrl(),
+                'backend_url'          => pl2()->getBackendUrl(),
                 'print'                => waRequest::get('print', false),
                 'pocket'               => $pocket,
                 'list_access_contacts' => $list_access_contacts ?: [],
                 'fileupload'           => 1,
-                'user'                 => $this->user
+                'user'                 => $this->user,
+                'list_icons'           => (new pocketlistsListIcon())->getAll(),            // get icons
+                'pl2_attachments_path' => wa()->getDataUrl('attachments/', true, pocketlistsHelper::APP_ID),
             ]
         );
     }

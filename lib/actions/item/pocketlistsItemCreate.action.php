@@ -19,11 +19,11 @@ class pocketlistsItemCreateAction extends pocketlistsViewAction
         $inserted = $items = [];
         $assign_contact = null;
         $user_id = wa()->getUser()->getId();
-        $plContact = new pocketlistsContact(new waContact($user_id));
+        $plContact = pl2()->getEntityFactory(pocketlistsContact::class)->createNewWithId($user_id);
 
         $canAssign = pocketlistsRBAC::canAssign();
         if ($canAssign && $assigned_contact_id) {
-            $assign_contact = new pocketlistsContact(new waContact($assigned_contact_id));
+            $assign_contact = pl2()->getEntityFactory(pocketlistsContact::class)->createNewWithId($assigned_contact_id);
         }
 
         // if no list id passed - get default list from settings
@@ -57,7 +57,7 @@ class pocketlistsItemCreateAction extends pocketlistsViewAction
 
                 if ($canAssign && ($assigned_contact_id || !empty($d['assigned_contact_id']))) {
                     if (!empty($d['assigned_contact_id'])) {
-                        $assign_contact = new pocketlistsContact(new waContact($d['assigned_contact_id']));
+                        $assign_contact = pl2()->getEntityFactory(pocketlistsContact::class)->createNewWithId($d['assigned_contact_id']);
                     }
 
                     if ($assign_contact->isExists()) {
@@ -127,7 +127,7 @@ class pocketlistsItemCreateAction extends pocketlistsViewAction
 
                 if (!empty($d['links'])) {
                     foreach ($d['links'] as $link) {
-                        /** @var pocketlistsItemLinkInterface $app */
+                        /** @var pocketlistsAppLinkInterface $app */
                         $app = pl2()->getLinkedApp($link['model']['app']);
 
                         if (!$app->userCanAccess()) {

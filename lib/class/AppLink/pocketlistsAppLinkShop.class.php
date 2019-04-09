@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Class pocketlistsItemLinkShop
+ * Class pocketlistsAppLinkShop
  */
-class pocketlistsItemLinkShop extends pocketlistsItemLink implements pocketlistsItemLinkInterface
+class pocketlistsAppLinkShop extends pocketlistsAppLinkAbstract
 {
     const TYPE_ORDER = 'order';
 
@@ -122,7 +122,7 @@ class pocketlistsItemLinkShop extends pocketlistsItemLink implements pocketlists
      * @return shopOrder|waModel|false
      * @throws waException
      */
-    public function getEntity()
+    public function getAppEntity()
     {
         try {
             return new shopOrder($this->getItemLinkModel()->entity_id);
@@ -137,7 +137,7 @@ class pocketlistsItemLinkShop extends pocketlistsItemLink implements pocketlists
      */
     public function getExtraData()
     {
-        $order = $this->getEntity();
+        $order = $this->getAppEntity();
 
         $order_data_array = $order->dataArray();
         $order_data_array['contact'] = $order->contact_essentials;

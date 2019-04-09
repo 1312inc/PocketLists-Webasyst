@@ -275,7 +275,7 @@ class pocketlistsItemModel extends kmModelExt
         $and_sql = [
             "(".pocketlistsRBAC::filterListAccess($lists, $contact_id)." OR l.id IS NULL)",
             // get to-do items only from accмфп essed pockets
-            "(l.archived = 0 OR l.archived IS NULL)",
+            "l.archived = 0",
         ];
         $or_sql = [
             "(i.list_id IS NULL AND i.key_list_id IS NULL AND i.contact_id = i:contact_id) /* My to-dos to self */",
@@ -322,7 +322,7 @@ class pocketlistsItemModel extends kmModelExt
             $select_sql[] = "IF(uf2.contact_id, 1, 0) favorite_list";
         }
 
-        $and_sql[] = "(i.assigned_contact_id = i:contact_id OR i.assigned_contact_id = 0 OR i.assigned_contact_id IS NULL)";
+        $and_sql[] = "(i.assigned_contact_id = i:contact_id OR i.assigned_contact_id IS NULL)";
 
         if ($calc_priority) {
             $and_sql[] = '(i.calc_priority in (i:calc_priority))';
@@ -376,11 +376,11 @@ class pocketlistsItemModel extends kmModelExt
                   SUM(i.status > 0) done,
                   SUM(i.status = 0) undone
                 FROM {$this->table} i
-                LEFT JOIN pocketlists_list l ON (l.id = i.list_id  OR l.id = i.key_list_id)
+                LEFT JOIN pocketlists_list l ON l.id = i.key_list_id
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
                 WHERE
                   uf.item_id IS NOT NULL
-                  AND (l.archived = 0 OR l.archived IS NULL) /* ONLY not archived items */
+                  AND l.archived = 0 /* ONLY not archived items */
                   {$lists_sql}";
 
         return $this->query(
@@ -440,7 +440,7 @@ class pocketlistsItemModel extends kmModelExt
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
                 WHERE
                 uf.item_id IS NOT NULL
-                AND (l.archived = 0 OR l.archived IS NULL) /* ONLY not archived items */
+                AND l.archived = 0 /* ONLY not archived items */
                 {$due_date}
                 {$lists_sql}
                 ORDER BY
@@ -1039,6 +1039,7 @@ class pocketlistsItemModel extends kmModelExt
      */
     public function getAssignedOrCompletesByContactItems($contact_id)
     {
+
         $lists = [];
         pocketlistsRBAC::filterListAccess($lists, $contact_id);
         $list_sql = pocketlistsRBAC::filterListAccess($lists);
@@ -1050,6 +1051,7 @@ class pocketlistsItemModel extends kmModelExt
                   i.note note,
                   i.status status,
                   i.priority priority,
+                  i.calc_priority calc_priority,
                   i.contact_id contact_id,
                   i.create_datetime create_datetime,
                   i.due_date due_date,
@@ -1074,10 +1076,7 @@ class pocketlistsItemModel extends kmModelExt
                     OR i.contact_id = i:contact_id AND i.status >= 0 /* created by contact (completed and not) */
                     OR i.complete_contact_id = i:contact_id AND i.status > 0 /* completed by contact */
                   )
-                  AND (
-                    l.archived = 0
-                    OR l.archived IS NULL
-                  )
+                  AND l.archived = 0
                   AND {$list_sql}
                 GROUP BY id
                 ORDER BY
@@ -1094,21 +1093,21 @@ class pocketlistsItemModel extends kmModelExt
 
 //        $items = self::generateModels($items);
 
-//        $results = [
-//            0 => [],
-//            1 => [],
-//        ];
+        $results = [
+            0 => [],
+            1 => [],
+        ];
 //
-//        if ($items) {
-//            foreach ($items as $id => $item) {
-//                $results[$item['status']][$id] = $item;
-//            }
-//        }
+        if ($items) {
+            foreach ($items as $id => $item) {
+                $results[$item['status']][$id] = $item;
+            }
+        }
 //
-//        return [
-//            0 => $results[0],
-//            1 => $results[1],
-//        ];
+        return [
+            0 => $results[0],
+            1 => $results[1],
+        ];
 
         return $items;
     }
@@ -1155,6 +1154,7 @@ class pocketlistsItemModel extends kmModelExt
                   i.note note,
                   i.status status,
                   i.priority priority,
+                  i.calc_priority calc_priority,
                   i.contact_id contact_id,
                   i.create_datetime create_datetime,
                   i.due_date due_date,
@@ -1175,10 +1175,7 @@ class pocketlistsItemModel extends kmModelExt
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:user_contact_id AND uf.item_id = i.id
                 JOIN pocketlists_item_link pil ON pil.item_id = i.id {$appSql} {$appTypeSql} {$entityIdSql}
                 WHERE
-                  (
-                    l.archived = 0
-                    OR l.archived IS NULL
-                  )
+                  l.archived = 0
                   AND {$list_sql}
                   {$dateSql}
                 GROUP BY i.id
@@ -1269,8 +1266,8 @@ class pocketlistsItemModel extends kmModelExt
                   OR (i.contact_id = i:contact_id AND i.list_id IS NULL AND i.key_list_id IS NULL) /* + my items from NULL-list */
                 )
                 AND i.status = 0 /* ONLY not completed items */
-                AND (l.archived = 0 OR l.archived IS NULL) /* ONLY not archived items */
-                AND (i.assigned_contact_id = i:contact_id OR i.assigned_contact_id IS NULL OR i.assigned_contact_id = 0) /* ONLY assigned to me or noone */
+                AND l.archived = 0 /* ONLY not archived items */
+                AND (i.assigned_contact_id = i:contact_id OR i.assigned_contact_id IS NULL) /* ONLY assigned to me or noone */
                 {$list_sql}
                 {$when}";
 

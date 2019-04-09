@@ -39,14 +39,14 @@ class pocketlistsUser extends pocketlistsContact
      */
     public function hasLinkedApps()
     {
-        /** @var pocketlistsItemLinkInterface[] $apps */
+        /** @var pocketlistsAppLinkInterface[] $apps */
         $apps = wa(pocketlistsHelper::APP_ID)->getConfig()->getLinkedApp();
 
         if (!$apps) {
             return 0;
         }
 
-        /** @var pocketlistsItemLinkInterface $app */
+        /** @var pocketlistsAppLinkInterface $app */
         foreach ($apps as $app) {
             if ($app->userCanAccess($this)) {
                 return 1;
