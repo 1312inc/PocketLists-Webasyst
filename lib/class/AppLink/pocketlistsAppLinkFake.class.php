@@ -41,34 +41,32 @@ class pocketlistsAppLinkFake implements pocketlistsAppLinkInterface
     {}
 
     /**
-     * @return pocketlistsItemLinkModel
-     */
-    public function getItemLinkModel()
-    {
-        return new pocketlistsItemLinkModel();
-    }
-
-    /**
+     * @param pocketlistsItemLink $itemLink
+     *
      * @return string
      */
-    public function getLinkUrl()
+    public function getLinkUrl(pocketlistsItemLink $itemLink)
     {
         return '';
     }
 
     /**
+     * @param pocketlistsItemLink $itemLink
+     *
      * @return waModel
      */
-    public function getAppEntity()
+    public function getAppEntity(pocketlistsItemLink $itemLink)
     {
         return null;
     }
 
     /**
+     * @param pocketlistsItemLink $itemLink
+     *
      * @return array
      * @throws waException
      */
-    public function getExtraData()
+    public function getExtraData(pocketlistsItemLink $itemLink)
     {
         return [];
     }
@@ -129,5 +127,25 @@ class pocketlistsAppLinkFake implements pocketlistsAppLinkInterface
     public function userCanAccess(pocketlistsUser $user = null)
     {
         return false;
+    }
+
+    /**
+     * @param pocketlistsItemLink $itemLink
+     *
+     * @return string
+     */
+    public function renderPreview(pocketlistsItemLink $itemLink)
+    {
+        return '';
+    }
+
+    /**
+     * @param pocketlistsItemLink $itemLink
+     *
+     * @return string
+     */
+    public function renderAutocomplete(pocketlistsItemLink $itemLink)
+    {
+        return '';
     }
 }

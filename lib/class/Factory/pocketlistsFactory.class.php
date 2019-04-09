@@ -5,10 +5,12 @@
  */
 class pocketlistsFactory
 {
-    /**
-     * @var pocketlistsEntity
-     */
     protected $entity;
+
+    /**
+     * @var array
+     */
+    protected $cache = [];
 
     /**
      * @var kmModelExt
@@ -62,6 +64,11 @@ class pocketlistsFactory
      */
     public function findById($id)
     {
+        $cached = $this->getFromCache($id);
+        if ($cached) {
+            return $cached;
+        }
+
         $data = $this->getModel()->getById($id);
         if (!$data) {
             return null;
@@ -73,7 +80,13 @@ class pocketlistsFactory
             $all = true;
         }
 
-        return $this->generateWithData($data, $all);
+        $entities = $this->generateWithData($data, $all);
+
+        if (!$all && $entities) {
+            $this->cache($id, $entities);
+        }
+
+        return $entities;
     }
 
     /**
@@ -198,5 +211,32 @@ class pocketlistsFactory
     protected function getDbFields()
     {
         return $this->getModel()->getMetadata();
+    }
+
+    /**
+     * @param $key
+     *
+     * @return bool|pocketlistsEntity
+     */
+    protected function getFromCache($key)
+    {
+        if (isset($this->cache[$this->entity][$key])) {
+            return $this->cache[$this->entity][$key];
+        }
+
+        return false;
+    }
+
+    /**
+     * @param $key
+     * @param $entity
+     */
+    protected function cache($key, $entity)
+    {
+        if (!isset($this->cache[$this->entity])) {
+            $this->cache[$this->entity] = [];
+        }
+
+        $this->cache[$this->entity][$key] = $entity;
     }
 }

@@ -214,7 +214,7 @@ class pocketlistsStrategyItemFilterAndSort
 
         $date = [];
         foreach ([$i1, $i2] as $item) {
-            $date[] = $item->getUpdateDatetime()() ? strtotime($item->getUpdateDatetime) : null;
+            $date[] = $item->getUpdateDatetime() ? strtotime($item->getUpdateDatetime()) : null;
         }
 
         // check update_datetime

@@ -11,29 +11,10 @@
  */
 class pocketlistsItemLinkModel extends kmModelExt
 {
+    /**
+     * @var string
+     */
     protected $table = 'pocketlists_item_link';
-
-    /**
-     * @var pocketlistsAppLinkInterface
-     */
-    protected $linkedClass;
-
-    /**
-     * @var waSmarty3View
-     */
-    protected $view;
-
-    /**
-     * @return waSmarty3View
-     */
-    public function getView()
-    {
-        if ($this->view === null) {
-            $this->view = new waSmarty3View(wa());
-        }
-
-        return $this->view;
-    }
 
     /**
      * @param string $app
@@ -47,84 +28,21 @@ class pocketlistsItemLinkModel extends kmModelExt
     }
 
     /**
-     * @return string
-     */
-    public function renderAutocomplete()
-    {
-        $template = wa()->getAppPath(
-            sprintf('templates/include/item_linked_entities/%s.%s.autocomplete.html', $this->app, $this->entity_type),
-            pocketlistsHelper::APP_ID
-        );
-
-//        $render = wa()->event('item.render_autocomplete', $this);
-
-        if (file_exists($template)) {
-            $this->getView()->clearAllAssign();
-            $this->getView()->assign('link', $this);
-
-            $render = $this->getView()->fetch($template);
-        } else {
-            $render = (string)$this;
-        }
-
-        return $render;
-    }
-
-    /**
-     * @return string
-     */
-    public function renderPreview()
-    {
-        if (!$this->entity_id || !$this->entity_type) {
-            return '';
-        }
-
-        $template = wa()->getAppPath(
-            sprintf('templates/include/item_linked_entities/%s.%s.preview.html', $this->app, $this->entity_type),
-            pocketlistsHelper::APP_ID
-        );
-
-        $pluginRender = wa()->event('item.render_linked', $this);
-        $render = !empty($pluginRender['preview']) ? $pluginRender['preview'] : '';
-
-        if ($this->getEntityClass()->isEnabled() && !$render && file_exists($template)) {
-            if (!$this->getEntityClass()->getAppEntity()) {
-                return '';
-            }
-
-            $this->getView()->clearAllAssign();
-            $vars = [
-                'link'  => $this,
-                'extra' => $this->getEntityClass()->getExtraData(),
-            ];
-            $this->getView()->assign($vars);
-
-            $render = $this->getView()->fetch($template);
-        }
-
-        return $render;
-    }
-
-    /**
-     * @return pocketlistsAppLinkInterface
+     * @param $app
+     * @param $entityType
+     * @param $entityId
+     *
+     * @return int
      * @throws waException
      */
-    public function getEntityClass()
+    public function countLinkedItems($app, $entityType, $entityId)
     {
-        if ($this->linkedClass === null) {
-            $app = wa(pocketlistsHelper::APP_ID)->getConfig()->getLinkedApp($this->app);
-            $this->linkedClass = $app;
-            $this->linkedClass->setItemLinkModel($this);
-        }
-
-        return $this->linkedClass;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return ucfirst($this->entity_type).' #'.$this->entity_id;
+        return $this->countByField(
+            [
+                'app'         => $app,
+                'entity_type' => $entityType,
+                'entity_id'   => $entityId,
+            ]
+        );
     }
 }

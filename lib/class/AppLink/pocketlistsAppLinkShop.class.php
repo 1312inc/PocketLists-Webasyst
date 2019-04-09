@@ -65,6 +65,13 @@ class pocketlistsAppLinkShop extends pocketlistsAppLinkAbstract
         return $result;
     }
 
+    /**
+     * @param $term
+     * @param $count
+     *
+     * @return array
+     * @throws waException
+     */
     protected function autocompleteOrder($term, $count)
     {
         $result = [];
@@ -87,22 +94,24 @@ class pocketlistsAppLinkShop extends pocketlistsAppLinkAbstract
             $orders = array_merge($orders, $this->getOrders($term, $count - $cnt));
         }
 
+        /** @var pocketlistsItemLinkFactory $itemlinkFactory */
+        $itemlinkFactory = pl2()->getEntityFactory(pocketlistsItemLink::class);
+
         foreach ($orders as $order) {
-            $linkEntity = new pocketlistsItemLinkModel(
-                [
-                    'app'         => $this->getApp(),
-                    'entity_type' => 'order',
-                    'entity_id'   => $order['id'],
-                ]
-            );
-            $this->setItemLinkModel($linkEntity);
+            /** @var pocketlistsItemLink $linkEntity */
+            $linkEntity = $itemlinkFactory->createNew();
+
+            $linkEntity
+                ->setApp($this->getApp())
+                ->setEntityType('order')
+                ->setEntityId($order['id']);
 
             $result[] = [
-                'label' => $linkEntity->renderAutocomplete(),
+                'label' => $this->renderAutocomplete($linkEntity),
                 'value' => shopHelper::encodeOrderId($order['id']),
                 'data'  => [
-                    'model'   => $linkEntity->getAttributes(),
-                    'preview' => $linkEntity->renderPreview(),
+                    'model'   => $linkEntity,
+                    'preview' => $this->renderPreview($linkEntity),
                 ],
             ];
         }
@@ -111,33 +120,38 @@ class pocketlistsAppLinkShop extends pocketlistsAppLinkAbstract
     }
 
     /**
+     * @param pocketlistsItemLink $itemLink
+     *
      * @return string
      */
-    public function getLinkUrl()
+    public function getLinkUrl(pocketlistsItemLink $itemLink)
     {
-        return sprintf('%s#/orders/id=%s/', wa()->getAppUrl('shop'), $this->getItemLinkModel()->entity_id);
+        return sprintf('%s#/orders/id=%s/', wa()->getAppUrl('shop'), $itemLink->getEntityId());
     }
 
     /**
-     * @return shopOrder|waModel|false
-     * @throws waException
+     * @param pocketlistsItemLink $itemLink
+     *
+     * @return bool|shopOrder
      */
-    public function getAppEntity()
+    public function getAppEntity(pocketlistsItemLink $itemLink)
     {
         try {
-            return new shopOrder($this->getItemLinkModel()->entity_id);
+            return new shopOrder($itemLink->getEntityId());
         } catch (waException $ex) {
             return false;
         }
     }
 
     /**
+     * @param pocketlistsItemLink $itemLink
+     *
      * @return array
      * @throws waException
      */
-    public function getExtraData()
+    public function getExtraData(pocketlistsItemLink $itemLink)
     {
-        $order = $this->getAppEntity();
+        $order = $itemLink->getAppEntity();
 
         $order_data_array = $order->dataArray();
         $order_data_array['contact'] = $order->contact_essentials;
@@ -146,7 +160,7 @@ class pocketlistsAppLinkShop extends pocketlistsAppLinkAbstract
         return [
             'order'                => $order_data_array,
             'last_action_datetime' => $order->last_action_datetime,
-            'link'                 => $this->getLinkUrl(),
+            'link'                 => $this->getLinkUrl($itemLink),
         ];
     }
 
@@ -169,9 +183,10 @@ class pocketlistsAppLinkShop extends pocketlistsAppLinkAbstract
      */
     public function getAppIcon()
     {
-        return '<i class="icon16 pl-wa-app-icon" style="background-image: url('.wa()->getAppStaticUrl(
-                'shop'
-            ).'img/shop.png); background-size: 16px 16px;"></i>';
+        return sprintf(
+            '<i class="icon16 pl-wa-app-icon" style="background-image: url(%simg/shop.png); background-size: 16px 16px;"></i>',
+            wa()->getAppStaticUrl('shop')
+        );
     }
 
     /**
@@ -214,5 +229,77 @@ class pocketlistsAppLinkShop extends pocketlistsAppLinkAbstract
         }
 
         return pocketlistsRBAC::canUseShopScript($user);
+    }
+
+    /**
+     * @param pocketlistsItemLink $itemLink
+     *
+     * @return string
+     * @throws waException
+     */
+    public function renderPreview(pocketlistsItemLink $itemLink)
+    {
+        if (!$itemLink->getEntityId() || !$itemLink->getEntityType()) {
+            return '';
+        }
+
+        $template = wa()->getAppPath(
+            sprintf(
+                'templates/include/item_linked_entities/%s.%s.preview.html',
+                $this->getApp(),
+                $itemLink->getEntityType()
+            ),
+            pocketlistsHelper::APP_ID
+        );
+
+        $pluginRender = wa()->event('item.render_linked', $this);
+        $render = !empty($pluginRender['preview']) ? $pluginRender['preview'] : '';
+
+        if ($this->isEnabled() && !$render && file_exists($template)) {
+            if (!$itemLink->getAppEntity()) {
+                return '';
+            }
+
+            $this->getView()->clearAllAssign();
+            $vars = [
+                'link'  => $itemLink,
+                'extra' => $this->getExtraData($itemLink),
+            ];
+            $this->getView()->assign($vars);
+
+            $render = $this->getView()->fetch($template);
+        }
+
+        return $render;
+    }
+
+    /**
+     * @param pocketlistsItemLink $itemLink
+     *
+     * @return string
+     */
+    public function renderAutocomplete(pocketlistsItemLink $itemLink)
+    {
+        $template = wa()->getAppPath(
+            sprintf(
+                'templates/include/item_linked_entities/%s.%s.autocomplete.html',
+                $this->getApp(),
+                $itemLink->getEntityType()
+            ),
+            pocketlistsHelper::APP_ID
+        );
+
+//        $render = wa()->event('item.render_autocomplete', $this);
+
+        if (file_exists($template)) {
+            $this->getView()->clearAllAssign();
+            $this->getView()->assign('link', $itemLink);
+
+            $render = $this->getView()->fetch($template);
+        } else {
+            $render = (string)$this;
+        }
+
+        return $render;
     }
 }

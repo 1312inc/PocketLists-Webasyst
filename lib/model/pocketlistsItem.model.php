@@ -1113,13 +1113,16 @@ class pocketlistsItemModel extends kmModelExt
     }
 
     /**
-     * @param string|bool $app
-     * @param string|bool $entity_type
-     * @param int|bool    $entity_id
+     * @param string $app
+     * @param string $entity_type
+     * @param string $entity_id
+     * @param string $date
      *
      * @return array
+     * @throws waDbException
+     * @throws waException
      */
-    public function getAppItems($app = false, $entity_type = false, $entity_id = false, $date = false)
+    public function getAppItems($app = '', $entity_type = '', $entity_id = '', $date = '')
     {
         $lists = [];
         $contact_id = wa()->getUser()->getId();
@@ -1127,17 +1130,17 @@ class pocketlistsItemModel extends kmModelExt
         $list_sql = 1;//pocketlistsRBAC::filterListAccess($lists);
 
         $appSql = '';
-        if ($app !== false) {
+        if ($app) {
             $appSql = 'AND pil.app = s:app';
         }
 
         $appTypeSql = '';
-        if ($entity_type !== false) {
+        if ($entity_type) {
             $appTypeSql = 'AND pil.entity_type = s:type';
         }
 
         $entityIdSql = '';
-        if ($entity_type !== false) {
+        if ($entity_type) {
             $entityIdSql = 'AND pil.entity_id = i:entity_id';
         }
 
@@ -1146,33 +1149,10 @@ class pocketlistsItemModel extends kmModelExt
             $dateSql = "AND ((i.status = 0 AND (i.due_date = s:date OR DATE(i.due_datetime) = s:date)) OR (i.status > 0 AND DATE(i.complete_datetime) = s:date)) /* with due date or completed this day */";
         }
 
-        $q = "SELECT
-                  i.id id,
-                  i.parent_id parent_id,
-                  i.has_children has_children,
-                  i.name name,
-                  i.note note,
-                  i.status status,
-                  i.priority priority,
-                  i.calc_priority calc_priority,
-                  i.contact_id contact_id,
-                  i.create_datetime create_datetime,
-                  i.due_date due_date,
-                  i.due_datetime due_datetime,
-                  i.complete_datetime complete_datetime,
-                  i.complete_contact_id complete_contact_id,
-                  i.assigned_contact_id assigned_contact_id,
-                  i.key_list_id key_list_id,
-                  l.id list_id,
-                  l.icon list_icon,
-                  l.color list_color,
-                  l.name list_name,
-                  IF(uf.contact_id, 1, 0) favorite
-                FROM {$this->table} i
+        $q = $this->getQuery()."
                 LEFT JOIN (select i2.name, l2.*
                           from pocketlists_list l2
                                  JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) l ON l.id = i.list_id
-                LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:user_contact_id AND uf.item_id = i.id
                 JOIN pocketlists_item_link pil ON pil.item_id = i.id {$appSql} {$appTypeSql} {$entityIdSql}
                 WHERE
                   l.archived = 0
@@ -1196,25 +1176,27 @@ class pocketlistsItemModel extends kmModelExt
             ]
         )->fetchAll();
 
-        $items = self::generateModels($items);
+//        $items = self::generateModels($items);
 
-        $results = [
-            0 => [],
-            1 => [],
-        ];
+//        $results = [
+//            0 => [],
+//            1 => [],
+//        ];
+//
+//        if ($items) {
+//            $items = $this->extendItemData($items);
+//
+//            foreach ($items as $id => $item) {
+//                $results[$item['status']][$id] = $item;
+//            }
+//        }
+//
+//        return [
+//            0 => $results[0],
+//            1 => $results[1],
+//        ];
 
-        if ($items) {
-            $items = $this->extendItemData($items);
-
-            foreach ($items as $id => $item) {
-                $results[$item['status']][$id] = $item;
-            }
-        }
-
-        return [
-            0 => $results[0],
-            1 => $results[1],
-        ];
+        return $items;
     }
 
     /**
