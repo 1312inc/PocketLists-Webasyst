@@ -10,11 +10,6 @@ abstract class pocketlistsAppLinkAbstract implements pocketlistsAppLinkInterface
     protected $enabled = null;
 
     /**
-     * @var pocketlistsItemLinkModel
-     */
-    protected $itemLinkModel;
-
-    /**
      * @var waSmarty3View
      */
     protected $view;
@@ -44,14 +39,6 @@ abstract class pocketlistsAppLinkAbstract implements pocketlistsAppLinkInterface
     }
 
     /**
-     * @return pocketlistsItemLinkModel
-     */
-    public function getItemLinkModel()
-    {
-        return $this->itemLinkModel;
-    }
-
-    /**
      * pocketlistsItemLink constructor.
      */
     public function __construct()
@@ -70,7 +57,7 @@ abstract class pocketlistsAppLinkAbstract implements pocketlistsAppLinkInterface
      */
     public function countItems()
     {
-        return pocketlistsItemModel::model()->getCountForApp($this->getApp());
+        return pl2()->getModel(pocketlistsItem::class)->getCountForApp($this->getApp());
     }
 
     /**

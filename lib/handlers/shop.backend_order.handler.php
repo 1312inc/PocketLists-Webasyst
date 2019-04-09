@@ -18,7 +18,7 @@ class pocketlistsShopBackend_orderHandler extends waEventHandler
 
         $return = [];
 
-        $app = wa(pocketlistsHelper::APP_ID)->getConfig()->getLinkedApp('shop');
+        $app = pl2()->getLinkedApp('shop');
 
         if (!$app->isEnabled()) {
             return $return;
@@ -28,9 +28,7 @@ class pocketlistsShopBackend_orderHandler extends waEventHandler
             return $return;
         }
 
-        /** @var pocketlistsItemLink $itemLink */
-        $itemLink = pl2()->getEntityFactory(pocketlistsItemLink::class)
-            ->findWithAppEntityTypeAndId('shop', 'order', $params['id']);
+        $hasItems = pl2()->getModel(pocketlistsItemLink::class)->countLinkedItems('shop', 'order', $params['id']);
 
         $viewParams = [
             'wa_app_static_url' => wa()->getAppStaticUrl(pocketlistsHelper::APP_ID),
@@ -41,15 +39,13 @@ class pocketlistsShopBackend_orderHandler extends waEventHandler
             'items_done'        => [],
             'count_done_items'  => 0,
             'fileupload'        => 1,
-            'user'              => wa(pocketlistsHelper::APP_ID)->getConfig()->getUser(),
+            'user'              => pl2()->getUser(),
         ];
 
-        if ($itemLink) {
+        if ($hasItems) {
             $items = pl2()
                 ->getEntityFactory(pocketlistsItem::class)
-                ->findForLinkedEntity($itemLink);
-
-            $im = new pocketlistsItemModel();
+                ->findAllForApp($app, 'order', $params['id']);
 
             $filter = (new pocketlistsStrategyItemFilterAndSort($items))->filterDoneUndone();
 

@@ -248,7 +248,7 @@ class pocketlistsConfig extends waAppConfig
     {
         if ($this->linkers === null) {
             foreach ($this->getLinkedApps() as $entity) {
-                $class = sprintf('pocketlistsItemLink%s', ucfirst($entity));
+                $class = sprintf('pocketlistsAppLink%s', ucfirst($entity));
                 if (class_exists($class)) {
                     $class = new $class();
                     if ($class instanceof pocketlistsAppLinkInterface && $class->isEnabled()) {

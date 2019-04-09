@@ -17,9 +17,29 @@ class pocketlistsItemFactory extends pocketlistsFactory
      */
     public function findForLinkedEntity(pocketlistsItemLink $itemLink)
     {
-        $data = $this->getModel()->getAppItems($itemLink->getApp(), $itemLink->getEntityType(), $itemLink->getEntityId());
+        $data = $this->getModel()->getAppItems(
+            $itemLink->getApp(),
+            $itemLink->getEntityType(),
+            $itemLink->getEntityId()
+        );
 
-        return $this->generateWithData($data);
+        return $this->generateWithData($data, true);
+    }
+
+    /**
+     * @param pocketlistsAppLinkInterface $app
+     * @param string                      $entityType
+     * @param int                         $entityId
+     * @param string                      $date
+     *
+     * @return pocketlistsItem[]
+     * @throws waException
+     */
+    public function findAllForApp(pocketlistsAppLinkInterface $app, $entityType = '', $entityId = 0, $date = '')
+    {
+        $data = $this->getModel()->getAppItems($app->getApp(), $entityType, $entityId, $date);
+
+        return $this->generateWithData($data, true);
     }
 
     /**

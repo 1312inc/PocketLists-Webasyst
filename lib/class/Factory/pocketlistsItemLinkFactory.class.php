@@ -19,7 +19,7 @@ class pocketlistsItemLinkFactory extends pocketlistsFactory
     {
         $data = $this->getModel()->getByField('item_id', $item->getId(), true);
 
-        return $this->generateWithData($data);
+        return $this->generateWithData($data, true);
     }
 
     /**
@@ -36,7 +36,7 @@ class pocketlistsItemLinkFactory extends pocketlistsFactory
             'app'         => $app,
             'entity_type' => $entityType,
             'entity_id'   => $entityId,
-        ]);
+        ], true);
 
         return $this->generateWithData($data, true);
     }

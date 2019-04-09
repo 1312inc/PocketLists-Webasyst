@@ -48,6 +48,11 @@ class pocketlistsItemLink extends pocketlistsEntity
     private $link;
 
     /**
+     * @var shopOrder
+     */
+    private $appEntity;
+
+    /**
      * @return pocketlistsItem
      * @throws waException
      */
@@ -222,6 +227,48 @@ class pocketlistsItemLink extends pocketlistsEntity
     public function setLink($link)
     {
         $this->link = $link;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return ucfirst($this->getEntityType()).' #'.$this->getEntityId();
+    }
+
+    /**
+     * @return pocketlistsAppLinkInterface
+     * @throws waException
+     */
+    public function getAppLink()
+    {
+        return pl2()->getLinkedApp($this->getApp());
+    }
+
+    /**
+     * @return shopOrder
+     * @throws waException
+     */
+    public function getAppEntity()
+    {
+        if ($this->appEntity === null) {
+            $this->appEntity = $this->getAppLink()->getAppEntity($this);
+        }
+
+        return $this->appEntity;
+    }
+
+    /**
+     * @param shopOrder $appEntity
+     *
+     * @return pocketlistsItemLink
+     */
+    public function setAppEntity($appEntity)
+    {
+        $this->appEntity = $appEntity;
 
         return $this;
     }

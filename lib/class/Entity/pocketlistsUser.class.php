@@ -36,11 +36,12 @@ class pocketlistsUser extends pocketlistsContact
 
     /**
      * @return int
+     * @throws waException
      */
     public function hasLinkedApps()
     {
         /** @var pocketlistsAppLinkInterface[] $apps */
-        $apps = wa(pocketlistsHelper::APP_ID)->getConfig()->getLinkedApp();
+        $apps = pl2()->getLinkedApp();
 
         if (!$apps) {
             return 0;
