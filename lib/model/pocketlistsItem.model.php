@@ -2,34 +2,8 @@
 
 /**
  * Class pocketlistsItemModel
- *
- * @property int    $list_id
- * @property int    $contact_id
- * @property int    $parent_id
- * @property int    $sort
- * @property int    $has_children
- * @property int    $status
- * @property int    $priority
- * @property int    $calc_priority
- * @property string $create_datetime
- * @property string $update_datetime
- * @property string $complete_datetime
- * @property int    $complete_contact_id
- * @property string $name
- * @property string $note
- * @property string $due_date
- * @property string $due_datetime
- * @property int    $location_id
- * @property float  $amount
- * @property string $currency_iso3
- * @property int    $assigned_contact_id
- * @property int    $repeat
- * @property int    $key_list_id
- * @property array  $chat
- * @property array  $attachments
- * @property string $age_time
  */
-class pocketlistsItemModel extends kmModelExt
+class pocketlistsItemModel extends waModel
 {
     const PRIORITY_NORM       = 0;
     const PRIORITY_GREEN      = 1;
@@ -38,6 +12,9 @@ class pocketlistsItemModel extends kmModelExt
     const PRIORITY_BLACK      = 4;
     const PRIORITY_BURNINHELL = 5;
 
+    /**
+     * @var string
+     */
     protected $table = 'pocketlists_item';
 
     /**
@@ -45,13 +22,22 @@ class pocketlistsItemModel extends kmModelExt
      */
     protected $linkedEntities;
 
+    /**
+     * @var array
+     */
     public $chat = [
         'current_user' => [],
         'comments'     => [],
     ];
 
+    /**
+     * @var array
+     */
     public $childs = [];
 
+    /**
+     *
+     */
     public function init()
     {
         $this->chat = [
@@ -63,6 +49,9 @@ class pocketlistsItemModel extends kmModelExt
         ];
     }
 
+    /**
+     * @return array
+     */
     public static function getPriorities()
     {
         return [
@@ -86,22 +75,6 @@ class pocketlistsItemModel extends kmModelExt
         return $this->getLogbookItems($contact_id, $date_range);
     }
 
-//    public function getDefaultAttributes()
-//    {
-//        return array_merge(
-//            parent::getDefaultAttributes(),
-//            [
-//                'chat'        => [
-//                    'current_user' => [
-//                        'username' => wa()->getUser()->getName(),
-//                        'userpic'  => wa()->getUser()->getPhoto(20),
-//                    ],
-//                    'comments'     => [],
-//                ],
-//                'attachments' => [],
-//            ]
-//        );
-//    }
 
     /**
      * @param bool $contact_id
@@ -141,7 +114,7 @@ class pocketlistsItemModel extends kmModelExt
         $lists = pocketlistsRBAC::getAccessListForContact();
         $list_sql = $lists ? "AND (l.id IN (i:list_ids) OR (l.id IS NULL AND i.contact_id = i:contact_id))" : "AND (l.id IS NULL AND i.contact_id = i:contact_id)";
         $sql = $this->getQuery().
-                "LEFT JOIN (select i2.name, l2.*
+            "LEFT JOIN (select i2.name, l2.*
                           from pocketlists_list l2
                                  JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) l ON l.id = i.list_id
                 WHERE
@@ -192,6 +165,8 @@ class pocketlistsItemModel extends kmModelExt
      * @param bool $date
      *
      * @return array
+     * @throws waDbException
+     * @throws waException
      */
     public function getToDo($contact_id = false, $date = false)
     {
@@ -200,51 +175,10 @@ class pocketlistsItemModel extends kmModelExt
         if (!$contact_id) {
             $contact_id = wa()->getUser()->getId();
         }
-//
-//        $key = $this->getCacheKey($contact_id.$date);
-//
-//        return $this->getFromCache(
-//            $key,
-//            function () use ($key, $contact_id, $date) {
-//                $cache = wa()->getCache();
-//                $result = false;
-//
-//                if ($cache) {
-//                    $result = $cache->get($key);
-//                }
 
-//                if (!$result) {
-                    $items = $this->fetchTodo($contact_id, $date, $calc_priority = []);
+        $items = $this->fetchTodo($contact_id, $date, $calc_priority = []);
 
-//                    $items = self::generateModels($items);
-
-                    $result = [
-                        0 => [],
-                        1 => [],
-                    ];
-
-//                    if ($items) {
-//                        foreach ($items as $id => $item) {
-//                            $result[$item['status']][$id] = $this->extendItemData($item);
-//                        }
-//
-//                        $result = [
-//                            0 => $this->getProperSort($result[0]),
-//                            1 => $result[1],
-//                        ];
-//                    }
-//
-//                    if ($cache) {
-//                        $cache->set($key, $result, self::TTL);
-//                    }
-//                }
-//
-                return $items;
-//                return $result;
-//            }
-//        );
-
-//        return $this->getTree($items, true);
+        return $items;
     }
 
     /**
@@ -316,7 +250,8 @@ class pocketlistsItemModel extends kmModelExt
                 break;
         }
 
-        if ($us->myToDosCreatedByOthers() == pocketlistsUserSettings::MY_TO_DOS_CREATED_BY_OTHER_IN_SHARED_LISTS_FAVORITE_LISTS
+        if ($us->myToDosCreatedByOthers(
+            ) == pocketlistsUserSettings::MY_TO_DOS_CREATED_BY_OTHER_IN_SHARED_LISTS_FAVORITE_LISTS
             || $us->myToDosCreatedByMe() == pocketlistsUserSettings::MY_TO_DOS_CREATED_BY_ME_IN_SHARED_FAVORITE_LISTS) {
             $join_sql[] = "pocketlists_user_favorites uf2 ON uf2.contact_id = i:contact_id AND uf2.item_id = i2.id";
             $select_sql[] = "IF(uf2.contact_id, 1, 0) favorite_list";
@@ -456,61 +391,8 @@ class pocketlistsItemModel extends kmModelExt
             ]
         )->fetchAll();
 
-//        $result = [
-//            0 => [],
-//            1 => [],
-//        ];
-
-//        $items = self::generateModels($items);
-
-//        if ($items) {
-//            foreach ($items as $id => $item) {
-//                $result[$item['status']][$id] = $this->extendItemData($item);
-//            }
-//        }
-
-//        return [
-//            0 => $this->getProperSort($result[0]),
-//            1 => $result[1],
-//        ];
-//        return $this->getTree($items, true);
-
         return $items;
     }
-
-    /**
-     * @param array|int $ids
-     * @param bool      $user_id
-     *
-     * @return array|mixed|null
-     */
-   /* public function getById($ids, $user_id = false)
-    {
-        $key = $this->getCacheKey(serialize($ids).$user_id);
-
-        return $this->getFromCache(
-            $key,
-            function () use ($key, $ids, $user_id) {
-                if (!$user_id) {
-                    $user_id = wa()->getUser()->getId();
-                }
-                if (!is_array($ids)) {
-                    $ids = [$ids];
-                }
-//        $items = parent::getById($id);
-                $items = $this->query(
-                    $this->getQuery()."WHERE i.id IN (i:id)",
-                    ['contact_id' => $user_id, 'id' => $ids]
-                )->fetchAll();
-//        $items = $this->getItems($this->getQuery(), null, false);
-//        return $items;
-
-                self::$cached[$key] = pocketlistsItemModel::generateModels($items, count($ids) == 1);
-
-                return self::$cached[$key];
-            }
-        );
-    }*/
 
     /**
      * @param      $id
@@ -647,28 +529,13 @@ class pocketlistsItemModel extends kmModelExt
      */
     private function getItems($sql, $list_id, $tree)
     {
-//        $key = $this->getCacheKey($sql.serialize($list_id).$tree);
-//
-//        return $this->getFromCache(
-//            $key,
-//            function () use ($key, $sql, $list_id, $tree) {
-                $items = $this->query(
-                    $sql,
-                    [
-                        'lid'        => $list_id,
-                        'contact_id' => wa()->getUser()->getId(),
-                    ]
-                )->fetchAll('id');
-
-//                $items = self::generateModels($items);
-
-//                $items = $this->extendItemData($items);
-
-//                self::$cached[$key] = $tree ? $this->getTree($items, $tree) : $items;
-//
-//                return self::$cached[$key];
-//            }
-//        );
+        $items = $this->query(
+            $sql,
+            [
+                'lid'        => $list_id,
+                'contact_id' => wa()->getUser()->getId(),
+            ]
+        )->fetchAll('id');
 
         return $items;
     }
@@ -818,6 +685,11 @@ class pocketlistsItemModel extends kmModelExt
         }
     }
 
+    /**
+     * @param $comment
+     *
+     * @throws waException
+     */
     public function setChatComment($comment)
     {
         $comments = $this->chat['comments'];
@@ -1103,6 +975,7 @@ class pocketlistsItemModel extends kmModelExt
                 $results[$item['status']][$id] = $item;
             }
         }
+
 //
         return [
             0 => $results[0],
@@ -1286,6 +1159,13 @@ class pocketlistsItemModel extends kmModelExt
         )->fetch();
     }
 
+    /**
+     * @param $user_last_activity
+     *
+     * @return array
+     * @throws waDbException
+     * @throws waException
+     */
     public function getLastActivityItems($user_last_activity)
     {
         $user_id = wa()->getUser()->getId();
@@ -1382,6 +1262,11 @@ class pocketlistsItemModel extends kmModelExt
         return $count;
     }
 
+    /**
+     * @param $id
+     *
+     * @return array|bool
+     */
     public function getAllByPocket($id)
     {
         if (!$id) {
@@ -1428,7 +1313,10 @@ class pocketlistsItemModel extends kmModelExt
         $sql = $this->getQuery().'
                 WHERE i.id IN (i:ids)';
 
-        $items = $this->query($sql, ['contact_id' => pl2()->getUser()->getContact()->getId(), 'ids' => $value])->fetchAll('id');
+        $items = $this->query(
+            $sql,
+            ['contact_id' => pl2()->getUser()->getContact()->getId(), 'ids' => $value]
+        )->fetchAll('id');
 
         return $all ? $items : reset($items);
     }

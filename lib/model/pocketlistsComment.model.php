@@ -2,14 +2,12 @@
 
 /**
  * Class pocketlistsCommentModel
- *
- * @property int    $item_id
- * @property int    $contact_id
- * @property string $comment
- * @property string $create_datetime
  */
-class pocketlistsCommentModel extends kmModelExt
+class pocketlistsCommentModel extends waModel
 {
+    /**
+     * @var string
+     */
     protected $table = 'pocketlists_comment';
 
     /**
@@ -108,6 +106,9 @@ class pocketlistsCommentModel extends kmModelExt
         )->count();
     }
 
+    /**
+     * @return string
+     */
     private function getSql()
     {
         return "SELECT 

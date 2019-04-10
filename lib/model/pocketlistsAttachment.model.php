@@ -2,12 +2,8 @@
 
 /**
  * Class pocketlistsAttachmentModel
- *
- * @property int    $item_id
- * @property string $filename
- * @property string $filetype
  */
-class pocketlistsAttachmentModel extends kmModelExt
+class pocketlistsAttachmentModel extends waModel
 {
     protected $table = 'pocketlists_attachment';
 
