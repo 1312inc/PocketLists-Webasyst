@@ -235,6 +235,22 @@ class pocketlistsItemFactory extends pocketlistsFactory
 
     /**
      * @param pocketlistsItem[] $items
+     *
+     * @return pocketlistsItem[]
+     * @throws waException
+     */
+    public function updateProperSort(array $items)
+    {
+        $sort = 0;
+        foreach ($items as $item) {
+            $this->getModel()->updateById($item->getId(), ['sort' => $sort++]);
+        }
+
+        return $items;
+    }
+
+    /**
+     * @param pocketlistsItem[] $items
      * @param pocketlistsList   $list
      *
      * @return pocketlistsItem[]

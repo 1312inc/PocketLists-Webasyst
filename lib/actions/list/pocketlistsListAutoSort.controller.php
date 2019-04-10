@@ -12,14 +12,16 @@ class pocketlistsListAutoSortController extends pocketlistsJsonController
      */
     public function execute()
     {
-        $list = $this->getList(waRequest::post('list_id', 0, waRequest::TYPE_INT));
+        $list = $this->getList();
 
         if (!in_array($list->getId(), pocketlistsRBAC::getAccessListForContact())) {
-            throw new waRightsException('403');
+            throw new pocketlistsForbiddenException();
         }
 
-        /** @var pocketlistsItemModel $itemModel */
-        $itemModel = pl2()->getModel(pocketlistsItem::class);
-        $itemModel->sortItems($list->getId());
+        $items = $list->getItems();
+        $filter = new pocketlistsStrategyItemFilterAndSort($items);
+        $items = $filter->getProperSort()->getItemsUndone();
+
+        pl2()->getEntityFactory(pocketlistsItem::class)->updateProperSort($items);
     }
 }

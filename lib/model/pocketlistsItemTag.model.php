@@ -2,11 +2,11 @@
 
 /**
  * Class pocketlistsItemTagModel
- *
- * @property int $item_id
- * @property int $tag_id
  */
-class pocketlistsItemTagModel extends kmModelExt
+class pocketlistsItemTagModel extends waModel
 {
+    /**
+     * @var string
+     */
     protected $table = 'pocketlists_item_tag';
 }

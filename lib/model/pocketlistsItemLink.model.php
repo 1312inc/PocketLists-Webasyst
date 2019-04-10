@@ -2,14 +2,8 @@
 
 /**
  * Class pocketlistsItemLinkModel
- *
- * @property int    $item_id
- * @property string $app
- * @property string $entity_type
- * @property int    $entity_id
- * @property string $data
  */
-class pocketlistsItemLinkModel extends kmModelExt
+class pocketlistsItemLinkModel extends waModel
 {
     /**
      * @var string
