@@ -1,7 +1,14 @@
 <?php
 
+/**
+ * Class pocketlistsTodoMonthAction
+ */
 class pocketlistsTodoMonthAction extends pocketlistsViewAction
 {
+    /**
+     * @throws waDbException
+     * @throws waException
+     */
     public function execute()
     {
         $timezone = wa()->getUser()->getTimezone();
@@ -12,7 +19,9 @@ class pocketlistsTodoMonthAction extends pocketlistsViewAction
         // get all due or priority or assigned to me items
         $items = $im->getToDo(wa()->getUser()->getId(), $show_month);
 
-        $monthData = pocketlistsHelper::getMonthData($items, $show_month);
+        $filter = new pocketlistsStrategyItemFilterAndSort($items);
+
+        $monthData = pocketlistsHelper::getMonthData($filter, $show_month);
 
         $this->view->assign('days', $monthData['days']);
 
