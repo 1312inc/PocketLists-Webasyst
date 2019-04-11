@@ -54,11 +54,14 @@ class pocketlistsAppLinkShop extends pocketlistsAppLinkAbstract
         foreach ($this->getTypes() as $entityType) {
             $method = sprintf('autocomplete%s', ucfirst($entityType));
             if (method_exists($this, $method)) {
-                $result[] = [
-                    'app'      => $this->getApp(),
-                    'type'     => $entityType,
-                    'entities' => $this->$method($term, $count),
-                ];
+                $entities = $this->$method($term, $count);
+                if ($entities) {
+                    $result[] = [
+                        'app'      => $this->getApp(),
+                        'type'     => $entityType,
+                        'entities' => $entities,
+                    ];
+                }
             }
         }
 
@@ -110,7 +113,7 @@ class pocketlistsAppLinkShop extends pocketlistsAppLinkAbstract
                 'label' => $this->renderAutocomplete($linkEntity),
                 'value' => shopHelper::encodeOrderId($order['id']),
                 'data'  => [
-                    'model'   => $linkEntity,
+                    'model'   => pl2()->getHydrator()->extract($linkEntity, [], $itemlinkFactory->getDbFields()),
                     'preview' => $this->renderPreview($linkEntity),
                 ],
             ];

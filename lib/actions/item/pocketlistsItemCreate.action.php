@@ -106,6 +106,9 @@ class pocketlistsItemCreateAction extends pocketlistsViewAction
 
                 $links = pocketlistsNaturalInput::getLinks($item->getName());
 
+                /** @var pocketlistsItemLinkFactory $itemLinkFactory */
+                $itemLinkFactory = pl2()->getEntityFactory(pocketlistsItemLink::class);
+
                 if ($links) {
                     $linkDeterminer = new pocketlistsLinkDeterminer();
                     foreach ($links as $link) {
@@ -115,10 +118,17 @@ class pocketlistsItemCreateAction extends pocketlistsViewAction
                         }
 
                         // todo:
-                        $itemLink = new pocketlistsItemLinkModel($linkAppTypeId);
-                        $itemLink->item_id = $item->getId();
+                        /** @var pocketlistsItemLink $itemLink */
+                        $itemLink = $itemLinkFactory->createNew();
+                        $itemLink
+                            ->setApp($linkAppTypeId['app'])
+                            ->setEntityId($linkAppTypeId['entity_id'])
+                            ->setEntityType($linkAppTypeId['entity_type'])
+                            ->setItem($item);
+
                         try {
-                            $itemLink->save();
+                            $itemLinkFactory->save($itemLink);
+                            $item->addAppLinks($itemLink);
                         } catch (waException $ex) {
                             // silence
                         }
@@ -140,10 +150,17 @@ class pocketlistsItemCreateAction extends pocketlistsViewAction
                             }
                         }
 
-                        $itemLink = new pocketlistsItemLinkModel($link['model']);
-                        $itemLink->item_id = $item->getId();
+                        /** @var pocketlistsItemLink $itemLink */
+                        $itemLink = $itemLinkFactory->createNew();
+                        $itemLink
+                            ->setApp($link['model']['app'])
+                            ->setEntityId($link['model']['entity_id'])
+                            ->setEntityType($link['model']['entity_type'])
+                            ->setItem($item);
+
                         try {
-                            $itemLink->save();
+                            $itemLinkFactory->save($itemLink);
+                            $item->addAppLinks($itemLink);
                         } catch (waException $ex) {
                             // silence
                         }
