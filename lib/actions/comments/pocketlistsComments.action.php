@@ -16,12 +16,11 @@ class pocketlistsCommentsAction extends waViewAction
 
         /** @var pocketlistsCommentFactory $commentFactory */
         $commentFactory = pl2()->getEntityFactory(pocketlistsComment::class);
-        $comments = $commentFactory
-            ->setEntity(pocketlistsCommentOutputDecorator::class)
-            ->findForPage($offset * self::DEFAULT_OFFSET, self::DEFAULT_OFFSET);
+        $comments = $commentFactory->findForPage($offset * self::DEFAULT_OFFSET, self::DEFAULT_OFFSET);
 
         /** @var pocketlistsComment $comment */
         foreach ($comments as $comment) {
+            $comment = new pocketlistsCommentOutputDecorator($comment);
             $comment->setRecentlyCreated($this->last_activity);
         }
 

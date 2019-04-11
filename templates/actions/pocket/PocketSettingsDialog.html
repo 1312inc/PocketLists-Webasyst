@@ -28,7 +28,7 @@
                         <div class="value no-shift" id="pl-pocket-color">
                             <input type="hidden" name="pocket[color]" value="{$pocket->getColor()}"/>
                             {foreach pocketlistsStoreColor::getColors() as $color => $name}
-                                <a href="#" {if $pocket.color == $color}class="selected"{/if}
+                                <a href="#" {if $pocket->getColor() == $color}class="selected"{/if}
                                    data-pl-pocket-color="{$color}"><i
                                             class="icon16 color pl-dark-{$color}"></i></a>
                             {/foreach}

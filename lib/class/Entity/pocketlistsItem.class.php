@@ -198,16 +198,6 @@ class pocketlistsItem extends pocketlistsEntity
     private $appLinks;
 
     /**
-     * @throws waException
-     */
-    public function afterHydrate()
-    {
-        if ($this->getAttachmentsCount()) {
-            //todo: надо ли сразу загружать?
-        }
-    }
-
-    /**
      * @return pocketlistsComment[]
      * @throws waException
      */
@@ -1058,6 +1048,8 @@ class pocketlistsItem extends pocketlistsEntity
     }
 
     /**
+     * @param string $type
+     *
      * @return string
      */
     public function getCssClass($type)
@@ -1086,6 +1078,14 @@ class pocketlistsItem extends pocketlistsEntity
                 self::PRIORITY_YELLOW     => 'pl-due-today',
                 self::PRIORITY_GREEN      => 'pl-due-tomorrow',
                 self::PRIORITY_NORM       => 'pl-due-someday',
+            ],
+            'list-indicator'     => [
+                self::PRIORITY_BURNINHELL => 'indicator red',
+                self::PRIORITY_BLACK      => 'indicator red',
+                self::PRIORITY_RED        => 'indicator red',
+                self::PRIORITY_YELLOW     => 'indicator yellow',
+                self::PRIORITY_GREEN      => 'indicator green',
+                self::PRIORITY_NORM       => '',
             ],
         ];
 

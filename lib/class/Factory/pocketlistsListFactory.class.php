@@ -18,15 +18,17 @@ class pocketlistsListFactory extends pocketlistsFactory
     protected $entity = 'pocketlistsList';
 
     /**
-     * @param true $pocketId
-     * @param bool $checkAccess
+     * @param pocketlistsPocket $pocket
+     * @param bool              $checkAccess
      *
      * @return pocketlistsList[]
      * @throws waException
      */
-    public function findListsByPocketId($pocketId, $checkAccess)
+    public function findListsByPocket(pocketlistsPocket $pocket, $checkAccess)
     {
-        $data = $this->getModel()->getAllLists($checkAccess, $pocketId);
+        $data = $this->getModel()->getAllLists($checkAccess, $pocket->getId());
+
+//        $data = $this->calculatePriority($data);
 
         return $this->generateWithData($data, true);
     }
@@ -57,7 +59,7 @@ class pocketlistsListFactory extends pocketlistsFactory
             return [];
         }
 
-        $data = $this->calculatePriority($data);
+//        $data = $this->calculatePriority($data);
 
         $lists = $this->generateWithData($data, true);
 
@@ -78,6 +80,8 @@ class pocketlistsListFactory extends pocketlistsFactory
         if (!$data) {
             return [];
         }
+
+//        $data = $this->calculatePriority($data);
 
         return $this->generateWithData($data, true);
     }
@@ -110,7 +114,7 @@ class pocketlistsListFactory extends pocketlistsFactory
 
     /**
      * @param pocketlistsList|pocketlistsEntity $list
-     * @param int             $type
+     * @param int                               $type
      *
      * @return bool
      * @throws waException
@@ -158,6 +162,8 @@ class pocketlistsListFactory extends pocketlistsFactory
     {
         $data = $this->getModel()->getTeamLists($teammate->getId());
 
+//        $data = $this->calculatePriority($data);
+
         return $this->generateWithData($data, true);
     }
 
@@ -168,8 +174,8 @@ class pocketlistsListFactory extends pocketlistsFactory
      */
     private function calculatePriority(array $lists)
     {
-        foreach ($lists as $list) {
-            $list['calc_priority'] = max(
+        foreach ($lists as $i => $list) {
+            $list[$i]['calc_priority'] = max(
                 pocketlistsHelper::calcPriorityOnDueDate($list['min_due_date'], $list['min_due_datetime']),
                 $list['max_priority']
             );

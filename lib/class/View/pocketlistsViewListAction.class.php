@@ -13,12 +13,7 @@ class pocketlistsViewListAction extends pocketlistsViewAction
      */
     protected function getList($id = false)
     {
-        $id = $id ?: waRequest::request('list_id', 0, waRequest::TYPE_INT);
-        if (!$id) {
-            throw new pocketlistsNotFoundException();
-        }
-
-        $item = pl2()->getEntityFactory(pocketlistsList::class)->findById($id);
+        $item = pl2()->getEntityFactory(pocketlistsList::class)->findById($this->getId($id));
         if (!$item) {
             throw new pocketlistsNotFoundException();
         }

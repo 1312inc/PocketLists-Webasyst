@@ -246,6 +246,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                         1: ' indicator green',
                         2: ' indicator yellow',
                         3: ' indicator red',
+                        4: ' indicator red',
+                        5: ' indicator red',
                         0: ''
                     };
 

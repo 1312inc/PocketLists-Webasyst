@@ -325,6 +325,8 @@ $.pocketlists.List = function ($list_wrapper, options) {
                         if (r.status === 'ok') {
                             if (/#\/archive/.test(window.location.hash)) {
                                 $.wa.setHash('#/archive/');
+                            } else if (/#\/pocket/.test(window.location.hash)) {
+                                $.wa.setHash(window.location.hash.replace('/list/'+list_id, ''));
                             } else {
                                 $.wa.setHash('#/todo/');
                             }
@@ -354,8 +356,12 @@ $.pocketlists.List = function ($list_wrapper, options) {
         $.post('?module=list&action=archive', {list_id: list_id, archive: 1}, function (r) {
             if (r.status === 'ok') {
                 $dialog && $dialog.trigger('close');
-                $.wa.setHash('#/todo/');
-                $.pocketlists.reloadSidebar();
+                if (/#\/pocket/.test(window.location.hash)) {
+                    $.wa.setHash(window.location.hash.replace('/list/'+list_id, ''));
+                } else {
+                    $.wa.setHash('#/todo/');
+                }
+                $.pocketlists_routing.redispatch();
             } else {
             }
             request_in_action = false;

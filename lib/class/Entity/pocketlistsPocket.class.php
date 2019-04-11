@@ -179,7 +179,7 @@ class pocketlistsPocket extends pocketlistsEntity
             /** @var pocketlistsListFactory $factory */
             $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getEntityFactory(pocketlistsList::class);
 
-            $this->lists = $factory->findListsByPocketId($this->getId(), false);
+            $this->lists = $factory->findListsByPocket($this, false);
         }
 
         return $this->lists;
@@ -195,7 +195,7 @@ class pocketlistsPocket extends pocketlistsEntity
             /** @var pocketlistsListFactory $factory */
             $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getEntityFactory(pocketlistsList::class);
 
-            $this->userLists = $factory->findListsByPocketId($this->getId(), true);
+            $this->userLists = $factory->findListsByPocket($this, true);
         }
 
         return $this->userLists;

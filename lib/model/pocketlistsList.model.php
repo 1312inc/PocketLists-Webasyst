@@ -162,12 +162,13 @@ class pocketlistsListModel extends waModel
 
         $sql = "SELECT i.*,
                        l.*,
-                       (select count(i2.id) from pocketlists_item i2 where i2.status = 0 and i2.list_id = l.id) 'items_count',
-                       MAX(i.priority)                  'max_priority',
-                       MIN(i.due_date)                  'min_due_date',
-                       MIN(i.due_datetime)              'min_due_datetime'
+                       count(i2.id)                                   'items_count',
+                       greatest(i.priority, max(i2.priority))         'max_priority',
+                       greatest(i.due_date, max(i2.due_date))         'min_due_date',
+                       greatest(i.due_datetime, max(i2.due_datetime)) 'min_due_datetime'
                 FROM pocketlists_list l
                        JOIN pocketlists_item i ON i.key_list_id = l.id
+                       left join pocketlists_item i2 ON i2.status = 0 and i2.list_id = l.id
                 WHERE 1 
                 {$accessed_lists}
                 {$pocketSql}

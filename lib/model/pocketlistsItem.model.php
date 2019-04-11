@@ -911,7 +911,6 @@ class pocketlistsItemModel extends waModel
      */
     public function getAssignedOrCompletesByContactItems($contact_id)
     {
-
         $lists = [];
         pocketlistsRBAC::filterListAccess($lists, $contact_id);
         $list_sql = pocketlistsRBAC::filterListAccess($lists);
@@ -964,23 +963,23 @@ class pocketlistsItemModel extends waModel
         )->fetchAll();
 
 //        $items = self::generateModels($items);
-
-        $results = [
-            0 => [],
-            1 => [],
-        ];
 //
-        if ($items) {
-            foreach ($items as $id => $item) {
-                $results[$item['status']][$id] = $item;
-            }
-        }
-
+//        $results = [
+//            0 => [],
+//            1 => [],
+//        ];
+////
+//        if ($items) {
+//            foreach ($items as $id => $item) {
+//                $results[$item['status']][$id] = $item;
+//            }
+//        }
 //
-        return [
-            0 => $results[0],
-            1 => $results[1],
-        ];
+////
+//        return [
+//            0 => $results[0],
+//            1 => $results[1],
+//        ];
 
         return $items;
     }

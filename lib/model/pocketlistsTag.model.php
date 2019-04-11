@@ -2,10 +2,8 @@
 
 /**
  * Class pocketlistsTagModel
- *
- * @property string $text
  */
-class pocketlistsTagModel extends kmModelExt
+class pocketlistsTagModel extends waModel
 {
     protected $table = 'pocketlists_tag';
 }
