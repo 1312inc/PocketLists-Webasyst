@@ -40,7 +40,7 @@ class pocketlistsHydrator implements pocketlistsHydratorInterface
                 continue;
             }
 
-            if (!isset($dbFields[$toExtractField])) {
+            if ($dbFields && !isset($dbFields[$toExtractField])) {
                 continue;
             }
 

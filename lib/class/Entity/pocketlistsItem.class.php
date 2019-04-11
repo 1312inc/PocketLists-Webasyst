@@ -250,6 +250,19 @@ class pocketlistsItem extends pocketlistsEntity
     }
 
     /**
+     * @param pocketlistsItemLink $appLink
+     *
+     * @return pocketlistsItem
+     */
+    public function addAppLinks(pocketlistsItemLink $appLink)
+    {
+        $this->appLinks[] = $appLink;
+        $this->linkedEntitiesCount++;
+
+        return $this;
+    }
+
+    /**
      * @return pocketlistsAttachment[]
      * @throws waException
      */

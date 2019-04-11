@@ -208,7 +208,7 @@ class pocketlistsFactory
      * @return array
      * @throws waException
      */
-    protected function getDbFields()
+    public function getDbFields()
     {
         return $this->getModel()->getMetadata();
     }

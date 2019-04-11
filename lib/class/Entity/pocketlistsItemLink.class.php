@@ -33,9 +33,14 @@ class pocketlistsItemLink extends pocketlistsEntity
     private $entity_id = '';
 
     /**
+     * @var string|null
+     */
+    private $data = null;
+
+    /**
      * @var array
      */
-    private $data = [];
+    private $dataArray = [];
 
     /**
      * @var pocketlistsItem
@@ -179,7 +184,7 @@ class pocketlistsItemLink extends pocketlistsEntity
     }
 
     /**
-     * @return array
+     * @return string
      */
     public function getData()
     {
@@ -187,13 +192,32 @@ class pocketlistsItemLink extends pocketlistsEntity
     }
 
     /**
-     * @param array $data
+     * @return array
+     */
+    public function getDataArray()
+    {
+        return $this->dataArray;
+    }
+
+    /**
+     * @param string $data
      *
      * @return pocketlistsItemLink
      */
     public function setData($data)
     {
         $this->data = $data;
+
+        return $this;
+    }
+    /**
+     * @param array $data
+     *
+     * @return pocketlistsItemLink
+     */
+    public function setDataArray(array $data)
+    {
+        $this->dataArray = $data;
 
         return $this;
     }
@@ -204,9 +228,9 @@ class pocketlistsItemLink extends pocketlistsEntity
      *
      * @return pocketlistsItemLink
      */
-    public function addData($key, $value)
+    public function addDataArray($key, $value)
     {
-        $this->data[$key] = $value;
+        $this->dataArray[$key] = $value;
 
         return $this;
     }
