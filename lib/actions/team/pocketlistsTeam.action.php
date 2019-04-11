@@ -36,7 +36,10 @@ class pocketlistsTeamAction extends pocketlistsViewAction
 
                 /** @var pocketlistsList $list */
                 foreach ($lists as $list_id => $list) {
-                    $list->setLastContactAtivity($teammate->getListActivities($list));
+                    $activity = $teammate->getListActivities($list);
+                    if (!empty($activity['last_date'])) {
+                        $list->setLastContactAtivity($activity['last_date']);
+                    }
                 }
 
                 $lists = $listFilter->sortUnarchivedByActivity();

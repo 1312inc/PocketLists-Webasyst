@@ -49,6 +49,7 @@ class pocketlistsPocketAction extends pocketlistsViewPocketAction
         }
 
         $lists = $pocket->getUserLists();
+        $lists = (new pocketlistsStrategyListFilterAndSort($lists))->filter()->getNonArchived();
 
         if (!$list_id) {
             if ($list_id < 0 && isset($last_pocket_list_id['list_id']) && $last_pocket_list_id['pocket_id'] == $pocket['id']) {

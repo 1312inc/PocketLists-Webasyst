@@ -207,7 +207,7 @@ class pocketlistsItemFactory extends pocketlistsFactory
     {
         pl2()->getModel(pocketlistsComment::class)->deleteByField('item_id', $item->getId());
         pl2()->getModel('pocketlistsUserFavorites')->deleteByField('item_id', $item->getId());
-        pl2()->getModel('pocketlistsItemTag')->deleteByField('item_id', $item->getId());
+        pl2()->getModel('pocketlistsItemTags')->deleteByField('item_id', $item->getId());
         pl2()->getModel('pocketlistsItemLink')->deleteByField('item_id', $item->getId());
         pl2()->getModel('pocketlistsItemSort')->deleteByField('item_id', $item->getId());
 

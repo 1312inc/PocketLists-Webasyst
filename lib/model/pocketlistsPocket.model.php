@@ -2,13 +2,8 @@
 
 /**
  * Class pocketlistsPocketModel
- *
- * @property int    $sort
- * @property string $name
- * @property string $color
- * @property string $passcode
  */
-class pocketlistsPocketModel extends kmModelExt
+class pocketlistsPocketModel extends waModel
 {
     protected $table = 'pocketlists_pocket';
 

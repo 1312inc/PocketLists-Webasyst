@@ -96,9 +96,20 @@ class pocketlistsList extends pocketlistsItem
     private $keyItem;
 
     /**
-     * @var int
+     * @var string
      */
-    private $lastContactActivity = 0;
+    private $lastContactActivity = '';
+
+    /**
+     * @throws waException
+     */
+    public function afterHydrate()
+    {
+        $this->setCalcPriority(max(
+            pocketlistsHelper::calcPriorityOnDueDate($this->getMinDueDate(), $this->getMinDueDatetime()),
+            $this->getMaxPriority()
+        ));
+    }
 
     /**
      * @return pocketlistsItem[]
@@ -462,7 +473,7 @@ class pocketlistsList extends pocketlistsItem
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getLastContactAtivity()
     {
@@ -470,7 +481,7 @@ class pocketlistsList extends pocketlistsItem
     }
 
     /**
-     * @param int $lastContactActivity
+     * @param string $lastContactActivity
      *
      * @return pocketlistsList
      */

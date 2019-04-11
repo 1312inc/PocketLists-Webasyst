@@ -43,7 +43,7 @@
                     {if $l->getId()}
                         <li>
                             <a href="#/pocket/{$l->getPocketId()}/list/{$l->getId()}/">
-                                <i class="icon16 listicon16" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l.icon|default:'li-list@2x.png'});"></i>{if $l->getColor()}<span class="pl-dark-{$l->getColor()}-label">{$l->getName()|escape}</span>{else}{$l->getName()|escape|default:'(no name)'}{/if}
+                                <i class="icon16 listicon16" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l->getIcon()|default:'li-list@2x.png'});"></i>{if $l->getColor()}<span class="pl-dark-{$l->getColor()}-label">{$l->getName()|escape}</span>{else}{$l->getName()|escape|default:'(no name)'}{/if}
                                 <span class="hint nowrap" {if empty($l->getItemsCount())}style="display:none"{/if}>{_w('%d to-do', '%d to-dos', $l->getItemsCount())}</span>
                                 {* <span class="hint nowrap" {if empty($l.last_contact_ativity)}style="display:none"{/if}>{$l.last_contact_ativity|wa_datetime:'humandatetime'}</span> *}
                             </a>
@@ -72,11 +72,11 @@
 <main class="pl-inner-content pl-items shadowed pl-teammate-items" id="pl-list-content">
 
     <header class="pl-title">
-        <input type="hidden" id="pl-list-id" value="{$current_teammate.id}"/>
+        <input type="hidden" id="pl-list-id" value="{$current_teammate->getId()}"/>
         <h1 class="not-padded">
             {$current_teammate->getName()|default:' '|escape}
         </h1>
-        <input type="hidden" id="pl-assigned-contact-id" value="{$current_teammate.id}"/>
+        <input type="hidden" id="pl-assigned-contact-id" value="{$current_teammate->getId()}"/>
     </header>
 
     <div class="pl-list-items" id="pl-list-items">
@@ -105,7 +105,7 @@
     <div class="clear-both"></div>
 
     {if !$print}
-        {include '../../include/itemadd.html' assign_contact_photo=$current_teammate.userpic inline}
+        {include '../../include/itemadd.html' assign_contact_photo=$current_teammate->getUserpic() inline}
     {/if}
     {include '../../include/itemdetails.html' inline}
     {include '../../include/itemcomments.html' inline}

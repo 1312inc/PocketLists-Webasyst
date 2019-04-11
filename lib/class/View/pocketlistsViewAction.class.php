@@ -43,4 +43,24 @@ class pocketlistsViewAction extends waViewAction
             $this->setTemplate('templates/include/error.html');
         }
     }
+
+    /**
+     * @param int $id
+     *
+     * @return int|mixed
+     * @throws pocketlistsNotFoundException
+     */
+    protected function getId($id = 0)
+    {
+        $id = $id
+            ?: waRequest::request('id', 0, waRequest::TYPE_INT)
+                ?: waRequest::request('list_id', 0, waRequest::TYPE_INT)
+                    ?: waRequest::request('pocket_id', 0, waRequest::TYPE_INT);
+
+        if (!$id) {
+            throw new pocketlistsNotFoundException();
+        }
+
+        return $id;
+    }
 }

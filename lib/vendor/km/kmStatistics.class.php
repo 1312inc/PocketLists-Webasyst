@@ -108,7 +108,8 @@ class kmStatistics
             uasort(
                 $statQuery,
                 function ($v, $v2) {
-                    return $v['time_per_query'] < $v2['time_per_query'] ? 1 : ($v['time_per_query'] > $v2['time_per_query'] ? -1 : 0);
+//                    return $v['time_per_query'] < $v2['time_per_query'] ? 1 : ($v['time_per_query'] > $v2['time_per_query'] ? -1 : 0);
+                    return $v['total_time'] < $v2['total_time'] ? 1 : ($v['total_time'] > $v2['total_time'] ? -1 : 0);
                 }
             );
         }
@@ -135,9 +136,11 @@ class kmStatistics
     {
         if ($this->app) {
             $method = $this->getMethod();
-            if (!isset($this->statQueries[$this->app][$method])) {
-                $this->statQueries[$this->app][$method] = [
-//                    'path'           => $method,
+            $queryKey = md5($query);
+            $query = preg_replace('/\s+/', ' ', $query);
+            if (!isset($this->statQueries[$this->app][$queryKey])) {
+                $this->statQueries[$this->app][$queryKey] = [
+                    'path'           => [],
                     'total_time'     => 0,
                     'count'          => 0,
                     'last_query'     => [],
@@ -145,12 +148,19 @@ class kmStatistics
                 ];
             }
 
-            $query = preg_replace('/\s+/', ' ', $query);
-
-            $this->statQueries[$this->app][$method]['count']++;
-            $this->statQueries[$this->app][$method]['total_time'] += $executionTime;
-            $this->statQueries[$this->app][$method]['time_per_query'] = $this->statQueries[$this->app][$method]['total_time'] / $this->statQueries[$this->app][$method]['count'];
-            $this->statQueries[$this->app][$method]['last_query'][md5($query)] = $query;
+            $this->statQueries[$this->app][$queryKey]['count']++;
+            $this->statQueries[$this->app][$queryKey]['total_time'] += $executionTime;
+            $this->statQueries[$this->app][$queryKey]['last_query'] = $query;
+            $this->statQueries[$this->app][$queryKey]['time_per_query'] = $this->statQueries[$this->app][$queryKey]['total_time'] / $this->statQueries[$this->app][$queryKey]['count'];
+            if (!isset($this->statQueries[$this->app][$queryKey]['path'][$method])) {
+                $this->statQueries[$this->app][$queryKey]['path'][$method] = [
+                    'time'  => 0,
+                    'count' => 0,
+//                    'method' => $method,
+                ];
+            }
+            $this->statQueries[$this->app][$queryKey]['path'][$method]['time'] += $executionTime;
+            $this->statQueries[$this->app][$queryKey]['path'][$method]['count']++;
         }
     }
 
