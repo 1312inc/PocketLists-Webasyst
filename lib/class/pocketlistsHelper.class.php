@@ -83,7 +83,7 @@ class pocketlistsHelper
         // completed items
         /** @var pocketlistsItem $item */
         foreach ($items->getItemsDone() as $item) {
-            $list_colors[date('Y-m-d', strtotime($item->getCompleteDatetime()))]['gray'][] = $item['id'];
+            $list_colors[date('Y-m-d', strtotime($item->getCompleteDatetime()))]['gray'][] = $item->getId();
         }
 
         /** @var pocketlistsItem $item */

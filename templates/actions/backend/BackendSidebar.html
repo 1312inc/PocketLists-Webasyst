@@ -111,7 +111,7 @@
                     <li data-pl-team-id="{$teammate->getId()}"
                         {if $teammate@iteration > $max_visible_in_team}style="display: none;"{/if}>
                         <a href="#/team/{$teammate->getLogin()|escape}/">
-                            <span class="count{if $teammate->getItemsInfo('max_priority') == 1} indicator green{elseif $teammate->getItemsInfo('max_priority') == 2} indicator yellow{elseif $teammate->getItemsInfo('max_priority') == 3} indicator red{/if}">{$teammate->getItemsInfo('count')}</span>
+                            <span class="count{if $teammate->getItemsInfo('max_priority') == 1} indicator green{elseif $teammate->getItemsInfo('max_priority') == 2} indicator yellow{elseif $teammate->getItemsInfo('max_priority') >= 3} indicator red{/if}">{$teammate->getItemsInfo('count')}</span>
                             <i class="icon16 userpic20{if $teammate->getStatus() == 'online'} pl-user-online{/if}" style="background-image: url({$teammate->getPhotoUrl()})"
                                alt="{$teammate->getName()|escape}" data-pl-contact-id="{$teammate->getId()}"></i>{$teammate->getName()|escape}
                             {if !empty($new_items_count.team[$teammate->getId()])} <span
