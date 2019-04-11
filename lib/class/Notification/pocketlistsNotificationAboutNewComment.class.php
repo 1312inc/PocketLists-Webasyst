@@ -89,7 +89,7 @@ class pocketlistsNotificationAboutNewComment extends pocketlistsNotification
                 continue;
             }
 
-            if ($item->getListId() && !pocketlistsRBAC::canAccessToList($list->getObject(), $user_id)) {
+            if ($item->getListId() && !pocketlistsRBAC::canAccessToList($list, $user_id)) {
                 continue;
             }
 

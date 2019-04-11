@@ -155,6 +155,8 @@ class pocketlistsStrategyItemFilterAndSort
     public function setItems($items)
     {
         $this->items = $items;
+        $this->itemsUndone = [];
+        $this->itemsDone = [];
 
         return $this;
     }
@@ -187,8 +189,11 @@ class pocketlistsStrategyItemFilterAndSort
 
         $date = [];
         foreach ([$i1, $i2] as $item) {
-            $date[] = $item->getDueDatetime() ? strtotime($item['due_datetime'])
-                : ($item->getDueDate() ? strtotime($item->getDueDate()) : null);
+            $date[] = $item->getDueDatetime()
+                ? strtotime($item->getDueDatetime())
+                : ($item->getDueDate()
+                    ? strtotime($item->getDueDate())
+                    : null);
         }
 
         // check due_date
