@@ -8,17 +8,17 @@ class pocketlistsStrategyListFilterAndSort
     /**
      * @var pocketlistsList[]
      */
-    private $lists;
+    private $lists = [];
 
     /**
      * @var pocketlistsList[]
      */
-    private $unArchived;
+    private $unArchived = [];
 
     /**
      * @var pocketlistsList[]
      */
-    private $archived;
+    private $archived = [];
 
     /**
      * pocketlistsStrategyListFilter constructor.
