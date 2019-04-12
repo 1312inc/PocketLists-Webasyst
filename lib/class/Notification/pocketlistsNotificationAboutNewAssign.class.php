@@ -32,6 +32,10 @@ class pocketlistsNotificationAboutNewAssign extends pocketlistsNotification
         }
 
         $contact = $item->getAssignedContact();
+        if (!$contact) {
+            return;
+        }
+
         if (!$this->canSend($contact)) {
             return;
         }
