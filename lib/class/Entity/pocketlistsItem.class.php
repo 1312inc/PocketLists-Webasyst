@@ -135,7 +135,7 @@ class pocketlistsItem extends pocketlistsEntity
     /**
      * @var int|null
      */
-    protected $key_list_id = 0;
+    protected $key_list_id;
 
     /**
      * @var int

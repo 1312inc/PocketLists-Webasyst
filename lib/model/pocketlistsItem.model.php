@@ -199,18 +199,20 @@ class pocketlistsItemModel extends waModel
             "i.*",
             "IF(uf.contact_id, 1, 0) favorite",
         ];
+
         $join_sql = [
             "",
             "pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id",
             "(select i2.name, l2.*
                   from pocketlists_list l2
-                         JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) l ON l.id = i.list_id",
+                         JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) l ON l.id = i.list_id AND l.archived = 0",
         ];
+
         $and_sql = [
             "(".pocketlistsRBAC::filterListAccess($lists, $contact_id)." OR l.id IS NULL)",
             // get to-do items only from accмфп essed pockets
-            "l.archived = 0",
         ];
+
         $or_sql = [
             "(i.list_id IS NULL AND i.key_list_id IS NULL AND i.contact_id = i:contact_id) /* My to-dos to self */",
             "(i.key_list_id IS NULL AND i.assigned_contact_id = i:contact_id) /* To-dos assigned to me by other users */",
@@ -221,10 +223,12 @@ class pocketlistsItemModel extends waModel
         }
 
         $us = new pocketlistsUserSettings($contact_id);
+
         switch ($us->myToDosCreatedByMe()) {
             case pocketlistsUserSettings::MY_TO_DOS_CREATED_BY_ME_IN_SHARED_ANY_LIST:
                 $or_sql[] = "(i.list_id IS NOT NULL AND i.key_list_id IS NULL AND i.contact_id = i:contact_id) /* To-dos created by me in shared lists in just any list */";
                 break;
+
             case pocketlistsUserSettings::MY_TO_DOS_CREATED_BY_ME_IN_SHARED_FAVORITE_LISTS:
                 $or_sql[] = "(i.list_id IS NOT NULL AND i.key_list_id IS NULL AND i.contact_id = i:contact_id AND uf2.contact_id = i:contact_id) /* To-dos created BY other users IN shared lists only in lists which I marked as favorite*/";
                 break;
@@ -234,6 +238,7 @@ class pocketlistsItemModel extends waModel
             case pocketlistsUserSettings::MY_TO_DOS_CREATED_BY_OTHER_IN_SHARED_LISTS_FAVORITE_LISTS:
                 $or_sql[] = "(i.list_id IS NOT NULL AND i.key_list_id IS NULL AND i.contact_id <> i:contact_id AND uf2.contact_id = i:contact_id) /* To-dos created BY other users IN shared lists only in lists which I marked as favorite*/";
                 break;
+
             case pocketlistsUserSettings::MY_TO_DOS_CREATED_BY_OTHER_IN_SHARED_LISTS_GREEN_YELLOW_RED_ALL_LISTS:
                 $tomorrow = date("Y-m-d", strtotime("+1 day"));
                 $day_after_tomorrow = date("Y-m-d", strtotime("+2 day"));
@@ -250,10 +255,10 @@ class pocketlistsItemModel extends waModel
                 break;
         }
 
-        if ($us->myToDosCreatedByOthers(
-            ) == pocketlistsUserSettings::MY_TO_DOS_CREATED_BY_OTHER_IN_SHARED_LISTS_FAVORITE_LISTS
+        if ($us->myToDosCreatedByOthers() == pocketlistsUserSettings::MY_TO_DOS_CREATED_BY_OTHER_IN_SHARED_LISTS_FAVORITE_LISTS
             || $us->myToDosCreatedByMe() == pocketlistsUserSettings::MY_TO_DOS_CREATED_BY_ME_IN_SHARED_FAVORITE_LISTS) {
             $join_sql[] = "pocketlists_user_favorites uf2 ON uf2.contact_id = i:contact_id AND uf2.item_id = i2.id";
+
             $select_sql[] = "IF(uf2.contact_id, 1, 0) favorite_list";
         }
 
@@ -311,11 +316,10 @@ class pocketlistsItemModel extends waModel
                   SUM(i.status > 0) done,
                   SUM(i.status = 0) undone
                 FROM {$this->table} i
-                LEFT JOIN pocketlists_list l ON l.id = i.key_list_id
+                LEFT JOIN pocketlists_list l ON l.id = i.key_list_id AND l.archived = 0 /* ONLY not archived items */
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
                 WHERE
                   uf.item_id IS NOT NULL
-                  AND l.archived = 0 /* ONLY not archived items */
                   {$lists_sql}";
 
         return $this->query(
@@ -371,11 +375,10 @@ class pocketlistsItemModel extends waModel
                 FROM {$this->table} i
                 LEFT JOIN (select i2.name, l2.*
                           from pocketlists_list l2
-                                 JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) l ON l.id = i.list_id
+                                 JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) l ON l.id = i.list_id AND l.archived = 0 /* ONLY not archived items */
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
                 WHERE
                 uf.item_id IS NOT NULL
-                AND l.archived = 0 /* ONLY not archived items */
                 {$due_date}
                 {$lists_sql}
                 ORDER BY
@@ -939,7 +942,7 @@ class pocketlistsItemModel extends waModel
                 FROM {$this->table} i
                 LEFT JOIN (select i2.name, l2.*
                           from pocketlists_list l2
-                                 JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) l ON l.id = i.list_id
+                                 JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) l ON l.id = i.list_id AND l.archived = 0
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:user_contact_id AND uf.item_id = i.id
                 WHERE
                   (
@@ -947,7 +950,6 @@ class pocketlistsItemModel extends waModel
                     OR i.contact_id = i:contact_id AND i.status >= 0 /* created by contact (completed and not) */
                     OR i.complete_contact_id = i:contact_id AND i.status > 0 /* completed by contact */
                   )
-                  AND l.archived = 0
                   AND {$list_sql}
                 GROUP BY id
                 ORDER BY
@@ -1024,11 +1026,10 @@ class pocketlistsItemModel extends waModel
         $q = $this->getQuery()."
                 LEFT JOIN (select i2.name, l2.*
                           from pocketlists_list l2
-                                 JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) l ON l.id = i.list_id
+                                 JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) l ON l.id = i.list_id AND l.archived = 0
                 JOIN pocketlists_item_link pil ON pil.item_id = i.id {$appSql} {$appTypeSql} {$entityIdSql}
                 WHERE
-                  l.archived = 0
-                  AND {$list_sql}
+                  {$list_sql}
                   {$dateSql}
                 GROUP BY i.id
                 ORDER BY
@@ -1103,7 +1104,7 @@ class pocketlistsItemModel extends waModel
         $q = "SELECT
                 i.*
               FROM {$this->table} i
-              LEFT JOIN pocketlists_list l ON (l.id = i.list_id  OR l.id = i.key_list_id)
+              LEFT JOIN pocketlists_list l ON (l.id = i.list_id  OR l.id = i.key_list_id) AND l.archived = 0 /* ONLY not archived items */
               WHERE
                 (
                   (i.assigned_contact_id = i:contact_id) /* + items assigned to me */
@@ -1120,7 +1121,6 @@ class pocketlistsItemModel extends waModel
                   OR (i.contact_id = i:contact_id AND i.list_id IS NULL AND i.key_list_id IS NULL) /* + my items from NULL-list */
                 )
                 AND i.status = 0 /* ONLY not completed items */
-                AND l.archived = 0 /* ONLY not archived items */
                 AND (i.assigned_contact_id = i:contact_id OR i.assigned_contact_id IS NULL) /* ONLY assigned to me or noone */
                 {$list_sql}
                 {$when}";
