@@ -6,7 +6,7 @@
 {foreach $items as $item}
 {$format = 'humandate'}
 {if $item->getDueDatetime()}{$format = 'humandatetime'}{/if}
-&#9898; {sprintf('[`<strong>%s</strong> on %s`]', $item->getName()|nl2br, $item->getDueDatetime()|default:$item->getDueDate()|wa_datetime:$format:$timezone)}<br>
+&#9898; {sprintf('[`<strong>%s</strong> on %s`]', $item->getNameParsed()|nl2br, $item->getDueDatetime()|default:$item->getDueDate()|wa_datetime:$format:$timezone)}<br>
 {/foreach}
 <br>
 --<br>

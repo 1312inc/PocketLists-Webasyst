@@ -20,7 +20,6 @@ class pocketlistsCommentsAction extends waViewAction
 
         /** @var pocketlistsComment $comment */
         foreach ($comments as $comment) {
-            $comment = new pocketlistsCommentOutputDecorator($comment);
             $comment->setRecentlyCreated($this->last_activity);
         }
 

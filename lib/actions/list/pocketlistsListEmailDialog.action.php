@@ -32,7 +32,7 @@ class pocketlistsListEmailDialogAction extends pocketlistsViewAction
 
             $this->view->assign(
                 [
-                    'list'  => new pocketlistsListOutputDecorator($list),
+                    'list'  => $list,
                     'items' => $list->getUndoneItems(),
                 ]
             );
@@ -52,7 +52,7 @@ class pocketlistsListEmailDialogAction extends pocketlistsViewAction
             $this->view->assign(
                 [
                     'date'     => $date,
-                    'items'    => pocketlistsItemOutputDecorator::decorate($items),
+                    'items'    => $items,
                     'favorite' => true,
                 ]
             );
@@ -71,7 +71,7 @@ class pocketlistsListEmailDialogAction extends pocketlistsViewAction
             $this->view->assign(
                 [
                     'date'  => $date,
-                    'items' => pocketlistsItemOutputDecorator::decorate($items),
+                    'items' => $items,
                 ]
             );
         } elseif ($teammate) {
@@ -91,7 +91,7 @@ class pocketlistsListEmailDialogAction extends pocketlistsViewAction
                 $this->view->assign(
                     [
                         'teammate' => $teammate,
-                        'items'    => pocketlistsItemOutputDecorator::decorate($items),
+                        'items'    => $items,
                     ]
                 );
             }

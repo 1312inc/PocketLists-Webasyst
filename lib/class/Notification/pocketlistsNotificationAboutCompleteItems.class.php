@@ -140,14 +140,14 @@ class pocketlistsNotificationAboutCompleteItems extends pocketlistsNotification
                         'body'       => wa()->getAppPath('templates/mails/completeanyitem.html'),
                         'variables'  => [
                             'n'        => $items_left,
-                            'list'     => new pocketlistsListOutputDecorator($list),
+                            'list'     => $list,
                             'list_url' => $list ? sprintf(
                                 '#/pocket/%s/list/%s/',
                                 $list->getPocketId(),
                                 $list->getId()
                             ) : false,
                             'complete' => $item->getStatus(),
-                            'item'     => new pocketlistsItemOutputDecorator($item),
+                            'item'     => $item,
                         ],
                     ],
                     $this->getBackendUrl($user_id)

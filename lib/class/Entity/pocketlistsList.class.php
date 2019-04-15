@@ -121,7 +121,7 @@ class pocketlistsList extends pocketlistsItem
             /** @var pocketlistsItemFactory $factory */
             $factory = pl2()->getEntityFactory(pocketlistsItem::class);
 
-            $this->undoneItems = $factory->findUndoneByList($this);;
+            $this->undoneItems = $factory->findUndoneByList($this);
         }
 
         return $this->undoneItems;

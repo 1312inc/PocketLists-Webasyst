@@ -1,9 +1,24 @@
 <?php
 
+/**
+ * Class pocketlistsNaturalInput
+ */
 class pocketlistsNaturalInput
 {
+    /**
+     * @var pocketlistsNaturalInput
+     */
     private static $instance;
-    private static $json_rules       = [];
+
+    /**
+     * @var array
+     */
+
+    private static $json_rules = [];
+
+    /**
+     * @var array
+     */
     private static $numeric_entities = [
         "minutes",
         "hours",
@@ -13,7 +28,9 @@ class pocketlistsNaturalInput
         "years",
     ];
 
-
+    /**
+     * pocketlistsNaturalInput constructor.
+     */
     protected function __construct()
     {
         $files_path = wa()->getAppPath('/lib/config/data/natural_input/', 'pocketlists');
@@ -41,6 +58,11 @@ class pocketlistsNaturalInput
         return self::$instance;
     }
 
+    /**
+     * @param $category_name
+     *
+     * @return bool|int|string
+     */
     public static function matchCategory($category_name)
     {
         $instance = self::getInstance();
@@ -60,10 +82,15 @@ class pocketlistsNaturalInput
         return false;
     }
 
+    /**
+     * @param $item_name
+     *
+     * @return array|bool
+     */
     public static function matchPriority($item_name)
     {
         $matches = [];
-        if (preg_match('/(!{1,3})/isu', $item_name, $matches)) {
+        if (preg_match('/^(!{1,3})/isu', $item_name, $matches)) {
             $priority = [
                 '!'   => 1,
                 '!!'  => 2,
@@ -79,6 +106,11 @@ class pocketlistsNaturalInput
         return false;
     }
 
+    /**
+     * @param $item_name
+     *
+     * @return array|bool
+     */
     public static function matchNote($item_name)
     {
         $matches = [];
@@ -92,6 +124,11 @@ class pocketlistsNaturalInput
         return false;
     }
 
+    /**
+     * @param $item_name
+     *
+     * @return array|bool
+     */
     public static function matchDueDate(&$item_name)
     {
         $instance = self::getInstance();
@@ -124,6 +161,11 @@ class pocketlistsNaturalInput
         return false;
     }
 
+    /**
+     * @param $smartprases
+     *
+     * @return array
+     */
     private static function combineSmartparse($smartprases)
     {
         $smartphrase_long_regexes = [];
@@ -138,6 +180,11 @@ class pocketlistsNaturalInput
         return $smartphrase_long_regexes;
     }
 
+    /**
+     * @param $lookup_rules
+     * @param $smartphrases
+     * @param $smartphrase_long_regexes
+     */
     private static function prepareLookupRules(&$lookup_rules, $smartphrases, $smartphrase_long_regexes)
     {
         $instance = self::getInstance();
@@ -180,6 +227,14 @@ class pocketlistsNaturalInput
         }
     }
 
+    /**
+     * @param      $item_name
+     * @param      $lookup_rules
+     * @param      $smartphrase_long_regexes
+     * @param bool $time_after_rules
+     *
+     * @return array|bool
+     */
     private static function proceedLookupRules(
         &$item_name,
         $lookup_rules,
@@ -221,6 +276,13 @@ class pocketlistsNaturalInput
         return false;
     }
 
+    /**
+     * @param $matches
+     * @param $lookup_rule
+     * @param $time_after_rules
+     *
+     * @return array
+     */
     private static function proceedFoundRegex($matches, $lookup_rule, $time_after_rules)
     {
         $instance = self::getInstance();
@@ -423,6 +485,11 @@ class pocketlistsNaturalInput
         ];
     }
 
+    /**
+     * @param $day
+     *
+     * @return int
+     */
     private static function getCurrentWeekDay($day)
     {
         // first day is not 'Sunday'
@@ -433,6 +500,9 @@ class pocketlistsNaturalInput
         return ($day > 7) ? 1 : $day;
     }
 
+    /**
+     * @param $strings
+     */
     public static function testMatchDueDate($strings)
     {
         if (!is_array($strings)) {
@@ -460,13 +530,14 @@ class pocketlistsNaturalInput
     public static function matchLinks($string, $encode = true)
     {
         $pattern = '(?i)\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:\'".,<>?«»“”‘’]))';
-        $replace = array();
+        $replace = [];
 
         $i = 0;
         while (preg_match(
-            '/' . $pattern . '/miu',
+            '/'.$pattern.'/miu',
             $string,
-            $matches)
+            $matches
+        )
         ) {
             $i++;
             $now = time();
@@ -474,10 +545,12 @@ class pocketlistsNaturalInput
             $string = str_replace($matches[1], $replace_key, $string);
             $replace[$replace_key] = self::replaceWithLink($matches[1]);
         }
+
         if ($encode) {
             $string = htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
         }
-        $string = str_replace(array_keys($replace), $replace,$string);
+
+        $string = str_replace(array_keys($replace), $replace, $string);
 
         return $string;
     }

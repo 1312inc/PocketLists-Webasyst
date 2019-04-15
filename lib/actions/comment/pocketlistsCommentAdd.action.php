@@ -72,7 +72,7 @@ class pocketlistsCommentAddAction extends waViewAction
 
                     (new pocketlistsNotificationAboutNewComment())->notify($comment);
 
-                    $this->view->assign('comment', new pocketlistsCommentOutputDecorator($comment));
+                    $this->view->assign('comment', $comment);
                 } else {
 //                    $this->errors = 'error while adding new item comment';
                 }

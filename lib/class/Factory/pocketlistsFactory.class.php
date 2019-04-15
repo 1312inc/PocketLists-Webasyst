@@ -126,7 +126,9 @@ class pocketlistsFactory
         $lists = [];
 
         foreach ($data as $datum) {
-            $lists[] = pl2()->getHydrator()->hydrate($this->createNew(), $datum);
+            $obj = pl2()->getHydrator()->hydrate($this->createNew(), $datum);
+
+            $lists[] = $obj;
         }
 
         return $all === false ? reset($lists) : $lists;
@@ -211,6 +213,26 @@ class pocketlistsFactory
     public function getDbFields()
     {
         return $this->getModel()->getMetadata();
+    }
+
+    /**
+     * @return array
+     */
+    public function getCache()
+    {
+        return $this->cache;
+    }
+
+    /**
+     * @param array $cache
+     *
+     * @return pocketlistsFactory
+     */
+    public function setCache($cache)
+    {
+        $this->cache = $cache;
+
+        return $this;
     }
 
     /**

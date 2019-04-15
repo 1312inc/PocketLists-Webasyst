@@ -1138,4 +1138,26 @@ class pocketlistsItem extends pocketlistsEntity
 
         return $this;
     }
+
+    /**
+     * @param bool $encode
+     *
+     * @return string
+     * @throws waException
+     */
+    public function getNameParsed($encode = true)
+    {
+        return pocketlistsNaturalInput::matchLinks($this->getName(), $encode);
+    }
+
+    /**
+     * @param bool $encode
+     *
+     * @return string
+     * @throws waException
+     */
+    public function getNoteParsed($encode = true)
+    {
+        return pocketlistsNaturalInput::matchLinks($this->getNote(), true);
+    }
 }

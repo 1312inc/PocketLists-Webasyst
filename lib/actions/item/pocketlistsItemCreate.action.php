@@ -113,7 +113,7 @@ class pocketlistsItemCreateAction extends pocketlistsViewAction
                     $linkDeterminer = new pocketlistsLinkDeterminer();
                     foreach ($links as $link) {
                         $linkAppTypeId = $linkDeterminer->getAppTypeId($link);
-                        if ($link === false) {
+                        if ($linkAppTypeId === false) {
                             continue;
                         }
 
