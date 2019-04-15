@@ -10,6 +10,6 @@ class pocketlistsListDetailsAction extends pocketlistsViewListAction
      */
     public function execute()
     {
-        $this->view->assign('list', new pocketlistsListOutputDecorator($this->getList()));
+        $this->view->assign('list', $this->getList());
     }
 }

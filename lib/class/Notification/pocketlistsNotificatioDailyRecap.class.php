@@ -69,7 +69,6 @@ class pocketlistsNotificatioDailyRecap extends pocketlistsNotification
             }
 
             $items = $itemFactory->findForDayRecap($contact, $user['setting']);
-            $items = pocketlistsItemOutputDecorator::decorate($items);
 
             if ($items) {
                 $this->sendMail(

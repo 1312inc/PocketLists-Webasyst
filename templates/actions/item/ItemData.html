@@ -59,10 +59,10 @@
         <input type="checkbox" class="pl-is-selected" {if (isset($archive) && $archive == true) || $item->getKeyListId()}disabled{/if}>
         <span class="pl-item-name{if $item->getCalcPriority() == pocketlistsItem::PRIORITY_BURNINHELL} bold red{/if}">
             {if $item->getKeyListId()}
-                <a href="#/pocket/{$item->getPocketId()}/list/{$item->getListId()}/"><strong class="pl-dark-{$item->getList()->getColor()}-label">{$item->getName()|default:'&nbsp;'|nl2br}</strong></a>
+                <a href="#/pocket/{$item->getPocketId()}/list/{$item->getListId()}/"><strong class="pl-dark-{$item->getList()->getColor()}-label">{$item->getNameParsed()|default:'&nbsp;'|nl2br}</strong></a>
             {else}
                 {* <a href="#" class="pl-label pl-dark-purple">STATUS</a> *}
-                {$item->getName()|default:'&nbsp;'|nl2br}
+                {$item->getNameParsed()|default:'&nbsp;'|nl2br}
                 {* if $item.list_id == NULL && (empty($item.assigned_contact_id) || $item.assigned_contact_id == $wa->user()->getId())}<i class="icon10 lock-bw" title="[`Only you can see this item`]"></i>{/if *}
             {/if}
         </span>
@@ -80,7 +80,7 @@
             <span class="pl-due {$item->getCssClass('due-date')}">{waDateTime::date(waDateTime::getFormat('humandate'), $item->getDueDate())}</span>
         {/if}
 
-        {if $item->getNote()}<p class="pl-item-note">{$item->getNote()|nl2br}</p>{/if}
+        {if $item->getNote()}<p class="pl-item-note">{$item->getNoteParsed()|nl2br}</p>{/if}
         {if $item->getAttachmentsCount()}
           <ul class="pl-attachments">
             {foreach $item->getAttachments() as $attachment}

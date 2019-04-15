@@ -17,7 +17,7 @@
                         <div class="value">
                             <input type="text" value="{strip}
                             {if !empty($list)}
-                                {$list->getName()}
+                                {$list->getNameParsed()}
                             {elseif !empty($favorite)}
                                 [`Favorites`]
                                 {if !empty($date)} - {$date|wa_date:'humandate'}{/if}

@@ -93,7 +93,7 @@ class pocketlistsNotificationAboutNewItems extends pocketlistsNotification
 
             if ($filtered_items && $list) {
                 $emailParams = [
-                    'subject'    => 'string:{str_replace(array("\r", "\n"), " ", $item->getName())|truncate:64}',
+                    'subject'    => 'string:{str_replace(array("\r", "\n"), " ", $item->getName()|escape)|truncate:64}',
                     'body'       => wa()->getAppPath('templates/mails/newitem.html'),
                     'contact_id' => $user_id,
                     'variables'  => [
@@ -104,7 +104,7 @@ class pocketlistsNotificationAboutNewItems extends pocketlistsNotification
                             $list->getId()
                         ) : '',
                         'items'     => $filtered_items,
-                        'item'      => new pocketlistsItemOutputDecorator(reset($filtered_items)),
+                        'item'      => reset($filtered_items),
                     ],
                 ];
 

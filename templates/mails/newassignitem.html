@@ -1,8 +1,8 @@
-{if $item->getListId()}{sprintf('[`%s assigned you to a to-do on <a href="%s">%s</a>`]', $by_username|escape, $backend_url|cat:$listUrl, $list->getName())}
+{if $item->getListId()}{sprintf('[`%s assigned you to a to-do on <a href="%s">%s</a>`]', $by_username|escape, $backend_url|cat:$listUrl, $list->getNameParsed())}
 {else}{sprintf('[`%s sent you <a href="%s">a new to-do</a>`]', $by_username|escape, $backend_url|cat:'#/todo/')}
 {/if}
 <br><br>
-<strong>{$item->getName()|nl2br}</strong>
+<strong>{$item->getNameParsed()|nl2br}</strong>
 <br><br>
 {if $due_date}<em>[`Due`]: {$due_date}</em><br><br>{/if}
 --<br>

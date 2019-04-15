@@ -45,7 +45,6 @@ class pocketlistsNotificationAboutNewAssign extends pocketlistsNotification
         }
 
         /** @var pocketlistsItem $item */
-        $item = new pocketlistsItemOutputDecorator($item);
         $this->sendMail(
             [
                 'contact_id' => $contact->getId(),
@@ -64,7 +63,7 @@ class pocketlistsNotificationAboutNewAssign extends pocketlistsNotification
                             $item->getDueDate(),
                             $contact->getContact()->getTimezone()
                         ) : false),
-                    'list'        => new pocketlistsListOutputDecorator($list),
+                    'list'        => $list,
                     'listUrl'     => $listUrl,
                     'by_username' => $by_username,
                 ],

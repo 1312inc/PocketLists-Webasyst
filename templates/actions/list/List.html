@@ -1,7 +1,7 @@
 {if !$list->getId() && $print|default:0}
 <html>
 <head>
-    <title>{$list->getName()} &mdash; {$wa->accountName()}</title>
+    <title>{$list->getNameParsed()} &mdash; {$wa->accountName()}</title>
     <link type="text/css" rel="stylesheet" href="{$wa_app_static_url}css/pocketlists-print.css">
 </head>
 <body>
@@ -44,7 +44,7 @@
                 {if $new && !$archive}
                     <input type="text" placeholder="{sprintf('[`List #%d`]', $new_list_id)}" id="pl-new-list-input" class="bold" />
                 {else}
-                    <span id="pl-list-name"{if $list->getColor()!='none'} class="pl-dark-{$list->getColor()}-label"{/if}>{$list->getName()|default:' '|escape}</span>
+                    <span id="pl-list-name"{if $list->getColor()!='none'} class="pl-dark-{$list->getColor()}-label"{/if}>{$list->getNameParsed()|default:' '|escape}</span>
                 {/if}
             </h1>
         </header>
@@ -109,7 +109,7 @@
             current_user_id: {$user->getContact()->getId()},
             fileUpload: {$fileupload}
         });
-        $.pocketlists.setTitle('{$list->getName()|default:'`New list`'|escape}');
+        $.pocketlists.setTitle('{$list->getNameParsed()|default:'`New list`'|escape}');
 
 
         var $loading = $('#pl-list-content .lazyloading'),

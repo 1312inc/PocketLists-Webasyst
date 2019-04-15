@@ -57,7 +57,7 @@ class pocketlistsItemDetailsAction extends pocketlistsViewItemAction
         $this->view->assign(
             [
                 'fileupload'     => $item->getId(),
-                'item'           => new pocketlistsItemOutputDecorator($item),
+                'item'           => $item,
                 'list'           => $list,
                 'lists'          => $listFactory->findAllActive(),
                 'assign_user_id' => waRequest::post('assign_user_id', 0, waRequest::TYPE_INT)

@@ -46,7 +46,7 @@ class pocketlistsNotificationAboutNewComment extends pocketlistsNotification
         $comment_user = $comment->getContact();
 
         /** @var pocketlistsItem $item */
-        $item = new pocketlistsItemOutputDecorator($comment->getItem());
+        $item = $comment->getItem();
         $listUrl = '#/pocket/todo/';
         $list = null;
         if ($item->getListId()) {
@@ -63,9 +63,9 @@ class pocketlistsNotificationAboutNewComment extends pocketlistsNotification
             'body'      => wa()->getAppPath('templates/mails/newcomment.html'),
             'variables' => [
                 'item'        => $item,
-                'comment'     => new pocketlistsCommentOutputDecorator($comment),
+                'comment'     => $comment,
                 'by_username' => $comment_user->getName(),
-                'list'        => $list ? new pocketlistsListOutputDecorator($list) : false,
+                'list'        => $list ? $list : false,
                 'listUrl'     => $listUrl,
             ],
         ];

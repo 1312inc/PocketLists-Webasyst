@@ -10,7 +10,7 @@
     <!-- core -->
 
 
-        <textarea class="pl-details-textarea pl-item-name" name="item[name]" placeholder="[`Title`]" {if $item->isDone()} disabled="disabled"{/if}>{$item->getName()|escape}</textarea>
+        <textarea class="pl-details-textarea pl-item-name" name="item[name]" placeholder="[`Title`]" {if $item->isDone()} disabled="disabled"{/if}>{$item->getNameParsed()|escape}</textarea>
         <p class="hint">[`Use @ or # symbols to link this to-do with a Shop-Script order.`]</p>
 
         <div data-pl2-item-links class="pl-details-linked-entities">
@@ -152,7 +152,7 @@
                 <select id="pl-item-list">
                 {if !$list->getId() || $item->getContact()->isMe()}<option value=""{if !$list->getId()} selected="selected"{/if}>[`None`]</option>{/if}
                 {foreach $lists as $l}
-                    <option value="{$l->getId()}" {if ($item->getId() && $item->getListId() == $l->getId()) || ($list->getId() == $l->getId())}selected="selected"{/if}>{$l->getName()|escape|truncate:32}</option>
+                    <option value="{$l->getId()}" {if ($item->getId() && $item->getListId() == $l->getId()) || ($list->getId() == $l->getId())}selected="selected"{/if}>{$l->getNameParsed()|escape|truncate:32}</option>
                 {/foreach}
                 </select>
                 <input type="hidden" name="item[list_id]" value="{$list->getId()}"/>

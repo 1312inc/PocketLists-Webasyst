@@ -3,7 +3,7 @@
         <div class="pl-cue-inner">
             <div class="pl-bubble">
                 {if $comment->isMy() && $comment->canBeDeleted() && !(isset($archive) && $archive)}<a href="#" class="pl-delete-comment" data-pl-action="comment-delete" title="[`Delete`]">&times;</a>{/if}
-                {$comment->getComment()|nl2br|default:''}
+                {$comment->getCommentParsed()|nl2br|default:''}
 
             </div><span class="pl-bubble-arrow"></span>
 
