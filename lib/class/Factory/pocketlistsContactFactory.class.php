@@ -64,8 +64,8 @@ class pocketlistsContactFactory extends pocketlistsFactory
 
             if (isset($items_count_names[$tid])) {
                 $mate->setItemsInfo([
-                    'count'        => count($items_count_names[$tid]['item_names']),
-                    'names'        => implode(', ', $items_count_names[$tid]['item_names']),
+                    'count'        => $items_count_names[$tid]['count_items'],
+                    'names'        => '',
                     'max_priority' => $items_count_names[$tid]['item_max_priority'],
                 ]);
             }

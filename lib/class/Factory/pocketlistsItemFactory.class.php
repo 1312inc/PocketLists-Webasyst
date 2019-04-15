@@ -151,24 +151,8 @@ class pocketlistsItemFactory extends pocketlistsFactory
 
         $result = [];
 
-        $filter = new pocketlistsStrategyItemFilterAndSort();
-
-        $contactFactory = pl2()->getEntityFactory(pocketlistsContact::class);
         foreach ($contactIds as $contact_id) {
-            $contact = $contactFactory->createNewWithId($contact_id);
-
-            $items = $this->findAssignedOrCompletesByContact($contact);
-
-            $filter->setItems($items)->filterDoneUndone();
-
-            foreach ($filter->getItemsUndone() as $item) {
-                $result[$contact_id]['item_names'][] = $item->getName();
-                $result[$contact_id]['item_max_priority'] = max(
-                    !empty($result[$contact_id]['item_max_priority']) ?
-                        $result[$contact_id]['item_max_priority'] : pocketlistsItem::PRIORITY_NORM,
-                    $item->getCalcPriority()
-                );
-            }
+            $result[$contact_id] = $this->getModel()->countAssignedOrCompletesByContactItems($contact_id);
         }
 
         return $result;
