@@ -44,15 +44,10 @@ class pocketlistsHydrator implements pocketlistsHydratorInterface
                 continue;
             }
 
-            $methodName = $this->getMethodName($object, $toExtractField);
-
             foreach (['get', 'is'] as $methodPrefix) {
-                if ($reflection->hasMethod($methodPrefix.$methodName)) {
-                    $method = $reflection->getMethod($methodPrefix.$methodName);
-
-                    if ($method && $method->isPublic()) {
-                        $result[$toExtractField] = $method->invoke($object);
-                    }
+                $method = $this->getMethod($object, $methodPrefix, $toExtractField, $reflection);
+                if ($method) {
+                    $result[$toExtractField] = $method->invoke($object);
                 }
             }
         }
@@ -62,7 +57,7 @@ class pocketlistsHydrator implements pocketlistsHydratorInterface
 
     /**
      * @param pocketlistsHydratableInterface $object
-     * @param array                      $data
+     * @param array                          $data
      *
      * @return object|pocketlistsHydratableInterface
      * @throws ReflectionException
@@ -74,15 +69,9 @@ class pocketlistsHydrator implements pocketlistsHydratorInterface
         $object = is_object($object) ? $object : $reflection->newInstanceWithoutConstructor();
 
         foreach ($data as $name => $value) {
-            $methodName = 'set'.$this->getMethodName($object, $name);
-            try {
-                $method = $reflection->getMethod($methodName);
-
-                if ($method && $method->isPublic()) {
-                    $method->invoke($object, $value);
-                }
-            } catch (ReflectionException $ex) {
-
+            $method = $this->getMethod($object, 'set', $name, $reflection);
+            if ($method) {
+                $method->invoke($object, $value);
             }
         }
 
@@ -109,17 +98,30 @@ class pocketlistsHydrator implements pocketlistsHydratorInterface
     }
 
     /**
-     * @param $target
-     * @param $name
+     * @param object|string   $target
+     * @param string          $prefix
+     * @param string          $name
+     * @param ReflectionClass $reflection
      *
-     * @return mixed
+     * @return ReflectionMethod|false
      */
-    private function getMethodName($target, $name)
+    private function getMethod($target, $prefix, $name, $reflection)
     {
         $className = is_object($target) ? get_class($target) : $target;
 
         if (!isset($this->fieldMethodMap[$className][$name])) {
-            $this->fieldMethodMap[$className][$name] = str_replace('_', '', ucwords($name, '_'));
+            $methodName = $prefix.str_replace('_', '', ucwords($name, '_'));
+            $this->fieldMethodMap[$className][$name] = false;
+            try {
+                if ($reflection->hasMethod($methodName)) {
+                    $method = $reflection->getMethod($methodName);
+
+                    if ($method->isPublic()) {
+                        $this->fieldMethodMap[$className][$name] = $method;
+                    }
+                }
+            } catch (ReflectionException $ex) {
+            }
         }
 
         return $this->fieldMethodMap[$className][$name];

@@ -11,11 +11,10 @@ class pocketlistsBackendSidebarAction extends pocketlistsViewAction
      */
     public function execute()
     {
-        /** @var pocketlistsItemFactory $itemFactory */
-        $itemFactory = pl2()->getEntityFactory(pocketlistsItem::class);
-        $items = $itemFactory->findToDo($this->user);
+        /** @var pocketlistsItemModel $itemModel */
+        $itemModel = pl2()->getModel(pocketlistsItem::class);
 
-        $sidebar_todo_count = (new pocketlistsStrategyItemFilterAndSort($items))->filterDoneUndone()->countUndone();
+        $sidebar_todo_count = $itemModel->countTodo($this->user->getId(), false);
         $sidebar_todo_count_icon = pl2()->getUser()->getAppCount();
 
         $this->view->assign(compact('sidebar_todo_count', 'sidebar_todo_count_icon'));
@@ -39,9 +38,6 @@ class pocketlistsBackendSidebarAction extends pocketlistsViewAction
 
         /** @var pocketlistsCommentModel $commentModel */
         $commentModel = pl2()->getModel(pocketlistsComment::class);
-
-        /** @var pocketlistsItemModel $itemModel */
-        $itemModel = pl2()->getModel(pocketlistsItem::class);
 
         $this->view->assign(
             [

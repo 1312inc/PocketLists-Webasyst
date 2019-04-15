@@ -71,7 +71,7 @@ class pocketlistsUser extends pocketlistsContact
         $count = 0;
         switch ($icon) {
             case pocketlistsUserSettings::ICON_OVERDUE: // overdue
-                $items = $itemModel->fetchTodo(
+                $count = $itemModel->countTodo(
                     $this->getContact()->getId(),
                     false,
                     [
@@ -80,12 +80,11 @@ class pocketlistsUser extends pocketlistsContact
                         pocketlistsItem::PRIORITY_BURNINHELL,
                     ]
                 );
-                $count = count($items);
 
                 break;
 
             case pocketlistsUserSettings::ICON_OVERDUE_TODAY: // overdue + today
-                $items = $itemModel->fetchTodo(
+                $count = $itemModel->countTodo(
                     $this->getContact()->getId(),
                     false,
                     [
@@ -95,12 +94,11 @@ class pocketlistsUser extends pocketlistsContact
                         pocketlistsItem::PRIORITY_BURNINHELL,
                     ]
                 );
-                $count = count($items);
 
                 break;
 
             case pocketlistsUserSettings::ICON_OVERDUE_TODAY_AND_TOMORROW: // overdue + today + tomorrow
-                $items = $itemModel->fetchTodo(
+                $count = $itemModel->countTodo(
                     $this->getContact()->getId(),
                     false,
                     [
@@ -111,7 +109,6 @@ class pocketlistsUser extends pocketlistsContact
                         pocketlistsItem::PRIORITY_BURNINHELL,
                     ]
                 );
-                $count = count($items);
 
                 break;
         }

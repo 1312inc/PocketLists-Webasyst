@@ -68,8 +68,9 @@ class pocketlistsListAction extends pocketlistsViewAction
 
             /** @var pocketlistsContactFactory $factory */
             $factory = pl2()->getEntityFactory(pocketlistsContact::class);
+            $contactIds = pocketlistsRBAC::getAccessContacts($list);
             $list_access_contacts = $factory->getTeammates(
-                pocketlistsRBAC::getAccessContacts($list),
+                $contactIds,
                 true,
                 false,
                 true
