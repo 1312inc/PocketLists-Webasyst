@@ -88,4 +88,14 @@ class pocketlistsNotificatioDailyRecap extends pocketlistsNotification
             }
         }
     }
+
+    /**
+     * @param pocketlistsContact $contact
+     *
+     * @return bool
+     */
+    protected function canSend(pocketlistsContact $contact)
+    {
+        return $contact->isExists();
+    }
 }

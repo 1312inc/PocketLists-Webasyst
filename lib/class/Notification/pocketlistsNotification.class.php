@@ -114,6 +114,6 @@ class pocketlistsNotification
      */
     protected function canSend(pocketlistsContact $contact)
     {
-        return $contact->isExists();
+        return $contact->isExists() && !$contact->isMe();
     }
 }
