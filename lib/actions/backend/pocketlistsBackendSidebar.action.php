@@ -28,7 +28,7 @@ class pocketlistsBackendSidebarAction extends pocketlistsViewAction
         $teammates = $contactFactory->getTeammates(pocketlistsRBAC::getAccessContacts(), true, true, true);
 
         foreach ($teammates as $tid => $teammate) {
-            if (!$teammate->getId()) {
+            if (!$teammate->isExists()) {
                 unset($teammates[$tid]);
             }
         }

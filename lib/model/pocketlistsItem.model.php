@@ -677,7 +677,7 @@ class pocketlistsItemModel extends waModel
         $list_sql = pocketlistsRBAC::filterListAccess($lists);
         $q = "SELECT
                   count(i.id) count_items,
-                  max(i.calc_priority) item_max_priority
+                  if(max(i.calc_priority) is null, 0, max(i.calc_priority)) item_max_priority
                 FROM {$this->table} i
                 LEFT JOIN (select i2.name, l2.*
                           from pocketlists_list l2

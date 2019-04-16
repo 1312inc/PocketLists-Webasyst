@@ -157,7 +157,7 @@ class pocketlistsItemFactory extends pocketlistsFactory
      * @return array
      * @throws waException
      */
-    public function findAssignedItemsCountAndNames($contactIds)
+    public function getAssignedItemsCountAndNames($contactIds)
     {
         if (!is_array($contactIds)) {
             $contactIds = [$contactIds];
