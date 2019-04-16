@@ -42,7 +42,7 @@ class pocketlistsContactFactory extends pocketlistsFactory
     ) {
         $teammates = [];
 
-        $items_count_names = pl2()->getEntityFactory(pocketlistsItem::class)->findAssignedItemsCountAndNames($teammates_ids);
+        $items_count_names = pl2()->getEntityFactory(pocketlistsItem::class)->getAssignedItemsCountAndNames($teammates_ids);
         $last_activities = $sort_by_last_activity ? pl2()->getModel(pocketlistsItem::class)->getLastActivities($teammates_ids) : [];
 
         foreach ($teammates_ids as $tid) {

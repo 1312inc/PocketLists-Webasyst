@@ -19,7 +19,7 @@ class pocketlistsNotification
      * @param      $data
      * @param bool $backend_url
      */
-    public static function sendMail($data, $backend_url = false)
+    public function sendMail($data, $backend_url = false)
     {
         try {
             $default_variables = [

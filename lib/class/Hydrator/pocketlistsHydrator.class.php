@@ -109,21 +109,21 @@ class pocketlistsHydrator implements pocketlistsHydratorInterface
     {
         $className = is_object($target) ? get_class($target) : $target;
 
-        if (!isset($this->fieldMethodMap[$className][$name])) {
+        if (!isset($this->fieldMethodMap[$className][$prefix][$name])) {
             $methodName = $prefix.str_replace('_', '', ucwords($name, '_'));
-            $this->fieldMethodMap[$className][$name] = false;
+            $this->fieldMethodMap[$className][$prefix][$name] = false;
             try {
                 if ($reflection->hasMethod($methodName)) {
                     $method = $reflection->getMethod($methodName);
 
                     if ($method->isPublic()) {
-                        $this->fieldMethodMap[$className][$name] = $method;
+                        $this->fieldMethodMap[$className][$prefix][$name] = $method;
                     }
                 }
             } catch (ReflectionException $ex) {
             }
         }
 
-        return $this->fieldMethodMap[$className][$name];
+        return $this->fieldMethodMap[$className][$prefix][$name];
     }
 }
