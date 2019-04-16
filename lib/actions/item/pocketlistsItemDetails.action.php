@@ -18,10 +18,11 @@ class pocketlistsItemDetailsAction extends pocketlistsViewItemAction
         /** @var pocketlistsListFactory $listFactory */
         $listFactory = pl2()->getEntityFactory(pocketlistsList::class);
 
+        /** @var pocketlistsItemFactory $itemFactory */
+        $itemFactory = pl2()->getEntityFactory(pocketlistsItem::class);
         if ($id) {
             /** @var pocketlistsItem $item */
-            $item = pl2()->getEntityFactory(pocketlistsItem::class)
-                ->findById($id);
+            $item = $itemFactory->findById($id);
 
             $list = $item->getList();
 
@@ -30,13 +31,16 @@ class pocketlistsItemDetailsAction extends pocketlistsViewItemAction
                 wa()->getDataUrl('attachments/'.$item->getId().'/', true, pocketlistsHelper::APP_ID)
             );
         } else {
-            $item = new pocketlistsItem();
+            /** @var pocketlistsItem $item */
+            $item = $itemFactory->createNew();
+            $item->setContact($this->user);
 
             if ($listId) {
                 /** @var pocketlistsList $list */
-                $list = wa(pocketlistsHelper::APP_ID)->getConfig()
-                    ->getEntityFactory(pocketlistsList::class)
-                    ->findById($id);
+                $list = $listFactory->findById($listId);
+                if ($list) {
+                    $item->setList($list);
+                }
             }
         }
 
