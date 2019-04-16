@@ -128,8 +128,12 @@
                     if (typeof(this[actionName + 'Action']) == 'function') {
                         console.info('dispatch', [actionName + 'Action', attr]);
                         this[actionName + 'Action'].apply(this, attr);
-                        $.storage.set('/pocketlists/hash/' + this.options.user_id, hash.join('/'));
-                    } else {
+
+                        if (actionName !== 'debug') {
+                            $.storage.set('/pocketlists/hash/' + this.options.user_id, hash.join('/'));
+                        }
+                    }
+                    else {
                         console.info('Invalid action name:', actionName + 'Action');
                     }
                     this.postExecute(actionName);
