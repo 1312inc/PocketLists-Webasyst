@@ -11,10 +11,6 @@ class pocketlistsDebugAction extends waViewAction
             throw new waException('Access denied.', 403);
         }
 
-        if (!waSystemConfig::isDebug()) {
-            throw new waException('Access denied.', 403);
-        }
-
         $linkedAppsConfig = require_once wa()->getConfig()->getLinkedAppConfigPath();
         if (!is_array($linkedAppsConfig)) {
             $linkedAppsConfig = [];
