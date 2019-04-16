@@ -98,6 +98,8 @@ class pocketlistsItemCreateAction extends pocketlistsViewAction
                             $tm = pocketlistsHelper::convertToServerTime(strtotime($ni['due_datetime']));
                             $item->setDueDatetime(waDateTime::date('Y-m-d H:i:s', $tm));
                         }
+
+                        $item->setName($name);
                     }
                 }
 
