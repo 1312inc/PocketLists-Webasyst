@@ -126,6 +126,20 @@ class pocketlistsItemFactory extends pocketlistsFactory
 
     /**
      * @param pocketlistsContact $contact
+     * @param bool               $date
+     *
+     * @return pocketlistsItem[]
+     * @throws waException
+     */
+    public function findToDoRecap(pocketlistsContact $contact, $date = false)
+    {
+        $data = $this->getModel()->getDailyRecapItems($contact->getId(), $date);
+
+        return $this->generateWithData($data, true);
+    }
+
+    /**
+     * @param pocketlistsContact $contact
      *
      * @return pocketlistsItem[]
      * @throws waException
@@ -200,21 +214,6 @@ class pocketlistsItemFactory extends pocketlistsFactory
         $attachmentFactory->deleteAllByItem($item);
 
         return parent::delete($item);
-    }
-
-    /**
-     * @param pocketlistsContact $contact
-     * @param                    $settings
-     *
-     * @return pocketlistsItem[]
-     * @throws waDbException
-     * @throws waException
-     */
-    public function findForDayRecap(pocketlistsContact $contact, $settings)
-    {
-        $data = $this->getModel()->getDailyRecapItems($contact->getId(), $settings);
-
-        return $this->generateWithData($data, true);
     }
 
     /**
