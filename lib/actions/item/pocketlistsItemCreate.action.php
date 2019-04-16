@@ -50,10 +50,11 @@ class pocketlistsItemCreateAction extends pocketlistsViewAction
             foreach ($data as $i => $d) {
                 /** @var pocketlistsItem $item */
                 $item = $itemFactory->createNew();
+                $item = pl2()->getHydrator()->hydrate($item, $d);
                 $item
                     ->setCreateDatetime(date('Y-m-d H:i:s'))
                     ->setList($list)
-                    ->setContactId($user_id);
+                    ->setContact($this->user);
 
                 if ($canAssign && ($assigned_contact_id || !empty($d['assigned_contact_id']))) {
                     if (!empty($d['assigned_contact_id'])) {
