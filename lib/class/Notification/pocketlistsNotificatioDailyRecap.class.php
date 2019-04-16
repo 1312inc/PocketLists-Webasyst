@@ -68,7 +68,7 @@ class pocketlistsNotificatioDailyRecap extends pocketlistsNotification
                 wa()->setLocale($contact->getLocale());
             }
 
-            $items = $itemFactory->findForDayRecap($contact, $user['setting']);
+            $items = $itemFactory->findTodoRecap($contact, $user['setting']);
 
             if ($items) {
                 $this->sendMail(
@@ -78,7 +78,7 @@ class pocketlistsNotificatioDailyRecap extends pocketlistsNotification
                         'body'       => wa()->getAppPath('templates/mails/dailyrecap.html'),
                         'variables'  => [
                                 'items'    => $items,
-                                'timezone' => $contact->getTimezone(),
+                                'timezone' => $contact->getContact()->getTimezone(),
                             ] + $vars,
                     ],
                     $this->getBackendUrl($user_id)

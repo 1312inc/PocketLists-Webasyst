@@ -18,38 +18,6 @@ class pocketlistsItemModel extends waModel
     protected $table = 'pocketlists_item';
 
     /**
-     * @var pocketlistsItemLinkModel[]|[]
-     */
-    protected $linkedEntities;
-
-    /**
-     * @var array
-     */
-    public $chat = [
-        'current_user' => [],
-        'comments'     => [],
-    ];
-
-    /**
-     * @var array
-     */
-    public $childs = [];
-
-    /**
-     *
-     */
-    public function init()
-    {
-        $this->chat = [
-            'current_user' => [
-                'username' => wa()->getUser()->getName(),
-                'userpic'  => wa()->getUser()->getPhoto(20),
-            ],
-            'comments'     => [],
-        ];
-    }
-
-    /**
      * @return array
      */
     public static function getPriorities()
@@ -138,25 +106,6 @@ class pocketlistsItemModel extends waModel
             ]
         )->fetchAll();
 
-//        $activities = $this->getLastActivities();
-//        $result = [];
-//        foreach ($activities as $id => $item) {
-//            if (isset($items[$id])) {
-//                $result[$id] = $this->extendItemData($items[$id]);
-//                unset($items[$id]);
-//            }
-//        }
-
-//        $items = self::generateModels($items);
-//
-//        if ($items) {
-//            foreach ($items as $id => $item) {
-//                $result[$id] = $this->extendItemData($items[$id]);
-//            }
-//        }
-
-//        return $result;
-//        return $this->getTree($items, $tree);
         return $items;
     }
 
@@ -467,42 +416,6 @@ class pocketlistsItemModel extends waModel
     }
 
     /**
-     * @param      $id
-     * @param      $item
-     * @param bool $silent
-     *
-     * @return bool
-     */
-    public function addCalculatedPriorityDataAndSave($id, $item, $silent = false)
-    {
-        $email_to_assigned_contact = false;
-        $old_item = ['assigned_contact_id' => false];
-        if (!$silent && $item['assigned_contact_id']) {
-            $us = new pocketlistsUserSettings($item['assigned_contact_id']);
-            $email_to_assigned_contact = $us->emailWhenNewAssignToMe();
-            if ($email_to_assigned_contact) {
-                $old_item = $this->getById($id);
-            }
-        }
-
-        $this->addPriorityData($item);
-        $saved = $id ? $this->updateById($id, $item) : $this->insert($item);
-        if ($saved) {
-            if (!$silent && $email_to_assigned_contact && // settings are set
-                $item['assigned_contact_id'] != wa()->getUser()->getId() && // do not email if I assign myself
-                $item['assigned_contact_id'] != $old_item['assigned_contact_id']
-            ) { // assigned id is updated
-                throw new waException('OLOLOL');
-//                pocketlistsNotifications::notifyAboutNewAssign($this->prepareOutput($item), wa()->getUser()->getName());
-            }
-
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
      * @return string
      */
     private function getQuery()
@@ -644,254 +557,6 @@ class pocketlistsItemModel extends waModel
     }
 
     /**
-     * @param      $items
-     * @param bool $edit
-     *
-     * @return array|bool|mixed
-     * @throws waDbException
-     * @throws waException
-     */
-    public function extendItemData($items, $edit = false)
-    {
-        if (!is_array($items) && !$items instanceof pocketlistsItemModel) {
-            return false;
-        }
-
-        $is_array = true;
-        if (isset($items['id']) || $items instanceof pocketlistsItemModel) {
-            $is_array = false;
-            $items = [$items];
-        }
-        foreach ($items as &$item) {
-            if ($item['contact_id']) {
-                $user = new waContact($item['contact_id']);
-                $item['contact'] = pocketlistsHelper::getContactData($user);
-            } else {
-                $item['contact'] = pocketlistsHelper::getContactData(new waContact());
-            }
-            if ($item['assigned_contact_id']) {
-                $user = new waContact($item['assigned_contact_id']);
-                $item['assigned_contact'] = pocketlistsHelper::getContactData($user);
-            }
-            if ($item['complete_contact_id']) {
-                $user = new waContact($item['complete_contact_id']);
-                $item['complete_contact'] = pocketlistsHelper::getContactData($user);
-            }
-
-            $am = new pocketlistsAttachmentModel();
-            $item['attachments'] = $am->getByField('item_id', $item['id'], true);
-
-            $this->addChatData($item);
-
-            $this->addPriorityData($item);
-
-            $age_time = time() - max(
-                    !empty($item['update_datetime']) ? strtotime($item['update_datetime']) : 0,
-                    strtotime($item['create_datetime'])
-                );
-            $item['age_time'] = $age_time < 1 ? '' : pocketlistsHelper::getDatetimeBySeconds($age_time);
-
-            if (!$edit) {
-                $this->prepareOutput($item);
-            }
-        }
-
-        return ($is_array || !$items) ? $items : reset($items);
-    }
-
-    /**
-     * @param $item
-     *
-     * @return mixed
-     */
-    public function prepareOutput(&$item)
-    {
-        foreach (['name', 'note'] as $param) {
-            $item[$param.'_original'] = $item[$param];
-            $item[$param] = pocketlistsNaturalInput::matchLinks($item[$param]);
-        }
-
-        if (isset($item->chat['comments']) && is_array($item->chat['comments'])) {
-            foreach ($item['chat']['comments'] as $i => $comment) {
-                $item->chat['comments'][$i]['comment_original'] = $comment['comment'];
-                $item->chat['comments'][$i]['comment'] = pocketlistsNaturalInput::matchLinks($comment['comment']);
-            }
-        }
-
-        return $item;
-    }
-
-    /**
-     * @param $item
-     *
-     * @return mixed
-     */
-    public function addPriorityData(&$item)
-    {
-        $item['due_date'] = isset($item['due_date']) ? $item['due_date'] : null;
-        $item['due_datetime'] = isset($item['due_datetime']) ? $item['due_datetime'] : null;
-
-        $item['calc_priority'] = max(
-            pocketlistsHelper::calcPriorityOnDueDate($item['due_date'], $item['due_datetime']),
-            isset($item['priority']) ? $item['priority'] : pocketlistsItemModel::PRIORITY_NORM
-        );
-
-        return $item;
-    }
-
-    /**
-     * @param pocketlistsItemModel $item
-     *
-     * @throws waDbException
-     * @throws waException
-     */
-    private function addChatData(&$item)
-    {
-        $cm = new pocketlistsCommentModel();
-        $chat = $cm->getAllByItems($item['id']);
-        if (empty($chat[$item['id']])) {
-            return;
-        }
-        foreach ($chat[$item['id']] as $comment) {
-            $item->setChatComment($comment);
-        }
-    }
-
-    /**
-     * @param $comment
-     *
-     * @throws waException
-     */
-    public function setChatComment($comment)
-    {
-        $comments = $this->chat['comments'];
-        $comments[$comment['id']] = pocketlistsCommentModel::extendData($comment);
-
-        $this->chat = [
-            'current_user' => [
-                'username' => wa()->getUser()->getName(),
-                'userpic'  => wa()->getUser()->getPhoto(20),
-            ],
-            'comments'     => $comments,
-        ];
-    }
-
-    /**
-     * @param $items
-     *
-     * @return mixed
-     */
-    public function getProperSort($items)
-    {
-        usort($items, [$this, 'compare_for_proper_sort']);
-
-        return $items;
-    }
-
-    /**
-     * @param $i1
-     * @param $i2
-     *
-     * @return int
-     */
-    private function compare_for_proper_sort($i1, $i2)
-    {
-        if ($i1['calc_priority'] < $i2['calc_priority']) {
-            return 1;
-        }
-
-        if ($i1['calc_priority'] > $i2['calc_priority']) {
-            return -1;
-        }
-
-        $date1 = !empty($i1['due_datetime'])
-            ? strtotime($i1['due_datetime'])
-            : (!empty($i1['due_date']) ? strtotime($i1['due_date']) : null);
-
-        $date2 = !empty($i2['due_datetime'])
-            ? strtotime($i2['due_datetime'])
-            : (!empty($i2['due_date']) ? strtotime($i2['due_date']) : null);
-
-        // check due_date
-        if ($date1 && $date2) { // check both dates
-            if ($date1 < $date2) {
-                return -1;
-            }
-
-            if ($date1 > $date2) {
-                return 1;
-            }
-
-            return 0;
-        }
-
-        if ($date1 && !$date2) {
-            return -1;
-        }
-
-        if (!$date1 && $date2) {
-            return 1;
-        }
-
-        $date1 = !empty($i1['update_datetime']) ? strtotime($i1['update_datetime']) : null;
-
-        $date2 = !empty($i2['update_datetime']) ? strtotime($i2['update_datetime']) : null;
-
-        // check update_datetime
-        if ($date1 && $date2) { // check both dates
-            if ($date1 < $date2) {
-                return -1;
-            }
-
-            if ($date1 > $date2) {
-                return 1;
-            }
-
-            return 0;
-        }
-
-        if ($date1 && !$date2) {
-            return -1;
-        }
-
-        if (!$date1 && $date2) {
-            return 1;
-        }
-
-        return 0;
-    }
-
-    /**
-     * @param $list_id
-     *
-     * @return array
-     */
-    public function sortItems($list_id)
-    {
-        $sql = $this->getQuery()."WHERE
-                  i.list_id = i:id
-                  AND i.status = 0
-                  ORDER BY i.id DESC
-                /*GROUP BY i.parent_id, i.id*/";
-//        $items = $this->getItems($sql, $list_id, false);
-        $items = $this->query($sql, ['id' => $list_id, 'contact_id' => wa()->getUser()->getId()])->fetchAll();
-
-        $items = $this->getProperSort($items);
-        $sort = 0;
-        foreach ($items as $item) {
-            $this->updateById(
-                $item['id'],
-                [
-//                    'update_datetime' => date("Y-m-d H:i:s"),
-                    'sort' => $sort++,
-                ]
-            );
-        }
-
-        return $this->getTree($items, true);
-    }
-
-    /**
      * @param array $contact_ids
      *
      * @return array
@@ -997,25 +662,6 @@ class pocketlistsItemModel extends waModel
             ]
         )->fetchAll();
 
-//        $items = self::generateModels($items);
-//
-//        $results = [
-//            0 => [],
-//            1 => [],
-//        ];
-////
-//        if ($items) {
-//            foreach ($items as $id => $item) {
-//                $results[$item['status']][$id] = $item;
-//            }
-//        }
-//
-////
-//        return [
-//            0 => $results[0],
-//            1 => $results[1],
-//        ];
-
         return $items;
     }
 
@@ -1047,25 +693,6 @@ class pocketlistsItemModel extends waModel
                 'list_ids'        => $lists,
             ]
         )->fetchAssoc();
-
-//        $items = self::generateModels($items);
-//
-//        $results = [
-//            0 => [],
-//            1 => [],
-//        ];
-////
-//        if ($items) {
-//            foreach ($items as $id => $item) {
-//                $results[$item['status']][$id] = $item;
-//            }
-//        }
-//
-////
-//        return [
-//            0 => $results[0],
-//            1 => $results[1],
-//        ];
 
         return $items;
     }
@@ -1133,26 +760,6 @@ class pocketlistsItemModel extends waModel
             ]
         )->fetchAll();
 
-//        $items = self::generateModels($items);
-
-//        $results = [
-//            0 => [],
-//            1 => [],
-//        ];
-//
-//        if ($items) {
-//            $items = $this->extendItemData($items);
-//
-//            foreach ($items as $id => $item) {
-//                $results[$item['status']][$id] = $item;
-//            }
-//        }
-//
-//        return [
-//            0 => $results[0],
-//            1 => $results[1],
-//        ];
-
         return $items;
     }
 
@@ -1170,44 +777,44 @@ class pocketlistsItemModel extends waModel
         $today = date("Y-m-d");
         $tomorrow = date("Y-m-d", strtotime("+1 day", $now));
         $seven_days = date("Y-m-d", strtotime("+7 days", $now));
+
         switch ($when) {
             case pocketlistsUserSettings::DAILY_RECAP_FOR_TODAY:
-                $when = " AND (i.due_date <= '".$today."')";
+                $when = "(i.due_date <= '".$today."')";
                 break;
+
             case pocketlistsUserSettings::DAILY_RECAP_FOR_TODAY_AND_TOMORROW:
-                $when = " AND (i.due_date <= '".$tomorrow."')";
+                $when = "(i.due_date <= '".$tomorrow."')";
                 break;
+
             case pocketlistsUserSettings::DAILY_RECAP_FOR_NEXT_7_DAYS:
-                $when = " AND (i.due_date <= '".$seven_days."')";
+                $when = "(i.due_date <= '".$seven_days."')";
                 break;
         }
 
         $lists = pocketlistsRBAC::getAccessListForContact($contact_id);
-        $list_sql = $lists ? " AND (l.id IN (i:list_ids) OR l.id IS NULL) " : " AND l.id IS NULL ";
+
+        $sqlParts = $this->getTodoSql($contact_id, false, $lists);
+
+        $sqlParts['and'][] = $when;
+
+        $or_sql = implode("\n OR ", $sqlParts['or']);
+        $and_sql = implode("\n AND ", $sqlParts['and']);
+        $join_sql = implode("\n LEFT JOIN ", $sqlParts['join']);
+        $select_sql = implode(",\n", $sqlParts['select']);
 
         $q = "SELECT
-                i.*
-              FROM {$this->table} i
-              LEFT JOIN pocketlists_list l ON (l.id = i.list_id  OR l.id = i.key_list_id) AND l.archived = 0 /* ONLY not archived items */
-              WHERE
-                (
-                  (i.assigned_contact_id = i:contact_id) /* + items assigned to me */
-                  OR i.priority > ".pocketlistsItemModel::PRIORITY_NORM." /* + items with priority */
-                  OR
-                  (
-                    /*((i.due_date IS NOT NULL OR i.due_datetime IS NOT NULL) AND i.list_id IS NULL AND i.key_list_id IS NULL AND i.contact_id = 7)
-                    OR
-                    ((i.due_date IS NOT NULL OR i.due_datetime IS NOT NULL) AND (i.list_id IS NOT NULL OR i.key_list_id IS NOT NULL)) */
-                    (i.due_date IS NOT NULL OR i.due_datetime IS NOT NULL) /* + items with due */
-                    AND
-                    IF(i.list_id IS NULL AND i.key_list_id IS NULL, i.contact_id = i:contact_id, i.contact_id > 0) /* + and if item is from NULL-list check contact_id */
-                  )
-                  OR (i.contact_id = i:contact_id AND i.list_id IS NULL AND i.key_list_id IS NULL) /* + my items from NULL-list */
-                )
-                AND i.status = 0 /* ONLY not completed items */
-                AND (i.assigned_contact_id = i:contact_id OR i.assigned_contact_id IS NULL) /* ONLY assigned to me or noone */
-                {$list_sql}
-                {$when}";
+                  {$select_sql}
+                FROM {$this->table} i
+                {$join_sql}
+                WHERE
+                  ({$or_sql}) 
+                  AND 
+                  {$and_sql}
+                GROUP BY i.id
+                ORDER BY
+                  i.status,
+                  (i.complete_datetime IS NULL), i.complete_datetime DESC";
 
         $items = $this->query(
             $q,
@@ -1216,9 +823,6 @@ class pocketlistsItemModel extends waModel
                 'list_ids'   => $lists,
             ]
         )->fetchAll();
-//        foreach ($items as $id => $item) {
-//            $items[$id] = $this->extendItemData($item);
-//        }
 
         return $items;
     }
@@ -1307,21 +911,6 @@ class pocketlistsItemModel extends waModel
         }
 
         return $result;
-    }
-
-    /**
-     * @return array|pocketlistsItemLinkModel[]
-     * @throws waException
-     */
-    public function getLinkedEntities()
-    {
-        if ($this->linkedEntities === null) {
-            /** @var pocketlistsItemLinkFactory $factory */
-            $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getEntityFactory(pocketlistsItemLink::class);
-            $this->linkedEntities = $factory->findForItem($this) ?: [];
-        }
-
-        return $this->linkedEntities;
     }
 
     /**
