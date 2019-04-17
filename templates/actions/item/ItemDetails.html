@@ -10,8 +10,8 @@
     <!-- core -->
 
 
-        <textarea class="pl-details-textarea pl-item-name" name="item[name]" placeholder="[`Title`]" {if $item->isDone()} disabled="disabled"{/if}>{$item->getNameParsed()|escape}</textarea>
-        <p class="hint">[`Use @ or # symbols to link this to-do with a Shop-Script order.`]</p>
+        <textarea class="pl-details-textarea pl-item-name" name="item[name]" placeholder="[`Title`]" {if $item->isDone()} disabled="disabled"{/if}>{$item->getNameParsed()}</textarea>
+        {if $wa->shop}<p class="hint">[`Use @ or # symbols to link this to-do with a Shop-Script order.`]</p>{else}<br>{/if}
 
         <div data-pl2-item-links class="pl-details-linked-entities">
             {foreach $item->getLinkedEntities() as $linkedEntity}
