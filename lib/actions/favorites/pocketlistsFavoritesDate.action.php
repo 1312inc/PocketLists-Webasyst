@@ -22,9 +22,7 @@ class pocketlistsFavoritesDateAction extends pocketlistsViewAction
         $itemsUndone = $filter->filterDoneUndone()->properSortUndone()->getItemsUndone();
         $itemsDone = $filter->getItemsDone();
 
-        $timestamp = $date
-            ? waDateTime::date('Y-m-d', strtotime($date))
-            : waDateTime::date('Y-m-d', time() + 60 * 60 * 24, wa()->getUser()->getTimezone());
+        $timestamp = $date ? waDateTime::date('Y-m-d', strtotime($date)) : '';
 
         /** @var pocketlistsListFactory $listFactory */
         $listFactory = pl2()->getEntityFactory(pocketlistsList::class);
