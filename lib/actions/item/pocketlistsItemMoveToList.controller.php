@@ -44,8 +44,7 @@ class pocketlistsItemMoveToListController extends pocketlistsJsonController
 
         $item
             ->setList($list)
-            ->setSort(0)
-            ->setUpdateDatetime(date('Y-m-d H:i:s'));
+            ->setSort(0);
 
         $updated = pl2()->getEntityFactory(pocketlistsItem::class)->save($item);
 
