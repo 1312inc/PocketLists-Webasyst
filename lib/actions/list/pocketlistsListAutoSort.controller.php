@@ -14,7 +14,7 @@ class pocketlistsListAutoSortController extends pocketlistsJsonController
     {
         $list = $this->getList();
 
-        if (!in_array($list->getId(), pocketlistsRBAC::getAccessListForContact())) {
+        if (!pocketlistsRBAC::canAccessToList($list)) {
             throw new pocketlistsForbiddenException();
         }
 
