@@ -569,7 +569,7 @@ class pocketlistsItem extends pocketlistsEntity
      */
     public function setListId($list_id)
     {
-        $this->list_id = $list_id;
+        $this->list_id = $list_id ?: null;
 
         return $this;
     }
