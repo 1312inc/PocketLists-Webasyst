@@ -38,14 +38,6 @@ class pocketlistsTodoDateAction extends pocketlistsViewAction
             ]
         );
 
-        $stream_list_id = $this->user->getSettings()->getStreamInboxList();
-        if ($stream_list_id) {
-            $this->view->assign(
-                'stream_list',
-                pl2()->getEntityFactory(pocketlistsList::class)->findById($stream_list_id)
-            );
-        }
-
         $this->view->assign(
             [
                 'filter'               => $filter,

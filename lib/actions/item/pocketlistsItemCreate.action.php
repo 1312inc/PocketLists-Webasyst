@@ -26,12 +26,6 @@ class pocketlistsItemCreateAction extends pocketlistsViewAction
             $assign_contact = pl2()->getEntityFactory(pocketlistsContact::class)->createNewWithId($assigned_contact_id);
         }
 
-        // if no list id passed - get default list from settings
-        if (!$list_id) {
-            $us = new pocketlistsUserSettings($assign_contact ? $assign_contact->getId() : $user_id);
-            $list_id = $us->getStreamInboxList();
-        }
-
         if ($data) {
             $paste = false;
             if (!is_array($data)) {

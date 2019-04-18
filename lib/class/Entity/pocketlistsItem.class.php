@@ -962,9 +962,9 @@ class pocketlistsItem extends pocketlistsEntity
      *
      * @return pocketlistsItem
      */
-    public function setAssignedContactId($assigned_contact_id)
+    public function setAssignedContactId($assigned_contact_id = null)
     {
-        $this->assigned_contact_id = $assigned_contact_id;
+        $this->assigned_contact_id = !empty($assigned_contact_id) ? (int)$assigned_contact_id : null;
 
         return $this;
     }
