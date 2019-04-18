@@ -1,17 +1,25 @@
 <?php
 
+/**
+ * Class pocketlistsHelper
+ */
 class pocketlistsHelper
 {
-    const APP_ID = 'pocketlists';
+    const APP_ID        = 'pocketlists';
     const COLOR_DEFAULT = 'blue';
 
+    /**
+     * @param $date
+     *
+     * @throws waException
+     */
     public static function getDueDatetime(&$date)
     {
         if (!empty($date['due_date']) &&
             !empty($date['due_datetime_hours']) &&
             !empty($date['due_datetime_minutes'])
         ) {
-            $tm = strtotime($date['due_date'] . " " . $date['due_datetime_hours'] . ":" . $date['due_datetime_minutes'] . ":00");
+            $tm = strtotime($date['due_date']." ".$date['due_datetime_hours'].":".$date['due_datetime_minutes'].":00");
             $tm = self::convertToServerTime($tm);
             $date['due_datetime'] = waDateTime::date("Y-m-d H:i:s", $tm);
             unset($date['due_datetime_hours']);
@@ -29,6 +37,13 @@ class pocketlistsHelper
     }
 
     // thanks to hub
+
+    /**
+     * @param $timestamp
+     *
+     * @return int
+     * @throws waException
+     */
     public static function convertToServerTime($timestamp)
     {
         $timezone = wa()->getUser()->getTimezone();
@@ -38,9 +53,16 @@ class pocketlistsHelper
             $date_time->setTimezone(new DateTimeZone($default_timezone));
             $timestamp = (int)$date_time->format('U');
         }
+
         return $timestamp;
     }
 
+    /**
+     * @param $due_date
+     * @param $due_datetime
+     *
+     * @return int
+     */
     public static function calcPriorityOnDueDate($due_date, $due_datetime)
     {
         $now = time();
@@ -61,6 +83,11 @@ class pocketlistsHelper
         return $due_status;
     }
 
+    /**
+     * @param $item_id
+     * @param $item
+     * @param $return
+     */
     public static function getItemChildIds($item_id, $item, &$return)
     {
         $return[] = $item['id'];
@@ -69,6 +96,14 @@ class pocketlistsHelper
         }
     }
 
+    /**
+     * @param pocketlistsStrategyItemFilterAndSort $items
+     * @param                                      $show_month
+     * @param int                                  $month_count
+     *
+     * @return array
+     * @throws waException
+     */
     public static function getMonthData(pocketlistsStrategyItemFilterAndSort $items, $show_month, $month_count = 1)
     {
         $timezone = wa()->getUser()->getTimezone();
@@ -178,7 +213,7 @@ class pocketlistsHelper
      */
     public static function getContactData($contact)
     {
-        $default = array(
+        $default = [
             'name'      => '(DELETED USER)',
             'username'  => '(DELETED USER)',
             'id'        => 0,
@@ -188,13 +223,13 @@ class pocketlistsHelper
             'teamrole'  => '',
             'login'     => 'deleted',
             'me'        => false,
-        );
+        ];
 
         if (!$contact->exists()) {
             return $default;
         }
 
-        return array(
+        return [
             'name'      => $contact->getName(),
             'username'  => $contact->getName(),
             'id'        => $contact->getId(),
@@ -204,7 +239,7 @@ class pocketlistsHelper
             'status'    => $contact->getStatus(),
             'teamrole'  => $contact->get('jobtitle'),
             'me'        => ($contact->getId() == wa()->getUser()->getId()),
-        );
+        ];
     }
 
     /**
@@ -262,8 +297,24 @@ class pocketlistsHelper
     public static function logError($msg, $ex = null)
     {
         waLog::log(
-            sprintf("%s.\nException info: %s\n%s", $msg, $ex ? $ex->getMessage() : '', $ex ? $ex->getTraceAsString() : ''),
+            sprintf(
+                "%s.\nException info: %s\n%s",
+                $msg,
+                $ex ? $ex->getMessage() : '',
+                $ex ? $ex->getTraceAsString() : ''
+            ),
             'pocketlists/error.log'
         );
+    }
+
+    /**
+     * @param string $msg
+     * @param string $file
+     */
+    public static function logDebug($msg, $file = 'debug.log')
+    {
+        if (waSystemConfig::isDebug()) {
+            waLog::log($msg, 'pocketlists/'.$file);
+        }
     }
 }

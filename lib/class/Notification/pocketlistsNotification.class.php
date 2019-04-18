@@ -71,6 +71,15 @@ class pocketlistsNotification
             if (!$message->send()) {
                 pocketlistsHelper::logError(sprintf('Email send error to %s', $to));
             }
+
+            pocketlistsHelper::logDebug(
+                sprintf(
+                    "Mail sent to %s\nSubject: %s\nBody: %s",
+                    $to,
+                    $data['subject'],
+                    $data['body']
+                )
+            );
         } catch (waException $ex) {
             pocketlistsHelper::logError(sprintf('Email send error to %s', $to), $ex);
         }
