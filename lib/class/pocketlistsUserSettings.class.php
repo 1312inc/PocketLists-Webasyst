@@ -82,7 +82,6 @@ class pocketlistsUserSettings
             'email_comment_item_on'          => 1,
             'email_comment_item'             => self::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_ANY_LIST_ITEM,
             'email_create_list_on'           => 1,
-            'stream_inbox_list'              => 0,
             'natural_input_on'               => 1,
             'created_by_others_in_shared_on' => 1,
             'created_by_others_in_shared'    => self::MY_TO_DOS_CREATED_BY_OTHER_IN_SHARED_LISTS_GREEN_YELLOW_RED_ALL_LISTS,
@@ -105,7 +104,6 @@ class pocketlistsUserSettings
             'email_add_item_on'              => 0,
             'email_comment_item_on'          => 0,
             'email_create_list_on'           => 0,
-            'stream_inbox_list'              => 0,
             'created_by_others_in_shared_on' => 0,
             'created_by_me_in_shared_on'     => 0,
         ];
@@ -195,14 +193,6 @@ class pocketlistsUserSettings
             $this->settings['last_pocket_list_id'],
             true
         ) : false;
-    }
-
-    /**
-     * @return bool|int
-     */
-    public function getStreamInboxList()
-    {
-        return !empty($this->settings['stream_inbox_list']) ? $this->settings['stream_inbox_list'] : false;
     }
 
     /**

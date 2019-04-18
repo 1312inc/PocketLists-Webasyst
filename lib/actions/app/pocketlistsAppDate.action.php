@@ -51,15 +51,6 @@ class pocketlistsAppDateAction extends pocketlistsViewAction
             ]
         );
 
-        $stream_list_id = $this->user->getSettings()->getStreamInboxList();
-        if ($stream_list_id) {
-            /** @var pocketlistsListFactory $itemFactory */
-            $listFactory = pl2()->getEntityFactory(pocketlistsList::class);
-
-            $stream_list = $listFactory->findById($stream_list_id);
-            $this->view->assign('stream_list', $stream_list);
-        }
-
         $this->view->assign(
             [
                 'filter'               => $filter,

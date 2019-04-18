@@ -178,12 +178,5 @@
         $('input[name="daily_recap_on"]').on('click', function() {
             $('.pl-cron-msg').toggle(200);
         });
-
-        $('#pl-inbox-list').on('change', function() {
-            var list_id = $(this).find(':selected').val();
-            if (list_id) {
-                $('[name="stream_inbox_list"]').val(list_id);
-            }
-        });
     }());
 </script>

@@ -24,18 +24,6 @@ class pocketlistsFavoritesDateAction extends pocketlistsViewAction
 
         $timestamp = $date ? waDateTime::date('Y-m-d', strtotime($date)) : '';
 
-        /** @var pocketlistsListFactory $listFactory */
-        $listFactory = pl2()->getEntityFactory(pocketlistsList::class);
-        $stream_list_id = pl2()->getUser()->getSettings()->getStreamInboxList();
-        if ($stream_list_id && $stream_list = $listFactory->findById($stream_list_id)) {
-            $this->view->assign(
-                [
-                    'stream_list_id' => $stream_list_id,
-                    'stream_list'    => $stream_list,
-                ]
-            );
-        }
-
         $this->view->assign(
             [
                 'undone_items'         => $itemsUndone,
