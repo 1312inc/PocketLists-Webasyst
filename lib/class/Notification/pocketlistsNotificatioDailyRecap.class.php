@@ -74,7 +74,7 @@ class pocketlistsNotificatioDailyRecap extends pocketlistsNotification
                 $this->sendMail(
                     [
                         'contact_id' => $user_id,
-                        'subject'    => 'string:'.sprintf(_w("Daily recap for %s"), waDateTime::format('humandate')),
+                        'subject'    => 'string:📥 '.sprintf(_w("Daily recap for %s"), waDateTime::format('humandate')),
                         'body'       => wa()->getAppPath('templates/mails/dailyrecap.html'),
                         'variables'  => [
                                 'items'    => $items,

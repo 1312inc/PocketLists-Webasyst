@@ -313,7 +313,7 @@ input#pl-new-list-input:focus,
 .pl-item .pl-comment.pl-comment-count-show { opacity: 1; }
 .pl-item .pl-comment.pl-comment-count i.icon16 { margin-top: -1px; margin-right: 4px; }
 .pl-item .pl-lastaction-datetime { float: right; }
-.pl-item .pl-item-name { font-weight: 500; font-size: 15px; }
+.pl-item .pl-item-name { font-weight: 500; font-size: 15px; word-break: break-all; }
 .pl-item .pl-item-note { font-size: 13px; line-height: 17px; color: #777; margin-top: 5px; margin-bottom: 5px; }
 .pl-item p.hint { margin-bottom: 0; margin-top: 4px; line-height: 1.2em; color: rgba(0,0,0,0.3); }
 .pl-item i.icon10 { margin-top: 5px; }

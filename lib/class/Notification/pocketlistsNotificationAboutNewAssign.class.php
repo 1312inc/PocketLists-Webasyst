@@ -48,7 +48,7 @@ class pocketlistsNotificationAboutNewAssign extends pocketlistsNotification
         $this->sendMail(
             [
                 'contact_id' => $contact->getId(),
-                'subject'    => 'string:✊ {str_replace(array("\r", "\n"), " ", $item->getName())|truncate:64}',
+                'subject'    => 'string:➡️ {str_replace(array("\r", "\n"), " ", $item->getName())|truncate:64}',
                 'body'       => wa()->getAppPath('templates/mails/newassignitem.html'),
                 'variables'  => [
                     'item'        => $item,
