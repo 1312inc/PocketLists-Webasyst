@@ -36,7 +36,7 @@
                 </div>
             </form>
 
-            <form method="post">
+            <form method="post" id="pl-recap-form">
                 <h6 class="heading">Email</h6>
                 <br>
                 <div class="field-group">
@@ -45,8 +45,9 @@
                         <div class="name nowrap">
                             Daily Recap Email
                         </div>
-                        <div class="value no-shift">
-                            <a href="?module=debug&action=recap">Respect The Send!</a>
+                        <div class="value">
+                            <input type="submit" value="[`Send It!`]" id="pl-send-recap" class="button blue"/>
+                            <i class="icon16 yes" style="display: none;"></i>
                         </div>
 
                     </div>
@@ -135,5 +136,21 @@
                 }
             }, 'json')
         });
+
+        $('#pl-send-recap').on('click', $('#pl-recap-form').serialize(), function (e) {
+            var $this = $(this);
+            e.preventDefault();
+            $this.after($loading);
+            $.post('?module=debug&action=recap', $('#pl-recap-form').serialize(), function (r) {
+                $loading.remove();
+                if (r.status === 'ok') {
+                    $this.next('.icon16.yes').show(200, function () {
+                        // $.pocketlists_routing.redispatch();
+                    }).delay(3000).hide(200);
+                } else {
+                    alert('error while recaping');
+                }
+            }, 'json')
+        })
     }());
 </script>

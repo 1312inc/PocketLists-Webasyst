@@ -78,7 +78,7 @@ class pocketlistsItemDataAction extends pocketlistsViewItemAction
                     $us = new pocketlistsUserSettings($item->getAssignedContactId());
                     // settings are set AND assigned id is updated
                     if ($us->emailWhenNewAssignToMe() && $oldAssignedId != $item->getAssignedContactId()) {
-                        (new pocketlistsNotificationAboutNewAssign())->notify($item, wa()->getUser()->getName());
+                        (new pocketlistsNotificationAboutNewAssign())->notify($item);
                     }
                 }
             }

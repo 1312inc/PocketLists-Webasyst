@@ -8,15 +8,17 @@ class pocketlistsNotificationAboutNewAssign extends pocketlistsNotification
     /**
      * Notify all related users about new items (according to their settings)
      *
-     * @param pocketlistsItem $item
-     * @param string          $by_username
+     * @param pocketlistsItem         $item
+     * @param pocketlistsContact|null $by_username
      *
      * @throws waException
      */
-    public function notify(pocketlistsItem $item, $by_username = '')
+    public function notify(pocketlistsItem $item, pocketlistsContact $by_username = null)
     {
         if (!$by_username) {
-            $by_username = wa()->getUser()->getName();
+            $by_username = pl2()->getEntityFactory(pocketlistsContact::class)->createNewWithId(
+                wa()->getUser()->getId()
+            );
         }
 
         $list = $this->getList($item);
@@ -65,7 +67,7 @@ class pocketlistsNotificationAboutNewAssign extends pocketlistsNotification
                         ) : false),
                     'list'        => $list,
                     'listUrl'     => $listUrl,
-                    'by_username' => $by_username,
+                    'by_username' => $by_username->getName(),
                 ],
             ],
             $this->getBackendUrl($item->getAssignedContactId())
