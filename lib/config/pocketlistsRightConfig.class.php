@@ -101,6 +101,10 @@ class pocketlistsRightConfig extends waRightConfig
                 }
 
                 $pocket = $pocketFactory->findById($currentPocketId);
+                if (!$pocket) {
+                    continue;
+                }
+
                 $lists = $listFactory->findListsByPocket($pocket, false);
                 $items = [];
 
