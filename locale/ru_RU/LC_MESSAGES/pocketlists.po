@@ -928,8 +928,8 @@ msgid "author"
 msgstr "автор"
 
 #: /wa-apps/pocketlists/templates/actions/list/List.html:61
-msgid "Use <a href=\"%s\">Team app</a> to configure access to this to-do list: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level."
-msgstr "Для настройки доступа к списку используйте приложение «<a href=\"%s\">Команда</a>»: выберите пользователя или группу пользователей &gt; вкладка «Доступ» &gt; приложение «Дела» &gt; настройте подходящий уровень доступа."
+msgid "Use <a href=\"%s\">Team app</a> to configure access: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level."
+msgstr "Для настройки доступа используйте приложение «<a href=\"%s\">Команда</a>»: выберите пользователя или группу пользователей &gt; вкладка «Доступ» &gt; приложение «Дела» &gt; настройте подходящий уровень доступа."
 
 #: /wa-apps/pocketlists/templates/actions/settings/Settings.html:17
 msgid "Understand “Meeting tomorrow at 10” input (recommended)"

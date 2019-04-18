@@ -927,7 +927,7 @@ msgid "author"
 msgstr ""
 
 #: /wa-apps/pocketlists/templates/actions/list/List.html:61
-msgid "Use <a href=\"%s\">Team app</a> to configure access to this to-do list: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level."
+msgid "Use <a href=\"%s\">Team app</a> to configure access: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level."
 msgstr ""
 
 #: /wa-apps/pocketlists/templates/actions/settings/Settings.html:17
