@@ -50,7 +50,7 @@ class pocketlistsShopBackend_orderHandler extends waEventHandler
             $filter = (new pocketlistsStrategyItemFilterAndSort($items))->filterDoneUndone();
 
             if ($items) {
-                $viewParams['items_undone'] = $filter->getProperSortUndone()->getItemsUndone();
+                $viewParams['items_undone'] = $filter->getProperSortUndone();
                 $viewParams['items_done'] = $filter->getItemsDone();
                 $viewParams['count_done_items'] = $filter->countDone();
             }

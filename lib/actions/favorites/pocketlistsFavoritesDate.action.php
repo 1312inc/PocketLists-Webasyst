@@ -19,7 +19,7 @@ class pocketlistsFavoritesDateAction extends pocketlistsViewAction
         $items = $itemFactory->findFavoritesForUserAndDate($this->user, $date);
 
         $filter = new pocketlistsStrategyItemFilterAndSort($items);
-        $itemsUndone = $filter->filterDoneUndone()->properSortUndone()->getItemsUndone();
+        $itemsUndone = $filter->filterDoneUndone()->getProperSortUndone();
         $itemsDone = $filter->getItemsDone();
 
         $timestamp = $date ? waDateTime::date('Y-m-d', strtotime($date)) : '';

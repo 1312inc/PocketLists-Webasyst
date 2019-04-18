@@ -24,8 +24,8 @@ class pocketlistsTodoDateAction extends pocketlistsViewAction
 
         $this->view->assign(
             [
-                'undone_items'     => $itemFilter->getItemsUndone(),
-                'done_items'       => $itemFilter->getItemsDone(),
+                'undone_items'     => $itemFilter->getProperSortUndone(),
+                'done_items'       => $itemFilter->getProperSortDone(),
                 'count_done_items' => count($itemFilter->getItemsDone()),
                 'date'             => $date,
                 'timestamp'        => $date

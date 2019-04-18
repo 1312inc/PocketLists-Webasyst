@@ -56,7 +56,7 @@ class pocketlistsTeamAction extends pocketlistsViewAction
             $this->view->assign(
                 [
                     'lists'            => $lists,
-                    'items'            => $itemFilter->properSortUndone()->getItemsUndone(),
+                    'items'            => $itemFilter->getProperSortUndone(),
                     'items_done'       => $itemFilter->getItemsDone(),
                     'count_done_items' => count($itemFilter->getItemsDone()),
                     'current_teammate' => $teammate,
