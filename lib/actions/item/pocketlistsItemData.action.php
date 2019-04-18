@@ -66,7 +66,8 @@ class pocketlistsItemDataAction extends pocketlistsViewItemAction
                     throw new waException('Access denied.', 403);
                 }
 
-                if ($item->getAssignedContactId() && !pocketlistsRBAC::canAccessToList($item->getList(), $item->getAssignedContactId())) {
+                if ($item->getAssignedContactId()
+                    && !pocketlistsRBAC::canAccessToList($item->getList(), $item->getAssignedContactId())) {
                     $item->setAssignedContactId(null);
                 }
             }
@@ -93,27 +94,13 @@ class pocketlistsItemDataAction extends pocketlistsViewItemAction
             }
 
             if (!empty($item_new_data['links'])) {
+                /** @var pocketlistsItemLinkFactory $itemLinkFactory */
+                $itemLinkFactory = pl2()->getEntityFactory(pocketlistsItemLink::class);
+
                 foreach ($item_new_data['links'] as $link) {
-                    /** @var pocketlistsAppLinkInterface $app */
-                    $app = wa(pocketlistsHelper::APP_ID)->getConfig()->getLinkedApp($link['model']['app']);
+                    $linkData = $link['model'];
 
-                    if (!$app->userCanAccess()) {
-                        continue;
-                    }
-
-                    foreach ($link['model'] as $key => $value) {
-                        if ($value === '') {
-                            $link['model'][$key] = null;
-                        }
-                    }
-
-                    $itemLink = new pocketlistsItemLinkModel($link['model']);
-                    $itemLink->item_id = $item->getById();
-                    try {
-                        $itemLink->save();
-                    } catch (waException $ex) {
-                        // silence
-                    }
+                    $itemLinkFactory->createFromDataForItem($item, $linkData);
                 }
             }
 

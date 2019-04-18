@@ -28,9 +28,9 @@ class pocketlistsItemLink extends pocketlistsEntity
     private $entity_type = '';
 
     /**
-     * @var string
+     * @var int
      */
-    private $entity_id = '';
+    private $entity_id = 0;
 
     /**
      * @var string|null
@@ -172,13 +172,13 @@ class pocketlistsItemLink extends pocketlistsEntity
     }
 
     /**
-     * @param string $entity_id
+     * @param int $entity_id
      *
      * @return pocketlistsItemLink
      */
     public function setEntityId($entity_id)
     {
-        $this->entity_id = $entity_id;
+        $this->entity_id = (int)$entity_id;
 
         return $this;
     }

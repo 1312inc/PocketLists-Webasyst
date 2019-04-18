@@ -216,6 +216,15 @@ class pocketlistsComment extends pocketlistsEntity
     }
 
     /**
+     * @return mixed|string
+     * @throws waException
+     */
+    public function getCommentParsed()
+    {
+        return pocketlistsNaturalInput::matchLinks($this->getComment());
+    }
+
+    /**
      * @param string $comment
      *
      * @return pocketlistsComment

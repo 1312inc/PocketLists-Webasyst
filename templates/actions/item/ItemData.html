@@ -4,7 +4,7 @@
 <div class="pl-item{if $item->getAssignedContactId() != $wa->user()->getId() && !$item->isDone()} pl-item-assigned{/if}{if $item->isDone()} gray{/if}" {if $item->getAssignedContactId()}data-pl-assigned-contact="{$item->getAssignedContactId()}"{/if}>
     {if !$item->isDone() && empty($item->getKeyListId()) && !(isset($archive) && $archive)}<div class="pl-item-drag-handle" title="[`Sort`]" data-pl-action="item-sort"></div>{/if}
 
-    {if $item->getListId() != NULL}<div class="pl-item-list-name pl-dark-{$item->getList()->getColor()}-label">{$item->getList()->getName()|truncate:32|escape}</div>{/if}
+    {if $item->getListId()}<div class="pl-item-list-name pl-dark-{$item->getList()->getColor()}-label">{$item->getList()->getName()|truncate:32|escape}</div>{/if}
 
     <div class="pl-meta">
         {if !(isset($archive) && $archive)}
