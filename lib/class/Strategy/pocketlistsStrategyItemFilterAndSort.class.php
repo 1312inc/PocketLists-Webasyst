@@ -100,43 +100,36 @@ class pocketlistsStrategyItemFilterAndSort
     }
 
     /**
-     * @return pocketlistsStrategyItemFilterAndSort
+     * @return pocketlistsItem[]
      */
     public function getProperSort()
     {
+        $items = $this->itemsDone;
         usort($this->items, [$this, 'compareForProperSort']);
 
-        return $this;
+        return $items;
     }
 
     /**
-     * @return pocketlistsStrategyItemFilterAndSort
-     */
-    public function properSortUndone()
-    {
-        usort($this->itemsUndone, [$this, 'compareForProperSort']);
-
-        return $this;
-    }
-
-    /**
-     * @return pocketlistsStrategyItemFilterAndSort
+     * @return pocketlistsItem[]
      */
     public function getProperSortDone()
     {
-        usort($this->itemsDone, [$this, 'compareForProperSort']);
+        $items = $this->itemsDone;
+        usort($items, [$this, 'compareForProperSort']);
 
-        return $this;
+        return $items;
     }
 
     /**
-     * @return pocketlistsStrategyItemFilterAndSort
+     * @return pocketlistsItem[]
      */
     public function getProperSortUndone()
     {
-        usort($this->itemsUndone, [$this, 'compareForProperSort']);
+        $items = $this->itemsUndone;
+        usort($items, [$this, 'compareForProperSort']);
 
-        return $this;
+        return $items;
     }
 
     /**
