@@ -278,11 +278,12 @@ class pocketlistsLogAction
         $contact = new waContact($this->ext_logs[$id]['params']['assigned_to']);
         $team_url = $this->app_url.'#/team/'.$contact->get('login').'/';
 
+        $item = null;
         if (!empty($this->ext_logs[$id]['params']['item_id'])) {
             $item = $this->getItemData($this->ext_logs[$id]['params']['item_id']);
         }
 
-        return ($item->getId() ? $item->getName() : '') ." "._w("to user")." <a href=\"{$team_url}\">".htmlspecialchars($contact->getName())."</a>";
+        return ($item && $item->getId() ? $item->getName() : '') ." "._w("to user")." <a href=\"{$team_url}\">".htmlspecialchars($contact->getName())."</a>";
     }
 
     /**

@@ -65,7 +65,7 @@ class pocketlistsNotificatioDailyRecap extends pocketlistsNotification
             }
 
             if (wa()->getEnv() == 'cli') { // to load locale in cli
-                wa()->setLocale($contact->getLocale());
+                wa()->setLocale($contact->getContact()->getLocale());
             }
 
             $items = $itemFactory->findTodoRecap($contact, $user['setting']);

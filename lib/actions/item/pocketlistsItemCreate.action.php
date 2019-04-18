@@ -145,7 +145,7 @@ class pocketlistsItemCreateAction extends pocketlistsViewAction
                 // log this action
                 foreach ($items as $item) {
                     if ($assign_contact) {
-                        (new pocketlistsNotificationAboutNewAssign())->notify($item, $list);
+                        (new pocketlistsNotificationAboutNewAssign())->notify($item, $assign_contact);
 
                         $this->logAction(
                             pocketlistsLogAction::ITEM_ASSIGN_TEAM,

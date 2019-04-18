@@ -37,7 +37,7 @@ class pocketlistsItemAssignToController extends pocketlistsJsonController
                 $saved = $itemFactory->save($item);
 
                 if ($saved) {
-                    (new pocketlistsNotificationAboutNewAssign())->notify($item, wa()->getUser()->getName());
+                    (new pocketlistsNotificationAboutNewAssign())->notify($item);
 
                     $this->response = $contact->getName();
                 } else {

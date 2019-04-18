@@ -162,7 +162,8 @@ class pocketlistsItemModel extends waModel
                 GROUP BY i.id
                 ORDER BY
                   i.status,
-                  (i.complete_datetime IS NULL), i.complete_datetime DESC";
+                  (i.complete_datetime IS NULL), i.complete_datetime DESC,
+                  i.id DESC";
 
         $items = $this->query(
             $sql,
