@@ -2,6 +2,8 @@
 
     <main class="block double-padded">
 
+        <h3 style="color: red; border-bottom: 1px solid #ddd; padding-bottom: 16px; margin-bottom: 24px;">YOU ARE NOT SUPPOSED TO BE HERE!</h3>
+
         <div class="fields form">
             <form method="post" id="pl-settings-form">
                 <h6 class="heading">Debug</h6>
@@ -22,25 +24,40 @@
                                        {if empty($apps['shop']['enable'])}checked="checked"{/if}/> OFF
                             </label>
                         </div>
-                        <div class="value no-shift">
-                            <p class="hint">Disable integration in case of conflicts with third-party plugins.</p>
-                        </div>
+
                     </div>
 
                     <div class="field">
-                        <div class="value no-shift submit">
-                            <br>
+                        <div class="value no-shift">
                             <input type="submit" value="[`Save`]" id="pl-save-settings" class="button green"/>
                             <i class="icon16 yes" style="display: none;"></i>
                         </div>
                     </div>
                 </div>
             </form>
-        </div>
 
-        <div class="fields form">
+            <form method="post">
+                <h6 class="heading">Email</h6>
+                <br>
+                <div class="field-group">
+
+                    <div class="field">
+                        <div class="name nowrap">
+                            Daily Recap Email
+                        </div>
+                        <div class="value">
+                            <input type="submit" value="[`Send It!`]" id="pl-save-settings" class="button blue"/>
+                            <i class="icon16 yes" style="display: none;"></i>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </form>
+
             <form method="post" id="pl-fixtures-form">
-                <h6 class="heading">Generate fixtures</h6>
+                <h6 class="heading">100500 ITEM GENERATOR</h6>
                 <br>
                 <div class="field-group">
 
@@ -67,9 +84,9 @@
                     </div>
 
                     <div class="field">
-                        <div class="value no-shift submit">
+                        <div class="value no-shift">
                             <br>
-                            <input type="submit" value="[`Generate`]" id="pl-generate-fixture" class="button green"/>
+                            <input type="submit" value="[`Generate`]" id="pl-generate-fixture" class="button red"/>
                             <i class="icon16 yes" style="display: none;"></i>
                         </div>
                     </div>

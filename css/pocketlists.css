@@ -215,7 +215,6 @@ input#pl-new-list-input,
     min-width: 350px;
     width: 100%;
     height: 1.3em;
-    font-size: 15px;
     line-height: 1.3em;
     resize: none;
     word-wrap: normal;
@@ -230,6 +229,7 @@ input#pl-new-list-input,
     font-weight: 500;
     z-index: 7;
 }
+#pl-item-add textarea { font-size: 15px; }
 input#pl-new-list-input::-webkit-placeholder { color: rgba(0,0,0,0.4) !important; }
 #pl-item-add textarea::-webkit-placeholder { color: rgba(0,0,0,0.4) !important; }
 input#pl-new-list-input::-moz-placeholder { color: rgba(0,0,0,0.4) !important; }
@@ -247,7 +247,7 @@ input#pl-new-list-input:focus,
 /* .pl-unsaved { background: rgba(183,0,0,0.06) !important; 2px 3px 0nt; color: #f55 !important; } */
 
 .pl-title { padding: 25px 5px 15px 17px; }
-.pl-title h1 { margin-bottom: 0.2em; line-height: 1.1em; padding-right: 22px; }
+.pl-title h1 { margin-bottom: 0.2em; line-height: 1.1em; padding-right: 42px; }
 .pl-title h1 .pl-done + span {left: -34px; top: 2px; width: 22px; height: 22px; position: absolute; z-index: 1;}
 .pl-title h1 .pl-done:checked + span,
 .pl-title h1 .pl-done:disabled:checked + span { background-size: 24px 24px !important; }
