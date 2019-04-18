@@ -25,19 +25,59 @@ class pocketlistsItemLinkFactory extends pocketlistsFactory
     /**
      * @param string $app
      * @param string $entityType
-     * @param int$entityId
+     * @param int    $entityId
      *
      * @return pocketlistsItemLink[]
      * @throws waException
      */
     public function findWithAppEntityTypeAndId($app, $entityType, $entityId)
     {
-        $data = $this->getModel()->getByField([
-            'app'         => $app,
-            'entity_type' => $entityType,
-            'entity_id'   => $entityId,
-        ], true);
+        $data = $this->getModel()->getByField(
+            [
+                'app'         => $app,
+                'entity_type' => $entityType,
+                'entity_id'   => $entityId,
+            ],
+            true
+        );
 
         return $this->generateWithData($data, true);
+    }
+
+    /**
+     * @param pocketlistsItem $item
+     * @param array           $linkData
+     *
+     * @return bool|pocketlistsItemLink
+     * @throws waException
+     */
+    public function createFromDataForItem(pocketlistsItem $item, array $linkData)
+    {
+        /** @var pocketlistsAppLinkInterface $app */
+        $app = pl2()->getLinkedApp($linkData['app']);
+
+        if (!$app->userCanAccess()) {
+            return false;
+        }
+
+        foreach ($linkData as $key => $value) {
+            if ($value === '') {
+                unset($linkData[$key]);
+            }
+        }
+
+        /** @var pocketlistsItemLink $itemLink */
+        $itemLink = pl2()->getHydrator()->hydrate($this->createNew(), $linkData);
+        $itemLink->setItem($item);
+
+        try {
+            $this->save($itemLink);
+            $item->addAppLinks($itemLink);
+
+            return $itemLink;
+        } catch (waException $ex) {
+        }
+
+        return false;
     }
 }

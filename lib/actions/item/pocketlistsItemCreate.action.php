@@ -114,53 +114,15 @@ class pocketlistsItemCreateAction extends pocketlistsViewAction
                             continue;
                         }
 
-                        // todo:
-                        /** @var pocketlistsItemLink $itemLink */
-                        $itemLink = $itemLinkFactory->createNew();
-                        $itemLink
-                            ->setApp($linkAppTypeId['app'])
-                            ->setEntityId($linkAppTypeId['entity_id'])
-                            ->setEntityType($linkAppTypeId['entity_type'])
-                            ->setItem($item);
-
-                        try {
-                            $itemLinkFactory->save($itemLink);
-                            $item->addAppLinks($itemLink);
-                        } catch (waException $ex) {
-                            // silence
-                        }
+                        $itemLinkFactory->createFromDataForItem($item, $linkAppTypeId);
                     }
                 }
 
                 if (!empty($d['links'])) {
                     foreach ($d['links'] as $link) {
-                        /** @var pocketlistsAppLinkInterface $app */
-                        $app = pl2()->getLinkedApp($link['model']['app']);
+                        $linkData = $link['model'];
 
-                        if (!$app->userCanAccess()) {
-                            continue;
-                        }
-
-                        foreach ($link['model'] as $key => $value) {
-                            if ($value === '') {
-                                $link['model'][$key] = null;
-                            }
-                        }
-
-                        /** @var pocketlistsItemLink $itemLink */
-                        $itemLink = $itemLinkFactory->createNew();
-                        $itemLink
-                            ->setApp($link['model']['app'])
-                            ->setEntityId($link['model']['entity_id'])
-                            ->setEntityType($link['model']['entity_type'])
-                            ->setItem($item);
-
-                        try {
-                            $itemLinkFactory->save($itemLink);
-                            $item->addAppLinks($itemLink);
-                        } catch (waException $ex) {
-                            // silence
-                        }
+                        $itemLinkFactory->createFromDataForItem($item, $linkData);
                     }
                 }
 
