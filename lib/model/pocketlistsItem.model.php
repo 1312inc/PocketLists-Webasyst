@@ -242,53 +242,57 @@ class pocketlistsItemModel extends waModel
         ];
 
         $sqlParts['select'] = [
-            "i.*",
-            "IF(uf.contact_id, 1, 0) favorite",
+            'i.*',
+            'IF(uf.contact_id, 1, 0) favorite',
         ];
 
         $sqlParts['join'] = [
-            "",
-            "pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id",
-            "(select i2.name, l2.*
+            '',
+            'pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id',
+            '(select i2.name, l2.*
                   from pocketlists_list l2
-                         JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) l ON l.id = i.list_id AND l.archived = 0",
+                         JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) l ON l.id = i.list_id AND l.archived = 0',
         ];
 
         $sqlParts['and'] = [
-            "(".pocketlistsRBAC::filterListAccess($lists, $contact_id)." OR l.id IS NULL)",
+            sprintf('(%s OR l.id IS NULL)', pocketlistsRBAC::filterListAccess($lists, $contact_id)),
             // get to-do items only from accмфп essed pockets
         ];
 
         $sqlParts['or'] = [
-            "(i.list_id IS NULL AND i.key_list_id IS NULL AND i.contact_id = i:contact_id) /* My to-dos to self */",
-            "(i.key_list_id IS NULL AND i.assigned_contact_id = i:contact_id) /* To-dos assigned to me by other users */",
+            '(i.list_id IS NULL AND i.key_list_id IS NULL AND i.contact_id = i:contact_id) /* My to-dos to self */',
+            '(i.key_list_id IS NULL AND i.assigned_contact_id = i:contact_id) /* To-dos assigned to me by other users */',
         ];
 
         if ($date) {
-            $sqlParts['and'][] = "((i.status = 0 AND (i.due_date = s:date OR DATE(i.due_datetime) = s:date)) OR (i.status > 0 AND DATE(i.complete_datetime) = s:date)) /* with due date or completed this day */";
+            $sqlParts['and'][] = '((i.status = 0 AND (i.due_date = s:date OR DATE(i.due_datetime) = s:date)) OR (i.status > 0 AND DATE(i.complete_datetime) = s:date)) /* with due date or completed this day */';
         }
 
         $us = new pocketlistsUserSettings($contact_id);
 
         switch ($us->myToDosCreatedByMe()) {
             case pocketlistsUserSettings::MY_TO_DOS_CREATED_BY_ME_IN_SHARED_ANY_LIST:
-                $sqlParts['or'][] = "(i.list_id IS NOT NULL AND i.key_list_id IS NULL AND i.contact_id = i:contact_id) /* To-dos created by me in shared lists in just any list */";
+                $sqlParts['or'][] = '(i.list_id IS NOT NULL AND i.key_list_id IS NULL AND i.contact_id = i:contact_id) /* To-dos created by me in shared lists in just any list */';
                 break;
 
             case pocketlistsUserSettings::MY_TO_DOS_CREATED_BY_ME_IN_SHARED_FAVORITE_LISTS:
-                $sqlParts['or'][] = "(i.list_id IS NOT NULL AND i.key_list_id IS NULL AND i.contact_id = i:contact_id AND uf2.contact_id = i:contact_id) /* To-dos created BY other users IN shared lists only in lists which I marked as favorite*/";
+                $sqlParts['or'][] = '(i.list_id IS NOT NULL AND i.key_list_id IS NULL AND i.contact_id = i:contact_id AND uf2.contact_id = i:contact_id) /* To-dos created BY other users IN shared lists only in lists which I marked as favorite*/';
                 break;
         }
 
         switch ($us->myToDosCreatedByOthers()) {
             case pocketlistsUserSettings::MY_TO_DOS_CREATED_BY_OTHER_IN_SHARED_LISTS_FAVORITE_LISTS:
-                $sqlParts['or'][] = "(i.list_id IS NOT NULL AND i.key_list_id IS NULL AND i.contact_id <> i:contact_id AND uf2.contact_id = i:contact_id) /* To-dos created BY other users IN shared lists only in lists which I marked as favorite*/";
+                $sqlParts['or'][] = '(i.list_id IS NOT NULL AND i.key_list_id IS NULL AND i.contact_id <> i:contact_id AND uf2.contact_id = i:contact_id) /* To-dos created BY other users IN shared lists only in lists which I marked as favorite*/';
                 break;
 
             case pocketlistsUserSettings::MY_TO_DOS_CREATED_BY_OTHER_IN_SHARED_LISTS_GREEN_YELLOW_RED_ALL_LISTS:
-                $tomorrow = date("Y-m-d", strtotime("+1 day"));
-                $day_after_tomorrow = date("Y-m-d", strtotime("+2 day"));
-                $sqlParts['or'][] = "(i.list_id IS NOT NULL AND i.key_list_id IS NULL AND i.contact_id <> i:contact_id AND (i.due_date <= '".$tomorrow."' OR i.due_datetime < '".$day_after_tomorrow."' OR i.priority IN (".implode(
+                $tomorrow = date('Y-m-d', strtotime('+1 day'));
+                $day_after_tomorrow = date("Y-m-d", strtotime('+2 day'));
+                $sqlParts['or'][] = sprintf(
+                    "(i.list_id IS NOT NULL AND i.key_list_id IS NULL AND i.contact_id <> i:contact_id AND (i.due_date <= '%s' OR i.due_datetime < '%s' OR i.priority IN (%s))) /* To-dos created BY other users IN shared lists all Green, Yellow, and Red to-dos from all lists*/",
+                    $tomorrow,
+                    $day_after_tomorrow,
+                    implode(
                         ',',
                         [
                             self::PRIORITY_GREEN,
@@ -297,18 +301,19 @@ class pocketlistsItemModel extends waModel
                             self::PRIORITY_BLACK,
                             self::PRIORITY_BURNINHELL,
                         ]
-                    )."))) /* To-dos created BY other users IN shared lists all Green, Yellow, and Red to-dos from all lists*/";
+                    )
+                );
                 break;
         }
 
         if ($us->myToDosCreatedByOthers() == pocketlistsUserSettings::MY_TO_DOS_CREATED_BY_OTHER_IN_SHARED_LISTS_FAVORITE_LISTS
             || $us->myToDosCreatedByMe() == pocketlistsUserSettings::MY_TO_DOS_CREATED_BY_ME_IN_SHARED_FAVORITE_LISTS) {
-            $sqlParts['join'][] = "pocketlists_user_favorites uf2 ON uf2.contact_id = i:contact_id AND uf2.item_id = i2.id";
+            $sqlParts['join'][] = 'pocketlists_user_favorites uf2 ON uf2.contact_id = i:contact_id AND uf2.item_id = l.key_item_id';
 
-            $sqlParts['select'][] = "IF(uf2.contact_id, 1, 0) favorite_list";
+            $sqlParts['select'][] = 'IF(uf2.contact_id, 1, 0) favorite_list';
         }
 
-        $sqlParts['and'][] = "(i.assigned_contact_id = i:contact_id OR i.assigned_contact_id IS NULL)";
+        $sqlParts['and'][] = '(i.assigned_contact_id = i:contact_id OR i.assigned_contact_id IS NULL)';
 
         if ($calc_priority) {
             $sqlParts['and'][] = '(i.calc_priority in (i:calc_priority))';
