@@ -283,7 +283,7 @@ class pocketlistsLogAction
             $item = $this->getItemData($this->ext_logs[$id]['params']['item_id']);
         }
 
-        return ($item && $item->getId() ? $item->getName() : '') ." "._w("to user")." <a href=\"{$team_url}\">".htmlspecialchars($contact->getName())."</a>";
+        return ($item && $item->getId() ? htmlspecialchars($item->getName()) : '') ." "._w("to user")." <a href=\"{$team_url}\">".htmlspecialchars($contact->getName())."</a>";
     }
 
     /**
