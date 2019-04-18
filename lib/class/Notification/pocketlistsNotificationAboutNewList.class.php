@@ -52,7 +52,7 @@ class pocketlistsNotificationAboutNewList extends pocketlistsNotification
             $this->sendMail(
                 [
                     'contact_id' => $user_id,
-                    'subject'    => 'string:📝 [`New list!`]',
+                    'subject'    => 'string:📝 '.$list->getName(),
                     'body'       => wa()->getAppPath('templates/mails/newlist.html'),
                     'variables'  => [
                         'list_name'       => $list->getName(),
