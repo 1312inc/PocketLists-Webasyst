@@ -7,7 +7,7 @@ $currentRights = $rightsModel->query(
     "select * from {$rightsModel->getTableName()} where app_id = 'pocketlists'"
 )->fetchAll();
 
-$pockets = pocketlistsPocketModel::model()->getAll('id');
+$pockets = (new pocketlistsPocketModel())->getAll('id');
 
 foreach ($currentRights as $rights) {
     if (in_array($rights['value'], [pocketlistsRBAC::RIGHT_ADMIN, pocketlistsRBAC::RIGHT_LIMITED])) {
