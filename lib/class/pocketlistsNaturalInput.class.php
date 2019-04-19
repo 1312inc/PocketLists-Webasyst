@@ -90,11 +90,13 @@ class pocketlistsNaturalInput
     public static function matchPriority($item_name)
     {
         $matches = [];
-        if (preg_match('/^(!{1,3})/isu', $item_name, $matches)) {
+        if (preg_match('/^(!{1,5})/isu', $item_name, $matches)) {
             $priority = [
-                '!'   => 1,
-                '!!'  => 2,
-                '!!!' => 3,
+                '!'     => 1,
+                '!!'    => 2,
+                '!!!'   => 3,
+                '!!!!'  => 4,
+                '!!!!!' => 5,
             ];
 
             return [

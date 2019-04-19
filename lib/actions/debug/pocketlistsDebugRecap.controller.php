@@ -18,7 +18,7 @@ class pocketlistsDebugRecapController extends waJsonController
             throw new waException('Not debug mode.', 403);
         }
 
-        (new pocketlistsNotificatioDailyRecap())->notify(array(), true);
+        (new pocketlistsNotificationDailyRecap())->notify(array(), true);
 
         $this->response = 'ok';
     }
