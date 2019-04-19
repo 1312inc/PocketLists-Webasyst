@@ -21,8 +21,8 @@
             <input type="hidden" name="pocket_id" value="{$pocket->getId()}">
 
             {if !$new && !$archive}
-                {if pocketlistsRBAC::canAssign()}
                     <div class="float-right">
+                        {if pocketlistsRBAC::canAssign()}
                         <a data-pl-action="list-edit" href="#" class="pl-userpic-bundle" data-pl2-list-edit-action="accesses">
                             {$max_visible_in_bundle = 5}
                             {foreach $list_access_contacts as $list_access_contact}
@@ -33,9 +33,11 @@
                                 <i class="userpic" title="{$list_access_contact->getName()|escape}"><span>+{count($list_access_contacts) - $max_visible_in_bundle}</span></i>
                             {/if}
                         </a>
+                        {/if}
+                        {if pocketlistsRBAC::canAccessToList($list)}
                         <a data-pl-action="list-edit" href="#" class="pl-list-details-helper" data-pl2-list-edit-action="details"><i class="icon16 pl ellipsis"></i></a>
+                        {/if}
                     </div>
-                {/if}
             {/if}
 
             <h1>

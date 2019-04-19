@@ -219,7 +219,8 @@ class pocketlistsLogAction
      */
     private function new_self_item($id)
     {
-        $item = pl2()->getEntityFactory(pocketlistsItem::class)->findById($this->ext_logs[$id]['params']['item_id']);
+        $f = pl2()->getEntityFactory(pocketlistsItem::class);
+        $item = $f->findById($this->ext_logs[$id]['params']['item_id']) ?: $f->createNew();
 
         return $item->getName();
     }
