@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Class pocketlistsNotificatioDailyRecap
+ * Class pocketlistsNotificationDailyRecap
  */
-class pocketlistsNotificatioDailyRecap extends pocketlistsNotification
+class pocketlistsNotificationDailyRecap extends pocketlistsNotification
 {
     /**
      * @param array $vars
@@ -69,6 +69,8 @@ class pocketlistsNotificatioDailyRecap extends pocketlistsNotification
             }
 
             $items = $itemFactory->findTodoRecap($contact, $user['setting']);
+
+            $items = (new pocketlistsStrategyItemFilterAndSort($items))->filterDoneUndone()->getProperSortUndone();
 
             if ($items) {
                 $this->sendMail(

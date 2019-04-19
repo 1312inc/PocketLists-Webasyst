@@ -19,6 +19,6 @@ class pocketlistsRecapCli extends waCliController
         $asp = new waAppSettingsModel();
         $asp->set('pocketlists', 'last_recap_cron_time', $time);
 
-        (new pocketlistsNotificatioDailyRecap())->notify(array(), $test);
+        (new pocketlistsNotificationDailyRecap())->notify(array(), $test);
     }
 }
