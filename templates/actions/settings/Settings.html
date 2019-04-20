@@ -35,8 +35,8 @@
 
                     {* DEPRECATED *}
                         <select name="created_by_me_in_shared" style="display: none;">
-                            <option value="0" {if !empty($settings.created_by_me_in_shared) && $settings.created_by_me_in_shared == 0}selected="selected"{/if}>[`in any to-do list`]</option>
-                            <option value="1" {if !empty($settings.created_by_me_in_shared) && $settings.created_by_me_in_shared == 1}selected="selected"{/if}>[`only in lists which I marked as favorite`]</option>
+                            <option value="0" selected="selected">[`in any to-do list`]</option>
+                            <option value="1">[`only in lists which I marked as favorite`]</option>
                         </select>
                     {* / DEPRECATED *}
                 </div>
@@ -45,8 +45,8 @@
 
                     {* DEPRECATED *}
                     <select name="created_by_others_in_shared" style="display: none;">
-                        <option value="0" {if !empty($settings.created_by_others_in_shared) && $settings.created_by_others_in_shared == 0}selected="selected"{/if}>[`only in lists which I marked as favorite`]</option>
-                        <option value="1" {if !empty($settings.created_by_others_in_shared) && $settings.created_by_others_in_shared == 1}selected="selected"{/if}>[`all Green, Yellow, and Red to-dos from all lists`]</option>
+                        <option value="0">[`only in lists which I marked as favorite`]</option>
+                        <option value="1" selected="selected">[`all Green, Yellow, and Red to-dos from all lists`]</option>
                     </select>
                     {* / DEPRECATED *}
                 </div>
@@ -125,8 +125,8 @@
                     </label>
                     {* DEPRECATED *}
                         <select name="email_add_item" style="display: none;">
-                            <option value="0" {if isset($settings.email_add_item) && $settings.email_add_item == 0}selected="selected"{/if}>[`only items on to-do lists I previously marked as favorite`]</option>
-                            <option value="1" {if isset($settings.email_add_item) && $settings.email_add_item == 1}selected="selected"{/if}>[`to just any list`]</option>
+                            <option value="0">[`only items on to-do lists I previously marked as favorite`]</option>
+                            <option value="1" selected="selected">[`to just any list`]</option>
                         </select>
                     {* / DEPRECATED *}
                 </div>
