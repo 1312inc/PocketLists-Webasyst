@@ -28,13 +28,7 @@ class pocketlistsTodoDateAction extends pocketlistsViewAction
                 'done_items'       => $itemFilter->getProperSortDone(),
                 'count_done_items' => count($itemFilter->getItemsDone()),
                 'date'             => $date,
-                'timestamp'        => $date
-                    ? waDateTime::date('Y-m-d', strtotime($date))
-                    : waDateTime::date(
-                        'Y-m-d',
-                        time() + 60 * 60 * 24,
-                        wa()->getUser()->getTimezone()
-                    ),
+                'timestamp'        => $date ? waDateTime::date('Y-m-d', strtotime($date)) : ''
             ]
         );
 

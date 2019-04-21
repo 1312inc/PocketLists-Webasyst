@@ -27,13 +27,7 @@ class pocketlistsAppDateAction extends pocketlistsViewAction
 
         $date = waRequest::get('date', false);
         $filter = waRequest::get('filter', false);
-        $timestamp = $date
-            ? waDateTime::date('Y-m-d', strtotime($date))
-            : waDateTime::date(
-                'Y-m-d',
-                time() + 60 * 60 * 24,
-                wa()->getUser()->getTimezone()
-            );
+        $timestamp = $date ? waDateTime::date('Y-m-d', strtotime($date)) : '';
 
         /** @var pocketlistsItemFactory $itemFactory */
         $itemFactory = pl2()->getEntityFactory(pocketlistsItem::class);

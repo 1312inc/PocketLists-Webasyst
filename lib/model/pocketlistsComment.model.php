@@ -30,23 +30,6 @@ class pocketlistsCommentModel extends waModel
     }
 
     /**
-     * @param array $comment
-     *
-     * @return array
-     * @throws waException
-     */
-    public static function extendData($comment)
-    {
-        $comment_user = new waContact($comment['contact_id']);
-
-        return $comment + [
-                'my'             => $comment['contact_id'] == wa()->getUser()->getId() ? true : false,
-                'contact'        => pocketlistsHelper::getContactData($comment_user),
-                'can_be_deleted' => (time() - strtotime($comment['create_datetime']) < 60 * 60 * 24),
-            ];
-    }
-
-    /**
      * @param int $start
      * @param int $limit
      *

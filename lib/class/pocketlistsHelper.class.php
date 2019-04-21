@@ -97,44 +97,40 @@ class pocketlistsHelper
     }
 
     /**
-     * @param pocketlistsStrategyItemFilterAndSort $items
-     * @param                                      $show_month
-     * @param int                                  $month_count
+     * @param array $items
+     * @param int   $monthDiff
+     * @param int   $monthCount
      *
      * @return array
      * @throws waException
      */
-    public static function getMonthData(pocketlistsStrategyItemFilterAndSort $items, $show_month, $month_count = 1)
+    public static function getMonthData(array $items, $monthDiff = 0, $monthCount = 1)
     {
         $timezone = wa()->getUser()->getTimezone();
         $month_date = waDateTime::date('Y-m', null, $timezone);
-        if ($show_month) {
-            $month_date = date('Y-m', strtotime(date('Y-m-01').' '.($show_month.' month')));
+        if ($monthDiff) {
+            $month_date = date('Y-m', strtotime(date('Y-m-01').' '.($monthDiff.' month')));
         }
         $month_date = strtotime($month_date);
 
         $list_colors = [];
 
         // completed items
-        /** @var pocketlistsItem $item */
-        foreach ($items->getItemsDone() as $item) {
-            $list_colors[date('Y-m-d', strtotime($item->getCompleteDatetime()))]['gray'][] = $item->getId();
-        }
-
-        /** @var pocketlistsItem $item */
-        foreach ($items->getItemsUndone() as $item) {
-            if ($item->getDueDatetime() || $item->getDueDate()) {
+        foreach ($items as $item) {
+            if ($item['status']) {
+                $list_colors[date('Y-m-d', strtotime($item['complete_datetime']))]['gray'][] = $item['id'];
+            } elseif ($item['due_datetime'] || $item['due_date']) {
                 $due_date = date(
                     'Y-m-d',
-                    strtotime($item->getDueDate() ? $item->getDueDate() : $item->getDueDatetime())
+                    strtotime($item['due_date'] ?: $item['due_datetime'])
                 );
-                $list_color = $item->getListId() ? $item->getList()->getColor() : 'gray';
-                $list_colors[$due_date]['color'][$list_color][] = $item->getId();
+                $list_color = $item['list_id'] ? $item['list_color'] : 'gray';
+                $list_colors[$due_date]['color'][$list_color][] = $item['id'];
             }
         }
 
         $days = [];
-        for ($i = 0; $i < $month_count; $i++) { // 3 month
+        for ($i = 0; $i < $monthCount; $i++) { // 3 month
             $days_count = date('t', $month_date);
             $first_day = date('w', $month_date);
             $last_day = date('w', strtotime(date('Y-m-{$days_count}', $month_date)));
@@ -178,7 +174,7 @@ class pocketlistsHelper
                 if ($i == 0 && $current_date_start < $month_date) { // but show dates before first month
                     $hide_other_month_date = false;
                 }
-                if ($i == ($month_count - 1) && $current_date_start > $month_date) { // and after last month
+                if ($i == ($monthCount - 1) && $current_date_start > $month_date) { // and after last month
                     $hide_other_month_date = false;
                 }
                 $days[$year][$month_name]['weeks'][$week][$day] = [
@@ -205,40 +201,6 @@ class pocketlistsHelper
         return [
             'days'       => $days,
             'month_date' => $month_date,
-        ];
-    }
-
-    /**
-     * @param $contact waContact
-     */
-    public static function getContactData($contact)
-    {
-        $default = [
-            'name'      => '(DELETED USER)',
-            'username'  => '(DELETED USER)',
-            'id'        => 0,
-            'photo_url' => '/wa-content/img/userpic96@2x.jpg',
-            'userpic'   => '/wa-content/img/userpic20@2x.jpg',
-            'status'    => false,
-            'teamrole'  => '',
-            'login'     => 'deleted',
-            'me'        => false,
-        ];
-
-        if (!$contact->exists()) {
-            return $default;
-        }
-
-        return [
-            'name'      => $contact->getName(),
-            'username'  => $contact->getName(),
-            'id'        => $contact->getId(),
-            'photo_url' => $contact->getPhoto(),
-            'login'     => $contact->get('login'),
-            'userpic'   => $contact->getPhoto(20),
-            'status'    => $contact->getStatus(),
-            'teamrole'  => $contact->get('jobtitle'),
-            'me'        => ($contact->getId() == wa()->getUser()->getId()),
         ];
     }
 
@@ -288,6 +250,24 @@ class pocketlistsHelper
         $yearDays = round(($fullseconds / $day) % 365);
 
         return sprintf(_w('%d y'), $years, $yearDays);
+    }
+
+    /**
+     * @param int $monthDiff
+     *
+     * @return array
+     * @throws Exception
+     */
+    public static function getMonthBounds($monthDiff = 0)
+    {
+        $month_date = new DateTime(date('Y-m-01'));
+        $month_date->modify($monthDiff.' month');
+        $monthStart = $month_date->format('Y-m-d');
+
+        $month_date->modify('+1 month')->modify('-1 day');
+        $monthEnd = $month_date->format('Y-m-d 23:59:59');
+
+        return [$monthStart, $monthEnd];
     }
 
     /**

@@ -69,7 +69,8 @@
                 entity_type: null,
                 entity_id: null
             },
-            userHasLinkedApps: {$user->hasLinkedApps()}
+            userHasLinkedApps: {$user->hasLinkedApps()},
+            dueDate: '{if $timestamp}{$timestamp}{/if}',
         });
     }());
 </script>
