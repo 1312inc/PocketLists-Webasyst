@@ -73,7 +73,7 @@ class pocketlistsUser extends pocketlistsContact
             case pocketlistsUserSettings::ICON_OVERDUE: // overdue
                 $count = $itemModel->countTodo(
                     $this->getContact()->getId(),
-                    false,
+                    [],
                     [
                         pocketlistsItem::PRIORITY_RED,
                         pocketlistsItem::PRIORITY_BLACK,
@@ -86,7 +86,7 @@ class pocketlistsUser extends pocketlistsContact
             case pocketlistsUserSettings::ICON_OVERDUE_TODAY: // overdue + today
                 $count = $itemModel->countTodo(
                     $this->getContact()->getId(),
-                    false,
+                    [],
                     [
                         pocketlistsItem::PRIORITY_YELLOW,
                         pocketlistsItem::PRIORITY_RED,
@@ -100,7 +100,7 @@ class pocketlistsUser extends pocketlistsContact
             case pocketlistsUserSettings::ICON_OVERDUE_TODAY_AND_TOMORROW: // overdue + today + tomorrow
                 $count = $itemModel->countTodo(
                     $this->getContact()->getId(),
-                    false,
+                    [],
                     [
                         pocketlistsItem::PRIORITY_GREEN,
                         pocketlistsItem::PRIORITY_YELLOW,

@@ -174,7 +174,9 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 if (!o.list && $calendar.length && !o.standAloneItemAdd) {
                     $.get(o.appUrl + '?module=json&action=getItemsPocketColor&id=' + parseInt($html.data('id')), function (r) {
                         if (r.status === 'ok') {
-                            var $selected_date = $calendar.find('[data-pl-todo-date="' + due_date + '"]').length ? $calendar.find('[data-pl-todo-date="' + due_date + '"]') : ($calendar.find('.pl-today').next().length ? $calendar.find('.pl-today').next() : false);
+                            var $selected_date = $calendar.find('[data-pl-todo-date="' + due_date + '"]').length
+                                ? $calendar.find('[data-pl-todo-date="' + due_date + '"]')
+                                : false;
                             if ($selected_date) {
                                 var $dots_wrapper = $selected_date.find('.pl-dots'),
                                     $new_dot = $('<i class="icon10 color pl-dark-gray">');

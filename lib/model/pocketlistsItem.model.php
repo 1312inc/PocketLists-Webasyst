@@ -110,41 +110,45 @@ class pocketlistsItemModel extends waModel
     }
 
     /**
-     * @param bool $contact_id
-     * @param bool $date
+     * @param int   $contact_id
+     * @param array $dateBounds
      *
      * @return array
      * @throws waDbException
      * @throws waException
      */
-    public function getToDo($contact_id = false, $date = false)
+    public function getToDo($contact_id = 0, $dateBounds = [])
     {
-        $date = $date ?: false;
+        $dateBounds = $dateBounds ?: [];
+
+        if (!is_array($dateBounds)) {
+            $dateBounds = [$dateBounds];
+        }
 
         if (!$contact_id) {
             $contact_id = wa()->getUser()->getId();
         }
 
-        $items = $this->fetchTodo($contact_id, $date, $calc_priority = []);
+        $items = $this->fetchTodo($contact_id, $dateBounds, $calc_priority = []);
 
         return $items;
     }
 
     /**
      * @param $contact_id
-     * @param $date
+     * @param $dateBounds
      *
      * @return array
      *
      * @throws waDbException
      * @throws waException
      */
-    public function fetchTodo($contact_id, $date, array $calc_priority = [])
+    public function fetchTodo($contact_id, $dateBounds = [], array $calc_priority = [])
     {
         // get to-do items only from accessed pockets
         $lists = pocketlistsRBAC::getAccessListForContact($contact_id);
 
-        $sqlParts = $this->getTodoSql($contact_id, $date, $lists, $calc_priority);
+        $sqlParts = $this->getTodoSql($contact_id, $dateBounds, $lists, $calc_priority);
 
         $or_sql = implode("\n OR ", $sqlParts['or']);
         $and_sql = implode("\n AND ", $sqlParts['and']);
@@ -170,7 +174,8 @@ class pocketlistsItemModel extends waModel
             [
                 'list_ids'      => $lists,
                 'contact_id'    => $contact_id,
-                'date'          => $date,
+                'date'          => isset($dateBounds[0]) ? $dateBounds[0] : '',
+                'date2'         => isset($dateBounds[1]) ? $dateBounds[1] : '',
                 'calc_priority' => $calc_priority,
             ]
         )->fetchAll();
@@ -187,7 +192,7 @@ class pocketlistsItemModel extends waModel
      * @throws waDbException
      * @throws waException
      */
-    public function countTodo($contact_id, $date, array $calc_priority = [])
+    public function countTodo($contact_id, $date = [], array $calc_priority = [])
     {
         // get to-do items only from accessed pockets
         $lists = pocketlistsRBAC::getAccessListForContact($contact_id);
@@ -226,14 +231,15 @@ class pocketlistsItemModel extends waModel
 
     /**
      * @param       $contact_id
-     * @param       $date
+     * @param       $dateBounds
+     * @param       $lists
      * @param array $calc_priority
      *
      * @return array
      * @throws waDbException
      * @throws waException
      */
-    protected function getTodoSql($contact_id, $date, $lists, array $calc_priority = [])
+    protected function getTodoSql($contact_id, array $dateBounds, $lists, array $calc_priority = [])
     {
         $sqlParts = [
             'select' => [],
@@ -245,6 +251,7 @@ class pocketlistsItemModel extends waModel
         $sqlParts['select'] = [
             'i.*',
             'IF(uf.contact_id, 1, 0) favorite',
+            'l.color list_color',
         ];
 
         $sqlParts['join'] = [
@@ -265,8 +272,12 @@ class pocketlistsItemModel extends waModel
             '(i.key_list_id IS NULL AND i.assigned_contact_id = i:contact_id) /* To-dos assigned to me by other users */',
         ];
 
-        if ($date) {
-            $sqlParts['and'][] = '((i.status = 0 AND (i.due_date = s:date OR DATE(i.due_datetime) = s:date)) OR (i.status > 0 AND DATE(i.complete_datetime) = s:date)) /* with due date or completed this day */';
+        if ($dateBounds) {
+            if (isset($dateBounds[1])) {
+                $sqlParts['and'][] = '((i.status = 0 AND (i.due_date BETWEEN s:date AND s:date2 OR DATE(i.due_datetime) BETWEEN s:date AND s:date2)) OR (i.status > 0 AND DATE(i.complete_datetime) BETWEEN s:date AND s:date2)) /* with due date or completed this day */';
+            } elseif (isset($dateBounds[0])) {
+                $sqlParts['and'][] = '((i.status = 0 AND (i.due_date = s:date OR DATE(i.due_datetime) = s:date)) OR (i.status > 0 AND DATE(i.complete_datetime) = s:date)) /* with due date or completed this day */';
+            }
         }
 
         $us = new pocketlistsUserSettings($contact_id);
@@ -361,7 +372,7 @@ class pocketlistsItemModel extends waModel
      *
      * @return array
      */
-    public function getFavorites($contact_id = false, $date = false)
+    public function getFavorites($contact_id = false, $date = false, $date2 = false)
     {
         if (!$contact_id) {
             $contact_id = wa()->getUser()->getId();
@@ -370,11 +381,16 @@ class pocketlistsItemModel extends waModel
         $lists = pocketlistsRBAC::getAccessListForContact($contact_id);
         $lists_sql = $lists ? " AND (l.id IN (i:list_ids) OR l.id IS NULL) /* ONLY items from accessed pockets or NULL-list items */" : " AND l.id IS NULL /* ONLY items from NULL-list items */";
 
-        $due_date = $date
-            ?
-            "AND ((i.status = 0 AND (i.due_date = s:date OR DATE(i.due_datetime) = s:date)) OR (i.status > 0 AND DATE(i.complete_datetime) = s:date)) /* with due date or completed this day */"
-            :
-            "";
+        $due_date_sql = '';
+
+        if ($date) {
+            $due_date_sql = 'AND ((i.status = 0 AND (i.due_date = s:date OR DATE(i.due_datetime) = s:date)) OR (i.status > 0 AND DATE(i.complete_datetime) = s:date)) /* with due date or completed this day */';
+        }
+
+        if ($date2) {
+            $due_date_sql = 'AND ((i.status = 0 AND (i.due_date BETWEEN s:date AND s:date2 OR DATE(i.due_datetime) BETWEEN s:date AND s:date2)) OR (i.status > 0 AND DATE(i.complete_datetime) BETWEEN s:date AND s:date2)) /* with due date or completed this day */';
+        }
+
         $sql = "SELECT
                   i.id id,
                   i.parent_id parent_id,
@@ -403,7 +419,7 @@ class pocketlistsItemModel extends waModel
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
                 WHERE
                 uf.item_id IS NOT NULL
-                {$due_date}
+                {$due_date_sql}
                 {$lists_sql}
                 ORDER BY
                   i.status,
@@ -414,6 +430,7 @@ class pocketlistsItemModel extends waModel
             [
                 'list_ids'   => $lists,
                 'date'       => $date,
+                'date2'      => $date2,
                 'contact_id' => $contact_id,
             ]
         )->fetchAll();
@@ -707,13 +724,11 @@ class pocketlistsItemModel extends waModel
      * @param string $app
      * @param string $entity_type
      * @param string $entity_id
-     * @param string $date
+     * @param array  $dateBounds
      *
      * @return array
-     * @throws waDbException
-     * @throws waException
      */
-    public function getAppItems($app = '', $entity_type = '', $entity_id = '', $date = '')
+    public function getAppItems($app = '', $entity_type = '', $entity_id = '', $dateBounds = [])
     {
         $lists = [];
         $contact_id = wa()->getUser()->getId();
@@ -736,8 +751,12 @@ class pocketlistsItemModel extends waModel
         }
 
         $dateSql = '';
-        if ($date) {
-            $dateSql = "AND ((i.status = 0 AND (i.due_date = s:date OR DATE(i.due_datetime) = s:date)) OR (i.status > 0 AND DATE(i.complete_datetime) = s:date)) /* with due date or completed this day */";
+        if ($dateBounds) {
+            if (isset($dateBounds[1])) {
+                $dateSql = '((i.status = 0 AND (i.due_date BETWEEN s:date AND s:date2 OR DATE(i.due_datetime) BETWEEN s:date AND s:date2)) OR (i.status > 0 AND DATE(i.complete_datetime) BETWEEN s:date AND s:date2)) /* with due date or completed this day */';
+            } elseif (isset($dateBounds[0])) {
+                $dateSql = '((i.status = 0 AND (i.due_date = s:date OR DATE(i.due_datetime) = s:date)) OR (i.status > 0 AND DATE(i.complete_datetime) = s:date)) /* with due date or completed this day */';
+            }
         }
 
         $q = $this->getQuery()."
@@ -762,7 +781,8 @@ class pocketlistsItemModel extends waModel
                 'app'             => $app,
                 'type'            => $entity_type,
                 'entity_id'       => $entity_id,
-                'date'            => $date,
+                'date'            => isset($dateBounds[0]) ? $dateBounds[0] : '',
+                'date2'           => isset($dateBounds[1]) ? $dateBounds[1] : '',
             ]
         )->fetchAll();
 
@@ -800,7 +820,7 @@ class pocketlistsItemModel extends waModel
 
         $lists = pocketlistsRBAC::getAccessListForContact($contact_id);
 
-        $sqlParts = $this->getTodoSql($contact_id, false, $lists);
+        $sqlParts = $this->getTodoSql($contact_id, [], $lists);
 
         $sqlParts['and'][] = $when;
 

@@ -112,14 +112,20 @@ class pocketlistsItemFactory extends pocketlistsFactory
 
     /**
      * @param pocketlistsContact $contact
-     * @param bool               $date
+     * @param array              $dateBounds
      *
      * @return pocketlistsItem[]
      * @throws waException
      */
-    public function findToDo(pocketlistsContact $contact, $date = false)
+    public function findToDo(pocketlistsContact $contact, $dateBounds = [])
     {
-        $data = $this->getModel()->getToDo($contact->getId(), $date);
+        $dateBounds = $dateBounds ?: [];
+
+        if (!is_array($dateBounds)) {
+            $dateBounds = [$dateBounds];
+        }
+
+        $data = $this->getModel()->getToDo($contact->getId(), $dateBounds);
 
         return $this->generateWithData($data, true);
     }
