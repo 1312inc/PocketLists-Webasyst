@@ -27,27 +27,13 @@ class pocketlistsNotificationAboutNewItems extends pocketlistsNotification
         $csm = new waContactSettingsModel();
         $q = "SELECT
                 cs1.contact_id contact_id,
-                cs2.value setting
+                cs1.value setting
               FROM wa_contact_settings cs1
-              LEFT JOIN wa_contact_settings cs2 ON
-                cs1.contact_id = cs2.contact_id
-                AND cs2.app_id = s:app_id
-                AND cs2.name = 'email_add_item'
-                AND cs2.value IN (i:setting)
               WHERE
                 cs1.app_id = s:app_id
                 AND cs1.name = 'email_add_item_on'
                 AND cs1.value = 1";
-        $users = $csm->query(
-            $q,
-            [
-                'app_id'  => wa()->getApp(),
-                'setting' => [
-                    pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_ITEM_TO_FAVORITE_LIST,
-                    pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_ITEM_TO_ANY_LIST,
-                ],
-            ]
-        )->fetchAll('contact_id');
+        $users = $csm->query($q, ['app_id'  => wa()->getApp(),])->fetchAll('contact_id');
 
         /** @var pocketlistsUserFavoritesModel $ufm */
         $ufm = pl2()->getModel('pocketlistsUserFavorites');
