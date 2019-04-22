@@ -19,7 +19,6 @@ class pocketlistsRBAC
     const POCKET_ITEM = 'pocket';
     const LIST_ITEM   = 'list';
 
-    private static $access_rights = [];
     private static $lists         = [];
     private static $pockets       = [];
 
@@ -44,7 +43,7 @@ class pocketlistsRBAC
         /** @var pocketlistsListModel $listModel */
         $listModel = pl2()->getModel(pocketlistsList::class);
 
-        if (self::isAdmin($contact_id)) {
+        if (self::isAdmin($user_id)) {
             $lists = $listModel->getAll('id');
             if ($lists) {
                 foreach ($lists as $list) {
@@ -183,12 +182,12 @@ class pocketlistsRBAC
 
         switch (true) {
             case $user->getRights(pocketlistsHelper::APP_ID, self::LIST_ITEM.'.'.$list->getId()):
-            case $list->getPocketId() && $user->getRights(pocketlistsHelper::APP_ID, self::LIST_ITEM.'.'.$list->getPocketId()):
-                self::$lists[$user_id][$list->getId()] = true;
+            case $list->getPocketId() && $user->getRights(pocketlistsHelper::APP_ID, self::POCKET_ITEM.'.'.$list->getPocketId()):
+                self::addListUserRight($user_id, $list->getId(), true);
                 break;
 
             default:
-                self::$lists[$user_id][$list->getId()] = false;
+                self::addListUserRight($user_id, $list->getId(), false);
         }
 
         return self::$lists[$user_id][$list->getId()];
