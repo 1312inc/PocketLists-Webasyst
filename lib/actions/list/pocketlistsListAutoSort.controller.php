@@ -19,8 +19,7 @@ class pocketlistsListAutoSortController extends pocketlistsJsonController
         }
 
         $items = $list->getItems();
-        $filter = new pocketlistsStrategyItemFilterAndSort($items);
-        $items = $filter->getProperSortUndone();
+        $items = (new pocketlistsStrategyItemFilterAndSort($items))->filterDoneUndone()->getProperSortUndone();
 
         pl2()->getEntityFactory(pocketlistsItem::class)->updateProperSort($items);
     }
