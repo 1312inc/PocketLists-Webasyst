@@ -1,7 +1,5 @@
 <?php
 
-//todo: save state
-
 /**
  * Class pocketlistsRBAC
  */
@@ -9,8 +7,8 @@ class pocketlistsRBAC
 {
     const RIGHT_NONE    = 0;
     const RIGHT_ACCESS  = 1;
-    const RIGHT_ADMIN   = 2;
     const RIGHT_LIMITED = 3;
+    const RIGHT_ADMIN   = 99;
 
     const CAN_ASSIGN          = 'canassign';
     const CAN_CREATE_TODOS    = 'cancreatetodos';
