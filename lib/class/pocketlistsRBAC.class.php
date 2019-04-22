@@ -182,7 +182,8 @@ class pocketlistsRBAC
 
         switch (true) {
             case $user->getRights(pocketlistsHelper::APP_ID, self::LIST_ITEM.'.'.$list->getId()):
-            case $list->getPocketId() && $user->getRights(pocketlistsHelper::APP_ID, self::POCKET_ITEM.'.'.$list->getPocketId()):
+            case $list->getPocketId()
+                && $user->getRights(pocketlistsHelper::APP_ID, self::POCKET_ITEM.'.'.$list->getPocketId()) == self::RIGHT_ADMIN:
                 self::addListUserRight($user_id, $list->getId(), true);
                 break;
 
