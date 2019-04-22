@@ -14,6 +14,7 @@
                 </div>
                 <div class="value no-shift">
                   <label>
+                      <input type="hidden" name="natural_input_on" value="0"/>
                       <input type="checkbox" name="natural_input_on" {if !empty($settings.natural_input_on)}checked="checked"{/if}/> [`Understand “Meeting tomorrow at 10” input (recommended)`]
                       <p class="hint">[`When enabled, the app will automatically parse to-do name and set due date and time if it was typed.<br> Examples: “Meeting tomorrow morning”, “Call James next friday 5pm”, “Pay electricity bill in a week”, “Update working schedule April 25”.`]</p>
                   </label>
@@ -31,7 +32,10 @@
                     <label><input type="checkbox" disabled checked> [`To-dos assigned to me by other users`]</label>
                 </div>
                 <div class="value no-shift">
-                    <label><input type="checkbox" name="created_by_me_in_shared_on" {if !empty($settings.created_by_me_in_shared_on)}checked="checked"{/if}> [`To-dos created by me in shared lists`]</label>
+                    <label>
+                        <input type="hidden" name="created_by_me_in_shared_on" value="0"/>
+                        <input type="checkbox" name="created_by_me_in_shared_on" {if !empty($settings.created_by_me_in_shared_on)}checked="checked"{/if}> [`To-dos created by me in shared lists`]
+                    </label>
 
                     {* DEPRECATED *}
                         <select name="created_by_me_in_shared" style="display: none;">
@@ -41,7 +45,10 @@
                     {* / DEPRECATED *}
                 </div>
                 <div class="value no-shift">
-                    <label><input type="checkbox" name="created_by_others_in_shared_on" {if !empty($settings.created_by_others_in_shared_on)}checked="checked"{/if}> [`To-dos created by other users in shared lists`]: [`all Green, Yellow, and Red to-dos from all lists`]</label>
+                    <label>
+                        <input type="hidden" name="created_by_others_in_shared_on" value="0"/>
+                        <input type="checkbox" name="created_by_others_in_shared_on" {if !empty($settings.created_by_others_in_shared_on)}checked="checked"{/if}> [`To-dos created by other users in shared lists`]: [`all Green, Yellow, and Red to-dos from all lists`]
+                    </label>
 
                     {* DEPRECATED *}
                     <select name="created_by_others_in_shared" style="display: none;">
@@ -80,6 +87,7 @@
                 </div>
                 <div class="value no-shift">
                     <label>
+                        <input type="hidden" name="daily_recap_on" value="0"/>
                         <input value="1" type="checkbox" name="daily_recap_on" {if !empty($settings.daily_recap_on)}checked="checked"{/if}> [`Daily recap on what’s up next`]
                     </label>
                     <select name="daily_recap">
@@ -104,11 +112,13 @@
                 </div>
                 <div class="value no-shift">
                     <label>
+                        <input type="hidden" name="email_assign_me" value="0"/>
                         <input value="1" type="checkbox" name="email_assign_me" {if !empty($settings.email_assign_me)}checked="checked"{/if}> [`When someone sends me a to-do`]
                     </label>
                 </div>
                 <div class="value no-shift">
                     <label>
+                        <input type="hidden" name="email_complete_item_on" value="0"/>
                         <input value="1" type="checkbox" name="email_complete_item_on" {if !empty($settings.email_complete_item_on)}checked="checked"{/if}> [`When someone marks a to-do item as complete`]
                     </label>
                     <select name="email_complete_item">
@@ -121,10 +131,11 @@
                 </div>
                 <div class="value no-shift">
                     <label>
+                        <input type="hidden" name="email_add_item_on" value="0"/>
                         <input value="1" type="checkbox" name="email_add_item_on" {if !empty($settings.email_add_item_on)}checked="checked"{/if}> [`When someone adds a to-do item`]
                     </label>
                     {* DEPRECATED *}
-                        <select name="email_add_item" style="display: none;">
+                        <select style="display: none;">
                             <option value="0">[`only items on to-do lists I previously marked as favorite`]</option>
                             <option value="1" selected="selected">[`to just any list`]</option>
                         </select>
@@ -132,6 +143,7 @@
                 </div>
                 <div class="value no-shift">
                     <label>
+                        <input type="hidden" name="email_comment_item_on" value="0"/>
                         <input value="1" type="checkbox" name="email_comment_item_on" {if !empty($settings.email_comment_item_on)}checked="checked"{/if}> [`When someone comments a to-do item`]
                     </label>
                     <select name="email_comment_item">
@@ -143,6 +155,7 @@
                 </div>
                 <div class="value no-shift">
                     <label>
+                        <input type="hidden" name="email_create_list_on" value="0"/>
                         <input value="1" type="checkbox" name="email_create_list_on" {if !empty($settings.email_create_list_on)}checked="checked"{/if}> [`When someone creates a new to-do list`]
                     </label>
                 </div>
