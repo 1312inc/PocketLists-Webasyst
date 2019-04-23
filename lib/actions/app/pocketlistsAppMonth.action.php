@@ -36,7 +36,7 @@ class pocketlistsAppMonthAction extends pocketlistsViewAction
 
         /** @var pocketlistsItemModel $itemModel */
         $itemModel = pl2()->getModel(pocketlistsItem::class);
-        $items = $itemModel->getAppItems($app->getApp(), false, false, $monthStart, $monthEnd);
+        $items = $itemModel->getAppItems($app->getApp(), false, false, [$monthStart, $monthEnd]);
 
         $monthData = pocketlistsHelper::getMonthData($items, $show_month);
 

@@ -753,9 +753,9 @@ class pocketlistsItemModel extends waModel
         $dateSql = '';
         if ($dateBounds) {
             if (isset($dateBounds[1])) {
-                $dateSql = '((i.status = 0 AND (i.due_date BETWEEN s:date AND s:date2 OR DATE(i.due_datetime) BETWEEN s:date AND s:date2)) OR (i.status > 0 AND DATE(i.complete_datetime) BETWEEN s:date AND s:date2)) /* with due date or completed this day */';
+                $dateSql = 'AND ((i.status = 0 AND (i.due_date BETWEEN s:date AND s:date2 OR DATE(i.due_datetime) BETWEEN s:date AND s:date2)) OR (i.status > 0 AND DATE(i.complete_datetime) BETWEEN s:date AND s:date2)) /* with due date or completed this day */';
             } elseif (isset($dateBounds[0])) {
-                $dateSql = '((i.status = 0 AND (i.due_date = s:date OR DATE(i.due_datetime) = s:date)) OR (i.status > 0 AND DATE(i.complete_datetime) = s:date)) /* with due date or completed this day */';
+                $dateSql = 'AND ((i.status = 0 AND (i.due_date = s:date OR DATE(i.due_datetime) = s:date)) OR (i.status > 0 AND DATE(i.complete_datetime) = s:date)) /* with due date or completed this day */';
             }
         }
 
