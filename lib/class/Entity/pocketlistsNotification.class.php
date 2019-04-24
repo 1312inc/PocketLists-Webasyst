@@ -8,6 +8,10 @@ class pocketlistsNotification extends pocketlistsEntity
     const TYPE_EMAIL = 1;
     const TYPE_PUSH  = 2;
 
+    const STATUS_PENDING = 0;
+    const STATUS_OK = 1;
+    const STATUS_FAIL = 2;
+
     /**
      * @var int
      */
@@ -31,7 +35,7 @@ class pocketlistsNotification extends pocketlistsEntity
     /**
      * @var int
      */
-    private $status;
+    private $status = self::STATUS_PENDING;
 
     /**
      * @var string

@@ -13,11 +13,6 @@ class pocketlistsFactory
     protected $cache = [];
 
     /**
-     * @var kmModelExt
-     */
-    protected $model;
-
-    /**
      * @param string $entity
      *
      * @return pocketlistsFactory
@@ -48,7 +43,7 @@ class pocketlistsFactory
     }
 
     /**
-     * @return kmModelExt
+     * @return waModel
      * @throws waException
      */
     protected function getModel()

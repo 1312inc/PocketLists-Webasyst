@@ -3,7 +3,7 @@
 /**
  * Class pocketlistsListModel
  */
-class pocketlistsListModel extends waModel
+class pocketlistsListModel extends pocketlistsModel
 {
     const TYPE_CHECKLIST = 'checklist';
     const TYPE_NOTES     = 'notes';

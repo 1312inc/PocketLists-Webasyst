@@ -46,4 +46,17 @@ class pocketlistsNotificationFactory extends pocketlistsFactory implements pocke
 
         return $obj;
     }
+
+    /**
+     * @param int $limit
+     *
+     * @return pocketlistsNotification[]
+     * @throws waException
+     */
+    public function findUnsent($limit = 100)
+    {
+        $data = $this->getModel()->getUnsent($limit);
+
+        return $this->generateWithData($data, true);
+    }
 }

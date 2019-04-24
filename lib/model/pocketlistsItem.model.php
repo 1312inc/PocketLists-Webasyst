@@ -3,7 +3,7 @@
 /**
  * Class pocketlistsItemModel
  */
-class pocketlistsItemModel extends waModel
+class pocketlistsItemModel extends pocketlistsModel
 {
     const PRIORITY_NORM       = 0;
     const PRIORITY_GREEN      = 1;

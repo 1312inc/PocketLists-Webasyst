@@ -56,7 +56,7 @@ class pocketlistsNotificationAboutCompleteItems extends pocketlistsBaseNotificat
         /** @var pocketlistsNotificationFactory $notificationFactory */
         $notificationFactory = pl2()->getEntityFactory(pocketlistsNotification::class);
 
-        $subject = 'string:{if !$complete}🚫{else}✅{/if} {str_replace(array("\r", "\n"), " ", $item->getName())|truncate:64}';
+        $subject = 'string:{if $complete}🚫✅{/if} {str_replace(array("\r", "\n"), " ", $item.name)|truncate:64}';
         // todo: refactor
         foreach ($users as $user_id => $user) { // foreach user
             $contact = $contactFactory->createNewWithId($user_id);
@@ -155,13 +155,11 @@ class pocketlistsNotificationAboutCompleteItems extends pocketlistsBaseNotificat
                                 'name'         => $item->getName(),
                                 'contact_name' => $item->getContact()->getName(),
                             ],
-                            'wa'       => [
-                                'account_name' => wa()->accountName(),
-                            ],
                         ]
                     )
                     ->setSubject($subject)
                     ->setTemplate(wa()->getAppPath('templates/mails/completeanyitem.html'));
+
                 $notificationFactory->insert($notificationFactory->createNewEmail($emailContent));
             }
         }

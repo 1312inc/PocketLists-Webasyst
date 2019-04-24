@@ -80,7 +80,7 @@ class pocketlistsConfig extends waAppConfig
     /**
      * @param $entity
      *
-     * @return kmModelExt
+     * @return pocketlistsModel
      * @throws waException
      */
     public function getModel($entity = false)
@@ -134,8 +134,6 @@ class pocketlistsConfig extends waAppConfig
         $customClasses = [
             'wa-apps/pocketlists/lib/vendor/km/' => [
                 'kmStorage',
-                'kmModelExt',
-                'kmModelStorage',
                 'kmStatistics',
             ],
         ];
@@ -149,7 +147,7 @@ class pocketlistsConfig extends waAppConfig
             }
         }
 
-        $this->models[''] = new kmModelExt();
+        $this->models[''] = new pocketlistsModel();
         $this->factories[''] = new pocketlistsFactory();
 
         $this->registerGlobal();
@@ -178,6 +176,15 @@ class pocketlistsConfig extends waAppConfig
 
             $count = $this->getUser()->getAppCount();
 
+            $css = '';
+            if (!$count) {
+                $css = <<<HTML
+<style>
+    [data-app="pocketlists"] .indicator { display: none !important; }
+</style>
+HTML;
+
+            }
 
             $pocketlistsPath = sprintf('/%s/pocketlists?module=json&action=sendNotifications', pl2()->getBackendUrl());
 
@@ -191,7 +198,7 @@ class pocketlistsConfig extends waAppConfig
 </script>
 HTML;
 
-            return $count.$script;
+            return $count.$css.$script;
         } catch (Exception $ex) {
             pocketlistsHelper::logError('onCount error', $ex);
         }
@@ -231,6 +238,11 @@ HTML;
     public function getLinkedAppConfigPath()
     {
         return wa()->getAppPath('lib/config/linked_apps.php', pocketlistsHelper::APP_ID);
+    }
+
+    public function getUtf8mb4ColumnsPath()
+    {
+        return wa()->getAppPath('lib/config/utf8mb4.php', pocketlistsHelper::APP_ID);
     }
 
     public function getLinkedApps()

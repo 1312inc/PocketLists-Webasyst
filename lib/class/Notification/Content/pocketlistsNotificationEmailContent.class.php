@@ -31,6 +31,11 @@ class pocketlistsNotificationEmailContent implements pocketlistsNotificationCont
     private $params;
 
     /**
+     * @var string
+     */
+    private $error;
+
+    /**
      * @return int
      */
     public function getToContactId()
@@ -154,16 +159,22 @@ class pocketlistsNotificationEmailContent implements pocketlistsNotificationCont
      */
     public function extractJson($json)
     {
-        $data = json_decode($json);
+        $data = json_decode($json, true);
 
         pl2()->getHydrator()->hydrate($this, $data);
     }
 
+    /**
+     * @return bool
+     */
     public function send()
     {
         try {
             $default_variables = [
-                'email_settings_url' => '#/settings/',
+                'default'          => [
+                    'email_settings_url' => '#/settings/',
+                    'account_name' => wa()->accountName(),
+                ],
             ];
 
             $data = array_merge($default_variables, $this->getParams());
@@ -186,21 +197,17 @@ class pocketlistsNotificationEmailContent implements pocketlistsNotificationCont
             }
 
             if (!$to) {
-                return;
+                return false;
             }
 
             $absolute_backend_url = $this->getBackendUrl($this->getToContactId())
                 ?: pl2()->getRootUrl(true).pl2()->getBackendUrl();
 
             $view->assign('backend_url', rtrim($absolute_backend_url, '/').'/pocketlists/');
-            if (isset($data['variables'])) {
-                foreach ($data['variables'] as $var_name => $var_value) {
-                    $view->assign($var_name, $var_value);
-                }
-            }
+            $view->assign($data);
 
-            $subject = $view->fetch($data['subject']);
-            $body = $view->fetch($data['body']);
+            $subject = $view->fetch($this->getSubject());
+            $body = $view->fetch($this->getTemplate());
 
             $message = new waMailMessage($subject, $body);
             $message->setTo($to);
@@ -208,7 +215,10 @@ class pocketlistsNotificationEmailContent implements pocketlistsNotificationCont
 //        $message->setFrom('pocketlists@webasyst.ru', 'Pocketlists Notifier');
 
             if (!$message->send()) {
-                pocketlistsHelper::logError(sprintf('Email send error to %s', $to));
+                $this->error = sprintf('Email send error to %s', $to);
+                pocketlistsHelper::logError($this->error);
+
+                return false;
             }
 
             pocketlistsHelper::logDebug(
@@ -220,9 +230,22 @@ class pocketlistsNotificationEmailContent implements pocketlistsNotificationCont
                 ),
                 'mail.log'
             );
+
+            return true;
         } catch (waException $ex) {
-            pocketlistsHelper::logError(sprintf('Email send error to %s', $to), $ex);
+            $this->error = sprintf('Email send error to %s', $to);
+            pocketlistsHelper::logError($this->error, $ex);
         }
+
+        return false;
+    }
+
+    /**
+     * @return string
+     */
+    public function getError()
+    {
+        return $this->error;
     }
 
     public function afterHydrate()
