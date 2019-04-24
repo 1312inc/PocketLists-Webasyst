@@ -230,6 +230,7 @@ input#pl-new-list-input,
     z-index: 7;
 }
 #pl-item-add textarea { font-size: 15px; }
+input#pl-new-list-input { padding-right: 33px; }
 input#pl-new-list-input::-webkit-placeholder { color: rgba(0,0,0,0.4) !important; }
 #pl-item-add textarea::-webkit-placeholder { color: rgba(0,0,0,0.4) !important; }
 input#pl-new-list-input::-moz-placeholder { color: rgba(0,0,0,0.4) !important; }
