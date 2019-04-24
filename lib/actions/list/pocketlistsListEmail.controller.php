@@ -17,7 +17,7 @@ class pocketlistsListEmailController extends pocketlistsJsonController
     {
         $mail = waRequest::post('mail', false);
         if ($this->prepare($mail)) {
-            (new pocketlistsNotification())->sendMail($this->data);
+            (new pocketlistsBaseNotification())->sendMail($this->data);
         }
     }
 

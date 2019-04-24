@@ -65,4 +65,9 @@ class pocketlistsJsonActions extends waJsonActions
     {
         pocketlistsActivity::setUserActivity(wa()->getUser()->getId());
     }
+
+    public function sendNotificationsAction()
+    {
+        $this->response = '1';
+    }
 }

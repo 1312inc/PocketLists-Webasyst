@@ -55,7 +55,7 @@ class pocketlistsConfig extends waAppConfig
     /**
      * @param $entity
      *
-     * @return pocketlistsItemLinkFactory|pocketlistsItemFactory|pocketlistsListFactory|pocketlistsContactFactory|pocketlistsPocketFactory|pocketlistsCommentFactory|pocketlistsAttachmentFactory|pocketlistsItemLinkFactory
+     * @return pocketlistsItemLinkFactory|pocketlistsItemFactory|pocketlistsListFactory|pocketlistsContactFactory|pocketlistsPocketFactory|pocketlistsCommentFactory|pocketlistsAttachmentFactory|pocketlistsItemLinkFactory|pocketlistsNotificationFactory
      * @throws waException
      */
     public function getEntityFactory($entity)
@@ -176,7 +176,22 @@ class pocketlistsConfig extends waAppConfig
 
             $itemModel->updateCalcPriority();
 
-            return $this->getUser()->getAppCount();
+            $count = $this->getUser()->getAppCount();
+
+
+            $pocketlistsPath = sprintf('/%s/pocketlists?module=json&action=sendNotifications', pl2()->getBackendUrl());
+
+            $script = <<<HTML
+<script>
+(function() {
+    'use strict';
+    
+    $.post('{$pocketlistsPath}');    
+})()
+</script>
+HTML;
+
+            return $count.$script;
         } catch (Exception $ex) {
             pocketlistsHelper::logError('onCount error', $ex);
         }

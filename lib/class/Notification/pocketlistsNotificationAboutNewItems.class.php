@@ -3,7 +3,7 @@
 /**
  * Class pocketlistsNotificationsAboutNewItems
  */
-class pocketlistsNotificationAboutNewItems extends pocketlistsNotification
+class pocketlistsNotificationAboutNewItems extends pocketlistsBaseNotification
 {
     /**
      * Notify all related users about new items (according to their settings)

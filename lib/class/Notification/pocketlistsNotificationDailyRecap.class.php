@@ -3,7 +3,7 @@
 /**
  * Class pocketlistsNotificationDailyRecap
  */
-class pocketlistsNotificationDailyRecap extends pocketlistsNotification
+class pocketlistsNotificationDailyRecap extends pocketlistsBaseNotification
 {
     /**
      * @param array $vars

@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Class pocketlistsNotificationsAboutNewItems
+ * Class pocketlistsNotificationAboutNewAssign
  */
-class pocketlistsNotificationAboutNewAssign extends pocketlistsNotification
+class pocketlistsNotificationAboutNewAssign extends pocketlistsBaseNotification
 {
     /**
      * Notify all related users about new items (according to their settings)
@@ -46,14 +46,14 @@ class pocketlistsNotificationAboutNewAssign extends pocketlistsNotification
             return;
         }
 
-        /** @var pocketlistsItem $item */
-        $this->sendMail(
-            [
-                'contact_id' => $contact->getId(),
-                'subject'    => 'string:➡️ {str_replace(array("\r", "\n"), " ", $item->getName())|truncate:64}',
-                'body'       => wa()->getAppPath('templates/mails/newassignitem.html'),
-                'variables'  => [
-                    'item'        => $item,
+        /** @var pocketlistsNotificationFactory $notificationFactory */
+        $notificationFactory = pl2()->getEntityFactory(pocketlistsNotification::class);
+
+        $emailContent = new pocketlistsNotificationEmailContent();
+        $emailContent
+            ->setToContactId($contact->getId())
+            ->setParams(
+                [
                     'due_date'    => $item->getDueDatetime()
                         ? waDateTime::format(
                             'humandatetime',
@@ -65,12 +65,22 @@ class pocketlistsNotificationAboutNewAssign extends pocketlistsNotification
                             $item->getDueDate(),
                             $contact->getContact()->getTimezone()
                         ) : false),
-                    'list'        => $list,
-                    'listUrl'     => $listUrl,
                     'by_username' => $by_username->getName(),
-                ],
-            ],
-            $this->getBackendUrl($item->getAssignedContactId())
-        );
+                    'list'        => $list ? [
+                        'name_parsed' => $list->getNameParsed(),
+                        'url'         => $listUrl,
+                    ] : false,
+                    'item'        => [
+                        'name_parsed' => $item->getNameParsed(),
+                    ],
+                    'wa'          => [
+                        'account_name' => wa()->accountName(),
+                    ],
+                ]
+            )
+            ->setSubject('string:➡️ {str_replace(array("\r", "\n"), " ", $item->getName())|truncate:64}')
+            ->setTemplate(wa()->getAppPath('templates/mails/newassignitem.html'));
+
+        $notificationFactory->insert($notificationFactory->createNewEmail($emailContent));
     }
 }

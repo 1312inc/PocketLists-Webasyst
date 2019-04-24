@@ -3,7 +3,7 @@
 /**
  * Class pocketlistsNotificationAboutNewList
  */
-class pocketlistsNotificationAboutNewList extends pocketlistsNotification
+class pocketlistsNotificationAboutNewList extends pocketlistsBaseNotification
 {
     /**
      * @param pocketlistsList $list
