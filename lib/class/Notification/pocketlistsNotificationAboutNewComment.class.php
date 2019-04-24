@@ -3,7 +3,7 @@
 /**
  * Class pocketlistsNotificationAboutNewComment
  */
-class pocketlistsNotificationAboutNewComment extends pocketlistsNotification
+class pocketlistsNotificationAboutNewComment extends pocketlistsBaseNotification
 {
     /**
      * @param pocketlistsComment $comment
@@ -59,16 +59,27 @@ class pocketlistsNotificationAboutNewComment extends pocketlistsNotification
             );
         }
 
-        $mailParams = [
-            'body'      => wa()->getAppPath('templates/mails/newcomment.html'),
-            'variables' => [
-                'item'        => $item,
-                'comment'     => $comment,
+        $mailData = [
+            'body'   => wa()->getAppPath('templates/mails/newcomment.html'),
+            'params' => [
+                'item'        => [
+                    'name' => $item->getName(),
+                ],
+                'comment'     => [
+                    'name_parsed' => $comment->getCommentParsed(),
+                ],
                 'by_username' => $comment_user->getName(),
-                'list'        => $list ? $list : false,
-                'listUrl'     => $listUrl,
+                'list'        => $list ? [
+                    'url' => $listUrl,
+                ] : false,
+                'wa'          => [
+                    'account_name' => wa()->accountName(),
+                ],
             ],
         ];
+
+        /** @var pocketlistsNotificationFactory $notificationFactory */
+        $notificationFactory = pl2()->getEntityFactory(pocketlistsNotification::class);
 
         $contactFactory = pl2()->getEntityFactory(pocketlistsContact::class);
 
@@ -93,30 +104,37 @@ class pocketlistsNotificationAboutNewComment extends pocketlistsNotification
                 continue;
             }
 
-            $mailParams['contact_id'] = $user_id;
+            $mailData['contact_id'] = $user_id;
 
 //            if ($comment['contact_id'] != $user_id) {
             switch ($user['setting']) {
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_ITEM:
                     if ($item->getContactId() == $user_id) {
-                        $mailParams['subject'] = 'string:💬 {str_replace(array("\r", "\n"), " ", $item->getName())|truncate:64}';
+                        $mailData['subject'] = 'string:💬 {str_replace(array("\r", "\n"), " ", $item->getName())|truncate:64}';
                     }
                     break;
 
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_FAVORITE_ITEM:
                     if ($item->isFavorite()) {
-                        $mailParams['subject'] = 'string:💬 {str_replace(array("\r", "\n"), " ", $item->getName())|truncate:64}';
+                        $mailData['subject'] = 'string:💬 {str_replace(array("\r", "\n"), " ", $item->getName())|truncate:64}';
                     }
                     break;
 
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_ANY_LIST_ITEM:
                     if ($item) {
-                        $mailParams['subject'] = 'string:💬 {str_replace(array("\r", "\n"), " ", $item->getName())|truncate:64}';
+                        $mailData['subject'] = 'string:💬 {str_replace(array("\r", "\n"), " ", $item->getName())|truncate:64}';
                     }
                     break;
             }
 
-            $this->sendMail($mailParams, $this->getBackendUrl($user_id));
+            $emailContent = new pocketlistsNotificationEmailContent();
+            $emailContent
+                ->setToContactId($mailData['contact_id'])
+                ->setParams($mailData['params'])
+                ->setSubject($mailData['subject'])
+                ->setTemplate($mailData['body']);
+
+            $notificationFactory->insert($notificationFactory->createNewEmail($emailContent));
 //            }
         }
     }

@@ -3,7 +3,7 @@
 /**
  * Class pocketlistsNotificationsAboutNewItems
  */
-class pocketlistsNotificationAboutCompleteItems extends pocketlistsNotification
+class pocketlistsNotificationAboutCompleteItems extends pocketlistsBaseNotification
 {
     /**
      * Notify all related users about completed items (according to their settings)
@@ -52,6 +52,9 @@ class pocketlistsNotificationAboutCompleteItems extends pocketlistsNotification
         /** @var pocketlistsUserFavoritesModel $ufm */
         $ufm = pl2()->getModel('pocketlistsUserFavorites');
         $contactFactory = pl2()->getEntityFactory(pocketlistsContact::class);
+
+        /** @var pocketlistsNotificationFactory $notificationFactory */
+        $notificationFactory = pl2()->getEntityFactory(pocketlistsNotification::class);
 
         $subject = 'string:{if !$complete}🚫{else}✅{/if} {str_replace(array("\r", "\n"), " ", $item->getName())|truncate:64}';
         // todo: refactor
@@ -133,25 +136,33 @@ class pocketlistsNotificationAboutCompleteItems extends pocketlistsNotification
                 $list = $this->getList($item);
                 $items_left = $item->getListId() ? count($list->getUndoneItems()) : 0;
 
-                $this->sendMail(
-                    [
-                        'contact_id' => $user_id,
-                        'subject'    => $subject,
-                        'body'       => wa()->getAppPath('templates/mails/completeanyitem.html'),
-                        'variables'  => [
+                $emailContent = new pocketlistsNotificationEmailContent();
+                $emailContent
+                    ->setToContactId($contact->getId())
+                    ->setParams(
+                        [
                             'n'        => $items_left,
-                            'list'     => $list,
-                            'list_url' => $list ? sprintf(
-                                '#/pocket/%s/list/%s/',
-                                $list->getPocketId(),
-                                $list->getId()
-                            ) : false,
+                            'list'     => [
+                                'name' => $list->getName(),
+                                'url'  => $list ? sprintf(
+                                    '#/pocket/%s/list/%s/',
+                                    $list->getPocketId(),
+                                    $list->getId()
+                                ) : false,
+                            ],
                             'complete' => $item->getStatus(),
-                            'item'     => $item,
-                        ],
-                    ],
-                    $this->getBackendUrl($user_id)
-                );
+                            'item'     => [
+                                'name'         => $item->getName(),
+                                'contact_name' => $item->getContact()->getName(),
+                            ],
+                            'wa'       => [
+                                'account_name' => wa()->accountName(),
+                            ],
+                        ]
+                    )
+                    ->setSubject($subject)
+                    ->setTemplate(wa()->getAppPath('templates/mails/completeanyitem.html'));
+                $notificationFactory->insert($notificationFactory->createNewEmail($emailContent));
             }
         }
     }
