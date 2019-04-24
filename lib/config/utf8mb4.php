@@ -9,7 +9,7 @@ return [
         'text' => 'varchar(200)',
     ],
     'pocketlists_pocket'       => [
-        'name' => 'mediumtext',
+        'name' => 'varchar(200)',
     ],
     'pocketlists_attachment'   => [
         'filename' => 'text',
