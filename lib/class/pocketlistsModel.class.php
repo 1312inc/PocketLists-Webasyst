@@ -15,6 +15,10 @@ class pocketlistsModel extends waModel
     {
         parent::__construct($type, $writable);
 
-        @$this->exec('SET NAMES utf8mb4');
+        try {
+            $this->exec('set names utf8mb4');
+        } catch (Exception $ex) {
+            waLog::log('PLEASE UPDATE YOUR MYSQL DATABASE. ' . $ex->getMessage());
+        }
     }
 }
