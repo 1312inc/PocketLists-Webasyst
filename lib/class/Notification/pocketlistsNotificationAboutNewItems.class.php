@@ -33,11 +33,14 @@ class pocketlistsNotificationAboutNewItems extends pocketlistsBaseNotification
                 cs1.app_id = s:app_id
                 AND cs1.name = 'email_add_item_on'
                 AND cs1.value = 1";
-        $users = $csm->query($q, ['app_id'  => wa()->getApp(),])->fetchAll('contact_id');
+        $users = $csm->query($q, ['app_id' => wa()->getApp(),])->fetchAll('contact_id');
 
         /** @var pocketlistsUserFavoritesModel $ufm */
         $ufm = pl2()->getModel('pocketlistsUserFavorites');
         $contactFactory = pl2()->getEntityFactory(pocketlistsContact::class);
+
+        /** @var pocketlistsNotificationFactory $notificationFactory */
+        $notificationFactory = pl2()->getEntityFactory(pocketlistsNotification::class);
 
         foreach ($users as $user_id => $user) { // foreach user
             $contact = $contactFactory->createNewWithId($user_id);
@@ -78,23 +81,36 @@ class pocketlistsNotificationAboutNewItems extends pocketlistsBaseNotification
             }
 
             if ($filtered_items && $list) {
-                $emailParams = [
-                    'subject'    => 'string:{str_replace(array("\r", "\n"), " ", $item->getName())|truncate:64}',
-                    'body'       => wa()->getAppPath('templates/mails/newitem.html'),
-                    'contact_id' => $user_id,
-                    'variables'  => [
-                        'list_name' => $list->getId() ? $list->getName() : false,
-                        'list_url'  => $list ? sprintf(
-                            '#/pocket/%s/list/%s/',
-                            $list->getPocketId(),
-                            $list->getId()
-                        ) : '',
-                        'items'     => $filtered_items,
-                        'item'      => reset($filtered_items),
-                    ],
-                ];
+                $itemsToSend = [];
+                foreach ($filtered_items as $filteredItem) {
+                    $itemsToSend[$filteredItem->getId()] = [
+                        'name'         => $filteredItem->getName(),
+                        'name_parsed'  => $filteredItem->getNameParsed(),
+                        'contact_name' => $filteredItem->getContact()->getName(),
+                    ];
+                }
 
-                $this->sendMail($emailParams, $this->getBackendUrl($user_id));
+                $emailContent = new pocketlistsNotificationEmailContent();
+                $emailContent
+                    ->setToContactId($contact->getId())
+                    ->setParams(
+                        [
+                            'list'  => [
+                                'name' => $list->getId() ? $list->getName() : false,
+                                'url'  => $list ? sprintf(
+                                    '#/pocket/%s/list/%s/',
+                                    $list->getPocketId(),
+                                    $list->getId()
+                                ) : '',
+                            ],
+                            'items' => $itemsToSend,
+                            'item'  => reset($itemsToSend),
+                        ]
+                    )
+                    ->setSubject('string:{str_replace(array("\r", "\n"), " ", $item.name)|truncate:64}')
+                    ->setTemplate(wa()->getAppPath('templates/mails/newitem.html'));
+
+                $notificationFactory->insert($notificationFactory->createNewEmail($emailContent));
             }
         }
     }
@@ -115,7 +131,7 @@ class pocketlistsNotificationAboutNewItems extends pocketlistsBaseNotification
 
         $list = $this->getList($item);
 
-        if($list->getId() && !pocketlistsRBAC::canAccessToList($list, $user_id)) {
+        if ($list->getId() && !pocketlistsRBAC::canAccessToList($list, $user_id)) {
             return false;
         }
 

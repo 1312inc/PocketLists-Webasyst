@@ -73,12 +73,9 @@ class pocketlistsNotificationAboutNewAssign extends pocketlistsBaseNotification
                     'item'        => [
                         'name_parsed' => $item->getNameParsed(),
                     ],
-                    'wa'          => [
-                        'account_name' => wa()->accountName(),
-                    ],
                 ]
             )
-            ->setSubject('string:➡️ {str_replace(array("\r", "\n"), " ", $item->getName())|truncate:64}')
+            ->setSubject('string:➡️ {str_replace(array("\r", "\n"), " ", $item.name)|truncate:64}')
             ->setTemplate(wa()->getAppPath('templates/mails/newassignitem.html'));
 
         $notificationFactory->insert($notificationFactory->createNewEmail($emailContent));

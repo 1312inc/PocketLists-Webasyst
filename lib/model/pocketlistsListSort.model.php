@@ -3,7 +3,7 @@
 /**
  * Class pocketlistsListSortModel
  */
-class pocketlistsListSortModel extends waModel
+class pocketlistsListSortModel extends pocketlistsModel
 {
     protected $table = 'pocketlists_list_sort';
 }

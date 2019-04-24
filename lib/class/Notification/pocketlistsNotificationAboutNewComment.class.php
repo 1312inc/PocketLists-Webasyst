@@ -72,9 +72,6 @@ class pocketlistsNotificationAboutNewComment extends pocketlistsBaseNotification
                 'list'        => $list ? [
                     'url' => $listUrl,
                 ] : false,
-                'wa'          => [
-                    'account_name' => wa()->accountName(),
-                ],
             ],
         ];
 
@@ -110,19 +107,19 @@ class pocketlistsNotificationAboutNewComment extends pocketlistsBaseNotification
             switch ($user['setting']) {
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_ITEM:
                     if ($item->getContactId() == $user_id) {
-                        $mailData['subject'] = 'string:💬 {str_replace(array("\r", "\n"), " ", $item->getName())|truncate:64}';
+                        $mailData['subject'] = 'string:💬 {str_replace(array("\r", "\n"), " ", $item.name)|truncate:64}';
                     }
                     break;
 
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_FAVORITE_ITEM:
                     if ($item->isFavorite()) {
-                        $mailData['subject'] = 'string:💬 {str_replace(array("\r", "\n"), " ", $item->getName())|truncate:64}';
+                        $mailData['subject'] = 'string:💬 {str_replace(array("\r", "\n"), " ", $item.name)|truncate:64}';
                     }
                     break;
 
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_ANY_LIST_ITEM:
                     if ($item) {
-                        $mailData['subject'] = 'string:💬 {str_replace(array("\r", "\n"), " ", $item->getName())|truncate:64}';
+                        $mailData['subject'] = 'string:💬 {str_replace(array("\r", "\n"), " ", $item.name)|truncate:64}';
                     }
                     break;
             }

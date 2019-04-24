@@ -5,21 +5,33 @@
  */
 class pocketlistsJsonActions extends waJsonActions
 {
+    /**
+     * @throws waException
+     */
     public function defaultAction()
     {
         throw new waException('Unknown action.');
     }
 
+    /**
+     * @throws waException
+     */
     public function AppCountAction()
     {
         $this->response = wa('pocketlists')->getConfig()->onCount();
     }
 
+    /**
+     * @throws waException
+     */
     public function GetHumandateAction()
     {
         $this->response = waDateTime::format('humandate', waRequest::get('date'));
     }
 
+    /**
+     *
+     */
     public function GetListsAction()
     {
         if ($this->getRights('list.%') > 0) {
@@ -61,13 +73,19 @@ class pocketlistsJsonActions extends waJsonActions
         }
     }
 
+    /**
+     *
+     */
     public function heartbeatAction()
     {
         pocketlistsActivity::setUserActivity(wa()->getUser()->getId());
     }
 
+    /**
+     *
+     */
     public function sendNotificationsAction()
     {
-        $this->response = '1';
+        $this->response = (new pocketlistsNotificationSendService())->sendBatch();
     }
 }

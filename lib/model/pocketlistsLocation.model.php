@@ -3,7 +3,7 @@
 /**
  * Class pocketlistsLocationModel
  */
-class pocketlistsLocationModel extends waModel
+class pocketlistsLocationModel extends pocketlistsModel
 {
     protected $table = 'pocketlists_location';
 }

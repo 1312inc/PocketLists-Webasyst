@@ -1,10 +1,10 @@
-{sprintf('[`There are new items on <a href="%s">%s</a> to-do list:`]', $backend_url|cat:$list_url, $list_name|escape)}
+{sprintf('[`There are new items on <a href="%s">%s</a> to-do list:`]', $backend_url|cat:$list.url, $list.name|escape)}
 <br>
 <br>
 {foreach $items as $item}
-&#9898; {sprintf('[`<strong>%s</strong> by %s`]', $item->getNameParsed()|nl2br, $item->getContact()->getName()|escape)}<br>
+&#9898; {sprintf('[`<strong>%s</strong> by %s`]', $item.name_parsed|nl2br, $item.contact_name|escape)}<br>
 {/foreach}
 <br>
 --<br>
-{$wa->accountName()}<br>
-<a href="{$backend_url}{$email_settings_url}" style="color:#aaa;">[`Manage my subscription`]</a>
+{$default.account_name}<br>
+<a href="{$backend_url}{$default.email_settings_url}" style="color:#aaa;">[`Manage my subscription`]</a>

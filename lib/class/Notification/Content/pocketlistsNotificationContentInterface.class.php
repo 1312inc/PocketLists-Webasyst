@@ -16,7 +16,12 @@ interface pocketlistsNotificationContentInterface
     public function extractJson($json);
 
     /**
-     * @return mixed
+     * @return bool
      */
     public function send();
+
+    /**
+     * @return string
+     */
+    public function getError();
 }

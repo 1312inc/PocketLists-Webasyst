@@ -32,6 +32,9 @@ class pocketlistsNotificationAboutNewList extends pocketlistsBaseNotification
 
         $list->setCreateDatetime(waDateTime::format('humandatetime', $list->getCreateDatetime()));
 
+        /** @var pocketlistsNotificationFactory $notificationFactory */
+        $notificationFactory = pl2()->getEntityFactory(pocketlistsNotification::class);
+
         $contactFactory = pl2()->getEntityFactory(pocketlistsContact::class);
 
         foreach ($users as $user_id => $user) { // foreach user
@@ -49,20 +52,23 @@ class pocketlistsNotificationAboutNewList extends pocketlistsBaseNotification
                 continue;
             }
 
-            $this->sendMail(
-                [
-                    'contact_id' => $user_id,
-                    'subject'    => 'string:📝 '.$list->getName(),
-                    'body'       => wa()->getAppPath('templates/mails/newlist.html'),
-                    'variables'  => [
-                        'list_name'       => $list->getName(),
-                        'list_url'        => sprintf('#/pocket/%s/list/%s/', $list->getPocketId(), $list->getId()),
+            $emailContent = new pocketlistsNotificationEmailContent();
+            $emailContent
+                ->setToContactId($contact->getId())
+                ->setParams(
+                    [
+                        'list'            => [
+                            'name' => $list->getName(),
+                            'url'  => sprintf('#/pocket/%s/list/%s/', $list->getPocketId(), $list->getId()),
+                        ],
                         'by'              => $create_contact_name,
                         'create_datetime' => $list->getCreateDatetime(),
-                    ],
-                ],
-                $this->getBackendUrl($user_id)
-            );
+                    ]
+                )
+                ->setSubject('string:📝 '.$list->getName())
+                ->setTemplate(wa()->getAppPath('templates/mails/newlist.html'));
+
+            $notificationFactory->insert($notificationFactory->createNewEmail($emailContent));
         }
     }
 }

@@ -3,7 +3,7 @@
 /**
  * Class pocketlistsCommentModel
  */
-class pocketlistsCommentModel extends waModel
+class pocketlistsCommentModel extends pocketlistsModel
 {
     /**
      * @var string
