@@ -147,6 +147,17 @@ table.pl-calendar td .pl-dots i.icon10 { margin-top: 0.2em; margin-right: 0.2em;
 .pl-pocket-access { line-height: 1.5em; padding: 10px; }
 .pl-pocket-access table { margin: 10px 15px; }
 
+/* About
+-------- */
+
+.pl-badge-appstore { width: 144px; display: block; }
+
+.pl-roadmap { list-style: none; padding: 0; }
+.pl-roadmap li { padding: 5px 15px 15px 12px; font-size: 15px; }
+.pl-roadmap li .pl-done + span { left: -12px; top: -2px; }
+.pl-roadmap li .pl-done:checked + span { border: 2px solid transparent; }
+/* .pl-roadmap i { width: 16px; height: 16px;  } */
+
 /* Done checkbox
 ---------------- */
 
