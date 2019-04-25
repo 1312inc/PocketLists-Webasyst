@@ -166,7 +166,7 @@ class pocketlistsConfig extends waAppConfig
      * @return int|null
      * @throws waException
      */
-    public function onCount()
+    public function onCount($onlycount = false)
     {
         try {
             /** @var pocketlistsItemModel $itemModel */
@@ -205,7 +205,7 @@ HTML;
 </script>
 HTML;
 
-            return $count.$css.$script;
+            return $onlycount ? $count : $count.$css.$script;
         } catch (Exception $ex) {
             pocketlistsHelper::logError('onCount error', $ex);
         }

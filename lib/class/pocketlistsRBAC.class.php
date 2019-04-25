@@ -5,10 +5,11 @@
  */
 class pocketlistsRBAC
 {
-    const RIGHT_NONE    = 0;
-    const RIGHT_ACCESS  = 1;
-    const RIGHT_LIMITED = 3;
-    const RIGHT_ADMIN   = 99;
+    const RIGHT_NONE        = 0;
+    const RIGHT_ACCESS      = 1;
+    const RIGHT_FULL_ACCESS = 2;
+    const RIGHT_LIMITED     = 3;
+    const RIGHT_ADMIN       = 99;
 
     const CAN_ASSIGN          = 'canassign';
     const CAN_CREATE_TODOS    = 'cancreatetodos';
@@ -17,8 +18,8 @@ class pocketlistsRBAC
     const POCKET_ITEM = 'pocket';
     const LIST_ITEM   = 'list';
 
-    private static $lists         = [];
-    private static $pockets       = [];
+    private static $lists   = [];
+    private static $pockets = [];
 
     /**
      * Return all list ids accessible for given user
@@ -181,7 +182,10 @@ class pocketlistsRBAC
         switch (true) {
             case $user->getRights(pocketlistsHelper::APP_ID, self::LIST_ITEM.'.'.$list->getId()):
             case $list->getPocketId()
-                && $user->getRights(pocketlistsHelper::APP_ID, self::POCKET_ITEM.'.'.$list->getPocketId()) == self::RIGHT_ADMIN:
+                && $user->getRights(
+                    pocketlistsHelper::APP_ID,
+                    self::POCKET_ITEM.'.'.$list->getPocketId()
+                ) == self::RIGHT_ADMIN:
                 self::addListUserRight($user_id, $list->getId(), true);
                 break;
 
@@ -350,7 +354,7 @@ class pocketlistsRBAC
         return sprintf(
             " (app_id = '%s' AND name = 'backend' AND value = %s)",
             pocketlistsHelper::APP_ID,
-            self::RIGHT_ADMIN
+            self::RIGHT_FULL_ACCESS
         );
     }
 

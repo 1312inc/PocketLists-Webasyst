@@ -18,7 +18,7 @@ class pocketlistsJsonActions extends waJsonActions
      */
     public function AppCountAction()
     {
-        $this->response = wa('pocketlists')->getConfig()->onCount();
+        $this->response = pl2()->onCount(true);
     }
 
     /**
@@ -82,7 +82,8 @@ class pocketlistsJsonActions extends waJsonActions
     }
 
     /**
-     *
+     * @throws pocketlistsNotImplementedException
+     * @throws waException
      */
     public function sendNotificationsAction()
     {
