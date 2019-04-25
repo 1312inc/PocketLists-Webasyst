@@ -43,7 +43,7 @@ class pocketlistsNotificationSendService
      */
     public function sendBatch($chunk = 100)
     {
-        $notifications = pl2()->getEntityFactory(pocketlistsNotification::class)->findUnsent();
+        $notifications = pl2()->getEntityFactory(pocketlistsNotification::class)->findUnsent($chunk);
 
         $sentCount = 0;
         foreach ($notifications as $notification) {

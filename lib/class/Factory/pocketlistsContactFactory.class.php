@@ -6,7 +6,7 @@
 class pocketlistsContactFactory extends pocketlistsFactory
 {
     /**
-     * @var waContact[]
+     * @var pocketlistsContact[]
      */
     protected $contactsCache = [];
 

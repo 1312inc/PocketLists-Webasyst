@@ -193,7 +193,14 @@ HTML;
 (function() {
     'use strict';
     
-    $.post('{$pocketlistsPath}');    
+    $.post('{$pocketlistsPath}', function(r) {
+        if (r.status === 'ok') {
+            var sent = parseInt(r.data);
+            sent && console.log('pocketlists: notification send ' + sent);
+        } else {
+            console.log('pocketlists: notification send error ' + r.error);
+        }
+    });
 })()
 </script>
 HTML;

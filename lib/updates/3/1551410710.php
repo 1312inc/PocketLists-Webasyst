@@ -9,6 +9,11 @@ $path = [
     '/js/jquery-ui.min.old.js',
 ];
 
+
 foreach ($path as $item) {
-    waFiles::delete($appPath.$item);
+    try {
+        waFiles::delete($appPath.$item);
+    } catch (Exception $ex) {
+        waLog::log('Error on deleting file ' . $appPath.$item, 'pocketlists/update.log');
+    }
 }

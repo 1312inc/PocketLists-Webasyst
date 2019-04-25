@@ -149,6 +149,8 @@ $.pocketlists.List = function ($list_wrapper, options) {
                             // $.pocketlists.updateAppCounter();
                             // $.pocketlists.reloadSidebar();
                             // hideListDetails();
+
+                            $.pocketlists.sendNotifications();
                         } else {
                             $wrapper.find('.error').show().delay(3000).hide();
                         }
@@ -263,6 +265,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
                         $.pocketlists.$loading.removeAttr('style').remove();
                         if (r.status === 'ok') {
                             $.pocketlists.reloadSidebar();
+                            $.pocketlists.sendNotifications();
                             if (list_id === -1) {
                                 $.wa.setHash('#/pocket/'+pocket_id+'/list/' + r.data.id + '/');
                             }

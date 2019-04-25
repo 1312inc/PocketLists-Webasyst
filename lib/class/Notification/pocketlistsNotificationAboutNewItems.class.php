@@ -49,7 +49,6 @@ class pocketlistsNotificationAboutNewItems extends pocketlistsBaseNotification
             }
 
             $filtered_items = [];
-            $emailParams = [];
 
             switch ($user['setting']) {
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_ITEM_TO_FAVORITE_LIST:
