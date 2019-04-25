@@ -11,14 +11,14 @@ https://www.webasyst.com
   * Web Server
 		* e.g. Apache or IIS
 
-	* PHP 5.2+
+	* PHP 5.6+
 		* spl extension
 		* mbstring
 		* iconv
 		* json
 		* gd or ImageMagick extension
 
-	* MySQL 4.1+
+	* MySQL 5.5+
 
 ## Installing Webasyst Framework ##
 
