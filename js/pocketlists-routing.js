@@ -203,6 +203,9 @@
         settingsAction: function () {
             this.load('?module=settings', this.setHtmlContent);
         },
+        aboutAction: function () {
+            this.load('?module=about', this.setHtmlContent);
+        },
         debugAction: function () {
             this.load('?module=debug', this.setHtmlContent);
         },
