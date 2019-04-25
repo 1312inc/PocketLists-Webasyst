@@ -96,7 +96,7 @@ class pocketlistsContact
      */
     public function init()
     {
-        if ($this->contact->exists()/* && $this->contact->get('is_user') != -1*/) {
+        if ($this->contact->exists()) {
             $this->me = ($this->contact->getId() == wa()->getUser()->getId());
             $this->name = $this->contact->getName();
             $this->username = $this->contact->getName();
@@ -106,7 +106,7 @@ class pocketlistsContact
             $this->userPic = $this->contact->getPhoto(20);
             $this->status = $this->contact->getStatus();
             $this->teamrole = $this->contact->get('jobtitle');
-            $this->exists = true;
+            $this->exists = $this->contact->get('is_user') != -1;
         }
 
         return $this;
