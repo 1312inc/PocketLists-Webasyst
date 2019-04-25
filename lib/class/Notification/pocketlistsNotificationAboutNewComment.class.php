@@ -60,6 +60,7 @@ class pocketlistsNotificationAboutNewComment extends pocketlistsBaseNotification
         }
 
         $mailData = [
+            'subject' => '',
             'body'   => wa()->getAppPath('templates/mails/newcomment.html'),
             'params' => [
                 'item'        => [
@@ -103,7 +104,6 @@ class pocketlistsNotificationAboutNewComment extends pocketlistsBaseNotification
 
             $mailData['contact_id'] = $user_id;
 
-//            if ($comment['contact_id'] != $user_id) {
             switch ($user['setting']) {
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_ITEM:
                     if ($item->getContactId() == $user_id) {
@@ -132,7 +132,6 @@ class pocketlistsNotificationAboutNewComment extends pocketlistsBaseNotification
                 ->setTemplate($mailData['body']);
 
             $notificationFactory->insert($notificationFactory->createNewEmail($emailContent));
-//            }
         }
     }
 
