@@ -90,6 +90,7 @@ class pocketlistsNotificationDailyRecap extends pocketlistsBaseNotification
                 $emailContent = new pocketlistsNotificationEmailContent();
                 $emailContent
                     ->setToContactId($contact->getId())
+                    ->setToEmail($contact->getEmail())
                     ->setParams(
                         [
                             'items'    => $itemsToSend,
@@ -116,6 +117,6 @@ class pocketlistsNotificationDailyRecap extends pocketlistsBaseNotification
      */
     protected function canSend(pocketlistsContact $contact)
     {
-        return $contact->isExists();
+        return parent::canSend($contact) || $contact->isMe();
     }
 }

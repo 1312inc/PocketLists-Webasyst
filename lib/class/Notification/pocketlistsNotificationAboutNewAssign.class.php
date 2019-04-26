@@ -52,6 +52,7 @@ class pocketlistsNotificationAboutNewAssign extends pocketlistsBaseNotification
         $emailContent = new pocketlistsNotificationEmailContent();
         $emailContent
             ->setToContactId($contact->getId())
+            ->setToEmail($contact->getEmail())
             ->setParams(
                 [
                     'due_date'    => $item->getDueDatetime()

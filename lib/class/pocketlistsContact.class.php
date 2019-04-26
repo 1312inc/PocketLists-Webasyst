@@ -71,6 +71,11 @@ class pocketlistsContact
     private $listActivities;
 
     /**
+     * @var string|null
+     */
+    private $email;
+
+    /**
      * @var array
      */
     private $itemsInfo = [
@@ -107,7 +112,28 @@ class pocketlistsContact
             $this->status = $this->contact->getStatus();
             $this->teamrole = $this->contact->get('jobtitle');
             $this->exists = $this->contact->get('is_user') != -1;
+            $this->email = $this->getContact()->get('email', 'default');
         }
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string|null $email
+     *
+     * @return pocketlistsContact
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
 
         return $this;
     }
