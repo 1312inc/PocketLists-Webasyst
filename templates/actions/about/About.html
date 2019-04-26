@@ -5,6 +5,7 @@
         <div class="fields">
 
             <div class="field-group">
+              {if $wa->user()->isAdmin('webasyst')}
               <div class="field">
                 <div class="name nowrap">
                   [`Installer`]
@@ -20,6 +21,7 @@
                     <p><a href="[`https://www.webasyst.com/store/app/pocketlists/`]" target="_blank"><img src="{$wa_url}wa-apps/pocketlists/img/badge-webasyst.png" class="pl-badge-appstore"></a></p>
                 </div>
               </div>
+              {/if}
               <div class="field">
                 <div class="name nowrap">
                   [`Support`]
@@ -52,13 +54,20 @@
                   [`About`]
                 </div>
                 <div class="value">
-                    <p>[`Pocket Lists for Webasyst is an important part of the bigger <a href="https://pocketlists.com" target="_blank"><strong>PocketLists.com project</strong></a> — a suite of apps that are aimed to provide the friendliest to-do list making & collaboration experience.`]</p>
-
-                    <p>[`Pocket Lists is <strong>mostly known for its iOS app</strong> (iPhone, iPad, Apple Watch) designed for personal list making. Get Pocket Lists on the App Store for free.`]</p>
+                    <p>
+                        [`Pocket Lists for Webasyst is an important part of the bigger <a href="https://pocketlists.com" target="_blank"><strong>PocketLists.com project</strong></a> — a suite of apps that are aimed to provide the friendliest to-do list making & collaboration experience.`]
+                        [`Pocket Lists is <strong>mostly known for its iOS app</strong> (iPhone, iPad, Apple Watch) designed for personal list making. Get Pocket Lists on the App Store for free.`]
+                    </p>
 
                     <p><a href="[`http://itunes.apple.com/us/app/pocket-lists-2/id1272049520?mt=8`]" target="_blank"><img src="{$wa_url}wa-apps/pocketlists/img/badge-appstore.png" class="pl-badge-appstore"></a></p>
 
                     <p>[`With Pocket Lists for Webasyst, our goal is to deliver the best of the Pocket Lists world to the Webasyst collaborative environment and to make the teamwork and collaboration on tasks expectionally easy and friendly.`]</p>
+
+                    {if !$wa->user()->isAdmin('webasyst')}
+
+                        <p><a href="[`https://www.webasyst.com/store/app/pocketlists/`]" target="_blank"><img src="{$wa_url}wa-apps/pocketlists/img/badge-webasyst.png" class="pl-badge-appstore"></a></p>
+
+                    {/if}
                 </div>
               </div>
               <div class="field">
