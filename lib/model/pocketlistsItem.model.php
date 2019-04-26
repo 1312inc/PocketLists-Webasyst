@@ -252,6 +252,9 @@ class pocketlistsItemModel extends pocketlistsModel
             'i.*',
             'IF(uf.contact_id, 1, 0) favorite',
             'l.color list_color',
+            '(select count(*) from pocketlists_attachment pa where pa.item_id = i.id) attachments_count',
+            '(select count(*) from pocketlists_comment pc where pc.item_id = i.id) comments_count',
+            '(select count(*) from pocketlists_item_link pil where pil.item_id = i.id) linked_entities_count',
         ];
 
         $sqlParts['join'] = [
