@@ -185,19 +185,27 @@ class pocketlistsNotificationEmailContent implements pocketlistsNotificationCont
             $view->clearAllAssign();
             $view->clearAllCache();
 
-            if ($this->getToContactId()) {
-                $contact = pl2()->getEntityFactory(pocketlistsContact::class)->createNewWithId($this->getToContactId());
-
-                $to = $contact->getContact()->get('email', 'default'); // todo: add email option in settings
-
-                $view->assign('name', $contact->getName());
-                $view->assign('now', waDateTime::date('Y-m-d H:i:s', time(), $contact->getContact()->getTimezone()));
-            } elseif ($this->getToEmail()) {
-                $to = $this->getToEmail();
-            }
+            $to = $this->getToEmail();
 
             if (!$to) {
+                $this->error = 'Notification doesn`t have email';
+
                 return false;
+            }
+
+            if ($this->getToContactId()) {
+                $contact = pl2()->getEntityFactory(pocketlistsContact::class)->createNewWithId($this->getToContactId());
+                if ($contact->isExists()) {
+                    $view->assign('name', $contact->getName());
+                    $view->assign(
+                        'now',
+                        waDateTime::date('Y-m-d H:i:s', time(), $contact->getContact()->getTimezone())
+                    );
+                } else {
+                    $this->error = sprintf('Contact #%s doesn`t exist anymore (thanos snap)', $contact->getId());
+
+                    return false;
+                }
             }
 
             $absolute_backend_url = $this->getBackendUrl($this->getToContactId())

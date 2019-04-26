@@ -55,6 +55,7 @@ class pocketlistsNotificationAboutNewList extends pocketlistsBaseNotification
             $emailContent = new pocketlistsNotificationEmailContent();
             $emailContent
                 ->setToContactId($contact->getId())
+                ->setToEmail($contact->getEmail())
                 ->setParams(
                     [
                         'list'            => [

@@ -139,6 +139,7 @@ class pocketlistsNotificationAboutCompleteItems extends pocketlistsBaseNotificat
                 $emailContent = new pocketlistsNotificationEmailContent();
                 $emailContent
                     ->setToContactId($contact->getId())
+                    ->setToEmail($contact->getEmail())
                     ->setParams(
                         [
                             'n'        => $items_left,
