@@ -27,7 +27,7 @@ class pocketlistsListSaveController extends pocketlistsJsonController
             ->setUpdateDatetime(date("Y-m-d H:i:s"))
             ->setContact($this->user);
 
-        $saved = pl2()->getEntityFactory(pocketlistsList::class)->update($list);
+        $saved = pl2()->getEntityFactory(pocketlistsList::class)->save($list);
         if ($saved) {
             if ($list->getDueDate()) {
                 $list->setDueDate(waDateTime::format('humandate', $list->getDueDate()));
