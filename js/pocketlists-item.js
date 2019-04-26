@@ -205,7 +205,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     updateSort();
                 }
 
-                $.pocketlists.sendNotifications();
+                $.pocketlists.sendNotifications(o.appUrl);
 
                 $.isFunction(callback) && callback.call($this);
             }
@@ -425,7 +425,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
                             showEmptyListMessage();
 
-                            $.pocketlists.sendNotifications();
+                            $.pocketlists.sendNotifications(o.appUrl);
 
                             callback && $.isFunction(callback) && callback.call($item);
                         });
@@ -663,7 +663,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     }
                     $this.find('.pl-item').data('pl-assigned-contact', team_id);
 
-                    $.pocketlists.sendNotifications();
+                    $.pocketlists.sendNotifications(o.appUrl);
                 }
                 $(drop).trigger('dropActionDone.pl2', {
                     $obj: $this,
@@ -1606,7 +1606,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
                     $.pocketlists.scrollToEl($wrapper.find('.pl-chat-contents [data-pl-comment-id]:last')[0]);
 
-                    $.pocketlists.sendNotifications();
+                    $.pocketlists.sendNotifications(o.appUrl);
 
                     request_in_action = false;
                 }
