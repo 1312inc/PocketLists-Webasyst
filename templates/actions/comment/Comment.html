@@ -16,7 +16,7 @@
             <i class="icon16 userpic20" style="background-image: url({$comment->getContact()->getUserpic()})" alt="{$comment->getContact()->getUsername()|escape}"></i> {$comment->getContact()->getUsername()|escape}
             {if isset($comment_page)}
             [`on`]
-            <a href="{if $comment->getListId() && $comment->getPocketId()}#/pocket/{$comment->getPocketId()}/list/{$comment->getListId()}/{else if $comment->getContact()->isMe()}#/todo/{else}#/team/{$comment->gteContact()->getLogin()}{/if}">{$comment->getItemName()|truncate:64|escape}</a>
+            <a href="{if $comment->getListId() && $comment->getPocketId()}#/pocket/{$comment->getPocketId()}/list/{$comment->getListId()}/{else if $comment->getContact()->isMe()}#/todo/{else}#/team/{$comment->getContact()->getLogin()}{/if}">{$comment->getItemName()|truncate:64|escape}</a>
             {/if}
             <span class="hint nowrap">{$comment->getCreateDatetime()|wa_datetime:'humandatetime'}</span>
         </div>

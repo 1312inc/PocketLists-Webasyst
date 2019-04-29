@@ -142,7 +142,7 @@ class pocketlistsRBAC
             "SELECT DISTINCT group_id FROM wa_contact_rights WHERE %s OR %s OR %s %s",
             self::haveFullAdminSQL(),
             self::haveFullAccessSQL(),
-            $list ? self::haveAccessToListSQL($list) : self::haveAccessSQL(),
+            $list && $list->getId() ? self::haveAccessToListSQL($list) : self::haveAccessSQL(),
             $list && $list->getPocketId() ? ' OR '.self::havePocketFullAccessSQL($list->getPocketId()) : ''
         );
 
@@ -220,6 +220,11 @@ class pocketlistsRBAC
         $contact = self::getContact($user);
 
         return $contact->getRights(pocketlistsHelper::APP_ID, self::CAN_USE_SHOP_SCRIPT);
+    }
+
+    public static function getShopScriptUsers()
+    {
+
     }
 
     /**
