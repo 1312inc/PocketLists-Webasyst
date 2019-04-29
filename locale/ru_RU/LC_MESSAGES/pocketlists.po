@@ -1544,7 +1544,7 @@ msgid "Copyright"
 msgstr "Copyright"
 
 #: /wa-apps/pocketlists/templates/actions/about/About.html:170
-msgid "We wish we cloud implement new features that easy :)"
+msgid "We wish we could implement new features that easy :)"
 msgstr "Эх, если бы все было так просто :)"
 
 #: /wa-apps/pocketlists/templates/actions/debug/Debug.html:49

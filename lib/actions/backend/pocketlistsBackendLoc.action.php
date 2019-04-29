@@ -27,7 +27,7 @@ class pocketlistsBackendLocAction extends pocketlistsViewAction
                      'You are about to leave this page without saving your input. Are you sure?',
                      'Find order by ID',
                      'About',
-                     'We wish we cloud implement new features that easy :)'
+                     'We wish we could implement new features that easy :)'
                  ) as $s) {
             $strings[$s] = _w($s);
         }
