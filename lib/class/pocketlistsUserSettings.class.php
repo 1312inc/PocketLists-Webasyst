@@ -85,7 +85,7 @@ class pocketlistsUserSettings
             'natural_input_on'               => 1,
             'created_by_others_in_shared_on' => 0,
             'created_by_others_in_shared'    => self::MY_TO_DOS_CREATED_BY_OTHER_IN_SHARED_LISTS_GREEN_YELLOW_RED_ALL_LISTS,
-            'created_by_me_in_shared_on'     => 0,
+            'created_by_me_in_shared_on'     => 1,
             'created_by_me_in_shared'        => self::MY_TO_DOS_CREATED_BY_ME_IN_SHARED_ANY_LIST,
         ];
     }
