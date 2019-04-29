@@ -1407,8 +1407,8 @@ msgid "About"
 msgstr "О приложении"
 
 #: /wa-apps/pocketlists/templates/actions/about/About.html:10
-msgid "Installer"
-msgstr "Инсталлер"
+msgid "Rate"
+msgstr "Оценить"
 
 #: /wa-apps/pocketlists/templates/actions/about/About.html:13
 msgid "https://www.webasyst.com/store/app/pocketlists/reviews/"
@@ -1416,7 +1416,7 @@ msgstr "https://www.webasyst.ru/store/app/pocketlists/reviews/"
 
 #: /wa-apps/pocketlists/templates/actions/about/About.html:14
 msgid "Rate on Webasyst Installer"
-msgstr "Оценить на сайте Webasyst"
+msgstr "Оценить в приложении «Инсталлер»"
 
 #: /wa-apps/pocketlists/templates/actions/about/About.html:19
 msgid "<strong>Your feedback is very important!</strong> Please rate Pocket Lists and write a short review about your experience of using the app. Reviews (both positive and negative) really help us to see what is most useful in the app so we can continue delivering new features the right way."
