@@ -70,6 +70,7 @@ class pocketlistsNotificationAboutNewAssign extends pocketlistsBaseNotification
                     'list'        => $list ? [
                         'name_parsed' => $list->getNameParsed(),
                         'url'         => $listUrl,
+                        'id'          => (int)$list->getId(),
                     ] : false,
                     'item'        => [
                         'name'        => $item->getName(),
