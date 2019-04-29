@@ -125,6 +125,16 @@ class pocketlistsNotificationAboutCompleteItems extends pocketlistsBaseNotificat
                             continue;
                         }
 
+                        // not from NULL-list
+                        if (!$item->getListId()) {
+                            continue;
+                        }
+
+                        // from NULL-list but not assigned to this user nor created by user
+                        if (!$item->getListId() && ($item->getAssignedContactId() != $user_id || $item->getContactId() != $user_id)) {
+                            return false;
+                        }
+
                         $filtered_items[$item->getId()] = $item;
                     }
 
@@ -180,18 +190,8 @@ class pocketlistsNotificationAboutCompleteItems extends pocketlistsBaseNotificat
             return false;
         }
 
-        // not from NULL-list
-        if (!$item->getListId()) {
-            return false;
-        }
-
         $list = $this->getList($item);
         if ($item->getListId() && !pocketlistsRBAC::canAccessToList($list, $user_id)) {
-            return false;
-        }
-
-        // from NULL-list but not assigned to this user nor created by user
-        if (!$item->getListId() && ($item->getAssignedContactId() != $user_id || $item->getContactId() != $user_id)) {
             return false;
         }
 

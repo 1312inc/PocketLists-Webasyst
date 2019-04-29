@@ -87,21 +87,6 @@ class pocketlistsNotificationAboutNewComment extends pocketlistsBaseNotification
                 continue;
             }
 
-            // not from NULL-list
-            if ($item->getListId() === null) {
-                continue;
-            }
-
-            // from NULL-list, assigned to another user or created by another user
-            if ($item->getListId() === null
-                && ($item->getAssignedContactId() != $user_id || $item->getContactId() == $user_id)) {
-                continue;
-            }
-
-            if ($item->getListId() && !pocketlistsRBAC::canAccessToList($list, $user_id)) {
-                continue;
-            }
-
             switch ($user['setting']) {
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_ITEM:
                     if ($item->getContactId() == $user_id) {
@@ -116,6 +101,21 @@ class pocketlistsNotificationAboutNewComment extends pocketlistsBaseNotification
                     break;
 
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_ANY_LIST_ITEM:
+                    // not from NULL-list
+                    if ($item->getListId() === null) {
+                        continue 2;
+                    }
+
+                    // from NULL-list, assigned to another user or created by another user
+                    if ($item->getListId() === null
+                        && ($item->getAssignedContactId() != $user_id || $item->getContactId() == $user_id)) {
+                        continue 2;
+                    }
+
+                    if ($item->getListId() && !pocketlistsRBAC::canAccessToList($list, $user_id)) {
+                        continue 2;
+                    }
+
                     if ($item) {
                         $mailData['subject'] = 'string:💬 {str_replace(array("\r", "\n"), " ", $item.name)|truncate:64}';
                     }
