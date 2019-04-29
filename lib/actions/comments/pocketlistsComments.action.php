@@ -3,15 +3,20 @@
 /**
  * Class pocketlistsCommentsAction
  */
-class pocketlistsCommentsAction extends waViewAction
+class pocketlistsCommentsAction extends pocketlistsViewAction
 {
     const DEFAULT_OFFSET = 50;
 
-    private $last_activity;
-
-    public function execute()
+    /**
+     * @param null $params
+     *
+     * @return mixed|void
+     * @throws waDbException
+     * @throws waException
+     */
+    public function runAction($params = null)
     {
-        $this->last_activity = pocketlistsActivity::getUserActivity();
+        $last_activity = pocketlistsActivity::getUserActivity();
         $offset = waRequest::get('offset', 0);
 
         /** @var pocketlistsCommentFactory $commentFactory */
@@ -20,7 +25,7 @@ class pocketlistsCommentsAction extends waViewAction
 
         /** @var pocketlistsComment $comment */
         foreach ($comments as $comment) {
-            $comment->setRecentlyCreated($this->last_activity);
+            $comment->setRecentlyCreated($last_activity);
         }
 
         $this->view->assign('comments', $comments);

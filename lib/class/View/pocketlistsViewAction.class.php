@@ -3,7 +3,7 @@
 /**
  * Class pocketlistsViewAction
  */
-class pocketlistsViewAction extends waViewAction
+abstract class pocketlistsViewAction extends waViewAction
 {
     /**
      * @var pocketlistsUser
@@ -11,31 +11,39 @@ class pocketlistsViewAction extends waViewAction
     protected $user;
 
     /**
+     * @param null|array $params
+     *
+     * @return mixed
+     */
+    abstract public function runAction($params = null);
+
+    /**
+     * @throws pocketlistsForbiddenException
      * @throws waException
      */
     public function preExecute()
     {
         $this->user = pl2()->getUser();
-
-        if (!pocketlistsRBAC::canAccess()) {
-            throw new waException('Access denied.', 403);
-        }
     }
 
     /**
      * @param null $params
+     *
+     * @throws waException
      */
-    public function run($params = null)
+    public function execute($params = null)
     {
         try {
-            $this->preExecute();
-            $this->execute();
-            $this->afterExecute();
-        } catch (waException $ex) {
+            if (!pocketlistsRBAC::canAccess()) {
+                throw new pocketlistsForbiddenException();
+            }
+
+            $this->runAction($params);
+        } catch (pocketlistsException $ex) {
             $this->view->assign(
                 'error',
                 [
-                    'code'    => 403,
+                    'code'    => $ex->getCode(),
                     'message' => $ex->getMessage(),
                 ]
             );
@@ -43,6 +51,7 @@ class pocketlistsViewAction extends waViewAction
             $this->setTemplate('templates/include/error.html');
         }
     }
+
 
     /**
      * @param int $id

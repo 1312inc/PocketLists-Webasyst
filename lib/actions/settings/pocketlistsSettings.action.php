@@ -6,9 +6,12 @@
 class pocketlistsSettingsAction extends pocketlistsViewAction
 {
     /**
+     * @param null $params
+     *
+     * @return mixed|void
      * @throws waException
      */
-    public function execute()
+    public function runAction($params = null)
     {
         $settings = $this->user->getSettings()->getAllSettings();
         $this->view->assign('settings', $settings);

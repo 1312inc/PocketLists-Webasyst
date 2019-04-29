@@ -6,10 +6,12 @@
 class pocketlistsItemDetailsAction extends pocketlistsViewItemAction
 {
     /**
-     * @throws waDbException
+     * @param null $params
+     *
+     * @return mixed|void
      * @throws waException
      */
-    public function execute()
+    public function runAction($params = null)
     {
         $id = waRequest::request('id', false, waRequest::TYPE_INT);
         $listId = waRequest::request('list_id', false, waRequest::TYPE_INT);

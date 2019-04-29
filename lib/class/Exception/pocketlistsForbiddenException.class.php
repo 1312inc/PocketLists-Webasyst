@@ -3,7 +3,7 @@
 /**
  * Class pocketlistsForbiddenException
  */
-class pocketlistsForbiddenException extends waException
+class pocketlistsForbiddenException extends pocketlistsException
 {
     /**
      * pocketlistsForbiddenException constructor.
@@ -12,7 +12,7 @@ class pocketlistsForbiddenException extends waException
      * @param int    $code
      * @param null   $previous
      */
-    public function __construct($message = '', $code = 500, $previous = null)
+    public function __construct($message = '', $code = 500, Throwable $previous = null)
     {
         parent::__construct(_w('Access denied'), 403, $previous);
     }

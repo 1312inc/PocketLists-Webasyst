@@ -6,10 +6,13 @@
 class pocketlistsItemCreateAction extends pocketlistsViewAction
 {
     /**
+     * @param null $params
+     *
+     * @return mixed|void
      * @throws waDbException
      * @throws waException
      */
-    public function execute()
+    public function runAction($params = null)
     {
         $data = waRequest::post('data', false, waRequest::TYPE_ARRAY);
         $filter = waRequest::post('filter', false);

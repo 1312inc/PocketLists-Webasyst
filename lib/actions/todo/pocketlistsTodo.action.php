@@ -5,7 +5,12 @@
  */
 class pocketlistsTodoAction extends pocketlistsViewAction
 {
-    public function execute()
+    /**
+     * @param null $params
+     *
+     * @return mixed|void
+     */
+    public function runAction($params = null)
     {
         $calendar_html = (new pocketlistsTodoMonthAction())->display();
         $this->view->assign(

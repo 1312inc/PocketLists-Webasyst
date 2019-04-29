@@ -6,9 +6,12 @@
 class pocketlistsListEmailDialogAction extends pocketlistsViewAction
 {
     /**
+     * @param null $params
+     *
+     * @return mixed|void
      * @throws waException
      */
-    public function execute()
+    public function runAction($params = null)
     {
         $id = waRequest::get('id', false, waRequest::TYPE_INT);
         $date = waRequest::get('date', '');

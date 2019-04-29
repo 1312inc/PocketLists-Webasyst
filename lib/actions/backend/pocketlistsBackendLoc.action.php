@@ -5,7 +5,12 @@
  */
 class pocketlistsBackendLocAction extends pocketlistsViewAction
 {
-    public function execute()
+    /**
+     * @param null $params
+     *
+     * @return mixed|void
+     */
+    public function runAction($params = null)
     {
         $strings = array();
 

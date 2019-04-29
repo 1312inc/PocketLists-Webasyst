@@ -8,9 +8,12 @@ class pocketlistsLogbookAction extends pocketlistsViewAction
     const DEFAULT_OFFSET = 30;
 
     /**
+     * @param null $params
+     *
+     * @return mixed|void
      * @throws waException
      */
-    public function execute()
+    public function runAction($params = null)
     {
         $offset = waRequest::get('offset', 0);
 

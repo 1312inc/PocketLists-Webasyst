@@ -8,10 +8,13 @@ class pocketlistsListLazyDoneItemsAction extends pocketlistsViewListAction
     const OFFSET = 30;
 
     /**
-     * @throws waDbException
+     * @param null $params
+     *
+     * @return mixed|void
+     * @throws pocketlistsForbiddenException
      * @throws waException
      */
-    public function execute()
+    public function runAction($params = null)
     {
         $offset = waRequest::get('offset', 0, waRequest::TYPE_INT);
 

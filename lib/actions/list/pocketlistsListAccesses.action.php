@@ -6,9 +6,12 @@
 class pocketlistsListAccessesAction extends pocketlistsViewListAction
 {
     /**
+     * @param null $params
+     *
+     * @return mixed|void
      * @throws waException
      */
-    public function execute()
+    public function runAction($params = null)
     {
         /** @var pocketlistsList $list */
         $list = $this->getList(waRequest::post('id', false, waRequest::TYPE_INT));

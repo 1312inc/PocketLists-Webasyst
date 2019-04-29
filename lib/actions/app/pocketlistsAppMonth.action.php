@@ -6,10 +6,13 @@
 class pocketlistsAppMonthAction extends pocketlistsViewAction
 {
     /**
+     * @param null $params
+     *
+     * @return mixed|void
      * @throws pocketlistsNotFoundException
      * @throws waException
      */
-    public function execute()
+    public function runAction($params = null)
     {
         $app_id = waRequest::get('app');
 

@@ -6,10 +6,13 @@
 class pocketlistsTodoMonthAction extends pocketlistsViewAction
 {
     /**
+     * @param null $params
+     *
+     * @return mixed|void
      * @throws waDbException
      * @throws waException
      */
-    public function execute()
+    public function runAction($params = null)
     {
         $timezone = wa()->getUser()->getTimezone();
         $show_month = waRequest::get('month', 0, waRequest::TYPE_INT);

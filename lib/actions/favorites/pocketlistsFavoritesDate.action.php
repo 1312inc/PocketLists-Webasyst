@@ -7,10 +7,12 @@ class pocketlistsFavoritesDateAction extends pocketlistsViewAction
 {
     // todo: almost same as ToDo
     /**
-     * @throws waDbException
+     * @param null $params
+     *
+     * @return mixed|void
      * @throws waException
      */
-    public function execute()
+    public function runAction($params = null)
     {
         $date = waRequest::get('date', false);
 

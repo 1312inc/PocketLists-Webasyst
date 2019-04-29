@@ -6,10 +6,13 @@
 class pocketlistsListAction extends pocketlistsViewAction
 {
     /**
+     * @param null $params
+     *
+     * @return mixed|void
      * @throws waDbException
      * @throws waException
      */
-    public function execute()
+    public function runAction($params = null)
     {
         $list_id = isset($this->params['list_id'])
             ? $this->params['list_id']

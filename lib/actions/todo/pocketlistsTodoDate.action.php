@@ -6,10 +6,12 @@
 class pocketlistsTodoDateAction extends pocketlistsViewAction
 {
     /**
-     * @throws waDbException
+     * @param null $params
+     *
+     * @return mixed|void
      * @throws waException
      */
-    public function execute()
+    public function runAction($params = null)
     {
         $date = waRequest::get('date', false);
         $filter = waRequest::get('filter', false);

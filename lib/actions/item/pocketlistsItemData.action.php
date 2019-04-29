@@ -6,10 +6,12 @@
 class pocketlistsItemDataAction extends pocketlistsViewItemAction
 {
     /**
-     * @throws waDbException
+     * @param null $params
+     *
+     * @return mixed|void
      * @throws waException
      */
-    public function execute()
+    public function runAction($params = null)
     {
         if (waRequest::getMethod() !== 'post') {
             return;

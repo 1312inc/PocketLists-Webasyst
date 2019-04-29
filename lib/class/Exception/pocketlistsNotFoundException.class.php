@@ -3,7 +3,7 @@
 /**
  * Class pocketlistsNotFoundException
  */
-class pocketlistsNotFoundException extends waException
+class pocketlistsNotFoundException extends pocketlistsException
 {
     /**
      * pocketlistsNotFoundException constructor.

@@ -6,9 +6,12 @@
 class pocketlistsArchiveAction extends pocketlistsViewAction
 {
     /**
+     * @param null $params
+     *
+     * @return mixed|void
      * @throws waException
      */
-    public function execute()
+    public function runAction($params = null)
     {
         /** @var pocketlistsListFactory $listFactory */
         $listFactory = pl2()->getEntityFactory(pocketlistsList::class);

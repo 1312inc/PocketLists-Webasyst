@@ -5,11 +5,8 @@
  */
 class pocketlistsAboutAction extends pocketlistsViewAction
 {
-    /**
-     * @throws waException
-     */
-    public function execute()
+    public function runAction($params = null)
     {
-        
+
     }
 }

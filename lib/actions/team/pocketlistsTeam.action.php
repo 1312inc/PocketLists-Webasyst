@@ -6,10 +6,18 @@
 class pocketlistsTeamAction extends pocketlistsViewAction
 {
     /**
+     * @param null $params
+     *
+     * @return mixed|void
+     * @throws pocketlistsForbiddenException
      * @throws waException
      */
-    public function execute()
+    public function runAction($params = null)
     {
+        if (!pocketlistsRBAC::canAssign()) {
+            throw new pocketlistsForbiddenException();
+        }
+
         // get all pocketlists users
         // all admin
         $teammates = [];

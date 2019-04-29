@@ -6,9 +6,19 @@
 class pocketlistsViewItemAction extends pocketlistsViewAction
 {
     /**
+     * @param null $params
+     *
+     * @return mixed|void
+     */
+    public function runAction($params = null)
+    {
+    }
+
+    /**
      * @param bool $id
      *
-     * @return pocketlistsItem
+     * @return array|mixed
+     * @throws pocketlistsNotFoundException
      * @throws waException
      */
     protected function getItem($id = false)

@@ -6,9 +6,12 @@
 class pocketlistsPocketSettingsDialogAction extends pocketlistsViewPocketAction
 {
     /**
+     * @param null $params
+     *
+     * @return mixed|void
      * @throws waException
      */
-    public function execute()
+    public function runAction($params = null)
     {
         try {
             $pocket = $this->getPocket();
