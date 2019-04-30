@@ -1564,3 +1564,28 @@ msgstr ""
 #: /wa-apps/pocketlists/lib/class/Exception/pocketlistsNotImplementedException.class.php:17
 msgid "Not implemented for now"
 msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:122
+msgid "When someone adds a to-do item in any shared list"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:134
+msgid "When someone creates a new shared to-do list"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:147
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:158
+msgid "any item on any shared list"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:153
+msgid "When someone comments on a to-do item"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:11
+msgid "Rate"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/debug/Debug.html:49
+msgid "Send It!"
+msgstr ""

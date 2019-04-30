@@ -99,12 +99,14 @@
                     <div class="pl-cron-msg" style="{if empty($settings.daily_recap_on)}display: none;{/if}">
                     {if !$last_recap_cron_time}
                         <p class="small"><br><em><i class="icon10 exclamation"></i> [`Daily recap notifications require CRON to be configured, which is not the case for your Pocket Lists app. Cron the following command to run daily:`]</em></p>
-                        <p class="small">
-                            [`Webasyst Cloud`]: {sprintf('[`launch the <a href="%s">Cloud app</a>`]',$wa_backend_url|cat:'hosting/#/cron/')} &gt; <i class="icon10 add"></i> [`Add Cron job`] &gt; <code class="highlighted">php cli.php [Pocket Lists] <b>Recap</b></code>
-                        </p>
-                        <p class="small">
-                            [`Own server`]: <code class="highlighted">{$cron_command}</code>
-                        </p>
+                        <ul>
+                            <li style="padding-bottom: 1rem;">
+                                [`Webasyst Cloud`]: {sprintf('[`launch the <a href="%s">Cloud app</a>`]',$wa_backend_url|cat:'hosting/#/cron/')} &gt; <i class="icon10 add"></i> [`Add Cron job`] &gt; <code class="highlighted">php cli.php [Pocket Lists] <b>Recap</b></code>
+                            </li>
+                            <li>
+                                [`Own server`]: <code class="highlighted">{$cron_command}</code>
+                            </li>
+                        </ul>
                     {else}
                         <p class="small"><br><em><i class="icon10 yes"></i> [`We’ll keep you up to date and notify you on what’s up next! And when there is nothing planned for the upcoming period, no alerts will be sent.`] <span class="gray">{sprintf('[`Last Cron execution time: %s`]', $last_recap_cron_time|wa_datetime:'humandatetime')}</span></em></p>
                     {/if}
@@ -113,7 +115,25 @@
                 <div class="value no-shift">
                     <label>
                         <input type="hidden" name="email_assign_me" value="0"/>
-                        <input value="1" type="checkbox" name="email_assign_me" {if !empty($settings.email_assign_me)}checked="checked"{/if}> [`When someone sends me a to-do`]
+                        <input value="1" type="checkbox" name="email_assign_me" {if !empty($settings.email_assign_me)}checked="checked"{/if}> [`When someone assigns me a to-do`]
+                    </label>
+                </div>
+                <div class="value no-shift">
+                    <label>
+                        <input type="hidden" name="email_add_item_on" value="0"/>
+                        <input value="1" type="checkbox" name="email_add_item_on" {if !empty($settings.email_add_item_on)}checked="checked"{/if}> [`When someone adds a to-do item in any shared list`]
+                    </label>
+                    {* DEPRECATED *}
+                        <select style="display: none;">
+                            <option value="0">[`only items on to-do lists I previously marked as favorite`]</option>
+                            <option value="1" selected="selected">[`to just any list`]</option>
+                        </select>
+                    {* / DEPRECATED *}
+                </div>
+                <div class="value no-shift">
+                    <label>
+                        <input type="hidden" name="email_create_list_on" value="0"/>
+                        <input value="1" type="checkbox" name="email_create_list_on" {if !empty($settings.email_create_list_on)}checked="checked"{/if}> [`When someone creates a new shared to-do list`]
                     </label>
                 </div>
                 <div class="value no-shift">
@@ -126,38 +146,19 @@
                         <option value="1" {if isset($settings.email_complete_item) && $settings.email_complete_item == 1}selected="selected"{/if}>[`only items I marked as favorite`]</option>
                             {* DEPRECATED *}
                             <!-- <option value="2" {if isset($settings.email_complete_item) && $settings.email_complete_item == 2}selected="selected"{/if}>[`only items on to-do lists I previously marked as favorite`]</option> -->
-                        <option value="3" {if isset($settings.email_complete_item) && $settings.email_complete_item == 3}selected="selected"{/if}>[`any item on any list`]</option>
+                        <option value="3" {if isset($settings.email_complete_item) && $settings.email_complete_item == 3}selected="selected"{/if}>[`any item on any shared list`]</option>
                     </select>
-                </div>
-                <div class="value no-shift">
-                    <label>
-                        <input type="hidden" name="email_add_item_on" value="0"/>
-                        <input value="1" type="checkbox" name="email_add_item_on" {if !empty($settings.email_add_item_on)}checked="checked"{/if}> [`When someone adds a to-do item`]
-                    </label>
-                    {* DEPRECATED *}
-                        <select style="display: none;">
-                            <option value="0">[`only items on to-do lists I previously marked as favorite`]</option>
-                            <option value="1" selected="selected">[`to just any list`]</option>
-                        </select>
-                    {* / DEPRECATED *}
                 </div>
                 <div class="value no-shift">
                     <label>
                         <input type="hidden" name="email_comment_item_on" value="0"/>
-                        <input value="1" type="checkbox" name="email_comment_item_on" {if !empty($settings.email_comment_item_on)}checked="checked"{/if}> [`When someone comments a to-do item`]
+                        <input value="1" type="checkbox" name="email_comment_item_on" {if !empty($settings.email_comment_item_on)}checked="checked"{/if}> [`When someone comments on a to-do item`]
                     </label>
                     <select name="email_comment_item">
-                        <option value="0" {if isset($settings.email_comment_item) && $settings.email_comment_item == 0}selected="selected"{/if}>[`which I’ve created`]</option>
-                            {* DEPRECATED *}
-                            <!-- <option value="1" {if isset($settings.email_comment_item) && $settings.email_comment_item == 1}selected="selected"{/if}>[`which I previously marked as favorite`]</option> -->
-                        <option value="2" {if isset($settings.email_comment_item) && $settings.email_comment_item == 2}selected="selected"{/if}>[`in just any list`]</option>
+                        <option value="0" {if isset($settings.email_comment_item) && $settings.email_comment_item == 0}selected="selected"{/if}>[`only items I created`]</option>
+                        <option value="1" {if isset($settings.email_comment_item) && $settings.email_comment_item == 1}selected="selected"{/if}>[`only items I marked as favorite`]</option>
+                        <option value="2" {if isset($settings.email_comment_item) && $settings.email_comment_item == 2}selected="selected"{/if}>[`any item on any shared list`]</option>
                     </select>
-                </div>
-                <div class="value no-shift">
-                    <label>
-                        <input type="hidden" name="email_create_list_on" value="0"/>
-                        <input value="1" type="checkbox" name="email_create_list_on" {if !empty($settings.email_create_list_on)}checked="checked"{/if}> [`When someone creates a new to-do list`]
-                    </label>
                 </div>
               </div>
 
