@@ -90,6 +90,7 @@ class pocketlistsItemDataAction extends pocketlistsViewItemAction
                     pocketlistsLogAction::ITEM_ASSIGN,
                     [
                         'list_id'     => $item->getListId(),
+                        'item_id'     => $item->getId(),
                         'assigned_to' => $item->getAssignedContactId(),
                     ]
                 );
