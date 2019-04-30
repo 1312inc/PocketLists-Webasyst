@@ -396,7 +396,7 @@ msgstr "Уведомления настроены! Когда ничего не 
 
 #: /wa-apps/pocketlists/templates/actions/settings/Settings.html:74
 msgid "When someone assigns me a to-do"
-msgstr "О назначении задач на меня"
+msgstr "О назначении на меня новых задач"
 
 #: /wa-apps/pocketlists/templates/actions/settings/Settings.html:79
 msgid "When someone marks a to-do item as complete"
@@ -404,11 +404,11 @@ msgstr "О выполнении задач"
 
 #: /wa-apps/pocketlists/templates/actions/settings/Settings.html:82
 msgid "only items I created"
-msgstr "которые я создал"
+msgstr "только задач, которые я создал"
 
 #: /wa-apps/pocketlists/templates/actions/settings/Settings.html:83
 msgid "only items I marked as favorite"
-msgstr "которые я выделил как избранные"
+msgstr "только задач, которые я выделил как избранные"
 
 #: /wa-apps/pocketlists/templates/actions/settings/Settings.html:84
 msgid "only items on to-do lists I previously marked as favorite"
@@ -416,7 +416,7 @@ msgstr "которые находятся в моих избранных спи�
 
 #: /wa-apps/pocketlists/templates/actions/settings/Settings.html:85
 msgid "any item on any list"
-msgstr "любых задач"
+msgstr "любых задач в общих списках"
 
 #: /wa-apps/pocketlists/templates/actions/settings/Settings.html:90
 msgid "When someone adds a to-do item"
@@ -1565,4 +1565,25 @@ msgstr ""
 
 #: /wa-apps/pocketlists/lib/class/Exception/pocketlistsNotImplementedException.class.php:17
 msgid "Not implemented for now"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:122
+msgid "When someone adds a to-do item in any shared list"
+msgstr "О создании новых задач в любых общих списках"
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:134
+msgid "When someone creates a new shared to-do list"
+msgstr "О создании новых общих списков"
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:147
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:158
+msgid "any item on any shared list"
+msgstr "любых задач в общих списках"
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:153
+msgid "When someone comments on a to-do item"
+msgstr "О комментариях к задачам"
+
+#: /wa-apps/pocketlists/templates/actions/debug/Debug.html:49
+msgid "Send It!"
 msgstr ""
