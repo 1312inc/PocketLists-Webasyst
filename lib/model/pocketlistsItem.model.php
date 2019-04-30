@@ -641,6 +641,10 @@ class pocketlistsItemModel extends pocketlistsModel
         $lists = [];
         pocketlistsRBAC::filterListAccess($lists, $contact_id);
         $list_sql = pocketlistsRBAC::filterListAccess($lists);
+
+        // todo: one query to rule`em all
+        $qu = $this->getQuery();
+
         $q = "SELECT
                   i.id id,
                   i.parent_id parent_id,
@@ -662,7 +666,10 @@ class pocketlistsItemModel extends pocketlistsModel
                   l.icon list_icon,
                   l.color list_color,
                   l.name list_name,
-                  IF(uf.contact_id, 1, 0) favorite
+                  IF(uf.contact_id, 1, 0) favorite,
+                  (select count(*) from pocketlists_attachment pa where pa.item_id = i.id) attachments_count,
+                  (select count(*) from pocketlists_comment pc where pc.item_id = i.id) comments_count,  
+                  (select count(*) from pocketlists_item_link pil where pil.item_id = i.id) linked_entities_count
                 FROM {$this->table} i
                 LEFT JOIN (select i2.name, l2.*
                           from pocketlists_list l2
