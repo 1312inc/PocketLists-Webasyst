@@ -281,6 +281,7 @@ HTML;
     public function getLinkedApp($app = '')
     {
         if ($this->linkers === null) {
+            $this->linkers = [];
             foreach ($this->getLinkedApps() as $entity) {
                 $class = sprintf('pocketlistsAppLink%s', ucfirst($entity));
                 if (class_exists($class)) {

@@ -93,9 +93,11 @@
             <div class="field">
                 <div class="name">[`Completed`]</div>
                 <div class="value no-shift">
+                    {if $item->getCompleteContact()}
                     <i class="icon16 userpic20" style="background-image: url({$item->getCompleteContact()->getUserPic()})" alt="{$item->getCompleteContact()->getUsername()|escape}"></i>
                     {$item->getCompleteContact()->getUsername()|escape}
                     <span class="hint nowrap">{$item->getCompleteDatetime()|wa_datetime:'humandatetime'}</span>
+                    {/if}
                 </div>
             </div>
         {/if}
