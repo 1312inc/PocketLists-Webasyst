@@ -1067,7 +1067,7 @@ msgstr "добавил комментарий к задаче в списке"
 
 #: /wa-apps/pocketlists/lib/class/pocketlistsLogAction.class.php:73
 msgid "assigned a to-do to"
-msgstr "отправил задачу пользователю"
+msgstr "поставил задачу"
 
 #: /wa-apps/pocketlists/lib/config/app.php:3
 msgid "To-dos"

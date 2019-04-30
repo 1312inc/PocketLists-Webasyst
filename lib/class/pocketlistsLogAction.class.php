@@ -124,7 +124,7 @@ class pocketlistsLogAction
             ],
             self::ITEM_ASSIGN_TEAM => [
                 'name' => /*_w*/
-                    ('sent a new to-do'),
+                    ('assigned a to-do to'),
             ],
         ];
     }
@@ -162,7 +162,7 @@ class pocketlistsLogAction
      */
     private function list_created($id)
     {
-        return self::getListUrlHtml($id);
+        return '<b>'.self::getListUrlHtml($id).'</b>';
     }
 
     /**
@@ -261,10 +261,17 @@ class pocketlistsLogAction
         $list_html = self::getListUrlHtml($id);
         $team_url = $this->app_url.'#/team/'.htmlspecialchars($contact->get('login')).'/';
         $team_name = htmlspecialchars($contact->getName());
+
+        $item = null;
+        if (!empty($this->ext_logs[$id]['params']['item_id'])) {
+            $item = $this->getItemData($this->ext_logs[$id]['params']['item_id']);
+        }
+
+        $_str = '<a href="'.$team_url.'">'.$team_name.'</a>' . ($item && $item->getId() ? ' '.htmlspecialchars($item->getName()) : '');
         if ($list_html) {
-            return '<a hre="'.$team_url.'"> '.$team_name.'</a> '._w('in list').' '.$list_html;
+            return $_str .' @ <b>'.$list_html.'</b>';
         } else {
-            return '<a hre="'.$team_url.'"> '.$team_name.'</a>';
+            return $_str;
         }
     }
 
@@ -284,7 +291,7 @@ class pocketlistsLogAction
             $item = $this->getItemData($this->ext_logs[$id]['params']['item_id']);
         }
 
-        return ($item && $item->getId() ? htmlspecialchars($item->getName()) : '') ." "._w("to user")." <a href=\"{$team_url}\">".htmlspecialchars($contact->getName())."</a>";
+        return " <a href=\"{$team_url}\">".htmlspecialchars($contact->getName())."</a>" . ($item && $item->getId() ? ' '.htmlspecialchars($item->getName()) : '');
     }
 
     /**
