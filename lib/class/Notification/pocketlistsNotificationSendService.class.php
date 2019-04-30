@@ -13,9 +13,12 @@ class pocketlistsNotificationSendService
      */
     public function send(pocketlistsNotification $notification)
     {
+        wa()->getStorage()->close();
+
         $content = $notification->getContent();
 
         try {
+            sleep(10);
             if ($content->send()) {
                 $notification
                     ->setSentAt(date('Y-m-d H:i:s'))
