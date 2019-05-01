@@ -21,7 +21,8 @@ class pocketlistsCommentModel extends pocketlistsModel
             $item_ids = [$item_ids];
         }
 
-        return $this->query("
+        return $this->query(
+            "
             {$this->getSql()}
             WHERE item_id IN (i:ids)
             ORDER BY item_id, id",
@@ -44,16 +45,18 @@ class pocketlistsCommentModel extends pocketlistsModel
         $list_sql = pocketlistsRBAC::filterListAccess($lists, $user_id);
 
         $q = "{$this->getSql()}
-            WHERE {$list_sql}
+            WHERE {$list_sql} 
+                OR (i.list_id is null and (i.contact_id = i:contact_id or i.assigned_contact_id = i:contact_id))
             ORDER BY id DESC
             LIMIT {$start}, {$limit}";
 
         $comments = $this->query(
             $q,
             [
-                'list_ids' => $lists,
-                'start'    => $start,
-                'limit'    => $limit,
+                'list_ids'   => $lists,
+                'start'      => $start,
+                'limit'      => $limit,
+                'contact_id' => $user_id,
             ]
         )->fetchAll();
 
