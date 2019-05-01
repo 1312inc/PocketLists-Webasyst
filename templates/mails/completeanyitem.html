@@ -6,7 +6,7 @@
 <br>
 <br>
 {*if ITEM BELONGS TO SOME LIST*}
-{if $list}
+{if $list.id}
 {if $n > 0}
 <em>{sprintf('[`Just %d more items left on <a href="%s">%s</a>`]', $n, $backend_url|cat:$list.url, $list.name|escape:'html')}</em>
 {else}

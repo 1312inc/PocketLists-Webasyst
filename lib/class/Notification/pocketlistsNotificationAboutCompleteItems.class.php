@@ -154,6 +154,7 @@ class pocketlistsNotificationAboutCompleteItems extends pocketlistsBaseNotificat
                         [
                             'n'        => $items_left,
                             'list'     => [
+                                'id'   => (int)$list->getId(),
                                 'name' => $list->getName(),
                                 'url'  => $list ? sprintf(
                                     '#/pocket/%s/list/%s/',
@@ -164,7 +165,9 @@ class pocketlistsNotificationAboutCompleteItems extends pocketlistsBaseNotificat
                             'complete' => $item->getStatus(),
                             'item'     => [
                                 'name'         => $item->getName(),
-                                'contact_name' => $item->getContact()->getName(),
+                                'contact_name' => $item->getCompleteContact()
+                                    ? $item->getCompleteContact()->getName()
+                                    : '',
                             ],
                         ]
                     )
