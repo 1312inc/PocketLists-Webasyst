@@ -15,6 +15,9 @@ class pocketlistsNotificationSendService
     {
         wa()->getStorage()->close();
 
+        $notification->setStatus(pocketlistsNotification::STATUS_SENDING);
+        pl2()->getEntityFactory(pocketlistsNotification::class)->update($notification);
+
         $content = $notification->getContent();
 
         try {

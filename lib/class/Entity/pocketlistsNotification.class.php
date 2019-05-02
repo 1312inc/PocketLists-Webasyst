@@ -9,8 +9,9 @@ class pocketlistsNotification extends pocketlistsEntity
     const TYPE_PUSH  = 2;
 
     const STATUS_PENDING = 0;
-    const STATUS_OK = 1;
-    const STATUS_FAIL = 2;
+    const STATUS_OK      = 1;
+    const STATUS_SENDING = 2;
+    const STATUS_FAIL    = 99;
 
     /**
      * @var int
