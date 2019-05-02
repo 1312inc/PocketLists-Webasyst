@@ -79,7 +79,7 @@ class pocketlistsNotificationAboutNewAssign extends pocketlistsBaseNotification
                 ]
             )
             ->setSubject('string:➡️ {str_replace(array("\r", "\n"), " ", $item.name)|truncate:64}')
-            ->setTemplate(wa()->getAppPath('templates/mails/newassignitem.html'));
+            ->setTemplate('templates/mails/newassignitem.html');
 
         $notificationFactory->insert($notificationFactory->createNewEmail($emailContent));
     }

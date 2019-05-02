@@ -215,7 +215,7 @@ class pocketlistsNotificationEmailContent implements pocketlistsNotificationCont
             $view->assign($data);
 
             $subject = $view->fetch($this->getSubject());
-            $body = $view->fetch($this->getTemplate());
+            $body = $view->fetch(pl2()->getAppPath($this->getTemplate()));
 
             $message = new waMailMessage($subject, $body);
             $message->setTo($to);

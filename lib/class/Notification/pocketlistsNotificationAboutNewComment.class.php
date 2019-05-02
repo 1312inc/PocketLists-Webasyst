@@ -61,7 +61,7 @@ class pocketlistsNotificationAboutNewComment extends pocketlistsBaseNotification
 
         $mailData = [
             'subject' => '',
-            'body'   => wa()->getAppPath('templates/mails/newcomment.html'),
+            'body'   => 'templates/mails/newcomment.html',
             'params' => [
                 'item'        => [
                     'name' => $item->getName(),

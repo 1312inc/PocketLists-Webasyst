@@ -108,7 +108,7 @@ class pocketlistsNotificationAboutNewItems extends pocketlistsBaseNotification
                         ]
                     )
                     ->setSubject('string:{str_replace(array("\r", "\n"), " ", $item.name)|truncate:64}')
-                    ->setTemplate(wa()->getAppPath('templates/mails/newitem.html'));
+                    ->setTemplate('templates/mails/newitem.html');
 
                 $notificationFactory->insert($notificationFactory->createNewEmail($emailContent));
             }

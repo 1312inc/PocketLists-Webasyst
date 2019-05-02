@@ -98,7 +98,7 @@ class pocketlistsNotificationDailyRecap extends pocketlistsBaseNotification
                         ] + $vars
                     )
                     ->setSubject('string:📥 '.sprintf(_w("Daily recap for %s"), waDateTime::format('humandate')))
-                    ->setTemplate(wa()->getAppPath('templates/mails/dailyrecap.html'));
+                    ->setTemplate('templates/mails/dailyrecap.html');
 
                 $notification = $notificationFactory->createNewEmail($emailContent);
                 $notificationFactory->insert($notification);

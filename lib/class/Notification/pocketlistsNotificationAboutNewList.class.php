@@ -67,7 +67,7 @@ class pocketlistsNotificationAboutNewList extends pocketlistsBaseNotification
                     ]
                 )
                 ->setSubject('string:📝 '.$list->getName())
-                ->setTemplate(wa()->getAppPath('templates/mails/newlist.html'));
+                ->setTemplate('templates/mails/newlist.html');
 
             $notificationFactory->insert($notificationFactory->createNewEmail($emailContent));
         }

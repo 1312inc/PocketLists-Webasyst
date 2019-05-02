@@ -172,7 +172,7 @@ class pocketlistsNotificationAboutCompleteItems extends pocketlistsBaseNotificat
                         ]
                     )
                     ->setSubject($subject)
-                    ->setTemplate(wa()->getAppPath('templates/mails/completeanyitem.html'));
+                    ->setTemplate('templates/mails/completeanyitem.html');
 
                 $notificationFactory->insert($notificationFactory->createNewEmail($emailContent));
             }
