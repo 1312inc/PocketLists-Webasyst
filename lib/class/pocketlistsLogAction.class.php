@@ -500,7 +500,7 @@ class pocketlistsLogAction
             $list = pl2()->getEntityFactory(pocketlistsList::class)->findById($id);
 
             if (!$list) {
-                $data = ['name' => _w('DELETED LIST'), 'deleted' => true];
+                $data = ['name' => _w('Pocket Lists'), 'deleted' => true];
             } else {
                 $data = ['name' => $list->getName(), 'deleted' => false];
             }
