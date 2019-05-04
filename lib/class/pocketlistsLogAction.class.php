@@ -51,7 +51,7 @@ class pocketlistsLogAction
     /**
      * @var
      */
-    public  $user_id;
+    public $user_id;
     /**
      * @var
      */
@@ -162,7 +162,7 @@ class pocketlistsLogAction
      */
     private function list_created($id)
     {
-        return '<b>'.self::getListUrlHtml($id).'</b>';
+        return '<b>'.$this->getListUrlHtml($id).'</b>';
     }
 
     /**
@@ -184,7 +184,7 @@ class pocketlistsLogAction
      */
     private function list_archived($id)
     {
-        return self::getListUrlHtml($id);
+        return $this->getListUrlHtml($id);
     }
 
     /**
@@ -194,7 +194,7 @@ class pocketlistsLogAction
      */
     private function list_unarchived($id)
     {
-        return self::getListUrlHtml($id);
+        return $this->getListUrlHtml($id);
     }
 
     /**
@@ -205,7 +205,7 @@ class pocketlistsLogAction
     private function new_items($id)
     {
         if ($this->ext_logs[$id]['params']['list_id']) {
-            return self::getListUrlHtml($id);
+            return $this->getListUrlHtml($id);
         } else {
             return _w("to his personal to-do stream");
         }
@@ -243,10 +243,24 @@ class pocketlistsLogAction
      * @param $id
      *
      * @return string
+     * @throws waException
      */
     private function item_comment($id)
     {
-        return self::getListUrlHtml($id);
+        $item = false;
+        if (!empty($this->ext_logs[$id]['params']['item_id'])) {
+            $f = pl2()->getEntityFactory(pocketlistsItem::class);
+            /** @var pocketlistsItem $item */
+            $item = $f->findById($this->ext_logs[$id]['params']['item_id']) ?: '';
+        }
+
+        $html = $this->getListUrlHtml($id, $item ? $item->getName() : '');
+
+        if (!empty($this->ext_logs[$id]['pocketlists_ext']['comment']) && $this->ext_logs[$id]['pocketlists_ext']['comment'] instanceof pocketlistsComment) {
+            $html .= ': '.htmlspecialchars($this->ext_logs[$id]['pocketlists_ext']['comment']->getComment());
+        }
+
+        return $html;
     }
 
     /**
@@ -258,7 +272,7 @@ class pocketlistsLogAction
     private function item_assign($id)
     {
         $contact = new waContact($this->ext_logs[$id]['params']['assigned_to']);
-        $list_html = self::getListUrlHtml($id);
+        $list_html = $this->getListUrlHtml($id);
         $team_url = $this->app_url.'#/team/'.htmlspecialchars($contact->get('login')).'/';
         $team_name = htmlspecialchars($contact->getName());
 
@@ -267,9 +281,11 @@ class pocketlistsLogAction
             $item = $this->getItemData($this->ext_logs[$id]['params']['item_id']);
         }
 
-        $_str = '<a href="'.$team_url.'">'.$team_name.'</a>' . ($item && $item->getId() ? ' '.htmlspecialchars($item->getName()) : '');
+        $_str = '<a href="'.$team_url.'">'.$team_name.'</a>'.($item && $item->getId() ? ' '.htmlspecialchars(
+                    $item->getName()
+                ) : '');
         if ($list_html) {
-            return $_str .' @ <b>'.$list_html.'</b>';
+            return $_str.' @ <b>'.$list_html.'</b>';
         } else {
             return $_str;
         }
@@ -291,7 +307,8 @@ class pocketlistsLogAction
             $item = $this->getItemData($this->ext_logs[$id]['params']['item_id']);
         }
 
-        return " <a href=\"{$team_url}\">".htmlspecialchars($contact->getName())."</a>" . ($item && $item->getId() ? ' '.htmlspecialchars($item->getName()) : '');
+        return " <a href=\"{$team_url}\">".htmlspecialchars($contact->getName())."</a>".($item && $item->getId(
+            ) ? ' '.htmlspecialchars($item->getName()) : '');
     }
 
     /**
@@ -299,7 +316,7 @@ class pocketlistsLogAction
      *
      * @return string
      */
-    private function getListUrlHtml($id)
+    private function getListUrlHtml($id, $anchor = '')
     {
         if (!$this->ext_logs[$id][self::$ext]['list']) {
             return "";
@@ -311,7 +328,9 @@ class pocketlistsLogAction
             $list_url = $this->app_url;
         }
 
-        $list_name = htmlspecialchars($this->ext_logs[$id][self::$ext]['list']['name'], ENT_QUOTES);
+        $list_name = $anchor
+            ? htmlspecialchars($anchor)
+            : htmlspecialchars($this->ext_logs[$id][self::$ext]['list']['name'], ENT_QUOTES);
 
         return "<a href=\"{$list_url}\">{$list_name}</a>";
     }

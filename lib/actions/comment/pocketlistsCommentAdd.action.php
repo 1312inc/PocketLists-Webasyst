@@ -67,6 +67,7 @@ class pocketlistsCommentAddAction extends waViewAction
                         [
                             'list_id'    => $item->getListId(),
                             'comment_id' => $comment->getId(),
+                            'item_id'    => $item->getId(),
                         ]
                     );
 
