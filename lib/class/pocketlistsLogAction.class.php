@@ -116,7 +116,7 @@ class pocketlistsLogAction
             ],
             self::ITEM_COMMENT     => [
                 'name' => /*_w*/
-                    ('commented on a to-do in'),
+                    ('commented'),
             ],
             self::ITEM_ASSIGN      => [
                 'name' => /*_w*/
@@ -254,11 +254,16 @@ class pocketlistsLogAction
             $item = $f->findById($this->ext_logs[$id]['params']['item_id']) ?: '';
         }
 
-        $html = $this->getListUrlHtml($id, $item ? $item->getName() : '');
+        $html = '';
 
         if (!empty($this->ext_logs[$id]['pocketlists_ext']['comment']) && $this->ext_logs[$id]['pocketlists_ext']['comment'] instanceof pocketlistsComment) {
-            $html .= ': '.htmlspecialchars($this->ext_logs[$id]['pocketlists_ext']['comment']->getComment());
+            $html .= htmlspecialchars($this->ext_logs[$id]['pocketlists_ext']['comment']->getComment());
         }
+
+        $_link = $this->getListUrlHtml($id, $item ? $item->getName() : '');
+
+        if ($_link)
+            $html .= ' @ '.$_link;
 
         return $html;
     }
@@ -285,7 +290,7 @@ class pocketlistsLogAction
                     $item->getName()
                 ) : '');
         if ($list_html) {
-            return $_str.' @ <b>'.$list_html.'</b>';
+            return $_str.' @ '.$list_html;
         } else {
             return $_str;
         }

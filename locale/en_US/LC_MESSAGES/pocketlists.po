@@ -1061,7 +1061,7 @@ msgid "added new to-dos to"
 msgstr ""
 
 #: /wa-apps/pocketlists/lib/class/pocketlistsLogAction.class.php:69
-msgid "commented on a to-do in"
+msgid "commented"
 msgstr ""
 
 #: /wa-apps/pocketlists/lib/class/pocketlistsLogAction.class.php:73
@@ -1502,7 +1502,7 @@ msgstr ""
 
 #: /wa-apps/pocketlists/templates/actions/about/About.html:109
 #: /wa-apps/pocketlists/templates/actions/about/About.html:114
-msgid "Q2/Q3 2019"
+msgid "Mid 2019"
 msgstr ""
 
 #: /wa-apps/pocketlists/templates/actions/about/About.html:113

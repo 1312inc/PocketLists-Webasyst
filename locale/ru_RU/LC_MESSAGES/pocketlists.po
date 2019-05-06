@@ -1062,8 +1062,8 @@ msgid "added new to-dos to"
 msgstr "добавил новые задачи в список"
 
 #: /wa-apps/pocketlists/lib/class/pocketlistsLogAction.class.php:69
-msgid "commented on a to-do in"
-msgstr "добавил комментарий к задаче в списке"
+msgid "commented"
+msgstr "добавил комментарий"
 
 #: /wa-apps/pocketlists/lib/class/pocketlistsLogAction.class.php:73
 msgid "assigned a to-do to"
@@ -1504,8 +1504,8 @@ msgstr "Rest API"
 
 #: /wa-apps/pocketlists/templates/actions/about/About.html:109
 #: /wa-apps/pocketlists/templates/actions/about/About.html:114
-msgid "Q2/Q3 2019"
-msgstr "Весна-лето 2019"
+msgid "Mid 2019"
+msgstr "Середина 2019"
 
 #: /wa-apps/pocketlists/templates/actions/about/About.html:113
 msgid "Integrate Pocket Lists for Webasyst and iOS"
