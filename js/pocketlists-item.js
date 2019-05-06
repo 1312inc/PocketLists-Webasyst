@@ -174,7 +174,9 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 if (!o.list && $calendar.length && !o.standAloneItemAdd) {
                     $.get(o.appUrl + '?module=json&action=getItemsPocketColor&id=' + parseInt($html.data('id')), function (r) {
                         if (r.status === 'ok') {
-                            var $selected_date = $calendar.find('[data-pl-todo-date="' + due_date + '"]').length ? $calendar.find('[data-pl-todo-date="' + due_date + '"]') : ($calendar.find('.pl-today').next().length ? $calendar.find('.pl-today').next() : false);
+                            var $selected_date = $calendar.find('[data-pl-todo-date="' + due_date + '"]').length
+                                ? $calendar.find('[data-pl-todo-date="' + due_date + '"]')
+                                : false;
                             if ($selected_date) {
                                 var $dots_wrapper = $selected_date.find('.pl-dots'),
                                     $new_dot = $('<i class="icon10 color pl-dark-gray">');
@@ -202,6 +204,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     updateListCountBadge();
                     updateSort();
                 }
+
+                $.pocketlists.sendNotifications(o.appUrl);
 
                 $.isFunction(callback) && callback.call($this);
             }
@@ -246,6 +250,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                         1: ' indicator green',
                         2: ' indicator yellow',
                         3: ' indicator red',
+                        4: ' indicator red',
+                        5: ' indicator red',
                         0: ''
                     };
 
@@ -418,6 +424,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                             }
 
                             showEmptyListMessage();
+
+                            $.pocketlists.sendNotifications(o.appUrl);
 
                             callback && $.isFunction(callback) && callback.call($item);
                         });
@@ -654,6 +662,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                         $this.find('.pl-item-name + .hint').html('<br>' + $_('Assigned to') + ' ' + r.data);
                     }
                     $this.find('.pl-item').data('pl-assigned-contact', team_id);
+
+                    $.pocketlists.sendNotifications(o.appUrl);
                 }
                 $(drop).trigger('dropActionDone.pl2', {
                     $obj: $this,
@@ -711,7 +721,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             linkedEntities = $textarea.data('pl2-linked-entities');
 
         function findParent() {
-            debugger;
+            // debugger;
 
             var $parents = [$textarea.closest('#pl-item-details-form'), $textarea.closest('[data-pl-item-add]'), $textarea.closest(item_selector)],
                 $parent = null;
@@ -1595,6 +1605,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     $.pocketlists.resizeTextarea($this);
 
                     $.pocketlists.scrollToEl($wrapper.find('.pl-chat-contents [data-pl-comment-id]:last')[0]);
+
+                    $.pocketlists.sendNotifications(o.appUrl);
 
                     request_in_action = false;
                 }

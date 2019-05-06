@@ -3,31 +3,31 @@
 /**
  * Class pocketlistsCommentsAction
  */
-class pocketlistsCommentsAction extends waViewAction
+class pocketlistsCommentsAction extends pocketlistsViewAction
 {
     const DEFAULT_OFFSET = 50;
 
-    private $last_activity;
-
-    public function execute()
+    /**
+     * @param null $params
+     *
+     * @return mixed|void
+     * @throws waDbException
+     * @throws waException
+     */
+    public function runAction($params = null)
     {
-        $this->last_activity = pocketlistsActivity::getUserActivity();
-
+        $last_activity = pocketlistsActivity::getUserActivity();
         $offset = waRequest::get('offset', 0);
 
-        $comment_model = new pocketlistsCommentModel();
-        $comments = $comment_model->getComments($offset * self::DEFAULT_OFFSET, self::DEFAULT_OFFSET);
-        $comments = array_map([$this, 'markAsNewAndMatchLinks'], $comments);
+        /** @var pocketlistsCommentFactory $commentFactory */
+        $commentFactory = pl2()->getEntityFactory(pocketlistsComment::class);
+        $comments = $commentFactory->findForPage($offset * self::DEFAULT_OFFSET, self::DEFAULT_OFFSET);
+
+        /** @var pocketlistsComment $comment */
+        foreach ($comments as $comment) {
+            $comment->setRecentlyCreated($last_activity);
+        }
+
         $this->view->assign('comments', $comments);
-
-//        pocketlistsActivity::setUserActivity(wa()->getUser()->getId(), true);
-    }
-
-    private function markAsNewAndMatchLinks($comment)
-    {
-        $comment['new'] = strtotime($comment['create_datetime']) > strtotime($this->last_activity);
-        $comment['comment'] = pocketlistsNaturalInput::matchLinks($comment['comment']);
-
-        return $comment;
     }
 }

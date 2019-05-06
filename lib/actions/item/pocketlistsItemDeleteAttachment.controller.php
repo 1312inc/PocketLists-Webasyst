@@ -1,23 +1,26 @@
 <?php
 
-class pocketlistsItemDeleteAttachmentController extends waJsonController
+/**
+ * Class pocketlistsItemDeleteAttachmentController
+ */
+class pocketlistsItemDeleteAttachmentController extends pocketlistsJsonController
 {
+    /**
+     * @throws waException
+     */
     public function execute()
     {
-        $attachment = waRequest::post('attachment', '', waRequest::TYPE_STRING);
+        $attachment = waRequest::post('attachment', [], waRequest::TYPE_ARRAY_TRIM);
         $item_id = waRequest::post('item_id', 0, waRequest::TYPE_INT);
-        if ($attachment && $item_id) {
-            $im = new pocketlistsItemModel();
-            $item = $im->getById($item_id);
-            if (!$item) {
-                $this->setError('no item with such id');
-                return;
-            }
 
-            $am = new pocketlistsAttachmentModel();
-            $am->remove($item['id'], $attachment);
+        $item = $this->getItem($item_id);
+
+        if ($attachment) {
+            /** @var pocketlistsAttachmentFactory $attachmentFactory */
+            $attachmentFactory = pl2()->getEntityFactory(pocketlistsAttachment::class);
+            $attachmentFactory->deleteAllByItemAndNames($item, $attachment);
         } else {
-            $this->setError('no ids');
+            $this->setError('no attachments');
         }
     }
 }

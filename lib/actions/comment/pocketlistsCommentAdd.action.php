@@ -11,16 +11,21 @@ class pocketlistsCommentAddAction extends waViewAction
      */
     public function execute()
     {
-        $item_id = waRequest::post('item_id', 0, waRequest::TYPE_INT);
-        $comment = waRequest::post('comment', false, waRequest::TYPE_STRING_TRIM);
+        $itemId = waRequest::post('item_id', 0, waRequest::TYPE_INT);
+        $commentText = waRequest::post('comment', false, waRequest::TYPE_STRING_TRIM);
 
-        if ($item_id && $comment != '') {
-            $im = new pocketlistsItemModel();
-            $item = $im->getById($item_id);
+        if ($itemId && $commentText !== '') {
+            /** @var pocketlistsCommentFactory $commentFactory */
+            $commentFactory = pl2()->getEntityFactory(pocketlistsComment::class);
+
+            /** @var pocketlistsItemFactory $itemFactory */
+            $itemFactory = pl2()->getEntityFactory(pocketlistsItem::class);
+            /** @var pocketlistsItem $item */
+            $item = $itemFactory->findById($itemId);
 
             if ($item) {
-                if ($item['list_id']) {
-                    $list = pocketlistsListModel::model()->findByPk($item['list_id']);
+                if ($item->getListId()) {
+                    $list = $item->getList();
                     if (!$list) {
                         $this->view->assign(
                             'error',
@@ -48,32 +53,25 @@ class pocketlistsCommentAddAction extends waViewAction
                     }
                 }
 
-                $cm = new pocketlistsCommentModel();
+                /** @var pocketlistsComment $comment */
+                $comment = $commentFactory->createNew();
+                $comment
+                    ->setItem($item)
+                    ->setContactId(wa()->getUser()->getId())
+                    ->setComment($commentText)
+                    ->setCreateDatetime(date('Y-m-d H:i:s'));
 
-                $user = wa()->getUser();
-                $insert_data = [
-                    'item_id'         => $item['id'],
-                    'contact_id'      => $user->getId(),
-                    'comment'         => $comment,
-                    'create_datetime' => date('Y-m-d H:i:s'),
-                ];
-
-                $last_id = $cm->insert($insert_data);
-                if ($last_id) {
-                    $comment = $cm->getById($last_id);
-                    $comment['comment'] = pocketlistsNaturalInput::matchLinks($comment['comment']);
-
-                    $comment = pocketlistsCommentModel::extendData($comment);
-
+                if ($commentFactory->insert($comment)) {
                     $this->logAction(
                         pocketlistsLogAction::ITEM_COMMENT,
                         [
-                            'list_id'    => $item['list_id'],
-                            'comment_id' => $comment['id'],
+                            'list_id'    => $item->getListId(),
+                            'comment_id' => $comment->getId(),
+                            'item_id'    => $item->getId(),
                         ]
                     );
 
-                    pocketlistsNotifications::notifyAboutNewComment($comment);
+                    (new pocketlistsNotificationAboutNewComment())->notify($comment);
 
                     $this->view->assign('comment', $comment);
                 } else {

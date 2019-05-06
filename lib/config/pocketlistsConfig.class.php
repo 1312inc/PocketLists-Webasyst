@@ -6,17 +6,27 @@
 class pocketlistsConfig extends waAppConfig
 {
     /**
-     * @var
+     * @var array
      */
-    protected $factories;
+    protected $factories = [];
 
     /**
-     * @var pocketlistsItemLinkInterface[]
+     * @var array
+     */
+    protected $models = [];
+
+    /**
+     * @var array
+     */
+    protected $repositories = [];
+
+    /**
+     * @var pocketlistsAppLinkInterface[]
      */
     protected $linkers;
 
     /**
-     * @var pocketlistsItemLinkInterface
+     * @var pocketlistsAppLinkInterface
      */
     protected $fakeLinker;
 
@@ -26,26 +36,95 @@ class pocketlistsConfig extends waAppConfig
     protected $user;
 
     /**
-     * @param $factory
+     * @var pocketlistsHydratorInterface
+     */
+    protected $hydrator;
+
+    /**
+     * @return pocketlistsHydratorInterface
+     */
+    public function getHydrator()
+    {
+        if ($this->hydrator === null) {
+            $this->hydrator = new pocketlistsHydrator();
+        }
+
+        return $this->hydrator;
+    }
+
+    /**
+     * @param $entity
      *
-     * @return pocketlistsItemLinkFactory|pocketlistsItemFactory|pocketlistsTeammateFactory
+     * @return pocketlistsItemLinkFactory|pocketlistsItemFactory|pocketlistsListFactory|pocketlistsContactFactory|pocketlistsPocketFactory|pocketlistsCommentFactory|pocketlistsAttachmentFactory|pocketlistsItemLinkFactory|pocketlistsNotificationFactory
      * @throws waException
      */
-    public function getModelFactory($factory)
+    public function getEntityFactory($entity)
     {
-        if (isset($this->factories[$factory])) {
-            return $this->factories[$factory];
+        if (isset($this->factories[$entity])) {
+            return $this->factories[$entity];
         }
 
-        $factoryClass = sprintf('pocketlists%sFactory', $factory);
+        $factoryClass = sprintf('%sFactory', $entity);
 
-        if (!class_exists($factoryClass) ) {
-            throw new waException(sprintf('No factory class for %s', $factory));
+        if (!class_exists($factoryClass)) {
+            return $this->factories['']->setEntity($entity);
         }
 
-        $this->factories[$factory] = new $factoryClass();
+        $this->factories[$entity] = new $factoryClass();
+        $this->factories[$entity]->setEntity($entity);
 
-        return $this->factories[$factory];
+        return $this->factories[$entity];
+    }
+
+
+    /**
+     * @param $entity
+     *
+     * @return pocketlistsModel
+     * @throws waException
+     */
+    public function getModel($entity = false)
+    {
+        if ($entity === false) {
+            return $this->models[''];
+        }
+
+        if (isset($this->models[$entity])) {
+            return $this->models[$entity];
+        }
+
+        $modelClass = sprintf('%sModel', $entity);
+
+        if (!class_exists($modelClass)) {
+            throw new waException(sprintf('No model class for %s', $entity));
+        }
+
+        $this->models[$entity] = new $modelClass();
+
+        return $this->models[$entity];
+    }
+
+    /**
+     * @param $entity
+     *
+     * @return
+     * @throws waException
+     */
+    public function getEntityRepository($entity)
+    {
+        if (isset($this->repositories[$entity])) {
+            return $this->repositories[$entity];
+        }
+
+        $repositoryClass = sprintf('%sRepository', $entity);
+
+        if (!class_exists($repositoryClass)) {
+            throw new waException(sprintf('No repository class for %s', $entity));
+        }
+
+        $this->repositories[$entity] = new $repositoryClass();
+
+        return $this->repositories[$entity];
     }
 
     public function init()
@@ -55,8 +134,6 @@ class pocketlistsConfig extends waAppConfig
         $customClasses = [
             'wa-apps/pocketlists/lib/vendor/km/' => [
                 'kmStorage',
-                'kmModelExt',
-                'kmModelStorage',
                 'kmStatistics',
             ],
         ];
@@ -69,6 +146,11 @@ class pocketlistsConfig extends waAppConfig
                 }
             }
         }
+
+        $this->models[''] = new pocketlistsModel();
+        $this->factories[''] = new pocketlistsFactory();
+
+        $this->registerGlobal();
     }
 
     public function onInit()
@@ -80,11 +162,55 @@ class pocketlistsConfig extends waAppConfig
         }
     }
 
-    public function onCount()
+    /**
+     * @return int|null
+     * @throws waException
+     */
+    public function onCount($onlycount = false)
     {
-        $pi = new pocketlistsItemModel();
+        try {
+            /** @var pocketlistsItemModel $itemModel */
+            $itemModel = wa(pocketlistsHelper::APP_ID)->getConfig()->getModel(pocketlistsItem::class);
 
-        return $pi->getAppCountForUser();
+            $itemModel->updateCalcPriority();
+
+            $count = $this->getUser()->getAppCount();
+
+            $css = '';
+            if (!$count) {
+                $css = <<<HTML
+<style>
+    [data-app="pocketlists"] .indicator { display: none !important; }
+</style>
+HTML;
+
+            }
+
+            $pocketlistsPath = sprintf('/%s/pocketlists?module=json&action=sendNotifications', pl2()->getBackendUrl());
+
+            $script = <<<HTML
+<script>
+(function() {
+    'use strict';
+    
+    $.post('{$pocketlistsPath}', function(r) {
+        if (r.status === 'ok') {
+            var sent = parseInt(r.data);
+            sent && console.log('pocketlists: notification send ' + sent);
+        } else {
+            console.log('pocketlists: notification send error ' + r.error);
+        }
+    });
+})()
+</script>
+HTML;
+
+            return $onlycount ? $count : $count.$css.$script;
+        } catch (Exception $ex) {
+            pocketlistsHelper::logError('onCount error', $ex);
+        }
+
+        return null;
     }
 
     public function checkRights($module, $action)
@@ -121,6 +247,11 @@ class pocketlistsConfig extends waAppConfig
         return wa()->getAppPath('lib/config/linked_apps.php', pocketlistsHelper::APP_ID);
     }
 
+    public function getUtf8mb4ColumnsPath()
+    {
+        return wa()->getAppPath('lib/config/utf8mb4.php', pocketlistsHelper::APP_ID);
+    }
+
     public function getLinkedApps()
     {
         $apps = require $this->getLinkedAppConfigPath();
@@ -144,17 +275,18 @@ class pocketlistsConfig extends waAppConfig
     /**
      * @param string $app
      *
-     * @return pocketlistsItemLinkInterface|pocketlistsItemLinkInterface[]
+     * @return pocketlistsAppLinkInterface|pocketlistsAppLinkInterface[]
      * @throws waException
      */
     public function getLinkedApp($app = '')
     {
         if ($this->linkers === null) {
+            $this->linkers = [];
             foreach ($this->getLinkedApps() as $entity) {
-                $class = sprintf('pocketlistsItemLink%s', ucfirst($entity));
+                $class = sprintf('pocketlistsAppLink%s', ucfirst($entity));
                 if (class_exists($class)) {
                     $class = new $class();
-                    if ($class instanceof pocketlistsItemLinkInterface && $class->isEnabled()) {
+                    if ($class instanceof pocketlistsAppLinkInterface && $class->isEnabled()) {
                         $this->linkers[$entity] = $class;
                     }
                 }
@@ -163,7 +295,7 @@ class pocketlistsConfig extends waAppConfig
 
         if (!empty($app) && !isset($this->linkers[$app])) {
             if ($this->fakeLinker === null) {
-                $this->fakeLinker = new pocketlistsItemLinkFake();
+                $this->fakeLinker = new pocketlistsAppLinkFake();
             }
 
             return $this->fakeLinker;
@@ -183,5 +315,15 @@ class pocketlistsConfig extends waAppConfig
         }
 
         return $this->user;
+    }
+
+    private function registerGlobal()
+    {
+        if (!function_exists('pl2')) {
+            function pl2()
+            {
+                return wa(pocketlistsHelper::APP_ID)->getConfig();
+            }
+        }
     }
 }

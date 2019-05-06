@@ -5,46 +5,60 @@
  */
 class pocketlistsAppMonthAction extends pocketlistsViewAction
 {
-    public function execute()
+    /**
+     * @param null $params
+     *
+     * @return mixed|void
+     * @throws pocketlistsNotFoundException
+     * @throws waException
+     */
+    public function runAction($params = null)
     {
-       $app_id = waRequest::get('app');
+        $app_id = waRequest::get('app');
 
         if (!$app_id) {
-            throw new waException('Not found');
+            throw new pocketlistsNotFoundException();
         }
 
-        /** @var pocketlistsItemLinkInterface $app */
-        $app = wa(pocketlistsHelper::APP_ID)->getConfig()->getLinkedApp($app_id);
+        /** @var pocketlistsAppLinkInterface $app */
+        $app = pl2()->getLinkedApp($app_id);
 
         if (!$app->userCanAccess()) {
-            throw new waException('Access denied.', 403);
+            throw new pocketlistsNotFoundException();
         }
 
         $timezone = wa()->getUser()->getTimezone();
         $show_month = waRequest::get('month', 0, waRequest::TYPE_INT);
 
-        $im = new pocketlistsItemModel();
+        $month_date = new DateTime(date('Y-m-01'));
+        $month_date->modify($show_month.' month');
+        $monthStart = $month_date->format('Y-m-d');
 
-        $items = $im->getAppItems($app_id, false, false, $show_month);
+        $month_date->modify('+1 month')->modify('-1 day');
+        $monthEnd = $month_date->format('Y-m-d');
+
+        /** @var pocketlistsItemModel $itemModel */
+        $itemModel = pl2()->getModel(pocketlistsItem::class);
+        $items = $itemModel->getAppItems($app->getApp(), false, false, [$monthStart, $monthEnd]);
 
         $monthData = pocketlistsHelper::getMonthData($items, $show_month);
 
-        $this->view->assign('days', $monthData['days']);
+        $this->view->assign(
+            [
+                'days'              => $monthData['days'],
+                'week_first_sunday' => waLocale::getFirstDay() === 7,
 
-        $this->view->assign('week_first_sunday', waLocale::getFirstDay() === 7);
-        $this->view->assign('current_month', date('n', $monthData['month_date']));
-        $this->view->assign('current_year', date('Y', $monthData['month_date']));
-        $this->view->assign('prev_month', date('Y-m', strtotime('-1 month', $monthData['month_date'])));
-        $this->view->assign('next_month', date('Y-m', strtotime('+1 month', $monthData['month_date'])));
+                'current_month'     => date('n', $monthData['month_date']),
+                'current_year'      => date('Y', $monthData['month_date']),
+                'prev_month'        => date('Y-m', strtotime('-1 month', $monthData['month_date'])),
+                'next_month'        => date('Y-m', strtotime('+1 month', $monthData['month_date'])),
 
-        // cast to user timezone
-        $this->view->assign('today', waDateTime::date('j', null, $timezone));
-        $this->view->assign('today_month', waDateTime::date('n', null, $timezone));
-
-        $this->view->assign('type', 'app');
-
-        $this->view->assign('app', $app);
-
-        $this->setTemplate('templates/include/monthcalendar.html');
+                // cast to user timezone
+                'today'             => waDateTime::date('j', null, $timezone),
+                'today_month'       => waDateTime::date('n', null, $timezone),
+                'type'              => 'app',
+                'app'               => $app,
+            ]
+        );
     }
 }

@@ -147,6 +147,17 @@ table.pl-calendar td .pl-dots i.icon10 { margin-top: 0.2em; margin-right: 0.2em;
 .pl-pocket-access { line-height: 1.5em; padding: 10px; }
 .pl-pocket-access table { margin: 10px 15px; }
 
+/* About
+-------- */
+
+.pl-badge-appstore { width: 144px; display: block; }
+
+.pl-roadmap { list-style: none; padding: 0; }
+.pl-roadmap li { padding: 5px 15px 15px 12px; font-size: 15px; }
+.pl-roadmap li .pl-done + span { left: -12px; top: -2px; }
+.pl-roadmap li .pl-done:checked + span { border: 2px solid transparent; }
+/* .pl-roadmap i { width: 16px; height: 16px;  } */
+
 /* Done checkbox
 ---------------- */
 
@@ -220,7 +231,7 @@ input#pl-new-list-input,
     word-wrap: normal;
     overflow: hidden;
     border: none;
-    padding: 5px;
+    padding: 5px 45px 5px 5px;
     margin: -5px 0 -7px -5px;
     position: relative;
     top: -1px;
@@ -229,6 +240,8 @@ input#pl-new-list-input,
     font-weight: 500;
     z-index: 7;
 }
+#pl-item-add textarea { font-size: 15px; }
+input#pl-new-list-input { padding-right: 33px; }
 input#pl-new-list-input::-webkit-placeholder { color: rgba(0,0,0,0.4) !important; }
 #pl-item-add textarea::-webkit-placeholder { color: rgba(0,0,0,0.4) !important; }
 input#pl-new-list-input::-moz-placeholder { color: rgba(0,0,0,0.4) !important; }
@@ -242,11 +255,11 @@ input#pl-new-list-input:focus,
 #pl-item-add .pl-link-preview { opacity: 0.5; }
 #pl-item-add .pl-item-add-shortcuts { display: block; position: absolute; right: 25px; top: 0; bottom: 0; padding-top: 8px; z-index: 8; }
 
-.pl-chat textarea { background: #fff; margin-left: 0px; border-radius: 5px; border: 1px solid rgba(0,0,0,0.1); padding-left: 8px; width: 80%; min-width: 150px; max-height: 110px; }
+.pl-chat textarea { background: #fff; margin-left: 0px; border-radius: 5px; border: 1px solid rgba(0,0,0,0.1); padding-left: 8px; width: 80%; min-width: 150px; max-height: 110px; padding-right: 5px; }
 /* .pl-unsaved { background: rgba(183,0,0,0.06) !important; 2px 3px 0nt; color: #f55 !important; } */
 
 .pl-title { padding: 25px 5px 15px 17px; }
-.pl-title h1 { margin-bottom: 0.2em; line-height: 1.1em; padding-right: 22px; }
+.pl-title h1 { margin-bottom: 0.2em; line-height: 1.1em; padding-right: 42px; }
 .pl-title h1 .pl-done + span {left: -34px; top: 2px; width: 22px; height: 22px; position: absolute; z-index: 1;}
 .pl-title h1 .pl-done:checked + span,
 .pl-title h1 .pl-done:disabled:checked + span { background-size: 24px 24px !important; }
@@ -288,7 +301,7 @@ input#pl-new-list-input:focus,
 .pl-list-items ul.menu-v li .pl-item:hover { background: rgba(0, 0, 0, 0.04); }
 .pl-list-items ul.menu-v li .pl-item.pl-item-selected { background: rgba(155, 155, 155, 0.13); }
 #pl-item-add .pl-item.pl-item-selected { background: transparent; }
-.pl-list-items ul.menu-v li label.pl-select-label { padding: 1px 25px 15px 49px; display: block; line-height: 1.3em; position: relative; cursor: auto; }
+.pl-list-items ul.menu-v li label.pl-select-label { padding: 1px 65px 15px 49px; display: block; line-height: 1.3em; position: relative; cursor: auto; }
 .pl-list-items ul.menu-v li ul { padding-left: 0; margin: 0; }
 .pl-list-items ul.menu-v li ul li .pl-item { padding-left: 30px; }
 .pl-list-items ul.menu-v li ul li ul li .pl-item { padding-left: 56px; }
@@ -312,7 +325,7 @@ input#pl-new-list-input:focus,
 .pl-item .pl-comment.pl-comment-count-show { opacity: 1; }
 .pl-item .pl-comment.pl-comment-count i.icon16 { margin-top: -1px; margin-right: 4px; }
 .pl-item .pl-lastaction-datetime { float: right; }
-.pl-item .pl-item-name { font-weight: 500; font-size: 15px; }
+.pl-item .pl-item-name { font-weight: 500; font-size: 15px; word-break: break-word; }
 .pl-item .pl-item-note { font-size: 13px; line-height: 17px; color: #777; margin-top: 5px; margin-bottom: 5px; }
 .pl-item p.hint { margin-bottom: 0; margin-top: 4px; line-height: 1.2em; color: rgba(0,0,0,0.3); }
 .pl-item i.icon10 { margin-top: 5px; }
@@ -425,7 +438,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#12000000', e
 .pl-details-textarea { margin-bottom: 0rem; background: rgba(0,0,0,0.04); border-radius: 4px; border: none; -webkit-appearance: none; width: 100%; min-height: 1.3em; line-height: 1.3em; padding: 5px; outline: 0 none; max-height: 195px; }
 .pl-details-textarea.pl-item-name { max-height: 170px; }
 
-#pl-item-add .pl-details-form { margin-top: -12px; padding-left: 49px; background: #f2f2f2; position: relative; border-bottom: 1px solid rgba(0,0,0,0.1); }
+#pl-item-add .pl-details-form { margin-top: -12px; padding-left: 49px; padding-right: 45px; background: #f2f2f2; position: relative; border-bottom: 1px solid rgba(0,0,0,0.1); }
 #pl-item-add .pl-details-form .fields,
 #pl-item-add .pl-details-form .field-group,
 #pl-item-add .pl-details-form .field,

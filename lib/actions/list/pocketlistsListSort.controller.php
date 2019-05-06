@@ -3,38 +3,29 @@
 /**
  * Class pocketlistsListSortController
  */
-class pocketlistsListSortController extends waJsonController
+class pocketlistsListSortController extends pocketlistsJsonController
 {
     /**
+     * @throws pocketlistsForbiddenException
+     * @throws pocketlistsNotFoundException
      * @throws waDbException
      * @throws waException
-     * @throws waRightsException
      */
     public function execute()
     {
-        $pocketId = waRequest::post('pocket_id', 0, waRequest::TYPE_INT);
+        $pocket = $this->getPocket();
 
-        if (!$pocketId) {
-            $this->setError(_w('Not found'));
-            return;
-        }
-
-        $pocket = pocketlistsPocketModel::model()->findByPk($pocketId);
-        if (!$pocket) {
-            $this->setError(_w('Not found'));
-            return;
-        }
-
-        if (pocketlistsRBAC::contactHasAccessToPocket($pocket->pk) !== pocketlistsRBAC::RIGHT_ADMIN) {
-            throw new waRightsException(_w('Access denied'));
+        if (pocketlistsRBAC::contactHasAccessToPocket($pocket) !== pocketlistsRBAC::RIGHT_ADMIN) {
+            throw new pocketlistsForbiddenException();
         }
 
         $data = waRequest::post('data', false);
 
         if ($data) {
-            $lm = new pocketlistsListModel();
+            /** @var pocketlistsListModel $listModel */
+            $listModel = pl2()->getModel(pocketlistsList::class);
             foreach ($data as $list) {
-                $lm->updateById($list['id'], ['sort' => $list['sort']]);
+                $listModel->updateById($list['id'], ['sort' => $list['sort']]);
             }
         }
     }

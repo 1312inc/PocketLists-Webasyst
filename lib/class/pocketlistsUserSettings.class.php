@@ -76,15 +76,14 @@ class pocketlistsUserSettings
             'daily_recap'                    => self::DAILY_RECAP_FOR_TODAY,
             'email_assign_me'                => 1,
             'email_complete_item_on'         => 1,
-            'email_complete_item'            => self::EMAIL_WHEN_SOMEONE_COMPETES_ANY_ITEM,
+            'email_complete_item'            => self::EMAIL_WHEN_SOMEONE_COMPLETES_ITEM_I_CREATED,
             'email_add_item_on'              => 1,
             'email_add_item'                 => self::EMAIL_WHEN_SOMEONE_ADDS_ITEM_TO_ANY_LIST,
             'email_comment_item_on'          => 1,
-            'email_comment_item'             => self::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_ANY_LIST_ITEM,
+            'email_comment_item'             => self::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_ITEM,
             'email_create_list_on'           => 1,
-            'stream_inbox_list'              => 0,
             'natural_input_on'               => 1,
-            'created_by_others_in_shared_on' => 1,
+            'created_by_others_in_shared_on' => 0,
             'created_by_others_in_shared'    => self::MY_TO_DOS_CREATED_BY_OTHER_IN_SHARED_LISTS_GREEN_YELLOW_RED_ALL_LISTS,
             'created_by_me_in_shared_on'     => 1,
             'created_by_me_in_shared'        => self::MY_TO_DOS_CREATED_BY_ME_IN_SHARED_ANY_LIST,
@@ -105,7 +104,6 @@ class pocketlistsUserSettings
             'email_add_item_on'              => 0,
             'email_comment_item_on'          => 0,
             'email_create_list_on'           => 0,
-            'stream_inbox_list'              => 0,
             'created_by_others_in_shared_on' => 0,
             'created_by_me_in_shared_on'     => 0,
         ];
@@ -195,14 +193,6 @@ class pocketlistsUserSettings
             $this->settings['last_pocket_list_id'],
             true
         ) : false;
-    }
-
-    /**
-     * @return bool|int
-     */
-    public function getStreamInboxList()
-    {
-        return !empty($this->settings['stream_inbox_list']) ? $this->settings['stream_inbox_list'] : false;
     }
 
     /**

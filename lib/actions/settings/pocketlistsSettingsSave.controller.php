@@ -1,14 +1,13 @@
 <?php
 
-class pocketlistsSettingsSaveController extends waJsonController
+/**
+ * Class pocketlistsSettingsSaveController
+ */
+class pocketlistsSettingsSaveController extends pocketlistsJsonController
 {
     public function execute()
     {
-//        if (!pocketlistsRBAC::isAdmin()) {
-//            throw new waException('Access denied.', 403);
-//        }
-
-        $us = new pocketlistsUserSettings();
+        $us = $this->user->getSettings();
 
         // zero settings which are not in POST
         $data = array_merge($us->getZeroSettings(), waRequest::post());

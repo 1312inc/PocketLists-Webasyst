@@ -1,16 +1,15 @@
 <?php
 
-//todo: save state
-
 /**
  * Class pocketlistsRBAC
  */
 class pocketlistsRBAC
 {
-    const RIGHT_NONE    = 0;
-    const RIGHT_ACCESS  = 1;
-    const RIGHT_ADMIN   = 2;
-    const RIGHT_LIMITED = 3;
+    const RIGHT_NONE        = 0;
+    const RIGHT_ACCESS      = 1;
+    const RIGHT_FULL_ACCESS = 2;
+    const RIGHT_LIMITED     = 3;
+    const RIGHT_ADMIN       = 99;
 
     const CAN_ASSIGN          = 'canassign';
     const CAN_CREATE_TODOS    = 'cancreatetodos';
@@ -19,9 +18,8 @@ class pocketlistsRBAC
     const POCKET_ITEM = 'pocket';
     const LIST_ITEM   = 'list';
 
-    private static $access_rights = [];
-    private static $lists         = [];
-    private static $pockets       = [];
+    private static $lists   = [];
+    private static $pockets = [];
 
     /**
      * Return all list ids accessible for given user
@@ -41,9 +39,10 @@ class pocketlistsRBAC
             return array_keys(self::$lists[$user_id]);
         }
 
-        $listModel = new pocketlistsListModel();
+        /** @var pocketlistsListModel $listModel */
+        $listModel = pl2()->getModel(pocketlistsList::class);
 
-        if (self::isAdmin($contact_id)) {
+        if (self::isAdmin($user_id)) {
             $lists = $listModel->getAll('id');
             if ($lists) {
                 foreach ($lists as $list) {
@@ -60,7 +59,7 @@ class pocketlistsRBAC
                     case $rightValue == self::RIGHT_ADMIN:
                         $lists = $listModel->getAllLists(false, $pocketId);
                         foreach ($lists as $list) {
-                            self::addListUserRight($user_id, $list->pk, true);
+                            self::addListUserRight($user_id, $list['id'], true);
                         }
                         break;
 
@@ -89,36 +88,38 @@ class pocketlistsRBAC
     }
 
     /**
-     * @param int $pocket_id
-     * @param int $contact_id
+     * @param pocketlistsPocket       $pocket
+     * @param pocketlistsContact|null $contact
      *
-     * @return bool|int
+     * @return bool
      * @throws waDbException
      * @throws waException
      */
-    public static function contactHasAccessToPocket($pocket_id, $contact_id = 0)
+    public static function contactHasAccessToPocket(pocketlistsPocket $pocket, pocketlistsContact $contact = null)
     {
-        $user = self::getContact($contact_id);
+        $user = self::getContact($contact);
 
-        if (isset(self::$pockets[$user->getId()][$pocket_id])) {
-            return self::$pockets[$user->getId()][$pocket_id];
+        if (isset(self::$pockets[$user->getId()][$pocket->getId()])) {
+            return self::$pockets[$user->getId()][$pocket->getId()];
         }
 
         self::fillPocketsForUser($user);
 
-        return isset(self::$pockets[$user->getId()][$pocket_id]) ? self::$pockets[$user->getId()][$pocket_id] : false;
+        return isset(self::$pockets[$user->getId()][$pocket->getId()])
+            ? self::$pockets[$user->getId()][$pocket->getId()]
+            : false;
     }
 
     /**
-     * @param int $contact_id
+     * @param pocketlistsContact|null $contact
      *
      * @return array
      * @throws waDbException
      * @throws waException
      */
-    public static function getAccessPocketForContact($contact_id = 0)
+    public static function getAccessPocketForContact(pocketlistsContact $contact = null)
     {
-        $user = self::getContact($contact_id);
+        $user = self::getContact($contact);
 
         if (!isset(self::$pockets[$user->getId()])) {
             self::fillPocketsForUser($user);
@@ -130,19 +131,19 @@ class pocketlistsRBAC
     /**
      * Return users for given list
      *
-     * @param pocketlistsListModel|null $list
+     * @param pocketlistsList|null $list
      *
      * @return array
      */
-    public static function getAccessContacts(pocketlistsListModel $list = null)
+    public static function getAccessContacts(pocketlistsList $list = null)
     {
         $wcr = new waContactRightsModel();
         $query = sprintf(
             "SELECT DISTINCT group_id FROM wa_contact_rights WHERE %s OR %s OR %s %s",
             self::haveFullAdminSQL(),
             self::haveFullAccessSQL(),
-            $list ? self::haveAccessToListSQL($list) : self::haveAccessSQL(),
-            $list && $list->pocket_id ? ' OR '.self::havePocketFullAccessSQL($list->pocket_id) : ''
+            $list && $list->getId() ? self::haveAccessToListSQL($list) : self::haveAccessSQL(),
+            $list && $list->getPocketId() ? ' OR '.self::havePocketFullAccessSQL($list->getPocketId()) : ''
         );
 
         $contact_ids = $wcr->query($query)->fetchAll();
@@ -166,7 +167,7 @@ class pocketlistsRBAC
         return $contact->isAdmin() || $contact->isAdmin(pocketlistsHelper::APP_ID);
     }
 
-    public static function canAccessToList(pocketlistsListModel $list, $user_id = false)
+    public static function canAccessToList(pocketlistsList $list, $user_id = false)
     {
 //        $user_id = $user_id ? $user_id : wa()->getUser()->getId();
 //        if (!isset(self::$access_rights[$user_id])) {
@@ -174,21 +175,25 @@ class pocketlistsRBAC
 //        }
         $user = self::getContact($user_id);
 
-        if (isset(self::$lists[$user->getId()][$list->pk])) {
-            return self::$lists[$user->getId()][$list->pk];
+        if (isset(self::$lists[$user->getId()][$list->getId()])) {
+            return self::$lists[$user->getId()][$list->getId()];
         }
 
         switch (true) {
-            case $user->getRights(pocketlistsHelper::APP_ID, self::LIST_ITEM.'.'.$list->pk):
-            case $list->pocket_id && $user->getRights(pocketlistsHelper::APP_ID, self::LIST_ITEM.'.'.$list->pocket_id):
-                self::$lists[$user_id][$list->pk] = true;
+            case $user->getRights(pocketlistsHelper::APP_ID, self::LIST_ITEM.'.'.$list->getId()):
+            case $list->getPocketId()
+                && $user->getRights(
+                    pocketlistsHelper::APP_ID,
+                    self::POCKET_ITEM.'.'.$list->getPocketId()
+                ) == self::RIGHT_ADMIN:
+                self::addListUserRight($user_id, $list->getId(), true);
                 break;
 
             default:
-                self::$lists[$user_id][$list->pk] = false;
+                self::addListUserRight($user_id, $list->getId(), false);
         }
 
-        return self::$lists[$user_id][$list->pk];
+        return self::$lists[$user_id][$list->getId()];
     }
 
     /**
@@ -215,6 +220,11 @@ class pocketlistsRBAC
         $contact = self::getContact($user);
 
         return $contact->getRights(pocketlistsHelper::APP_ID, self::CAN_USE_SHOP_SCRIPT);
+    }
+
+    public static function getShopScriptUsers()
+    {
+
     }
 
     /**
@@ -349,7 +359,7 @@ class pocketlistsRBAC
         return sprintf(
             " (app_id = '%s' AND name = 'backend' AND value = %s)",
             pocketlistsHelper::APP_ID,
-            self::RIGHT_ADMIN
+            self::RIGHT_FULL_ACCESS
         );
     }
 
@@ -380,17 +390,17 @@ class pocketlistsRBAC
     }
 
     /**
-     * @param pocketlistsListModel|null $list
+     * @param pocketlistsList|null $list
      *
      * @return string
      */
-    private static function haveAccessToListSQL(pocketlistsListModel $list = null)
+    private static function haveAccessToListSQL(pocketlistsList $list = null)
     {
         return sprintf(
             " (app_id = '%s' AND name = '%s.%s' AND value = %s)",
             pocketlistsHelper::APP_ID,
             self::LIST_ITEM,
-            $list instanceOf pocketlistsListModel ? $list->pk : '%',
+            $list ? $list->getId() : '%',
             self::RIGHT_ACCESS
         );
     }
@@ -416,14 +426,14 @@ class pocketlistsRBAC
     }
 
     /**
-     * @param $user
+     * @param pocketlistsContact|int $user
      *
      * @return waAuthUser|waContact|waUser
      * @throws waException
      */
     private static function getContact($user)
     {
-        if (!$user instanceof pocketlistsUser) {
+        if (!$user instanceof pocketlistsContact) {
             $contact = $user && is_int($user) ? new waContact($user) : wa()->getUser();
         } else {
             $contact = $user->getContact();

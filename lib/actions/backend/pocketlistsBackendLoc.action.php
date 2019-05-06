@@ -5,7 +5,12 @@
  */
 class pocketlistsBackendLocAction extends pocketlistsViewAction
 {
-    public function execute()
+    /**
+     * @param null $params
+     *
+     * @return mixed|void
+     */
+    public function runAction($params = null)
     {
         $strings = array();
 
@@ -25,7 +30,9 @@ class pocketlistsBackendLocAction extends pocketlistsViewAction
                      'Assigned to',
                      "Archiving the list will temporarily make this list and all it's items invisible. When you need this list in the future, simply unarchive it and continue from just where you stopped. Archive the list?",
                      'You are about to leave this page without saving your input. Are you sure?',
-                     'Find order by ID'
+                     'Find order by ID',
+                     'About',
+                     'We wish we could implement new features that easy :)'
                  ) as $s) {
             $strings[$s] = _w($s);
         }

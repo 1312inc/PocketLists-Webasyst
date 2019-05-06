@@ -12,7 +12,7 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Basepath: .\n"
 "Language: ru_RU\n"
-"X-Generator: Poedit 1.8.7\n"
+"X-Generator: Poedit 2.2\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: .\n"
 
@@ -396,7 +396,7 @@ msgstr "Уведомления настроены! Когда ничего не 
 
 #: /wa-apps/pocketlists/templates/actions/settings/Settings.html:74
 msgid "When someone assigns me a to-do"
-msgstr "О назначении задач на меня"
+msgstr "О назначении на меня новых задач"
 
 #: /wa-apps/pocketlists/templates/actions/settings/Settings.html:79
 msgid "When someone marks a to-do item as complete"
@@ -404,11 +404,11 @@ msgstr "О выполнении задач"
 
 #: /wa-apps/pocketlists/templates/actions/settings/Settings.html:82
 msgid "only items I created"
-msgstr "которые я создал"
+msgstr "только задач, которые я создал"
 
 #: /wa-apps/pocketlists/templates/actions/settings/Settings.html:83
 msgid "only items I marked as favorite"
-msgstr "которые я выделил как избранные"
+msgstr "только задач, которые я выделил как избранные"
 
 #: /wa-apps/pocketlists/templates/actions/settings/Settings.html:84
 msgid "only items on to-do lists I previously marked as favorite"
@@ -416,7 +416,7 @@ msgstr "которые находятся в моих избранных спи�
 
 #: /wa-apps/pocketlists/templates/actions/settings/Settings.html:85
 msgid "any item on any list"
-msgstr "любых задач"
+msgstr "любых задач в общих списках"
 
 #: /wa-apps/pocketlists/templates/actions/settings/Settings.html:90
 msgid "When someone adds a to-do item"
@@ -928,8 +928,8 @@ msgid "author"
 msgstr "автор"
 
 #: /wa-apps/pocketlists/templates/actions/list/List.html:61
-msgid "Use <a href=\"%s\">Team app</a> to configure access to this to-do list: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level."
-msgstr "Для настройки доступа к списку используйте приложение «<a href=\"%s\">Команда</a>»: выберите пользователя или группу пользователей &gt; вкладка «Доступ» &gt; приложение «Дела» &gt; настройте подходящий уровень доступа."
+msgid "Use <a href=\"%s\">Team app</a> to configure access: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level."
+msgstr "Для настройки доступа используйте приложение «<a href=\"%s\">Команда</a>»: выберите пользователя или группу пользователей &gt; вкладка «Доступ» &gt; приложение «Дела» &gt; настройте подходящий уровень доступа."
 
 #: /wa-apps/pocketlists/templates/actions/settings/Settings.html:17
 msgid "Understand “Meeting tomorrow at 10” input (recommended)"
@@ -1062,12 +1062,12 @@ msgid "added new to-dos to"
 msgstr "добавил новые задачи в список"
 
 #: /wa-apps/pocketlists/lib/class/pocketlistsLogAction.class.php:69
-msgid "commented on a to-do in"
-msgstr "добавил комментарий к задаче в списке"
+msgid "commented"
+msgstr "добавил комментарий"
 
 #: /wa-apps/pocketlists/lib/class/pocketlistsLogAction.class.php:73
 msgid "assigned a to-do to"
-msgstr "отправил задачу пользователю"
+msgstr "поставил задачу"
 
 #: /wa-apps/pocketlists/lib/config/app.php:3
 msgid "To-dos"
@@ -1395,3 +1395,195 @@ msgstr "Добавить задание cron"
 #: /wa-apps/pocketlists/templates/actions/settings/Settings.html:111
 msgid "Own server"
 msgstr "На своем сервере"
+
+#: /wa-apps/pocketlists/templates/include/itemadd.html:27
+msgid "Only you can see this to-do"
+msgstr "Только вы видите эту задачу"
+
+#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:150
+#: /wa-apps/pocketlists/templates/actions/about/About.html:52
+#: /wa-apps/pocketlists/templates/actions/about/About.html:167
+msgid "About"
+msgstr "О приложении"
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:10
+msgid "Rate"
+msgstr "Оценить"
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:13
+msgid "https://www.webasyst.com/store/app/pocketlists/reviews/"
+msgstr "https://www.webasyst.ru/store/app/pocketlists/reviews/"
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:14
+msgid "Rate on Webasyst Installer"
+msgstr "Оценить в приложении «Инсталлер»"
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:19
+msgid "<strong>Your feedback is very important!</strong> Please rate Pocket Lists and write a short review about your experience of using the app. Reviews (both positive and negative) really help us to see what is most useful in the app so we can continue delivering new features the right way."
+msgstr "<strong>Ваши отзывы очень важны!</strong> Пожалуйста, поставьте оценку приложению Pocket Lists и расскажите о своем опыте его использования. Отзывы (и положительные, и отрицательные) помогают нам правильно выбирать направление развития приложения и в первую очередь разрабатывать те функции, которые наиболее востребованы."
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:20
+msgid "https://www.webasyst.com/store/app/pocketlists/"
+msgstr "https://www.webasyst.ru/store/app/pocketlists/"
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:25
+msgid "Support"
+msgstr "Поддержка"
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:31
+msgid "We speak English and Russian."
+msgstr "Мы говорим по-русски и по-английски."
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:36
+msgid "GitHub"
+msgstr "GitHub"
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:55
+msgid "Pocket Lists for Webasyst is an important part of the bigger <a href=\"https://pocketlists.com\" target=\"_blank\"><strong>PocketLists.com project</strong></a> — a suite of apps that are aimed to provide the friendliest to-do list making & collaboration experience."
+msgstr "Pocket Lists для Webasyst является важной частью большого проекта <a href=\"https://pocketlists.com\" target=\"_blank\"><strong>PocketLists.com</strong></a> — сервиса для работы со списками дел и совместной работы."
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:57
+msgid "Pocket Lists is <strong>mostly known for its iOS app</strong> (iPhone, iPad, Apple Watch) designed for personal list making. Get Pocket Lists on the App Store for free."
+msgstr "Pocket Lists <strong>наиболее известен как таск-менеджер для iPhone, iPad и Apple Watch</strong>, предназначенный для персональной работы с списками дел и напоминаниями."
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:59
+msgid "http://itunes.apple.com/us/app/pocket-lists-2/id1272049520?mt=8"
+msgstr "http://itunes.apple.com/ru/app/pocket-lists-2/id1272049520?mt=8"
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:61
+msgid "With Pocket Lists for Webasyst, our goal is to deliver the best of the Pocket Lists world to the Webasyst collaborative environment and to make the teamwork and collaboration on tasks expectionally easy and friendly."
+msgstr "Pocket Lists для Webasyst — это большой шаг проекта Pocket Lists в мир командной работы. В рамках Webasyst мы планируем организовать удобнейшую среду для командной работы и связать ее со всеми возможностями, которые предоставляет мобильное приложение Pocket Lists."
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:66
+msgid "Roadmap"
+msgstr "План развития"
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:69
+msgid "We have big plans for both iOS and Webasyst apps, and here is the summary of what we are keen to be integrating into Pocket Lists for Webasyst anytime soon (a draft plan):"
+msgstr "План ближайшего развития приложения включает в себя интеграцию Pocket Lists для iOS и Webasyst, а также много полезных прикладных возможностей (план примерный, возможны изменения):"
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:73
+msgid "Bring the shared to-do list functionality into Webasyst"
+msgstr "Совместная работа со списками дел в экосистеме Webasyst"
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:77
+msgid "Natural input ('... tomorrow 10am') parser"
+msgstr "Парсер умного ввода даты и времени («сделать завтра в 10»)"
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:81
+msgid "Integrate with Shop-Script"
+msgstr "Интеграция с Shop-Script"
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:82
+msgid "The ability to create to-dos linked with orders"
+msgstr "Связь задач Pocket Lists с заказами Shop-Script"
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:86
+msgid "Multiple pockets and sophisticated access rights management"
+msgstr "Проекты и гибкая настройка доступа для сотрудников"
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:90
+msgid "To-do search"
+msgstr "Поиск задач"
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:94
+msgid "“My To-dos” widget for the dashboard and Webasyst TV"
+msgstr "Виджет «Мои задачи» для дешборда и Webasyst TV"
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:98
+msgid "Integration with Webasyst Team and Tasks apps"
+msgstr "Интеграция с приложениями «Команда» и «Задачи»"
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:103
+msgid "Repeating to-dos"
+msgstr "Повторяющиеся задачи"
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:108
+msgid "Rest API"
+msgstr "Rest API"
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:109
+#: /wa-apps/pocketlists/templates/actions/about/About.html:114
+msgid "Mid 2019"
+msgstr "Середина 2019"
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:113
+msgid "Integrate Pocket Lists for Webasyst and iOS"
+msgstr "Интеграция Pocket Lists для Webasyst и iOS"
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:119
+msgid "Better Shop-Script integration"
+msgstr "Продвинутая интеграция с Shop-Script"
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:120
+msgid "Automated to-do creation based on order statuses"
+msgstr "Автоматическая постановка задач ответственным сотрудникам при выполнении действий с заказами в Shop-Script"
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:124
+msgid "Subtasks"
+msgstr "Подзадачи"
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:128
+msgid "Headings / dividers (sublists)"
+msgstr "Разделители / заголовки внутри списков"
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:132
+msgid "Pocket Lists for Android"
+msgstr "Pocket Lists для Android"
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:133
+msgid "Someday. The real ETA depends on the availability of development resources which are now focused mostly on iOS."
+msgstr "Пока не знаем когда. Но планируем заняться приложением для Android сразу после того, как основные планы по разработке для iOS будут выполнены."
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:137
+msgid "Profit!"
+msgstr "Профит!"
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:146
+msgid "Copyright"
+msgstr "Copyright"
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:170
+msgid "We wish we could implement new features that easy :)"
+msgstr "Эх, если бы все было так просто :)"
+
+#: /wa-apps/pocketlists/templates/actions/debug/Debug.html:49
+msgid "Respect The Send!"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/debug/Debug.html:69
+msgid "Go!"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/debug/Debug.html:109
+msgid "Generate"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/actions/item/pocketlistsItemAssignTo.controller.php:25
+msgid "Contact not found"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/class/Exception/pocketlistsNotImplementedException.class.php:17
+msgid "Not implemented for now"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:122
+msgid "When someone adds a to-do item in any shared list"
+msgstr "О создании новых задач в любых общих списках"
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:134
+msgid "When someone creates a new shared to-do list"
+msgstr "О создании новых общих списков"
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:147
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:158
+msgid "any item on any shared list"
+msgstr "любых задач в общих списках"
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:153
+msgid "When someone comments on a to-do item"
+msgstr "О комментариях к задачам"
+
+#: /wa-apps/pocketlists/templates/actions/debug/Debug.html:49
+msgid "Send It!"
+msgstr ""

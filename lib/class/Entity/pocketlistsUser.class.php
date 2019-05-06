@@ -1,43 +1,53 @@
 <?php
 
-class pocketlistsUser
+/**
+ * Class pocketlistsUser
+ */
+class pocketlistsUser extends pocketlistsContact
 {
     /**
-     * @var waContact
+     * @var pocketlistsUserSettings
      */
-    private $contact;
+    private $settings;
 
     /**
-     * pocketlistsUser constructor.
-     *
-     * @param waContact $contact
+     * @return pocketlistsUserSettings
      */
-    public function __construct(waContact $contact)
+    public function getSettings()
     {
-        $this->contact = $contact;
+        if ($this->settings === null) {
+            $this->settings = new pocketlistsUserSettings();
+        }
+
+        return $this->settings;
     }
 
     /**
-     * @return waContact
+     * @param pocketlistsUserSettings $settings
+     *
+     * @return pocketlistsUser
      */
-    public function getContact()
+    public function setSettings(pocketlistsUserSettings $settings)
     {
-        return $this->contact;
+        $this->settings = $settings;
+
+        return $this;
     }
 
     /**
      * @return int
+     * @throws waException
      */
     public function hasLinkedApps()
     {
-        /** @var pocketlistsItemLinkInterface[] $apps */
-        $apps = wa(pocketlistsHelper::APP_ID)->getConfig()->getLinkedApp();
+        /** @var pocketlistsAppLinkInterface[] $apps */
+        $apps = pl2()->getLinkedApp();
 
-         if (!$apps) {
+        if (!$apps) {
             return 0;
         }
 
-        /** @var pocketlistsItemLinkInterface $app */
+        /** @var pocketlistsAppLinkInterface $app */
         foreach ($apps as $app) {
             if ($app->userCanAccess($this)) {
                 return 1;
@@ -45,5 +55,64 @@ class pocketlistsUser
         }
 
         return 0;
+    }
+
+    /**
+     * @return int|null
+     * @throws waException
+     */
+    public function getAppCount()
+    {
+        $icon = $this->getSettings()->appIcon();
+
+        /** @var pocketlistsItemModel $itemModel */
+        $itemModel = pl2()->getModel(pocketlistsItem::class);
+
+        $count = 0;
+        switch ($icon) {
+            case pocketlistsUserSettings::ICON_OVERDUE: // overdue
+                $count = $itemModel->countTodo(
+                    $this->getContact()->getId(),
+                    [],
+                    [
+                        pocketlistsItem::PRIORITY_RED,
+                        pocketlistsItem::PRIORITY_BLACK,
+                        pocketlistsItem::PRIORITY_BURNINHELL,
+                    ]
+                );
+
+                break;
+
+            case pocketlistsUserSettings::ICON_OVERDUE_TODAY: // overdue + today
+                $count = $itemModel->countTodo(
+                    $this->getContact()->getId(),
+                    [],
+                    [
+                        pocketlistsItem::PRIORITY_YELLOW,
+                        pocketlistsItem::PRIORITY_RED,
+                        pocketlistsItem::PRIORITY_BLACK,
+                        pocketlistsItem::PRIORITY_BURNINHELL,
+                    ]
+                );
+
+                break;
+
+            case pocketlistsUserSettings::ICON_OVERDUE_TODAY_AND_TOMORROW: // overdue + today + tomorrow
+                $count = $itemModel->countTodo(
+                    $this->getContact()->getId(),
+                    [],
+                    [
+                        pocketlistsItem::PRIORITY_GREEN,
+                        pocketlistsItem::PRIORITY_YELLOW,
+                        pocketlistsItem::PRIORITY_RED,
+                        pocketlistsItem::PRIORITY_BLACK,
+                        pocketlistsItem::PRIORITY_BURNINHELL,
+                    ]
+                );
+
+                break;
+        }
+
+        return $count ?: null;
     }
 }

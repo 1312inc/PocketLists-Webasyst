@@ -3,33 +3,29 @@
 /**
  * Class pocketlistsItemCommentsAction
  */
-class pocketlistsItemCommentsAction extends waViewAction
+class pocketlistsItemCommentsAction extends pocketlistsViewItemAction
 {
     /**
-     * @throws waDbException
+     * @param null $params
+     *
+     * @return mixed|void
      * @throws waException
      */
-    public function execute()
+    public function runAction($params = null)
     {
-        $id = waRequest::post('id', false, waRequest::TYPE_INT);
+        $id = waRequest::request('id', false, waRequest::TYPE_INT);
         if ($id) {
-            $im = new pocketlistsItemModel();
-            $item = $im->getById($id);
-            $item = $im->extendItemData($item, false);
-            $this->view->assign('item', $item);
+            $item = $this->getItem();
+
             $this->view->assign(
-                'pl2_attachments_path',
-                wa()->getDataUrl('attachments/'.$item['id'].'/', true, pocketlistsHelper::APP_ID)
+                [
+                    'current_user'         => pl2()->getUser(),
+                    'item'                 => $item,
+                    'pl2_attachments_path' =>
+                        wa()->getDataUrl('attachments/'.$item->getId().'/', true, pocketlistsHelper::APP_ID),
+                    'plurl'                => wa()->getAppUrl(pocketlistsHelper::APP_ID),
+                ]
             );
-
-            $this->view->assign('plurl', wa()->getAppUrl(pocketlistsHelper::APP_ID));
         }
-    }
-
-    private function markAsNewAndMatchLinks($comment)
-    {
-        $comment['comment'] = pocketlistsNaturalInput::matchLinks($comment['comment']);
-
-        return $comment;
     }
 }

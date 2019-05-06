@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Class pocketlistsWaLogModel
+ */
 class pocketlistsWaLogModel extends waLogModel
 {
     /**
@@ -33,10 +36,5 @@ class pocketlistsWaLogModel extends waLogModel
                     AND app_id = '{$this->escape(pocketlistsHelper::APP_ID)}'
                     AND datetime > '{$this->escape($datetime)}'")
             ->order("id DESC");
-    }
-
-    public function getLogsForUser($id)
-    {
-
     }
 }

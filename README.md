@@ -19,7 +19,7 @@ https://www.webasyst.com/store/app/pocketlists/
 		* json
 		* gd or ImageMagick extension
 
-	* MySQL 4.1+
+	* MySQL 5.5+
 
 ## Installing Webasyst Framework (required first!) ##
 

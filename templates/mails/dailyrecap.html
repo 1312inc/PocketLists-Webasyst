@@ -6,9 +6,9 @@
 {foreach $items as $item}
 {$format = 'humandate'}
 {if $item.due_datetime}{$format = 'humandatetime'}{/if}
-&#9898; {sprintf('[`<strong>%s</strong> on %s`]', $item.name|nl2br, $item.due_datetime|default:$item.due_date|wa_datetime:$format:$timezone)}<br>
+&#9898; {sprintf('[`<strong>%s</strong> on %s`]', $item.name_parsed|nl2br, $item.due_datetime|default:$item.due_date|wa_datetime:$format:$timezone)}<br>
 {/foreach}
 <br>
 --<br>
-{$wa->accountName()}<br>
-<a href="{$backend_url}{$email_settings_url}" style="color:#aaa;">[`Manage my subscription`]</a>
+{$default.account_name}<br>
+<a href="{$backend_url}{$default.email_settings_url}" style="color:#aaa;">[`Manage my subscription`]</a>

@@ -18,7 +18,7 @@ class pocketlistsShopBackend_orderHandler extends waEventHandler
 
         $return = [];
 
-        $app = wa(pocketlistsHelper::APP_ID)->getConfig()->getLinkedApp('shop');
+        $app = pl2()->getLinkedApp('shop');
 
         if (!$app->isEnabled()) {
             return $return;
@@ -28,13 +28,7 @@ class pocketlistsShopBackend_orderHandler extends waEventHandler
             return $return;
         }
 
-        $itemLinkModel = pocketlistsItemLinkModel::model()->findByFields(
-            [
-                'app'         => 'shop',
-                'entity_type' => 'order',
-                'entity_id'   => $params['id'],
-            ]
-        );
+        $hasItems = pl2()->getModel(pocketlistsItemLink::class)->countLinkedItems('shop', 'order', $params['id']);
 
         $viewParams = [
             'wa_app_static_url' => wa()->getAppStaticUrl(pocketlistsHelper::APP_ID),
@@ -45,20 +39,20 @@ class pocketlistsShopBackend_orderHandler extends waEventHandler
             'items_done'        => [],
             'count_done_items'  => 0,
             'fileupload'        => 1,
-            'user'              => wa(pocketlistsHelper::APP_ID)->getConfig()->getUser(),
+            'user'              => pl2()->getUser(),
         ];
 
-        if ($itemLinkModel) {
-            $items = wa(pocketlistsHelper::APP_ID)->getConfig()
-                ->getModelFactory('Item')
-                ->findForLinkedEntity($itemLinkModel);
+        if ($hasItems) {
+            $items = pl2()
+                ->getEntityFactory(pocketlistsItem::class)
+                ->findAllForApp($app, 'order', $params['id']);
 
-            $im = new pocketlistsItemModel();
+            $filter = (new pocketlistsStrategyItemFilterAndSort($items))->filterDoneUndone();
 
             if ($items) {
-                $viewParams['items_undone'] = $im->getProperSort($im->extendItemData($items[0]));
-                $viewParams['items_done'] = $im->extendItemData($items[1]);
-                $viewParams['count_done_items'] = count($items[1]);
+                $viewParams['items_undone'] = $filter->getProperSortUndone();
+                $viewParams['items_done'] = $filter->getItemsDone();
+                $viewParams['count_done_items'] = $filter->countDone();
             }
         }
 

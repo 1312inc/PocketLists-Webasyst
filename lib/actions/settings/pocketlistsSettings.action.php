@@ -1,28 +1,43 @@
 <?php
 
-class pocketlistsSettingsAction extends waViewAction
+/**
+ * Class pocketlistsSettingsAction
+ */
+class pocketlistsSettingsAction extends pocketlistsViewAction
 {
-    public function execute()
+    /**
+     * @param null $params
+     *
+     * @return mixed|void
+     * @throws waException
+     */
+    public function runAction($params = null)
     {
-        $us = new pocketlistsUserSettings(wa()->getUser()->getId());
-        $settings = $us->getAllSettings();
+        $settings = $this->user->getSettings()->getAllSettings();
         $this->view->assign('settings', $settings);
 
-        $inbox_list_id = $us->getStreamInboxList();
-        if ($inbox_list_id) {
-            $lm = new pocketlistsListModel();
-            $inbox_list = $lm->getById($inbox_list_id);
-            $this->view->assign('inbox_lists', $lm->getLists());
-            $this->view->assign('inbox_list', $inbox_list);
-        }
+//        $inbox_list_id = $this->user->getSettings()->getStreamInboxList();
+//        if ($inbox_list_id) {
+//            /** @var pocketlistsListFactory $listFactory */
+//            $listFactory = pl2()->getEntityFactory(pocketlistsList::class);
+//            /** @var pocketlistsList $inbox_list */
+//            $inbox_list = $listFactory->findById($inbox_list_id);
+//
+//            $this->view->assign(
+//                [
+//                    'inbox_lists' => $listFactory->findAllActive(),
+//                    'inbox_list'  => $inbox_list,
+//                ]
+//            );
+//        }
 
         $asp = new waAppSettingsModel();
         $this->view->assign(
-            'last_recap_cron_time',
-            $asp->get(wa()->getApp(), 'last_recap_cron_time')
+            [
+                'last_recap_cron_time' => $asp->get(wa()->getApp(), 'last_recap_cron_time'),
+                'cron_command'         => pl2()->getCronJob('recap_mail'),
+                'admin'                => pocketlistsRBAC::isAdmin(),
+            ]
         );
-
-        $this->view->assign('cron_command', $this->getConfig()->getCronJob('recap_mail'));
-        $this->view->assign('admin', pocketlistsRBAC::isAdmin());
     }
 }

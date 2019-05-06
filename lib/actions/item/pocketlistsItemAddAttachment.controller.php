@@ -65,17 +65,23 @@ class pocketlistsItemAddAttachmentController extends waJsonController
     /**
      * @param waRequestFile $file
      *
-     * @return bool
-     * @throws waDbException
+     * @return array|bool
+     * @throws waException
      */
     public function save(waRequestFile $file)
     {
-        $im = new pocketlistsItemModel();
         $item_id = waRequest::post('item_id', 0, waRequest::TYPE_INT);
         $filevalid = $this->validFile($file);
         if ($filevalid === true) {
-            $item = $im->getById($item_id);
-            $path_public = wa()->getDataPath('attachments/'.$item['id'].'/', true, pocketlistsHelper::APP_ID);
+            /** @var pocketlistsItemFactory $itemFactory */
+            $itemFactory = pl2()->getEntityFactory(pocketlistsItem::class);
+            /** @var pocketlistsItem $item */
+            $item = $itemFactory->findById($item_id);
+            if (!$item) {
+                return false;
+            }
+
+            $path_public = wa()->getDataPath('attachments/'.$item->getId().'/', true, pocketlistsHelper::APP_ID);
             if ($item && is_writable($path_public)) {
                 $name = $file->name;
 
@@ -86,6 +92,7 @@ class pocketlistsItemAddAttachmentController extends waJsonController
                             $name = $tmp_name;
                         }
                     }
+
                     if (file_exists($path_public.DIRECTORY_SEPARATOR.$name)) {
                         $i = strrpos($name, '.');
                         $ext = substr($name, $i + 1);
@@ -94,30 +101,35 @@ class pocketlistsItemAddAttachmentController extends waJsonController
                         while (file_exists($path_public.DIRECTORY_SEPARATOR.$name.'-'.$i.'.'.$ext)) {
                             $i++;
                         }
+
                         $name = $name.'-'.$i.'.'.$ext;
                     }
+
                     $type = null;
                     if (exif_imagetype($file->tmp_name)) {
                         $type = 'image';
                     }
+
                     if ($file->moveTo($path_public, $name)) {
-                        $pa = new pocketlistsAttachmentModel();
-                        $attachment_id = $pa->insert(
-                            [
-                                'item_id'  => $item['id'],
-                                'filename' => $name,
-                                'filetype' => $type,
-                            ]
-                        );
+                        /** @var pocketlistsFactory $attachmentFactory */
+                        $attachmentFactory = pl2()->getEntityFactory(pocketlistsAttachment::class);
+                        /** @var pocketlistsAttachment $attachment */
+                        $attachment = $attachmentFactory->createNew();
+                        $attachment
+                            ->setFilename($name)
+                            ->setFiletype($type)
+                            ->setItemId($item->getId());
+
+                        $attachmentFactory->insert($attachment);
 
                         $this->errors = [];
 
                         return [
-                            'path' => wa()->getDataUrl('attachments/'.$item['id'].'/', true, pocketlistsHelper::APP_ID),
+                            'path' => wa()->getDataUrl('attachments/'.$item->getId().'/', true, pocketlistsHelper::APP_ID),
                             'name' => $file->name,
                             'type' => $file->type,
                             'size' => $file->size,
-                            'id'   => $attachment_id,
+//                            'id'   => $attachment_id,
                         ];
                     } else {
                         $this->errors[] = sprintf(_w('Failed to upload file %s.'), $file->name);
@@ -143,12 +155,14 @@ class pocketlistsItemAddAttachmentController extends waJsonController
     private function validFile(waRequestFile $file)
     {
         $name_ext = $file->extension;
-        if (strpos(strtolower($name_ext), 'php') !== false) {
+
+        if (stripos($name_ext, 'php') !== false) {
             $name_ext = 'php';
         }
+
         if (in_array($name_ext, ['php', 'phtml', 'htaccess'])) {
             return sprintf(
-                _w("Files with extension .%s are not allowed to security considerations."),
+                _w('Files with extension .%s are not allowed to security considerations.'),
                 $name_ext
             );
         }

@@ -149,6 +149,8 @@ $.pocketlists.List = function ($list_wrapper, options) {
                             // $.pocketlists.updateAppCounter();
                             // $.pocketlists.reloadSidebar();
                             // hideListDetails();
+
+                            $.pocketlists.sendNotifications();
                         } else {
                             $wrapper.find('.error').show().delay(3000).hide();
                         }
@@ -263,6 +265,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
                         $.pocketlists.$loading.removeAttr('style').remove();
                         if (r.status === 'ok') {
                             $.pocketlists.reloadSidebar();
+                            $.pocketlists.sendNotifications();
                             if (list_id === -1) {
                                 $.wa.setHash('#/pocket/'+pocket_id+'/list/' + r.data.id + '/');
                             }
@@ -325,6 +328,8 @@ $.pocketlists.List = function ($list_wrapper, options) {
                         if (r.status === 'ok') {
                             if (/#\/archive/.test(window.location.hash)) {
                                 $.wa.setHash('#/archive/');
+                            } else if (/#\/pocket/.test(window.location.hash)) {
+                                $.wa.setHash(window.location.hash.replace('/list/'+list_id, ''));
                             } else {
                                 $.wa.setHash('#/todo/');
                             }
@@ -354,8 +359,12 @@ $.pocketlists.List = function ($list_wrapper, options) {
         $.post('?module=list&action=archive', {list_id: list_id, archive: 1}, function (r) {
             if (r.status === 'ok') {
                 $dialog && $dialog.trigger('close');
-                $.wa.setHash('#/todo/');
-                $.pocketlists.reloadSidebar();
+                if (/#\/pocket/.test(window.location.hash)) {
+                    $.wa.setHash(window.location.hash.replace('/list/'+list_id, ''));
+                } else {
+                    $.wa.setHash('#/todo/');
+                }
+                $.pocketlists_routing.redispatch();
             } else {
             }
             request_in_action = false;

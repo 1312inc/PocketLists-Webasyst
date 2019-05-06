@@ -47,13 +47,14 @@ return array(
             'parent' => 'parent_id',
             'list_id' => 'list_id',
             'sort' => array('parent_id', 'sort'),
+            'key_list_id' => 'key_list_id',
         ),
     ),
     'pocketlists_item_link' => array(
         'id' => array('int', 11, 'unsigned' => 1, 'null' => 0, 'autoincrement' => 1),
         'item_id' => array('int', 11, 'null' => 0),
         'app' => array('varchar', 50, 'null' => 0, 'default' => ''),
-        'entity_type' => array('varchar', 50, 'null' => 0, 'default' => ''),
+        'entity_type' => array('varchar', 50),
         'entity_id' => array('int', 11),
         'data' => array('text'),
         ':keys' => array(
@@ -110,10 +111,23 @@ return array(
             'PRIMARY' => 'id',
         ),
     ),
+    'pocketlists_notification' => array(
+        'id' => array('int', 11, 'null' => 0, 'autoincrement' => 1),
+        'type' => array('smallint', 6, 'null' => 0),
+        'created_at' => array('datetime', 'null' => 0),
+        'sent_at' => array('datetime'),
+        'status' => array('varchar', 255),
+        'error' => array('text'),
+        'data' => array('text'),
+        ':keys' => array(
+            'PRIMARY' => 'id',
+            'pocketlists_notification_status_index' => 'status',
+        ),
+    ),
     'pocketlists_pocket' => array(
         'id' => array('int', 11, 'unsigned' => 1, 'null' => 0, 'autoincrement' => 1),
         'sort' => array('int', 11, 'null' => 0, 'default' => '0'),
-        'name' => array('varchar', 255, 'null' => 0, 'default' => ''),
+        'name' => array('mediumtext'),
         'color' => array('enum', "'none','red','green','blue','yellow','purple'", 'null' => 0, 'default' => 'blue'),
         'passcode' => array('varchar', 32),
         ':keys' => array(
@@ -123,7 +137,7 @@ return array(
     ),
     'pocketlists_tag' => array(
         'id' => array('int', 11, 'null' => 0, 'autoincrement' => 1),
-        'text' => array('varchar', 255, 'null' => 0),
+        'text' => array('varchar', 200, 'null' => 0),
         ':keys' => array(
             'PRIMARY' => array('id', 'text'),
         ),

@@ -1,24 +1,25 @@
-<div class="shadowed" data-pl2-pocket-wrapper="{$pocket->pk}">
+{* @var pocketlistsPocket $pocket *}
+<div class="shadowed" data-pl2-pocket-wrapper="{$pocket->getId()}">
     <nav class="sidebar left300px">
 
         <!-- LISTS -->
         <div id="pl-lists" data-pl-scroll-to-top>
             <div class="pl-lists-header">
-                {if pocketlistsRBAC::contactHasAccessToPocket($pocket->pk) == pocketlistsRBAC::RIGHT_ADMIN}<a href="#/pocket/{$pocket->pk}/list/new/" class="count" title="[`New list`]"><i class="icon16 add"></i></a>{/if}
-                <h5 class="pl-dark-{$pocket->color|default:'none'}-label">
-                    {$pocket->name|escape}
-                    {if pocketlistsRBAC::contactHasAccessToPocket($pocket->pk) == pocketlistsRBAC::RIGHT_ADMIN}<a href="#" title="[`Pocket settings`]" data-pl2-action="edit-pocket" data-pl2-pocket-id="{$pocket->pk}"><i class="icon16 pl ellipsis pl-pocket-settings"></i></a>{/if}
+                {if $isAdmin}<a href="#/pocket/{$pocket->getId()}/list/new/" class="count" title="[`New list`]"><i class="icon16 add"></i></a>{/if}
+                <h5 class="pl-dark-{$pocket->getColor()|default:'none'}-label">
+                    {$pocket->getName()|escape}
+                    {if $isAdmin}<a href="#" title="[`Pocket settings`]" data-pl2-action="edit-pocket" data-pl2-pocket-id="{$pocket->getId()}"><i class="icon16 pl ellipsis pl-pocket-settings"></i></a>{/if}
                 </h5>
             </div>
             {if !empty($lists)}
                 <ul class="pl-lists" data-pl2-wrapper="lists">
                     {foreach $lists as $l}
-                        <li data-pl-list-id="{$l->pk}">
-                            <a href="#/pocket/{$pocket->pk}/list/{$l->pk}/"{if $l->pk == $list_id} class="pl-is-selected"{/if} title="{$l->name|escape}">
-                                <span class="count{if $l->calc_priority == 1} indicator green{elseif $l->calc_priority == 2} indicator yellow{elseif $l->calc_priority == 3} indicator red{/if}">{$l->count}</span>
+                        <li data-pl-list-id="{$l->getId()}">
+                            <a href="#/pocket/{$pocket->getId()}/list/{$l->getId()}/"{if $l->getId() == $list_id} class="pl-is-selected"{/if} title="{$l->getName()|escape}">
+                                <span class="count {$l->getCssClass('list-indicator')}">{$l->getItemsCount()}</span>
                                 <i class="listicon36"
-                                   style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l->icon|default:'li-list@2x.png'});"></i>
-                                <span class="pl-list-name pl-dark-{$l->color|default:'none'}-label">{$l->name|escape}</span>
+                                   style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l->getIcon()|default:'li-list@2x.png'});"></i>
+                                <span class="pl-list-name pl-dark-{$l->getColor()|default:'none'}-label">{$l->getName()|escape}</span>
                             </a>
                         </li>
                     {/foreach}
@@ -26,7 +27,7 @@
             {else}
                 <div class="block double-padded align-center pl-lists-empty">
                     <p>
-                        {if pocketlistsRBAC::contactHasAccessToPocket($pocket->pk) == pocketlistsRBAC::RIGHT_ADMIN}
+                        {if $isAdmin}
                             [`This pocket is empty. Start by creating a to-do list.`]
                         {else}
                             [`You don’t have access to any list in the pocket. Please contact your admin to request access setup.`]
@@ -34,7 +35,7 @@
                     </p>
                 </div>
             {/if}
-            <!-- <a href="#/pocket/{$pocket->pk}/list/new/" class="pl-lists-add">
+            <!-- <a href="#/pocket/{$pocket->getId()}/list/new/" class="pl-lists-add">
                 <i></i>
                 <span>[`New list`]</span>
             </a> -->
@@ -59,6 +60,6 @@
             listsWrapper: $lists_wrapper
         });
 
-        $.pocketlists.setTitle('{if isset($pocket.name)}{$pocket.name|default:" "|escape}{else}{/if}');
+        $.pocketlists.setTitle('{$pocket->getName()|default:" "|escape}');
     }());
 </script>

@@ -4,7 +4,7 @@
         <div class="dialog-content">
 
                 <h1>[`Email list`]</h1>
-                {if !empty($list)}<input type="hidden" name="mail[list_id]" value="{$list.id}">{/if}
+                {if !empty($list)}<input type="hidden" name="mail[list_id]" value="{$list->getId()}">{/if}
                 <div class="fields form width100px">
                     <div class="field">
                         <div class="name">[`To`]</div>
@@ -17,7 +17,7 @@
                         <div class="value">
                             <input type="text" value="{strip}
                             {if !empty($list)}
-                                {$list.name}
+                                {$list->getNameParsed()}
                             {elseif !empty($favorite)}
                                 [`Favorites`]
                                 {if !empty($date)} - {$date|wa_date:'humandate'}{/if}
@@ -34,7 +34,7 @@
                     <div class="field">
                         <div class="name">[`Message`]</div>
                         <div class="value">
-                            <textarea name="mail[body]" style="height: 170px;">{foreach $items as $item}&#9679; {$item.name}
+                            <textarea name="mail[body]" style="height: 170px;">{foreach $items as $item}&#9679; {$item->getName()}
 {foreachelse}[`No to-dos :)`]
 {/foreach}
 

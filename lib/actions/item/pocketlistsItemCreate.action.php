@@ -6,30 +6,29 @@
 class pocketlistsItemCreateAction extends pocketlistsViewAction
 {
     /**
+     * @param null $params
+     *
+     * @return mixed|void
      * @throws waDbException
      * @throws waException
      */
-    public function execute()
+    public function runAction($params = null)
     {
         $data = waRequest::post('data', false, waRequest::TYPE_ARRAY);
         $filter = waRequest::post('filter', false);
         $list_id = waRequest::post('list_id', false, waRequest::TYPE_INT);
         $assigned_contact_id = waRequest::post('assigned_contact_id', false, waRequest::TYPE_INT);
 
-        $im = new pocketlistsItemModel();
-        $inserted = $inserted_items = $items = [];
+        $inserted = $items = [];
         $assign_contact = null;
         $user_id = wa()->getUser()->getId();
+        $plContact = pl2()->getEntityFactory(pocketlistsContact::class)->createNewWithId($user_id);
+
         $canAssign = pocketlistsRBAC::canAssign();
         if ($canAssign && $assigned_contact_id) {
-            $assign_contact = new waContact($assigned_contact_id);
+            $assign_contact = pl2()->getEntityFactory(pocketlistsContact::class)->createNewWithId($assigned_contact_id);
         }
 
-        // if no list id passed - get default list from settings
-        if (!$list_id) {
-            $us = new pocketlistsUserSettings($assign_contact ? $assign_contact->getId() : $user_id);
-            $list_id = $us->getStreamInboxList();
-        }
         if ($data) {
             $paste = false;
             if (!is_array($data)) {
@@ -37,156 +36,133 @@ class pocketlistsItemCreateAction extends pocketlistsViewAction
             } else {
                 $paste = true;
             }
-            $lm = new pocketlistsListModel();
-            $list = $lm->getById($list_id);
+
+            /** @var pocketlistsListFactory $listFactory */
+            $listFactory = pl2()->getEntityFactory(pocketlistsList::class);
+            /** @var pocketlistsItemFactory $itemFactory */
+            $itemFactory = pl2()->getEntityFactory(pocketlistsItem::class);
+
+            $list = $list_id ? $listFactory->findById($list_id) : $listFactory->createNewNullList();
+
             foreach ($data as $i => $d) {
-                $data[$i]['create_datetime'] = date("Y-m-d H:i:s");
-                $data[$i]['list_id'] = $list ? $list['id'] : null;
-                $data[$i]['contact_id'] = $user_id;
+                /** @var pocketlistsItem $item */
+                $item = $itemFactory->createNew();
+                $item = pl2()->getHydrator()->hydrate($item, $d);
+                $item
+                    ->setCreateDatetime(date('Y-m-d H:i:s'))
+                    ->setList($list)
+                    ->setContact($this->user);
 
-                if ($canAssign && ($assigned_contact_id || !empty($data[$i]['assigned_contact_id']))) {
-                    if (!empty($data[$i]['assigned_contact_id'])) {
-                        $assign_contact = new waContact($data[$i]['assigned_contact_id']);
+                if ($canAssign && ($assigned_contact_id || !empty($d['assigned_contact_id']))) {
+                    if (!empty($d['assigned_contact_id'])) {
+                        $assign_contact = pl2()->getEntityFactory(pocketlistsContact::class)->createNewWithId($d['assigned_contact_id']);
                     }
 
-                    if ($assign_contact->exists()) {
-                        $data[$i]['assigned_contact_id'] = $assign_contact->getId();
+                    if ($assign_contact->isExists()) {
+                        $item->setAssignedContact($assign_contact);
                     }
                 }
 
-                if (!empty($data[$i]['due_date'])) {
-                    $data[$i]['due_date'] = waDateTime::date('Y-m-d', strtotime($data[$i]['due_date']));
+                if (!empty($d['due_date'])) {
+                    $item->setDueDate(waDateTime::date('Y-m-d', strtotime($d['due_date'])));
                 }
 
-                $data[$i]['name'] = trim($data[$i]['name']);
+                $item->setName(trim($d['name']));
 
                 // if add throught paste - cut some letters
                 if ($paste) {
-                    $data[$i]['name'] = preg_replace('/^(([-|—|–]*)(\s*))(.*)$/u', "$4", $data[$i]['name']);
+                    $item->setName(preg_replace('/^(([-|—|–]*)(\s*))(.*)$/u', "$4", $item->getName()));
                 }
 
                 // natural input parse
-                $ni = pocketlistsNaturalInput::matchPriority($data[$i]['name']);
+                $ni = pocketlistsNaturalInput::matchPriority($item->getName());
                 if ($ni) {
-                    $data[$i]['name'] = $ni['name'];
-                    $data[$i]['priority'] = $ni['priority'];
-                }
-                $ni = pocketlistsNaturalInput::matchNote($data[$i]['name']);
-                if ($ni) {
-                    $data[$i]['name'] = $ni['name'];
-                    $data[$i]['note'] = $ni['note'];
+                    $item->setName($ni['name']);
+                    $item->setPriority((int)$ni['priority']);
                 }
 
-                $us = new pocketlistsUserSettings($user_id);
-                if ($us->getNaturalInput()) {
-                    $ni = pocketlistsNaturalInput::matchDueDate($data[$i]['name']);
+                $ni = pocketlistsNaturalInput::matchNote($item->getName());
+                if ($ni) {
+                    $item->setName($ni['name']);
+                    $item->setNote($ni['note']);
+                }
+
+                if ($this->user->getSettings()->getNaturalInput()) {
+                    $name = $item->getName();
+                    $ni = pocketlistsNaturalInput::matchDueDate($name);
                     if ($ni) {
-                        $data[$i]['due_date'] = $ni['due_date'];
+                        $item->setDueDate($ni['due_date']);
                         if ($ni['due_datetime']) {
                             $tm = pocketlistsHelper::convertToServerTime(strtotime($ni['due_datetime']));
-                            $data[$i]['due_datetime'] = waDateTime::date("Y-m-d H:i:s", $tm);
+                            $item->setDueDatetime(waDateTime::date('Y-m-d H:i:s', $tm));
                         }
+
+                        $item->setName($name);
                     }
                 }
 
-                $im->addPriorityData($data[$i]);
+                $item->recalculatePriority();
+                $itemFactory->insert($item);
 
-                $last_id = $im->insert($data[$i], 1);
+                $links = pocketlistsNaturalInput::getLinks($item->getName());
 
-                $links = pocketlistsNaturalInput::getLinks($data[$i]['name']);
+                /** @var pocketlistsItemLinkFactory $itemLinkFactory */
+                $itemLinkFactory = pl2()->getEntityFactory(pocketlistsItemLink::class);
 
                 if ($links) {
                     $linkDeterminer = new pocketlistsLinkDeterminer();
                     foreach ($links as $link) {
                         $linkAppTypeId = $linkDeterminer->getAppTypeId($link);
-                        if ($link === false) {
+                        if ($linkAppTypeId === false) {
                             continue;
                         }
 
-                        $itemLink = new pocketlistsItemLinkModel($linkAppTypeId);
-                        $itemLink->item_id = $last_id;
-                        try {
-                            $itemLink->save();
-                        } catch (waException $ex) {
-                            // silence
-                        }
+                        $itemLinkFactory->createFromDataForItem($item, $linkAppTypeId);
                     }
                 }
 
-                if (!empty($data[$i]['links'])) {
-                    foreach ($data[$i]['links'] as $link) {
-                        /** @var pocketlistsItemLinkInterface $app */
-                        $app = wa(pocketlistsHelper::APP_ID)->getConfig()->getLinkedApp($link['model']['app']);
+                if (!empty($d['links'])) {
+                    foreach ($d['links'] as $link) {
+                        $linkData = $link['model'];
 
-                        if (!$app->userCanAccess()) {
-                            continue;
-                        }
-
-                        foreach ($link['model'] as $key => $value) {
-                            if ($value === '') {
-                                $link['model'][$key] = null;
-                            }
-                        }
-
-                        $itemLink = new pocketlistsItemLinkModel($link['model']);
-                        $itemLink->item_id = $last_id;
-                        try {
-                            $itemLink->save();
-                        } catch (waException $ex) {
-                            // silence
-                        }
+                        $itemLinkFactory->createFromDataForItem($item, $linkData);
                     }
                 }
 
-                $inserted[] = $last_id;
-                $inserted_items[] = $data[$i] + ['id' => $last_id];
+                $inserted[] = $item->getId();
+                $items[] = $item;
             }
 
             if ($inserted) {
                 switch ($filter) {
                     case 'favorites':
-                        $ufm = new pocketlistsUserFavoritesModel();
-                        foreach ($inserted_items as $item) {
-                            $ufm->insert(
-                                [
-                                    'item_id'    => $item['id'],
-                                    'contact_id' => $user_id,
-                                ]
-                            );
+                        /** @var pocketlistsItem $item */
+                        foreach ($items as $item) {
+                            $item->makeFavorite($plContact);
                         }
                         break;
                 }
 
-                $items = $im->getById($inserted);
-                $items = $im->extendItemData($items);
-                if ($items instanceof pocketlistsItemModel) {
-                    $items = [$items];
-                }
-
-                if ($list) {
-                    $list['name'] = pocketlistsNaturalInput::matchLinks($list['name']);
-                }
-
-                pocketlistsNotifications::notifyAboutNewItems($items, $list);
+                (new pocketlistsNotificationAboutNewItems())->notify($items, $list);
 
                 // log this action
                 foreach ($items as $item) {
                     if ($assign_contact) {
-                        pocketlistsNotifications::notifyAboutNewAssign($item);
+                        (new pocketlistsNotificationAboutNewAssign())->notify($item);
 
                         $this->logAction(
                             pocketlistsLogAction::ITEM_ASSIGN_TEAM,
                             [
-                                'list_id'     => $item['list_id'],
-                                'item_id'     => $item['id'],
-                                'assigned_to' => $item['assigned_contact_id'],
+                                'list_id'     => $item->getListId(),
+                                'item_id'     => $item->getId(),
+                                'assigned_to' => $item->getAssignedContactId(),
                             ]
                         );
                     }
                 }
 
-                if ($list) {
-                    $this->logAction(pocketlistsLogAction::NEW_ITEMS, ['list_id' => $list['id']]);
+                if ($list->getId()) {
+                    $this->logAction(pocketlistsLogAction::NEW_ITEMS, ['list_id' => $list->getId()]);
                 }
             }
         }

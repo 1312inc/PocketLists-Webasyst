@@ -5,6 +5,9 @@
  */
 class pocketlistsItemLinkAutocompleteController extends waJsonController
 {
+    /**
+     * @throws waException
+     */
     public function execute()
     {
         $term = waRequest::get('term', '');

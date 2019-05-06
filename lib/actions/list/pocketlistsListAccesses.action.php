@@ -1,30 +1,30 @@
 <?php
 
 /**
- * Class pocketlistsListDetailsAction
+ * Class pocketlistsListAccessesAction
  */
-class pocketlistsListAccessesAction extends waViewAction
+class pocketlistsListAccessesAction extends pocketlistsViewListAction
 {
     /**
-     * @throws waDbException
+     * @param null $params
+     *
+     * @return mixed|void
+     * @throws waException
      */
-    public function execute()
+    public function runAction($params = null)
     {
-        $id = waRequest::post('id', false, waRequest::TYPE_INT);
+        /** @var pocketlistsList $list */
+        $list = $this->getList(waRequest::post('id', false, waRequest::TYPE_INT));
 
-        if ($id) {
-            $list = pocketlistsListModel::model()->findByPk($id);
+        /** @var pocketlistsContactFactory $factory */
+        $factory = pl2()->getEntityFactory(pocketlistsContact::class);
+        $list_access_contacts = $factory->getTeammates(
+            pocketlistsRBAC::getAccessContacts($list),
+            true,
+            false,
+            true
+        );
 
-            /** @var pocketlistsTeammateFactory $factory */
-            $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getModelFactory('Teammate');
-            $list_access_contacts = $factory->getTeammates(
-                pocketlistsRBAC::getAccessContacts($list),
-                true,
-                false,
-                true
-            );
-
-            $this->view->assign(compact('list', 'list_access_contacts'));
-        }
+        $this->view->assign(compact('list', 'list_access_contacts'));
     }
 }

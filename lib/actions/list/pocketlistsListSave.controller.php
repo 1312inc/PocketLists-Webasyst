@@ -1,29 +1,45 @@
 <?php
 
-class pocketlistsListSaveController extends waJsonController
+/**
+ * Class pocketlistsListSaveController
+ */
+class pocketlistsListSaveController extends pocketlistsJsonController
 {
+    /**
+     * @throws pocketlistsNotFoundException
+     * @throws waException
+     */
     public function execute()
     {
-        $list = waRequest::post('list', array(), waRequest::TYPE_ARRAY);
+        $listData = waRequest::post('list', [], waRequest::TYPE_ARRAY);
 
-        if ($list) {
-            $im = new pocketlistsListModel();
-            pocketlistsHelper::getDueDatetime($list);
+        if (!$listData) {
+            return;
+        }
 
-            $list['update_datetime'] = date("Y-m-d H:i:s");
-            $list['contact_id'] = wa()->getUser()->getId();
-            $data = $im->update($list['id'], $list);
-            if ($data) {
-                if ($data['due_date']) {
-                    $data['due_date'] = waDateTime::format('humandate', $data['due_date']);
-                }
-                if ($data['due_datetime']) {
-                    $data['due_datetime'] = waDateTime::format('humandatetime', $data['due_datetime']);
-                }
-                $this->response = $data;
-            } else {
-                $this->errors = 'error while saving item';
+        pocketlistsHelper::getDueDatetime($listData);
+
+        $list = $this->getList($listData['id']);
+        /** @var pocketlistsList $list */
+        $list = pl2()->getHydrator()->hydrate($list, $listData);
+
+        $list
+            ->setUpdateDatetime(date("Y-m-d H:i:s"))
+            ->setContact($this->user);
+
+        $saved = pl2()->getEntityFactory(pocketlistsList::class)->save($list);
+        if ($saved) {
+            if ($list->getDueDate()) {
+                $list->setDueDate(waDateTime::format('humandate', $list->getDueDate()));
             }
+
+            if ($list->getDueDate()) {
+                $list->setDueDatetime(waDateTime::format('humandatetime', $list->getDueDatetime()));
+            }
+
+            $this->response = pl2()->getHydrator()->extract($list);
+        } else {
+            $this->errors = 'error while saving item';
         }
     }
 }

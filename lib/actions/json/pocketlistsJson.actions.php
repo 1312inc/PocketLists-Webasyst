@@ -1,22 +1,37 @@
 <?php
 
+/**
+ * Class pocketlistsJsonActions
+ */
 class pocketlistsJsonActions extends waJsonActions
 {
+    /**
+     * @throws waException
+     */
     public function defaultAction()
     {
         throw new waException('Unknown action.');
     }
 
+    /**
+     * @throws waException
+     */
     public function AppCountAction()
     {
-        $this->response = wa('pocketlists')->getConfig()->onCount();
+        $this->response = pl2()->onCount(true);
     }
 
+    /**
+     * @throws waException
+     */
     public function GetHumandateAction()
     {
         $this->response = waDateTime::format('humandate', waRequest::get('date'));
     }
 
+    /**
+     *
+     */
     public function GetListsAction()
     {
         if ($this->getRights('list.%') > 0) {
@@ -27,31 +42,51 @@ class pocketlistsJsonActions extends waJsonActions
         }
     }
 
+    /**
+     * @throws waException
+     */
     public function GetItemsPocketColorAction()
     {
         $item_id = waRequest::get('id', false, waRequest::TYPE_INT);
-        if ($item_id) {
-            $im = new pocketlistsItemModel();
-            $item = $im->getById($item_id);
+        if (!$item_id) {
+            $this->errors = 'no item id';
 
-            if ($item['list_id']) {
-                $lm = new pocketlistsListModel();
-                $list = $lm->getById($item['list_id']);
-                if ($this->getRights('list.' . $list['id']) > 0) {
-                    $this->response = $list['color'];
-                } else {
-                    $this->errors = '403 error';
-                }
+            return;
+        }
+
+        /** @var pocketlistsItem $item */
+        $item = pl2()->getEntityFactory(pocketlistsItem::class)->findById($item_id);
+        if (!$item) {
+            $this->errors = 'no item id';
+
+            return;
+        }
+
+        if ($item->getListId()) {
+            if (pocketlistsRBAC::canAccessToList($item->getList())) {
+                $this->response = $item->getList()->getColor();
             } else {
-                $this->response = pocketlistsHelper::COLOR_DEFAULT;
+                $this->errors = '403 error';
             }
         } else {
-            $this->errors = 'no item id';
+            $this->response = pocketlistsStoreColor::NONE;
         }
     }
 
+    /**
+     *
+     */
     public function heartbeatAction()
     {
         pocketlistsActivity::setUserActivity(wa()->getUser()->getId());
+    }
+
+    /**
+     * @throws pocketlistsNotImplementedException
+     * @throws waException
+     */
+    public function sendNotificationsAction()
+    {
+        $this->response = (new pocketlistsNotificationSendService())->sendBatch();
     }
 }

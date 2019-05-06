@@ -12,7 +12,7 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Language: en_US\n"
-"X-Generator: Poedit 1.8.7\n"
+"X-Generator: Poedit 2.2\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: .\n"
 
@@ -927,7 +927,7 @@ msgid "author"
 msgstr ""
 
 #: /wa-apps/pocketlists/templates/actions/list/List.html:61
-msgid "Use <a href=\"%s\">Team app</a> to configure access to this to-do list: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level."
+msgid "Use <a href=\"%s\">Team app</a> to configure access: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level."
 msgstr ""
 
 #: /wa-apps/pocketlists/templates/actions/settings/Settings.html:17
@@ -1061,7 +1061,7 @@ msgid "added new to-dos to"
 msgstr ""
 
 #: /wa-apps/pocketlists/lib/class/pocketlistsLogAction.class.php:69
-msgid "commented on a to-do in"
+msgid "commented"
 msgstr ""
 
 #: /wa-apps/pocketlists/lib/class/pocketlistsLogAction.class.php:73
@@ -1392,4 +1392,200 @@ msgstr ""
 
 #: /wa-apps/pocketlists/templates/actions/settings/Settings.html:111
 msgid "Own server"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/include/itemadd.html:27
+msgid "Only you can see this to-do"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:150
+#: /wa-apps/pocketlists/templates/actions/about/About.html:52
+#: /wa-apps/pocketlists/templates/actions/about/About.html:167
+msgid "About"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:10
+msgid "Installer"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:13
+msgid "https://www.webasyst.com/store/app/pocketlists/reviews/"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:14
+msgid "Rate on Webasyst Installer"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:19
+msgid "<strong>Your feedback is very important!</strong> Please rate Pocket Lists and write a short review about your experience of using the app. Reviews (both positive and negative) really help us to see what is most useful in the app so we can continue delivering new features the right way."
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:20
+msgid "https://www.webasyst.com/store/app/pocketlists/"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:25
+msgid "Support"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:31
+msgid "We speak English and Russian."
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:36
+msgid "GitHub"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:55
+msgid "Pocket Lists for Webasyst is an important part of the bigger <a href=\"https://pocketlists.com\" target=\"_blank\"><strong>PocketLists.com project</strong></a> — a suite of apps that are aimed to provide the friendliest to-do list making & collaboration experience."
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:57
+msgid "Pocket Lists is <strong>mostly known for its iOS app</strong> (iPhone, iPad, Apple Watch) designed for personal list making. Get Pocket Lists on the App Store for free."
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:59
+msgid "http://itunes.apple.com/us/app/pocket-lists-2/id1272049520?mt=8"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:61
+msgid "With Pocket Lists for Webasyst, our goal is to deliver the best of the Pocket Lists world to the Webasyst collaborative environment and to make the teamwork and collaboration on tasks expectionally easy and friendly."
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:66
+msgid "Roadmap"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:69
+msgid "We have big plans for both iOS and Webasyst apps, and here is the summary of what we are keen to be integrating into Pocket Lists for Webasyst anytime soon (a draft plan):"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:73
+msgid "Bring the shared to-do list functionality into Webasyst"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:77
+msgid "Natural input ('... tomorrow 10am') parser"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:81
+msgid "Integrate with Shop-Script"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:82
+msgid "The ability to create to-dos linked with orders"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:86
+msgid "Multiple pockets and sophisticated access rights management"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:90
+msgid "To-do search"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:94
+msgid "“My To-dos” widget for the dashboard and Webasyst TV"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:98
+msgid "Integration with Webasyst Team and Tasks apps"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:103
+msgid "Repeating to-dos"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:108
+msgid "Rest API"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:109
+#: /wa-apps/pocketlists/templates/actions/about/About.html:114
+msgid "Mid 2019"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:113
+msgid "Integrate Pocket Lists for Webasyst and iOS"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:119
+msgid "Better Shop-Script integration"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:120
+msgid "Automated to-do creation based on order statuses"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:124
+msgid "Subtasks"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:128
+msgid "Headings / dividers (sublists)"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:132
+msgid "Pocket Lists for Android"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:133
+msgid "Someday. The real ETA depends on the availability of development resources which are now focused mostly on iOS."
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:137
+msgid "Profit!"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:146
+msgid "Copyright"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:170
+msgid "We wish we could implement new features that easy :)"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/debug/Debug.html:49
+msgid "Respect The Send!"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/debug/Debug.html:69
+msgid "Go!"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/debug/Debug.html:109
+msgid "Generate"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/actions/item/pocketlistsItemAssignTo.controller.php:25
+msgid "Contact not found"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/class/Exception/pocketlistsNotImplementedException.class.php:17
+msgid "Not implemented for now"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:122
+msgid "When someone adds a to-do item in any shared list"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:134
+msgid "When someone creates a new shared to-do list"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:147
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:158
+msgid "any item on any shared list"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:153
+msgid "When someone comments on a to-do item"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:11
+msgid "Rate"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/debug/Debug.html:49
+msgid "Send It!"
 msgstr ""

@@ -2,10 +2,10 @@
 <div class="block pl-sidebar-core" data-pl2-sidebar-wrapper="pockets">
     <ul class="menu-v with-icons">
         {foreach $pockets as $pocket}
-            <li data-pl-pocket-id="{$pocket->pk}">
-                <span class="count">{$pocket->countLists()}</span>
-                <a href="#/pocket/{$pocket->pk}/"><i
-                            class="icon16 color pl-dark-{$pocket->color}"></i>{$pocket->name|escape}</a>
+            <li data-pl-pocket-id="{$pocket->getId()}">
+                <span class="count">{$pocket->getListsCount()}</span>
+                <a href="#/pocket/{$pocket->getId()}/"><i
+                            class="icon16 color pl-dark-{$pocket->getColor()}"></i>{$pocket->getName()|escape}</a>
             </li>
         {/foreach}
     </ul>
@@ -108,14 +108,14 @@
             <ul class="menu-v with-icons" data-pl-sidebar-block="team"
                 data-pl-collapsible-wrapper="team">
                 {foreach $team as $team_id => $teammate}
-                    <li data-pl-team-id="{$teammate.id}"
+                    <li data-pl-team-id="{$teammate->getId()}"
                         {if $teammate@iteration > $max_visible_in_team}style="display: none;"{/if}>
-                        <a href="#/team/{$teammate.login|escape}/">
-                            <span class="count{if $teammate.items_info.max_priority == 1} indicator green{elseif $teammate.items_info.max_priority == 2} indicator yellow{elseif $teammate.items_info.max_priority == 3} indicator red{/if}">{$teammate.items_info.count}</span>
-                            <i class="icon16 userpic20{if $teammate.status == 'online'} pl-user-online{/if}" style="background-image: url({$teammate.photo_url})"
-                               alt="{$teammate.name|escape}" data-pl-contact-id="{$team_id}"></i>{$teammate.name|escape}
-                            {if !empty($new_items_count.team[$teammate.id])} <span
-                                    class="highlighted bold small black">+{$new_items_count.team[$teammate.id]}</span>{/if}
+                        <a href="#/team/{$teammate->getLogin()|escape}/">
+                            <span class="count{if $teammate->getItemsInfo('max_priority') == 1} indicator green{elseif $teammate->getItemsInfo('max_priority') == 2} indicator yellow{elseif $teammate->getItemsInfo('max_priority') >= 3} indicator red{/if}">{$teammate->getItemsInfo('count')}</span>
+                            <i class="icon16 userpic20{if $teammate->getStatus() == 'online'} pl-user-online{/if}" style="background-image: url({$teammate->getPhotoUrl()})"
+                               alt="{$teammate->getName()|escape}" data-pl-contact-id="{$teammate->getId()}"></i>{$teammate->getName()|escape}
+                            {if !empty($new_items_count.team[$teammate->getId()])} <span
+                                    class="highlighted bold small black">+{$new_items_count.team[$teammate->getId()]}</span>{/if}
                         </a>
                     </li>
                 {/foreach}
@@ -145,6 +145,9 @@
         </li>
         <li>
             <a href="#/settings/"><i class="icon16 settings"></i>[`Settings`]</a>
+        </li>
+        <li>
+            <a href="#/about/"><i class="icon16" style="background-image: url('/wa-apps/pocketlists/img/pl2webasyst48.png') !important; background-size: 16px 16px;"></i>[`About`]</a>
         </li>
     </ul>
 </div>

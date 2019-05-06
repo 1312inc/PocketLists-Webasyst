@@ -1,7 +1,7 @@
-{if !$list->isNewRecord && $print|default:0}
+{if !$list->getId() && $print|default:0}
 <html>
 <head>
-    <title>{$list.name} &mdash; {$wa->accountName()}</title>
+    <title>{$list->getNameParsed()} &mdash; {$wa->accountName()}</title>
     <link type="text/css" rel="stylesheet" href="{$wa_app_static_url}css/pocketlists-print.css">
 </head>
 <body>
@@ -10,7 +10,7 @@
     </div>
 {/if}
 
-{if !$print|default:0 && !$list->isNewRecord}
+{if !$print|default:0}
 {include '../../include/listiconsdialog.html' inline}
 {/if}
 
@@ -18,33 +18,35 @@
 
     <div class="pl-items">
         <header class="pl-list-title pl-title">
-            <input type="hidden" name="pocket_id" value="{$pocket->pk}">
+            <input type="hidden" name="pocket_id" value="{$pocket->getId()}">
 
             {if !$new && !$archive}
-                {if pocketlistsRBAC::canAssign()}
                     <div class="float-right">
+                        {if pocketlistsRBAC::canAssign()}
                         <a data-pl-action="list-edit" href="#" class="pl-userpic-bundle" data-pl2-list-edit-action="accesses">
                             {$max_visible_in_bundle = 5}
-                            {foreach $list_access_contacts as $list_access_contact_id => $list_access_contact}
+                            {foreach $list_access_contacts as $list_access_contact}
                                 {if $list_access_contact@iteration > $max_visible_in_bundle}{break}{/if}
-                                <i class="userpic" style="background-image: url('{$list_access_contact.photo_url}');" title="{$list_access_contact.name|escape}"></i>
+                                <i class="userpic" style="background-image: url('{$list_access_contact->getPhotoUrl()}');" title="{$list_access_contact->getName()|escape}"></i>
                             {/foreach}
                             {if count($list_access_contacts) > $max_visible_in_bundle}
-                                <i class="userpic" title="{$list_access_contact.name|escape}"><span>+{count($list_access_contacts) - $max_visible_in_bundle}</span></i>
+                                <i class="userpic" title="{$list_access_contact->getName()|escape}"><span>+{count($list_access_contacts) - $max_visible_in_bundle}</span></i>
                             {/if}
                         </a>
+                        {/if}
+                        {if pocketlistsRBAC::canAccessToList($list)}
                         <a data-pl-action="list-edit" href="#" class="pl-list-details-helper" data-pl2-list-edit-action="details"><i class="icon16 pl ellipsis"></i></a>
+                        {/if}
                     </div>
-                {/if}
             {/if}
 
             <h1>
-                <input type="hidden" value="{if $list->isNewRecord}-1{else}{$list->pk}{/if}" id="pl-list-id">
+                <input type="hidden" value="{if !$list->getId()}-1{else}{$list->getId()}{/if}" id="pl-list-id">
 
                 {if $new && !$archive}
                     <input type="text" placeholder="{sprintf('[`List #%d`]', $new_list_id)}" id="pl-new-list-input" class="bold" />
                 {else}
-                    <span id="pl-list-name"{if isset($list.color) && {$list.color}!='none'} class="pl-dark-{$list.color}-label"{/if}>{$list.name|default:' '|escape}</span>
+                    <span id="pl-list-name"{if $list->getColor()!='none'} class="pl-dark-{$list->getColor()}-label"{/if}>{$list->getNameParsed()|default:' '}</span>
                 {/if}
             </h1>
         </header>
@@ -77,19 +79,20 @@
 
             {include '../../include/archivelistdialog.html' inline}
 
-            {if !$list->isNewRecord}
+            {if $list->getId()}
             {include '../../include/deletelistdialog.html' inline}
             {include '../../include/itemadd.html' inline}
             {/if}
 
         {/if}
     </div>
-    {include '../../include/listdetails.html' inline list_access_contacts=$list_access_contacts}
+
+    {include '../../include/listdetails.html' list_access_contacts=$list_access_contacts inline}
     {include '../../include/itemdetails.html' inline}
     {include '../../include/itemcomments.html' inline}
 </main>
 
-{if !$list->isNewRecord && $print|default:0}
+{if !$list->getId() && $print|default:0}
 </body>
 </html>
 {else}
@@ -108,7 +111,7 @@
             current_user_id: {$user->getContact()->getId()},
             fileUpload: {$fileupload}
         });
-        $.pocketlists.setTitle('{if isset($list.name)}{$list.name|default:" "|escape}{else}[`New list`]{/if}');
+        $.pocketlists.setTitle('{$list->getNameParsed()|default:'`New list`'|escape}');
 
 
         var $loading = $('#pl-list-content .lazyloading'),
@@ -119,7 +122,7 @@
             this_is_the_end = false,
             html_selector = '#pl-complete-log > .menu-v';
 
-        // {if !$list->isNewRecord}
+        // {if $list->getId()}
 
         $(window).on('scroll.pl2', function () {
             if (this_is_the_end) {
@@ -138,7 +141,7 @@
                     $loading.show();
                     request_in_action = true;
 
-                    $.get('?module=list&action=lazyDoneItems&offset=' + offset + '&id={$list.id}', function (html) {
+                    $.get('?module=list&action=lazyDoneItems&offset=' + offset + '&id={$list->getId()}', function (html) {
                         $loading.hide();
                         html = $(html).find(html_selector).html();
                         if ($.trim(html).length) {

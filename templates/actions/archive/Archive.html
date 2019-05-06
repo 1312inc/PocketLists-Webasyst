@@ -10,9 +10,9 @@
     {else}
         <nav class="sidebar left200px">
             <ul class="menu-v with-icons stack top-padded">
-                {foreach $lists as $l_id => $l}
-                <li data-pl-list-id="{$l.id}" {if $l.id == $list_id}class="selected"{/if}>
-                    <a href="#/archive/{$l.id}/"><i class="icon16" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l.icon|default:'li-list@2x.png'}); background-size: 16px 16px;"></i>{$l.name|escape}</a>
+                {foreach $lists as $l}
+                <li data-pl-list-id="{$l->getId()}" {if $l->getId() == $list->getId()}class="selected"{/if}>
+                    <a href="#/archive/{$l->getId()}/"><i class="icon16" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l->getIcon()|default:'li-list@2x.png'}); background-size: 16px 16px;"></i>{$l->getName()|escape}</a>
                 </li>
                 {foreachelse}
                 {/foreach}
@@ -22,10 +22,10 @@
             </div>
         </nav>
         <main class="content left200px blank bordered-left pl-list-content pl-archive" id="pl-list-content">
-            <div class="pl-inner-content pl-items pl-{$list.color|default:'none'}">
+            <div class="pl-inner-content pl-items pl-{$list->getColor()}">
                 <header class="pl-list-title pl-title">
                     <div class="float-right block half-padded">
-                        {if isset($list.id)}
+                        {if $list->getId()}
                         <ul class="menu-h">
                             <li>
                                 <a href="#" data-pl-action="list-unarchive" class="bold"><i class="icon16 pl archive"></i> [`Unarchive list`]</a>
@@ -37,14 +37,14 @@
                         {/if}
                     </div>
                     <h1>
-                        <input type="hidden" value="{$list.id|default:-1}" id="pl-list-id">
-                        <span id="pl-list-name">{$list.name|default:' '|escape}</span>
+                        <input type="hidden" value="{$list->getId()|default:-1}" id="pl-list-id">
+                        <span id="pl-list-name">{$list->getName()|escape}</span>
 
-                        <span class="pl-list-due {if $list.calc_priority == 0}pl-due-someday{elseif $list.calc_priority == 1}pl-due-tomorrow{elseif $list.calc_priority == 2}pl-due-today{elseif $list.calc_priority == 3}pl-due-overdue{/if}" {if empty($list.due_datetime) && empty($list.due_date)}style="display: none;"{/if}>
-                        {if !empty($list.due_datetime)}
-                        {$list.due_datetime|wa_datetime:'humandatetime'}
-                        {else if !empty($list.due_date)}
-                        {$list.due_date|wa_date:'humandate'}
+                        <span class="pl-list-due {$list->getCssClass('due-datetime')}" {if !$list->getDueDatetime() && !$list->getDueDate()}style="display: none;"{/if}>
+                        {if $list->getDueDatetime()}
+                        {$list->getDueDatetime()|wa_datetime:'humandatetime'}
+                        {elseif $list->getDueDate()}
+                        {$list->getDueDate()|wa_date:'humandate'}
                         {/if}
                         </span>
                     </h1>
@@ -90,7 +90,7 @@
                     current_user_id: "{$user->getContact()->getId()}",
                     userHasLinkedApps: {$user->hasLinkedApps()}
                 });
-                $.pocketlists.setTitle('{$list.name|default:" "|escape}');
+                $.pocketlists.setTitle('{$list->getName()|escape}');
             </script>
 
 

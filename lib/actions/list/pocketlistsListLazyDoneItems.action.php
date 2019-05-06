@@ -3,84 +3,51 @@
 /**
  * Class pocketlistsListLazyDoneItemsAction
  */
-class pocketlistsListLazyDoneItemsAction extends waViewAction
+class pocketlistsListLazyDoneItemsAction extends pocketlistsViewListAction
 {
     const OFFSET = 30;
 
     /**
-     * @throws waDbException
+     * @param null $params
+     *
+     * @return mixed|void
+     * @throws pocketlistsForbiddenException
      * @throws waException
      */
-    public function execute()
+    public function runAction($params = null)
     {
-        $list_id = waRequest::get('id', false, waRequest::TYPE_INT);
-
-        $lm = new pocketlistsListModel();
-
-        $list_access_contacts = [];
-
         $offset = waRequest::get('offset', 0, waRequest::TYPE_INT);
 
-        if ($list_id > 0) { // existing list
-            /** @var pocketlistsListModel $list */
-            $list = $lm->findByPk($list_id);
+        $list = $this->getList();
 
-            if (!$list) {
-                $this->view->assign(
-                    'error',
-                    [
-                        'code'    => 404,
-                        'message' => _w('Not found'),
-                    ]
-                );
-                $this->setTemplate('templates/include/error.html');
-
-                return;
-            }
-
-            if (!pocketlistsRBAC::canAccessToList($list)) {
-                $this->view->assign(
-                    'error',
-                    [
-                        'code'    => 403,
-                        'message' => _w('Access denied'),
-                    ]
-                );
-                $this->setTemplate('templates/include/error.html');
-
-                return;
-            }
-
-            /** @var pocketlistsTeammateFactory $factory */
-            $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getModelFactory('Teammate');
-            $list_access_contacts = $factory->getTeammates(
-                pocketlistsRBAC::getAccessContacts($list),
-                true,
-                false,
-                true
-            );
-
-            $us = new pocketlistsUserSettings();
-            $us->set('last_pocket_list_id', json_encode(['list_id' => $list->pk]));
-
-            $done = pocketlistsItemModel::model()->getDoneByList($list->pk, $offset * self::OFFSET, self::OFFSET);
-
-            $pocket = pocketlistsPocketModel::model()->findByPk($list['pocket_id']);
-
-            $this->view->assign(
-                [
-                    'list'                 => $list,
-                    'items_done'           => $done,
-                    'empty'                => count($done),
-                    'pl2_attachments_path' => wa()->getDataUrl('attachments/', true, pocketlistsHelper::APP_ID),
-                    'pocket'               => $pocket,
-                ]
-            );
+        if (!pocketlistsRBAC::canAccessToList($list)) {
+            throw new pocketlistsForbiddenException();
         }
+
+        /** @var pocketlistsContactFactory $contactFactory */
+        $contactFactory = pl2()->getEntityFactory(pocketlistsContact::class);
+        $list_access_contacts = $contactFactory->getTeammates(
+            pocketlistsRBAC::getAccessContacts($list),
+            true,
+            false,
+            true
+        );
+
+        $this->user->getSettings()->set('last_pocket_list_id', json_encode(['list_id' => $list->getId()]));
+
+        /** @var pocketlistsItemFactory $itemFactory */
+        $itemFactory = pl2()->getEntityFactory(pocketlistsItem::class);
+        $done = $itemFactory->findDoneByList($list, $offset * self::OFFSET, self::OFFSET);
 
         $this->view->assign(
             [
-                'backend_url'          => wa(pocketlistsHelper::APP_ID)->getConfig()->getBackendUrl(),
+                'list'                 => $list,
+                'items_done'           => $done,
+                'empty'                => count($done),
+                'pl2_attachments_path' => wa()->getDataUrl('attachments/', true, pocketlistsHelper::APP_ID),
+                'pocket'               => $list->getPocket(),
+
+                'backend_url'          => pl2()->getBackendUrl(),
                 'print'                => waRequest::get('print', false),
                 'list_access_contacts' => $list_access_contacts ?: [],
                 'fileupload'           => 1,

@@ -2,11 +2,8 @@
 
 /**
  * Class pocketlistsUserFavoritesModel
- *
- * @property int $item_id
- * @property int $contact_id
  */
-class pocketlistsUserFavoritesModel extends kmModelExt
+class pocketlistsUserFavoritesModel extends pocketlistsModel
 {
     protected $table = 'pocketlists_user_favorites';
 }

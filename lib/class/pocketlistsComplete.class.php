@@ -1,41 +1,33 @@
 <?php
 
-class pocketlistsComplete extends waJsonController
+/**
+ * Class pocketlistsComplete
+ */
+class pocketlistsComplete extends pocketlistsJsonController
 {
-    protected $completed_items = array();
+    /**
+     * @var pocketlistsItem[]
+     */
+    protected $completed_items = [];
 
     /**
-     * @param $item_id int
-     * @param pocketlistsItemModel $item
-     * @param $status int
-     * @param $im pocketlistsItemModel
+     * @param pocketlistsItem|pocketlistsList $item
+     * @param                 $status
+     *
+     * @throws waException
      */
-    protected function changeComplete($item_id, $item, $status, $im)
+    protected function changeComplete($item, $status)
     {
-        $data = array(
-            'status' => $status,
-            'parent_id' => ($item['id'] == $item_id ? 0 : $item['parent_id']) // reset level for root item
-        );
         if ($status) {
-            $data['complete_datetime'] = date("Y-m-d H:i:s");
-            $data['complete_contact_id'] = wa()->getUser()->getId();
+            $item->setDone();
         } else {
-            $data['complete_contact_id'] = null;
-            $data['complete_datetime'] = '';
+            $item->setUndone();
         }
-        if ($item['id']) {
-            if (!$im->updateById($item['id'], $data, null, true)) {
-                $this->errors[] = 'error while updating parent id: ' . $item['id'];
-            } else {
-                $item->setAttributes($data);
-//                foreach ($data as $key => $datum) {
-//                    $item->$key = $datum;
-//                }
-                $this->completed_items[] = $im->prepareOutput($item);
-            };
-        }
-        foreach ($item['childs'] as $i) {
-            $this->changeComplete($item_id, $i, $status, $im);
+
+        if (pl2()->getEntityFactory(get_class($item))->save($item)) {
+            $this->completed_items[] = $item;
+        } else {
+            $this->errors[] = 'error while updating parent id: ' . $item->getId();
         }
     }
 }

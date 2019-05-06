@@ -1,9 +1,9 @@
-{sprintf('[`%s commented on <a href="%s">%s</a>`]', $by_username|escape, $backend_url|cat:$list.url, $item.name_original|escape|truncate:64)}
+{sprintf('[`%s commented on <a href="%s">%s</a>`]', $by_username|escape, $backend_url|cat:$list.url, $item.name|escape|truncate:64)}
 <br>
 <blockquote style="background: #ffd; padding: 10px; border-radius: 5px; border: 1px solid #ddb; margin-left: 0; display: inline-block;">
-{$comment.comment|nl2br}
+{$comment.name_parsed|nl2br}
 </blockquote>
 <br>
 --<br>
-{$wa->accountName()}<br>
-<a href="{$backend_url}{$email_settings_url}" style="color:#aaa;">[`Manage my subscription`]</a>
+{$default.account_name}<br>
+<a href="{$backend_url}{$default.email_settings_url}" style="color:#aaa;">[`Manage my subscription`]</a>

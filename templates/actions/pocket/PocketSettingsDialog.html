@@ -2,10 +2,10 @@
     <div class="dialog-content">
         <div data-pl2-wrapper="pocket-settings-dialog">
 
-            <input type="hidden" name="pocket[id]" value="{$pocket.id|default:0}"/>
+            <input type="hidden" name="pocket[id]" value="{$pocket->getId()|default:0}"/>
 
-            {if !$pocket->isNewRecord}
-                <h1>{$pocket.name|default:'[`(unnamed pocket)`]'|escape|truncate:32}</h1>
+            {if $pocket->getId()}
+                <h1>{$pocket->getName()|default:'[`(unnamed pocket)`]'|escape|truncate:32}</h1>
             {else}
                 <h1>[`New pocket`]</h1>
             {/if}
@@ -18,7 +18,7 @@
                         </div>
                         <div class="value">
                             <input type="text" class="large bold" name="pocket[name]"
-                                   value="{$pocket.name|default:''|escape}"/>
+                                   value="{$pocket->getName()|escape}"/>
                         </div>
                     </div>
                     <div class="field">
@@ -26,22 +26,22 @@
                             [`Color`]
                         </div>
                         <div class="value no-shift" id="pl-pocket-color">
-                            <input type="hidden" name="pocket[color]" value="{$pocket.color|default:'blue'}"/>
+                            <input type="hidden" name="pocket[color]" value="{$pocket->getColor()}"/>
                             {foreach pocketlistsStoreColor::getColors() as $color => $name}
-                                <a href="#" {if $pocket.color == $color}class="selected"{/if}
+                                <a href="#" {if $pocket->getColor() == $color}class="selected"{/if}
                                    data-pl-pocket-color="{$color}"><i
                                             class="icon16 color pl-dark-{$color}"></i></a>
                             {/foreach}
                         </div>
                     </div>
-                    <!-- <div class="field">
+                    <div class="field">
                         <div class="name">
                             [`Access rights`]
                         </div>
                         <div class="value no-shift">
-                            <span style="font-size: 0.9em;">[`Use Contacts app to customize access rights for pockets.`]</span>
+                            <p class="hint">{sprintf('[`Use <a href="%s">Team app</a> to configure access: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/')}</p>
                         </div>
-                    </div> -->
+                    </div>
 
                 </div>
 
@@ -50,7 +50,7 @@
     </div>
 
     <div class="dialog-buttons">
-        {if !$pocket->isNewRecord}
+        {if $pocket->getId()}
             <div class="block half-padded float-right">
                 <ul class="menu-h">
                     <li>

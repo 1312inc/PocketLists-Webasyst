@@ -1,7 +1,16 @@
 <?php
 
+/**
+ * Class pocketlistsRecapCli
+ */
 class pocketlistsRecapCli extends waCliController
 {
+    /**
+     * @param null $params
+     *
+     * @throws waDbException
+     * @throws waException
+     */
     public function run($params = null)
     {
         $test = waRequest::param('test', false, waRequest::TYPE_INT);
@@ -10,6 +19,6 @@ class pocketlistsRecapCli extends waCliController
         $asp = new waAppSettingsModel();
         $asp->set('pocketlists', 'last_recap_cron_time', $time);
 
-        pocketlistsNotifications::notifyDailyRecap(array(), $test);
+        (new pocketlistsNotificationDailyRecap())->notify(array(), $test);
     }
 }

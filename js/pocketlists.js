@@ -450,6 +450,17 @@
                 block: "end",
                 inline: "nearest"
             });
+        },
+        sendNotifications: function (appUrl) {
+            appUrl = appUrl || '';
+            $.post(appUrl + '?module=json&action=sendNotifications', function(r) {
+                if (r.status === 'ok') {
+                    var sent = parseInt(r.data);
+                    sent && console.log('pocketlists: notification send ' + sent);
+                } else {
+                    console.log('pocketlists: notification send error ' + r.error);
+                }
+            });
         }
     };
 }(jQuery));

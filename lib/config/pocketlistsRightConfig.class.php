@@ -6,9 +6,9 @@
 class pocketlistsRightConfig extends waRightConfig
 {
     /**
-     * @var waContact
+     * @var int
      */
-    private $user;
+    private $userId;
 
     /**
      * @var array
@@ -23,23 +23,17 @@ class pocketlistsRightConfig extends waRightConfig
      */
     public function __construct()
     {
-        $user_id = waRequest::post('user_id', 0, waRequest::TYPE_INT);
+        $this->userId = waRequest::post('user_id', 0, waRequest::TYPE_INT);
 
-        if (!$user_id) {
-            $user_id = waRequest::request('id', 0, waRequest::TYPE_INT);
-        }
-
-        if ($user_id) {
-            $this->user = new waContact($user_id);
-        } else {
-            $this->user = new waContact();
+        if (!$this->userId) {
+            $this->userId = waRequest::request('id', 0, waRequest::TYPE_INT);
         }
 
         parent::__construct();
     }
 
     /**
-     * @throws waDbException
+     * @throws waException
      */
     public function init()
     {
@@ -59,9 +53,10 @@ class pocketlistsRightConfig extends waRightConfig
         // POCKETS
 
         $items = [];
-        $pm = new pocketlistsPocketModel();
-        foreach ($pm->getAllPockets() as $pocket) {
-            $items[$pocket->pk] = $pocket->name;
+        /** @var pocketlistsPocketFactory $pocketFactory */
+        $pocketFactory = pl2()->getEntityFactory(pocketlistsPocket::class);
+        foreach ($pocketFactory->getAllPocketsForUser() as $pocket) {
+            $items[$pocket->getId()] = $pocket->getName();
         }
 
         $this->addItem(
@@ -79,11 +74,18 @@ class pocketlistsRightConfig extends waRightConfig
             ]
         );
 
-        $currentPocketRights = $this->user->getRights(pocketlistsHelper::APP_ID, pocketlistsRBAC::POCKET_ITEM.'.%');
+        $rights = (new waContactRightsModel())->get($this->userId, pocketlistsHelper::APP_ID);
+        $currentPocketRights = [];
+        foreach ($rights as $right => $rightValue) {
+            if (strpos($right, pocketlistsRBAC::POCKET_ITEM.'.') !== 0) {
+                continue;
+            }
 
+            $currentPocketRights[str_replace(pocketlistsRBAC::POCKET_ITEM.'.', '', $right)] = $rightValue;
+        }
         // LISTS
 
-        if (empty($currentPocketRights)) {
+        if (empty($rights)) {
             $this->addItem(
                 '',
                 _w('To setup access rights by pocket, set Limited access for at least one pocket'),
@@ -91,25 +93,36 @@ class pocketlistsRightConfig extends waRightConfig
                 ['hint1' => 'Подсказка']
             );
         } else {
-            $lm = new pocketlistsListModel();
+            /** @var pocketlistsListFactory $listFactory */
+            $listFactory = pl2()->getEntityFactory(pocketlistsList::class);
             foreach ($currentPocketRights as $currentPocketId => $rightValue) {
                 if ($rightValue == pocketlistsRBAC::RIGHT_ADMIN) {
                     continue;
                 }
 
-                $pocket = $pm->findByPk($currentPocketId);
-                $lists = $lm->getLists(false, $currentPocketId);
+                $pocket = $pocketFactory->findById($currentPocketId);
+                if (!$pocket) {
+                    continue;
+                }
+
+                $lists = $listFactory->findListsByPocket($pocket, false);
                 $items = [];
 
                 if ($lists) {
-                    usort($lists, [$this, 'sort_archive']);
-                    foreach ($lists as $list) {
-                        $items[$list['id']] = ($list['archived'] ? "("._w('archive').") " : "").$list['name'];
+                    $filter = new pocketlistsStrategyListFilterAndSort($lists);
+                    $lists = $filter->filter();
+
+                    foreach ($lists->getNonArchived() as $list) {
+                        $items[$list->getId()] = $list->getName();
+                    }
+
+                    foreach ($lists->getArchived() as $list) {
+                        $items[$list->getId()] = "("._w('archive').") " .$list->getName();
                     }
 
                     $this->addItem(
                         pocketlistsRBAC::LIST_ITEM,
-                        $pocket->name,
+                        $pocket->getName(),
                         'list',
                         [
                             'items' => $items,
@@ -119,17 +132,6 @@ class pocketlistsRightConfig extends waRightConfig
                 }
             }
         }
-    }
-
-    /**
-     * @param $a
-     * @param $b
-     *
-     * @return bool
-     */
-    private function sort_archive($a, $b)
-    {
-        return $a['archived'] > $b['archived'];
     }
 
     /**
@@ -152,8 +154,7 @@ class pocketlistsRightConfig extends waRightConfig
      * @param null   $value
      *
      * @return bool
-     *
-     * @throws waDbException
+     * @throws waException
      */
     public function setRights($contact_id, $right, $value = null)
     {
@@ -162,16 +163,21 @@ class pocketlistsRightConfig extends waRightConfig
         if (strpos($right, pocketlistsRBAC::POCKET_ITEM.'.') === 0) {
             $pocketId = (int)str_replace(pocketlistsRBAC::POCKET_ITEM.'.', '', $right);
             if ($value == pocketlistsRBAC::RIGHT_NONE) {
-                $lists = pocketlistsListModel::model()->getLists(false, $pocketId);
+                /** @var pocketlistsPocket $pocket */
+                $pocket = pl2()->getEntityFactory(pocketlistsPocket::class)->findById($pocketId);
+
+                /** @var pocketlistsList[] $lists */
+                $lists = pl2()->getEntityFactory(pocketlistsList::class)->findListsByPocket($pocket, false);
+
                 /** @var pocketlistsListModel $list */
                 foreach ($lists as $list) {
                     if ($right_model->save(
                         $contact_id,
                         pocketlistsHelper::APP_ID,
-                        pocketlistsRBAC::LIST_ITEM.'.'.$list->pk,
+                        pocketlistsRBAC::LIST_ITEM.'.'.$list->getId(),
                         $value
                     )) {
-                        self::$rightsCache['lists'][$list->pk] = true;
+                        self::$rightsCache['lists'][$list->getId()] = true;
                     }
                 }
             }

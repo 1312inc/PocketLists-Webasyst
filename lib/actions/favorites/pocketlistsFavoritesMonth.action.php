@@ -1,32 +1,49 @@
 <?php
 
-class pocketlistsFavoritesMonthAction extends waViewAction
+/**
+ * Class pocketlistsFavoritesMonthAction
+ */
+class pocketlistsFavoritesMonthAction extends pocketlistsViewAction
 {
-    public function execute()
+    /**
+     * @param null $params
+     *
+     * @return mixed|void
+     * @throws waException
+     */
+    public function runAction($params = null)
     {
         $timezone = wa()->getUser()->getTimezone();
         $show_month = waRequest::get('month', 0, waRequest::TYPE_INT);
 
-        // get pocket dots
-        $im = new pocketlistsItemModel();
-        // get all due or priority or assigned to me items
-        $items = $im->getFavorites(wa()->getUser()->getId(), $show_month);
+        $month_date = new DateTime(date('Y-m-01'));
+        $month_date->modify($show_month.' month');
+        $monthStart = $month_date->format('Y-m-d');
+
+        $month_date->modify('+1 month')->modify('-1 day');
+        $monthEnd = $month_date->format('Y-m-d');
+
+        /** @var pocketlistsItemModel $itemModel */
+        $itemModel = pl2()->getModel(pocketlistsItem::class);
+        $items = $itemModel->getFavorites($this->user->getId(), $monthStart, $monthEnd);
 
         $monthData = pocketlistsHelper::getMonthData($items, $show_month);
 
-        $this->view->assign('days', $monthData['days']);
+        $this->view->assign(
+            [
+                'days'              => $monthData['days'],
+                'week_first_sunday' => waLocale::getFirstDay() === 7,
 
-        $this->view->assign('week_first_sunday', waLocale::getFirstDay() === 7);
-        $this->view->assign('current_month', date('n', $monthData['month_date']));
-        $this->view->assign('current_year', date('Y', $monthData['month_date']));
-        $this->view->assign('prev_month', date('Y-m', strtotime('-1 month', $monthData['month_date'])));
-        $this->view->assign('next_month', date('Y-m', strtotime('+1 month', $monthData['month_date'])));
+                'current_month' => date('n', $monthData['month_date']),
+                'current_year'  => date('Y', $monthData['month_date']),
+                'prev_month'    => date('Y-m', strtotime('-1 month', $monthData['month_date'])),
+                'next_month'    => date('Y-m', strtotime('+1 month', $monthData['month_date'])),
 
-        // cast to user timezone
-        $this->view->assign('today', waDateTime::date('j', null, $timezone));
-        $this->view->assign('today_month', waDateTime::date('n', null, $timezone));
+                'today'       => waDateTime::date('j', null, $timezone),         // cast to user timezone
+                'today_month' => waDateTime::date('n', null, $timezone),         // cast to user timezone
 
-        $this->view->assign('type', 'favorites');
-        $this->setTemplate('templates/include/monthcalendar.html');
+                'type' => 'favorites',
+            ]
+        );
     }
 }

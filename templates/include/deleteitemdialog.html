@@ -1,7 +1,7 @@
 <div id="pl-dialog-delete-item-confirm" style="display: none;">
     <form action="post">
         <div class="dialog-content">
-            <h1>{$item.name|truncate:32|default:'[`Delete to-do`]'|escape}</h1>
+            <h1>{$item->getName()|truncate:32|default:'[`Delete to-do`]'|escape}</h1>
             <p><i class="icon16 exclamation"></i>[`Item will be deleted permanently without the ability to restore. Are you sure?`]</p>
         </div>
         <div class="dialog-buttons">

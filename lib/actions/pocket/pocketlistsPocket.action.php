@@ -3,13 +3,17 @@
 /**
  * Class pocketlistsPocketAction
  */
-class pocketlistsPocketAction extends pocketlistsViewAction
+class pocketlistsPocketAction extends pocketlistsViewPocketAction
 {
     /**
+     * @param null $params
+     *
+     * @return mixed|void
+     * @throws pocketlistsNotFoundException
      * @throws waDbException
      * @throws waException
      */
-    public function execute()
+    public function runAction($params = null)
     {
         $id = waRequest::get('id', 0, waRequest::TYPE_INT);
         $list_id = waRequest::get('list_id', false, waRequest::TYPE_INT);
@@ -19,11 +23,7 @@ class pocketlistsPocketAction extends pocketlistsViewAction
 //            throw new waException('Access denied.', 403);
 //        }
 
-        $us = new pocketlistsUserSettings();
-        $pm = new pocketlistsPocketModel();
-        $lm = new pocketlistsListModel();
-
-        $last_pocket_list_id = $us->getLastPocketList();
+        $last_pocket_list_id = $this->user->getSettings()->getLastPocketList();
 
         if (!$id) {
             if (isset($last_pocket_list_id['pocket_id'])) { // last visited pocket
@@ -41,18 +41,19 @@ class pocketlistsPocketAction extends pocketlistsViewAction
             $id = reset($available_pockets);
         }
 
+        /** @var pocketlistsPocketFactory $pocketFactory */
+        $pocketFactory = pl2()->getEntityFactory(pocketlistsPocket::class);
+
         if (!$id) {
-            $allPockets = $pm->getAllPockets();
+            $allPockets = $pocketFactory->getAllPocketsForUser($this->user);
             $pocket = reset($allPockets);
         } else {
-            /** @var pocketlistsPocketModel $pocket */
-            $pocket = $pm->findByPk($id);
+            /** @var pocketlistsPocket $pocket */
+            $pocket = $this->getPocket($id);
         }
 
-        $id = $pocket->pk;
-
-        // get all lists for this pocket
-        $lists = $lm->getLists(true, $pocket['id']);
+        $lists = $pocket->getUserLists();
+        $lists = (new pocketlistsStrategyListFilterAndSort($lists))->filter()->getNonArchived();
 
         if (!$list_id) {
             if ($list_id < 0 && isset($last_pocket_list_id['list_id']) && $last_pocket_list_id['pocket_id'] == $pocket['id']) {
@@ -60,28 +61,31 @@ class pocketlistsPocketAction extends pocketlistsViewAction
             } else {
                 if ($lists) {
                     $firtsList = reset($lists);
-                    $list_id = $firtsList['id'];
-                    $last_pocket_list_id = ["pocket_id" => $id, "list_id" => $list_id];
+                    $list_id = $firtsList->getId();
+                    $last_pocket_list_id = ['pocket_id' => $id, 'list_id' => $list_id];
                 } else {
-                    $last_pocket_list_id = ["pocket_id" => $id];
+                    $last_pocket_list_id = ['pocket_id' => $id];
                 }
             }
         } else {
-            $last_pocket_list_id = ["pocket_id" => $id, "list_id" => $list_id];
+            $last_pocket_list_id = ['pocket_id' => $id, 'list_id' => $list_id];
         }
 
         if ($list_id != -1) {
-            $us->set('last_pocket_list_id', json_encode($last_pocket_list_id));
+            $this->user->getSettings()->set('last_pocket_list_id', json_encode($last_pocket_list_id));
         }
 
-        $lists_html = wao(new pocketlistsListAction(['list_id' => $list_id, 'pocket_id' => $pocket->pk]))->display();
-        $this->view->assign('lists_html', $lists_html);
+        $lists_html = (new pocketlistsListAction(['list_id' => $list_id, 'pocket_id' => $pocket->getId()]))->display();
         $this->view->assign(
-            'isAdmin',
-            pocketlistsRBAC::contactHasAccessToPocket($pocket->pk) == pocketlistsRBAC::RIGHT_ADMIN ? 1 : 0
+            [
+                'lists_html' => $lists_html,
+                'isAdmin'    =>
+                    pocketlistsRBAC::contactHasAccessToPocket($pocket) == pocketlistsRBAC::RIGHT_ADMIN ? 1 : 0
+                ,
+                'lists'      => $lists,
+                'list_id'    => $list_id,
+                'pocket'     => $pocket,
+            ]
         );
-        $this->view->assign('lists', $lists);
-        $this->view->assign('list_id', $list_id);
-        $this->view->assign('pocket', $pocket);
     }
 }

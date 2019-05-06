@@ -1,67 +1,70 @@
-{if empty($item.key_list_id)} {* stating Nov 2018, we don't show lists as items; TODO: clean up .key_list_id check in the code with time *}
+{* @var pocketlistsItem $item *}
+{if !$item->getKeyListId()} {* stating Nov 2018, we don't show lists as items; TODO: clean up .key_list_id check in the code with time *}
 
-<div class="pl-item{if !empty($item.assigned_contact_id) && $item.assigned_contact_id != $wa->user()->getId() && $item.status != 1} pl-item-assigned{/if}{if $item.status == 1} gray{/if}" {if $item.assigned_contact_id}data-pl-assigned-contact="{$item.assigned_contact_id}"{/if}>
-    {if !$item.status && empty($item.key_list_id) && !(isset($archive) && $archive)}<div class="pl-item-drag-handle" title="[`Sort`]" data-pl-action="item-sort"></div>{/if}
+<div class="pl-item{if $item->getAssignedContactId() != $wa->user()->getId() && !$item->isDone()} pl-item-assigned{/if}{if $item->isDone()} gray{/if}" {if $item->getAssignedContactId()}data-pl-assigned-contact="{$item->getAssignedContactId()}"{/if}>
+    {if !$item->isDone() && empty($item->getKeyListId()) && !(isset($archive) && $archive)}<div class="pl-item-drag-handle" title="[`Sort`]" data-pl-action="item-sort"></div>{/if}
 
-    {if $item.list_id != NULL}<div class="pl-item-list-name pl-dark-{$item.list_color}-label">{$item.list_name|truncate:32|escape}</div>{/if}
+    {if $item->getListId()}<div class="pl-item-list-name pl-dark-{$item->getList()->getColor()}-label">{$item->getList()->getName()|truncate:32|escape}</div>{/if}
 
     <div class="pl-meta">
         {if !(isset($archive) && $archive)}
-            <a href="#" class="pl-favorite" data-pl-action="item-favorite" title="[`Favorite`]"><i class="icon16 star{if !$item.favorite}-empty{/if}"></i></a>
+            <a href="#" class="pl-favorite" data-pl-action="item-favorite" title="[`Favorite`]"><i class="icon16 star{if !$item->isFavorite()}-empty{/if}"></i></a>
         {/if}
-        {if empty($item.key_list_id)}
-            {if $item.status == 1}
+        {if empty($item->getKeyListId())}
+            {if $item->isDone()}
 
                 {* COMPLETED BY *}
-                <span class="pl-userpic" title="{sprintf('[`Completed by %s`]', $item.complete_contact.username|default:'%username%'|escape)}">
-                    {if $item.complete_contact.userpic}
-                        <i class="icon16 userpic20" style="background-image: url({$item.complete_contact.userpic})" alt="{$item.complete_contact.username|escape}"></i>
+                {if $item->getCompleteContact()}
+                <span class="pl-userpic" title="{sprintf('[`Completed by %s`]', $item->getCompleteContact()->getUsername()|default:'%username%'|escape)}">
+                    {if $item->getCompleteContact()->getUserpic()}
+                        <i class="icon16 userpic20" style="background-image: url({$item->getCompleteContact()->getUserpic()})" alt="{$item->getCompleteContact()->getUsername()|escape}"></i>
                     {/if}
                 </span>
+                {/if}
 
-                <span class="pl-lastaction-datetime hint">{$item.complete_datetime|wa_date:'humandatetime'}</span>
+                <span class="pl-lastaction-datetime hint">{$item->getCompleteDatetime()|wa_date:'humandatetime'}</span>
 
             {else}
 
-                <span class="pl-userpic" title="{sprintf('%s by %s', $item.create_datetime|wa_date:'humandatetime', $item.contact.username|default:'%username%'|escape)}">
+                <span class="pl-userpic" title="{sprintf('%s by %s', $item->getCreateDatetime()|wa_date:'humandatetime', $item->getContact()->getUsername()|default:'%username%'|escape)}">
 
                     {* AUTHOR / LAST ACTOR *}
-                    <i class="icon16 userpic20" style="background-image: url({$item.contact.userpic})" alt="{$item.contact.username|escape}"></i>
+                    <i class="icon16 userpic20" style="background-image: url({$item->getContact()->getUserpic()})" alt="{$item->getContact()->getUsername()|escape}"></i>
 
                     {* &rarr; ASSIGNED TO *}
-                    {if !empty($item.assigned_contact_id) && $item.assigned_contact_id != $item.contact_id}
+                    {if $item->isAssignedtoSomeone() }
                          <span class="pl-assignee-arrow">&#9658;</span>
-                         <i class="icon16 userpic20" style="background-image: url({$item.assigned_contact.userpic})" alt="{$item.assigned_contact.username|escape}" title="{sprintf('[`Assigned to %s`]', $item.assigned_contact.username|escape)}"></i>
+                         <i class="icon16 userpic20" style="background-image: url({$item->getAssignedContact()->getUserpic()})" alt="{$item->getAssignedContact()->getUsername()|escape}" title="{sprintf('[`Assigned to %s`]', $item->getAssignedContact()->getUsername()|escape)}"></i>
                     {/if}
 
                 </span>
 
-                <span class="pl-lastaction-datetime hint" title="{if !empty($item.update_datetime)}{$item.update_datetime|wa_date:'humandatetime'}{else}{$item.create_datetime|wa_date:'humandatetime'}{/if}">
+                <span class="pl-lastaction-datetime hint" title="{if $item->getUpdateDatetime()}{$item->getUpdateDatetime()|wa_date:'humandatetime'}{else}{$item->getCreateDatetime()|wa_date:'humandatetime'}{/if}">
                     {* TODO: replace with timediff *}
-                    {$item.age_time}
+                    {$item->getAgeTime()}
                 </span>
 
             {/if}
-            {if empty($item.key_list_id) && !(isset($archive) && $archive == true)}<a href="#" class="pl-comment pl-comment-count{if !empty($item.chat.comments)} pl-comment-count-show{/if}" title="[`Comment`]"><i class="icon16 pl comments"></i>{if !empty($item.chat.comments)}{count($item.chat.comments)}{/if}</a>{/if}
+            {if !$item->getKeyListId() && !(isset($archive) && $archive == true)}<a href="#" class="pl-comment pl-comment-count{if $item->getCommentsCount()} pl-comment-count-show{/if}" title="[`Comment`]"><i class="icon16 pl comments"></i>{$item->getCommentsCount()}</a>{/if}
         {/if}
     </div>
 
     <label class="pl-done-label">
-        {if !empty($item.key_list_id)}
-            <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$item.list_icon|default:'li-list@2x.png'});"></i>
+        {if $item->getKeyListId()}
+            <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$item->getList()->getIcon()|default:'li-list@2x.png'});"></i>
         {else}
-            <input type="checkbox" class="pl-done{if isset($item.calc_priority)}{if $item.calc_priority == 1} pl-priority-green{elseif $item.calc_priority == 2} pl-priority-yellow{elseif $item.calc_priority == 3} pl-priority-red{elseif $item.calc_priority == 4} pl-priority-black{elseif $item.calc_priority == 5} pl-priority-fire{/if}{/if}" {if $item.status == 1}checked="checked"{/if}{if isset($archive) && $archive == true}disabled{/if} data-pl2-item-priority="{$item.calc_priority|default:0}">
-            <span{if $item.list_color !='none'} class="pl-dark-{$item.list_color}-border"{/if} title="[`Completed`]"></span>
+            <input type="checkbox" class="pl-done {$item->getCssClass('priority')}" {if $item->isDone()}checked="checked"{/if}{if isset($archive) && $archive == true}disabled{/if} data-pl2-item-priority="{$item->getCalcPriority()}">
+            <span{if $item->getList()->getColor() !='none'} class="pl-dark-{$item->getList()->getColor()}-border"{/if} title="[`Completed`]"></span>
         {/if}
     </label>
     <label class="pl-select-label">
-        <input type="checkbox" class="pl-is-selected" {if isset($archive) && $archive == true || !empty($item.key_list_id)}disabled{/if}>
-        <span class="pl-item-name{if isset($item.calc_priority) && $item.calc_priority == 5} bold red{/if}">
-            {if !empty($item.key_list_id)}
-                <a href="#/pocket/{$item.pocket_id}/list/{$item.list_id}/"><strong class="pl-dark-{$item.list_color}-label">{$item.name|default:'&nbsp;'|nl2br}</strong></a>
+        <input type="checkbox" class="pl-is-selected" {if (isset($archive) && $archive == true) || $item->getKeyListId()}disabled{/if}>
+        <span class="pl-item-name{if $item->getCalcPriority() == pocketlistsItem::PRIORITY_BURNINHELL} bold red{/if}">
+            {if $item->getKeyListId()}
+                <a href="#/pocket/{$item->getPocketId()}/list/{$item->getListId()}/"><strong class="pl-dark-{$item->getList()->getColor()}-label">{$item->getNameParsed()|default:'&nbsp;'|nl2br}</strong></a>
             {else}
                 {* <a href="#" class="pl-label pl-dark-purple">STATUS</a> *}
-                {$item.name|default:'&nbsp;'|nl2br}
+                {$item->getNameParsed()|default:'&nbsp;'|nl2br}
                 {* if $item.list_id == NULL && (empty($item.assigned_contact_id) || $item.assigned_contact_id == $wa->user()->getId())}<i class="icon10 lock-bw" title="[`Only you can see this item`]"></i>{/if *}
             {/if}
         </span>
@@ -71,20 +74,20 @@
             <a href="#" class="pl-edit inline-link"><i class="icon16 pl ellipsis"></i></a>
         {/if}
 
-        {if !empty($item.due_datetime)}
+        {if $item->getDueDatetime()}
             <br>
-            <span class="pl-due {if $item.calc_priority == 0}pl-due-someday{elseif $item.calc_priority == 1}pl-due-tomorrow{elseif $item.calc_priority == 2}pl-due-today{elseif $item.calc_priority >= 3}pl-due-overdue{/if}">{$item.due_datetime|wa_date:'humandatetime'}</span>
-        {elseif !empty($item.due_date)}
+            <span class="pl-due {$item->getCssClass('due-datetime')}">{$item->getDueDatetime()|wa_date:'humandatetime'}</span>
+        {elseif $item->getDueDate()}
             <br>
-            <span class="pl-due {if $item.calc_priority == 0}pl-due-someday{elseif $item.calc_priority == 1}pl-due-tomorrow{elseif $item.calc_priority == 2}pl-due-today{elseif $item.calc_priority >= 3}pl-due-overdue{/if}">{waDateTime::date(waDateTime::getFormat('humandate'), $item.due_date)}</span>
+            <span class="pl-due {$item->getCssClass('due-date')}">{waDateTime::date(waDateTime::getFormat('humandate'), $item->getDueDate())}</span>
         {/if}
 
-        {if $item.note}<p class="pl-item-note">{$item.note|nl2br}</p>{/if}
-        {if $item.attachments}
+        {if $item->getNote()}<p class="pl-item-note">{$item->getNoteParsed()|nl2br}</p>{/if}
+        {if $item->getAttachmentsCount()}
           <ul class="pl-attachments">
-            {foreach $item.attachments as $attachment}
-              {if $attachment.filetype == 'image'}<li><a href="{$pl2_attachments_path}/{$item.id}/{$attachment.filename}" target="_blank"><img src="{$pl2_attachments_path}/{$item.id}/{$attachment.filename}"></a></li>
-              {else}<li class="pl-no-preview"><a href="{$pl2_attachments_path}/{$item.id}/{$attachment.filename}" target="_blank"><i class="icon16 download"></i>{$attachment.filename|truncate:128}</a></li>
+            {foreach $item->getAttachments() as $attachment}
+              {if $attachment->getFiletype() == 'image'}<li><a href="{$pl2_attachments_path}/{$item->getId()}/{$attachment->getFilename()}" target="_blank"><img src="{$pl2_attachments_path}/{$item->getId()}/{$attachment->getFilename()}"></a></li>
+              {else}<li class="pl-no-preview"><a href="{$pl2_attachments_path}/{$item->getId()}/{$attachment->getFilename()}" target="_blank"><i class="icon16 download"></i>{$attachment->getFilename()|truncate:128}</a></li>
               {/if}
             {/foreach}
           </ul>
@@ -93,7 +96,9 @@
         <div data-pl2-item-links>
         {foreach $item->getLinkedEntities() as $linkedEntity}
             <div data-pl2-link-preview>
-                {$linkedEntity->renderPreview()}
+                {if $linkedEntity->getAppLink()}
+                    {$linkedEntity->getAppLink()->renderPreview($linkedEntity)}
+                {/if}
             </div>
         {/foreach}
         </div>
