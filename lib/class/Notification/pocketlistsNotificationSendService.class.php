@@ -48,15 +48,19 @@ class pocketlistsNotificationSendService
      */
     public function sendBatch($chunk = 100)
     {
-        $notifications = pl2()->getEntityFactory(pocketlistsNotification::class)->findUnsent($chunk);
+        try {
+            $notifications = pl2()->getEntityFactory(pocketlistsNotification::class)->findUnsent($chunk);
 
-        $sentCount = 0;
-        foreach ($notifications as $notification) {
-            $this->send($notification);
+            $sentCount = 0;
+            foreach ($notifications as $notification) {
+                $this->send($notification);
 
-            if ($notification->getStatus() === pocketlistsNotification::STATUS_OK) {
-                $sentCount++;
+                if ($notification->getStatus() === pocketlistsNotification::STATUS_OK) {
+                    $sentCount++;
+                }
             }
+        } catch (Exception $ex) {
+            pocketlistsHelper::logError('Notifications send error', $ex);
         }
 
         return $sentCount;
