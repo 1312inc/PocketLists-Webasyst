@@ -47,7 +47,7 @@ class pocketlistsListLazyDoneItemsAction extends pocketlistsViewListAction
                 'pl2_attachments_path' => wa()->getDataUrl('attachments/', true, pocketlistsHelper::APP_ID),
                 'pocket'               => $list->getPocket(),
 
-                'backend_url'          => pl2()->getBackendUrl(),
+                'backend_url'          => pl2()->getBackendUrl(true),
                 'print'                => waRequest::get('print', false),
                 'list_access_contacts' => $list_access_contacts ?: [],
                 'fileupload'           => 1,

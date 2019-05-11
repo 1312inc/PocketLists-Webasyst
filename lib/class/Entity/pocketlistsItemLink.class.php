@@ -269,7 +269,12 @@ class pocketlistsItemLink extends pocketlistsEntity
      */
     public function getAppLink()
     {
-        return pl2()->getLinkedApp($this->getApp());
+        $linkedApp = pl2()->getLinkedApp($this->getApp());
+        if (!$linkedApp instanceof pocketlistsAppLinkInterface) {
+           return  pl2()->getLinkedApp(time());
+        }
+
+        return $linkedApp;
     }
 
     /**

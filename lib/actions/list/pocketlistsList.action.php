@@ -141,7 +141,7 @@ class pocketlistsListAction extends pocketlistsViewAction
 
         $this->view->assign(
             [
-                'backend_url'          => pl2()->getBackendUrl(),
+                'backend_url'          => pl2()->getBackendUrl(true),
                 'print'                => waRequest::get('print', false),
                 'pocket'               => $pocket,
                 'list_access_contacts' => $list_access_contacts ?: [],
