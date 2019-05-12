@@ -358,6 +358,7 @@ class pocketlistsItemModel extends pocketlistsModel
                 LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
                 WHERE
                   uf.item_id IS NOT NULL
+                  and i.key_list_id is null
                   {$lists_sql}";
 
         return $this->query(

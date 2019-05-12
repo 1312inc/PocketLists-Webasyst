@@ -22,6 +22,19 @@ class pocketlistsItemLinkModel extends pocketlistsModel
     }
 
     /**
+     * @param int $itemId
+     *
+     * @return array
+     */
+    public function getByItemId($itemId)
+    {
+        return $this
+            ->select('*')
+            ->where('entity_id > 0 and item_id = ?', (int)$itemId)
+            ->fetchAll();
+    }
+
+    /**
      * @param $app
      * @param $entityType
      * @param $entityId

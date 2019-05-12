@@ -17,7 +17,7 @@ class pocketlistsItemLinkFactory extends pocketlistsFactory
      */
     public function findForItem(pocketlistsItem $item)
     {
-        $data = $this->getModel()->getByField('item_id', $item->getId(), true);
+        $data = $this->getModel()->getByItemId($item->getId());
 
         return $this->generateWithData($data, true);
     }
