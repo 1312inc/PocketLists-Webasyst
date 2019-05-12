@@ -186,21 +186,25 @@ HTML;
 
             }
 
-            $pocketlistsPath = sprintf('/%s/pocketlists?module=json&action=sendNotifications', pl2()->getBackendUrl());
+            $pocketlistsPath = sprintf('%spocketlists?module=json&action=sendNotifications', pl2()->getBackendUrl(true));
 
             $script = <<<HTML
 <script>
 (function() {
     'use strict';
     
-    $.post('{$pocketlistsPath}', function(r) {
-        if (r.status === 'ok') {
-            var sent = parseInt(r.data);
-            sent && console.log('pocketlists: notification send ' + sent);
-        } else {
-            console.log('pocketlists: notification send error ' + r.error);
-        }
-    });
+    try {
+        $.post('{$pocketlistsPath}', function(r) {
+            if (r.status === 'ok') {
+                var sent = parseInt(r.data);
+                sent && console.log('pocketlists: notification send ' + sent);
+            } else {
+                console.log('pocketlists: notification send error ' + r.error);
+            }
+        });
+    } catch (e) {
+        console.log('pocketlists: notification send exception ', e);
+    }
 })()
 </script>
 HTML;
