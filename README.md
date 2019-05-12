@@ -2,7 +2,7 @@
 
 Pocket Lists for Webasyst is a server-side web app that is aimed to provide your private cloud syncing hub for Pocket Lists client apps. The app is developed on the LAMP stack and offers the web UI to manage your lists and to-dos.
 
-*IMPORTANT: REST API and full sync between Pocket Lists for iOS and Webasyst is scheduled for Q1/Q2 2019.*
+*IMPORTANT: REST API and full sync between Pocket Lists for iOS and Webasyst is scheduled for the mid 2019.*
 
 https://pocketlists.com
 https://www.webasyst.com/store/app/pocketlists/
