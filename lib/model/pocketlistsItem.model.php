@@ -262,11 +262,12 @@ class pocketlistsItemModel extends pocketlistsModel
             'pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id',
             '(select i2.name, l2.*
                   from pocketlists_list l2
-                         JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) l ON l.id = i.list_id AND l.archived = 0',
+                         JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) l ON l.id = i.list_id',
         ];
 
         $sqlParts['and'] = [
             sprintf('(%s OR l.id IS NULL)', pocketlistsRBAC::filterListAccess($lists, $contact_id)),
+            '(l.id is null OR (l.id is not null and l.archived = 0))',
             // get to-do items only from accмфп essed pockets
         ];
 
@@ -834,6 +835,7 @@ class pocketlistsItemModel extends pocketlistsModel
         $sqlParts = $this->getTodoSql($contact_id, [], $lists);
 
         $sqlParts['and'][] = $when;
+        $sqlParts['and'][] =
 
         $or_sql = implode("\n OR ", $sqlParts['or']);
         $and_sql = implode("\n AND ", $sqlParts['and']);
