@@ -461,6 +461,54 @@
                     console.log('pocketlists: notification send error ' + r.error);
                 }
             });
+        },
+        lazyItems: function (config) {
+            $(window).off('scroll.pl2');
+
+            if (config) {
+                var $loading = config.$loading,//$('#pl-list-content .lazyloading'),
+                    is_bottom = false,
+                    request_in_action = false,
+                    prev_scroll_pos = 0,
+                    offset = 1,
+                    this_is_the_end = false,
+                    html_selector = config.html_selector;//'#pl-complete-log > .menu-v';
+
+                $(window).on('scroll.pl2', function () {
+                    if (this_is_the_end) {
+                        return;
+                    }
+
+                    var scroll_pos = $(document).scrollTop() + $(window).outerHeight(),
+                        doc_h = $(document).outerHeight() - 20;
+
+                    if (prev_scroll_pos < scroll_pos) {
+                        if (!is_bottom && scroll_pos >= doc_h) {
+                            is_bottom = true;
+                            if (request_in_action) {
+                                return;
+                            }
+                            $loading.show();
+                            request_in_action = true;
+
+                            $.get(config.url, { offset: offset }, function (html) {
+                                $loading.hide();
+                                html = $(html).find(html_selector).html();
+                                if ($.trim(html).length) {
+                                    offset++;
+                                } else {
+                                    this_is_the_end = true;
+                                }
+                                $(html_selector).append(html);
+                                request_in_action = false;
+                            });
+                        } else {
+                            is_bottom = false;
+                        }
+                    }
+                    prev_scroll_pos = scroll_pos;
+                });
+            }
         }
     };
 }(jQuery));

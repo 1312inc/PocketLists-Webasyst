@@ -469,6 +469,29 @@ class pocketlistsItemModel extends pocketlistsModel
                  ";
     }
 
+    private function getQueryComponents()
+    {
+        return [
+            'select'    => [
+                '*'                     => 'i.*',
+                'favorite'              => 'IF(uf.contact_id, 1, 0) favorite',
+                'attachments_count'     => '(select count(*) from pocketlists_attachment pa where pa.item_id = i.id) attachments_count',
+                'comments_count'        => '(select count(*) from pocketlists_comment pc where pc.item_id = i.id) comments_count',
+                'linked_entities_count' => '(select count(*) from pocketlists_item_link pil where pil.item_id = i.id) linked_entities_count',
+            ],
+            'from'      => ['i' => "{$this->table} i"],
+            'join' => [
+                'uf' => 'left join pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id',
+            ],
+            'where'     => [
+                'and' => [],
+                'or'  => [],
+            ],
+            'group by'  => [],
+            'order by'  => [],
+        ];
+    }
+
     /**
      * @param      $list_id
      * @param bool $tree
@@ -732,6 +755,47 @@ class pocketlistsItemModel extends pocketlistsModel
         return $items;
     }
 
+    protected function getAppItemsQueryComponents($app = '', $entity_type = '', $entity_id = '', $dateBounds = [], $status = null)
+    {
+        $query = $this->getQueryComponents();
+
+        if ($app) {
+            $query['where']['and'][] = 'pil.app = s:app';
+        }
+
+        if ($entity_type) {
+            $query['where']['and'][] = 'pil.entity_type = s:type';
+        }
+
+        if ($entity_type) {
+            $query['where']['and'][] = 'pil.entity_id = i:entity_id';
+        }
+
+        if ($status !== null) {
+            $query['where']['and'][] = 'i.status = i:status';
+        }
+
+        if ($dateBounds) {
+            if (isset($dateBounds[1])) {
+                $query['where']['and'][] = '((i.status = 0 AND (i.due_date BETWEEN s:date AND s:date2 OR DATE(i.due_datetime) BETWEEN s:date AND s:date2)) OR (i.status > 0 AND DATE(i.complete_datetime) BETWEEN s:date AND s:date2)) /* with due date or completed this day */';
+            } elseif (isset($dateBounds[0])) {
+                $query['where']['and'][] = '((i.status = 0 AND (i.due_date = s:date OR DATE(i.due_datetime) = s:date)) OR (i.status > 0 AND DATE(i.complete_datetime) = s:date)) /* with due date or completed this day */';
+            }
+        }
+
+        $query['join']['l'] = 'left join (select i2.name, l2.*
+                          from pocketlists_list l2
+                                 JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) l ON l.id = i.list_id AND l.archived = 0';
+        $query['join']['pil'] = 'join pocketlists_item_link pil ON pil.item_id = i.id';
+
+        $query['group by'][] = 'i.id';
+        $query['order by'][] = 'i.status';
+        $query['order by'][] = '(i.complete_datetime IS NULL)';
+        $query['order by'][] = 'i.complete_datetime DESC';
+
+        return $query;
+    }
+
     /**
      * @param string $app
      * @param string $entity_type
@@ -740,49 +804,37 @@ class pocketlistsItemModel extends pocketlistsModel
      *
      * @return array
      */
-    public function getAppItems($app = '', $entity_type = '', $entity_id = '', $dateBounds = [])
+    public function getAppItems($app = '', $entity_type = '', $entity_id = '', $dateBounds = [], $status = null, $limit = 0, $offset = 0)
     {
         $lists = [];
         $contact_id = wa()->getUser()->getId();
 //        pocketlistsRBAC::filterListAccess($lists, $contact_id);
         $list_sql = 1;//pocketlistsRBAC::filterListAccess($lists);
 
-        $appSql = '';
-        if ($app) {
-            $appSql = 'AND pil.app = s:app';
-        }
+        $query = $this->getAppItemsQueryComponents($app, $entity_type, $entity_id, $dateBounds, $status);
 
-        $appTypeSql = '';
-        if ($entity_type) {
-            $appTypeSql = 'AND pil.entity_type = s:type';
-        }
-
-        $entityIdSql = '';
-        if ($entity_type) {
-            $entityIdSql = 'AND pil.entity_id = i:entity_id';
-        }
-
-        $dateSql = '';
-        if ($dateBounds) {
-            if (isset($dateBounds[1])) {
-                $dateSql = 'AND ((i.status = 0 AND (i.due_date BETWEEN s:date AND s:date2 OR DATE(i.due_datetime) BETWEEN s:date AND s:date2)) OR (i.status > 0 AND DATE(i.complete_datetime) BETWEEN s:date AND s:date2)) /* with due date or completed this day */';
-            } elseif (isset($dateBounds[0])) {
-                $dateSql = 'AND ((i.status = 0 AND (i.due_date = s:date OR DATE(i.due_datetime) = s:date)) OR (i.status > 0 AND DATE(i.complete_datetime) = s:date)) /* with due date or completed this day */';
-            }
-        }
-
-        $q = $this->getQuery()."
-                LEFT JOIN (select i2.name, l2.*
-                          from pocketlists_list l2
-                                 JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) l ON l.id = i.list_id AND l.archived = 0
-                JOIN pocketlists_item_link pil ON pil.item_id = i.id {$appSql} {$appTypeSql} {$entityIdSql}
-                WHERE
-                  {$list_sql}
-                  {$dateSql}
-                GROUP BY i.id
-                ORDER BY
-                  i.status,
-                  (i.complete_datetime IS NULL), i.complete_datetime DESC";
+        $q = sprintf('
+            select %s
+            from %s
+            %s
+            %s
+            %s
+            %s
+            %s',
+            implode(",\n", $query['select']),
+            implode(",\n", $query['from']),
+            implode("\n", $query['join']),
+            !empty($query['where']['and'])
+                ? 'where '.implode(' AND ', $query['where']['and'])
+                : '',
+            !empty($query['group by'])
+                ? 'group by '.implode(",\n", $query['group by'])
+                : '',
+            !empty($query['order by'])
+                ? 'order by '.implode(",\n", $query['order by'])
+                : '',
+            !empty($limit) ? sprintf('limit %d, %d', $offset, $limit) : ''
+        );
 
         $items = $this->query(
             $q,
@@ -795,10 +847,69 @@ class pocketlistsItemModel extends pocketlistsModel
                 'entity_id'       => $entity_id,
                 'date'            => isset($dateBounds[0]) ? $dateBounds[0] : '',
                 'date2'           => isset($dateBounds[1]) ? $dateBounds[1] : '',
+                'status'          => $status,
             ]
         )->fetchAll();
 
         return $items;
+    }
+    /**
+     * @param string $app
+     * @param string $entity_type
+     * @param string $entity_id
+     * @param array  $dateBounds
+     *
+     * @return int
+     */
+    public function countAppItems($app = '', $entity_type = '', $entity_id = '', $dateBounds = [], $status = null)
+    {
+        $lists = [];
+        $contact_id = wa()->getUser()->getId();
+//        pocketlistsRBAC::filterListAccess($lists, $contact_id);
+        $list_sql = 1;//pocketlistsRBAC::filterListAccess($lists);
+
+        $query = $this->getAppItemsQueryComponents($app, $entity_type, $entity_id, $dateBounds, $status);
+
+        $query['select'] = ['count(i.id) count'];
+        $query['group by'] = $query['order by'] = [];
+
+        $q = sprintf('
+            select %s
+            from %s
+            %s
+            %s
+            %s
+            %s',
+            implode(",\n", $query['select']),
+            implode(",\n", $query['from']),
+            implode("\n", $query['join']),
+            !empty($query['where']['and'])
+                ? 'where '.implode(' AND ', $query['where']['and'])
+                : '',
+            !empty($query['group by'])
+                ? 'group by '.implode(",\n", $query['group by'])
+                : '',
+            !empty($query['order by'])
+                ? 'order by '.implode(",\n", $query['order by'])
+                : ''
+        );
+
+        $items = $this->query(
+            $q,
+            [
+                'contact_id'      => $contact_id,
+                'list_ids'        => $lists,
+                'user_contact_id' => wa()->getUser()->getId(),
+                'app'             => $app,
+                'type'            => $entity_type,
+                'entity_id'       => $entity_id,
+                'date'            => isset($dateBounds[0]) ? $dateBounds[0] : '',
+                'date2'           => isset($dateBounds[1]) ? $dateBounds[1] : '',
+                'status'          => $status,
+            ]
+        )->fetchField('count');
+
+        return (int)$items;
     }
 
     /**

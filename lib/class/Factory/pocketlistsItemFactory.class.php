@@ -43,6 +43,54 @@ class pocketlistsItemFactory extends pocketlistsFactory
     }
 
     /**
+     * @param pocketlistsAppLinkInterface $app
+     * @param string                      $entityType
+     * @param int                         $entityId
+     * @param string                      $date
+     *
+     * @return pocketlistsItem[]
+     * @throws waException
+     */
+    public function findDoneForApp(pocketlistsAppLinkInterface $app, $entityType = '', $entityId = 0, $date = '')
+    {
+        $data = $this->getModel()->getAppItems(
+            $app->getApp(),
+            $entityType,
+            $entityId,
+            $date,
+            pocketlistsItem::STATUS_DONE,
+            $this->getLimit(),
+            $this->getOffset()
+        );
+
+        return $this->generateWithData($data, true);
+    }
+
+    /**
+     * @param pocketlistsAppLinkInterface $app
+     * @param string                      $entityType
+     * @param int                         $entityId
+     * @param string                      $date
+     *
+     * @return pocketlistsItem[]
+     * @throws waException
+     */
+    public function findUndoneForApp(pocketlistsAppLinkInterface $app, $entityType = '', $entityId = 0, $date = '')
+    {
+        $data = $this->getModel()->getAppItems(
+            $app->getApp(),
+            $entityType,
+            $entityId,
+            $date,
+            pocketlistsItem::STATUS_UNDONE,
+            $this->getLimit(),
+            $this->getOffset()
+        );
+
+        return $this->generateWithData($data, true);
+    }
+
+    /**
      * @param pocketlistsList $list
      *
      * @return pocketlistsItem[]
@@ -77,9 +125,9 @@ class pocketlistsItemFactory extends pocketlistsFactory
      * @return pocketlistsItem[]
      * @throws waException
      */
-    public function findDoneByList(pocketlistsList $list, $offset = 0, $limit = 10, $tree = true)
+    public function findDoneByList(pocketlistsList $list, $tree = true)
     {
-        $data = $this->getModel()->getDoneByList($list->getId(), $offset, $limit, $tree);
+        $data = $this->getModel()->getDoneByList($list->getId(), $this->getOffset(), $this->getLimit(), $tree);
 
         return $this->generateWithList($data, $list);
     }

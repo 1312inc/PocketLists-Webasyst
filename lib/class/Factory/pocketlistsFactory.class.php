@@ -5,7 +5,20 @@
  */
 class pocketlistsFactory
 {
+    const DEFAULT_LIMIT = 2;
+    const DEFAULT_OFFSET = 0;
+
     protected $entity;
+
+    /**
+     * @var int
+     */
+    protected $limit = 0;
+
+    /**
+     * @var int
+     */
+    protected $offset = 0;
 
     /**
      * @var array
@@ -13,9 +26,60 @@ class pocketlistsFactory
     protected $cache = [];
 
     /**
+     * @return int
+     */
+    public function getLimit()
+    {
+        return $this->limit;
+    }
+
+    /**
+     * @param int $limit
+     *
+     * @return static
+     */
+    public function setLimit($limit)
+    {
+        $this->limit = $limit;
+
+        return $this;
+    }
+
+    /**
+     * @return static
+     */
+    public function resetLimitAndOffset()
+    {
+        $this->limit = 0;
+        $this->offset = 0;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOffset()
+    {
+        return $this->offset;
+    }
+
+    /**
+     * @param int $offset
+     *
+     * @return static
+     */
+    public function setOffset($offset)
+    {
+        $this->offset = $offset;
+
+        return $this;
+    }
+
+    /**
      * @param string $entity
      *
-     * @return pocketlistsFactory
+     * @return static
      */
     public function setEntity($entity)
     {

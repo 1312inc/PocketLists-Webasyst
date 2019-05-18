@@ -149,7 +149,11 @@ class pocketlistsList extends pocketlistsItem
             /** @var pocketlistsItemFactory $factory */
             $factory = pl2()->getEntityFactory(pocketlistsItem::class);
 
-            $this->doneItems = $factory->findDoneByList($this);
+            $this->doneItems = $factory
+                ->setLimit(pocketlistsItemFactory::DEFAULT_LIMIT)
+                ->findDoneByList($this);
+
+            $factory->resetLimitAndOffset();
         }
 
         return $this->doneItems;

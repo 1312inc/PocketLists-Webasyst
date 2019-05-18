@@ -47,7 +47,7 @@ class pocketlistsArchiveAction extends pocketlistsViewAction
             }
 
             /** @var pocketlistsContactFactory $factory */
-            $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getEntityFactory(pocketlistsContact::class);
+            $factory = pl2()->getEntityFactory(pocketlistsContact::class);
             $list_access_contacts = $factory->getTeammates(
                 pocketlistsRBAC::getAccessContacts($list),
                 true,
@@ -71,7 +71,13 @@ class pocketlistsArchiveAction extends pocketlistsViewAction
             );
 
             $undone = $list->getUndoneItems();
-            $done = $list->getDoneItems();
+
+            /** @var pocketlistsItemFactory $itemFactory */
+            $itemFactory = pl2()->getEntityFactory(pocketlistsItem::class);
+            $done = $itemFactory
+                ->setOffset(0)
+                ->setLimit(pocketlistsItemFactory::DEFAULT_LIMIT)
+                ->findDoneByList($list);
 
             $this->view->assign(
                 [
