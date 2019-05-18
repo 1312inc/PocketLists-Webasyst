@@ -20,9 +20,26 @@ class pocketlistsDebugFixturesController extends waJsonController
         $listsCount = (int)$fixturesSettings['lists'];
         $itemsCount = (int)$fixturesSettings['items'];
 
+        /** @var pocketlistsPocketFactory $pocketFactory */
         $pocketFactory = pl2()->getEntityFactory(pocketlistsPocket::class);
+        /** @var pocketlistsListFactory $listFactory */
         $listFactory = pl2()->getEntityFactory(pocketlistsList::class);
+        /** @var pocketlistsItemFactory $itemFactory */
         $itemFactory = pl2()->getEntityFactory(pocketlistsItem::class);
+        /** @var pocketlistsItemLinkFactory $itemLinkFactory */
+        $itemLinkFactory = pl2()->getEntityFactory(pocketlistsItemLink::class);
+
+        wa('shop');
+        $ssOrders = (new shopOrderModel())->getAll('id');
+        if ($ssOrders) {
+            $ssOrders = array_keys($ssOrders);
+        }
+
+        $accessedUsers = pocketlistsRBAC::getAccessContacts();
+
+        $completeProbablity = (int)$fixturesSettings['items_completed'];
+        $assignProbablity = (int)$fixturesSettings['items_assigned'];
+        $linkSsProbablity = (int)$fixturesSettings['items_linked_ss'];
 
         /** @var pocketlistsPocket $pocket */
         $pocket = $pocketFactory->createNew();
@@ -62,14 +79,38 @@ class pocketlistsDebugFixturesController extends waJsonController
                     ->setName(sprintf('Fake item %s-%s', $i, $j))
                     ->setContactId(wa()->getUser()->getId())
                     ->setList($list)
-                    ->setPriority($this->getRandomValue(
-                        $this->getRandomFromArray(pocketlistsItemModel::getPriorities())
-                    ))
+                    ->setPriority(
+                        $this->getRandomValue(
+                            $this->getRandomFromArray(pocketlistsItemModel::getPriorities())
+                        )
+                    )
                     ->setDueDate($genDueDate ? $dueDate->format('Y-m-d') : null)
                     ->setDueDatetime($genDueDate ? $dueDate->format('Y-m-d H:i:s') : null)
                     ->setCreateDatetime(date('Y-m-d H:i:s'));
 
+                if ($this->getProbability($assignProbablity) && $accessedUsers) {
+                    $item->setAssignedContactId($this->getRandomFromArray($accessedUsers));
+                }
+
+                if ($this->getProbability($completeProbablity)) {
+                    $item
+                        ->setStatus(pocketlistsItem::STATUS_DONE)
+                        ->setCompleteContactId($item->getAssignedContactId() ? $item->getAssignedContactId() : $item->getContactId())
+                        ->setCompleteDatetime(date('Y-m-d H:i:s'));
+                }
+
                 $itemFactory->save($item);
+
+                if ($this->getProbability($linkSsProbablity) && $ssOrders) {
+                    $itemLinkFactory->createFromDataForItem(
+                        $item,
+                        [
+                            'app'         => 'shop',
+                            'entity_type' => 'order',
+                            'entity_id'   => $this->getRandomFromArray($ssOrders),
+                        ]
+                    );
+                }
             }
         }
 
@@ -96,5 +137,15 @@ class pocketlistsDebugFixturesController extends waJsonController
     private function getRandomValue($value = 1, $default = 0, $randomness = 9)
     {
         return $this->tick % $randomness === 0 ? $value : $default;
+    }
+
+    /**
+     * @param int $prob
+     *
+     * @return bool
+     */
+    private function getProbability($prob)
+    {
+        return mt_rand(0, 100) <= $prob;
     }
 }
