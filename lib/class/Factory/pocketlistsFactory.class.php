@@ -5,7 +5,7 @@
  */
 class pocketlistsFactory
 {
-    const DEFAULT_LIMIT = 2;
+    const DEFAULT_LIMIT = 30;
     const DEFAULT_OFFSET = 0;
 
     protected $entity;

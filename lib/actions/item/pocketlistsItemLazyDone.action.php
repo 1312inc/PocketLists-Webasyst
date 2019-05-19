@@ -5,8 +5,6 @@
  */
 class pocketlistsItemLazyDoneAction extends pocketlistsViewAction
 {
-    const OFFSET = 2;
-
     /**
      * @param null $params
      *
@@ -37,8 +35,8 @@ class pocketlistsItemLazyDoneAction extends pocketlistsViewAction
                 }
 
                 $done = $itemFactory
-                    ->setOffset($offset * self::OFFSET)
-                    ->setLimit(self::OFFSET)
+                    ->setOffset($offset * pocketlistsFactory::DEFAULT_LIMIT)
+                    ->setLimit(pocketlistsFactory::DEFAULT_LIMIT)
                     ->findDoneByList($list);
 
                 break;
@@ -60,8 +58,8 @@ class pocketlistsItemLazyDoneAction extends pocketlistsViewAction
                 $date = waRequest::request('date', false);
 
                 $done = $itemFactory
-                    ->setOffset($offset * self::OFFSET)
-                    ->setLimit(self::OFFSET)
+                    ->setOffset($offset * pocketlistsFactory::DEFAULT_LIMIT)
+                    ->setLimit(pocketlistsFactory::DEFAULT_LIMIT)
                     ->findDoneForApp($app, '', 0, $date);
 
                 break;
@@ -70,8 +68,8 @@ class pocketlistsItemLazyDoneAction extends pocketlistsViewAction
                 $date = waRequest::request('date', false);
 
                 $done = $itemFactory
-                    ->setOffset($offset * self::OFFSET)
-                    ->setLimit(self::OFFSET)
+                    ->setOffset($offset * pocketlistsFactory::DEFAULT_LIMIT)
+                    ->setLimit(pocketlistsFactory::DEFAULT_LIMIT)
                     ->findToDoDone($this->user, $date);
 
                 break;
@@ -80,8 +78,8 @@ class pocketlistsItemLazyDoneAction extends pocketlistsViewAction
                 $date = waRequest::request('date', false);
 
                 $done = $itemFactory
-                    ->setOffset($offset * self::OFFSET)
-                    ->setLimit(self::OFFSET)
+                    ->setOffset($offset * pocketlistsFactory::DEFAULT_LIMIT)
+                    ->setLimit(pocketlistsFactory::DEFAULT_LIMIT)
                     ->findFavoritesDoneForUserAndDate($this->user, $date);
 
                 break;
@@ -90,8 +88,8 @@ class pocketlistsItemLazyDoneAction extends pocketlistsViewAction
                 $teammate = pl2()->getEntityFactory(pocketlistsContact::class)->createNewWithId(waRequest::request('teammate', 0));
 
                 $done = $itemFactory
-                    ->setOffset($offset * self::OFFSET)
-                    ->setLimit(self::OFFSET)
+                    ->setOffset($offset * pocketlistsFactory::DEFAULT_LIMIT)
+                    ->setLimit(pocketlistsFactory::DEFAULT_LIMIT)
                     ->findAssignedOrCompletesDoneByContact($teammate);
 
                 break;
