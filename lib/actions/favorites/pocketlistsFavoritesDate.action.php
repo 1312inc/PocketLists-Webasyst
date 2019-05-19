@@ -18,11 +18,15 @@ class pocketlistsFavoritesDateAction extends pocketlistsViewAction
 
         /** @var pocketlistsItemFactory $itemFactory */
         $itemFactory = pl2()->getEntityFactory(pocketlistsItem::class);
-        $items = $itemFactory->findFavoritesForUserAndDate($this->user, $date);
 
-        $filter = new pocketlistsStrategyItemFilterAndSort($items);
-        $itemsUndone = $filter->filterDoneUndone()->getProperSortUndone();
-        $itemsDone = $filter->getItemsDone();
+        $itemsUndone = $itemFactory->findFavoritesUndoneForUserAndDate($this->user, $date);
+        $itemsDone = $itemFactory
+            ->setLimit(pocketlistsFactory::DEFAULT_LIMIT)
+            ->setOffset(pocketlistsFactory::DEFAULT_OFFSET)
+            ->findFavoritesDoneForUserAndDate($this->user, $date);
+
+        $countItemsDone = pl2()->getModel(pocketlistsItem::class)
+            ->getFavoritesCount($this->user->getId(), $date, false, pocketlistsItem::STATUS_DONE);
 
         $timestamp = $date ? waDateTime::date('Y-m-d', strtotime($date)) : '';
 
@@ -30,7 +34,7 @@ class pocketlistsFavoritesDateAction extends pocketlistsViewAction
             [
                 'undone_items'         => $itemsUndone,
                 'done_items'           => $itemsDone,
-                'count_done_items'     => count($itemsDone),
+                'count_done_items'     => $countItemsDone,
                 'date'                 => $date,
                 'timestamp'            => $timestamp,
                 'pl2_attachments_path' => wa()->getDataUrl('attachments/', true, pocketlistsHelper::APP_ID),

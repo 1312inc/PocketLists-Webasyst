@@ -57,12 +57,42 @@ class pocketlistsItemLazyDoneAction extends pocketlistsViewAction
                     throw new pocketlistsForbiddenException();
                 }
 
-                $date = waRequest::get('date', false);
+                $date = waRequest::request('date', false);
 
                 $done = $itemFactory
                     ->setOffset($offset * self::OFFSET)
                     ->setLimit(self::OFFSET)
                     ->findDoneForApp($app, '', 0, $date);
+
+                break;
+
+            case 'todo':
+                $date = waRequest::request('date', false);
+
+                $done = $itemFactory
+                    ->setOffset($offset * self::OFFSET)
+                    ->setLimit(self::OFFSET)
+                    ->findToDoDone($this->user, $date);
+
+                break;
+
+            case 'favorites':
+                $date = waRequest::request('date', false);
+
+                $done = $itemFactory
+                    ->setOffset($offset * self::OFFSET)
+                    ->setLimit(self::OFFSET)
+                    ->findFavoritesDoneForUserAndDate($this->user, $date);
+
+                break;
+
+            case 'team':
+                $teammate = pl2()->getEntityFactory(pocketlistsContact::class)->createNewWithId(waRequest::request('teammate', 0));
+
+                $done = $itemFactory
+                    ->setOffset($offset * self::OFFSET)
+                    ->setLimit(self::OFFSET)
+                    ->findAssignedOrCompletesDoneByContact($teammate);
 
                 break;
         }

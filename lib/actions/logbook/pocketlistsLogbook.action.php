@@ -18,7 +18,9 @@ class pocketlistsLogbookAction extends pocketlistsViewAction
         $offset = waRequest::get('offset', 0);
 
         $items = pl2()->getEntityFactory(pocketlistsItem::class)
-            ->findLogbook(null, false, true, $offset * self::DEFAULT_OFFSET, self::DEFAULT_OFFSET);
+            ->setOffset($offset * self::DEFAULT_OFFSET)
+            ->setLimit(self::DEFAULT_OFFSET)
+            ->findLogbook(null, false, true);
 
         $this->view->assign(
             [

@@ -20,22 +20,29 @@ class pocketlistsTodoDateAction extends pocketlistsViewAction
 
         /** @var pocketlistsItemFactory $itemFactory */
         $itemFactory = pl2()->getEntityFactory(pocketlistsItem::class);
-        $items = $itemFactory->findToDo($this->user, $date);
 
-        $itemFilter = (new pocketlistsStrategyItemFilterAndSort($items))->filterDoneUndone();
+        $itemsUndone = $itemFactory->findToDoUndone($this->user, $date);
+        $itemsDone = $itemFactory
+            ->setOffset(0)
+            ->setLimit(pocketlistsFactory::DEFAULT_LIMIT)
+            ->findToDoDone($this->user, $date);
+
+        $countDoneItems = pl2()->getModel(pocketlistsItem::class)
+            ->countTodo(
+                $this->user->getId(),
+                $date ? [$date] : [],
+                [],
+                pocketlistsItem::STATUS_DONE
+            );
 
         $this->view->assign(
             [
-                'undone_items'     => $itemFilter->getProperSortUndone(),
-                'done_items'       => $itemFilter->getProperSortDone(),
-                'count_done_items' => count($itemFilter->getItemsDone()),
+                'undone_items'     => $itemsUndone,
+                'done_items'       => $itemsDone,
+                'count_done_items' => $countDoneItems,
                 'date'             => $date,
-                'timestamp'        => $date ? waDateTime::date('Y-m-d', strtotime($date)) : ''
-            ]
-        );
+                'timestamp'        => $date ? waDateTime::date('Y-m-d', strtotime($date)) : '',
 
-        $this->view->assign(
-            [
                 'filter'               => $filter,
                 'pl2_attachments_path' => wa()->getDataUrl('attachments/', true, pocketlistsHelper::APP_ID),
                 'this_is_stream'       => true,

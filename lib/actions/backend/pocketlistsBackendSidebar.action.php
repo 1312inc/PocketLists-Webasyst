@@ -44,10 +44,15 @@ class pocketlistsBackendSidebarAction extends pocketlistsViewAction
 
         $this->view->assign(
             [
-                'new_comments_count' => $commentModel->getLastActivityComments($last_activity),
-                'new_items_count'    => $itemModel->getLastActivityItems($last_activity),
-                'last_activity'      => $last_activity,
-                'favorites_count'    => $itemModel->getFavoritesCount(),
+                'new_comments_count'     => $commentModel->getLastActivityComments($last_activity),
+                'new_items_count'        => $itemModel->getLastActivityItems($last_activity),
+                'last_activity'          => $last_activity,
+                'favorites_count_undone' => $itemModel->getFavoritesCount(
+                    false,
+                    false,
+                    false,
+                    pocketlistsItem::STATUS_UNDONE
+                ),
             ]
         );
 
