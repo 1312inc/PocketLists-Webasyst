@@ -57,16 +57,22 @@ class pocketlistsTeamAction extends pocketlistsViewAction
 
             /** @var pocketlistsItemFactory $itemFactory */
             $itemFactory = pl2()->getEntityFactory(pocketlistsItem::class);
-            $items = $itemFactory->findAssignedOrCompletesByContact($teammate);
 
-            $itemFilter = (new pocketlistsStrategyItemFilterAndSort($items))->filterDoneUndone();
+            $itemsUndone = $itemFactory->findAssignedOrCompletesUndoneByContact($teammate);
+            $itemsDone = $itemFactory
+                ->setLimit(pocketlistsFactory::DEFAULT_LIMIT)
+                ->setOffset(pocketlistsFactory::DEFAULT_OFFSET)
+                ->findAssignedOrCompletesDoneByContact($teammate);
+
+            $countDoneItems = pl2()->getModel(pocketlistsItem::class)
+                ->countAssignedOrCompletesDoneByContactItems($teammate->getId());
 
             $this->view->assign(
                 [
                     'lists'            => $lists,
-                    'items'            => $itemFilter->getProperSortUndone(),
-                    'items_done'       => $itemFilter->getItemsDone(),
-                    'count_done_items' => count($itemFilter->getItemsDone()),
+                    'items_done'       => $itemsDone,
+                    'items'            => $itemsUndone,
+                    'count_done_items' => $countDoneItems,
                     'current_teammate' => $teammate,
                 ]
             );

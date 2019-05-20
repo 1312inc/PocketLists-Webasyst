@@ -97,6 +97,9 @@
                 {include '../item/Item.html' items=$items_done}
                 {/if}
             </ul>
+            <div class="block double-padded lazyloading" style="display: none;">
+                <i class="icon16 loading"></i> [`Loading...`]
+            </div>
         </section>
 
         <a href="#" id="pl-complete-log-link" class="inline-link gray" {if !$count_done_items}style="display:none;"{/if}><b><i>{_w('Show all %d completed to-do', 'Show all %d completed to-dos', $count_done_items)}</i></b></a>
@@ -118,45 +121,55 @@
 {else}
 
 <script text="text/javascript">
-    var $all_items_wrapper = $('#pl-list-items');
+    (function () {
+        'use strict';
 
-    new $.pocketlists.Items($all_items_wrapper, {
-        enableAddLinkOnHover: false,
-        enableChangeLevel: false,
-        enableSortItems: false,
-        assignUser: parseInt($('#pl-assigned-contact-id').val()),
-        showMessageOnEmptyList: true,
+        var $all_items_wrapper = $('#pl-list-items');
+
+        new $.pocketlists.Items($all_items_wrapper, {
+            enableAddLinkOnHover: false,
+            enableChangeLevel: false,
+            enableSortItems: false,
+            assignUser: parseInt($('#pl-assigned-contact-id').val()),
+            showMessageOnEmptyList: true,
 //        list: new $.pocketlists.List($('.pl-title')),
-        userHasLinkedApps: {$user->hasLinkedApps()},
-        current_user_id: {$user->getContact()->getId()}
-    });
-    $.pocketlists.setTitle('{$current_teammate->getName()|escape}');
-
-    $('[data-pl="uho"]').on('click', '[data-pl-action="list-email"]', function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        $('<div>').waDialog({
-            'url': '?module=list&action=emailDialog&teammate={$current_teammate->getLogin()|escape}',
-            onLoad: function () {
-            },
-            onSubmit: function (d) {
-                var $this = $(this);
-
-                $this.after($.pocketlists.$loading);
-                $.post('?module=list&action=email', $this.serialize(), function(r) {
-                    $.pocketlists.$loading.remove();
-                    if (r.status === 'ok') {
-                        d.trigger('close');
-                    }  else {
-                        alert(r.errors);
-                    }
-                }, 'json');
-                return false;
-            },
-            onClose: function () {
-                this.remove();
-            }
+            userHasLinkedApps: {$user->hasLinkedApps()},
+            current_user_id: {$user->getContact()->getId()}
         });
-    })
+        $.pocketlists.setTitle('{$current_teammate->getName()|escape}');
+
+        $('[data-pl="uho"]').on('click', '[data-pl-action="list-email"]', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            $('<div>').waDialog({
+                'url': '?module=list&action=emailDialog&teammate={$current_teammate->getLogin()|escape}',
+                onLoad: function () {
+                },
+                onSubmit: function (d) {
+                    var $this = $(this);
+
+                    $this.after($.pocketlists.$loading);
+                    $.post('?module=list&action=email', $this.serialize(), function(r) {
+                        $.pocketlists.$loading.remove();
+                        if (r.status === 'ok') {
+                            d.trigger('close');
+                        }  else {
+                            alert(r.errors);
+                        }
+                    }, 'json');
+                    return false;
+                },
+                onClose: function () {
+                    this.remove();
+                }
+            });
+        });
+
+        $.pocketlists.lazyItems({
+            $loading: $('#pl-list-content .lazyloading'),
+            html_selector: '#pl-complete-log > .menu-v',
+            url: '?module=item&action=lazyDone&type=team&teammate={$current_teammate->getId()}'
+        });
+    }())
 </script>
 {/if}

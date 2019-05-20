@@ -124,7 +124,7 @@ class pocketlistsHelper
                     'Y-m-d',
                     strtotime($item['due_date'] ?: $item['due_datetime'])
                 );
-                $list_color = $item['list_id'] ? $item['list_color'] : 'gray';
+                $list_color = !empty($item['list_color']) ? $item['list_color'] : 'gray';
                 $list_colors[$due_date]['color'][$list_color][] = $item['id'];
             }
         }

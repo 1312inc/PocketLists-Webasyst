@@ -18,8 +18,8 @@
         </div>
     {/if}
 
-    <div class="block lazyloading" style="display: none;">
-        [`Loading...`] <i class="icon16 loading"></i>
+    <div class="block double-padded lazyloading" style="display: none;">
+        <i class="icon16 loading"></i> [`Loading...`]
     </div>
 
     <div class="clear-both"></div>
@@ -35,51 +35,14 @@
             enableChangeLevel: false,
             enableSortItems: false,
             userHasLinkedApps: {$user->hasLinkedApps()},
-            current_user_id: {$user->getContact()->getId()}                });
+            current_user_id: {$user->getContact()->getId()}
+        });
         $.pocketlists.setTitle($_('Logbook'));
 
-
-        var $loading = $('#pl-list-content .lazyloading'),
-            is_bottom = false,
-            request_in_action = false,
-            prev_scroll_pos = 0,
-            offset = 1,
-            this_is_the_end = false,
-            html_selector = '[data-pl-items="undone"] > .menu-v';
-
-        $(window).on('scroll.pl2', function () {
-            if (this_is_the_end) {
-                return;
-            }
-
-            var scroll_pos = $(document).scrollTop() + $(window).outerHeight(),
-                doc_h = $(document).outerHeight() - 20;
-
-            if (prev_scroll_pos < scroll_pos) {
-                if (!is_bottom && scroll_pos >= doc_h) {
-                    is_bottom = true;
-                    if (request_in_action) {
-                        return;
-                    }
-                    $loading.show();
-                    request_in_action = true;
-
-                    $.get('?module=logbook&offset=' + offset, function (html) {
-                        $loading.hide();
-                        var html = $(html).find(html_selector).html();
-                        if ($.trim(html).length) {
-                            offset++;
-                        } else {
-                            this_is_the_end = true;
-                        }
-                        $(html_selector).append(html);
-                        request_in_action = false;
-                    });
-                } else {
-                    is_bottom = false;
-                }
-            }
-            prev_scroll_pos = scroll_pos;
+        $.pocketlists.lazyItems({
+            $loading: $('#pl-list-content .lazyloading'),
+            html_selector: '[data-pl-items="undone"] > .menu-v',
+            url: '?module=logbook'
         });
     }());
 </script>

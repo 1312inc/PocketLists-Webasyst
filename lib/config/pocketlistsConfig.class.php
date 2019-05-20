@@ -61,7 +61,7 @@ class pocketlistsConfig extends waAppConfig
     public function getEntityFactory($entity)
     {
         if (isset($this->factories[$entity])) {
-            return $this->factories[$entity];
+            return $this->factories[$entity]->resetLimitAndOffset();
         }
 
         $factoryClass = sprintf('%sFactory', $entity);
@@ -80,7 +80,7 @@ class pocketlistsConfig extends waAppConfig
     /**
      * @param $entity
      *
-     * @return pocketlistsModel
+     * @return pocketlistsModel|pocketlistsItemLinkModel|pocketlistsItemModel
      * @throws waException
      */
     public function getModel($entity = false)

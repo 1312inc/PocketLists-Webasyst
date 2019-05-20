@@ -68,7 +68,9 @@
                     {include '../item/Item.html' items=$items_done}
                 {/if}
                 </ul>
-                <i class="icon16 loading lazyloading" style="display: none;"></i>
+                <div class="block double-padded lazyloading" style="display: none;">
+                    <i class="icon16 loading"></i> [`Loading...`]
+                </div>
             </section>
 
             <a href="#" id="pl-complete-log-link" class="inline-link gray" {if empty($items_done)}style="display:none;"{/if}><b><i>{_w('Show all %d completed to-do', 'Show all %d completed to-dos', $count_items_done|default:0)}</i></b></a>
@@ -113,50 +115,12 @@
         });
         $.pocketlists.setTitle('{$list->getNameParsed()|default:'`New list`'|escape}');
 
-
-        var $loading = $('#pl-list-content .lazyloading'),
-            is_bottom = false,
-            request_in_action = false,
-            prev_scroll_pos = 0,
-            offset = 1,
-            this_is_the_end = false,
-            html_selector = '#pl-complete-log > .menu-v';
-
         // {if $list->getId()}
 
-        $(window).on('scroll.pl2', function () {
-            if (this_is_the_end) {
-                return;
-            }
-
-            var scroll_pos = $(document).scrollTop() + $(window).outerHeight(),
-                doc_h = $(document).outerHeight() - 20;
-
-            if (prev_scroll_pos < scroll_pos) {
-                if (!is_bottom && scroll_pos >= doc_h) {
-                    is_bottom = true;
-                    if (request_in_action) {
-                        return;
-                    }
-                    $loading.show();
-                    request_in_action = true;
-
-                    $.get('?module=list&action=lazyDoneItems&offset=' + offset + '&id={$list->getId()}', function (html) {
-                        $loading.hide();
-                        html = $(html).find(html_selector).html();
-                        if ($.trim(html).length) {
-                            offset++;
-                        } else {
-                            this_is_the_end = true;
-                        }
-                        $(html_selector).append(html);
-                        request_in_action = false;
-                    });
-                } else {
-                    is_bottom = false;
-                }
-            }
-            prev_scroll_pos = scroll_pos;
+        $.pocketlists.lazyItems({
+            $loading: $('#pl-list-content .lazyloading'),
+            html_selector: '#pl-complete-log > .menu-v',
+            url: '?module=item&action=lazyDone&type=list&id={$list->getId()}'
         });
 
         //{/if}

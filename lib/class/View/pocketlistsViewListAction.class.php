@@ -21,11 +21,11 @@ class pocketlistsViewListAction extends pocketlistsViewAction
      */
     protected function getList($id = false)
     {
-        $item = pl2()->getEntityFactory(pocketlistsList::class)->findById($this->getId($id));
-        if (!$item) {
+        $list = pl2()->getEntityFactory(pocketlistsList::class)->findById($this->getId($id));
+        if (!$list) {
             throw new pocketlistsNotFoundException();
         }
 
-        return $item;
+        return $list;
     }
 }

@@ -40,6 +40,9 @@
                     {include '../item/Item.html' parent_id=0 items=$done_items}
                 {/if}
             </ul>
+            <div class="block double-padded lazyloading" style="display: none;">
+                <i class="icon16 loading"></i> [`Loading...`]
+            </div>
         </section>
 
         <a href="#" id="pl-complete-log-link" class="inline-link gray" {if !$count_done_items}style="display:none;"{/if}><b><i>{_w('Show all %d completed to-do', 'Show all %d completed to-dos', $count_done_items)}</i></b></a>
@@ -71,6 +74,12 @@
             },
             userHasLinkedApps: {$user->hasLinkedApps()},
             dueDate: '{if $timestamp}{$timestamp}{/if}',
+        });
+
+        $.pocketlists.lazyItems({
+            $loading: $('#pl-list-content .lazyloading'),
+            html_selector: '#pl-complete-log > .menu-v',
+            url: '?module=item&action=lazyDone&type=app&app={$app->getApp()}'
         });
     }());
 </script>

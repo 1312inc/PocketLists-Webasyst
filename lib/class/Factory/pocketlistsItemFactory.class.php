@@ -43,6 +43,54 @@ class pocketlistsItemFactory extends pocketlistsFactory
     }
 
     /**
+     * @param pocketlistsAppLinkInterface $app
+     * @param string                      $entityType
+     * @param int                         $entityId
+     * @param string                      $date
+     *
+     * @return pocketlistsItem[]
+     * @throws waException
+     */
+    public function findDoneForApp(pocketlistsAppLinkInterface $app, $entityType = '', $entityId = 0, $date = '')
+    {
+        $data = $this->getModel()->getAppItems(
+            $app->getApp(),
+            $entityType,
+            $entityId,
+            $date,
+            pocketlistsItem::STATUS_DONE,
+            $this->getLimit(),
+            $this->getOffset()
+        );
+
+        return $this->generateWithData($data, true);
+    }
+
+    /**
+     * @param pocketlistsAppLinkInterface $app
+     * @param string                      $entityType
+     * @param int                         $entityId
+     * @param string                      $date
+     *
+     * @return pocketlistsItem[]
+     * @throws waException
+     */
+    public function findUndoneForApp(pocketlistsAppLinkInterface $app, $entityType = '', $entityId = 0, $date = '')
+    {
+        $data = $this->getModel()->getAppItems(
+            $app->getApp(),
+            $entityType,
+            $entityId,
+            $date,
+            pocketlistsItem::STATUS_UNDONE,
+            $this->getLimit(),
+            $this->getOffset()
+        );
+
+        return $this->generateWithData($data, true);
+    }
+
+    /**
      * @param pocketlistsList $list
      *
      * @return pocketlistsItem[]
@@ -77,9 +125,9 @@ class pocketlistsItemFactory extends pocketlistsFactory
      * @return pocketlistsItem[]
      * @throws waException
      */
-    public function findDoneByList(pocketlistsList $list, $offset = 0, $limit = 10, $tree = true)
+    public function findDoneByList(pocketlistsList $list, $tree = true)
     {
-        $data = $this->getModel()->getDoneByList($list->getId(), $offset, $limit, $tree);
+        $data = $this->getModel()->getDoneByList($list->getId(), $this->getOffset(), $this->getLimit(), $tree);
 
         return $this->generateWithList($data, $list);
     }
@@ -99,13 +147,81 @@ class pocketlistsItemFactory extends pocketlistsFactory
 
     /**
      * @param pocketlistsUser $user
+     * @param                 $date
+     * @param null            $status
      *
-     * @return pocketlistsItem[]
+     * @return array|mixed
+     * @throws waDbException
      * @throws waException
      */
-    public function findFavoritesForUserAndDate(pocketlistsUser $user, $date)
+    public function findFavoritesForUserAndDate(pocketlistsUser $user, $date, $status = null)
     {
-        $data = $this->getModel()->getFavorites($user->getContact()->getId(), $date);
+        $data = $this->getModel()->getFavorites(
+            $user->getContact()->getId(),
+            $date,
+            false,
+            $status,
+            $this->getOffset(),
+            $this->getLimit()
+        );
+
+        $this->resetLimitAndOffset();
+
+        return $this->generateWithData($data, true);
+    }
+
+    /**
+     * @param pocketlistsUser $user
+     * @param                 $date
+     *
+     * @return array|mixed
+     * @throws waDbException
+     * @throws waException
+     */
+    public function findFavoritesUndoneForUserAndDate(pocketlistsUser $user, $date)
+    {
+        return $this->findFavoritesForUserAndDate($user, $date, pocketlistsItem::STATUS_UNDONE);
+    }
+
+    /**
+     * @param pocketlistsUser $user
+     * @param                 $date
+     *
+     * @return array|mixed
+     * @throws waDbException
+     * @throws waException
+     */
+    public function findFavoritesDoneForUserAndDate(pocketlistsUser $user, $date)
+    {
+        return $this->findFavoritesForUserAndDate($user, $date, pocketlistsItem::STATUS_DONE);
+    }
+
+    /**
+     * @param pocketlistsContact $contact
+     * @param array              $dateBounds
+     * @param null               $status
+     *
+     * @return array|mixed
+     * @throws waDbException
+     * @throws waException
+     */
+    public function findToDo(pocketlistsContact $contact, $dateBounds = [], $status = null)
+    {
+        $dateBounds = $dateBounds ?: [];
+
+        if (!is_array($dateBounds)) {
+            $dateBounds = [$dateBounds];
+        }
+
+        $data = $this->getModel()->getToDo(
+            $contact->getId(),
+            $dateBounds,
+            $status,
+            $this->getOffset(),
+            $this->getLimit()
+        );
+
+        $this->resetLimitAndOffset();
 
         return $this->generateWithData($data, true);
     }
@@ -117,17 +233,21 @@ class pocketlistsItemFactory extends pocketlistsFactory
      * @return pocketlistsItem[]
      * @throws waException
      */
-    public function findToDo(pocketlistsContact $contact, $dateBounds = [])
+    public function findToDoDone(pocketlistsContact $contact, $dateBounds = [])
     {
-        $dateBounds = $dateBounds ?: [];
+        return $this->findToDo($contact, $dateBounds, pocketlistsItem::STATUS_DONE);
+    }
 
-        if (!is_array($dateBounds)) {
-            $dateBounds = [$dateBounds];
-        }
-
-        $data = $this->getModel()->getToDo($contact->getId(), $dateBounds);
-
-        return $this->generateWithData($data, true);
+    /**
+     * @param pocketlistsContact $contact
+     * @param array              $dateBounds
+     *
+     * @return pocketlistsItem[]
+     * @throws waException
+     */
+    public function findToDoUndone(pocketlistsContact $contact, $dateBounds = [])
+    {
+        return $this->findToDo($contact, $dateBounds, pocketlistsItem::STATUS_UNDONE);
     }
 
     /**
@@ -146,15 +266,46 @@ class pocketlistsItemFactory extends pocketlistsFactory
 
     /**
      * @param pocketlistsContact $contact
+     * @param null               $status
+     *
+     * @return array|mixed
+     * @throws waDbException
+     * @throws waException
+     */
+    public function findAssignedOrCompletesByContact(pocketlistsContact $contact, $status = null)
+    {
+        $data = $this->getModel()->getAssignedOrCompletesByContactItems(
+            $contact->getId(),
+            $status,
+            $this->getLimit(),
+            $this->getOffset()
+        );
+
+        $this->resetLimitAndOffset();
+
+        return $this->generateWithData($data, true);
+    }
+
+    /**
+     * @param pocketlistsContact $contact
      *
      * @return pocketlistsItem[]
      * @throws waException
      */
-    public function findAssignedOrCompletesByContact(pocketlistsContact $contact)
+    public function findAssignedOrCompletesUndoneByContact(pocketlistsContact $contact)
     {
-        $data = $this->getModel()->getAssignedOrCompletesByContactItems($contact->getId());
+        return $this->findAssignedOrCompletesByContact($contact, pocketlistsItem::STATUS_UNDONE);
+    }
 
-        return $this->generateWithData($data, true);
+    /**
+     * @param pocketlistsContact $contact
+     *
+     * @return pocketlistsItem[]
+     * @throws waException
+     */
+    public function findAssignedOrCompletesDoneByContact(pocketlistsContact $contact)
+    {
+        return $this->findAssignedOrCompletesByContact($contact, pocketlistsItem::STATUS_DONE);
     }
 
     /**
@@ -182,21 +333,22 @@ class pocketlistsItemFactory extends pocketlistsFactory
      * @param pocketlistsContact|null $contact
      * @param bool                    $date_range
      * @param bool                    $completed
-     * @param int                     $start
-     * @param int                     $limit
      *
      * @return array|mixed
      * @throws waException
      */
-    public function findLogbook(
-        pocketlistsContact $contact = null,
-        $date_range = false,
-        $completed = false,
-        $start = 0,
-        $limit = 50
-    ) {
+    public function findLogbook(pocketlistsContact $contact = null, $date_range = false, $completed = false)
+    {
         $data = $this->getModel()
-            ->getLogbookItems($contact ? $contact->getId() : false, $date_range, $completed, $start, $limit);
+            ->getLogbookItems(
+                $contact ? $contact->getId() : false,
+                $date_range,
+                $completed,
+                $this->getOffset(),
+                $this->getLimit()
+            );
+
+        $this->resetLimitAndOffset();
 
         return $this->generateWithData($data, true);
     }

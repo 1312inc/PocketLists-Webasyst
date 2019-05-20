@@ -34,15 +34,27 @@ class pocketlistsAppDateAction extends pocketlistsViewAction
 
         /** @var pocketlistsItemFactory $itemFactory */
         $itemFactory = pl2()->getEntityFactory(pocketlistsItem::class);
-        $items = $itemFactory->findAllForApp($app, '', 0, $date);
 
-        $filterItems = (new pocketlistsStrategyItemFilterAndSort($items))->filterDoneUndone();
+        $itemsUndone = $itemFactory->findUndoneForApp($app, '', 0, $date);
+
+        $itemsDone = $itemFactory
+            ->setLimit(pocketlistsFactory::DEFAULT_LIMIT)
+            ->setOffset(0)
+            ->findDoneForApp($app, '', 0, $date);
+
+        $countDoneItems = pl2()->getModel(pocketlistsItem::class)->countAppItems(
+            $app->getApp(),
+            '',
+            0,
+            $date,
+            pocketlistsItem::STATUS_DONE
+        );
 
         $this->view->assign(
             [
-                'undone_items'     => $filterItems->getItemsUndone(),
-                'done_items'       => $filterItems->getItemsDone(),
-                'count_done_items' => count($filterItems->getItemsDone()),
+                'undone_items'     => $itemsUndone,
+                'done_items'       => $itemsDone,
+                'count_done_items' => $countDoneItems,
                 'date'             => $date,
                 'timestamp'        => $timestamp,
             ]
