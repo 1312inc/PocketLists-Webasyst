@@ -118,10 +118,10 @@
             </div>
         </div>
         <div class="field">
-            <div class="name">[`Due`]</div>
+            <div class="name">[`When`]</div>
 
             <div class="value">
-                <input name="item[due_date]" class="pl-due-date-input" type="text" id="pl-item-due-datetime" value="{$item->getDueDate()}" autocomplete="off"/>
+                <input name="item[due_date]" class="pl-due-date-input" type="text" id="pl-item-due-datetime" value="{$item->getDueDate()}" autocomplete="off" placeholder="[`Set date`]" />
                 <span id="pl-item-due-datetime-time">
                     {$hour = $item->getDueDatetime()|wa_datetime:'H'}
                     <select name="item[due_datetime_hours]" class="pl-due-date-input" id="pl-item-due-datetime-hours" value="{$hour}" {if !$item->getDueDatetime()}style="display: none;" disabled="disabled"{/if}>
@@ -204,7 +204,7 @@
 
             <input type="submit" class="button green" value="[`Save`]"  id="pl-item-details-save"/>
             [`or`]
-            <a href="#" class="pl-item-details-cancel">[`cancel`]</a>
+            <a href="#" class="pl-item-details-cancel">[`close details`]</a>
 
             <span class="error" style="display: none;">[`error`]</span>
             <span class="success" style="display: none;">[`saved`]</span>

@@ -61,7 +61,9 @@
                 {include '../item/Item.html' parent_id=0 items=$done_items}
                 {/if}
             </ul>
-            <i class="icon16 loading lazyloading" style="display: none;"></i>
+            <div class="block double-padded lazyloading" style="display: none;">
+                <i class="icon16 loading"></i> [`Loading...`]
+            </div>
         </section>
 
         <a href="#" id="pl-complete-log-link" class="inline-link gray" {if !$count_done_items}style="display:none;"{/if}><b><i>{_w('Show all %d completed to-do', 'Show all %d completed to-dos', $count_done_items)}</i></b></a>
