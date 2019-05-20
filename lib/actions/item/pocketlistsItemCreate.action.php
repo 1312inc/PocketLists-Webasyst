@@ -117,9 +117,7 @@ class pocketlistsItemCreateAction extends pocketlistsViewAction
                             continue;
                         }
 
-                        $itemLinkFactory->createFromDataForItem($item, [
-
-                        ]);
+                        $itemLinkFactory->createFromDataForItem($item, $linkAppTypeId);
                     }
                 }
 
