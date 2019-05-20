@@ -202,7 +202,7 @@
                 </ul>
             </div>
 
-            <input type="submit" class="button green" value="[`Save`]"  id="pl-item-details-save"/>
+            <input type="submit" class="button green" value="{if $item->getId()}[`Save`]{else}[`Add to-do`]{/if}"  id="pl-item-details-save"/>
             [`or`]
             <a href="#" class="pl-item-details-cancel">[`close details`]</a>
 

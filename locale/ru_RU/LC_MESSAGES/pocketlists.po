@@ -1587,3 +1587,19 @@ msgstr "О комментариях к задачам"
 #: /wa-apps/pocketlists/templates/actions/debug/Debug.html:49
 msgid "Send It!"
 msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:121
+msgid "When"
+msgstr "Когда"
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:124
+msgid "Set date"
+msgstr "Дата"
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:207
+msgid "close details"
+msgstr "скрыть подробности"
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:205
+msgid "Add to-do"
+msgstr "Создать задачу"
