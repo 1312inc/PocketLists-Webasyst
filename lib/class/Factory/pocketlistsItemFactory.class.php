@@ -390,6 +390,11 @@ class pocketlistsItemFactory extends pocketlistsFactory
         return $items;
     }
 
+    public function searchByTerm($term)
+    {
+
+    }
+
     /**
      * @param pocketlistsItem[] $items
      * @param pocketlistsList   $list

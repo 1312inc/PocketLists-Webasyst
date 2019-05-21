@@ -197,6 +197,10 @@
             id = id || 0;
             this.load('?module=archive&id=' + id, this.setHtmlContent);
         },
+        searchAction: function (term) {
+            term = term || '';
+            this.load('?module=search&term=' + term, this.setHtmlContent);
+        },
         logbookAction: function () {
             this.load('?module=logbook', this.setHtmlContent);
         },
