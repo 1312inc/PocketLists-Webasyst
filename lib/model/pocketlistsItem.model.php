@@ -784,7 +784,7 @@ class pocketlistsItemModel extends pocketlistsModel
         $sqlParts = $this->getAssignedOrCompletesByContactQueryComponents($list_sql, pocketlistsItem::STATUS_UNDONE);
         $sqlParts['select'] = [
             'count(i.id) count_items',
-            'if(max(i.calc_priority) is null, 0, max(i.calc_priority)) item_max_priority'
+            'if(max(i.calc_priority) is null, 0, max(i.calc_priority)) item_max_priority',
         ];
 
         $q = $this->buildSqlComponents($sqlParts);
@@ -1236,5 +1236,52 @@ class pocketlistsItemModel extends pocketlistsModel
         )->fetchAll('id');
 
         return $all ? $items : reset($items);
+    }
+
+    /**
+     * @param string $term
+     * @param int    $found
+     *
+     * @return array
+     * @throws waDbException
+     * @throws waException
+     */
+    public function getByTerm($term, &$found = 0, $contact_id = 0, $limit = 300)
+    {
+        $available_lists = pocketlistsRBAC::getAccessListForContact();
+        $accessed_lists = $available_lists ? ' AND l.id IN (i:list_ids)' : ' AND l.id IS NULL';
+
+        if (!$contact_id) {
+            $contact_id = wa()->getUser()->getId();
+        }
+
+        $sqlParts = $this->getQueryComponents();
+
+        $sqlParts['join'][] = 'LEFT JOIN (select i2.name, l2.*
+                          from pocketlists_list l2
+                                 JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) l ON l.id = i.list_id AND l.archived = 0';
+
+        if ($accessed_lists) {
+            $sqlParts['where']['and'][] = '(l.id IN (i:list_ids) OR l.id IS NULL) /* ONLY items from accessed pockets or NULL-list items */';
+        } else {
+            $sqlParts['where']['and'][] = 'l.id IS NULL /* ONLY items from NULL-list items */';
+        }
+
+        $sqlParts['where']['and'][] = "lower(concat(ifnull(i.name,''), '|', ifnull(i.note,''))) like s:term";
+
+        $sql = $this->buildSqlComponents($sqlParts, $limit);
+
+        $lists_data = $this->query(
+            $sql,
+            [
+                'list_ids'   => $available_lists,
+                'term'       => mb_strtolower('%'.$term.'%'),
+                'contact_id' => $contact_id,
+            ]
+        )->fetchAll();
+
+        $found = (int)$this->query('SELECT FOUND_ROWS()')->fetchField();
+
+        return $lists_data ?: [];
     }
 }

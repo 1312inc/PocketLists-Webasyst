@@ -402,6 +402,14 @@
 
             self.windowResize();
 
+            self.$core_sidebar.on('search', '[data-pl2-action="search"]', function (e) {
+                e.preventDefault();
+                var $this = $(this),
+                    term = $this.val();
+
+                window.location.hash = '/search/' + term;
+            });
+
             $.pocketlists_routing.init({
                 user_id: o.userId
             });
