@@ -853,7 +853,7 @@ msgid "Online"
 msgstr ""
 
 #: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:85
-msgid "Use <a href=\"%s\">Team app</a> to invite teammates and to collaborate using the To-dos app: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level."
+msgid "Use <a href=\"%s\">Team app</a> to invite teammates and to collaborate using the Pocket Lists app: select a user or a group of users &gt; Access tab &gt; Pocket Lists app &gt; apply the proper access level."
 msgstr ""
 
 #: /wa-apps/pocketlists/templates/actions/comment/Comment.html:12
@@ -927,7 +927,7 @@ msgid "author"
 msgstr ""
 
 #: /wa-apps/pocketlists/templates/actions/list/List.html:61
-msgid "Use <a href=\"%s\">Team app</a> to configure access: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level."
+msgid "Use <a href=\"%s\">Team app</a> to configure access: select a user or a group of users &gt; Access tab &gt; Pocket Lists app &gt; apply the proper access level."
 msgstr ""
 
 #: /wa-apps/pocketlists/templates/actions/settings/Settings.html:17
@@ -994,7 +994,7 @@ msgstr ""
 
 #: /wa-apps/pocketlists/templates/actions/team/Team.html:48
 #: /wa-apps/pocketlists/templates/actions/team/Team.html:53
-msgid "Use Team app to <a href=\"%s\">configure %s’s access</a> to shared lists: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level."
+msgid "Use Team app to <a href=\"%s\">configure %s’s access</a> to shared lists: select a user or a group of users &gt; Access tab &gt; Pocket Lists app &gt; apply the proper access level."
 msgstr ""
 
 #: /wa-apps/pocketlists/templates/actions/team/Team.html:52
@@ -1003,11 +1003,11 @@ msgstr ""
 
 #: /wa-apps/pocketlists/templates/actions/todo/TodoDate.html:19
 #: /wa-apps/pocketlists/templates/actions/todo/TodoDate.html:20
-msgid "Welcome to To-dos app!"
+msgid "Welcome to Pocket Lists app!"
 msgstr ""
 
 #: /wa-apps/pocketlists/templates/actions/todo/TodoDate.html:21
-msgid "Use To-dos app to keep track on what you need to do up next, to assign to-dos to your teammates, and to collaborate on shared to-do lists."
+msgid "Use Pocket Lists app to keep track on what you need to do up next, to assign to-dos to your teammates, and to collaborate on shared to-do lists."
 msgstr ""
 
 #: /wa-apps/pocketlists/templates/include/itemadd.html:15
