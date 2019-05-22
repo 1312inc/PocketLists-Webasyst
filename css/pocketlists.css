@@ -631,7 +631,7 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 
 }
 
-.pl-shop-close {
+.pl-shop-close, .pl-close {
     position: absolute;
     padding: 5px;
     display: block;
