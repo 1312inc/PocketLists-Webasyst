@@ -1,5 +1,6 @@
 <script type="template/pl2" data-pl2-template="itemadd">
     <main class="pl-items pl-list-items pl-todo pl-shop-order" id="pl-list-content">
+        <a class="pl-shop-close" href="#" data-pl2-action="close">&times;</a>
         <div class="pl-list-items" id="pl-list-items">
             <section id="pl-undone-items" data-pl-items="undone">
                 <ul class="menu-v">
@@ -43,17 +44,27 @@
     (function(){
         var $order_info_wrapper = $('#s-split-order-wrapper'),
             item_add_html = $('[data-pl2-template="itemadd"]').html(),
-            $toggle_link = $('[data-pl2-action="show-add-item"]');
+            $toggle_link = $('[data-pl2-action="show-add-item"]'),
+            has_undone = /*{if empty($params.items_undone)}*/false/*{else}*/true/*{/if}*/;
 
         $order_info_wrapper.prepend(item_add_html);
 
         var $list_wrapper = $('#pl-list-content');
 
-        //{if empty($params.items_undone)}
+        function canShow() {
+            return (!has_undone && !$.storage.get('pocketlists/apps/hide-pl2ss-by-default')) || has_undone;
+        }
 
-        $list_wrapper.hide();
+        $list_wrapper.on('click', '[data-pl2-action="close"]', function (e) {
+            e.preventDefault();
 
-        //{/if}
+            $.storage.set('pocketlists/apps/hide-pl2ss-by-default', 1);
+            $toggle_link.trigger('click');
+        });
+
+        if (!canShow()) {
+            $list_wrapper.hide();
+        }
 
         $toggle_link.on('click', function (e) {
             e.preventDefault();
