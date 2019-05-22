@@ -630,3 +630,12 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
     .pl-details.sticky { width: 400px; }
 
 }
+
+.pl-shop-close {
+    position: absolute;
+    padding: 5px;
+    display: block;
+    right: 5px;
+    margin: 0;
+    z-index: 30;
+}
