@@ -7,13 +7,21 @@ class pocketlistsUserSettings
 {
     private $settings;
     private $contact_id;
-    /** @var waContactSettingsModel */
+
+    /**
+     * @var waContactSettingsModel
+     */
     private $csm;
+
+    /**
+     * @var string
+     */
     private $app_id = 'pocketlists';
 
     const ICON_OVERDUE                    = 1;
     const ICON_OVERDUE_TODAY              = 2;
     const ICON_OVERDUE_TODAY_AND_TOMORROW = 3;
+    const ICON_ALL                        = 99;
     const ICON_NONE                       = 0;
 
     const DAILY_RECAP_FOR_TODAY              = 0;
@@ -71,7 +79,7 @@ class pocketlistsUserSettings
     public function getDefaults()
     {
         return [
-            'app_icon'                       => self::ICON_OVERDUE_TODAY,
+            'app_icon'                       => self::ICON_ALL,
             'daily_recap_on'                 => 1,
             'daily_recap'                    => self::DAILY_RECAP_FOR_TODAY,
             'email_assign_me'                => 1,

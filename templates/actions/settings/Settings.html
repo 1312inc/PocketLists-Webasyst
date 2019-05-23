@@ -72,10 +72,11 @@
                 </div>
                 <div class="value no-shift">
                     <select name="app_icon">
-                        <option value="1" {if !empty($settings.app_icon) && $settings.app_icon == 1}selected="selected"{/if}>[`Reds`]</option>
-                        <option value="2" {if !empty($settings.app_icon) && $settings.app_icon == 2}selected="selected"{/if}>[`Reds + Yellows`]</option>
-                        <option value="3" {if !empty($settings.app_icon) && $settings.app_icon == 3}selected="selected"{/if}>[`Reds + Yellows + Greens`]</option>
-                        <option value="0" {if !empty($settings.app_icon) && $settings.app_icon == 0}selected="selected"{/if}>[`None`]</option>
+                        <option value="99" {if !empty($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_ALL}selected="selected"{/if}>[`All`]</option>
+                        <option value="1" {if !empty($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_OVERDUE}selected="selected"{/if}>[`Reds`]</option>
+                        <option value="2" {if !empty($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_OVERDUE_TODAY}selected="selected"{/if}>[`Reds + Yellows`]</option>
+                        <option value="3" {if !empty($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_OVERDUE_TODAY_AND_TOMORROW}selected="selected"{/if}>[`Reds + Yellows + Greens`]</option>
+                        <option value="0" {if !empty($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_NONE}selected="selected"{/if}>[`None`]</option>
                     </select>
                     <p class="hint">[`The counter will count to-dos of the specified colors on your My to-dos list.`]</p>
                 </div>
