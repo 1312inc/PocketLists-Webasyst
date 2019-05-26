@@ -69,7 +69,7 @@ class pocketlistsNotificationAboutCompleteItems extends pocketlistsBaseNotificat
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_COMPLETES_ITEM_I_CREATED:
                     foreach ($items as $item) { // filter items according to settings
                         // created NOT by user
-                        if ($item->getContactId() != $user_id) {
+                        if ($item->getContactId() != $user_id && $item->getAssignedContactId() != $user_id) {
                             continue;
                         }
 
@@ -188,8 +188,8 @@ class pocketlistsNotificationAboutCompleteItems extends pocketlistsBaseNotificat
      */
     private function checkCompleteItem(pocketlistsItem $item, $user_id)
     {
-        // completed not by user
-        if ($item->getCompleteContactId() == $user_id) {
+        // completed not by user or not by user, but item is assigned to user
+        if ($item->getCompleteContactId() == $user_id || ($item->getAssignedContactId() == $user_id && $item->getCompleteContactId() == $user_id)) {
             return false;
         }
 
