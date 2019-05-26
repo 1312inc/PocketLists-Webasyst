@@ -41,25 +41,26 @@ class pocketlistsAppLinkShop extends pocketlistsAppLinkAbstract
     }
 
     /**
-     * @param        $type
      * @param string $term
+     * @param array  $params
      * @param int    $count
      *
      * @return array
      */
-    public function autocomplete($term, $type = '', $count = 10)
+    public function autocomplete($term, $params = [], $count = 10)
     {
         $result = [];
 
         foreach ($this->getTypes() as $entityType) {
             $method = sprintf('autocomplete%s', ucfirst($entityType));
             if (method_exists($this, $method)) {
-                $entities = $this->$method($term, $count);
+                $entities = $this->$method($term, $params, $count);
                 if ($entities) {
                     $result[] = [
                         'app'      => $this->getApp(),
                         'type'     => $entityType,
                         'entities' => $entities,
+                        'params'   => $params
                     ];
                 }
             }
@@ -69,13 +70,14 @@ class pocketlistsAppLinkShop extends pocketlistsAppLinkAbstract
     }
 
     /**
-     * @param $term
-     * @param $count
+     * @param       $term
+     * @param array $params
+     * @param       $count
      *
      * @return array
      * @throws waException
      */
-    protected function autocompleteOrder($term, $count)
+    protected function autocompleteOrder($term, $params = [], $count)
     {
         $result = [];
 
@@ -114,7 +116,7 @@ class pocketlistsAppLinkShop extends pocketlistsAppLinkAbstract
                 'value' => shopHelper::encodeOrderId($order['id']),
                 'data'  => [
                     'model'   => pl2()->getHydrator()->extract($linkEntity, [], $itemlinkFactory->getDbFields()),
-                    'preview' => $this->renderPreview($linkEntity),
+                    'preview' => $this->renderPreview($linkEntity, $params),
                 ],
             ];
         }
@@ -236,11 +238,12 @@ class pocketlistsAppLinkShop extends pocketlistsAppLinkAbstract
 
     /**
      * @param pocketlistsItemLink $itemLink
+     * @param array               $params
      *
      * @return string
      * @throws waException
      */
-    public function renderPreview(pocketlistsItemLink $itemLink)
+    public function renderPreview(pocketlistsItemLink $itemLink, $params = [])
     {
         if (!$itemLink->getEntityId() || !$itemLink->getEntityType()) {
             return '';
@@ -265,8 +268,9 @@ class pocketlistsAppLinkShop extends pocketlistsAppLinkAbstract
 
             $this->getView()->clearAllAssign();
             $vars = [
-                'link'  => $itemLink,
-                'extra' => $this->getExtraData($itemLink),
+                'link'   => $itemLink,
+                'extra'  => $this->getExtraData($itemLink),
+                'params' => $params,
             ];
             $this->getView()->assign($vars);
 

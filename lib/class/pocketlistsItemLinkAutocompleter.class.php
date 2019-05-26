@@ -12,12 +12,12 @@ class pocketlistsItemLinkAutocompleter
 
     /**
      * @param       $term
-     * @param array $types
+     * @param array $params
      *
      * @return $this
      * @throws waException
      */
-    public function process($term, $types = [])
+    public function process($term, $params = [])
     {
         $this->result = [];
         $linked = wa(pocketlistsHelper::APP_ID)->getConfig()->getLinkedApp();
@@ -31,7 +31,7 @@ class pocketlistsItemLinkAutocompleter
          * @var pocketlistsAppLinkInterface $linker
          */
         foreach ($linked as $app => $linker) {
-            if ($types && !in_array($app, $types)) {
+            if ($params && !empty($params['types']) && !in_array($app, $params['types'])) {
                 continue;
             }
 
@@ -39,7 +39,7 @@ class pocketlistsItemLinkAutocompleter
                 continue;
             }
 
-            $this->result = array_merge($this->result, $linker->autocomplete($term));
+            $this->result = array_merge($this->result, $linker->autocomplete($term, $params));
         }
 
         return $this;

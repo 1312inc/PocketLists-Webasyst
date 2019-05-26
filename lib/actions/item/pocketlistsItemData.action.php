@@ -96,6 +96,20 @@ class pocketlistsItemDataAction extends pocketlistsViewItemAction
                 );
             }
 
+            if (!empty($item_new_data['links_delete'])) {
+                /** @var pocketlistsItemLinkFactory $itemLinkFactory */
+                $itemLinkFactory = pl2()->getEntityFactory(pocketlistsItemLink::class);
+
+                $itemsToDelete = $itemLinkFactory->findById($item_new_data['links_delete']);
+
+                /** @var pocketlistsItemLink $link */
+                foreach ($itemsToDelete as $link) {
+                    if ($link->getItemId() == $item->getId()) {
+                        $itemLinkFactory->delete($link);
+                    }
+                }
+            }
+
             if (!empty($item_new_data['links'])) {
                 /** @var pocketlistsItemLinkFactory $itemLinkFactory */
                 $itemLinkFactory = pl2()->getEntityFactory(pocketlistsItemLink::class);
