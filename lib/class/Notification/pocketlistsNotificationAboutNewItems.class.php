@@ -81,8 +81,10 @@ class pocketlistsNotificationAboutNewItems extends pocketlistsBaseNotification
 
             if ($filtered_items && $list) {
                 $itemsToSend = [];
+                $iconFinder = new pocketlistsItemIcon();
                 foreach ($filtered_items as $filteredItem) {
                     $itemsToSend[$filteredItem->getId()] = [
+                        'icon'         => $iconFinder->getIconByItemPriority($filteredItem->getPriority()),
                         'name'         => $filteredItem->getName(),
                         'name_parsed'  => $filteredItem->getNameParsed(),
                         'contact_name' => $filteredItem->getContact()->getName(),

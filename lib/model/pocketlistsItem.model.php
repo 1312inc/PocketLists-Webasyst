@@ -1046,7 +1046,7 @@ class pocketlistsItemModel extends pocketlistsModel
         $select_sql = implode(",\n", $sqlParts['select']);
 
         // todo: move to this
-        $q = $this->buildSqlComponents($sqlParts);
+//        $q = $this->buildSqlComponents($sqlParts);
 
         $q = "SELECT
                   {$select_sql}

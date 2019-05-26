@@ -79,8 +79,10 @@ class pocketlistsNotificationDailyRecap extends pocketlistsBaseNotification
 
             if ($items) {
                 $itemsToSend = [];
+                $iconFinder = new pocketlistsItemIcon();
                 foreach ($items as $item) {
                     $itemsToSend[$item->getId()] = [
+                        'icon'         => $iconFinder->getIconByItemPriority($item->getPriority()),
                         'due_datetime' => $item->getDueDatetime(),
                         'due_date'     => $item->getDueDate(),
                         'name_parsed'  => $item->getNameParsed(),
