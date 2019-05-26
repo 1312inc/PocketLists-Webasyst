@@ -27,7 +27,7 @@ class pocketlistsAppLinkFake implements pocketlistsAppLinkInterface
      *
      * @return array
      */
-    public function autocomplete($term, $type = '', $count = 10)
+    public function autocomplete($term, $params = [], $count = 10)
     {
         return [];
     }

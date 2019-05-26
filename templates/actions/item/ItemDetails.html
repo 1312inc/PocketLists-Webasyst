@@ -18,7 +18,7 @@
         <div data-pl2-item-links class="pl-details-linked-entities">
             {foreach $item->getLinkedEntities() as $linkedEntity}
                 <div data-pl2-link-preview>
-                    {$linkedEntity->getAppLink()->renderPreview($linkedEntity)}
+                    {$linkedEntity->getAppLink()->renderPreview($linkedEntity, [allow_delete => 1])}
                 </div>
             {/foreach}
         </div>
