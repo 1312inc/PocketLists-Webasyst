@@ -180,6 +180,7 @@ class pocketlistsItemModel extends pocketlistsModel
                 GROUP BY i.id
                 ORDER BY
                   i.status,
+                  %s
                   (i.complete_datetime IS NULL), i.complete_datetime DESC,
                   i.id DESC
                 %s
@@ -189,6 +190,7 @@ class pocketlistsItemModel extends pocketlistsModel
             $join_sql,
             $or_sql,
             $and_sql,
+            $status == pocketlistsItem::STATUS_UNDONE ? 'i.calc_priority DESC,' : '',
             $offset || $limit ? sprintf('limit %d, %d', $offset, $limit) : ''
         );
 
