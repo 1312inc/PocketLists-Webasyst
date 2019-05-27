@@ -47,6 +47,7 @@ return array(
             'parent' => 'parent_id',
             'list_id' => 'list_id',
             'sort' => array('parent_id', 'sort'),
+            'key_list_id' => 'key_list_id',
         ),
     ),
     'pocketlists_item_link' => array(
