@@ -47,14 +47,13 @@ return array(
             'parent' => 'parent_id',
             'list_id' => 'list_id',
             'sort' => array('parent_id', 'sort'),
-            'key_list_id' => 'key_list_id',
         ),
     ),
     'pocketlists_item_link' => array(
         'id' => array('int', 11, 'unsigned' => 1, 'null' => 0, 'autoincrement' => 1),
         'item_id' => array('int', 11, 'null' => 0),
         'app' => array('varchar', 50, 'null' => 0, 'default' => ''),
-        'entity_type' => array('varchar', 50),
+        'entity_type' => array('varchar', 50, 'null' => 0, 'default' => ''),
         'entity_id' => array('int', 11),
         'data' => array('text'),
         ':keys' => array(
@@ -121,13 +120,13 @@ return array(
         'data' => array('text'),
         ':keys' => array(
             'PRIMARY' => 'id',
-            'pocketlists_notification_status_index' => 'status',
+            'pocketlists_notification_sent_at_index' => 'sent_at',
         ),
     ),
     'pocketlists_pocket' => array(
         'id' => array('int', 11, 'unsigned' => 1, 'null' => 0, 'autoincrement' => 1),
         'sort' => array('int', 11, 'null' => 0, 'default' => '0'),
-        'name' => array('mediumtext'),
+        'name' => array('varchar', 200),
         'color' => array('enum', "'none','red','green','blue','yellow','purple'", 'null' => 0, 'default' => 'blue'),
         'passcode' => array('varchar', 32),
         ':keys' => array(
