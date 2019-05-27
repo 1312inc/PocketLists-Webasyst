@@ -120,7 +120,7 @@ return array(
         'data' => array('text'),
         ':keys' => array(
             'PRIMARY' => 'id',
-            'pocketlists_notification_sent_at_index' => 'sent_at',
+            'pocketlists_notification_status_index' => 'status',
         ),
     ),
     'pocketlists_pocket' => array(
