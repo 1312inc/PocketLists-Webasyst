@@ -78,7 +78,8 @@ class pocketlistsUser extends pocketlistsContact
                         pocketlistsItem::PRIORITY_RED,
                         pocketlistsItem::PRIORITY_BLACK,
                         pocketlistsItem::PRIORITY_BURNINHELL,
-                    ]
+                    ],
+                    pocketlistsItem::STATUS_UNDONE
                 );
 
                 break;
@@ -92,7 +93,8 @@ class pocketlistsUser extends pocketlistsContact
                         pocketlistsItem::PRIORITY_RED,
                         pocketlistsItem::PRIORITY_BLACK,
                         pocketlistsItem::PRIORITY_BURNINHELL,
-                    ]
+                    ],
+                    pocketlistsItem::STATUS_UNDONE
                 );
 
                 break;
@@ -107,7 +109,8 @@ class pocketlistsUser extends pocketlistsContact
                         pocketlistsItem::PRIORITY_RED,
                         pocketlistsItem::PRIORITY_BLACK,
                         pocketlistsItem::PRIORITY_BURNINHELL,
-                    ]
+                    ],
+                    pocketlistsItem::STATUS_UNDONE
                 );
 
                 break;
