@@ -47,7 +47,6 @@ return array(
             'parent' => 'parent_id',
             'list_id' => 'list_id',
             'sort' => array('parent_id', 'sort'),
-            'key_list_id' => 'key_list_id',
         ),
     ),
     'pocketlists_item_link' => array(
@@ -121,7 +120,7 @@ return array(
         'data' => array('text'),
         ':keys' => array(
             'PRIMARY' => 'id',
-            'pocketlists_notification_status_index' => 'status',
+            'pocketlists_notification_sent_at_index' => 'sent_at',
         ),
     ),
     'pocketlists_pocket' => array(
