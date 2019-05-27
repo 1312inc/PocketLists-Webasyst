@@ -735,6 +735,14 @@ class pocketlistsItemModel extends pocketlistsModel
             $sqlParts['where']['and'][] = sprintf('i.status = %d', $status);
         }
 
+        if ($status == pocketlistsItem::STATUS_UNDONE) {
+            array_splice($sqlParts['order by'], 1, 0, ['i.calc_priority DESC']);
+        }
+
+        if ($status == pocketlistsItem::STATUS_DONE) {
+            array_splice($sqlParts['order by'], 1, 0, ['(i.complete_datetime IS NULL)', 'i.complete_datetime DESC']);
+        }
+
         return $sqlParts;
     }
 
