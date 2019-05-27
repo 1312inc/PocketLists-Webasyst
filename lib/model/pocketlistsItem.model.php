@@ -443,6 +443,11 @@ class pocketlistsItemModel extends pocketlistsModel
                                  JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) l ON l.id = i.list_id AND l.archived = 0';
 
         $sqlParts['order by'][] = 'i.status';
+
+        if ($status == pocketlistsItem::STATUS_UNDONE) {
+            $sqlParts['order by'][] = 'i.calc_priority DESC';
+        }
+
         $sqlParts['order by'][] = '(i.complete_datetime IS NULL)';
         $sqlParts['order by'][] = 'i.complete_datetime DESC';
 
@@ -887,7 +892,13 @@ class pocketlistsItemModel extends pocketlistsModel
         $query['join']['pil'] = 'join pocketlists_item_link pil ON pil.item_id = i.id';
 
         $query['group by'][] = 'i.id';
+
         $query['order by'][] = 'i.status';
+
+        if ($status == pocketlistsItem::STATUS_UNDONE) {
+            $sqlParts['order by'][] = 'i.calc_priority DESC';
+        }
+
         $query['order by'][] = '(i.complete_datetime IS NULL)';
         $query['order by'][] = 'i.complete_datetime DESC';
 
