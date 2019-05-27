@@ -896,7 +896,7 @@ class pocketlistsItemModel extends pocketlistsModel
         $query['order by'][] = 'i.status';
 
         if ($status == pocketlistsItem::STATUS_UNDONE) {
-            $sqlParts['order by'][] = 'i.calc_priority DESC';
+            $query['order by'][] = 'i.calc_priority DESC';
         }
 
         $query['order by'][] = '(i.complete_datetime IS NULL)';
@@ -946,6 +946,9 @@ class pocketlistsItemModel extends pocketlistsModel
      * @param string $entity_type
      * @param string $entity_id
      * @param array  $dateBounds
+     * @param null   $status
+     * @param int    $limit
+     * @param int    $offset
      *
      * @return array
      */
