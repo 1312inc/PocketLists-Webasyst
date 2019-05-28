@@ -2,7 +2,8 @@
 <div class="pl-details-form">
 <div class="pl-details-form-container">
 <div class="fields form">
-    <a class="pl-close" href="#" data-pl2-action="close">&times;</a>
+
+    <a class="pl-enable-item-add-compact-mode pl-unsaved-items-only" href="#" data-pl2-action="close" title="[`Hide details by default`]"><i class="icon16 pl ellipsis"></i></a>
 
     <form method="post" id="pl-item-details-form" action="{$plurl}?module=item&amp;action=data" target="pl-item-details-form-iframe" enctype="multipart/form-data">
     {* <a href="#" class="pl-item-details-cancel" class="pl-close" title="[`Close`]">&times;</a> *}
@@ -12,7 +13,7 @@
     <!-- core -->
 
 
-        <textarea class="pl-details-textarea pl-item-name" name="item[name]" placeholder="[`Title`]" {if $item->isDone()} disabled="disabled"{/if}>{$item->getNameParsed()}</textarea>
+        <textarea class="pl-details-textarea pl-item-name" name="item[name]" placeholder="[`New to-do`]" {if $item->isDone()} disabled="disabled"{/if}>{$item->getNameParsed()}</textarea>
         {if $wa->shop}<p class="hint">[`Use @ or # symbols to link this to-do with a Shop-Script order.`]</p>{else}<br>{/if}
 
         <div data-pl2-item-links class="pl-details-linked-entities">
@@ -23,7 +24,7 @@
             {/foreach}
         </div>
 
-        <textarea class="pl-details-textarea" name="item[note]" placeholder="[`Add note`]"{if $item->isDone()} disabled="disabled"{/if}>{$item->getNote()|escape}</textarea>
+        <textarea class="pl-details-textarea" name="item[note]" placeholder="[`Note`]"{if $item->isDone()} disabled="disabled"{/if}>{$item->getNote()|escape}</textarea>
 
     {*$wa->csrf()*}
     <div data-pl-item-details-attachments class="pl-already-saved-items-only">
@@ -194,9 +195,12 @@
     <div class="field-group" style="margin-bottom: 0;">
         <div class="field">
 
-            <div class="float-right block half-padded pl-already-saved-items-only">
+            <div class="float-right block half-padded">
                 <ul class="menu-v with-icons">
-                    <li>
+                    <li class="pl-unsaved-items-only">
+                        <a class="nowrap inline-link" href="#" data-pl2-action="close"><span class="gray"><b><i>[`Hide details by default`]</i></b></span></a>
+                    </li>
+                    <li class="pl-already-saved-items-only">
                         <a href="#" data-pl-action="item-delete" class="nowrap">
                             <i class="icon16 delete"></i>[`Delete to-do`]
                         </a>
@@ -206,7 +210,7 @@
 
             <input type="submit" class="button green" value="{if $item->getId()}[`Save`]{else}[`Add to-do`]{/if}"  id="pl-item-details-save"/>
             [`or`]
-            <a href="#" class="pl-item-details-cancel">[`close details`]</a>
+            <a href="#" class="pl-item-details-cancel">[`cancel`]</a>
 
             <span class="error" style="display: none;">[`error`]</span>
             <span class="success" style="display: none;">[`saved`]</span>
