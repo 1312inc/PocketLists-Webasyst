@@ -20,10 +20,12 @@ class pocketlistsItemIcon
                 return '⚫';
 
             case pocketlistsItem::PRIORITY_RED:
-                return '❗';
+                return '‼️';
 
             case pocketlistsItem::PRIORITY_YELLOW:
+                //return '⚠️';
             case pocketlistsItem::PRIORITY_GREEN:
+                //return '❗';
             case pocketlistsItem::PRIORITY_NORM:
             default:
                 return '&#9898;';

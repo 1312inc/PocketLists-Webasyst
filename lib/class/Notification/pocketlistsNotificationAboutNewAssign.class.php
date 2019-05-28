@@ -49,6 +49,7 @@ class pocketlistsNotificationAboutNewAssign extends pocketlistsBaseNotification
         /** @var pocketlistsNotificationFactory $notificationFactory */
         $notificationFactory = pl2()->getEntityFactory(pocketlistsNotification::class);
 
+        $iconFinder = new pocketlistsItemIcon();
         $emailContent = new pocketlistsNotificationEmailContent();
         $emailContent
             ->setToContactId($contact->getId())
@@ -73,6 +74,7 @@ class pocketlistsNotificationAboutNewAssign extends pocketlistsBaseNotification
                         'id'          => (int)$list->getId(),
                     ] : false,
                     'item'        => [
+                        'icon'        => $iconFinder->getIconByItemPriority($item->getPriority()),
                         'name'        => $item->getName(),
                         'name_parsed' => $item->getNameParsed(),
                     ],
