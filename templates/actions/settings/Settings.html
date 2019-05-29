@@ -72,10 +72,10 @@
                 </div>
                 <div class="value no-shift">
                     <select name="app_icon">
-                        <option value="99" {if !empty($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_ALL}selected="selected"{/if}>[`All`]</option>
-                        <option value="1" {if !empty($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_OVERDUE}selected="selected"{/if}>[`Reds`]</option>
-                        <option value="2" {if !empty($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_OVERDUE_TODAY}selected="selected"{/if}>[`Reds + Yellows`]</option>
-                        <option value="3" {if !empty($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_OVERDUE_TODAY_AND_TOMORROW}selected="selected"{/if}>[`Reds + Yellows + Greens`]</option>
+                        <option value="99" {if !empty($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_ALL}selected="selected"{/if}>[`All my to-dos`]</option>
+                        <option value="1" {if !empty($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_OVERDUE}selected="selected"{/if}>[`Only On Fire + Black + Red`]</option>
+                        <option value="2" {if !empty($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_OVERDUE_TODAY}selected="selected"{/if}>[`Only On Fire + Black + Red + Yellow`]</option>
+                        <option value="3" {if !empty($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_OVERDUE_TODAY_AND_TOMORROW}selected="selected"{/if}>[`Only On Fire + Black + Red + Yellow + Green`]</option>
                         <option value="0" {if !empty($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_NONE}selected="selected"{/if}>[`None`]</option>
                     </select>
                     <p class="hint">[`The counter will count to-dos of the specified colors on your My to-dos list.`]</p>
@@ -158,7 +158,7 @@
                         <option
                                 value="{pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_COMPLETES_ITEM_I_CREATED}"
                                 {if isset($settings.email_complete_item) && $settings.email_complete_item == pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_COMPLETES_ITEM_I_CREATED}selected="selected"{/if}>
-                            [`only items I created or assigned to me`]
+                            [`only items created by me or assigned to me`]
                         </option>
                         <option
                                 value="{pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_COMPETES_ITEM_I_FAVORITE}"
@@ -179,7 +179,7 @@
                         <option
                                 value="{pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_ITEM}"
                                 {if isset($settings.email_comment_item) && $settings.email_comment_item == pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_ITEM}selected="selected"{/if}>
-                            [`only items I created or assigned to me`]
+                            [`only items created by me or assigned to me`]
                         </option>
                         <option
                                 value="{pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_FAVORITE_ITEM}"

@@ -531,7 +531,7 @@ input.pl-due-date-input { width: 130px !important; min-width: 130px !important; 
 /* Custom 16x16 icons
 --------------------- */
 
-.icon16.pl { background-image: url('../img/pl-backend-ui-icons-16.png?1811'); }
+.icon16.pl { background-image: url('../img/pl-backend-ui-icons-16.png?1905'); }
 .icon16.pl.lists { background-position:-16px 0; }
 .icon16.pl.todo { background-position:-32px 0; }
 .icon16.pl.archive { background-position:-48px 0; }
@@ -541,6 +541,8 @@ input.pl-due-date-input { width: 130px !important; min-width: 130px !important; 
 .icon16.pl.add { background-position:0 -16px; }
 .icon16.pl.darr { background-position:-16px -16px; }
 .icon16.pl.ellipsis { background-position:0 -48px; }
+.icon16.pl.caret-up { background-position:-16px -48px; }
+.icon16.pl.caret-down { background-position:-32px -48px; }
 
 a:hover .icon16.pl.add { background-position:0 -32px; }
 a:hover .icon16.pl.darr { background-position:-16px -32px; }
@@ -594,7 +596,7 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 @media
 (-webkit-min-device-pixel-ratio: 2),
 (min-resolution: 192dpi) {
-    i.icon16.pl { background-image: url('../img/pl-backend-ui-icons-16@2x.png?1811'); background-size: 346px 179px; }
+    i.icon16.pl { background-image: url('../img/pl-backend-ui-icons-16@2x.png?1905'); background-size: 346px 179px; }
 }
 
 /* Narrow screens

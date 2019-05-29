@@ -3,7 +3,7 @@
 <div class="pl-details-form-container">
 <div class="fields form">
 
-    <a class="pl-enable-item-add-compact-mode pl-unsaved-items-only" href="#" data-pl2-action="close" title="[`Hide details by default`]"><i class="icon16 pl ellipsis"></i></a>
+    <a class="pl-enable-item-add-compact-mode pl-unsaved-items-only" href="#" data-pl2-action="close" title="[`Hide details`]"><i class="icon16 pl caret-up"></i></a>
 
     <form method="post" id="pl-item-details-form" action="{$plurl}?module=item&amp;action=data" target="pl-item-details-form-iframe" enctype="multipart/form-data">
     {* <a href="#" class="pl-item-details-cancel" class="pl-close" title="[`Close`]">&times;</a> *}
@@ -197,9 +197,6 @@
 
             <div class="float-right block half-padded">
                 <ul class="menu-v with-icons">
-                    <li class="pl-unsaved-items-only">
-                        <a class="nowrap inline-link" href="#" data-pl2-action="close"><span class="gray"><b><i>[`Hide details by default`]</i></b></span></a>
-                    </li>
                     <li class="pl-already-saved-items-only">
                         <a href="#" data-pl-action="item-delete" class="nowrap">
                             <i class="icon16 delete"></i>[`Delete to-do`]
