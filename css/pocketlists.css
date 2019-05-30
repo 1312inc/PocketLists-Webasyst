@@ -639,3 +639,11 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
     .pl-details.sticky { width: 400px; }
 
 }
+
+#pl-item-add [data-pl2-link-action] {
+    display: none;
+}
+
+#pl2-item-details [data-pl2-link-action] {
+    display: block;
+}
