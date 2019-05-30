@@ -1,6 +1,9 @@
 <style>
-    .pl2-shop-item-count { float: right; position: relative; top: -1.1rem; font-size: 13px; font-weight: 500; }
+    .pl2-shop-item-count { float: right; position: relative; top: -1.1rem; font-size: 12px; font-weight: 500; }
     i.icon16.pl2-shop-icon { background-image: url('{$params.wa_app_static_url}img/pl2webasyst48.png') !important; background-size: 16px 16px; margin-left: 0.2rem; margin-right: 0; }
+    table.zebra.single-lined .pl2-shop-item-count { height: 0 !important; overflow: visible !important; }
+    table.zebra.single-lined .pl2-shop-item-count i.icon16 { float: right; margin-right: 0.5rem; }
+    table.zebra.single-lined .pl2-shop-item-count span { display: none; }
 </style>
 <script>
     (function ($) {
@@ -26,7 +29,7 @@
                                 var $order = $this.find('[data-order-id='+datum.entity_id+']');
 
                                 if ($order.length) {
-                                    var pl2 = '<div class="pl2-shop-item-count" title="{if $wa->locale() == 'ru_RU'}Количество невыполненных задач, связанных с заказом{else}Number of active to-dos linked with the order{/if}"><span>'+datum.count_entities+'</span><i class="icon16 pl2-shop-icon"></i></div>';
+                                    var pl2 = '<div class="pl2-shop-item-count" title="{if $wa->locale() == 'ru_RU'}'+datum.count_entities+' задач связаны с этим заказом{else}'+datum.count_entities+' to-dos linked with the order{/if}"><span>'+datum.count_entities+'</span><i class="icon16 pl2-shop-icon"></i></div>';
 
                                     if ($.order_list.options.view == 'split') {
                                         $order

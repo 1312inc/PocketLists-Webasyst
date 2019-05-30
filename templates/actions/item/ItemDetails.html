@@ -14,7 +14,8 @@
 
 
         <textarea class="pl-details-textarea pl-item-name" name="item[name]" placeholder="[`New to-do`]" {if $item->isDone()} disabled="disabled"{/if}>{$item->getNameParsed()}</textarea>
-        {if $wa->shop}<p class="hint">[`Use @ or # symbols to link this to-do with a Shop-Script order.`]</p>{else}<br>{/if}
+        {if $wa->shop}<p class="hint pl-app-hint-internal">[`Use @ or # symbols to link this to-do with a Shop-Script order.`]</p>{else}<br>{/if}
+        <p class="hint pl-app-hint-external">{sprintf('[`The to-do item will be visible only to authorized Webasyst users and will be saved in the <span class="nowrap"><i class="icon16 pl pl2app"></i><a href="%s" class="gray" target="_blank"><b>Pocket Lists</b></a> app</span>. The customer will not see this to-do.`]', $wa_backend_url|cat:'pocketlists/')} <a href="#" class="inline-link"><b><i>[`Ok, I got it.`]</i></b></a></p>
 
         <div data-pl2-item-links class="pl-details-linked-entities">
             {foreach $item->getLinkedEntities() as $linkedEntity}
@@ -70,6 +71,7 @@
                     <option value="{$contact->getId()}" {if $assignUserId == $contact->getId()}selected="selected"{/if}>{$contact->getUsername()|escape|truncate:64}{if $contact->isMe()} ([`me`]){/if}</option>
                     {/foreach}
                 </select>
+                <p class="hint">[`The user will see this to-do in his Pocket Lists to-do stream and will be notified about this assignment by email.`]</p>
             </div>
         </div>
         {/if}

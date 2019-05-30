@@ -214,8 +214,6 @@ label.pl-done-label i.icon16.userpic20 {
 .pl-welcome.top-padded { padding-top: 70px; }
 .pl-welcome.bottom-padded { padding-bottom: 40px; }
 
-/* #pl-item-add { display: none; } */
-
 .pl-inner-item-add-placeholder { opacity: 0; height: 0; background: #ddd; margin: 0; cursor: pointer; z-index: 3; transition: 0.2s; }
 #wa.pl-keypress-alt .pl-item-wrapper:hover .pl-inner-item-add-placeholder { opacity: 1; height: 10px; }
 
@@ -255,6 +253,9 @@ input#pl-new-list-input:focus,
 #pl-item-add .pl-link-preview { opacity: 0.5; }
 #pl-item-add .pl-item-add-shortcuts { display: block; position: absolute; right: 25px; top: 0; bottom: 0; padding-top: 8px; z-index: 8; }
 .pl-enable-item-add-compact-mode { position: absolute; right: 22px; top: 17px; z-index: 30; }
+
+.pl-app-hint-internal { display: block; }
+.pl-app-hint-external { display: none; }
 
 .pl-chat textarea { background: #fff; margin-left: 0px; border-radius: 5px; border: 1px solid rgba(0,0,0,0.1); padding-left: 8px; width: 80%; min-width: 150px; max-height: 110px; padding-right: 5px; }
 /* .pl-unsaved { background: rgba(183,0,0,0.06) !important; 2px 3px 0nt; color: #f55 !important; } */
@@ -426,7 +427,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#12000000', e
 .pl-details-form .fields .field-group { float: left; width: 100%; }
 .pl-details-form .name { width: 110px; }
 .pl-details-form .value { margin-left: 140px; }
-.pl-details-form p.hint { margin-bottom: 0.5rem; }
+.pl-details-form p.hint { margin-bottom: 0.5rem; max-width: 80%; }
+.pl-details-form p.hint a.gray { color: #888 !important; }
+.pl-details-form p.hint a.gray:hover { color: #f20 !important; }
 .pl-details-form .pl-details-linked-entities { margin-bottom: 1rem; }
 .pl-details-form .pl-done + span { margin-left: 6px; left: 0; top: 0; }
 .pl-details-form .pl-done.pl-priority-fire + span { top: -10px; }
@@ -543,6 +546,7 @@ input.pl-due-date-input { width: 130px !important; min-width: 130px !important; 
 .icon16.pl.ellipsis { background-position:0 -48px; }
 .icon16.pl.caret-up { background-position:-16px -48px; }
 .icon16.pl.caret-down { background-position:-32px -48px; }
+.icon16.pl.pl2app { background-image: url('../img/pl2webasyst48.png') !important; background-size: 16px 16px !important; }
 
 a:hover .icon16.pl.add { background-position:0 -32px; }
 a:hover .icon16.pl.darr { background-position:-16px -32px; }
@@ -589,6 +593,8 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 .s-order .pl-shop-close { position: absolute; padding: 15px 3px; display: block; right: 5px; margin: 0; z-index: 30; font-size: 1.8rem; color: #aaa !important; }
 .s-order .pl-shop-close:hover { color: #000 !important; }
 .s-order .pl-enable-item-add-compact-mode { right: 53px; }
+.s-order .pl-app-hint-internal { display: none; }
+.s-order .pl-app-hint-external { display: block; }
 
 /* @2x
 ------ */
