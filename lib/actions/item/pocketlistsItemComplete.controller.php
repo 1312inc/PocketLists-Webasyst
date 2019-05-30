@@ -22,7 +22,7 @@ class pocketlistsItemCompleteController extends pocketlistsComplete
         /** @var pocketlistsItem $complete_item */
         foreach ($this->completed_items as $complete_item) {
             // 3.204: self tasks @timeline
-            if ($complete_item->getListId() == null) {
+            if ($complete_item->getListId() == null && !$complete_item->getAssignedContactId()) {
                 continue;
             }
 
