@@ -69,6 +69,8 @@
         $toggle_link.on('click', function (e) {
             e.preventDefault();
 
+            $.storage.del('pocketlists/apps/hide-pl2ss-by-default');
+
             $list_wrapper.slideToggle(200, function () {
                 if ($list_wrapper.is(':visible')) {
                     $list_wrapper.find('#pl-item-add textarea').trigger('focus');
