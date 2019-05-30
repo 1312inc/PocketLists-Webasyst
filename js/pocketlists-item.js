@@ -62,6 +62,18 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         }
     }());
 
+    var full_itemadd_form = {
+        can_show: function () {
+            return !$.storage.get('pocketlists/item-add-compact-mode');
+        },
+        set_show: function () {
+            return $.storage.del('pocketlists/item-add-compact-mode');
+        },
+        set_hide: function () {
+            return $.storage.set('pocketlists/item-add-compact-mode', 1);
+        }
+    };
+
     /**
      * for new item dom manipulating
      */
@@ -72,17 +84,17 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             openItemDetailsWrapper.call(this, true);
         });
 
-        $new_item_wrapper.on('open_new_item_wrapper.pl2', function (e) {
-            e.stopPropagation();
+        // $new_item_wrapper.on('open_new_item_wrapper.pl2', function (e) {
+        //     e.stopPropagation();
 
-            if (can_show_full_itemadd_form()) {
+            // if (full_itemadd_form.can_show()) {
                 // setTimeout(function() {
-                $(this).find('[data-pl2-action="edit-new-item"]').trigger('click');
+                // $(this).find('[data-pl2-action="edit-new-item"]').trigger('click');
                 // }, 1000);
 
-                return;
-            }
-        });
+                // return;
+            // }
+        // });
 
         // var $new_item_wrapper_hover = $('<div class="pl-inner-item-add-placeholder"></div>'),
         var $new_item_wrapper_hover = $('<div id="pl-item-add-wrapper-hover" style="display: none;">'),
@@ -99,10 +111,6 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             });
         };
 
-        var can_show_full_itemadd_form = function () {
-            return !$.storage.get('pocketlists/item-add-compact-mode');
-        };
-
         var init = function () {
             // if (!o.standAloneItemAdd) {
             $new_item_wrapper.detach();
@@ -113,12 +121,14 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 $top_new_item_wrapper.prependTo($undone_items_wrapper).show().wrap('<li data-pl-item-add-top>');
                 $top_new_item_wrapper.trigger('open_new_item_wrapper.pl2');
 
-                setTimeout(function () {
-                    if (isEmptyList()/* && !o.showMessageOnEmptyList*/) {
-                        $top_textarea.val('').trigger('focus');
-                        ItemLinker($top_textarea);
-                    }
-                }, 500);
+                // if (full_itemadd_form.can_show()) {
+                    setTimeout(function () {
+                        if (isEmptyList()/* && !o.showMessageOnEmptyList*/) {
+                            // $top_textarea.val('').trigger('focus');
+                            ItemLinker($top_textarea);
+                        }
+                    }, 500);
+                // }
             };
             !isNewList() && show_new_item_wrapper();
 
@@ -197,9 +207,14 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     if (!o.standAloneItemAdd) {
                         $.pocketlists.disable_prevent_close_browser();
                     }
-                    $this
-                        .data('can_blur', true)
-                        .removeClass('pl-unsaved');
+
+                    if (full_itemadd_form.can_show()) {
+                        $top_new_item_wrapper.find('[data-pl2-action="edit-new-item"]').trigger('click');
+                    } else {
+                        $this
+                            .data('can_blur', true)
+                            .removeClass('pl-unsaved');
+                    }
                 })
                 .on('blur', function () {
                     var $this = $(this),
@@ -523,7 +538,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     e.preventDefault();
 
                     hideItemDetails(e, function () {
-                        $.storage.set('pocketlists/item-add-compact-mode', 1);s
+                        full_itemadd_form.set_hide();
                     });
                 })
                 .on('submit', 'form', function () {
