@@ -21,7 +21,7 @@
             {/if}
         </p>
 
-        {if isset($params, $params.allow_delete)}
+        {if isset($params, $params.allow_delete) && !empty($params.allow_delete)}
             <div style="float: right;"><a href="#" data-pl2-link-action="delete">&times;</a></div>
         {/if}
     </div>

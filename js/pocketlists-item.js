@@ -777,7 +777,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 this.$el.trigger(event, data);
             },
             isVisible: function () {
-                return this.$el.is(':visible');
+                return this.$el.children().length;
             }
         };
     }
