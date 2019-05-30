@@ -410,6 +410,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 hideItemDetails();
             }
 
+            full_itemadd_form.set_show();
+
             loadDetails();
         };
 
