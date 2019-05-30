@@ -111,6 +111,21 @@ return array(
             'PRIMARY' => 'id',
         ),
     ),
+    'pocketlists_log' => array(
+        'id' => array('bigint', 20, 'null' => 0, 'autoincrement' => 1),
+        'action' => array('varchar', 30, 'null' => 0),
+        'entity_id' => array('int', 11, 'null' => 0),
+        'entity_type' => array('varchar', 30, 'null' => 0),
+        'additional_id' => array('int', 11),
+        'data' => array('text'),
+        'params' => array('text'),
+        'created_datetime' => array('datetime'),
+        ':keys' => array(
+            'PRIMARY' => 'id',
+            'pocketlists_log_action' => array('action', 'unique' => 1),
+            'pocketlists_log_entity' => array('entity_id', 'entity_type', 'unique' => 1),
+        ),
+    ),
     'pocketlists_notification' => array(
         'id' => array('int', 11, 'null' => 0, 'autoincrement' => 1),
         'type' => array('smallint', 6, 'null' => 0),
