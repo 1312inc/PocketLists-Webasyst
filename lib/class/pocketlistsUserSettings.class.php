@@ -145,6 +145,48 @@ class pocketlistsUserSettings
     }
 
     /**
+     * @param $icon
+     *
+     * @return array
+     */
+    public function getIconPrioririesMapping($icon)
+    {
+        $mapping = [
+            self::ICON_OVERDUE => [
+                pocketlistsItem::PRIORITY_RED,
+                pocketlistsItem::PRIORITY_BLACK,
+                pocketlistsItem::PRIORITY_BURNINHELL,
+            ],
+
+            self::ICON_OVERDUE_TODAY => [
+                pocketlistsItem::PRIORITY_YELLOW,
+                pocketlistsItem::PRIORITY_RED,
+                pocketlistsItem::PRIORITY_BLACK,
+                pocketlistsItem::PRIORITY_BURNINHELL,
+            ],
+
+            self::ICON_OVERDUE_TODAY_AND_TOMORROW => [
+                pocketlistsItem::PRIORITY_GREEN,
+                pocketlistsItem::PRIORITY_YELLOW,
+                pocketlistsItem::PRIORITY_RED,
+                pocketlistsItem::PRIORITY_BLACK,
+                pocketlistsItem::PRIORITY_BURNINHELL,
+            ],
+
+            self::ICON_ALL => [
+                pocketlistsItem::PRIORITY_NORM,
+                pocketlistsItem::PRIORITY_GREEN,
+                pocketlistsItem::PRIORITY_YELLOW,
+                pocketlistsItem::PRIORITY_RED,
+                pocketlistsItem::PRIORITY_BLACK,
+                pocketlistsItem::PRIORITY_BURNINHELL,
+            ],
+        ];
+
+        return isset($mapping[$icon]) ? $mapping[$icon] : $mapping[self::ICON_ALL];
+    }
+
+    /**
      * @return bool
      */
     public function emailDailyRecap()

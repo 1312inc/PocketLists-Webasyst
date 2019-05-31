@@ -41,6 +41,11 @@ class pocketlistsConfig extends waAppConfig
     protected $hydrator;
 
     /**
+     * @var pocketlistsEntityCounter
+     */
+    protected $entityCounter;
+
+    /**
      * @return pocketlistsHydratorInterface
      */
     public function getHydrator()
@@ -319,6 +324,18 @@ HTML;
         }
 
         return $this->user;
+    }
+
+    /**
+     * @return pocketlistsEntityCounter
+     */
+    public function getEntityCounter()
+    {
+        if ($this->entityCounter === null) {
+            $this->entityCounter = new pocketlistsEntityCounter();
+        }
+
+        return $this->entityCounter;
     }
 
     private function registerGlobal()
