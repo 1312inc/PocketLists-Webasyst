@@ -212,6 +212,7 @@ input#pl-new-list-input,
 .pl-link-preview { margin-left: 49px; padding: 5px 10px 5px 7px; margin-bottom: 15px; margin-top: -5px; display: inline-block; line-height: 1.3em; position: relative; border-radius: 5px; min-width: 300px; background: #eee; }
 .pl-link-preview-image { display: inline-block; width: 36px; float: left; }
 .pl-link-preview-image img { max-width: 32px; margin-top: 3px; }
+.pl-link-preview-remove { display: none; }
 .pl-link-preview-details { display: block; margin-left: 40px; }
 .pl-link-preview-details p { margin-bottom: 0; line-height: 1em; margin-top: 2px; }
 .pl-link-preview-details a .pl-label { margin-left: 0px !important; font-size: 12px; position: relative; top: 2px; }

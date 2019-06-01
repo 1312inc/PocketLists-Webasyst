@@ -339,7 +339,7 @@ input#pl-new-list-input:focus,
 .pl-list-items ul.menu-v li .pl-item:hover .pl-item-drag-handle { display: block; }
 .pl-list-items ul.menu-v li #pl-item-add .pl-item:hover { background: transparent; }
 
-.pl-link-preview { padding: 5px 10px 5px 7px; margin-bottom: 3px; margin-top: 8px; display: inline-block; line-height: 1.3em; position: relative; border-radius: 5px; min-width: 300px;
+.pl-link-preview { padding: 5px 10px 5px 7px; margin-bottom: 3px; margin-top: 8px; display: inline-block; line-height: 1.3em; position: relative; border-radius: 5px; min-width: 320px;
 background: -moz-linear-gradient(-45deg, rgba(0,0,0,0.07) 0%, rgba(0,0,0,0.07) 1%, rgba(0,0,0,0.03) 100%); /* FF3.6-15 */
 background: -webkit-linear-gradient(-45deg, rgba(0,0,0,0.07) 0%,rgba(0,0,0,0.07) 1%,rgba(0,0,0,0.03) 100%); /* Chrome10-25,Safari5.1-6 */
 background: linear-gradient(135deg, rgba(0,0,0,0.07) 0%,rgba(0,0,0,0.07) 1%,rgba(0,0,0,0.03) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
@@ -350,11 +350,17 @@ background: linear-gradient(135deg, rgba(0,0,0,0.07) 0%,rgba(0,0,0,0.08) 1%,rgba
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#12000000', endColorstr='#05000000',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */ }
 .pl-link-preview-image { display: inline-block; width: 36px; float: left; }
 .pl-link-preview-image img { max-width: 32px; margin-top: 3px; }
+.pl-link-preview-remove { float: right; }
+.pl-link-preview-remove a { display: block !important; padding: 13px 10px 12px 18px !important; color: #aaa !important; font-size: 1.4rem; }
+.pl-link-preview-remove a:hover { color: #f20 !important; }
 .pl-link-preview-details { display: block; margin-left: 40px; }
 .pl-link-preview-details p { margin-bottom: 0; line-height: 1em; margin-top: 2px; }
 .pl-link-preview-details a .pl-label { margin-left: 0px !important; font-size: 12px; }
 .pl-link-preview-details a:hover .pl-label { background-color: red !important; color: white !important; }
 #pl-item-add .pl-link-preview { margin-left: 44px; margin-top: 0px; margin-bottom: 10px; }
+#pl-item-add .pl-link-preview-remove { display: none; }
+#pl2-item-details .pl-link-preview-remove { display: block; }
+
 
 .pl-list-content { position: relative; }
 .pl-list-content .pl-item-list-name { display: none !important; }
@@ -644,12 +650,4 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
     .pl-details { width: 390px; }
     .pl-details.sticky { width: 400px; }
 
-}
-
-#pl-item-add [data-pl2-link-action] {
-    display: none;
-}
-
-#pl2-item-details [data-pl2-link-action] {
-    display: block;
 }
