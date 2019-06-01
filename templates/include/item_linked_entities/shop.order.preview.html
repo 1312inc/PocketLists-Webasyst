@@ -3,7 +3,9 @@
         <a href="{$extra.link}" target="_blank"><img src="{$wa_url}wa-apps/shop/img/shop96.png" class="userpic"></a>
     </div>
 
+    {if isset($params, $params.allow_delete) && !empty($params.allow_delete)}
     <div class="pl-link-preview-remove"><a href="#" data-pl2-link-action="delete" title="[`Unlink`]">&times;</a></div>
+    {/if}
 
     <div class="pl-link-preview-details">
         <a href="{$extra.link}" class="bold" style="{$extra.order.state->getStyle()}" target="_blank">
