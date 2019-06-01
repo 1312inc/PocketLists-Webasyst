@@ -256,14 +256,22 @@ class pocketlistsNotificationEmailContent implements pocketlistsNotificationCont
         return $this->error;
     }
 
-    public function afterHydrate()
+    /**
+     * @param array $data
+     *
+     * @return mixed|void
+     */
+    public function afterHydrate($data = [])
     {
-        // TODO: Implement afterHydrate() method.
     }
 
+    /**
+     * @param array $fields
+     *
+     * @return array|void
+     */
     public function beforeExtract(array &$fields)
     {
-        // TODO: Implement beforeExtract() method.
     }
 
     /**

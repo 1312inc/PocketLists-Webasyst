@@ -61,7 +61,7 @@ interface pocketlistsAppLinkInterface
     public function getName();
 
     /**
-     * @return int
+     * @return pocketlistsItemsCount
      */
     public function countItems();
 

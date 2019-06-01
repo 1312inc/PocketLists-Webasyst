@@ -11,7 +11,7 @@ class pocketlistsContactFactory extends pocketlistsFactory
     protected $contactsCache = [];
 
     /**
-     * @param $contactId
+     * @param int $contactId
      *
      * @return pocketlistsContact
      * @throws waException
@@ -26,10 +26,27 @@ class pocketlistsContactFactory extends pocketlistsFactory
     }
 
     /**
-     * @param      $teammates_ids
-     * @param bool $sort_by_last_activity
-     * @param bool $exclude_me
-     * @param bool $exclude_deleted
+     * @param array $contactIds
+     *
+     * @return pocketlistsContact[]
+     * @throws waException
+     */
+    public function createNewWithIds($contactIds)
+    {
+        $contacts = [];
+
+        foreach ($contactIds as $contactId) {
+            $contacts[] = $this->createNewWithId($contactId);
+        }
+
+        return $contacts;
+    }
+
+    /**
+     * @param array $teammates_ids
+     * @param bool  $sort_by_last_activity
+     * @param bool  $exclude_me
+     * @param bool  $exclude_deleted
      *
      * @return pocketlistsContact[]
      * @throws waException
@@ -40,37 +57,39 @@ class pocketlistsContactFactory extends pocketlistsFactory
         $exclude_me = true,
         $exclude_deleted = false
     ) {
-        $teammates = [];
+        /** @var pocketlistsContact[] $teammates */
+        $teammates = $this->createNewWithIds($teammates_ids);
 
-        $items_count_names = pl2()->getEntityFactory(pocketlistsItem::class)->getAssignedItemsCountAndNames($teammates_ids);
-        $last_activities = $sort_by_last_activity ? pl2()->getModel(pocketlistsItem::class)->getLastActivities($teammates_ids) : [];
+        $itemsCounts = pl2()->getEntityCounter()->getAssignedItemsCountAndNames($teammates);
 
-        foreach ($teammates_ids as $tid) {
-            if ($exclude_me && $tid == wa()->getUser()->getId()) {
+        $last_activities = $sort_by_last_activity
+            ? pl2()->getModel(pocketlistsItem::class)->getLastActivities($teammates_ids)
+            : [];
+
+        foreach ($teammates as $i => $teammate) {
+            if ($exclude_me && $teammate->isMe()) {
+                unset($teammates[$i]);
+
                 continue;
             }
 
-            $mate = $this->createNewWithId($tid);
+            if ($exclude_deleted && !$teammate->isExists()) {
+                unset($teammates[$i]);
 
-            if ($exclude_deleted && !$mate->isExists()) {
                 continue;
             }
 
-            if ($mate->isExists() && $mate->getContact()->get('is_user') == -1) {
-                continue;
+//            if ($teammate->isExists()) {
+//                continue;
+//            }
+
+            $teammate->setLastActivity(
+                isset($last_activities[$teammate->getId()]) ? $last_activities[$teammate->getId()] : 0
+            );
+
+            if (isset($itemsCounts[$teammate->getId()])) {
+                $teammate->setItemsInfo($itemsCounts[$teammate->getId()]);
             }
-
-            $mate->setLastActivity(isset($last_activities[$tid]) ? $last_activities[$tid] : 0);
-
-            if (isset($items_count_names[$tid])) {
-                $mate->setItemsInfo([
-                    'count'        => $items_count_names[$tid]['count_items'],
-                    'names'        => '',
-                    'max_priority' => $items_count_names[$tid]['item_max_priority'],
-                ]);
-            }
-
-            $teammates[$tid] = $mate;
         }
 
         if ($sort_by_last_activity) {

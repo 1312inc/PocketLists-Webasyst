@@ -309,27 +309,6 @@ class pocketlistsItemFactory extends pocketlistsFactory
     }
 
     /**
-     * @param array|int $contactIds
-     *
-     * @return array
-     * @throws waException
-     */
-    public function getAssignedItemsCountAndNames($contactIds)
-    {
-        if (!is_array($contactIds)) {
-            $contactIds = [$contactIds];
-        }
-
-        $result = [];
-
-        foreach ($contactIds as $contact_id) {
-            $result[$contact_id] = $this->getModel()->countAssignedOrCompletesByContactItems($contact_id);
-        }
-
-        return $result;
-    }
-
-    /**
      * @param pocketlistsContact|null $contact
      * @param bool                    $date_range
      * @param bool                    $completed

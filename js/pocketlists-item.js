@@ -1216,7 +1216,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             if (o.list) {
                 var priority = 0,
                     list_priority = 0,
-                    $list_count = $('#pl-lists').find('[data-pl-list-id="' + o.list.list_id + '"] span.count');
+                    $list_count = $('#pl-lists').find('[data-pl-list-id="' + o.list.list_id + '"] [data-pl2-list-calc-priority]');
 
                 var priority_class = {
                         'green': 1,
@@ -1245,7 +1245,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 // item moved to another
                 if (item_list_id != item_list_id_new) {
                     // update other list count && indicator color
-                    var $other_list_count = $('#pl-lists').find('[data-pl-list-id="' + item_list_id_new + '"] span.count'),
+                    var $other_list_count = $('#pl-lists').find('[data-pl-list-id="' + item_list_id_new + '"] [data-pl2-list-calc-priority]'),
                         other_list_count = parseInt($other_list_count.text()),
                         other_list_priority = 0,
                         other_list_class = $other_list_count.attr('class').match(/count\sindicator\s(.+)/),
@@ -1255,14 +1255,20 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                         other_list_priority = Math.max(other_list_priority, this.priority);
                     });
 
-                    $other_list_count.text(other_list_count + other_list_items.length);
-                    $other_list_count.removeClass().addClass('count' + class_priority[Math.max(other_list_priority, (other_list_class ? priority_class[other_list_class[1]] : 0))]);
+                    $other_list_count
+                        .text(other_list_count + other_list_items.length)
+                        .removeClass()
+                        .addClass('count bold ' + class_priority[Math.max(other_list_priority, (other_list_class ? priority_class[other_list_class[1]] : 0))]).show();
 
                     removeItem($form.find('input[name="item\[id\]"]').val());
                     updateListCountBadge();
                 }
 
+                var priority_count = 0;
                 $.each(getItems(), function () {
+                    if (this.priority) {
+                        priority_count++;
+                    }
                     priority = Math.max(priority, this.priority);
                 });
                 // don't forget about list priority
@@ -1271,7 +1277,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     list_priority = priority_class[$list_due.attr('class').match(/bold\s(pl-.*)/)[1]];
                 }
 
-                $list_count.removeClass().addClass('count' + class_priority[Math.max(priority, list_priority)]);
+                $list_count.removeClass().addClass('count' + class_priority[Math.max(priority, list_priority)]).text(priority_count);
             }
             $.isFunction(callback) && callback.call();
         };
@@ -1560,7 +1566,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         if (o.list && o.list.list_id) {
             $('#pl-lists')
                 .find('[data-pl-list-id="' + o.list.list_id + '"]')
-                .find('.count').text($undone_items_wrapper.find('[data-id]').length);
+                .find('.count:first').text($undone_items_wrapper.find('[data-id]').length);
         }
     }
     function isEmptyList() {
@@ -1599,7 +1605,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             function (r) {
                 // $.pocketlists.$loading.removeAttr('style').remove();
                 var $toList = $(toList);
-                var currentCount = parseInt($toList.find('.count').text());
+                var currentCount = parseInt($toList.find('.count:first').text());
                 if (r.status === 'ok') {
                     $this.hide(200, function () {
                         $this.remove();
@@ -1607,10 +1613,10 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     $toList.addClass('pl-drop-success');
                     if (o.list && o.list.list_id) {
                         var $fromList = $toList.parent().find('[data-pl-list-id="' + o.list.list_id + '"]'),
-                            currentCountOld = parseInt($fromList.find('.count').text());
+                            currentCountOld = parseInt($fromList.find('.count:first').text());
 
-                        $toList.find('.count').text(currentCount + 1);
-                        $fromList.find('.count').text(currentCountOld - 1);
+                        $toList.find('.count:first').text(currentCount + 1);
+                        $fromList.find('.count:first').text(currentCountOld - 1);
                     }
                 } else {
                     $this.addClass('pl-drop-fail');
@@ -1684,8 +1690,6 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             linkedEntities = $textarea.data('pl2-linked-entities');
 
         function findParent() {
-            // debugger;
-
             var $parents = [$textarea.closest('#pl-item-details-form'), $textarea.closest('[data-pl-item-add]'), $textarea.closest(item_selector)],
                 $parent = null;
 

@@ -20,7 +20,7 @@ class pocketlistsBackendSidebarAction extends pocketlistsViewAction
         $sidebar_todo_count = 0;
         $sidebar_todo_count_icon = pl2()->getUser()->getAppCount();
         if ($this->user->getSettings()->appIcon() != pocketlistsUserSettings::ICON_ALL) {
-            $sidebar_todo_count = pl2()->getEntityCounter()->countItemsTodoUndone();
+            $sidebar_todo_count = pl2()->getEntityCounter()->countTodoUndoneItems()->getCount();
         }
 
         $this->view->assign(compact('sidebar_todo_count', 'sidebar_todo_count_icon'));
@@ -45,17 +45,18 @@ class pocketlistsBackendSidebarAction extends pocketlistsViewAction
         /** @var pocketlistsCommentModel $commentModel */
         $commentModel = pl2()->getModel(pocketlistsComment::class);
 
+        $favoritesCount = pl2()->getEntityCounter()->countFavoritesItems(
+            $this->user,
+            false,
+            false,
+            pocketlistsItem::STATUS_UNDONE
+        );
         $this->view->assign(
             [
                 'new_comments_count'     => $commentModel->getLastActivityComments($last_activity),
                 'new_items_count'        => $itemModel->getLastActivityItems($last_activity),
                 'last_activity'          => $last_activity,
-                'favorites_count_undone' => $itemModel->getFavoritesCount(
-                    false,
-                    false,
-                    false,
-                    pocketlistsItem::STATUS_UNDONE
-                ),
+                'favorites_count_undone' => $favoritesCount,
             ]
         );
 
@@ -69,7 +70,13 @@ class pocketlistsBackendSidebarAction extends pocketlistsViewAction
                 unset($pockets[$pocketId]);
             }
         }
+
         $linkedApps = pl2()->getLinkedApp();
+        foreach ($linkedApps as $i => $app) {
+            if (!$app->userCanAccess()) {
+                unset($linkedApps[$i]);
+            }
+        }
 
         $this->view->assign(compact('pockets', 'linkedApps'));
     }

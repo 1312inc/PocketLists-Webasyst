@@ -216,7 +216,7 @@ class pocketlistsItemModel extends pocketlistsModel
      * @param array $calc_priority
      * @param null  $status
      *
-     * @return bool|mixed
+     * @return bool|array
      * @throws waDbException
      * @throws waException
      */
@@ -227,7 +227,7 @@ class pocketlistsItemModel extends pocketlistsModel
 
         $sqlParts = $this->getTodoSqlComponents($contact_id, $date, $lists, $calc_priority);
 
-        $sqlParts['select'] = ['count(i.id)'];
+        $sqlParts['select'] = ['count(i.id)', 'sum(if(i.calc_priority > 0, 1, 0))', 'max(i.calc_priority)'];
         if ($status !== null) {
             $sqlParts['and'][] = 'i.status = '.$status;
         }
@@ -254,7 +254,7 @@ class pocketlistsItemModel extends pocketlistsModel
                 'date'          => $date,
                 'calc_priority' => $calc_priority,
             ]
-        )->fetchField();
+        )->fetchArray();
 
         return $items;
     }
@@ -370,12 +370,12 @@ class pocketlistsItemModel extends pocketlistsModel
     }
 
     /**
-     * @param bool $contact_id
-     * @param bool $date
-     * @param bool $date2
-     * @param null $status
+     * @param bool     $contact_id
+     * @param bool     $date
+     * @param bool     $date2
+     * @param null|int $status
      *
-     * @return int
+     * @return array
      * @throws waDbException
      * @throws waException
      */
@@ -384,11 +384,12 @@ class pocketlistsItemModel extends pocketlistsModel
         if (!$contact_id) {
             $contact_id = wa()->getUser()->getId();
         }
+
         // get to-do items only from accessed pockets
         $lists = pocketlistsRBAC::getAccessListForContact($contact_id);
 
         $sqlParts = $this->getFavoritesSqlComponents($lists, $date, $date2, $status);
-        $sqlParts['select'] = ['count(i.id)'];
+        $sqlParts['select'] = ['count(i.id)', 'sum(if(i.calc_priority > 0, 1, 0))', 'max(i.calc_priority)'];
         $sqlParts['order by'] = [];
 
         $sql = $this->buildSqlComponents($sqlParts);
@@ -401,9 +402,9 @@ class pocketlistsItemModel extends pocketlistsModel
                 'date2'      => $date2,
                 'contact_id' => $contact_id,
             ]
-        )->fetchField();
+        )->fetchArray();
 
-        return (int)$itemsCount;
+        return $itemsCount;
     }
 
     /**
@@ -798,8 +799,9 @@ class pocketlistsItemModel extends pocketlistsModel
 
         $sqlParts = $this->getAssignedOrCompletesByContactQueryComponents($list_sql, pocketlistsItem::STATUS_UNDONE);
         $sqlParts['select'] = [
-            'count(i.id) count_items',
-            'if(max(i.calc_priority) is null, 0, max(i.calc_priority)) item_max_priority',
+            'count(i.id)',
+            'sum(if(i.calc_priority > 0, 1, 0))',
+            'max(i.calc_priority)',
         ];
 
         $q = $this->buildSqlComponents($sqlParts);
@@ -810,7 +812,7 @@ class pocketlistsItemModel extends pocketlistsModel
                 'contact_id' => $contact_id,
                 'list_ids'   => $lists,
             ]
-        )->fetchAssoc();
+        )->fetchArray();
 
         return $items;
     }
@@ -1185,20 +1187,20 @@ class pocketlistsItemModel extends pocketlistsModel
     /**
      * @param string $app
      *
-     * @return int
+     * @return array
      */
     public function getCountForApp($app)
     {
-        $count = (int)$this->query(
-            "SELECT COUNT(lid) cnt
+        $count = $this->query(
+            "SELECT COUNT(lid) cnt, max(cnt_pr), max(calc_priority)
              FROM (
-                SELECT l.item_id lid 
+                SELECT l.item_id lid, sum(if(i.calc_priority > 0, 1, 0)) cnt_pr, i.calc_priority calc_priority
                 FROM {$this->table} i 
                 JOIN pocketlists_item_link l ON i.id = l.item_id AND i.status = 0
                 WHERE app = s:app 
                 GROUP BY l.item_id) t",
             ['app' => $app]
-        )->fetchField('cnt');
+        )->fetchArray();
 
         return $count;
     }

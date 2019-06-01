@@ -63,8 +63,8 @@ class pocketlistsUser extends pocketlistsContact
      */
     public function getAppCount()
     {
-        $count = pl2()->getEntityCounter()->countItemsTodoUndoneWithUserPriorities();
+        $count = pl2()->getEntityCounter()->countTodoUndoneWithUserPrioritiesItems();
 
-        return $count ?: null;
+        return $count ? $count->getCount() : null;
     }
 }

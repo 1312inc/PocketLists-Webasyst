@@ -40,7 +40,7 @@
                         <input type="hidden" value="{$list->getId()|default:-1}" id="pl-list-id">
                         <span id="pl-list-name">{$list->getName()|escape}</span>
 
-                        <span class="pl-list-due {$list->getCssClass('due-datetime')}" {if !$list->getDueDatetime() && !$list->getDueDate()}style="display: none;"{/if}>
+                        <span class="pl-list-due {$list->getCssClass(pocketlistsViewHelper::CSS_CLASS_DUE_DATETIME)}" {if !$list->getDueDatetime() && !$list->getDueDate()}style="display: none;"{/if}>
                         {if $list->getDueDatetime()}
                         {$list->getDueDatetime()|wa_datetime:'humandatetime'}
                         {elseif $list->getDueDate()}

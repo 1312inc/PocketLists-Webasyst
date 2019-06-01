@@ -1067,42 +1067,7 @@ class pocketlistsItem extends pocketlistsEntity
      */
     public function getCssClass($type)
     {
-        $classes = [
-            'priority'     => [
-                self::PRIORITY_BURNINHELL => 'pl-priority-fire',
-                self::PRIORITY_BLACK      => 'pl-priority-black',
-                self::PRIORITY_RED        => 'pl-priority-red',
-                self::PRIORITY_YELLOW     => 'pl-priority-yellow',
-                self::PRIORITY_GREEN      => 'pl-priority-green',
-                self::PRIORITY_NORM       => '',
-            ],
-            'due-datetime' => [
-                self::PRIORITY_BURNINHELL => '',
-                self::PRIORITY_BLACK      => '',
-                self::PRIORITY_RED        => 'pl-due-overdue',
-                self::PRIORITY_YELLOW     => 'pl-due-today',
-                self::PRIORITY_GREEN      => 'pl-due-tomorrow',
-                self::PRIORITY_NORM       => '',
-            ],
-            'due-date'     => [
-                self::PRIORITY_BURNINHELL => '',
-                self::PRIORITY_BLACK      => '',
-                self::PRIORITY_RED        => 'pl-due-overdue',
-                self::PRIORITY_YELLOW     => 'pl-due-today',
-                self::PRIORITY_GREEN      => 'pl-due-tomorrow',
-                self::PRIORITY_NORM       => 'pl-due-someday',
-            ],
-            'list-indicator'     => [
-                self::PRIORITY_BURNINHELL => 'indicator red',
-                self::PRIORITY_BLACK      => 'indicator red',
-                self::PRIORITY_RED        => 'indicator red',
-                self::PRIORITY_YELLOW     => 'indicator yellow',
-                self::PRIORITY_GREEN      => 'indicator green',
-                self::PRIORITY_NORM       => '',
-            ],
-        ];
-
-        return isset($classes[$type][$this->getCalcPriority()]) ? $classes[$type][$this->getCalcPriority()] : '';
+        return pocketlistsViewHelper::getPriorityCssClass($this->getCalcPriority(), $type);
     }
 
     /**

@@ -27,19 +27,19 @@ class pocketlistsTodoDateAction extends pocketlistsViewAction
             ->setLimit(pocketlistsFactory::DEFAULT_LIMIT)
             ->findToDoDone($this->user, $date);
 
-        $countDoneItems = pl2()->getModel(pocketlistsItem::class)
-            ->countTodo(
-                $this->user->getId(),
-                $date ? [$date] : [],
+        $countDoneItems = pl2()->getEntityCounter()
+            ->countTodoItems(
+                $this->user,
                 [],
-                pocketlistsItem::STATUS_DONE
+                pocketlistsItem::STATUS_DONE,
+                $date ? [$date] : []
             );
 
         $this->view->assign(
             [
                 'undone_items'     => $itemsUndone,
                 'done_items'       => $itemsDone,
-                'count_done_items' => $countDoneItems,
+                'count_done_items' => $countDoneItems->getCount(),
                 'date'             => $date,
                 'timestamp'        => $date ? waDateTime::date('Y-m-d', strtotime($date)) : '',
 

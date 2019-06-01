@@ -96,11 +96,11 @@ class pocketlistsAppLinkFake implements pocketlistsAppLinkInterface
     }
 
     /**
-     * @return int
+     * @return pocketlistsItemsCount
      */
     public function countItems()
     {
-        return 0;
+        return new pocketlistsItemsCount();
     }
 
     /**

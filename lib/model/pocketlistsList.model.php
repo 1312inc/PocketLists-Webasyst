@@ -164,6 +164,8 @@ class pocketlistsListModel extends pocketlistsModel
         $sql = "SELECT i.*,
                        l.*,
                        count(i2.id)                                   'items_count',
+                       max(i2.calc_priority)                          'item_max_priority',
+                       sum(if(i2.calc_priority > 0, 1, 0))            'item_count_priority',
                        greatest(i.priority, max(i2.priority))         'max_priority',
                        greatest(i.due_date, max(i2.due_date))         'min_due_date',
                        greatest(i.due_datetime, max(i2.due_datetime)) 'min_due_datetime'
@@ -347,6 +349,8 @@ class pocketlistsListModel extends pocketlistsModel
                        i.*,
                        l.*,
                        count(i2.id)                                   'items_count',
+                       max(i2.calc_priority)                          'item_max_priority',
+                       sum(if(i2.calc_priority > 0, 1, 0))            'item_count_priority',
                        greatest(i.priority, max(i2.priority))         'max_priority',
                        greatest(i.due_date, max(i2.due_date))         'min_due_date',
                        greatest(i.due_datetime, max(i2.due_datetime)) 'min_due_datetime'

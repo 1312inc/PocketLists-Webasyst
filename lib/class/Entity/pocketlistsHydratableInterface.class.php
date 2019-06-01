@@ -6,9 +6,11 @@
 interface pocketlistsHydratableInterface
 {
     /**
+     * @param array $data
+     *
      * @return mixed
      */
-    public function afterHydrate();
+    public function afterHydrate($data = []);
 
     /**
      * @param array $fields

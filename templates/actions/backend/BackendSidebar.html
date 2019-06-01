@@ -30,16 +30,27 @@
             <a href="#/todo/"><i class="icon16 pl todo"></i>[`My to-dos`]</a>
         </li>
         <li>
-            <span class="count" data-pl-sidebar="favorites-count">{$favorites_count_undone}</span>
+            <span class="count" data-pl-sidebar="favorites-count">{$favorites_count_undone->getCount()}</span>
+
+            {if $favorites_count_undone->getCountPriority()}
+                <span class="count bold {pocketlistsViewHelper::getPriorityCssClass($favorites_count_undone->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}">
+                    {$favorites_count_undone->getCountPriority()}
+                </span>
+            {/if}
+
             <a href="#/favorites/"><i class="icon16 star"></i>[`Favorites`]</a>
         </li>
         {foreach $linkedApps as $app}
-            {if $app->userCanAccess()}
-            <li>
-                <span class="count">{$app->countItems()}</span>
-                <a href="#/app/{$app->getApp()}/">{$app->getAppIcon()}[`Store`]</a>
-            </li>
+        <li>
+            <span class="count">{$app->countItems()->getCount()}</span>
+            {if $app->countItems()->getCountPriority()}
+                <span class="count bold {pocketlistsViewHelper::getPriorityCssClass($app->countItems()->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}">
+                    {$app->countItems()->getCountPriority()}
+                </span>
             {/if}
+
+            <a href="#/app/{$app->getApp()}/">{$app->getAppIcon()}[`Store`]</a>
+        </li>
         {/foreach}
         <li>
             <a href="#/comments/"><i class="icon16 pl comments"></i>[`Discussions`]{if $new_comments_count} <span
@@ -115,7 +126,14 @@
                     <li data-pl-team-id="{$teammate->getId()}"
                         {if $teammate@iteration > $max_visible_in_team}style="display: none;"{/if}>
                         <a href="#/team/{$teammate->getLogin()|escape}/">
-                            <span class="count{if $teammate->getItemsInfo('max_priority') == 1} indicator green{elseif $teammate->getItemsInfo('max_priority') == 2} indicator yellow{elseif $teammate->getItemsInfo('max_priority') >= 3} indicator red{/if}">{$teammate->getItemsInfo('count')}</span>
+                            <span class="count">{$teammate->getItemsInfo()->getCount()}</span>
+
+                            {if $teammate->getItemsInfo()->getMaxPriority()}
+                            <span class="count bold {pocketlistsViewHelper::getPriorityCssClass($teammate->getItemsInfo()->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}">
+                                {$teammate->getItemsInfo()->getCountPriority()}
+                            </span>
+                            {/if}
+
                             <i class="icon16 userpic20{if $teammate->getStatus() == 'online'} pl-user-online{/if}" style="background-image: url({$teammate->getPhotoUrl()})"
                                alt="{$teammate->getName()|escape}" data-pl-contact-id="{$teammate->getId()}"></i>{$teammate->getName()|escape}
                             {if !empty($new_items_count.team[$teammate->getId()])} <span

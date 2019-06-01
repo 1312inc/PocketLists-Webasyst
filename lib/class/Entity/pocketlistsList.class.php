@@ -101,14 +101,53 @@ class pocketlistsList extends pocketlistsItem
     private $lastContactActivity = '';
 
     /**
-     * @throws waException
+     * @var pocketlistsItemsCount
      */
-    public function afterHydrate()
+    private $itemCount;
+
+    /**
+     * @param array $data
+     *
+     * @return mixed|void
+     */
+    public function afterHydrate($data = [])
     {
         $this->setCalcPriority(max(
             pocketlistsHelper::calcPriorityOnDueDate($this->getMinDueDate(), $this->getMinDueDatetime()),
             $this->getMaxPriority()
         ));
+
+        if (isset($data['items_count'], $data['item_max_priority'], $data['item_count_priority'])) {
+            $itemCount = new pocketlistsItemsCount(
+                $data['items_count'],
+                $data['item_count_priority'],
+                $data['item_max_priority']
+            );
+        } else {
+            $itemCount = new pocketlistsItemsCount();
+        }
+
+        $this->setItemCount($itemCount);
+    }
+
+    /**
+     * @return pocketlistsItemsCount
+     */
+    public function getItemCount()
+    {
+        return $this->itemCount;
+    }
+
+    /**
+     * @param pocketlistsItemsCount $itemCount
+     *
+     * @return pocketlistsList
+     */
+    public function setItemCount($itemCount)
+    {
+        $this->itemCount = $itemCount;
+
+        return $this;
     }
 
     /**

@@ -76,13 +76,9 @@ class pocketlistsContact
     private $email;
 
     /**
-     * @var array
+     * @var pocketlistsItemsCount|null
      */
-    private $itemsInfo = [
-        'count'        => 0,
-        'names'        => '',
-        'max_priority' => 0,
-    ];
+    private $itemsInfo;
 
     /**
      * pocketlistsContact constructor.
@@ -159,21 +155,19 @@ class pocketlistsContact
     }
 
     /**
-     * @param string $key
-     *
-     * @return array|mixed
+     * @return pocketlistsItemsCount|null
      */
-    public function getItemsInfo($key = '')
+    public function getItemsInfo()
     {
-        return isset($this->itemsInfo[$key]) ? $this->itemsInfo[$key] : $this->itemsInfo;
+        return $this->itemsInfo;
     }
 
     /**
-     * @param array $itemsInfo
+     * @param pocketlistsItemsCount $itemsInfo
      *
      * @return pocketlistsContact
      */
-    public function setItemsInfo($itemsInfo)
+    public function setItemsInfo(pocketlistsItemsCount $itemsInfo)
     {
         $this->itemsInfo = $itemsInfo;
 
