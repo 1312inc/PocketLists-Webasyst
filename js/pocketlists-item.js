@@ -1375,6 +1375,10 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                             $show_logbook_items.show().find('i').text($_('Show all %d completed to-dos').replace('%d', $done_items_wrapper.find('[data-id]').length)); // update "complete items" heading
 
                             if (!o.standAloneItemAdd) {
+                                if (o.list) {
+                                    loadListCounts(o.list.list_id);
+                                }
+
                                 $.pocketlists.reloadSidebar();
                             }
 
@@ -1896,6 +1900,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
                 $this.prop('disabled', true);
                 completeItem.call(this, $item, status, function () {
+
                     if (ItemDetails.isVisible()) {
                         ItemDetails.trigger('hide.pl2');
                     }
