@@ -110,8 +110,9 @@
         },
         resizeTextarea: function ($textarea) {
             if ($textarea.is(':visible')) {
-                $textarea.css('height', 'auto');
-                $textarea.css('height', ($textarea.get(0).scrollHeight - parseInt($textarea.css('padding-top')) - parseInt($textarea.css('padding-bottom'))) + 'px');
+                $textarea
+                    .css('height', 0)
+                    .css('height', $textarea.get(0).scrollHeight - parseInt($textarea.css('padding-top')) - parseInt($textarea.css('padding-bottom')));
             }
         },
         initNotice: function (wrapper_selector) {

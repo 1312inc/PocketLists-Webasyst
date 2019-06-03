@@ -544,7 +544,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     });
                 })
                 .on('submit', 'form', function () {
-                    //e.preventDefault();
+                    // e.preventDefault();
                     var $form = $(this),
                         $name = $form.find('[name="item[name]"]'),
                         links = $name.data('pl2-linked-entities'),
@@ -757,12 +757,18 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                         }
                     }, 'json');
                 })
-                .on('change cut keydown drop paste', 'textarea', function () {
-                    var $textarea = $(this);
+                .on('change cut keydown drop paste', 'textarea', function (e) {
+                    var $textarea = $(this),
+                        keycode = (e.keyCode ? e.keyCode : e.which);
 
-                    window.setTimeout(function () {
-                        $.pocketlists.resizeTextarea($textarea)
-                    }, 0);
+                    if(keycode == '13' && !e.shiftKey) {
+                        $textarea.closest('form').trigger('submit');
+                        e.preventDefault();
+                    } else {
+                        window.setTimeout(function () {
+                            $.pocketlists.resizeTextarea($textarea);
+                        }, 0);
+                    }
                 })
                 .on('click', '[data-pl2-link-action="delete"]', function (e) {
                     e.preventDefault();
