@@ -47,8 +47,8 @@ class pocketlistsViewHelper
             ],
 
             self::CSS_CLASS_LIST_INDICATOR => [
-                pocketlistsItem::PRIORITY_BURNINHELL => 'indicator red',
-                pocketlistsItem::PRIORITY_BLACK      => 'indicator red',
+                pocketlistsItem::PRIORITY_BURNINHELL => 'indicator onfire',
+                pocketlistsItem::PRIORITY_BLACK      => 'indicator black',
                 pocketlistsItem::PRIORITY_RED        => 'indicator red',
                 pocketlistsItem::PRIORITY_YELLOW     => 'indicator yellow',
                 pocketlistsItem::PRIORITY_GREEN      => 'indicator green',
