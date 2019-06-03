@@ -660,6 +660,12 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
                                 $.post(o.appUrl + '?module=item&action=delete', {id: itemId}, function (r) {
                                     if (r.status === 'ok') {
+                                        if (!o.standAloneItemAdd) {
+                                            if (o.list) {
+                                                loadListCounts(o.list.list_id);
+                                            }
+                                        }
+
                                         d.trigger('close');
                                         hideItemDetails(null, function () {
                                             removeItem(r.data.id);
@@ -1190,6 +1196,9 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     hideEmptyListMessage();
                     updateListCountBadge();
                     updateSort();
+                    if (o.list) {
+                        loadListCounts(o.list.list_id);
+                    }
                 }
 
                 $.pocketlists.sendNotifications(o.appUrl);
