@@ -1,6 +1,6 @@
 <script type="template/pl2" data-pl2-template="itemadd">
     <main class="pl-items pl-list-items pl-todo pl-shop-order" id="pl-list-content">
-        <a class="pl-shop-close" href="#" data-pl2-action="close" title="[`Close`]">&times;</a>
+        <a class="pl-shop-close" href="#" data-pl2-shop-action="close" title="[`Close`]">&times;</a>
         <div class="pl-list-items" id="pl-list-items">
             <section id="pl-undone-items" data-pl-items="undone">
                 <ul class="menu-v">
@@ -55,11 +55,11 @@
             return (!has_undone && !$.storage.get('pocketlists/apps/hide-pl2ss-by-default')) || has_undone;
         }
 
-        $list_wrapper.on('click', '[data-pl2-action="close"]', function (e) {
+        $list_wrapper.on('click', '[data-pl2-shop-action="close"]', function (e) {
             e.preventDefault();
 
             $.storage.set('pocketlists/apps/hide-pl2ss-by-default', 1);
-            $toggle_link.trigger('click');
+            $list_wrapper.slideUp(200);
         });
 
         if (!canShow()) {
