@@ -148,7 +148,7 @@ class pocketlistsListModel extends pocketlistsModel
      */
     public function getAllLists($check_access = true, $pocket_id = 0)
     {
-        $accessed_lists = "";
+        $accessed_lists = '';
         $available_lists = [];
 
         if ($check_access) {
@@ -163,9 +163,6 @@ class pocketlistsListModel extends pocketlistsModel
 
         $sql = "SELECT i.*,
                        l.*,
-                       count(i2.id)                                   'items_count',
-                       max(i2.calc_priority)                          'item_max_priority',
-                       sum(if(i2.calc_priority > 0, 1, 0))            'item_count_priority',
                        greatest(i.priority, max(i2.priority))         'max_priority',
                        greatest(i.due_date, max(i2.due_date))         'min_due_date',
                        greatest(i.due_datetime, max(i2.due_datetime)) 'min_due_datetime'
@@ -184,11 +181,28 @@ class pocketlistsListModel extends pocketlistsModel
                 'list_ids'  => $available_lists,
                 'pocket_id' => $pocket_id,
             ]
-        )->fetchAll();
+        )->fetchAll('id');
 
-//        $lists = self::generateModels($lists_data);
+        $this->fillWithItemCount($lists_data, $available_lists);
 
         return $lists_data ?: [];
+    }
+
+    protected function fillWithItemCount(&$lists_data, $available_lists)
+    {
+        $itemsCount = pl2()->getModel(pocketlistsItem::class)
+            ->countListItems($available_lists, pocketlistsItem::STATUS_UNDONE);
+
+        foreach ($itemsCount as $list_id => $itemCount) {
+            if (!isset($lists_data[$list_id])) {
+                continue;
+            }
+
+            $lists_data[$list_id]['itemCount'] = array_combine(
+                array_column($itemCount, 'priority'),
+                array_column($itemCount, 'count')
+            );
+        }
     }
 
     /**
@@ -371,9 +385,11 @@ class pocketlistsListModel extends pocketlistsModel
                 'list_ids' => $available_lists,
                 'term'     => mb_strtolower('%'.$term.'%'),
             ]
-        )->fetchAll();
+        )->fetchAll('id');
 
         $found = (int)$this->query('SELECT FOUND_ROWS()')->fetchField();
+
+        $this->fillWithItemCount($lists_data, $available_lists);
 
         return $lists_data ?: [];
     }

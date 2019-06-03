@@ -33,9 +33,8 @@ class pocketlistsEntityCounter
         $itemModel = pl2()->getModel(pocketlistsItem::class);
 
         $count = $itemModel->countTodo($user->getId(), $date, $priorities, $status);
-        list($count, $countPriority, $maxPriority) = $count ?: [0, 0, 0];
 
-        return $this->cache($key, new pocketlistsItemsCount($count, $countPriority, $maxPriority));
+        return $this->cache($key, new pocketlistsItemsCount($count));
     }
 
     /**
@@ -111,9 +110,8 @@ class pocketlistsEntityCounter
         $itemModel = pl2()->getModel(pocketlistsItem::class);
 
         $count = $itemModel->getFavoritesCount($user->getId(), $date, $date2, $status);
-        list($count, $countPriority, $maxPriority) = $count ?: [0, 0, 0];
 
-        return $this->cache($key, new pocketlistsItemsCount($count, $countPriority, $maxPriority));
+        return $this->cache($key, new pocketlistsItemsCount($count));
     }
 
     /**
@@ -153,9 +151,8 @@ class pocketlistsEntityCounter
         $itemModel = pl2()->getModel(pocketlistsItem::class);
 
         $count = $itemModel->countAssignedOrCompletesByContactItems($user->getId());
-        list($count, $countPriority, $maxPriority) = $count ?: [0, 0, 0];
 
-        return $this->cache($key, new pocketlistsItemsCount($count, $countPriority, $maxPriority));
+        return $this->cache($key, new pocketlistsItemsCount($count));
     }
 
 
@@ -178,6 +175,39 @@ class pocketlistsEntityCounter
         }
 
         return $result;
+    }
+
+    /**
+     * @param pocketlistsList $list
+     *
+     * @return array|pocketlistsItemsCount|null
+     * @throws waException
+     */
+    public function getListItemsCount(pocketlistsList $list)
+    {
+        $key = sprintf('items|list|%s', $list->getId());
+
+        $count = $this->getFromCache($key);
+        if ($count instanceof pocketlistsItemsCount) {
+            return $count;
+        }
+
+        /** @var pocketlistsItemModel $itemModel */
+        $itemModel = pl2()->getModel(pocketlistsItem::class);
+
+        $count = $itemModel->countListItems([$list->getId()], pocketlistsItem::STATUS_UNDONE);
+
+        if (isset($count[$list->getId()])) {
+            $count = array_combine(
+                array_column($count[$list->getId()], 'priority'),
+                array_column($count[$list->getId()], 'count')
+            );
+            $count = new pocketlistsItemsCount($count);
+        } else {
+            $count = new pocketlistsItemsCount();
+        }
+
+        return $this->cache($key, $count);
     }
 
     /**

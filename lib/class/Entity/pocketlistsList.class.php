@@ -117,12 +117,8 @@ class pocketlistsList extends pocketlistsItem
             $this->getMaxPriority()
         ));
 
-        if (isset($data['items_count'], $data['item_max_priority'], $data['item_count_priority'])) {
-            $itemCount = new pocketlistsItemsCount(
-                $data['items_count'],
-                $data['item_count_priority'],
-                $data['item_max_priority']
-            );
+        if (!empty($data['itemCount']) && is_array($data['itemCount'])) {
+            $itemCount = new pocketlistsItemsCount($data['itemCount']);
         } else {
             $itemCount = new pocketlistsItemsCount();
         }

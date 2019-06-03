@@ -16,10 +16,10 @@
                     {foreach $lists as $l}
                         <li data-pl-list-id="{$l->getId()}">
                             <a href="#/pocket/{$pocket->getId()}/list/{$l->getId()}/"{if $l->getId() == $list_id} class="pl-is-selected"{/if} title="{$l->getName()|escape}">
-                                <span class="count">{$l->getItemCount()->getCount()}</span>
+                                <span data-pl2-list-items class="count">{$l->getItemCount()->getCount()}</span>
 
                                 <span data-pl2-list-calc-priority class="count bold {pocketlistsViewHelper::getPriorityCssClass($l->getItemCount()->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}" {if !$l->getItemCount()->getMaxPriority()}style="display: none;"{/if}>
-                                    {$l->getItemCount()->getCountPriority()}
+                                    {$l->getItemCount()->getCountMaxPriority()}
                                 </span>
 
                                 <i class="listicon36"

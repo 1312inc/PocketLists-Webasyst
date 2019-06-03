@@ -3,35 +3,57 @@
 /**
  * Class pocketlistsItemsCount
  */
-class pocketlistsItemsCount implements pocketlistsHydratableInterface
+class pocketlistsItemsCount
 {
     /**
      * @var int
      */
-    private $count;
+    private $count = 0;
 
     /**
      * @var int
      */
-    private $countPriority;
+    private $countPriority = 0;
 
     /**
      * @var int
      */
-    private $maxPriority;
+    private $maxPriority = 0;
+
+    /**
+     * @var int
+     */
+    private $countMaxPriority = 0;
+
+    /**
+     * @var array
+     */
+    private $countPriorities = [];
 
     /**
      * pocketlistsItemsCount constructor.
      *
-     * @param int $count
-     * @param int $countPriority
-     * @param int $maxPriority
+     * @param array $data
      */
-    public function __construct($count = 0, $countPriority = 0, $maxPriority = pocketlistsItem::PRIORITY_NORM)
+    public function __construct($data = [])
     {
-        $this->count = $count;
-        $this->countPriority = $countPriority;
-        $this->maxPriority = $maxPriority;
+        if (empty($data)) {
+            return;
+        }
+
+        foreach ($data as $priority => $count) {
+            $this->count += $count;
+            $this->maxPriority = max($this->maxPriority, $priority);
+            $this->countPriorities[$priority] = $count;
+
+            if ($priority > pocketlistsItem::PRIORITY_NORM) {
+                $this->countPriority += $count;
+            }
+        }
+
+        if (isset($this->countPriorities[$this->maxPriority])) {
+            $this->countMaxPriority = $this->countPriorities[$this->maxPriority];
+        }
     }
 
     /**
@@ -43,35 +65,11 @@ class pocketlistsItemsCount implements pocketlistsHydratableInterface
     }
 
     /**
-     * @param int $count
-     *
-     * @return pocketlistsItemsCount
-     */
-    public function setCount($count)
-    {
-        $this->count = $count;
-
-        return $this;
-    }
-
-    /**
      * @return int
      */
     public function getCountPriority()
     {
         return $this->countPriority;
-    }
-
-    /**
-     * @param int $countPriority
-     *
-     * @return pocketlistsItemsCount
-     */
-    public function setCountPriority($countPriority)
-    {
-        $this->countPriority = $countPriority;
-
-        return $this;
     }
 
     /**
@@ -83,22 +81,18 @@ class pocketlistsItemsCount implements pocketlistsHydratableInterface
     }
 
     /**
-     * @param int $maxPriority
-     *
-     * @return pocketlistsItemsCount
+     * @return int
      */
-    public function setMaxPriority($maxPriority)
+    public function getCountMaxPriority()
     {
-        $this->maxPriority = $maxPriority;
-
-        return $this;
+        return $this->countMaxPriority;
     }
 
-    public function afterHydrate($data = [])
+    /**
+     * @return array
+     */
+    public function getCountPriorities()
     {
-    }
-
-    public function beforeExtract(array &$fields)
-    {
+        return $this->countPriorities;
     }
 }

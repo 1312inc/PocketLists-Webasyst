@@ -227,7 +227,7 @@ class pocketlistsItemModel extends pocketlistsModel
 
         $sqlParts = $this->getTodoSqlComponents($contact_id, $date, $lists, $calc_priority);
 
-        $sqlParts['select'] = ['count(i.id)', 'sum(if(i.calc_priority > 0, 1, 0))', 'max(i.calc_priority)'];
+        $sqlParts['select'] = ['i.calc_priority calc_priority', 'count(i.id) count'];
         if ($status !== null) {
             $sqlParts['and'][] = 'i.status = '.$status;
         }
@@ -244,9 +244,10 @@ class pocketlistsItemModel extends pocketlistsModel
                 WHERE
                   ({$or_sql}) 
                   AND 
-                  {$and_sql}";
+                  {$and_sql}
+                  GROUP by i.calc_priority";
 
-        $items = $this->query(
+        $itemsCount = $this->query(
             $sql,
             [
                 'list_ids'      => $lists,
@@ -254,9 +255,14 @@ class pocketlistsItemModel extends pocketlistsModel
                 'date'          => $date,
                 'calc_priority' => $calc_priority,
             ]
-        )->fetchArray();
+        )->fetchAll();
 
-        return $items;
+        $itemsCount = array_combine(
+            array_column($itemsCount, 'calc_priority'),
+            array_column($itemsCount, 'count')
+        );
+
+        return $itemsCount;
     }
 
     /**
@@ -389,8 +395,9 @@ class pocketlistsItemModel extends pocketlistsModel
         $lists = pocketlistsRBAC::getAccessListForContact($contact_id);
 
         $sqlParts = $this->getFavoritesSqlComponents($lists, $date, $date2, $status);
-        $sqlParts['select'] = ['count(i.id)', 'sum(if(i.calc_priority > 0, 1, 0))', 'max(i.calc_priority)'];
+        $sqlParts['select'] = ['i.calc_priority calc_priority', 'count(i.id) count'];
         $sqlParts['order by'] = [];
+        $sqlParts['group by'] = ['i.calc_priority'];
 
         $sql = $this->buildSqlComponents($sqlParts);
 
@@ -402,7 +409,12 @@ class pocketlistsItemModel extends pocketlistsModel
                 'date2'      => $date2,
                 'contact_id' => $contact_id,
             ]
-        )->fetchArray();
+        )->fetchAll();
+
+        $itemsCount = array_combine(
+            array_column($itemsCount, 'calc_priority'),
+            array_column($itemsCount, 'count')
+        );
 
         return $itemsCount;
     }
@@ -798,23 +810,25 @@ class pocketlistsItemModel extends pocketlistsModel
         $list_sql = pocketlistsRBAC::filterListAccess($lists);
 
         $sqlParts = $this->getAssignedOrCompletesByContactQueryComponents($list_sql, pocketlistsItem::STATUS_UNDONE);
-        $sqlParts['select'] = [
-            'count(i.id)',
-            'sum(if(i.calc_priority > 0, 1, 0))',
-            'max(i.calc_priority)',
-        ];
+        $sqlParts['select'] = ['i.calc_priority calc_priority', 'count(i.id) count'];
+        $sqlParts['group by'] = ['i.calc_priority'];
 
         $q = $this->buildSqlComponents($sqlParts);
 
-        $items = $this->query(
+        $itemsCount = $this->query(
             $q,
             [
                 'contact_id' => $contact_id,
                 'list_ids'   => $lists,
             ]
-        )->fetchArray();
+        )->fetchAll();
 
-        return $items;
+        $itemsCount = array_combine(
+            array_column($itemsCount, 'calc_priority'),
+            array_column($itemsCount, 'count')
+        );
+
+        return $itemsCount;
     }
 
     /**
@@ -1027,7 +1041,44 @@ class pocketlistsItemModel extends pocketlistsModel
             ]
         )->fetchField('count');
 
-        return (int)$items;
+        return $items;
+    }
+
+    /**
+     * @param int|array $listIds
+     * @param null      $status
+     *
+     * @return array
+     */
+    public function countListItems($listIds, $status = null)
+    {
+        if (!is_array($listIds)) {
+            $listIds = [$listIds];
+        }
+
+        $statusSql = '';
+        if ($status !== null) {
+            $statusSql = ' and i.status = i:status';
+        }
+
+        $listSql = 'i.list_id in (i:listIds)';
+        if (empty($listIds)) {
+            $listSql = '1';
+        }
+
+        return $this->query(
+            "SELECT 
+                    i.calc_priority priority,
+                    count(i.id) count,
+                    i.list_id
+            from {$this->table} i
+            where
+                {$listSql}  
+                {$statusSql}
+                AND i.list_id > 0
+            GROUP BY i.list_id, i.calc_priority",
+            ['status' => $status, 'listIds' => $listIds]
+        )->fetchAll('list_id', 2);
     }
 
     /**
@@ -1191,18 +1242,26 @@ class pocketlistsItemModel extends pocketlistsModel
      */
     public function getCountForApp($app)
     {
-        $count = $this->query(
-            "SELECT COUNT(lid) cnt, max(cnt_pr), max(calc_priority)
+        $itemsCount = $this->query(
+            "SELECT 
+                calc_priority calc_priority,
+                count(lid) count
              FROM (
-                SELECT l.item_id lid, sum(if(i.calc_priority > 0, 1, 0)) cnt_pr, i.calc_priority calc_priority
+                SELECT l.item_id lid, i.calc_priority calc_priority
                 FROM {$this->table} i 
                 JOIN pocketlists_item_link l ON i.id = l.item_id AND i.status = 0
                 WHERE app = s:app 
-                GROUP BY l.item_id) t",
+                GROUP BY l.item_id) t
+                group by calc_priority",
             ['app' => $app]
-        )->fetchArray();
+        )->fetchAll();
 
-        return $count;
+        $itemsCount = array_combine(
+            array_column($itemsCount, 'calc_priority'),
+            array_column($itemsCount, 'count')
+        );
+
+        return $itemsCount;
     }
 
     /**

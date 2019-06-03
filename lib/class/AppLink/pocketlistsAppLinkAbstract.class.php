@@ -57,10 +57,10 @@ abstract class pocketlistsAppLinkAbstract implements pocketlistsAppLinkInterface
      */
     public function countItems()
     {
-        list($count, $countPriority, $maxPriority) = pl2()->getModel(pocketlistsItem::class)
+        $count = pl2()->getModel(pocketlistsItem::class)
             ->getCountForApp($this->getApp());
 
-        return new pocketlistsItemsCount($count, $countPriority, $maxPriority);
+        return new pocketlistsItemsCount($count);
     }
 
     /**

@@ -1198,6 +1198,25 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             }
         );
     }
+
+    function loadListCounts(list_id) {
+        $.getJSON(o.appUrl + '?module=json&action=getListItemCount', {id: list_id}, function(r) {
+            if (r.status === 'ok') {
+                var $list = $('#pl-lists').find('[data-pl-list-id="' + list_id + '"]');
+
+                $list.find('[data-pl2-list-items]').text(r.data.count);
+                $list.find('[data-pl2-list-calc-priority]').removeClass().hide();
+
+                if (r.data.count) {
+                    $list.find('[data-pl2-list-calc-priority]')
+                        .addClass('count bold ' + r.data.class)
+                        .text(r.data.count_max_priority)
+                        .show();
+                }
+            }
+        });
+    }
+
     // update item
     function updateItem($form, callback) {
         var item_id = $form.find('#pl-item-list-id').val(),
@@ -1214,70 +1233,13 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             replaceItem(html);
             // update indicator color
             if (o.list) {
-                var priority = 0,
-                    list_priority = 0,
-                    $list_count = $('#pl-lists').find('[data-pl-list-id="' + o.list.list_id + '"] [data-pl2-list-calc-priority]');
+                loadListCounts(item_list_id);
 
-                var priority_class = {
-                        'green': 1,
-                        'pl-green': 1,
-                        'pl-due-tomorrow': 1,
-                        'yellow': 2,
-                        'pl-yellow': 2,
-                        'pl-due-today': 2,
-                        'red': 3,
-                        'pl-red': 3,
-                        'pl-due-overdue': 3,
-                        'none': 0,
-                        'pl-none': 0,
-                        'pl-due-someday': 0,
-                        'undefined': 0
-                    },
-                    class_priority = {
-                        1: ' indicator green',
-                        2: ' indicator yellow',
-                        3: ' indicator red',
-                        4: ' indicator red',
-                        5: ' indicator red',
-                        0: ''
-                    };
-
-                // item moved to another
                 if (item_list_id != item_list_id_new) {
-                    // update other list count && indicator color
-                    var $other_list_count = $('#pl-lists').find('[data-pl-list-id="' + item_list_id_new + '"] [data-pl2-list-calc-priority]'),
-                        other_list_count = parseInt($other_list_count.text()),
-                        other_list_priority = 0,
-                        other_list_class = $other_list_count.attr('class').match(/count\sindicator\s(.+)/),
-                        other_list_items = getItems($('<div>').html($current_item));
-
-                    $.each(other_list_items, function () {
-                        other_list_priority = Math.max(other_list_priority, this.priority);
-                    });
-
-                    $other_list_count
-                        .text(other_list_count + other_list_items.length)
-                        .removeClass()
-                        .addClass('count bold ' + class_priority[Math.max(other_list_priority, (other_list_class ? priority_class[other_list_class[1]] : 0))]).show();
-
+                    loadListCounts(item_list_id_new);
                     removeItem($form.find('input[name="item\[id\]"]').val());
                     updateListCountBadge();
                 }
-
-                var priority_count = 0;
-                $.each(getItems(), function () {
-                    if (this.priority) {
-                        priority_count++;
-                    }
-                    priority = Math.max(priority, this.priority);
-                });
-                // don't forget about list priority
-                var $list_due = o.list.$el.find('[data-pl-list="due-date"]');
-                if ($list_due.length && $list_due.is(':visible')) {
-                    list_priority = priority_class[$list_due.attr('class').match(/bold\s(pl-.*)/)[1]];
-                }
-
-                $list_count.removeClass().addClass('count' + class_priority[Math.max(priority, list_priority)]).text(priority_count);
             }
             $.isFunction(callback) && callback.call();
         };
@@ -1605,19 +1567,21 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             function (r) {
                 // $.pocketlists.$loading.removeAttr('style').remove();
                 var $toList = $(toList);
-                var currentCount = parseInt($toList.find('.count:first').text());
                 if (r.status === 'ok') {
+                    var item_list_id_new = $toList.data('pl-list-id'),
+                        item_list_id = o.list.list_id;
+
+                    loadListCounts(item_list_id);
+
+                    if (item_list_id != item_list_id_new) {
+                        loadListCounts(item_list_id_new);
+                    }
+
                     $this.hide(200, function () {
                         $this.remove();
                     });
-                    $toList.addClass('pl-drop-success');
-                    if (o.list && o.list.list_id) {
-                        var $fromList = $toList.parent().find('[data-pl-list-id="' + o.list.list_id + '"]'),
-                            currentCountOld = parseInt($fromList.find('.count:first').text());
 
-                        $toList.find('.count:first').text(currentCount + 1);
-                        $fromList.find('.count:first').text(currentCountOld - 1);
-                    }
+                    $toList.addClass('pl-drop-success');
                 } else {
                     $this.addClass('pl-drop-fail');
                 }

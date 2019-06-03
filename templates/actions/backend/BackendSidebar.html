@@ -32,9 +32,9 @@
         <li>
             <span class="count" data-pl-sidebar="favorites-count">{$favorites_count_undone->getCount()}</span>
 
-            {if $favorites_count_undone->getCountPriority()}
+            {if $favorites_count_undone->getCountMaxPriority()}
                 <span class="count bold {pocketlistsViewHelper::getPriorityCssClass($favorites_count_undone->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}">
-                    {$favorites_count_undone->getCountPriority()}
+                    {$favorites_count_undone->getCountMaxPriority()}
                 </span>
             {/if}
 
@@ -43,9 +43,9 @@
         {foreach $linkedApps as $app}
         <li>
             <span class="count">{$app->countItems()->getCount()}</span>
-            {if $app->countItems()->getCountPriority()}
+            {if $app->countItems()->getCountMaxPriority()}
                 <span class="count bold {pocketlistsViewHelper::getPriorityCssClass($app->countItems()->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}">
-                    {$app->countItems()->getCountPriority()}
+                    {$app->countItems()->getCountMaxPriority()}
                 </span>
             {/if}
 
@@ -130,7 +130,7 @@
 
                             {if $teammate->getItemsInfo()->getMaxPriority()}
                             <span class="count bold {pocketlistsViewHelper::getPriorityCssClass($teammate->getItemsInfo()->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}">
-                                {$teammate->getItemsInfo()->getCountPriority()}
+                                {$teammate->getItemsInfo()->getCountMaxPriority()}
                             </span>
                             {/if}
 
