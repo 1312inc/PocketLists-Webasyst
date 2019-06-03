@@ -402,12 +402,15 @@
 
             self.windowResize();
 
-            self.$core_sidebar.on('search', '[data-pl2-action="search"]', function (e) {
-                e.preventDefault();
-                var $this = $(this),
-                    term = $this.val();
+            self.$core_sidebar.on('keydown', '[data-pl2-action="search"]', function (e) {
+                var keycode = (e.keyCode ? e.keyCode : e.which);
 
-                window.location.hash = '/search/' + term;
+                if(keycode == '13'){
+                    var $this = $(this),
+                        term = $this.val();
+
+                    window.location.hash = '/search/' + term;
+                }
             });
 
             $.pocketlists_routing.init({
