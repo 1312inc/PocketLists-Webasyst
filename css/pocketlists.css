@@ -84,6 +84,10 @@ ul.menu-v.with-icons i.icon16.color { margin: 2px 7px 1px -18px; width: 12px; he
 .pl-drop-success { background-color: greenyellow; }
 .pl-drop-fail { background-color: indianred; }
 
+.pl-search-input { width: 100%; -webkit-appearance: textfield; border: 1px solid #ddd; border-radius: 2px; font-size: 1rem; outline: 0 none;text-indent: 8px; min-height: 28px; }
+.pl-search-input::-webkit-search-decoration { -webkit-appearance: none; }
+.pl-search-input::-webkit-search-cancel-button { display: none; }
+
 /* Lists
 -------- */
 

@@ -4,9 +4,11 @@
         <!-- LISTS -->
         <div id="pl-lists" data-pl-scroll-to-top>
             <div class="pl-lists-header">
-                <h5 class="none-label">
-                    Нашлось {if $lists_count == 300}более 300{else}{$lists_count}{/if} списков
+                {if !empty($lists)}
+                <h5 class="gray">
+                    {sprintf('[`%s lists found`]', ($lists_count >= 300) ? ($lists_count|cat:'+') : $lists_count)}
                 </h5>
+                {/if}
             </div>
             {if !empty($lists)}
                 <ul class="pl-lists" data-pl2-wrapper="lists">
@@ -24,7 +26,7 @@
             {else}
                 <div class="block double-padded align-center pl-lists-empty">
                     <p>
-                        Ничего нет
+                        [`No lists found`]
                     </p>
                 </div>
             {/if}
@@ -40,7 +42,8 @@
             <div class="pl-items">
                 <header class="pl-list-title pl-title">
                     <h1>
-                        {$term|escape}. Нашлось {if $items_count == 300}более 300{else}{$items_count}{/if} айтемов
+                        {$term|escape}
+                        <span class="hint">{sprintf('[`%s to-dos found`]', ($items_count >= 300) ? ($items_count|cat:'+') : $items_count)}</span>
                     </h1>
                 </header>
 
@@ -92,6 +95,6 @@
             fileUpload: {$fileupload}
         });
 
-        $.pocketlists.setTitle('{$term|default:'`Search results`'|escape}');
+        $.pocketlists.setTitle('{$term|default:'[`Search`]'|escape}');
     }());
 </script>
