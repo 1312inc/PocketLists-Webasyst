@@ -72,7 +72,7 @@ ul.menu-v.with-icons i.icon16.color { margin: 2px 7px 1px -18px; width: 12px; he
 
 .pl-team-showall-link { font-size: 0.95em; color: #aaa !important; }
 
-.indicator.onfire { background: #f33 url('../img/item-bullets-priority-fire.gif') no-repeat; background-size: 45px 45px; background-position: -15px -10px; color: #fff; padding: 3px 5px 3px 15px; top: -1px; }
+.indicator.onfire { background: #f33 url('../img/item-bullets-priority-fire.gif') no-repeat; background-size: 65px 65px; background-position: center -13px; color: #fff; padding: 3px 5px 3px 5px; top: -1px; }
 .indicator.black { background-color: #222; color: #fff; }
 .indicator.red { background-color: #dd1713; }
 .indicator.yellow { background-color: #f2aa42; color: #fff; }
@@ -101,7 +101,7 @@ ul.pl-lists li a i.listicon36 { background-repeat: no-repeat; height: 36px; widt
 ul.pl-lists li a .pl-list-name { display: block; padding: 9px 10px 11px; margin-left: 36px; font-weight: 500; font-size: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 ul.pl-lists li a .count { font-size: 14px; margin-top: 10px; margin-right: 8px; }
 ul.pl-lists li a .count.indicator { font-weight: bolder; padding: 3px 6px 3px; margin-top: 8px; margin-right: 5px; }
-ul.pl-lists li a .count.indicator.onfire { padding-left: 15px; padding-right: 7px; }
+ul.pl-lists li a .count.indicator.onfire { padding-left: 7px; padding-right: 7px; }
 ul.pl-lists li a:hover { background: rgba(0,0,0,0.03); }
 ul.pl-lists li a.pl-is-selected { background: rgba(0,0,0,0.02); }
 
