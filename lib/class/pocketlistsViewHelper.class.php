@@ -29,8 +29,8 @@ class pocketlistsViewHelper
             ],
 
             self::CSS_CLASS_DUE_DATETIME => [
-                pocketlistsItem::PRIORITY_BURNINHELL => '',
-                pocketlistsItem::PRIORITY_BLACK      => '',
+                pocketlistsItem::PRIORITY_BURNINHELL => 'pl-due-overdue',
+                pocketlistsItem::PRIORITY_BLACK      => 'pl-due-overdue',
                 pocketlistsItem::PRIORITY_RED        => 'pl-due-overdue',
                 pocketlistsItem::PRIORITY_YELLOW     => 'pl-due-today',
                 pocketlistsItem::PRIORITY_GREEN      => 'pl-due-tomorrow',
@@ -38,8 +38,8 @@ class pocketlistsViewHelper
             ],
 
             self::CSS_CLASS_DUE_DATE => [
-                pocketlistsItem::PRIORITY_BURNINHELL => '',
-                pocketlistsItem::PRIORITY_BLACK      => '',
+                pocketlistsItem::PRIORITY_BURNINHELL => 'pl-due-overdue',
+                pocketlistsItem::PRIORITY_BLACK      => 'pl-due-overdue',
                 pocketlistsItem::PRIORITY_RED        => 'pl-due-overdue',
                 pocketlistsItem::PRIORITY_YELLOW     => 'pl-due-today',
                 pocketlistsItem::PRIORITY_GREEN      => 'pl-due-tomorrow',
