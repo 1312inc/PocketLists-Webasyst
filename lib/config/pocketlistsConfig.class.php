@@ -85,7 +85,7 @@ class pocketlistsConfig extends waAppConfig
     /**
      * @param $entity
      *
-     * @return pocketlistsModel|pocketlistsItemLinkModel|pocketlistsItemModel|pocketlistsListModel
+     * @return pocketlistsModel|pocketlistsItemLinkModel|pocketlistsItemModel|pocketlistsListModel|pocketlistsLogModel
      * @throws waException
      */
     public function getModel($entity = false)

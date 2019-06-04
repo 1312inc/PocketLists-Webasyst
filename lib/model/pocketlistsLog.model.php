@@ -3,7 +3,7 @@
 /**
  * Class pocketlistsAttachmentModel
  */
-class pocketlistsAttachmentModel extends pocketlistsModel
+class pocketlistsLogModel extends pocketlistsModel
 {
     protected $table = 'pocketlists_log';
 }
