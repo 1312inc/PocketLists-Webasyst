@@ -610,8 +610,7 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 .s-order .pl-app-hint-internal { display: none; }
 .s-order .pl-app-hint-external { display: block; }
 .s-order #pl-complete-log { display: block; }
-.s-order #pl-complete-log .heading { display: none; }
-.s-order #pl-complete-log-link { display: none; }
+.s-order #pl-complete-log ul.menu-v { margin-top: 10px; }
 
 /* @2x
 ------ */
