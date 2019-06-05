@@ -122,10 +122,21 @@ class pocketlistsItemAddAttachmentController extends waJsonController
 
                         $attachmentFactory->insert($attachment);
 
+                        pl2()->getLogService()->add(
+                            pl2()->getEntityFactory(pocketlistsLog::class)->createNewItemAttachmentAdd(
+                                $item,
+                                $attachment
+                            )
+                        );
+
                         $this->errors = [];
 
                         return [
-                            'path' => wa()->getDataUrl('attachments/'.$item->getId().'/', true, pocketlistsHelper::APP_ID),
+                            'path' => wa()->getDataUrl(
+                                'attachments/'.$item->getId().'/',
+                                true,
+                                pocketlistsHelper::APP_ID
+                            ),
                             'name' => $file->name,
                             'type' => $file->type,
                             'size' => $file->size,

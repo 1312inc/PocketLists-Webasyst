@@ -29,6 +29,15 @@ class pocketlistsItemDeleteController extends pocketlistsJsonController
         $attachmentFactory = pl2()->getEntityFactory(pocketlistsAttachment::class);
         $attachmentFactory->deleteAllByItem($item);
 
+        pl2()->getLogService()->add(
+            pl2()->getEntityFactory(pocketlistsLog::class)->createNewAfterItemDelete(
+                $item,
+                [
+                    'by_contact_id' => $this->user->getId(),
+                ]
+            )
+        );
+
         $this->response = ['id' => $item->getId()];
     }
 }

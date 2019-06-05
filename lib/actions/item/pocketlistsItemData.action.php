@@ -18,6 +18,7 @@ class pocketlistsItemDataAction extends pocketlistsViewItemAction
         }
 
         $item_new_data = waRequest::post('item', [], waRequest::TYPE_ARRAY);
+        $isNewItem = false;
 
         /** @var pocketlistsItemFactory $itemFactory */
         $itemFactory = pl2()->getEntityFactory(pocketlistsItem::class);
@@ -25,8 +26,10 @@ class pocketlistsItemDataAction extends pocketlistsViewItemAction
         /** @var pocketlistsItem $item */
         if (!empty($item_new_data['id'])) {
             $item = $this->getItem($item_new_data['id']);
+            $itemOld = clone $item;
         } else {
             $item = $itemFactory->createNew();
+            $isNewItem = true;
         }
 
         if ($item_new_data) {
@@ -127,6 +130,16 @@ class pocketlistsItemDataAction extends pocketlistsViewItemAction
             );
 
             $this->view->assign('item', $item);
+
+            if ($isNewItem) {
+                pl2()->getLogService()->add(
+                    pl2()->getEntityFactory(pocketlistsLog::class)->createNewAfterItemAdd($item)
+                );
+            } else {
+                pl2()->getLogService()->add(
+                    pl2()->getEntityFactory(pocketlistsLog::class)->createNewAfterItemUpdate($item)
+                );
+            }
         }
     }
 }

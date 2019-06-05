@@ -5,12 +5,12 @@
  */
 class pocketlistsLog extends pocketlistsEntity
 {
-    const ACTION_ADD    = 'add';
-    const ACTION_EDIT   = 'edit';
-    const ACTION_UPDATE = 'update';
-    const ACTION_DELETE = 'delete';
-    const ACTION_ATTACH = 'attach';
-    const ACTION_ASSIGN = 'assign';
+    const ACTION_ADD            = 'add';
+    const ACTION_EDIT           = 'edit';
+    const ACTION_UPDATE         = 'update';
+    const ACTION_DELETE         = 'delete';
+    const ACTION_ATTACHMENT_ADD = 'attach';
+    const ACTION_ASSIGN         = 'assign';
 
     const ENTITY_USER   = 'user';
     const ENTITY_POCKET = 'pocket';
@@ -56,6 +56,31 @@ class pocketlistsLog extends pocketlistsEntity
      * @var \DateTime|string
      */
     private $created_datetime;
+
+    /**
+     * @param array $fields
+     *
+     * @return array|void
+     */
+    public function beforeExtract(array &$fields)
+    {
+        if (array_key_exists('data', $fields)) {
+            $this->data = waUtils::jsonEncode($this->data);
+        }
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return mixed|void
+     * @throws waException
+     */
+    public function afterHydrate($data = [])
+    {
+        if (array_key_exists('data', $data)) {
+            $this->data = waUtils::jsonDecode($data['data']);
+        }
+    }
 
     /**
      * @return int

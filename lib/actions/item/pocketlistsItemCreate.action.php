@@ -159,6 +159,10 @@ class pocketlistsItemCreateAction extends pocketlistsViewAction
                             ]
                         );
                     }
+
+                    pl2()->getLogService()->add(
+                        pl2()->getEntityFactory(pocketlistsLog::class)->createNewAfterItemAdd($item)
+                    );
                 }
 
                 if ($list->getId()) {

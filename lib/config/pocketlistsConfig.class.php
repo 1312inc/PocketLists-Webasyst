@@ -46,6 +46,11 @@ class pocketlistsConfig extends waAppConfig
     protected $entityCounter;
 
     /**
+     * @var pocketlistsLogService
+     */
+    protected $logService;
+
+    /**
      * @return pocketlistsHydratorInterface
      */
     public function getHydrator()
@@ -58,9 +63,21 @@ class pocketlistsConfig extends waAppConfig
     }
 
     /**
+     * @return pocketlistsLogService
+     */
+    public function getLogService()
+    {
+        if ($this->logService === null) {
+            $this->logService = new pocketlistsLogService();
+        }
+
+        return $this->logService;
+    }
+
+    /**
      * @param $entity
      *
-     * @return pocketlistsItemLinkFactory|pocketlistsItemFactory|pocketlistsListFactory|pocketlistsContactFactory|pocketlistsPocketFactory|pocketlistsCommentFactory|pocketlistsAttachmentFactory|pocketlistsItemLinkFactory|pocketlistsNotificationFactory
+     * @return pocketlistsItemLinkFactory|pocketlistsItemFactory|pocketlistsListFactory|pocketlistsContactFactory|pocketlistsPocketFactory|pocketlistsCommentFactory|pocketlistsAttachmentFactory|pocketlistsItemLinkFactory|pocketlistsNotificationFactory|pocketlistsLogFactory
      * @throws waException
      */
     public function getEntityFactory($entity)
