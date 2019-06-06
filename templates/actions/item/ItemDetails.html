@@ -25,7 +25,7 @@
             {/foreach}
         </div>
 
-        <textarea class="pl-details-textarea" name="item[note]" placeholder="[`Note`]"{if $item->isDone()} disabled="disabled"{/if}>{$item->getNote()|escape}</textarea>
+        <textarea class="pl-details-textarea" name="item[note]" data-pl2-textarea-rows="2" placeholder="[`Note`]"{if $item->isDone()} disabled="disabled"{/if}>{$item->getNote()|escape}</textarea>
 
     {*$wa->csrf()*}
     <div data-pl-item-details-attachments class="pl-already-saved-items-only">
