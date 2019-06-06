@@ -96,7 +96,7 @@ class pocketlistsNotificationDailyRecap extends pocketlistsBaseNotification
                     ->setParams(
                         [
                             'items'    => $itemsToSend,
-                            'timezone' => $contact->getContact()->getTimezone(),
+                            'timezone' => new DateTimeZone($contact->getContact()->getTimezone()),
                         ] + $vars
                     )
                     ->setSubject('string:📥 '.sprintf(_w("Daily recap for %s"), waDateTime::format('humandate')))

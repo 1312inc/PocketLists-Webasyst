@@ -1115,7 +1115,7 @@ class pocketlistsItemModel extends pocketlistsModel
         $sqlParts = $this->getTodoSqlComponents($contact_id, [], $lists);
 
         $sqlParts['and'][] = $when;
-        $sqlParts['and'][] =
+        $sqlParts['and'][] = 'l.archived = 0';
 
         $or_sql = implode("\n OR ", $sqlParts['or']);
         $and_sql = implode("\n AND ", $sqlParts['and']);
