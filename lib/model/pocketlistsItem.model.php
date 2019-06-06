@@ -1265,6 +1265,42 @@ class pocketlistsItemModel extends pocketlistsModel
     }
 
     /**
+     * @param string $app
+     * @param string $entityType
+     * @param array  $entityIds
+     * @param int    $status
+     *
+     * @return array|false
+     */
+    public function countLinkedItemsByAppAndEntities(
+        $app,
+        $entityType,
+        array $entityIds,
+        $status = pocketlistsItem::STATUS_UNDONE
+    ) {
+        $itemsCount = $this->query(
+            "SELECT 
+                count(l.item_id) count, 
+                i.calc_priority calc_priority, 
+                l.entity_id entity_id
+             FROM {$this->table} i 
+             JOIN pocketlists_item_link l ON i.id = l.item_id AND i.status = i:status
+             WHERE l.app = s:app 
+                and l.entity_type = s:entity_type
+                and l.entity_id in (i:entity_ids)
+             GROUP BY l.entity_id, calc_priority",
+            [
+                'status' => $status,
+                'app' => $app,
+                'entity_type' => $entityType,
+                'entity_ids' => $entityIds,
+            ]
+        )->fetchAll('entity_id', 2);
+
+        return $itemsCount;
+    }
+
+    /**
      * @param $id
      *
      * @return array|bool

@@ -672,6 +672,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                                             $list_items_wrapper.find('[data-id="' + r.data.id + '"]').remove();
                                             updateListCountBadge();
                                         });
+
+                                        $(document).trigger('item_delete.pl2', r.data);
                                     } else {
 
                                     }
@@ -1213,6 +1215,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 $.pocketlists.sendNotifications(o.appUrl);
 
                 $.isFunction(callback) && callback.call($this);
+
+                $(document).trigger('item_add.pl2');
             }
         );
     }
@@ -1258,6 +1262,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     removeItem($form.find('input[name="item\[id\]"]').val());
                     updateListCountBadge();
                 }
+
+                $(document).trigger('item_update.pl2', r.data);
             }
             $.isFunction(callback) && callback.call();
         };
@@ -1283,6 +1289,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             $iframe.one('load', function () {
                 var html = $(this).contents().find('body').html();
                 afterUpdateItem(html, callback);
+
                 request_in_action = false;
             });
         };
@@ -1405,6 +1412,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                             $.pocketlists.sendNotifications(o.appUrl);
 
                             callback && $.isFunction(callback) && callback.call($item);
+
+                            $(document).trigger('item_complete.pl2', r.data);
                         });
                     }, 800);
 
@@ -1604,6 +1613,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     });
 
                     $toList.addClass('pl-drop-success');
+
+                    $(document).trigger('item_move.pl2', r.data);
                 } else {
                     $this.addClass('pl-drop-fail');
                 }

@@ -23,7 +23,7 @@
                     return datum['id'];
                 });
 
-                    $.post(plurl + '?module=shop&action=loadOrderIcons', { orders: order_ids }, function (r) {
+                    $.post(plurl + '?module=shop&action=loadOrdersIcon', { orders: order_ids }, function (r) {
                         if (r.status === 'ok' && r.data) {
                             $.each(r.data, function(i, datum) {
                                 var $order = $this.find('[data-order-id='+datum.entity_id+']');

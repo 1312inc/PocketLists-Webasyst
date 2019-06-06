@@ -86,5 +86,36 @@
             wa_url: '{$wa_url}',
             fileUpload: {$params.fileupload}
         });
+
+        var order_id = parseInt($('#s-order-items [data-id]').data('id')),
+            $order_list = $('#order-list');
+
+        $(document)
+            .off('item_delete.pl2 item_add.pl2 item_complete.pl2 item_move.pl2 item_update.pl2')
+            .on('item_delete.pl2 item_add.pl2 item_complete.pl2 item_move.pl2 item_update.pl2', function (e, data) {
+                $.post('{$params.plurl}?module=shop&action=loadOrderIcon', { order: order_id }, function (r) {
+                    if (r.status === 'ok' && r.data) {
+                        var $order = $order_list.find('[data-order-id='+r.data.entity_id+']');
+
+                        if ($order.length) {
+                            var pl2 = '<div class="pl2-shop-item-count" title="{if $wa->locale() == 'ru_RU'}'+r.data.count_entities+' задач связаны с этим заказом{else}'+r.data.count_entities+' to-dos linked with the order{/if}"><span>'+r.data.count_entities+'</span><i class="icon16 pl2-shop-icon"></i></div>';
+
+                            $order.find('.pl2-shop-item-count').remove();
+
+                            if (r.data.count_entities) {
+                                if ($.order_list.options.view == 'split') {
+                                    $order
+                                        .find('.details')
+                                        .append(pl2);
+                                } else {
+                                    $order
+                                        .find('td:last')
+                                        .append(pl2);
+                                }
+                            }
+                        }
+                    }
+                });
+            })
     }());
 </script>

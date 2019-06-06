@@ -211,6 +211,71 @@ class pocketlistsEntityCounter
     }
 
     /**
+     * @param pocketlistsAppLinkInterface $app
+     * @param string                      $entityType
+     * @param array                       $entityIds
+     *
+     * @return pocketlistsItemsCount[]
+     * @throws waException
+     */
+    public function countLinkedItemsByAppAndEntities(pocketlistsAppLinkInterface $app, $entityType, array $entityIds)
+    {
+        /** @var pocketlistsItemModel $itemModel */
+        $itemModel = pl2()->getModel(pocketlistsItem::class);
+
+        $count = $itemModel->countLinkedItemsByAppAndEntities(
+            $app->getApp(),
+            $entityType,
+            $entityIds
+        );
+
+        $counts = [];
+        foreach ($count as $entityId => $item) {
+            $itemsCount = array_combine(
+                array_column($item, 'calc_priority'),
+                array_column($item, 'count')
+            );
+
+            $counts[$entityId] = new pocketlistsItemsCount($itemsCount);
+        }
+
+        return $counts;
+    }
+
+    /**
+     * @param pocketlistsAppLinkInterface $app
+     * @param string                      $entityType
+     * @param int                       $entityId
+     *
+     * @return pocketlistsItemsCount
+     * @throws waException
+     */
+    public function countLinkedItemByAppAndEntities(pocketlistsAppLinkInterface $app, $entityType, $entityId)
+    {
+        /** @var pocketlistsItemModel $itemModel */
+        $itemModel = pl2()->getModel(pocketlistsItem::class);
+
+        $count = $itemModel->countLinkedItemsByAppAndEntities(
+            $app->getApp(),
+            $entityType,
+            [$entityId]
+        );
+
+        $itemsCount = [];
+        if ($count) {
+            $entityId = key($count);
+            $item = $count[$entityId];
+
+            $itemsCount = array_combine(
+                array_column($item, 'calc_priority'),
+                array_column($item, 'count')
+            );
+        }
+
+        return new pocketlistsItemsCount($itemsCount);
+    }
+
+    /**
      * @param $key
      *
      * @return pocketlistsItemsCount|null
