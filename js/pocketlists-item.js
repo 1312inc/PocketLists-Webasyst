@@ -82,6 +82,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             e.preventDefault();
 
             openItemDetailsWrapper.call(this, true);
+
+            full_itemadd_form.set_show();
         });
 
         // $new_item_wrapper.on('open_new_item_wrapper.pl2', function (e) {
@@ -409,8 +411,6 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             if (isOpen()) {
                 hideItemDetails();
             }
-
-            full_itemadd_form.set_show();
 
             loadDetails();
         };
