@@ -661,3 +661,7 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
     .pl-details.sticky { width: 400px; }
 
 }
+
+.search-results #pl-complete-log { display: block;}
+.search-results #pl-complete-log ul.menu-v { margin-top: 10px; }
+.search-results #pl-complete-log-link { display: none;}
