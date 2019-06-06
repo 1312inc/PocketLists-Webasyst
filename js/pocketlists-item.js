@@ -1222,7 +1222,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 $list.find('[data-pl2-list-items]').text(r.data.count);
                 $list.find('[data-pl2-list-calc-priority]').removeClass().hide();
 
-                if (r.data.count) {
+                if (r.data.count && r.data.max_priority) {
                     $list.find('[data-pl2-list-calc-priority]')
                         .addClass('count bold ' + r.data.class)
                         .text(r.data.count_max_priority)
