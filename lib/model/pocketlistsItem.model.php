@@ -1353,6 +1353,7 @@ class pocketlistsItemModel extends pocketlistsModel
         }
 
         $sqlParts['where']['and'][] = "lower(concat(ifnull(i.name,''), '|', ifnull(i.note,''))) like s:term";
+        $sqlParts['where']['and'][] = 'i.key_list_id is null';
 
         $sql = $this->buildSqlComponents($sqlParts, $limit);
 
