@@ -1164,9 +1164,12 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     .find('.pl-item').first().after(_itemAdd);
 
                 _itemAdd.textarea.val('').css('height', 'auto').data('can_blur', true);
-                setTimeout(function () {
-                    _itemAdd.textarea.trigger('focus');
-                }, 500);
+
+                if (!full_itemadd_form.can_show()) { // do not focus on full add mode
+                    setTimeout(function () {
+                        _itemAdd.textarea.trigger('focus');
+                    }, 500);
+                }
 
                 // update calendar date with new dot
                 var $calendar = $('.pl-calendar');
