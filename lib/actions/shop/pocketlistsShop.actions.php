@@ -15,8 +15,13 @@ class pocketlistsShopActions extends waJsonActions
      */
     protected $fail = false;
 
+    /**
+     * @throws waException
+     */
     public function preExecute()
     {
+        wa()->getStorage()->close();
+
         $this->app = pl2()->getLinkedApp('shop');
 
         if (!$this->app->isEnabled()) {
