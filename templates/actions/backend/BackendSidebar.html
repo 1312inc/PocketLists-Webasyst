@@ -1,4 +1,4 @@
-<!-- CORE FILTERS -->
+<!-- POCKETS -->
 <div class="block pl-sidebar-core" data-pl2-sidebar-wrapper="pockets">
     <ul class="menu-v with-icons">
         {foreach $pockets as $pocket}
@@ -18,10 +18,8 @@
 
 <div class="hr"></div>
 
+<!-- TO-DO STREAMS: PLAIN LISTS -->
 <div class="block">
-    {* <h5 class="heading">
-        [`To-dos`]
-    </h5> *}
 
     <ul class="menu-v with-icons">
         <li data-pl-sidebar="todo">
@@ -52,16 +50,11 @@
             <a href="#/app/{$app->getApp()}/">{$app->getAppIcon()}[`Store`]</a>
         </li>
         {/foreach}
-        <li>
-            <a href="#/comments/"><i class="icon16 pl comments"></i>[`Discussions`]{if $new_comments_count} <span
-                        class="highlighted bold small black"
-                        title="{$last_activity|wa_datetime}">+{$new_comments_count}</span>{/if}</a>
-        </li>
 
 
         {* <li class="top-padded">
-        <a href="#/"><i class="icon16 "></i>CRM</a>
-    </li>
+            <a href="#/"><i class="icon16 "></i>CRM</a>
+        </li>
         <li>
             <a href="#/"><i class="icon16 "></i>Tasks</a>
         </li>
@@ -77,35 +70,27 @@
     </ul>
 </div>
 
-<!-- LISTS -->
-{* {if $lists || pocketlistsRBAC::canCreateLists()}
-<div class="block">
-    <h5 class="heading">
-        {if pocketlistsRBAC::canCreateLists()}<a href="#/list/new/" class="count"><i class="icon16 add"></i></a>{/if}
-        {if $lists && count($lists) > 10}<i class="icon16 darr" data-pl-collapsible="lists"></i>{/if}[`Lists`]
-    </h5>
-
-    {if count($lists)}
-    <ul class="menu-v with-icons collapsible" data-pl-sidebar-block="lists" data-pl-collapsible-wrapper="lists">
-        {foreach $lists as $l}
-        <li data-pl-list-id="{$l.id}">
-            <a href="#/list/{$l.id}/">
-                <span class="count{if $l.calc_priority == 1} indicator green{elseif $l.calc_priority == 2} indicator yellow{elseif $l.calc_priority == 3} indicator red{/if}">{if !empty($l.due_date)}<i class="icon10 exclamation no-overhanging" title="{sprintf('[`Due %s`]', $l.due_date|wa_date:'humandate')}"></i> {/if}{$l.count}</span>
-                <i class="icon16 listicon16" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l.icon|default:'li-list@2x.png'});"></i><span{if $l.color != 'none'} class="pl-{$l.color}"{/if}>{$l.name|escape}
-                    {if !empty($new_items_count.list[$l.id])} <span class="highlighted bold small black">+{$new_items_count.list[$l.id]}</span>{/if}
-                </span>
-
-            </a>
+<!-- 'PRO' VIEWS -->
+<div class="block" style="padding-top: 0;">
+    <ul class="menu-v with-icons">
+        <li>
+            <a href="#/comments/"><i class="icon16 pl comments"></i>[`Comments`]{if $new_comments_count} <span
+                        class="highlighted bold small black"
+                        title="{$last_activity|wa_datetime}">+{$new_comments_count}</span>{/if}</a>
         </li>
-        {/foreach}
+        {*
+        <li>
+            <a href="#/calendar/"><i class="icon16 calendar"></i>[`Calendar`]</a>
+        </li>
+        <li>
+            <a href="#/places/"><i class="icon16 map"></i>[`Places`]</a>
+        </li>
+        <li>
+            <a href="#/board/"><i class="icon16 zone"></i>[`Board`]</a>
+        </li>
+        *}
     </ul>
-    {else}
-        <div class="block">
-            <p class="hint align-center">[`Create a to-do list and share it with your teammates.`]</p>
-        </div>
-    {/if}
 </div>
-{/if} *}
 
 <div class="block">
     <input type="search" data-pl2-action="search" placeholder="[`Search`]" class="pl-search-input" />

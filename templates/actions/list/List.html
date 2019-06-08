@@ -46,7 +46,7 @@
                     <span id="pl-list-name"{if $list->getColor()!='none'} class="pl-dark-{$list->getColor()}-label"{/if}>{$list->getNameParsed()|default:' '}</span>
                 {/if}
 
-                {if pocketlistsRBAC::canAccessToList($list)}
+                {if pocketlistsRBAC::canAccessToList($list) && !$new}
                 <a data-pl-action="list-edit" href="#" class="pl-list-details-helper" data-pl2-list-edit-action="details"><i class="icon16 pl ellipsis"></i></a>
                 {/if}
             </h1>
