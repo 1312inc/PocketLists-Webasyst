@@ -3,7 +3,7 @@
 /**
  * Class pocketlistsCommentDeleteController
  */
-class pocketlistsCommentDeleteController extends waJsonController
+class pocketlistsCommentDeleteController extends pocketlistsJsonController
 {
     /**
      * @throws waDbException
@@ -36,6 +36,13 @@ class pocketlistsCommentDeleteController extends waJsonController
                     && $comment->getContact()->isMe()
                     && $commentFactory->delete($comment)
                 ) {
+                    $this->logService->add(
+                        $this->logService->getFactory()->createNewCommentLog(
+                            (new pocketlistsLogContext())->setComment($comment),
+                            pocketlistsLog::ACTION_DELETE
+                        )
+                    );
+
                     $this->response = 'ok';
                 } else {
                     $this->errors = 'error while deleting item comment';

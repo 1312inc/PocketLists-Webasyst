@@ -12,10 +12,11 @@ class pocketlistsLog extends pocketlistsEntity
     const ACTION_ATTACHMENT_ADD = 'attach';
     const ACTION_ASSIGN         = 'assign';
 
-    const ENTITY_USER   = 'user';
-    const ENTITY_POCKET = 'pocket';
-    const ENTITY_LIST   = 'list';
-    const ENTITY_ITEM   = 'item';
+    const ENTITY_USER    = 'user';
+    const ENTITY_POCKET  = 'pocket';
+    const ENTITY_LIST    = 'list';
+    const ENTITY_ITEM    = 'item';
+    const ENTITY_COMMENT = 'comment';
 
     /**
      * @var int

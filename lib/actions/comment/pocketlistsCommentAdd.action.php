@@ -3,13 +3,13 @@
 /**
  * Class pocketlistsCommentAddAction
  */
-class pocketlistsCommentAddAction extends waViewAction
+class pocketlistsCommentAddAction extends pocketlistsViewAction
 {
     /**
      * @throws waDbException
      * @throws waException
      */
-    public function execute()
+    public function runAction($params = null)
     {
         $itemId = waRequest::post('item_id', 0, waRequest::TYPE_INT);
         $commentText = waRequest::post('comment', false, waRequest::TYPE_STRING_TRIM);
@@ -72,6 +72,12 @@ class pocketlistsCommentAddAction extends waViewAction
                     );
 
                     (new pocketlistsNotificationAboutNewComment())->notify($comment);
+
+                    $this->logService->add(
+                        $this->logService->getFactory()->createNewCommentLog(
+                            (new pocketlistsLogContext())->setComment($comment)
+                        )
+                    );
 
                     $this->view->assign('comment', $comment);
                 } else {

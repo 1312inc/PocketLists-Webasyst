@@ -108,4 +108,40 @@ class pocketlistsLogFactory extends pocketlistsFactory
             ->setContactId(pl2()->getUser()->getId())
             ->setParams($params);
     }
+
+    /**
+     * @param pocketlistsLogContext $context
+     * @param string                $action
+     *
+     * @return pocketlistsLog
+     * @throws pocketlistsLogicException
+     */
+    public function createNewCommentLog(pocketlistsLogContext $context, $action = pocketlistsLog::ACTION_ADD)
+    {
+        /** @var pocketlistsComment $comment */
+        $comment = $context->getEntity(pocketlistsLogContext::COMMENT_ENTITY);
+
+        /** @var pocketlistsItem $item */
+        $item = $context->getEntity(pocketlistsLogContext::ITEM_ENTITY);
+
+        $params = [
+            'item' => [
+                'name' => $item->getName(),
+            ],
+        ];
+
+        if ($action === pocketlistsLog::ACTION_ADD) {
+            $params['comment'] = [
+                'comment' => $comment->getComment(),
+            ];
+        }
+
+        return $this->createNew()
+            ->setEntityType(pocketlistsLog::ENTITY_COMMENT)
+            ->setCreatedDatetime(date('Y-m-d H:i:s'))
+            ->setAction($action)
+            ->setContactId(pl2()->getUser()->getId())
+            ->setParams($params)
+            ->fillWithContext($context);
+    }
 }
