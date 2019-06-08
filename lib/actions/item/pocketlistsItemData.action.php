@@ -131,13 +131,16 @@ class pocketlistsItemDataAction extends pocketlistsViewItemAction
 
             $this->view->assign('item', $item);
 
+            $context = (new pocketlistsLogContext())
+                ->setList($item->getList())
+                ->setItem($item);
             if ($isNewItem) {
-                pl2()->getLogService()->add(
-                    pl2()->getEntityFactory(pocketlistsLog::class)->createNewAfterItemAdd($item)
+                $this->logService->add(
+                    $this->logService->getFactory()->createNewAfterItemAdd($context)
                 );
             } else {
-                pl2()->getLogService()->add(
-                    pl2()->getEntityFactory(pocketlistsLog::class)->createNewAfterItemUpdate($item)
+                $this->logService->add(
+                    $this->logService->getFactory()->createNewAfterItemUpdate($context)
                 );
             }
         }

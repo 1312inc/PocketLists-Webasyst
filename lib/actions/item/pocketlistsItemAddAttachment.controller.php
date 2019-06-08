@@ -3,7 +3,7 @@
 /**
  * Class pocketlistsItemAddAttachmentController
  */
-class pocketlistsItemAddAttachmentController extends waJsonController
+class pocketlistsItemAddAttachmentController extends pocketlistsJsonController
 {
     /**
      * @var array
@@ -27,11 +27,11 @@ class pocketlistsItemAddAttachmentController extends waJsonController
             file_put_contents($file_path, fopen('php://input', 'rb'), $append_file ? FILE_APPEND : 0);
             $file = new waRequestFile(
                 [
-                    'name'     => $name,
-                    'type'     => waRequest::server('HTTP_X_FILE_TYPE'),
-                    'size'     => $size,
+                    'name' => $name,
+                    'type' => waRequest::server('HTTP_X_FILE_TYPE'),
+                    'size' => $size,
                     'tmp_name' => $file_path,
-                    'error'    => 0,
+                    'error' => 0,
                 ]
             );
 
@@ -122,10 +122,11 @@ class pocketlistsItemAddAttachmentController extends waJsonController
 
                         $attachmentFactory->insert($attachment);
 
-                        pl2()->getLogService()->add(
-                            pl2()->getEntityFactory(pocketlistsLog::class)->createNewItemAttachmentAdd(
-                                $item,
-                                $attachment
+                        $this->logService->add(
+                            $this->logService->getFactory()->createNewItemAttachmentAdd(
+                                (new pocketlistsLogContext())
+                                    ->setItem($item)
+                                    ->setAttachment($attachment)
                             )
                         );
 
@@ -142,9 +143,9 @@ class pocketlistsItemAddAttachmentController extends waJsonController
                             'size' => $file->size,
 //                            'id'   => $attachment_id,
                         ];
-                    } else {
-                        $this->errors[] = sprintf(_w('Failed to upload file %s.'), $file->name);
                     }
+
+                    $this->errors[] = sprintf(_w('Failed to upload file %s.'), $file->name);
                 } else {
                     $this->errors[] = sprintf(_w('Failed to upload file %s.'), $file->name).' ('.$file->error.')';
                 }

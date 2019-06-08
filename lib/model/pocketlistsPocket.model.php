@@ -90,4 +90,18 @@ class pocketlistsPocketModel extends pocketlistsModel
             )
             ->fetchField('count_lists');
     }
+
+    /**
+     * @param $listId
+     *
+     * @return array
+     */
+    public function getByListId($listId)
+    {
+        $sql = "SELECT * FROM {$this->table} p JOIN pocketlists_list pl on pl.pocket_id = p.id AND pl.id = i:list_id";
+
+        $pocket = $this->query($sql, ['list_id' => $listId])->fetchAll();
+
+        return reset($pocket);
+    }
 }

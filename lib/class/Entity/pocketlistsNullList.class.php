@@ -20,4 +20,12 @@ class pocketlistsNullList extends pocketlistsList
     {
         return 'NULL list';
     }
+
+    /**
+     * @return pocketlistsPocket
+     */
+    public function getPocket()
+    {
+        return new pocketlistsPocket();
+    }
 }

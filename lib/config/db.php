@@ -1,10 +1,12 @@
 <?php
 return array(
     'pocketlists_attachment' => array(
+        'id' => array('int', 11, 'null' => 0, 'autoincrement' => 1),
         'item_id' => array('int', 11, 'null' => 0),
         'filename' => array('text'),
         'filetype' => array('enum', "'image'"),
         ':keys' => array(
+            'PRIMARY' => 'id',
             'item_id' => 'item_id',
         ),
     ),
@@ -114,16 +116,24 @@ return array(
     'pocketlists_log' => array(
         'id' => array('bigint', 20, 'null' => 0, 'autoincrement' => 1),
         'action' => array('varchar', 30, 'null' => 0),
-        'entity_id' => array('int', 11, 'null' => 0),
-        'entity_type' => array('varchar', 30, 'null' => 0),
+        'entity_type' => array('varchar', 30),
+        'contact_id' => array('int', 11),
+        'pocket_id' => array('int', 11),
+        'list_id' => array('int', 11),
+        'item_id' => array('int', 11),
+        'comment_id' => array('int', 11),
+        'attachment_id' => array('int', 11),
+        'location_id' => array('int', 11),
         'additional_id' => array('int', 11),
-        'data' => array('text'),
         'params' => array('text'),
         'created_datetime' => array('datetime'),
         ':keys' => array(
             'PRIMARY' => 'id',
-            'pocketlists_log_action' => array('action', 'unique' => 1),
-            'pocketlists_log_entity' => array('entity_id', 'entity_type', 'unique' => 1),
+            'pocketlists_log_action_index' => 'action',
+            'pocketlists_log_contact_id_index' => 'contact_id',
+            'pocketlists_log_item_id_index' => 'item_id',
+            'pocketlists_log_list_id_index_2' => 'list_id',
+            'pocketlists_log_pocket_id_index' => 'pocket_id',
         ),
     ),
     'pocketlists_notification' => array(

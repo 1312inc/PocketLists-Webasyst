@@ -30,7 +30,37 @@ class pocketlistsLog extends pocketlistsEntity
     /**
      * @var int
      */
-    private $entity_id;
+    private $pocket_id;
+
+    /**
+     * @var int
+     */
+    private $list_id;
+
+    /**
+     * @var int
+     */
+    private $item_id;
+
+    /**
+     * @var int
+     */
+    private $contact_id;
+
+    /**
+     * @var int
+     */
+    private $comment_id;
+
+    /**
+     * @var int
+     */
+    private $attachment_id;
+
+    /**
+     * @var int
+     */
+    private $location_id;
 
     /**
      * @var string
@@ -45,11 +75,6 @@ class pocketlistsLog extends pocketlistsEntity
     /**
      * @var array|null
      */
-    private $data;
-
-    /**
-     * @var array|null
-     */
     private $params;
 
     /**
@@ -58,14 +83,19 @@ class pocketlistsLog extends pocketlistsEntity
     private $created_datetime;
 
     /**
+     * @var pocketlistsLogContext
+     */
+    private $context;
+
+    /**
      * @param array $fields
      *
      * @return array|void
      */
     public function beforeExtract(array &$fields)
     {
-        if (array_key_exists('data', $fields)) {
-            $this->data = waUtils::jsonEncode($this->data);
+        if (empty($fields) || (!empty($fields) && array_key_exists('params', $fields))) {
+            $this->params = json_encode($this->params, JSON_UNESCAPED_UNICODE);
         }
     }
 
@@ -77,8 +107,8 @@ class pocketlistsLog extends pocketlistsEntity
      */
     public function afterHydrate($data = [])
     {
-        if (array_key_exists('data', $data)) {
-            $this->data = waUtils::jsonDecode($data['data']);
+        if (!empty($data) && array_key_exists('params', $data)) {
+            $this->params = json_decode($data['params'], true);
         }
     }
 
@@ -118,26 +148,6 @@ class pocketlistsLog extends pocketlistsEntity
     public function setAction($action)
     {
         $this->action = $action;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getEntityId()
-    {
-        return $this->entity_id;
-    }
-
-    /**
-     * @param int $entity_id
-     *
-     * @return pocketlistsLog
-     */
-    public function setEntityId($entity_id)
-    {
-        $this->entity_id = $entity_id;
 
         return $this;
     }
@@ -185,26 +195,6 @@ class pocketlistsLog extends pocketlistsEntity
     /**
      * @return array|null
      */
-    public function getData()
-    {
-        return $this->data;
-    }
-
-    /**
-     * @param array|null $data
-     *
-     * @return pocketlistsLog
-     */
-    public function setData($data)
-    {
-        $this->data = $data;
-
-        return $this;
-    }
-
-    /**
-     * @return array|null
-     */
     public function getParams()
     {
         return $this->params;
@@ -238,6 +228,169 @@ class pocketlistsLog extends pocketlistsEntity
     public function setCreatedDatetime($created_datetime)
     {
         $this->created_datetime = $created_datetime;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPocketId()
+    {
+        return $this->pocket_id;
+    }
+
+    /**
+     * @param int $pocket_id
+     *
+     * @return pocketlistsLog
+     */
+    public function setPocketId($pocket_id)
+    {
+        $this->pocket_id = $pocket_id;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getListId()
+    {
+        return $this->list_id;
+    }
+
+    /**
+     * @param int $list_id
+     *
+     * @return pocketlistsLog
+     */
+    public function setListId($list_id)
+    {
+        $this->list_id = $list_id;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getItemId()
+    {
+        return $this->item_id;
+    }
+
+    /**
+     * @param int $item_id
+     *
+     * @return pocketlistsLog
+     */
+    public function setItemId($item_id)
+    {
+        $this->item_id = $item_id;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getContactId()
+    {
+        return $this->contact_id;
+    }
+
+    /**
+     * @param int $contact_id
+     *
+     * @return pocketlistsLog
+     */
+    public function setContactId($contact_id)
+    {
+        $this->contact_id = $contact_id;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCommentId()
+    {
+        return $this->comment_id;
+    }
+
+    /**
+     * @param int $comment_id
+     *
+     * @return pocketlistsLog
+     */
+    public function setCommentId($comment_id)
+    {
+        $this->comment_id = $comment_id;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAttachmentId()
+    {
+        return $this->attachment_id;
+    }
+
+    /**
+     * @param int $attachment_id
+     *
+     * @return pocketlistsLog
+     */
+    public function setAttachmentId($attachment_id)
+    {
+        $this->attachment_id = $attachment_id;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLocationId()
+    {
+        return $this->location_id;
+    }
+
+    /**
+     * @param int $location_id
+     *
+     * @return pocketlistsLog
+     */
+    public function setLocationId($location_id)
+    {
+        $this->location_id = $location_id;
+
+        return $this;
+    }
+
+    /**
+     * @param pocketlistsLogContext $context
+     *
+     * @return $this
+     */
+    public function fillWithContext(pocketlistsLogContext $context)
+    {
+        $this->context = $context;
+
+        foreach ($this->context->getEntities() as $type => $entity) {
+            if (method_exists($entity, 'getId')) {
+                $this->{$type.'_id'} = $entity->getId();
+            }
+        }
+
+        $params = $this->context->getParams();
+        if (!empty($params)) {
+            $this->setParams(array_merge_recursive($this->getParams(), $params));
+        }
 
         return $this;
     }

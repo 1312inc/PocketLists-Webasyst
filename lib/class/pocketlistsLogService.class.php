@@ -7,6 +7,29 @@
 class pocketlistsLogService
 {
     /**
+     * @var pocketlistsLogFactory
+     */
+    private $factory;
+
+    /**
+     * pocketlistsLogService constructor.
+     *
+     * @throws waException
+     */
+    public function __construct()
+    {
+        $this->factory = pl2()->getEntityFactory(pocketlistsLog::class);
+    }
+
+    /**
+     * @return pocketlistsLogFactory
+     */
+    public function getFactory()
+    {
+        return $this->factory;
+    }
+
+    /**
      * @param pocketlistsLog $log
      *
      * @return bool|waDbResultUpdate|null
@@ -14,7 +37,8 @@ class pocketlistsLogService
      */
     public function add(pocketlistsLog $log)
     {
-        return pl2()->getEntityFactory(pocketlistsLog::class)->save($log);
+//        wa()->event('lodAdd', $log);
+        return $this->factory->save($log);
     }
 
     /**

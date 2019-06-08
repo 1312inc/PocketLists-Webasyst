@@ -10,6 +10,11 @@ class pocketlistsAttachment extends pocketlistsEntity
     /**
      * @var int
      */
+    private $id;
+
+    /**
+     * @var int
+     */
     private $item_id;
 
     /**
@@ -21,6 +26,31 @@ class pocketlistsAttachment extends pocketlistsEntity
      * @var string
      */
     private $filetype = '';
+
+    /**
+     * @var pocketlistsItem
+     */
+    private $item;
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return pocketlistsAttachment
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
 
     /**
      * @return int
@@ -80,5 +110,18 @@ class pocketlistsAttachment extends pocketlistsEntity
         $this->filetype = $filetype;
 
         return $this;
+    }
+
+    /**
+     * @return pocketlistsItem
+     * @throws waException
+     */
+    public function getItem()
+    {
+        if ($this->item === null && $this->item_id) {
+            $this->item = pl2()->getEntityFactory(pocketlistsItem::class)->findById($this->item_id);
+        }
+
+        return $this->item;
     }
 }

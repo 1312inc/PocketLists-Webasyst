@@ -452,8 +452,14 @@ class pocketlistsList extends pocketlistsItem
      */
     public function getPocket()
     {
-        if ($this->pocket) {
-            $this->setPocket(pl2()->getEntityFactory(pocketlistsPocket::class)->findById($this->getPocketId()));
+        if ($this->pocket === null) {
+            if ($this->getPocketId()) {
+                $pocket = pl2()->getEntityFactory(pocketlistsPocket::class)->findById($this->getPocketId());
+            } else {
+                $pocket = new pocketlistsPocket();
+            }
+
+            $this->setPocket($pocket);
         }
 
         return $this->pocket;

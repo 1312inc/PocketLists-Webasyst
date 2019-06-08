@@ -198,6 +198,11 @@ class pocketlistsItem extends pocketlistsEntity
     private $appLinks;
 
     /**
+     * @var pocketlistsPocket|null
+     */
+    private $pocket;
+
+    /**
      * @return pocketlistsComment[]
      * @throws waException
      */
@@ -1124,5 +1129,18 @@ class pocketlistsItem extends pocketlistsEntity
     public function getNoteParsed($encode = true)
     {
         return pocketlistsNaturalInput::matchLinks($this->getNote(), true);
+    }
+
+    /**
+     * @return pocketlistsPocket|null
+     * @throws waException
+     */
+    public function getPocket()
+    {
+        if ($this->pocket === null && $this->getListId()) {
+            $this->pocket = pl2()->getEntityFactory(pocketlistsPocket::class)->findByListId($this->getListId());
+        }
+
+        return $this->pocket;
     }
 }

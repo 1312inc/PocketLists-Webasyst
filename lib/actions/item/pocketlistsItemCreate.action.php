@@ -160,8 +160,12 @@ class pocketlistsItemCreateAction extends pocketlistsViewAction
                         );
                     }
 
-                    pl2()->getLogService()->add(
-                        pl2()->getEntityFactory(pocketlistsLog::class)->createNewAfterItemAdd($item)
+                    $this->logService->add(
+                        $this->logService->getFactory()->createNewAfterItemAdd(
+                            (new pocketlistsLogContext())
+                                ->setList($list)
+                                ->setItem($item)
+                        )
                     );
                 }
 
