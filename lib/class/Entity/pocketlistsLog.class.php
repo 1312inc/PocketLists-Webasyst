@@ -5,18 +5,19 @@
  */
 class pocketlistsLog extends pocketlistsEntity
 {
-    const ACTION_ADD            = 'add';
-    const ACTION_EDIT           = 'edit';
-    const ACTION_UPDATE         = 'update';
-    const ACTION_DELETE         = 'delete';
-    const ACTION_ATTACHMENT_ADD = 'attach';
-    const ACTION_ASSIGN         = 'assign';
+    const ACTION_ADD     = 'add';
+    const ACTION_EDIT    = 'edit';
+    const ACTION_UPDATE  = 'update';
+    const ACTION_DELETE  = 'delete';
+    const ACTION_ASSIGN  = 'assign';
+    const ACTION_ARCHIVE = 'archive';
 
-    const ENTITY_USER    = 'user';
-    const ENTITY_POCKET  = 'pocket';
-    const ENTITY_LIST    = 'list';
-    const ENTITY_ITEM    = 'item';
-    const ENTITY_COMMENT = 'comment';
+    const ENTITY_USER       = 'user';
+    const ENTITY_POCKET     = 'pocket';
+    const ENTITY_LIST       = 'list';
+    const ENTITY_ITEM       = 'item';
+    const ENTITY_COMMENT    = 'comment';
+    const ENTITY_ATTACHMENT = 'attachment';
 
     /**
      * @var int
@@ -390,7 +391,25 @@ class pocketlistsLog extends pocketlistsEntity
 
         $params = $this->context->getParams();
         if (!empty($params)) {
+            if (!is_array($this->getParams())) {
+                $this->params = [];
+            }
+
             $this->setParams(array_merge_recursive($this->getParams(), $params));
+        }
+
+        $additional = $context->getAdditional();
+        if ($additional) {
+            if (is_object($additional) && method_exists($additional, 'getId')) {
+                $this->additional_id = $additional->getId();
+            } else {
+                $this->additional_id = (int)$additional;
+            }
+        }
+
+        $action = $context->getAction();
+        if (!empty($action)) {
+            $this->setAction($action);
         }
 
         return $this;

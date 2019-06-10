@@ -21,6 +21,13 @@ class pocketlistsListArchiveController extends pocketlistsJsonController
         if ($updated) {
             $this->response = 'ok';
 
+            $this->logService->add(
+                $this->logService->getFactory()->createNewListLog(
+                    (new pocketlistsLogContext())->setList($list),
+                    pocketlistsLog::ACTION_ARCHIVE
+                )
+            );
+
             // log this action
             $this->logAction(
                 $list->isArchived() ? pocketlistsLogAction::LIST_ARCHIVED : pocketlistsLogAction::LIST_UNARCHIVED,

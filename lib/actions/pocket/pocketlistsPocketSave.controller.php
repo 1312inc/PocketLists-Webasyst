@@ -31,6 +31,13 @@ class pocketlistsPocketSaveController extends pocketlistsJsonController
 
                 return;
             }
+
+            $this->logService->add(
+                $this->logService->getFactory()->createNewPocketLog(
+                    (new pocketlistsLogContext())->setPocket($pocket),
+                    pocketlistsLog::ACTION_UPDATE
+                )
+            );
         } else {
             /** @var pocketlistsPocket $pocket */
             $pocket = $pocketFactory->createNew();
@@ -43,6 +50,13 @@ class pocketlistsPocketSaveController extends pocketlistsJsonController
                     wa()->getApp(),
                     pocketlistsRBAC::POCKET_ITEM.'.'.$pocket->getId(),
                     pocketlistsRBAC::RIGHT_ADMIN
+                );
+
+                $this->logService->add(
+                    $this->logService->getFactory()->createNewPocketLog(
+                        (new pocketlistsLogContext())->setPocket($pocket),
+                        pocketlistsLog::ACTION_ADD
+                    )
                 );
                 // todo: update access rights for others
             } else {

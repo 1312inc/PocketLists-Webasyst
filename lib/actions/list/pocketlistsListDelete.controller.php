@@ -10,10 +10,18 @@ class pocketlistsListDeleteController extends pocketlistsJsonController
      */
     public function execute()
     {
+        /** @var pocketlistsList $list */
         $list = $this->getList();
 
         if (pl2()->getEntityFactory(pocketlistsList::class)->delete($list)) {
             $this->response = 'ok';
+
+            $this->logService->add(
+                $this->logService->getFactory()->createNewAttachmentLog(
+                    (new pocketlistsLogContext())->setList($list),
+                    pocketlistsLog::ACTION_DELETE
+                )
+            );
 
             // log this action
             $this->logAction(pocketlistsLogAction::LIST_DELETED, ['list_name' => $list->getName()]);

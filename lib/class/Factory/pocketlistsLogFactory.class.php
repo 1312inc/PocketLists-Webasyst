@@ -21,12 +21,18 @@ class pocketlistsLogFactory extends pocketlistsFactory
      */
     public function createNewAfterItemAdd(pocketlistsLogContext $context)
     {
-        /** @var pocketlistsItem $item */
-        $item = $context->getEntity(pocketlistsLogContext::ITEM_ENTITY);
+        return $this->createNewItemLog($context, pocketlistsLog::ACTION_ADD);
+    }
 
-        return $this->createNewItemLog($item)
-            ->setAction(pocketlistsLog::ACTION_ADD)
-            ->fillWithContext($context);
+    /**
+     * @param pocketlistsLogContext $context
+     *
+     * @return pocketlistsLog
+     * @throws pocketlistsLogicException
+     */
+    public function createNewAfterItemAssign(pocketlistsLogContext $context)
+    {
+        return $this->createNewItemLog($context, pocketlistsLog::ACTION_ASSIGN);
     }
 
     /**
@@ -37,12 +43,7 @@ class pocketlistsLogFactory extends pocketlistsFactory
      */
     public function createNewAfterItemUpdate(pocketlistsLogContext $context)
     {
-        /** @var pocketlistsItem $item */
-        $item = $context->getEntity(pocketlistsLogContext::ITEM_ENTITY);
-
-        return $this->createNewItemLog($item)
-            ->setAction(pocketlistsLog::ACTION_UPDATE)
-            ->fillWithContext($context);
+        return $this->createNewItemLog($context, pocketlistsLog::ACTION_UPDATE);
     }
 
     /**
@@ -53,49 +54,21 @@ class pocketlistsLogFactory extends pocketlistsFactory
      */
     public function createNewAfterItemDelete(pocketlistsLogContext $context)
     {
-        /** @var pocketlistsItem $item */
-        $item = $context->getEntity(pocketlistsLogContext::ITEM_ENTITY);
-
-        return $this->createNewItemLog($item)
-            ->setAction(pocketlistsLog::ACTION_DELETE)
-            ->fillWithContext($context);
+        return $this->createNewItemLog($context, pocketlistsLog::ACTION_DELETE);
     }
 
     /**
      * @param pocketlistsLogContext $context
+     * @param string                $action
      *
      * @return pocketlistsLog
      * @throws pocketlistsLogicException
      */
-    public function createNewItemAttachmentAdd(pocketlistsLogContext $context)
+    public function createNewItemLog(pocketlistsLogContext $context, $action = pocketlistsLog::ACTION_ADD)
     {
         /** @var pocketlistsItem $item */
         $item = $context->getEntity(pocketlistsLogContext::ITEM_ENTITY);
 
-        /** @var pocketlistsAttachment $attachment */
-        $attachment = $context->getEntity(pocketlistsLogContext::ATTACHMENT_ENTITY);
-
-        $context->addParam(
-            [
-                'attachment' => [
-                    'filename' => $attachment->getFilename(),
-                    'type'     => $attachment->getFiletype(),
-                ],
-            ]
-        );
-
-        return $this->createNewItemLog($item)
-            ->setAction(pocketlistsLog::ACTION_ATTACHMENT_ADD)
-            ->fillWithContext($context);
-    }
-
-    /**
-     * @param pocketlistsItem $item
-     *
-     * @return pocketlistsLog
-     */
-    public function createNewItemLog(pocketlistsItem $item)
-    {
         $params = [
             'item' => [
                 'name' => $item->getName(),
@@ -106,7 +79,100 @@ class pocketlistsLogFactory extends pocketlistsFactory
             ->setEntityType(pocketlistsLog::ENTITY_ITEM)
             ->setCreatedDatetime(date('Y-m-d H:i:s'))
             ->setContactId(pl2()->getUser()->getId())
-            ->setParams($params);
+            ->setAction($action)
+            ->setParams($params)
+            ->fillWithContext($context);
+    }
+
+    /**
+     * @param pocketlistsLogContext $context
+     * @param string                $action
+     *
+     * @return pocketlistsLog
+     * @throws pocketlistsLogicException
+     */
+    public function createNewAttachmentLog(pocketlistsLogContext $context, $action = pocketlistsLog::ACTION_ADD)
+    {
+        /** @var pocketlistsItem $item */
+        $item = $context->getEntity(pocketlistsLogContext::ITEM_ENTITY);
+
+        /** @var pocketlistsAttachment $attachment */
+        $attachment = $context->getEntity(pocketlistsLogContext::ATTACHMENT_ENTITY);
+
+        $context->addParam(
+            [
+                'item'       => [
+                    'name' => $item->getName(),
+                ],
+                'attachment' => [
+                    'filename' => $attachment->getFilename(),
+                    'type'     => $attachment->getFiletype(),
+                ],
+            ]
+        );
+
+        return $this->createNew()
+            ->setEntityType(pocketlistsLog::ENTITY_ATTACHMENT)
+            ->setCreatedDatetime(date('Y-m-d H:i:s'))
+            ->setAction($action)
+            ->setContactId(pl2()->getUser()->getId())
+            ->fillWithContext($context);
+    }
+
+    /**
+     * @param pocketlistsLogContext $context
+     * @param string                $action
+     *
+     * @return pocketlistsLog
+     * @throws pocketlistsLogicException
+     */
+    public function createNewListLog(pocketlistsLogContext $context, $action = pocketlistsLog::ACTION_ADD)
+    {
+        /** @var pocketlistsList $list */
+        $list = $context->getEntity(pocketlistsLogContext::LIST_ENTITY);
+
+        $context->addParam(
+            [
+                'list' => [
+                    'name' => $list->getName(),
+                ],
+            ]
+        );
+
+        return $this->createNew()
+            ->setEntityType(pocketlistsLog::ENTITY_LIST)
+            ->setCreatedDatetime(date('Y-m-d H:i:s'))
+            ->setAction($action)
+            ->setContactId(pl2()->getUser()->getId())
+            ->fillWithContext($context);
+    }
+
+    /**
+     * @param pocketlistsLogContext $context
+     * @param string                $action
+     *
+     * @return pocketlistsLog
+     * @throws pocketlistsLogicException
+     */
+    public function createNewPocketLog(pocketlistsLogContext $context, $action = pocketlistsLog::ACTION_ADD)
+    {
+        /** @var pocketlistsPocket $pocket */
+        $pocket = $context->getEntity(pocketlistsLogContext::POCKET_ENTITY);
+
+        $context->addParam(
+            [
+                'pocket' => [
+                    'name' => $pocket->getName(),
+                ],
+            ]
+        );
+
+        return $this->createNew()
+            ->setEntityType(pocketlistsLog::ENTITY_POCKET)
+            ->setCreatedDatetime(date('Y-m-d H:i:s'))
+            ->setAction($action)
+            ->setContactId(pl2()->getUser()->getId())
+            ->fillWithContext($context);
     }
 
     /**

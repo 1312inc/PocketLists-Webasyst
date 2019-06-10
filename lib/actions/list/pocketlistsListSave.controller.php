@@ -37,6 +37,13 @@ class pocketlistsListSaveController extends pocketlistsJsonController
                 $list->setDueDatetime(waDateTime::format('humandatetime', $list->getDueDatetime()));
             }
 
+            $this->logService->add(
+                $this->logService->getFactory()->createNewListLog(
+                    (new pocketlistsLogContext())->setList($list),
+                    pocketlistsLog::ACTION_ADD
+                )
+            );
+
             $this->response = pl2()->getHydrator()->extract($list);
         } else {
             $this->errors = 'error while saving item';

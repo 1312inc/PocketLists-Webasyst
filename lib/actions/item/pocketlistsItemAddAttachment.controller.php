@@ -123,7 +123,7 @@ class pocketlistsItemAddAttachmentController extends pocketlistsJsonController
                         $attachmentFactory->insert($attachment);
 
                         $this->logService->add(
-                            $this->logService->getFactory()->createNewItemAttachmentAdd(
+                            $this->logService->getFactory()->createNewAttachmentLog(
                                 (new pocketlistsLogContext())
                                     ->setItem($item)
                                     ->setAttachment($attachment)
@@ -141,7 +141,7 @@ class pocketlistsItemAddAttachmentController extends pocketlistsJsonController
                             'name' => $file->name,
                             'type' => $file->type,
                             'size' => $file->size,
-//                            'id'   => $attachment_id,
+                            'id'   => $attachment->getId(),
                         ];
                     }
 

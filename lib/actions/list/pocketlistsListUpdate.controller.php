@@ -78,6 +78,13 @@ class pocketlistsListUpdateController extends pocketlistsJsonController
             );
 
             (new pocketlistsNotificationAboutNewList())->notifyAboutNewList($list);
+
+            $this->logService->add(
+                $this->logService->getFactory()->createNewListLog(
+                    (new pocketlistsLogContext())->setList($list),
+                    pocketlistsLog::ACTION_UPDATE
+                )
+            );
         }
 
         $this->response = ['id' => $list->getId()];

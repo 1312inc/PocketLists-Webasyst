@@ -38,6 +38,20 @@ class pocketlistsListMoveToController extends pocketlistsJsonController
         $list->setPocket($pocket);
         if (!pl2()->getEntityFactory(pocketlistsList::class)->update($list, ['pocket_id'])) {
             $this->setError(_w('List move error'));
+        } else {
+            $this->logService->add(
+                $this->logService->getFactory()->createNewListLog(
+                    (new pocketlistsLogContext())
+                        ->setList($list)
+                        ->setAdditional($pocket->getId())
+                        ->addParam(
+                            [
+                                'pocket' => ['name' => $pocket->getName()],
+                            ]
+                        ),
+                    pocketlistsLog::ACTION_UPDATE
+                )
+            );
         }
     }
 }

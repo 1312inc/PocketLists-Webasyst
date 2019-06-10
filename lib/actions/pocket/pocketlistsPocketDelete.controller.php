@@ -20,6 +20,17 @@ class pocketlistsPocketDeleteController extends pocketlistsJsonController
             throw new pocketlistsForbiddenException();
         }
 
-        $this->response = (int)pl2()->getEntityFactory(pocketlistsPocket::class)->delete($pocket);
+        if (pl2()->getEntityFactory(pocketlistsPocket::class)->delete($pocket)) {
+            $this->logService->add(
+                $this->logService->getFactory()->createNewPocketLog(
+                    (new pocketlistsLogContext())->setPocket($pocket),
+                    pocketlistsLog::ACTION_DELETE
+                )
+            );
+
+            $this->response = 1;
+        } else {
+            $this->response = 0;
+        }
     }
 }

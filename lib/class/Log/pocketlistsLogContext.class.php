@@ -54,6 +54,11 @@ class pocketlistsLogContext
     private $additional;
 
     /**
+     * @var string
+     */
+    private $action;
+
+    /**
      * @return int|pocketlistsEntity
      */
     public function getAdditional()
@@ -62,7 +67,7 @@ class pocketlistsLogContext
     }
 
     /**
-     * @param int|pocketlistsEntity $additional
+     * @param int|pocketlistsEntity|pocketlistsContact $additional
      *
      * @return pocketlistsLogContext
      */
@@ -167,7 +172,7 @@ class pocketlistsLogContext
      *
      * @return pocketlistsLogContext
      */
-    public function setPocket($pocket)
+    public function setPocket(pocketlistsPocket $pocket)
     {
         $this->pocket = $pocket;
 
@@ -188,7 +193,7 @@ class pocketlistsLogContext
      * @return pocketlistsLogContext
      * @throws waException
      */
-    public function setList($list)
+    public function setList(pocketlistsList $list)
     {
         if ($this->list === null) {
             $this->list = $list;
@@ -213,7 +218,7 @@ class pocketlistsLogContext
      * @return pocketlistsLogContext
      * @throws waException
      */
-    public function setItem($item)
+    public function setItem(pocketlistsItem $item)
     {
         if ($this->item === null) {
             $this->item = $item;
@@ -238,7 +243,7 @@ class pocketlistsLogContext
      * @return pocketlistsLogContext
      * @throws waException
      */
-    public function setComment($comment)
+    public function setComment(pocketlistsComment $comment)
     {
         if ($this->comment === null) {
             $this->comment = $comment;
@@ -263,7 +268,7 @@ class pocketlistsLogContext
      * @return pocketlistsLogContext
      * @throws waException
      */
-    public function setAttachment($attachment)
+    public function setAttachment(pocketlistsAttachment $attachment)
     {
         if ($this->attachment === null) {
             $this->attachment = $attachment;
@@ -287,9 +292,29 @@ class pocketlistsLogContext
      *
      * @return pocketlistsLogContext
      */
-    public function setLocation($location)
+    public function setLocation(pocketlistsLocation $location)
     {
         $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAction()
+    {
+        return $this->action;
+    }
+
+    /**
+     * @param string $action
+     *
+     * @return pocketlistsLogContext
+     */
+    public function setAction($action)
+    {
+        $this->action = $action;
 
         return $this;
     }

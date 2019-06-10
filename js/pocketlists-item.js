@@ -471,7 +471,9 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                         $.each(data.result.data.files, function (index, file) {
                             $attachments.find('ul').append('<li>' +
                                 '<a href="' + file.path + '/' + file.name + '" target="_blank">' + file.name + '</a> ' +
-                                '<a href="#" class="gray" data-pl-attachment-name="' + file.name + '" style="margin-left: 10px;" title="' + $_('Delete') + '" style="margin-left: 10px;">&times;</a>' +
+                                '<a href="#" class="gray" data-pl-attachment-id="' + file.id + '" ' +
+                                'data-pl-attachment-name="' + file.name + '" style="margin-left: 10px;" ' +
+                                'title="' + $_('Delete') + '" style="margin-left: 10px;">&times;</a>' +
                                 '</li>');
                         });
                     },
@@ -737,7 +739,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                         $wrapper.find('#pl-null-list-msg').show();
                     }
                 })
-                .on('click', '[data-pl-attachment-name]', function (e) {
+                .on('click', '[data-pl-attachment-id]', function (e) {
                     e.preventDefault();
 
                     if (!confirm($_('Are you sure you want to delete this file?'))) {
@@ -745,11 +747,11 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     }
 
                     var $this = $(this),
-                        attachment_name = $this.data('pl-attachment-name'),
+                        attachment_id = $this.data('pl-attachment-id'),
                         $w = $this.closest('li');
 
                     $.post(o.appUrl + '?module=item&action=deleteAttachment', {
-                        attachment: attachment_name,
+                        attachment: attachment_id,
                         item_id: itemId
                     }, function (r) {
                         if (r.status === 'ok') {
