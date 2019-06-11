@@ -17,8 +17,7 @@ class pocketlistsPocketModel extends pocketlistsModel
     {
         $where_ids = '';
         $accessed_pockets = [];
-        if ($contact_id) {
-            $accessed_pockets = pocketlistsRBAC::getAccessPocketForContact($contact_id);
+        if ($contact_id && ($accessed_pockets = pocketlistsRBAC::getAccessPocketForContact($contact_id))) {
             $where_ids = 'WHERE id IN (i:access_id)';
         }
 
