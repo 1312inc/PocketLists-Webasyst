@@ -18,7 +18,13 @@
 </main>
 
 <script>
+    'use strict';
     (function () {
+        new $.pocketlists.Comments($('[data-pl="comments"]'), {
+            lazy: true
+        });
+    }());
+    /*(function () {
         var request_in_action = false,
             $w = $('[data-pl="comments"]'),
             load_next_page = null,
@@ -172,5 +178,5 @@
             }
             prev_scroll_pos = scroll_pos;
         });
-    }());
+    }());*/
 </script>

@@ -19,11 +19,9 @@ class pocketlistsItemCommentsAction extends pocketlistsViewItemAction
 
             $this->view->assign(
                 [
-                    'current_user'         => pl2()->getUser(),
                     'item'                 => $item,
                     'pl2_attachments_path' =>
                         wa()->getDataUrl('attachments/'.$item->getId().'/', true, pocketlistsHelper::APP_ID),
-                    'plurl'                => wa()->getAppUrl(pocketlistsHelper::APP_ID),
                 ]
             );
         }

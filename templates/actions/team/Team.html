@@ -111,7 +111,6 @@
         {include '../../include/itemadd.html' assign_contact_photo=$current_teammate->getUserpic() inline}
     {/if}
     {include '../../include/itemdetails.html' inline}
-    {include '../../include/itemcomments.html' inline}
 </main>
 {/if}
 
@@ -136,6 +135,9 @@
             userHasLinkedApps: {$user->hasLinkedApps()},
             current_user_id: {$user->getContact()->getId()}
         });
+
+        new $.pocketlists.Comments($all_items_wrapper);
+
         $.pocketlists.setTitle('{$current_teammate->getName()|escape}');
 
         $('[data-pl="uho"]').on('click', '[data-pl-action="list-email"]', function (e) {

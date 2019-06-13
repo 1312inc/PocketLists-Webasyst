@@ -64,14 +64,15 @@
     {/if}
 
     {include '../../include/itemdetails.html' inline}
-    {include '../../include/itemcomments.html' inline}
 </main>
 {if !$print}
 <script type="text/javascript">
     (function(){
         $.pocketlists.initNotice('#pl-stream-notice');
 
-        new $.pocketlists.Items($('#pl-list-items'), {
+        var $all_items_wrapper = $('#pl-list-items');
+
+        new $.pocketlists.Items($all_items_wrapper, {
             enableAddLinkOnHover: false,
             enableChangeLevel: false,
             enableSortItems: false,
@@ -82,6 +83,8 @@
             userHasLinkedApps: {$user->hasLinkedApps()},
             current_user_id: {$user->getContact()->getId()}
         });
+
+        new $.pocketlists.Comments($all_items_wrapper);
 
         $.pocketlists.lazyItems({
             $loading: $('#pl-list-content .lazyloading'),

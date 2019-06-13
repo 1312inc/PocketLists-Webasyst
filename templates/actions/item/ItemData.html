@@ -100,6 +100,14 @@
             </div>
         {/foreach}
         </div>
+
+        <div class="pl-item-discussion" {if !$item->getCommentsCount()}style="display: none;"{/if}>
+            <div class="block double-padded">
+                {include './ItemComments.html' item=$item inline}
+            </div>
+        </div>
+
+
     </label>
     <div data-pl2-item-details class="pl-item-details"></div>
 

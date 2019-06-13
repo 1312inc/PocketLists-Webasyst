@@ -141,14 +141,12 @@ class pocketlistsListAction extends pocketlistsViewAction
 
         $this->view->assign(
             [
-                'backend_url'          => pl2()->getBackendUrl(true),
                 'print'                => waRequest::get('print', false),
                 'pocket'               => $pocket,
                 'list_access_contacts' => $list_access_contacts ?: [],
                 'fileupload'           => 1,
                 'user'                 => $this->user,
                 'list_icons'           => (new pocketlistsListIcon())->getAll(),            // get icons
-                'pl2_attachments_path' => wa()->getDataUrl('attachments/', true, pocketlistsHelper::APP_ID),
             ]
         );
     }

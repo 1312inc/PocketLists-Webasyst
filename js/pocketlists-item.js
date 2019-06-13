@@ -815,231 +815,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         };
     }
 
-    function InitItemComments($w) {
-        var id = 0,
-            $wrapper = $w;
-
-        var countComments = function () {
-            return $wrapper.find('[data-pl-comment-id]').length;
-        };
-
-        var updateCommentsCount = function () {
-            $list_items_wrapper.find('.pl-item-wrapper[data-id="' + id + '"] .pl-comment-count')
-                .addClass('pl-comment-count-show')
-                .html('<i class="icon16 pl comments"></i>' + countComments());
-        };
-
-        var addComment = function (data) {
-            if (request_in_action) {
-                return;
-            }
-            request_in_action = true;
-
-            var $this = $(this),
-                $reply_wrapper = $this.closest('.pl-reply'),
-                $userpic = $reply_wrapper.find('.icon16');
-
-            $userpic.hide();
-            $reply_wrapper.prepend($.pocketlists.$loading.css({
-                'margin-top': 1,
-                'margin-left': 12
-            }));
-            $.post(
-                o.appUrl + '?module=comment&action=add',
-                {
-                    item_id: id,
-                    comment: data.comment
-                },
-                function (html) {
-                    $.pocketlists.$loading.removeAttr('style').remove();
-                    $userpic.show();
-
-                    $wrapper.find('.pl-chat-contents').append(html);
-
-                    updateCommentsCount();
-
-                    $this.val('').trigger('focus');
-                    $.pocketlists.resizeTextarea($this);
-
-                    $.pocketlists.scrollToEl($wrapper.find('.pl-chat-contents [data-pl-comment-id]:last')[0]);
-
-                    $.pocketlists.sendNotifications(o.appUrl);
-
-                    request_in_action = false;
-                }
-            );
-        };
-
-        var deleteComment = function () {
-            if (!confirm($_('You are about to permanently delete this comment. Delete?'))) {
-                return;
-            }
-
-            if (request_in_action) {
-                return;
-            }
-            request_in_action = true;
-
-            var $this = $(this),
-                $comment_wrapper = $this.closest('[data-pl-comment-id]'),
-                comment_id = $comment_wrapper.data('pl-comment-id');
-
-            $.post(
-                o.appUrl + '?module=comment&action=delete',
-                {
-                    id: comment_id
-                },
-                function (r) {
-                    $.pocketlists.$loading.removeAttr('style').remove();
-                    if (r.status === 'ok') {
-                        $comment_wrapper.slideUp(200, function () {
-                            $comment_wrapper.remove();
-
-                            updateCommentsCount();
-                        });
-                    }
-                    request_in_action = false;
-                },
-                'json'
-            );
-        };
-
-        var hideItemComments = function () {
-            $wrapper.animate({
-                'right': '-300px'
-            }, 200, function () {
-                $wrapper.hide().empty()
-            });
-            id = 0;
-            $list_items_wrapper.trigger('deselectItem.pl2');
-        };
-
-        var showItemComments = function (id_item) {
-            if (request_in_action) {
-                return;
-            }
-            request_in_action = true;
-
-            id = id_item;
-            //$wrapper.html($.pocketlists.$loading).show();
-            $(window).scrollTop();
-            // o.list && o.list.list_details.isVisible() && o.list.list_details.$el.after($wrapper);
-            $wrapper.html($.pocketlists.$loading).show().animate({
-                'right': '0'
-            }, 200, function () {
-                o.list && o.list.list_details.isVisible() && o.list.list_details.trigger('hide.pl2');
-                $.pocketlists.stickyDetailsSidebar();
-            });
-            $.post(o.appUrl + '?module=item&action=comments', {id: id}, function (html) {
-                request_in_action = false;
-                $wrapper.html(html);
-                afterLoad();
-            });
-        };
-
-        var afterLoad = function () {
-            $.pocketlists.flexHack();
-            var $last_comment = $wrapper.find('.pl-chat-contents [data-pl-comment-id]:last');
-
-            if ($last_comment.length) {
-                $.pocketlists.scrollToEl($wrapper.find('.pl-chat-contents [data-pl-comment-id]:last')[0]);
-            }
-
-            setTimeout(function () {
-                $wrapper.find('.pl-chat .pl-reply textarea').trigger('focus');
-            }, 1);
-        };
-
-        var init = function () {
-            if ($wrapper.data('pl-ItemComments')) {
-                return;
-            }
-            $wrapper.data('pl-ItemComments', true);
-
-            //id = parseInt($wrapper.find('input[name="item\[id\]"]').val());
-            $wrapper
-                .on('click', '.pl-item-details-cancel', function (e) {
-                    e.preventDefault();
-
-                    hideItemComments();
-                })
-                .on('keydown', '.pl-chat .pl-reply textarea', function (e) {
-                    var $this = $(this);
-                    if (!e.shiftKey && e.which === 13) {
-                        e.preventDefault();
-                        var comment = $this.val().trim();
-                        if (comment) {
-                            addComment.call(this, {
-                                comment: comment
-                            });
-                        }
-                    } else if (e.which === 27) {
-                        // hideChatCommentInput();
-                        // deselectItem();
-                    }
-
-                    window.setTimeout(function () {
-                        $.pocketlists.resizeTextarea($this)
-                    }, 0);
-                })
-                .on('blur', '.pl-chat .pl-reply textarea', function (e) {
-                    var $this = $(this),
-                        comment = $this.val().trim();
-                    if (comment) {
-                        $this.addClass('pl-unsaved');
-                        if (!o.standAloneItemAdd) {
-                            $.pocketlists.enable_prevent_close_browser();
-                        }
-                    }
-                })
-                .on('focus', '.pl-chat .pl-reply textarea', function (e) {
-                    var $this = $(this);
-                    $this.removeClass('pl-unsaved');
-                    if (!o.standAloneItemAdd) {
-                        $.pocketlists.disable_prevent_close_browser();
-                    }
-                })
-                .on('click', '[data-pl-action="comment-delete"]', function (e) {
-                    e.preventDefault();
-
-                    deleteComment.call(this);
-                })
-                .on('click', '.pl-chat .pl-reply textarea', function (e) {
-                    e.preventDefault();
-
-                    selectItem($(this).closest(item_selector));
-                })
-                .on('show.pl2', function (e, id) {
-                    showItemComments(id);
-                })
-                .on('hide.pl2', hideItemComments)
-            ;
-
-            $(window).scroll(function () {
-                $.pocketlists.stickyDetailsSidebar();
-            });
-        };
-
-        var _getWrapper = function () {
-            return $wrapper;
-        };
-
-        init();
-
-        return {
-            getWrapper: _getWrapper,
-            trigger: function (event, data) {
-                this.getWrapper() && this.getWrapper().trigger(event, data);
-            },
-            isVisible: function () {
-                return this.getWrapper() ? this.getWrapper().is(':visible') : false;
-            }
-        };
-    }
-
     var ItemDetails = InitItemDetails($('#pl2-item-details'));
     var NewItemWrapper = InitNewItemWrapper($('[data-pl-item-add]'));
-    var ItemComments = InitItemComments($('#pl2-item-comments'));
         // todo: add wrapper around $.post $.get with request_in_action implementation
 
     // sortable items
@@ -1912,6 +1689,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         });
     }
 
+
     function init() {
         //if ($.pocketlists_routing.getHash() == '#/todo/' &&
         //    $.pocketlists_routing.getHash().indexOf('/team/') > 0) {
@@ -2029,7 +1807,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 e.preventDefault();
                 var $item = $(this).closest('.pl-item-wrapper[data-id]');
 
-                ItemComments.trigger('show.pl2', [parseInt($item.data('id'))])
+                $item.find('.pl-item-discussion').toggle();
             })
         ;
 
@@ -2053,7 +1831,6 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 //    break;
                 case 27: // esc
                     //($current_item.length && $current_item.find('.pl-chat').is(':visible')) && hideChatCommentInput();
-                    ItemComments.isVisible() && ItemComments.trigger('hide.pl2');
                     ItemDetails.isVisible() && ItemDetails.trigger('hide.pl2');
                     break;
             }

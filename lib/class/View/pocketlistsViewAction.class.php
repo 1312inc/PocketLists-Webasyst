@@ -44,6 +44,13 @@ abstract class pocketlistsViewAction extends waViewAction
                 throw new pocketlistsForbiddenException();
             }
 
+            $this->view->assign([
+                'backend_url'          => pl2()->getBackendUrl(true),
+                'plurl'                => wa()->getAppUrl(pocketlistsHelper::APP_ID),
+                'current_user'         => pl2()->getUser(),
+                'pl2_attachments_path' => wa()->getDataUrl('attachments/', true, pocketlistsHelper::APP_ID),
+            ]);
+
             $this->runAction($params);
         } catch (pocketlistsException $ex) {
             $this->view->assign(

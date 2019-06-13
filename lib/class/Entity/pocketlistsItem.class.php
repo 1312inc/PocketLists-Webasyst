@@ -208,10 +208,14 @@ class pocketlistsItem extends pocketlistsEntity
      */
     public function getComments()
     {
-        if ($this->comments === null && $this->getCommentsCount()) {
-            /** @var pocketlistsCommentFactory $commentFactory */
-            $commentFactory = pl2()->getEntityFactory(pocketlistsComment::class);
-            $this->comments = $commentFactory->findForItem($this);
+        if ($this->comments === null) {
+            if ($this->getCommentsCount()) {
+                /** @var pocketlistsCommentFactory $commentFactory */
+                $commentFactory = pl2()->getEntityFactory(pocketlistsComment::class);
+                $this->comments = $commentFactory->findForItem($this);
+            } else {
+                $this->comments = [];
+            }
         }
 
         return $this->comments;

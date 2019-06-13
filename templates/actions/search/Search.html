@@ -77,14 +77,15 @@
             </div>
 
             {include '../../include/itemdetails.html' inline}
-            {include '../../include/itemcomments.html' inline}
         </main>
     </main>
 
 </div>
 <script>
     (function () {
-        new $.pocketlists.Items($('#pl-list-items'), {
+        var $all_items_wrapper = $('#pl-list-items');
+
+        new $.pocketlists.Items($all_items_wrapper, {
             enableAddLinkOnHover: false,
             enableChangeLevel: false,
             enableSortItems: false,
@@ -94,6 +95,8 @@
             current_user_id: {$user->getContact()->getId()},
             fileUpload: {$fileupload}
         });
+
+        new $.pocketlists.Comments($all_items_wrapper);
 
         $.pocketlists.setTitle('{$term|default:'[`Search`]'|escape}');
     }());

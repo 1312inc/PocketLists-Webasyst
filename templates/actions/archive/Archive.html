@@ -72,25 +72,32 @@
                 <div class="clear-both"></div>
 
                 {include '../../include/archivelistdialog.html' inline}
-
                 {include '../../include/deletelistdialog.html' inline}
 
             </div>
 
             <script type="text/javascript">
-                new $.pocketlists.Items($('#pl-list-items'), {
-                    enableChangeLevel: false,
-                    archive: true,
-                    list: new $.pocketlists.List(
+                'use strict';
+                (function () {
+                    var $all_items_wrapper = $('#pl-list-items');
+
+                    new $.pocketlists.Items($all_items_wrapper, {
+                        enableChangeLevel: false,
+                        archive: true,
+                        list: new $.pocketlists.List(
                             $('.pl-list-title'),
                             {
                                 archive: true
                             }
-                    ),
-                    current_user_id: "{$user->getContact()->getId()}",
-                    userHasLinkedApps: {$user->hasLinkedApps()}
-                });
-                $.pocketlists.setTitle('{$list->getName()|escape}');
+                        ),
+                        current_user_id: "{$user->getContact()->getId()}",
+                        userHasLinkedApps: {$user->hasLinkedApps()}
+                    });
+
+                    new $.pocketlists.Comments($all_items_wrapper);
+
+                    $.pocketlists.setTitle('{$list->getName()|escape}');
+                }());
             </script>
 
 

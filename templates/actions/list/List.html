@@ -92,7 +92,6 @@
 
     {include '../../include/listdetails.html' list_access_contacts=$list_access_contacts inline}
     {include '../../include/itemdetails.html' inline}
-    {include '../../include/itemcomments.html' inline}
 </main>
 
 {if !$list->getId() && $print|default:0}
@@ -114,6 +113,9 @@
             current_user_id: {$user->getContact()->getId()},
             fileUpload: {$fileupload}
         });
+
+        new $.pocketlists.Comments($('#pl-list-items'));
+
         $.pocketlists.setTitle('{$list->getNameParsed()|default:'`New list`'|escape}');
 
         // {if $list->getId()}

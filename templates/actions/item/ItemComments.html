@@ -1,10 +1,4 @@
 <div class="pl-comments-form pl-chat" data-pl2-item-id="{$item->getId()}">
-    <div class="pl-chat-title">
-        <div class="block">
-            <a href="#" class="pl-item-details-cancel pl-close" title="[`Close`]">&times;</a>
-            <h5>{$item->getName()|escape}</h5>
-        </div>
-    </div>
     <div class="pl-chat-contents">
 
         {$wa->csrf()}
@@ -22,7 +16,5 @@
                alt="{$current_user->getContact()->getName()|escape}"></i>
             <textarea rows="1" placeholder="[`Add comment`]"></textarea>
         </div>
-    </div>
-    <div id="pl-chat-waapps-height-compensation">
     </div>
 </div>
