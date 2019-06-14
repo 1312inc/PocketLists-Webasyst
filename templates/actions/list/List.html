@@ -101,7 +101,9 @@
 <script type="text/javascript">
     'use strict';
     (function () {
-        new $.pocketlists.Items($('#pl-list-items'), {
+        var $list_wrapper = $('#pl-list-items');
+
+        new $.pocketlists.Items($list_wrapper, {
             enableChangeLevel: false,
             archive: {if $archive|default:0}true{else}false{/if},
             list: new $.pocketlists.List(
@@ -114,7 +116,7 @@
             fileUpload: {$fileupload}
         });
 
-        new $.pocketlists.Comments($('#pl-list-items'));
+        new $.pocketlists.Comments($list_wrapper);
 
         $.pocketlists.setTitle('{$list->getNameParsed()|default:'`New list`'|escape}');
 

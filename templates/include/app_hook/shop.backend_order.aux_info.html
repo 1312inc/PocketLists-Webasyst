@@ -87,6 +87,12 @@
             fileUpload: {$params.fileupload}
         });
 
+        new $.pocketlists.Comments($list_wrapper, {
+            standAloneItemAdd: true,
+            appUrl: '{$params.plurl}',
+            wa_url: '{$wa_url}'
+        });
+
         var order_id = parseInt($('#s-order-items [data-id]').data('id')),
             $order_list = $('#order-list');
 

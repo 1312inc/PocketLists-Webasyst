@@ -12,8 +12,8 @@
     </div>
     <div class="pl-chat-reply">
         <div class="pl-reply"{if $item->isDone()} style="display:none;"{/if}>
-            <i class="icon16 userpic20" style="background-image: url({$current_user->getContact()->getPhoto(20)})"
-               alt="{$current_user->getContact()->getName()|escape}"></i>
+            <i class="icon16 userpic20" style="background-image: url({$wa->user()->getPhoto(20)})"
+               alt="{$wa->user()->get('name')|escape}"></i>
             <textarea rows="1" placeholder="[`Add comment`]"></textarea>
         </div>
     </div>

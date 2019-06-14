@@ -30,17 +30,20 @@ class pocketlistsShopBackend_orderHandler extends waEventHandler
 
         $hasItems = pl2()->getModel(pocketlistsItemLink::class)->countLinkedItems('shop', 'order', $params['id']);
 
-        $viewParams = [
-            'wa_app_static_url' => wa()->getAppStaticUrl(pocketlistsHelper::APP_ID),
-            'app'               => $app,
-            'order'             => $params,
-            'plurl'             => wa()->getAppUrl(pocketlistsHelper::APP_ID),
-            'items_undone'      => [],
-            'items_done'        => [],
-            'count_done_items'  => 0,
-            'fileupload'        => 1,
-            'user'              => pl2()->getUser(),
-        ];
+        $viewParams = array_merge(
+            [
+                'wa_app_static_url' => wa()->getAppStaticUrl(pocketlistsHelper::APP_ID),
+                'app'               => $app,
+                'order'             => $params,
+                'plurl'             => wa()->getAppUrl(pocketlistsHelper::APP_ID),
+                'items_undone'      => [],
+                'items_done'        => [],
+                'count_done_items'  => 0,
+                'fileupload'        => 1,
+                'user'              => pl2()->getUser(),
+            ],
+            pl2()->getDefaultViewVars()
+        );
 
         if ($hasItems) {
             $items = pl2()

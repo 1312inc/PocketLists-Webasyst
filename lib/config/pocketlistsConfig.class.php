@@ -355,6 +355,19 @@ HTML;
         return $this->entityCounter;
     }
 
+    /**
+     * @return array
+     */
+    public function getDefaultViewVars()
+    {
+        return [
+            'backend_url'          => $this->getBackendUrl(true),
+            'plurl'                => wa()->getAppUrl(pocketlistsHelper::APP_ID),
+            'current_user'         => $this->getUser(),
+            'pl2_attachments_path' => wa()->getDataUrl('attachments/', true, pocketlistsHelper::APP_ID),
+        ];
+    }
+
     private function registerGlobal()
     {
         if (!function_exists('pl2')) {

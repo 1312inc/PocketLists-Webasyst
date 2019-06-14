@@ -7,6 +7,8 @@ $.pocketlists.Comments = function ($list_items_wrapper, options) {
         $loading = $w.find('.lazyloading'),
         o = $.extend({}, {
             lazy: false,
+            appUrl: '',
+            wa_url: '',
             standAloneItemAdd: false
         }, options);
 
@@ -47,7 +49,7 @@ $.pocketlists.Comments = function ($list_items_wrapper, options) {
             'margin-left': 12
         }));
         $.post(
-            '?module=comment&action=add',
+            o.appUrl + '?module=comment&action=add',
             {
                 item_id: item_id,
                 comment: $this.val().trim()
@@ -86,7 +88,7 @@ $.pocketlists.Comments = function ($list_items_wrapper, options) {
             item_id = $comment_wrapper.data('pl-item-id');
 
         $.post(
-            '?module=comment&action=delete',
+            o.appUrl + '?module=comment&action=delete',
             {
                 id: comment_id
             },
