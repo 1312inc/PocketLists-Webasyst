@@ -78,7 +78,7 @@
                     <option value="{$contact->getId()}" {if $assignUserId == $contact->getId()}selected="selected"{/if}>{$contact->getUsername()|escape|truncate:64}{if $contact->isMe()} ([`me`]){/if}</option>
                     {/foreach}
                 </select>
-                <p class="hint">[`The user will see this to-do in his Pocket Lists to-do stream and will be notified about this assignment by email.`]</p>
+                <p class="hint" style="display: none;" data-pl2-item-assign-hint>[`The user will see this to-do in his Pocket Lists to-do stream and will be notified about this assignment by email.`]</p>
             </div>
         </div>
         {/if}

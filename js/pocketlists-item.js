@@ -697,8 +697,10 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                             .show()
                             .siblings()
                             .hide();
+                        $wrapper.find('[data-pl2-item-assign-hint]').show();
                     } else {
-                        $wrapper.find('#pl-assigned-contact [data-pl-contact-id]').hide()
+                        $wrapper.find('#pl-assigned-contact [data-pl-contact-id]').hide();
+                        $wrapper.find('[data-pl2-item-assign-hint]').hide();
                     }
                 })
                 .on('change paste keyup', ':input', function () {
