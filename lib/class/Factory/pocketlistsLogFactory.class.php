@@ -197,16 +197,9 @@ class pocketlistsLogFactory extends pocketlistsFactory
         $item = $context->getEntity(pocketlistsLogContext::ITEM_ENTITY);
 
         $params = [
-            'item' => [
-                'name' => $item->getName(),
-            ],
+            pocketlistsLog::ENTITY_ITEM => ['name' => $item->getName()],
+            pocketlistsLog::ENTITY_COMMENT => ['comment' => $comment->getComment()]
         ];
-
-        if ($action === pocketlistsLog::ACTION_ADD) {
-            $params['comment'] = [
-                'comment' => $comment->getComment(),
-            ];
-        }
 
         return $this->createNew()
             ->setEntityType(pocketlistsLog::ENTITY_COMMENT)
