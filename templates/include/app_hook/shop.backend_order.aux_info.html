@@ -99,7 +99,11 @@
         $(document)
             .off('item_delete.pl2 item_add.pl2 item_complete.pl2 item_move.pl2 item_update.pl2')
             .on('item_delete.pl2 item_add.pl2 item_complete.pl2 item_move.pl2 item_update.pl2', function (e, data) {
+                console.log('pl2 item captured', e.type, data);
+
                 $.post('{$params.plurl}?module=shop&action=loadOrderIcon', { order: order_id }, function (r) {
+                    console.log('pl2 item loadOrderIcon response', r);
+
                     if (r.status === 'ok' && r.data) {
                         var $order = $order_list.find('[data-order-id='+r.data.entity_id+']');
 
