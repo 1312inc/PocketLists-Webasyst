@@ -17,9 +17,10 @@ class pocketlistsListDeleteController extends pocketlistsJsonController
             $this->response = 'ok';
 
             $this->logService->add(
-                $this->logService->getFactory()->createNewAttachmentLog(
-                    (new pocketlistsLogContext())->setList($list),
-                    pocketlistsLog::ACTION_DELETE
+                $this->logService->getFactory()->createNewListLog(
+                    (new pocketlistsLogContext())
+                        ->setList($list)
+                        ->setAction(pocketlistsLog::ACTION_DELETE)
                 )
             );
 
