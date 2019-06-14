@@ -60,12 +60,12 @@ class pocketlistsNotificationAboutNewAssign extends pocketlistsBaseNotification
                         ? waDateTime::format(
                             'humandatetime',
                             $item->getDueDatetime(),
-                            $contact->getContact()->getTimezone()
+                            new DateTimeZone($contact->getContact()->getTimezone())
                         )
                         : ($item->getDueDate() ? waDateTime::format(
                             'humandate',
                             $item->getDueDate(),
-                            $contact->getContact()->getTimezone()
+                            new DateTimeZone($contact->getContact()->getTimezone())
                         ) : false),
                     'by_username' => $by_username->getName(),
                     'list'        => $list ? [

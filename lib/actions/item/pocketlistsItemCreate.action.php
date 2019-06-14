@@ -45,6 +45,8 @@ class pocketlistsItemCreateAction extends pocketlistsViewAction
             $list = $list_id ? $listFactory->findById($list_id) : $listFactory->createNewNullList();
 
             foreach ($data as $i => $d) {
+                pocketlistsHelper::getDueDatetime($d);
+
                 /** @var pocketlistsItem $item */
                 $item = $itemFactory->createNew();
                 $item = pl2()->getHydrator()->hydrate($item, $d);

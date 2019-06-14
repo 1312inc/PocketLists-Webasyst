@@ -27,9 +27,10 @@ class pocketlistsItemCompleteController extends pocketlistsComplete
             }
 
             $this->logService->add(
-                $this->logService->getFactory()->createNewAfterItemUpdate(
+                $this->logService->getFactory()->createNewItemLog(
                     (new pocketlistsLogContext())
                         ->setItem($complete_item)
+                        ->setAction(pocketlistsLog::ACTION_COMPLETE)
                         ->setParams([pocketlistsLogContext::ITEM_ENTITY => ['complete' => $status]])
                 )
             );

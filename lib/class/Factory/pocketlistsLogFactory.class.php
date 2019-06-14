@@ -18,9 +18,12 @@ class pocketlistsLogFactory extends pocketlistsFactory
      *
      * @return pocketlistsLog
      * @throws pocketlistsLogicException
+     * @throws waException
      */
     public function createNewAfterItemAdd(pocketlistsLogContext $context)
     {
+        $this->updateContextWithItemData($context);
+
         return $this->createNewItemLog($context, pocketlistsLog::ACTION_ADD);
     }
 
@@ -40,9 +43,12 @@ class pocketlistsLogFactory extends pocketlistsFactory
      *
      * @return pocketlistsLog
      * @throws pocketlistsLogicException
+     * @throws waException
      */
     public function createNewAfterItemUpdate(pocketlistsLogContext $context)
     {
+        $this->updateContextWithItemData($context);
+
         return $this->createNewItemLog($context, pocketlistsLog::ACTION_UPDATE);
     }
 
@@ -133,7 +139,7 @@ class pocketlistsLogFactory extends pocketlistsFactory
 
         $context->addParam(
             [
-                'list' => [
+                pocketlistsLog::ENTITY_LIST => [
                     'name' => $list->getName(),
                 ],
             ]
@@ -209,5 +215,42 @@ class pocketlistsLogFactory extends pocketlistsFactory
             ->setContactId(pl2()->getUser()->getId())
             ->setParams($params)
             ->fillWithContext($context);
+    }
+
+    /**
+     * @param pocketlistsLogContext $context
+     *
+     * @throws pocketlistsLogicException
+     * @throws waException
+     */
+    private function updateContextWithItemData(pocketlistsLogContext $context)
+    {
+        /** @var pocketlistsItem $item */
+        $item = $context->getEntity(pocketlistsLogContext::ITEM_ENTITY);
+
+        $itemData = pl2()->getHydrator()->extract(
+            $item,
+            [
+                'status',
+                'priority',
+                'calc_priority',
+                'create_datetime',
+                'due_date',
+                'due_datetime',
+                'location_id',
+                'assigned_contact_id',
+                'repeat',
+            ]
+        );
+        if ($item->getAppLinksCount()) {
+            foreach ($item->getAppLinks() as $link) {
+                $itemData['itemlinks'][] = pl2()->getHydrator()->extract(
+                    $link,
+                    ['id', 'item_id', 'app', 'entity_type', 'entity_id']
+                );
+            }
+        }
+
+        $context->addParam([pocketlistsLog::ENTITY_ITEM => $itemData]);
     }
 }

@@ -247,6 +247,14 @@ class pocketlistsItem extends pocketlistsEntity
     }
 
     /**
+     * @return int
+     */
+    public function getAppLinksCount()
+    {
+        return is_array($this->appLinks) ? count($this->appLinks) : 0;
+    }
+
+    /**
      * @param pocketlistsItemLink[] $appLinks
      *
      * @return pocketlistsItem

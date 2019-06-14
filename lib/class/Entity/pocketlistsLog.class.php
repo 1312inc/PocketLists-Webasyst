@@ -11,6 +11,7 @@ class pocketlistsLog extends pocketlistsEntity
     const ACTION_DELETE  = 'delete';
     const ACTION_ASSIGN  = 'assign';
     const ACTION_ARCHIVE = 'archive';
+    const ACTION_COMPLETE = 'complete';
 
     const ENTITY_USER       = 'user';
     const ENTITY_POCKET     = 'pocket';

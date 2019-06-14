@@ -154,7 +154,7 @@ class pocketlistsLogContext
      */
     public function addParam(array $param)
     {
-        $this->params = array_merge($this->params, $param);
+        $this->params = array_merge_recursive($this->params, $param);
 
         return $this;
     }
