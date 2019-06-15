@@ -357,7 +357,7 @@ class pocketlistsListModel extends pocketlistsModel
     public function getByTerm($term, &$found = 0)
     {
         $available_lists = pocketlistsRBAC::getAccessListForContact();
-        $accessed_lists = $available_lists ? ' AND l.id IN (i:list_ids)' : ' AND l.id IS NULL';
+        $accessed_lists = $available_lists ? 'l.id IN (i:list_ids)' : 'l.id IS NULL';
 
         $sql = "SELECT SQL_CALC_FOUND_ROWS
                        i.*,
@@ -372,7 +372,6 @@ class pocketlistsListModel extends pocketlistsModel
                    JOIN pocketlists_item i ON i.key_list_id = l.id
                    left join pocketlists_item i2 ON i2.status = 0 and i2.list_id = l.id
                 WHERE 
-                l.archived = 0
                 {$accessed_lists}
                 and lower(concat(ifnull(i.name,''),'|',ifnull(i.note,''))) like s:term
                 GROUP BY l.id

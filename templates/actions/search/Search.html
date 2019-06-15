@@ -13,8 +13,12 @@
             {if !empty($lists)}
                 <ul class="pl-lists" data-pl2-wrapper="lists">
                     {foreach $lists as $l}
-                        <li data-pl-list-id="{$l->getId()}">
-                            <a href="#/pocket/{$l->getPocketId()}/list/{$l->getId()}/" title="{$l->getName()|escape}">
+                        <li data-pl-list-id="{$l->getId()}" {if $l->isArchived()}class="highlighted"{/if}>
+                            {$url = '/pocket/'|cat:$l->getPocketId()|cat:'/list/'|cat:{$l->getId()}}
+                            {if $l->isArchived()}
+                            {$url = '/archive/'|cat:{$l->getId()}}
+                            {/if}
+                            <a href="#{$url}/" title="{$l->getName()|escape}">
                                 <span class="count {$l->getCssClass(pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}">{$l->getItemsCount()}</span>
                                 <i class="listicon36"
                                    style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l->getIcon()|default:'li-list@2x.png'});"></i>
