@@ -671,3 +671,8 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 .search-results #pl-complete-log { display: block;}
 .search-results #pl-complete-log ul.menu-v { margin-top: 10px; }
 .search-results #pl-complete-log-link { display: none;}
+
+
+.pl2-shop-link-action_link {
+    transition:background 1s;
+}

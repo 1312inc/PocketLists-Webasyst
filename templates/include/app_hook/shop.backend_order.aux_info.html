@@ -51,7 +51,12 @@
             e.preventDefault();
 
             $.storage.set('pocketlists/apps/hide-pl2ss-by-default', 1);
-            $list_wrapper.slideUp(200);
+            $list_wrapper.slideUp(200, function() {
+                $('[data-pl2-action="show-add-item"]').css('background', 'greenyellow');
+                setTimeout(function () {
+                    $('[data-pl2-action="show-add-item"]').css('background', '')
+                }, 1000);
+            });
         });
 
         if (!canShow()) {
