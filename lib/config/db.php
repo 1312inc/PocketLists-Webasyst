@@ -126,7 +126,7 @@ return array(
         'location_id' => array('int', 11),
         'additional_id' => array('int', 11),
         'params' => array('text'),
-        'created_datetime' => array('datetime'),
+        'create_datetime' => array('datetime'),
         ':keys' => array(
             'PRIMARY' => 'id',
             'pocketlists_log_action_index' => 'action',

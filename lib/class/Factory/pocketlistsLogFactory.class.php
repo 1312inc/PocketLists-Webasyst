@@ -83,7 +83,7 @@ class pocketlistsLogFactory extends pocketlistsFactory
 
         return $this->createNew()
             ->setEntityType(pocketlistsLog::ENTITY_ITEM)
-            ->setCreatedDatetime(date('Y-m-d H:i:s'))
+            ->setCreateDatetime(date('Y-m-d H:i:s'))
             ->setContactId(pl2()->getUser()->getId())
             ->setAction($action)
             ->setParams($params)
@@ -119,7 +119,7 @@ class pocketlistsLogFactory extends pocketlistsFactory
 
         return $this->createNew()
             ->setEntityType(pocketlistsLog::ENTITY_ATTACHMENT)
-            ->setCreatedDatetime(date('Y-m-d H:i:s'))
+            ->setCreateDatetime(date('Y-m-d H:i:s'))
             ->setAction($action)
             ->setContactId(pl2()->getUser()->getId())
             ->fillWithContext($context);
@@ -147,7 +147,7 @@ class pocketlistsLogFactory extends pocketlistsFactory
 
         return $this->createNew()
             ->setEntityType(pocketlistsLog::ENTITY_LIST)
-            ->setCreatedDatetime(date('Y-m-d H:i:s'))
+            ->setCreateDatetime(date('Y-m-d H:i:s'))
             ->setAction($action)
             ->setContactId(pl2()->getUser()->getId())
             ->fillWithContext($context);
@@ -175,7 +175,7 @@ class pocketlistsLogFactory extends pocketlistsFactory
 
         return $this->createNew()
             ->setEntityType(pocketlistsLog::ENTITY_POCKET)
-            ->setCreatedDatetime(date('Y-m-d H:i:s'))
+            ->setCreateDatetime(date('Y-m-d H:i:s'))
             ->setAction($action)
             ->setContactId(pl2()->getUser()->getId())
             ->fillWithContext($context);
@@ -203,7 +203,7 @@ class pocketlistsLogFactory extends pocketlistsFactory
 
         return $this->createNew()
             ->setEntityType(pocketlistsLog::ENTITY_COMMENT)
-            ->setCreatedDatetime(date('Y-m-d H:i:s'))
+            ->setCreateDatetime(date('Y-m-d H:i:s'))
             ->setAction($action)
             ->setContactId(pl2()->getUser()->getId())
             ->setParams($params)

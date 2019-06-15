@@ -7,8 +7,7 @@ try {
 } catch (waException $ex) {
     $m->exec('create table pocketlists_log
         (
-            id               bigint auto_increment
-                primary key,
+            id               bigint auto_increment primary key,
             action           varchar(30) not null,
             entity_type      varchar(30) null,
             contact_id       int         null,
@@ -20,7 +19,7 @@ try {
             location_id      int         null,
             additional_id    int         null,
             params           text        null,
-            created_datetime datetime    null
+            create_datetime  datetime    null
         )');
     $m->exec('create index pocketlists_log_action_index on pocketlists_log (action)');
     $m->exec('create index pocketlists_log_contact_id_index on pocketlists_log (contact_id)');
