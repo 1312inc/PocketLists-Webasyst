@@ -138,6 +138,14 @@ class pocketlistsItemDataAction extends pocketlistsViewItemAction
                 $this->logService->add(
                     $this->logService->getFactory()->createNewAfterItemAdd($context)
                 );
+
+                $this->logAction(
+                    pocketlistsLogAction::NEW_ITEM,
+                    [
+                        'item_id' => $item->getName(),
+                        'list_id' => $item->getList()->getId(),
+                    ]
+                );
             } else {
                 $this->logService->add(
                     $this->logService->getFactory()->createNewAfterItemUpdate($context)
