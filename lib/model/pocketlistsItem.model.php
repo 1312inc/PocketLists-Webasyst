@@ -895,9 +895,9 @@ class pocketlistsItemModel extends pocketlistsModel
         }
 
         if ($dateBounds) {
-            if (isset($dateBounds[1])) {
+            if (!empty($dateBounds[1])) {
                 $query['where']['and'][] = '((i.status = 0 AND (i.due_date BETWEEN s:date AND s:date2 OR DATE(i.due_datetime) BETWEEN s:date AND s:date2)) OR (i.status > 0 AND DATE(i.complete_datetime) BETWEEN s:date AND s:date2)) /* with due date or completed this day */';
-            } elseif (isset($dateBounds[0])) {
+            } elseif (!empty($dateBounds[0])) {
                 $query['where']['and'][] = '((i.status = 0 AND (i.due_date = s:date OR DATE(i.due_datetime) = s:date)) OR (i.status > 0 AND DATE(i.complete_datetime) = s:date)) /* with due date or completed this day */';
             }
         }
@@ -995,13 +995,13 @@ class pocketlistsItemModel extends pocketlistsModel
                 'app'             => $app,
                 'type'            => $entity_type,
                 'entity_id'       => $entity_id,
-                'date'            => isset($dateBounds[0]) ? $dateBounds[0] : '',
-                'date2'           => isset($dateBounds[1]) ? $dateBounds[1] : '',
-                'status'          => $status,
+                'date'            => !empty($dateBounds[0]) ? $dateBounds[0] : '',
+                'date2'           => !empty($dateBounds[1]) ? $dateBounds[1] : '',
+                'status'          => (int)$status,
             ]
         )->fetchAll();
 
-        return $items;
+        return $items ?: [];
     }
 
     /**
