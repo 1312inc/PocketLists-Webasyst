@@ -18,7 +18,9 @@
 
     <div class="pl-items">
         <header class="pl-list-title pl-title">
+            {if !$print}
             <input type="hidden" name="pocket_id" value="{$pocket->getId()}">
+            {/if}
 
             {if !$new && !$archive}
                 <div class="float-right">
