@@ -1044,7 +1044,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     updateListCountBadge();
                 }
 
-                $(document).trigger('item_update.pl2', r.data);
+                $(document).trigger('item_update.pl2');
             }
             $.isFunction(callback) && callback.call();
         };
