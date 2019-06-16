@@ -24,13 +24,13 @@
     <ul class="menu-v with-icons">
         <li data-pl-sidebar="todo">
             {if $sidebar_todo_count}<span class="count">{$sidebar_todo_count}</span>{/if}
-            {if $sidebar_todo_count_icon}<span class="count bold  {pocketlistsViewHelper::getPriorityCssClass($sidebar_todo_count_icon->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}">{$sidebar_todo_count_icon->getCountMaxPriority()}</span>{/if}
+            {if $sidebar_todo_count_icon && $sidebar_todo_count_icon->getMaxPriority() > 0}<span class="count bold  {pocketlistsViewHelper::getPriorityCssClass($sidebar_todo_count_icon->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}">{$sidebar_todo_count_icon->getCountMaxPriority()}</span>{/if}
             <a href="#/todo/"><i class="icon16 pl todo"></i>[`My to-dos`]</a>
         </li>
         <li>
             <span class="count" data-pl-sidebar="favorites-count">{$favorites_count_undone->getCount()}</span>
 
-            {if $favorites_count_undone->getCountMaxPriority()}
+            {if $favorites_count_undone->getCountMaxPriority() && $favorites_count_undone->getMaxPriority() > 0}
                 <span class="count bold {pocketlistsViewHelper::getPriorityCssClass($favorites_count_undone->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}">
                     {$favorites_count_undone->getCountMaxPriority()}
                 </span>
@@ -41,7 +41,7 @@
         {foreach $linkedApps as $app}
         <li>
             <span class="count">{$app->countItems()->getCount()}</span>
-            {if $app->countItems()->getCountMaxPriority()}
+            {if $app->countItems()->getCountMaxPriority() && $app->countItems()->getMaxPriority() > 0}
                 <span class="count bold {pocketlistsViewHelper::getPriorityCssClass($app->countItems()->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}">
                     {$app->countItems()->getCountMaxPriority()}
                 </span>
