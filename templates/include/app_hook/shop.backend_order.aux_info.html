@@ -52,10 +52,10 @@
 
             $.storage.set('pocketlists/apps/hide-pl2ss-by-default', 1);
             $list_wrapper.slideUp(200, function() {
-                $('[data-pl2-action="show-add-item"]').css('background', 'greenyellow');
+                $('[data-pl2-action="show-add-item"]').find('span').css('background', 'greenyellow');
                 setTimeout(function () {
-                    $('[data-pl2-action="show-add-item"]').css('background', '')
-                }, 1000);
+                    $('[data-pl2-action="show-add-item"]').find('span').css('background', 'white');
+                }, 1312);
             });
         });
 

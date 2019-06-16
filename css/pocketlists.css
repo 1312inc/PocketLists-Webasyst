@@ -525,28 +525,18 @@ input.pl-due-date-input { width: 130px !important; min-width: 130px !important; 
 .pl-chat .userpic20 { margin-left: 14px; margin-top: 1px; }
 .pl-chat .pl-reply-link { float: right; margin: 0 10px 5px; }
 .pl-chat .pl-reply { margin-top: 20px; margin-left: 15%; width: 85%; margin-bottom: 30px; }
-.pl-chat .pl-reply textarea { border-radius: 18px; padding-left: 10px; }
+.pl-chat .pl-reply textarea { border-radius: 18px; padding-left: 10px; font-weight: normal; width: 75%; }
 .pl-chat .pl-reply .userpic20 { margin-top: 1px; }
 .pl-chat .pl-delete-comment { color: #579; float: right; font-size: 1.2em; position: relative; top: -2px; right: 3px; text-decoration: none !important; }
 .pl-chat .pl-cue.pl-new-comment .pl-bubble { background: #ffd; }
 .pl-chat .pl-cue.pl-new-comment .pl-bubble-arrow { border-top-color: #ffd; }
 .pl-chat .pl-cue .pl-label { position: relative; top: -1px; }
 
-.pl-details.pl-item-discussion { width: 420px;  }
-.pl-details.pl-item-discussion .pl-comments-form { flex: 1; display: flex; flex-direction: column; height: 100%; max-height: 100vh; }
-
-.pl-details .pl-comments-form .pl-chat-title { flex: 0 0 40px; }
-.pl-details .pl-comments-form .pl-chat-title h5 { font-size: 1.3em; color: #555; margin-left: 4px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
-.pl-details .pl-comments-form .pl-chat-contents { flex: 1; padding: 0 15px; overflow-y: scroll; }
-.pl-details .pl-comments-form .pl-chat-reply { flex: 0 0 60px; }
-.pl-details .pl-comments-form #pl-chat-waapps-height-compensation { flex: 0 0 90px; background: white; display: none; }
-.pl-details .pl-chat .pl-reply {  margin-bottom: 20px; margin-left: 0; width: 100%; }
-.pl-details .pl-chat textarea { font-size: 0.95em; }
-.pl-details .pl-chat .pl-cue { margin-bottom: 13px; }
-.pl-details .pl-chat .pl-cue .pl-cue-inner { font-size: 0.95em; }
-.pl-details .pl-chat .pl-cue .pl-bubble { padding: 7px 13px; }
-.pl-details.sticky .pl-comments-form #pl-chat-waapps-height-compensation { display: none !important; }
-
+.pl-item-discussion { margin-left: 40%; padding: 20px 0; min-width: 300px; }
+.pl-item-discussion .pl-chat .pl-cue { font-size: 13px; }
+.pl-item-discussion .pl-chat .pl-cue .pl-bubble { padding: 7px 11px; border-radius: 13px; }
+.pl-item-discussion .pl-chat .pl-reply { margin-bottom: 10px; }
+.pl-item-discussion .pl-chat .pl-reply textarea { font-size: 13px; min-width: 130px; }
 
 /* Custom 16x16 icons
 --------------------- */
@@ -644,10 +634,9 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
     .pl-details input.long { min-width: 200px !important; width: 200px !important; }
     .pl-details textarea { min-width: 250px !important; }
     .pl-details { width: 220px; }
-    .pl-details.pl-item-discussion { width: 320px;  }
     .pl-details.sticky { width: 230px; }
-    .pl-details.sticky.pl-item-discussion { width: 330px;  }
-    .s-order .pl-details .pl-chat-reply { width: 320px; }
+
+    .pl-item-discussion { margin-left: auto; }
 
     .pl-details-form .field .name { float: none; padding-bottom: 5px; }
     .pl-details-form .fields.form .field .value { margin-left: 0 !important; }
@@ -671,8 +660,3 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 .search-results #pl-complete-log { display: block;}
 .search-results #pl-complete-log ul.menu-v { margin-top: 10px; }
 .search-results #pl-complete-log-link { display: none;}
-
-
-.pl2-shop-link-action_link {
-    transition:background 1s;
-}
