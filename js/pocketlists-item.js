@@ -692,7 +692,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 .on('change', '#pl-assigned-contact select', function () {
                     var assigned_contact_id = parseInt($(this).val());
 
-                    if (assigned_contact_id) {
+                    if (assigned_contact_id && assigned_contact_id != o.current_user_id) {
                         $wrapper.find('#pl-assigned-contact [data-pl-contact-id="' + assigned_contact_id + '"]')
                             .show()
                             .siblings()
