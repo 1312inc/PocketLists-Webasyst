@@ -1,4 +1,4 @@
-{if !$list->getId() && $print|default:0}
+{if $print|default:0}
 <html>
 <head>
     <title>{$list->getNameParsed()} &mdash; {$wa->accountName()}</title>
@@ -96,7 +96,7 @@
     {include '../../include/itemdetails.html' inline}
 </main>
 
-{if !$list->getId() && $print|default:0}
+{if $print|default:0}
 </body>
 </html>
 {else}
