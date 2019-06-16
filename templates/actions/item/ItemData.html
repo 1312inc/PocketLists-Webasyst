@@ -102,9 +102,7 @@
         </div>
 
         <div class="pl-item-discussion" {if !$item->getCommentsCount()}style="display: none;"{/if}>
-            <div class="block double-padded">
-                {include './ItemComments.html' item=$item inline}
-            </div>
+            {include './ItemComments.html' item=$item inline}
         </div>
 
 
