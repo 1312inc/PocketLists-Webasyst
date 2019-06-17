@@ -1585,6 +1585,9 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 return false;
             },
             select: function (event, ui) {
+                event.preventDefault();
+                event.stopPropagation();
+
                 var linked = $textarea.data('pl2-linked-entities') || {},
                     link = ui.item.data,
                     hash = link.model.app + link.model.entity_type + link.model.entity_id;
