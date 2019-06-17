@@ -10,11 +10,19 @@
 </div>
 {/if}
 
-
-
 {if !empty($teammates)}
 
 {if !$print}
+
+{if $external}
+<script type="text/javascript" src="{$wa_app_static_url}js/pocketlists.js?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
+<script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-item.js?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
+<script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-comment.js?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
+<script type="text/javascript" src="{$wa_url}wa-content/js/jquery-plugins/jquery.store.js"></script>
+<script type="text/javascript" src="{$wa_url}wa-content/js/jquery-wa/jquery.autocomplete.js"></script>
+<link type="text/css" rel="stylesheet" href="{$wa_app_static_url}css/pocketlists.css?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}">
+{/if}
+
 <!-- TEAM -->
 <nav class="pl-inner-sidebar" data-pl="uho">
     <div class="block double-padded">
@@ -133,7 +141,11 @@
             showMessageOnEmptyList: true,
 //        list: new $.pocketlists.List($('.pl-title')),
             userHasLinkedApps: {$user->hasLinkedApps()},
-            current_user_id: {$user->getContact()->getId()}
+            current_user_id: {$user->getContact()->getId()},
+            standAloneItemAdd: {if $external}1{else}0{/if},
+            appUrl: '{$plurl}',
+            wa_url: '{$wa_url}',
+            fileUpload: {if $external}0{else}1{/if}
         });
 
         new $.pocketlists.Comments($all_items_wrapper);

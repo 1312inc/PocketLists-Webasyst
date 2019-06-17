@@ -64,13 +64,13 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
     var full_itemadd_form = {
         can_show: function () {
-            return !$.storage.get('pocketlists/item-add-compact-mode');
+            return $.storage && !$.storage.get('pocketlists/item-add-compact-mode');
         },
         set_show: function () {
-            return $.storage.del('pocketlists/item-add-compact-mode');
+            return $.storage && $.storage.del('pocketlists/item-add-compact-mode');
         },
         set_hide: function () {
-            return $.storage.set('pocketlists/item-add-compact-mode', 1);
+            return $.storage && $.storage.set('pocketlists/item-add-compact-mode', 1);
         }
     };
 
@@ -857,22 +857,23 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 }
             });
         } else {
-            $(item_selector, $sortable_items).draggable({
-                handle: '[data-pl-action="item-sort"]',
-                distance: 5,
-                opacity: 0.75,
-                appendTo: 'body',
-                // connectWith: '[data-pl-items="done"] ul.menu-v',
-                tolerance: 'pointer',
-                revert: true,
-                revertDuration: 0,
-                classes: {
-                    'ui-sortable-helper': 'shadowed'
-                }
-                // forcePlaceholderSize: true,
-                // forceHelperSize: true,
-
-            });
+            if (!o.standAloneItemAdd) {
+                $(item_selector, $sortable_items).draggable({
+                    handle: '[data-pl-action="item-sort"]',
+                    distance: 5,
+                    opacity: 0.75,
+                    appendTo: 'body',
+                    // connectWith: '[data-pl-items="done"] ul.menu-v',
+                    tolerance: 'pointer',
+                    revert: true,
+                    revertDuration: 0,
+                    classes: {
+                        'ui-sortable-helper': 'shadowed'
+                    }
+                    // forcePlaceholderSize: true,
+                    // forceHelperSize: true,
+                });
+            }
         }
     }
     // save item
@@ -1701,6 +1702,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         //    $new_item_wrapper.prependTo($undone_items_wrapper).slideDown(200).wrap('<li class="pl-new-item-wrapper">');
         //    $new_item_input.focus();
         //}
+
+        $.store && !$.storage && ($.storage = new $.store());
 
         var do_not_show_item_details = false;
 

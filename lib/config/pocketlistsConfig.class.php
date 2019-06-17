@@ -365,6 +365,7 @@ HTML;
             'plurl'                => wa()->getAppUrl(pocketlistsHelper::APP_ID),
             'current_user'         => $this->getUser(),
             'pl2_attachments_path' => wa()->getDataUrl('attachments/', true, pocketlistsHelper::APP_ID),
+            'wa_app_static_url'    => wa()->getAppStaticUrl(pocketlistsHelper::APP_ID),
         ];
     }
 
