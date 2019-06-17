@@ -12,7 +12,7 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Basepath: .\n"
 "Language: ru_RU\n"
-"X-Generator: Poedit 2.2\n"
+"X-Generator: Poedit 2.2.3\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: .\n"
 
@@ -1603,3 +1603,94 @@ msgstr "скрыть подробности"
 #: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:205
 msgid "Add to-do"
 msgstr "Создать задачу"
+
+#: /wa-apps/pocketlists/templates/include/item_linked_entities/shop.order.preview.html:7
+msgid "Unlink"
+msgstr "Удалить ссылку"
+
+#: /wa-apps/pocketlists/templates/include/itemadd.html:25
+msgid "Show details and use the detailed add mode by default"
+msgstr "Показывать все параметры задачи по умолчанию"
+
+#: /wa-apps/pocketlists/templates/actions/pocket/Pocket.html:36
+msgid "Go ahead! Create a list."
+msgstr "Создайте свой первый список!"
+
+#: /wa-apps/pocketlists/templates/actions/pocket/Pocket.html:37
+msgid "Pockets and lists help you organize to-dos, ideas, and notes, and flexibly configure access rights for your team."
+msgstr "Проекты и списки помогают организовать задачи, идеи и заметки, гибко настроив права доступа к ним для вашей команды."
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:75
+msgid "All my to-dos"
+msgstr "Все мои задачи"
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:76
+msgid "Only On Fire + Black + Red"
+msgstr "Только Горит + Черные + Красные"
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:77
+msgid "Only On Fire + Black + Red + Yellow"
+msgstr "Только Горит + Черные + Красные + Желтые"
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:78
+msgid "Only On Fire + Black + Red + Yellow + Green"
+msgstr "Только Горит + Черные + Красные + Желтые + Зеленые"
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:161
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:182
+msgid "only items created by me or assigned to me"
+msgstr "только задачи, которые я создал или которые назначили на меня"
+
+#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:83
+msgid "Calendar"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:86
+msgid "Places"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:89
+msgid "Board"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:96
+#: /wa-apps/pocketlists/templates/actions/search/Search.html:105
+msgid "Search"
+msgstr "Поиск"
+
+#: /wa-apps/pocketlists/templates/actions/search/Search.html:9
+msgid "%s lists found"
+msgstr "Найдено %s списков"
+
+#: /wa-apps/pocketlists/templates/actions/search/Search.html:33
+msgid "No lists found"
+msgstr "Не найдено ни одного списка"
+
+#: /wa-apps/pocketlists/templates/actions/search/Search.html:50
+msgid "%s to-dos found"
+msgstr "Найдено %s задач"
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:7
+msgid "Hide details and use the compact add mode by default"
+msgstr "Скрывать параметры задачи по умолчанию"
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:21
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:23
+msgid "Ok, I got it."
+msgstr "Ок, понял."
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:23
+msgid "The to-do item will be saved in the <span class=\"nowrap\"><a href=\"%s\" class=\"gray\" target=\"_blank\">Pocket Lists</a> app</span> and will be visible only to authorized Webasyst users. The customer will not see this to-do."
+msgstr "Задача будет сохранена в приложении <span class=“nowrap”><a href=“%s” class=“gray” target=“_blank”>Pocket Lists</a> и видна только пользователям бекенда. Покупатель никогда не увидит эту задачу."
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:81
+msgid "The user will see this to-do in his Pocket Lists to-do stream and will be notified about this assignment by email."
+msgstr "Пользователь увидит эту задачу в своем потоке задач в приложении Pocket Lists и получит уведомление о назначении по email."
+
+#: /wa-apps/pocketlists/templates/actions/debug/Debug.html:140
+msgid "Reset everything"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/class/pocketlistsLogAction.class.php:114
+msgid "added new to-do"
+msgstr "добавил задачу"
