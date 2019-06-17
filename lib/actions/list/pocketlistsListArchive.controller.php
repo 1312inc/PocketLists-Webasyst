@@ -6,6 +6,8 @@
 class pocketlistsListArchiveController extends pocketlistsJsonController
 {
     /**
+     * @throws pocketlistsLogicException
+     * @throws pocketlistsNotFoundException
      * @throws waException
      */
     public function execute()
@@ -25,8 +27,11 @@ class pocketlistsListArchiveController extends pocketlistsJsonController
                 $this->logService->getFactory()->createNewListLog(
                     (new pocketlistsLogContext())
                         ->setList($list)
-                        ->setAction(pocketlistsLog::ACTION_ARCHIVE)
-                        ->setParams([pocketlistsLogContext::LIST_ENTITY => ['complete' => (int) $list->isArchived()]])
+                        ->setAction(
+                            $list->isArchived()
+                                ? pocketlistsLog::ACTION_ARCHIVE
+                                : pocketlistsLog::ACTION_UNARCHIVE
+                        )
                 )
             );
 

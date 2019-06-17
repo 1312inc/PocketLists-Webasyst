@@ -171,12 +171,12 @@ class pocketlistsItemCreateAction extends pocketlistsViewAction
                     );
                 }
 
-                if (count($items) === 1) {
+                if (count($items) === 1 && $list->getId()) {
                     $item = reset($items);
                     $this->logAction(
                         pocketlistsLogAction::NEW_ITEM,
                         [
-                            'item_id' => $item->getName(),
+                            'item_id' => $item->getId(),
                             'list_id' => $list->getId(),
                         ]
                     );

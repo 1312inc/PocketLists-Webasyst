@@ -9,6 +9,8 @@ class pocketlistsItemDataAction extends pocketlistsViewItemAction
      * @param null $params
      *
      * @return mixed|void
+     * @throws pocketlistsLogicException
+     * @throws pocketlistsNotFoundException
      * @throws waException
      */
     public function runAction($params = null)
@@ -139,13 +141,15 @@ class pocketlistsItemDataAction extends pocketlistsViewItemAction
                     $this->logService->getFactory()->createNewAfterItemAdd($context)
                 );
 
-                $this->logAction(
-                    pocketlistsLogAction::NEW_ITEM,
-                    [
-                        'item_id' => $item->getName(),
-                        'list_id' => $item->getList()->getId(),
-                    ]
-                );
+                if ($item->getList()) {
+                    $this->logAction(
+                        pocketlistsLogAction::NEW_ITEM,
+                        [
+                            'item_id' => $item->getId(),
+                            'list_id' => $item->getList()->getId(),
+                        ]
+                    );
+                }
             } else {
                 $this->logService->add(
                     $this->logService->getFactory()->createNewAfterItemUpdate($context)

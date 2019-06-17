@@ -6,6 +6,8 @@
 class pocketlistsItemCompleteController extends pocketlistsComplete
 {
     /**
+     * @throws pocketlistsLogicException
+     * @throws pocketlistsNotFoundException
      * @throws waException
      */
     public function execute()
@@ -30,8 +32,7 @@ class pocketlistsItemCompleteController extends pocketlistsComplete
                 $this->logService->getFactory()->createNewItemLog(
                     (new pocketlistsLogContext())
                         ->setItem($complete_item)
-                        ->setAction(pocketlistsLog::ACTION_COMPLETE)
-                        ->setParams([pocketlistsLogContext::ITEM_ENTITY => ['complete' => $status]])
+                        ->setAction($status ? pocketlistsLog::ACTION_COMPLETE : pocketlistsLog::ACTION_UNCOMPLETE)
                 )
             );
 

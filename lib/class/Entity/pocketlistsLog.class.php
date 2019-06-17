@@ -5,13 +5,15 @@
  */
 class pocketlistsLog extends pocketlistsEntity
 {
-    const ACTION_ADD     = 'add';
-    const ACTION_EDIT    = 'edit';
-    const ACTION_UPDATE  = 'update';
-    const ACTION_DELETE  = 'delete';
-    const ACTION_ASSIGN  = 'assign';
-    const ACTION_ARCHIVE = 'archive';
-    const ACTION_COMPLETE = 'complete';
+    const ACTION_ADD        = 'add';
+    const ACTION_EDIT       = 'edit';
+    const ACTION_UPDATE     = 'update';
+    const ACTION_DELETE     = 'delete';
+    const ACTION_ASSIGN     = 'assign';
+    const ACTION_ARCHIVE    = 'archive';
+    const ACTION_UNARCHIVE  = 'unarchive';
+    const ACTION_COMPLETE   = 'complete';
+    const ACTION_UNCOMPLETE = 'uncomplete';
 
     const ENTITY_USER       = 'user';
     const ENTITY_POCKET     = 'pocket';
