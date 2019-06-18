@@ -1491,8 +1491,8 @@ msgid "“My To-dos” widget for the dashboard and Webasyst TV"
 msgstr "Виджет «Мои задачи» для дешборда и Webasyst TV"
 
 #: /wa-apps/pocketlists/templates/actions/about/About.html:98
-msgid "Integration with Webasyst Team and Tasks apps"
-msgstr "Интеграция с приложениями «Команда» и «Задачи»"
+msgid "Integration with Webasyst CRM, Tasks, and other apps"
+msgstr "Интеграция CRM, «Задачами» и другими приложениями Webasyst"
 
 #: /wa-apps/pocketlists/templates/actions/about/About.html:103
 msgid "Repeating to-dos"
@@ -1512,7 +1512,7 @@ msgid "Integrate Pocket Lists for Webasyst and iOS"
 msgstr "Интеграция Pocket Lists для Webasyst и iOS"
 
 #: /wa-apps/pocketlists/templates/actions/about/About.html:119
-msgid "Better Shop-Script integration"
+msgid "Advanced Shop-Script integration"
 msgstr "Продвинутая интеграция с Shop-Script"
 
 #: /wa-apps/pocketlists/templates/actions/about/About.html:120
@@ -1694,3 +1694,27 @@ msgstr ""
 #: /wa-apps/pocketlists/lib/class/pocketlistsLogAction.class.php:114
 msgid "added new to-do"
 msgstr "добавил задачу"
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:104
+msgid "Integration with the Team app"
+msgstr "Интеграция с приложением «Команда»"
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:115
+msgid "Timelines: detailed activity log of who did what"
+msgstr "Журнал: подробный список всех действий сотрудников"
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:116
+msgid "By pocket, by list, by user"
+msgstr "По проектам, по спискам, по пользователям"
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:120
+msgid "Custom to-do statuses"
+msgstr "Статусы задач"
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:124
+msgid "Agile board"
+msgstr "Agile board: просмотр задач в виде таблицы по статусам"
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:172
+msgid "Bullets highlighted with a %s label will be available as a part of the paid Pocket Lists PRO plugin."
+msgstr "Пункты, отмеченные значком %s, планируются к выпуску в виде платного плагина Pocket Lists PRO."

@@ -1489,7 +1489,7 @@ msgid "“My To-dos” widget for the dashboard and Webasyst TV"
 msgstr ""
 
 #: /wa-apps/pocketlists/templates/actions/about/About.html:98
-msgid "Integration with Webasyst Team and Tasks apps"
+msgid "Integration with Webasyst CRM, Tasks, and other apps"
 msgstr ""
 
 #: /wa-apps/pocketlists/templates/actions/about/About.html:103
@@ -1510,7 +1510,7 @@ msgid "Integrate Pocket Lists for Webasyst and iOS"
 msgstr ""
 
 #: /wa-apps/pocketlists/templates/actions/about/About.html:119
-msgid "Better Shop-Script integration"
+msgid "Advanced Shop-Script integration"
 msgstr ""
 
 #: /wa-apps/pocketlists/templates/actions/about/About.html:120
@@ -1695,4 +1695,28 @@ msgstr ""
 
 #: /wa-apps/pocketlists/lib/class/pocketlistsLogAction.class.php:114
 msgid "added new to-do"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:104
+msgid "Integration with the Team app"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:115
+msgid "Timelines: detailed activity log of who did what"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:116
+msgid "By pocket, by list, by user"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:120
+msgid "Custom to-do statuses"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:124
+msgid "Agile board"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:172
+msgid "Bullets highlighted with a %s label will be available as a part of the paid Pocket Lists PRO plugin."
 msgstr ""

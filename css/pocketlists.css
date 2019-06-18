@@ -166,7 +166,7 @@ table.pl-calendar td .pl-dots i.icon10 { margin-top: 0.2em; margin-right: 0.2em;
 .pl-roadmap li { padding: 5px 15px 15px 12px; font-size: 15px; }
 .pl-roadmap li .pl-done + span { left: -12px; top: -2px; }
 .pl-roadmap li .pl-done:checked + span { border: 2px solid transparent; }
-/* .pl-roadmap i { width: 16px; height: 16px;  } */
+.pl-roadmap li .pl-done.pl-priority-fire + span { width: 25px; height: 25px; background-size: 27px 27px; margin-left: -5px; }
 
 /* Done checkbox
 ---------------- */
@@ -381,6 +381,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#12000000', e
 .pl-label.pl-hint { background: rgba(0,0,0,0.07); color: rgba(0,0,0,0.42) !important; font-size: 0.75em; position: relative; top: 2px; font-style: italic; }
 .pl-label.pl-dark-none { background: #bbb !important; }
 .pl-item .pl-label { margin-left: -4px !important; }
+.pl-label.pl-pro { background: gold !important; color: black !important; font-size: 0.75em; font-style: normal !important; }
+p .pl-label.pl-pro { position: relative; top: 3px; margin-right: 0; }
 
 .pl-edit { opacity: 0; display: inline-block; font-size: 0.9em; position: absolute; }
 .pl-edit i.icon16 { margin-left: 8px; margin-top: 2px; }
