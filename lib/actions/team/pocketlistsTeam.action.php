@@ -83,7 +83,7 @@ class pocketlistsTeamAction extends pocketlistsViewAction
                 'teammates'            => $teammates,
                 'print'                => waRequest::get('print', false),
                 'user'                 => $this->user,
-                'external'             => waRequest::request('external', waRequest::TYPE_INT, 0),
+                'external'             => waRequest::request('external', 0, waRequest::TYPE_INT),
             ]
         );
     }

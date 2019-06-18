@@ -22,6 +22,10 @@ class pocketlistsContactsProfileTabHandler extends waEventHandler
         $old_app = wa()->getApp();
         wa(pocketlistsHelper::APP_ID, 1);
 
+        if (!pocketlistsRBAC::canAssign()) {
+            return;
+        }
+
         /** @var pocketlistsContactFactory $contactFactory */
         $contactFactory = pl2()->getEntityFactory(pocketlistsContact::class);
 
