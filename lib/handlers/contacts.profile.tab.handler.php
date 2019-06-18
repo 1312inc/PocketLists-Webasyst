@@ -9,7 +9,7 @@ class pocketlistsContactsProfileTabHandler extends waEventHandler
      * @param $params
      *
      * @return mixed|void|null
-     * @throws waException
+     * @throws pocketlistsForbiddenException
      */
     public function execute(&$params)
     {
@@ -19,35 +19,47 @@ class pocketlistsContactsProfileTabHandler extends waEventHandler
 
         $contact_id = $params;
 
-        $old_app = wa()->getApp();
-        wa(pocketlistsHelper::APP_ID, 1);
+        try {
+            $old_app = wa()->getApp();
+            wa(pocketlistsHelper::APP_ID, 1);
 
-        if (!pocketlistsRBAC::canAssign()) {
-            return;
+            if (!pocketlistsRBAC::canAssign()) {
+                throw new pocketlistsForbiddenException();
+            }
+
+            $has_access_app = wa()->getUser()->getRights(pocketlistsHelper::APP_ID, 'backend');
+
+            if (!$has_access_app) {
+                throw new pocketlistsForbiddenException();
+            }
+
+            /** @var pocketlistsContactFactory $contactFactory */
+            $contactFactory = pl2()->getEntityFactory(pocketlistsContact::class);
+
+            /** @var pocketlistsContact $user */
+            $user = $contactFactory->createNewWithId($contact_id);
+
+            if (!$user->getContact()->getRights(pocketlistsHelper::APP_ID)) {
+                throw new pocketlistsForbiddenException();
+            }
+
+            $backend_url = pl2()->getBackendUrl(true);
+
+            $result = [];
+
+            // Invoices
+            $result[] = [
+                'id' => 'pl2items',
+                'title' => _w('Pocket Lists'),
+                'url' => sprintf(
+                    '%spocketlists/?module=team&teammate=%s&external=1',
+                    $backend_url,
+                    $user->getLogin()
+                ),
+            ];
+        } catch (waException $ex) {
+
         }
-
-        /** @var pocketlistsContactFactory $contactFactory */
-        $contactFactory = pl2()->getEntityFactory(pocketlistsContact::class);
-
-        /** @var pocketlistsContact $user */
-        $user = $contactFactory->createNewWithId($contact_id);
-
-        $has_access_app = wa()->getUser()->getRights(pocketlistsHelper::APP_ID, 'backend');
-
-        if (!$has_access_app) {
-            return;
-        }
-
-        $backend_url = pl2()->getBackendUrl(true);
-
-        $result = [];
-
-        // Invoices
-        $result[] = [
-            'id'    => 'pl2items',
-            'title' => _w('Pocket Lists'),
-            'url'   => sprintf('%spocketlists/?module=team&teammate=%s&external=1', $backend_url, $user->getLogin()),
-        ];
 
         wa($old_app, 1);
 

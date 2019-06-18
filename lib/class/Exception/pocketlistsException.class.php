@@ -3,6 +3,6 @@
 /**
  * Class pocketlistsException
  */
-abstract class pocketlistsException extends Exception
+abstract class pocketlistsException extends waException
 {
 }
