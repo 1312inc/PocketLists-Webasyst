@@ -13,6 +13,7 @@
 
 .pl-inner-sidebar { background: #f3f3f3; float: right; width: 340px; margin-top: 17px; margin-right: 10px; position: relative; z-index: 10; box-shadow: 0 3px 5px -2px #ccc; }
 .pl-inner-content { position: relative; min-height: 700px; margin-right: 350px; z-index: 11; }
+.pl-inner-content.pl-embedded { margin-right: auto; margin-left: auto; }
 
 /* Misc
 ------- */
