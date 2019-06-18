@@ -1614,7 +1614,7 @@ msgstr "Показывать все параметры задачи по умо�
 
 #: /wa-apps/pocketlists/templates/actions/pocket/Pocket.html:36
 msgid "Go ahead! Create a list."
-msgstr "Создайте свой первый список!"
+msgstr "Создайте первый список!"
 
 #: /wa-apps/pocketlists/templates/actions/pocket/Pocket.html:37
 msgid "Pockets and lists help you organize to-dos, ideas, and notes, and flexibly configure access rights for your team."
@@ -1681,11 +1681,11 @@ msgstr "Ок, понял."
 
 #: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:23
 msgid "The to-do item will be saved in the <span class=\"nowrap\"><a href=\"%s\" class=\"gray\" target=\"_blank\">Pocket Lists</a> app</span> and will be visible only to authorized Webasyst users. The customer will not see this to-do."
-msgstr "Задача будет сохранена в приложении <span class=“nowrap”><a href=“%s” class=“gray” target=“_blank”>Pocket Lists</a> и видна только пользователям бекенда. Покупатель никогда не увидит эту задачу."
+msgstr "Задача будет сохранена в приложении <a href=\"%s\" class=\"gray\" target=\"_blank\">Pocket Lists</a> и видна только пользователям бекенда. Покупатель никогда не увидит эту задачу."
 
 #: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:81
 msgid "The user will see this to-do in his Pocket Lists to-do stream and will be notified about this assignment by email."
-msgstr "Пользователь увидит эту задачу в своем потоке задач в приложении Pocket Lists и получит уведомление о назначении по email."
+msgstr "Ответственный пользователь увидит эту задачу в своем потоке задач в приложении Pocket Lists и получит уведомление о назначении по email."
 
 #: /wa-apps/pocketlists/templates/actions/debug/Debug.html:140
 msgid "Reset everything"
@@ -1701,7 +1701,7 @@ msgstr "Интеграция с приложением «Команда»"
 
 #: /wa-apps/pocketlists/templates/actions/about/About.html:115
 msgid "Timelines: detailed activity log of who did what"
-msgstr "Журнал: подробный список всех действий сотрудников"
+msgstr "История действий: подробный список всего, что делала ваша команда"
 
 #: /wa-apps/pocketlists/templates/actions/about/About.html:116
 msgid "By pocket, by list, by user"
@@ -1713,8 +1713,8 @@ msgstr "Статусы задач"
 
 #: /wa-apps/pocketlists/templates/actions/about/About.html:124
 msgid "Agile board"
-msgstr "Agile board: просмотр задач в виде таблицы по статусам"
+msgstr "Agile: просмотр задач в виде колонок по статусам"
 
 #: /wa-apps/pocketlists/templates/actions/about/About.html:172
 msgid "Bullets highlighted with a %s label will be available as a part of the paid Pocket Lists PRO plugin."
-msgstr "Пункты, отмеченные значком %s, планируются к выпуску в виде платного плагина Pocket Lists PRO."
+msgstr "Пункты, отмеченные значком %s, планируются к выпуску в виде отдельного платного плагина Pocket Lists PRO."
