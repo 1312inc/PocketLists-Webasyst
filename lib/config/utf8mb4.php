@@ -24,4 +24,7 @@ return [
         'error' => 'text',
         'data'  => 'text',
     ],
+    'pocketlists_log' => [
+        'params' => 'text',
+    ],
 ];
