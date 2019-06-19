@@ -1618,7 +1618,7 @@ msgstr "Создайте первый список!"
 
 #: /wa-apps/pocketlists/templates/actions/pocket/Pocket.html:37
 msgid "Pockets and lists help you organize to-dos, ideas, and notes, and flexibly configure access rights for your team."
-msgstr "Проекты и списки помогают организовать задачи, идеи и заметки, гибко настроив права доступа к ним для вашей команды."
+msgstr "Проекты и списки помогают организовывать задачи, идеи, заметки и гибко настраивать права доступа к ним для сотрудников."
 
 #: /wa-apps/pocketlists/templates/actions/settings/Settings.html:75
 msgid "All my to-dos"
