@@ -421,7 +421,6 @@ p .pl-label.pl-pro { position: relative; top: 3px; margin-right: 0; }
 .pl-logbook .pl-item.gray .pl-due-tomorrow,
 .pl-logbook .pl-item.gray .pl-due-someday { display: none; }
 .pl-logbook .pl-item.gray .pl-edit { display: none !important; }
-.pl-logbook .pl-item.gray .pl-chat { display: none; }
 .pl-logbook .pl-item.gray .pl-comment { display: none; }
 .pl-logbook .pl-item.gray .pl-comment-count-show { display: inline-block; }
 .pl-logbook .pl-item.gray .pl-favorite,

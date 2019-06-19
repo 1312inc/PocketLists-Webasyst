@@ -101,7 +101,7 @@
         {/foreach}
         </div>
 
-        <div class="pl-item-discussion" {if !$item->getCommentsCount()}style="display: none;"{/if}>
+        <div class="pl-item-discussion" {if !$item->getCommentsCount() || $item->isDone()}style="display: none;"{/if}>
             {include './ItemComments.html' item=$item inline}
         </div>
 
