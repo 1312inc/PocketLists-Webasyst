@@ -1815,7 +1815,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 e.preventDefault();
                 var $item = $(this).closest('.pl-item-wrapper[data-id]');
 
-                $item.find('.pl-item-discussion').toggle();
+                $item.find('.pl-item-discussion').toggle().find('.pl-reply textarea').trigger('focus');
             })
         ;
 
