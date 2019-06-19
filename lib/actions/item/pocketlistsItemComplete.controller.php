@@ -36,7 +36,9 @@ class pocketlistsItemCompleteController extends pocketlistsComplete
                 )
             );
 
-            $this->logAction(pocketlistsLogAction::ITEM_COMPLETED, ['item_id' => $complete_item->getId()]);
+            if ($status) {
+                $this->logAction(pocketlistsLogAction::ITEM_COMPLETED, ['item_id' => $complete_item->getId()]);
+            }
         }
     }
 }
