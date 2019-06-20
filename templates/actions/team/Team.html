@@ -10,12 +10,26 @@
 </div>
 {/if}
 
-
-
 {if !empty($teammates)}
 
 {if !$print}
+
+{if $external}
+<script type="text/javascript" src="{$wa_url}wa-content/js/jquery-plugins/jquery.store.js"></script>
+<script type="text/javascript" src="{$wa_url}wa-content/js/jquery-wa/jquery.autocomplete.js"></script>
+<script type="text/javascript" src="{$wa_app_static_url}js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="{$wa_app_static_url}js/jquery.ui.widget.js"></script>
+{if ($wa->locale() == 'ru_RU')}<script type="text/javascript" src="{$wa_url}wa-content/js/jquery-ui/i18n/jquery.ui.datepicker-ru_RU.js"></script>{/if}
+<script type="text/javascript" src="{$wa_url}wa-content/js/jquery-plugins/fileupload/jquery.iframe-transport.js"></script>
+<script type="text/javascript" src="{$wa_url}wa-content/js/jquery-plugins/fileupload/jquery.fileupload.js"></script>
+<script type="text/javascript" src="{$wa_app_static_url}js/pocketlists.js?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
+<script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-item.js?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
+<script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-comment.js?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
+<link type="text/css" rel="stylesheet" href="{$wa_app_static_url}css/pocketlists.css?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}">
+{/if}
+
 <!-- TEAM -->
+{if !$external}
 <nav class="pl-inner-sidebar" data-pl="uho">
     <div class="block double-padded">
 
@@ -52,14 +66,14 @@
                 {/foreach}
             </ul>
             {if $wa->team}
-                <p class="hint">{sprintf('[`Use Team app to <a href="%s">configure %s’s access</a> to shared lists: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/u/'|cat:$current_teammate->getLogin()|cat:'/', $current_teammate->getName()|default:' '|escape)}</p>
+                <p class="hint">{sprintf('[`Use Team app to <a href="%s">configure %s’s access</a> to shared lists: select a user or a group of users &gt; Access tab &gt; Pocket Lists app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/u/'|cat:$current_teammate->getLogin()|cat:'/', $current_teammate->getName()|default:' '|escape)}</p>
             {/if}
         {else}
             <hr>
             <p class="pl-teammate-nolists-disclaimer">
                 {sprintf('[`You have no lists that you would share with %s in common.`]', $current_teammate->getName()|default:' '|escape)}
                 {if $wa->team}
-                    {sprintf('[`Use Team app to <a href="%s">configure %s’s access</a> to shared lists: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/u/'|cat:$current_teammate->getLogin()|cat:'/', $current_teammate->getName()|default:' '|escape)}
+                    {sprintf('[`Use Team app to <a href="%s">configure %s’s access</a> to shared lists: select a user or a group of users &gt; Access tab &gt; Pocket Lists app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/u/'|cat:$current_teammate->getLogin()|cat:'/', $current_teammate->getName()|default:' '|escape)}
                 {/if}
             </p>
         {/if}
@@ -67,9 +81,10 @@
     </div>
 </nav>
 {/if}
+{/if}
 
 <!-- ITEMS -->
-<main class="pl-inner-content pl-items shadowed pl-teammate-items" id="pl-list-content">
+<main class="pl-inner-content pl-items pl-teammate-items {if $external}pl-embedded{else}shadowed{/if}" id="pl-list-content">
 
     <header class="pl-title">
         <input type="hidden" id="pl-list-id" value="{$current_teammate->getId()}"/>
@@ -111,7 +126,6 @@
         {include '../../include/itemadd.html' assign_contact_photo=$current_teammate->getUserpic() inline}
     {/if}
     {include '../../include/itemdetails.html' inline}
-    {include '../../include/itemcomments.html' inline}
 </main>
 {/if}
 
@@ -134,8 +148,15 @@
             showMessageOnEmptyList: true,
 //        list: new $.pocketlists.List($('.pl-title')),
             userHasLinkedApps: {$user->hasLinkedApps()},
-            current_user_id: {$user->getContact()->getId()}
+            current_user_id: {$user->getContact()->getId()},
+            standAloneItemAdd: {if $external}1{else}0{/if},
+            appUrl: '{$plurl}',
+            wa_url: '{$wa_url}',
+            fileUpload: {if $external}0{else}1{/if}
         });
+
+        new $.pocketlists.Comments($all_items_wrapper);
+
         $.pocketlists.setTitle('{$current_teammate->getName()|escape}');
 
         $('[data-pl="uho"]').on('click', '[data-pl-action="list-email"]', function (e) {

@@ -14,9 +14,11 @@ abstract class pocketlistsEntity implements pocketlistsHydratableInterface
     }
 
     /**
+     * @param array $data
+     *
      * @return mixed|void
      */
-    public function afterHydrate()
+    public function afterHydrate($data = [])
     {
     }
 

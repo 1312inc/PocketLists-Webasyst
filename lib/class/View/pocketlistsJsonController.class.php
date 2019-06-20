@@ -11,11 +11,17 @@ class pocketlistsJsonController extends waJsonController
     protected $user;
 
     /**
+     * @var pocketlistsLogService
+     */
+    protected $logService;
+
+    /**
      * @param null $params
      */
     public function run($params = null)
     {
         $this->user = pl2()->getUser();
+        $this->logService = pl2()->getLogService();
 
         try {
             $this->preExecute();

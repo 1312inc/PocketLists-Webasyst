@@ -53,7 +53,7 @@
         {if $item->getKeyListId()}
             <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$item->getList()->getIcon()|default:'li-list@2x.png'});"></i>
         {else}
-            <input type="checkbox" class="pl-done {$item->getCssClass('priority')}" {if $item->isDone()}checked="checked"{/if}{if isset($archive) && $archive == true}disabled{/if} data-pl2-item-priority="{$item->getCalcPriority()}">
+            <input type="checkbox" class="pl-done {$item->getCssClass(pocketlistsViewHelper::CSS_CLASS_PRIORITY)}" {if $item->isDone()}checked="checked"{/if}{if isset($archive) && $archive == true}disabled{/if} data-pl2-item-priority="{$item->getCalcPriority()}">
             <span{if $item->getList()->getColor() !='none'} class="pl-dark-{$item->getList()->getColor()}-border"{/if} title="[`Completed`]"></span>
         {/if}
     </label>
@@ -76,10 +76,10 @@
 
         {if $item->getDueDatetime()}
             <br>
-            <span class="pl-due {$item->getCssClass('due-datetime')}">{$item->getDueDatetime()|wa_date:'humandatetime'}</span>
+            <span class="pl-due {$item->getCssClass(pocketlistsViewHelper::CSS_CLASS_DUE_DATETIME)}">{$item->getDueDatetime()|wa_date:'humandatetime'}</span>
         {elseif $item->getDueDate()}
             <br>
-            <span class="pl-due {$item->getCssClass('due-date')}">{waDateTime::date(waDateTime::getFormat('humandate'), $item->getDueDate())}</span>
+            <span class="pl-due {$item->getCssClass(pocketlistsViewHelper::CSS_CLASS_DUE_DATE)}">{waDateTime::date(waDateTime::getFormat('humandate'), $item->getDueDate())}</span>
         {/if}
 
         {if $item->getNote()}<p class="pl-item-note">{$item->getNoteParsed()|nl2br}</p>{/if}
@@ -100,6 +100,12 @@
             </div>
         {/foreach}
         </div>
+
+        <div class="pl-item-discussion" {if !$item->getCommentsCount() || $item->isDone()}style="display: none;"{/if}>
+            {include './ItemComments.html' item=$item inline}
+        </div>
+
+
     </label>
     <div data-pl2-item-details class="pl-item-details"></div>
 

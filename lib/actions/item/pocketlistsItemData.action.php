@@ -9,6 +9,8 @@ class pocketlistsItemDataAction extends pocketlistsViewItemAction
      * @param null $params
      *
      * @return mixed|void
+     * @throws pocketlistsLogicException
+     * @throws pocketlistsNotFoundException
      * @throws waException
      */
     public function runAction($params = null)
@@ -18,6 +20,7 @@ class pocketlistsItemDataAction extends pocketlistsViewItemAction
         }
 
         $item_new_data = waRequest::post('item', [], waRequest::TYPE_ARRAY);
+        $isNewItem = false;
 
         /** @var pocketlistsItemFactory $itemFactory */
         $itemFactory = pl2()->getEntityFactory(pocketlistsItem::class);
@@ -25,8 +28,10 @@ class pocketlistsItemDataAction extends pocketlistsViewItemAction
         /** @var pocketlistsItem $item */
         if (!empty($item_new_data['id'])) {
             $item = $this->getItem($item_new_data['id']);
+            $itemOld = clone $item;
         } else {
             $item = $itemFactory->createNew();
+            $isNewItem = true;
         }
 
         if ($item_new_data) {
@@ -96,6 +101,20 @@ class pocketlistsItemDataAction extends pocketlistsViewItemAction
                 );
             }
 
+            if (!empty($item_new_data['links_delete'])) {
+                /** @var pocketlistsItemLinkFactory $itemLinkFactory */
+                $itemLinkFactory = pl2()->getEntityFactory(pocketlistsItemLink::class);
+
+                $itemsToDelete = $itemLinkFactory->findById($item_new_data['links_delete']);
+
+                /** @var pocketlistsItemLink $link */
+                foreach ($itemsToDelete as $link) {
+                    if ($link->getItemId() == $item->getId()) {
+                        $itemLinkFactory->delete($link);
+                    }
+                }
+            }
+
             if (!empty($item_new_data['links'])) {
                 /** @var pocketlistsItemLinkFactory $itemLinkFactory */
                 $itemLinkFactory = pl2()->getEntityFactory(pocketlistsItemLink::class);
@@ -113,6 +132,29 @@ class pocketlistsItemDataAction extends pocketlistsViewItemAction
             );
 
             $this->view->assign('item', $item);
+
+            $context = (new pocketlistsLogContext())
+                ->setList($item->getList())
+                ->setItem($item);
+            if ($isNewItem) {
+                $this->logService->add(
+                    $this->logService->getFactory()->createNewAfterItemAdd($context)
+                );
+
+                if ($item->getList()) {
+                    $this->logAction(
+                        pocketlistsLogAction::NEW_ITEM,
+                        [
+                            'item_id' => $item->getId(),
+                            'list_id' => $item->getList()->getId(),
+                        ]
+                    );
+                }
+            } else {
+                $this->logService->add(
+                    $this->logService->getFactory()->createNewAfterItemUpdate($context)
+                );
+            }
         }
     }
 }

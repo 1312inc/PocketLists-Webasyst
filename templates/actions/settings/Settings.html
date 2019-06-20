@@ -72,10 +72,11 @@
                 </div>
                 <div class="value no-shift">
                     <select name="app_icon">
-                        <option value="1" {if !empty($settings.app_icon) && $settings.app_icon == 1}selected="selected"{/if}>[`Reds`]</option>
-                        <option value="2" {if !empty($settings.app_icon) && $settings.app_icon == 2}selected="selected"{/if}>[`Reds + Yellows`]</option>
-                        <option value="3" {if !empty($settings.app_icon) && $settings.app_icon == 3}selected="selected"{/if}>[`Reds + Yellows + Greens`]</option>
-                        <option value="0" {if !empty($settings.app_icon) && $settings.app_icon == 0}selected="selected"{/if}>[`None`]</option>
+                        <option value="{pocketlistsUserSettings::ICON_ALL}" {if !empty($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_ALL}selected="selected"{/if}>[`All my to-dos`]</option>
+                        <option value="{pocketlistsUserSettings::ICON_OVERDUE}" {if !empty($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_OVERDUE}selected="selected"{/if}>[`Only On Fire + Black + Red`]</option>
+                        <option value="{pocketlistsUserSettings::ICON_OVERDUE_TODAY}" {if !empty($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_OVERDUE_TODAY}selected="selected"{/if}>[`Only On Fire + Black + Red + Yellow`]</option>
+                        <option value="{pocketlistsUserSettings::ICON_OVERDUE_TODAY_AND_TOMORROW}" {if !empty($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_OVERDUE_TODAY_AND_TOMORROW}selected="selected"{/if}>[`Only On Fire + Black + Red + Yellow + Green`]</option>
+                        <option value="{pocketlistsUserSettings::ICON_NONE}" {if !empty($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_NONE}selected="selected"{/if}>[`None`]</option>
                     </select>
                     <p class="hint">[`The counter will count to-dos of the specified colors on your My to-dos list.`]</p>
                 </div>
@@ -91,9 +92,21 @@
                         <input value="1" type="checkbox" name="daily_recap_on" {if !empty($settings.daily_recap_on)}checked="checked"{/if}> [`Daily recap on what’s up next`]
                     </label>
                     <select name="daily_recap">
-                        <option value="0" {if !empty($settings.daily_recap) && $settings.daily_recap == 0}selected="selected"{/if}>[`for today`]</option>
-                        <option value="1" {if !empty($settings.daily_recap) && $settings.daily_recap == 1}selected="selected"{/if}>[`for today and tomorrow`]</option>
-                        <option value="2" {if !empty($settings.daily_recap) && $settings.daily_recap == 2}selected="selected"{/if}>[`for next 7 days`]</option>
+                        <option
+                                value="{pocketlistsUserSettings::DAILY_RECAP_FOR_TODAY}"
+                                {if !empty($settings.daily_recap) && $settings.daily_recap == pocketlistsUserSettings::DAILY_RECAP_FOR_TODAY}selected="selected"{/if}>
+                            [`for today`]
+                        </option>
+                        <option
+                                value="{pocketlistsUserSettings::DAILY_RECAP_FOR_TODAY_AND_TOMORROW}"
+                                {if !empty($settings.daily_recap) && $settings.daily_recap == pocketlistsUserSettings::DAILY_RECAP_FOR_TODAY_AND_TOMORROW}selected="selected"{/if}>
+                            [`for today and tomorrow`]
+                        </option>
+                        <option
+                                value="{pocketlistsUserSettings::DAILY_RECAP_FOR_NEXT_7_DAYS}"
+                                {if !empty($settings.daily_recap) && $settings.daily_recap == pocketlistsUserSettings::DAILY_RECAP_FOR_NEXT_7_DAYS}selected="selected"{/if}>
+                            [`for next 7 days`]
+                        </option>
                     </select>
 
                     <div class="pl-cron-msg" style="{if empty($settings.daily_recap_on)}display: none;{/if}">
@@ -142,8 +155,16 @@
                         <input value="1" type="checkbox" name="email_complete_item_on" {if !empty($settings.email_complete_item_on)}checked="checked"{/if}> [`When someone marks a to-do item as complete`]
                     </label>
                     <select name="email_complete_item">
-                        <option value="0" {if isset($settings.email_complete_item) && $settings.email_complete_item == 0}selected="selected"{/if}>[`only items I created`]</option>
-                        <option value="1" {if isset($settings.email_complete_item) && $settings.email_complete_item == 1}selected="selected"{/if}>[`only items I marked as favorite`]</option>
+                        <option
+                                value="{pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_COMPLETES_ITEM_I_CREATED}"
+                                {if isset($settings.email_complete_item) && $settings.email_complete_item == pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_COMPLETES_ITEM_I_CREATED}selected="selected"{/if}>
+                            [`only items created by me or assigned to me`]
+                        </option>
+                        <option
+                                value="{pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_COMPETES_ITEM_I_FAVORITE}"
+                                {if isset($settings.email_complete_item) && $settings.email_complete_item == pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_COMPETES_ITEM_I_FAVORITE}selected="selected"{/if}>
+                            [`only items I marked as favorite`]
+                        </option>
                             {* DEPRECATED *}
                             <!-- <option value="2" {if isset($settings.email_complete_item) && $settings.email_complete_item == 2}selected="selected"{/if}>[`only items on to-do lists I previously marked as favorite`]</option> -->
                         <option value="3" {if isset($settings.email_complete_item) && $settings.email_complete_item == 3}selected="selected"{/if}>[`any item on any shared list`]</option>
@@ -155,9 +176,21 @@
                         <input value="1" type="checkbox" name="email_comment_item_on" {if !empty($settings.email_comment_item_on)}checked="checked"{/if}> [`When someone comments on a to-do item`]
                     </label>
                     <select name="email_comment_item">
-                        <option value="0" {if isset($settings.email_comment_item) && $settings.email_comment_item == 0}selected="selected"{/if}>[`only items I created`]</option>
-                        <option value="1" {if isset($settings.email_comment_item) && $settings.email_comment_item == 1}selected="selected"{/if}>[`only items I marked as favorite`]</option>
-                        <option value="2" {if isset($settings.email_comment_item) && $settings.email_comment_item == 2}selected="selected"{/if}>[`any item on any shared list`]</option>
+                        <option
+                                value="{pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_ITEM}"
+                                {if isset($settings.email_comment_item) && $settings.email_comment_item == pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_ITEM}selected="selected"{/if}>
+                            [`only items created by me or assigned to me`]
+                        </option>
+                        <option
+                                value="{pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_FAVORITE_ITEM}"
+                                {if isset($settings.email_comment_item) && $settings.email_comment_item == pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_FAVORITE_ITEM}selected="selected"{/if}>
+                            [`only items I marked as favorite`]
+                        </option>
+                        <option
+                                value="{pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_ANY_LIST_ITEM}"
+                                {if isset($settings.email_comment_item) && $settings.email_comment_item == pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_ANY_LIST_ITEM}selected="selected"{/if}>
+                            [`any item on any shared list`]
+                        </option>
                     </select>
                 </div>
               </div>

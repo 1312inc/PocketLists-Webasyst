@@ -216,7 +216,7 @@ class pocketlistsItemModel extends pocketlistsModel
      * @param array $calc_priority
      * @param null  $status
      *
-     * @return bool|mixed
+     * @return bool|array
      * @throws waDbException
      * @throws waException
      */
@@ -227,7 +227,7 @@ class pocketlistsItemModel extends pocketlistsModel
 
         $sqlParts = $this->getTodoSqlComponents($contact_id, $date, $lists, $calc_priority);
 
-        $sqlParts['select'] = ['count(i.id)'];
+        $sqlParts['select'] = ['i.calc_priority calc_priority', 'count(i.id) count'];
         if ($status !== null) {
             $sqlParts['and'][] = 'i.status = '.$status;
         }
@@ -244,9 +244,10 @@ class pocketlistsItemModel extends pocketlistsModel
                 WHERE
                   ({$or_sql}) 
                   AND 
-                  {$and_sql}";
+                  {$and_sql}
+                  GROUP by i.calc_priority";
 
-        $items = $this->query(
+        $itemsCount = $this->query(
             $sql,
             [
                 'list_ids'      => $lists,
@@ -254,9 +255,14 @@ class pocketlistsItemModel extends pocketlistsModel
                 'date'          => $date,
                 'calc_priority' => $calc_priority,
             ]
-        )->fetchField();
+        )->fetchAll();
 
-        return $items;
+        $itemsCount = array_combine(
+            array_column($itemsCount, 'calc_priority'),
+            array_column($itemsCount, 'count')
+        );
+
+        return $itemsCount;
     }
 
     /**
@@ -370,12 +376,12 @@ class pocketlistsItemModel extends pocketlistsModel
     }
 
     /**
-     * @param bool $contact_id
-     * @param bool $date
-     * @param bool $date2
-     * @param null $status
+     * @param bool     $contact_id
+     * @param bool     $date
+     * @param bool     $date2
+     * @param null|int $status
      *
-     * @return int
+     * @return array
      * @throws waDbException
      * @throws waException
      */
@@ -384,12 +390,14 @@ class pocketlistsItemModel extends pocketlistsModel
         if (!$contact_id) {
             $contact_id = wa()->getUser()->getId();
         }
+
         // get to-do items only from accessed pockets
         $lists = pocketlistsRBAC::getAccessListForContact($contact_id);
 
         $sqlParts = $this->getFavoritesSqlComponents($lists, $date, $date2, $status);
-        $sqlParts['select'] = ['count(i.id)'];
+        $sqlParts['select'] = ['i.calc_priority calc_priority', 'count(i.id) count'];
         $sqlParts['order by'] = [];
+        $sqlParts['group by'] = ['i.calc_priority'];
 
         $sql = $this->buildSqlComponents($sqlParts);
 
@@ -401,9 +409,14 @@ class pocketlistsItemModel extends pocketlistsModel
                 'date2'      => $date2,
                 'contact_id' => $contact_id,
             ]
-        )->fetchField();
+        )->fetchAll();
 
-        return (int)$itemsCount;
+        $itemsCount = array_combine(
+            array_column($itemsCount, 'calc_priority'),
+            array_column($itemsCount, 'count')
+        );
+
+        return $itemsCount;
     }
 
     /**
@@ -797,22 +810,25 @@ class pocketlistsItemModel extends pocketlistsModel
         $list_sql = pocketlistsRBAC::filterListAccess($lists);
 
         $sqlParts = $this->getAssignedOrCompletesByContactQueryComponents($list_sql, pocketlistsItem::STATUS_UNDONE);
-        $sqlParts['select'] = [
-            'count(i.id) count_items',
-            'if(max(i.calc_priority) is null, 0, max(i.calc_priority)) item_max_priority'
-        ];
+        $sqlParts['select'] = ['i.calc_priority calc_priority', 'count(i.id) count'];
+        $sqlParts['group by'] = ['i.calc_priority'];
 
         $q = $this->buildSqlComponents($sqlParts);
 
-        $items = $this->query(
+        $itemsCount = $this->query(
             $q,
             [
                 'contact_id' => $contact_id,
                 'list_ids'   => $lists,
             ]
-        )->fetchAssoc();
+        )->fetchAll();
 
-        return $items;
+        $itemsCount = array_combine(
+            array_column($itemsCount, 'calc_priority'),
+            array_column($itemsCount, 'count')
+        );
+
+        return $itemsCount;
     }
 
     /**
@@ -879,9 +895,9 @@ class pocketlistsItemModel extends pocketlistsModel
         }
 
         if ($dateBounds) {
-            if (isset($dateBounds[1])) {
+            if (!empty($dateBounds[1])) {
                 $query['where']['and'][] = '((i.status = 0 AND (i.due_date BETWEEN s:date AND s:date2 OR DATE(i.due_datetime) BETWEEN s:date AND s:date2)) OR (i.status > 0 AND DATE(i.complete_datetime) BETWEEN s:date AND s:date2)) /* with due date or completed this day */';
-            } elseif (isset($dateBounds[0])) {
+            } elseif (!empty($dateBounds[0])) {
                 $query['where']['and'][] = '((i.status = 0 AND (i.due_date = s:date OR DATE(i.due_datetime) = s:date)) OR (i.status > 0 AND DATE(i.complete_datetime) = s:date)) /* with due date or completed this day */';
             }
         }
@@ -979,13 +995,13 @@ class pocketlistsItemModel extends pocketlistsModel
                 'app'             => $app,
                 'type'            => $entity_type,
                 'entity_id'       => $entity_id,
-                'date'            => isset($dateBounds[0]) ? $dateBounds[0] : '',
-                'date2'           => isset($dateBounds[1]) ? $dateBounds[1] : '',
-                'status'          => $status,
+                'date'            => !empty($dateBounds[0]) ? $dateBounds[0] : '',
+                'date2'           => !empty($dateBounds[1]) ? $dateBounds[1] : '',
+                'status'          => (int)$status,
             ]
         )->fetchAll();
 
-        return $items;
+        return $items ?: [];
     }
 
     /**
@@ -1025,7 +1041,44 @@ class pocketlistsItemModel extends pocketlistsModel
             ]
         )->fetchField('count');
 
-        return (int)$items;
+        return $items;
+    }
+
+    /**
+     * @param int|array $listIds
+     * @param null      $status
+     *
+     * @return array
+     */
+    public function countListItems($listIds, $status = null)
+    {
+        if (!is_array($listIds)) {
+            $listIds = [$listIds];
+        }
+
+        $statusSql = '';
+        if ($status !== null) {
+            $statusSql = ' and i.status = i:status';
+        }
+
+        $listSql = 'i.list_id in (i:listIds)';
+        if (empty($listIds)) {
+            $listSql = '1';
+        }
+
+        return $this->query(
+            "SELECT 
+                    i.calc_priority priority,
+                    count(i.id) count,
+                    i.list_id
+            from {$this->table} i
+            where
+                {$listSql}  
+                {$statusSql}
+                AND i.list_id > 0
+            GROUP BY i.list_id, i.calc_priority",
+            ['status' => $status, 'listIds' => $listIds]
+        )->fetchAll('list_id', 2);
     }
 
     /**
@@ -1062,7 +1115,7 @@ class pocketlistsItemModel extends pocketlistsModel
         $sqlParts = $this->getTodoSqlComponents($contact_id, [], $lists);
 
         $sqlParts['and'][] = $when;
-        $sqlParts['and'][] =
+        $sqlParts['and'][] = 'l.archived = 0';
 
         $or_sql = implode("\n OR ", $sqlParts['or']);
         $and_sql = implode("\n AND ", $sqlParts['and']);
@@ -1070,7 +1123,7 @@ class pocketlistsItemModel extends pocketlistsModel
         $select_sql = implode(",\n", $sqlParts['select']);
 
         // todo: move to this
-        $q = $this->buildSqlComponents($sqlParts);
+//        $q = $this->buildSqlComponents($sqlParts);
 
         $q = "SELECT
                   {$select_sql}
@@ -1185,22 +1238,66 @@ class pocketlistsItemModel extends pocketlistsModel
     /**
      * @param string $app
      *
-     * @return int
+     * @return array
      */
     public function getCountForApp($app)
     {
-        $count = (int)$this->query(
-            "SELECT COUNT(lid) cnt
+        $itemsCount = $this->query(
+            "SELECT 
+                calc_priority calc_priority,
+                count(lid) count
              FROM (
-                SELECT l.item_id lid 
+                SELECT l.item_id lid, i.calc_priority calc_priority
                 FROM {$this->table} i 
                 JOIN pocketlists_item_link l ON i.id = l.item_id AND i.status = 0
                 WHERE app = s:app 
-                GROUP BY l.item_id) t",
+                GROUP BY l.item_id) t
+                group by calc_priority",
             ['app' => $app]
-        )->fetchField('cnt');
+        )->fetchAll();
 
-        return $count;
+        $itemsCount = array_combine(
+            array_column($itemsCount, 'calc_priority'),
+            array_column($itemsCount, 'count')
+        );
+
+        return $itemsCount;
+    }
+
+    /**
+     * @param string $app
+     * @param string $entityType
+     * @param array  $entityIds
+     * @param int    $status
+     *
+     * @return array|false
+     */
+    public function countLinkedItemsByAppAndEntities(
+        $app,
+        $entityType,
+        array $entityIds,
+        $status = pocketlistsItem::STATUS_UNDONE
+    ) {
+        $itemsCount = $this->query(
+            "SELECT 
+                count(l.item_id) count, 
+                i.calc_priority calc_priority, 
+                l.entity_id entity_id
+             FROM {$this->table} i 
+             JOIN pocketlists_item_link l ON i.id = l.item_id AND i.status = i:status
+             WHERE l.app = s:app 
+                and l.entity_type = s:entity_type
+                and l.entity_id in (i:entity_ids)
+             GROUP BY l.entity_id, calc_priority",
+            [
+                'status' => $status,
+                'app' => $app,
+                'entity_type' => $entityType,
+                'entity_ids' => $entityIds,
+            ]
+        )->fetchAll('entity_id', 2);
+
+        return $itemsCount;
     }
 
     /**
@@ -1260,5 +1357,53 @@ class pocketlistsItemModel extends pocketlistsModel
         )->fetchAll('id');
 
         return $all ? $items : reset($items);
+    }
+
+    /**
+     * @param string $term
+     * @param int    $found
+     *
+     * @return array
+     * @throws waDbException
+     * @throws waException
+     */
+    public function getByTerm($term, &$found = 0, $contact_id = 0, $limit = 300)
+    {
+        $available_lists = pocketlistsRBAC::getAccessListForContact();
+        $accessed_lists = $available_lists ? ' AND l.id IN (i:list_ids)' : ' AND l.id IS NULL';
+
+        if (!$contact_id) {
+            $contact_id = wa()->getUser()->getId();
+        }
+
+        $sqlParts = $this->getQueryComponents();
+
+        $sqlParts['join'][] = 'LEFT JOIN (select i2.name, l2.*
+                          from pocketlists_list l2
+                                 JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) l ON l.id = i.list_id AND l.archived = 0';
+
+        if ($accessed_lists) {
+            $sqlParts['where']['and'][] = '(l.id IN (i:list_ids) OR l.id IS NULL) /* ONLY items from accessed pockets or NULL-list items */';
+        } else {
+            $sqlParts['where']['and'][] = 'l.id IS NULL /* ONLY items from NULL-list items */';
+        }
+
+        $sqlParts['where']['and'][] = "lower(concat(ifnull(i.name,''), '|', ifnull(i.note,''))) like s:term";
+        $sqlParts['where']['and'][] = 'i.key_list_id is null';
+
+        $sql = $this->buildSqlComponents($sqlParts, $limit);
+
+        $lists_data = $this->query(
+            $sql,
+            [
+                'list_ids'   => $available_lists,
+                'term'       => mb_strtolower('%'.$term.'%'),
+                'contact_id' => $contact_id,
+            ]
+        )->fetchAll();
+
+        $found = (int)$this->query('SELECT FOUND_ROWS()')->fetchField();
+
+        return $lists_data ?: [];
     }
 }

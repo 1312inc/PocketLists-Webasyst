@@ -39,6 +39,14 @@ class pocketlistsItemAssignToController extends pocketlistsJsonController
                 if ($saved) {
                     (new pocketlistsNotificationAboutNewAssign())->notify($item);
 
+                    $this->logService->add(
+                        $this->logService->getFactory()->createNewAfterItemAssign(
+                            (new pocketlistsLogContext())
+                                ->setItem($item)
+                                ->setAdditional($contact)
+                        )
+                    );
+
                     $this->response = $contact->getName();
                 } else {
                     $this->errors = 'db error';

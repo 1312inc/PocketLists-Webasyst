@@ -30,12 +30,12 @@ class pocketlistsItemFactory extends pocketlistsFactory
      * @param pocketlistsAppLinkInterface $app
      * @param string                      $entityType
      * @param int                         $entityId
-     * @param string                      $date
+     * @param array                       $date
      *
      * @return pocketlistsItem[]
      * @throws waException
      */
-    public function findAllForApp(pocketlistsAppLinkInterface $app, $entityType = '', $entityId = 0, $date = '')
+    public function findAllForApp(pocketlistsAppLinkInterface $app, $entityType = '', $entityId = 0, $date = [])
     {
         $data = $this->getModel()->getAppItems($app->getApp(), $entityType, $entityId, $date);
 
@@ -46,12 +46,12 @@ class pocketlistsItemFactory extends pocketlistsFactory
      * @param pocketlistsAppLinkInterface $app
      * @param string                      $entityType
      * @param int                         $entityId
-     * @param string                      $date
+     * @param array                       $date
      *
      * @return pocketlistsItem[]
      * @throws waException
      */
-    public function findDoneForApp(pocketlistsAppLinkInterface $app, $entityType = '', $entityId = 0, $date = '')
+    public function findDoneForApp(pocketlistsAppLinkInterface $app, $entityType = '', $entityId = 0, $date = [])
     {
         $data = $this->getModel()->getAppItems(
             $app->getApp(),
@@ -70,12 +70,12 @@ class pocketlistsItemFactory extends pocketlistsFactory
      * @param pocketlistsAppLinkInterface $app
      * @param string                      $entityType
      * @param int                         $entityId
-     * @param string                      $date
+     * @param array                       $date
      *
      * @return pocketlistsItem[]
      * @throws waException
      */
-    public function findUndoneForApp(pocketlistsAppLinkInterface $app, $entityType = '', $entityId = 0, $date = '')
+    public function findUndoneForApp(pocketlistsAppLinkInterface $app, $entityType = '', $entityId = 0, $date = [])
     {
         $data = $this->getModel()->getAppItems(
             $app->getApp(),
@@ -309,27 +309,6 @@ class pocketlistsItemFactory extends pocketlistsFactory
     }
 
     /**
-     * @param array|int $contactIds
-     *
-     * @return array
-     * @throws waException
-     */
-    public function getAssignedItemsCountAndNames($contactIds)
-    {
-        if (!is_array($contactIds)) {
-            $contactIds = [$contactIds];
-        }
-
-        $result = [];
-
-        foreach ($contactIds as $contact_id) {
-            $result[$contact_id] = $this->getModel()->countAssignedOrCompletesByContactItems($contact_id);
-        }
-
-        return $result;
-    }
-
-    /**
      * @param pocketlistsContact|null $contact
      * @param bool                    $date_range
      * @param bool                    $completed
@@ -388,6 +367,11 @@ class pocketlistsItemFactory extends pocketlistsFactory
         }
 
         return $items;
+    }
+
+    public function searchByTerm($term)
+    {
+
     }
 
     /**

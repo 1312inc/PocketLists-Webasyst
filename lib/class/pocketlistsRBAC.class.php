@@ -111,13 +111,13 @@ class pocketlistsRBAC
     }
 
     /**
-     * @param pocketlistsContact|null $contact
+     * @param pocketlistsContact|null|int $contact
      *
      * @return array
      * @throws waDbException
      * @throws waException
      */
-    public static function getAccessPocketForContact(pocketlistsContact $contact = null)
+    public static function getAccessPocketForContact($contact = null)
     {
         $user = self::getContact($contact);
 
@@ -125,7 +125,7 @@ class pocketlistsRBAC
             self::fillPocketsForUser($user);
         }
 
-        return array_keys(self::$pockets[$user->getId()]);
+        return array_key_exists($user->getId(), self::$pockets) ? array_keys(self::$pockets[$user->getId()]) : [];
     }
 
     /**

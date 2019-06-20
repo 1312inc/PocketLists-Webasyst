@@ -7,7 +7,7 @@ return array(
             48 => 'img/pl2webasyst48.png',
             96 => 'img/pl2webasyst96.png',
         ),
-    'version'        => '3.2.3',
+    'version'        => '3.3.0',
     'vendor'         => '1021997',
     'frontend'       => true,
     'routing_params' => array(

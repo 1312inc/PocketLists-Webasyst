@@ -79,8 +79,8 @@ class pocketlistsListEmailDialogAction extends pocketlistsViewAction
         } elseif ($teammate) {
             $user_model = new waUserModel();
             $id = $user_model->getByLogin($teammate);
-            if ($id) {
-                $contact = pl2()->getEntityFactory(pocketlistsContact::class)->createNewWithId($id);
+            if (isset($id['id'])) {
+                $contact = pl2()->getEntityFactory(pocketlistsContact::class)->createNewWithId($id['id']);
 
                 $items = $itemFactory->findAssignedOrCompletesByContact($contact);
 

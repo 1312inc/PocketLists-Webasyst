@@ -30,13 +30,17 @@
 </div>
 <script type="text/javascript">
     (function () {
-        new $.pocketlists.Items($('#pl-list-content'), {
+        var $all_items_wrapper = $('#pl-list-content');
+
+        new $.pocketlists.Items($all_items_wrapper, {
             enableAddLinkOnHover: false,
             enableChangeLevel: false,
             enableSortItems: false,
             userHasLinkedApps: {$user->hasLinkedApps()},
             current_user_id: {$user->getContact()->getId()}
         });
+        new $.pocketlists.Comments($all_items_wrapper);
+
         $.pocketlists.setTitle($_('Logbook'));
 
         $.pocketlists.lazyItems({

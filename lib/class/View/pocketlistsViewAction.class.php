@@ -11,6 +11,11 @@ abstract class pocketlistsViewAction extends waViewAction
     protected $user;
 
     /**
+     * @var pocketlistsLogService
+     */
+    protected $logService;
+
+    /**
      * @param null|array $params
      *
      * @return mixed
@@ -24,6 +29,7 @@ abstract class pocketlistsViewAction extends waViewAction
     public function preExecute()
     {
         $this->user = pl2()->getUser();
+        $this->logService = pl2()->getLogService();
     }
 
     /**
@@ -37,6 +43,8 @@ abstract class pocketlistsViewAction extends waViewAction
             if (!pocketlistsRBAC::canAccess()) {
                 throw new pocketlistsForbiddenException();
             }
+
+            $this->view->assign(pl2()->getDefaultViewVars());
 
             $this->runAction($params);
         } catch (pocketlistsException $ex) {

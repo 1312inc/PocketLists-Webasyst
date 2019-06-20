@@ -101,14 +101,49 @@ class pocketlistsList extends pocketlistsItem
     private $lastContactActivity = '';
 
     /**
-     * @throws waException
+     * @var pocketlistsItemsCount
      */
-    public function afterHydrate()
+    private $itemCount;
+
+    /**
+     * @param array $data
+     *
+     * @return mixed|void
+     */
+    public function afterHydrate($data = [])
     {
         $this->setCalcPriority(max(
             pocketlistsHelper::calcPriorityOnDueDate($this->getMinDueDate(), $this->getMinDueDatetime()),
             $this->getMaxPriority()
         ));
+
+        if (!empty($data['itemCount']) && is_array($data['itemCount'])) {
+            $itemCount = new pocketlistsItemsCount($data['itemCount']);
+        } else {
+            $itemCount = new pocketlistsItemsCount();
+        }
+
+        $this->setItemCount($itemCount);
+    }
+
+    /**
+     * @return pocketlistsItemsCount
+     */
+    public function getItemCount()
+    {
+        return $this->itemCount;
+    }
+
+    /**
+     * @param pocketlistsItemsCount $itemCount
+     *
+     * @return pocketlistsList
+     */
+    public function setItemCount($itemCount)
+    {
+        $this->itemCount = $itemCount;
+
+        return $this;
     }
 
     /**
@@ -417,8 +452,14 @@ class pocketlistsList extends pocketlistsItem
      */
     public function getPocket()
     {
-        if ($this->pocket) {
-            $this->setPocket(pl2()->getEntityFactory(pocketlistsPocket::class)->findById($this->getPocketId()));
+        if ($this->pocket === null) {
+            if ($this->getPocketId()) {
+                $pocket = pl2()->getEntityFactory(pocketlistsPocket::class)->findById($this->getPocketId());
+            } else {
+                $pocket = new pocketlistsPocket();
+            }
+
+            $this->setPocket($pocket);
         }
 
         return $this->pocket;

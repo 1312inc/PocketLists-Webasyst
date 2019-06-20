@@ -81,9 +81,9 @@ class pocketlistsTeamAction extends pocketlistsViewAction
         $this->view->assign(
             [
                 'teammates'            => $teammates,
-                'pl2_attachments_path' => wa()->getDataUrl('attachments/', true, pocketlistsHelper::APP_ID),
                 'print'                => waRequest::get('print', false),
                 'user'                 => $this->user,
+                'external'             => waRequest::request('external', 0, waRequest::TYPE_INT),
             ]
         );
     }

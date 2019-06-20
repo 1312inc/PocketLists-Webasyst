@@ -79,8 +79,10 @@ class pocketlistsNotificationDailyRecap extends pocketlistsBaseNotification
 
             if ($items) {
                 $itemsToSend = [];
+                $iconFinder = new pocketlistsItemIcon();
                 foreach ($items as $item) {
                     $itemsToSend[$item->getId()] = [
+                        'icon'         => $iconFinder->getIconByItemPriority($item->getPriority()),
                         'due_datetime' => $item->getDueDatetime(),
                         'due_date'     => $item->getDueDate(),
                         'name_parsed'  => $item->getNameParsed(),
@@ -94,7 +96,7 @@ class pocketlistsNotificationDailyRecap extends pocketlistsBaseNotification
                     ->setParams(
                         [
                             'items'    => $itemsToSend,
-                            'timezone' => $contact->getContact()->getTimezone(),
+                            'timezone' => new DateTimeZone($contact->getContact()->getTimezone()),
                         ] + $vars
                     )
                     ->setSubject('string:📥 '.sprintf(_w("Daily recap for %s"), waDateTime::format('humandate')))

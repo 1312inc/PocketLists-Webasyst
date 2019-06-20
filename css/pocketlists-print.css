@@ -131,7 +131,7 @@ input#pl-new-list-input,
 .pl-items.content.left300px { margin-left: 299px; }
 
 .pl-title { border-bottom: 1px solid rgba(0,0,0,0.1); padding: 25px 5px 25px 20px; }
-.pl-title h1 { padding-left: 0px; position: relative; margin-bottom: 0.2em; }
+.pl-title h1 { padding-left: 0px; position: relative; margin-bottom: 0.2em; margin-top: 0; }
 .pl-title h1 .pl-done + span {left: -7px; top: 8px; width: 22px; height: 22px; position: absolute; z-index: 1;}
 .pl-title h1 .loading { margin-left: 3px; margin-top: 8px; opacity: 0.5; }
 .pl-title h1.not-padded { padding-left: 0; }
@@ -146,6 +146,7 @@ input#pl-new-list-input,
 .pl-list-access img { width: 32px; height: 32px; margin-top: 4px; border-radius: 50%; }
 .pl-list-access p { margin-bottom: 3px; margin-top: 4px; line-height: 1.2em; }
 
+.pl-due { font-size: 0.9em; font-weight: bold; }
 .pl-due-overdue { color: #dd1713; }
 .pl-due-today { color: #ffa71a; }
 .pl-due-tomorrow { color: #64b320; }
@@ -174,6 +175,7 @@ input#pl-new-list-input,
 .pl-list-items ul.menu-v li .pl-item .pl-item-list-name { font-size: 0.8em; color: rgba(0,0,0,0.4); font-weight: bold; padding-left: 49px; margin-bottom: 0px; }
 .pl-list-items ul.menu-v li .pl-item .pl-item-list-name.pl-dark-none-label { color: #aaa !important; }
 .pl-list-items ul.menu-v li .pl-item .pl-meta { display: none; }
+.pl-list-items ul.menu-v li .pl-item .pl-item-note { color: #aaa; }
 .pl-list-items ul.menu-v li .pl-item p { margin-bottom: 0; margin-top: 4px; line-height: 1.2em; }
 .pl-list-items ul.menu-v li .pl-item i.icon10 { margin-top: 5px; }
 .pl-list-items ul.menu-v li .pl-item:hover .pl-edit,
@@ -193,25 +195,26 @@ input#pl-new-list-input,
 .pl-add-attachment-dropbox .pl-attachments { padding-top: 0; }
 .pl-attachments li.pl-no-preview { display: block !important; }
 
-.pl-chat { display: none; }
+/* .pl-chat { display: none; } */
 
-/* .pl-chat { padding: 13px 25px 15px 0px;}
+.pl-chat { padding: 13px 25px 15px 0px; margin-left: 25%; }
 .pl-item-selected .pl-chat { display: block; }
 .pl-chat .pl-cue { margin-bottom: 13px; width: 100%; }
 .pl-chat .pl-cue .pl-cue-inner { width: 70%; font-size: 0.95em; }
-.pl-chat .pl-cue .pl-bubble { background: rgba(0,0,0,0.05); border-radius: 10px; padding: 8px; margin-bottom: 8px; position: relative; border: 1px solid rgba(0,0,0,0.1); line-height: 1.1em; }
-.pl-chat .pl-cue .pl-bubble .pl-bubble-arrow { background: rgba(0,0,0,0.05); transform: rotate(45deg); width: 10px; height: 10px; display: block; position: absolute; left: 15px; bottom: -4px; border: 1px solid rgba(0,0,0,0.1); }
+.pl-chat .pl-cue .pl-bubble { background: rgba(0,0,0,0.05); border-radius: 10px; padding: 7px 10px; margin-bottom: 8px; position: relative; border: 1px solid rgba(0,0,0,0.1); line-height: 1.1em; font-size: 0.9em; }
+.pl-chat .pl-cue .pl-bubble .pl-bubble-arrow { background: rgba(0,0,0,0.05); transform: rotate(45deg); width: 10px; height: 10px; display: block; position: absolute; left: 15px; bottom: -4px; border: 1px solid rgba(0,0,0,0.05); }
 .pl-chat .pl-cue .pl-bubble .pl-bubble-arrow:after { content: ''; border-top: 1px solid red;}
 .pl-chat .pl-cue.pl-my-cue .pl-cue-inner { margin-left: 30%; }
 .pl-chat .pl-cue.pl-my-cue .pl-bubble,
-.pl-chat .pl-cue.pl-my-cue .pl-bubble .pl-bubble-arrow { background: #def; }
+.pl-chat .pl-cue.pl-my-cue .pl-bubble .pl-bubble-arrow { background: #eef7ff; }
 .pl-chat .userpic20 { margin-left: 10px; margin-top: 1px; }
 .pl-chat .pl-reply { display: none; }
-.pl-chat .pl-delete-comment { display: none; } */
+.pl-chat .pl-delete-comment { display: none; }
 
-.pl-link-preview { margin-left: 49px; padding: 5px 10px 5px 7px; margin-bottom: 15px; margin-top: -5px; display: inline-block; line-height: 1.3em; position: relative; border-radius: 5px; min-width: 300px; background: #eee; }
+.pl-link-preview { margin-left: 0px; padding: 5px 10px 5px 7px; margin-bottom: 5px; margin-top: 5px; display: inline-block; line-height: 1.3em; position: relative; border-radius: 5px; min-width: 300px; background: #eee; }
 .pl-link-preview-image { display: inline-block; width: 36px; float: left; }
 .pl-link-preview-image img { max-width: 32px; margin-top: 3px; }
+.pl-link-preview-remove { display: none; }
 .pl-link-preview-details { display: block; margin-left: 40px; }
 .pl-link-preview-details p { margin-bottom: 0; line-height: 1em; margin-top: 2px; }
 .pl-link-preview-details a .pl-label { margin-left: 0px !important; font-size: 12px; position: relative; top: 2px; }

@@ -25,8 +25,12 @@ class pocketlistsFavoritesDateAction extends pocketlistsViewAction
             ->setOffset(pocketlistsFactory::DEFAULT_OFFSET)
             ->findFavoritesDoneForUserAndDate($this->user, $date);
 
-        $countItemsDone = pl2()->getModel(pocketlistsItem::class)
-            ->getFavoritesCount($this->user->getId(), $date, false, pocketlistsItem::STATUS_DONE);
+        $countItemsDone = pl2()->getEntityCounter()->countFavoritesItems(
+            $this->user,
+            $date,
+            false,
+            pocketlistsItem::STATUS_DONE
+        )->getCount();
 
         $timestamp = $date ? waDateTime::date('Y-m-d', strtotime($date)) : '';
 

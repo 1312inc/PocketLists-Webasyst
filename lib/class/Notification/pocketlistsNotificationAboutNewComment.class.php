@@ -89,7 +89,7 @@ class pocketlistsNotificationAboutNewComment extends pocketlistsBaseNotification
 
             switch ($user['setting']) {
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_ITEM:
-                    if ($item->getContactId() != $user_id) {
+                    if ($item->getContactId() != $user_id && $item->getAssignedContactId() != $user_id) {
                         continue 2;
                     }
 

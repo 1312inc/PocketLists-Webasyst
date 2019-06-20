@@ -89,4 +89,42 @@ class pocketlistsJsonActions extends waJsonActions
     {
         $this->response = (new pocketlistsNotificationSendService())->sendBatch();
     }
+
+    public function getListItemCountAction()
+    {
+        wa()->getStorage()->close();
+
+        $list_id = waRequest::get('id', false, waRequest::TYPE_INT);
+        if (!$list_id) {
+            $this->errors = 'no list id';
+
+            return;
+        }
+
+        /** @var pocketlistsList $list */
+        $list = pl2()->getEntityFactory(pocketlistsList::class)->findById($list_id);
+        if (!$list) {
+            $this->errors = 'no list';
+
+            return;
+        }
+
+        if (!pocketlistsRBAC::canAccessToList($list)) {
+            $this->errors = '403 error';
+
+            return;
+        }
+
+        $count = pl2()->getEntityCounter()->getListItemsCount($list);
+
+        $this->response = [
+            'count_max_priority' => $count->getCountMaxPriority(),
+            'max_priority'       => $count->getMaxPriority(),
+            'class'              => pocketlistsViewHelper::getPriorityCssClass(
+                $count->getMaxPriority(),
+                pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR
+            ),
+            'count'              => $count->getCount(),
+        ];
+    }
 }

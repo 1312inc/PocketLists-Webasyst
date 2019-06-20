@@ -1,7 +1,11 @@
 {* @var pocketlistsItem $item *}
+{* @var pocketlistsAttachment $attachment *}
 <div class="pl-details-form">
 <div class="pl-details-form-container">
 <div class="fields form">
+
+    <a class="pl-enable-item-add-compact-mode pl-unsaved-items-only" href="#" data-pl2-action="close" title="[`Hide details and use the compact add mode by default`]"><i class="icon16 pl caret-up"></i></a>
+
     <form method="post" id="pl-item-details-form" action="{$plurl}?module=item&amp;action=data" target="pl-item-details-form-iframe" enctype="multipart/form-data">
     {* <a href="#" class="pl-item-details-cancel" class="pl-close" title="[`Close`]">&times;</a> *}
     {$wa->csrf()}
@@ -10,18 +14,25 @@
     <!-- core -->
 
 
-        <textarea class="pl-details-textarea pl-item-name" name="item[name]" placeholder="[`Title`]" {if $item->isDone()} disabled="disabled"{/if}>{$item->getNameParsed()}</textarea>
-        {if $wa->shop}<p class="hint">[`Use @ or # symbols to link this to-do with a Shop-Script order.`]</p>{else}<br>{/if}
+        <textarea class="pl-details-textarea pl-item-name" name="item[name]" placeholder="[`New to-do`]" {if $item->isDone()} disabled="disabled"{/if}>{$item->getNameParsed()}</textarea>
 
-        <div data-pl2-item-links class="pl-details-linked-entities">
-            {foreach $item->getLinkedEntities() as $linkedEntity}
-                <div data-pl2-link-preview>
-                    {$linkedEntity->getAppLink()->renderPreview($linkedEntity)}
-                </div>
-            {/foreach}
+        <div class="pl-details-primary-hint-wrapper">
+
+            {if $wa->shop}<p class="hint pl-app-hint-internal">[`Use @ or # symbols to link this to-do with a Shop-Script order.`]{* <a href="#" class="inline-link"><b><i>[`Ok, I got it.`]</i></b></a> *}</p>{/if}
+
+            <p class="hint pl-app-hint-external"><i class="icon16 pl pl2app"></i>{sprintf('[`The to-do item will be saved in the <span class="nowrap"><a href="%s" class="gray" target="_blank">Pocket Lists</a> app</span> and will be visible only to authorized Webasyst users. The customer will not see this to-do.`]', $wa_backend_url|cat:'pocketlists/')}{* <a href="#" class="inline-link"><b><i>[`Ok, I got it.`]</i></b></a> *}</p>
+
+            <div data-pl2-item-links class="pl-details-linked-entities">
+                {foreach $item->getLinkedEntities() as $linkedEntity}
+                    <div data-pl2-link-preview>
+                        {$linkedEntity->getAppLink()->renderPreview($linkedEntity, [allow_delete => 1])}
+                    </div>
+                {/foreach}
+            </div>
+
         </div>
 
-        <textarea class="pl-details-textarea" name="item[note]" placeholder="[`Add note`]"{if $item->isDone()} disabled="disabled"{/if}>{$item->getNote()|escape}</textarea>
+        <textarea class="pl-details-textarea" name="item[note]" data-pl2-textarea-rows="2" placeholder="[`Note`]"{if $item->isDone()} disabled="disabled"{/if}>{$item->getNote()|escape}</textarea>
 
     {*$wa->csrf()*}
     <div data-pl-item-details-attachments class="pl-already-saved-items-only">
@@ -31,7 +42,7 @@
             <ul class="menu-v">
             {foreach $item->getAttachments() as $attachment}
                 <li>
-                    <a href="#" class="gray float-right" data-pl-attachment-name="{$attachment->getFilename()}" style="margin-left: 10px;">&times;</a>
+                    <a href="#" class="gray float-right" data-pl-attachment-id="{$attachment->getId()}" data-pl-attachment-name="{$attachment->getFilename()}" style="margin-left: 10px;">&times;</a>
                     <a href="{$pl2_attachments_path}{$attachment->getFilename()}" target="_blank">{$attachment->getFilename()|truncate:128}</a>
                 </li>
             {/foreach}
@@ -67,6 +78,7 @@
                     <option value="{$contact->getId()}" {if $assignUserId == $contact->getId()}selected="selected"{/if}>{$contact->getUsername()|escape|truncate:64}{if $contact->isMe()} ([`me`]){/if}</option>
                     {/foreach}
                 </select>
+                <p class="hint" style="display: none;" data-pl2-item-assign-hint>[`The user will see this to-do in his Pocket Lists to-do stream and will be notified about this assignment by email.`]</p>
             </div>
         </div>
         {/if}
@@ -192,9 +204,9 @@
     <div class="field-group" style="margin-bottom: 0;">
         <div class="field">
 
-            <div class="float-right block half-padded pl-already-saved-items-only">
+            <div class="float-right block half-padded">
                 <ul class="menu-v with-icons">
-                    <li>
+                    <li class="pl-already-saved-items-only">
                         <a href="#" data-pl-action="item-delete" class="nowrap">
                             <i class="icon16 delete"></i>[`Delete to-do`]
                         </a>
@@ -204,7 +216,7 @@
 
             <input type="submit" class="button green" value="{if $item->getId()}[`Save`]{else}[`Add to-do`]{/if}"  id="pl-item-details-save"/>
             [`or`]
-            <a href="#" class="pl-item-details-cancel">[`close details`]</a>
+            <a href="#" class="pl-item-details-cancel">[`cancel`]</a>
 
             <span class="error" style="display: none;">[`error`]</span>
             <span class="success" style="display: none;">[`saved`]</span>

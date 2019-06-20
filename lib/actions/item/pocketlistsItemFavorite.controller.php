@@ -6,6 +6,8 @@
 class pocketlistsItemFavoriteController extends pocketlistsJsonController
 {
     /**
+     * @throws pocketlistsLogicException
+     * @throws pocketlistsNotFoundException
      * @throws waException
      */
     public function execute()
@@ -19,5 +21,14 @@ class pocketlistsItemFavoriteController extends pocketlistsJsonController
         } else {
             $item->removeFavorite(pl2()->getUser());
         }
+
+        $this->logService->add(
+            $this->logService->getFactory()->createNewItemLog(
+                (new pocketlistsLogContext())
+                    ->setItem($item)
+                    ->setParams(['item' => ['favorite' => $status]]),
+                pocketlistsLog::ACTION_UPDATE
+            )
+        );
     }
 }

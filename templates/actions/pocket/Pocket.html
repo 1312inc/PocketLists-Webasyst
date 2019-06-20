@@ -16,7 +16,12 @@
                     {foreach $lists as $l}
                         <li data-pl-list-id="{$l->getId()}">
                             <a href="#/pocket/{$pocket->getId()}/list/{$l->getId()}/"{if $l->getId() == $list_id} class="pl-is-selected"{/if} title="{$l->getName()|escape}">
-                                <span class="count {$l->getCssClass('list-indicator')}">{$l->getItemsCount()}</span>
+                                <span data-pl2-list-items class="count">{$l->getItemCount()->getCount()}</span>
+
+                                <span data-pl2-list-calc-priority class="count bold {pocketlistsViewHelper::getPriorityCssClass($l->getItemCount()->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}" {if !$l->getItemCount()->getMaxPriority()}style="display: none;"{/if}>
+                                    {$l->getItemCount()->getCountMaxPriority()}
+                                </span>
+
                                 <i class="listicon36"
                                    style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l->getIcon()|default:'li-list@2x.png'});"></i>
                                 <span class="pl-list-name pl-dark-{$l->getColor()|default:'none'}-label">{$l->getName()|escape}</span>
@@ -26,13 +31,14 @@
                 </ul>
             {else}
                 <div class="block double-padded align-center pl-lists-empty">
-                    <p>
-                        {if $isAdmin}
-                            [`This pocket is empty. Start by creating a to-do list.`]
-                        {else}
-                            [`You don’t have access to any list in the pocket. Please contact your admin to request access setup.`]
-                        {/if}
-                    </p>
+                    {if $isAdmin}
+                        <div class="pl-new-list-icons-mix-helper"></div>
+                        <h2 class="align-center">[`Go ahead! Create a list.`]</h2>
+                        <p class="align-center gray">[`Pockets and lists help you organize to-dos, ideas, and notes, and flexibly configure access rights for your team.`]</p>
+
+                    {else}
+                        <p>[`You don’t have access to any list in the pocket. Please contact your admin to request access setup.`]</p>
+                    {/if}
                 </div>
             {/if}
             <!-- <a href="#/pocket/{$pocket->getId()}/list/new/" class="pl-lists-add">

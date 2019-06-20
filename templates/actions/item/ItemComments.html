@@ -1,10 +1,4 @@
 <div class="pl-comments-form pl-chat" data-pl2-item-id="{$item->getId()}">
-    <div class="pl-chat-title">
-        <div class="block">
-            <a href="#" class="pl-item-details-cancel pl-close" title="[`Close`]">&times;</a>
-            <h5>{$item->getName()|escape}</h5>
-        </div>
-    </div>
     <div class="pl-chat-contents">
 
         {$wa->csrf()}
@@ -18,11 +12,9 @@
     </div>
     <div class="pl-chat-reply">
         <div class="pl-reply"{if $item->isDone()} style="display:none;"{/if}>
-            <i class="icon16 userpic20" style="background-image: url({$current_user->getContact()->getPhoto(20)})"
-               alt="{$current_user->getContact()->getName()|escape}"></i>
+            <i class="icon16 userpic20" style="background-image: url({$wa->user()->getPhoto(20)})"
+               alt="{$wa->user()->get('name')|escape}"></i>
             <textarea rows="1" placeholder="[`Add comment`]"></textarea>
         </div>
-    </div>
-    <div id="pl-chat-waapps-height-compensation">
     </div>
 </div>

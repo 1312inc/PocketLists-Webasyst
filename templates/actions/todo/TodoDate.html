@@ -16,7 +16,7 @@
     <div id="pl-stream-notice" class="pl-alert" style="display: none;">
         <a href="javascript:void(0)" class="close pl-alert-close bigger">&times;</a>
         <div class="pl-welcome" id="pl-welcome-msg">
-            <div class="pl-jumbodone" title="[`Welcome to To-dos app!`]"></div>
+            <div class="pl-jumbodone" title="[`Welcome to Pocket Lists app!`]"></div>
             <h2>[`Your daily routine`]</h2>
             <p>[`My to-dos is your personal dynamic to-do list that automatically collects all to-dos which you are about to do up next. To-dos to self and to-dos assigned to you by your teammates are included in this list automatically. Most important and urgent to-dos are on top.`] {sprintf('[`<a href="%s">Use Settings</a> page to configure your custom “My To-dos” filter behaviour.`]','#/settings/')}</p>
         </div>
@@ -78,14 +78,15 @@
     {/if}
 
     {include '../../include/itemdetails.html' inline}
-    {include '../../include/itemcomments.html' inline}
 </main>
 {if !$print}
 <script type="text/javascript">
     (function(){
         $.pocketlists.initNotice('#pl-stream-notice');
 
-        new $.pocketlists.Items($('#pl-list-items'), {
+        var $all_items_wrapper = $('#pl-list-items');
+
+        new $.pocketlists.Items($all_items_wrapper, {
             enableAddLinkOnHover: false,
             enableChangeLevel: false,
             enableSortItems: false,
@@ -95,6 +96,8 @@
             current_user_id: {$user->getContact()->getId()},
             dueDate: '{if $timestamp}{$timestamp}{/if}',
         });
+
+        new $.pocketlists.Comments($all_items_wrapper);
 
         $.pocketlists.lazyItems({
             $loading: $('#pl-list-content .lazyloading'),

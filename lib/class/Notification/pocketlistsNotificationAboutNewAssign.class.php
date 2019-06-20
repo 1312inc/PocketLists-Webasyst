@@ -49,6 +49,7 @@ class pocketlistsNotificationAboutNewAssign extends pocketlistsBaseNotification
         /** @var pocketlistsNotificationFactory $notificationFactory */
         $notificationFactory = pl2()->getEntityFactory(pocketlistsNotification::class);
 
+        $iconFinder = new pocketlistsItemIcon();
         $emailContent = new pocketlistsNotificationEmailContent();
         $emailContent
             ->setToContactId($contact->getId())
@@ -59,12 +60,12 @@ class pocketlistsNotificationAboutNewAssign extends pocketlistsBaseNotification
                         ? waDateTime::format(
                             'humandatetime',
                             $item->getDueDatetime(),
-                            $contact->getContact()->getTimezone()
+                            new DateTimeZone($contact->getContact()->getTimezone())
                         )
                         : ($item->getDueDate() ? waDateTime::format(
                             'humandate',
                             $item->getDueDate(),
-                            $contact->getContact()->getTimezone()
+                            new DateTimeZone($contact->getContact()->getTimezone())
                         ) : false),
                     'by_username' => $by_username->getName(),
                     'list'        => $list ? [
@@ -73,6 +74,7 @@ class pocketlistsNotificationAboutNewAssign extends pocketlistsBaseNotification
                         'id'          => (int)$list->getId(),
                     ] : false,
                     'item'        => [
+                        'icon'        => $iconFinder->getIconByItemPriority($item->getPriority()),
                         'name'        => $item->getName(),
                         'name_parsed' => $item->getNameParsed(),
                     ],

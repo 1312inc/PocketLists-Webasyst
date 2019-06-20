@@ -123,14 +123,15 @@ class pocketlistsListModel extends pocketlistsModel
     }
 
     /**
+     * @return array
      * @deprecated
      * Get only active lists and its items with calculated priority that are accessible for current user
      *
-     * @return array
      */
     public function getLists($check_access = true, $pocket_id = 0)
     {
         $lists = $this->getAllActiveLists($check_access, $pocket_id);
+
 //        $lists = $this->calculatePriority($lists);
 
         return $lists;
@@ -147,7 +148,7 @@ class pocketlistsListModel extends pocketlistsModel
      */
     public function getAllLists($check_access = true, $pocket_id = 0)
     {
-        $accessed_lists = "";
+        $accessed_lists = '';
         $available_lists = [];
 
         if ($check_access) {
@@ -162,7 +163,6 @@ class pocketlistsListModel extends pocketlistsModel
 
         $sql = "SELECT i.*,
                        l.*,
-                       count(i2.id)                                   'items_count',
                        greatest(i.priority, max(i2.priority))         'max_priority',
                        greatest(i.due_date, max(i2.due_date))         'min_due_date',
                        greatest(i.due_datetime, max(i2.due_datetime)) 'min_due_datetime'
@@ -181,11 +181,28 @@ class pocketlistsListModel extends pocketlistsModel
                 'list_ids'  => $available_lists,
                 'pocket_id' => $pocket_id,
             ]
-        )->fetchAll();
+        )->fetchAll('id');
 
-//        $lists = self::generateModels($lists_data);
+        $this->fillWithItemCount($lists_data, $available_lists);
 
         return $lists_data ?: [];
+    }
+
+    protected function fillWithItemCount(&$lists_data, $available_lists)
+    {
+        $itemsCount = pl2()->getModel(pocketlistsItem::class)
+            ->countListItems($available_lists, pocketlistsItem::STATUS_UNDONE);
+
+        foreach ($itemsCount as $list_id => $itemCount) {
+            if (!isset($lists_data[$list_id])) {
+                continue;
+            }
+
+            $lists_data[$list_id]['itemCount'] = array_combine(
+                array_column($itemCount, 'priority'),
+                array_column($itemCount, 'count')
+            );
+        }
     }
 
     /**
@@ -310,7 +327,7 @@ class pocketlistsListModel extends pocketlistsModel
      */
     public function getLastListId()
     {
-        return (int) $this->query("SELECT id FROM {$this->table} ORDER BY id DESC")->fetchField('id');
+        return (int)$this->query("SELECT id FROM {$this->table} ORDER BY id DESC")->fetchField('id');
     }
 
 
@@ -327,5 +344,52 @@ class pocketlistsListModel extends pocketlistsModel
         }
 
         return $this->item;
+    }
+
+    /**
+     * @param string $term
+     * @param int    $found
+     *
+     * @return array
+     * @throws waDbException
+     * @throws waException
+     */
+    public function getByTerm($term, &$found = 0)
+    {
+        $available_lists = pocketlistsRBAC::getAccessListForContact();
+        $accessed_lists = $available_lists ? 'l.id IN (i:list_ids)' : 'l.id IS NULL';
+
+        $sql = "SELECT SQL_CALC_FOUND_ROWS
+                       i.*,
+                       l.*,
+                       count(i2.id)                                   'items_count',
+                       max(i2.calc_priority)                          'item_max_priority',
+                       sum(if(i2.calc_priority > 0, 1, 0))            'item_count_priority',
+                       greatest(i.priority, max(i2.priority))         'max_priority',
+                       greatest(i.due_date, max(i2.due_date))         'min_due_date',
+                       greatest(i.due_datetime, max(i2.due_datetime)) 'min_due_datetime'
+                FROM pocketlists_list l
+                   JOIN pocketlists_item i ON i.key_list_id = l.id
+                   left join pocketlists_item i2 ON i2.status = 0 and i2.list_id = l.id
+                WHERE 
+                {$accessed_lists}
+                and lower(concat(ifnull(i.name,''),'|',ifnull(i.note,''))) like s:term
+                GROUP BY l.id
+                ORDER BY l.sort, l.id DESC
+                limit 0, 100";
+
+        $lists_data = $this->query(
+            $sql,
+            [
+                'list_ids' => $available_lists,
+                'term'     => mb_strtolower('%'.$term.'%'),
+            ]
+        )->fetchAll('id');
+
+        $found = (int)$this->query('SELECT FOUND_ROWS()')->fetchField();
+
+        $this->fillWithItemCount($lists_data, $available_lists);
+
+        return $lists_data ?: [];
     }
 }

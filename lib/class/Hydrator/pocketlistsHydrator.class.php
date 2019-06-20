@@ -75,7 +75,7 @@ class pocketlistsHydrator implements pocketlistsHydratorInterface
             }
         }
 
-        $object->afterHydrate();
+        $object->afterHydrate($data);
 
         return $object;
     }

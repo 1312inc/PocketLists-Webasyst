@@ -1,5 +1,6 @@
 <script type="template/pl2" data-pl2-template="itemadd">
     <main class="pl-items pl-list-items pl-todo pl-shop-order" id="pl-list-content">
+        <a class="pl-shop-close" href="#" data-pl2-shop-action="close" title="[`Close`]">&times;</a>
         <div class="pl-list-items" id="pl-list-items">
             <section id="pl-undone-items" data-pl-items="undone">
                 <ul class="menu-v">
@@ -10,7 +11,6 @@
             </section>
 
             <section id="pl-complete-log" class="pl-logbook">
-                <h5 class="heading">{if $wa->locale() == 'ru_RU'}Выполнено{else}[`Logbook`]{/if}</h5>
                 <ul class="menu-v">
                     {if $params.count_done_items}
                     {include '../../actions/item/Item.html' parent_id=0 items=$params.items_done}
@@ -18,45 +18,55 @@
                 </ul>
             </section>
 
-            <a href="#" id="pl-complete-log-link" class="inline-link gray" {if !$params.count_done_items}style="display:none;"{/if}><b><i>
-                {if $wa->locale() == 'ru_RU'}
-                    {sprintf('Показать выполненные задачи (%d)', $params.count_done_items)}
-                {else}
-                    {_w('Show all %d completed to-do', 'Show all %d completed to-dos', $params.count_done_items)}
-                {/if}
-            </i></b></a>
         </div>
 
         {if $params.app->userCanAccess()}
             {include '../../include/itemadd.html' inline}
         {/if}
         {include '../../include/itemdetails.html' inline}
-        {include '../../include/itemcomments.html' inline}
 
     </main>
 </script>
 <script type="text/javascript" src="{$params.wa_app_static_url}js/pocketlists.js?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
 <script type="text/javascript" src="{$params.wa_app_static_url}js/pocketlists-item.js?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
+<script type="text/javascript" src="{$params.wa_app_static_url}js/pocketlists-comment.js?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
 <link type="text/css" rel="stylesheet" href="{$params.wa_app_static_url}css/pocketlists.css?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}">
 
 <script>
     (function(){
         var $order_info_wrapper = $('#s-split-order-wrapper'),
             item_add_html = $('[data-pl2-template="itemadd"]').html(),
-            $toggle_link = $('[data-pl2-action="show-add-item"]');
+            $toggle_link = $('[data-pl2-action="show-add-item"]'),
+            has_items = /*{if empty($params.count_undone_items) && empty($params.count_done_items)}*/false/*{else}*/true/*{/if}*/;
 
         $order_info_wrapper.prepend(item_add_html);
 
         var $list_wrapper = $('#pl-list-content');
 
-        //{if empty($params.items_undone)}
+        function canShow() {
+            return (!has_items && !$.storage.get('pocketlists/apps/hide-pl2ss-by-default')) || has_items;
+        }
 
-        $list_wrapper.hide();
+        $list_wrapper.on('click', '[data-pl2-shop-action="close"]', function (e) {
+            e.preventDefault();
 
-        //{/if}
+            $.storage.set('pocketlists/apps/hide-pl2ss-by-default', 1);
+            $list_wrapper.slideUp(200, function() {
+                $('[data-pl2-action="show-add-item"]').find('span').css('background', 'greenyellow');
+                setTimeout(function () {
+                    $('[data-pl2-action="show-add-item"]').find('span').css('background', 'white');
+                }, 1312);
+            });
+        });
+
+        if (!canShow()) {
+            $list_wrapper.hide();
+        }
 
         $toggle_link.on('click', function (e) {
             e.preventDefault();
+
+            $.storage.del('pocketlists/apps/hide-pl2ss-by-default');
 
             $list_wrapper.slideToggle(200, function () {
                 if ($list_wrapper.is(':visible')) {
@@ -81,5 +91,46 @@
             wa_url: '{$wa_url}',
             fileUpload: {$params.fileupload}
         });
+
+        new $.pocketlists.Comments($list_wrapper, {
+            standAloneItemAdd: true,
+            appUrl: '{$params.plurl}',
+            wa_url: '{$wa_url}'
+        });
+
+        var order_id = parseInt($('#s-order-items [data-id]').data('id')),
+            $order_list = $('#order-list');
+
+        $(document)
+            .off('item_delete.pl2 item_add.pl2 item_complete.pl2 item_move.pl2 item_update.pl2')
+            .on('item_delete.pl2 item_add.pl2 item_complete.pl2 item_move.pl2 item_update.pl2', function (e, data) {
+                console.log('pl2 item captured', e.type, data);
+
+                $.post('{$params.plurl}?module=shop&action=loadOrderIcon', { order: order_id }, function (r) {
+                    console.log('pl2 item loadOrderIcon response', r);
+
+                    if (r.status === 'ok' && r.data) {
+                        var $order = $order_list.find('[data-order-id='+r.data.entity_id+']');
+
+                        if ($order.length) {
+                            var pl2 = '<div class="pl2-shop-item-count" title="{if $wa->locale() == 'ru_RU'}'+r.data.count_entities+' задач связаны с этим заказом{else}'+r.data.count_entities+' to-dos linked with the order{/if}"><span>'+r.data.count_entities+'</span><i class="icon16 pl2-shop-icon"></i></div>';
+
+                            $order.find('.pl2-shop-item-count').remove();
+
+                            if (r.data.count_entities) {
+                                if ($.order_list.options.view == 'split') {
+                                    $order
+                                        .find('.details')
+                                        .append(pl2);
+                                } else {
+                                    $order
+                                        .find('td:last')
+                                        .append(pl2);
+                                }
+                            }
+                        }
+                    }
+                });
+            })
     }());
 </script>

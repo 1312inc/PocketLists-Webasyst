@@ -12,7 +12,7 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Basepath: .\n"
 "Language: ru_RU\n"
-"X-Generator: Poedit 2.2\n"
+"X-Generator: Poedit 2.2.3\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: .\n"
 
@@ -854,8 +854,8 @@ msgid "Online"
 msgstr "Онлайн"
 
 #: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:85
-msgid "Use <a href=\"%s\">Team app</a> to invite teammates and to collaborate using the To-dos app: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level."
-msgstr "Работайте совместно! Используйте приложение «<a href=\"%s\">Команда</a>», чтобы предоставить доступ коллегам: выберите пользователя или группу пользователей &gt; вкладка «Доступ» &gt; приложение «Дела» &gt; настройте подходящий уровень доступа."
+msgid "Use <a href=\"%s\">Team app</a> to invite teammates and to collaborate using the Pocket Lists app: select a user or a group of users &gt; Access tab &gt; Pocket Lists app &gt; apply the proper access level."
+msgstr "Работайте совместно! Используйте приложение «<a href=\"%s\">Команда</a>», чтобы предоставить доступ коллегам: выберите пользователя или группу пользователей &gt; вкладка «Доступ» &gt; Pocket Lists &gt; настройте подходящий уровень доступа."
 
 #: /wa-apps/pocketlists/templates/actions/comment/Comment.html:12
 msgid "Reply"
@@ -928,8 +928,8 @@ msgid "author"
 msgstr "автор"
 
 #: /wa-apps/pocketlists/templates/actions/list/List.html:61
-msgid "Use <a href=\"%s\">Team app</a> to configure access: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level."
-msgstr "Для настройки доступа используйте приложение «<a href=\"%s\">Команда</a>»: выберите пользователя или группу пользователей &gt; вкладка «Доступ» &gt; приложение «Дела» &gt; настройте подходящий уровень доступа."
+msgid "Use <a href=\"%s\">Team app</a> to configure access: select a user or a group of users &gt; Access tab &gt; Pocket Lists app &gt; apply the proper access level."
+msgstr "Для настройки доступа используйте приложение «<a href=\"%s\">Команда</a>»: выберите пользователя или группу пользователей &gt; вкладка «Доступ» &gt; Pocket Lists &gt; настройте подходящий уровень доступа."
 
 #: /wa-apps/pocketlists/templates/actions/settings/Settings.html:17
 msgid "Understand “Meeting tomorrow at 10” input (recommended)"
@@ -995,8 +995,8 @@ msgstr "Общие списки"
 
 #: /wa-apps/pocketlists/templates/actions/team/Team.html:48
 #: /wa-apps/pocketlists/templates/actions/team/Team.html:53
-msgid "Use Team app to <a href=\"%s\">configure %s’s access</a> to shared lists: select a user or a group of users &gt; Access tab &gt; To-dos app &gt; apply the proper access level."
-msgstr "Настройте <a href=\"%s\">доступ к спискам для %s</a> в приложении «Команда»: выберите пользователя или группу пользователей &gt; вкладка «Доступ» &gt; приложение «Дела» &gt; настройте подходящий уровень доступа."
+msgid "Use Team app to <a href=\"%s\">configure %s’s access</a> to shared lists: select a user or a group of users &gt; Access tab &gt; Pocket Lists app &gt; apply the proper access level."
+msgstr "Настройте <a href=\"%s\">доступ к спискам для %s</a> в приложении «Команда»: выберите пользователя или группу пользователей &gt; вкладка «Доступ» &gt; Pocket Lists &gt; настройте подходящий уровень доступа."
 
 #: /wa-apps/pocketlists/templates/actions/team/Team.html:52
 msgid "You have no lists that you would share with %s in common."
@@ -1004,12 +1004,12 @@ msgstr "У вас нет общих списков дел с %s."
 
 #: /wa-apps/pocketlists/templates/actions/todo/TodoDate.html:19
 #: /wa-apps/pocketlists/templates/actions/todo/TodoDate.html:20
-msgid "Welcome to To-dos app!"
+msgid "Welcome to Pocket Lists app!"
 msgstr "Добро пожаловать!"
 
 #: /wa-apps/pocketlists/templates/actions/todo/TodoDate.html:21
-msgid "Use To-dos app to keep track on what you need to do up next, to assign to-dos to your teammates, and to collaborate on shared to-do lists."
-msgstr "Приложение «Дела» позволит вашей команде эффективно работать совместно: вести общие списки дел, планировать работу, назначать задачи друг другу и не пропустить ни одного важного запланированного события."
+msgid "Use Pocket Lists app to keep track on what you need to do up next, to assign to-dos to your teammates, and to collaborate on shared to-do lists."
+msgstr "Pocket Lists позволит вашей команде эффективно работать совместно: вести общие списки дел, планировать работу, назначать задачи друг другу и не пропустить ни одного важного запланированного события."
 
 #: /wa-apps/pocketlists/templates/include/itemadd.html:15
 msgid "Meeting tomorrow at 10"
@@ -1491,8 +1491,8 @@ msgid "“My To-dos” widget for the dashboard and Webasyst TV"
 msgstr "Виджет «Мои задачи» для дешборда и Webasyst TV"
 
 #: /wa-apps/pocketlists/templates/actions/about/About.html:98
-msgid "Integration with Webasyst Team and Tasks apps"
-msgstr "Интеграция с приложениями «Команда» и «Задачи»"
+msgid "Integration with Webasyst CRM, Tasks, and other apps"
+msgstr "Интеграция CRM, «Задачами» и другими приложениями Webasyst"
 
 #: /wa-apps/pocketlists/templates/actions/about/About.html:103
 msgid "Repeating to-dos"
@@ -1512,7 +1512,7 @@ msgid "Integrate Pocket Lists for Webasyst and iOS"
 msgstr "Интеграция Pocket Lists для Webasyst и iOS"
 
 #: /wa-apps/pocketlists/templates/actions/about/About.html:119
-msgid "Better Shop-Script integration"
+msgid "Advanced Shop-Script integration"
 msgstr "Продвинутая интеграция с Shop-Script"
 
 #: /wa-apps/pocketlists/templates/actions/about/About.html:120
@@ -1603,3 +1603,118 @@ msgstr "скрыть подробности"
 #: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:205
 msgid "Add to-do"
 msgstr "Создать задачу"
+
+#: /wa-apps/pocketlists/templates/include/item_linked_entities/shop.order.preview.html:7
+msgid "Unlink"
+msgstr "Удалить ссылку"
+
+#: /wa-apps/pocketlists/templates/include/itemadd.html:25
+msgid "Show details and use the detailed add mode by default"
+msgstr "Показывать все параметры задачи по умолчанию"
+
+#: /wa-apps/pocketlists/templates/actions/pocket/Pocket.html:36
+msgid "Go ahead! Create a list."
+msgstr "Создайте первый список!"
+
+#: /wa-apps/pocketlists/templates/actions/pocket/Pocket.html:37
+msgid "Pockets and lists help you organize to-dos, ideas, and notes, and flexibly configure access rights for your team."
+msgstr "Проекты и списки помогают организовывать задачи, идеи, заметки и гибко настраивать права доступа к ним для сотрудников."
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:75
+msgid "All my to-dos"
+msgstr "Все мои задачи"
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:76
+msgid "Only On Fire + Black + Red"
+msgstr "Только Горит + Черные + Красные"
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:77
+msgid "Only On Fire + Black + Red + Yellow"
+msgstr "Только Горит + Черные + Красные + Желтые"
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:78
+msgid "Only On Fire + Black + Red + Yellow + Green"
+msgstr "Только Горит + Черные + Красные + Желтые + Зеленые"
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:161
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:182
+msgid "only items created by me or assigned to me"
+msgstr "только задачи, которые я создал или которые назначили на меня"
+
+#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:83
+msgid "Calendar"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:86
+msgid "Places"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:89
+msgid "Board"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:96
+#: /wa-apps/pocketlists/templates/actions/search/Search.html:105
+msgid "Search"
+msgstr "Поиск"
+
+#: /wa-apps/pocketlists/templates/actions/search/Search.html:9
+msgid "%s lists found"
+msgstr "Найдено %s списков"
+
+#: /wa-apps/pocketlists/templates/actions/search/Search.html:33
+msgid "No lists found"
+msgstr "Не найдено ни одного списка"
+
+#: /wa-apps/pocketlists/templates/actions/search/Search.html:50
+msgid "%s to-dos found"
+msgstr "Найдено %s задач"
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:7
+msgid "Hide details and use the compact add mode by default"
+msgstr "Скрывать параметры задачи по умолчанию"
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:21
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:23
+msgid "Ok, I got it."
+msgstr "Ок, понял."
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:23
+msgid "The to-do item will be saved in the <span class=\"nowrap\"><a href=\"%s\" class=\"gray\" target=\"_blank\">Pocket Lists</a> app</span> and will be visible only to authorized Webasyst users. The customer will not see this to-do."
+msgstr "Задача будет сохранена в приложении <a href=\"%s\" class=\"gray\" target=\"_blank\">Pocket Lists</a> и видна только пользователям бекенда. Покупатель никогда не увидит эту задачу."
+
+#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:81
+msgid "The user will see this to-do in his Pocket Lists to-do stream and will be notified about this assignment by email."
+msgstr "Ответственный пользователь увидит эту задачу в своем потоке задач в приложении Pocket Lists и получит уведомление о назначении по email."
+
+#: /wa-apps/pocketlists/templates/actions/debug/Debug.html:140
+msgid "Reset everything"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/class/pocketlistsLogAction.class.php:114
+msgid "added new to-do"
+msgstr "добавил задачу"
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:104
+msgid "Integration with the Team app"
+msgstr "Интеграция с приложением «Команда»"
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:115
+msgid "Timelines: detailed activity log of who did what"
+msgstr "История действий: подробный список всего, что делала ваша команда"
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:116
+msgid "By pocket, by list, by user"
+msgstr "По проектам, по спискам, по пользователям"
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:120
+msgid "Custom to-do statuses"
+msgstr "Статусы задач"
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:124
+msgid "Agile board"
+msgstr "Agile: просмотр задач в виде колонок по статусам"
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:172
+msgid "Bullets highlighted with a %s label will be available as a part of the paid Pocket Lists PRO plugin."
+msgstr "Пункты, отмеченные значком %s, планируются к выпуску в виде отдельного платного плагина Pocket Lists PRO."

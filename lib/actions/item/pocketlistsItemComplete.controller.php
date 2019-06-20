@@ -6,6 +6,8 @@
 class pocketlistsItemCompleteController extends pocketlistsComplete
 {
     /**
+     * @throws pocketlistsLogicException
+     * @throws pocketlistsNotFoundException
      * @throws waException
      */
     public function execute()
@@ -22,11 +24,21 @@ class pocketlistsItemCompleteController extends pocketlistsComplete
         /** @var pocketlistsItem $complete_item */
         foreach ($this->completed_items as $complete_item) {
             // 3.204: self tasks @timeline
-            if ($complete_item->getListId() == null) {
+            if ($complete_item->getListId() == null && !$complete_item->getAssignedContactId()) {
                 continue;
             }
 
-            $this->logAction(pocketlistsLogAction::ITEM_COMPLETED, ['item_id' => $complete_item->getId()]);
+            $this->logService->add(
+                $this->logService->getFactory()->createNewItemLog(
+                    (new pocketlistsLogContext())
+                        ->setItem($complete_item)
+                        ->setAction($status ? pocketlistsLog::ACTION_COMPLETE : pocketlistsLog::ACTION_UNCOMPLETE)
+                )
+            );
+
+            if ($status) {
+                $this->logAction(pocketlistsLogAction::ITEM_COMPLETED, ['item_id' => $complete_item->getId()]);
+            }
         }
     }
 }

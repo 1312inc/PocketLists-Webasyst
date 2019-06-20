@@ -45,6 +45,8 @@ class pocketlistsItemCreateAction extends pocketlistsViewAction
             $list = $list_id ? $listFactory->findById($list_id) : $listFactory->createNewNullList();
 
             foreach ($data as $i => $d) {
+                pocketlistsHelper::getDueDatetime($d);
+
                 /** @var pocketlistsItem $item */
                 $item = $itemFactory->createNew();
                 $item = pl2()->getHydrator()->hydrate($item, $d);
@@ -159,9 +161,26 @@ class pocketlistsItemCreateAction extends pocketlistsViewAction
                             ]
                         );
                     }
+
+                    $this->logService->add(
+                        $this->logService->getFactory()->createNewAfterItemAdd(
+                            (new pocketlistsLogContext())
+                                ->setList($list)
+                                ->setItem($item)
+                        )
+                    );
                 }
 
-                if ($list->getId()) {
+                if (count($items) === 1 && $list->getId()) {
+                    $item = reset($items);
+                    $this->logAction(
+                        pocketlistsLogAction::NEW_ITEM,
+                        [
+                            'item_id' => $item->getId(),
+                            'list_id' => $list->getId(),
+                        ]
+                    );
+                } elseif ($list->getId()) {
                     $this->logAction(pocketlistsLogAction::NEW_ITEMS, ['list_id' => $list->getId()]);
                 }
             }

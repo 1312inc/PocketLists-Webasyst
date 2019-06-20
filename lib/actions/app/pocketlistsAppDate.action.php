@@ -35,18 +35,18 @@ class pocketlistsAppDateAction extends pocketlistsViewAction
         /** @var pocketlistsItemFactory $itemFactory */
         $itemFactory = pl2()->getEntityFactory(pocketlistsItem::class);
 
-        $itemsUndone = $itemFactory->findUndoneForApp($app, '', 0, $date);
+        $itemsUndone = $itemFactory->findUndoneForApp($app, '', 0, [$date]);
 
         $itemsDone = $itemFactory
             ->setLimit(pocketlistsFactory::DEFAULT_LIMIT)
             ->setOffset(0)
-            ->findDoneForApp($app, '', 0, $date);
+            ->findDoneForApp($app, '', 0, [$date]);
 
         $countDoneItems = pl2()->getModel(pocketlistsItem::class)->countAppItems(
             $app->getApp(),
             '',
             0,
-            $date,
+            [$date],
             pocketlistsItem::STATUS_DONE
         );
 

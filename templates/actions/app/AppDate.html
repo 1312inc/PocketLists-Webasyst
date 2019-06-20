@@ -53,14 +53,15 @@
 
     {include '../../include/itemadd.html' inline}
     {include '../../include/itemdetails.html' inline}
-    {include '../../include/itemcomments.html' inline}
 </main>
 
 <script type="text/javascript">
     (function(){
         $.pocketlists.initNotice('#pl-{$app->getApp()}-notice');
 
-        new $.pocketlists.Items($('#pl-list-items'), {
+        var $all_items_wrapper = $('#pl-list-content');
+
+        new $.pocketlists.Items($all_items_wrapper, {
             enableAddLinkOnHover: false,
             enableChangeLevel: false,
             enableSortItems: false,
@@ -75,6 +76,8 @@
             userHasLinkedApps: {$user->hasLinkedApps()},
             dueDate: '{if $timestamp}{$timestamp}{/if}',
         });
+
+        new $.pocketlists.Comments($all_items_wrapper);
 
         $.pocketlists.lazyItems({
             $loading: $('#pl-list-content .lazyloading'),

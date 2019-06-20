@@ -27,7 +27,7 @@ class pocketlistsAppLinkFake implements pocketlistsAppLinkInterface
      *
      * @return array
      */
-    public function autocomplete($term, $type = '', $count = 10)
+    public function autocomplete($term, $params = [], $count = 10)
     {
         return [];
     }
@@ -96,11 +96,11 @@ class pocketlistsAppLinkFake implements pocketlistsAppLinkInterface
     }
 
     /**
-     * @return int
+     * @return pocketlistsItemsCount
      */
     public function countItems()
     {
-        return 0;
+        return new pocketlistsItemsCount();
     }
 
     /**

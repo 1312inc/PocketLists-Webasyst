@@ -45,4 +45,28 @@ class pocketlistsPocketFactory extends pocketlistsFactory
 
         return parent::delete($pocket);
     }
+
+    /**
+     * @param pocketlistsList $list
+     *
+     * @return pocketlistsPocket
+     * @throws waException
+     */
+    public function findByList(pocketlistsList $list)
+    {
+        return $this->findByListId($list->getId());
+    }
+
+    /**
+     * @param int $listId
+     *
+     * @return pocketlistsPocket
+     * @throws waException
+     */
+    public function findByListId($listId)
+    {
+        $data = $this->getModel()->getByListId($listId);
+
+        return $this->generateWithData($data);
+    }
 }

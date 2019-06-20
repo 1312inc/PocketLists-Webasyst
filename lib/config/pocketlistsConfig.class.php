@@ -41,6 +41,16 @@ class pocketlistsConfig extends waAppConfig
     protected $hydrator;
 
     /**
+     * @var pocketlistsEntityCounter
+     */
+    protected $entityCounter;
+
+    /**
+     * @var pocketlistsLogService
+     */
+    protected $logService;
+
+    /**
      * @return pocketlistsHydratorInterface
      */
     public function getHydrator()
@@ -53,9 +63,21 @@ class pocketlistsConfig extends waAppConfig
     }
 
     /**
+     * @return pocketlistsLogService
+     */
+    public function getLogService()
+    {
+        if ($this->logService === null) {
+            $this->logService = new pocketlistsLogService();
+        }
+
+        return $this->logService;
+    }
+
+    /**
      * @param $entity
      *
-     * @return pocketlistsItemLinkFactory|pocketlistsItemFactory|pocketlistsListFactory|pocketlistsContactFactory|pocketlistsPocketFactory|pocketlistsCommentFactory|pocketlistsAttachmentFactory|pocketlistsItemLinkFactory|pocketlistsNotificationFactory
+     * @return pocketlistsItemLinkFactory|pocketlistsItemFactory|pocketlistsListFactory|pocketlistsContactFactory|pocketlistsPocketFactory|pocketlistsCommentFactory|pocketlistsAttachmentFactory|pocketlistsItemLinkFactory|pocketlistsNotificationFactory|pocketlistsLogFactory
      * @throws waException
      */
     public function getEntityFactory($entity)
@@ -80,7 +102,7 @@ class pocketlistsConfig extends waAppConfig
     /**
      * @param $entity
      *
-     * @return pocketlistsModel|pocketlistsItemLinkModel|pocketlistsItemModel
+     * @return pocketlistsModel|pocketlistsItemLinkModel|pocketlistsItemModel|pocketlistsListModel|pocketlistsLogModel
      * @throws waException
      */
     public function getModel($entity = false)
@@ -319,6 +341,32 @@ HTML;
         }
 
         return $this->user;
+    }
+
+    /**
+     * @return pocketlistsEntityCounter
+     */
+    public function getEntityCounter()
+    {
+        if ($this->entityCounter === null) {
+            $this->entityCounter = new pocketlistsEntityCounter();
+        }
+
+        return $this->entityCounter;
+    }
+
+    /**
+     * @return array
+     */
+    public function getDefaultViewVars()
+    {
+        return [
+            'backend_url'          => $this->getBackendUrl(true),
+            'plurl'                => wa()->getAppUrl(pocketlistsHelper::APP_ID),
+            'current_user'         => $this->getUser(),
+            'pl2_attachments_path' => wa()->getDataUrl('attachments/', true, pocketlistsHelper::APP_ID),
+            'wa_app_static_url'    => wa()->getAppStaticUrl(pocketlistsHelper::APP_ID),
+        ];
     }
 
     private function registerGlobal()

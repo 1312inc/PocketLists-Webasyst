@@ -1,4 +1,4 @@
-<div data-pl-comment-id="{$comment->getId()}" {if isset($comment_page) && !empty($comment->getItemId())}data-pl-item-id="{$comment->getItemId()}"{/if}>
+<div data-pl-comment-id="{$comment->getId()}" {if !empty($comment->getItemId())}data-pl-item-id="{$comment->getItemId()}"{/if}>
     <div class="pl-cue{if $comment->isMy()} pl-my-cue{/if}{if $comment->isRecentlyCreated() && !$comment->isMy()} pl-new-comment{/if}">
         <div class="pl-cue-inner">
             <div class="pl-bubble">
@@ -21,10 +21,10 @@
             <span class="hint nowrap">{$comment->getCreateDatetime()|wa_datetime:'humandatetime'}</span>
         </div>
     </div>
-    {if isset($comment_page)}
+{*    {if isset($comment_page)}*}
     <div class="pl-reply" style="display:none;">
         <i class="icon16 userpic20" style="background-image: url({$wa->user()->getPhoto(20)})" alt="{$wa->user()->getName()|escape}"></i>
         <textarea rows="1" placeholder="[`Add comment`]"></textarea>
     </div>
-    {/if}
+{*    {/if}*}
 </div>

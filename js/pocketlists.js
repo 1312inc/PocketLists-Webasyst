@@ -110,8 +110,9 @@
         },
         resizeTextarea: function ($textarea) {
             if ($textarea.is(':visible')) {
-                $textarea.css('height', 'auto');
-                $textarea.css('height', ($textarea.get(0).scrollHeight - parseInt($textarea.css('padding-top')) - parseInt($textarea.css('padding-bottom'))) + 'px');
+                $textarea
+                    .css('height', $textarea.data('pl2-textarea-rows') ? 'auto' : 0)
+                    .css('height', $textarea.get(0).scrollHeight - parseInt($textarea.css('padding-top')) - parseInt($textarea.css('padding-bottom')));
             }
         },
         initNotice: function (wrapper_selector) {
@@ -401,6 +402,17 @@
                 });
 
             self.windowResize();
+
+            self.$core_sidebar.on('keydown', '[data-pl2-action="search"]', function (e) {
+                var keycode = (e.keyCode ? e.keyCode : e.which);
+
+                if(keycode == '13'){
+                    var $this = $(this),
+                        term = $this.val();
+
+                    window.location.hash = '/search/' + term;
+                }
+            });
 
             $.pocketlists_routing.init({
                 user_id: o.userId
