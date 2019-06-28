@@ -2,14 +2,32 @@
 <div class="shadowed" data-pl2-pocket-wrapper="{$pocket->getId()}">
     <nav class="sidebar left300px">
 
+        {* pl2pro *}
+        <!-- VIEWS -->
+        <div class="pl-views">
+            <div class="pl-view-box fullwidth"><a class="pl-view-widget">Activity</a></div>
+            <div class="pl-view-box"><a class="pl-view-widget" style="background: #ffc;">Board</a></div>
+            <div class="pl-view-box"><a class="pl-view-widget" style="background: #fdd;">Calendar</a></div>
+            <div class="pl-view-box"><a class="pl-view-widget" style="background: #fde;">Gantt</a></div>
+            <div class="pl-view-box"><a class="pl-view-widget" style="background: #cfc;">Map</a></div>
+            <div class="pl-view-box"><a class="pl-view-widget" style="background: #def;">Comments</a></div>
+            <div class="pl-view-box"><a class="pl-view-widget">Whatever</a></div>
+            {* pl2pro :: <div class="pl-view-box"> backend_pocket.views_widget </div> *}
+        </div>
+        {* /pl2pro *}
+
+        {* pl2pro :: backend_pocket.views_section *}
+
+
         <!-- LISTS -->
         <div id="pl-lists" data-pl-scroll-to-top>
             <div class="pl-lists-header">
                 {if $isAdmin}<a href="#/pocket/{$pocket->getId()}/list/new/" class="count" title="[`New list`]"><i class="icon16 add"></i></a>{/if}
-                <h5 class="pl-dark-{$pocket->getColor()|default:'none'}-label">
-                    {$pocket->getName()|escape}
-                    {if $isAdmin}<a href="#" title="[`Pocket settings`]" data-pl2-action="edit-pocket" data-pl2-pocket-id="{$pocket->getId()}"><i class="icon16 pl ellipsis pl-pocket-settings"></i></a>{/if}
+
+                <h5 class="heading pl-dark-{$pocket->getColor()|default:'none'}-label">
+                    [`Lists`]
                 </h5>
+
             </div>
             {if !empty($lists)}
                 <ul class="pl-lists" data-pl2-wrapper="lists">
@@ -41,10 +59,13 @@
                     {/if}
                 </div>
             {/if}
-            <!-- <a href="#/pocket/{$pocket->getId()}/list/new/" class="pl-lists-add">
-                <i></i>
-                <span>[`New list`]</span>
-            </a> -->
+            <div class="block align-center double-padded">
+                {if $isAdmin}
+                <a href="#" title="[`Pocket settings`]" data-pl2-action="edit-pocket" data-pl2-pocket-id="{$pocket->getId()}" class="gray">
+                    <i class="icon16 settings"></i><span>[`Pocket settings`]</span>
+                </a>
+                {/if}
+            </div>
         </div>
 
     </nav>
