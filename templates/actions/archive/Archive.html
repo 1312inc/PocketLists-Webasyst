@@ -8,7 +8,7 @@
             </div>
         </main>
     {else}
-        <nav class="sidebar left200px">
+        <nav class="sidebar left250px">
             <ul class="menu-v with-icons stack top-padded">
                 {foreach $lists as $l}
                 <li data-pl-list-id="{$l->getId()}" {if $l->getId() == $list->getId()}class="selected"{/if}>
@@ -21,7 +21,7 @@
                 <p class="hint">[`To archive an active list, tap on it’s checkmark.`]</p>
             </div>
         </nav>
-        <main class="content left200px blank bordered-left pl-list-content pl-archive" id="pl-list-content">
+        <main class="content left250px blank bordered-left pl-list-content pl-archive" id="pl-list-content">
             <div class="pl-inner-content pl-items pl-{$list->getColor()}">
                 <header class="pl-list-title pl-title">
                     <div class="float-right block half-padded">
