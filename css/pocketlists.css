@@ -155,6 +155,8 @@ table.pl-calendar td .pl-dots i.icon10 { margin-top: 0.2em; margin-right: 0.2em;
 /* Settings
 ----------- */
 
+.pl-settings { background: #f7f7f7; }
+
 #pl-settings-form { overflow: visible; }
 #pl-settings-form .heading i.icon16 { margin-left: -0.2em; }
 #pl-settings-form .field p { margin-right: 150px; }
