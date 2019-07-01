@@ -93,9 +93,10 @@ ul.menu-v.with-icons i.icon16.color { margin: 2px 7px 1px -18px; width: 12px; he
 -------- */
 
 .pl-views { padding: 0 14px 12px 0; display: flex; flex-wrap: wrap; }
-.pl-view-box { flex: 0 0 50%;  }
-.pl-view-box.fullwidth { flex: 0 0 100%;  }
-.pl-view-widget { display: block; background: #eee; min-height: 80px; padding: 10px; margin: 14px 0 0 13px; border-radius: 5px; }
+.pl-view-box { flex: 0 0 100%;  }
+.pl-view-box.x2 { flex: 0 0 50%;  }
+.pl-view-box.x3 { flex: 0 0 33%;  }
+.pl-view-widget { display: block; background: #eee; min-height: 50px; padding: 10px; margin: 14px 0 0 13px; border-radius: 5px; }
 
 .pl-lists-header { padding: 14px 14px 12px 13px; }
 .pl-lists-header h5 { font-size: 1.3em; }
