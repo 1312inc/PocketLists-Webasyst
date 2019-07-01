@@ -51,18 +51,7 @@
         </li>
         {/foreach}
 
-
-        {* <li class="top-padded">
-            <a href="#/"><i class="icon16 "></i>CRM</a>
-        </li>
-        <li>
-            <a href="#/"><i class="icon16 "></i>Tasks</a>
-        </li>
-        <li>
-            <a href="#/"><i class="icon16 "></i>Blog</a>
-        </li> *}
-
-        {* pl2pro :: backend_sidebar.streams_li *}
+        {* pl2pro :: @backend_sidebar.streams_li *}
 
         <li>
             <a href="#/logbook/"><i class="icon16 pl logbook"></i>[`Completed`]{if $new_items_count.logbook} <span
@@ -81,27 +70,12 @@
                         title="{$last_activity|wa_datetime}">+{$new_comments_count}</span>{/if}</a>
         </li>
 
-        {* pl2pro :: backend_sidebar.views_li *}
+        {* pl2pro :: @backend_sidebar.views_li *}
             <li>
-                <a href="#/timeline/"><i class="icon16 clock"></i>[`Activity`]</a>
-            </li>
-            <li>
-                <a href="#/calendar/"><i class="icon16 calendar"></i>[`Calendar`]</a>
-            </li>
-            <li>
-                <a href="#/notes/"><i class="icon16 edit"></i>[`Notes`]</a>
-            </li>
-            <li>
-                <a href="#/places/"><i class="icon16 map"></i>[`Places`]</a>
+                <a href="#/timeline/"><i class="icon16 reports"></i>[`Activity log`]</a>
             </li>
             <li>
                 <a href="#/board/"><i class="icon16 zone"></i>[`Board`]</a>
-            </li>
-            <li>
-                <a href="#/gantt/"><i class="icon16 reports"></i>[`Gantt`]</a>
-            </li>
-            <li>
-                <a href="#/whatever/"><i class="icon16 pl ellipsis"></i>[`Whatever`]</a>
             </li>
         {* /pl2pro *}
 
@@ -112,7 +86,7 @@
     <input type="search" data-pl2-action="search" placeholder="[`Search`]" class="pl-search-input" />
 </div>
 
-{* pl2pro :: backend_sidebar.section_block *}
+{* pl2pro :: @backend_sidebar.section_block *}
 
 <!-- TEAM -->
 {$max_visible_in_team = 5}
@@ -172,7 +146,7 @@
             <a href="#/settings/"><i class="icon16 settings"></i>[`Settings`]</a>
         </li>
 
-        {* pl2pro :: backend_sidebar.system_li *}
+        {* pl2pro :: @backend_sidebar.system_li *}
 
         <li class="top-padded">
             <a href="#/about/"><i class="icon16" style="background-image: url('/wa-apps/pocketlists/img/pl2webasyst48.png') !important; background-size: 16px 16px;"></i>[`About`]</a>
