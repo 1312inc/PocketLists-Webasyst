@@ -672,3 +672,16 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 .search-results #pl-complete-log { display: block;}
 .search-results #pl-complete-log ul.menu-v { margin-top: 10px; }
 .search-results #pl-complete-log-link { display: none;}
+
+/* pl2pro */
+
+.pl2pro-labels { min-width: 400px; }
+.pl2pro-labels td { padding: 15px 20px 15px 0; }
+.pl2pro-labels td.bordered { border-bottom: 1px solid #ddd; }
+.pl2pro-labels td.min-width { width: 1%; }
+.pl2pro-labels td .pl-done + span { left: 0 !important; top: 0 !important; }
+.pl2pro-labels td .pl-label { padding: 3px 6px 4px !important; font-size: 1em; }
+.pl2pro-labels td .icon16.color { margin-top: 8px; margin-left: 4px; }
+.pl2pro-labels td .pl2pro-label-delete { float: right; margin-top: 8px; }
+.pl2pro-labels td .pl2pro-label-edit { float: right; opacity: 0; transition: 0.2s; margin-top: 2px; }
+.pl2pro-labels td:hover .pl2pro-label-edit { opacity: 1; }
