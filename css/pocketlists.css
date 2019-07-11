@@ -685,3 +685,10 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 .pl2pro-labels td .pl2pro-label-delete { float: right; margin-top: 8px; }
 .pl2pro-labels td .pl2pro-label-edit { float: right; opacity: 0; transition: 0.2s; margin-top: 2px; }
 .pl2pro-labels td:hover .pl2pro-label-edit { opacity: 1; }
+
+.pl2pro-item-add { margin-top: 13px; }
+.pl2pro-item-add .pl-label { display: none !important; margin-right: 5px !important; }
+.pl2pro-item-add .pl-label.current { display: inline !important; }
+.pl2pro-item-add .pl2pro-shortcut { margin-right: 2px; font-size: 0.9em; }
+.pl2pro-item-add.pl2pro-item-add-all-labels-shown .pl-label { display: inline !important; }
+.pl2pro-item-add.pl2pro-item-add-all-labels-shown .pl2pro-shortcuts-group { display: none; }
