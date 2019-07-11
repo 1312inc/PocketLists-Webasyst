@@ -240,6 +240,115 @@
                 </form>
             </div>
 
+
+                <hr>
+
+                    {* BEGIN: pl2pro / settings / status *}
+
+                        <h1>[`To-do statuses`]</h1>
+                        <p>[`Statuses enables you to mark to-dos with color labels for better and a more sophisticated organization.`] [`The list of available custom labels is system-wide and applicable for all to-dos no matter of a pocket or a list.`]</p>
+
+                        {$_status_config = [
+                                [ 'Backlog', 'aaaaaa' ],
+                                [ 'To do', '46c7fc' ],
+                                [ 'In progress', '328532' ],
+                                [ 'Testing', 'ffc600' ]
+                            ]}
+
+                        <table class="pl2pro-labels">
+                            <tr>
+                                <td class="min-width">
+                                    <input type="checkbox" class="pl-done"><span></span>
+                                </td>
+                                <td class="bordered">
+                                    <em>[`No status`]</em>
+                                </td>
+                            </tr>
+                            {foreach $_status_config as $s}
+                                <tr>
+                                    <td class="min-width">
+                                        <a title="[`Sort`]"><i class="icon16 sort"></i></a>
+                                    </td>
+                                    <td class="bordered">
+                                        <a href="#" class="inline-link pl2pro-label-edit"><i class="icon16 edit"></i><b><i>[`Edit`]</i></b></a>
+                                        <span class="pl-label" style="background: #{$s[1]};">{$s[0]}</span>
+                                    </td>
+                                </tr>
+                            {/foreach}
+                            <tr>
+                                <td class="min-width">
+                                    <a title="[`Sort`]"><i class="icon16 sort"></i></a>
+                                </td>
+                                <td class="bordered">
+                                    <a href="#" class="inline-link pl2pro-label-delete"><i class="icon16 delete"></i>[`Delete`]</a>
+                                    <input type="text" class="large bold" value="EDIT MODE">
+                                    #<input type="text" class="short" value="ff6000"><a href="#"><i class="icon16 color" style="background-color: #ff6000;"></i></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="min-width">
+                                    <input type="checkbox" class="pl-done" checked="checked"><span></span>
+                                </td>
+                                <td class="bordere1d">
+                                    <span class="gray">[`Done`]</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="min-width">
+
+                                </td>
+                                <td>
+                                    <a href="#" class="inline-link"><i class="icon16 add"></i><b><i>[`Add status`]</i></b></a>
+                                </td>
+                            </tr>
+                        </table>
+
+
+
+                    {* END: pl2pro / settings / status *}
+
+                <hr>
+
+                    {* BEGIN: pl2pro / settings / shortcuts *}
+
+                        <h1>[`To-do shortcuts`]</h1>
+                        <p>[`Shortcuts help you create to-dos even faster. When creating a new to-do item, shortcuts will be offered as suggestions depending on your current input. Grouping enables the priority of each shortcut.`]</p>
+                        <p>[`For even faster to-do creation, use <code>Alt + N</code> keyboard combination to quickly select the suggested shortcut shown under the to-do name input.`]
+                        </p>
+
+                        <div class="fields form">
+                            <div class="field">
+                                <div class="name">
+                                    {sprintf('[`Group #%d`]', 1)}
+                                </div>
+                                <div class="value">
+                                    <textarea>Call, Ship, Track, Remind</textarea>
+                                    <p style="display: none1; margin-top: 10px;">
+                                        <input type="button" class="button green" value="[`Save`]">
+                                        <i class="icon16 yes"></i>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="name">
+                                    {sprintf('[`Group #%d`]', 2)}
+                                </div>
+                                <div class="value">
+                                    <textarea>today, tomorrow, in 2 days</textarea>
+                                    <p style="display: none;"><input type="button" class="button green" value="[`Save`]"></p>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="value no-shift">
+                                    <a href="#" class="inline-link"><i class="icon16 add"></i><b><i>[`Add group`]</i></b></a>
+                                </div>
+                            </div>
+                        </div>
+
+                    {* END: pl2pro / settings / templates *}
+
+
+
             <div class="clear-both"></div>
 
         </main>
