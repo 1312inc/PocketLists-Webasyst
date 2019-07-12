@@ -692,3 +692,13 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 .pl2pro-item-add .pl2pro-shortcut { margin-right: 2px; font-size: 0.9em; }
 .pl2pro-item-add.pl2pro-item-add-all-labels-shown .pl-label { display: inline !important; }
 .pl2pro-item-add.pl2pro-item-add-all-labels-shown .pl2pro-shortcuts-group { display: none; }
+
+.pl2pro-rule-baloon { border-radius: 10px; border: 1px solid #ddd; overflow: hidden; margin-bottom: 15px; max-width: 400px; }
+.pl2pro-rule-baloon .pl2pro-label-edit { float: right; opacity: 0; transition: 0.2s; margin-top: 0px; font-size: 0.9em; }
+.pl2pro-rule-baloon:hover .pl2pro-label-edit { opacity: 1; }
+.pl2pro-rule-header { background: #def; padding: 6px 12px; line-height: 1.5rem; }
+.pl2pro-rule-header .pl2pro-rule-if { opacity: 0.5; }
+.pl2pro-rule-body { background: #fff; padding: 10px 12px; }
+
+.pl2pro-ss-order-action { border-radius: 15px; padding: 7px 9px 7px; background: #fafafa; border: 1px solid rgba(0,0,0,0.1); box-shadow: 0 5px 10px -5px #eee; margin-left: -4px; margin-top: -3px; white-space: nowrap; text-overflow: ellipsis; max-width: 150px; display: inline-block; overflow: hidden; }
+.pl2pro-ss-order-action .icon16.color { margin-top: -1px; }
