@@ -2,18 +2,9 @@
 <div class="shadowed" data-pl2-pocket-wrapper="{$pocket->getId()}">
     <nav class="sidebar left300px">
 
-        {* pl2pro :: @backend_pocket.sidebar_section *}
-        <!-- VIEWS -->
-        <div class="pl-views">
-            <div class="pl-view-box"><a class="pl-view-widget">Activity / Reports / KPIs</a></div>
-            <div class="pl-view-box x3"><a class="pl-view-widget" style="background: #def;" href="#/pocket/N/status/M/"><h5>75</h5>Backlog</a></div>
-            <div class="pl-view-box x3"><a class="pl-view-widget" style="background: #fdd;" href="#/pocket/N/status/M/"><h5>47</h5>Doing</a></div>
-            <div class="pl-view-box x3"><a class="pl-view-widget" style="background: #fde;" href="#/pocket/N/status/M/"><h5>33</h5>Testing</a></div>
-            <div class="pl-view-box x3"><a class="pl-view-widget" style="background: #ffc;" href="#/pocket/N/status/M/"><h5>12</h5>QA</a></div>
-            <div class="pl-view-box x3"><a class="pl-view-widget" style="background: #cfc;" href="#/pocket/N/status/M/"><h5>2</h5>Deploy</a></div>
-            <div class="pl-view-box x3"><a class="pl-view-widget" href="#/pocket/N/status/M/"><h5>921</h5>Done</a></div>
-        </div>
-        {* /pl2pro *}
+        <!-- plugin hook: 'backend_pocket.sidebar_section' -->
+        {* @event backend_pocket.%plugin_id% *}
+        {if !empty($backend_pocket)}{foreach $backend_pocket as $_}{ifset($_.sidebar_section)}{/foreach}{/if}
 
         <!-- LISTS -->
         <div id="pl-lists" data-pl-scroll-to-top>

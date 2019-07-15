@@ -1,7 +1,13 @@
 <?php
 
+/**
+ * Class pocketlistsDefaultLayout
+ */
 class pocketlistsDefaultLayout extends waLayout
 {
+    /**
+     * @throws waException
+     */
     public function execute()
     {
         $us = new pocketlistsUserSettings();
@@ -11,6 +17,6 @@ class pocketlistsDefaultLayout extends waLayout
         $this->executeAction('sidebar', new pocketlistsBackendSidebarAction());
         $this->view->assign('isAdmin', (int)pocketlistsRBAC::isAdmin());
 
-//        pocketlistsActivity::setUserActivity();
+        $this->view->assign('backend_head', wa()->event('backend_head'));
     }
 }

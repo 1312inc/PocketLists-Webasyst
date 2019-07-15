@@ -13,7 +13,7 @@ return array(
     'routing_params' => array(
         'private' => true
     ),
-    'plugins'        => false,
+    'plugins'        => true,
     'rights'         => true,
     'sash_color'     => '#58a8f8',
 );

@@ -204,8 +204,38 @@
         logbookAction: function () {
             this.load('?module=logbook', this.setHtmlContent);
         },
-        settingsAction: function () {
-            this.load('?module=settings', this.setHtmlContent);
+        settingsAction: function (a,b,c,d) {
+            var that = this,
+                loadPlugin = function (plugin, settings) {
+                    return that.load('?plugin='+ plugin + '&module=settings&action=' + settings, function (html) {
+                        $('[data-pl2-settings-content]').html(html);
+                        def.resolve();
+                    });
+                },
+                $wrapper = $('[data-pl2-settings-content]'),
+                def = $.Deferred();
+
+            if (!$wrapper.length) {
+                this.load('?module=settings', function (html) {
+                    var $html = $(html);
+
+                    if (a === 'plugin') {
+                        $html.find('#pl-settings-form').html('<i class="icon16 loading">');
+                        loadPlugin(b, c);
+                    }
+
+                    $('#content').empty().append($html);
+                });
+            } else if (a === 'plugin') {
+                loadPlugin(b, c);
+            } else {
+                this.load('?module=settings', this.setHtmlContent);
+            }
+
+            def.done(function () {
+                $('[data-pl2-settings-sidebar]').find('li').removeClass('selected').end()
+                    .find('[href*="'+that.hash+'"]').closest('li').addClass('selected');
+            })
         },
         aboutAction: function () {
             this.load('?module=about', this.setHtmlContent);
