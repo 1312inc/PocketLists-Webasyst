@@ -68,6 +68,7 @@ class pocketlistsAppDateAction extends pocketlistsViewAction
                 'print'                => waRequest::get('print', false),
                 'app'                  => $app,
                 'user'                 => $this->user,
+                'itemAdd'              => (new pocketlistsItemAddAction())->display(false),
             ]
         );
     }

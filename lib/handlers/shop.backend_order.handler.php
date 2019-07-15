@@ -41,6 +41,7 @@ class pocketlistsShopBackend_orderHandler extends waEventHandler
                 'count_done_items'  => 0,
                 'fileupload'        => 1,
                 'user'              => pl2()->getUser(),
+                'itemAdd'           => (new pocketlistsItemAddAction())->display(),
             ],
             pl2()->getDefaultViewVars()
         );

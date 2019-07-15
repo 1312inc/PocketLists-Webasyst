@@ -1,0 +1,24 @@
+<div class="pl2pro-item-add">
+    <a class="pl-label" style="background-color: white; color: #aaa !important;">[`No status`]</a>
+    <a class="pl-label" style="background-color: #aaaaaa;">Backlog</a>
+    <a class="pl-label current" style="background-color: #46c7fc;">To do</a>
+    <a class="pl-label" style="background-color: #328532;">In progress</a>
+    <a class="pl-label" style="background-color: #ffc600;">Testing</a>
+    <span class="pl2pro-shortcuts-group">
+                        <a href="#" class="inline-link pl2pro-shortcut" title="Alt + 1"><b><i>Call</i></b></a>
+                        <a href="#" class="inline-link pl2pro-shortcut" title="Alt + 2"><b><i>Ship</i></b></a>
+                        <a href="#" class="inline-link pl2pro-shortcut" title="Alt + 3"><b><i>Track</i></b></a>
+                        <a href="#" class="inline-link pl2pro-shortcut" title="Alt + 4"><b><i>Remind</i></b></a>
+                    </span>
+    <span class="pl2pro-shortcuts-group" style="display: none;">
+                        <a href="#" class="inline-link pl2pro-shortcut" title="Alt + 1"><b><i>today</i></b></a>
+                        <a href="#" class="inline-link pl2pro-shortcut" title="Alt + 2"><b><i>tomorrow</i></b></a>
+                        <a href="#" class="inline-link pl2pro-shortcut" title="Alt + 3"><b><i>in 2 days</i></b></a>
+                    </span>
+
+    <script>
+        $('.pl-label').click(function(){
+            $('.pl2pro-item-add').toggleClass('pl2pro-item-add-all-labels-shown');
+        });
+    </script>
+</div>

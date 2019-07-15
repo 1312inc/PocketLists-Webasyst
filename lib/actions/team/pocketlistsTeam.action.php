@@ -22,6 +22,7 @@ class pocketlistsTeamAction extends pocketlistsViewAction
         // all admin
         $teammates = [];
         $teammates_ids = pocketlistsRBAC::getAccessContacts();
+        $teammate = null;
 
         if ($teammates_ids) {
             /** @var pocketlistsContactFactory $factory */
@@ -80,10 +81,11 @@ class pocketlistsTeamAction extends pocketlistsViewAction
 
         $this->view->assign(
             [
-                'teammates'            => $teammates,
-                'print'                => waRequest::get('print', false),
-                'user'                 => $this->user,
-                'external'             => waRequest::request('external', 0, waRequest::TYPE_INT),
+                'teammates' => $teammates,
+                'print'     => waRequest::get('print', false),
+                'user'      => $this->user,
+                'external'  => waRequest::request('external', 0, waRequest::TYPE_INT),
+                'itemAdd'   => (new pocketlistsItemAddAction(['teammate' => $teammate]))->display(false),
             ]
         );
     }

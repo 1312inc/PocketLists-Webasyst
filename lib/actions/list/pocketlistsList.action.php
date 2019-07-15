@@ -147,6 +147,7 @@ class pocketlistsListAction extends pocketlistsViewAction
                 'fileupload'           => 1,
                 'user'                 => $this->user,
                 'list_icons'           => (new pocketlistsListIcon())->getAll(),            // get icons
+                'itemAdd'              => (new pocketlistsItemAddAction())->display(false),
             ]
         );
     }
