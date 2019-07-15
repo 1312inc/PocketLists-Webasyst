@@ -48,6 +48,8 @@ class pocketlistsTodoDateAction extends pocketlistsViewAction
                 'this_is_stream'       => true,
                 'print'                => waRequest::get('print', false),
                 'user'                 => $this->user,
+
+                'itemAdd'              => (new pocketlistsItemAddAction())->display(false),
             ]
         );
     }

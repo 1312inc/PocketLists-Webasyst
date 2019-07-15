@@ -1,0 +1,59 @@
+<h1>[`To-do statuses`]</h1>
+<p>[`Statuses enables you to mark to-dos with color labels for better and a more sophisticated organization.`] [`The list of available custom labels is system-wide and applicable for all to-dos no matter of a pocket or a list.`]</p>
+
+{$_status_config = [
+[ 'Backlog', 'aaaaaa' ],
+[ 'To do', '46c7fc' ],
+[ 'In progress', '328532' ],
+[ 'Testing', 'ffc600' ]
+]}
+
+<table class="pl2pro-labels">
+    <tr>
+        <td class="min-width">
+            <input type="checkbox" class="pl-done"><span></span>
+        </td>
+        <td class="bordered">
+            <em>[`No status`]</em>
+        </td>
+    </tr>
+    {foreach $_status_config as $s}
+        <tr>
+            <td class="min-width">
+                <a title="[`Sort`]"><i class="icon16 sort"></i></a>
+            </td>
+            <td class="bordered">
+                <a href="#" class="inline-link pl2pro-label-edit"><i class="icon16 edit"></i><b><i>[`Edit`]</i></b></a>
+                <span class="pl-label" style="background: #{$s[1]};">{$s[0]}</span>
+            </td>
+        </tr>
+    {/foreach}
+    <tr>
+        <td class="min-width">
+            <a title="[`Sort`]"><i class="icon16 sort"></i></a>
+        </td>
+        <td class="bordered">
+            <a href="#" class="inline-link pl2pro-label-delete"><i class="icon16 delete"></i>[`Delete`]</a>
+            <input type="text" class="large bold" value="EDIT MODE">
+            #<input type="text" class="short" value="ff6000"><a href="#"><i class="icon16 color" style="background-color: #ff6000;"></i></a>
+        </td>
+    </tr>
+    <tr>
+        <td class="min-width">
+            <input type="checkbox" class="pl-done" checked="checked"><span></span>
+        </td>
+        <td class="bordere1d">
+            <span class="gray">[`Done`]</span>
+        </td>
+    </tr>
+    <tr>
+        <td class="min-width">
+
+        </td>
+        <td>
+            <a href="#" class="inline-link"><i class="icon16 add"></i><b><i>[`Add status`]</i></b></a>
+        </td>
+    </tr>
+</table>
+
+<div class="clear-both"></div>

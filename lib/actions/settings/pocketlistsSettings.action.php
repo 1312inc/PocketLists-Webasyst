@@ -37,6 +37,7 @@ class pocketlistsSettingsAction extends pocketlistsViewAction
                 'last_recap_cron_time' => $asp->get(wa()->getApp(), 'last_recap_cron_time'),
                 'cron_command'         => pl2()->getCronJob('recap_mail'),
                 'admin'                => pocketlistsRBAC::isAdmin(),
+                'backend_settings'     => wa()->event('backend_settings'),
             ]
         );
     }

@@ -85,6 +85,8 @@ class pocketlistsPocketAction extends pocketlistsViewPocketAction
                 'lists'      => $lists,
                 'list_id'    => $list_id,
                 'pocket'     => $pocket,
+
+                'backend_pocket' => wa()->event('backend_pocket'),
             ]
         );
     }

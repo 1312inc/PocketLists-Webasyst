@@ -32,6 +32,11 @@
 <body>
     <div id="wa">
         {$wa->header()}
+
+        <!-- plugin hook: 'backend_head' -->
+        {* @event backend_head.%plugin_id% *}
+        {if !empty($backend_head)}{foreach $backend_head as $_}{ifset($_)}{/foreach}{/if}
+
         <div id="wa-app">
 
             <div class="sidebar left200px" data-pl-scroll-to-top id="pl-sidebar-core">
