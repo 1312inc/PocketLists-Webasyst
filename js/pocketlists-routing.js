@@ -240,9 +240,6 @@
         aboutAction: function () {
             this.load('?module=about', this.setHtmlContent);
         },
-        boardAction: function () {
-            this.load('?module=board', this.setHtmlContent);
-        },
         debugAction: function () {
             this.load('?module=debug', this.setHtmlContent);
         },
