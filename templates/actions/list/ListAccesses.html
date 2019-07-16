@@ -49,8 +49,10 @@
 
             {$_log_dummy = [
                     ['item','complete','vofka','Забрать Алиску из садика','Today 18:00'],
+                    ['comment','delete','vofka','Ок, забираю на каршеринге','Today 16:11'],
                     ['comment','add','vofka','Ок, забираю на каршеринге','Today 16:10'],
-                    ['item','add','vofka','Забрать Алиску из садика','Today 15:00'],
+                    ['item','update','vofka','Забрать Алиску из садика','Today 15:01'],
+                    ['item','add','vofka','Забрать Алиску из садка','Today 15:00'],
                     ['item','completed','vofka','Винишко','Yesterday 23:00'],
                     ['item','delete','vofka','Пивасик','Yesterday 22:00'],
                     ['list','add','olka','Магазин','Yesterday 15:23']
@@ -84,7 +86,7 @@
                             {if $l[1] == 'add'}
                                 {$_action_explained = '%s created the to-do'}
                             {elseif $l[1] == 'complete'}
-                                {$_action_explained = '%s marked the to-do as completed'}
+                                {$_action_explained = '%s completed the to-do'}
                             {elseif $l[1] == 'delete'}
                                 {$_action_explained = '%s deleted the to-do'}
                             {else}
@@ -99,9 +101,9 @@
                             {$_style = ''}
                         {/if}
 
-                    <div class="pl2pro-log-record {$_style}">
+                    <div class="pl2pro-log-record {$_style}" title="{sprintf( $_action_explained , $l[2] )}">
 
-                        <i class="pl2pro-log-glyph {$_glyph}" title="{sprintf( $_action_explained , $l[2] )}"></i>
+                        <i class="pl2pro-log-glyph {$_glyph}"></i>
                         <i class="pl2pro-log-userpic icon16 userpic20"></i>
 
                         <span class="pl2pro-log-entity">

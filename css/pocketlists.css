@@ -719,8 +719,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', e
 .pl2pro-log h5 { margin-bottom: 20px; }
 .pl2pro-log-record { margin-bottom: 20px; padding-left: 30px; position: relative; }
 .pl2pro-log-record .pl2pro-log-entity { display: block; margin-bottom: 5px; }
-.pl2pro-log-record .pl2pro-log-userpic { position: absolute; top: 0; left: 0; }
-.pl2pro-log-record .pl2pro-log-glyph { display: inline-block; width: 20px; height: 20px; background: url('../img/pl2pro/log-glyphs.png') no-repeat; background-size: 120px 20px; margin-left: 10px; float: right; }
+.pl2pro-log-record .pl2pro-log-userpic {  margin-left: 10px; float: right;}
+.pl2pro-log-record .pl2pro-log-glyph { display: inline-block; width: 20px; height: 20px; background: url('../img/pl2pro/log-glyphs.png') no-repeat; background-size: 120px 20px;  position: absolute; top: -3px; left: -3px; opacity: 0.65; }
 .pl2pro-log-record .pl2pro-log-glyph.add { background-position: -20px 0; }
 .pl2pro-log-record .pl2pro-log-glyph.delete { background-position: -40px 0; }
 .pl2pro-log-record .pl2pro-log-glyph.update { background-position: -60px 0; }
@@ -728,3 +728,4 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', e
 .pl2pro-log-record .pl2pro-log-glyph.list { background-position: -100px 0; }
 .pl2pro-log-record.delete { color: #aaa; }
 .pl2pro-log-record.delete .pl2pro-log-entity { text-decoration: line-through; }
+.pl2pro-log-record:hover .pl2pro-log-glyph { opacity: 1; }
