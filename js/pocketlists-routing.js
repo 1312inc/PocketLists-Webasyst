@@ -263,6 +263,13 @@
             app = app || 0;
             this.load('?module=app&app=' + app, this.setHtmlContent);
         },
+        pluginsAction: function (params) {
+            if ($('#wa-plugins-container').length) {
+                $.plugins.dispatch(params);
+            } else {
+                this.load('?module=plugins', this.setHtmlContent);
+            }
+        },
         /** Helper to load data into main content area. */
         load: function (url, options, fn) {
             if (typeof options === 'function') {
