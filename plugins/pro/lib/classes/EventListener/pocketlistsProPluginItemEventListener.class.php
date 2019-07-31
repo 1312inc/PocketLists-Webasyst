@@ -6,6 +6,21 @@
 class pocketlistsProPluginItemEventListener
 {
     /**
+     * @var pocketlistsProPluginLabelFactory
+     */
+    private $labelFactory;
+
+    /**
+     * pocketlistsProPluginItemEventListener constructor.
+     *
+     * @throws waException
+     */
+    public function __construct()
+    {
+        $this->labelFactory = pl2()->getEntityFactory(pocketlistsProPluginLabel::class);
+    }
+
+    /**
      * @param pocketlistsEventInterface $event
      */
     public function onSave(pocketlistsEventInterface $event)
@@ -44,7 +59,21 @@ class pocketlistsProPluginItemEventListener
             return '';
         }
 
-        return '<a href="#" class="pl-label pl-dark-purple">STATUS</a>';
+        try {
+            $labelId = $item->getDataField('pro_label');
+            /** @var pocketlistsProPluginLabel $label */
+            $label = $this->labelFactory->findById($labelId);
+
+            if ($label instanceof pocketlistsProPluginLabel) {
+                return sprintf(
+                    '<a href="#" class="pl-label" style="background-color: #%s">%s</a>',
+                    $label->getColor(),
+                    htmlspecialchars($label->getName())
+                );
+            }
+        } catch (waException $ex) {}
+
+        return '';
     }
 
     /**

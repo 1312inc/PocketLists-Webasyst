@@ -163,7 +163,7 @@
         function addForm(formData) {
             var $form = labelFormTemplate.tmpl(formData),
                 data = '',
-                action = data['id'] ? 'update' : 'create';
+                action = formData['id'] ? 'update' : 'create';
 
             initColorPicker($form);
             initSortable();
@@ -219,7 +219,6 @@
                 url: '?plugin=pro&module=label&action=deleteDialog&id=' + labelId,
                 disableButtonsOnSubmit: true,
                 onSubmit: function (d) {
-                debugger;
                     $.post(
                         '?plugin=pro&module=labelCrud&action=delete',
                         $(d).find('form').serialize(),

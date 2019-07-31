@@ -110,7 +110,7 @@ class pocketlistsFactory
      * @return waModel
      * @throws waException
      */
-    protected function getModel()
+    public function getModel()
     {
         return pl2()->getModel($this->getEntity());
     }
