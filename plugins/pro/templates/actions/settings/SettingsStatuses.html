@@ -1,15 +1,9 @@
 <h1>[`To-do statuses`]</h1>
 <p>[`Statuses enables you to mark to-dos with color labels for better and a more sophisticated organization.`] [`The list of available custom labels is system-wide and applicable for all to-dos no matter of a pocket or a list.`]</p>
 
-{$_status_config = [
-[ 'Backlog', 'aaaaaa' ],
-[ 'To do', '46c7fc' ],
-[ 'In progress', '328532' ],
-[ 'Testing', 'ffc600' ]
-]}
-
-<table class="pl2pro-labels">
-    <tr>
+<table class="pl2pro-labels" data-pl2-labels>
+    <tbody>
+    <tr data-pl2-label-no-status>
         <td class="min-width">
             <input type="checkbox" class="pl-done"><span></span>
         </td>
@@ -17,28 +11,7 @@
             <em>[`No status`]</em>
         </td>
     </tr>
-    {foreach $_status_config as $s}
-        <tr>
-            <td class="min-width">
-                <a title="[`Sort`]"><i class="icon16 sort"></i></a>
-            </td>
-            <td class="bordered">
-                <a href="#" class="inline-link pl2pro-label-edit"><i class="icon16 edit"></i><b><i>[`Edit`]</i></b></a>
-                <span class="pl-label" style="background: #{$s[1]};">{$s[0]}</span>
-            </td>
-        </tr>
-    {/foreach}
-    <tr>
-        <td class="min-width">
-            <a title="[`Sort`]"><i class="icon16 sort"></i></a>
-        </td>
-        <td class="bordered">
-            <a href="#" class="inline-link pl2pro-label-delete"><i class="icon16 delete"></i>[`Delete`]</a>
-            <input type="text" class="large bold" value="EDIT MODE">
-            #<input type="text" class="short" value="ff6000"><a href="#"><i class="icon16 color" style="background-color: #ff6000;"></i></a>
-        </td>
-    </tr>
-    <tr>
+    <tr data-pl2-label-done>
         <td class="min-width">
             <input type="checkbox" class="pl-done" checked="checked"><span></span>
         </td>
@@ -51,9 +24,239 @@
 
         </td>
         <td>
-            <a href="#" class="inline-link"><i class="icon16 add"></i><b><i>[`Add status`]</i></b></a>
+            <a href="#" class="inline-link" data-pl2-label-action="create"><i class="icon16 add"></i><b><i>[`Add status`]</i></b></a>
         </td>
     </tr>
+    </tbody>
 </table>
 
+<script type="text/x-jquery-tmpl" id="pl2pro-label">
+{literal}
+    <tr data-pl2pro-label-id="${id}">
+        <td class="min-width">
+            <a title="[`Sort`]"><i class="icon16 sort"></i></a>
+        </td>
+        <td class="bordered">
+            <a href="#" class="inline-link pl2pro-label-edit" data-pl2-label-action="update"><i class="icon16 edit"></i><b><i>[`Edit`]</i></b></a>
+            <span class="pl-label" style="background: #${color};">${name}</span>
+        </td>
+    </tr>
+{/literal}
+</script>
+
+<script type="text/x-jquery-tmpl" id="pl2pro-label-form">
+{literal}
+    <tr data-pl2pro-label-id="${id}" data-pl2-label-form>
+        <td class="min-width">
+            <a title="[`Sort`]"><i class="icon16 sort"></i></a>
+        </td>
+        <td class="bordered">
+            <a href="#" class="inline-link pl2pro-label-delete" data-pl2-label-action="delete"><i class="icon16 delete"></i>[`Delete`]</a>
+            <input type="text" class="large bold" value="${name}" name="data[name]">
+            <input type="hidden" value="${id}" name="id">
+            #<input type="text" class="short" value="${color}" name="data[color]"><a href="#"><i class="icon16 color" style="background-color: #${color};"></i></a>
+            <div id="colorpicker-wrapper" style="display:none"></div>
+        </td>
+    </tr>
+{/literal}
+</script>
+
 <div class="clear-both"></div>
+
+<link rel="stylesheet" href="{$wa_url}wa-content/js/farbtastic/farbtastic.css" type="text/css" />
+<script type="text/javascript" src="{$wa_url}wa-content/js/farbtastic/farbtastic.js?{$wa->version(true)}"></script>
+
+<script>
+    'use strict';
+    (function () {
+        var $labels = $('[data-pl2-labels]'),
+            $noStatus = $labels.find('[data-pl2-label-no-status]'),
+            $done = $labels.find('[data-pl2-label-done]'),
+            labels = {$labels_json},
+            labelTemplate = $('#pl2pro-label'),
+            labelFormTemplate = $('#pl2pro-label-form');
+
+        for (var i = 0; i < labels.length; i++) {
+            labelTemplate.tmpl(labels[i]).insertAfter($noStatus);
+        }
+
+        function initSortable() {
+            $labels.find('tbody').sortable({
+                item: 'tr[data-pl2pro-label-id]',
+                distance: 5,
+                // placeholder: 'pl-list-placeholder',
+                opacity: 0.75,
+                appendTo: 'body',
+                tolerance: 'pointer',
+                classes: {
+                    'ui-sortable-helper': 'shadowed'
+                },
+                start: function (e, ui) {
+                    ui.placeholder.height(ui.helper.outerHeight());
+                },
+                stop: function (event, ui) {
+                    var getLabels = function () {
+                        var data = [];
+                        $labels.find('[data-pl2pro-label-id]').each(function (i) {
+                            data.push($(this).data('pl2pro-label-id'));
+                        });
+
+                        return data;
+                    };
+
+                    var updateSort = function () {
+                        $.post(
+                            '?plugin=pro&module=label&action=saveOrder',
+                            {
+                                data: getLabels()
+                            },
+                            function (r) {
+                                if (r.status === 'ok') {
+                                } else {
+                                    console.log(r.errors);
+                                }
+                            },
+                            'json'
+                        );
+                    };
+
+                    updateSort();
+                }
+            });
+        }
+
+        function initColorPicker($form) {
+            var $wrapper = $form.find('#colorpicker-wrapper'),
+                $color_input = $form.find('[name="data[color]"]'),
+                $color_icon = $form.find('i.color'),
+                farbtastic = $.farbtastic($wrapper, function (color) {
+                    $color_input.val(color.substr(1)).change();
+                    $color_icon.css('background', color);
+                });
+
+            $color_input.on('keyup', function() {
+                farbtastic.setColor('#'+this.value);
+            });
+
+            $color_icon.on('click', function(e) {
+                e.preventDefault();
+
+                $wrapper.slideToggle();
+            });
+        }
+
+        function removeForm() {
+            var $openedForm = $labels.find('[data-pl2-label-form]');
+
+            if ($openedForm.length) {
+                $.get('?plugin=pro&module=labelCrud&action=get', { id: $openedForm.data('pl2pro-label-id') }, function (r) {
+                    if (r.status === 'ok') {
+                        $openedForm.replaceWith(labelTemplate.tmpl(r.data));
+                    } else {
+                        console.log(r.errors);
+                        $openedForm.remove();
+                    }
+                }, 'json');
+            }
+        }
+
+        function addForm(formData) {
+            var $form = labelFormTemplate.tmpl(formData),
+                data = '',
+                action = data['id'] ? 'update' : 'create';
+
+            initColorPicker($form);
+            initSortable();
+
+            $form.on('change', '[name^="data["]', function () {
+                if (data === $form.find(':input').serialize()) {
+                    return;
+                }
+
+                data = $form.find(':input').serialize();
+                $.post(
+                    '?plugin=pro&module=labelCrud&action=' + action,
+                    data,
+                    function (r) {
+                        if (r.status === 'ok') {
+                            if (r.data['id']) {
+                                $form
+                                    .data('pl2pro-label-id', r.data.id)
+                                    .find('[name="id"]')
+                                        .val(r.data.id);
+                                action = 'update';
+                            }
+                        }
+                    },
+                    'json'
+                );
+            });
+
+            return $form;
+        }
+
+        initSortable();
+
+        $labels.on('click', '[data-pl2-label-action="create"]', function (e) {
+            e.preventDefault();
+
+            removeForm();
+
+            addForm({
+                id: 0,
+                name: '',
+                color: '000000'
+            }).insertBefore($done);
+        });
+
+        $labels.on('click', '[data-pl2-label-action="delete"]', function (e) {
+            e.preventDefault();
+
+            var $label = $(this).closest('[data-pl2pro-label-id]'),
+                labelId = $label.data('pl2pro-label-id');
+
+            $('<div>').waDialog({
+                url: '?plugin=pro&module=label&action=deleteDialog&id=' + labelId,
+                disableButtonsOnSubmit: true,
+                onSubmit: function (d) {
+                debugger;
+                    $.post(
+                        '?plugin=pro&module=labelCrud&action=delete',
+                        $(d).find('form').serialize(),
+                        function (r) {
+                            if (r.status === 'ok') {
+                                $label.remove();
+                                initSortable();
+                            } else {
+                                console.log(r.errors);
+                            }
+                        },
+                        'json'
+                    );
+
+                    d.trigger('close');
+                    return false;
+                }
+            });
+        });
+
+        $labels.on('click', '[data-pl2-label-action="update"]', function (e) {
+            e.preventDefault();
+
+            var $label = $(this).closest('[data-pl2pro-label-id]'),
+                labelId = $label.data('pl2pro-label-id');
+
+            removeForm();
+
+            $.get('?plugin=pro&module=labelCrud&action=get', { id: labelId }, function (r) {
+                if (r.status === 'ok') {
+                    var $form = addForm(r.data);
+
+                    $label.replaceWith($form);
+                } else {
+                    console.log(r.errors);
+                }
+            }, 'json');
+        });
+    }())
+</script>

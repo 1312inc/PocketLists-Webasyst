@@ -162,7 +162,7 @@
         },
 
         heartbeat: function () {
-            $.post('?module=json&action=heartbeat');
+            $.post('?module=backendJson&action=heartbeat');
         },
 
         // actions

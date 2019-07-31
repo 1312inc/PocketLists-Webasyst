@@ -3,29 +3,18 @@
 /**
  * Class pocketlistsViewAction
  */
-abstract class pocketlistsViewAction extends waViewAction
+abstract class pocketlistsViewActions extends waViewActions
 {
     use pocketlistsViewTrait;
 
     /**
-     * @param null|array $params
-     *
-     * @return mixed
-     */
-    abstract public function runAction($params = null);
-
-    /**
      * @param null $params
-     *
-     * @throws waException
      */
-    public function execute($params = null)
+    public function run($params = null)
     {
         try {
-            $this->view->assign(pl2()->getDefaultViewVars());
-
-            $this->runAction($params);
-        } catch (pocketlistsException $ex) {
+            parent::run($params);
+        } catch (waException $ex) {
             $this->view->assign(
                 'error',
                 [
@@ -37,4 +26,5 @@ abstract class pocketlistsViewAction extends waViewAction
             $this->setTemplate('templates/include/error.html');
         }
     }
+
 }

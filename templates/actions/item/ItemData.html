@@ -74,7 +74,9 @@
         {/if}
 
         <br>
-        <a href="#" class="pl-label pl-dark-purple">STATUS</a>
+        {foreach $pl2->event(pocketlistsEventStorage::ITEM_UI_LABEL, $item) as $response}
+            {$response}
+        {/foreach}
 
         {if $item->getDueDatetime()}
             <br>
@@ -106,7 +108,6 @@
         <div class="pl-item-discussion" {if !$item->getCommentsCount() || $item->isDone()}style="display: none;"{/if}>
             {include './ItemComments.html' item=$item inline}
         </div>
-
 
     </label>
     <div data-pl2-item-details class="pl-item-details"></div>

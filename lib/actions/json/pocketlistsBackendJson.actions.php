@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Class pocketlistsJsonActions
+ * Class pocketlistsBackendJsonActions
  */
-class pocketlistsJsonActions extends waJsonActions
+class pocketlistsBackendJsonActions extends pocketlistsJsonActions
 {
     /**
      * @throws waException

@@ -35,6 +35,9 @@ class pocketlistsTodoDateAction extends pocketlistsViewAction
                 $date ? [$date] : []
             );
 
+        pl2()->event(pocketlistsEventStorage::ITEM_SAVE, null, $itemsDone);
+        pl2()->event(pocketlistsEventStorage::ITEM_DELETE, null, $itemsDone);
+
         $this->view->assign(
             [
                 'undone_items'     => $itemsUndone,

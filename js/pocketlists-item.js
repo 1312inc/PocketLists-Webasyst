@@ -715,7 +715,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     request_in_action = true;
 
                     $(this).after($.pocketlists.$loading);
-                    $.get(o.appUrl + '?module=json&action=getLists', function (r) {
+                    $.get(o.appUrl + '?module=backendJson&action=getLists', function (r) {
                         $.pocketlists.$loading.remove();
                         var $pocket_lists = $('#pl-item-list');
                         $pocket_lists.empty();
@@ -958,7 +958,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 // update calendar date with new dot
                 var $calendar = $('.pl-calendar');
                 if (!o.list && $calendar.length && !o.standAloneItemAdd) {
-                    $.get(o.appUrl + '?module=json&action=getItemsPocketColor&id=' + parseInt($html.data('id')), function (r) {
+                    $.get(o.appUrl + '?module=backendJson&action=getItemsPocketColor&id=' + parseInt($html.data('id')), function (r) {
                         if (r.status === 'ok') {
                             var $selected_date = $calendar.find('[data-pl-todo-date="' + due_date + '"]').length
                                 ? $calendar.find('[data-pl-todo-date="' + due_date + '"]')
@@ -1004,7 +1004,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
     }
 
     function loadListCounts(list_id) {
-        $.getJSON(o.appUrl + '?module=json&action=getListItemCount', {id: list_id}, function(r) {
+        $.getJSON(o.appUrl + '?module=backendJson&action=getListItemCount', {id: list_id}, function(r) {
             if (r.status === 'ok') {
                 var $list = $('#pl-lists').find('[data-pl-list-id="' + list_id + '"]');
 
