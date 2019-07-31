@@ -736,10 +736,12 @@ class pocketlistsItem extends pocketlistsEntity
      */
     public function recalculatePriority()
     {
-        $this->setCalcPriority(max(
-            pocketlistsHelper::calcPriorityOnDueDate($this->getDueDate(), $this->getDueDatetime()),
-            $this->getPriority()
-        ));
+        $this->setCalcPriority(
+            max(
+                pocketlistsHelper::calcPriorityOnDueDate($this->getDueDate(), $this->getDueDatetime()),
+                $this->getPriority()
+            )
+        );
 
         return $this;
     }

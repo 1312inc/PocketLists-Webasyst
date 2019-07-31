@@ -6,6 +6,35 @@
 abstract class pocketlistsEntity implements pocketlistsHydratableInterface
 {
     /**
+     * @var array
+     */
+    protected $_dataFields = [];
+
+    /**
+     * @param string $field
+     *
+     * @return mixed
+     * @throws pocketlistsLogicException
+     */
+    public function getDataField($field)
+    {
+        if (!array_key_exists($field, $this->_dataFields)) {
+            throw new pocketlistsLogicException(sprintf('Field %s not found in %s', $field, static::class));
+        }
+
+        return $this->_dataFields[$field];
+    }
+
+    /**
+     * @param string $field
+     * @param mixed  $value
+     */
+    public function setDataField($field, $value)
+    {
+        $this->_dataFields[$field] = $value;
+    }
+
+    /**
      * @return array
      */
     public function getDbFields()

@@ -297,4 +297,37 @@ class pocketlistsHelper
             waLog::log($msg, 'pocketlists/'.$file);
         }
     }
+
+    /**
+     * @param string $file
+     */
+    public static function updateUtf8Mb($file)
+    {
+        $m = new pocketlistsModel();
+
+        $updates = require $file;
+
+        try {
+            foreach ($updates as $table => $columns) {
+                foreach ($columns as $column => $type) {
+                    $m->exec(
+                        sprintf(
+                            'alter table %s change %s %s %s character set utf8mb4 collate utf8mb4_unicode_ci',
+                            $table,
+                            $column,
+                            $column,
+                            $type
+                        )
+                    );
+                }
+            }
+        } catch (Exception $ex) {
+            waLog::log('Error on altering to utf8mb4.', 'pocketlists/utf8mb4.log');
+        }
+    }
+
+    public function saveEntity(pocketlistsEventInterface $event)
+    {
+        $params = $event->getParams();
+    }
 }

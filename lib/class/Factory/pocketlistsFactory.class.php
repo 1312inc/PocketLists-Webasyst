@@ -171,6 +171,17 @@ class pocketlistsFactory
     }
 
     /**
+     * @return pocketlistsEntity[]|pocketlistsEntity
+     * @throws waException
+     */
+    public function findAll()
+    {
+        $data = $this->getModel()->getAll();
+
+        return $this->generateWithData($data, true);
+    }
+
+    /**
      * @param array $data
      * @param bool  $all
      *
@@ -193,9 +204,24 @@ class pocketlistsFactory
         return $all === false ? reset($lists) : $lists;
     }
 
+    /**
+     * @param pocketlistsEntity $entity
+     * @param array             $fields
+     * @param int               $type
+     *
+     * @return bool
+     * @throws waException
+     */
     public function insert(pocketlistsEntity $entity, $fields = [], $type = waModel::INSERT_ON_DUPLICATE_KEY_UPDATE)
     {
         $data = pl2()->getHydrator()->extract($entity, $fields, $this->getDbFields());
+
+        $eventData = ['entity' => $entity, 'data' => $data];
+        $eventResponse = wa()->event('entity_insert', $eventData);
+        if (isset($eventResponse['data'])) {
+            $data = array_merge($data, $eventData);
+        }
+
         unset($data['id']);
 
         $id = $this->getModel()->insert($data, $type);
@@ -220,6 +246,12 @@ class pocketlistsFactory
     public function delete(pocketlistsEntity $entity)
     {
         if (method_exists($entity, 'getId')) {
+            $eventData = ['entity' => $entity];
+            $eventResponse = wa()->event('entity_delete', $eventData);
+            if (isset($eventResponse['status']) && $eventResponse['status'] === false) {
+                return false;
+            }
+
             return $this->getModel()->deleteById($entity->getId());
         }
 
@@ -237,6 +269,13 @@ class pocketlistsFactory
     {
         if (method_exists($entity, 'getId')) {
             $data = pl2()->getHydrator()->extract($entity, $fields, $this->getDbFields());
+
+            $eventData = ['entity' => $entity, $data => $data];
+            $eventResponse = wa()->event('entity_update', $eventData);
+            if (isset($eventResponse['data'])) {
+                $data = array_merge($data, $eventData);
+            }
+
             unset($data['id']);
 
             return $this->getModel()->updateById($entity->getId(), $data);
