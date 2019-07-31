@@ -96,4 +96,9 @@ class pocketlistsProPlugin extends waPlugin
     {
         return sprintf('%s/templates/hooks/%s', $this->path, $name);
     }
+
+    public function saveEntity(pocketlistsEventInterface $event)
+    {
+        $event->getName();
+    }
 }

@@ -51,6 +51,55 @@ class pocketlistsConfig extends waAppConfig
     protected $logService;
 
     /**
+     * @var pocketlistsEventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @param string $type
+     *
+     * @return waCache
+     */
+    public function getCache($type = 'default')
+    {
+        if ($this->cache === null) {
+            $this->cache = parent::getCache($type)
+                ?: new waCache(
+                    new waFileCacheAdapter(['type' => 'file']),
+                    'pocketlists'
+                );
+        }
+
+        return $this->cache;
+    }
+
+    /**
+     * @return pocketlistsEventDispatcherInterface
+     */
+    public function getEventDispatcher()
+    {
+        if ($this->eventDispatcher === null) {
+            $this->eventDispatcher = new pocketlistsEventDispatcher(
+                new pocketlistsListenerProvider()
+            );
+        }
+
+        return $this->eventDispatcher;
+    }
+
+    /**
+     * @param string      $eventName
+     * @param null|object $object
+     * @param array       $params
+     *
+     * @return pocketlistsListenerResponseInterface
+     */
+    public function event($eventName, $object = null, $params = [])
+    {
+        return $this->getEventDispatcher()->dispatch(new pocketlistsEvent($eventName, $object, $params));
+    }
+
+    /**
      * @return pocketlistsHydratorInterface
      */
     public function getHydrator()
@@ -208,7 +257,10 @@ HTML;
 
             }
 
-            $pocketlistsPath = sprintf('%spocketlists?module=json&action=sendNotifications', pl2()->getBackendUrl(true));
+            $pocketlistsPath = sprintf(
+                '%spocketlists?module=backendJson&action=sendNotifications',
+                pl2()->getBackendUrl(true)
+            );
 
             $script = <<<HTML
 <script>
@@ -366,6 +418,7 @@ HTML;
             'current_user'         => $this->getUser(),
             'pl2_attachments_path' => wa()->getDataUrl('attachments/', true, pocketlistsHelper::APP_ID),
             'wa_app_static_url'    => wa()->getAppStaticUrl(pocketlistsHelper::APP_ID),
+            'pl2'                  => pl2(),
         ];
     }
 
