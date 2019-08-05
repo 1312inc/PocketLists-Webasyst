@@ -1,9 +1,9 @@
 <h1>[`To-do statuses`]</h1>
 <p>[`Statuses enables you to mark to-dos with color labels for better and a more sophisticated organization.`] [`The list of available custom labels is system-wide and applicable for all to-dos no matter of a pocket or a list.`]</p>
 
-<table class="pl2pro-labels" data-pl2-labels>
+<table class="pl2pro-labels" data-pl2pro-labels>
     <tbody>
-    <tr data-pl2-label-no-status>
+    <tr data-pl2pro-label-no-status>
         <td class="min-width">
             <input type="checkbox" class="pl-done"><span></span>
         </td>
@@ -11,7 +11,7 @@
             <em>[`No status`]</em>
         </td>
     </tr>
-    <tr data-pl2-label-done>
+    <tr data-pl2pro-label-done>
         <td class="min-width">
             <input type="checkbox" class="pl-done" checked="checked"><span></span>
         </td>
@@ -24,7 +24,7 @@
 
         </td>
         <td>
-            <a href="#" class="inline-link" data-pl2-label-action="create"><i class="icon16 add"></i><b><i>[`Add status`]</i></b></a>
+            <a href="#" class="inline-link" data-pl2pro-label-action="create"><i class="icon16 add"></i><b><i>[`Add status`]</i></b></a>
         </td>
     </tr>
     </tbody>
@@ -37,7 +37,7 @@
             <a title="[`Sort`]"><i class="icon16 sort"></i></a>
         </td>
         <td class="bordered">
-            <a href="#" class="inline-link pl2pro-label-edit" data-pl2-label-action="update"><i class="icon16 edit"></i><b><i>[`Edit`]</i></b></a>
+            <a href="#" class="inline-link pl2pro-label-edit" data-pl2pro-label-action="update"><i class="icon16 edit"></i><b><i>[`Edit`]</i></b></a>
             <span class="pl-label" style="background: #${color};">${name}</span>
         </td>
     </tr>
@@ -46,12 +46,12 @@
 
 <script type="text/x-jquery-tmpl" id="pl2pro-label-form">
 {literal}
-    <tr data-pl2pro-label-id="${id}" data-pl2-label-form>
+    <tr data-pl2pro-label-id="${id}" data-pl2pro-label-form>
         <td class="min-width">
             <a title="[`Sort`]"><i class="icon16 sort"></i></a>
         </td>
         <td class="bordered">
-            <a href="#" class="inline-link pl2pro-label-delete" data-pl2-label-action="delete"><i class="icon16 delete"></i>[`Delete`]</a>
+            <a href="#" class="inline-link pl2pro-label-delete" data-pl2pro-label-action="delete"><i class="icon16 delete"></i>[`Delete`]</a>
             <input type="text" class="large bold" value="${name}" name="data[name]">
             <input type="hidden" value="${id}" name="id">
             #<input type="text" class="short" value="${color}" name="data[color]"><a href="#"><i class="icon16 color" style="background-color: #${color};"></i></a>
@@ -69,9 +69,9 @@
 <script>
     'use strict';
     (function () {
-        var $labels = $('[data-pl2-labels]'),
-            $noStatus = $labels.find('[data-pl2-label-no-status]'),
-            $done = $labels.find('[data-pl2-label-done]'),
+        var $labels = $('[data-pl2pro-labels]'),
+            $noStatus = $labels.find('[data-pl2pro-label-no-status]'),
+            $done = $labels.find('[data-pl2pro-label-done]'),
             labels = {$labels_json},
             labelTemplate = $('#pl2pro-label'),
             labelFormTemplate = $('#pl2pro-label-form');
@@ -146,7 +146,7 @@
         }
 
         function removeForm() {
-            var $openedForm = $labels.find('[data-pl2-label-form]');
+            var $openedForm = $labels.find('[data-pl2pro-label-form]');
 
             if ($openedForm.length) {
                 $.get('?plugin=pro&module=labelCrud&action=get', { id: $openedForm.data('pl2pro-label-id') }, function (r) {
@@ -197,7 +197,7 @@
 
         initSortable();
 
-        $labels.on('click', '[data-pl2-label-action="create"]', function (e) {
+        $labels.on('click', '[data-pl2pro-label-action="create"]', function (e) {
             e.preventDefault();
 
             removeForm();
@@ -209,7 +209,7 @@
             }).insertBefore($done);
         });
 
-        $labels.on('click', '[data-pl2-label-action="delete"]', function (e) {
+        $labels.on('click', '[data-pl2pro-label-action="delete"]', function (e) {
             e.preventDefault();
 
             var $label = $(this).closest('[data-pl2pro-label-id]'),
@@ -239,7 +239,7 @@
             });
         });
 
-        $labels.on('click', '[data-pl2-label-action="update"]', function (e) {
+        $labels.on('click', '[data-pl2pro-label-action="update"]', function (e) {
             e.preventDefault();
 
             var $label = $(this).closest('[data-pl2pro-label-id]'),
