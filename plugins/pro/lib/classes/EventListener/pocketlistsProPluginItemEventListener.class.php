@@ -60,11 +60,10 @@ class pocketlistsProPluginItemEventListener
         }
 
         try {
-            $labelId = $item->getDataField('pro_label');
             /** @var pocketlistsProPluginLabel $label */
-            $label = $this->labelFactory->findById($labelId);
+            $label = $this->labelFactory->findForItem($item);
 
-            if ($label instanceof pocketlistsProPluginLabel) {
+            if ($label) {
                 return sprintf(
                     '<a href="#" class="pl-label" style="background-color: #%s">%s</a>',
                     $label->getColor(),

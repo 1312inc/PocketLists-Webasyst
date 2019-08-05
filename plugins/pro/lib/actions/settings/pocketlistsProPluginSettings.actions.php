@@ -5,14 +5,12 @@
  */
 class pocketlistsProPluginSettingsActions extends pocketlistsViewActions
 {
-    public function statusesAction()
+    public function labelsAction()
     {
+        $labels = pl2()->getModel(pocketlistsProPluginLabel::class)->getAllWithSort();
         $this->view->assign(
             [
-                'labels_json' => json_encode(
-                    array_reverse(pl2()->getModel(pocketlistsProPluginLabel::class)->getAllWithSort()),
-                    JSON_UNESCAPED_UNICODE
-                ),
+                'labels_json' => json_encode(array_reverse($labels), JSON_UNESCAPED_UNICODE),
             ]
         );
     }
@@ -22,8 +20,13 @@ class pocketlistsProPluginSettingsActions extends pocketlistsViewActions
         $this->view->assign('params', 'shopscript');
     }
 
-    public function templatesAction()
+    public function shortcutsAction()
     {
-        $this->view->assign('params', 'templates');
+        $shortcuts = pl2()->getModel(pocketlistsProPluginShortcut::class)->getAllGrouped();
+        $this->view->assign(
+            [
+                'shortcuts_json' => json_encode($shortcuts, JSON_UNESCAPED_UNICODE),
+            ]
+        );
     }
 }
