@@ -35,6 +35,38 @@ class pocketlistsProPluginItemEventListener
 
     /**
      * @param pocketlistsEventInterface $event
+     *
+     * @return mixed
+     */
+    public function onUpdate(pocketlistsEventInterface $event)
+    {
+        return $this->onInsert($event);
+    }
+
+    /**
+     * @param pocketlistsEventInterface $event
+     *
+     * @return mixed
+     */
+    public function onInsert(pocketlistsEventInterface $event)
+    {
+        /** @var pocketlistsItem $item */
+        $item = $event->getObject();
+
+        if (!$item instanceof pocketlistsItem) {
+            return null;
+        }
+
+        $response = [];
+        try {
+            $response['pro_label_id'] = $item->getDataField('pro_label_id') ?: null;
+        } catch (pocketlistsLogicException $ex) {}
+
+        return $response;
+    }
+
+    /**
+     * @param pocketlistsEventInterface $event
      */
     public function onDelete(pocketlistsEventInterface $event)
     {
@@ -70,7 +102,8 @@ class pocketlistsProPluginItemEventListener
                     htmlspecialchars($label->getName())
                 );
             }
-        } catch (waException $ex) {}
+        } catch (waException $ex) {
+        }
 
         return '';
     }

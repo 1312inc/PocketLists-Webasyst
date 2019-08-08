@@ -70,4 +70,12 @@ class pocketlistsListenerResponse implements pocketlistsListenerResponseInterfac
     {
         $this->responses[$key] = $value;
     }
+
+    /**
+     * @return array
+     */
+    public function getResponses()
+    {
+        return $this->responses;
+    }
 }

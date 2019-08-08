@@ -12,4 +12,9 @@ interface pocketlistsListenerResponseInterface extends Iterator, Countable
      * @return mixed
      */
     public function addResponseFromListener($key, $value);
+
+    /**
+     * @return array
+     */
+    public function getResponses();
 }

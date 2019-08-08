@@ -4,7 +4,7 @@ pocketlistsHelper::updateUtf8Mb(wa()->getAppPath('plugins/pro/lib/config/utf8mb4
 
 $m = new pocketlistsModel();
 
-$m->exec("alter table pocketlists_item add pro_label int default null");
+$m->exec("alter table pocketlists_item add pro_label_id int default null");
 
 $labels = [
     [_wp('Backlog'), 'aaaaaa'],

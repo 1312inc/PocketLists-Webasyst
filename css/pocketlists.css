@@ -688,6 +688,7 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 
 .pl2pro-item-add { margin-top: 13px; }
 .pl2pro-item-add .pl-label { display: none !important; margin-right: 5px !important; }
+.pl2pro-item-add .pl-label.shown { display: inline !important; margin-right: 5px !important; }
 .pl2pro-item-add .pl-label.current { display: inline !important; }
 .pl2pro-item-add .pl2pro-shortcut { margin-right: 2px; font-size: 0.9em; }
 .pl2pro-item-add.pl2pro-item-add-all-labels-shown .pl-label { display: inline !important; }

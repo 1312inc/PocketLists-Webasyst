@@ -18,7 +18,7 @@ class pocketlistsProPluginLabelFactory extends pocketlistsFactory
      */
     public function findForItem(pocketlistsItem $item)
     {
-        $labelId = $item->getDataField('pro_label');
+        $labelId = $item->getDataField('pro_label_id');
         /** @var pocketlistsProPluginLabel $label */
         $label = $this->findById($labelId);
 
