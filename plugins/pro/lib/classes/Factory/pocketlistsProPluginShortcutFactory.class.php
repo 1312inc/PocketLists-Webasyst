@@ -19,7 +19,7 @@ class pocketlistsProPluginShortcutFactory extends pocketlistsFactory
 
         $return = [];
         foreach ($data as $group => $shortcuts) {
-            $return[$group][] = $this->generateWithData($shortcuts, true);
+            $return[$group] = $this->generateWithData($shortcuts, true);
         }
 
         return $return;

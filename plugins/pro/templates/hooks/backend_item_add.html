@@ -1,0 +1,72 @@
+{if $labels || $shortcuts}
+<div class="pl2pro-item-add" data-pl2pro-wrapper="item-compact-add"{if $itemLabel->getId()} data-pl2pro-label-selected="{$itemLabel->getId()}"{/if}>
+    {* @var pocketlistsProPluginLabel $label *}
+    {foreach $labels as $label}
+        <a
+                class="pl-label shown {if $label->getId() == $itemLabel->getId()}selected{/if}"
+                style="background-color: #{$label->getColor()|escape}; color: #aaa !important;"
+                data-pl2pro-label="{$label->getId()}"
+        >
+            {$label->getName()|escape}
+        </a>
+    {/foreach}
+
+    {if $shortcutsGrouped}
+        {foreach $shortcutsGrouped as $group => $shortcuts}
+        <span
+                class="pl2pro-shortcuts-group"
+                data-pl2pro-shortcuts-group="{$group}"
+                {if $shortcuts@iteration != 1}style="display: none"{/if}
+        >
+        {* @var pocketlistsProPluginShortcut shortcut *}
+        {foreach $shortcuts as $shortcut}
+            <a href="#" class="inline-link pl2pro-shortcut" title="Alt + {$shortcut@iteration}"><b><i>{$shortcut->getName()|escape}</i></b></a>
+        {/foreach}
+        </span>
+        {/foreach}
+    {/if}
+
+    <script>
+        (function () {
+            'use strict';
+            var $wrapper = $('[data-pl2pro-wrapper="item-compact-add"]'),
+                $labels = $wrapper.find('[data-pl2pro-label]');
+
+            $labels.on('click', function () {
+                var $this = $(this),
+                    add = !$this.hasClass('selected');
+
+                $labels.removeClass('selected');
+                $wrapper.removeData('pl2pro-label-selected');
+
+                if (add) {
+                    $this.addClass('selected');
+                    $wrapper.data('pl2pro-label-selected', $this.data('pl2pro-label'));
+                }
+            });
+
+            // todo: удалить несколько обработчиков
+            $('#pl-list-content')
+                .on('beforeAddItemSync.pl2', function (e, eventData) {
+                    eventData.response.data[0]['pro_label_id'] = parseInt($wrapper.data('pl2pro-label-selected')) || 0;
+                })
+                .on('item_add.pl2', function (e) {
+                    $labels.filter('.selected').trigger('click');
+                })
+                .on('beforeUpdateItemSync.pl2', function (e, $form) {
+                    $('<input>', {
+                        type: 'hidden',
+                        name: 'item[pro_label_id]',
+                        value: (parseInt($wrapper.data('pl2pro-label-selected')) || 0)
+                    }).appendTo($form);
+
+                    e.preventDefault();
+                });
+
+            // $('.pl-label').click(function () {
+            //     $('.pl2pro-item-add').toggleClass('pl2pro-item-add-all-labels-shown');
+            // });
+        }());
+    </script>
+</div>
+{/if}

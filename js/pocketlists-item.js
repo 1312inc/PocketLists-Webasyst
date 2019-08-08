@@ -675,7 +675,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                                             updateListCountBadge();
                                         });
 
-                                        $(document).trigger('item_delete.pl2', r.data);
+                                        $('#pl-list-content').trigger('item_delete.pl2', r.data);
                                     } else {
 
                                     }
@@ -901,14 +901,26 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         }
 
         var $pl_done = $this.closest('.pl-item').find('.pl-done-label span').addClass('transparent').html($.pocketlists.$loading);
-        $.post(
-            o.appUrl + '?module=item&action=create',
-            {
+
+        var itemData = {
                 list_id: o.list ? o.list.list_id : 0,
                 data: data,
                 assigned_contact_id: o.assignUser ? o.assignUser : false,
                 filter: o.filter
             },
+            eventData = {
+                response: itemData,
+                wrapper: $this,
+                isTopAdd: isTopAdd
+            };
+
+        $('#pl-list-content')
+            .trigger('beforeAddItemAsync.pl2', eventData)
+            .triggerHandler('beforeAddItemSync.pl2', eventData);
+
+        $.post(
+            o.appUrl + '?module=item&action=create',
+            eventData.response,
             function (html) {
                 request_in_action = false;
 
@@ -998,7 +1010,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
                 $.isFunction(callback) && callback.call($this);
 
-                $(document).trigger('item_add.pl2');
+                $('#pl-list-content').trigger('item_add.pl2');
             }
         );
     }
@@ -1045,7 +1057,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     updateListCountBadge();
                 }
 
-                $(document).trigger('item_update.pl2');
+                $('#pl-list-content').trigger('item_update.pl2');
             }
             $.isFunction(callback) && callback.call();
         };
@@ -1067,6 +1079,10 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
             var $iframe = $('#' + iframe_id);
             $form.attr('target', iframe_id);
+
+            $('#pl-list-content')
+                .trigger('beforeUpdateItemAsync.pl2', $form)
+                .triggerHandler('beforeUpdateItemSync.pl2', $form);
 
             $iframe.one('load', function () {
                 var html = $(this).contents().find('body').html();
@@ -1195,7 +1211,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
                             callback && $.isFunction(callback) && callback.call($item);
 
-                            $(document).trigger('item_complete.pl2', r.data);
+                            $('#pl-list-content').trigger('item_complete.pl2', r.data);
                         });
                     }, 800);
 
@@ -1396,7 +1412,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
                     $toList.addClass('pl-drop-success');
 
-                    $(document).trigger('item_move.pl2', r.data);
+                    $('#pl-list-content').trigger('item_move.pl2', r.data);
                 } else {
                     $this.addClass('pl-drop-fail');
                 }

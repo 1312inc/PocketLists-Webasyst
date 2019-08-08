@@ -217,10 +217,19 @@ class pocketlistsFactory
         $data = pl2()->getHydrator()->extract($entity, $fields, $this->getDbFields());
 
         $eventData = ['entity' => $entity, 'data' => $data];
-        $eventResponse = wa()->event('entity_insert', $eventData);
-        if (isset($eventResponse['data'])) {
-            $data = array_merge($data, $eventData);
+        $eventResponse = wa()->event(pocketlistsEventStorage::ENTITY_INSERT_BEFORE, $eventData);
+        $dataFromEvents = [];
+        foreach ($eventResponse as $plugin => $responseData) {
+            if ($responseData instanceof pocketlistsListenerResponseInterface) {
+                foreach ($responseData->getResponses() as $pl2EventResponse) {
+                    $dataFromEvents += $pl2EventResponse;
+                }
+            } else {
+                $dataFromEvents += $responseData;
+            }
         }
+
+        $data = array_merge($data, $dataFromEvents);
 
         unset($data['id']);
 
@@ -247,9 +256,17 @@ class pocketlistsFactory
     {
         if (method_exists($entity, 'getId')) {
             $eventData = ['entity' => $entity];
-            $eventResponse = wa()->event('entity_delete', $eventData);
-            if (isset($eventResponse['status']) && $eventResponse['status'] === false) {
-                return false;
+            $eventResponse = wa()->event(pocketlistsEventStorage::ENTITY_DELETE_BEFORE, $eventData);
+            foreach ($eventResponse as $plugin => $responseData) {
+                if ($responseData instanceof pocketlistsListenerResponseInterface) {
+                    foreach ($responseData->getResponses() as $pl2EventResponse) {
+                        if ($pl2EventResponse === false) {
+                            return false;
+                        }
+                    }
+                } elseif ($responseData === false) {
+                    return false;
+                }
             }
 
             return $this->getModel()->deleteById($entity->getId());
@@ -270,11 +287,20 @@ class pocketlistsFactory
         if (method_exists($entity, 'getId')) {
             $data = pl2()->getHydrator()->extract($entity, $fields, $this->getDbFields());
 
-            $eventData = ['entity' => $entity, $data => $data];
-            $eventResponse = wa()->event('entity_update', $eventData);
-            if (isset($eventResponse['data'])) {
-                $data = array_merge($data, $eventData);
+            $eventData = ['entity' => $entity, 'data' => $data];
+            $eventResponse = wa()->event(pocketlistsEventStorage::ENTITY_UPDATE_BEFORE, $eventData);
+            $dataFromEvents = [];
+            foreach ($eventResponse as $plugin => $responseData) {
+                if ($responseData instanceof pocketlistsListenerResponseInterface) {
+                    foreach ($responseData->getResponses() as $pl2EventResponse) {
+                        $dataFromEvents += $pl2EventResponse;
+                    }
+                } else {
+                    $dataFromEvents += $responseData;
+                }
             }
+
+            $data = array_merge($data, $dataFromEvents);
 
             unset($data['id']);
 

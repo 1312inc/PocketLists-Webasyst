@@ -69,6 +69,8 @@ class pocketlistsItemDetailsAction extends pocketlistsViewItemAction
                 'assign_user_id' => waRequest::post('assign_user_id', 0, waRequest::TYPE_INT)
                     ?: $item->getAssignedContactId(),
                 'contacts'       => $contacts,
+
+                'backend_item_add' => wa()->event('backend_item_add', $item),
             ]
         );
     }
