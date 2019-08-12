@@ -3,10 +3,10 @@
 $m = new pocketlistsModel();
 
 $labels = [
+    [_wp('Testing'), 'ffc600'],
     [_wp('Backlog'), 'aaaaaa'],
     [_wp('To do'), '46c7fc'],
     [_wp('In progress'), '328532'],
-    [_wp('Testing'), 'ffc600'],
 ];
 
 foreach ($labels as $label) {
