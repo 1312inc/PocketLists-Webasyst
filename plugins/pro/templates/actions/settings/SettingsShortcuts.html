@@ -54,9 +54,22 @@
                 : [],
                 $button = $el.find('[type="button"]'),
                 $shortcuts = $el.find('[data-pl2pro-shortcuts-input]'),
+                shortcutsInputId = $shortcuts.attr('id'),
+                tagsInputSelector = '#' + shortcutsInputId + '_tag',
                 $buttons = $el.find('[data-pl2pro-shortcuts-buttons]'),
                 $yes = $buttons.find('.yes'),
                 groupId = $el.data('pl2pro-shortcuts-group');
+
+
+            var buttonShow = function() {
+                $buttons.show();
+                $button.removeClass('green').addClass('yellow');
+            };
+
+            var buttonHide = function() {
+                $buttons.hide();
+                $button.removeClass('yellow').addClass('green');
+            };
 
             $shortcuts
                 .val(shortcutNames.join(','))
@@ -75,18 +88,25 @@
                     height: '',
                     width: '',
                     defaultText: '',
-                    onAddTag: function() {
-                        $buttons.show();
-                        $button.removeClass('green').addClass('yellow');
-                    },
-                    onRemoveTag: function() {
-                        $buttons.show();
-                        $button.removeClass('green').addClass('yellow');
-                    }
+                    onAddTag: buttonShow,
+                    onRemoveTag: buttonShow
                 });
+
+            $el.on('keydown', tagsInputSelector, function (e) {
+                if ($(this).val()) {
+                    buttonShow();
+                } else {
+                    buttonHide();
+                }
+            });
 
             $button.on('click', function (e) {
                 e.preventDefault();
+                var newVal = $.trim($el.find(tagsInputSelector).val());
+
+                if (newVal) {
+                    $shortcuts.addTag(newVal)
+                }
 
                 $.post(
                     '?plugin=pro&module=shortcut&action=renew',
@@ -95,7 +115,6 @@
                         shortcuts: $shortcuts.val()
                     },
                     function (r) {
-                        debugger;
                         if (r.status === 'ok') {
                             $button.removeClass('yellow').addClass('green');
                             $yes
@@ -134,7 +153,7 @@
                 id: +(new Date())
             });
             $shortcuts.append($shortcutsGroup);
-debugger;
+
             init($shortcutsGroup);
         })
     }())
