@@ -55,6 +55,11 @@
             <input type="text" class="large bold" value="${name}" name="data[name]">
             <input type="hidden" value="${id}" name="id">
             #<input type="text" class="short" value="${color}" name="data[color]"><a href="#"><i class="icon16 color" style="background-color: #${color};"></i></a>
+            <span style="margin-left: 10px;" data-pl2pro-label-buttons>
+                <input type="button" class="button green" value="[`Save`]">
+                [`or`] <a href="#" class="cancel">[`cancel`]</a>
+                <i class="icon16 yes" style="display:none"></i>
+            </span>
             <div id="colorpicker-wrapper" style="display:none"></div>
         </td>
     </tr>
@@ -82,7 +87,7 @@
 
         function initSortable() {
             $labels.find('tbody').sortable({
-                item: 'tr[data-pl2pro-label-id]',
+                items: 'tr[data-pl2pro-label-id]',
                 distance: 5,
                 // placeholder: 'pl-list-placeholder',
                 opacity: 0.75,
@@ -162,18 +167,37 @@
 
         function addForm(formData) {
             var $form = labelFormTemplate.tmpl(formData),
-                data = '',
-                action = formData['id'] ? 'update' : 'create';
+                action = formData['id'] ? 'update' : 'create',
+                $button = $form.find('input[type="button"]'),
+                $cancel = $form.find('.cancel'),
+                $inputs = $form.find(':input'),
+                data = $inputs.serialize();
 
             initColorPicker($form);
             initSortable();
 
-            $form.on('change', '[name^="data["]', function () {
-                if (data === $form.find(':input').serialize()) {
+            $inputs.on('change keyup paste', function (e) {
+                e.preventDefault();
+
+                if (data === $inputs.serialize()) {
+                    $button.removeClass('yellow red').addClass('green');
+                } else {
+                    $button.removeClass('green red').addClass('yellow');
+                }
+            });
+
+            $cancel.on('click', function (e) {
+                e.preventDefault();
+
+                removeForm();
+            });
+
+            $button.on('click', function () {
+                if (data === $inputs.serialize()) {
                     return;
                 }
 
-                data = $form.find(':input').serialize();
+                data = $inputs.serialize();
                 $.post(
                     '?plugin=pro&module=labelCrud&action=' + action,
                     data,
@@ -186,6 +210,12 @@
                                         .val(r.data.id);
                                 action = 'update';
                             }
+
+                            $inputs = $form.find(':input');
+                            data = $inputs.serialize();
+                            $button.removeClass('yellow red');
+                        } else {
+                            $button.removeClass('yellow green').addClass('red');
                         }
                     },
                     'json'
