@@ -675,7 +675,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                                             updateListCountBadge();
                                         });
 
-                                        $('#pl-list-content').trigger('item_delete.pl2', r.data);
+                                        $(document).trigger('item_delete.pl2', r.data);
                                     } else {
 
                                     }
@@ -914,7 +914,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 isTopAdd: isTopAdd
             };
 
-        $('#pl-list-content')
+        $(document)
             .trigger('beforeAddItemAsync.pl2', eventData)
             .triggerHandler('beforeAddItemSync.pl2', eventData);
 
@@ -1010,7 +1010,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
                 $.isFunction(callback) && callback.call($this);
 
-                $('#pl-list-content').trigger('item_add.pl2');
+                $(document).trigger('item_add.pl2');
             }
         );
     }
@@ -1057,7 +1057,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     updateListCountBadge();
                 }
 
-                $('#pl-list-content').trigger('item_update.pl2');
+                $(document).trigger('item_update.pl2');
             }
             $.isFunction(callback) && callback.call();
         };
@@ -1080,7 +1080,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             var $iframe = $('#' + iframe_id);
             $form.attr('target', iframe_id);
 
-            $('#pl-list-content')
+            $(document)
                 .trigger('beforeUpdateItemAsync.pl2', $form)
                 .triggerHandler('beforeUpdateItemSync.pl2', $form);
 
@@ -1211,7 +1211,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
                             callback && $.isFunction(callback) && callback.call($item);
 
-                            $('#pl-list-content').trigger('item_complete.pl2', r.data);
+                            $(document).trigger('item_complete.pl2', r.data);
                         });
                     }, 800);
 
@@ -1412,7 +1412,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
                     $toList.addClass('pl-drop-success');
 
-                    $('#pl-list-content').trigger('item_move.pl2', r.data);
+                    $(document).trigger('item_move.pl2', r.data);
                 } else {
                     $this.addClass('pl-drop-fail');
                 }
