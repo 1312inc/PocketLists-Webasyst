@@ -41,4 +41,11 @@ class pocketlistsProPluginLabelFactory extends pocketlistsFactory
 
         return false;
     }
+
+    public function findForPocket(pocketlistsPocket $pocket)
+    {
+        $data = $this->getModel()->getByPocketId($pocket->getId());
+
+
+    }
 }
