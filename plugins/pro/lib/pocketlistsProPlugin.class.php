@@ -58,16 +58,36 @@ class pocketlistsProPlugin extends waPlugin
     }
 
     /**
+     * @param array $data
+     *
      * @return array
+     * @throws pocketlistsAssertException
+     * @throws waException
      */
-    public function backendPocketHandler()
+    public function backendPocketHandler(array $data)
     {
-        $return = [];
+        $return = ['sidebar_section' => ''];
 
-        $hooks = ['sidebar_section'];
-        foreach ($hooks as $hook) {
-            $return[$hook] = $this->getView()->fetch($this->getViewTemplate('backend_pocket.'.$hook));
+        /** @var pocketlistsPocket $pocket */
+        $pocket = $data['pocket'];
+        pocketlistsAssert::instance($pocket, pocketlistsPocket::class);
+
+        /** @var pocketlistsProPluginLabelFactory $factory */
+        $factory = pl2()->getEntityFactory(pocketlistsProPluginLabel::class);
+
+        $pocketLabelsInfo = [];
+        $data = $factory->getModel()->getByPocketId($pocket->getId());
+        foreach ($data as $datum) {
+            $pocketLabelInfo = new pocketlistsProPluginLabelPocketInfoDto();
+            $pocketLabelInfo->pocket = $pocket;
+            $pocketLabelInfo->count = $datum['labels_count'];
+            $pocketLabelInfo->label = $factory->generateWithData($datum);
+            $pocketLabelsInfo[] = $pocketLabelInfo;
         }
+
+        $this->getView()->assign('pocketLabelStat', $pocketLabelsInfo);
+
+        $return['sidebar_section'] = $this->getView()->fetch($this->getViewTemplate('backend_pocket.sidebar_section'));
 
         return $return;
     }
