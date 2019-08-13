@@ -27,7 +27,8 @@ class pocketlistsBackendSidebarAction extends pocketlistsViewAction
 
         /** @var pocketlistsListFactory $pocketFactory */
         $pocketFactory = pl2()->getEntityFactory(pocketlistsList::class);
-        $this->view->assign('lists', $pocketFactory->findAllActive());
+        $lists = $pocketFactory->findAllActive();
+        $this->view->assign('lists', $lists);
 
         /** @var pocketlistsContactFactory $contactFactory */
         $contactFactory = pl2()->getEntityFactory(pocketlistsContact::class);
@@ -79,6 +80,7 @@ class pocketlistsBackendSidebarAction extends pocketlistsViewAction
         }
 
         $this->view->assign(compact('pockets', 'linkedApps'));
+
         $this->view->assign('backend_sidebar', wa()->event('backend_sidebar'));
     }
 }

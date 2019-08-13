@@ -76,6 +76,9 @@ class pocketlistsPocketAction extends pocketlistsViewPocketAction
         }
 
         $lists_html = (new pocketlistsListAction(['list_id' => $list_id, 'pocket_id' => $pocket->getId()]))->display();
+
+        $eventData = ['pocket' => $pocket, 'lists' => $lists];
+
         $this->view->assign(
             [
                 'lists_html' => $lists_html,
@@ -86,7 +89,7 @@ class pocketlistsPocketAction extends pocketlistsViewPocketAction
                 'list_id'    => $list_id,
                 'pocket'     => $pocket,
 
-                'backend_pocket' => wa()->event('backend_pocket'),
+                'backend_pocket' => wa()->event('backend_pocket', $eventData),
             ]
         );
     }
