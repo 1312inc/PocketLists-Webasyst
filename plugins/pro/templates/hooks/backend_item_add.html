@@ -2,10 +2,17 @@
 {if $labels || $shortcuts}
 <div class="pl2pro-item-add" data-pl2pro-wrapper="item-compact-add-{$time}"{if $itemLabel->getId()} data-pl2pro-label-selected="{$itemLabel->getId()}"{/if}>
     {* @var pocketlistsProPluginLabel $label *}
+    <a
+            class="pl-label shown {if !$itemLabel->getId()}selected{/if}"
+            style="background-color: #fff; color: #aaa !important;"
+            data-pl2pro-label="NONENONE"
+    >
+        [`No status`]
+    </a>
     {foreach $labels as $label}
         <a
                 class="pl-label shown {if $label->getId() == $itemLabel->getId()}selected{/if}"
-                style="background-color: #{$label->getColor()|escape}; color: #aaa !important;"
+                style="background-color: #{$label->getColor()|escape};"
                 data-pl2pro-label="{$label->getId()}"
         >
             {$label->getName()|escape}

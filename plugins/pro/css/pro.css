@@ -45,7 +45,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', e
 .pl2pro-log-record { margin-bottom: 20px; padding-left: 30px; position: relative; }
 .pl2pro-log-record .pl2pro-log-entity { display: block; margin-bottom: 5px; }
 .pl2pro-log-record .pl2pro-log-userpic {  margin-left: 10px; float: right;}
-.pl2pro-log-record .pl2pro-log-glyph { display: inline-block; width: 20px; height: 20px; background: url('../img/pl2pro/log-glyphs.png') no-repeat; background-size: 120px 20px;  position: absolute; top: -3px; left: -3px; opacity: 0.65; }
+.pl2pro-log-record .pl2pro-log-glyph { display: inline-block; width: 20px; height: 20px; background: url('../img/log-glyphs.png') no-repeat; background-size: 120px 20px;  position: absolute; top: -3px; left: -3px; opacity: 0.65; }
 .pl2pro-log-record .pl2pro-log-glyph.add { background-position: -20px 0; }
 .pl2pro-log-record .pl2pro-log-glyph.delete { background-position: -40px 0; }
 .pl2pro-log-record .pl2pro-log-glyph.update { background-position: -60px 0; }
