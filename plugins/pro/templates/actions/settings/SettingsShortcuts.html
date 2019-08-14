@@ -3,11 +3,9 @@
 <p>[`For even faster to-do creation, use <code>Alt + N</code> keyboard combination to quickly select the suggested shortcut shown under the to-do name input.`]
 </p>
 
-<div>
+<div class="float-left">
     <div class="fields form" data-pl2pro-shortcuts></div>
-</div>
-
-<div>
+    <div class="clear-left"></div>
     <div class="fields form">
         <div class="field">
             <div class="value no-shift">
@@ -130,7 +128,7 @@
 
         for (var group in shortcuts) {
             var $shortcutsGroup = shortcutTemplate.tmpl({
-                group: $_('Group') + '#' + group,
+                group: $_('Group') + ' #' + group,
                 groupId: group,
                 id: +(new Date())
             });
