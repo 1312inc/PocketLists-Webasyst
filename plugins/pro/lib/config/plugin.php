@@ -1,8 +1,8 @@
 <?php
 return [
-    'name'     => 'Pro',
-    'img'      => 'img/pro.gif',
-    'version'  => '0.0.1',
+    'name'     => 'Pocket Lists PRO',
+    'img'      => 'img/pl2pro.png',
+    'version'  => '1.0.0',
     'vendor'   => '--',
     'handlers' =>
         [
