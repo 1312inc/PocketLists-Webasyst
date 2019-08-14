@@ -1,18 +1,20 @@
 <li>
-    <a href="#/settings/plugin/pro/shortcuts/" data-pro-settings="shortcuts">
-        <i class="icon16 edit"></i>
-        [`Templates`]
+    <a href="#/settings/plugin/pro/labels/" data-pro-settings="labels">
+        <i class="icon16 pl statuses"></i>
+        [`Status labels`]
     </a>
 </li>
 <li>
-    <a href="#/settings/plugin/pro/labels/" data-pro-settings="labels">
-        <i class="icon16 star"></i>
-        [`Statuses`]
+    <a href="#/settings/plugin/pro/shortcuts/" data-pro-settings="shortcuts">
+        <i class="icon16 pl shortcuts"></i>
+        [`Shortcuts`]
     </a>
 </li>
+{if $wa->shop}
 <li>
     <a href="#/settings/plugin/pro/shopscript/" data-pro-settings="shopscript">
-        <i class="icon16 cart"></i>
+        <i class="icon16 pl-wa-app-icon" style="background-image: url('/wa-apps/shop/img/shop.png'); background-size: 16px 16px;"></i>
         [`Shop-Script`]
     </a>
 </li>
+{/if}
