@@ -76,7 +76,7 @@ class pocketlistsProPlugin extends waPlugin
         $factory = pl2()->getEntityFactory(pocketlistsProPluginLabel::class);
 
         $pocketLabelsInfo = [];
-        $data = $factory->getModel()->getByPocketId($pocket->getId());
+        $data = $factory->getModel()->getByPocketIdWithCount($pocket->getId());
         foreach ($data as $datum) {
             $pocketLabelInfo = new pocketlistsProPluginLabelPocketInfoDto();
             $pocketLabelInfo->pocket = $pocket;

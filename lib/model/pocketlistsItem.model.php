@@ -514,7 +514,7 @@ class pocketlistsItemModel extends pocketlistsModel
     /**
      * @return string
      */
-    private function getQuery()
+    public function getQuery()
     {
         return "SELECT
                   i.*,
@@ -540,7 +540,7 @@ class pocketlistsItemModel extends pocketlistsModel
     /**
      * @return array
      */
-    private function getQueryComponents()
+    public function getQueryComponents()
     {
         return [
             'select'   => [
@@ -919,42 +919,6 @@ class pocketlistsItemModel extends pocketlistsModel
         $query['order by'][] = 'i.complete_datetime DESC';
 
         return $query;
-    }
-
-    /**
-     * @param array $query
-     * @param int   $limit
-     * @param int   $offset
-     *
-     * @return string
-     */
-    private function buildSqlComponents(array $query, $limit = 0, $offset = 0)
-    {
-        $q = sprintf(
-            '
-            select %s
-            from %s
-            %s
-            %s
-            %s
-            %s
-            %s',
-            implode(",\n", $query['select']),
-            implode(",\n", $query['from']),
-            implode("\n", $query['join']),
-            !empty($query['where']['and'])
-                ? 'where '.implode(' AND ', $query['where']['and'])
-                : '',
-            !empty($query['group by'])
-                ? 'group by '.implode(",\n", $query['group by'])
-                : '',
-            !empty($query['order by'])
-                ? 'order by '.implode(",\n", $query['order by'])
-                : '',
-            $limit || $offset ? sprintf('limit %d, %d', $offset, $limit) : ''
-        );
-
-        return $q;
     }
 
     /**

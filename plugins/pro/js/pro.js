@@ -52,20 +52,20 @@
             while (hash.length > 0 && hash[hash.length - 1] === '/') {
                 hash = hash.substr(0, hash.length - 1);
             }
-            hash += '/pro/';
-
+            // hash += '/pro/';
+            //
             if (hash[0] != '#') {
-                if (hash[0] != '/') {
-                    hash = '/pro/' + hash;
-                }
+                // if (hash[0] != '/') {
+                //     hash = '/pro/' + hash;
+                // }
                 hash = '#' + hash;
-            } else if (hash[1] && hash[1] != '/') {
-                hash = '#/pro/' + hash.substr(1);
+            // } else if (hash[1] && hash[1] != '/') {
+            //     hash = '#/pro/' + hash.substr(1);
             }
-
-            if (hash == '#/pro/') {
-                return '';
-            }
+            //
+            // if (hash == '#/pro/') {
+            //     return '';
+            // }
 
             return hash;
         },
@@ -142,6 +142,26 @@
         },
         timelineAction: function () {
             this.load('?plugin=pro&module=timeline', this.setHtmlContent);
+        },
+        pocketAction: function (id) {
+            //var self = this;
+            var label_id = decodeURIComponent(this.getHash().substr(('#/pro/pocket/' + id + '/status/').length).replace('/', '')) || 0;
+
+            var that = this;
+
+            that.load(
+                '?module=pocket&pocket_id=' + id,
+                function (html) {
+                    that.load(
+                        '?plugin=pro&module=label&action=pocket&pocket_id=' + id + '&label_id=' + label_id,
+                        function (labelHtml) {
+                            var $html = $(html);
+
+                            $html.find('#pl-list-content').html(labelHtml);
+                            $('#content').empty().append($html);
+                        })
+                }
+            );
         },
         boardAction: function () {
             this.load('?plugin=pro&module=board', this.setHtmlContent);
