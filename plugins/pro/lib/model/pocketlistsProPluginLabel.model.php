@@ -59,7 +59,7 @@ class pocketlistsProPluginLabelModel extends pocketlistsModel
      *
      * @return array
      */
-    public function getByPocketId($pocketId)
+    public function getByPocketIdWithCount($pocketId)
     {
         return $this->query('select
                    count(pi.pro_label_id) labels_count,

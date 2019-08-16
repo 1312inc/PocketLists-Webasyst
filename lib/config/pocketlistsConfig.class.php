@@ -425,6 +425,9 @@ HTML;
     private function registerGlobal()
     {
         if (!function_exists('pl2')) {
+            /**
+             * @return pocketlistsConfig
+             */
             function pl2()
             {
                 return wa(pocketlistsHelper::APP_ID)->getConfig();
