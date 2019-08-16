@@ -137,6 +137,60 @@ class pocketlistsListModel extends pocketlistsModel
         return $lists;
     }
 
+
+    /**
+     * @return array
+     */
+    public function getQueryComponents()
+    {
+        return [
+            'select'   => [
+                'i.*',
+                'l.*',
+                "greatest(i.priority, max(i2.priority)) 'max_priority'",
+                "greatest(i.due_date, max(i2.due_date)) 'min_due_date'",
+                "greatest(i.due_datetime, max(i2.due_datetime)) 'min_due_datetime'",
+            ],
+            'from'     => ['l' => "{$this->table} l"],
+            'join'     => [
+                'join pocketlists_item i ON i.key_list_id = l.id',
+                'left join pocketlists_item i2 ON i2.status = 0 and i2.list_id = l.id',
+            ],
+            'where'    => [
+                'and' => [1],
+                'or'  => [],
+            ],
+            'group by' => ['l.id'],
+            'order by' => ['l.sort', 'l.id DESC'],
+        ];
+    }
+
+
+    /**
+     * @param bool $check_access
+     * @param int  $pocket_id
+     *
+     * @return array
+     *
+     * @throws waDbException
+     * @throws waException
+     */
+    public function getAllListsSqlComponents($pocket_id, $available_lists = false)
+    {
+        $sqlComponents = $this->getQueryComponents();
+        if ($pocket_id) {
+            $sqlComponents['where']['and'][] = 'l.pocket_id = i:pocket_id';
+        }
+
+        if ($available_lists) {
+            $sqlComponents['where']['and'][] = $available_lists ? 'l.id IN (i:list_ids)' : 'l.id IS NULL';
+        }
+
+        return $sqlComponents;
+
+    }
+
+
     /**
      * @param bool $check_access
      * @param int  $pocket_id
@@ -148,32 +202,14 @@ class pocketlistsListModel extends pocketlistsModel
      */
     public function getAllLists($check_access = true, $pocket_id = 0)
     {
-        $accessed_lists = '';
-        $available_lists = [];
-
+        $available_lists = false;
         if ($check_access) {
             $available_lists = pocketlistsRBAC::getAccessListForContact();
-            $accessed_lists = $available_lists ? " AND l.id IN (i:list_ids)" : " AND l.id IS NULL";
         }
 
-        $pocketSql = '';
-        if ($pocket_id) {
-            $pocketSql = ' AND l.pocket_id = i:pocket_id';
-        }
-
-        $sql = "SELECT i.*,
-                       l.*,
-                       greatest(i.priority, max(i2.priority))         'max_priority',
-                       greatest(i.due_date, max(i2.due_date))         'min_due_date',
-                       greatest(i.due_datetime, max(i2.due_datetime)) 'min_due_datetime'
-                FROM pocketlists_list l
-                       JOIN pocketlists_item i ON i.key_list_id = l.id
-                       left join pocketlists_item i2 ON i2.status = 0 and i2.list_id = l.id
-                WHERE 1 
-                {$accessed_lists}
-                {$pocketSql}
-                GROUP BY l.id
-                ORDER BY l.sort, l.id DESC";
+        $sql = $this->buildSqlComponents(
+            $this->getAllListsSqlComponents($pocket_id, $available_lists)
+        );
 
         $lists_data = $this->query(
             $sql,
@@ -328,22 +364,6 @@ class pocketlistsListModel extends pocketlistsModel
     public function getLastListId()
     {
         return (int)$this->query("SELECT id FROM {$this->table} ORDER BY id DESC")->fetchField('id');
-    }
-
-
-    /**
-     * @return null|pocketlistsItemModel
-     * @throws waDbException
-     */
-    public function getItem()
-    {
-        if ($this->item === null) {
-            if (!$this->isNewRecord) {
-                $this->item = pocketlistsItemModel::model()->findByPk($this->key_item_id);
-            }
-        }
-
-        return $this->item;
     }
 
     /**

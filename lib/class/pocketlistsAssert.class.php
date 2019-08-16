@@ -22,4 +22,17 @@ class pocketlistsAssert
             throw new pocketlistsAssertException(sprintf('Expected %s. Got %s', $class, get_class($object)));
         }
     }
+
+    /**
+     * @param $variable
+     * @param $value
+     *
+     * @throws pocketlistsAssertException
+     */
+    public static function gt($variable, $value)
+    {
+        if ($variable < $value) {
+            throw new pocketlistsAssertException(sprintf('Variable %s should be greater then %s', $$variable, $value));
+        }
+    }
 }
