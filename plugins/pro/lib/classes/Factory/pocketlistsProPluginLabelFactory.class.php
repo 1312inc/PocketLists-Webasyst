@@ -119,4 +119,15 @@ class pocketlistsProPluginLabelFactory extends pocketlistsFactory
 
         return $lists;
     }
+
+    /**
+     * @return pocketlistsProPluginLabel
+     */
+    public function createNewDone()
+    {
+        return $this->createNew()
+            ->setName(_wp('Done'))
+            ->setId(0)
+            ->setColor('ccc');
+    }
 }

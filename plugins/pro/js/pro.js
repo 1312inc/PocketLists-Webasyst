@@ -147,21 +147,30 @@
             //var self = this;
             var label_id = decodeURIComponent(this.getHash().substr(('#/pro/pocket/' + id + '/status/').length).replace('/', '')) || 0;
 
-            var that = this;
-
-            that.load(
-                '?module=pocket&pocket_id=' + id,
-                function (html) {
+            var that = this,
+                $content = $('#content'),
+                loadLabelItems = function(){
                     that.load(
                         '?plugin=pro&module=label&action=pocket&pocket_id=' + id + '&label_id=' + label_id,
                         function (labelHtml) {
-                            var $html = $(html);
-
-                            $html.find('#pl-list-content').html(labelHtml);
-                            $('#content').empty().append($html);
+                            $content.find('#pl-list-content').html(labelHtml);
                         })
-                }
-            );
+                };
+
+            if (!$content.find('[data-pl2-pocket-wrapper="'+id+'"]').length) {
+                that.load(
+                    '?module=pocket&pocket_id=' + id,
+                    function (html) {
+                        var $html = $(html);
+
+                        $html.find('#pl-list-content').empty();
+                        $content.empty().append($html);
+                        loadLabelItems()
+                    }
+                );
+            } else {
+                loadLabelItems()
+            }
         },
         boardAction: function () {
             this.load('?plugin=pro&module=board', this.setHtmlContent);
