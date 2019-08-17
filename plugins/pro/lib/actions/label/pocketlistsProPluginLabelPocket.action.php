@@ -18,18 +18,25 @@ class pocketlistsProPluginLabelPocketAction extends pocketlistsViewAction
         pocketlistsAssert::gt($pocketId, 0);
 
         $labelId = waRequest::get('label_id', 0, waRequest::TYPE_INT);
-        pocketlistsAssert::gt($labelId, 0);
+        pocketlistsAssert::gte($labelId, 0);
+
+        /** @var pocketlistsProPluginLabelFactory $factory */
+        $factory = pl2()->getEntityFactory(pocketlistsProPluginLabel::class);
 
         $resolver = new pocketlistsEntityResolver();
         /** @var pocketlistsPocket $pocket */
         $pocket = $resolver->getEntityById(pocketlistsPocket::class, $pocketId);
         /** @var pocketlistsProPluginLabel $label */
-        $label = $resolver->getEntityById(pocketlistsProPluginLabel::class, $labelId);
-
-        /** @var pocketlistsProPluginLabelFactory $factory */
-        $factory = pl2()->getEntityFactory(pocketlistsProPluginLabel::class);
-
-        $items = $factory->findItemsByPocketAndLabel($pocket, $label);
+        if ($labelId) {
+            $label = $resolver->getEntityById(pocketlistsProPluginLabel::class, $labelId);
+            $items = $factory->findItemsByPocketAndLabel($pocket, $label);
+        } else {
+            $label = $factory->createNewDone();
+            $items = pl2()->getEntityFactory(pocketlistsItem::class)
+                ->setOffset(0)
+                ->setLimit(400)
+                ->findLogbookForPocket($pocket, null, false, true);
+        }
 
         $this->view->assign(
             [

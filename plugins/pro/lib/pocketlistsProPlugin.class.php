@@ -85,6 +85,15 @@ class pocketlistsProPlugin extends waPlugin
             $pocketLabelsInfo[] = $pocketLabelInfo;
         }
 
+        $pocketLabelInfo = new pocketlistsProPluginLabelPocketInfoDto();
+        $pocketLabelInfo->pocket = $pocket;
+        $pocketLabelInfo->label = $factory->createNewDone();
+        $pocketLabelInfo->count = count(pl2()
+            ->getModel(pocketlistsItem::class)
+            ->getLogbookItems(false, false, true, $pocket->getId(), 0, 400));
+
+        $pocketLabelsInfo[] = $pocketLabelInfo;
+
         $this->getView()->assign('pocketLabelStat', $pocketLabelsInfo);
 
         $return['sidebar_section'] = $this->getView()->fetch($this->getViewTemplate('backend_pocket.sidebar_section'));

@@ -60,6 +60,7 @@ class pocketlistsItemModel extends pocketlistsModel
         $contact_id = false,
         $date_range = false,
         $completed = false,
+        $pocket_id = 0,
         $start = 0,
         $limit = 50
     ) {
@@ -82,12 +83,18 @@ class pocketlistsItemModel extends pocketlistsModel
             $only_completed = " AND i.status > 0";
         }
 
+        $by_pocket = '';
+        if ($pocket_id) {
+            $by_pocket = 'join pocketlists_list l2 on i.list_id = l2.id join pocketlists_pocket p2 on (l2.pocket_id = p2.id and p2.id = i:pocket_id)';
+        }
+
         $lists = pocketlistsRBAC::getAccessListForContact();
         $list_sql = $lists ? "AND (l.id IN (i:list_ids) OR (l.id IS NULL AND i.contact_id = i:contact_id))" : "AND (l.id IS NULL AND i.contact_id = i:contact_id)";
         $sql = $this->getQuery().
             "LEFT JOIN (select i2.name, l2.*
                           from pocketlists_list l2
                                  JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) l ON l.id = i.list_id
+                 {$by_pocket}
                 WHERE
                   i.key_list_id IS NULL
                   {$list_sql}
@@ -106,6 +113,7 @@ class pocketlistsItemModel extends pocketlistsModel
                 'date_before' => !empty($date_range['before']) ? $date_range['before'] : '',
                 'start'       => $start,
                 'limit'       => $limit,
+                'pocket_id'   => $pocket_id,
             ]
         )->fetchAll();
 

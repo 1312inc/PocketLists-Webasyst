@@ -333,6 +333,33 @@ class pocketlistsItemFactory extends pocketlistsFactory
     }
 
     /**
+     * @param pocketlistsPocket       $pocket
+     * @param pocketlistsContact|null $contact
+     * @param bool                    $date_range
+     * @param bool                    $completed
+     *
+     * @return array|mixed
+     * @throws waDbException
+     * @throws waException
+     */
+    public function findLogbookForPocket(pocketlistsPocket $pocket, pocketlistsContact $contact = null, $date_range = false, $completed = false)
+    {
+        $data = $this->getModel()
+            ->getLogbookItems(
+                $contact ? $contact->getId() : false,
+                $date_range,
+                $completed,
+                $pocket->getId(),
+                $this->getOffset(),
+                $this->getLimit()
+            );
+
+        $this->resetLimitAndOffset();
+
+        return $this->generateWithData($data, true);
+    }
+
+    /**
      * @param pocketlistsItem $item
      *
      * @return bool
