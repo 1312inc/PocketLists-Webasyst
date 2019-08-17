@@ -1,5 +1,5 @@
 {$time = time()}
-{if $labels || $shortcuts}
+{if $labels || $shortcutsGrouped}
 <div class="pl2pro-item-add" data-pl2pro-wrapper="item-compact-add-{$time}"{if $itemLabel->getId()} data-pl2pro-label-selected="{$itemLabel->getId()}"{/if}>
     {* @var pocketlistsProPluginLabel $label *}
     <a
@@ -19,7 +19,7 @@
         </a>
     {/foreach}
 
-    {if $shortcutsGrouped}
+    {if $shortcutsGrouped && $new}
         {foreach $shortcutsGrouped as $group => $shortcuts}
         <span
                 class="pl2pro-shortcuts-group"
@@ -40,8 +40,6 @@
             var wrapperTime = {$time},
                 $wrapper = null;
 
-            debugger;
-
             $(document)
                 .off('open_new_item_wrapper.pl2')
                 .off('itemDetailsOpened.pl2')
@@ -56,9 +54,6 @@
                     init($wrapper);
                 });
 
-            // $('[data-pl2pro-wrapper="item-compact-add-' + wrapperTime + '"]').closest('[data-pl-item-add]').on('open_new_item_wrapper.pl2', function () {
-            // });
-
             function init($wrapper) {
                 if ($wrapper.data('pl2pro-item-add')) {
                     return;
@@ -67,7 +62,6 @@
                 $wrapper.data('pl2pro-item-add', 1);
 
                 var labels = function () {
-                debugger;
                     var $labels = $wrapper.find('[data-pl2pro-label]');
 
                     $labels.on('click', function () {
@@ -155,7 +149,7 @@
                     });
                 };
 
-                /*{if $shortcuts}*/
+                /*{if $shortcutsGrouped && $new}*/
                 shortcuts();
                 /*{/if}*/
             }

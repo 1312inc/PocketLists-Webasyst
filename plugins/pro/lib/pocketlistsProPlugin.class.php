@@ -124,10 +124,10 @@ class pocketlistsProPlugin extends waPlugin
 
         $this->getView()->assign(
             [
-                'itemLabel' => $label,
-                'labels'    => $factoryLabel->findAll(),
+                'itemLabel'        => $label,
+                'labels'           => $factoryLabel->findAll(),
                 'shortcutsGrouped' => $factoryShortcut->findAllGrouped(),
-                'type'
+                'new'              => !($item instanceof pocketlistsItem && $item->getId()),
             ]
         );
 
