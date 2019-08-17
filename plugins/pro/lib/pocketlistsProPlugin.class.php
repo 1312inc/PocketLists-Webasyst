@@ -117,7 +117,7 @@ class pocketlistsProPlugin extends waPlugin
         $factoryShortcut = pl2()->getEntityFactory(pocketlistsProPluginShortcut::class);
 
         $label = null;
-        if ($item instanceof pocketlistsItem) {
+        if ($item instanceof pocketlistsItem && $item->getId()) {
             $label = $factoryLabel->findForItem($item);
         }
         $label = $label ?: new pocketlistsProPluginLabel();
@@ -127,6 +127,7 @@ class pocketlistsProPlugin extends waPlugin
                 'itemLabel' => $label,
                 'labels'    => $factoryLabel->findAll(),
                 'shortcutsGrouped' => $factoryShortcut->findAllGrouped(),
+                'type'
             ]
         );
 

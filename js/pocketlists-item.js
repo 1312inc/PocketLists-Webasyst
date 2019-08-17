@@ -121,7 +121,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             var show_new_item_wrapper = function () {
                 // hideEmptyListMessage();
                 $top_new_item_wrapper.prependTo($undone_items_wrapper).show().wrap('<li data-pl-item-add-top>');
-                $top_new_item_wrapper.trigger('open_new_item_wrapper.pl2');
+                $(document).trigger('open_new_item_wrapper.pl2', {add_wrapper: $top_new_item_wrapper});
 
                 // if (full_itemadd_form.can_show()) {
                     setTimeout(function () {
@@ -405,6 +405,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     }
 
                     $.pocketlists.flexHack();
+
+                    $(document).trigger('itemDetailsOpened.pl2', {details_wrapper: $wrapper});
                 });
             };
 
