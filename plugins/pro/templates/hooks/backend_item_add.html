@@ -62,16 +62,22 @@
 
                 $wrapper.data('pl2pro-item-add', 1);
 
-                var labels = function () {
-                    var $labels = $wrapper.find('[data-pl2pro-label]');
+                $wrapper.removeData('pl2pro-label-selected');
 
-                    var labelId = 0;
-                    debugger;
+                var labels = function () {
+                    var $labels = $wrapper.find('[data-pl2pro-label]'),
+                        labelId = 0;
+
                     if (!isNew) {
                         $labels.addClass('shown');
                     } else {
+                        $labels.removeClass('selected');
                         if ($.storage && (labelId = $.storage.get('pocketlists/pro/label'))) {
-                            $labels.filter('[data-pl2pro-label="'+labelId+'"]').addClass('shown');
+                            $labels
+                                .removeClass('selected shown')
+                                .filter('[data-pl2pro-label="'+labelId+'"]')
+                                .addClass('selected shown');
+                            $wrapper.data('pl2pro-label-selected', labelId);
                         } else {
                             $labels.filter(':nth(1)').addClass('shown');
                         }
@@ -108,7 +114,8 @@
                             eventData.response.data[0]['pro_label_id'] = parseInt($wrapper.data('pl2pro-label-selected')) || 0;
                         })
                         .on('item_add.pl2', function (e) {
-                            $labels.filter('.selected').trigger('click');
+                            labels();
+                            shortcuts();
                         })
                         .on('beforeUpdateItemSync.pl2', function (e, $form) {
                             $('<input>', {
@@ -126,6 +133,12 @@
                 /*{/if}*/
 
                 var shortcuts = function() {
+                    $wrapper
+                        .find('[data-pl2pro-shortcuts-group]')
+                            .hide()
+                        .filter(':first')
+                            .show();
+
                     var setVisible = function (i) {
                         var $this = $(this),
                             $shortcutGroups = $wrapper.find('[data-pl2pro-shortcuts-group]'),
