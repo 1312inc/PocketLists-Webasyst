@@ -1,17 +1,17 @@
 {$time = time()}
-{if $labels || $shortcutsGrouped}
-<div class="pl2pro-item-add" data-pl2pro-wrapper="item-compact-add-{$time}"{if $itemLabel->getId()} data-pl2pro-label-selected="{$itemLabel->getId()}"{/if}>
+{if $pl2pro.labels || $pl2pro.shortcutsGrouped}
+<div class="pl2pro-item-add" data-pl2pro-wrapper="item-compact-add-{$time}"{if $pl2pro.itemLabel->getId()} data-pl2pro-label-selected="{$pl2pro.itemLabel->getId()}"{/if}>
     {* @var pocketlistsProPluginLabel $label *}
     <a
-            class="pl-label shown {if !$itemLabel->getId()}selected{/if}"
+            class="pl-label"
             style="background-color: #fff; color: #aaa !important;"
-            data-pl2pro-label="NONENONE"
+            data-pl2pro-label="0"
     >
         [`No status`]
     </a>
-    {foreach $labels as $label}
+    {foreach $pl2pro.labels as $label}
         <a
-                class="pl-label shown {if $label->getId() == $itemLabel->getId()}selected{/if}"
+                class="pl-label {if $label->getId() == $pl2pro.itemLabel->getId()}selected{/if}"
                 style="background-color: #{$label->getColor()|escape};"
                 data-pl2pro-label="{$label->getId()}"
         >
@@ -19,8 +19,8 @@
         </a>
     {/foreach}
 
-    {if $shortcutsGrouped && $new}
-        {foreach $shortcutsGrouped as $group => $shortcuts}
+    {if $pl2pro.shortcutsGrouped && $pl2pro.isNew}
+        {foreach $pl2pro.shortcutsGrouped as $group => $shortcuts}
         <span
                 class="pl2pro-shortcuts-group"
                 data-pl2pro-shortcuts-group="{$group}"
@@ -38,7 +38,8 @@
         (function () {
             'use strict';
             var wrapperTime = {$time},
-                $wrapper = null;
+                $wrapper = null,
+                isNew = {$pl2pro.isNew};
 
             $(document)
                 .off('open_new_item_wrapper.pl2')
@@ -64,15 +65,39 @@
                 var labels = function () {
                     var $labels = $wrapper.find('[data-pl2pro-label]');
 
+                    var labelId = 0;
+                    debugger;
+                    if (!isNew) {
+                        $labels.addClass('shown');
+                    } else {
+                        if ($.storage && (labelId = $.storage.get('pocketlists/pro/label'))) {
+                            $labels.filter('[data-pl2pro-label="'+labelId+'"]').addClass('shown');
+                        } else {
+                            $labels.filter(':nth(1)').addClass('shown');
+                        }
+                    }
+
+                    var labelsAreHidden = function() {
+                        return !!$labels.filter(':hidden').length;
+                    };
+
                     $labels.on('click', function () {
                         var $this = $(this),
                             add = !$this.hasClass('selected');
+
+                        if (labelsAreHidden()) {
+                            $labels.addClass('shown');
+
+                            return;
+                        }
 
                         $labels.removeClass('selected');
                         $wrapper.removeData('pl2pro-label-selected');
 
                         if (add) {
-                            $this.addClass('selected');
+                            $.storage && !$.storage.set('pocketlists/pro/label', $this.data('pl2pro-label'));
+                            $labels.removeClass('shown');
+                            $this.addClass('selected shown');
                             $wrapper.data('pl2pro-label-selected', $this.data('pl2pro-label'));
                         }
                     });
@@ -96,7 +121,7 @@
                         });
                 };
 
-                /*{if $labels}*/
+                /*{if $pl2pro.labels}*/
                 labels();
                 /*{/if}*/
 
@@ -149,7 +174,7 @@
                     });
                 };
 
-                /*{if $shortcutsGrouped && $new}*/
+                /*{if $pl2pro.shortcutsGrouped && $pl2pro.isNew}*/
                 shortcuts();
                 /*{/if}*/
             }

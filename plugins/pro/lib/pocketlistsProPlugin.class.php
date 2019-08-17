@@ -88,9 +88,11 @@ class pocketlistsProPlugin extends waPlugin
         $pocketLabelInfo = new pocketlistsProPluginLabelPocketInfoDto();
         $pocketLabelInfo->pocket = $pocket;
         $pocketLabelInfo->label = $factory->createNewDone();
-        $pocketLabelInfo->count = count(pl2()
-            ->getModel(pocketlistsItem::class)
-            ->getLogbookItems(false, false, true, $pocket->getId(), 0, 400));
+        $pocketLabelInfo->count = count(
+            pl2()
+                ->getModel(pocketlistsItem::class)
+                ->getLogbookItems(false, false, true, $pocket->getId(), 0, 400)
+        );
 
         $pocketLabelsInfo[] = $pocketLabelInfo;
 
@@ -124,10 +126,12 @@ class pocketlistsProPlugin extends waPlugin
 
         $this->getView()->assign(
             [
-                'itemLabel'        => $label,
-                'labels'           => $factoryLabel->findAll(),
-                'shortcutsGrouped' => $factoryShortcut->findAllGrouped(),
-                'new'              => !($item instanceof pocketlistsItem && $item->getId()),
+                'pl2pro' => [
+                    'itemLabel'        => $label,
+                    'labels'           => $factoryLabel->findAll(),
+                    'shortcutsGrouped' => $factoryShortcut->findAllGrouped(),
+                    'isNew'            => (int) !($item instanceof pocketlistsItem && $item->getId()),
+                ],
             ]
         );
 
