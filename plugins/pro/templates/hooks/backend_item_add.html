@@ -140,21 +140,53 @@
                             .show();
 
                     var setVisible = function (i) {
-                        var $this = $(this),
-                            $shortcutGroups = $wrapper.find('[data-pl2pro-shortcuts-group]'),
-                            $nextGroup = $shortcutGroups.filter('[data-pl2pro-shortcuts-group="' + i + '"]');
+                            var $this = $(this),
+                                $shortcutGroups = $wrapper.find('[data-pl2pro-shortcuts-group]'),
+                                $nextGroup = $shortcutGroups.filter('[data-pl2pro-shortcuts-group="' + i + '"]');
 
-                        if ($nextGroup.length) {
-                            $shortcutGroups.hide();
-                            $nextGroup.show();
-                        }
-                    };
+                            if ($nextGroup.length) {
+                                $shortcutGroups.hide();
+                                $nextGroup.show();
+                            }
+                        },
+                        focus = function($textarea) {
+                            setTimeout(function () {
+                                $textarea.trigger('focus');
+                            }, 0);
+                        },
+                        canBeShown = function(itemText) {
+                            var $shortcutGroups = $wrapper.find('[data-pl2pro-shortcuts-group]'),
+                                groups = { };
 
-                    var focus = function($textarea) {
-                        setTimeout(function () {
-                            $textarea.trigger('focus');
-                        }, 0);
-                    };
+                            $shortcutGroups
+                                .hide()
+                                .map(function () {
+                                    groups[$(this).data('pl2pro-shortcuts-group')] = true;
+                                });
+
+                            $shortcutGroups.find('.pl2pro-shortcut')
+                                .each(function () {
+                                    var $this = $(this),
+                                        search = new RegExp($this.text(), 'i');
+
+                                    if (itemText.search(search) > -1) {
+                                        var groupId = $this.closest('[data-pl2pro-shortcuts-group]').data('pl2pro-shortcuts-group');
+
+                                        groups[groupId] = false;
+                                    }
+                                });
+
+                            for (var index in groups) {
+                                if (groups[index]) {
+                                    $shortcutGroups.filter(':nth(' + (index - 1) + ')').show();
+                                    break;
+                                }
+                            }
+                        };
+
+                    $wrapper.closest('#pl-item-add').find('textarea').on('keyup', function (e) {
+                        canBeShown($(this).val());
+                    });
 
                     $wrapper.on('click.pl2pro', '.pl2pro-shortcut', function (e) {
                         e.preventDefault();
@@ -191,10 +223,6 @@
                 shortcuts();
                 /*{/if}*/
             }
-
-            // $('.pl-label').click(function () {
-            //     $('.pl2pro-item-add').toggleClass('pl2pro-item-add-all-labels-shown');
-            // });
         }());
     </script>
 </div>
