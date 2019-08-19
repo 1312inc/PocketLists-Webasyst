@@ -1,13 +1,13 @@
 {$time = time()}
 {if $pl2pro.labels || $pl2pro.shortcutsGrouped}
-<div class="pl2pro-item-add" data-pl2pro-wrapper="item-compact-add-{$time}"{if $pl2pro.itemLabel->getId()} data-pl2pro-label-selected="{$pl2pro.itemLabel->getId()}"{/if}>
+<div class="pl2pro-item-add{if !$pl2pro.isNew} pl2pro-edit-existing{/if}" data-pl2pro-wrapper="item-compact-add-{$time}"{if $pl2pro.itemLabel->getId()} data-pl2pro-label-selected="{$pl2pro.itemLabel->getId()}"{/if}>
     {* @var pocketlistsProPluginLabel $label *}
     <a
             class="pl-label"
-            style="background-color: #fff; color: #aaa !important;"
+            style="background-color: rgba(0,0,0,0.06); color: #aaa !important;"
             data-pl2pro-label="0"
     >
-        [`No status`]
+        [`No status`]<i class="pl2pro-label-tiny-helper"></i>
     </a>
     {foreach $pl2pro.labels as $label}
         <a
@@ -15,7 +15,7 @@
                 style="background-color: #{$label->getColor()|escape};"
                 data-pl2pro-label="{$label->getId()}"
         >
-            {$label->getName()|escape}
+            {$label->getName()|escape}<i class="pl2pro-label-tiny-helper"></i>
         </a>
     {/foreach}
 
