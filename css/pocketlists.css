@@ -389,7 +389,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#12000000', e
 .pl-label:hover { color: #ffa !important; }
 .pl-label.pl-hint { background: rgba(0,0,0,0.07); color: rgba(0,0,0,0.42) !important; font-size: 0.75em; position: relative; top: 2px; font-style: italic; }
 .pl-label.pl-dark-none { background: #bbb !important; }
-.pl-item .pl-label { margin-left: -4px !important; }
+.pl-item .pl-label { margin-left: 0px !important; }
 .pl-label.pl-pro { background: gold !important; color: black !important; font-size: 0.75em; font-style: normal !important; }
 p .pl-label.pl-pro { position: relative; top: 3px; margin-right: 0; }
 
