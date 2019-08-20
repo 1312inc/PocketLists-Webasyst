@@ -123,14 +123,19 @@ class pocketlistsProPlugin extends waPlugin
             $label = $factoryLabel->findForItem($item);
         }
         $label = $label ?: new pocketlistsProPluginLabel();
+        $labels = $factoryLabel->findAll();
+        $shortcutsGroups = $factoryShortcut->findAllGrouped();
+        $isNew = (int)!($item instanceof pocketlistsItem && $item->getId());
 
         $this->getView()->assign(
             [
                 'pl2pro' => [
                     'itemLabel'        => $label,
-                    'labels'           => $factoryLabel->findAll(),
-                    'shortcutsGrouped' => $factoryShortcut->findAllGrouped(),
-                    'isNew'            => (int) !($item instanceof pocketlistsItem && $item->getId()),
+                    'labels'           => $labels,
+                    'shortcutsGrouped' => $shortcutsGroups,
+                    'isNew'            => $isNew,
+                    'shortcutsExists'  => (int)($shortcutsGroups && $isNew),
+                    'labelsExists'     => (int)$labels,
                 ],
             ]
         );
