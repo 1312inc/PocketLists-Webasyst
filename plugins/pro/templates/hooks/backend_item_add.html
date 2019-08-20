@@ -39,7 +39,9 @@
             'use strict';
             var wrapperTime = {$time},
                 $wrapper = null,
-                isNew = {$pl2pro.isNew};
+                isNew = {$pl2pro.isNew},
+                labelsExists = {$pl2pro.labelsExists},
+                shortcutsExists = {$pl2pro.shortcutsExists};
 
             $(document)
                 .off('open_new_item_wrapper.pl2')
@@ -64,14 +66,14 @@
 
                 $wrapper.removeData('pl2pro-label-selected');
 
-                var labels = function () {
+                function labels() {
                     var $labels = $wrapper.find('[data-pl2pro-label]'),
                         labelId = 0;
 
                     if (!isNew) {
                         $labels.addClass('shown');
                     } else {
-                        $labels.removeClass('selected');
+                        // $labels.removeClass('selected');
                         if ($.storage && (labelId = $.storage.get('pocketlists/pro/label'))) {
                             $labels
                                 .removeClass('selected shown')
@@ -79,7 +81,7 @@
                                 .addClass('selected shown');
                             $wrapper.data('pl2pro-label-selected', labelId);
                         } else {
-                            $labels.filter(':nth(1)').addClass('shown');
+                            $labels.removeClass('selected shown').filter(':nth(1)').addClass('shown');
                         }
                     }
 
@@ -101,7 +103,9 @@
                         $wrapper.removeData('pl2pro-label-selected');
 
                         if (add) {
-                            $.storage && !$.storage.set('pocketlists/pro/label', $this.data('pl2pro-label'));
+                            if (isNew) {
+                                $.storage && !$.storage.set('pocketlists/pro/label', $this.data('pl2pro-label'));
+                            }
                             $labels.removeClass('shown');
                             $this.addClass('selected shown');
                             $wrapper.data('pl2pro-label-selected', $this.data('pl2pro-label'));
@@ -110,12 +114,17 @@
 
                     // todo: удалить несколько обработчиков
                     $(document)
+                        .off('beforeAddItemSync.pl2 item_add.pl2 beforeUpdateItemSync.pl2')
                         .on('beforeAddItemSync.pl2', function (e, eventData) {
                             eventData.response.data[0]['pro_label_id'] = parseInt($wrapper.data('pl2pro-label-selected')) || 0;
                         })
                         .on('item_add.pl2', function (e) {
-                            labels();
-                            shortcuts();
+                            if (labelsExists) {
+                                labels();
+                            }
+                            if (shortcutsExists) {
+                                shortcuts();
+                            }
                         })
                         .on('beforeUpdateItemSync.pl2', function (e, $form) {
                             $('<input>', {
@@ -127,12 +136,11 @@
                             e.preventDefault();
                         });
                 };
+                if (labelsExists) {
+                    labels();
+                }
 
-                /*{if $pl2pro.labels}*/
-                labels();
-                /*{/if}*/
-
-                var shortcuts = function() {
+                function shortcuts() {
                     $wrapper
                         .find('[data-pl2pro-shortcuts-group]')
                             .hide()
@@ -218,10 +226,9 @@
                         }
                     });
                 };
-
-                /*{if $pl2pro.shortcutsGrouped && $pl2pro.isNew}*/
-                shortcuts();
-                /*{/if}*/
+                if (shortcutsExists) {
+                    shortcuts();
+                }
             }
         }());
     </script>
