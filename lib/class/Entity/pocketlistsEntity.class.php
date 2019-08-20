@@ -59,4 +59,13 @@ abstract class pocketlistsEntity implements pocketlistsHydratableInterface
     public function beforeExtract(array &$fields)
     {
     }
+
+    /**
+     * @param array $fields
+     *
+     * @return array|void
+     */
+    public function afterExtract(array &$fields)
+    {
+    }
 }
