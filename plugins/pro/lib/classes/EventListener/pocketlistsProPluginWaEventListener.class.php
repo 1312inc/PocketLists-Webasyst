@@ -40,4 +40,11 @@ class pocketlistsProPluginWaEventListener
 
         return pl2()->event($eventName, $object, $eventData['data']);
     }
+
+    public function onOrderAction($params)
+    {
+        $automator = new kmAutomation();
+
+        $automator->run(new pocketlistsProPluginAutomationShopOrderCreate());
+    }
 }

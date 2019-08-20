@@ -112,10 +112,10 @@ class pocketlistsLog extends pocketlistsEntity
      *
      * @return array|void
      */
-    public function beforeExtract(array &$fields)
+    public function afterExtract(array &$fields)
     {
-        if (empty($fields) || (!empty($fields) && array_key_exists('params', $fields))) {
-            $this->params = json_encode($this->params, JSON_UNESCAPED_UNICODE);
+        if (array_key_exists('params', $fields)) {
+            $fields['params'] = json_encode($fields['params'], JSON_UNESCAPED_UNICODE);
         }
     }
 
