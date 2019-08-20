@@ -1,15 +1,19 @@
 {if $pocketLabelStat}
 <div class="pl-views">
-    <div class="pl-view-box"><a class="pl-view-widget">Activity / Reports / KPIs</a></div>
-{foreach $pocketLabelStat as $labelInfo}
-    <div class="pl-view-box x3">
-        <a class="pl-view-widget"
-           style="background: #{$labelInfo->label->getColor()};"
-           href="#/pro/pocket/{$labelInfo->pocket->getId()}/status/{$labelInfo->label->getId()}/
-">
-            <h5>{$labelInfo->count}</h5>{$labelInfo->label->getName()|escape}
-        </a>
-    </div>
-{/foreach}
+    {* <div class="pl-view-box"><a class="pl-view-widget">Activity / Reports / KPIs</a></div> *}
+    {foreach $pocketLabelStat as $labelInfo}
+        <div class="pl-view-box x3">
+            <a class="pl-view-widget"
+               href="#/pro/pocket/{$labelInfo->pocket->getId()}/status/{$labelInfo->label->getId()}/
+    ">
+                <h3>
+                    <i class="icon16 color" style="background: #{$labelInfo->label->getColor()};"></i>
+                    <!-- <input type="checkbox" class="pl-done" checked="checked"><span></span> -->
+                    <span class="cou1nt" style="color: #{$labelInfo->label->getColor()};">{$labelInfo->count}</span>
+                </h3>
+                <span class="hint">{$labelInfo->label->getName()|escape}</span>
+            </a>
+        </div>
+    {/foreach}
 </div>
 {/if}
