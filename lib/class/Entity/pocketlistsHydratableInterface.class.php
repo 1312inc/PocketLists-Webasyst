@@ -18,4 +18,11 @@ interface pocketlistsHydratableInterface
      * @return array
      */
     public function beforeExtract(array &$fields);
+
+    /**
+     * @param array $fields
+     *
+     * @return array
+     */
+    public function afterExtract(array &$fields);
 }
