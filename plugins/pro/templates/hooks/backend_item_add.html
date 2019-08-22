@@ -44,8 +44,12 @@
                 shortcutsExists = {$pl2pro.shortcutsExists};
 
             $(document)
-                .off('open_new_item_wrapper.pl2')
-                .off('itemDetailsOpened.pl2')
+                .off('open_new_item_wrapper.pl2 itemDetailsOpened.pl2 itemDetailsClosed.pl2 item_add.pl2')
+                .on('item_add.pl2', function (e, data) {
+                    $wrapper = data.add_wrapper.find('[data-pl2pro-wrapper]');
+                    $wrapper.removeData('pl2pro-item-add');
+                    init($wrapper);
+                })
                 .on('open_new_item_wrapper.pl2', function (e, data) {
                     $wrapper = data.add_wrapper.find('[data-pl2pro-wrapper="item-compact-add-' + wrapperTime + '"]');
 
@@ -54,6 +58,12 @@
                 .on('itemDetailsOpened.pl2', function (e, data) {
                     $wrapper = data.details_wrapper.find('[data-pl2pro-wrapper="item-compact-add-' + wrapperTime + '"]');
 
+                    init($wrapper);
+                })
+                .on('itemDetailsClosed.pl2', function (e, data) {
+                    debugger;
+                    $wrapper = data.details_wrapper.find('[data-pl2pro-wrapper]');
+                    $wrapper.removeData('pl2pro-item-add');
                     init($wrapper);
                 });
 
@@ -70,6 +80,7 @@
                     var $labels = $wrapper.find('[data-pl2pro-label]'),
                         labelId = 0;
 
+                    debugger;
                     if (!isNew) {
                         $labels.addClass('shown');
                     } else {
@@ -114,17 +125,9 @@
 
                     // todo: удалить несколько обработчиков
                     $(document)
-                        .off('beforeAddItemSync.pl2 item_add.pl2 beforeUpdateItemSync.pl2')
+                        .off('beforeAddItemSync.pl2 beforeUpdateItemSync.pl2')
                         .on('beforeAddItemSync.pl2', function (e, eventData) {
                             eventData.response.data[0]['pro_label_id'] = parseInt($wrapper.data('pl2pro-label-selected')) || 0;
-                        })
-                        .on('item_add.pl2', function (e) {
-                            if (labelsExists) {
-                                labels();
-                            }
-                            if (shortcutsExists) {
-                                shortcuts();
-                            }
                         })
                         .on('beforeUpdateItemSync.pl2', function (e, $form) {
                             $('<input>', {
