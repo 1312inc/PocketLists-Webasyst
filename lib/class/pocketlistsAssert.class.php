@@ -32,7 +32,7 @@ class pocketlistsAssert
     public static function gt($variable, $value)
     {
         if ($variable <= $value) {
-            throw new pocketlistsAssertException(sprintf('Variable %s should be greater then %s', $$variable, $value));
+            throw new pocketlistsAssertException(sprintf('Variable %s should be greater then %s', $variable, $value));
         }
     }
 
@@ -45,7 +45,7 @@ class pocketlistsAssert
     public static function gte($variable, $value)
     {
         if ($variable < $value) {
-            throw new pocketlistsAssertException(sprintf('Variable %s should be greater or equal then %s', $$variable, $value));
+            throw new pocketlistsAssertException(sprintf('Variable %s should be greater or equal then %s', $variable, $value));
         }
     }
 }

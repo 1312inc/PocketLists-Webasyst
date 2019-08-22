@@ -29,6 +29,7 @@ class pocketlistsTeamAction extends pocketlistsViewAction
             $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getEntityFactory(pocketlistsContact::class);
             $teammates = $factory->getTeammates($teammates_ids);
 
+            /** @var pocketlistsContact $teammate */
             $selected_teammate = waRequest::get('teammate');
             $lists = [];
             if ($selected_teammate) {
@@ -81,11 +82,12 @@ class pocketlistsTeamAction extends pocketlistsViewAction
 
         $this->view->assign(
             [
-                'teammates' => $teammates,
-                'print'     => waRequest::get('print', false),
-                'user'      => $this->user,
-                'external'  => waRequest::request('external', 0, waRequest::TYPE_INT),
-                'itemAdd'   => (new pocketlistsItemAddAction(['teammate' => $teammate]))->display(false),
+                'teammates'             => $teammates,
+                'print'                 => waRequest::get('print', false),
+                'user'                  => $this->user,
+                'external'              => waRequest::request('external', 0, waRequest::TYPE_INT),
+                'itemAdd'               => (new pocketlistsItemAddAction(['teammate' => $teammate]))->display(false),
+                'backend_teammate_sidebar' => wa()->event('backend_teammate_sidebar', $teammate),
             ]
         );
     }

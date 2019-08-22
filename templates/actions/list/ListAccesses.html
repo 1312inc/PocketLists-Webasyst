@@ -45,85 +45,9 @@
 
     <div class="clear-both"></div>
 
-        {* BEGIN: pl2pro / log *}
-
-            {$_log_dummy = [
-                    ['item','complete','vofka','Забрать Алиску из садика','Today 18:00'],
-                    ['comment','delete','vofka','Ок, забираю на каршеринге','Today 16:11'],
-                    ['comment','add','vofka','Ок, забираю на каршеринге','Today 16:10'],
-                    ['item','update','vofka','Забрать Алиску из садика','Today 15:01'],
-                    ['item','add','vofka','Забрать Алиску из садка','Today 15:00'],
-                    ['item','completed','vofka','Винишко','Yesterday 23:00'],
-                    ['item','delete','vofka','Пивасик','Yesterday 22:00'],
-                    ['list','add','olka','Магазин','Yesterday 15:23']
-                ]}
-
-            <div class="pl2pro-log">
-                <h5 class="heading">[`List activity`]</h5>
-                {foreach $_log_dummy as $l}
-
-                        {* glyph/action_explained factory *}
-                        {$_glyph = ''}
-                        {if $l[0] == 'comment'}
-                            {$_glyph = 'comment'}
-                            {if $l[1] == 'add'}
-                                {$_action_explained = '%s commented'}
-                            {else}
-                                {$_action_explained = '%s deleted the comment'}
-                            {/if}
-                        {else if $l[0] == 'list'}
-                            {$_glyph = 'list'}
-                            {if $l[1] == 'add'}
-                                {$_action_explained = '%s created the list'}
-                            {elseif $l[1] == 'delete'}
-                                {$_action_explained = '%s deleted the list'}
-                            {else}
-                                {$_action_explained = '%s updated list details'}
-                            {/if}
-                        {else}
-                            {* item *}
-                            {$_glyph = $l[1]}
-                            {if $l[1] == 'add'}
-                                {$_action_explained = '%s created the to-do'}
-                            {elseif $l[1] == 'complete'}
-                                {$_action_explained = '%s completed the to-do'}
-                            {elseif $l[1] == 'delete'}
-                                {$_action_explained = '%s deleted the to-do'}
-                            {else}
-                                {$_action_explained = '%s edited the to-do'}
-                            {/if}
-                        {/if}
-
-                        {* style factory *}
-                        {if $l[1] == 'delete'}
-                            {$_style = 'delete'}
-                        {else}
-                            {$_style = ''}
-                        {/if}
-
-                    <div class="pl2pro-log-record {$_style}" title="{sprintf( $_action_explained , $l[2] )}">
-
-                        <i class="pl2pro-log-glyph {$_glyph}"></i>
-                        <i class="pl2pro-log-userpic icon16 userpic20"></i>
-
-                        <span class="pl2pro-log-entity">
-                            {$l[3]}
-                        </span>
-
-                        <span class="small">{sprintf( $_action_explained , $l[2] )}</span>
-                        <span class="hint">{$l[4]}</span>
-                    </div>
-                {foreachelse}
-                    <p>[`No activity logged.`]</p>
-                {/foreach}
-
-                <div class="block align-center">
-                    <a href="#" class="gray inline-link"><b><i>[`Show more`]</i></b></a>
-                </div>
-
-            </div>
-
-        {* END: pl2pro / log *}
+    <!-- plugin hook: 'backend_list_accesses' -->
+    {* @event backend_list_accesses.%plugin_id% *}
+    {if !empty($backend_list_accesses)}{foreach $backend_list_accesses as $_}{ifset($_)}{/foreach}{/if}
 
     {/if}
 </div>

@@ -138,7 +138,7 @@ class pocketlistsLog extends pocketlistsEntity
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getAction()
     {

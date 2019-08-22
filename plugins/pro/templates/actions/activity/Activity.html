@@ -1,0 +1,80 @@
+<div class="pl2pro-log" data-pl2pro-logs>
+    <h5 class="heading">[`List activity`]</h5>
+    <section data-pl2pro-logs-list>
+    {foreach $logs as $log}
+        <div class="pl2pro-log-record {$log->getStyle()}"
+             title="{$log->getActionExplained()|escape}"
+             data-pl2pro-log="{$log->getId()}"
+        >
+            <i class="pl2pro-log-glyph {$log->getGlyph()}"></i>
+            <i class="pl2pro-log-userpic icon16 userpic20"
+               style="background-image: url({$log->getActor()->getUserPic()})"></i>
+
+            <span class="pl2pro-log-entity">
+                {$log->getLogEntry()}
+            </span>
+
+            <span class="small">
+                {$log->getActionExplained()|escape}
+            </span>
+            <span class="hint">
+                {$log->getCreateDatetime()|wa_datetime:'humandatetime'}
+            </span>
+        </div>
+    {/foreach}
+    </section>
+
+    {if !$logs}
+    <p>[`No activity logged.`]</p>
+    {/if}
+
+    <div class="block double-padded lazyloading" style="display: none;">
+        <i class="icon16 loading"></i> [`Loading...`]
+    </div>
+
+    {if !$lazy && $logs}
+    <div class="block align-center">
+        <a href="#" class="gray inline-link" data-pl2pro-activity-action="lazy"><b><i>[`Show more`]</i></b></a>
+    </div>
+    {/if}
+</div>
+
+<script>
+    'use strict';
+    (function () {
+        var $wrapper = $('[data-pl2pro-logs]'),
+            config = {
+                url: '?plugin=pro&module=activity&action={$type}&entity_id={$entity_id}',
+                html_selector: '[data-pl2pro-logs-list]',
+                $loading: $wrapper.find('.lazyloading')
+            },
+            offset = 1;
+
+        /*{if $lazy}*/
+
+        $.pocketlists.lazyItems(config);
+
+        /*{else}*/
+
+        $wrapper.on('click', '[data-pl2pro-activity-action="lazy"]', function (e) {
+            e.preventDefault();
+            var $this = $(this);
+
+            config.$loading.show();
+
+            $.get(config.url, { offset: offset }, function (html) {
+                config.$loading.hide();
+                html = $(html).find(config.html_selector).html();
+                if ($.trim(html).length) {
+                    offset++;
+                } else {
+                    $this.hide();
+                }
+
+                $wrapper.find(config.html_selector).append(html);
+            })
+        });
+
+        /*{/if}*/
+    }());
+</script>
