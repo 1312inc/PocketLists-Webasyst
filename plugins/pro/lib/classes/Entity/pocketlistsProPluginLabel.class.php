@@ -104,4 +104,12 @@ class pocketlistsProPluginLabel extends pocketlistsEntity
 
         return $this;
     }
+
+    /**
+     * @param pocketlistsItem $item
+     */
+    public function assignToItem(pocketlistsItem $item)
+    {
+        $item->setDataField('pro_label_id', $this->getId());
+    }
 }
