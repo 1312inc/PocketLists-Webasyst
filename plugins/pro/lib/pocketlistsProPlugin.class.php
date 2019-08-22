@@ -43,6 +43,34 @@ class pocketlistsProPlugin extends waPlugin
     }
 
     /**
+     * @param pocketlistsList $list
+     *
+     * @return string
+     */
+    public function backendListAccessesHandler(pocketlistsList $list)
+    {
+        $action = new pocketlistsProPluginActivityListAction([
+            'entity_id' => $list->getId()
+        ]);
+
+        return $action->display(false);
+    }
+
+    /**
+     * @param pocketlistsContact $contact
+     *
+     * @return string
+     */
+    public function backendTeammateSidebarHandler(pocketlistsContact $contact)
+    {
+        $action = new pocketlistsProPluginActivityContactAction([
+            'entity_id' => $contact->getId()
+        ]);
+
+        return $action->display(false);
+    }
+
+    /**
      * @return array
      */
     public function backendSidebarHandler()
@@ -98,7 +126,12 @@ class pocketlistsProPlugin extends waPlugin
 
         $pocketLabelsInfo[] = $pocketLabelInfo;
 
-        $this->getView()->assign('pocketLabelStat', $pocketLabelsInfo);
+        $this->getView()->assign(
+            [
+                'pocketLabelStat' => $pocketLabelsInfo,
+                'pocket'          => $pocket,
+            ]
+        );
 
         $return['sidebar_section'] = $this->getView()->fetch($this->getViewTemplate('backend_pocket.sidebar_section'));
 

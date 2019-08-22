@@ -197,8 +197,8 @@ class pocketlistsLogFactory extends pocketlistsFactory
         $item = $context->getEntity(pocketlistsLogContext::ITEM_ENTITY);
 
         $params = [
-            pocketlistsLog::ENTITY_ITEM => ['name' => $item->getName()],
-            pocketlistsLog::ENTITY_COMMENT => ['comment' => $comment->getComment()]
+            pocketlistsLog::ENTITY_ITEM    => ['name' => $item->getName()],
+            pocketlistsLog::ENTITY_COMMENT => ['comment' => $comment->getComment()],
         ];
 
         return $this->createNew()
@@ -208,6 +208,113 @@ class pocketlistsLogFactory extends pocketlistsFactory
             ->setContactId(pl2()->getUser()->getId())
             ->setParams($params)
             ->fillWithContext($context);
+    }
+
+    /**
+     * @param bool $checkAccess
+     *
+     * @return pocketlistsLog[]
+     * @throws waDbException
+     * @throws waException
+     */
+    public function findLast($checkAccess = true)
+    {
+        $availableLists = [];
+        $availablePockets = [];
+        if ($checkAccess) {
+            $availableLists = pocketlistsRBAC::getAccessListForContact();
+            $availablePockets = pocketlistsRBAC::getAccessPocketForContact();
+        }
+
+        $data = $this->getModel()->getLast(
+            $availableLists,
+            $availablePockets,
+            $this->getOffset(),
+            $this->getLimit()
+        );
+
+        return $this->generateWithData($data, true);
+    }
+
+    /**
+     * @param pocketlistsPocket $pocket
+     * @param bool              $checkAccess
+     *
+     * @return pocketlistsLog[]
+     * @throws waDbException
+     * @throws waException
+     */
+    public function findLastForPocket(pocketlistsPocket $pocket, $checkAccess = true)
+    {
+        $availableLists = [];
+        $availablePockets = [];
+        if ($checkAccess) {
+            $availableLists = pocketlistsRBAC::getAccessListForContact();
+            $availablePockets = pocketlistsRBAC::getAccessPocketForContact();
+        }
+
+        $data = $this->getModel()->getLastByPocketId(
+            $availableLists,
+            $availablePockets,
+            $pocket->getId(),
+            $this->getOffset(),
+            $this->getLimit()
+        );
+
+        return $this->generateWithData($data, true);
+    }
+
+    /**
+     * @param pocketlistsList $list
+     * @param bool            $checkAccess
+     *
+     * @return pocketlistsLog[]
+     * @throws waDbException
+     * @throws waException
+     */
+    public function findLastForList(pocketlistsList $list, $checkAccess = true)
+    {
+        $availableLists = [];
+        if ($checkAccess) {
+            $availableLists = pocketlistsRBAC::getAccessListForContact();
+        }
+
+        $data = $this->getModel()->getLastByListId(
+            $availableLists,
+            $list->getId(),
+            $this->getOffset(),
+            $this->getLimit()
+        );
+
+        return $this->generateWithData($data, true);
+    }
+
+    /**
+     * @param pocketlistsContact $contact
+     * @param bool               $checkAccess
+     *
+     * @return pocketlistsLog[]
+     * @throws waDbException
+     * @throws waException
+     */
+    public function findLastForContact(pocketlistsContact $contact, $checkAccess = true)
+    {
+        $availableLists = [];
+        $availablePockets = [];
+        if ($checkAccess) {
+            $availableLists = pocketlistsRBAC::getAccessListForContact($contact->getId());
+            $availablePockets = pocketlistsRBAC::getAccessPocketForContact($contact);
+        }
+
+        $data = $this->getModel()->getLastByContactId(
+            $availableLists,
+            $availablePockets,
+            $contact->getId(),
+            $this->getOffset(),
+            $this->getLimit()
+        );
+
+        return $this->generateWithData($data, true);
     }
 
     /**

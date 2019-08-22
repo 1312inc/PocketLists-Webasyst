@@ -78,6 +78,10 @@
             </p>
         {/if}
 
+        <!-- plugin hook: 'backend_teammate_sidebar' -->
+        {* @event backend_teammate_sidebar.%plugin_id% *}
+        {if !empty($backend_teammate_sidebar)}{foreach $backend_teammate_sidebar as $_}{ifset($_)}{/foreach}{/if}
+
     </div>
 </nav>
 {/if}

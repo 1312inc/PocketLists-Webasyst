@@ -6,7 +6,7 @@ return [
     'vendor'   => '--',
     'handlers' =>
         [
-            '*'                => [
+            '*'                        => [
                 [
                     'event_app_id' => 'pocketlists',
                     'event'        => 'entity_insert.before',
@@ -20,10 +20,12 @@ return [
                     'method'       => 'onEntityUpdateBefore',
                 ],
             ],
-            'backend_head'     => 'backendHeadHandler',
-            'backend_settings' => 'backendSettingsHandler',
-            'backend_sidebar'  => 'backendSidebarHandler',
-            'backend_pocket'   => 'backendPocketHandler',
-            'backend_item_add' => 'backendItemAddHandler',
+            'backend_head'             => 'backendHeadHandler',
+            'backend_settings'         => 'backendSettingsHandler',
+            'backend_sidebar'          => 'backendSidebarHandler',
+            'backend_pocket'           => 'backendPocketHandler',
+            'backend_item_add'         => 'backendItemAddHandler',
+            'backend_list_accesses'    => 'backendListAccessesHandler',
+            'backend_teammate_sidebar' => 'backendTeammateSidebarHandler',
         ],
 ];
