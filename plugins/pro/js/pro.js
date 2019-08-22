@@ -140,8 +140,8 @@
             this.prevHash = null;
             this.dispatch();
         },
-        timelineAction: function () {
-            this.load('?plugin=pro&module=timeline', this.setHtmlContent);
+        activityAction: function () {
+            this.load('?plugin=pro&module=activity', this.setHtmlContent);
         },
         pocketAction: function (id) {
             //var self = this;
@@ -170,6 +170,32 @@
                 );
             } else {
                 loadLabelItems()
+            }
+        },
+        pocketActivityAction: function (id) {
+            var that = this,
+                $content = $('#content'),
+                loadActivity = function(){
+                    that.load(
+                        '?plugin=pro&module=activity&action=pocket&entity_id=' + id,
+                        function (labelHtml) {
+                            $content.find('#pl-list-content').html(labelHtml);
+                        })
+                };
+
+            if (!$content.find('[data-pl2-pocket-wrapper="'+id+'"]').length) {
+                that.load(
+                    '?module=pocket&pocket_id=' + id,
+                    function (html) {
+                        var $html = $(html);
+
+                        $html.find('#pl-list-content').empty();
+                        $content.empty().append($html);
+                        loadActivity()
+                    }
+                );
+            } else {
+                loadActivity()
             }
         },
         boardAction: function () {
