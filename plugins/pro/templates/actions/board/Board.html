@@ -1,143 +1,188 @@
-{function name=__pl2dummyitems completed_only=0}
-    {strip}
-        <ul class="pl-roadmap">
-            {if $completed_only}
-                <li class="gray">
-                    <input type="checkbox" class="pl-done" checked="checked"><span></span>
-                    Совместная работа со списками дел в экосистеме Webasyst
-                </li>
-                <li class="gray">
-                    <input type="checkbox" class="pl-done" checked="checked"><span></span>
-                    Парсер умного ввода даты и времени («сделать завтра в 10»)
-                </li>
-                <li class="gray">
-                    <input type="checkbox" class="pl-done" checked="checked"><span></span>
-                    <strong>Интеграция с Shop-Script</strong>
-                    <span class="hint">Связь задач Pocket Lists с заказами Shop-Script</span>
-                </li>
-                <li class="gray">
-                    <input type="checkbox" class="pl-done" checked="checked"><span></span>
-                    Проекты и гибкая настройка доступа для сотрудников
-                </li>
-                <li class="gray">
-                    <input type="checkbox" class="pl-done" checked="checked"><span></span>
-                    Поиск задач
-                </li>
-                <li class="gray">
-                    <input type="checkbox" class="pl-done" checked="checked"><span></span>
-                    Интеграция с приложением «Команда»
-                </li>
-
-            {else}
-
-                <li>
-                    <input type="checkbox" class="pl-done pl-priority-fire"><span></span>
-                    Продвинутая интеграция с Shop-Script<br>
-                    <span class="hint">Автоматическая постановка задач ответственным сотрудникам при выполнении действий с заказами в Shop-Script</span>
-                </li>
-                <li>
-                    <input type="checkbox" class="pl-done"><span></span>
-                    История действий: подробный список всего, что делала ваша команда<br>
-                    <span class="hint">По проектам, по спискам, по пользователям</span>
-                </li>
-                <li>
-                    <input type="checkbox" class="pl-done"><span></span>
-                    Статусы задач
-                </li>
-                <li>
-                    <input type="checkbox" class="pl-done"><span></span>
-                    Agile: просмотр задач в виде колонок по статусам
-                </li>
-
-
-                <li>
-                    <input type="checkbox" class="pl-done"><span></span>
-                    Интеграция CRM, «Задачами» и другими приложениями Webasyst
-                </li>
-                <li>
-                    <input type="checkbox" class="pl-done"><span></span>
-                    Виджет «Мои задачи» для дешборда и Webasyst TV
-                </li>
-
-
-                <li>
-                    <input type="checkbox" class="pl-done pl-priority-yellow"><span></span>
-                    <strong>Rest API</strong>
-                    <strong class="hint">Середина 2019</strong>
-                </li>
-                <li>
-                    <input type="checkbox" class="pl-done pl-priority-yellow"><span></span>
-                    <strong>Интеграция Pocket Lists для Webasyst и iOS</strong>
-                </li>
-
-                <li>
-                    <input type="checkbox" class="pl-done"><span></span>
-                    Повторяющиеся задачи
-                </li>
-                <li>
-                    <input type="checkbox" class="pl-done"><span></span>
-                    Подзадачи
-                </li>
-
-                <li>
-                    <input type="checkbox" class="pl-done"><span></span>
-                    Разделители / заголовки внутри списков
-                </li>
-                <li>
-                    <input type="checkbox" class="pl-done pl-priority-green"><span style="margin-bottom: 2rem;"></span>
-                    Pocket Lists для Android<br>
-                    <span class="hint">Пока не знаем когда. Но планируем заняться приложением для Android сразу после того, как основные планы по разработке для iOS будут выполнены.</span>
-                </li>
-                <li>
-                    <input type="checkbox" class="pl-done"><span></span>
-                    Профит!
-                </li>
-            {/if}
-        </ul>
-    {/strip}
-{/function}
-
-
 <div class="shadowed">
 
-    <main class="block double-padded" style="position: relative;">
+    <main class="block double-padded" style="position: relative;" data-pl2pro-wrapper="board">
 
         <!-- <h1>[`All pockets`]</h1> -->
         <h1><a href="#" class="back">&larr; [`All pockets`]</a> <span class="pl-dark-green-label">Shop-Script</span></h1>
 
-        {$_status_config = [
-        [ 'Backlog', 'aaaaaa', 75 ],
-        [ 'To do', '46c7fc', 47 ],
-        [ 'In progress', '328532', 33 ],
-        [ 'Testing', 'ffc600', 12 ]
-        ]}
-
         <div class="pl2pro-board">
-            {foreach $_status_config as $s}
-                <div class="pl2pro-column">
-                    <div class="pl2pro-column-header" style="border-color: #{$s[1]}; color: #{$s[1]};">
-                        <span class="count">{$s[2]}</span>
-                        <h5><i class="icon16 color" style="background-color: #{$s[1]};"></i> {$s[0]}</h5>
+            {** @var pocketlistsProPluginLabelItemsDto $labelInfo **}
+            {foreach $allItems as $labelInfo}
+                <div class="pl2pro-column" data-pl2pro-label="{$labelInfo->label->getId()}">
+                    <div class="pl2pro-column-header {if $labelInfo->isDone}gray{/if}"
+                         {if !$labelInfo->isDone}style="border-color: #{$labelInfo->label->getColor()}; color: #{$labelInfo->label->getColor()};"{/if}>
+                        <span class="count">{$labelInfo->count}</span>
+                        <h5>
+                            {if !$labelInfo->isDone}
+                                <i class="icon16 color" style="background-color: #{$labelInfo->label->getColor()};"></i>
+                            {else}
+                                <input type="checkbox" class="pl-done" checked="checked">
+                                <span></span>
+                            {/if}
+                            {$labelInfo->label->getName()|escape}
+                        </h5>
                     </div>
                     <div class="pl2pro-column-items">
-                        {__pl2dummyitems}
+                        <ul class="pl-roadmap">
+                        {** $var pocketlistsItem $item **}
+                        {foreach $labelInfo->items as $item}
+                            <li
+                                    data-pl2pro-item="{$item->getId()}"
+                                    data-pl2pro-item-status="{if $item->isDone()}1{else}0{/if}"
+                                    {if $item->isDone()}class="gray"{/if}
+                            >
+                                <input
+                                        type="checkbox"
+                                        class="pl-done {pocketlistsViewHelper::getPriorityCssClass($item->getCalcPriority())}"
+                                        {if $item->isDone()}checked="checked"{/if}
+                                ><span data-pl2pro-done></span>
+                                {$item->getName()|escape}<br>
+                                <span class="hint">{$item->getNote()|escape}</span>
+                            </li>
+                        {/foreach}
+                        </ul>
                     </div>
                 </div>
             {/foreach}
-            <div class="pl2pro-column">
-                <div class="pl2pro-column-header gray">
-                    <span class="count">921</span>
-                    <h5><input type="checkbox" class="pl-done" checked="checked"><span></span> [`Done`]</h5>
-                </div>
-                <div class="pl2pro-column-items">
-                    {__pl2dummyitems completed_only=1}
-                </div>
-            </div>
         </div>
         <div class="pl2pro-board-scroll-helper"></div>
 
         <div class="clear-both"></div>
 
     </main>
+
+    <script>
+        'use strict';
+        (function () {
+            var $wrapper = $('[data-pl2pro-wrapper="board"]'),
+                $columns = $wrapper.find('[data-pl2pro-label]'),
+                dropInAction = false,
+                $sourceLabel = null;
+
+            $('[data-pl2pro-item]', $wrapper).draggable({
+                // handle: '[data-pl-action="item-sort"]',
+                distance: 5,
+                opacity: 0.75,
+                appendTo: 'body',
+                // connectWith: $columns,
+                tolerance: 'pointer',
+                revert: true,
+                revertDuration: 0,
+                classes: {
+                    'ui-sortable-helper': 'shadowed'
+                }
+                // forcePlaceholderSize: true,
+                // forceHelperSize: true,
+            });
+
+            $columns.droppable({
+                accept: '[data-pl2pro-item]',
+                disabled: false,
+                greedy: true,
+                tolerance: 'pointer',
+                classes: {
+                    'ui-droppable': 'pl-droppable'
+                },
+                over: function (event, ui) {
+                    dropInAction = true;
+                    $(this).addClass('highlighted-background');
+
+                    $sourceLabel = $sourceLabel || $(this);
+                },
+                out: function (event, ui) {
+                    dropInAction = false;
+                    $(this).removeClass('highlighted-background');
+                },
+                drop: function (event, ui) {
+                    var $item = ui.draggable,
+                        $label = $(event.target),
+                        labelId = $label.data('pl2pro-label'),
+                        itemId = $item.data('pl2pro-item'),
+                        $curSourceLabel = $sourceLabel;
+
+                    $sourceLabel = null;
+
+                    if (labelId != $curSourceLabel.data('pl2pro-label')) {
+                        $label.find('.pl-roadmap').prepend($item);
+                        dropInAction = false;
+
+                        if (labelId) {
+                            $.post('?plugin=pro&module=label&action=addToItem', {
+                                id: labelId,
+                                item_id: itemId
+                            }, function (r) {
+                                if (r.status === 'ok') {
+                                    $(document).trigger('itemLabelChanged.pl2pro', {
+                                        label: labelId, item: itemId, drop: this
+                                    });
+
+                                    labelCount($label, 1);
+                                    labelCount($curSourceLabel, -1);
+
+                                    if (!$curSourceLabel.data('pl2pro-label')) {
+                                        completeItem($item, 0, function () { });
+                                    }
+                                }
+                            }, 'json');
+                        } else {
+                            completeItem($item, 1, function () {
+                                labelCount($label, 1);
+                                labelCount($curSourceLabel, -1);
+                            });
+                        }
+                    }
+
+                    $(this).removeClass('highlighted-background');
+                    $item.addClass('pl-dropped');
+                }
+            });
+
+            $columns.on('click', '[data-pl2pro-done]', function (e) {
+                e.preventDefault();
+                var $item = $(this).closest('[data-pl2pro-item]'),
+                    status = !!$item.data('pl2pro-item-status');
+
+                completeItem($item, status ? 0 : 1, function () {
+                    labelCount($item.closest('[data-pl2pro-label]'), status ? 1 : -1);
+                });
+            });
+
+            function labelCount($column, count) {
+                var $count = $column.find('.count');
+                count = count || 1;
+                $count.text(parseInt($count.text()) + count);
+            }
+
+            function completeItem($item, status, callback) {
+                var id = parseInt($item.data('pl2pro-item')),
+                    $checkbox = $item.find(':checkbox');
+
+                $item.toggleClass('gray');
+                $checkbox.prop('checked', status); // check nesting items
+                $item.data('pl2pro-item-status', status);
+
+                $.post(
+                    '?module=item&action=complete',
+                    {
+                        id: id,
+                        status: status
+                    },
+                    function (r) {
+                        if (r.status === 'ok') {
+                            $.pocketlists.updateAppCounter();
+
+                            $.isFunction(callback) && callback.call();
+                        } else {
+                            console.log(r.errors);
+
+                            $checkbox.prop('checked', status ? 0 : 1);
+                            $item.data('pl2pro-item-status', status ? 0 : 1);
+                        }
+                    },
+                    'json'
+                );
+            }
+        }())
+    </script>
 
 </div>
