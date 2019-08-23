@@ -23,7 +23,7 @@ class pocketlistsAppAction extends pocketlistsViewAction
             throw new pocketlistsForbiddenException();
         }
 
-        $calendar_html = (new pocketlistsAppMonthAction())->display();
+        $calendar_html = (new pocketlistsAppMonthAction())->display(false);
 
         $this->view->assign(compact('calendar_html', 'app'));
         $this->view->assign('user', $this->user);

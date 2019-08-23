@@ -75,7 +75,7 @@ class pocketlistsPocketAction extends pocketlistsViewPocketAction
             $this->user->getSettings()->set('last_pocket_list_id', json_encode($last_pocket_list_id));
         }
 
-        $lists_html = (new pocketlistsListAction(['list_id' => $list_id, 'pocket_id' => $pocket->getId()]))->display();
+        $lists_html = (new pocketlistsListAction(['list_id' => $list_id, 'pocket_id' => $pocket->getId()]))->display(false);
 
         $eventData = ['pocket' => $pocket, 'lists' => $lists];
 
