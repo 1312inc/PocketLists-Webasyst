@@ -30,6 +30,10 @@ class pocketlistsShopBackend_orderHandler extends waEventHandler
 
         $hasItems = pl2()->getModel(pocketlistsItemLink::class)->countLinkedItems('shop', 'order', $params['id']);
 
+        wa('pocketlists', true);
+        $itemAdd = (new pocketlistsItemAddAction())->display(false);
+        wa('shop', true);
+
         $viewParams = array_merge(
             [
                 'wa_app_static_url' => wa()->getAppStaticUrl(pocketlistsHelper::APP_ID),
@@ -41,7 +45,7 @@ class pocketlistsShopBackend_orderHandler extends waEventHandler
                 'count_done_items'  => 0,
                 'fileupload'        => 1,
                 'user'              => pl2()->getUser(),
-                'itemAdd'           => (new pocketlistsItemAddAction())->display(),
+                'itemAdd'           => $itemAdd,
             ],
             pl2()->getDefaultViewVars()
         );
