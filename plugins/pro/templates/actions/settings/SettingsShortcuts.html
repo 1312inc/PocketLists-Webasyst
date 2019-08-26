@@ -92,17 +92,24 @@
 
             $el
                 .on('keyup', tagsInputSelector, function (e) {
-                    if ($(this).val()) {
-                        buttonShow();
+                    if (e.which === 13) {
+                        $button.trigger('click.pl2pro');
                     } else {
-                        buttonHide();
+                        if ($(this).val()) {
+                            buttonShow();
+                        } else {
+                            buttonHide();
+                        }
                     }
                 })
-                .on('focus ', tagsInputSelector, function (e) {
+                .on('focus paste', tagsInputSelector, function (e) {
                     buttonShow();
+                })
+                .on('blur', tagsInputSelector, function (e) {
+                    buttonHide();
                 });
 
-            $button.on('click', function (e) {
+            $button.on('click.pl2pro', function (e) {
                 e.preventDefault();
                 var newVal = $.trim($el.find(tagsInputSelector).val());
 
