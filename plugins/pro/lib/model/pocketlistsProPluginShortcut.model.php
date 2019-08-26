@@ -15,7 +15,10 @@ class pocketlistsProPluginShortcutModel extends pocketlistsModel
      */
     public function getAllGrouped()
     {
-        return $this->getAll('group', 2);
+        return $this
+            ->select('*')
+            ->order('`group` ASC, id ASC')
+            ->fetchAll('group', 2);
     }
 
     /**
@@ -26,7 +29,11 @@ class pocketlistsProPluginShortcutModel extends pocketlistsModel
      */
     public function getByGroup($group)
     {
-        return $this->getByField('group', $group, true);
+        return $this
+            ->select('*')
+            ->where('`group` = i:id', ['id' => $group])
+            ->order('id ASC')
+            ->fetchAll();
     }
 
     /**
@@ -43,6 +50,7 @@ class pocketlistsProPluginShortcutModel extends pocketlistsModel
             ->select('*')
             ->where("name like '$term%'")
             ->limit(sprintf('%d, %d', 0, $limit))
+            ->order('id ASC')
             ->fetchAll();
     }
 
@@ -67,6 +75,16 @@ class pocketlistsProPluginShortcutModel extends pocketlistsModel
      */
     public function getMaxGroup()
     {
-        return (int) $this->select('max(`group`) as maxgroup')->fetchField();
+        return (int)$this->select('max(`group`) as maxgroup')->fetchField();
+    }
+
+    public function renewGroupNums()
+    {
+        $i = 1;
+        foreach ($this->getAllGrouped() as $groupNum => $group) {
+            if ($groupNum) {
+                $this->updateByField('group', $groupNum, ['group' => $i++]);
+            }
+        }
     }
 }

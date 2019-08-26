@@ -90,13 +90,17 @@
                     onRemoveTag: buttonShow
                 });
 
-            $el.on('keydown', tagsInputSelector, function (e) {
-                if ($(this).val()) {
+            $el
+                .on('keyup', tagsInputSelector, function (e) {
+                    if ($(this).val()) {
+                        buttonShow();
+                    } else {
+                        buttonHide();
+                    }
+                })
+                .on('focus ', tagsInputSelector, function (e) {
                     buttonShow();
-                } else {
-                    buttonHide();
-                }
-            });
+                });
 
             $button.on('click', function (e) {
                 e.preventDefault();
