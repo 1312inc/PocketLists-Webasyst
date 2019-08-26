@@ -51,7 +51,7 @@ class pocketlistsProPluginLabelModel extends pocketlistsModel
      */
     public function countItemsWithLabel($id)
     {
-        return (int) $this->query('select count(id) from pocketlists_item where pro_label = i:id', ['id' => $id])->fetchField();
+        return (int) $this->query('select count(id) from pocketlists_item where pro_label_id = i:id', ['id' => $id])->fetchField();
     }
 
     /**
@@ -63,6 +63,7 @@ class pocketlistsProPluginLabelModel extends pocketlistsModel
     {
         return $this->query('select
                    count(pi.pro_label_id) labels_count,
+                   ppl.id,
                    ppl.*
             from pocketlists_item pi
             join pocketlists_list pl on pi.list_id = pl.id
@@ -72,6 +73,6 @@ class pocketlistsProPluginLabelModel extends pocketlistsModel
                 and pp.id = i:pocket_id
             group by pi.pro_label_id',
             ['pocket_id' => $pocketId]
-        )->fetchAll();
+        )->fetchAll('id', 1);
     }
 }

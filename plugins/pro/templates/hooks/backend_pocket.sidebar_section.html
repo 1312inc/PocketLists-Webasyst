@@ -7,11 +7,13 @@
     {foreach $pocketLabelStat as $labelInfo}
         <div class="pl-view-box x3">
             <a class="pl-view-widget"
-               href="#/pro/pocket/{$labelInfo->pocket->getId()}/status/{$labelInfo->label->getId()}/
-    ">
+               href="#/pro/pocket/{$labelInfo->pocket->getId()}/status/{$labelInfo->label->getId()}/">
                 <h3>
+                    {if $labelInfo->label->getId()}
                     <i class="icon16 color" style="background: #{$labelInfo->label->getColor()};"></i>
-                    <!-- <input type="checkbox" class="pl-done" checked="checked"><span></span> -->
+                    {else}
+                    <input type="checkbox" class="pl-done" checked="checked"><span></span>
+                    {/if}
                     <span class="cou1nt" style="color: #{$labelInfo->label->getColor()};">{$labelInfo->count}</span>
                 </h3>
                 <span class="hint">{$labelInfo->label->getName()|escape}</span>

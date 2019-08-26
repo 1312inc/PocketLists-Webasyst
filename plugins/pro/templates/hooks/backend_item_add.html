@@ -1,3 +1,7 @@
+{if $wa->globals('pl2_external')}
+    {$pl2_external = $wa->globals('pl2_external')}
+    <link href="{$pl2_external['wa_app_static_url']}plugins/pro/css/pro.css" rel="stylesheet" type="text/css">
+{/if}
 {$time = time()}
 {if $pl2pro.labels || $pl2pro.shortcutsGrouped}
 <div class="pl2pro-item-add{if !$pl2pro.isNew} pl2pro-edit-existing{/if}" data-pl2pro-wrapper="item-compact-add-{$time}"{if $pl2pro.itemLabel->getId()} data-pl2pro-label-selected="{$pl2pro.itemLabel->getId()}"{/if}>

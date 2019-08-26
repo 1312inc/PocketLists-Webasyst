@@ -50,7 +50,7 @@ class pocketlistsProPlugin extends waPlugin
     public function backendListAccessesHandler(pocketlistsList $list)
     {
         $action = new pocketlistsProPluginActivityListAction([
-            'entity_id' => $list->getId()
+            'entity_id' => $list->getId(),
         ]);
 
         return $action->display(false);
@@ -64,7 +64,7 @@ class pocketlistsProPlugin extends waPlugin
     public function backendTeammateSidebarHandler(pocketlistsContact $contact)
     {
         $action = new pocketlistsProPluginActivityContactAction([
-            'entity_id' => $contact->getId()
+            'entity_id' => $contact->getId(),
         ]);
 
         return $action->display(false);
@@ -107,11 +107,12 @@ class pocketlistsProPlugin extends waPlugin
 
         $pocketLabelsInfo = [];
         $data = $factory->getModel()->getByPocketIdWithCount($pocket->getId());
-        foreach ($data as $datum) {
+        /** @var pocketlistsProPluginLabel $label */
+        foreach ($factory->findAll() as $label) {
             $pocketLabelInfo = new pocketlistsProPluginLabelPocketInfoDto();
             $pocketLabelInfo->pocket = $pocket;
-            $pocketLabelInfo->count = $datum['labels_count'];
-            $pocketLabelInfo->label = $factory->generateWithData($datum);
+            $pocketLabelInfo->count = ifset($data, $label->getId(), 'labels_count', 0);
+            $pocketLabelInfo->label = $label;
             $pocketLabelsInfo[] = $pocketLabelInfo;
         }
 

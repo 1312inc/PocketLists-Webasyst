@@ -28,9 +28,7 @@ class pocketlistsProPluginBoardAction extends pocketlistsProPluginAbstractViewAc
                 ->findItemsByLabel($label);
             $labelItems->count = count($labelItems->items);
 
-            if ($labelItems->count) {
-                $allItems[$labelItems->label->getId()] = $labelItems;
-            }
+            $allItems[$labelItems->label->getId()] = $labelItems;
         }
 
         $labelItems = new pocketlistsProPluginLabelItemsDto();

@@ -15,10 +15,10 @@ class pocketlistsProPluginShortcutRenewController extends pocketlistsJsonControl
 
         $shortcuts = explode(',', $shortcuts);
 
-        /** @var pocketlistsProPluginShortcutModel $shortcutModel */
-        $shortcutModel = pl2()->getModel(pocketlistsProPluginShortcut::class);
         /** @var pocketlistsProPluginShortcutFactory $shortcutFactory */
         $shortcutFactory = pl2()->getEntityFactory(pocketlistsProPluginShortcut::class);
+        /** @var pocketlistsProPluginShortcutModel $shortcutModel */
+        $shortcutModel= $shortcutFactory->getModel();
 
         $existingShortcuts = array_flip(
             array_column($shortcutModel->getByGroup($group), 'name')
@@ -29,6 +29,10 @@ class pocketlistsProPluginShortcutRenewController extends pocketlistsJsonControl
         }
 
         foreach ($shortcuts as $shortcut) {
+            if (empty($shortcut)) {
+                continue;
+            }
+
             if (!array_key_exists($shortcut, $existingShortcuts)) {
                 /** @var pocketlistsProPluginShortcut $shrtct */
                 $shrtct = $shortcutFactory->createNew();
@@ -44,5 +48,7 @@ class pocketlistsProPluginShortcutRenewController extends pocketlistsJsonControl
         foreach ($existingShortcuts as $name => $index) {
             $shortcutModel->deleteByNameFromGroup($name, $group);
         }
+
+        $shortcutModel->renewGroupNums();
     }
 }

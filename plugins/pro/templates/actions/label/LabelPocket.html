@@ -8,7 +8,7 @@
         </header>
         <div class="pl-list-items" id="pl-list-items">
 
-            <section id="pl-undone-items" data-pl-items="undone">
+            <section {if $label->getId()}id="pl-undone-items" data-pl-items="undone"{else}id="pl-complete-log" class="pl-logbook" style="display: block;"{/if}>
                 <ul class="menu-v">
                     {if !empty($items)}
                         {include '../../../../../templates/actions/item/Item.html' parent_id=0 items=$items}
