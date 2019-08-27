@@ -247,6 +247,8 @@
 
             $('<div>').waDialog({
                 url: '?plugin=pro&module=label&action=deleteDialog&id=' + labelId,
+                width: '400px',
+                height: '200px',
                 disableButtonsOnSubmit: true,
                 onSubmit: function (d) {
                     $.post(

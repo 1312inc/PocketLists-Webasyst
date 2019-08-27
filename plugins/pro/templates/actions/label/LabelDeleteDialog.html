@@ -1,7 +1,7 @@
 <div>
     <div class="dialog-content">
-        <h1>[`Delete label`]</h1>
-        <p>{$itemsWithLabelsCount} will delete</p>
+        <h1>[`Delete status`]</h1>
+        <p>{sprintf('[`The status label will be permanently deleted leaving all <strong>%d&nbsp;to-dos</strong> currently marked with this status unlabelled. Delete the status label?`]', $itemsWithLabelsCount)}</p>
     </div>
     <div class="dialog-buttons">
         <input type="hidden" name="id" value="{$id}"/>
