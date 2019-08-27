@@ -313,9 +313,9 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
         var hideItemDetails = function (e, callback) {
             if ($currentItem) {
+                var $addItemTextarea = $currentItem.find('[data-pl2-item-textarea]');
 
                 if (!itemId) {
-                    var $addItemTextarea = $currentItem.find('[data-pl2-item-textarea]');
                     $currentItem.find('[data-pl2-item-links]').show();
                     $addItemTextarea.val($wrapper.find('[name="item[name]"]').val());
 
@@ -1062,7 +1062,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     updateListCountBadge();
                 }
 
-                $(document).trigger('item_update.pl2', { add_wrapper: $textarea_parent });
+                $(document).trigger('item_update.pl2');
             }
             $.isFunction(callback) && callback.call();
         };
