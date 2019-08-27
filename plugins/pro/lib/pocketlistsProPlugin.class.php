@@ -122,7 +122,7 @@ class pocketlistsProPlugin extends waPlugin
         $pocketLabelInfo->count = count(
             pl2()
                 ->getModel(pocketlistsItem::class)
-                ->getLogbookItems(false, false, true, $pocket->getId(), 0, 400)
+                ->getLogbookItems(false, false, true, $pocket->getId(), 0, 100)
         );
 
         $pocketLabelsInfo[] = $pocketLabelInfo;
