@@ -64,11 +64,6 @@
                 $button.removeClass('green').addClass('yellow');
             };
 
-            var buttonHide = function() {
-                $buttons.hide();
-                $button.removeClass('yellow').addClass('green');
-            };
-
             $shortcuts
                 .val(shortcutNames.join(','))
                 .tagsInput({
@@ -95,18 +90,11 @@
                     if (e.which === 13) {
                         $button.trigger('click.pl2pro');
                     } else {
-                        if ($(this).val()) {
-                            buttonShow();
-                        } else {
-                            buttonHide();
-                        }
+                        buttonShow();
                     }
                 })
                 .on('focus paste', tagsInputSelector, function (e) {
                     buttonShow();
-                })
-                .on('blur', tagsInputSelector, function (e) {
-                    buttonHide();
                 });
 
             $button.on('click.pl2pro', function (e) {
