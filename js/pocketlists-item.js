@@ -211,7 +211,9 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     }
 
                     if (full_itemadd_form.can_show()) {
-                        $top_new_item_wrapper.find('[data-pl2-action="edit-new-item"]').trigger('click');
+                        if (!ItemDetails.isVisible()) {
+                            $top_new_item_wrapper.find('[data-pl2-action="edit-new-item"]').trigger('click');
+                        }
                     } else {
                         $this
                             .data('can_blur', true)
