@@ -8,10 +8,11 @@
                 </a>
             </li>
 
+            {if $isAdmin}
             <!-- plugin hook: 'backend_settings.sidebar_li' -->
             {* @event backend_settings.%plugin_id% *}
             {if !empty($backend_settings)}{foreach $backend_settings as $_}{ifset($_.sidebar_li)}{/foreach}{/if}
-
+            {/if}
         </ul>
     </div>
 

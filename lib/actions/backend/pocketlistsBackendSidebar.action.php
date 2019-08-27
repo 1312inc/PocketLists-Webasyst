@@ -80,7 +80,11 @@ class pocketlistsBackendSidebarAction extends pocketlistsViewAction
         }
 
         $this->view->assign(compact('pockets', 'linkedApps'));
-
-        $this->view->assign('backend_sidebar', wa()->event('backend_sidebar'));
+        $this->view->assign(
+            [
+                'backend_sidebar' => wa()->event('backend_sidebar'),
+                'isAdmin'         => $this->getUser()->isAdmin('pocketlists'),
+            ]
+        );
     }
 }

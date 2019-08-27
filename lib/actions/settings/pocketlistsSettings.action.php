@@ -38,6 +38,7 @@ class pocketlistsSettingsAction extends pocketlistsViewAction
                 'cron_command'         => pl2()->getCronJob('recap_mail'),
                 'admin'                => pocketlistsRBAC::isAdmin(),
                 'backend_settings'     => wa()->event('backend_settings'),
+                'isAdmin'              => $this->getUser()->isAdmin('pocketlists'),
             ]
         );
     }
