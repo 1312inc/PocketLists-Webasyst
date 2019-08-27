@@ -52,6 +52,7 @@
                 .on('item_add.pl2', function (e, data) {
                     $wrapper = data.add_wrapper.find('[data-pl2pro-wrapper]');
                     $wrapper.removeData('pl2pro-item-add');
+
                     init($wrapper);
                 })
                 .on('open_new_item_wrapper.pl2', function (e, data) {
@@ -67,6 +68,7 @@
                 .on('itemDetailsClosed.pl2', function (e, data) {
                     $wrapper = data.details_wrapper.find('[data-pl2pro-wrapper]');
                     $wrapper.removeData('pl2pro-item-add');
+
                     init($wrapper);
                 });
 
@@ -140,7 +142,7 @@
 
                             e.preventDefault();
                         });
-                };
+                }
                 if (labelsExists) {
                     labels();
                 }
@@ -164,7 +166,7 @@
                         },
                         focus = function($textarea) {
                             setTimeout(function () {
-                                $textarea.trigger('focus');
+                                $textarea.trigger('focus.pl2pro');
                             }, 0);
                         },
                         canBeShown = function(itemText) {
@@ -197,40 +199,51 @@
                             }
                         };
 
-                    $wrapper.closest('#pl-item-add').find('textarea').on('keyup', function (e) {
-                        canBeShown($(this).val());
-                    });
+                    $wrapper.closest('#pl-item-add')
+                        .off('keyup.pl2pro', 'textarea.pl-item-name:visible')
+                        .on('keyup.pl2pro', 'textarea.pl-item-name:visible', function (e) {
+                            canBeShown($(this).val());
+                        });
 
-                    $wrapper.on('click.pl2pro', '.pl2pro-shortcut', function (e) {
-                        e.preventDefault();
+                    canBeShown($wrapper.closest('#pl-item-add').find('textarea.pl-item-name:visible').val());
 
-                        var $this = $(this),
-                            $textarea = $this.closest('#pl-item-add').find('textarea'),
-                            isNotEmpty = !!$textarea.val(),
-                            groupId = $this.closest('[data-pl2pro-shortcuts-group]').data('pl2pro-shortcuts-group');
+                    $wrapper
+                        .off('click.pl2pro change.pl2pro paste.pl2pro', '.pl2pro-shortcut')
+                        .on('click.pl2pro change.pl2pro paste.pl2pro', '.pl2pro-shortcut', function (e) {
+                            e.preventDefault();
+                            e.stopPropagation();
 
-                        $textarea.val($textarea.val() + (isNotEmpty ? ' ' : '') + $this.text());
-                        focus($textarea);
-                        setVisible.call(this, groupId + 1);
-                    });
+                            var $this = $(this),
+                                $textarea = $this.closest('#pl-item-add').find('textarea.pl-item-name:visible'),
+                                isNotEmpty = !!$textarea.val(),
+                                groupId = $this.closest('[data-pl2pro-shortcuts-group]').data('pl2pro-shortcuts-group');
 
-                    $(document).on('keydown', function (e) {
-                        var num = parseInt(e.which) - 48;
+                            $textarea.val($textarea.val() + (isNotEmpty ? ' ' : '') + $this.text());
+                            focus($textarea);
+                            setVisible.call(this, groupId + 1);
 
-                        if (e.altKey && num > 0 && num < 10) {
-                            var $shortcut = $wrapper
-                                .find('[data-pl2pro-shortcuts-group]')
-                                .filter('[data-pl2pro-shortcuts-group]:visible')
-                                .find('.pl2pro-shortcut:nth(' + (num - 1) + ')');
+                            return false;
+                        });
 
-                            if ($shortcut.length) {
-                                $shortcut.trigger('click.pl2pro');
+                    $(document)
+                        .off('keydown.pl2pro')
+                        .on('keydown.pl2pro', function (e) {
+                            var num = parseInt(e.which) - 48;
 
-                                e.preventDefault();
+                            if (e.altKey && num > 0 && num < 10) {
+                                var $shortcut = $wrapper
+                                    .find('[data-pl2pro-shortcuts-group]')
+                                    .filter('[data-pl2pro-shortcuts-group]:visible')
+                                    .find('.pl2pro-shortcut:nth(' + (num - 1) + ')');
+
+                                if ($shortcut.length) {
+                                    $shortcut.trigger('click.pl2pro');
+
+                                    e.preventDefault();
+                                }
                             }
-                        }
-                    });
-                };
+                        });
+                }
                 if (shortcutsExists) {
                     shortcuts();
                 }
