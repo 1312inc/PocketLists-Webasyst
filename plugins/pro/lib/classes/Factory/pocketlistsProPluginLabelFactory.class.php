@@ -139,25 +139,7 @@ class pocketlistsProPluginLabelFactory extends pocketlistsFactory
      */
     public function findItemsByLabel(pocketlistsProPluginLabel $label)
     {
-        /** @var pocketlistsItemModel $itemModel */
-        $itemModel = pl2()->getModel(pocketlistsItem::class);
-        $sqlParts = $itemModel->getQueryComponents();
-        $sqlParts['join'] += [
-            'join pocketlists_list pl on pl.id = i.list_id',
-            'join pocketlists_pro_label ppl on ppl.id = i.pro_label_id',
-        ];
-        $sqlParts['where']['and'] = ['i.pro_label_id = i:label_id', 'i.status = 0'];
-        $sqlParts['order by'] = ['i.calc_priority desc', 'i.id asc'];
-        $sql = $itemModel->buildSqlComponents($sqlParts, $this->getLimit(), $this->getOffset());
-
-        $itemsData = $itemModel->query(
-            $sql,
-            [
-                'contact_id' => wa()->getUser()->getId(),
-                'label_id'   => $label->getId(),
-            ]
-        )->fetchAll();
-
+        $itemsData = $this->getItemsByLabel($label->getId());
 
         /** @var pocketlistsItemFactory $itemFactory */
         $itemFactory = pl2()->getEntityFactory(pocketlistsItem::class);
@@ -172,27 +154,58 @@ class pocketlistsProPluginLabelFactory extends pocketlistsFactory
      */
     public function findDoneItemsByAllLabels()
     {
-        /** @var pocketlistsItemModel $itemModel */
-        $itemModel = pl2()->getModel(pocketlistsItem::class);
-        $sqlParts = $itemModel->getQueryComponents();
-        $sqlParts['join'] += [
-            'join pocketlists_list pl on pl.id = i.list_id',
-            'join pocketlists_pro_label ppl on ppl.id = i.pro_label_id',
-        ];
-        $sqlParts['where']['and'] = ['i.status > 0'];
-        $sqlParts['order by'] = ['i.complete_datetime desc'];
-        $sql = $itemModel->buildSqlComponents($sqlParts, $this->getLimit(), $this->getOffset());
-
-        $itemsData = $itemModel->query(
-            $sql,
-            ['contact_id' => wa()->getUser()->getId()]
-        )->fetchAll();
-
+        $itemsData = $this->getItemsByLabel(null, pocketlistsItem::STATUS_DONE);
 
         /** @var pocketlistsItemFactory $itemFactory */
         $itemFactory = pl2()->getEntityFactory(pocketlistsItem::class);
         $items = $itemFactory->generateWithData($itemsData, true);
 
         return $items;
+    }
+
+    /**
+     * @param int $labelId
+     * @param int $status
+     *
+     * @return array
+     * @throws waDbException
+     * @throws waException
+     */
+    private function getItemsByLabel($labelId, $status = pocketlistsItem::STATUS_UNDONE)
+    {
+        $contactId = wa()->getUser()->getId();
+        $lists = pocketlistsRBAC::getAccessListForContact($contactId);
+
+        /** @var pocketlistsItemModel $itemModel */
+        $itemModel = pl2()->getModel(pocketlistsItem::class);
+        $sqlParts = $itemModel->getQueryComponents();
+        $sqlParts['join'] += [
+            'left join (select i2.name, l2.*
+                    from pocketlists_list l2
+                             JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) l ON l.id = i.list_id',
+        ];
+        if ($labelId) {
+            $sqlParts['join'][] = 'join pocketlists_pro_label ppl on ppl.id = i.pro_label_id';
+        }
+
+        $sqlParts['where']['and'] = [
+            sprintf('(%s OR l.id IS NULL)', pocketlistsRBAC::filterListAccess($lists, $contactId)),
+            '(l.id is null OR (l.id is not null and l.archived = 0))',
+            'i.status = i:status',
+        ];
+        if ($labelId) {
+            $sqlParts['where']['and'][] = 'i.pro_label_id = i:label_id';
+        }
+        $sqlParts['order by'] = ['i.calc_priority desc', 'i.id asc'];
+        $sql = $itemModel->buildSqlComponents($sqlParts, $this->getLimit(), $this->getOffset());
+
+        return $itemModel->query(
+            $sql,
+            [
+                'contact_id' => $contactId,
+                'label_id'   => $labelId,
+                'status'     => $status,
+            ]
+        )->fetchAll();
     }
 }

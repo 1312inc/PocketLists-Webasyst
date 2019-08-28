@@ -21,7 +21,11 @@ class pocketlistsTodoDateAction extends pocketlistsViewAction
         /** @var pocketlistsItemFactory $itemFactory */
         $itemFactory = pl2()->getEntityFactory(pocketlistsItem::class);
 
-        $itemsUndone = $itemFactory->findToDoUndone($this->user, $date);
+        $itemsUndone = $itemFactory
+            ->setOffset(0)
+            ->setLimit(1312)
+            ->findToDoUndone($this->user, $date);
+
         $itemsDone = $itemFactory
             ->setOffset(0)
             ->setLimit(pocketlistsFactory::DEFAULT_LIMIT)
