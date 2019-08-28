@@ -1,5 +1,5 @@
 <div class="pl2pro-log pl2pro-log-{$type|strtolower}" data-pl2pro-logs>
-    <h5 class="heading">[`List activity`]</h5>
+    <h5 class="heading">[`Activity`]</h5>
     <section data-pl2pro-logs-list>
     {foreach $logs as $log}
         <div class="pl2pro-log-record {$log->getStyle()}"
@@ -25,7 +25,7 @@
     </section>
 
     {if !$logs}
-    <p>[`No activity logged.`]</p>
+        <p>[`No activity logged.`]</p>
     {/if}
 
     <div class="block double-padded lazyloading" style="display: none;">
