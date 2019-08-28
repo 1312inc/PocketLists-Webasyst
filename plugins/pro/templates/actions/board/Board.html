@@ -2,52 +2,56 @@
 
     <main class="block double-padded" style="position: relative;" data-pl2pro-wrapper="board">
 
-        <!-- <h1>[`All pockets`]</h1> -->
-        <h1><a href="#" class="back">&larr; [`All pockets`]</a> <span class="pl-dark-green-label">Shop-Script</span></h1>
+        <div class="pl2pro-board-container">
 
-        <div class="pl2pro-board">
-            {** @var pocketlistsProPluginLabelItemsDto $labelInfo **}
-            {foreach $allItems as $labelInfo}
-                <div class="pl2pro-column" data-pl2pro-label="{$labelInfo->label->getId()}">
-                    <div class="pl2pro-column-header {if $labelInfo->isDone}gray{/if}"
-                         {if !$labelInfo->isDone}style="border-color: #{$labelInfo->label->getColor()}; color: #{$labelInfo->label->getColor()};"{/if}>
-                        <span class="count">{$labelInfo->count}</span>
-                        <h5>
-                            {if !$labelInfo->isDone}
-                                <i class="icon16 color" style="background-color: #{$labelInfo->label->getColor()};"></i>
-                            {else}
-                                <input type="checkbox" class="pl-done" checked="checked">
-                                <span></span>
-                            {/if}
-                            {$labelInfo->label->getName()|escape}
-                        </h5>
+            <!-- <h1>[`All pockets`]</h1> -->
+            <h1><a href="#" class="back">&larr; [`All pockets`]</a> <span class="pl-dark-green-label">Shop-Script</span></h1>
+
+            <div class="pl2pro-board">
+                {** @var pocketlistsProPluginLabelItemsDto $labelInfo **}
+                {foreach $allItems as $labelInfo}
+                    <div class="pl2pro-column" data-pl2pro-label="{$labelInfo->label->getId()}">
+                        <div class="pl2pro-column-header {if $labelInfo->isDone}gray{/if}"
+                             {if !$labelInfo->isDone}style="border-color: #{$labelInfo->label->getColor()}; color: #{$labelInfo->label->getColor()};"{/if}>
+                            <span class="count">{$labelInfo->count}</span>
+                            <h5>
+                                {if !$labelInfo->isDone}
+                                    <i class="icon16 color" style="background-color: #{$labelInfo->label->getColor()};"></i>
+                                {else}
+                                    <input type="checkbox" class="pl-done" checked="checked">
+                                    <span></span>
+                                {/if}
+                                {$labelInfo->label->getName()|escape}
+                            </h5>
+                        </div>
+                        <div class="pl2pro-column-content">
+                            <ul class="pl2pro-column-items">
+                            {** $var pocketlistsItem $item **}
+                            {foreach $labelInfo->items as $item}
+                                <li
+                                        data-pl2pro-item="{$item->getId()}"
+                                        data-pl2pro-item-status="{if $item->isDone()}1{else}0{/if}"
+                                        {if $item->isDone()}class="gray"{/if}
+                                >
+                                    <input
+                                            type="checkbox"
+                                            class="pl-done {pocketlistsViewHelper::getPriorityCssClass($item->getCalcPriority())}"
+                                            {if $item->isDone()}checked="checked"{/if}
+                                    ><span data-pl2pro-done></span>
+                                    <span class="item-name">{$item->getName()|escape}</span><br>
+                                    <span class="hint">{$item->getNote()|escape}</span>
+                                </li>
+                            {/foreach}
+                            </ul>
+                        </div>
                     </div>
-                    <div class="pl2pro-column-items">
-                        <ul class="pl-roadmap">
-                        {** $var pocketlistsItem $item **}
-                        {foreach $labelInfo->items as $item}
-                            <li
-                                    data-pl2pro-item="{$item->getId()}"
-                                    data-pl2pro-item-status="{if $item->isDone()}1{else}0{/if}"
-                                    {if $item->isDone()}class="gray"{/if}
-                            >
-                                <input
-                                        type="checkbox"
-                                        class="pl-done {pocketlistsViewHelper::getPriorityCssClass($item->getCalcPriority())}"
-                                        {if $item->isDone()}checked="checked"{/if}
-                                ><span data-pl2pro-done></span>
-                                {$item->getName()|escape}<br>
-                                <span class="hint">{$item->getNote()|escape}</span>
-                            </li>
-                        {/foreach}
-                        </ul>
-                    </div>
-                </div>
-            {/foreach}
+                {/foreach}
+            </div>
+            <div class="pl2pro-board-scroll-helper"></div>
+
         </div>
-        <div class="pl2pro-board-scroll-helper"></div>
 
-        <div class="clear-both"></div>
+        <!-- <div class="clear-both"></div> -->
 
     </main>
 
@@ -103,7 +107,7 @@
                     $sourceLabel = null;
 
                     if (labelId != $curSourceLabel.data('pl2pro-label')) {
-                        $label.find('.pl-roadmap').prepend($item);
+                        $label.find('.pl2pro-column-items').prepend($item);
                         dropInAction = false;
 
                         if (labelId) {

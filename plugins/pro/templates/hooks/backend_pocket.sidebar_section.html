@@ -1,5 +1,5 @@
-<div>
-    <a href="#/pro/pocketActivity/{$pocket->getId()}/">activity</a>
+<div class="block double-padded">
+    <a href="#/pro/pocketActivity/{$pocket->getId()}/">Activity</a>
 </div>
 {if $pocketLabelStat}
 <div class="pl-views">
@@ -14,9 +14,9 @@
                     {else}
                     <input type="checkbox" class="pl-done" checked="checked"><span></span>
                     {/if}
-                    <span class="cou1nt" style="color: #{$labelInfo->label->getColor()};">{if $labelInfo->count == 100}99+{else}{$labelInfo->count}{/if}</span>
+                    <span style="color: #{$labelInfo->label->getColor()};">{if $labelInfo->count == 100}99+{else}{$labelInfo->count}{/if}</span>
                 </h3>
-                <span class="hint">{$labelInfo->label->getName()|escape}</span>
+                <span class="hint" style="color: #{$labelInfo->label->getColor()};">{$labelInfo->label->getName()|escape}</span>
             </a>
         </div>
     {/foreach}
