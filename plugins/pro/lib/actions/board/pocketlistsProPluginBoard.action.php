@@ -40,9 +40,7 @@ class pocketlistsProPluginBoardAction extends pocketlistsProPluginAbstractViewAc
         $labelItems->count = count($labelItems->items);
         $labelItems->isDone = true;
 
-        if ($labelItems->count) {
-            $allItems[$labelItems->label->getId()] = $labelItems;
-        }
+        $allItems[$labelItems->label->getId()] = $labelItems;
 
         $this->view->assign(
             [
