@@ -32,8 +32,7 @@ class pocketlistsModel extends waModel
      */
     public function buildSqlComponents(array $query, $limit = 0, $offset = 0)
     {
-        $q = sprintf(
-            '
+        $q = sprintf('
             select %s
             from %s
             %s
