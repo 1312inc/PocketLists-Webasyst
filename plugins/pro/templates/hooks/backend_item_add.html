@@ -7,6 +7,7 @@
 <div class="pl2pro-item-add{if !$pl2pro.isNew} pl2pro-edit-existing{/if}" data-pl2pro-wrapper="item-compact-add-{$time}"{if $pl2pro.itemLabel->getId()} data-pl2pro-label-selected="{$pl2pro.itemLabel->getId()}"{/if}>
     {* @var pocketlistsProPluginLabel $label *}
     <a
+            href="#"
             class="pl-label"
             style="background-color: rgba(0,0,0,0.06); color: #aaa !important;"
             data-pl2pro-label="0"
@@ -15,6 +16,7 @@
     </a>
     {foreach $pl2pro.labels as $label}
         <a
+                href="#"
                 class="pl-label {if $label->getId() == $pl2pro.itemLabel->getId()}selected{/if}"
                 style="background-color: #{$label->getColor()|escape};"
                 data-pl2pro-label="{$label->getId()}"
@@ -104,7 +106,9 @@
                         return !!$labels.filter(':hidden').length;
                     };
 
-                    $labels.on('click', function () {
+                    $labels.on('click', function (e) {
+                        e.preventDefault();
+
                         var $this = $(this),
                             add = !$this.hasClass('selected');
 
