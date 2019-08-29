@@ -287,15 +287,19 @@ class pocketlistsLogAction
     {
         $contact = new waContact($this->ext_logs[$id]['params']['assigned_to']);
         $list_html = $this->getListUrlHtml($id);
-        $team_url = $this->app_url.'#/team/'.htmlspecialchars($contact->get('login')).'/';
-        $team_name = htmlspecialchars($contact->getName());
+        $team_url = '#/team/';
+        $teamName = 'no contact';
+        if ($contact->exists()) {
+            $team_url = $this->app_url.'#/team/'.$contact->get('login').'/';
+            $teamName = htmlspecialchars($contact->getName());
+        }
 
         $item = null;
         if (!empty($this->ext_logs[$id]['params']['item_id'])) {
             $item = $this->getItemData($this->ext_logs[$id]['params']['item_id']);
         }
 
-        $_str = '<a href="'.$team_url.'">'.$team_name.'</a>'.($item && $item->getId() ? ' '.htmlspecialchars(
+        $_str = '<a href="'.$team_url.'">'.$teamName.'</a>'.($item && $item->getId() ? ' '.htmlspecialchars(
                     $item->getName()
                 ) : '');
         if ($list_html) {
@@ -336,7 +340,12 @@ class pocketlistsLogAction
     private function item_assign_team($id)
     {
         $contact = new waContact($this->ext_logs[$id]['params']['assigned_to']);
-        $team_url = $this->app_url.'#/team/'.$contact->get('login').'/';
+        $team_url = '#/team/';
+        $teamName = 'no contact';
+        if ($contact->exists()) {
+            $team_url = $this->app_url.'#/team/'.$contact->get('login').'/';
+            $teamName = htmlspecialchars($contact->getName());
+        }
 
         $item = null;
         if (!empty($this->ext_logs[$id]['params']['item_id'])) {
@@ -346,7 +355,7 @@ class pocketlistsLogAction
         return sprintf(
             ' <a href="%s">%s</a>%s',
             $team_url,
-            htmlspecialchars($contact->getName()),
+            $teamName,
             ($item && $item->getId() ? ' '.htmlspecialchars($item->getName()) : '')
         );
     }
