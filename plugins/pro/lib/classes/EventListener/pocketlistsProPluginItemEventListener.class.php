@@ -97,8 +97,9 @@ class pocketlistsProPluginItemEventListener
 
             if ($label) {
                 return sprintf(
-                    '<a href="#" class="pl-label" style="background-color: #%s">%s</a>',
+                    '<a href="javascript:void(0);" class="pl-label" style="background-color: #%s" data-pl2pro-label="%d">%s</a>',
                     $label->getColor(),
+                    $label->getId(),
                     htmlspecialchars($label->getName())
                 );
             }

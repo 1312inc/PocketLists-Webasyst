@@ -1840,6 +1840,14 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             })
         ;
 
+        $(document)
+            .on('openItemDetails.pl2', function (e, data) {
+                e.preventDefault();
+
+                openItemDetailsWrapper.call(data.pledit);
+            })
+        ;
+
         // keyboard
         $(document).on('keydown', function (e) {
             switch (e.which) {
