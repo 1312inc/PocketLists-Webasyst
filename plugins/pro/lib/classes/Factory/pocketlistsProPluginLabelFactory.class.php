@@ -26,6 +26,17 @@ class pocketlistsProPluginLabelFactory extends pocketlistsFactory
     }
 
     /**
+     * @return pocketlistsProPluginLabel[]
+     * @throws waException
+     */
+    public function findAll()
+    {
+        $data = $this->getModel()->select('*')->order('sort asc, id desc')->fetchAll();
+
+        return $this->generateWithData($data, true);
+    }
+
+    /**
      * @param pocketlistsProPluginLabel $entity
      *
      * @return bool
