@@ -10,7 +10,7 @@ class pocketlistsProPluginSettingsActions extends pocketlistsViewActions
         $labels = pl2()->getModel(pocketlistsProPluginLabel::class)->getAllWithSort();
         $this->view->assign(
             [
-                'labels_json' => json_encode(array_reverse($labels), JSON_UNESCAPED_UNICODE),
+                'labels_json' => json_encode($labels, JSON_UNESCAPED_UNICODE),
             ]
         );
     }
