@@ -8,7 +8,7 @@ class pocketlistsProPluginLogFactory
     /**
      * @param pocketlistsLog $log
      *
-     * @return pocketlistsProPluginLogComment|pocketlistsProPluginLogItem|pocketlistsProPluginLogList
+     * @return pocketlistsProPluginLogComment|pocketlistsProPluginLogItem|pocketlistsProPluginLogList|pocketlistsProPluginLogPocket|pocketlistsProPluginLogAttachment
      * @throws pocketlistsLogicException
      */
     public static function createFromLog(pocketlistsLog $log)
@@ -22,6 +22,12 @@ class pocketlistsProPluginLogFactory
 
             case pocketlistsLog::ENTITY_COMMENT:
                 return new pocketlistsProPluginLogComment($log);
+
+            case pocketlistsLog::ENTITY_POCKET:
+                return new pocketlistsProPluginLogPocket($log);
+
+            case pocketlistsLog::ENTITY_ATTACHMENT:
+                return new pocketlistsProPluginLogAttachment($log);
         }
 
         throw new pocketlistsLogicException('unknown log entity');
