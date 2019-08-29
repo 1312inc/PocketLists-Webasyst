@@ -139,16 +139,13 @@
         $add.on('click', function (e) {
             e.preventDefault();
 
-            var groupIds = $('[data-pl2pro-shortcuts-group]').map(function () {
-                    return $(this).data('pl2pro-shortcuts-group');
-                }).toArray(),
-                groupId = Math.max(...groupIds) + 1;
+            var groupId = $('[data-pl2pro-shortcuts-group]').length + 1,
+                $shortcutsGroup = shortcutTemplate.tmpl({
+                    group: $_('Group') + '#' + groupId,
+                    groupId: 0,
+                    id: +(new Date())
+                });
 
-            var $shortcutsGroup = shortcutTemplate.tmpl({
-                group: $_('Group') + '#' + groupId,
-                groupId: 0,
-                id: +(new Date())
-            });
             $shortcuts.append($shortcutsGroup);
 
             init($shortcutsGroup);
