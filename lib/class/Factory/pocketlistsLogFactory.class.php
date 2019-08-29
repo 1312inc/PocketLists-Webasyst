@@ -85,6 +85,7 @@ class pocketlistsLogFactory extends pocketlistsFactory
             ->setEntityType(pocketlistsLog::ENTITY_ITEM)
             ->setCreateDatetime(date('Y-m-d H:i:s'))
             ->setContactId(pl2()->getUser()->getId())
+            ->setAssignedContactId($item->getAssignedContactId())
             ->setAction($action)
             ->setParams($params)
             ->fillWithContext($context);

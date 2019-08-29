@@ -78,6 +78,11 @@ class pocketlistsLog extends pocketlistsEntity
     private $additional_id;
 
     /**
+     * @var int|null
+     */
+    private $assigned_contact_id;
+
+    /**
      * @var array|null
      */
     private $params;
@@ -373,6 +378,26 @@ class pocketlistsLog extends pocketlistsEntity
     public function setLocationId($location_id)
     {
         $this->location_id = $location_id;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getAssignedContactId()
+    {
+        return $this->assigned_contact_id;
+    }
+
+    /**
+     * @param int|null $assigned_contact_id
+     *
+     * @return pocketlistsLog
+     */
+    public function setAssignedContactId($assigned_contact_id)
+    {
+        $this->assigned_contact_id = $assigned_contact_id;
 
         return $this;
     }
