@@ -63,7 +63,7 @@ class pocketlistsBackendSidebarAction extends pocketlistsViewAction
 
         /** @var pocketlistsPocketFactory $pocketFactory */
         $pocketFactory = pl2()->getEntityFactory(pocketlistsPocket::class);
-        $pockets = $pocketFactory->getAllPocketsForUser();
+        $pockets = $pocketFactory->findAllForUser();
 
         /** @var pocketlistsPocket $pocket */
         foreach ($pockets as $pocketId => $pocket) {

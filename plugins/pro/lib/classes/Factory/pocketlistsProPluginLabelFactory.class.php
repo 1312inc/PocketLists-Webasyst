@@ -133,45 +133,49 @@ class pocketlistsProPluginLabelFactory extends pocketlistsFactory
 
     /**
      * @param pocketlistsProPluginLabel $label
+     * @param pocketlistsPocket|null    $pocket
      *
      * @return pocketlistsItem[]
      * @throws waException
      */
-    public function findItemsByLabel(pocketlistsProPluginLabel $label)
+    public function findItemsByLabelAndPocket(pocketlistsProPluginLabel $label, pocketlistsPocket $pocket = null)
     {
-        $itemsData = $this->getItemsByLabel($label->getId());
+        $itemsData = $this->getItemsByLabelAndPocket(
+            $label->getId(),
+            pocketlistsItem::STATUS_UNDONE,
+            $pocket ? $pocket->getId() : null
+        );
 
-        /** @var pocketlistsItemFactory $itemFactory */
-        $itemFactory = pl2()->getEntityFactory(pocketlistsItem::class);
-        $items = $itemFactory->generateWithData($itemsData, true);
-
-        return $items;
+        return pl2()->getEntityFactory(pocketlistsItem::class)->generateWithData($itemsData, true);
     }
 
     /**
+     * @param pocketlistsPocket|null $pocket
+     *
      * @return pocketlistsItem[]
      * @throws waException
      */
-    public function findDoneItemsByAllLabels()
+    public function findDoneItemsByAllLabelsAndPocket(pocketlistsPocket $pocket = null)
     {
-        $itemsData = $this->getItemsByLabel(null, pocketlistsItem::STATUS_DONE);
+        $itemsData = $this->getItemsByLabelAndPocket(
+            null,
+            pocketlistsItem::STATUS_DONE,
+            $pocket ? $pocket->getId() : null
+        );
 
-        /** @var pocketlistsItemFactory $itemFactory */
-        $itemFactory = pl2()->getEntityFactory(pocketlistsItem::class);
-        $items = $itemFactory->generateWithData($itemsData, true);
-
-        return $items;
+        return pl2()->getEntityFactory(pocketlistsItem::class)->generateWithData($itemsData, true);
     }
 
     /**
      * @param int $labelId
      * @param int $status
+     * @param int $pocketId
      *
      * @return array
      * @throws waDbException
      * @throws waException
      */
-    private function getItemsByLabel($labelId, $status = pocketlistsItem::STATUS_UNDONE)
+    private function getItemsByLabelAndPocket($labelId, $status = pocketlistsItem::STATUS_UNDONE, $pocketId = 0)
     {
         $contactId = wa()->getUser()->getId();
         $lists = pocketlistsRBAC::getAccessListForContact($contactId);
@@ -184,20 +188,30 @@ class pocketlistsProPluginLabelFactory extends pocketlistsFactory
                     from pocketlists_list l2
                              JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) l ON l.id = i.list_id',
         ];
+
         if ($labelId) {
             $sqlParts['join'][] = 'join pocketlists_pro_label ppl on ppl.id = i.pro_label_id';
         }
 
-        $sqlParts['where']['and'] = [
+        if ($pocketId) {
+            $sqlParts['join'][] = 'join pocketlists_pocket pp on l.pocket_id = pp.id';
+            $sqlParts['where']['and'][] = 'pp.id = i:pocket_id';
+        }
+
+        $sqlParts['where']['and'] += [
             sprintf('(%s OR l.id IS NULL)', pocketlistsRBAC::filterListAccess($lists, $contactId)),
             '(l.id is null OR (l.id is not null and l.archived = 0))',
             'i.status = i:status',
         ];
+
         if ($labelId) {
             $sqlParts['where']['and'][] = 'i.pro_label_id = i:label_id';
         }
+
         $sqlParts['order by'] = ['i.calc_priority desc', 'i.id asc'];
         $sql = $itemModel->buildSqlComponents($sqlParts, $this->getLimit(), $this->getOffset());
+
+        $this->resetLimitAndOffset();
 
         return $itemModel->query(
             $sql,
@@ -205,6 +219,7 @@ class pocketlistsProPluginLabelFactory extends pocketlistsFactory
                 'contact_id' => $contactId,
                 'label_id'   => $labelId,
                 'status'     => $status,
+                'pocket_id'  => $pocketId,
             ]
         )->fetchAll();
     }
