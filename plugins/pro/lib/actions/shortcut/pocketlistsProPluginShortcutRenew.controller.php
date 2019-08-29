@@ -29,7 +29,7 @@ class pocketlistsProPluginShortcutRenewController extends pocketlistsJsonControl
         }
 
         foreach ($shortcuts as $shortcut) {
-            if (empty($shortcut)) {
+            if (trim($shortcut) === 0) {
                 continue;
             }
 
