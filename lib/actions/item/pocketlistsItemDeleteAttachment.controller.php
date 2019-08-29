@@ -17,10 +17,8 @@ class pocketlistsItemDeleteAttachmentController extends pocketlistsJsonControlle
 
         $item = $this->getItem($item_id);
 
-        if ($item->getListId()) {
-            if (pocketlistsRBAC::canAccessToList($item->getList())) {
-                throw new pocketlistsForbiddenException();
-            }
+        if ($item->getListId() && !pocketlistsRBAC::canAccessToList($item->getList())) {
+            throw new pocketlistsForbiddenException();
         }
 
         if ($attachmentId) {
