@@ -15,7 +15,7 @@ class pocketlistsProPluginActivityAction extends pocketlistsProPluginAbstractVie
     /**
      * @var string
      */
-    protected $type = '';
+    protected $type = 'Activity';
 
     /**
      * @var int
@@ -42,7 +42,7 @@ class pocketlistsProPluginActivityAction extends pocketlistsProPluginAbstractVie
     {
         $this->offset = $this->getParam('offset', 0, waRequest::TYPE_INT);
         $this->entity_id = $this->getParam('entity_id', 0, waRequest::TYPE_INT);
-        if ($this->type) {
+        if ($this->type !== 'Activity') {
             pocketlistsAssert::gt($this->entity_id, 0);
         }
 
