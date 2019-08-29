@@ -198,8 +198,9 @@
                 loadActivity()
             }
         },
-        boardAction: function () {
-            this.load('?plugin=pro&module=board', this.setHtmlContent);
+        boardAction: function (id) {
+            id = id || 0;
+            this.load('?plugin=pro&module=board&pocket_id=' + id, this.setHtmlContent);
         },
         /** Helper to load data into main content area. */
         load: function (url, options, fn) {

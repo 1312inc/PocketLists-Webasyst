@@ -5,7 +5,12 @@
         <div class="pl2pro-board-container">
 
             <!-- <h1>[`All pockets`]</h1> -->
-            <h1><a href="#" class="back">&larr; [`All pockets`]</a> <span class="pl-dark-green-label">Shop-Script</span></h1>
+
+            <h1><a href="#/pro/board/" class="back">&larr; [`All pockets`]</a> <span class="pl-dark-green-label">Shop-Script</span></h1>
+            {foreach $pockets as $p}
+                {if $pocket->getId() == $p->getId()}current{/if}
+                <h1><a href="#/pro/board/{$p->getId()}/" class="back">{$p->getName()|escape}</a> <span class="pl-dark-{$p->getColor()}-label">{$p->getName()|escape}</span></h1>
+            {/foreach}
 
             <div class="pl2pro-board">
                 {** @var pocketlistsProPluginLabelItemsDto $labelInfo **}

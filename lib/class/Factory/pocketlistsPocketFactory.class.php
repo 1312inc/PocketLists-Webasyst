@@ -15,7 +15,7 @@ class pocketlistsPocketFactory extends pocketlistsFactory
      * @return pocketlistsPocket[]
      * @throws waException
      */
-    public function getAllPocketsForUser(pocketlistsContact $user = null)
+    public function findAllForUser(pocketlistsContact $user = null)
     {
         $contactId = $user instanceof pocketlistsContact ? $user->getId() : false;
         $data = $this->getModel()->getAllPockets($contactId);
