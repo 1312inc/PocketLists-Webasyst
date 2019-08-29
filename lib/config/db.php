@@ -125,6 +125,7 @@ return array(
         'attachment_id' => array('int', 11),
         'location_id' => array('int', 11),
         'additional_id' => array('int', 11),
+        'assigned_contact_id' => array('int', 11),
         'params' => array('text'),
         'create_datetime' => array('datetime'),
         ':keys' => array(
