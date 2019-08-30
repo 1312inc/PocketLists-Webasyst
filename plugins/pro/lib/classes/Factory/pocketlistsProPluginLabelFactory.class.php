@@ -46,9 +46,9 @@ class pocketlistsProPluginLabelFactory extends pocketlistsFactory
     {
         if (parent::delete($entity)) {
             pl2()->getModel(pocketlistsItem::class)->updateByField(
-                'pro_label',
+                'pro_label_id',
                 $entity->getId(),
-                ['pro_label' => null]
+                ['pro_label_id' => null]
             );
 
             return true;
