@@ -49,30 +49,43 @@
                 labelsExists = {$pl2pro.labelsExists},
                 shortcutsExists = {$pl2pro.shortcutsExists};
 
-            $(document)
-                .off('open_new_item_wrapper.pl2 itemDetailsOpened.pl2 itemDetailsClosed.pl2 item_add.pl2')
-                .on('item_add.pl2', function (e, data) {
+            var pl2EventsHandlers = {
+                item_add: function (e, data) {
                     $wrapper = data.add_wrapper.find('[data-pl2pro-wrapper]');
                     $wrapper.removeData('pl2pro-item-add');
 
                     init($wrapper);
-                })
-                .on('open_new_item_wrapper.pl2', function (e, data) {
+                },
+                open_new_item_wrapper: function (e, data) {
                     $wrapper = data.add_wrapper.find('[data-pl2pro-wrapper="item-compact-add-' + wrapperTime + '"]');
 
                     init($wrapper);
-                })
-                .on('itemDetailsOpened.pl2', function (e, data) {
+                },
+                itemDetailsOpened: function (e, data) {
                     $wrapper = data.details_wrapper.find('[data-pl2pro-wrapper="item-compact-add-' + wrapperTime + '"]');
 
                     init($wrapper);
-                })
-                .on('itemDetailsClosed.pl2', function (e, data) {
+                },
+                itemDetailsClosed: function (e, data) {
                     $wrapper = data.details_wrapper.find('[data-pl2pro-wrapper]');
                     $wrapper.removeData('pl2pro-item-add');
 
                     init($wrapper);
-                });
+                }
+            };
+
+            $(document)
+                .off('item_add.pl2', pl2EventsHandlers.item_add)
+                .on('item_add.pl2', pl2EventsHandlers.item_add)
+
+                .off('open_new_item_wrapper.pl2', pl2EventsHandlers.open_new_item_wrapper)
+                .on('open_new_item_wrapper.pl2', pl2EventsHandlers.open_new_item_wrapper)
+
+                .off('itemDetailsOpened.pl2', pl2EventsHandlers.itemDetailsOpened)
+                .on('itemDetailsOpened.pl2', pl2EventsHandlers.itemDetailsOpened)
+
+                .off('itemDetailsClosed.pl2', pl2EventsHandlers.itemDetailsClosed)
+                .on('itemDetailsClosed.pl2', pl2EventsHandlers.itemDetailsClosed);
 
             function init($wrapper) {
                 if ($wrapper.data('pl2pro-item-add')) {
