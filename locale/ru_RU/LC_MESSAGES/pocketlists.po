@@ -12,7 +12,7 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Basepath: .\n"
 "Language: ru_RU\n"
-"X-Generator: Poedit 2.2.3\n"
+"X-Generator: Poedit 1.8.7\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: .\n"
 
@@ -1718,3 +1718,7 @@ msgstr "Agile: просмотр задач в виде колонок по ст�
 #: /wa-apps/pocketlists/templates/actions/about/About.html:172
 msgid "Bullets highlighted with a %s label will be available as a part of the paid Pocket Lists PRO plugin."
 msgstr "Пункты, отмеченные значком %s, планируются к выпуску в виде отдельного платного плагина Pocket Lists PRO."
+
+#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:157
+msgid "Plugins"
+msgstr "Плагины"
