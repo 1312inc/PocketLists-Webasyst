@@ -154,7 +154,7 @@ class pocketlistsLogModel extends pocketlistsModel
         }
 
         if ($contactId) {
-            $queryComponents['where']['and'][] = '(l.contact_id = i:contact_id)';// or (l.additional_id = i.contact_id and ';
+            $queryComponents['where']['and'][] = '(l.contact_id = i:contact_id or l.assigned_contact_id = i:contact_id)';
         }
 
         $sql = $this->buildSqlComponents($queryComponents, $limit, $offset);
