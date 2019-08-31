@@ -173,6 +173,7 @@
             }
         },
         pocketActivityAction: function (id) {
+            $.pocketlists.skipHighlightSidebar = true;
             var that = this,
                 $content = $('#content'),
                 loadActivity = function(){
@@ -180,6 +181,9 @@
                         '?plugin=pro&module=activity&action=pocket&entity_id=' + id,
                         function (labelHtml) {
                             $content.find('#pl-list-content').html(labelHtml);
+
+                            $.pocketlists.skipHighlightSidebar = false;
+                            $.pocketlists.highlightSidebar(null, '#/pocket/' + id + '/');
                         })
                 };
 
@@ -191,7 +195,7 @@
 
                         $html.find('#pl-list-content').empty();
                         $content.empty().append($html);
-                        loadActivity()
+                        loadActivity();
                     }
                 );
             } else {
