@@ -14,7 +14,8 @@ $.pocketlists.List = function ($list_wrapper, options) {
         list_id = parseInt($list_wrapper.find('#pl-list-id').val()),
         pocket_id = parseInt($list_wrapper.find('input[name="pocket_id"]').val()),
         o = $.extend({}, {
-            archive: false
+            archive: false,
+            totalItems: 0
         }, options),
         request_in_action = false;
 
@@ -268,6 +269,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
                             $.pocketlists.sendNotifications();
                             if (list_id === -1) {
                                 $.wa.setHash('#/pocket/'+pocket_id+'/list/' + r.data.id + '/');
+
                             }
                         } else {
 
@@ -448,6 +450,11 @@ $.pocketlists.List = function ($list_wrapper, options) {
             $list_wrapper.find(':checkbox').prop('disabled', true);
         }
 
+        if (!o.totalItems) {
+            setTimeout(function () {
+                $('[data-pl2-item-textarea]').trigger('focus');
+            }, 10);
+        }
 
         $uho.add($list_wrapper)
             .on('click', '[data-pl-action="list-edit"]', function (e) {
