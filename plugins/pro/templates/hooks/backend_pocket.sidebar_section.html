@@ -21,4 +21,64 @@
         </div>
     {/foreach}
 </div>
+<script>
+    'use strict';
+    (function(){
+        var $labelsWrapper = $('[data-pl2pro-pocket-sidebar-labels]'),
+            dropInAction = false;
+
+        $('[data-pl2pro-label] .pl-view-widget', $labelsWrapper).droppable({
+            accept: '[data-parent-id]',
+            disabled: false,
+            greedy: true,
+            tolerance: 'pointer',
+            classes: {
+                'ui-droppable': 'pl-droppable'
+            },
+            over: function (event, ui) {
+                dropInAction = true;
+
+                $(this).addClass('highlighted-background');
+            },
+            out: function (event, ui) {
+                dropInAction = false;
+
+                $(this).removeClass('highlighted-background');
+            },
+            drop: function (event, ui) {
+                var $item = ui.draggable,
+                    $label = $(event.target).closest('[data-pl2pro-label]'),
+                    labelId = $label.data('pl2pro-label'),
+                    itemId = $item.data('id');
+
+                dropInAction = false;
+                $item.addClass('pl-dropped');
+                $(this).removeClass('highlighted-background');
+
+                $.post(
+                    '?plugin=pro&module=label&action=addToItem',
+                    {
+                        id: labelId,
+                        item_id: itemId
+                    },
+                    function (r) {
+                        if (r.status === 'ok') {
+                            $.get(
+                                '?module=item&action=data',
+                                { item: { id: itemId } },
+                                function (html) {
+                                    $item.html(html);
+                                }
+                            );
+
+                            $.pocketlists_pro.updatePocketLabelCounts();
+                        }
+                    },
+                    'json'
+                );
+            }
+        });
+    }())
+</script>
+
 {/if}
