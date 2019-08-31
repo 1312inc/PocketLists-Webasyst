@@ -21,7 +21,7 @@ class pocketlistsItemMoveToListController extends pocketlistsJsonController
         }
 
         if ($item->getListId() == $list_id) {
-            $this->response = $item->getId();
+            $this->errors = 'same list';
 
             return;
         }
