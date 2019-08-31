@@ -124,19 +124,19 @@
                     }
 
                     var attr = hash.slice(attrMarker);
-                    this.preExecute(actionName);
                     if (typeof(this[actionName + 'Action']) == 'function') {
+                        this.preExecute(actionName);
                         console.info('dispatch', [actionName + 'Action', attr]);
                         this[actionName + 'Action'].apply(this, attr);
 
                         if (actionName !== 'debug') {
                             $.storage.set('/pocketlists/hash/' + this.options.user_id, hash.join('/'));
                         }
+                        this.postExecute(actionName);
                     }
                     else {
                         console.info('Invalid action name:', actionName + 'Action');
                     }
-                    this.postExecute(actionName);
                 } else {
                     this.preExecute();
                     this.defaultAction();

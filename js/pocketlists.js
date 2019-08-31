@@ -10,6 +10,7 @@
         options: {},
         reloadSidebarInAction: false,
         dropInAction: false,
+        skipHighlightSidebar: false,
         updateAppCounter: function (count) {
             var self = this;
 
@@ -37,12 +38,20 @@
                 $('html,body').animate({scrollTop: offset + 'px'}, speed);
             }
         },
-        highlightSidebar: function ($li) {
+        highlightSidebar: function ($li, href) {
+            if (this.skipHighlightSidebar) {
+                return;
+            }
+
             var self = this;
 
             var $all_li = self.$core_sidebar.find('li');
             if ($li) {
                 $all_li.removeClass('selected');
+                $li.addClass('selected');
+            } else if (href) {
+                $all_li.removeClass('selected');
+                $li = self.$core_sidebar.find('a[href^="' + href + '"]').first().closest('li');
                 $li.addClass('selected');
             } else {
                 var hash = $.pocketlists_routing.getHash(),
