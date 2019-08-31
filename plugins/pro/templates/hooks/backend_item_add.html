@@ -104,14 +104,16 @@
                         $labels.addClass('shown');
                     } else {
                         // $labels.removeClass('selected');
+                        $labels.removeClass('selected shown').filter(':nth(1)').addClass('shown');
+
                         if ($.storage && (labelId = $.storage.get('pocketlists/pro/label'))) {
-                            $labels
-                                .removeClass('selected shown')
-                                .filter('[data-pl2pro-label="'+labelId+'"]')
-                                .addClass('selected shown');
-                            $wrapper.data('pl2pro-label-selected', labelId);
-                        } else {
-                            $labels.removeClass('selected shown').filter(':nth(1)').addClass('shown');
+                            var $lastUsedLabel = $labels.filter('[data-pl2pro-label="'+labelId+'"]');
+
+                            if ($lastUsedLabel.length) {
+                                $labels.removeClass('selected shown');
+                                $lastUsedLabel.addClass('selected shown');
+                                $wrapper.data('pl2pro-label-selected', labelId);
+                            }
                         }
                     }
 
