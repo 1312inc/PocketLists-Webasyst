@@ -1409,11 +1409,10 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
                     if (item_list_id != item_list_id_new) {
                         loadListCounts(item_list_id_new);
+                        $this.hide(200, function () {
+                            $this.remove();
+                        });
                     }
-
-                    $this.hide(200, function () {
-                        $this.remove();
-                    });
 
                     $toList.addClass('pl-drop-success');
 
@@ -1425,6 +1424,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
                 setTimeout(function () {
                     $toList.removeClass('pl-drop-success pl-drop-fail');
+                    $this.removeClass('pl-drop-fail');
                 }, 500);
 
                 request_in_action = false;

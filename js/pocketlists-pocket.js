@@ -141,6 +141,7 @@ $.pocketlists.Pocket = function ($pocket_wrapper, options) {
                     $list = $(event.target),
                     list_id = $list.data('pl-list-id');
 
+                debugger;
                 $item.trigger('moveToList.pl2', {
                     id: list_id,
                     drop: this
