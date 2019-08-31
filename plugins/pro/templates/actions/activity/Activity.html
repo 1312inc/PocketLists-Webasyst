@@ -1,5 +1,9 @@
 <div class="pl2pro-log pl2pro-log-{$type|strtolower}" data-pl2pro-logs>
-    <h5 class="heading">[`Activity`]</h5>
+    {if $type|strtolower == 'activity' || $type|strtolower == 'pocket'}
+        <h1>[`Activity`]</h1>
+    {else}
+        <h5 class="heading">[`Activity`]</h5>
+    {/if}
     <section data-pl2pro-logs-list>
     {foreach $logs as $log}
         <div class="pl2pro-log-record {$log->getStyle()}"
