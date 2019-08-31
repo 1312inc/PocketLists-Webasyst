@@ -1,0 +1,425 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: pocketlists/plugins/pro\n"
+"POT-Creation-Date: 2019-08-31 09:16+0200\n"
+"PO-Revision-Date: \n"
+"Last-Translator: pocketlists/plugins/pro\n"
+"Language-Team: pocketlists/plugins/pro\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Basepath: .\n"
+"Language: pro\n"
+"X-Generator: Poedit 1.8.7\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: .\n"
+
+#: /wa-apps/pocketlists/plugins/pro/templates/hooks/backend_item_add.html:15
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsLabels.html:11
+msgid "No status"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/hooks/backend_settings.sidebar_li.html:4
+msgid "Status labels"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/hooks/backend_settings.sidebar_li.html:10
+msgid "Shortcuts"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/hooks/backend_settings.sidebar_li.html:17
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:1
+msgid "Shop-Script"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/hooks/backend_sidebar.views_li.html:2
+msgid "Activity log"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/hooks/backend_sidebar.views_li.html:6
+msgid "Board"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShortcuts.html:1
+msgid "To-do shortcuts"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShortcuts.html:2
+msgid "Shortcuts help you create to-dos even faster. When creating a new to-do item, shortcuts will be offered as suggestions depending on your current input. Grouping enables the priority of each shortcut."
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShortcuts.html:3
+msgid "For even faster to-do creation, use <code>Alt + N</code> keyboard combination to quickly select the suggested shortcut shown under the to-do name input."
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShortcuts.html:12
+msgid "Add group"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShortcuts.html:28
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:351
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsLabels.html:59
+msgid "Save"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShortcuts.html:130
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShortcuts.html:144
+msgid "Group"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:2
+msgid "Set up the automation rules to make Pocket Lists automatically create and assign to-dos based on actions performed with Shop-Script orders."
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:7
+msgid "New order"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:12
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:30
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:81
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:106
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsLabels.html:41
+msgid "Edit"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:13
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:31
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:83
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:108
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:155
+msgid "IF"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:14
+msgid "ALL"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:18
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:37
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:93
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:112
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:282
+msgid "Assigned to"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:19
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:39
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:94
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:115
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:298
+msgid "Priority"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:20
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:94
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:116
+msgid "Normal"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:20
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:40
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:98
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:119
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:313
+msgid "Due"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:21
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:43
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:100
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:120
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:329
+msgid "List"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:23
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:44
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:101
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:120
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:338
+msgid "None"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:33
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:207
+msgid "Amount"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:39
+msgid "Urgent"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:40
+msgid "Now"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:49
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:69
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:127
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:147
+msgid "Add rule"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:61
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:137
+msgid "No automation rules are defined for the ‘%s’ order action"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:84
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:109
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:189
+msgid "Shipping"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:87
+msgid "AND"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:89
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:170
+msgid "Payment"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:93
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:113
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:284
+msgid "Order action performer"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:147
+msgid "‘Order > To-do’ automation rule"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:148
+msgid "Pocket Lists will create a new to-do upon an action performed with any order in Shop-Script if the specified conditions are met."
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:156
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:262
+msgid "Action"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:225
+msgid "Storefront"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:240
+msgid "Customer group"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:257
+msgid "THEN"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:264
+msgid "Create a to-do"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:270
+msgid "Title"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:275
+msgid "New to-do"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:279
+msgid "Note"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:284
+msgid "Nobody"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:285
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:288
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:292
+msgid "Random user from the “%s” group"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:320
+msgid "minutes"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:322
+msgid "hours"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:323
+msgid "day"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:325
+msgid "from the moment the action was performed"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:348
+msgid "Delete rule"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:354
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsLabels.html:60
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/label/LabelDeleteDialog.html:13
+msgid "or"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:354
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/label/LabelDeleteDialog.html:13
+msgid "cancel"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsLabels.html:1
+msgid "To-do status labels"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsLabels.html:2
+msgid "Statuses enables you to mark to-dos with color labels for better and a more sophisticated organization."
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsLabels.html:2
+msgid "The list of available custom labels is system-wide and applicable for all to-dos no matter of a pocket or a list."
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsLabels.html:19
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Factory/pocketlistsProPluginLabelFactory.class.php:140
+msgid "Done"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsLabels.html:27
+msgid "Add status"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsLabels.html:37
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsLabels.html:51
+msgid "Sort"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsLabels.html:54
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/label/LabelDeleteDialog.html:12
+msgid "Delete"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsLabels.html:60
+msgid "close"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/board/Board.html:7
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/board/Board.html:24
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/board/Board.html:27
+msgid "All pockets"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/board/Board.html:14
+msgid "Filter by pocket"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/activity/Activity.html:3
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/activity/Activity.html:5
+msgid "Activity"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/activity/Activity.html:32
+msgid "No activity logged."
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/activity/Activity.html:36
+msgid "Loading..."
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/activity/Activity.html:41
+msgid "Show more"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/label/LabelDeleteDialog.html:3
+msgid "Delete status"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/label/LabelDeleteDialog.html:5
+msgid "The status label will be permanently deleted leaving all <strong>%d&nbsp;to-dos</strong> currently marked with this status unlabelled. Delete the status label?"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/label/LabelDeleteDialog.html:7
+msgid "The status label will be permanently deleted. Are you sure?"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/config/install.php:10
+#: /wa-apps/pocketlists/plugins/pro/lib/updates/dev/1564224483.php:9
+msgid "In progress"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/config/install.php:11
+#: /wa-apps/pocketlists/plugins/pro/lib/updates/dev/1564224483.php:8
+msgid "To do"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/config/install.php:12
+#: /wa-apps/pocketlists/plugins/pro/lib/updates/dev/1564224483.php:7
+msgid "Backlog"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/config/install.php:13
+#: /wa-apps/pocketlists/plugins/pro/lib/updates/dev/1564224483.php:6
+msgid "Testing"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/config/install.php:23
+#: /wa-apps/pocketlists/plugins/pro/lib/updates/dev/1564650128.php:6
+msgid "Call"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/config/install.php:23
+#: /wa-apps/pocketlists/plugins/pro/lib/updates/dev/1564650128.php:6
+msgid "Remind"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/config/install.php:23
+#: /wa-apps/pocketlists/plugins/pro/lib/updates/dev/1564650128.php:6
+msgid "Pay"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/config/install.php:23
+#: /wa-apps/pocketlists/plugins/pro/lib/updates/dev/1564650128.php:6
+msgid "Ship"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/config/install.php:23
+#: /wa-apps/pocketlists/plugins/pro/lib/updates/dev/1564650128.php:6
+msgid "Check"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/config/install.php:23
+#: /wa-apps/pocketlists/plugins/pro/lib/updates/dev/1564650128.php:6
+msgid "Meet"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/config/install.php:24
+#: /wa-apps/pocketlists/plugins/pro/lib/updates/dev/1564650128.php:7
+msgid "today"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/config/install.php:24
+#: /wa-apps/pocketlists/plugins/pro/lib/updates/dev/1564650128.php:7
+msgid "tomorrow"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/config/install.php:24
+#: /wa-apps/pocketlists/plugins/pro/lib/updates/dev/1564650128.php:7
+msgid "in 2 days"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/config/install.php:24
+#: /wa-apps/pocketlists/plugins/pro/lib/updates/dev/1564650128.php:7
+msgid "in a week"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/config/install.php:24
+#: /wa-apps/pocketlists/plugins/pro/lib/updates/dev/1564650128.php:7
+msgid "in 2 weeks"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/config/install.php:24
+#: /wa-apps/pocketlists/plugins/pro/lib/updates/dev/1564650128.php:7
+msgid "in a month"
+msgstr ""
