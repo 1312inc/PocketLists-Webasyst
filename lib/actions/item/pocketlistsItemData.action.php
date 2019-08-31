@@ -30,7 +30,7 @@ class pocketlistsItemDataAction extends pocketlistsViewItemAction
             $isNewItem = true;
         }
 
-        if ($item_new_data && waRequest::getMethod() !== 'post') {
+        if ($item_new_data && waRequest::getMethod() === 'post') {
 //            $item->setListId($item_new_data['list_id'] === '' ? null : $item_new_data['list_id']);
 
             // todo: childs not available for now
@@ -125,6 +125,11 @@ class pocketlistsItemDataAction extends pocketlistsViewItemAction
             $context = (new pocketlistsLogContext())
                 ->setList($item->getList())
                 ->setItem($item);
+
+            if ($item->getAssignedContactId() != $oldAssignedId) {
+                $context->addParam(['item_action' => 'new assign']);
+            }
+
             if ($isNewItem) {
                 $this->logService->add(
                     $this->logService->getFactory()->createNewAfterItemAdd($context)

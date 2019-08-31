@@ -98,6 +98,16 @@ class pocketlistsLog extends pocketlistsEntity
     private $context;
 
     /**
+     * @var pocketlistsContact|null
+     */
+    private $_assignedContact;
+
+    /**
+     * @var pocketlistsContact
+     */
+    private $_contact;
+
+    /**
      * @param array $fields
      *
      * @return array|void
@@ -400,6 +410,35 @@ class pocketlistsLog extends pocketlistsEntity
         $this->assigned_contact_id = $assigned_contact_id;
 
         return $this;
+    }
+
+    /**
+     * @return pocketlistsContact
+     * @throws waException
+     */
+    public function getAssignContact()
+    {
+        if ($this->_assignedContact === null && $this->assigned_contact_id) {
+            /** @var pocketlistsContactFactory $factory */
+            $factory = pl2()->getEntityFactory(pocketlistsContact::class);
+            $this->_assignedContact = $factory->createNewWithId($this->assigned_contact_id) ?: $factory->createNew();
+        }
+
+        return $this->_assignedContact;
+    }
+
+    /**
+     * @return pocketlistsContact
+     * @throws waException
+     */
+    public function getContact()
+    {
+        if ($this->_contact === null) {
+            $this->_contact = pl2()->getEntityFactory(pocketlistsContact::class)
+                ->createNewWithId($this->contact_id);
+        }
+
+        return $this->_contact;
     }
 
     /**

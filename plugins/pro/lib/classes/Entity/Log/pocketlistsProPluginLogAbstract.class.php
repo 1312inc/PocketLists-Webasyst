@@ -11,11 +11,6 @@ abstract class pocketlistsProPluginLogAbstract
     protected $log;
 
     /**
-     * @var pocketlistsContact
-     */
-    protected $actor;
-
-    /**
      * pocketlistsProPluginLog constructor.
      *
      * @param pocketlistsLog $log
@@ -73,19 +68,5 @@ abstract class pocketlistsProPluginLogAbstract
         }
 
         throw new pocketlistsLogicException(sprintf_wp('Unknown log method %s', $name));
-    }
-
-    /**
-     * @return pocketlistsContact
-     * @throws waException
-     */
-    public function getActor()
-    {
-        if ($this->actor === null) {
-            $this->actor = pl2()->getEntityFactory(pocketlistsContact::class)
-                ->createNewWithId($this->log->getContactId());
-        }
-
-        return $this->actor;
     }
 }

@@ -21,7 +21,7 @@ class pocketlistsProPluginLogPocket extends pocketlistsProPluginLogAbstract
     {
         switch ($this->log->getAction()) {
             default:
-                return sprintf_wp('%s did something with pocket', $this->getActor()->getName());
+                return sprintf_wp('%s did something with pocket', $this->log->getContact()->getName());
         }
     }
 }
