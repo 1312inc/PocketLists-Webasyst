@@ -38,6 +38,12 @@ $.pocketlists.Pocket = function ($pocket_wrapper, options) {
                         _deletePocket.call(d, pocketId);
                     })
                 ;
+
+                setTimeout(function () {
+                    if (!$dialogWrapper.find('[name="pocket[id]"]').val() == 0) {
+                        $dialogWrapper.find('[name="pocket[name]"]').trigger('focus');
+                    }
+                }, 10);
             },
             onSubmit: function (d) {
                 d.find('.dialog-buttons input[type="button"]').after($loading);
