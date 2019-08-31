@@ -214,6 +214,8 @@
                             $inputs = $form.find(':input');
                             data = $inputs.serialize();
                             $button.removeClass('yellow red');
+
+                            removeForm();
                         } else {
                             $button.removeClass('yellow green').addClass('red');
                         }
