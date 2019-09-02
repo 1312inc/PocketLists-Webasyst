@@ -124,26 +124,26 @@
                     $labels.on('click', function (e) {
                         e.preventDefault();
 
-                        var $this = $(this),
-                            add = !$this.hasClass('selected');
+                        var $this = $(this);
 
                         if (labelsAreHidden()) {
+                            $wrapper.addClass('pl2pro-all-labels-shown');
                             $labels.addClass('shown');
 
                             return;
+                        } else {
+                            $wrapper.removeClass('pl2pro-all-labels-shown');
                         }
 
                         $labels.removeClass('selected');
                         $wrapper.removeData('pl2pro-label-selected');
 
-                        if (add) {
-                            if (isNew) {
-                                $.storage && !$.storage.set('pocketlists/pro/label', $this.data('pl2pro-label'));
-                            }
-                            $labels.removeClass('shown');
-                            $this.addClass('selected shown');
-                            $wrapper.data('pl2pro-label-selected', $this.data('pl2pro-label'));
+                        if (isNew) {
+                            $.storage && !$.storage.set('pocketlists/pro/label', $this.data('pl2pro-label'));
                         }
+                        $labels.removeClass('shown');
+                        $this.addClass('selected shown');
+                        $wrapper.data('pl2pro-label-selected', $this.data('pl2pro-label'));
                     });
 
                     // todo: удалить несколько обработчиков
