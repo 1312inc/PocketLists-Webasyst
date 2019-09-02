@@ -2,8 +2,20 @@
 
     <div class="pl-items">
         <header class="pl-list-title pl-title">
+            <div class="float-right block half-padded">
+                <ul class="menu-h with-icons">
+                    <li>
+                        {if $label->getId()}
+                            <a href="#/pro/board/{$pocket->getId()}/"><i class="icon16 zone"></i>[`Kanban view`]</a>
+                        {else}
+                            <a href="#/pro/pocketActivity/{$pocket->getId()}/"><i class="icon16 view-timeline"></i>[`Pocket activity log`]</a>
+                        {/if}
+                    </li>
+                </ul>
+            </div>
             <h1>
                 <span id="pl-list-name" style="color: #{$label->getColor()}">{$label->getName()|escape}</span>
+                <span class="hint">POCKET NAME</span>
             </h1>
         </header>
         <div class="pl-list-items" id="pl-list-items">

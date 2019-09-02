@@ -12,18 +12,18 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Basepath: .\n"
 "Language: pro\n"
-"X-Generator: Poedit 1.8.7\n"
+"X-Generator: Poedit 2.2.3\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: .\n"
 
 #: /wa-apps/pocketlists/plugins/pro/templates/hooks/backend_item_add.html:15
 #: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsLabels.html:11
 msgid "No status"
-msgstr "Без статуса"
+msgstr "Без маркера"
 
 #: /wa-apps/pocketlists/plugins/pro/templates/hooks/backend_settings.sidebar_li.html:4
 msgid "Status labels"
-msgstr "Статусы задач"
+msgstr "Маркеры задач"
 
 #: /wa-apps/pocketlists/plugins/pro/templates/hooks/backend_settings.sidebar_li.html:10
 msgid "Shortcuts"
@@ -40,15 +40,15 @@ msgstr "История действий"
 
 #: /wa-apps/pocketlists/plugins/pro/templates/hooks/backend_sidebar.views_li.html:6
 msgid "Board"
-msgstr "Таблица"
+msgstr "Доска"
 
 #: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShortcuts.html:1
 msgid "To-do shortcuts"
-msgstr "Шаблоны для новых задач"
+msgstr "Шаблоны быстрого ввода"
 
 #: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShortcuts.html:2
 msgid "Shortcuts help you create to-dos even faster. When creating a new to-do item, shortcuts will be offered as suggestions depending on your current input. Grouping enables the priority of each shortcut."
-msgstr "Шаблоны быстрого ввода позволяют создавать задачи, выбирая предзаполненные варианты вместо ввода текста задачи вручную. Группы шаблонов позволяют задать порядок появления каждого следующего набора шаблонов."
+msgstr "Шаблоны позволяют создавать задачи, выбирая предзаполненные варианты вместо ввода текста задачи вручную. Группы шаблонов позволяют задать порядок появления каждого следующего набора шаблонов."
 
 #: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShortcuts.html:3
 msgid "For even faster to-do creation, use <code>Alt + N</code> keyboard combination to quickly select the suggested shortcut shown under the to-do name input."
@@ -273,24 +273,24 @@ msgstr "отменить"
 
 #: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsLabels.html:1
 msgid "To-do status labels"
-msgstr "Статусы задач"
+msgstr "Маркировка задач"
 
 #: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsLabels.html:2
 msgid "Statuses enables you to mark to-dos with color labels for better and a more sophisticated organization."
-msgstr "Статусы расширяют возможности по маркировке задач в списках и фильтрах и позволяют добиться лучшей организации дел в команде."
+msgstr "Маркеры расширяют возможности по типизации задач в списках и фильтрах и позволяют добиться лучшей организации дел в команде."
 
 #: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsLabels.html:2
 msgid "The list of available custom labels is system-wide and applicable for all to-dos no matter of a pocket or a list."
-msgstr "Список заданных статусов задач применяется ко всем задачам, в каких бы проектах или списках они ни находились."
+msgstr "Маркеры могут быть назначены к любым задачам, в каких бы проектах или списках они ни находились."
 
 #: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsLabels.html:19
 #: /wa-apps/pocketlists/plugins/pro/lib/classes/Factory/pocketlistsProPluginLabelFactory.class.php:140
 msgid "Done"
-msgstr "Готово"
+msgstr "Выполнено"
 
 #: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsLabels.html:27
 msgid "Add status"
-msgstr "Добавить статус"
+msgstr "Добавить маркер"
 
 #: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsLabels.html:37
 #: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsLabels.html:51
@@ -314,16 +314,16 @@ msgstr "Все проекты"
 
 #: /wa-apps/pocketlists/plugins/pro/templates/actions/board/Board.html:14
 msgid "Filter by pocket"
-msgstr "Выбрать проект"
+msgstr "Фильтр по проекту"
 
 #: /wa-apps/pocketlists/plugins/pro/templates/actions/activity/Activity.html:3
 #: /wa-apps/pocketlists/plugins/pro/templates/actions/activity/Activity.html:5
 msgid "Activity"
-msgstr "История действий"
+msgstr "История"
 
 #: /wa-apps/pocketlists/plugins/pro/templates/actions/activity/Activity.html:32
 msgid "No activity logged."
-msgstr "Пока действий не производилось."
+msgstr "Пока здесь пусто."
 
 #: /wa-apps/pocketlists/plugins/pro/templates/actions/activity/Activity.html:36
 msgid "Loading..."
@@ -358,7 +358,7 @@ msgstr "План"
 #: /wa-apps/pocketlists/plugins/pro/lib/config/install.php:12
 #: /wa-apps/pocketlists/plugins/pro/lib/updates/dev/1564224483.php:7
 msgid "Backlog"
-msgstr "Беклог"
+msgstr "Бэклог"
 
 #: /wa-apps/pocketlists/plugins/pro/lib/config/install.php:13
 #: /wa-apps/pocketlists/plugins/pro/lib/updates/dev/1564224483.php:6
@@ -424,3 +424,15 @@ msgstr "через 2 недели"
 #: /wa-apps/pocketlists/plugins/pro/lib/updates/dev/1564650128.php:7
 msgid "in a month"
 msgstr "через месяц"
+
+#: /wa-apps/pocketlists/plugins/pro/templates/hooks/backend_sidebar.views_li.html:6
+msgid "Kanban"
+msgstr "Канбан"
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/label/LabelPocket.html:9
+msgid "Kanban view"
+msgstr "Канбан"
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/label/LabelPocket.html:11
+msgid "Pocket activity log"
+msgstr "История действий в проекте"

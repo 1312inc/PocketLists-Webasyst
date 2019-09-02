@@ -1,24 +1,17 @@
-{*
-    <div class="block double-padded">
-        <a href="#/pro/pocketActivity/{$pocket->getId()}/">Activity</a>
-    </div>
-*}
 {if $pocketLabelStat}
 <div class="pl-views" data-pl2pro-pocket-sidebar-labels>
-    {* <div class="pl-view-box"><a class="pl-view-widget">Activity / Reports / KPIs</a></div> *}
+    {* <div class="pl-view-box"><a class="pl-view-widget" href="#/pro/pocketActivity/{$pocket->getId()}/">Activity</a></div> *} 
     {foreach $pocketLabelStat as $labelInfo}
-        <div class="pl-view-box x3" data-pl2pro-label="{$labelInfo->label->getId()}">
+        <div class="pl-view-box x3" data-pl2pro-label="{$labelInfo->label->getId()}"{if !$labelInfo->count} style="display: none;"{/if}>
             <a class="pl-view-widget"
-               href="#/pro/pocket/{$labelInfo->pocket->getId()}/status/{$labelInfo->label->getId()}/">
+               href="#/pro/pocket/{$labelInfo->pocket->getId()}/status/{$labelInfo->label->getId()}/"{if $labelInfo->label->getId()} style="background-color: #{$labelInfo->label->getColor()};"{/if}>
                 <h3>
-                    {if $labelInfo->label->getId()}
-                    <i class="icon16 color" style="background: #{$labelInfo->label->getColor()};"></i>
-                    {else}
-                    <input type="checkbox" class="pl-done" checked="checked"><span></span>
+                    {if !$labelInfo->label->getId()}
+                        <input type="checkbox" class="pl-done" checked="checked"><span></span>
                     {/if}
-                    <span data-pl2pro-label-count style="color: #{$labelInfo->label->getColor()};">{if $labelInfo->count == 100}99+{else}{$labelInfo->count}{/if}</span>
+                    <span data-pl2pro-label-count{if $labelInfo->label->getId()} style="color: white;"{/if}>{if $labelInfo->count == 100}99+{else}{$labelInfo->count}{/if}</span>
                 </h3>
-                <span class="hint" style="color: #{$labelInfo->label->getColor()};">{$labelInfo->label->getName()|escape}</span>
+                <span class="hint"{if $labelInfo->label->getId()} style="color: white;"{/if}>{$labelInfo->label->getName()|escape}</span>
             </a>
         </div>
     {/foreach}
