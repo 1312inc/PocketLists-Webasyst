@@ -107,6 +107,7 @@ class pocketlistsProPlugin extends waPlugin
         $factory = pl2()->getEntityFactory(pocketlistsProPluginLabel::class);
 
         $pocketLabelsInfo = [];
+        $totalLabels = 0;
         $data = $factory->getModel()->getByPocketIdWithCount($pocket->getId());
         /** @var pocketlistsProPluginLabel $label */
         foreach ($factory->findAll() as $label) {
@@ -115,9 +116,10 @@ class pocketlistsProPlugin extends waPlugin
             $pocketLabelInfo->count = ifset($data, $label->getId(), 'labels_count', 0);
             $pocketLabelInfo->label = $label;
             $pocketLabelsInfo[] = $pocketLabelInfo;
+            $totalLabels += $pocketLabelInfo->count;
         }
 
-        if ($pocketLabelsInfo) {
+        if ($totalLabels) {
             $pocketLabelInfo = new pocketlistsProPluginLabelPocketInfoDto();
             $pocketLabelInfo->pocket = $pocket;
             $pocketLabelInfo->label = $factory->createNewDone();
