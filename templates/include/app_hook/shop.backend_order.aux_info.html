@@ -1,33 +1,34 @@
 {$wa->globals('pl2_external', true)}
-<script type="template/pl2" data-pl2-template="itemadd">
-    <main class="pl-items pl-list-items pl-todo pl-shop-order" id="pl-list-content">
-        <a class="pl-shop-close" href="#" data-pl2-shop-action="close" title="[`Close`]">&times;</a>
-        <div class="pl-list-items" id="pl-list-items">
-            <section id="pl-undone-items" data-pl-items="undone">
-                <ul class="menu-v">
-                    {if !empty($params.items_undone)}
-                    {include '../../actions/item/Item.html' parent_id=0 items=$params.items_undone}
-                    {/if}
-                </ul>
-            </section>
+<main class="pl-items pl-list-items pl-todo pl-shop-order"
+      id="pl-list-content"
+      data-pl2-template="itemadd"
+      style="display: none;"
+>
+    <a class="pl-shop-close" href="#" data-pl2-shop-action="close" title="[`Close`]">&times;</a>
+    <div class="pl-list-items" id="pl-list-items">
+        <section id="pl-undone-items" data-pl-items="undone">
+            <ul class="menu-v">
+                {if !empty($params.items_undone)}
+                {include '../../actions/item/Item.html' parent_id=0 items=$params.items_undone}
+                {/if}
+            </ul>
+        </section>
 
-            <section id="pl-complete-log" class="pl-logbook">
-                <ul class="menu-v">
-                    {if $params.count_done_items}
-                    {include '../../actions/item/Item.html' parent_id=0 items=$params.items_done}
-                    {/if}
-                </ul>
-            </section>
+        <section id="pl-complete-log" class="pl-logbook">
+            <ul class="menu-v">
+                {if $params.count_done_items}
+                {include '../../actions/item/Item.html' parent_id=0 items=$params.items_done}
+                {/if}
+            </ul>
+        </section>
 
-        </div>
+    </div>
 
-        {if $params.app->userCanAccess()}
-            {$params.itemAdd}
-        {/if}
-        {include '../../include/itemdetails.html' inline}
-
-    </main>
-</script>
+    {if $params.app->userCanAccess()}
+        {$params.itemAdd}
+    {/if}
+    {include '../../include/itemdetails.html' inline}
+</main>
 <script type="text/javascript" src="{$params.wa_app_static_url}js/pocketlists.js?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
 <script type="text/javascript" src="{$params.wa_app_static_url}js/pocketlists-item.js?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
 <script type="text/javascript" src="{$params.wa_app_static_url}js/pocketlists-comment.js?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
@@ -36,13 +37,11 @@
 <script>
     (function(){
         var $order_info_wrapper = $('#s-split-order-wrapper'),
-            item_add_html = $('[data-pl2-template="itemadd"]').html(),
+            $list_wrapper = $('#pl-list-content'),
             $toggle_link = $('[data-pl2-action="show-add-item"]'),
             has_items = /*{if empty($params.count_undone_items) && empty($params.count_done_items)}*/false/*{else}*/true/*{/if}*/;
 
-        $order_info_wrapper.prepend(item_add_html);
-
-        var $list_wrapper = $('#pl-list-content');
+        $order_info_wrapper.prepend($list_wrapper);
 
         function canShow() {
             return (!has_items && !$.storage.get('pocketlists/apps/hide-pl2ss-by-default')) || has_items;
@@ -62,6 +61,10 @@
 
         if (!canShow()) {
             $list_wrapper.hide();
+        } else {
+            setTimeout(function() {
+                $list_wrapper.slideDown();
+            }, 131.2);
         }
 
         $toggle_link.on('click', function (e) {
