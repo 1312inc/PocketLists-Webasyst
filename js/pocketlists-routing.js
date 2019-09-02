@@ -4,7 +4,8 @@
     $.storage = new $.store();
     $.pocketlists_routing = {
         options: {
-            user_id: 0
+            user_id: 0,
+            $content: $('#content')
         },
         init: function (options) {
             var that = this;
@@ -159,6 +160,7 @@
         postExecute: function () {
             $.pocketlists.reloadSidebar();
             this.heartbeat();
+            $.pocketlists.scrollToContent();
         },
 
         heartbeat: function () {

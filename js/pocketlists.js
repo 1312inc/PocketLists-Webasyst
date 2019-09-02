@@ -11,6 +11,9 @@
         reloadSidebarInAction: false,
         dropInAction: false,
         skipHighlightSidebar: false,
+        scrollToContent: function() {
+            this.scrollToTop(80, $('#content').offset().top);
+        },
         updateAppCounter: function (count) {
             var self = this;
 
@@ -34,7 +37,7 @@
             }
         },
         scrollToTop: function (speed, offset) {
-            if ($('body').scrollTop() > offset) {
+            if ($(document).scrollTop() > offset) {
                 $('html,body').animate({scrollTop: offset + 'px'}, speed);
             }
         },
