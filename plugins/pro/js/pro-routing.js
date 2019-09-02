@@ -132,6 +132,8 @@
                         if (actionName !== 'debug') {
                             $.storage.set('/pocketlists/pro/hash/' + this.options.user_id, hash.join('/'));
                         }
+
+                        this.postExecute();
                     }
                 }
             }
@@ -139,6 +141,9 @@
         redispatch: function () {
             this.prevHash = null;
             this.dispatch();
+        },
+        postExecute: function () {
+            $.pocketlists.scrollToContent()
         },
         activityAction: function () {
             this.load('?plugin=pro&module=activity', this.setHtmlContent);
