@@ -72,6 +72,7 @@ class pocketlistsProPlugin extends waPlugin
 
     /**
      * @return array
+     * @throws waException
      */
     public function backendSidebarHandler()
     {
@@ -116,16 +117,18 @@ class pocketlistsProPlugin extends waPlugin
             $pocketLabelsInfo[] = $pocketLabelInfo;
         }
 
-        $pocketLabelInfo = new pocketlistsProPluginLabelPocketInfoDto();
-        $pocketLabelInfo->pocket = $pocket;
-        $pocketLabelInfo->label = $factory->createNewDone();
-        $pocketLabelInfo->count = count(
-            pl2()
-                ->getModel(pocketlistsItem::class)
-                ->getLogbookItems(false, false, true, $pocket->getId(), 0, 100)
-        );
+        if ($pocketLabelsInfo) {
+            $pocketLabelInfo = new pocketlistsProPluginLabelPocketInfoDto();
+            $pocketLabelInfo->pocket = $pocket;
+            $pocketLabelInfo->label = $factory->createNewDone();
+            $pocketLabelInfo->count = count(
+                pl2()
+                    ->getModel(pocketlistsItem::class)
+                    ->getLogbookItems(false, false, true, $pocket->getId(), 0, 100)
+            );
 
-        $pocketLabelsInfo[] = $pocketLabelInfo;
+            $pocketLabelsInfo[] = $pocketLabelInfo;
+        }
 
         $this->getView()->assign(
             [
