@@ -146,7 +146,7 @@
             $.pocketlists.scrollToContent()
         },
         activityAction: function () {
-            this.load('?plugin=pro&module=activity', this.setHtmlContent);
+            this.load('?plugin=pro&module=activity&action=activity', this.setHtmlContent);
         },
         pocketAction: function (id) {
             //var self = this;

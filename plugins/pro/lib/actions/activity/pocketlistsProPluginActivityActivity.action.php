@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Class pocketlistsProPluginActivityAction
+ * Class pocketlistsProPluginActivityActivityAction
  */
-class pocketlistsProPluginActivityAction extends pocketlistsProPluginAbstractViewAction
+class pocketlistsProPluginActivityActivityAction extends pocketlistsProPluginAbstractViewAction
 {
     const LIMIT = 30;
 

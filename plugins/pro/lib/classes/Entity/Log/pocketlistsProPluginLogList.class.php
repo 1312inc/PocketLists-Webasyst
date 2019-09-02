@@ -36,4 +36,12 @@ class pocketlistsProPluginLogList extends pocketlistsProPluginLogAbstract
 
         }
     }
+
+    /**
+     * @return string
+     */
+    public function getGlyph()
+    {
+        return 'list';
+    }
 }

@@ -32,4 +32,12 @@ class pocketlistsProPluginLogComment extends pocketlistsProPluginLogAbstract
                 return sprintf_wp('%s did something with comment', $this->log->getContact()->getName());
         }
     }
+
+    /**
+     * @return string
+     */
+    public function getGlyph()
+    {
+        return 'comment';
+    }
 }
