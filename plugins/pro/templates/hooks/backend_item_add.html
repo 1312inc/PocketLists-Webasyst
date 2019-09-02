@@ -85,7 +85,8 @@
                 .on('itemDetailsOpened.pl2', pl2EventsHandlers.itemDetailsOpened)
 
                 .off('itemDetailsClosed.pl2', pl2EventsHandlers.itemDetailsClosed)
-                .on('itemDetailsClosed.pl2', pl2EventsHandlers.itemDetailsClosed);
+                .on('itemDetailsClosed.pl2', pl2EventsHandlers.itemDetailsClosed)
+            ;
 
             function init($wrapper) {
                 if ($wrapper.data('pl2pro-item-add')) {
@@ -106,8 +107,8 @@
                         // $labels.removeClass('selected');
                         $labels.removeClass('selected shown').filter(':nth(1)').addClass('shown');
 
-                        if ($.storage && (labelId = $.storage.get('pocketlists/pro/label'))) {
-                            var $lastUsedLabel = $labels.filter('[data-pl2pro-label="'+labelId+'"]');
+                        if ($.storage && (labelId = $.storage.get('pocketlists/pro/label')) !== undefined) {
+                            var $lastUsedLabel = $labels.filter('[data-pl2pro-label="' + labelId + '"]');
 
                             if ($lastUsedLabel.length) {
                                 $labels.removeClass('selected shown');
@@ -117,34 +118,36 @@
                         }
                     }
 
-                    var labelsAreHidden = function() {
+                    var labelsAreHidden = function () {
                         return !!$labels.filter(':hidden').length;
                     };
 
-                    $labels.on('click', function (e) {
-                        e.preventDefault();
+                    $labels
+                        .off('click.pl2pro')
+                        .on('click.pl2pro', function (e) {
+                            e.preventDefault();
 
-                        var $this = $(this);
+                            var $this = $(this);
 
-                        if (labelsAreHidden()) {
-                            $wrapper.addClass('pl2pro-all-labels-shown');
-                            $labels.addClass('shown');
+                            if (labelsAreHidden()) {
+                                $wrapper.addClass('pl2pro-all-labels-shown');
+                                $labels.addClass('shown');
 
-                            return;
-                        } else {
-                            $wrapper.removeClass('pl2pro-all-labels-shown');
-                        }
+                                return;
+                            } else {
+                                $wrapper.removeClass('pl2pro-all-labels-shown');
+                            }
 
-                        $labels.removeClass('selected');
-                        $wrapper.removeData('pl2pro-label-selected');
+                            $labels.removeClass('selected');
+                            $wrapper.removeData('pl2pro-label-selected');
 
-                        if (isNew) {
-                            $.storage && !$.storage.set('pocketlists/pro/label', $this.data('pl2pro-label'));
-                        }
-                        $labels.removeClass('shown');
-                        $this.addClass('selected shown');
-                        $wrapper.data('pl2pro-label-selected', $this.data('pl2pro-label'));
-                    });
+                            if (isNew) {
+                                $.storage && !$.storage.set('pocketlists/pro/label', $this.data('pl2pro-label'));
+                            }
+                            $labels.removeClass('shown');
+                            $this.addClass('selected shown');
+                            $wrapper.data('pl2pro-label-selected', $this.data('pl2pro-label'));
+                        });
 
                     // todo: удалить несколько обработчиков
                     $(document)

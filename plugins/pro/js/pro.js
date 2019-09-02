@@ -26,7 +26,7 @@
         },
         init: function () {
             $(document)
-                .on('click', '.pl-label[data-pl2pro-label]', function (e) {
+                .on('click', '.pl-item-wrapper[data-id] .pl-label[data-pl2pro-label]', function (e) {
                     e.preventDefault();
 
                     if ($('#pl-item-details-form').length) {
