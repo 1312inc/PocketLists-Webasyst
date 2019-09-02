@@ -413,7 +413,7 @@ p .pl-label.pl-pro { position: relative; top: 3px; margin-right: 0; }
 
 .pl-list-items .pl-item-placeholder { background: rgba(0,0,0,0.05); min-height: 5px; }
 
-#pl-complete-log {/* display: none; */}
+#pl-complete-log { display: none; }
 #pl-complete-log h5 { margin: 30px 15px 5px; }
 #pl-complete-log-link { padding: 13px 15px; display: block; }
 
