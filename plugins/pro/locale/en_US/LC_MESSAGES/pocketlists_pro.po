@@ -423,3 +423,15 @@ msgstr ""
 #: /wa-apps/pocketlists/plugins/pro/lib/updates/dev/1564650128.php:7
 msgid "in a month"
 msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/hooks/backend_sidebar.views_li.html:6
+msgid "Kanban"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/label/LabelPocket.html:9
+msgid "Kanban view"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/label/LabelPocket.html:11
+msgid "Pocket activity log"
+msgstr ""
