@@ -19,12 +19,6 @@ return [
                     'class'        => 'pocketlistsProPluginWaEventListener',
                     'method'       => 'onEntityUpdateBefore',
                 ],
-                [
-                    'event_app_id' => 'shop',
-                    'event'        => 'order_action.*',
-                    'class'        => 'pocketlistsProPluginWaEventListener',
-                    'method'       => 'onOrderAction',
-                ],
             ],
             'backend_head'             => 'backendHeadHandler',
             'backend_settings'         => 'backendSettingsHandler',

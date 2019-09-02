@@ -52,8 +52,6 @@ class pocketlistsHydrator implements pocketlistsHydratorInterface
             }
         }
 
-        $object->afterExtract($result);
-
         return $result;
     }
 
