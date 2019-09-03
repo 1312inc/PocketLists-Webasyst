@@ -21,7 +21,7 @@ class pocketlistsListMoveToController extends pocketlistsJsonController
         $list = $this->getList();
 
         if ($list->getPocket()->getId() == $pocket_id) {
-            $this->setError(_w('List is already in this pocket'));
+            $this->setError(_w('The list is in the pocket already'));
 
             return;
         }
