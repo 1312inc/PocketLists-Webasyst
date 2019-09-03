@@ -368,7 +368,7 @@ msgstr "Проверяется"
 #: /wa-apps/pocketlists/plugins/pro/lib/config/install.php:23
 #: /wa-apps/pocketlists/plugins/pro/lib/updates/dev/1564650128.php:6
 msgid "Call"
-msgstr "Позвонить"
+msgstr "Звонок"
 
 #: /wa-apps/pocketlists/plugins/pro/lib/config/install.php:23
 #: /wa-apps/pocketlists/plugins/pro/lib/updates/dev/1564650128.php:6
@@ -436,3 +436,43 @@ msgstr "Канбан"
 #: /wa-apps/pocketlists/plugins/pro/templates/actions/label/LabelPocket.html:11
 msgid "Pocket activity log"
 msgstr "История действий в проекте"
+
+#: /wa-apps/pocketlists/plugins/pro/lib/config/install.php:10
+msgid "Reminder"
+msgstr "Напоминание"
+
+#: /wa-apps/pocketlists/plugins/pro/lib/config/install.php:12
+msgid "Bill"
+msgstr "Счет"
+
+#: /wa-apps/pocketlists/plugins/pro/lib/config/install.php:13
+msgid "Shipment"
+msgstr "Доставка"
+
+#: /wa-apps/pocketlists/plugins/pro/lib/config/install.php:14
+msgid "Docs"
+msgstr "Доки"
+
+#: /wa-apps/pocketlists/plugins/pro/lib/config/install.php:15
+msgid "Meeting"
+msgstr "Встреча"
+
+#: /wa-apps/pocketlists/plugins/pro/lib/config/install.php:26
+msgid "Reach out"
+msgstr "Связаться"
+
+#: /wa-apps/pocketlists/plugins/pro/lib/config/install.php:26
+msgid "Order"
+msgstr "Заказать"
+
+#: /wa-apps/pocketlists/plugins/pro/lib/config/install.php:26
+msgid "Prepare"
+msgstr "Подготовить"
+
+#: /wa-apps/pocketlists/plugins/pro/lib/config/install.php:26
+msgid "Return"
+msgstr "Вернуть"
+
+#: /wa-apps/pocketlists/plugins/pro/lib/config/install.php:27
+msgid "in 3 days"
+msgstr "через 3 дня"
