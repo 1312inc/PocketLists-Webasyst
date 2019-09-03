@@ -364,7 +364,13 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             if (request_in_action) {
                 return;
             }
+
+            if ($item.data('pl2-open-details-in-progress')) {
+                return;
+            }
+
             request_in_action = true;
+            $item.data('pl2-open-details-in-progress', 1);
 
             var loadDetails = function () {
                 setItem($item);
@@ -408,6 +414,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     }
 
                     $.pocketlists.flexHack();
+
+                    $item.removeData('pl2-open-details-in-progress');
 
                     $(document).trigger('itemDetailsOpened.pl2', {details_wrapper: $wrapper});
                 });
@@ -1062,8 +1070,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     updateListCountBadge();
                 }
 
-                $(document).trigger('item_update.pl2');
             }
+            $(document).trigger('item_update.pl2');
             $.isFunction(callback) && callback.call();
         };
 
@@ -1690,15 +1698,9 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 break;
         }
 
-        if ($item.data('pl2-open-details-in-progress')) {
-            return;
-        }
-
         if ($item.data('pl-complete-datetime')) {
             return;
         }
-
-        $item.data('pl2-open-details-in-progress', 1);
 
         ItemDetails.trigger('hide.pl2', function () {
             ItemDetails.$el.appendTo($item.find('[data-pl2-item-details]'));
@@ -1708,8 +1710,6 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 $item.find('.pl-meta').animate({'opacity': '0', 'height': 0}, 200, function () {
                     $(this).hide();
                 });
-
-                $item.removeData('pl2-open-details-in-progress');
             }]);
 
             selectItem($item);
