@@ -3,7 +3,7 @@
 /**
  * Class pocketlistsProPluginActivityContactAction
  */
-class pocketlistsProPluginActivityContactAction extends pocketlistsProPluginActivityAction
+class pocketlistsProPluginActivityContactAction extends pocketlistsProPluginActivityActivityAction
 {
     /**
      * @var bool

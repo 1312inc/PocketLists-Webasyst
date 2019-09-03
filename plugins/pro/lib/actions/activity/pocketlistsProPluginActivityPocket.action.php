@@ -3,7 +3,7 @@
 /**
  * Class pocketlistsProPluginActivityPocketAction
  */
-class pocketlistsProPluginActivityPocketAction extends pocketlistsProPluginActivityAction
+class pocketlistsProPluginActivityPocketAction extends pocketlistsProPluginActivityActivityAction
 {
     /**
      * @var string
