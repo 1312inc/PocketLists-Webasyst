@@ -434,6 +434,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
                     if (e.which === 13 && $new_list_input.data('pl-can-add')) {
                         e.preventDefault();
                         addNewList(list_id);
+                        $.storage.set('pocketlists/lists/focus', 1);
                     }
                     if (e.which === 27) {
                         $new_list_input.data('pl-can-add', false).val('').removeClass('pl-unsaved');
@@ -450,10 +451,11 @@ $.pocketlists.List = function ($list_wrapper, options) {
             $list_wrapper.find(':checkbox').prop('disabled', true);
         }
 
-        if (!o.totalItems) {
+        if ($.storage.get('pocketlists/lists/focus')) {
             setTimeout(function () {
                 $('[data-pl2-item-textarea]').trigger('focus');
             }, 10);
+            $.storage.del('pocketlists/lists/focus');
         }
 
         $uho.add($list_wrapper)
