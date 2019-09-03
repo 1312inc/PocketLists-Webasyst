@@ -164,7 +164,7 @@
 
             if (!$content.find('[data-pl2-pocket-wrapper="'+id+'"]').length) {
                 that.load(
-                    '?module=pocket&pocket_id=' + id,
+                    '?module=pocket&id=' + id,
                     function (html) {
                         var $html = $(html);
 
