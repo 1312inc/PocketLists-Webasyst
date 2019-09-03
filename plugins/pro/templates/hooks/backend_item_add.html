@@ -188,8 +188,9 @@
                         },
                         focus = function($textarea) {
                             setTimeout(function () {
-                                $textarea.trigger('focus.pl2pro');
-                            }, 0);
+                                var val = $textarea.val();
+                                $textarea.trigger('focus.pl2pro').val('').val(val);
+                            }, 10);
                         },
                         canBeShown = function(itemText) {
                             var $shortcutGroups = $wrapper.find('[data-pl2pro-shortcuts-group]'),
@@ -241,8 +242,10 @@
                                 groupId = $this.closest('[data-pl2pro-shortcuts-group]').data('pl2pro-shortcuts-group');
 
                             $textarea.val($textarea.val() + (isNotEmpty ? ' ' : '') + $this.text());
-                            focus($textarea);
+                            canBeShown($textarea.val());
                             setVisible.call(this, groupId + 1);
+
+                            focus($textarea);
 
                             return false;
                         });
