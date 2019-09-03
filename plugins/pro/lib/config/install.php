@@ -7,10 +7,13 @@ $m = new pocketlistsModel();
 $m->exec("alter table pocketlists_item add pro_label_id int default null");
 
 $labels = [
-    [_wp('In progress'), '328532'],
-    [_wp('To do'), '46c7fc'],
+    [_wp('Reminder'), '74d5fb'],
+    [_wp('Call'), 'e85d8a'],
+    [_wp('Bill'), '328532'],
+    [_wp('Shipment'), '5d96ff'],
+    [_wp('Docs'), 'd180f5'],
+    [_wp('Meeting'), '31e074'],
     [_wp('Backlog'), 'aaaaaa'],
-    [_wp('Testing'), 'ffc600'],
 ];
 
 foreach ($labels as $label) {
@@ -20,8 +23,8 @@ foreach ($labels as $label) {
 }
 
 $shortcuts = [
-    [_wp('Call'), _wp('Remind'), _wp('Pay'), _wp('Ship'), _wp('Check'), _wp('Meet')],
-    [_wp('today'), _wp('tomorrow'), _wp('in 2 days'), _wp('in a week'), _wp('in 2 weeks'), _wp('in a month')],
+    [_wp('Check'), _wp('Reach out'), _wp('Pay'), _wp('Ship'), _wp('Order'), _wp('Prepare'), _wp('Return')],
+    [_wp('today'), _wp('tomorrow'), _wp('in 2 days'), _wp('in 3 days'), _wp('in a week'), _wp('in 2 weeks'), _wp('in a month')],
 ];
 
 foreach ($shortcuts as $i => $names) {
