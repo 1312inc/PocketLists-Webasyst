@@ -11,7 +11,7 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Basepath: .\n"
 "Language: pro\n"
-"X-Generator: Poedit 1.8.7\n"
+"X-Generator: Poedit 2.2.3\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: .\n"
 
@@ -434,4 +434,44 @@ msgstr ""
 
 #: /wa-apps/pocketlists/plugins/pro/templates/actions/label/LabelPocket.html:11
 msgid "Pocket activity log"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/config/install.php:10
+msgid "Reminder"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/config/install.php:12
+msgid "Bill"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/config/install.php:13
+msgid "Shipment"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/config/install.php:14
+msgid "Docs"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/config/install.php:15
+msgid "Meeting"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/config/install.php:26
+msgid "Reach out"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/config/install.php:26
+msgid "Order"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/config/install.php:26
+msgid "Prepare"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/config/install.php:26
+msgid "Return"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/config/install.php:27
+msgid "in 3 days"
 msgstr ""
