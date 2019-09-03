@@ -31,18 +31,19 @@
                 {** @var pocketlistsProPluginLabelItemsDto $labelInfo **}
                 {foreach $allItems as $labelInfo}
                     <div class="pl2pro-column" data-pl2pro-label="{$labelInfo->label->getId()}">
-                        <div class="pl2pro-column-header {if $labelInfo->isDone}gray{/if}"
-                             {if !$labelInfo->isDone}style="border-color: #{$labelInfo->label->getColor()}; color: #{$labelInfo->label->getColor()};"{/if}>
-                            <span class="count">{$labelInfo->count}</span>
+                        <div class="pl2pro-column-header {if $labelInfo->isDone}gray{/if}">
+
                             <h5>
                                 {if !$labelInfo->isDone}
-                                    <i class="icon16 color" style="background-color: #{$labelInfo->label->getColor()};"></i>
+                                    <span class="pl-label" style="background-color: #{$labelInfo->label->getColor()};">{$labelInfo->label->getName()|escape}</span>
                                 {else}
                                     <input type="checkbox" class="pl-done" checked="checked">
                                     <span></span>
+                                    [`Done`]
                                 {/if}
-                                {$labelInfo->label->getName()|escape}
+                                <span class="hint">{$labelInfo->count}</span>
                             </h5>
+
                         </div>
                         <div class="pl2pro-column-content">
                             <ul class="pl2pro-column-items">
