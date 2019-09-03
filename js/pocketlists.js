@@ -468,7 +468,6 @@
             onResize();
         },
         scrollToEl: function(el) {
-            //debugger;
             el.scrollIntoView({
                 behavior: "smooth",
                 block: "end",
