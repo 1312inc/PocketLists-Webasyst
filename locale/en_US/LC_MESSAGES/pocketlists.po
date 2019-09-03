@@ -12,7 +12,7 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Language: en_US\n"
-"X-Generator: Poedit 1.8.7\n"
+"X-Generator: Poedit 2.2.3\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: .\n"
 
@@ -1723,4 +1723,20 @@ msgstr ""
 
 #: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:157
 msgid "Plugins"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:109
+msgid "To-do status labels"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:113
+msgid "Kanban board"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:117
+msgid "To-do shortcuts"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/actions/list/pocketlistsListMoveTo.controller.php:24
+msgid "The list is in the pocket already"
 msgstr ""
