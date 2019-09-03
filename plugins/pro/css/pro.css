@@ -58,20 +58,23 @@ background: -moz-linear-gradient(left,  rgba(255,255,255,0) 0%, rgba(255,255,255
 background: -webkit-linear-gradient(left,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%); /* Chrome10-25,Safari5.1-6 */
 background: linear-gradient(to right,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 */ }
-.pl2pro-column { flex: 1; min-width: 150px; background: #fff; border-radius: 5px; min-height: 65vh; margin-right: 20px; padding-right: 20px; border-right: 1px solid #ddd; transition: background-color 0.2s; background: transparent; }
-/* .pl2pro-column:hover { background: rgba(0,0,0,0.04); } */
-.pl2pro-column-header { padding: 10px 0; border-bottom: 2px solid #ddd; }
-.pl2pro-column-header h5 { font-size: 1.4rem; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
+.pl2pro-column { flex: 1; min-width: 170px; min-height: 65vh; margin-right: 10px; display: flex; flex-direction: column; }
+.pl2pro-column-header { padding: 10px 0; flex: 0 0 auto; }
+.pl2pro-column-header h5 { font-size: 1.3rem; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
 .pl2pro-column-header h5 .icon16.color { margin-top: 5px; }
 .pl2pro-column-header h5 .pl-done:checked + span { left: 0; margin-right: 8px; }
 .pl2pro-column-header .count { padding: 6px; font-weight: bold; }
-.pl2pro-column-items { list-style: none; padding: 0; cursor: move; }
-.pl2pro-column-items li { padding: 5px 15px 15px 12px; font-size: 15px; }
-.pl2pro-column-items li span.item-name { transition: background-color 0.2s; background: transparent; }
-.pl2pro-column-items li .pl-done + span { left: -12px; top: -2px; }
-.pl2pro-column-items li .pl-done:checked + span { border: 2px solid transparent; }
-.pl2pro-column-items li .pl-done.pl-priority-fire + span { width: 25px; height: 25px; background-size: 27px 27px; margin-left: -5px; }
-.pl2pro-column-items li:hover span.item-name { background: rgba(0,0,0,0.07); }
+.pl2pro-column-content { flex: 1; background: #f7f7f7; padding: 0 10px; transition: background-color 0.2s; border-radius: 5px; }
+.pl2pro-column.ui-droppable-active { background: transparent !important }
+.pl2pro-column.ui-droppable-active:hover .pl2pro-column-content { background: rgba(0,0,0,0.06); }
+.pl2pro-column-items { list-style: none; padding: 0; margin-top: 10px; cursor: move; }
+.pl2pro-column-items li { padding: 13px 15px 15px 20px; font-size: 15px; background: #fff; transition: background-color 0.2s; border-radius: 5px; margin-bottom: 10px; box-shadow: 0 2px 8px -4px rgba(0,0,0,0.1); }
+.pl2pro-column-items li span.item-name { font-weight: 500; line-height: 1.3rem; }
+.pl2pro-column-items li .pl-done + span { left: -10px; top: 0px; }
+.pl2pro-column-items li .pl-done:checked + span { border: 2px solid transparent; width: 16px !important; height: 16px !important; background-size: 16px 16px !important; top: -2px !important; }
+.pl2pro-column-items li .pl-done.pl-priority-fire + span { width: 25px; height: 25px; background-size: 27px 27px; margin-left: -5px; top: -6px; }
+.pl2pro-column-items li.gray { background: #fafafa; box-shadow: none; }
+.pl2pro-column-items li:hover { background: #ffe; box-shadow: 0 2px 12px -5px rgba(0,0,0,0.15); }
 
 .pl2pro-log { margin-top: 10px; }
 .pl2pro-log h1 { margin-bottom: 25px; }
