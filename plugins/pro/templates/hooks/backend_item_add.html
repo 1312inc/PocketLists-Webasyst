@@ -89,17 +89,26 @@
             ;
 
             function init($wrapper) {
+                $.pocketlists_pro.log('item_add init');
                 if ($wrapper.data('pl2pro-item-add')) {
                     return;
                 }
+                $.pocketlists_pro.log('item_add inited');
 
                 $wrapper.data('pl2pro-item-add', 1);
 
                 $wrapper.removeData('pl2pro-label-selected');
 
+                var focus = function($textarea) {
+                    setTimeout(function () {
+                        var val = $textarea.val();
+                        $textarea.trigger('focus.pl2pro').val('').val(val);
+                    }, 10);
+                };
+
                 function labels() {
                     var $labels = $wrapper.find('[data-pl2pro-label]'),
-                        labelId = 0;
+                        labelId = $.storage.get('pocketlists/pro/label');
 
                     if (!isNew) {
                         $labels.addClass('shown');
@@ -107,7 +116,7 @@
                         // $labels.removeClass('selected');
                         $labels.removeClass('selected shown').filter(':nth(1)').addClass('shown');
 
-                        if ($.storage && (labelId = $.storage.get('pocketlists/pro/label')) !== undefined) {
+                        if (labelId !== null) {
                             var $lastUsedLabel = $labels.filter('[data-pl2pro-label="' + labelId + '"]');
 
                             if ($lastUsedLabel.length) {
@@ -115,6 +124,11 @@
                                 $lastUsedLabel.addClass('selected shown');
                                 $wrapper.data('pl2pro-label-selected', labelId);
                             }
+                        } else {
+                            $wrapper.closest('#pl-item-add').one('focus.pl2pro', 'textarea.pl-item-name:visible', function (e) {
+                                $wrapper.addClass('pl2pro-all-labels-shown');
+                                $labels.addClass('shown');
+                            });
                         }
                     }
 
@@ -186,12 +200,6 @@
                                 $nextGroup.show();
                             }
                         },
-                        focus = function($textarea) {
-                            setTimeout(function () {
-                                var val = $textarea.val();
-                                $textarea.trigger('focus.pl2pro').val('').val(val);
-                            }, 10);
-                        },
                         canBeShown = function(itemText) {
                             var $shortcutGroups = $wrapper.find('[data-pl2pro-shortcuts-group]'),
                                 groups = { };
@@ -205,7 +213,8 @@
                             $shortcutGroups.find('.pl2pro-shortcut')
                                 .each(function () {
                                     var $this = $(this),
-                                        search = new RegExp($this.text(), 'i');
+                                        text = $this.text(),
+                                        search = new RegExp(text, 'i');
 
                                     if (itemText.search(search) > -1) {
                                         var groupId = $this.closest('[data-pl2pro-shortcuts-group]').data('pl2pro-shortcuts-group');

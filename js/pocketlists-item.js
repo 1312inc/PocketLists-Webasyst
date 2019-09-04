@@ -260,6 +260,11 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     $new_item_wrapper.slideDown(200);
                     // $new_item_wrapper.trigger('open_new_item_wrapper.pl2');
                     $textarea.focus();
+
+                    $(document).trigger('open_new_item_wrapper.pl2', {
+                        add_wrapper: $new_item_wrapper,
+                        position: $this.closest(item_selector)
+                    });
                 });
             }
 

@@ -26,13 +26,22 @@
                 }
             }, 'json');
         },
+        log: function(message) {
+            console.log('pl2pro', message);
+        },
         init: function () {
             $(document)
                 .on('click', '.pl-item-wrapper[data-id] .pl-label[data-pl2pro-label]', function (e) {
                     e.preventDefault();
                     e.stopPropagation();
 
+                    var $this = $(this);
+
                     if ($('#pl-item-details-form').length) {
+                        return;
+                    }
+
+                    if ($this.closest('[data-pl-item-add]').length) {
                         return;
                     }
 
