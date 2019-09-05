@@ -21,6 +21,6 @@ class pocketlistsProPluginLogPocket extends pocketlistsProPluginLogAbstract
     {
         $name = $this->log->getContact()->getName();
 
-        return sprintf_wp('%s did something with pocket', $name);
+        return sprintf_wp('%s updated the pocket', $name);
     }
 }

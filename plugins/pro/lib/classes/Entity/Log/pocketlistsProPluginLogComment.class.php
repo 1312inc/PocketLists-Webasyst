@@ -31,7 +31,7 @@ class pocketlistsProPluginLogComment extends pocketlistsProPluginLogAbstract
                 return sprintf_wp('%s deleted the comment', $name);
 
             default:
-                return sprintf_wp('%s did something with comment', $name);
+                return sprintf_wp('%s updated the comment', $name);
         }
     }
 
