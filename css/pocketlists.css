@@ -171,6 +171,8 @@ table.pl-calendar td .pl-dots i.icon10 { margin-top: 0.2em; margin-right: 0.2em;
 .pl-roadmap li .pl-done:checked + span { border: 2px solid transparent; }
 .pl-roadmap li .pl-done.pl-priority-fire + span { width: 25px; height: 25px; background-size: 27px 27px; margin-left: -5px; }
 
+.pl-wa-plugin-icon { box-shadow: 0 15px 35px rgba(40,40,80,0.1), 0 5px 10px rgba(0,0,0,0.07); border-radius: 5px; width: 200px; height: 110px; }
+
 /* Done checkbox
 ---------------- */
 
