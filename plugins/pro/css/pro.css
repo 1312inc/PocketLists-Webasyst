@@ -24,20 +24,24 @@
 .pl2pro-labels td:hover .pl2pro-label-edit { opacity: 1; }
 
 .pl2pro-label-tiny-helper { width: 8px; height: 12px; background: transparent url('../img/label-tiny-helper.png') no-repeat; background-size: 8px 8px; background-position: 0 4px; display: none; opacity: 0.65; margin-left: 2px; }
-.pl2pro-item-add { margin-top: 13px; }
-.pl2pro-item-add .pl-label { display: none !important; margin-right: 8px !important; margin-left: 0 !important; }
-.pl2pro-item-add .pl-label.selected { display: inline !important; padding-right: 2px !important; }
+.pl2pro-item-add { margin-top: 10px; line-height: 1.5rem; }
+.pl2pro-item-add .pl-label { display: none !important; margin: 2px 8px 2px 0 !important; }
+.pl2pro-item-add .pl-label.selected { display: inline-block !important; padding-right: 2px !important; }
 .pl2pro-item-add .pl-label.selected .pl2pro-label-tiny-helper { display: inline-block; }
-.pl2pro-item-add .pl-label.shown { display: inline !important; margin-right: 5px !important; }
-.pl2pro-item-add .pl-label.current { display: inline !important; }
-.pl2pro-item-add .pl2pro-shortcut { margin-right: 2px; font-size: 0.9em; color: #aaa; }
+.pl2pro-item-add .pl-label.shown { display: inline-block !important; margin-right: 5px !important; }
+.pl2pro-item-add .pl-label.current { display: inline-block !important; }
+.pl2pro-item-add .pl2pro-shortcuts-group { margin-left: 5px; }
+.pl2pro-item-add .pl2pro-shortcut { margin-right: 3px; font-size: 13px; color: #888; display: inline-block !important; line-height: 1.8rem !important; }
 .pl2pro-item-add.pl2pro-all-labels-shown .pl2pro-label-tiny-helper { display: none !important; }
-.pl2pro-item-add.pl2pro-all-labels-shown .pl-label.selected { border: 2px solid rgba(0,0,0,0.5); box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
-.pl2pro-item-add.pl2pro-edit-existing { margin-top: 20px !important; margin-bottom: 23px; }
+.pl2pro-item-add.pl2pro-all-labels-shown .pl-label.selected { border: 2px solid rgba(0,0,0,0.75); margin-top: 0px !important; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+.pl2pro-item-add.pl2pro-all-labels-shown .pl2pro-shortcuts-group { display: none !important; }
+.pl2pro-item-add.pl2pro-edit-existing { margin-top: 13px !important; margin-bottom: 23px; line-height: 2rem; }
 .pl2pro-item-add.pl2pro-edit-existing .pl2pro-label-tiny-helper { display: none !important; }
-.pl2pro-item-add.pl2pro-edit-existing .pl-label { display: inline !important; font-size: 1rem; margin-right: 10px !important; padding: 2px 6px 3px !important; }
-.pl2pro-item-add.pl2pro-edit-existing .pl-label.selected { border: 2px solid rgba(0,0,0,0.5); box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+.pl2pro-item-add.pl2pro-edit-existing .pl-label { display: inline-block !important; font-size: 1rem; margin-right: 10px !important; padding: 2px 6px 3px !important; }
+.pl2pro-item-add.pl2pro-edit-existing .pl-label.selected { border: 2px solid rgba(0,0,0,0.75); box-shadow: 0 2px 10px rgba(0,0,0,0.2); margin-top: 0 !important; }
 .pl-details-form .pl2pro-item-add { margin-top: 5px; margin-bottom: 10px; }
+.pl-details-form .pl2pro-item-add .pl2pro-shortcuts-group { margin-left: 2px; }
+.pl-details-form .pl2pro-item-add .pl2pro-shortcut { line-height: 1.5rem !important; }
 
 .pl2pro-rule-baloon { border-radius: 10px; border: 1px solid #ddd; overflow: hidden; margin-bottom: 15px; max-width: 400px; }
 .pl2pro-rule-baloon .pl2pro-label-edit { float: right; opacity: 0; transition: 0.2s; margin-top: 0px; font-size: 0.9em; }
