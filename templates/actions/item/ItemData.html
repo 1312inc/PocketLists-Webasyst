@@ -73,10 +73,16 @@
             <a href="#" class="pl-edit inline-link"><i class="icon16 pl ellipsis"></i></a>
         {/if}
 
-        <br>
+        {capture name="item_extended_data"}
+        {capture "item_extended_data"}
         {foreach $pl2->event(pocketlistsEventStorage::ITEM_UI_LABEL, $item) as $response}
             {$response}
         {/foreach}
+        {/capture}
+        {if $smarty.capture.item_extended_data|trim ne ""}
+            <br>
+            {$smarty.capture.item_extended_data}
+        {/if}
 
         {if $item->getDueDatetime()}
             <br>
