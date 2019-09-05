@@ -379,11 +379,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#12000000', e
 .pl-teammate-items .pl-list-items ul.menu-v li .pl-item:hover { background: rgba(0,0,0,0.04); }
 .pl-teammate-items .pl-list-items ul.menu-v li .pl-item.pl-item-selected { background: #f3f3f3; }
 
-.pl-label { font-size: 0.9em; border-radius: 4px; background: #aaa; color: #fff !important; padding: 1px 4px 2px !important; margin-right: 2px !important; line-height: 1.4em; vertical-align: top; margin-top: 1px; display: inline !important; font-weight: bold; }
+.pl-label { font-size: 0.9em; border-radius: 4px; background: #aaa; color: #fff !important; padding: 1px 4px 2px !important; margin-right: 2px !important; line-height: 1.4em; vertical-align: top; margin-top: 1px; display: inline; font-weight: bold; }
 .pl-label:hover { color: #ffa !important; }
 .pl-label.pl-hint { background: rgba(0,0,0,0.07); color: rgba(0,0,0,0.42) !important; font-size: 0.75em; position: relative; top: 2px; font-style: italic; }
 .pl-label.pl-dark-none { background: #bbb !important; }
-.pl-item .pl-label { margin-left: 0px !important; }
+.pl-list-items .pl-item a.pl-label { margin: 3px 0 !important; display: inline-block; }
 .pl-label.pl-pro { background: gold !important; color: black !important; font-size: 0.75em; font-style: normal !important; }
 p .pl-label.pl-pro { position: relative; top: 3px; margin-right: 0; }
 
