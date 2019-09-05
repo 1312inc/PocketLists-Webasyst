@@ -7,13 +7,13 @@ $m = new pocketlistsModel();
 $m->exec("alter table pocketlists_item add pro_label_id int default null");
 
 $labels = [
-    [_wp('Reminder'), '74d5fb'],
-    [_wp('Call'), 'e85d8a'],
-    [_wp('Bill'), '328532'],
-    [_wp('Shipment'), '5d96ff'],
-    [_wp('Docs'), 'd180f5'],
-    [_wp('Meeting'), '31e074'],
     [_wp('Backlog'), 'aaaaaa'],
+    [_wp('Meeting'), '31e074'],
+    [_wp('Docs'), 'd180f5'],
+    [_wp('Shipment'), '5d96ff'],
+    [_wp('Bill'), 'faca2e'],
+    [_wp('Call'), 'f27c44'],
+    [_wp('Reminder'), '74d5fb'],
 ];
 
 foreach ($labels as $label) {
