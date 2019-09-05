@@ -152,9 +152,6 @@
 
                             var $this = $(this);
 
-
-                            $.pocketlists.log(['label click.pl2pro', e]);
-
                             if (labelsAreHidden()) {
                                 $wrapper.addClass('pl2pro-all-labels-shown');
                                 $labels.addClass('shown');
@@ -189,6 +186,21 @@
                             }).appendTo($form);
 
                             e.preventDefault();
+                        })
+                        .off('keydown.pl2pro_labels')
+                        .on('keydown.pl2pro_labels', function (e) {
+                            var num = parseInt(e.which) - 48;
+
+                            if (e.altKey && e.shiftKey && num >= 0 && num < 10) {
+                                var $label = $labels.filter(':nth(' + (num - 1) + ')');
+
+                                if ($label.length) {
+                                    $labels.trigger('click.pl2pro');
+                                    $label.trigger('click.pl2pro');
+
+                                    e.preventDefault();
+                                }
+                            }
                         });
                 }
                 if (labelsExists) {
@@ -273,17 +285,16 @@
                         });
 
                     $(document)
-                        .off('keydown.pl2pro')
-                        .on('keydown.pl2pro', function (e) {
+                        .off('keydown.pl2pro_shortcuts')
+                        .on('keydown.pl2pro_shortcuts', function (e) {
                             var num = parseInt(e.which) - 48;
 
-                            if (e.altKey && num > 0 && num < 10) {
+                            if (e.altKey && !e.shiftKey && num > 0 && num < 10) {
                                 var $shortcut = $wrapper
                                     .find('[data-pl2pro-shortcuts-group]')
                                     .filter('[data-pl2pro-shortcuts-group]:visible')
                                     .find('.pl2pro-shortcut:nth(' + (num - 1) + ')');
 
-                                $.pocketlists.log('trigger(\'click.pl2pro');
                                 if ($shortcut.length) {
                                     $shortcut.trigger('click.pl2pro');
 
