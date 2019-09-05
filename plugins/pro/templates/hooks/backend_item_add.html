@@ -18,6 +18,7 @@
             class="pl-label"
             style="background-color: rgba(0,0,0,0.06); color: #aaa !important;"
             data-pl2pro-label="0"
+            title="Alt + Shift + 0"
     >
         [`No status`]<i class="pl2pro-label-tiny-helper"></i>
     </a>
@@ -27,6 +28,7 @@
                 class="pl-label {if $label->getId() == $pl2pro.itemLabel->getId()}selected{/if}"
                 style="background-color: #{$label->getColor()|escape};"
                 data-pl2pro-label="{$label->getId()}"
+                title="Alt + Shift + {$label@iteration}"
         >
             {$label->getName()|escape}<i class="pl2pro-label-tiny-helper"></i>
         </a>
