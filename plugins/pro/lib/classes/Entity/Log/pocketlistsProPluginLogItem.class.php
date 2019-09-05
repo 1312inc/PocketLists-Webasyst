@@ -49,7 +49,7 @@ class pocketlistsProPluginLogItem extends pocketlistsProPluginLogAbstract
                 }
 
             default:
-                return sprintf_wp('%s did something with to-do', $name);
+                return sprintf_wp('%s updated the to-do', $name);
         }
     }
 

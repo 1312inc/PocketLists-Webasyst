@@ -25,13 +25,13 @@ class pocketlistsProPluginLogAttachment extends pocketlistsProPluginLogAbstract
 
         switch ($this->log->getAction()) {
             case pocketlistsLog::ACTION_ADD:
-                return sprintf_wp('%s added attachment', $name);
+                return sprintf_wp('%s added an attachment', $name);
 
             case pocketlistsLog::ACTION_DELETE:
-                return sprintf_wp('%s deleted attachment', $name);
+                return sprintf_wp('%s deleted the attachment', $name);
 
             default:
-                return sprintf_wp('%s did something with attachment', $name);
+                return sprintf_wp('%s updated the attachment', $name);
         }
     }
 }
