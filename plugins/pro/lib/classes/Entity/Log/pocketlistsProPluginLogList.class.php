@@ -34,7 +34,7 @@ class pocketlistsProPluginLogList extends pocketlistsProPluginLogAbstract
                 return sprintf_wp('%s updated list details', $name);
 
             default:
-                return sprintf_wp('%s did something with list', $name);
+                return sprintf_wp('%s updated the list', $name);
 
         }
     }

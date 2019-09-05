@@ -475,3 +475,75 @@ msgstr ""
 #: /wa-apps/pocketlists/plugins/pro/lib/config/install.php:27
 msgid "in 3 days"
 msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Entity/Log/pocketlistsProPluginLogPocket.class.php:24
+msgid "%s updated the pocket"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Entity/Log/pocketlistsProPluginLogComment.class.php:28
+msgid "%s commented"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Entity/Log/pocketlistsProPluginLogComment.class.php:31
+msgid "%s deleted the comment"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Entity/Log/pocketlistsProPluginLogComment.class.php:34
+msgid "%s updated the comment"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Entity/Log/pocketlistsProPluginLogList.class.php:28
+msgid "%s created the list"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Entity/Log/pocketlistsProPluginLogList.class.php:31
+msgid "%s deleted the list"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Entity/Log/pocketlistsProPluginLogList.class.php:34
+msgid "%s updated list details"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Entity/Log/pocketlistsProPluginLogList.class.php:37
+msgid "%s updated the list"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Entity/Log/pocketlistsProPluginLogAttachment.class.php:28
+msgid "%s added an attachment"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Entity/Log/pocketlistsProPluginLogAttachment.class.php:31
+msgid "%s deleted the attachment"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Entity/Log/pocketlistsProPluginLogAttachment.class.php:34
+msgid "%s updated the attachment"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Entity/Log/pocketlistsProPluginLogAbstract.class.php:70
+msgid "Unknown log method %s"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Entity/Log/pocketlistsProPluginLogItem.class.php:29
+msgid "%s created the to-do"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Entity/Log/pocketlistsProPluginLogItem.class.php:32
+msgid "%s completed the to-do"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Entity/Log/pocketlistsProPluginLogItem.class.php:35
+msgid "%s deleted the to-do"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Entity/Log/pocketlistsProPluginLogItem.class.php:42
+msgid "%s assign to-do to %s"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Entity/Log/pocketlistsProPluginLogItem.class.php:48
+msgid "%s edited the to-do"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Entity/Log/pocketlistsProPluginLogItem.class.php:52
+msgid "%s updated the to-do"
+msgstr ""
