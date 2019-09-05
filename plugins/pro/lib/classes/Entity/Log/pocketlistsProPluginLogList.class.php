@@ -21,18 +21,20 @@ class pocketlistsProPluginLogList extends pocketlistsProPluginLogAbstract
      */
     public function getActionExplained()
     {
+        $name = $this->log->getContact()->getName();
+
         switch ($this->log->getAction()) {
             case pocketlistsLog::ACTION_ADD:
-                return sprintf_wp('%s created the list', $this->log->getContact()->getName());
+                return sprintf_wp('%s created the list', $name);
 
             case pocketlistsLog::ACTION_DELETE:
-                return sprintf_wp('%s deleted the list', $this->log->getContact()->getName());
+                return sprintf_wp('%s deleted the list', $name);
 
             case pocketlistsLog::ACTION_UPDATE:
-                return sprintf_wp('%s updated list details', $this->log->getContact()->getName());
+                return sprintf_wp('%s updated list details', $name);
 
             default:
-                return sprintf_wp('%s did something with list', $this->log->getContact()->getName());
+                return sprintf_wp('%s did something with list', $name);
 
         }
     }

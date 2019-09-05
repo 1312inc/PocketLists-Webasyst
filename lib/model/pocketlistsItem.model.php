@@ -217,6 +217,7 @@ class pocketlistsItemModel extends pocketlistsModel
         if ($status !== null) {
             $sqlParts['where']['and'][] = 'i.status = '.$status;
         }
+        $sqlParts['group by'] = ['i.calc_priority'];
 
         $sql = $this->buildSqlComponents($sqlParts);
         $itemsCount = $this->query(
@@ -330,6 +331,10 @@ class pocketlistsItemModel extends pocketlistsModel
         if ($calc_priority) {
             $sqlParts['where']['and'][] = '(i.calc_priority in (i:calc_priority))';
         }
+
+        $sqlParts['where']['and'][] = sprintf('(%s)', implode(' OR ',  $sqlParts['where']['or']));
+//        $sqlParts['where']['and'] = array_merge($sqlParts['where']['or'], $sqlParts['where']['and']);
+        $sqlParts['where']['or'] = [];
 
         return $sqlParts;
     }
