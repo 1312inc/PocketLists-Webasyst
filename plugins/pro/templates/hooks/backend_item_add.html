@@ -117,33 +117,10 @@
 
                 function labels() {
                     var $labels = $wrapper.find('[data-pl2pro-label]'),
-                        labelId = $.storage.get('pocketlists/pro/label');
-
-                    if (!isNew) {
-                        $labels.addClass('shown');
-                    } else {
-                        // $labels.removeClass('selected');
-                        $labels.removeClass('selected shown').filter(':nth(1)').addClass('shown');
-
-                        if (labelId !== null) {
-                            var $lastUsedLabel = $labels.filter('[data-pl2pro-label="' + labelId + '"]');
-
-                            if ($lastUsedLabel.length) {
-                                $labels.removeClass('selected shown');
-                                $lastUsedLabel.addClass('selected shown');
-                                $wrapper.data('pl2pro-label-selected', labelId);
-                            }
-                        } else {
-                            $wrapper.closest('#pl-item-add').one('focus.pl2pro', 'textarea.pl-item-name:visible', function (e) {
-                                $wrapper.addClass('pl2pro-all-labels-shown');
-                                $labels.addClass('shown');
-                            });
-                        }
-                    }
-
-                    var labelsAreHidden = function () {
-                        return !!$labels.filter(':hidden').length;
-                    };
+                        labelId = $.storage.get('pocketlists/pro/label'),
+                        labelsAreHidden = function () {
+                            return !!$labels.filter(':hidden').length;
+                        };
 
                     $labels
                         .off('click.pl2pro')
@@ -174,7 +151,7 @@
 
                     // todo: удалить несколько обработчиков
                     $(document)
-                        .off('beforeAddItemSync.pl2 beforeUpdateItemSync.pl2')
+                        .off('beforeAddItemSync.pl2 beforeUpdateItemSync.pl2 keydown.pl2pro_labels')
                         .on('beforeAddItemSync.pl2', function (e, eventData) {
                             eventData.response.data[0]['pro_label_id'] = parseInt($wrapper.data('pl2pro-label-selected')) || 0;
                         })
@@ -187,12 +164,11 @@
 
                             e.preventDefault();
                         })
-                        .off('keydown.pl2pro_labels')
                         .on('keydown.pl2pro_labels', function (e) {
                             var num = parseInt(e.which) - 48;
 
                             if (e.altKey && e.shiftKey && num >= 0 && num < 10) {
-                                var $label = $labels.filter(':nth(' + (num - 1) + ')');
+                                var $label = $labels.filter(':nth(' + (num) + ')');
 
                                 if ($label.length) {
                                     $labels.trigger('click.pl2pro');
@@ -202,6 +178,27 @@
                                 }
                             }
                         });
+
+                    if (!isNew) {
+                        $labels.addClass('shown');
+                    } else {
+                        // $labels.removeClass('selected');
+                        var $firstLabel = $labels.removeClass('selected shown').filter(':nth(1)');
+
+                        $firstLabel.addClass('shown');
+
+                        if (labelId !== null) {
+                            var $lastUsedLabel = $labels.filter('[data-pl2pro-label="' + labelId + '"]');
+
+                            if ($lastUsedLabel.length) {
+                                $labels.removeClass('selected shown');
+                                $lastUsedLabel.addClass('selected shown');
+                                $wrapper.data('pl2pro-label-selected', labelId);
+                            }
+                        } else {
+                            $firstLabel.trigger('click.pl2pro').trigger('click.pl2pro');
+                        }
+                    }
                 }
                 if (labelsExists) {
                     labels();
