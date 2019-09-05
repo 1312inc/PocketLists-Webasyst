@@ -45,7 +45,7 @@ class pocketlistsPocketAction extends pocketlistsViewPocketAction
         $pocketFactory = pl2()->getEntityFactory(pocketlistsPocket::class);
 
         if (!$id) {
-            $allPockets = $pocketFactory->findAllForUser($this->user);
+            $allPockets = $pocketFactory->findAllForUser();
             $pocket = reset($allPockets);
         } else {
             /** @var pocketlistsPocket $pocket */

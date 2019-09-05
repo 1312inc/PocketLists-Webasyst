@@ -25,9 +25,9 @@ class pocketlistsBackendSidebarAction extends pocketlistsViewAction
 
         $this->view->assign(compact('sidebar_todo_count', 'sidebar_todo_count_icon'));
 
-        /** @var pocketlistsListFactory $pocketFactory */
-        $pocketFactory = pl2()->getEntityFactory(pocketlistsList::class);
-        $lists = $pocketFactory->findAllActive();
+        /** @var pocketlistsListFactory $listFactory */
+        $listFactory = pl2()->getEntityFactory(pocketlistsList::class);
+        $lists = $listFactory->findAllActive();
         $this->view->assign('lists', $lists);
 
         /** @var pocketlistsContactFactory $contactFactory */
@@ -62,15 +62,8 @@ class pocketlistsBackendSidebarAction extends pocketlistsViewAction
         );
 
         /** @var pocketlistsPocketFactory $pocketFactory */
-        $pocketFactory = pl2()->getEntityFactory(pocketlistsPocket::class);
-        $pockets = $pocketFactory->findAllForUser();
-
-        /** @var pocketlistsPocket $pocket */
-        foreach ($pockets as $pocketId => $pocket) {
-            if (!pocketlistsRBAC::contactHasAccessToPocket($pocket)) {
-                unset($pockets[$pocketId]);
-            }
-        }
+        $listFactory = pl2()->getEntityFactory(pocketlistsPocket::class);
+        $pockets = $listFactory->findAllForUser();
 
         $linkedApps = pl2()->getLinkedApp();
         foreach ($linkedApps as $i => $app) {

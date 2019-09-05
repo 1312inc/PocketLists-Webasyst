@@ -58,27 +58,37 @@ class pocketlistsProPluginLabelModel extends pocketlistsModel
     }
 
     /**
-     * @param int $pocketId
-     * @param int $itemStatus
+     * @param      $pocketId
+     * @param int  $itemStatus
+     * @param null $contactId
      *
      * @return array
+     * @throws waDbException
+     * @throws waException
      */
-    public function getByPocketIdWithCount($pocketId, $itemStatus = pocketlistsItem::STATUS_UNDONE)
+    public function getByPocketIdWithCount($pocketId, $itemStatus = pocketlistsItem::STATUS_UNDONE, $contactId = null)
     {
+        if (!$contactId) {
+            $contactId = pl2()->getUser()->getId();
+        }
+        $available_lists = pocketlistsRBAC::getAccessListForContact();
+
         return $this->query(
             'select
-                   count(pi.pro_label_id) labels_count,
+                   count(i.pro_label_id) labels_count,
                    ppl.id,
                    ppl.*
-            from pocketlists_item pi
-            join pocketlists_list pl on pi.list_id = pl.id
-            join pocketlists_pocket pp on pl.pocket_id = pp.id
-            join pocketlists_pro_label ppl on pi.pro_label_id = ppl.id
-            where pi.pro_label_id > 0
+            from pocketlists_item i
+            join pocketlists_list l on i.list_id = l.id
+            join pocketlists_pocket pp on l.pocket_id = pp.id
+            join pocketlists_pro_label ppl on i.pro_label_id = ppl.id
+            where 
+                i.pro_label_id > 0
                 and pp.id = i:pocket_id
-                and pi.status = i:status
-            group by pi.pro_label_id',
-            ['pocket_id' => $pocketId, 'status' => $itemStatus]
+                and i.status = i:status
+                and ' . pocketlistsRBAC::filterListAccess($available_lists, $contactId) . '
+            group by i.pro_label_id',
+            ['pocket_id' => $pocketId, 'status' => $itemStatus, 'list_ids' => $available_lists]
         )->fetchAll('id', 1);
     }
 }

@@ -1,7 +1,14 @@
 {if $wa->globals('pl2_external')}
     {$pl2_external = $wa->globals('pl2_external')}
     <link href="{$pl2_external['wa_app_static_url']}plugins/pro/css/pro.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="{$pl2_external['wa_app_static_url']}plugins/pro/js/pro.js?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
+    <script>
+        (function () {
+            $.pocketlists_pro.init();
+        }())
+    </script>
 {/if}
+
 {$time = time()}
 {if $pl2pro.labels || $pl2pro.shortcutsGrouped}
 <div class="pl2pro-item-add{if !$pl2pro.isNew} pl2pro-edit-existing{/if}" data-pl2pro-wrapper="item-compact-add-{$time}"{if $pl2pro.itemLabel->getId()} data-pl2pro-label-selected="{$pl2pro.itemLabel->getId()}"{/if}>
@@ -57,12 +64,13 @@
                     init($wrapper);
                 },
                 open_new_item_wrapper: function (e, data) {
-                    $wrapper = data.add_wrapper.find('[data-pl2pro-wrapper="item-compact-add-' + wrapperTime + '"]');
+                    $wrapper = data.add_wrapper.find('[data-pl2pro-wrapper]');
+                    $wrapper.removeData('pl2pro-item-add');
 
                     init($wrapper);
                 },
                 itemDetailsOpened: function (e, data) {
-                    $wrapper = data.details_wrapper.find('[data-pl2pro-wrapper="item-compact-add-' + wrapperTime + '"]');
+                    $wrapper = data.details_wrapper.find('[data-pl2pro-wrapper]');
 
                     init($wrapper);
                 },
@@ -78,8 +86,8 @@
                 .off('item_add.pl2', pl2EventsHandlers.item_add)
                 .on('item_add.pl2', pl2EventsHandlers.item_add)
 
-                .off('open_new_item_wrapper.pl2', pl2EventsHandlers.open_new_item_wrapper)
-                .on('open_new_item_wrapper.pl2', pl2EventsHandlers.open_new_item_wrapper)
+                .off('open_new_item_wrapper.pl2 hide_new_item_wrapper.pl2', pl2EventsHandlers.open_new_item_wrapper)
+                .on('open_new_item_wrapper.pl2 hide_new_item_wrapper.pl2', pl2EventsHandlers.open_new_item_wrapper)
 
                 .off('itemDetailsOpened.pl2', pl2EventsHandlers.itemDetailsOpened)
                 .on('itemDetailsOpened.pl2', pl2EventsHandlers.itemDetailsOpened)
@@ -93,10 +101,11 @@
                 if ($wrapper.data('pl2pro-item-add')) {
                     return;
                 }
+
                 $.pocketlists_pro.log('item_add inited');
+                $.store && !$.storage && ($.storage = new $.store());
 
                 $wrapper.data('pl2pro-item-add', 1);
-
                 $wrapper.removeData('pl2pro-label-selected');
 
                 var focus = function($textarea) {
@@ -142,6 +151,9 @@
                             e.preventDefault();
 
                             var $this = $(this);
+
+
+                            $.pocketlists.log(['label click.pl2pro', e]);
 
                             if (labelsAreHidden()) {
                                 $wrapper.addClass('pl2pro-all-labels-shown');
@@ -201,6 +213,7 @@
                             }
                         },
                         canBeShown = function(itemText) {
+                            itemText = itemText || '';
                             var $shortcutGroups = $wrapper.find('[data-pl2pro-shortcuts-group]'),
                                 groups = { };
 
@@ -270,6 +283,7 @@
                                     .filter('[data-pl2pro-shortcuts-group]:visible')
                                     .find('.pl2pro-shortcut:nth(' + (num - 1) + ')');
 
+                                $.pocketlists.log('trigger(\'click.pl2pro');
                                 if ($shortcut.length) {
                                     $shortcut.trigger('click.pl2pro');
 
