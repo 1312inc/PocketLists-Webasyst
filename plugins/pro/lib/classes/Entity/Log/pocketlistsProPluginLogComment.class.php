@@ -21,15 +21,17 @@ class pocketlistsProPluginLogComment extends pocketlistsProPluginLogAbstract
      */
     public function getActionExplained()
     {
+        $name = $this->log->getContact()->getName();
+
         switch ($this->log->getAction()) {
             case pocketlistsLog::ACTION_ADD:
-                return sprintf_wp('%s commented', $this->log->getContact()->getName());
+                return sprintf_wp('%s commented', $name);
 
             case pocketlistsLog::ACTION_DELETE:
-                return sprintf_wp('%s deleted the comment', $this->log->getContact()->getName());
+                return sprintf_wp('%s deleted the comment', $name);
 
             default:
-                return sprintf_wp('%s did something with comment', $this->log->getContact()->getName());
+                return sprintf_wp('%s did something with comment', $name);
         }
     }
 

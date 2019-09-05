@@ -110,6 +110,10 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 $('.pl-new-item-wrapper').remove();
                 $textarea.val('').removeClass('pl-unsaved');
                 showEmptyListMessage();
+
+                $(document).trigger('hide_new_item_wrapper.pl2', {
+                    add_wrapper: $top_new_item_wrapper
+                });
             });
         };
 

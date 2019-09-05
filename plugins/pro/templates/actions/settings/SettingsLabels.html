@@ -139,15 +139,16 @@
                     $color_icon.css('background', color);
                 });
 
-            $color_input.on('keyup', function() {
-                farbtastic.setColor('#'+this.value);
+            $color_input.on('keyup', function () {
+                farbtastic.setColor('#' + this.value);
+                $color_icon.css('background', this.value);
             });
 
             $color_icon.closest('a').on('click', function(e) {
                 e.preventDefault();
 
                 $wrapper.slideToggle();
-                farbtastic.setColor('#' + $color_icon.val());
+                farbtastic.setColor('#' + $color_input.val());
             });
         }
 
