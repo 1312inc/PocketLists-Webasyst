@@ -60,6 +60,7 @@ class pocketlistsItemDetailsAction extends pocketlistsViewItemAction
             );
         }
 
+        $event = new pocketlistsEvent('backend_item_add', $item);
         $this->view->assign(
             [
                 'fileupload'     => $item->getId(),
@@ -70,7 +71,7 @@ class pocketlistsItemDetailsAction extends pocketlistsViewItemAction
                     ?: $item->getAssignedContactId(),
                 'contacts'       => $contacts,
 
-                'backend_item_add' => wa()->event('backend_item_add', $item),
+                'backend_item_add' => wa()->event('backend_item_add', $event),
             ]
         );
     }

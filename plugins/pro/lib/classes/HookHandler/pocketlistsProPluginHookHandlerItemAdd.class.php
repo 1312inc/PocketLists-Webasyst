@@ -6,12 +6,12 @@
 class pocketlistsProPluginHookHandlerItemAdd extends pocketlistsProPluginAbstractHookHandler
 {
     /**
-     * @param null|pocketlistsItem $item
+     * @param null|pocketlistsEvent $event
      *
      * @return array
      * @throws waException
      */
-    public function handle($item = null)
+    public function handle($event = null)
     {
         $return = [];
 
@@ -21,6 +21,8 @@ class pocketlistsProPluginHookHandlerItemAdd extends pocketlistsProPluginAbstrac
         $factoryShortcut = pl2()->getEntityFactory(pocketlistsProPluginShortcut::class);
 
         $label = null;
+        $item = $event->getObject();
+        $eventParams = $event->getParams();
         if ($item instanceof pocketlistsItem && $item->getId()) {
             $label = $factoryLabel->findForItem($item);
         }
@@ -38,6 +40,9 @@ class pocketlistsProPluginHookHandlerItemAdd extends pocketlistsProPluginAbstrac
                     'isNew'            => $isNew,
                     'shortcutsExists'  => (int)($shortcutsGroups && $isNew),
                     'labelsExists'     => (int)$labels,
+
+                    'wa_app_static_url' => wa()->getAppStaticUrl(pocketlistsHelper::APP_ID),
+                    'external'         => !empty($eventParams['external'])
                 ],
             ]
         );
