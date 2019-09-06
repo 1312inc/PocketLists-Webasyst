@@ -127,7 +127,7 @@ class pocketlistsItemDataAction extends pocketlistsViewItemAction
                 ->setItem($item);
 
             if ($item->getAssignedContactId() != $oldAssignedId) {
-                $context->addParam(['item_action' => 'new assign']);
+                $context->addParam(['item_action' => pocketlistsLog::ITEM_ACTION_NEW_ASSIGN]);
             }
 
             if ($isNewItem) {

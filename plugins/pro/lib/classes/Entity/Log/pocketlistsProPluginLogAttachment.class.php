@@ -21,17 +21,15 @@ class pocketlistsProPluginLogAttachment extends pocketlistsProPluginLogAbstract
      */
     public function getActionExplained()
     {
-        $name = $this->log->getContact()->getName();
-
         switch ($this->log->getAction()) {
             case pocketlistsLog::ACTION_ADD:
-                return sprintf_wp('%s added an attachment', $name);
+                return sprintf_wp('%s added an attachment', $this->getActorName());
 
             case pocketlistsLog::ACTION_DELETE:
-                return sprintf_wp('%s deleted the attachment', $name);
+                return sprintf_wp('%s deleted the attachment', $this->getActorName());
 
             default:
-                return sprintf_wp('%s updated the attachment', $name);
+                return sprintf_wp('%s updated the attachment', $this->getActorName());
         }
     }
 }
