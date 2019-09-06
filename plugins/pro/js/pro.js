@@ -3,6 +3,7 @@
 
     $.storage = new $.store();
     $.pocketlists_pro = {
+        inited: false,
         updatePocketLabelCounts: function () {
             var $pocketWrapper = $('[data-pl2-pocket-wrapper]');
 
@@ -30,6 +31,10 @@
             console.log('pl2pro', message);
         },
         init: function () {
+            if (this.inited) {
+                return;
+            }
+
             $(document)
                 .on('click', '.pl-item-wrapper[data-id] .pl-label[data-pl2pro-label]', function (e) {
                     e.preventDefault();
@@ -57,6 +62,8 @@
                     this.updatePocketLabelCounts
                 )
             ;
+
+            this.inited = true;
         }
     }
 }(jQuery));

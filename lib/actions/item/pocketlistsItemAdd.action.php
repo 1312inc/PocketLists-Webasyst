@@ -16,10 +16,9 @@ class pocketlistsItemAddAction extends pocketlistsViewItemAction
             $this->view->assign('assign_contact_photo', $this->params['teammate']->getUserpic());
         }
 
-        $this->view->assign(
-            [
-                'backend_item_add' => wa()->event('backend_item_add'),
-            ]
-        );
+        $event = new pocketlistsEvent('backend_item_add', null, [
+            'external' => !empty($this->params['external'])
+        ]);
+        $this->view->assign('backend_item_add', wa()->event('backend_item_add', $event));
     }
 }
