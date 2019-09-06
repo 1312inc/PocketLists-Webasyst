@@ -7,7 +7,7 @@
  */
 class pocketlistsProPluginShortcutFactory extends pocketlistsFactory
 {
-    protected $entity;
+    protected $entity = 'pocketlistsProPluginShortcut';
 
     /**
      * @return array

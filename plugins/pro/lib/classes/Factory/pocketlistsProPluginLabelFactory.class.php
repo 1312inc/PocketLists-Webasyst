@@ -4,10 +4,21 @@
  * Class pocketlistsProPluginLabelFactory
  *
  * @method pocketlistsProPluginLabelModel getModel()
+ * @method pocketlistsProPluginLabel createNew()
  */
 class pocketlistsProPluginLabelFactory extends pocketlistsFactory
 {
-    protected $entity;
+    protected $entity = 'pocketlistsProPluginLabel';
+
+    /**
+     * @return pocketlistsProPluginLabel
+     */
+    public function createNoStatus()
+    {
+        return $this->createNew()
+            ->setName(_wp('No status'))
+            ->setColor('0000000f');
+    }
 
     /**
      * @param pocketlistsItem $item
@@ -260,7 +271,7 @@ class pocketlistsProPluginLabelFactory extends pocketlistsFactory
 
         $sqlParts['order by'] = ['i.calc_priority desc', 'i.id asc'];
 
-        $sqlParts['where']['and'][] = sprintf('(%s)', implode(' OR ',  $sqlParts['where']['or']));
+        $sqlParts['where']['and'][] = sprintf('(%s)', implode(' OR ', $sqlParts['where']['or']));
 //        $sqlParts['where']['and'] = array_merge($sqlParts['where']['or'], $sqlParts['where']['and']);
         $sqlParts['where']['or'] = [];
 

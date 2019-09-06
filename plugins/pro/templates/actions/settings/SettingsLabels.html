@@ -74,6 +74,8 @@
 <script>
     'use strict';
     (function () {
+        $.pocketlists.setTitle();
+
         var $labels = $('[data-pl2pro-labels]'),
             $noStatus = $labels.find('[data-pl2pro-label-no-status]'),
             $done = $labels.find('[data-pl2pro-label-done]'),
@@ -175,26 +177,7 @@
                 $inputs = $form.find(':input'),
                 data = $inputs.serialize();
 
-            initColorPicker($form);
-            initSortable();
-
-            $inputs.on('change keyup paste', function (e) {
-                e.preventDefault();
-
-                if (data === $inputs.serialize()) {
-                    $button.removeClass('yellow red').addClass('green');
-                } else {
-                    $button.removeClass('green red').addClass('yellow');
-                }
-            });
-
-            $cancel.on('click', function (e) {
-                e.preventDefault();
-
-                removeForm();
-            });
-
-            $button.on('click', function () {
+            var save = function() {
                 if (data === $inputs.serialize()) {
                     return;
                 }
@@ -209,7 +192,7 @@
                                 $form
                                     .data('pl2pro-label-id', r.data.id)
                                     .find('[name="id"]')
-                                        .val(r.data.id);
+                                    .val(r.data.id);
                                 action = 'update';
                             }
 
@@ -224,6 +207,37 @@
                     },
                     'json'
                 );
+            };
+
+            initColorPicker($form);
+            initSortable();
+
+            $inputs
+                .on('change keyup paste', function (e) {
+                    e.preventDefault();
+
+                    if (data === $inputs.serialize()) {
+                        $button.removeClass('yellow red').addClass('green');
+                    } else {
+                        $button.removeClass('green red').addClass('yellow');
+                    }
+                })
+                .on('keydown', function (e) {
+                    if (e.which === 13) {
+                        e.preventDefault();
+                        save();
+                    }
+                    // if (e.which === 27)
+                });
+
+            $cancel.on('click', function (e) {
+                e.preventDefault();
+
+                removeForm();
+            });
+
+            $button.on('click', function () {
+                save();
             });
 
             return $form;

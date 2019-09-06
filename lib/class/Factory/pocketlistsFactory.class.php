@@ -77,23 +77,23 @@ class pocketlistsFactory
     }
 
     /**
-     * @param string $entity
+     * @return mixed
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * @param mixed $entity
      *
-     * @return static
+     * @return pocketlistsFactory
      */
     public function setEntity($entity)
     {
         $this->entity = $entity;
 
         return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getEntity()
-    {
-        return $this->entity;
     }
 
     /**

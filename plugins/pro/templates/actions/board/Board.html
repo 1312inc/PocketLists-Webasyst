@@ -79,6 +79,8 @@
     <script>
         'use strict';
         (function () {
+            $.pocketlists.setTitle('{$pocket->getName()|escape}', true);
+
             var $wrapper = $('[data-pl2pro-wrapper="board"]'),
                 $columns = $wrapper.find('[data-pl2pro-label]'),
                 dropInAction = false,

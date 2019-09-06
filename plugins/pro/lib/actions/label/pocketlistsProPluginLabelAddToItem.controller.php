@@ -18,7 +18,7 @@ class pocketlistsProPluginLabelAddToItemController extends pocketlistsJsonContro
         if ($labelId) {
             $label = $resolver->getEntityById(pocketlistsProPluginLabel::class, $labelId);
         } else {
-            $label= pl2()->getEntityFactory(pocketlistsProPluginLabel::class)->createNewDone();
+            $label = pl2()->getEntityFactory(pocketlistsProPluginLabel::class)->createNoStatus();
         }
 
         /** @var pocketlistsItem $item */
@@ -28,6 +28,18 @@ class pocketlistsProPluginLabelAddToItemController extends pocketlistsJsonContro
         );
 
         $label->assignToItem($item);
+
         pl2()->getEntityFactory(pocketlistsItem::class)->update($item);
+
+        /** @var pocketlistsProPluginLogFactory $factory */
+        $factory = pl2()->getEntityFactory('pocketlistsProPluginLog');
+        $this->logService->add(
+            $factory->createNewAfterAddLabel(
+                (new pocketlistsLogContext())
+                    ->setItem($item)
+                    ->setAction(pocketlistsLog::ACTION_UPDATE),
+                $label
+            )
+        );
     }
 }

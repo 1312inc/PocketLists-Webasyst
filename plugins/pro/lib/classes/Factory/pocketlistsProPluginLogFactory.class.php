@@ -3,7 +3,7 @@
 /**
  * Class pocketlistsProPluginLogFactory
  */
-class pocketlistsProPluginLogFactory
+class pocketlistsProPluginLogFactory extends pocketlistsLogFactory
 {
     /**
      * @param pocketlistsLog $log
@@ -31,5 +31,34 @@ class pocketlistsProPluginLogFactory
         }
 
         throw new pocketlistsLogicException('unknown log entity');
+    }
+
+    /**
+     * @param pocketlistsLogContext     $context
+     * @param pocketlistsProPluginLabel $label
+     *
+     * @return pocketlistsLog
+     * @throws pocketlistsLogicException
+     * @throws waException
+     */
+    public function createNewAfterAddLabel(pocketlistsLogContext $context, pocketlistsProPluginLabel $label)
+    {
+        $log = $this->createNewAfterItemUpdate($context);
+
+        $log->setParams(
+            array_merge(
+                [
+                    'item_action' => 'add_label',
+                    'label'       =>
+                        [
+                            'name'  => $label->getName(),
+                            'color' => $label->getColor(),
+                        ],
+                ],
+                $log->getParams()
+            )
+        );
+
+        return $log;
     }
 }
