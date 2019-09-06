@@ -323,6 +323,7 @@ class pocketlistsItemFactory extends pocketlistsFactory
                 $contact ? $contact->getId() : false,
                 $date_range,
                 $completed,
+                0,
                 $this->getOffset(),
                 $this->getLimit()
             );

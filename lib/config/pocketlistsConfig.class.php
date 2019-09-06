@@ -138,11 +138,11 @@ class pocketlistsConfig extends waAppConfig
         $factoryClass = sprintf('%sFactory', $entity);
 
         if (!class_exists($factoryClass)) {
-            return $this->factories['']->setEntity($entity);
+            return $this->factories[''];//->setEntity($entity);
         }
 
         $this->factories[$entity] = new $factoryClass();
-        $this->factories[$entity]->setEntity($entity);
+//        $this->factories[$entity]->setEntity($entity);
 
         return $this->factories[$entity];
     }

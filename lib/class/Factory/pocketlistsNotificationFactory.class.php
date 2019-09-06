@@ -7,7 +7,7 @@
  */
 class pocketlistsNotificationFactory extends pocketlistsFactory implements pocketlistsFactoryInterface
 {
-    protected $entity;
+    protected $entity = 'pocketlistsNotification';
 
     /**
      * @return pocketlistsNotification

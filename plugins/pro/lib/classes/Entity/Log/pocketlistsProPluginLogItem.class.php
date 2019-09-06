@@ -22,7 +22,6 @@ class pocketlistsProPluginLogItem extends pocketlistsProPluginLogAbstract
     public function getActionExplained()
     {
         $name = $this->log->getContact()->getName();
-        $assignedName = $this->log->getAssignContact()->getName();
 
         switch ($this->log->getAction()) {
             case pocketlistsLog::ACTION_ADD:
@@ -38,6 +37,8 @@ class pocketlistsProPluginLogItem extends pocketlistsProPluginLogAbstract
                 $itemAction = $this->getItemAction();
                 switch ($itemAction) {
                     case 'new assign':
+                        $assignedName = $this->log->getAssignContact()->getName();
+
                         return sprintf_wp(
                             '%s assign to-do to %s',
                             $name,
