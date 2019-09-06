@@ -40,6 +40,15 @@ abstract class pocketlistsProPluginLogAbstract
 
     /**
      * @return string
+     * @throws waException
+     */
+    public function getActorName()
+    {
+        return htmlspecialchars($this->log->getContact()->getName(), ENT_QUOTES);
+    }
+
+    /**
+     * @return string
      */
     public function getStyle()
     {

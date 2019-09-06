@@ -22,6 +22,8 @@ class pocketlistsLog extends pocketlistsEntity
     const ENTITY_COMMENT    = 'comment';
     const ENTITY_ATTACHMENT = 'attachment';
 
+    const ITEM_ACTION_NEW_ASSIGN = 'new_assign';
+
     /**
      * @var int
      */
