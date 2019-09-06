@@ -173,8 +173,9 @@
                                 var $label = $labels.filter(':nth(' + (num) + ')');
 
                                 if ($label.length) {
-                                    $labels.trigger('click.pl2pro');
-                                    $label.trigger('click.pl2pro');
+                                    $labels.removeClass('selected shown');
+                                    $label.addClass('selected shown');
+                                    $wrapper.data('pl2pro-label-selected', $label.data('pl2pro-label'));
 
                                     e.preventDefault();
                                 }
