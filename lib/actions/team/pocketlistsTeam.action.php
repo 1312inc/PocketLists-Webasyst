@@ -80,13 +80,15 @@ class pocketlistsTeamAction extends pocketlistsViewAction
             );
         }
 
+        $external = waRequest::request('external', 0, waRequest::TYPE_INT);
+
         $this->view->assign(
             [
                 'teammates'             => $teammates,
                 'print'                 => waRequest::get('print', false),
                 'user'                  => $this->user,
-                'external'              => waRequest::request('external', 0, waRequest::TYPE_INT),
-                'itemAdd'               => (new pocketlistsItemAddAction(['teammate' => $teammate]))->display(false),
+                'external'              => $external,
+                'itemAdd'               => (new pocketlistsItemAddAction(['teammate' => $teammate, 'external' => $external]))->display(false),
                 'backend_teammate_sidebar' => wa()->event('backend_teammate_sidebar', $teammate),
             ]
         );

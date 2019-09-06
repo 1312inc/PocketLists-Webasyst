@@ -1,7 +1,6 @@
-{if $wa->globals('pl2_external')}
-    {$pl2_external = $wa->globals('pl2_external')}
-    <link href="{$pl2_external['wa_app_static_url']}plugins/pro/css/pro.css" rel="stylesheet" type="text/css">
-    <script type="text/javascript" src="{$pl2_external['wa_app_static_url']}plugins/pro/js/pro.js?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
+{if !empty($pl2pro['external'])}
+    <link href="{$pl2pro['wa_app_static_url']}plugins/pro/css/pro.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="{$pl2pro['wa_app_static_url']}plugins/pro/js/pro.js?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
     <script>
         (function () {
             $.pocketlists_pro.init();

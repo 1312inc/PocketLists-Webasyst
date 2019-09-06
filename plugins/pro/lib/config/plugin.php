@@ -51,6 +51,12 @@ return [
                 ],
                 [
                     'event_app_id' => 'pocketlists',
+                    'event'        => 'backend_item_add_external',
+                    'class'        => 'pocketlistsProPluginHookHandlerItemAdd',
+                    'method'       => 'external',
+                ],
+                [
+                    'event_app_id' => 'pocketlists',
                     'event'        => 'backend_list_accesses',
                     'class'        => 'pocketlistsProPluginHookHandlerListAccesses',
                     'method'       => 'handle',
