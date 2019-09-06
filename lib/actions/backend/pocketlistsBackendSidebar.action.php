@@ -17,11 +17,8 @@ class pocketlistsBackendSidebarAction extends pocketlistsViewAction
         /** @var pocketlistsItemModel $itemModel */
         $itemModel = pl2()->getModel(pocketlistsItem::class);
 
-        $sidebar_todo_count = 0;
         $sidebar_todo_count_icon = pl2()->getEntityCounter()->countTodoUndoneWithUserPrioritiesItems();
-        if ($this->user->getSettings()->appIcon() != pocketlistsUserSettings::ICON_ALL) {
-            $sidebar_todo_count = pl2()->getEntityCounter()->countTodoUndoneItems()->getCount();
-        }
+        $sidebar_todo_count = pl2()->getEntityCounter()->countTodoUndoneItems()->getCount();
 
         $this->view->assign(compact('sidebar_todo_count', 'sidebar_todo_count_icon'));
 
