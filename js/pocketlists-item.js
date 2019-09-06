@@ -1028,7 +1028,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     }
                 }
 
-                $.pocketlists.sendNotifications(o.appUrl);
+                // $.pocketlists.sendNotifications(o.appUrl);
 
                 $.isFunction(callback) && callback.call($this);
 
@@ -1229,7 +1229,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
                             showEmptyListMessage();
 
-                            $.pocketlists.sendNotifications(o.appUrl);
+                            // $.pocketlists.sendNotifications(o.appUrl);
 
                             callback && $.isFunction(callback) && callback.call($item);
 
@@ -1473,7 +1473,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     }
                     $this.find('.pl-item').data('pl-assigned-contact', team_id);
 
-                    $.pocketlists.sendNotifications(o.appUrl);
+                    // $.pocketlists.sendNotifications(o.appUrl);
                 }
                 $(drop).trigger('dropActionDone.pl2', {
                     $obj: $this,

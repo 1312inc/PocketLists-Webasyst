@@ -82,8 +82,16 @@
                 }
             }
         },
-        setTitle: function (title) {
+        skipNextTitle: false,
+        setTitle: function (title, skipNext) {
             var self = this;
+
+            if (self.skipNextTitle === true) {
+                self.skipNextTitle = false;
+                return;
+            }
+
+            self.skipNextTitle = skipNext || false;
             var $h1 = $('#wa-app .content h1').first();
             if ($h1.length && !title) {
                 title = $h1.contents().filter(function () {

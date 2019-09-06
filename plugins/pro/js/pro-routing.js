@@ -147,6 +147,7 @@
         },
         activityAction: function () {
             this.load('?plugin=pro&module=activity&action=activity', this.setHtmlContent);
+            $.pocketlists.highlightSidebar();
         },
         pocketAction: function (id) {
             //var self = this;
@@ -210,6 +211,7 @@
         boardAction: function (id) {
             id = id || 0;
             this.load('?plugin=pro&module=board&pocket_id=' + id, this.setHtmlContent);
+            $.pocketlists.highlightSidebar();
         },
         /** Helper to load data into main content area. */
         load: function (url, options, fn) {
@@ -234,6 +236,7 @@
         },
         setHtmlContent: function (html) {
             $('#content').html(html);
+            $.pocketlists.setTitle();
         }
     }
 }(jQuery));

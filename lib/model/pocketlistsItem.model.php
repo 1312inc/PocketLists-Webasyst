@@ -49,6 +49,7 @@ class pocketlistsItemModel extends pocketlistsModel
      * @param bool $contact_id
      * @param bool $date_range
      * @param bool $completed
+     * @param int  $pocket_id
      * @param int  $start
      * @param int  $limit
      *

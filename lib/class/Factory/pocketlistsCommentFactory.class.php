@@ -7,7 +7,7 @@
  */
 class pocketlistsCommentFactory extends pocketlistsFactory
 {
-    protected  $entity;
+    protected $entity = 'pocketlistsComment';
 
     /**
      * @param pocketlistsItem $item

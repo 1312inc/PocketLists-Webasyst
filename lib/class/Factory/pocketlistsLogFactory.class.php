@@ -11,7 +11,7 @@ class pocketlistsLogFactory extends pocketlistsFactory
     /**
      * @var string
      */
-    protected $entity = 'pocketlistsLogModel';
+    protected $entity = 'pocketlistsLog';
 
     /**
      * @param pocketlistsLogContext $context
