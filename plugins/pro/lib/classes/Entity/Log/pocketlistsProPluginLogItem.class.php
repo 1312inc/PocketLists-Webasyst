@@ -50,14 +50,14 @@ class pocketlistsProPluginLogItem extends pocketlistsProPluginLogAbstract
                         $assignedName = $this->log->getAssignContact()->getName();
 
                         return sprintf_wp(
-                            '%s assign to-do to %s',
-                            $this->getActorName(),
+                            '%s assigned to-do to %s',
+                            '$this->getActorName()',
                             $assignedName
                         );
 
                     case self::ITEM_ACTION_ADD_LABEL:
                         return sprintf_wp(
-                            '%s added <span style="background: #%s">%s</span> label',
+                            '%s updated the label to <span class="pl-label" style="background: #%s">%s</span>',
                             $this->getActorName(),
                             $this->getLabel('color'),
                             htmlspecialchars($this->getLabel('name'), ENT_QUOTES)
