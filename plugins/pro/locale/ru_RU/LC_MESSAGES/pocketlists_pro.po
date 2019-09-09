@@ -548,3 +548,11 @@ msgstr "%s обновил задачу"
 #: /wa-apps/pocketlists/plugins/pro/lib/classes/Entity/Log/pocketlistsProPluginLogItem.class.php:52
 msgid "%s updated the to-do"
 msgstr "%s обновил задачу"
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Entity/Log/pocketlistsProPluginLogItem.class.php:53
+msgid "%s assigned to-do to %s"
+msgstr "%s назначил задачу пользователю %s"
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Entity/Log/pocketlistsProPluginLogItem.class.php:60
+msgid "%s updated the label to <span class=\"pl-label\" style=\"background: #%s\">%s</span>"
+msgstr "%s обновил маркер задачи на <span class=\"pl-label\" style=\"background: #%s\">%s</span>"

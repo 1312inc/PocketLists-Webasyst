@@ -547,3 +547,11 @@ msgstr ""
 #: /wa-apps/pocketlists/plugins/pro/lib/classes/Entity/Log/pocketlistsProPluginLogItem.class.php:52
 msgid "%s updated the to-do"
 msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Entity/Log/pocketlistsProPluginLogItem.class.php:53
+msgid "%s assigned to-do to %s"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Entity/Log/pocketlistsProPluginLogItem.class.php:60
+msgid "%s updated the label to <span class=\"pl-label\" style=\"background: #%s\">%s</span>"
+msgstr ""
