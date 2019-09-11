@@ -79,6 +79,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', e
 .pl2pro-column-items li .pl-done.pl-priority-fire + span { width: 25px; height: 25px; background-size: 27px 27px; margin-left: -5px; top: -6px; }
 .pl2pro-column-items li.gray { background: #fafafa; box-shadow: none; }
 .pl2pro-column-items li:hover { background: #ffe; box-shadow: 0 2px 12px -5px rgba(0,0,0,0.15); }
+.pl2pro-column-items li .pl-link-preview { min-width: 0; }
+.pl2pro-column-items li .pl-link-preview .pl-link-preview-image { float: none; }
+.pl2pro-column-items li .pl-link-preview .pl-link-preview-details { margin-left: 0; }
+.pl2pro-column-items li .pl-link-preview .pl-link-preview-details a { text-decoration: none; }
+.pl2pro-column-items li .pl-link-preview .pl-link-preview-details .float-right { display: none; }
 
 .pl2pro-log { margin-top: 10px; }
 .pl2pro-log h1 { margin-bottom: 25px; }

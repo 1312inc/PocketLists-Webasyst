@@ -12,7 +12,7 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Basepath: .\n"
 "Language: ru_RU\n"
-"X-Generator: Poedit 1.8.7\n"
+"X-Generator: Poedit 2.2.3\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: .\n"
 
@@ -1745,7 +1745,7 @@ msgstr "https://www.webasyst.ru/store/plugin/pocketlists/pro/"
 
 #: /wa-apps/pocketlists/templates/actions/about/About.html:178
 msgid "Bullets highlighted with a %s label are available as a part of the paid <a href=\"%s\" target=\"_blank\"><b>Pocket Lists PRO</b></a> plugin."
-msgstr "Пункты, отмеченные значком %s, планируются к выпуску в виде отдельного платного плагина <a href=\"%s\" target=\"_blank\"><b>Pocket Lists PRO</b></a>."
+msgstr "Возможности, отмеченные значком %s, доступны в виде отдельного платного плагина <a href=\"%s\" target=\"_blank\"><b>Pocket Lists PRO</b></a>."
 
 #: /wa-apps/pocketlists/lib/class/Log/pocketlistsLogContext.class.php:140
 msgid "No %s entity object in log context"
