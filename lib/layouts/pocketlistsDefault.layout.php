@@ -17,6 +17,9 @@ class pocketlistsDefaultLayout extends waLayout
         $this->executeAction('sidebar', new pocketlistsBackendSidebarAction());
         $this->view->assign('isAdmin', (int)pocketlistsRBAC::isAdmin());
 
-        $this->view->assign('backend_head', wa()->event('backend_head'));
+        $this->view->assign(
+            pocketlistsEventStorage::WA_BACKEND_HEAD,
+            wa()->event(pocketlistsEventStorage::WA_BACKEND_HEAD)
+        );
     }
 }

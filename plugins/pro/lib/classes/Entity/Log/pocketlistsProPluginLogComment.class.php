@@ -10,7 +10,7 @@ class pocketlistsProPluginLogComment extends pocketlistsProPluginLogAbstract
      */
     public function getLogEntry()
     {
-        $params = $this->log->getParams();
+        $params = $this->log->getParamsArray();
 
         return ifset($params, 'comment', 'comment', 'no saved comment');
     }

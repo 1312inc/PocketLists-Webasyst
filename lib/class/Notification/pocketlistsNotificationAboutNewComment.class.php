@@ -5,6 +5,8 @@
  */
 class pocketlistsNotificationAboutNewComment extends pocketlistsBaseNotification
 {
+    const IDENTIFIER = 'new_comment';
+
     /**
      * @param pocketlistsComment $comment
      *
@@ -129,7 +131,12 @@ class pocketlistsNotificationAboutNewComment extends pocketlistsBaseNotification
                 ->setSubject($mailData['subject'])
                 ->setTemplate($mailData['body']);
 
-            $notificationFactory->insert($notificationFactory->createNewEmail($emailContent));
+
+            $notificationFactory->insert(
+                $notificationFactory
+                    ->createNewEmail($emailContent)
+                    ->setIdentifier(self::IDENTIFIER)
+            );
         }
     }
 

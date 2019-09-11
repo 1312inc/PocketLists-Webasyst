@@ -9,18 +9,6 @@ return [
             '*' => [
                 [
                     'event_app_id' => 'pocketlists',
-                    'event'        => 'entity_insert.before',
-                    'class'        => 'pocketlistsProPluginWaEventListener',
-                    'method'       => 'onEntityInsertBefore',
-                ],
-                [
-                    'event_app_id' => 'pocketlists',
-                    'event'        => 'entity_update.before',
-                    'class'        => 'pocketlistsProPluginWaEventListener',
-                    'method'       => 'onEntityUpdateBefore',
-                ],
-                [
-                    'event_app_id' => 'pocketlists',
                     'event'        => 'backend_head',
                     'class'        => 'pocketlistsProPluginHookHandlerHead',
                     'method'       => 'handle',
@@ -48,12 +36,6 @@ return [
                     'event'        => 'backend_item_add',
                     'class'        => 'pocketlistsProPluginHookHandlerItemAdd',
                     'method'       => 'handle',
-                ],
-                [
-                    'event_app_id' => 'pocketlists',
-                    'event'        => 'backend_item_add_external',
-                    'class'        => 'pocketlistsProPluginHookHandlerItemAdd',
-                    'method'       => 'external',
                 ],
                 [
                     'event_app_id' => 'pocketlists',

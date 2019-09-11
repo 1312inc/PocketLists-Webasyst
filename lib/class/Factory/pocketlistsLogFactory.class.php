@@ -87,7 +87,7 @@ class pocketlistsLogFactory extends pocketlistsFactory
             ->setContactId(pl2()->getUser()->getId())
             ->setAssignedContactId($item->getAssignedContactId())
             ->setAction($action)
-            ->setParams($params)
+            ->setParamsArray($params)
             ->fillWithContext($context);
     }
 
@@ -331,17 +331,7 @@ class pocketlistsLogFactory extends pocketlistsFactory
 
         $itemData = pl2()->getHydrator()->extract(
             $item,
-            [
-                'status',
-                'priority',
-                'calc_priority',
-                'create_datetime',
-                'due_date',
-                'due_datetime',
-                'location_id',
-                'assigned_contact_id',
-                'repeat',
-            ]
+            pocketlistsLogContext::ITEM_FIELDS_TO_EXTRACT
         );
         if ($item->getAppLinksCount()) {
             foreach ($item->getAppLinks() as $link) {

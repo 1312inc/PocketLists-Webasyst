@@ -37,8 +37,18 @@ class pocketlistsLogService
      */
     public function add(pocketlistsLog $log)
     {
-//        wa()->event('lodAdd', $log);
-        return $this->factory->save($log);
+        $ok = $this->factory->save($log);
+
+        if ($ok) {
+            pl2()->getEventDispatcher()->dispatch(
+                new pocketlistsEvent(
+                    pocketlistsEventStorage::LOG_INSERT,
+                    $log
+                )
+            );
+        }
+
+        return $ok;
     }
 
     /**

@@ -20,7 +20,9 @@ class pocketlistsProPluginWaEventListener
                 $eventName = pocketlistsEventStorage::ITEM_INSERT;
         }
 
-        return pl2()->event($eventName, $object, $eventData['data']);
+        $event = new pocketlistsEvent($eventName, $object, $eventData['data']);
+
+        return pl2()->getEventDispatcher()->dispatch($event);
     }
 
     /**
@@ -38,6 +40,8 @@ class pocketlistsProPluginWaEventListener
                 $eventName = pocketlistsEventStorage::ITEM_UPDATE;
         }
 
-        return pl2()->event($eventName, $object, $eventData['data']);
+        $event = new pocketlistsEvent($eventName, $object, $eventData['data']);
+
+        return pl2()->getEventDispatcher()->dispatch($event);
     }
 }
