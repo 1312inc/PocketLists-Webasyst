@@ -6,11 +6,11 @@
 class pocketlistsProPluginHookHandlerHead extends pocketlistsProPluginAbstractHookHandler
 {
     /**
-     * @param null|mixed $params
+     * @param null|pocketlistsEvent $event
      *
      * @return mixed
      */
-    public function handle($params = null)
+    public function handle($event = null)
     {
         return $this->getView()->fetch($this->getViewTemplate('backend_head'));
     }

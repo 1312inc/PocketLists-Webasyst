@@ -12,7 +12,7 @@ class pocketlistsProPluginLogItem extends pocketlistsProPluginLogAbstract
      */
     public function getLogEntry()
     {
-        $params = $this->log->getParams();
+        $params = $this->log->getParamsArray();
 
         return ifset($params, 'item', 'name', 'no saved item name');
     }
@@ -22,7 +22,7 @@ class pocketlistsProPluginLogItem extends pocketlistsProPluginLogAbstract
      */
     public function getLabel($smth)
     {
-        $params = $this->log->getParams();
+        $params = $this->log->getParamsArray();
 
         return ifset($params, 'label', $smth, 'no saved label ' . $smth);
     }
@@ -77,7 +77,7 @@ class pocketlistsProPluginLogItem extends pocketlistsProPluginLogAbstract
      */
     private function getItemAction()
     {
-        $params = $this->log->getParams();
+        $params = $this->log->getParamsArray();
 
         return  ifset($params, 'item_action', '');
     }

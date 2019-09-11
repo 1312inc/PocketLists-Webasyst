@@ -5,6 +5,8 @@
  */
 class pocketlistsNotificationAboutNewItems extends pocketlistsBaseNotification
 {
+    const IDENTIFIER = 'new_items';
+
     /**
      * Notify all related users about new items (according to their settings)
      *
@@ -112,7 +114,11 @@ class pocketlistsNotificationAboutNewItems extends pocketlistsBaseNotification
                     ->setSubject('string:{str_replace(array("\r", "\n"), " ", $item.name)|truncate:64}')
                     ->setTemplate('templates/mails/newitem.html');
 
-                $notificationFactory->insert($notificationFactory->createNewEmail($emailContent));
+                $notificationFactory->insert(
+                    $notificationFactory
+                        ->createNewEmail($emailContent)
+                        ->setIdentifier(self::IDENTIFIER)
+                );
             }
         }
     }

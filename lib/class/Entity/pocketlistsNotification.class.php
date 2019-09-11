@@ -19,17 +19,27 @@ class pocketlistsNotification extends pocketlistsEntity
     private $id;
 
     /**
-     * @var int
+     * @var string
      */
     private $type;
 
     /**
      * @var string
      */
+    private $handler;
+
+    /**
+     * @var string|DateTime
+     */
     private $created_at;
 
     /**
-     * @var string
+     * @var string|DateTime
+     */
+    private $delayed_to;
+
+    /**
+     * @var string|DateTime
      */
     private $sent_at;
 
@@ -54,6 +64,11 @@ class pocketlistsNotification extends pocketlistsEntity
     protected $content;
 
     /**
+     * @var string
+     */
+    protected $identifier;
+
+    /**
      * @return int
      */
     public function getId()
@@ -74,7 +89,7 @@ class pocketlistsNotification extends pocketlistsEntity
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getType()
     {
@@ -82,7 +97,7 @@ class pocketlistsNotification extends pocketlistsEntity
     }
 
     /**
-     * @param int $type
+     * @param string $type
      *
      * @return pocketlistsNotification
      */
@@ -216,6 +231,66 @@ class pocketlistsNotification extends pocketlistsEntity
     {
         $this->content = $content;
         $this->setData($this->content->toJson());
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdentifier()
+    {
+        return $this->identifier;
+    }
+
+    /**
+     * @param string $identifier
+     *
+     * @return pocketlistsNotification
+     */
+    public function setIdentifier($identifier)
+    {
+        $this->identifier = $identifier;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHandler()
+    {
+        return $this->handler;
+    }
+
+    /**
+     * @param string $handler
+     *
+     * @return pocketlistsNotification
+     */
+    public function setHandler($handler)
+    {
+        $this->handler = $handler;
+
+        return $this;
+    }
+
+    /**
+     * @return DateTime|string
+     */
+    public function getDelayedTo()
+    {
+        return $this->delayed_to;
+    }
+
+    /**
+     * @param DateTime|string $delayed_to
+     *
+     * @return pocketlistsNotification
+     */
+    public function setDelayedTo($delayed_to)
+    {
+        $this->delayed_to = $delayed_to;
 
         return $this;
     }

@@ -10,7 +10,7 @@ class pocketlistsProPluginLogList extends pocketlistsProPluginLogAbstract
      */
     public function getLogEntry()
     {
-        $params = $this->log->getParams();
+        $params = $this->log->getParamsArray();
 
         return ifset($params, 'list', 'name', 'no saved list name');
     }

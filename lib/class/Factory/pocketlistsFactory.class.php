@@ -216,18 +216,18 @@ class pocketlistsFactory
     {
         $data = pl2()->getHydrator()->extract($entity, $fields, $this->getDbFields());
 
-        $eventData = ['entity' => $entity, 'data' => $data];
-        $eventResponse = wa()->event(pocketlistsEventStorage::ENTITY_INSERT_BEFORE, $eventData);
+        $event = new pocketlistsEvent(pocketlistsEventStorage::ENTITY_INSERT_BEFORE, $entity, ['data' => $data]);
+        $eventResponse = pl2()->waDispatchEvent($event);
         $dataFromEvents = [];
-        foreach ($eventResponse as $plugin => $responseData) {
-            if ($responseData instanceof pocketlistsListenerResponseInterface) {
-                foreach ($responseData->getResponses() as $pl2EventResponse) {
-                    $dataFromEvents += $pl2EventResponse;
-                }
-            } else {
-                $dataFromEvents += $responseData;
-            }
-        }
+//        foreach ($eventResponse as $plugin => $responseData) {
+//            if ($responseData instanceof pocketlistsListenerResponseInterface) {
+//                foreach ($responseData->getResponses() as $pl2EventResponse) {
+//                    $dataFromEvents += $pl2EventResponse;
+//                }
+//            } else {
+//                $dataFromEvents += $responseData;
+//            }
+//        }
 
         $data = array_merge($data, $dataFromEvents);
 
@@ -239,6 +239,10 @@ class pocketlistsFactory
             if (method_exists($entity, 'setId')) {
                 $entity->setId($id);
             }
+
+            pl2()->getEventDispatcher()->dispatch(
+                new pocketlistsEvent(pocketlistsEventStorage::ENTITY_INSERT_AFTER, $entity)
+            );
 
             return true;
         }

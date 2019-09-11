@@ -21,6 +21,11 @@ class pocketlistsEvent implements pocketlistsEventInterface
     protected $params;
 
     /**
+     * @var mixed
+     */
+    protected $response;
+
+    /**
      * pocketlistsEvent constructor.
      *
      * @param string $name
@@ -79,6 +84,26 @@ class pocketlistsEvent implements pocketlistsEventInterface
     public function setParams($params)
     {
         $this->params = $params;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getResponse()
+    {
+        return $this->response;
+    }
+
+    /**
+     * @param mixed $response
+     *
+     * @return pocketlistsEvent
+     */
+    public function setResponse($response)
+    {
+        $this->response = $response;
 
         return $this;
     }

@@ -26,6 +26,9 @@ class pocketlistsListAccessesAction extends pocketlistsViewListAction
         );
 
         $this->view->assign(compact('list', 'list_access_contacts'));
-        $this->view->assign('backend_list_accesses', wa()->event('backend_list_accesses', $list));
+        $this->view->assign(
+            'backend_list_accesses',
+            pl2()->waDispatchEvent(new pocketlistsEvent(pocketlistsEventStorage::WA_BACKEND_LIST_ACCESSES, $list))
+        );
     }
 }

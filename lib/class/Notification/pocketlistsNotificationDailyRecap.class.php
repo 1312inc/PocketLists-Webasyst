@@ -5,6 +5,8 @@
  */
 class pocketlistsNotificationDailyRecap extends pocketlistsBaseNotification
 {
+    const IDENTIFIER = 'recap';
+
     /**
      * @param array $vars
      * @param bool  $test
@@ -102,7 +104,9 @@ class pocketlistsNotificationDailyRecap extends pocketlistsBaseNotification
                     ->setSubject('string:📥 '.sprintf(_w("Daily recap for %s"), waDateTime::format('humandate')))
                     ->setTemplate('templates/mails/dailyrecap.html');
 
-                $notification = $notificationFactory->createNewEmail($emailContent);
+                $notification = $notificationFactory
+                        ->createNewEmail($emailContent)
+                        ->setIdentifier(self::IDENTIFIER);
                 $notificationFactory->insert($notification);
 
                 $sender->send($notification);

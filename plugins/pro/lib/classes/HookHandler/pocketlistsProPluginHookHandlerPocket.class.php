@@ -6,17 +6,17 @@
 class pocketlistsProPluginHookHandlerPocket extends pocketlistsProPluginAbstractHookHandler
 {
     /**
-     * @param null|mixed $params
+     * @param pocketlistsEvent $event
      *
      * @return mixed
      * @throws waException
      */
-    public function handle($params = null)
+    public function handle($event = null)
     {
         $return = ['sidebar_section' => ''];
 
         /** @var pocketlistsPocket $pocket */
-        $pocket = $params['pocket'];
+        $pocket = $event->getObject();
         pocketlistsAssert::instance($pocket, pocketlistsPocket::class);
 
         /** @var pocketlistsProPluginLabelFactory $factory */

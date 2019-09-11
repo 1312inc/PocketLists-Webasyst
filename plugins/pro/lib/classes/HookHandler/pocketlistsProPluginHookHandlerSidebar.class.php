@@ -6,12 +6,12 @@
 class pocketlistsProPluginHookHandlerSidebar extends pocketlistsProPluginAbstractHookHandler
 {
     /**
-     * @param null|mixed $params
+     * @param pocketlistsEvent|null $event
      *
      * @return mixed
      * @throws waException
      */
-    public function handle($params = null)
+    public function handle($event = null)
     {
         $return = [];
 

@@ -10,7 +10,7 @@ class pocketlistsProPluginLogAttachment extends pocketlistsProPluginLogAbstract
      */
     public function getLogEntry()
     {
-        $params = $this->log->getParams();
+        $params = $this->log->getParamsArray();
 
         return ifset($params, 'attachment', 'filename', 'no attachment name');
     }
