@@ -61,6 +61,14 @@
                                     ><span data-pl2pro-done></span>
                                     <span class="item-name">{$item->getName()|escape}</span><br>
                                     <span class="hint">{$item->getNote()|escape}</span>
+                                    <div data-pl2-item-links>
+                                        {foreach $item->getLinkedEntities() as $linkedEntity}
+                                            <div data-pl2-link-preview>
+                                                {$linkedEntity->getAppLink()->renderPreview($linkedEntity)}
+                                            </div>
+                                        {/foreach}
+                                    </div>
+
                                 </li>
                             {/foreach}
                             </ul>
