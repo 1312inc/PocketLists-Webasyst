@@ -26,6 +26,15 @@ class pocketlistsContactFactory extends pocketlistsFactory
     }
 
     /**
+     * @return pocketlistsContact
+     * @throws waException
+     */
+    public function createNewFake()
+    {
+        return new pocketlistsContact(new waContact());
+    }
+
+    /**
      * @param array $contactIds
      *
      * @return pocketlistsContact[]
