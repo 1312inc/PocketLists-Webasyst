@@ -1,12 +1,13 @@
 (function ($) {
     'use strict';
 
-    $.storage = new $.store();
     $.pocketlists_pro_routing = {
         options: {
             user_id: 0
         },
         init: function (options) {
+            $.store && !$.storage && ($.storage = new $.store());
+
             var that = this;
             that.options = options;
             if (typeof($.History) != "undefined") {

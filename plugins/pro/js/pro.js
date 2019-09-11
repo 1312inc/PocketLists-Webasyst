@@ -1,7 +1,6 @@
 (function ($) {
     'use strict';
 
-    $.storage = new $.store();
     $.pocketlists_pro = {
         inited: false,
         updatePocketLabelCounts: function () {
@@ -34,6 +33,8 @@
             if (this.inited) {
                 return;
             }
+
+            $.store && !$.storage && ($.storage = new $.store());
 
             $(document)
                 .on('click', '.pl-item-wrapper[data-id] .pl-label[data-pl2pro-label]', function (e) {
