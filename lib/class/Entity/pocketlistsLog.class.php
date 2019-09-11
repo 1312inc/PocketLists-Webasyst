@@ -449,10 +449,12 @@ class pocketlistsLog extends pocketlistsEntity
      */
     public function getAssignContact()
     {
-        if ($this->_assignedContact === null && $this->assigned_contact_id) {
+        if ($this->_assignedContact === null) {
             /** @var pocketlistsContactFactory $factory */
             $factory = pl2()->getEntityFactory(pocketlistsContact::class);
-            $this->_assignedContact = $factory->createNewWithId($this->assigned_contact_id) ?: $factory->createNew();
+            $this->_assignedContact = $this->assigned_contact_id
+                ? $factory->createNewWithId($this->assigned_contact_id)
+                : $factory->createNewFake();
         }
 
         return $this->_assignedContact;

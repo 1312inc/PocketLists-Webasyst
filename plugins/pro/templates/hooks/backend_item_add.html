@@ -72,6 +72,7 @@
                 },
                 itemDetailsOpened: function (e, data) {
                     $wrapper = data.details_wrapper.find('[data-pl2pro-wrapper]');
+                    $wrapper.removeData('pl2pro-item-add');
 
                     init($wrapper);
                 },

@@ -51,7 +51,7 @@ class pocketlistsProPluginLogItem extends pocketlistsProPluginLogAbstract
 
                         return sprintf_wp(
                             '%s assigned to-do to %s',
-                            '$this->getActorName()',
+                            $this->getActorName(),
                             $assignedName
                         );
 
