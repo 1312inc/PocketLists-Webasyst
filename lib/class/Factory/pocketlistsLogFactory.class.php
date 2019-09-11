@@ -214,11 +214,13 @@ class pocketlistsLogFactory extends pocketlistsFactory
     /**
      * @param bool $checkAccess
      *
+     * @param bool $includeMy
+     *
      * @return pocketlistsLog[]
      * @throws waDbException
      * @throws waException
      */
-    public function findLast($checkAccess = true)
+    public function findLastAll($checkAccess = true, $includeMy = false)
     {
         $availableLists = [];
         $availablePockets = [];
@@ -227,9 +229,10 @@ class pocketlistsLogFactory extends pocketlistsFactory
             $availablePockets = pocketlistsRBAC::getAccessPocketForContact();
         }
 
-        $data = $this->getModel()->getLast(
+        $data = $this->getModel()->getLastAll(
             $availableLists,
             $availablePockets,
+            $includeMy,
             $this->getOffset(),
             $this->getLimit()
         );

@@ -88,6 +88,6 @@ class pocketlistsProPluginActivityActivityAction extends pocketlistsProPluginAbs
         return $factory
             ->setOffset($this->offset * self::LIMIT)
             ->setLimit(self::LIMIT)
-            ->findLast();
+            ->findLastAll(true, $this->type === 'Activity');
     }
 }
