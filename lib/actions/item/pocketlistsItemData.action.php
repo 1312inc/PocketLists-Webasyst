@@ -54,6 +54,13 @@ class pocketlistsItemDataAction extends pocketlistsViewItemAction
 
             $oldAssignedId = !empty($item_new_data['id']) ? $item->getAssignedContactId() : 0;
 
+            $logContext = new pocketlistsLogContext();
+            if (!$isNewItem) {
+                $logContext->addParam(
+                    ['item_old' => pl2()->getHydrator()->extract($item, pocketlistsLogContext::ITEM_FIELDS_TO_EXTRACT)]
+                );
+            }
+
             $item = pl2()->getHydrator()->hydrate($item, $item_new_data);
 
             if ($item->getId()) {
@@ -122,17 +129,17 @@ class pocketlistsItemDataAction extends pocketlistsViewItemAction
                 }
             }
 
-            $context = (new pocketlistsLogContext())
+            $logContext
                 ->setList($item->getList())
                 ->setItem($item);
 
             if ($item->getAssignedContactId() != $oldAssignedId) {
-                $context->addParam(['item_action' => pocketlistsLog::ITEM_ACTION_NEW_ASSIGN]);
+                $logContext->addParam(['item_action' => pocketlistsLog::ITEM_ACTION_NEW_ASSIGN]);
             }
 
             if ($isNewItem) {
                 $this->logService->add(
-                    $this->logService->getFactory()->createNewAfterItemAdd($context)
+                    $this->logService->getFactory()->createNewAfterItemAdd($logContext)
                 );
 
                 if ($item->getList()) {
@@ -146,7 +153,7 @@ class pocketlistsItemDataAction extends pocketlistsViewItemAction
                 }
             } else {
                 $this->logService->add(
-                    $this->logService->getFactory()->createNewAfterItemUpdate($context)
+                    $this->logService->getFactory()->createNewAfterItemUpdate($logContext)
                 );
             }
         }

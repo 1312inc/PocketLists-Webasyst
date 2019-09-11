@@ -5,6 +5,8 @@
  */
 class pocketlistsNotificationAboutNewList extends pocketlistsBaseNotification
 {
+    const IDENTIFIER = 'new_list';
+
     /**
      * @param pocketlistsList $list
      *
@@ -69,7 +71,11 @@ class pocketlistsNotificationAboutNewList extends pocketlistsBaseNotification
                 ->setSubject('string:📝 '.$list->getName())
                 ->setTemplate('templates/mails/newlist.html');
 
-            $notificationFactory->insert($notificationFactory->createNewEmail($emailContent));
+            $notificationFactory->insert(
+                $notificationFactory
+                    ->createNewEmail($emailContent)
+                    ->setIdentifier(self::IDENTIFIER)
+            );
         }
     }
 }

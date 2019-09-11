@@ -3,7 +3,7 @@
 /**
  * Class pocketlistsProPluginAbstractHookHandler
  */
-abstract class pocketlistsProPluginAbstractHookHandler
+abstract class pocketlistsProPluginAbstractHookHandler implements pocketlistsHookHandlerInterface
 {
     /**
      * @var pocketlistsProPlugin
@@ -17,13 +17,6 @@ abstract class pocketlistsProPluginAbstractHookHandler
     {
         $this->plugin = pocketlistsProPlugin::getInstance();
     }
-
-    /**
-     * @param null|mixed $params
-     *
-     * @return mixed
-     */
-    abstract public function handle($params = null);
 
     /**
      * @param string $name

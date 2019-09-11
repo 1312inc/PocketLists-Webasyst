@@ -36,6 +36,9 @@ class pocketlistsNotificationSendService
                 ->setStatus(pocketlistsNotification::STATUS_FAIL);
         }
 
+        pl2()->getEventDispatcher()->dispatch(
+            new pocketlistsEvent(pocketlistsEventStorage::NOTIFICATION_SENT, $notification)
+        );
         pl2()->getEntityFactory(pocketlistsNotification::class)->update($notification);
     }
 

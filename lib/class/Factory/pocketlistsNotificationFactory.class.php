@@ -10,6 +10,8 @@ class pocketlistsNotificationFactory extends pocketlistsFactory implements pocke
     protected $entity = 'pocketlistsNotification';
 
     /**
+     * @param pocketlistsNotificationContentInterface $content
+     *
      * @return pocketlistsNotification
      */
     public function createNewEmail(pocketlistsNotificationContentInterface $content)
@@ -35,16 +37,22 @@ class pocketlistsNotificationFactory extends pocketlistsFactory implements pocke
     {
         switch ($notification->getType()) {
             case pocketlistsNotification::TYPE_EMAIL:
-                $obj = new pocketlistsNotificationEmailContent();
-                $obj->extractJson($notification->getData());
+                $notificationEmailContent = new pocketlistsNotificationEmailContent($notification->getData());
 
-                break;
+                return $notificationEmailContent;
 
             default:
-                throw new pocketlistsNotImplementedException();
+                $event = new pocketlistsEvent(pocketlistsEventStorage::CREATE_NOTIFICATION_CONTENT, $notification);
+
+                /** @var pocketlistsNotificationContentInterface $notificationContent */
+                pl2()->getEventDispatcher()->dispatch($event);
+                $notificationContent = $event->getResponse();
+                if ($notificationContent instanceof pocketlistsNotificationContentInterface) {
+                    return $notificationContent;
+                }
         }
 
-        return $obj;
+        throw new pocketlistsNotImplementedException();
     }
 
     /**

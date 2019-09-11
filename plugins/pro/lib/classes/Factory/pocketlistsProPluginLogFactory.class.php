@@ -45,7 +45,7 @@ class pocketlistsProPluginLogFactory extends pocketlistsLogFactory
     {
         $log = $this->createNewAfterItemUpdate($context);
 
-        $log->setParams(
+        $log->setParamsArray(
             array_merge(
                 [
                     'item_action' => 'add_label',
@@ -55,7 +55,7 @@ class pocketlistsProPluginLogFactory extends pocketlistsLogFactory
                             'color' => $label->getColor(),
                         ],
                 ],
-                $log->getParams()
+                $log->getParamsArray()
             )
         );
 

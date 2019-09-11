@@ -140,6 +140,7 @@ return array(
     'pocketlists_notification' => array(
         'id' => array('int', 11, 'null' => 0, 'autoincrement' => 1),
         'type' => array('smallint', 6, 'null' => 0),
+        'identifier' => array('varchar', 32),
         'created_at' => array('datetime', 'null' => 0),
         'sent_at' => array('datetime'),
         'status' => array('varchar', 255),

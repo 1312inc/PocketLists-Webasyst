@@ -5,6 +5,8 @@
  */
 class pocketlistsNotificationAboutCompleteItems extends pocketlistsBaseNotification
 {
+    const IDENTIFIER = 'complete_items';
+
     /**
      * Notify all related users about completed items (according to their settings)
      *
@@ -174,7 +176,11 @@ class pocketlistsNotificationAboutCompleteItems extends pocketlistsBaseNotificat
                     ->setSubject($subject)
                     ->setTemplate('templates/mails/completeanyitem.html');
 
-                $notificationFactory->insert($notificationFactory->createNewEmail($emailContent));
+                $notificationFactory->insert(
+                    $notificationFactory
+                        ->createNewEmail($emailContent)
+                        ->setIdentifier(self::IDENTIFIER)
+                );
             }
         }
     }

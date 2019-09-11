@@ -258,7 +258,9 @@ class pocketlistsAppLinkShop extends pocketlistsAppLinkAbstract
             pocketlistsHelper::APP_ID
         );
 
-        $pluginRender = wa()->event('item.render_linked', $this);
+        $event = new pocketlistsEvent(pocketlistsEventStorage::WA_ITEM_RENDER_LINKED, $this);
+        pl2()->waDispatchEvent($event);
+        $pluginRender = $event->getResponse();
         $render = !empty($pluginRender['preview']) ? $pluginRender['preview'] : '';
 
         if ($this->isEnabled() && !$render && file_exists($template)) {

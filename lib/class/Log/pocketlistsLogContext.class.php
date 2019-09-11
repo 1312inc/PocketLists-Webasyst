@@ -13,6 +13,18 @@ class pocketlistsLogContext
     const ATTACHMENT_ENTITY = 'attachment';
     const LOCATION_ENTITY   = 'location';
 
+    const ITEM_FIELDS_TO_EXTRACT = [
+        'status',
+        'priority',
+        'calc_priority',
+        'create_datetime',
+        'due_date',
+        'due_datetime',
+        'location_id',
+        'assigned_contact_id',
+        'repeat',
+    ];
+
     /**
      * @var pocketlistsPocket
      */

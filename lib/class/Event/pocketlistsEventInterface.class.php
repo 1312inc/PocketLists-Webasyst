@@ -19,4 +19,16 @@ interface pocketlistsEventInterface
      * @return array
      */
     public function getParams();
+
+    /**
+     * @return mixed
+     */
+    public function getResponse();
+
+    /**
+     * @param mixed $response
+     *
+     * @return pocketlistsEvent
+     */
+    public function setResponse($response);
 }
