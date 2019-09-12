@@ -34,7 +34,7 @@ abstract class pocketlistsViewAction extends waViewAction
                 ]
             );
 
-            $this->setTemplate('templates/include/error.html');
+            $this->setTemplate(wa()->getAppPath('templates/include/error.html'));
         }
     }
 }
