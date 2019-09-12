@@ -59,8 +59,8 @@ class pocketlistsBackendSidebarAction extends pocketlistsViewAction
         );
 
         /** @var pocketlistsPocketFactory $pocketFactory */
-        $listFactory = pl2()->getEntityFactory(pocketlistsPocket::class);
-        $pockets = $listFactory->findAllForUser();
+        $pocketFactory = pl2()->getEntityFactory(pocketlistsPocket::class);
+        $pockets = $pocketFactory->findAllForUser();
 
         $linkedApps = pl2()->getLinkedApp();
         foreach ($linkedApps as $i => $app) {

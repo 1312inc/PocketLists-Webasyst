@@ -50,6 +50,7 @@ class pocketlistsRBAC
                 }
             }
         } else {
+            self::addPocketUserRight($user_id, 0, self::RIGHT_NONE);
             $pockets = $user->getRights(pocketlistsHelper::APP_ID, self::POCKET_ITEM.'.%');
             foreach ($pockets as $pocketId => $rightValue) {
                 self::addPocketUserRight($user_id, $pocketId, $rightValue);
@@ -72,6 +73,7 @@ class pocketlistsRBAC
             }
 
             // соберем все остальные листы
+            self::addListUserRight($user_id, 0, true);
             $accessedLists = $user->getRights(pocketlistsHelper::APP_ID, self::LIST_ITEM.'.%');
             if ($accessedLists) {
                 foreach ($accessedLists as $accessedListId => $rightValue) {

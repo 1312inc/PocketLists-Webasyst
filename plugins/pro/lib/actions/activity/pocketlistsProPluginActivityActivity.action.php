@@ -82,6 +82,10 @@ class pocketlistsProPluginActivityActivityAction extends pocketlistsProPluginAbs
      */
     protected function getLogs()
     {
+        if (!pocketlistsRBAC::canAssign()) {
+            throw new pocketlistsForbiddenException();
+        }
+
         /** @var pocketlistsLogFactory $factory */
         $factory = pl2()->getEntityFactory(pocketlistsLog::class);
 
