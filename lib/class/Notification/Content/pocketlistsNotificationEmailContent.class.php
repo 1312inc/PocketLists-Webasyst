@@ -131,11 +131,11 @@ class pocketlistsNotificationEmailContent extends pocketlistsNotificationAbstrac
     }
 
     /**
-     * @return false|string
+     * @return array
      */
-    public function toJson()
+    public function jsonSerialize()
     {
-        $data = pl2()->getHydrator()->extract(
+        return pl2()->getHydrator()->extract(
             $this,
             [
                 'subject',
@@ -145,8 +145,6 @@ class pocketlistsNotificationEmailContent extends pocketlistsNotificationAbstrac
                 'params',
             ]
         );
-
-        return json_encode($data, JSON_UNESCAPED_UNICODE);
     }
 
     /**

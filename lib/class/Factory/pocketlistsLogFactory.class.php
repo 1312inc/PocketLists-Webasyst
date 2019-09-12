@@ -207,7 +207,7 @@ class pocketlistsLogFactory extends pocketlistsFactory
             ->setCreateDatetime(date('Y-m-d H:i:s'))
             ->setAction($action)
             ->setContactId(pl2()->getUser()->getId())
-            ->setParams($params)
+            ->setParamsArray($params)
             ->fillWithContext($context);
     }
 
