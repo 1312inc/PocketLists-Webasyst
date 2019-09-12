@@ -62,7 +62,7 @@ background: -moz-linear-gradient(left,  rgba(255,255,255,0) 0%, rgba(255,255,255
 background: -webkit-linear-gradient(left,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%); /* Chrome10-25,Safari5.1-6 */
 background: linear-gradient(to right,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 */ }
-.pl2pro-column { flex: 1; min-width: 170px; min-height: 65vh; margin-right: 10px; display: flex; flex-direction: column; }
+.pl2pro-column { flex: 1; min-width: 183px; min-height: 65vh; margin-right: 10px; display: flex; flex-direction: column; }
 .pl2pro-column-header { padding: 10px 0; flex: 0 0 auto; }
 .pl2pro-column-header h5 { font-size: 1.3rem; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
 .pl2pro-column-header h5 .icon16.color { margin-top: 5px; }
@@ -102,3 +102,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', e
 .pl2pro-log-record:hover .pl2pro-log-glyph { opacity: 1; }
 .pl2pro-log.pl2pro-log-activity { padding: 10px; margin: 0; }
 .pl2pro-log.pl2pro-log-pocket { padding: 23px 17px 15px 17px; margin: 0; }
+
+/* Narrow screens
+----------------- */
+@media screen and (max-width: 1024px) {
+    .pl-view-widget h3 .pl-done:checked + span { display: none; }
+}
