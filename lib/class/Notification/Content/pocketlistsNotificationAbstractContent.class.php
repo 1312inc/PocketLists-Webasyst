@@ -3,7 +3,7 @@
 /**
  * Class pocketlistsNotificationAbstractContent
  */
-abstract class pocketlistsNotificationAbstractContent implements pocketlistsNotificationContentInterface, pocketlistsHydratableInterface
+abstract class pocketlistsNotificationAbstractContent implements pocketlistsNotificationContentInterface, pocketlistsHydratableInterface, JsonSerializable
 {
     /**
      * @var string

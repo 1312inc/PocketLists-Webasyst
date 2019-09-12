@@ -12,16 +12,18 @@ class pocketlistsNotificationModel extends pocketlistsModel
 
     /**
      * @param int $limit
+     * @param int $contactId
      *
      * @return array
      */
-    public function getUnsent($limit)
+    public function getUnsent($limit, $contactId = 0)
     {
         return $this
             ->select('*')
             ->where(
-                'status = i:status AND sent_at is null',
-                ['status' => pocketlistsNotification::STATUS_PENDING]
+                sprintf('status = i:status AND sent_at is null%s', $contactId ? ' and contact_id = i:contact_id' : ''),
+                ['status' => pocketlistsNotification::STATUS_PENDING,
+                'contact_id' => $contactId]
             )
             ->order('id')
             ->limit($limit)

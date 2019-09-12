@@ -15,6 +15,18 @@ return [
                 ],
                 [
                     'event_app_id' => 'pocketlists',
+                    'event'        => 'entity_insert.before',
+                    'class'        => 'pocketlistsProPluginWaEventListener',
+                    'method'       => 'onEntityInsertBefore',
+                ],
+                [
+                    'event_app_id' => 'pocketlists',
+                    'event'        => 'entity_update.before',
+                    'class'        => 'pocketlistsProPluginWaEventListener',
+                    'method'       => 'onEntityUpdateBefore',
+                ],
+                [
+                    'event_app_id' => 'pocketlists',
                     'event'        => 'backend_settings',
                     'class'        => 'pocketlistsProPluginHookHandlerSettings',
                     'method'       => 'handle',

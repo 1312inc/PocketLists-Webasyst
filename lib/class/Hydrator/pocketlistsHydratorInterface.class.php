@@ -10,7 +10,7 @@ interface pocketlistsHydratorInterface
      * @param array                          $fields
      * @param array                          $dbFields
      *
-     * @return mixed
+     * @return array
      */
     public function extract(pocketlistsHydratableInterface $object, array $fields = [], $dbFields = []);
 
@@ -18,7 +18,7 @@ interface pocketlistsHydratorInterface
      * @param pocketlistsHydratableInterface $object
      * @param array                          $data
      *
-     * @return mixed
+     * @return object
      */
     public function hydrate(pocketlistsHydratableInterface $object, array $data);
 }

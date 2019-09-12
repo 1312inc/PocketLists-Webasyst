@@ -230,7 +230,7 @@ class pocketlistsNotification extends pocketlistsEntity
     public function setContent(pocketlistsNotificationContentInterface $content)
     {
         $this->content = $content;
-        $this->setData($this->content->toJson());
+        $this->setData(json_encode($this->content, JSON_UNESCAPED_UNICODE));
 
         return $this;
     }

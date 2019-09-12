@@ -6,42 +6,32 @@
 class pocketlistsProPluginWaEventListener
 {
     /**
-     * @param array $eventData
+     * @param pocketlistsEvent $event
      *
-     * @return mixed
+     * @throws waException
      */
-    public function onEntityInsertBefore(array $eventData)
+    public function onEntityInsertBefore(pocketlistsEvent $event)
     {
-        $object = $eventData['entity'];
-        $eventName = '';
+        $object = $event->getObject();
 
         switch (get_class($object)) {
             case pocketlistsItem::class:
-                $eventName = pocketlistsEventStorage::ITEM_INSERT;
+                (new pocketlistsProPluginItemEventListener())->onInsert($event);
         }
-
-        $event = new pocketlistsEvent($eventName, $object, $eventData['data']);
-
-        return pl2()->getEventDispatcher()->dispatch($event);
     }
 
     /**
-     * @param array $eventData
+     * @param pocketlistsEvent $event
      *
-     * @return mixed
+     * @throws waException
      */
-    public function onEntityUpdateBefore(array $eventData)
+    public function onEntityUpdateBefore(pocketlistsEvent $event)
     {
-        $object = $eventData['entity'];
-        $eventName = '';
+        $object = $event->getObject();
 
         switch (get_class($object)) {
             case pocketlistsItem::class:
-                $eventName = pocketlistsEventStorage::ITEM_UPDATE;
+                (new pocketlistsProPluginItemEventListener())->onUpdate($event);
         }
-
-        $event = new pocketlistsEvent($eventName, $object, $eventData['data']);
-
-        return pl2()->getEventDispatcher()->dispatch($event);
     }
 }

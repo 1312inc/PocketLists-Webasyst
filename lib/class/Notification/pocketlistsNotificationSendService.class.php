@@ -36,18 +36,17 @@ class pocketlistsNotificationSendService
                 ->setStatus(pocketlistsNotification::STATUS_FAIL);
         }
 
+        pl2()->getEntityFactory(pocketlistsNotification::class)->update($notification);
+
         pl2()->getEventDispatcher()->dispatch(
             new pocketlistsEvent(pocketlistsEventStorage::NOTIFICATION_SENT, $notification)
         );
-        pl2()->getEntityFactory(pocketlistsNotification::class)->update($notification);
     }
 
     /**
      * @param int $chunk
      *
      * @return int
-     * @throws pocketlistsNotImplementedException
-     * @throws waException
      */
     public function sendBatch($chunk = 100)
     {
@@ -67,5 +66,25 @@ class pocketlistsNotificationSendService
         }
 
         return $sentCount;
+    }
+
+    public function sendDirect()
+    {
+        $user = pl2()->getUser();
+
+        try {
+            $notifications = pl2()->getEntityFactory(pocketlistsNotification::class)->findUnsentForUser();
+
+            $response = [];
+            foreach ($notifications as $notification) {
+                $this->send($notification);
+
+                if ($notification->getStatus() === pocketlistsNotification::STATUS_OK) {
+                    $response = $notification->getContent();
+                }
+            }
+        } catch (Exception $ex) {
+            pocketlistsHelper::logError(sprintf('Direct notifications send error for user %d', $user->getId()), $ex);
+        }
     }
 }

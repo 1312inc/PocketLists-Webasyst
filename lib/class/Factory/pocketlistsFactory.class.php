@@ -217,19 +217,11 @@ class pocketlistsFactory
         $data = pl2()->getHydrator()->extract($entity, $fields, $this->getDbFields());
 
         $event = new pocketlistsEvent(pocketlistsEventStorage::ENTITY_INSERT_BEFORE, $entity, ['data' => $data]);
-        $eventResponse = pl2()->waDispatchEvent($event);
-        $dataFromEvents = [];
-//        foreach ($eventResponse as $plugin => $responseData) {
-//            if ($responseData instanceof pocketlistsListenerResponseInterface) {
-//                foreach ($responseData->getResponses() as $pl2EventResponse) {
-//                    $dataFromEvents += $pl2EventResponse;
-//                }
-//            } else {
-//                $dataFromEvents += $responseData;
-//            }
-//        }
-
-        $data = array_merge($data, $dataFromEvents);
+        $event->setResponse([]);
+        pl2()->waDispatchEvent($event);
+        foreach ($event->getResponse() as $responseData) {
+            $data = array_merge($data, $responseData);
+        }
 
         unset($data['id']);
 
@@ -259,16 +251,11 @@ class pocketlistsFactory
     public function delete(pocketlistsEntity $entity)
     {
         if (method_exists($entity, 'getId')) {
-            $eventData = ['entity' => $entity];
-            $eventResponse = wa()->event(pocketlistsEventStorage::ENTITY_DELETE_BEFORE, $eventData);
-            foreach ($eventResponse as $plugin => $responseData) {
-                if ($responseData instanceof pocketlistsListenerResponseInterface) {
-                    foreach ($responseData->getResponses() as $pl2EventResponse) {
-                        if ($pl2EventResponse === false) {
-                            return false;
-                        }
-                    }
-                } elseif ($responseData === false) {
+            $event = new pocketlistsEvent(pocketlistsEventStorage::ENTITY_DELETE_BEFORE, $entity);
+            $event->setResponse([]);
+            pl2()->waDispatchEvent($event);
+            foreach ($event->getResponse() as $plugin => $responseData) {
+                if ($responseData === false) {
                     return false;
                 }
             }
@@ -291,20 +278,12 @@ class pocketlistsFactory
         if (method_exists($entity, 'getId')) {
             $data = pl2()->getHydrator()->extract($entity, $fields, $this->getDbFields());
 
-            $eventData = ['entity' => $entity, 'data' => $data];
-            $eventResponse = wa()->event(pocketlistsEventStorage::ENTITY_UPDATE_BEFORE, $eventData);
-            $dataFromEvents = [];
-            foreach ($eventResponse as $plugin => $responseData) {
-                if ($responseData instanceof pocketlistsListenerResponseInterface) {
-                    foreach ($responseData->getResponses() as $pl2EventResponse) {
-                        $dataFromEvents += $pl2EventResponse;
-                    }
-                } else {
-                    $dataFromEvents += $responseData;
-                }
+            $event = new pocketlistsEvent(pocketlistsEventStorage::ENTITY_INSERT_BEFORE, $entity, ['data' => $data]);
+            $event->setResponse([]);
+            pl2()->waDispatchEvent($event);
+            foreach ($event->getResponse() as $responseData) {
+                $data = array_merge($data, $responseData);
             }
-
-            $data = array_merge($data, $dataFromEvents);
 
             unset($data['id']);
 
