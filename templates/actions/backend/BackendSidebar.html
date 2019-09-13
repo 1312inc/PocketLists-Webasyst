@@ -1,22 +1,25 @@
-<!-- POCKETS -->
-<div class="block pl-sidebar-core" data-pl2-sidebar-wrapper="pockets">
-    <ul class="menu-v with-icons">
-        {foreach $pockets as $pocket}
-            <li data-pl-pocket-id="{$pocket->getId()}">
-                <span class="count">{$pocket->getListsCount()}</span>
-                <a href="#/pocket/{$pocket->getId()}/"><i
-                            class="icon16 color pl-dark-{$pocket->getColor()}"></i>{$pocket->getName()|escape}</a>
+{if !empty($pockets)}
+    <!-- POCKETS -->
+    <div class="block pl-sidebar-core" data-pl2-sidebar-wrapper="pockets">
+        <ul class="menu-v with-icons">
+            {foreach $pockets as $pocket}
+                <li data-pl-pocket-id="{$pocket->getId()}">
+                    <span class="count">{$pocket->getListsCount()}</span>
+                    <a href="#/pocket/{$pocket->getId()}/"><i
+                                class="icon16 color pl-dark-{$pocket->getColor()}"></i>{$pocket->getName()|escape}</a>
+                </li>
+            {/foreach}
+        </ul>
+        <ul class="menu-v with-icons">
+            <li class="small">
+                <a href="#" data-pl2-action="add-pocket"><i class="icon10 add"></i>[`New pocket`]</a>
             </li>
-        {/foreach}
-    </ul>
-    <ul class="menu-v with-icons">
-        <li class="small">
-            <a href="#" data-pl2-action="add-pocket"><i class="icon10 add"></i>[`New pocket`]</a>
-        </li>
-    </ul>
-</div>
+        </ul>
+    </div>
 
-<div class="hr"></div>
+    <div class="hr"></div>
+    
+{/if}
 
 <!-- TO-DO STREAMS -->
 <div class="block">
