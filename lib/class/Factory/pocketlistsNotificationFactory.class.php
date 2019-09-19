@@ -21,6 +21,8 @@ class pocketlistsNotificationFactory extends pocketlistsFactory implements pocke
         $notification
             ->setType(pocketlistsNotification::TYPE_EMAIL)
             ->setCreatedAt(date('Y-m-d H:i:s'))
+            ->setDirection(pocketlistsNotification::DIRECTION_EXTERNAL)
+            ->setContactId($content->getToContactId())
             ->setContent($content);
 
         return $notification;
@@ -30,7 +32,6 @@ class pocketlistsNotificationFactory extends pocketlistsFactory implements pocke
      * @param pocketlistsNotification $notification
      *
      * @return pocketlistsNotificationContentInterface
-     *
      * @throws pocketlistsNotImplementedException
      */
     public function createContentForNotification(pocketlistsNotification $notification)
@@ -63,21 +64,21 @@ class pocketlistsNotificationFactory extends pocketlistsFactory implements pocke
      */
     public function findUnsent($limit = 100)
     {
-        $data = $this->getModel()->getUnsent($limit);
+        $data = $this->getModel()->getExternalUnsent($limit);
 
         return $this->generateWithData($data, true);
     }
 
     /**
-     * @param int $limit
+     * @param pocketlistsContact|null $user
+     * @param int                     $limit
      *
      * @return pocketlistsNotification[]
      * @throws waException
      */
-    public function findUnsentForUser(pocketlistsContact $user = null, $limit = 10)
+    public function findUnsentForUser(pocketlistsContact $user, $limit = 10)
     {
-        $user = $user ?: pl2()->getUser();
-        $data = $this->getModel()->getUnsent($limit, $user->getId());
+        $data = $this->getModel()->getInternalUnsentForUser($limit, $user->getId());
 
         return $this->generateWithData($data, true);
     }

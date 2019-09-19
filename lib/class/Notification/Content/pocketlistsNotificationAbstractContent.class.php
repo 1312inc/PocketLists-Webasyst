@@ -11,6 +11,11 @@ abstract class pocketlistsNotificationAbstractContent implements pocketlistsNoti
     protected $error;
 
     /**
+     * @var int
+     */
+    protected $toContactId;
+
+    /**
      * pocketlistsNotificationAbstractContent constructor.
      *
      * @param null $json
@@ -38,6 +43,26 @@ abstract class pocketlistsNotificationAbstractContent implements pocketlistsNoti
     public function getError()
     {
         return $this->error;
+    }
+
+    /**
+     * @return int
+     */
+    public function getToContactId()
+    {
+        return $this->toContactId;
+    }
+
+    /**
+     * @param int $toContactId
+     *
+     * @return pocketlistsNotificationContentInterface
+     */
+    public function setToContactId($toContactId)
+    {
+        $this->toContactId = $toContactId;
+
+        return $this;
     }
 
     /**

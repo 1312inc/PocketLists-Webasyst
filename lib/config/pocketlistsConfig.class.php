@@ -269,7 +269,7 @@ HTML;
             }
 
             $pocketlistsPath = sprintf(
-                '%spocketlists?module=backendJson&action=sendNotifications',
+                '%spocketlists?module=backendJson&action=',
                 pl2()->getBackendUrl(true)
             );
 
@@ -279,10 +279,27 @@ HTML;
     'use strict';
     
     try {
-        $.post('{$pocketlistsPath}', function(r) {
+        $.post('{$pocketlistsPath}sendNotifications', function(r) {
             if (r.status === 'ok') {
                 var sent = parseInt(r.data);
                 sent && console.log('pocketlists: notification send ' + sent);
+            } else {
+                console.log('pocketlists: notification send error ' + r.error);
+            }
+        });
+        
+        $.post('{$pocketlistsPath}sendDirectNotifications', function(r) {
+            if (r.status === 'ok') {
+                if (window['pocketlistsAlertBox']) {
+                    $.each(r.data, function() {
+                        var alertbox = new pocketlistsAlertBox('#pl2-notification-area', {
+                            closeTime: 120000,
+                            persistent: true,
+                            hideCloseButton: false
+                        });
+                        alertbox.show(this);
+                    });
+                }
             } else {
                 console.log('pocketlists: notification send error ' + r.error);
             }

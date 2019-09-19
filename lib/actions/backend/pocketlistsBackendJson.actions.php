@@ -87,7 +87,16 @@ class pocketlistsBackendJsonActions extends pocketlistsJsonActions
      */
     public function sendNotificationsAction()
     {
-        $this->response = (new pocketlistsNotificationSendService())->sendBatch();
+        $this->response = (new pocketlistsNotificationSendService())->sendExternal();
+    }
+
+    /**
+     * @throws pocketlistsNotImplementedException
+     * @throws waException
+     */
+    public function sendDirectNotificationsAction()
+    {
+        $this->response = (new pocketlistsNotificationSendService())->sendInternal();
     }
 
     public function getListItemCountAction()

@@ -132,6 +132,13 @@ class pocketlistsRightConfig extends waRightConfig
                 }
             }
         }
+
+        /**
+         * @event rights.config
+         * @param waRightConfig $this Rights setup object
+         * @return void
+         */
+        wa()->event('rights.config', $this);
     }
 
     /**

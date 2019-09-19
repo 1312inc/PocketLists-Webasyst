@@ -6,11 +6,6 @@
 class pocketlistsNotificationEmailContent extends pocketlistsNotificationAbstractContent
 {
     /**
-     * @var int
-     */
-    private $toContactId;
-
-    /**
      * @var string
      */
     private $toEmail;
@@ -29,26 +24,6 @@ class pocketlistsNotificationEmailContent extends pocketlistsNotificationAbstrac
      * @var array
      */
     private $params;
-
-    /**
-     * @return int
-     */
-    public function getToContactId()
-    {
-        return $this->toContactId;
-    }
-
-    /**
-     * @param int $contactId
-     *
-     * @return pocketlistsNotificationEmailContent
-     */
-    public function setToContactId($contactId)
-    {
-        $this->toContactId = $contactId;
-
-        return $this;
-    }
 
     /**
      * @return string

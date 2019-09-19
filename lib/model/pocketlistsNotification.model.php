@@ -11,19 +11,48 @@ class pocketlistsNotificationModel extends pocketlistsModel
     protected $table = 'pocketlists_notification';
 
     /**
+     * get all external notifications
+     *
      * @param int $limit
      * @param int $contactId
      *
      * @return array
      */
-    public function getUnsent($limit, $contactId = 0)
+    public function getExternalUnsent($limit)
     {
         return $this
             ->select('*')
             ->where(
-                sprintf('status = i:status AND sent_at is null%s', $contactId ? ' and contact_id = i:contact_id' : ''),
-                ['status' => pocketlistsNotification::STATUS_PENDING,
-                'contact_id' => $contactId]
+                'status = i:status AND sent_at is null and direction = s:direction',
+                [
+                    'status'    => pocketlistsNotification::STATUS_PENDING,
+                    'direction' => pocketlistsNotification::DIRECTION_EXTERNAL,
+                ]
+            )
+            ->order('id')
+            ->limit($limit)
+            ->fetchAll();
+    }
+
+    /**
+     * get all external notifications
+     *
+     * @param int $limit
+     * @param int $contactId
+     *
+     * @return array
+     */
+    public function getInternalUnsentForUser($limit, $contactId)
+    {
+        return $this
+            ->select('*')
+            ->where(
+                'status = i:status AND sent_at is null and direction = s:direction and contact_id = i:contact_id',
+                [
+                    'status'     => pocketlistsNotification::STATUS_PENDING,
+                    'direction'  => pocketlistsNotification::DIRECTION_INTERNAL,
+                    'contact_id' => $contactId,
+                ]
             )
             ->order('id')
             ->limit($limit)

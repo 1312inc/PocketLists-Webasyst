@@ -13,6 +13,9 @@ class pocketlistsNotification extends pocketlistsEntity
     const STATUS_SENDING = 2;
     const STATUS_FAIL    = 99;
 
+    const DIRECTION_EXTERNAL = 'external';
+    const DIRECTION_INTERNAL = 'internal';
+
     /**
      * @var int
      */
@@ -67,6 +70,16 @@ class pocketlistsNotification extends pocketlistsEntity
      * @var string
      */
     protected $identifier;
+
+    /**
+     * @var string
+     */
+    protected $direction = self::DIRECTION_EXTERNAL;
+
+    /**
+     * @var int|null
+     */
+    protected $contact_id;
 
     /**
      * @return int
@@ -291,6 +304,46 @@ class pocketlistsNotification extends pocketlistsEntity
     public function setDelayedTo($delayed_to)
     {
         $this->delayed_to = $delayed_to;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDirection()
+    {
+        return $this->direction;
+    }
+
+    /**
+     * @param string $direction
+     *
+     * @return pocketlistsNotification
+     */
+    public function setDirection($direction)
+    {
+        $this->direction = $direction;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getContactId()
+    {
+        return $this->contact_id;
+    }
+
+    /**
+     * @param int|null $contact_id
+     *
+     * @return pocketlistsNotification
+     */
+    public function setContactId($contact_id)
+    {
+        $this->contact_id = $contact_id;
 
         return $this;
     }

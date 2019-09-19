@@ -19,4 +19,16 @@ interface pocketlistsNotificationContentInterface
      * @return string
      */
     public function getError();
+
+    /**
+     * @return int
+     */
+    public function getToContactId();
+
+    /**
+     * @param int $contactId
+     *
+     * @return pocketlistsNotificationContentInterface
+     */
+    public function setToContactId($contactId);
 }

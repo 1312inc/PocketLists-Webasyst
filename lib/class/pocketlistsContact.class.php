@@ -81,6 +81,11 @@ class pocketlistsContact
     private $itemsInfo;
 
     /**
+     * @var string
+     */
+    private $locale;
+
+    /**
      * pocketlistsContact constructor.
      *
      * @param waContact $contact
@@ -279,5 +284,23 @@ class pocketlistsContact
         }
 
         return $this->listActivities;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getLocale()
+    {
+        if ($this->locale === null) {
+            static $contact_model;
+            if (!$contact_model instanceof waContactModel) {
+                $contact_model = new waContactModel();
+            }
+
+            $contact_info = $contact_model->getById($this->id);
+            $this->locale = isset($contact_info['locale']) ? $contact_info['locale'] : null;
+        }
+
+        return $this->locale;
     }
 }

@@ -3,7 +3,7 @@
 /**
  * Class pocketlistsNotificationSendService
  */
-class pocketlistsNotificationSendService
+class pocketlistsNotificationSendService implements pocketlistsNotificationSendable
 {
     /**
      * @param pocketlistsNotification $notification
@@ -38,9 +38,8 @@ class pocketlistsNotificationSendService
 
         pl2()->getEntityFactory(pocketlistsNotification::class)->update($notification);
 
-        pl2()->getEventDispatcher()->dispatch(
-            new pocketlistsEvent(pocketlistsEventStorage::NOTIFICATION_SENT, $notification)
-        );
+        $event = new pocketlistsEvent(pocketlistsEventStorage::NOTIFICATION_SENT, $notification);
+        pl2()->getEventDispatcher()->dispatch($event);
     }
 
     /**
@@ -48,7 +47,7 @@ class pocketlistsNotificationSendService
      *
      * @return int
      */
-    public function sendBatch($chunk = 100)
+    public function sendExternal($chunk = 100)
     {
         try {
             $notifications = pl2()->getEntityFactory(pocketlistsNotification::class)->findUnsent($chunk);
@@ -68,21 +67,45 @@ class pocketlistsNotificationSendService
         return $sentCount;
     }
 
-    public function sendDirect()
+    public function sendInternal()
     {
         $user = pl2()->getUser();
 
         try {
-            $notifications = pl2()->getEntityFactory(pocketlistsNotification::class)->findUnsentForUser();
+            $notifications = pl2()->getEntityFactory(pocketlistsNotification::class)->findUnsentForUser($user);
 
             $response = [];
+            /** @var pocketlistsNotification $notification */
             foreach ($notifications as $notification) {
+                if (pl2()->getUser()->getContact()->getStatus() !== 'online') {
+                    $notification
+                        ->setError('user not online')
+                        ->setStatus(pocketlistsNotification::STATUS_FAIL);
+
+                    pl2()->getEntityFactory(pocketlistsNotification::class)->update($notification);
+
+                    continue;
+                }
+
+                $onlineTimeout = waContact::getOption('online_timeout');
+                if ($notification->getCreatedAt() < waDateTime::date('Y-m-d H:i:s', strtotime(sprintf('-%d seconds', $onlineTimeout), waDateTime::date('U')))) {
+                    $notification
+                        ->setError('too old notification')
+                        ->setStatus(pocketlistsNotification::STATUS_FAIL);
+
+                    pl2()->getEntityFactory(pocketlistsNotification::class)->update($notification);
+
+                    continue;
+                }
+
                 $this->send($notification);
 
                 if ($notification->getStatus() === pocketlistsNotification::STATUS_OK) {
-                    $response = $notification->getContent();
+                    $response[] = $notification->getContent();
                 }
             }
+
+            return $response;
         } catch (Exception $ex) {
             pocketlistsHelper::logError(sprintf('Direct notifications send error for user %d', $user->getId()), $ex);
         }
