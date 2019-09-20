@@ -64,6 +64,14 @@ abstract class pocketlistsProPluginLogAbstract
     }
 
     /**
+     * @return string
+     */
+    public function getMoreHtml()
+    {
+        return '';
+    }
+
+    /**
      * @param $name
      * @param $arguments
      *

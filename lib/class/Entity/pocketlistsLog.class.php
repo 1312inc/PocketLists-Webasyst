@@ -517,10 +517,11 @@ class pocketlistsLog extends pocketlistsEntity
 
     /**
      * @param string $key
+     * @param mixed  $default
      *
      * @return mixed|null
      */
-    public function getParamValueByKey($key)
+    public function getParamValueByKey($key, $default = null)
     {
         $keys = explode('.', $key);
         $val = $this->paramsArray;
@@ -529,7 +530,7 @@ class pocketlistsLog extends pocketlistsEntity
             $key = array_shift($keys);
 
             if (!isset($val[$key])) {
-                return null;
+                return $default;
             }
             $val = $val[$key];
         }

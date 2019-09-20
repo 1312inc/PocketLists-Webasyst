@@ -236,14 +236,6 @@ class pocketlistsItemLink extends pocketlistsEntity
     }
 
     /**
-     * @return pocketlistsAppLinkInterface
-     */
-    public function getLink()
-    {
-        return $this->link;
-    }
-
-    /**
      * @param pocketlistsAppLinkInterface $link
      *
      * @return pocketlistsItemLink

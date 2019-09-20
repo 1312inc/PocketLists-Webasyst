@@ -1,3 +1,4 @@
+{** @var $log pocketlistsLog **}
 <div class="pl2pro-log pl2pro-log-{$type|strtolower}" data-pl2pro-logs>
     {if $type|strtolower == 'activity' || $type|strtolower == 'pocket'}
         <h1>
@@ -27,6 +28,7 @@
             <span class="hint">
                 {$log->getCreateDatetime()|wa_datetime:'humandatetime'}
             </span>
+            {$log->getMoreHtml()}
         </div>
     {/foreach}
     </section>

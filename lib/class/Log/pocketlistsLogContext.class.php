@@ -25,6 +25,9 @@ class pocketlistsLogContext
         'repeat',
     ];
 
+    const ITEM_MORE_INFO_APP_LINKS = 1;
+    const ITEM_MORE_INFO = self::ITEM_MORE_INFO_APP_LINKS;
+
     /**
      * @var pocketlistsPocket
      */
@@ -227,13 +230,34 @@ class pocketlistsLogContext
     /**
      * @param pocketlistsItem $item
      *
+     * @param int             $moreInfo
+     *
      * @return pocketlistsLogContext
      * @throws waException
      */
-    public function setItem(pocketlistsItem $item)
+    public function setItem(pocketlistsItem $item, $moreInfo = 0)
     {
         if ($this->item === null) {
             $this->item = $item;
+
+            if ($moreInfo) {
+                try {
+                    /** @var pocketlistsItemLink $link */
+                    foreach ($item->getAppLinks() as $link) {
+                        $this->setParams([
+                            'item' => [
+                                $link->getApp() => [
+                                    'link'        => $link->getAppLink()->getLinkUrl($link),
+                                    'entity_id'   => $link->getEntityId(),
+                                    'entity_type' => $link->getEntityType(),
+                                    'app_name'    => $link->getAppLink()->getName(),
+                                    'app_icon'    => $link->getAppLink()->getAppIcon(),
+                                ],
+                            ],
+                        ]);
+                    }
+                } catch (waException $ex) {}
+            }
 
             $this->setListByItem();
         }

@@ -12,19 +12,7 @@ class pocketlistsProPluginLogItem extends pocketlistsProPluginLogAbstract
      */
     public function getLogEntry()
     {
-        $params = $this->log->getParamsArray();
-
-        return ifset($params, 'item', 'name', 'no saved item name');
-    }
-
-    /**
-     * @return string
-     */
-    public function getLabel($smth)
-    {
-        $params = $this->log->getParamsArray();
-
-        return ifset($params, 'label', $smth, 'no saved label ' . $smth);
+        return $this->log->getParamValueByKey('item.name', 'no saved item name');
     }
 
     /**
@@ -44,7 +32,7 @@ class pocketlistsProPluginLogItem extends pocketlistsProPluginLogAbstract
                 return sprintf_wp('%s deleted the to-do', $this->getActorName());
 
             case pocketlistsLog::ACTION_UPDATE:
-                $itemAction = $this->getItemAction();
+                $itemAction = $this->log->getParamValueByKey('item_action');
                 switch ($itemAction) {
                     case pocketlistsLog::ITEM_ACTION_NEW_ASSIGN:
                         $assignedName = $this->log->getAssignContact()->getName();
@@ -59,8 +47,8 @@ class pocketlistsProPluginLogItem extends pocketlistsProPluginLogAbstract
                         return sprintf_wp(
                             '%s updated the label to <span class="pl-label" style="background: #%s">%s</span>',
                             $this->getActorName(),
-                            $this->getLabel('color'),
-                            htmlspecialchars($this->getLabel('name'), ENT_QUOTES)
+                            $this->log->getParamValueByKey('item.color'),
+                            htmlspecialchars($this->log->getParamValueByKey('item.name'), ENT_QUOTES)
                         );
 
                     default:
@@ -75,10 +63,8 @@ class pocketlistsProPluginLogItem extends pocketlistsProPluginLogAbstract
     /**
      * @return string
      */
-    private function getItemAction()
+    public function getMoreHtml()
     {
-        $params = $this->log->getParamsArray();
-
-        return  ifset($params, 'item_action', '');
+        return print_r($this->log->getParamValueByKey('item.shop', ''), 1);
     }
 }
