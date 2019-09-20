@@ -1153,7 +1153,6 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 o.appUrl + '?module=item&action=sort',
                 {
                     list_id: o.list.list_id,
-                    item_id: id ? id : 0,
                     data: getItems()
                 },
                 function (r) {
