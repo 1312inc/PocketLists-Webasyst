@@ -77,7 +77,15 @@ class pocketlistsPocketAction extends pocketlistsViewPocketAction
 
         $lists_html = (new pocketlistsListAction(['list_id' => $list_id, 'pocket_id' => $pocket->getId()]))->display(false);
 
-        $eventData = new pocketlistsEvent(pocketlistsEventStorage::WA_BACKEND_POCKET, $pocket, ['lists' => $lists]);
+        /**
+         * UI hook in pocket sidebar
+         * @event backend_pocket
+         *
+         * @param pocketlistsEventInterface $event Event with pocketlistsPocket object and it lists in params array
+         * @return string html output
+         */
+        $event = new pocketlistsEvent(pocketlistsEventStorage::WA_BACKEND_POCKET, $pocket, ['lists' => $lists]);
+        $eventResult = pl2()->waDispatchEvent($event);
 
         $this->view->assign(
             [
@@ -89,7 +97,7 @@ class pocketlistsPocketAction extends pocketlistsViewPocketAction
                 'list_id'    => $list_id,
                 'pocket'     => $pocket,
 
-                'backend_pocket' => pl2()->waDispatchEvent($eventData),
+                'backend_pocket' => $eventResult,
             ]
         );
     }

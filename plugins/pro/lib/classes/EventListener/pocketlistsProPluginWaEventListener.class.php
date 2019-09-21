@@ -8,30 +8,30 @@ class pocketlistsProPluginWaEventListener
     /**
      * @param pocketlistsEvent $event
      *
+     * @return array
      * @throws waException
      */
     public function onEntityInsertBefore(pocketlistsEvent $event)
     {
-        $object = $event->getObject();
-
-        switch (get_class($object)) {
-            case pocketlistsItem::class:
-                (new pocketlistsProPluginItemEventListener())->onInsert($event);
+        if ($event->getObject() instanceof pocketlistsItem) {
+            return (new pocketlistsProPluginItemEventListener())->onInsert($event);
         }
+
+        return  [];
     }
 
     /**
      * @param pocketlistsEvent $event
      *
+     * @return array
      * @throws waException
      */
     public function onEntityUpdateBefore(pocketlistsEvent $event)
     {
-        $object = $event->getObject();
-
-        switch (get_class($object)) {
-            case pocketlistsItem::class:
-                (new pocketlistsProPluginItemEventListener())->onUpdate($event);
+        if ($event->getObject() instanceof pocketlistsItem) {
+                return (new pocketlistsProPluginItemEventListener())->onUpdate($event);
         }
+
+        return  [];
     }
 }

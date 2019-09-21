@@ -27,7 +27,7 @@
 
             <!-- plugin hook: 'backend_item_add.compact' -->
             {* @event backend_item_add.%plugin_id% *}
-            {if !empty($backend_item_add)}{foreach $backend_item_add as $_}{ifset($_.compact)}{/foreach}{/if}
+            {if !empty($backend_item_add)}{foreach $backend_item_add as $_}{ifset($_)}{/foreach}{/if}
 
         </label>
 

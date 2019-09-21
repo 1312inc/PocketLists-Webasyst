@@ -69,10 +69,20 @@ class pocketlistsBackendSidebarAction extends pocketlistsViewAction
             }
         }
 
+        /**
+         * UI in main sidebar
+         * @event backend_sidebar
+         *
+         * @param pocketlistsEventInterface $event Event object
+         * @return string HTML output
+         */
+        $event = new pocketlistsEvent(pocketlistsEventStorage::WA_BACKEND_SIDEBAR);
+        $eventResult = pl2()->waDispatchEvent($event);
+
         $this->view->assign(compact('pockets', 'linkedApps'));
         $this->view->assign(
             [
-                'backend_sidebar' => pl2()->waDispatchEvent(new pocketlistsEvent(pocketlistsEventStorage::WA_BACKEND_SIDEBAR)),
+                'backend_sidebar' => $eventResult,
                 'isAdmin'         => $this->getUser()->isAdmin('pocketlists'),
             ]
         );

@@ -17,11 +17,7 @@ class pocketlistsProPluginHookHandlerListAccesses extends pocketlistsProPluginAb
         $list = $event->getObject();
         pocketlistsAssert::instance($list, pocketlistsList::class);
 
-        $action = new pocketlistsProPluginActivityListAction(
-            [
-                'entity_id' => $list->getId(),
-            ]
-        );
+        $action = new pocketlistsProPluginActivityListAction(['entity_id' => $list->getId()]);
 
         return $action->display(false);
     }

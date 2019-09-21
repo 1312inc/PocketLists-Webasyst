@@ -94,7 +94,7 @@ class pocketlistsConfig extends waAppConfig
      */
     public function waDispatchEvent(pocketlistsEvent $event)
     {
-        return wa()->event($event->getName(), $event);
+        return wa('pocketlists')->event($event->getName(), $event);
     }
 
     /**

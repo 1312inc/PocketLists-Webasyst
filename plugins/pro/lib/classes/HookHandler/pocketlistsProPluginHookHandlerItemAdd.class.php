@@ -8,13 +8,11 @@ class pocketlistsProPluginHookHandlerItemAdd extends pocketlistsProPluginAbstrac
     /**
      * @param null|pocketlistsEvent $event
      *
-     * @return array
+     * @return string
      * @throws waException
      */
     public function handle($event = null)
     {
-        $return = [];
-
         /** @var pocketlistsProPluginLabelFactory $factoryLabel */
         $factoryLabel = pl2()->getEntityFactory(pocketlistsProPluginLabel::class);
         /** @var pocketlistsProPluginShortcutFactory $factoryShortcut */
@@ -47,9 +45,6 @@ class pocketlistsProPluginHookHandlerItemAdd extends pocketlistsProPluginAbstrac
             ]
         );
 
-        $return['compact'] = $this->getView()->fetch($this->getViewTemplate('backend_item_add'));
-        $return['detail'] = $return['compact'];
-
-        return $return;
+        return $this->getView()->fetch($this->getViewTemplate('backend_item_add'));
     }
 }

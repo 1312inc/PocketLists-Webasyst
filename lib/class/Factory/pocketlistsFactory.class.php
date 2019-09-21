@@ -216,11 +216,19 @@ class pocketlistsFactory
     {
         $data = pl2()->getHydrator()->extract($entity, $fields, $this->getDbFields());
 
+        /**
+         * Before every entity insert
+         * @event entity_insert.before
+         *
+         * @param pocketlistsEventInterface $event Event with pocketlistsEntity object
+         * @return array Entity data to merge and insert
+         */
         $event = new pocketlistsEvent(pocketlistsEventStorage::ENTITY_INSERT_BEFORE, $entity, ['data' => $data]);
-        $event->setResponse([]);
-        pl2()->waDispatchEvent($event);
-        foreach ($event->getResponse() as $responseData) {
-            $data = array_merge($data, $responseData);
+        $eventResult = pl2()->waDispatchEvent($event);
+        foreach ($eventResult as $plugin => $responseData) {
+            if (!empty($responseData) && is_array($responseData)) {
+                $data = array_merge($data, $responseData);
+            }
         }
 
         unset($data['id']);
@@ -232,9 +240,15 @@ class pocketlistsFactory
                 $entity->setId($id);
             }
 
-            pl2()->getEventDispatcher()->dispatch(
-                new pocketlistsEvent(pocketlistsEventStorage::ENTITY_INSERT_AFTER, $entity)
-            );
+            /**
+             * After every entity insert
+             * @event entity_insert.after
+             *
+             * @param pocketlistsEventInterface $event Event with pocketlistsEntity object
+             * @return void
+             */
+            $event = new pocketlistsEvent(pocketlistsEventStorage::ENTITY_INSERT_AFTER, $entity);
+            pl2()->getEventDispatcher()->dispatch($event);
 
             return true;
         }
@@ -251,16 +265,34 @@ class pocketlistsFactory
     public function delete(pocketlistsEntity $entity)
     {
         if (method_exists($entity, 'getId')) {
+            /**
+             * Before every entity delete
+             * @event entity_delete.before
+             *
+             * @param pocketlistsEventInterface $event Event with pocketlistsEntity object
+             * @return bool If false - entity delete will be canceled
+             */
             $event = new pocketlistsEvent(pocketlistsEventStorage::ENTITY_DELETE_BEFORE, $entity);
-            $event->setResponse([]);
-            pl2()->waDispatchEvent($event);
-            foreach ($event->getResponse() as $plugin => $responseData) {
+            $eventResult = pl2()->waDispatchEvent($event);
+            foreach ($eventResult as $plugin => $responseData) {
                 if ($responseData === false) {
                     return false;
                 }
             }
 
-            return $this->getModel()->deleteById($entity->getId());
+            $deleted = $this->getModel()->deleteById($entity->getId());
+
+            /**
+             * After every entity delete
+             * @event entity_delete.after
+             *
+             * @param pocketlistsEventInterface $event Event with pocketlistsEntity object
+             * @return void
+             */
+            $event = new pocketlistsEvent(pocketlistsEventStorage::ENTITY_DELETE_AFTER, $entity);
+            pl2()->waDispatchEvent($event);
+
+            return $deleted;
         }
 
         throw new waException('No id in entity');
@@ -278,16 +310,38 @@ class pocketlistsFactory
         if (method_exists($entity, 'getId')) {
             $data = pl2()->getHydrator()->extract($entity, $fields, $this->getDbFields());
 
-            $event = new pocketlistsEvent(pocketlistsEventStorage::ENTITY_INSERT_BEFORE, $entity, ['data' => $data]);
-            $event->setResponse([]);
-            pl2()->waDispatchEvent($event);
-            foreach ($event->getResponse() as $responseData) {
-                $data = array_merge($data, $responseData);
+            /**
+             * Before every entity update
+             * @event entity_update.before
+             *
+             * @param pocketlistsEventInterface $event Event with pocketlistsEntity object
+             * @return array Entity data to merge and update
+             */
+            $event = new pocketlistsEvent(pocketlistsEventStorage::ENTITY_UPDATE_BEFORE, $entity, ['data' => $data]);
+            $eventResult = pl2()->waDispatchEvent($event);
+            foreach ($eventResult as $plugin => $responseData) {
+                if (!empty($responseData) && is_array($responseData)) {
+                    $data = array_merge($data, $responseData);
+                }
             }
 
             unset($data['id']);
 
-            return $this->getModel()->updateById($entity->getId(), $data);
+            $updated = $this->getModel()->updateById($entity->getId(), $data);
+
+            if ($updated) {
+                /**
+                 * After every entity update
+                 *
+                 * @event entity_update.after
+                 * @param pocketlistsEventInterface $event Event with pocketlistsEntity object
+                 * @return void
+                 */
+                $event = new pocketlistsEvent(pocketlistsEventStorage::ENTITY_UPDATE_AFTER, $entity, ['data' => $data]);
+                pl2()->waDispatchEvent($event);
+            }
+
+            return $updated;
         }
 
         throw new waException('No id in entity');

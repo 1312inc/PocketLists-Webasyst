@@ -60,7 +60,15 @@ class pocketlistsItemDetailsAction extends pocketlistsViewItemAction
             );
         }
 
-        $event = new pocketlistsEvent(pocketlistsEventStorage::WA_BACKEND_ITEM_ADD, $item);
+        /**
+         * @event backend_item_add.detail
+         *
+         * @param pocketlistsEventInterface $event Event with pocketlistsItem as object
+         * @return string of html output
+         */
+        $event = new pocketlistsEvent(pocketlistsEventStorage::WA_BACKEND_ITEM_ADD_DETAIL, $item);
+        $eventResult = pl2()->waDispatchEvent($event);
+
         $this->view->assign(
             [
                 'fileupload'     => $item->getId(),
@@ -71,7 +79,7 @@ class pocketlistsItemDetailsAction extends pocketlistsViewItemAction
                     ?: $item->getAssignedContactId(),
                 'contacts'       => $contacts,
 
-                'backend_item_add' => pl2()->waDispatchEvent($event),
+                'backend_item_add' => $eventResult,
             ]
         );
     }

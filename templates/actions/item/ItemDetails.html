@@ -20,7 +20,7 @@
 
             <!-- plugin hook: 'backend_item_add.detail' -->
             {* @event backend_item_add.%plugin_id% *}
-            {if !empty($backend_item_add)}{foreach $backend_item_add as $_}{ifset($_.detail)}{/foreach}{/if}
+            {if !empty($backend_item_add)}{foreach $backend_item_add as $_}{ifset($_)}{/foreach}{/if}
 
             {if $wa->shop}<p class="hint pl-app-hint-internal">[`Use @ or # symbols to link this to-do with a Shop-Script order.`]{* <a href="#" class="inline-link"><b><i>[`Ok, I got it.`]</i></b></a> *}</p>{/if}
 
