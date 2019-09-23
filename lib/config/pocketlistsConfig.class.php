@@ -290,7 +290,7 @@ HTML;
         
         $.post('{$pocketlistsPath}sendDirectNotifications', function(r) {
             if (r.status === 'ok') {
-                if (window['pocketlistsAlertBox']) {
+                if (window['pocketlistsAlertBox'] && r.data) {
                     $.each(r.data, function() {
                         var alertbox = new pocketlistsAlertBox('#pl2-notification-area', {
                             closeTime: 120000,
