@@ -65,6 +65,9 @@ class pocketlistsProPluginLogItem extends pocketlistsProPluginLogAbstract
      */
     public function getMoreHtml()
     {
-        return print_r($this->log->getParamValueByKey('item.shop', ''), 1);
+        //return print_r($this->log->getParamValueByKey('item.shop', ''), 1);
+
+        $_entity = $this->log->getParamValueByKey('item.shop', '');
+        return '<a href="'.$_entity['link'].'">' . $_entity['app_icon'] . $_entity['entity_id'] . '</a>';
     }
 }
