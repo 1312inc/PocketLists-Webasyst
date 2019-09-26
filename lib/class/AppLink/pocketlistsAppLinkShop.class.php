@@ -137,6 +137,16 @@ class pocketlistsAppLinkShop extends pocketlistsAppLinkAbstract
     /**
      * @param pocketlistsItemLink $itemLink
      *
+     * @return string
+     */
+    public function getEntityNum(pocketlistsItemLink $itemLink)
+    {
+        return shopHelper::encodeOrderId($itemLink->getEntityId());
+    }
+
+    /**
+     * @param pocketlistsItemLink $itemLink
+     *
      * @return bool|shopOrder
      */
     public function getAppEntity(pocketlistsItemLink $itemLink)

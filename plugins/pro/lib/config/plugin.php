@@ -9,7 +9,7 @@ return array(
             '*' => array(
                 array(
                     'event_app_id' => 'pocketlists',
-                    'event'        => 'use_prices_price',
+                    'event'        => 'backend_head',
                     'class'        => 'pocketlistsProPluginHookHandlerHead',
                     'method'       => 'handle',
                 ),

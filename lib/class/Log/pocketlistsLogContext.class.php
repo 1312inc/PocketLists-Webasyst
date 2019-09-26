@@ -249,6 +249,7 @@ class pocketlistsLogContext
                                 $link->getApp() => [
                                     'link'        => $link->getAppLink()->getLinkUrl($link),
                                     'entity_id'   => $link->getEntityId(),
+                                    'entity_num'  => $link->getAppLink()->getEntityNum($link),
                                     'entity_type' => $link->getEntityType(),
                                     'app_name'    => $link->getAppLink()->getName(),
                                     'app_icon'    => $link->getAppLink()->getAppIcon(),
