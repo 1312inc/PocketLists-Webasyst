@@ -13,7 +13,6 @@ class pocketlistsItemSortController extends pocketlistsJsonController
     public function execute()
     {
         $data = waRequest::post('data', [], waRequest::TYPE_ARRAY);
-        $item_id = waRequest::post('item_id', 0, waRequest::TYPE_INT);
 
         $list = $this->getList();
         if (!pocketlistsRBAC::canAccessToList($list)) {

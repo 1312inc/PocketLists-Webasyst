@@ -10,22 +10,7 @@ class pocketlistsViewListAction extends pocketlistsViewAction
      *
      * @return mixed|void
      */
-    public function runAction($params = null) {}
-
-    /**
-     * @param bool $id
-     *
-     * @return array|mixed
-     * @throws pocketlistsNotFoundException
-     * @throws waException
-     */
-    protected function getList($id = false)
+    public function runAction($params = null)
     {
-        $list = pl2()->getEntityFactory(pocketlistsList::class)->findById($this->getId($id));
-        if (!$list) {
-            throw new pocketlistsNotFoundException();
-        }
-
-        return $list;
     }
 }

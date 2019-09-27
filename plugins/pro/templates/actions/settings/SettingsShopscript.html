@@ -1,0 +1,361 @@
+<h1>[`Shop-Script`]</h1>
+<p>[`Set up the automation rules to make Pocket Lists automatically create and assign to-dos based on actions performed with Shop-Script orders.`]</p>
+
+<h2><em><span style="background: gold;">Скоро!</span> Этот интерфейс заработает в Pocket Lists PRO версии 1.1.0. Релиз — сентябрь/октябрь 2019 года.</em></h2>
+<br><br>
+
+<div class="fields form" style="opacity: 0.42; position: relative;">
+    <div style="position: absolute; font-size: 7rem; font-weight: bold; top: 100px; left: 0; right: 0; z-index: 1312; -transform: rotate(-45deg); -webkit-transform: rotate(-45deg); display: block; opacity: 0.5;">
+        ОБРАЗЕЦ
+    </div>
+    <div class="field">
+        <div class="name">
+            [`New order`]
+        </div>
+        <div class="value">
+            <div class="pl2pro-rule-baloon">
+                <div class="pl2pro-rule-header">
+                    <a href="#" class="inline-link pl2pro-label-edit"><i class="icon10 edit"></i> <b><i>[`Edit`]</i></b></a>
+                    <span class="pl2pro-rule-if">[`IF`]</span>
+                    [`ALL`]
+                </div>
+                <div class="pl2pro-rule-body">
+                    <h4>Позвонить {literal}{$customer_name}{/literal}</h4>
+                    <span class="hint">[`Assigned to`]:</span> RANDOM ( Менеджеры )<br>
+                    <span class="hint">[`Priority`]:</span> [`Normal`]<br>
+                    <span class="hint">[`Due`]:</span> + 5 минут<br>
+                    <span class="hint">[`List`]:</span> [`None`]<br>
+
+                </div>
+            </div>
+        </div>
+        <div class="value">
+            <div class="pl2pro-rule-baloon">
+                <div class="pl2pro-rule-header">
+                    <a href="#" class="inline-link pl2pro-label-edit"><i class="icon10 edit"></i> <b><i>[`Edit`]</i></b></a>
+                    <span class="pl2pro-rule-if">[`IF`]</span>
+                    <strong>
+                        [`Amount`] >= 100000 RUB
+                    </strong>
+                </div>
+                <div class="pl2pro-rule-body">
+                    <h4>Проверить контрагента {literal}{$customer_name}{/literal}</h4>
+                    <span class="hint">[`Assigned to`]:</span> RANDOM ( Бухгалтерия )<br>
+                    <span class="hint">[`Priority`]:</span> [`Urgent`]<br>
+                    <span class="hint">[`Due`]:</span> [`Now`]<br>
+                    <span class="hint">[`List`]:</span> [`None`]<br>
+
+                </div>
+            </div>
+        </div>
+        <div class="value">
+            <div class="block">
+                <a href="#" class="inline-link pl2pro-ss-add-rule"><i class="icon16 add"></i><b><i>[`Add rule`]</i></b></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="field">
+        <div class="name">
+                                    <span class="pl2pro-ss-order-action">
+                                        <i class="icon16 color" style="background-color: limegreen;"></i>
+                                        В обработку
+                                    </span>
+        </div>
+        <div class="value">
+            <div class="block gray">
+                {sprintf('[`No automation rules are defined for the ‘%s’ order action`]','В обработку')}
+            </div>
+            <div class="block">
+                <a href="#" class="inline-link pl2pro-ss-add-rule"><i class="icon16 add"></i><b><i>[`Add rule`]</i></b></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="field">
+        <div class="name">
+                                    <span class="pl2pro-ss-order-action">
+                                        <i class="icon16 color" style="background-color: #09f;"></i>
+                                        Отправлен
+                                    </span>
+        </div>
+        <div class="value">
+            <div class="pl2pro-rule-baloon">
+                <div class="pl2pro-rule-header"">
+                <a href="#" class="inline-link pl2pro-label-edit"><i class="icon10 edit"></i> <b><i>[`Edit`]</i></b></a>
+                <span class="pl2pro-rule-if">[`IF`]</span>
+                <strong>
+                    [`Shipping`] = Почта России
+                </strong>
+                <span class="pl2pro-rule-if">[`AND`]</span>
+                <strong>
+                    [`Payment`] = Наложенный платеж
+                </strong>
+            </div>
+            <div class="pl2pro-rule-body">
+                <h4>Проверить трек-номер {literal}{$tracking_number}{/literal}</h4>
+                <span class="hint">[`Assigned to`]:</span> [`Order action performer`]<br>
+                <span class="hint">[`Priority`]:</span> [`Normal`]<br>
+                <span class="hint">[`Due`]:</span> + 7 дней<br>
+                <span class="hint">[`List`]:</span> [`None`]<br>
+
+            </div>
+        </div>
+    </div>
+    <div class="value">
+        <div class="pl2pro-rule-baloon">
+            <div class="pl2pro-rule-header"">
+            <a href="#" class="inline-link pl2pro-label-edit"><i class="icon10 edit"></i> <b><i>[`Edit`]</i></b></a>
+            <span class="pl2pro-rule-if">[`IF`]</span>
+            <strong>
+                [`Shipping`] = СДЭК
+            </strong>
+        </div>
+        <div class="pl2pro-rule-body">
+            <h4>Проверить трек-номер {literal}{$tracking_number}{/literal}</h4>
+            <span class="hint">[`Assigned to`]:</span> [`Order action performer`]<br>
+            <span class="hint">[`Priority`]:</span> [`Normal`]<br>
+            <span class="hint">[`Due`]:</span> + 5 дней<br>
+            <span class="hint">[`List`]:</span> [`None`]<br>
+
+        </div>
+    </div>
+</div>
+<div class="value">
+    <div class="block">
+        <a href="#" class="inline-link pl2pro-ss-add-rule"><i class="icon16 add"></i><b><i>[`Add rule`]</i></b></a>
+    </div>
+</div>
+</div>
+
+<div class="field">
+    <div class="name">
+                                    <span class="pl2pro-ss-order-action">
+                                        <i class="icon16 color" style="background-color: rebeccapurple;"></i>
+                                        Выполнен
+                                    </span>
+    </div>
+    <div class="value">
+        <div class="block gray">
+            {sprintf('[`No automation rules are defined for the ‘%s’ order action`]','Выполнен')}
+        </div>
+        <div class="block">
+            <a href="#" class="inline-link pl2pro-ss-add-rule"><i class="icon16 add"></i><b><i>[`Add rule`]</i></b></a>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<div id="pl2pro-dialog" style="display: none;">
+
+    <h1>[`‘Order > To-do’ automation rule`]</h1>
+    <p>[`Pocket Lists will create a new to-do upon an action performed with any order in Shop-Script if the specified conditions are met.`]</p>
+    <h2 class="heading bordered-bottom" style="padding-bottom: 10px; margin-bottom: 13px;">[`IF`]</h2>
+    <div class="fields form ">
+        <div class="field">
+            <div class="name">
+                [`Action`]
+            </div>
+            <div class="value">
+                                        <span class="pl2pro-ss-order-action">
+                                            <i class="icon16 color" style="background-color: rebeccapurple;"></i>
+                                            Выполнен
+                                        </span>
+            </div>
+        </div>
+        <div class="field">
+            <div class="name">
+                [`Payment`]
+            </div>
+            <div class="value">
+                <select>
+                    <option>=</option>
+                    <option>≠</option>
+                </select>
+                <select>
+                    <option></option>
+                    <option>Квитанция</option>
+                    <option>Банк юрлица</option>
+                    <option>Биткоины</option>
+                    <option>Бартер</option>
+                </select>
+            </div>
+        </div>
+        <div class="field">
+            <div class="name">
+                [`Shipping`]
+            </div>
+            <div class="value">
+                <select>
+                    <option>=</option>
+                    <option>≠</option>
+                </select>
+                <select>
+                    <option></option>
+                    <option>Почта России</option>
+                    <option>СДЭК</option>
+                    <option>Курьер</option>
+                    <option>Самовывоз</option>
+                </select>
+            </div>
+        </div>
+        <div class="field">
+            <div class="name">
+                [`Amount`]
+            </div>
+            <div class="value">
+                <select>
+                    <option>=</option>
+                    <option>≠</option>
+                    <option>&gt;</option>
+                    <option>&lt;</option>
+                </select>
+                <input type="text" class="numerical short">
+                <select>
+                    <option>RUB</option>
+                    <option>USD</option>
+                    <option>EUR</option>
+                </select>
+            </div>
+        </div>
+        <div class="field">
+            <div class="name">
+                [`Storefront`]
+            </div>
+            <div class="value">
+                <select>
+                    <option></option>
+                    <option>domain1.ru</option>
+                    <option>domain1.ru/vip/</option>
+                    <option>sochi.domain1.ru</option>
+                    <option>domain2.ru/test/</option>
+                </select>
+            </div>
+        </div>
+        <div class="field">
+            <div class="name">
+                [`Customer group`]
+            </div>
+            <div class="value">
+                <select>
+                    <option></option>
+                    <option>Розница</option>
+                    <option>VIP</option>
+                    <option>Оптовики</option>
+                    <option>Партнеры</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="clear-both"></div>
+    <br>
+    <h2 class="heading bordered-bottom" style="padding-bottom: 10px; margin-bottom: 13px;">[`THEN`]</h2>
+    <div class="fields form pl-details-form">
+        <div class="field">
+            <div class="name">
+                [`Action`]
+            </div>
+            <div class="value no-shift">
+                <strong>[`Create a to-do`]</strong>
+            </div>
+        </div>
+        <div class="field">
+            <div class="name">
+                [`Title`]
+            </div>
+            <div class="value">
+                <input type="text" class="long bold" placeholder="[`New to-do`]">
+            </div>
+        </div>
+        <div class="field">
+            <div class="name">
+                [`Note`]
+            </div>
+            <div class="value">
+                <textarea></textarea>
+            </div>
+        </div>
+        <div class="field">
+            <div class="name">
+                [`Assigned to`]
+            </div>
+            <div class="value no-shift">
+                <select>
+                    <option>[`Nobody`]</option>
+                    <option>[`Order action performer`]</option>
+                    <option>{sprintf('[`Random user from the “%s” group`]','Group 1')}</option>
+                    <option>{sprintf('[`Random user from the “%s” group`]','Group 2')}</option>
+                    <option>{sprintf('[`Random user from the “%s” group`]','Group 3')}</option>
+                    <option>User 1</option>
+                    <option>User 2</option>
+                    <option>User 3</option>
+                </select>
+            </div>
+        </div>
+        <div class="field">
+            <div class="name">
+                [`Priority`]
+            </div>
+            <div class="value no-shift" id="pl-item-priority">
+                <a href="#" class="selected"><input type="checkbox" class="pl-done"><span></span></a>
+                <a href="#"><input type="checkbox" class="pl-done pl-priority-green"><span></span></a>
+                <a href="#"><input type="checkbox" class="pl-done pl-priority-yellow"><span></span></a>
+                <a href="#"><input type="checkbox" class="pl-done pl-priority-red"><span></span></a>
+                <a href="#"><input type="checkbox" class="pl-done pl-priority-black"><span></span></a>
+                <a href="#"><input type="checkbox" class="pl-done pl-priority-fire"><span></span></a>
+            </div>
+        </div>
+        <div class="field">
+            <div class="name">
+                [`Due`]
+            </div>
+            <div class="value no-shift">
+                In <input type="text" class="short numerical" placeholder="0">
+                <select>
+                    <option>[`minutes`]</option>
+                    <option>[`hours`]</option>
+                    <option>[`day`]</option>
+                </select>
+                [`from the moment the action was performed`]
+            </div>
+        </div>
+        <div class="field">
+            <div class="name">
+                [`List`]
+            </div>
+            <div class="value no-shift">
+                <select>
+                    <option>[`None`]</option>=
+                    <option>List 1</option>
+                    <option>List 2</option>
+                    <option>List 3</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="clear-both"></div>
+
+<script>
+    $.pocketlists.setTitle();
+
+    $('.pl2pro-ss-add-rule').click(function(){
+        $('#pl2pro-dialog').waDialog({
+            'buttons': '<div class="block float-right"><a href="#"><i class="icon16 delete"></i>[`Delete rule`]</a></div> <input type="submit" value="[`Save`]" class="button green" /> [`or`] <a href="#">[`cancel`]</a>',
+            onLoad: function () {
+            },
+            onSubmit: function (d) {
+
+                return false;
+            },
+            onClose: function () {
+                this.remove();
+            }
+        });
+        return false;
+    });
+</script>

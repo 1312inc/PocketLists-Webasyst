@@ -23,18 +23,19 @@ class pocketlistsItemCompleteController extends pocketlistsComplete
         // log this action
         /** @var pocketlistsItem $complete_item */
         foreach ($this->completed_items as $complete_item) {
-            // 3.204: self tasks @timeline
-            if ($complete_item->getListId() == null && !$complete_item->getAssignedContactId()) {
-                continue;
-            }
-
             $this->logService->add(
                 $this->logService->getFactory()->createNewItemLog(
                     (new pocketlistsLogContext())
                         ->setItem($complete_item)
+                        ->addParam(['item' => ['contact_id' => $item->getContactId()]])
                         ->setAction($status ? pocketlistsLog::ACTION_COMPLETE : pocketlistsLog::ACTION_UNCOMPLETE)
                 )
             );
+
+            // 3.204: self tasks @timeline
+            if ($complete_item->getListId() == null && !$complete_item->getAssignedContactId()) {
+                continue;
+            }
 
             if ($status) {
                 $this->logAction(pocketlistsLogAction::ITEM_COMPLETED, ['item_id' => $complete_item->getId()]);

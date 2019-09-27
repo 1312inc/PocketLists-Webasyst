@@ -5,15 +5,7 @@
  */
 abstract class pocketlistsViewAction extends waViewAction
 {
-    /**
-     * @var pocketlistsUser
-     */
-    protected $user;
-
-    /**
-     * @var pocketlistsLogService
-     */
-    protected $logService;
+    use pocketlistsViewTrait;
 
     /**
      * @param null|array $params
@@ -23,16 +15,6 @@ abstract class pocketlistsViewAction extends waViewAction
     abstract public function runAction($params = null);
 
     /**
-     * @throws pocketlistsForbiddenException
-     * @throws waException
-     */
-    public function preExecute()
-    {
-        $this->user = pl2()->getUser();
-        $this->logService = pl2()->getLogService();
-    }
-
-    /**
      * @param null $params
      *
      * @throws waException
@@ -40,10 +22,6 @@ abstract class pocketlistsViewAction extends waViewAction
     public function execute($params = null)
     {
         try {
-            if (!pocketlistsRBAC::canAccess()) {
-                throw new pocketlistsForbiddenException();
-            }
-
             $this->view->assign(pl2()->getDefaultViewVars());
 
             $this->runAction($params);
@@ -56,28 +34,7 @@ abstract class pocketlistsViewAction extends waViewAction
                 ]
             );
 
-            $this->setTemplate('templates/include/error.html');
+            $this->setTemplate(wa()->getAppPath('templates/include/error.html'));
         }
-    }
-
-
-    /**
-     * @param int $id
-     *
-     * @return int|mixed
-     * @throws pocketlistsNotFoundException
-     */
-    protected function getId($id = 0)
-    {
-        $id = $id
-            ?: waRequest::request('id', 0, waRequest::TYPE_INT)
-                ?: waRequest::request('list_id', 0, waRequest::TYPE_INT)
-                    ?: waRequest::request('pocket_id', 0, waRequest::TYPE_INT);
-
-        if (!$id) {
-            throw new pocketlistsNotFoundException();
-        }
-
-        return $id;
     }
 }

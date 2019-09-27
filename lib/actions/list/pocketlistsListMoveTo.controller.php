@@ -20,6 +20,12 @@ class pocketlistsListMoveToController extends pocketlistsJsonController
 
         $list = $this->getList();
 
+        if ($list->getPocket()->getId() == $pocket_id) {
+            $this->setError(_w('The list is in the pocket already'));
+
+            return;
+        }
+
         /** @var pocketlistsPocket $pocket */
         $pocket = pl2()->getEntityFactory(pocketlistsPocket::class)->findById($pocket_id);
 

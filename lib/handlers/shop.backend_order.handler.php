@@ -30,6 +30,10 @@ class pocketlistsShopBackend_orderHandler extends waEventHandler
 
         $hasItems = pl2()->getModel(pocketlistsItemLink::class)->countLinkedItems('shop', 'order', $params['id']);
 
+        wa('pocketlists', true);
+        $itemAdd = (new pocketlistsItemAddAction(['external' => true]))->display(false);
+        wa('shop', true);
+
         $viewParams = array_merge(
             [
                 'wa_app_static_url' => wa()->getAppStaticUrl(pocketlistsHelper::APP_ID),
@@ -41,6 +45,7 @@ class pocketlistsShopBackend_orderHandler extends waEventHandler
                 'count_done_items'  => 0,
                 'fileupload'        => 1,
                 'user'              => pl2()->getUser(),
+                'itemAdd'           => $itemAdd,
             ],
             pl2()->getDefaultViewVars()
         );
@@ -67,9 +72,18 @@ class pocketlistsShopBackend_orderHandler extends waEventHandler
             );
 
             if (file_exists($template)) {
-                $view->assign('params', $viewParams);
-                $view->assign('pl2_attachments_path', wa()->getDataUrl('attachments', true, pocketlistsHelper::APP_ID));
-                $return[$hook] = $view->fetch($template);
+                try {
+                    $view->assign(
+                        [
+                            'params'               => $viewParams,
+                            'pl2'                  => pl2(),
+                            'pl2_attachments_path' => wa()->getDataUrl('attachments', true, pocketlistsHelper::APP_ID),
+                        ]
+                    );
+                    $return[$hook] = $view->fetch($template);
+                } catch (Exception $ex) {
+                    waLog::log(sprintf('%s error %s', $hook, $ex->getMessage()), 'pocketlists/shop.log');
+                }
             }
         }
 

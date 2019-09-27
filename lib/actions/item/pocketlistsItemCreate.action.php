@@ -166,7 +166,7 @@ class pocketlistsItemCreateAction extends pocketlistsViewAction
                         $this->logService->getFactory()->createNewAfterItemAdd(
                             (new pocketlistsLogContext())
                                 ->setList($list)
-                                ->setItem($item)
+                                ->setItem($item, pocketlistsLogContext::ITEM_MORE_INFO_APP_LINKS)
                         )
                     );
                 }

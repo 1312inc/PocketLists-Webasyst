@@ -68,10 +68,13 @@ class pocketlistsHydrator implements pocketlistsHydratorInterface
 
         $object = is_object($object) ? $object : $reflection->newInstanceWithoutConstructor();
 
+        $setDataFieldMethod = $this->getMethod($object, 'set', 'dataField', $reflection);
         foreach ($data as $name => $value) {
             $method = $this->getMethod($object, 'set', $name, $reflection);
             if ($method) {
                 $method->invoke($object, $value);
+            } elseif ($setDataFieldMethod) {
+                $setDataFieldMethod->invoke($object, $name, $value);
             }
         }
 

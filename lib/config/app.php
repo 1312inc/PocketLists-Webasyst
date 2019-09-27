@@ -7,13 +7,13 @@ return array(
             48 => 'img/pl2webasyst48.png',
             96 => 'img/pl2webasyst96.png',
         ),
-    'version'        => '3.3.0',
+    'version'        => '3.4.1',
     'vendor'         => '1021997',
     'frontend'       => true,
     'routing_params' => array(
         'private' => true
     ),
-    'plugins'        => false,
+    'plugins'        => true,
     'rights'         => true,
     'sash_color'     => '#58a8f8',
 );

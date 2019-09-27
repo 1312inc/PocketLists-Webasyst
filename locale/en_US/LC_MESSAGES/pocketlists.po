@@ -1720,3 +1720,43 @@ msgstr ""
 #: /wa-apps/pocketlists/templates/actions/about/About.html:172
 msgid "Bullets highlighted with a %s label will be available as a part of the paid Pocket Lists PRO plugin."
 msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:157
+msgid "Plugins"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:109
+msgid "To-do status labels"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:113
+msgid "Kanban board"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:117
+msgid "To-do shortcuts"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/actions/list/pocketlistsListMoveTo.controller.php:24
+msgid "The list is in the pocket already"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:176
+msgid "https://www.webasyst.com/store/plugin/pocketlists/pro/"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:178
+msgid "Bullets highlighted with a %s label are available as a part of the paid <a href=\"%s\" target=\"_blank\"><b>Pocket Lists PRO</b></a> plugin."
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/class/Log/pocketlistsLogContext.class.php:140
+msgid "No %s entity object in log context"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/class/Log/pocketlistsLogContext.class.php:144
+msgid "There should be %s entity in log context"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/class/Log/pocketlistsLogContext.class.php:389
+msgid "No log mapping for %s"
+msgstr ""

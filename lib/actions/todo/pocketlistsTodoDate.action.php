@@ -21,7 +21,11 @@ class pocketlistsTodoDateAction extends pocketlistsViewAction
         /** @var pocketlistsItemFactory $itemFactory */
         $itemFactory = pl2()->getEntityFactory(pocketlistsItem::class);
 
-        $itemsUndone = $itemFactory->findToDoUndone($this->user, $date);
+        $itemsUndone = $itemFactory
+            ->setOffset(0)
+            ->setLimit(1312)
+            ->findToDoUndone($this->user, $date);
+
         $itemsDone = $itemFactory
             ->setOffset(0)
             ->setLimit(pocketlistsFactory::DEFAULT_LIMIT)
@@ -34,6 +38,9 @@ class pocketlistsTodoDateAction extends pocketlistsViewAction
                 pocketlistsItem::STATUS_DONE,
                 $date ? [$date] : []
             );
+
+        pl2()->getEventDispatcher()->dispatch(new pocketlistsEvent(pocketlistsEventStorage::ITEM_SAVE, null, $itemsDone));
+        pl2()->getEventDispatcher()->dispatch(new pocketlistsEvent(pocketlistsEventStorage::ITEM_DELETE, null, $itemsDone));
 
         $this->view->assign(
             [
@@ -48,6 +55,8 @@ class pocketlistsTodoDateAction extends pocketlistsViewAction
                 'this_is_stream'       => true,
                 'print'                => waRequest::get('print', false),
                 'user'                 => $this->user,
+
+                'itemAdd'              => (new pocketlistsItemAddAction())->display(false),
             ]
         );
     }

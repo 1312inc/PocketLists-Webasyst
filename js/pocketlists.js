@@ -10,6 +10,10 @@
         options: {},
         reloadSidebarInAction: false,
         dropInAction: false,
+        skipHighlightSidebar: false,
+        scrollToContent: function() {
+            this.scrollToTop(80, $('#content').offset().top);
+        },
         updateAppCounter: function (count) {
             var self = this;
 
@@ -25,7 +29,7 @@
             if (count) {
                 setIcon(count);
             } else {
-                $.get('?module=json&action=appCount', function (r) {
+                $.get('?module=backendJson&action=appCount', function (r) {
                     if (r.status === 'ok') {
                         setIcon(r.data);
                     }
@@ -33,16 +37,24 @@
             }
         },
         scrollToTop: function (speed, offset) {
-            if ($('body').scrollTop() > offset) {
+            if ($(document).scrollTop() > offset) {
                 $('html,body').animate({scrollTop: offset + 'px'}, speed);
             }
         },
-        highlightSidebar: function ($li) {
+        highlightSidebar: function ($li, href) {
+            if (this.skipHighlightSidebar) {
+                return;
+            }
+
             var self = this;
 
             var $all_li = self.$core_sidebar.find('li');
             if ($li) {
                 $all_li.removeClass('selected');
+                $li.addClass('selected');
+            } else if (href) {
+                $all_li.removeClass('selected');
+                $li = self.$core_sidebar.find('a[href^="' + href + '"]').first().closest('li');
                 $li.addClass('selected');
             } else {
                 var hash = $.pocketlists_routing.getHash(),
@@ -70,8 +82,16 @@
                 }
             }
         },
-        setTitle: function (title) {
+        skipNextTitle: false,
+        setTitle: function (title, skipNext) {
             var self = this;
+
+            if (self.skipNextTitle === true) {
+                self.skipNextTitle = false;
+                return;
+            }
+
+            self.skipNextTitle = skipNext || false;
             var $h1 = $('#wa-app .content h1').first();
             if ($h1.length && !title) {
                 title = $h1.contents().filter(function () {
@@ -456,7 +476,6 @@
             onResize();
         },
         scrollToEl: function(el) {
-            //debugger;
             el.scrollIntoView({
                 behavior: "smooth",
                 block: "end",
@@ -465,7 +484,7 @@
         },
         sendNotifications: function (appUrl) {
             appUrl = appUrl || '';
-            $.post(appUrl + '?module=json&action=sendNotifications', function(r) {
+            $.post(appUrl + '?module=backendJson&action=sendNotifications', function(r) {
                 if (r.status === 'ok') {
                     var sent = parseInt(r.data);
                     sent && console.log('pocketlists: notification send ' + sent);

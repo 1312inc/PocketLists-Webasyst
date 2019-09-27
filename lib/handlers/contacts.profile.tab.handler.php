@@ -47,7 +47,6 @@ class pocketlistsContactsProfileTabHandler extends waEventHandler
 
             $result = [];
 
-            // Invoices
             $result[] = [
                 'id' => 'pl2items',
                 'title' => _w('Pocket Lists'),

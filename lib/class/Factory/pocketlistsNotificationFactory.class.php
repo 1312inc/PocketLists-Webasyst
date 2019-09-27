@@ -7,9 +7,11 @@
  */
 class pocketlistsNotificationFactory extends pocketlistsFactory implements pocketlistsFactoryInterface
 {
-    protected $entity;
+    protected $entity = 'pocketlistsNotification';
 
     /**
+     * @param pocketlistsNotificationContentInterface $content
+     *
      * @return pocketlistsNotification
      */
     public function createNewEmail(pocketlistsNotificationContentInterface $content)
@@ -19,6 +21,8 @@ class pocketlistsNotificationFactory extends pocketlistsFactory implements pocke
         $notification
             ->setType(pocketlistsNotification::TYPE_EMAIL)
             ->setCreatedAt(date('Y-m-d H:i:s'))
+            ->setDirection(pocketlistsNotification::DIRECTION_EXTERNAL)
+            ->setContactId($content->getToContactId())
             ->setContent($content);
 
         return $notification;
@@ -28,23 +32,28 @@ class pocketlistsNotificationFactory extends pocketlistsFactory implements pocke
      * @param pocketlistsNotification $notification
      *
      * @return pocketlistsNotificationContentInterface
-     *
      * @throws pocketlistsNotImplementedException
      */
     public function createContentForNotification(pocketlistsNotification $notification)
     {
         switch ($notification->getType()) {
             case pocketlistsNotification::TYPE_EMAIL:
-                $obj = new pocketlistsNotificationEmailContent();
-                $obj->extractJson($notification->getData());
+                $notificationEmailContent = new pocketlistsNotificationEmailContent($notification->getData());
 
-                break;
+                return $notificationEmailContent;
 
             default:
-                throw new pocketlistsNotImplementedException();
+                $event = new pocketlistsEvent(pocketlistsEventStorage::CREATE_NOTIFICATION_CONTENT, $notification);
+
+                /** @var pocketlistsNotificationContentInterface $notificationContent */
+                pl2()->getEventDispatcher()->dispatch($event);
+                $notificationContent = $event->getResponse();
+                if ($notificationContent instanceof pocketlistsNotificationContentInterface) {
+                    return $notificationContent;
+                }
         }
 
-        return $obj;
+        throw new pocketlistsNotImplementedException();
     }
 
     /**
@@ -55,7 +64,21 @@ class pocketlistsNotificationFactory extends pocketlistsFactory implements pocke
      */
     public function findUnsent($limit = 100)
     {
-        $data = $this->getModel()->getUnsent($limit);
+        $data = $this->getModel()->getExternalUnsent($limit);
+
+        return $this->generateWithData($data, true);
+    }
+
+    /**
+     * @param pocketlistsContact|null $user
+     * @param int                     $limit
+     *
+     * @return pocketlistsNotification[]
+     * @throws waException
+     */
+    public function findUnsentForUser(pocketlistsContact $user, $limit = 10)
+    {
+        $data = $this->getModel()->getInternalUnsentForUser($limit, $user->getId());
 
         return $this->generateWithData($data, true);
     }

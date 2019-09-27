@@ -17,17 +17,15 @@ class pocketlistsBackendSidebarAction extends pocketlistsViewAction
         /** @var pocketlistsItemModel $itemModel */
         $itemModel = pl2()->getModel(pocketlistsItem::class);
 
-        $sidebar_todo_count = 0;
         $sidebar_todo_count_icon = pl2()->getEntityCounter()->countTodoUndoneWithUserPrioritiesItems();
-        if ($this->user->getSettings()->appIcon() != pocketlistsUserSettings::ICON_ALL) {
-            $sidebar_todo_count = pl2()->getEntityCounter()->countTodoUndoneItems()->getCount();
-        }
+        $sidebar_todo_count = pl2()->getEntityCounter()->countTodoUndoneItems()->getCount();
 
         $this->view->assign(compact('sidebar_todo_count', 'sidebar_todo_count_icon'));
 
-        /** @var pocketlistsListFactory $pocketFactory */
-        $pocketFactory = pl2()->getEntityFactory(pocketlistsList::class);
-        $this->view->assign('lists', $pocketFactory->findAllActive());
+        /** @var pocketlistsListFactory $listFactory */
+        $listFactory = pl2()->getEntityFactory(pocketlistsList::class);
+        $lists = $listFactory->findAllActive();
+        $this->view->assign('lists', $lists);
 
         /** @var pocketlistsContactFactory $contactFactory */
         $contactFactory = pl2()->getEntityFactory(pocketlistsContact::class);
@@ -62,14 +60,7 @@ class pocketlistsBackendSidebarAction extends pocketlistsViewAction
 
         /** @var pocketlistsPocketFactory $pocketFactory */
         $pocketFactory = pl2()->getEntityFactory(pocketlistsPocket::class);
-        $pockets = $pocketFactory->getAllPocketsForUser();
-
-        /** @var pocketlistsPocket $pocket */
-        foreach ($pockets as $pocketId => $pocket) {
-            if (!pocketlistsRBAC::contactHasAccessToPocket($pocket)) {
-                unset($pockets[$pocketId]);
-            }
-        }
+        $pockets = $pocketFactory->findAllForUser();
 
         $linkedApps = pl2()->getLinkedApp();
         foreach ($linkedApps as $i => $app) {
@@ -78,6 +69,22 @@ class pocketlistsBackendSidebarAction extends pocketlistsViewAction
             }
         }
 
+        /**
+         * UI in main sidebar
+         * @event backend_sidebar
+         *
+         * @param pocketlistsEventInterface $event Event object
+         * @return string HTML output
+         */
+        $event = new pocketlistsEvent(pocketlistsEventStorage::WA_BACKEND_SIDEBAR);
+        $eventResult = pl2()->waDispatchEvent($event);
+
         $this->view->assign(compact('pockets', 'linkedApps'));
+        $this->view->assign(
+            [
+                'backend_sidebar' => $eventResult,
+                'isAdmin'         => $this->getUser()->isAdmin('pocketlists'),
+            ]
+        );
     }
 }

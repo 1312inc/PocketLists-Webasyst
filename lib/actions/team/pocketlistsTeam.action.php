@@ -22,12 +22,14 @@ class pocketlistsTeamAction extends pocketlistsViewAction
         // all admin
         $teammates = [];
         $teammates_ids = pocketlistsRBAC::getAccessContacts();
+        $teammate = null;
 
         if ($teammates_ids) {
             /** @var pocketlistsContactFactory $factory */
             $factory = wa(pocketlistsHelper::APP_ID)->getConfig()->getEntityFactory(pocketlistsContact::class);
             $teammates = $factory->getTeammates($teammates_ids);
 
+            /** @var pocketlistsContact $teammate */
             $selected_teammate = waRequest::get('teammate');
             $lists = [];
             if ($selected_teammate) {
@@ -78,12 +80,30 @@ class pocketlistsTeamAction extends pocketlistsViewAction
             );
         }
 
+        $external = waRequest::request('external', 0, waRequest::TYPE_INT);
+
+        /**
+         * UI hook in teammate right sidebar
+         * @event backend_teammate_sidebar
+         *
+         * @param pocketlistsEventInterface $event Event with pocketlistsContact object and external flag in params array
+         * @return string html output
+         */
+        $event = new pocketlistsEvent(
+            pocketlistsEventStorage::WA_BACKEND_TEAMMATE_SIDEBAR,
+            $teammate,
+            ['external' => $external]
+        );
+        $eventResult = pl2()->waDispatchEvent($event);
+
         $this->view->assign(
             [
-                'teammates'            => $teammates,
-                'print'                => waRequest::get('print', false),
-                'user'                 => $this->user,
-                'external'             => waRequest::request('external', 0, waRequest::TYPE_INT),
+                'teammates'             => $teammates,
+                'print'                 => waRequest::get('print', false),
+                'user'                  => $this->user,
+                'external'              => $external,
+                'itemAdd'               => (new pocketlistsItemAddAction(['teammate' => $teammate, 'external' => $external]))->display(false),
+                'backend_teammate_sidebar' => $eventResult,
             ]
         );
     }

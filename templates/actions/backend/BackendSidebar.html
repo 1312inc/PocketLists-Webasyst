@@ -1,24 +1,27 @@
-<!-- POCKETS -->
-<div class="block pl-sidebar-core" data-pl2-sidebar-wrapper="pockets">
-    <ul class="menu-v with-icons">
-        {foreach $pockets as $pocket}
-            <li data-pl-pocket-id="{$pocket->getId()}">
-                <span class="count">{$pocket->getListsCount()}</span>
-                <a href="#/pocket/{$pocket->getId()}/"><i
-                            class="icon16 color pl-dark-{$pocket->getColor()}"></i>{$pocket->getName()|escape}</a>
+{if !empty($pockets)}
+    <!-- POCKETS -->
+    <div class="block pl-sidebar-core" data-pl2-sidebar-wrapper="pockets">
+        <ul class="menu-v with-icons">
+            {foreach $pockets as $pocket}
+                <li data-pl-pocket-id="{$pocket->getId()}">
+                    <span class="count">{$pocket->getListsCount()}</span>
+                    <a href="#/pocket/{$pocket->getId()}/"><i
+                                class="icon16 color pl-dark-{$pocket->getColor()}"></i>{$pocket->getName()|escape}</a>
+                </li>
+            {/foreach}
+        </ul>
+        <ul class="menu-v with-icons">
+            <li class="small">
+                <a href="#" data-pl2-action="add-pocket"><i class="icon10 add"></i>[`New pocket`]</a>
             </li>
-        {/foreach}
-    </ul>
-    <ul class="menu-v with-icons">
-        <li class="small">
-            <a href="#" data-pl2-action="add-pocket"><i class="icon10 add"></i>[`New pocket`]</a>
-        </li>
-    </ul>
-</div>
+        </ul>
+    </div>
 
-<div class="hr"></div>
+    <div class="hr"></div>
+    
+{/if}
 
-<!-- TO-DO STREAMS: PLAIN LISTS -->
+<!-- TO-DO STREAMS -->
 <div class="block">
 
     <ul class="menu-v with-icons">
@@ -51,16 +54,9 @@
         </li>
         {/foreach}
 
-
-        {* <li class="top-padded">
-            <a href="#/"><i class="icon16 "></i>CRM</a>
-        </li>
-        <li>
-            <a href="#/"><i class="icon16 "></i>Tasks</a>
-        </li>
-        <li>
-            <a href="#/"><i class="icon16 "></i>Blog</a>
-        </li> *}
+        <!-- plugin hook: 'backend_sidebar.streams_li' -->
+        {* @event backend_sidebar.%plugin_id% *}
+        {if !empty($backend_sidebar)}{foreach $backend_sidebar as $_}{ifset($_.streams_li)}{/foreach}{/if}
 
         <li>
             <a href="#/logbook/"><i class="icon16 pl logbook"></i>[`Completed`]{if $new_items_count.logbook} <span
@@ -70,7 +66,7 @@
     </ul>
 </div>
 
-<!-- 'PRO' VIEWS -->
+<!-- CUSTOM VIEWS -->
 <div class="block" style="padding-top: 0;">
     <ul class="menu-v with-icons">
         <li>
@@ -78,23 +74,21 @@
                         class="highlighted bold small black"
                         title="{$last_activity|wa_datetime}">+{$new_comments_count}</span>{/if}</a>
         </li>
-        {*
-        <li>
-            <a href="#/calendar/"><i class="icon16 calendar"></i>[`Calendar`]</a>
-        </li>
-        <li>
-            <a href="#/places/"><i class="icon16 map"></i>[`Places`]</a>
-        </li>
-        <li>
-            <a href="#/board/"><i class="icon16 zone"></i>[`Board`]</a>
-        </li>
-        *}
+
+        <!-- plugin hook: 'backend_sidebar.views_li' -->
+        {* @event backend_sidebar.%plugin_id% *}
+        {if !empty($backend_sidebar)}{foreach $backend_sidebar as $_}{ifset($_.views_li)}{/foreach}{/if}
+
     </ul>
 </div>
 
 <div class="block">
     <input type="search" data-pl2-action="search" placeholder="[`Search`]" class="pl-search-input" />
 </div>
+
+<!-- plugin hook: 'backend_sidebar.section_block' -->
+{* @event backend_sidebar.%plugin_id% *}
+{if !empty($backend_sidebar)}{foreach $backend_sidebar as $_}{ifset($_.section_block)}{/foreach}{/if}
 
 <!-- TEAM -->
 {$max_visible_in_team = 5}
@@ -153,9 +147,20 @@
         <li>
             <a href="#/settings/"><i class="icon16 settings"></i>[`Settings`]</a>
         </li>
+
+        <!-- plugin hook: 'backend_sidebar.system_li' -->
+        {* @event backend_sidebar.%plugin_id% *}
+        {if !empty($backend_sidebar)}{foreach $backend_sidebar as $_}{ifset($_.system_li)}{/foreach}{/if}
+
         <li class="top-padded">
             <a href="#/about/"><i class="icon16" style="background-image: url('/wa-apps/pocketlists/img/pl2webasyst48.png') !important; background-size: 16px 16px;"></i>[`About`]</a>
         </li>
+        {if $isAdmin}
+        <li>
+            <strong class="count highlighted indicator" style="color: #444; background: gold; font-size: 10px;">NEW!</strong>
+            <a href="#/plugins/"><i class="icon16 plugins"></i>[`Plugins`]</a>
+        </li>
+        {/if}
     </ul>
 </div>
 

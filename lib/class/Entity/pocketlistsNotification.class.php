@@ -13,23 +13,36 @@ class pocketlistsNotification extends pocketlistsEntity
     const STATUS_SENDING = 2;
     const STATUS_FAIL    = 99;
 
+    const DIRECTION_EXTERNAL = 'external';
+    const DIRECTION_INTERNAL = 'internal';
+
     /**
      * @var int
      */
     private $id;
 
     /**
-     * @var int
+     * @var string
      */
     private $type;
 
     /**
      * @var string
      */
+    private $handler;
+
+    /**
+     * @var string|DateTime
+     */
     private $created_at;
 
     /**
-     * @var string
+     * @var string|DateTime
+     */
+    private $delayed_to;
+
+    /**
+     * @var string|DateTime
      */
     private $sent_at;
 
@@ -54,6 +67,21 @@ class pocketlistsNotification extends pocketlistsEntity
     protected $content;
 
     /**
+     * @var string
+     */
+    protected $identifier;
+
+    /**
+     * @var string
+     */
+    protected $direction = self::DIRECTION_EXTERNAL;
+
+    /**
+     * @var int|null
+     */
+    protected $contact_id;
+
+    /**
      * @return int
      */
     public function getId()
@@ -74,7 +102,7 @@ class pocketlistsNotification extends pocketlistsEntity
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getType()
     {
@@ -82,7 +110,7 @@ class pocketlistsNotification extends pocketlistsEntity
     }
 
     /**
-     * @param int $type
+     * @param string $type
      *
      * @return pocketlistsNotification
      */
@@ -215,7 +243,107 @@ class pocketlistsNotification extends pocketlistsEntity
     public function setContent(pocketlistsNotificationContentInterface $content)
     {
         $this->content = $content;
-        $this->setData($this->content->toJson());
+        $this->setData(json_encode($this->content, JSON_UNESCAPED_UNICODE));
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdentifier()
+    {
+        return $this->identifier;
+    }
+
+    /**
+     * @param string $identifier
+     *
+     * @return pocketlistsNotification
+     */
+    public function setIdentifier($identifier)
+    {
+        $this->identifier = $identifier;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHandler()
+    {
+        return $this->handler;
+    }
+
+    /**
+     * @param string $handler
+     *
+     * @return pocketlistsNotification
+     */
+    public function setHandler($handler)
+    {
+        $this->handler = $handler;
+
+        return $this;
+    }
+
+    /**
+     * @return DateTime|string
+     */
+    public function getDelayedTo()
+    {
+        return $this->delayed_to;
+    }
+
+    /**
+     * @param DateTime|string $delayed_to
+     *
+     * @return pocketlistsNotification
+     */
+    public function setDelayedTo($delayed_to)
+    {
+        $this->delayed_to = $delayed_to;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDirection()
+    {
+        return $this->direction;
+    }
+
+    /**
+     * @param string $direction
+     *
+     * @return pocketlistsNotification
+     */
+    public function setDirection($direction)
+    {
+        $this->direction = $direction;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getContactId()
+    {
+        return $this->contact_id;
+    }
+
+    /**
+     * @param int|null $contact_id
+     *
+     * @return pocketlistsNotification
+     */
+    public function setContactId($contact_id)
+    {
+        $this->contact_id = $contact_id;
 
         return $this;
     }

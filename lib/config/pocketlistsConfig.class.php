@@ -51,6 +51,65 @@ class pocketlistsConfig extends waAppConfig
     protected $logService;
 
     /**
+     * @var pocketlistsEventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @param string $type
+     *
+     * @return waCache
+     */
+    public function getCache($type = 'default')
+    {
+        if ($this->cache === null) {
+            $this->cache = parent::getCache($type)
+                ?: new waCache(
+                    new waFileCacheAdapter(['type' => 'file']),
+                    'pocketlists'
+                );
+        }
+
+        return $this->cache;
+    }
+
+    /**
+     * @return pocketlistsEventDispatcherInterface
+     */
+    public function getEventDispatcher()
+    {
+        if ($this->eventDispatcher === null) {
+            $this->eventDispatcher = new pocketlistsEventDispatcher(
+                new pocketlistsListenerProvider()
+            );
+        }
+
+        return $this->eventDispatcher;
+    }
+
+    /**
+     * @param pocketlistsEvent $event
+     *
+     * @return array
+     */
+    public function waDispatchEvent(pocketlistsEvent $event)
+    {
+        return wa('pocketlists')->event($event->getName(), $event);
+    }
+
+    /**
+     * @param string      $eventName
+     * @param object|null $object
+     * @param array       $params
+     *
+     * @return pocketlistsListenerResponseInterface
+     */
+    public function event($eventName, $object = null, $params = [])
+    {
+        return $this->getEventDispatcher()->dispatch(new pocketlistsEvent($eventName, $object, $params));
+    }
+
+    /**
      * @return pocketlistsHydratorInterface
      */
     public function getHydrator()
@@ -89,11 +148,12 @@ class pocketlistsConfig extends waAppConfig
         $factoryClass = sprintf('%sFactory', $entity);
 
         if (!class_exists($factoryClass)) {
-            return $this->factories['']->setEntity($entity);
+            return $this->factories[''];//->setEntity($entity);
         }
 
         $this->factories[$entity] = new $factoryClass();
-        $this->factories[$entity]->setEntity($entity);
+
+//        $this->factories[$entity]->setEntity($entity);
 
         return $this->factories[$entity];
     }
@@ -208,7 +268,10 @@ HTML;
 
             }
 
-            $pocketlistsPath = sprintf('%spocketlists?module=json&action=sendNotifications', pl2()->getBackendUrl(true));
+            $pocketlistsPath = sprintf(
+                '%spocketlists?module=backendJson&action=',
+                pl2()->getBackendUrl(true)
+            );
 
             $script = <<<HTML
 <script>
@@ -216,10 +279,27 @@ HTML;
     'use strict';
     
     try {
-        $.post('{$pocketlistsPath}', function(r) {
+        $.post('{$pocketlistsPath}sendNotifications', function(r) {
             if (r.status === 'ok') {
                 var sent = parseInt(r.data);
                 sent && console.log('pocketlists: notification send ' + sent);
+            } else {
+                console.log('pocketlists: notification send error ' + r.error);
+            }
+        });
+        
+        $.post('{$pocketlistsPath}sendDirectNotifications', function(r) {
+            if (r.status === 'ok') {
+                if (window['pocketlistsAlertBox'] && r.data) {
+                    $.each(r.data, function() {
+                        var alertbox = new pocketlistsAlertBox('#pl2-notification-area', {
+                            closeTime: 120000,
+                            persistent: true,
+                            hideCloseButton: false
+                        });
+                        alertbox.show(this);
+                    });
+                }
             } else {
                 console.log('pocketlists: notification send error ' + r.error);
             }
@@ -366,12 +446,16 @@ HTML;
             'current_user'         => $this->getUser(),
             'pl2_attachments_path' => wa()->getDataUrl('attachments/', true, pocketlistsHelper::APP_ID),
             'wa_app_static_url'    => wa()->getAppStaticUrl(pocketlistsHelper::APP_ID),
+            'pl2'                  => pl2(),
         ];
     }
 
     private function registerGlobal()
     {
         if (!function_exists('pl2')) {
+            /**
+             * @return pocketlistsConfig
+             */
             function pl2()
             {
                 return wa(pocketlistsHelper::APP_ID)->getConfig();

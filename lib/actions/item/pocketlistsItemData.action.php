@@ -15,11 +15,7 @@ class pocketlistsItemDataAction extends pocketlistsViewItemAction
      */
     public function runAction($params = null)
     {
-        if (waRequest::getMethod() !== 'post') {
-            return;
-        }
-
-        $item_new_data = waRequest::post('item', [], waRequest::TYPE_ARRAY);
+        $item_new_data = waRequest::request('item', [], waRequest::TYPE_ARRAY);
         $isNewItem = false;
 
         /** @var pocketlistsItemFactory $itemFactory */
@@ -34,7 +30,7 @@ class pocketlistsItemDataAction extends pocketlistsViewItemAction
             $isNewItem = true;
         }
 
-        if ($item_new_data) {
+        if ($item_new_data && waRequest::getMethod() === 'post') {
 //            $item->setListId($item_new_data['list_id'] === '' ? null : $item_new_data['list_id']);
 
             // todo: childs not available for now
@@ -57,6 +53,13 @@ class pocketlistsItemDataAction extends pocketlistsViewItemAction
             pocketlistsHelper::getDueDatetime($item_new_data);
 
             $oldAssignedId = !empty($item_new_data['id']) ? $item->getAssignedContactId() : 0;
+
+            $logContext = new pocketlistsLogContext();
+            if (!$isNewItem) {
+                $logContext->addParam(
+                    ['item_old' => pl2()->getHydrator()->extract($item, pocketlistsLogContext::ITEM_FIELDS_TO_EXTRACT)]
+                );
+            }
 
             $item = pl2()->getHydrator()->hydrate($item, $item_new_data);
 
@@ -115,6 +118,7 @@ class pocketlistsItemDataAction extends pocketlistsViewItemAction
                 }
             }
 
+            $withNewAppLinks = 0;
             if (!empty($item_new_data['links'])) {
                 /** @var pocketlistsItemLinkFactory $itemLinkFactory */
                 $itemLinkFactory = pl2()->getEntityFactory(pocketlistsItemLink::class);
@@ -123,22 +127,21 @@ class pocketlistsItemDataAction extends pocketlistsViewItemAction
                     $linkData = $link['model'];
 
                     $itemLinkFactory->createFromDataForItem($item, $linkData);
+                    $withNewAppLinks = pocketlistsLogContext::ITEM_MORE_INFO_APP_LINKS;
                 }
             }
 
-            $this->view->assign(
-                'pl2_attachments_path',
-                wa()->getDataUrl('attachments/', true, pocketlistsHelper::APP_ID)
-            );
-
-            $this->view->assign('item', $item);
-
-            $context = (new pocketlistsLogContext())
+            $logContext
                 ->setList($item->getList())
-                ->setItem($item);
+                ->setItem($item, $withNewAppLinks);
+
+            if ($item->getAssignedContactId() && $item->getAssignedContactId() != $oldAssignedId) {
+                $logContext->addParam(['item_action' => pocketlistsLog::ITEM_ACTION_NEW_ASSIGN]);
+            }
+
             if ($isNewItem) {
                 $this->logService->add(
-                    $this->logService->getFactory()->createNewAfterItemAdd($context)
+                    $this->logService->getFactory()->createNewAfterItemAdd($logContext)
                 );
 
                 if ($item->getList()) {
@@ -152,9 +155,16 @@ class pocketlistsItemDataAction extends pocketlistsViewItemAction
                 }
             } else {
                 $this->logService->add(
-                    $this->logService->getFactory()->createNewAfterItemUpdate($context)
+                    $this->logService->getFactory()->createNewAfterItemUpdate($logContext)
                 );
             }
         }
+
+        $this->view->assign(
+            'pl2_attachments_path',
+            wa()->getDataUrl('attachments/', true, pocketlistsHelper::APP_ID)
+        );
+
+        $this->view->assign('item', $item);
     }
 }

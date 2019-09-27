@@ -2,14 +2,19 @@
 <div class="shadowed" data-pl2-pocket-wrapper="{$pocket->getId()}">
     <nav class="sidebar left300px">
 
+        <!-- plugin hook: 'backend_pocket.sidebar_section' -->
+        {* @event backend_pocket.%plugin_id% *}
+        {if !empty($backend_pocket)}{foreach $backend_pocket as $_}{ifset($_.sidebar_section)}{/foreach}{/if}
+
         <!-- LISTS -->
         <div id="pl-lists" data-pl-scroll-to-top>
             <div class="pl-lists-header">
                 {if $isAdmin}<a href="#/pocket/{$pocket->getId()}/list/new/" class="count" title="[`New list`]"><i class="icon16 add"></i></a>{/if}
-                <h5 class="pl-dark-{$pocket->getColor()|default:'none'}-label">
-                    {$pocket->getName()|escape}
-                    {if $isAdmin}<a href="#" title="[`Pocket settings`]" data-pl2-action="edit-pocket" data-pl2-pocket-id="{$pocket->getId()}"><i class="icon16 pl ellipsis pl-pocket-settings"></i></a>{/if}
+
+                <h5 class="heading pl-dark-{$pocket->getColor()|default:'none'}-label">
+                    [`Lists`]
                 </h5>
+
             </div>
             {if !empty($lists)}
                 <ul class="pl-lists" data-pl2-wrapper="lists">
@@ -41,16 +46,19 @@
                     {/if}
                 </div>
             {/if}
-            <!-- <a href="#/pocket/{$pocket->getId()}/list/new/" class="pl-lists-add">
-                <i></i>
-                <span>[`New list`]</span>
-            </a> -->
+            <div class="block align-center double-padded">
+                {if $isAdmin}
+                <a href="#" title="[`Pocket settings`]" data-pl2-action="edit-pocket" data-pl2-pocket-id="{$pocket->getId()}" class="gray">
+                    <i class="icon16 settings"></i><span>[`Pocket settings`]</span>
+                </a>
+                {/if}
+            </div>
         </div>
 
     </nav>
 
     <!-- ITEMS -->
-    <main class="content left300px blank bordered-left" id="pl-list-content">
+    <main class="content left300px blank bordered-left">
         {$lists_html|default:""}
     </main>
 

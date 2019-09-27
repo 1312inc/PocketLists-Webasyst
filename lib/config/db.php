@@ -125,6 +125,7 @@ return array(
         'attachment_id' => array('int', 11),
         'location_id' => array('int', 11),
         'additional_id' => array('int', 11),
+        'assigned_contact_id' => array('int', 11),
         'params' => array('text'),
         'create_datetime' => array('datetime'),
         ':keys' => array(
@@ -138,8 +139,11 @@ return array(
     ),
     'pocketlists_notification' => array(
         'id' => array('int', 11, 'null' => 0, 'autoincrement' => 1),
-        'type' => array('smallint', 6, 'null' => 0),
+        'type' => array('varchar', 30, 'null' => 0),
+        'identifier' => array('varchar', 32),
+        'handler' => array('text'),
         'created_at' => array('datetime', 'null' => 0),
+        'delayed_to' => array('datetime'),
         'sent_at' => array('datetime'),
         'status' => array('varchar', 255),
         'error' => array('text'),

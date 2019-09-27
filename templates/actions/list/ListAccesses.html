@@ -43,6 +43,12 @@
     </div>
     </div>
 
+    <div class="clear-both"></div>
+
+    <!-- plugin hook: 'backend_list_accesses' -->
+    {* @event backend_list_accesses.%plugin_id% *}
+    {if !empty($backend_list_accesses)}{foreach $backend_list_accesses as $_}{ifset($_)}{/foreach}{/if}
+
     {/if}
 </div>
 </div>

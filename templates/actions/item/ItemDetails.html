@@ -18,6 +18,15 @@
 
         <div class="pl-details-primary-hint-wrapper">
 
+            <!-- plugin hook: 'backend_item_add.detail' -->
+            {* @event backend_item_add.%plugin_id% *}
+            {if !empty($backend_item_add)}{foreach $backend_item_add as $plugin_id => $_}
+                <!-- plugin {$plugin_id} -->
+                {ifset($_)}
+                <!-- /plugin {$plugin_id} -->
+            {/foreach}{/if}
+            <!-- /plugin hook: 'backend_item_add.detail' -->
+
             {if $wa->shop}<p class="hint pl-app-hint-internal">[`Use @ or # symbols to link this to-do with a Shop-Script order.`]{* <a href="#" class="inline-link"><b><i>[`Ok, I got it.`]</i></b></a> *}</p>{/if}
 
             <p class="hint pl-app-hint-external"><i class="icon16 pl pl2app"></i>{sprintf('[`The to-do item will be saved in the <span class="nowrap"><a href="%s" class="gray" target="_blank">Pocket Lists</a> app</span> and will be visible only to authorized Webasyst users. The customer will not see this to-do.`]', $wa_backend_url|cat:'pocketlists/')}{* <a href="#" class="inline-link"><b><i>[`Ok, I got it.`]</i></b></a> *}</p>

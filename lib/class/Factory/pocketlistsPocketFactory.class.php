@@ -7,7 +7,7 @@
  */
 class pocketlistsPocketFactory extends pocketlistsFactory
 {
-    protected $entity;
+    protected $entity = 'pocketlistsPocket';
 
     /**
      * @param pocketlistsContact|null $user
@@ -15,9 +15,9 @@ class pocketlistsPocketFactory extends pocketlistsFactory
      * @return pocketlistsPocket[]
      * @throws waException
      */
-    public function getAllPocketsForUser(pocketlistsContact $user = null)
+    public function findAllForUser(pocketlistsContact $user = null)
     {
-        $contactId = $user instanceof pocketlistsContact ? $user->getId() : false;
+        $contactId = $user instanceof pocketlistsContact ? $user->getId() : pl2()->getUser()->getId();
         $data = $this->getModel()->getAllPockets($contactId);
 
         return $this->generateWithData($data, true);

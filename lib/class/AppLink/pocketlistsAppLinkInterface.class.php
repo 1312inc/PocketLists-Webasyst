@@ -33,6 +33,13 @@ interface pocketlistsAppLinkInterface
     /**
      * @param pocketlistsItemLink $itemLink
      *
+     * @return string
+     */
+    public function getEntityNum(pocketlistsItemLink $itemLink);
+
+    /**
+     * @param pocketlistsItemLink $itemLink
+     *
      * @return shopOrder
      */
     public function getAppEntity(pocketlistsItemLink $itemLink);

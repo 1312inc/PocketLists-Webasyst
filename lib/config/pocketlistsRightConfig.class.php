@@ -55,7 +55,7 @@ class pocketlistsRightConfig extends waRightConfig
         $items = [];
         /** @var pocketlistsPocketFactory $pocketFactory */
         $pocketFactory = pl2()->getEntityFactory(pocketlistsPocket::class);
-        foreach ($pocketFactory->getAllPocketsForUser() as $pocket) {
+        foreach ($pocketFactory->findAllForUser() as $pocket) {
             $items[$pocket->getId()] = $pocket->getName();
         }
 
@@ -132,6 +132,13 @@ class pocketlistsRightConfig extends waRightConfig
                 }
             }
         }
+
+        /**
+         * @event rights.config
+         * @param waRightConfig $this Rights setup object
+         * @return void
+         */
+        wa()->event('rights.config', $this);
     }
 
     /**

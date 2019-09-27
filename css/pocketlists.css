@@ -150,6 +150,8 @@ table.pl-calendar td .pl-dots i.icon10 { margin-top: 0.2em; margin-right: 0.2em;
 /* Settings
 ----------- */
 
+.pl-settings { background: #f7f7f7; }
+
 #pl-settings-form { overflow: visible; }
 #pl-settings-form .heading i.icon16 { margin-left: -0.2em; }
 #pl-settings-form .field p { margin-right: 150px; }
@@ -168,6 +170,8 @@ table.pl-calendar td .pl-dots i.icon10 { margin-top: 0.2em; margin-right: 0.2em;
 .pl-roadmap li .pl-done + span { left: -12px; top: -2px; }
 .pl-roadmap li .pl-done:checked + span { border: 2px solid transparent; }
 .pl-roadmap li .pl-done.pl-priority-fire + span { width: 25px; height: 25px; background-size: 27px 27px; margin-left: -5px; }
+
+.pl-wa-plugin-icon { box-shadow: 0 15px 35px rgba(40,40,80,0.1), 0 5px 10px rgba(0,0,0,0.07); border-radius: 5px; width: 200px; height: 110px; }
 
 /* Done checkbox
 ---------------- */
@@ -377,11 +381,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#12000000', e
 .pl-teammate-items .pl-list-items ul.menu-v li .pl-item:hover { background: rgba(0,0,0,0.04); }
 .pl-teammate-items .pl-list-items ul.menu-v li .pl-item.pl-item-selected { background: #f3f3f3; }
 
-.pl-label { font-size: 0.9em; border-radius: 4px; background: #aaa; color: #fff !important; padding: 1px 4px 2px !important; margin-right: 2px !important; line-height: 1.4em; vertical-align: top; margin-top: 1px; display: inline !important; font-weight: bold; }
+.pl-label { font-size: 0.9em; border-radius: 4px; background: #aaa; color: #fff !important; padding: 1px 4px 2px !important; margin-right: 2px !important; line-height: 1.4em; vertical-align: top; margin-top: 1px; display: inline; font-weight: bold; }
 .pl-label:hover { color: #ffa !important; }
 .pl-label.pl-hint { background: rgba(0,0,0,0.07); color: rgba(0,0,0,0.42) !important; font-size: 0.75em; position: relative; top: 2px; font-style: italic; }
 .pl-label.pl-dark-none { background: #bbb !important; }
-.pl-item .pl-label { margin-left: -4px !important; }
+.pl-list-items .pl-item a.pl-label { margin: 3px 0 !important; display: inline-block; }
 .pl-label.pl-pro { background: gold !important; color: black !important; font-size: 0.75em; font-style: normal !important; }
 p .pl-label.pl-pro { position: relative; top: 3px; margin-right: 0; }
 
@@ -427,6 +431,8 @@ p .pl-label.pl-pro { position: relative; top: 3px; margin-right: 0; }
 .pl-logbook .pl-item.gray .pl-userpic { opacity: 1 !important; }
 .pl-logbook .pl-item.gray .pl-item-list-name,
 .pl-logbook .pl-item.gray .pl-item-name { color: #aaa !important; }
+.pl-logbook .pl-item.gray .pl-label { opacity: 0.4; }
+.pl-logbook .pl-item.gray .pl-link-preview-details .pl-label { opacity: 1; }
 
 .pl-archive { background: #eee; }
 .pl-archive .pl-title h1 { padding-left: 0; }
@@ -545,13 +551,16 @@ input.pl-due-date-input { width: 130px !important; min-width: 130px !important; 
 /* Custom 16x16 icons
 --------------------- */
 
-.icon16.pl { background-image: url('../img/pl-backend-ui-icons-16.png?1905'); }
+.icon16.pl { background-image: url('../img/pl-backend-ui-icons-16.png?1909'); }
 .icon16.pl.lists { background-position:-16px 0; }
 .icon16.pl.todo { background-position:-32px 0; }
 .icon16.pl.archive { background-position:-48px 0; }
 .icon16.pl.todo-bw { background-position:-64px 0; }
 .icon16.pl.logbook { background-position:-80px 0; }
 .icon16.pl.comments { background-position:-96px 0; }
+.icon16.pl.statuses { background-position:-112px 0; }
+.icon16.pl.shortcuts { background-position:-128px 0; }
+.icon16.pl.kanban { background-position:-144px 0; }
 .icon16.pl.add { background-position:0 -16px; }
 .icon16.pl.darr { background-position:-16px -16px; }
 .icon16.pl.ellipsis { background-position:0 -48px; }
@@ -618,7 +627,7 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 @media
 (-webkit-min-device-pixel-ratio: 2),
 (min-resolution: 192dpi) {
-    i.icon16.pl { background-image: url('../img/pl-backend-ui-icons-16@2x.png?1905'); background-size: 346px 179px; }
+    i.icon16.pl { background-image: url('../img/pl-backend-ui-icons-16@2x.png?1909'); background-size: 346px 179px; }
 }
 
 /* Narrow screens

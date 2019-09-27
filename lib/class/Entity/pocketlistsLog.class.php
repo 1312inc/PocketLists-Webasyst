@@ -22,6 +22,8 @@ class pocketlistsLog extends pocketlistsEntity
     const ENTITY_COMMENT    = 'comment';
     const ENTITY_ATTACHMENT = 'attachment';
 
+    const ITEM_ACTION_NEW_ASSIGN = 'new_assign';
+
     /**
      * @var int
      */
@@ -78,7 +80,12 @@ class pocketlistsLog extends pocketlistsEntity
     private $additional_id;
 
     /**
-     * @var array|null
+     * @var int|null
+     */
+    private $assigned_contact_id;
+
+    /**
+     * @var string
      */
     private $params;
 
@@ -93,6 +100,21 @@ class pocketlistsLog extends pocketlistsEntity
     private $context;
 
     /**
+     * @var pocketlistsContact|null
+     */
+    private $_assignedContact;
+
+    /**
+     * @var pocketlistsContact
+     */
+    private $_contact;
+
+    /**
+     * @var array|null
+     */
+    private $paramsArray;
+
+    /**
      * @param array $fields
      *
      * @return array|void
@@ -100,8 +122,32 @@ class pocketlistsLog extends pocketlistsEntity
     public function beforeExtract(array &$fields)
     {
         if (empty($fields) || (!empty($fields) && array_key_exists('params', $fields))) {
-            $this->params = json_encode($this->params, JSON_UNESCAPED_UNICODE);
+            $this->params = json_encode($this->paramsArray, JSON_UNESCAPED_UNICODE);
         }
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getParamsArray()
+    {
+        if ($this->paramsArray === null) {
+            $this->paramsArray = json_decode($this->params, true);
+        }
+
+        return $this->paramsArray;
+    }
+
+    /**
+     * @param array|null $paramsArray
+     *
+     * @return pocketlistsLog
+     */
+    public function setParamsArray(array $paramsArray = null)
+    {
+        $this->paramsArray = $paramsArray;
+
+        return $this;
     }
 
     /**
@@ -113,7 +159,7 @@ class pocketlistsLog extends pocketlistsEntity
     public function afterHydrate($data = [])
     {
         if (!empty($data) && array_key_exists('params', $data)) {
-            $this->params = json_decode($data['params'], true);
+            $this->setParamsArray(json_decode($data['params'], true));
         }
     }
 
@@ -138,7 +184,7 @@ class pocketlistsLog extends pocketlistsEntity
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getAction()
     {
@@ -198,7 +244,7 @@ class pocketlistsLog extends pocketlistsEntity
     }
 
     /**
-     * @return array|null
+     * @return string|null
      */
     public function getParams()
     {
@@ -206,11 +252,11 @@ class pocketlistsLog extends pocketlistsEntity
     }
 
     /**
-     * @param array|null $params
+     * @param string|null $params
      *
      * @return pocketlistsLog
      */
-    public function setParams($params)
+    public function setParams($params = null)
     {
         $this->params = $params;
 
@@ -378,6 +424,57 @@ class pocketlistsLog extends pocketlistsEntity
     }
 
     /**
+     * @return int|null
+     */
+    public function getAssignedContactId()
+    {
+        return $this->assigned_contact_id;
+    }
+
+    /**
+     * @param int|null $assigned_contact_id
+     *
+     * @return pocketlistsLog
+     */
+    public function setAssignedContactId($assigned_contact_id)
+    {
+        $this->assigned_contact_id = $assigned_contact_id;
+
+        return $this;
+    }
+
+    /**
+     * @return pocketlistsContact
+     * @throws waException
+     */
+    public function getAssignContact()
+    {
+        if ($this->_assignedContact === null) {
+            /** @var pocketlistsContactFactory $factory */
+            $factory = pl2()->getEntityFactory(pocketlistsContact::class);
+            $this->_assignedContact = $this->assigned_contact_id
+                ? $factory->createNewWithId($this->assigned_contact_id)
+                : $factory->createNewFake();
+        }
+
+        return $this->_assignedContact;
+    }
+
+    /**
+     * @return pocketlistsContact
+     * @throws waException
+     */
+    public function getContact()
+    {
+        if ($this->_contact === null) {
+            $this->_contact = pl2()->getEntityFactory(pocketlistsContact::class)
+                ->createNewWithId($this->contact_id);
+        }
+
+        return $this->_contact;
+    }
+
+    /**
      * @param pocketlistsLogContext $context
      *
      * @return $this
@@ -394,11 +491,11 @@ class pocketlistsLog extends pocketlistsEntity
 
         $params = $this->context->getParams();
         if (!empty($params)) {
-            if (!is_array($this->getParams())) {
-                $this->params = [];
+            if (!is_array($this->getParamsArray())) {
+                $this->paramsArray = [];
             }
 
-            $this->setParams(array_merge_recursive($this->getParams(), $params));
+            $this->setParamsArray(array_merge_recursive($this->getParamsArray(), $params));
         }
 
         $additional = $context->getAdditional();
@@ -416,5 +513,28 @@ class pocketlistsLog extends pocketlistsEntity
         }
 
         return $this;
+    }
+
+    /**
+     * @param string $key
+     * @param mixed  $default
+     *
+     * @return mixed|null
+     */
+    public function getParamValueByKey($key, $default = null)
+    {
+        $keys = explode('.', $key);
+        $val = $this->paramsArray;
+
+        while ($keys) {
+            $key = array_shift($keys);
+
+            if (!isset($val[$key])) {
+                return $default;
+            }
+            $val = $val[$key];
+        }
+
+        return $val;
     }
 }

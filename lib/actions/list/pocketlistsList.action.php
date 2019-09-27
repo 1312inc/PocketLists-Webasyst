@@ -135,6 +135,8 @@ class pocketlistsListAction extends pocketlistsViewAction
                     'empty'       => true,
                     'new_list_id' => $last_list_id ? $last_list_id + 1 : 1,
                     'list'        => pl2()->getEntityFactory(pocketlistsList::class)->createNew(),
+                    'count_items_done'   => 0,
+                    'count_items_undone' => 0,
                 ]
             );
         }
@@ -147,6 +149,7 @@ class pocketlistsListAction extends pocketlistsViewAction
                 'fileupload'           => 1,
                 'user'                 => $this->user,
                 'list_icons'           => (new pocketlistsListIcon())->getAll(),            // get icons
+                'itemAdd'              => (new pocketlistsItemAddAction())->display(false),
             ]
         );
     }

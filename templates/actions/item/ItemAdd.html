@@ -19,12 +19,16 @@
                 {* another friendly hack that promotes app Natural Input feature on the very empty launch *}
                 {$_placeholder = '[`New to-do (e.g. “meeting tomorrow at 10”)`]'}
             {/if}
-            <textarea rows="1" placeholder="{$_placeholder}" data-pl2-item-textarea></textarea>
+            <textarea rows="1" placeholder="{$_placeholder}" data-pl2-item-textarea class="pl-item-name"></textarea>
             <a href="#" class="pl-item-add-shortcuts" data-pl2-action="edit-new-item">
                 <i class="icon16 userpic20" style="background-image: url('{$assign_contact_photo|default:$wa->user()->getPhoto(20)}')" data-pl2-item-add="assign-contact"></i>
                 <i class="icon16 pl caret-down" title="[`Show details and use the detailed add mode by default`]"></i>
             </a>
-            {* <p class="hint"><i class="icon10 lock-bw"></i>[`Only you can see this to-do`]</p> *}
+
+            <!-- plugin hook: 'backend_item_add.compact' -->
+            {* @event backend_item_add.%plugin_id% *}
+            {if !empty($backend_item_add)}{foreach $backend_item_add as $_}{ifset($_)}{/foreach}{/if}
+
         </label>
 
         <div data-pl2-item-links>

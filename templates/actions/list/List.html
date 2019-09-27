@@ -86,7 +86,7 @@
 
             {if $list->getId()}
             {include '../../include/deletelistdialog.html' inline}
-            {include '../../include/itemadd.html' inline}
+            {$itemAdd}
             {/if}
 
         {/if}
@@ -111,7 +111,8 @@
             list: new $.pocketlists.List(
                 $('.pl-list-title'),
                 {
-                    archive: {if $archive|default:0}true{else}false{/if}
+                    archive: {if $archive|default:0}true{else}false{/if},
+                    totalItems: {$count_items_done|default:0 + $count_items_undone|default:0}
                 }),
             userHasLinkedApps: {$user->hasLinkedApps()},
             current_user_id: {$user->getContact()->getId()},

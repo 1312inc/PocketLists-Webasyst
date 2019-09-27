@@ -26,5 +26,17 @@ class pocketlistsListAccessesAction extends pocketlistsViewListAction
         );
 
         $this->view->assign(compact('list', 'list_access_contacts'));
+
+        /**
+         * UI hook in list details
+         * @event backend_list_accesses
+         *
+         * @param pocketlistsEventInterface $event Event with pocketlistsList object
+         * @return string html output
+         */
+        $event = new pocketlistsEvent(pocketlistsEventStorage::WA_BACKEND_LIST_ACCESSES, $list);
+        $eventResult = pl2()->waDispatchEvent($event);
+
+        $this->view->assign('backend_list_accesses', $eventResult);
     }
 }

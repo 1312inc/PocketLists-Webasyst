@@ -4,7 +4,8 @@
     $.storage = new $.store();
     $.pocketlists_routing = {
         options: {
-            user_id: 0
+            user_id: 0,
+            $content: $('#content')
         },
         init: function (options) {
             var that = this;
@@ -124,19 +125,19 @@
                     }
 
                     var attr = hash.slice(attrMarker);
-                    this.preExecute(actionName);
                     if (typeof(this[actionName + 'Action']) == 'function') {
+                        this.preExecute(actionName);
                         console.info('dispatch', [actionName + 'Action', attr]);
                         this[actionName + 'Action'].apply(this, attr);
 
                         if (actionName !== 'debug') {
                             $.storage.set('/pocketlists/hash/' + this.options.user_id, hash.join('/'));
                         }
+                        this.postExecute(actionName);
                     }
                     else {
                         console.info('Invalid action name:', actionName + 'Action');
                     }
-                    this.postExecute(actionName);
                 } else {
                     this.preExecute();
                     this.defaultAction();
@@ -159,10 +160,11 @@
         postExecute: function () {
             $.pocketlists.reloadSidebar();
             this.heartbeat();
+            $.pocketlists.scrollToContent();
         },
 
         heartbeat: function () {
-            $.post('?module=json&action=heartbeat');
+            $.post('?module=backendJson&action=heartbeat');
         },
 
         // actions
@@ -204,8 +206,38 @@
         logbookAction: function () {
             this.load('?module=logbook', this.setHtmlContent);
         },
-        settingsAction: function () {
-            this.load('?module=settings', this.setHtmlContent);
+        settingsAction: function (a,b,c,d) {
+            var that = this,
+                loadPlugin = function (plugin, settings) {
+                    return that.load('?plugin='+ plugin + '&module=settings&action=' + settings, function (html) {
+                        $('[data-pl2-settings-content]').html(html);
+                        def.resolve();
+                    });
+                },
+                $wrapper = $('[data-pl2-settings-content]'),
+                def = $.Deferred();
+
+            if (!$wrapper.length) {
+                this.load('?module=settings', function (html) {
+                    var $html = $(html);
+
+                    if (a === 'plugin') {
+                        $html.find('#pl-settings-form').html('<i class="icon16 loading">');
+                        loadPlugin(b, c);
+                    }
+
+                    $('#content').empty().append($html);
+                });
+            } else if (a === 'plugin') {
+                loadPlugin(b, c);
+            } else {
+                this.load('?module=settings', this.setHtmlContent);
+            }
+
+            def.done(function () {
+                $('[data-pl2-settings-sidebar]').find('li').removeClass('selected').end()
+                    .find('[href*="'+that.hash+'"]').closest('li').addClass('selected');
+            })
         },
         aboutAction: function () {
             this.load('?module=about', this.setHtmlContent);
@@ -232,6 +264,13 @@
         appAction: function (app) {
             app = app || 0;
             this.load('?module=app&app=' + app, this.setHtmlContent);
+        },
+        pluginsAction: function (params) {
+            if ($('#wa-plugins-container').length) {
+                $.plugins.dispatch(params);
+            } else {
+                this.load('?module=plugins', this.setHtmlContent);
+            }
         },
         /** Helper to load data into main content area. */
         load: function (url, options, fn) {

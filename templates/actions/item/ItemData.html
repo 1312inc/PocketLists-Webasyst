@@ -63,7 +63,6 @@
             {if $item->getKeyListId()}
                 <a href="#/pocket/{$item->getPocketId()}/list/{$item->getListId()}/"><strong class="pl-dark-{$item->getList()->getColor()}-label">{$item->getNameParsed()|default:'&nbsp;'|nl2br}</strong></a>
             {else}
-                {* <a href="#" class="pl-label pl-dark-purple">STATUS</a> *}
                 {$item->getNameParsed()|default:'&nbsp;'|nl2br}
                 {* if $item.list_id == NULL && (empty($item.assigned_contact_id) || $item.assigned_contact_id == $wa->user()->getId())}<i class="icon10 lock-bw" title="[`Only you can see this item`]"></i>{/if *}
             {/if}
@@ -72,6 +71,16 @@
         {if !(isset($archive) && $archive == true)}
             {* <a href="#" class="pl-edit inline-link"><b><i>[`Edit`]</i></b></a> *}
             <a href="#" class="pl-edit inline-link"><i class="icon16 pl ellipsis"></i></a>
+        {/if}
+
+        {capture "item_extended_data"}
+        {foreach $pl2->event(pocketlistsEventStorage::ITEM_UI_LABEL, $item) as $response}
+            {$response}
+        {/foreach}
+        {/capture}
+        {if $smarty.capture.item_extended_data|trim ne ""}
+            <br>
+            {$smarty.capture.item_extended_data}
         {/if}
 
         {if $item->getDueDatetime()}
@@ -104,7 +113,6 @@
         <div class="pl-item-discussion" {if !$item->getCommentsCount() || $item->isDone()}style="display: none;"{/if}>
             {include './ItemComments.html' item=$item inline}
         </div>
-
 
     </label>
     <div data-pl2-item-details class="pl-item-details"></div>

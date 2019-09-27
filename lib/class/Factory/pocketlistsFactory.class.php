@@ -77,23 +77,23 @@ class pocketlistsFactory
     }
 
     /**
-     * @param string $entity
+     * @return mixed
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * @param mixed $entity
      *
-     * @return static
+     * @return pocketlistsFactory
      */
     public function setEntity($entity)
     {
         $this->entity = $entity;
 
         return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getEntity()
-    {
-        return $this->entity;
     }
 
     /**
@@ -110,7 +110,7 @@ class pocketlistsFactory
      * @return waModel
      * @throws waException
      */
-    protected function getModel()
+    public function getModel()
     {
         return pl2()->getModel($this->getEntity());
     }
@@ -171,6 +171,17 @@ class pocketlistsFactory
     }
 
     /**
+     * @return pocketlistsEntity[]|pocketlistsEntity
+     * @throws waException
+     */
+    public function findAll()
+    {
+        $data = $this->getModel()->getAll();
+
+        return $this->generateWithData($data, true);
+    }
+
+    /**
      * @param array $data
      * @param bool  $all
      *
@@ -193,9 +204,33 @@ class pocketlistsFactory
         return $all === false ? reset($lists) : $lists;
     }
 
+    /**
+     * @param pocketlistsEntity $entity
+     * @param array             $fields
+     * @param int               $type
+     *
+     * @return bool
+     * @throws waException
+     */
     public function insert(pocketlistsEntity $entity, $fields = [], $type = waModel::INSERT_ON_DUPLICATE_KEY_UPDATE)
     {
         $data = pl2()->getHydrator()->extract($entity, $fields, $this->getDbFields());
+
+        /**
+         * Before every entity insert
+         * @event entity_insert.before
+         *
+         * @param pocketlistsEventInterface $event Event with pocketlistsEntity object
+         * @return array Entity data to merge and insert
+         */
+        $event = new pocketlistsEvent(pocketlistsEventStorage::ENTITY_INSERT_BEFORE, $entity, ['data' => $data]);
+        $eventResult = pl2()->waDispatchEvent($event);
+        foreach ($eventResult as $plugin => $responseData) {
+            if (!empty($responseData) && is_array($responseData)) {
+                $data = array_merge($data, $responseData);
+            }
+        }
+
         unset($data['id']);
 
         $id = $this->getModel()->insert($data, $type);
@@ -204,6 +239,16 @@ class pocketlistsFactory
             if (method_exists($entity, 'setId')) {
                 $entity->setId($id);
             }
+
+            /**
+             * After every entity insert
+             * @event entity_insert.after
+             *
+             * @param pocketlistsEventInterface $event Event with pocketlistsEntity object
+             * @return void
+             */
+            $event = new pocketlistsEvent(pocketlistsEventStorage::ENTITY_INSERT_AFTER, $entity);
+            pl2()->getEventDispatcher()->dispatch($event);
 
             return true;
         }
@@ -220,7 +265,34 @@ class pocketlistsFactory
     public function delete(pocketlistsEntity $entity)
     {
         if (method_exists($entity, 'getId')) {
-            return $this->getModel()->deleteById($entity->getId());
+            /**
+             * Before every entity delete
+             * @event entity_delete.before
+             *
+             * @param pocketlistsEventInterface $event Event with pocketlistsEntity object
+             * @return bool If false - entity delete will be canceled
+             */
+            $event = new pocketlistsEvent(pocketlistsEventStorage::ENTITY_DELETE_BEFORE, $entity);
+            $eventResult = pl2()->waDispatchEvent($event);
+            foreach ($eventResult as $plugin => $responseData) {
+                if ($responseData === false) {
+                    return false;
+                }
+            }
+
+            $deleted = $this->getModel()->deleteById($entity->getId());
+
+            /**
+             * After every entity delete
+             * @event entity_delete.after
+             *
+             * @param pocketlistsEventInterface $event Event with pocketlistsEntity object
+             * @return void
+             */
+            $event = new pocketlistsEvent(pocketlistsEventStorage::ENTITY_DELETE_AFTER, $entity);
+            pl2()->waDispatchEvent($event);
+
+            return $deleted;
         }
 
         throw new waException('No id in entity');
@@ -237,9 +309,39 @@ class pocketlistsFactory
     {
         if (method_exists($entity, 'getId')) {
             $data = pl2()->getHydrator()->extract($entity, $fields, $this->getDbFields());
+
+            /**
+             * Before every entity update
+             * @event entity_update.before
+             *
+             * @param pocketlistsEventInterface $event Event with pocketlistsEntity object
+             * @return array Entity data to merge and update
+             */
+            $event = new pocketlistsEvent(pocketlistsEventStorage::ENTITY_UPDATE_BEFORE, $entity, ['data' => $data]);
+            $eventResult = pl2()->waDispatchEvent($event);
+            foreach ($eventResult as $plugin => $responseData) {
+                if (!empty($responseData) && is_array($responseData)) {
+                    $data = array_merge($data, $responseData);
+                }
+            }
+
             unset($data['id']);
 
-            return $this->getModel()->updateById($entity->getId(), $data);
+            $updated = $this->getModel()->updateById($entity->getId(), $data);
+
+            if ($updated) {
+                /**
+                 * After every entity update
+                 *
+                 * @event entity_update.after
+                 * @param pocketlistsEventInterface $event Event with pocketlistsEntity object
+                 * @return void
+                 */
+                $event = new pocketlistsEvent(pocketlistsEventStorage::ENTITY_UPDATE_AFTER, $entity, ['data' => $data]);
+                pl2()->waDispatchEvent($event);
+            }
+
+            return $updated;
         }
 
         throw new waException('No id in entity');

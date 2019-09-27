@@ -45,7 +45,7 @@ class pocketlistsPocketAction extends pocketlistsViewPocketAction
         $pocketFactory = pl2()->getEntityFactory(pocketlistsPocket::class);
 
         if (!$id) {
-            $allPockets = $pocketFactory->getAllPocketsForUser($this->user);
+            $allPockets = $pocketFactory->findAllForUser();
             $pocket = reset($allPockets);
         } else {
             /** @var pocketlistsPocket $pocket */
@@ -75,7 +75,18 @@ class pocketlistsPocketAction extends pocketlistsViewPocketAction
             $this->user->getSettings()->set('last_pocket_list_id', json_encode($last_pocket_list_id));
         }
 
-        $lists_html = (new pocketlistsListAction(['list_id' => $list_id, 'pocket_id' => $pocket->getId()]))->display();
+        $lists_html = (new pocketlistsListAction(['list_id' => $list_id, 'pocket_id' => $pocket->getId()]))->display(false);
+
+        /**
+         * UI hook in pocket sidebar
+         * @event backend_pocket
+         *
+         * @param pocketlistsEventInterface $event Event with pocketlistsPocket object and it lists in params array
+         * @return string html output
+         */
+        $event = new pocketlistsEvent(pocketlistsEventStorage::WA_BACKEND_POCKET, $pocket, ['lists' => $lists]);
+        $eventResult = pl2()->waDispatchEvent($event);
+
         $this->view->assign(
             [
                 'lists_html' => $lists_html,
@@ -85,6 +96,8 @@ class pocketlistsPocketAction extends pocketlistsViewPocketAction
                 'lists'      => $lists,
                 'list_id'    => $list_id,
                 'pocket'     => $pocket,
+
+                'backend_pocket' => $eventResult,
             ]
         );
     }

@@ -3,13 +3,8 @@
 /**
  * Class pocketlistsNotificationEmailContent
  */
-class pocketlistsNotificationEmailContent implements pocketlistsNotificationContentInterface, pocketlistsHydratableInterface
+class pocketlistsNotificationEmailContent extends pocketlistsNotificationAbstractContent
 {
-    /**
-     * @var int
-     */
-    private $toContactId;
-
     /**
      * @var string
      */
@@ -29,31 +24,6 @@ class pocketlistsNotificationEmailContent implements pocketlistsNotificationCont
      * @var array
      */
     private $params;
-
-    /**
-     * @var string
-     */
-    private $error;
-
-    /**
-     * @return int
-     */
-    public function getToContactId()
-    {
-        return $this->toContactId;
-    }
-
-    /**
-     * @param int $contactId
-     *
-     * @return pocketlistsNotificationEmailContent
-     */
-    public function setToContactId($contactId)
-    {
-        $this->toContactId = $contactId;
-
-        return $this;
-    }
 
     /**
      * @return string
@@ -136,11 +106,11 @@ class pocketlistsNotificationEmailContent implements pocketlistsNotificationCont
     }
 
     /**
-     * @return false|string
+     * @return array
      */
-    public function toJson()
+    public function jsonSerialize()
     {
-        $data = pl2()->getHydrator()->extract(
+        return pl2()->getHydrator()->extract(
             $this,
             [
                 'subject',
@@ -150,18 +120,6 @@ class pocketlistsNotificationEmailContent implements pocketlistsNotificationCont
                 'params',
             ]
         );
-
-        return json_encode($data, JSON_UNESCAPED_UNICODE);
-    }
-
-    /**
-     * @param string $json
-     */
-    public function extractJson($json)
-    {
-        $data = json_decode($json, true);
-
-        pl2()->getHydrator()->hydrate($this, $data);
     }
 
     /**
@@ -246,45 +204,5 @@ class pocketlistsNotificationEmailContent implements pocketlistsNotificationCont
         }
 
         return false;
-    }
-
-    /**
-     * @return string
-     */
-    public function getError()
-    {
-        return $this->error;
-    }
-
-    /**
-     * @param array $data
-     *
-     * @return mixed|void
-     */
-    public function afterHydrate($data = [])
-    {
-    }
-
-    /**
-     * @param array $fields
-     *
-     * @return array|void
-     */
-    public function beforeExtract(array &$fields)
-    {
-    }
-
-    /**
-     * @param $user_id
-     *
-     * @return mixed|string
-     * @throws waException
-     */
-    protected function getBackendUrl($user_id)
-    {
-        /** @var waContactSettingsModel $us */
-        $us = pl2()->getModel('waContactSettings');
-
-        return $us->getOne($user_id, 'webasyst', 'backend_url');
     }
 }

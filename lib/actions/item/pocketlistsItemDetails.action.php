@@ -60,15 +60,30 @@ class pocketlistsItemDetailsAction extends pocketlistsViewItemAction
             );
         }
 
+        $assign_user_id = $item->getAssignedContactId();
+        if (!$assign_user_id) {
+            $assign_user_id = waRequest::post('assign_user_id', 0, waRequest::TYPE_INT);
+        }
+
+        /**
+         * @event backend_item_add.detail
+         *
+         * @param pocketlistsEventInterface $event Event with pocketlistsItem as object
+         * @return string of html output
+         */
+        $event = new pocketlistsEvent(pocketlistsEventStorage::WA_BACKEND_ITEM_ADD_DETAIL, $item);
+        $eventResult = pl2()->waDispatchEvent($event);
+
         $this->view->assign(
             [
                 'fileupload'     => $item->getId(),
                 'item'           => $item,
                 'list'           => $list,
                 'lists'          => $listFactory->findAllActive(),
-                'assign_user_id' => waRequest::post('assign_user_id', 0, waRequest::TYPE_INT)
-                    ?: $item->getAssignedContactId(),
+                'assign_user_id' => $assign_user_id,
                 'contacts'       => $contacts,
+
+                'backend_item_add' => $eventResult,
             ]
         );
     }

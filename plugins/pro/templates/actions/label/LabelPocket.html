@@ -1,0 +1,56 @@
+<main id="pl-list-content" class="pl-list-content">
+
+    <div class="pl-items">
+        <header class="pl-list-title pl-title">
+            <div class="float-right block half-padded">
+                <ul class="menu-h with-icons">
+                    <li>
+                        {if $label->getId()}
+                            <a href="#/pro/board/{$pocket->getId()}/"><i class="icon16 zone"></i>[`Kanban view`]</a>
+                        {else}
+                            <a href="#/pro/pocketActivity/{$pocket->getId()}/"><i class="icon16 view-timeline"></i>[`Pocket activity log`]</a>
+                        {/if}
+                    </li>
+                </ul>
+            </div>
+            <h1>
+                <span id="pl-list-name" style="color: #{$label->getColor()}">{$label->getName()|escape}</span>
+                <span class="hint">{$pocket->getName()|escape}</span>
+            </h1>
+        </header>
+        <div class="pl-list-items" id="pl-list-items">
+
+            <section {if $label->getId()}id="pl-undone-items" data-pl-items="undone"{else}id="pl-complete-log" class="pl-logbook" style="display: block;"{/if}>
+                <ul class="menu-v">
+                    {if !empty($items)}
+                        {include '../../../../../templates/actions/item/Item.html' parent_id=0 items=$items}
+                    {/if}
+                </ul>
+            </section>
+
+        </div>
+        <div class="clear-both"></div>
+
+    </div>
+
+    {include '../../../../../templates/include/itemdetails.html' inline}
+
+    <script type="text/javascript">
+        'use strict';
+        (function () {
+            var $list_wrapper = $('#pl-list-items');
+
+            new $.pocketlists.Items($list_wrapper, {
+                enableChangeLevel: false,
+                archive: false,
+                userHasLinkedApps: {$current_user->hasLinkedApps()},
+                current_user_id: {$current_user->getContact()->getId()},
+                fileUpload: true
+            });
+
+            new $.pocketlists.Comments($list_wrapper);
+
+            $.pocketlists.setTitle('{$label->getName()|escape}');
+        }());
+    </script>
+</main>
