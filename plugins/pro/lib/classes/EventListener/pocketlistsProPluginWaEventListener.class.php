@@ -34,4 +34,11 @@ class pocketlistsProPluginWaEventListener
 
         return  [];
     }
+
+    public function onOrderAction($params)
+    {
+        $automator = new kmAutomation();
+
+        $automator->run(new pocketlistsProPluginAutomationShopOrderCreate());
+    }
 }

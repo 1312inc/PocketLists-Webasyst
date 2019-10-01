@@ -67,6 +67,12 @@ return array(
                     'class'        => 'pocketlistsProPluginHookHandlerTeammateSidebar',
                     'method'       => 'handle',
                 ),
+                array(
+                    'event_app_id' => 'shop',
+                    'event'        => 'order_action.*',
+                    'class'        => 'pocketlistsProPluginHookHandlerTeammateSidebar',
+                    'method'       => 'backendOrderActionHandler',
+                ),
             ),
         ),
 );
