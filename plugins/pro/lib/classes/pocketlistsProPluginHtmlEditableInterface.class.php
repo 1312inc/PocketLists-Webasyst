@@ -8,7 +8,7 @@ interface pocketlistsProPluginHtmlEditableInterface
     /**
      * @return string
      */
-    public function buildHtml();
+    public function viewHtml();
 
     /**
      * @return string

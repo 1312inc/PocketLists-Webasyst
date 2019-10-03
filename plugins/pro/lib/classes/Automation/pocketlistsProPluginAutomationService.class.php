@@ -42,4 +42,13 @@ class pocketlistsProPluginAutomationService
 
         return $events;
     }
+
+    public function getAvailableRules($group = self::GROUP_SHOP)
+    {
+        $rules = [
+            new pocketlistsProPluginAutomationRuleShopPayment()
+        ];
+
+        return $rules;
+    }
 }

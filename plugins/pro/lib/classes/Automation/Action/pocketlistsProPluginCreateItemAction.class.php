@@ -73,7 +73,7 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
     /**
      * @return string
      */
-    public function buildHtml()
+    public function viewHtml()
     {
         return <<<HTML
 

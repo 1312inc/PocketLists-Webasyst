@@ -3,7 +3,7 @@
 /**
  * Class pocketlistsProPluginAbstractAutomation
  */
-abstract class pocketlistsProPluginAbstractAutomation implements kmAutomationEventInterface
+abstract class pocketlistsProPluginAbstractAutomation
 {
     /**
      * @return string

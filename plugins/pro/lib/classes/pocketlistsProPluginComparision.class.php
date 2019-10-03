@@ -1,17 +1,17 @@
 <?php
 
-/**
- * Class pocketlistsProPluginComparision
- */
 class pocketlistsProPluginComparision
 {
-    const TYPE_EQ       = '=';
-    const TYPE_GT       = '>';
-    const TYPE_GTE      = '>=';
-    const TYPE_LT       = '<';
-    const TYPE_LTE      = '<=';
-    const TYPE_NQE      = '<>';
-    const TYPE_CONTAINS = 'contains';
+    /**
+     * Class pocketlistsProPluginComparision
+     */
+    const TYPE_EQ  = '=';
+    const TYPE_GT  = '>';
+    const TYPE_GTE = '>=';
+    const TYPE_LT  = '<';
+    const TYPE_LTE = '<=';
+    const TYPE_NEQ = '≠';
+    const TYPE_IN  = 'in';
 
     /**
      * @param mixed  $val
@@ -39,10 +39,10 @@ class pocketlistsProPluginComparision
             case self::TYPE_LTE:
                 return $val <= $val2;
 
-            case self::TYPE_NQE:
+            case self::TYPE_NEQ:
                 return $val != $val2;
 
-            case self::TYPE_CONTAINS:
+            case self::TYPE_IN:
                 if (is_array($val2)) {
                     return in_array($val, $val2);
                 }
@@ -51,5 +51,21 @@ class pocketlistsProPluginComparision
         }
 
         throw new pocketlistsLogicException(sprintf('Unknown comparision type %s', $type));
+    }
+
+    /**
+     * @return array
+     */
+    public static function getTypes()
+    {
+        return [
+            self::TYPE_EQ,
+            self::TYPE_GT,
+            self::TYPE_GTE,
+            self::TYPE_LT,
+            self::TYPE_LTE,
+            self::TYPE_NEQ,
+            self::TYPE_IN,
+        ];
     }
 }

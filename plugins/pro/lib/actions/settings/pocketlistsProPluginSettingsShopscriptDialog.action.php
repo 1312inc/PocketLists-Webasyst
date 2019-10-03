@@ -26,8 +26,21 @@ class pocketlistsProPluginSettingsShopscriptDialogAction extends pocketlistsView
      */
     public function runAction($params = null)
     {
-        $actionId = waRequest::get('action', '', waRequest::TYPE_STRING_TRIM);
+        $actionId = waRequest::get('event', '', waRequest::TYPE_STRING_TRIM);
 
-        pocketlistsProPlugin::getInstance()->getAutomationService()->getAvailableEventsForGroup('shop');
+        $rules = [
+            (new pocketlistsProPluginAutomationRuleShopAction())->load(['value' => $actionId]),
+            new pocketlistsProPluginAutomationRuleShopPayment(),
+            new pocketlistsProPluginAutomationRuleShopShipping(),
+            new pocketlistsProPluginAutomationRuleShopAmount(),
+            new pocketlistsProPluginAutomationRuleShopStorefront(),
+            new pocketlistsProPluginAutomationRuleShopCustomerGroup(),
+        ];
+
+        $this->view->assign(
+            [
+                'rules' => $rules,
+            ]
+        );
     }
 }
