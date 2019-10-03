@@ -5,6 +5,25 @@
 <br><br>
 
 <div class="fields form" style="position: relative;">
+    {foreach $shopActions as $action}
+    <div class="field" data-pl2pro-ss-event="{$action.id}">
+        {$action|wa_dumpc}
+        <div class="name">
+{*            <i class="icon16 color" style="background: #{$action.info.options.style.color|substr:'1'|lower};"></i>*}
+            [`{$action.name}`]
+        </div>
+        <div class="value">
+            <div class="block">
+                <a href="#" class="inline-link pl2pro-ss-add-rule" data-pl2pro-action="automation-add-rule"><i class="icon16 add"></i><b><i>[`Add rule`]</i></b></a>
+            </div>
+        </div>
+    </div>
+{/foreach}
+</div>
+
+<hr>
+
+<div class="fields form" style="position: relative;">
     <div class="field">
         <div class="name">
             [`New order`]
@@ -340,8 +359,9 @@
 <script>
     $.pocketlists.setTitle();
 
-    $('.pl2pro-ss-add-rule').click(function(){
+    $('[data-pl2pro-action="automation-add-rule"]').click(function(){
         $('#pl2pro-dialog').waDialog({
+            url: ''
             'buttons': '<div class="block float-right"><a href="#"><i class="icon16 delete"></i>[`Delete rule`]</a></div> <input type="submit" value="[`Save`]" class="button green" /> [`or`] <a href="#">[`cancel`]</a>',
             onLoad: function () {
             },

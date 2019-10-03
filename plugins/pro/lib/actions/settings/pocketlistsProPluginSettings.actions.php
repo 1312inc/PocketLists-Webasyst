@@ -17,7 +17,14 @@ class pocketlistsProPluginSettingsActions extends pocketlistsViewActions
 
     public function shopscriptAction()
     {
-        $this->view->assign('params', 'shopscript');
+        $automation = pocketlistsProPlugin::getInstance()->getAutomationService();
+
+        /** @var shopWorkflowState[] $shopStates */
+        $shopStates = $automation->getAvailableEventsForGroup();
+
+        $this->view->assign(
+            ['params' => 'shopscript', 'shopActions' => $shopStates]
+        );
     }
 
     public function shortcutsAction()
