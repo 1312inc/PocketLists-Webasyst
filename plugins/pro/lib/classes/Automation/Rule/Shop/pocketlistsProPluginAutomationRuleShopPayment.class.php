@@ -89,11 +89,19 @@ HTML;
      */
     public function editHtml()
     {
+        $options = [['title' => '', 'value' => '']];
+        foreach ($this->getPossibleValues() as $possibleValue) {
+            $options[] = [
+                'title' => $possibleValue,
+                'value' => $possibleValue,
+            ];
+        }
+
         $controlOptions = waHtmlControl::getControl(
             waHtmlControl::SELECT,
             'automation[rule]['.$this->getIdentifier().'][value]',
             [
-                'options' => $this->getPossibleValues(),
+                'options' => $options,
                 'value'   => $this->value,
             ]
         );

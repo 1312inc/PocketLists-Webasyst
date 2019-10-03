@@ -67,12 +67,19 @@ class pocketlistsProPluginAutomationRuleShopAction extends pocketlistsProPluginA
     {
         $options = print_r($this->options, 1);
 
+        $input = waHtmlControl::getControl(
+            waHtmlControl::HIDDEN,
+            'automation[rule]['.$this->getIdentifier().'][value]',
+            ['value' => $this->value->getId()]
+        );
+
         return <<<HTML
 html forms here
  <span class="pl2pro-ss-order-action">
     <i class="icon16 color" style="background-color: rebeccapurple;"></i>
     {$this->value->getName()}
     <br>{$options}
+    {$input}
 </span>
 HTML;
     }
