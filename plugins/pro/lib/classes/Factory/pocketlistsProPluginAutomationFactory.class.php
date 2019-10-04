@@ -7,7 +7,7 @@
  */
 class pocketlistsProPluginAutomationFactory extends pocketlistsFactory
 {
-    protected $entity;
+    protected $entity = 'pocketlistsProPluginAutomation';
 
     /**
      * @param string $event

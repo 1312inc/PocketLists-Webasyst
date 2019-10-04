@@ -1,0 +1,100 @@
+{** @var $action pocketlistsProPluginCreateItemAction **}
+<section id="pl2-pro-automation-{$action->getIdentifier()}">
+<div class="field">
+    <div class="name">
+        [`Action`]
+    </div>
+    <div class="value no-shift">
+        <strong>[`Create a to-do`]</strong>
+    </div>
+</div>
+<div class="field">
+    <div class="name">
+        [`Title`]
+    </div>
+    <div class="value">
+        <input type="text" class="long bold" placeholder="[`New to-do`]" name="data[action][{$action->getIdentifier()}][title]">
+    </div>
+</div>
+<div class="field">
+    <div class="name">
+        [`Note`]
+    </div>
+    <div class="value">
+        <textarea></textarea>
+    </div>
+</div>
+<div class="field">
+    <div class="name">
+        [`Assigned to`]
+    </div>
+    <div class="value no-shift">
+        <select name="data[action][{$action->getIdentifier()}][assigned_to]">
+            <option>[`Nobody`]</option>
+            <option>[`Order action performer`]</option>
+            <option>{sprintf('[`Random user from the “%s” group`]','Group 1')}</option>
+            <option>{sprintf('[`Random user from the “%s” group`]','Group 2')}</option>
+            <option>{sprintf('[`Random user from the “%s” group`]','Group 3')}</option>
+            <option>User 1</option>
+            <option>User 2</option>
+            <option>User 3</option>
+        </select>
+    </div>
+</div>
+<div class="field">
+    <div class="name">
+        [`Priority`]
+    </div>
+    <div class="value no-shift" id="pl-item-priority">
+        <a href="#" class="selected"><input type="checkbox" class="pl-done" data-pl2-pro-item-priority="0"><span></span></a>
+        <a href="#"><input type="checkbox" class="pl-done pl-priority-green" data-pl2-pro-item-priority="1"><span></span></a>
+        <a href="#"><input type="checkbox" class="pl-done pl-priority-yellow" data-pl2-pro-item-priority="2"><span></span></a>
+        <a href="#"><input type="checkbox" class="pl-done pl-priority-red" data-pl2-pro-item-priority="3"><span></span></a>
+        <a href="#"><input type="checkbox" class="pl-done pl-priority-black" data-pl2-pro-item-priority="4"><span></span></a>
+        <a href="#"><input type="checkbox" class="pl-done pl-priority-fire" data-pl2-pro-item-priority="5"><span></span></a>
+    </div>
+    <input type="hidden" name="data[action][{$action->getIdentifier()}][priority]"/>
+</div>
+<div class="field">
+    <div class="name">
+        [`Due`]
+    </div>
+    <div class="value no-shift">
+        In <input type="text" class="short numerical" placeholder="0" name="data[action][{$action->getIdentifier()}][due_in]">
+        <select name="data[action][{$action->getIdentifier()}][due_period]">
+            <option>[`minutes`]</option>
+            <option>[`hours`]</option>
+            <option>[`day`]</option>
+        </select>
+        [`from the moment the action was performed`]
+    </div>
+</div>
+<div class="field">
+    <div class="name">
+        [`List`]
+    </div>
+    <div class="value no-shift">
+        <select name="data[action][{$action->getIdentifier()}][list]">
+            <option value="0">[`None`]</option>
+            {foreach $lists as $list}
+                <option value="{$list->getId()}">{$list->getName()|escape}</option>
+            {/foreach}
+            <option>List 2</option>
+            <option>List 3</option>
+        </select>
+    </div>
+</div>
+</section>
+
+<script>
+    'use strict';
+    (function () {
+        var $w = $('#pl2-pro-automation-{$action->getIdentifier()}');
+
+        $w.on('click', '[data-pl2-pro-item-priority]', function (e) {
+            e.preventDefault();
+
+            $w.find('[name="data[action][{$action->getIdentifier()}][priority]"]').val($(this).data('pl2-pro-item-priority'));
+        });
+    })()
+</script>

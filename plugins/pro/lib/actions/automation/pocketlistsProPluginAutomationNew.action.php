@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Class pocketlistsProPluginSettingsShopscriptDialogAction
+ * Class pocketlistsProPluginAutomationNewAction
  */
-class pocketlistsProPluginSettingsShopscriptDialogAction extends pocketlistsViewAction
+class pocketlistsProPluginAutomationNewAction extends pocketlistsViewAction
 {
     /**
      * @throws pocketlistsForbiddenException

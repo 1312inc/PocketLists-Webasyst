@@ -36,8 +36,6 @@ class pocketlistsProPluginAutomationRuleShopPayment extends pocketlistsProPlugin
     public function getPossibleValues()
     {
         if ($this->possibleValues === null) {
-            $plugins = shopPayment::getList();
-
             $model = new shopPluginModel();
             $instances = $model->listPlugins(shopPluginModel::TYPE_PAYMENT, ['all' => true,]);
 //        foreach ($instances as &$instance) {
@@ -45,10 +43,9 @@ class pocketlistsProPluginAutomationRuleShopPayment extends pocketlistsProPlugin
 //
 //            unset($instance);
 //        }
-            $this->possibleValues = array_combine(
-                array_column($instances, 'plugin'),
-                array_column($instances, 'name')
-            );
+            foreach ($instances as $instance) {
+                $this->possibleValues[$instance['plugin'].$instance['id']] = $instance['name'];
+            }
         }
 
         return $this->possibleValues;
@@ -99,7 +96,7 @@ HTML;
 
         $controlOptions = waHtmlControl::getControl(
             waHtmlControl::SELECT,
-            'automation[rule]['.$this->getIdentifier().'][value]',
+            'data[rules]['.$this->getIdentifier().'][value]',
             [
                 'options' => $options,
                 'value'   => $this->value,
@@ -124,17 +121,20 @@ HTML;
     /**
      * @param array $json
      *
-     * @return pocketlistsProPluginAutomationRuleShopPayment
+     * @return $this|pocketlistsProPluginSerializableInterface
      */
     public function load(array $json)
     {
+        $this->value = $json['value'];
+        $this->compare = $json['compare'];
+
         return $this;
     }
 
     /**
      * Specify data which should be serialized to JSON
      *
-     * @link https://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @link  https://php.net/manual/en/jsonserializable.jsonserialize.php
      * @return mixed data which can be serialized by <b>json_encode</b>,
      * which is a value of any type other than a resource.
      * @since 5.4.0

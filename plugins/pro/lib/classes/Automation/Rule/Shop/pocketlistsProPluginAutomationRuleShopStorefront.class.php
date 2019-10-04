@@ -81,7 +81,7 @@ class pocketlistsProPluginAutomationRuleShopStorefront extends pocketlistsProPlu
 
         $domains = waHtmlControl::getControl(
             waHtmlControl::SELECT,
-            'automation[rule]['.$this->getIdentifier().'][value]',
+            'data[rules]['.$this->getIdentifier().'][value]',
             [
                 'value'   => $this->value,
                 'options' => $domains,

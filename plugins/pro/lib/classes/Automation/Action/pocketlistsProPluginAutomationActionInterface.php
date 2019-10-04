@@ -8,7 +8,7 @@ interface pocketlistsProPluginAutomationActionInterface extends pocketlistsProPl
     /**
      * @return string
      */
-    public function getName();
+    public function getIdentifier();
 
     /**
      * @return mixed

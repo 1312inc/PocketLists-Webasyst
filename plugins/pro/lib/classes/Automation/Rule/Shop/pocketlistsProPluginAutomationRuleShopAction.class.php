@@ -45,15 +45,15 @@ class pocketlistsProPluginAutomationRuleShopAction extends pocketlistsProPluginA
      * @param $data
      *
      * @return bool
-     * @throws pocketlistsLogicException
      */
     public function match($data)
     {
-        return pocketlistsProPluginComparision::compare($data, $this->value->getId(), $this->compare);
+        return $data == $this->value->getId();
     }
 
     /**
      * @return string
+     * @throws Exception
      */
     public function viewHtml()
     {
@@ -62,6 +62,7 @@ class pocketlistsProPluginAutomationRuleShopAction extends pocketlistsProPluginA
 
     /**
      * @return string
+     * @throws Exception
      */
     public function editHtml()
     {
@@ -69,7 +70,7 @@ class pocketlistsProPluginAutomationRuleShopAction extends pocketlistsProPluginA
 
         $input = waHtmlControl::getControl(
             waHtmlControl::HIDDEN,
-            'automation[rule]['.$this->getIdentifier().'][value]',
+            'data[rules]['.$this->getIdentifier().'][value]',
             ['value' => $this->value->getId()]
         );
 

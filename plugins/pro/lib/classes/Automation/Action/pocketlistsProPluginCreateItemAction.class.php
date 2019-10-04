@@ -5,10 +5,19 @@
  */
 class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutomationActionInterface
 {
+    const DUE_PERIOD_MIN  = 'min';
+    const DUE_PERIOD_HOUR = 'hour';
+    const DUE_PERIOD_DAY  = 'day';
+
     /**
      * @var string
      */
     protected $name;
+
+    /**
+     * @var string
+     */
+    protected $assignedTo;
 
     /**
      * @var pocketlistsContact
@@ -21,9 +30,14 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
     protected $priority = 0;
 
     /**
-     * @var DateTime|null
+     * @var int
      */
-    protected $dueDate;
+    protected $dueIn = 0;
+
+    /**
+     * @var string
+     */
+    protected $duePeriod = self::DUE_PERIOD_DAY;
 
     /**
      * @var pocketlistsList|null
@@ -33,7 +47,7 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
     /**
      * @return string
      */
-    public function getName()
+    public function getIdentifier()
     {
         return 'create_item';
     }
@@ -49,11 +63,11 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
     public function jsonSerialize()
     {
         return [
-            'name'           => $this->name,
-            'assign_contact' => $this->assignContact ? $this->assignContact->getId() : null,
-            'priority'       => $this->priority,
-            'due_date'       => $this->dueDate ? $this->dueDate->format('Y-m-d 00:00:00') : null,
-            'list'           => $this->list ? $this->list->getId() : null,
+            'name'        => $this->name,
+            'assigned_to' => $this->assignContact ? $this->assignContact->getId() : null,
+            'priority'    => $this->priority,
+            'due_in'      => $this->dueIn,
+            'list'        => $this->list ? $this->list->getId() : null,
         ];
     }
 
@@ -82,21 +96,41 @@ HTML;
 
     /**
      * @return string
+     * @throws waException
      */
     public function editHtml()
     {
-        return <<<HTML
+        $view = wa()->getView();
 
-HTML;
+        /** @var pocketlistsListFactory $factory */
+        $factory = pl2()->getEntityFactory(pocketlistsList::class);
+        $users = pocketlistsRBAC::getAccessContacts();
+        $app = pl2()->getLinkedApp('shop');
+        foreach ($users as $id => $user) {
+            if (!$app->userCanAccess($user)) {
+                unset($users[$id]);
+                continue;
+            }
+        }
+
+        $view->assign(
+            [
+                'action' => $this,
+                'lists'  => $factory->findLists(),
+                'users'  => $users,
+            ]
+        );
+
+        return $view->fetch(
+            wa()->getAppPath('/plugins/pro/templates/actions/automation/actions/createItemEdit.html', 'pocketlists')
+        );
     }
 
     /**
      * @param string $json
      */
-    public function load($json)
+    public function load(array $json)
     {
-        $json = json_decode($json, true);
-
         foreach ($json as $name => $item) {
             switch ($name) {
                 case 'name':

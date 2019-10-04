@@ -64,7 +64,7 @@ abstract class pocketlistsProPluginAutomationRuleAbstract implements pocketlists
 
         return waHtmlControl::getControl(
             waHtmlControl::SELECT,
-            'automation[rule]['.$this->getIdentifier().'][compare]',
+            'data[rules]['.$this->getIdentifier().'][compare]',
             [
                 'options' => $options,
                 'value'   => $selected,

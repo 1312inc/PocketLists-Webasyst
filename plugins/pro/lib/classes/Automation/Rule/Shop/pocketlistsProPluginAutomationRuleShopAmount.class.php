@@ -74,7 +74,7 @@ class pocketlistsProPluginAutomationRuleShopAmount extends pocketlistsProPluginA
     {
         $input = waHtmlControl::getControl(
             waHtmlControl::INPUT,
-            'automation[rule]['.$this->getIdentifier().'][value]',
+            'data[rules]['.$this->getIdentifier().'][value]',
             ['value' => $this->value, 'class' => 'numerical short']
         );
 
@@ -89,7 +89,7 @@ class pocketlistsProPluginAutomationRuleShopAmount extends pocketlistsProPluginA
         }
         $currencies = waHtmlControl::getControl(
             waHtmlControl::SELECT,
-            'automation[rule]['.$this->getIdentifier().'][currency]',
+            'data['.$this->getIdentifier().'][currency]',
             [
                 'value'   => $this->currency,
                 'options' => $currencies,
@@ -106,7 +106,7 @@ HTML;
     /**
      * @param array $json
      *
-     * @return pocketlistsProPluginAutomationRuleShopAction
+     * @return $this|pocketlistsProPluginSerializableInterface
      */
     public function load(array $json)
     {

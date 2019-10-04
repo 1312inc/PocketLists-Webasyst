@@ -71,7 +71,7 @@ class pocketlistsProPluginAutomationRuleShopCustomerGroup extends pocketlistsPro
     public function editHtml()
     {
         $groups = [['title' => '', 'value' => '']];
-        foreach ($this->getPossibleValues() as $ud => $item) {
+        foreach ($this->getPossibleValues() as $id => $item) {
             $groups[] = [
                 'title' => $item,
                 'value' => $id,
@@ -80,7 +80,7 @@ class pocketlistsProPluginAutomationRuleShopCustomerGroup extends pocketlistsPro
 
         $groups = waHtmlControl::getControl(
             waHtmlControl::SELECT,
-            'automation[rule]['.$this->getIdentifier().'][value]',
+            'data[rules]['.$this->getIdentifier().'][value]',
             [
                 'value'   => $this->value,
                 'options' => $groups,
