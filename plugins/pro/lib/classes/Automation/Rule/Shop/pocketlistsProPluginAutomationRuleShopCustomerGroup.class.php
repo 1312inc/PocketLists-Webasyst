@@ -88,6 +88,7 @@ class pocketlistsProPluginAutomationRuleShopCustomerGroup extends pocketlistsPro
         );
 
         return <<<HTML
+{$this->getHiddenIdentifierControl()}
 {$groups}
 HTML;
     }

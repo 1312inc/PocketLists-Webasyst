@@ -51,7 +51,7 @@ abstract class pocketlistsProPluginAutomationRuleAbstract implements pocketlists
      * @return string
      * @throws Exception
      */
-    protected function getSelectCompare($selected = null, $types = [])
+    protected function getSelectCompareControl($selected = null, $types = [])
     {
         $options = [];
 
@@ -70,5 +70,31 @@ abstract class pocketlistsProPluginAutomationRuleAbstract implements pocketlists
                 'value'   => $selected,
             ]
         );
+    }
+
+    /**
+     * @return string
+     * @throws Exception
+     */
+    protected function getHiddenIdentifierControl()
+    {
+        return waHtmlControl::getControl(
+            waHtmlControl::HIDDEN,
+            'data[rules]['.$this->getIdentifier().'][identifier]',
+            ['value'   => $this->getIdentifier()]
+        );
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        $json = json_encode($this, JSON_UNESCAPED_UNICODE);
+        if ($json === false) {
+            return '';
+        }
+
+        return  $json;
     }
 }

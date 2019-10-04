@@ -81,6 +81,7 @@ html forms here
     {$this->value->getName()}
     <br>{$options}
     {$input}
+    {$this->getHiddenIdentifierControl()}
 </span>
 HTML;
     }

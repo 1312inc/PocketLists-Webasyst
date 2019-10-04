@@ -103,7 +103,7 @@ HTML;
             ]
         );
 
-        $compareOptions = $this->getSelectCompare(
+        $compareOptions = $this->getSelectCompareControl(
             $this->compare,
             [
                 pocketlistsProPluginComparision::TYPE_EQ,
@@ -113,6 +113,7 @@ HTML;
         );
 
         return <<<HTML
+{$this->getHiddenIdentifierControl()}
 {$compareOptions}
 {$controlOptions}
 HTML;

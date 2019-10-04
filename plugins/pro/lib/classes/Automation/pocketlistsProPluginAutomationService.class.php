@@ -51,4 +51,33 @@ class pocketlistsProPluginAutomationService
 
         return $rules;
     }
+
+    /**
+     * @param       $identifier
+     * @param array $data
+     *
+     * @return pocketlistsProPluginAutomationRuleInterface
+     */
+    public function createRule($identifier, array $data)
+    {
+        switch ($identifier) {
+            case pocketlistsProPluginAutomationRuleShopAction::IDENTIFIER:
+                return (new pocketlistsProPluginAutomationRuleShopAction())->load($data);
+
+            case pocketlistsProPluginAutomationRuleShopAmount::IDENTIFIER:
+                return (new pocketlistsProPluginAutomationRuleShopAmount())->load($data);
+
+            case pocketlistsProPluginAutomationRuleShopCustomerGroup::IDENTIFIER:
+                return (new pocketlistsProPluginAutomationRuleShopCustomerGroup())->load($data);
+
+            case pocketlistsProPluginAutomationRuleShopPayment::IDENTIFIER:
+                return (new pocketlistsProPluginAutomationRuleShopPayment())->load($data);
+
+            case pocketlistsProPluginAutomationRuleShopShipping::IDENTIFIER:
+                return (new pocketlistsProPluginAutomationRuleShopShipping())->load($data);
+
+            case pocketlistsProPluginAutomationRuleShopStorefront::IDENTIFIER:
+                return (new pocketlistsProPluginAutomationRuleShopStorefront())->load($data);
+        }
+    }
 }

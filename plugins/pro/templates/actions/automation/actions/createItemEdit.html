@@ -1,5 +1,5 @@
 {** @var $action pocketlistsProPluginCreateItemAction **}
-<section id="pl2-pro-automation-{$action->getIdentifier()}">
+<div class="fields form pl-details-form" id="pl2-pro-automation-{$action->getIdentifier()}">
 <div class="field">
     <div class="name">
         [`Action`]
@@ -13,7 +13,7 @@
         [`Title`]
     </div>
     <div class="value">
-        <input type="text" class="long bold" placeholder="[`New to-do`]" name="data[action][{$action->getIdentifier()}][title]">
+        <input type="text" class="long bold" placeholder="[`New to-do`]" name="data[action][{$action->getIdentifier()}][name]" value="{$action->getName()}">
     </div>
 </div>
 <div class="field">
@@ -21,7 +21,7 @@
         [`Note`]
     </div>
     <div class="value">
-        <textarea></textarea>
+        <textarea name="data[action][{$action->getIdentifier()}][note]">{$action->getNote()}</textarea>
     </div>
 </div>
 <div class="field">
@@ -30,14 +30,12 @@
     </div>
     <div class="value no-shift">
         <select name="data[action][{$action->getIdentifier()}][assigned_to]">
-            <option>[`Nobody`]</option>
-            <option>[`Order action performer`]</option>
-            <option>{sprintf('[`Random user from the “%s” group`]','Group 1')}</option>
-            <option>{sprintf('[`Random user from the “%s” group`]','Group 2')}</option>
-            <option>{sprintf('[`Random user from the “%s” group`]','Group 3')}</option>
-            <option>User 1</option>
-            <option>User 2</option>
-            <option>User 3</option>
+            <option value="0" {if $action->getAssignedTo() == 0}selected{/if}>[`Nobody`]</option>
+            <option value="{$performer->getid()}" {if $action->getAssignedTo() == $performer->getid()}selected{/if}>[`Order action performer`]</option>
+<!--            <option>{sprintf('[`Random user from the “%s” group`]','Group 1')}</option>-->
+        {foreach $users as $user}
+            <option value="{$user->getId()}" {if $action->getAssignedTo() == $user->getid()}selected{/if}>{$user->getName()|escape}</option>
+        {/foreach}
         </select>
     </div>
 </div>
@@ -46,25 +44,25 @@
         [`Priority`]
     </div>
     <div class="value no-shift" id="pl-item-priority">
-        <a href="#" class="selected"><input type="checkbox" class="pl-done" data-pl2-pro-item-priority="0"><span></span></a>
-        <a href="#"><input type="checkbox" class="pl-done pl-priority-green" data-pl2-pro-item-priority="1"><span></span></a>
-        <a href="#"><input type="checkbox" class="pl-done pl-priority-yellow" data-pl2-pro-item-priority="2"><span></span></a>
-        <a href="#"><input type="checkbox" class="pl-done pl-priority-red" data-pl2-pro-item-priority="3"><span></span></a>
-        <a href="#"><input type="checkbox" class="pl-done pl-priority-black" data-pl2-pro-item-priority="4"><span></span></a>
-        <a href="#"><input type="checkbox" class="pl-done pl-priority-fire" data-pl2-pro-item-priority="5"><span></span></a>
+        <a href="#" class="selected"><input type="checkbox" class="pl-done" data-pl2-pro-item-priority="0" {if $action->getPriority() == 0}checked{/if}><span></span></a>
+        <a href="#"><input type="checkbox" class="pl-done pl-priority-green" data-pl2-pro-item-priority="1" {if $action->getPriority() == 1}checked{/if}><span></span></a>
+        <a href="#"><input type="checkbox" class="pl-done pl-priority-yellow" data-pl2-pro-item-priority="2" {if $action->getPriority() == 2}checked{/if}><span></span></a>
+        <a href="#"><input type="checkbox" class="pl-done pl-priority-red" data-pl2-pro-item-priority="3" {if $action->getPriority() == 3}checked{/if}><span></span></a>
+        <a href="#"><input type="checkbox" class="pl-done pl-priority-black" data-pl2-pro-item-priority="4" {if $action->getPriority() == 4}checked{/if}><span></span></a>
+        <a href="#"><input type="checkbox" class="pl-done pl-priority-fire" data-pl2-pro-item-priority="5" {if $action->getPriority() == 5}checked{/if}><span></span></a>
     </div>
-    <input type="hidden" name="data[action][{$action->getIdentifier()}][priority]"/>
+    <input type="hidden" name="data[action][{$action->getIdentifier()}][priority]" value="{$action->getPriority()}"/>
 </div>
 <div class="field">
     <div class="name">
         [`Due`]
     </div>
     <div class="value no-shift">
-        In <input type="text" class="short numerical" placeholder="0" name="data[action][{$action->getIdentifier()}][due_in]">
+        In <input type="text" class="short numerical" placeholder="0" name="data[action][{$action->getIdentifier()}][due_in]" value="{$action->getDueIn()}">
         <select name="data[action][{$action->getIdentifier()}][due_period]">
-            <option>[`minutes`]</option>
-            <option>[`hours`]</option>
-            <option>[`day`]</option>
+            {foreach $duePeriods as $duePeriod => $duePeriodName}
+            <option value="{$duePeriod}" {if $action->getDuePeriod() == $duePeriod}selected{/if}>{$duePeriodName}</option>
+            {/foreach}
         </select>
         [`from the moment the action was performed`]
     </div>
@@ -75,16 +73,14 @@
     </div>
     <div class="value no-shift">
         <select name="data[action][{$action->getIdentifier()}][list]">
-            <option value="0">[`None`]</option>
+            <option value="0" {if $action->getList() && $action->getList()->getId() == 0}selected{/if}>[`None`]</option>
             {foreach $lists as $list}
-                <option value="{$list->getId()}">{$list->getName()|escape}</option>
+                <option value="{$list->getId()}" {if $action->getList() && $action->getList()->getId() == $list->getId()}selected{/if}>{$list->getName()|escape}</option>
             {/foreach}
-            <option>List 2</option>
-            <option>List 3</option>
         </select>
     </div>
 </div>
-</section>
+</div>
 
 <script>
     'use strict';
@@ -93,8 +89,10 @@
 
         $w.on('click', '[data-pl2-pro-item-priority]', function (e) {
             e.preventDefault();
+            var $this = $(this);
 
-            $w.find('[name="data[action][{$action->getIdentifier()}][priority]"]').val($(this).data('pl2-pro-item-priority'));
+            $this.siblings().prop('checked', false);
+            $w.find('[name="data[action][{$action->getIdentifier()}][priority]"]').val($this.data('pl2-pro-item-priority'));
         });
     })()
 </script>

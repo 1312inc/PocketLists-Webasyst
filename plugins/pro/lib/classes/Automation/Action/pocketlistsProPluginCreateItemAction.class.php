@@ -9,15 +9,22 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
     const DUE_PERIOD_HOUR = 'hour';
     const DUE_PERIOD_DAY  = 'day';
 
-    /**
-     * @var string
-     */
-    protected $name;
+    const IDENTIFIER = 'create_item';
 
     /**
      * @var string
      */
-    protected $assignedTo;
+    protected $name = '';
+
+    /**
+     * @var string
+     */
+    protected $note = '';
+
+    /**
+     * @var int
+     */
+    protected $assignedTo = 0;
 
     /**
      * @var pocketlistsContact
@@ -49,7 +56,7 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
      */
     public function getIdentifier()
     {
-        return 'create_item';
+        return self::IDENTIFIER;
     }
 
     /**
@@ -63,16 +70,20 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
     public function jsonSerialize()
     {
         return [
+            'identifier'  => $this->getIdentifier(),
             'name'        => $this->name,
-            'assigned_to' => $this->assignContact ? $this->assignContact->getId() : null,
-            'priority'    => $this->priority,
-            'due_in'      => $this->dueIn,
-            'list'        => $this->list ? $this->list->getId() : null,
+            'note'        => $this->note,
+            'assigned_to' => (int)$this->assignedTo,
+            'priority'    => (int)$this->priority,
+            'due_in'      => (int)$this->dueIn,
+            'due_period'  => $this->duePeriod,
+            'list'        => $this->list ? (int)$this->list->getId() : null,
         ];
     }
 
     /**
      * @return mixed
+     * @throws waException
      */
     public function perform()
     {
@@ -104,43 +115,127 @@ HTML;
 
         /** @var pocketlistsListFactory $factory */
         $factory = pl2()->getEntityFactory(pocketlistsList::class);
-        $users = pocketlistsRBAC::getAccessContacts();
+        $users = [];
         $app = pl2()->getLinkedApp('shop');
-        foreach ($users as $id => $user) {
-            if (!$app->userCanAccess($user)) {
-                unset($users[$id]);
-                continue;
+        foreach (pocketlistsRBAC::getAccessContacts() as $userId) {
+            $user = pl2()->getEntityFactory(pocketlistsContact::class)->createNewWithId($userId);
+            if ($app->userCanAccess($user)) {
+                $users[$id] = $user;
             }
         }
 
         $view->assign(
             [
-                'action' => $this,
-                'lists'  => $factory->findLists(),
-                'users'  => $users,
+                'action'     => $this,
+                'lists'      => $factory->findLists(),
+                'users'      => $users,
+                'performer'  => pl2()->getUser(),
+                'duePeriods' => [
+                    self::DUE_PERIOD_MIN  => _wp('Minutes'),
+                    self::DUE_PERIOD_HOUR => _wp('Hours'),
+                    self::DUE_PERIOD_DAY  => _wp('Days'),
+                ],
             ]
         );
 
         return $view->fetch(
-            wa()->getAppPath('/plugins/pro/templates/actions/automation/actions/createItemEdit.html', 'pocketlists')
+            wa()->getAppPath('/plugins/pro/templates/actions/automation/actions/createItemEdit.html', pocketlistsHelper::APP_ID)
         );
     }
 
     /**
-     * @param string $json
+     * @param array $json
+     *
+     * @return pocketlistsProPluginCreateItemAction
+     * @throws waException
      */
     public function load(array $json)
     {
-        foreach ($json as $name => $item) {
-            switch ($name) {
-                case 'name':
-                    $this->name = $item;
-                    break;
+        $this->name = ifset($json['name'], '');
+        $this->note = ifset($json['note'], '');
+        $this->assignedTo = (int)ifset($json['assigned_to'], 0);
+        $this->list = !empty($json['list']) ? pl2()->getEntityFactory(pocketlistsList::class)->findById($json['list']) : null;
+        $this->dueIn = (int)$json['due_in'];
+        $this->duePeriod = $json['due_period'];
+        $this->priority = (int)$json['priority'];
 
-                case 'priority':
-                    $this->priority = $item;
-                    break;
-            }
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAssignedTo()
+    {
+        return $this->assignedTo;
+    }
+
+    /**
+     * @return pocketlistsContact
+     */
+    public function getAssignContact()
+    {
+        return $this->assignContact;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPriority()
+    {
+        return $this->priority;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDueIn()
+    {
+        return $this->dueIn;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDuePeriod()
+    {
+        return $this->duePeriod;
+    }
+
+    /**
+     * @return pocketlistsList|null
+     */
+    public function getList()
+    {
+        return $this->list;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNote()
+    {
+        return $this->note;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        $json = json_encode($this, JSON_UNESCAPED_UNICODE);
+        if ($json === false) {
+            return '';
         }
+
+        return  $json;
     }
 }

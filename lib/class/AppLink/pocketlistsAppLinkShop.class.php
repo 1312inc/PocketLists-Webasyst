@@ -232,12 +232,12 @@ class pocketlistsAppLinkShop extends pocketlistsAppLinkAbstract
     }
 
     /**
-     * @param pocketlistsUser|null $user
+     * @param pocketlistsContact|null $user
      *
      * @return bool
      * @throws waException
      */
-    public function userCanAccess(pocketlistsUser $user = null)
+    public function userCanAccess(pocketlistsContact $user = null)
     {
         if ($user === null) {
             $user = wa(pocketlistsHelper::APP_ID)->getConfig()->getUser();

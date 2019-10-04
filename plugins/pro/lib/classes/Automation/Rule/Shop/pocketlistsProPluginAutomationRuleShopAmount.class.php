@@ -78,10 +78,8 @@ class pocketlistsProPluginAutomationRuleShopAmount extends pocketlistsProPluginA
             ['value' => $this->value, 'class' => 'numerical short']
         );
 
-        $compareOptions = $this->getSelectCompare($this->compare);
-
         $currencies = [];
-        foreach ((new shopCurrencyModel())->getAll() as $item) {
+        foreach ((new shopCurrencyModel())->getAll('') as $item) {
             $currencies[] = [
                 'title' => $item['code'],
                 'value' => $item['code'],
@@ -89,7 +87,7 @@ class pocketlistsProPluginAutomationRuleShopAmount extends pocketlistsProPluginA
         }
         $currencies = waHtmlControl::getControl(
             waHtmlControl::SELECT,
-            'data['.$this->getIdentifier().'][currency]',
+            'data[rules]['.$this->getIdentifier().'][currency]',
             [
                 'value'   => $this->currency,
                 'options' => $currencies,
@@ -97,7 +95,8 @@ class pocketlistsProPluginAutomationRuleShopAmount extends pocketlistsProPluginA
         );
 
         return <<<HTML
-{$compareOptions}
+{$this->getSelectCompareControl($this->compare)}
+{$this->getHiddenIdentifierControl()}
 {$input}
 {$currencies}
 HTML;

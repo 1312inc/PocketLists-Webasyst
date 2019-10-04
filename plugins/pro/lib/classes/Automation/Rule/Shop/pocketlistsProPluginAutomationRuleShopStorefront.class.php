@@ -89,6 +89,7 @@ class pocketlistsProPluginAutomationRuleShopStorefront extends pocketlistsProPlu
         );
 
         return <<<HTML
+{$this->getHiddenIdentifierControl()}
 {$domains}
 HTML;
     }
@@ -100,8 +101,7 @@ HTML;
      */
     public function load(array $json)
     {
-        $this->value = (new shopWorkflow())->getActionById($json['value']);
-        $this->options = $this->value->getOptions();
+        $this->value = $json['value'];
 
         return $this;
     }

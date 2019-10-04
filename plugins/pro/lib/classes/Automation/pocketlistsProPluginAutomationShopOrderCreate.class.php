@@ -5,6 +5,8 @@
  */
 class pocketlistsProPluginAutomationShopOrderCreate extends pocketlistsProPluginAbstractAutomation
 {
+    const NAME = 'order_create';
+
     /**
      * @return string
      */

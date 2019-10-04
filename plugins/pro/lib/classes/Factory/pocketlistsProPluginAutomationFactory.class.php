@@ -22,4 +22,20 @@ class pocketlistsProPluginAutomationFactory extends pocketlistsFactory
 
         return $this->generateWithData($data, true);
     }
+
+    /**
+     * @return pocketlistsProPluginAutomation
+     */
+    public function createNew()
+    {
+        /** @var pocketlistsProPluginAutomation $entity */
+        $entity = parent::createNew();
+
+        $entity
+            ->setCreatedBy(pl2()->getUser()->getId())
+            ->setCreatedDatetime(date('Y-m-d H:i:s'))
+            ->setEvent(pocketlistsProPluginAutomationShopOrderCreate::NAME);
+
+        return $entity;
+    }
 }

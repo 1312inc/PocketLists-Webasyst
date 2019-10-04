@@ -40,6 +40,7 @@ class pocketlistsProPluginAutomationNewAction extends pocketlistsViewAction
         $this->view->assign(
             [
                 'rules' => $rules,
+                'plAction' => new pocketlistsProPluginCreateItemAction()
             ]
         );
     }
