@@ -5,9 +5,9 @@
  */
 class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutomationActionInterface
 {
-    const DUE_PERIOD_MIN  = 'min';
-    const DUE_PERIOD_HOUR = 'hour';
-    const DUE_PERIOD_DAY  = 'day';
+    const DUE_PERIOD_MIN  = 'minutes';
+    const DUE_PERIOD_HOUR = 'hours';
+    const DUE_PERIOD_DAY  = 'days';
 
     const IDENTIFIER = 'create_item';
 
@@ -85,14 +85,47 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
      * @return mixed
      * @throws waException
      */
-    public function perform()
+    public function execute()
     {
         /** @var pocketlistsItemFactory $factory */
         $factory = pl2()->getEntityFactory(pocketlistsItem::class);
 
         /** @var pocketlistsItem $item */
         $item = $factory->createNew();
-        $item->setName($this->name);
+        $item
+            ->setName($this->name)
+            ->setNote($this->note)
+            ->setPriority($this->priority)
+            ->setAssignedContactId($this->assignedTo ?: null)
+            ->setList($this->list);
+
+        if ($this->dueIn) {
+            if ($this->duePeriod === self::DUE_PERIOD_DAY) {
+                $due = (new DateTime())->modify(sprintf('%s %s', $this->dueIn, $this->duePeriod))->format('Y-m-d 00:00:00');
+                $item->setDueDate($due);
+            } else {
+                $due = (new DateTime())->modify(sprintf('%s %s', $this->dueIn, $this->duePeriod))->format('Y-m-d H:i:s');
+                $item->setDueDatetime($due);
+            }
+        }
+
+        if (pl2()->getEntityFactory(pocketlistsItem::class)->insert($item)) {
+            pl2()->getEventDispatcher()->dispatch(
+                new pocketlistsEventItemsSave(
+                    pocketlistsEventStorage::ITEM_INSERT,
+                    $item,
+                    ['list' => $this->list, 'assign_contact' => $this->assignContact]
+                )
+            );
+
+            pocketlistsLogger::debug(sprintf('item %d created from automation action %s', $item->getId(), $this->getIdentifier()));
+
+            return true;
+        }
+
+        pocketlistsLogger::debug(sprintf('item %d failed to create from automation action %s', $item->getId(), $this->getIdentifier()));
+
+        return false;
     }
 
     /**
@@ -120,7 +153,7 @@ HTML;
         foreach (pocketlistsRBAC::getAccessContacts() as $userId) {
             $user = pl2()->getEntityFactory(pocketlistsContact::class)->createNewWithId($userId);
             if ($app->userCanAccess($user)) {
-                $users[$id] = $user;
+                $users[$userId] = $user;
             }
         }
 
@@ -154,10 +187,16 @@ HTML;
         $this->name = ifset($json['name'], '');
         $this->note = ifset($json['note'], '');
         $this->assignedTo = (int)ifset($json['assigned_to'], 0);
-        $this->list = !empty($json['list']) ? pl2()->getEntityFactory(pocketlistsList::class)->findById($json['list']) : null;
+        $this->list = !empty($json['list'])
+            ? pl2()->getEntityFactory(pocketlistsList::class)->findById($json['list'])
+            : null;
         $this->dueIn = (int)$json['due_in'];
         $this->duePeriod = $json['due_period'];
         $this->priority = (int)$json['priority'];
+
+        if (!$this->list instanceof pocketlistsList) {
+            $this->list = new pocketlistsNullList();
+        }
 
         return $this;
     }

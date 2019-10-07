@@ -70,8 +70,8 @@ return array(
                 array(
                     'event_app_id' => 'shop',
                     'event'        => 'order_action.*',
-                    'class'        => 'pocketlistsProPluginHookHandlerTeammateSidebar',
-                    'method'       => 'backendOrderActionHandler',
+                    'class'        => 'pocketlistsProPluginWaEventListener',
+                    'method'       => 'onOrderAction',
                 ),
             ),
         ),

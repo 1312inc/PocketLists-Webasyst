@@ -84,6 +84,15 @@ abstract class pocketlistsNotificationAbstractContent implements pocketlistsNoti
     }
 
     /**
+     * @param array $fields
+     *
+     * @return array
+     */
+    public function afterExtract(array &$fields)
+    {
+    }
+
+    /**
      * @param $user_id
      *
      * @return mixed|string

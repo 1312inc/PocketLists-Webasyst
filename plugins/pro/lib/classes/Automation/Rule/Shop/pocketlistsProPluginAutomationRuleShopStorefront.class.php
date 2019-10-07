@@ -47,13 +47,19 @@ class pocketlistsProPluginAutomationRuleShopStorefront extends pocketlistsProPlu
     }
 
     /**
-     * @param $data
+     * @param shopOrder $order
      *
      * @return bool
      */
-    public function match($data)
+    public function match($order)
     {
-        return $data == $this->value;
+        if (empty($this->value)) {
+            return true;
+        }
+
+        $storefront = isset($order->params['storefront']) ? $order->params['storefront'] : null;
+
+        return $storefront == $this->value;
     }
 
     /**

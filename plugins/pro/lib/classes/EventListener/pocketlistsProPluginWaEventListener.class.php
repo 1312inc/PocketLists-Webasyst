@@ -29,16 +29,26 @@ class pocketlistsProPluginWaEventListener
     public function onEntityUpdateBefore(pocketlistsEvent $event)
     {
         if ($event->getObject() instanceof pocketlistsItem) {
-                return (new pocketlistsProPluginItemEventListener())->onUpdate($event);
+            return (new pocketlistsProPluginItemEventListener())->onUpdate($event);
         }
 
         return  [];
     }
 
-    public function onOrderAction($params)
+    /**
+     * @param array $params
+     *
+     * @throws waException
+     */
+    public function onOrderAction(array $params)
     {
-        $automator = new kmAutomation();
+        pocketlistsLogger::debug('in order action handler');
 
-        $automator->run(new pocketlistsProPluginAutomationShopOrderCreate());
+        $order = new shopOrder($params['order_id']);
+        /** @var shopWorkflowAction $action */
+        $action = (new shopWorkflow())->getActionById($params['action_id']);
+
+        $automationEvent = new pocketlistsProPluginAutomationShopOrderActionEvent($order, $action);
+        $automationEvent->applyAutomations();
     }
 }

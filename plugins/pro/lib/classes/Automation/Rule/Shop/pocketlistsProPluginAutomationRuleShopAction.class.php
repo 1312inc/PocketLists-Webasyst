@@ -42,13 +42,13 @@ class pocketlistsProPluginAutomationRuleShopAction extends pocketlistsProPluginA
     }
 
     /**
-     * @param $data
+     * @param shopWorkflowAction $action
      *
      * @return bool
      */
-    public function match($data)
+    public function match($action)
     {
-        return $data == $this->value->getId();
+        return $action->getId() === $this->value->getId();
     }
 
     /**

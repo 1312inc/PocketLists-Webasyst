@@ -47,14 +47,18 @@ class pocketlistsProPluginAutomationRuleShopAmount extends pocketlistsProPluginA
     }
 
     /**
-     * @param $data
+     * @param shopOrder $order
      *
      * @return bool
      * @throws pocketlistsLogicException
      */
-    public function match($data)
+    public function match($order)
     {
-        return pocketlistsProPluginComparision::compare($data, $this->value->getId(), $this->compare);
+        if (trim($this->value) === '') {
+            return true;
+        }
+
+        return pocketlistsProPluginComparision::compare($order->total, $this->value, $this->compare);
     }
 
     /**

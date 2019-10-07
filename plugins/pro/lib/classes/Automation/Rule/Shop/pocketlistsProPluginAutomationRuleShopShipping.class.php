@@ -16,6 +16,21 @@ class pocketlistsProPluginAutomationRuleShopShipping extends pocketlistsProPlugi
     }
 
     /**
+     * @param shopOrder $order
+     *
+     * @return bool
+     * @throws pocketlistsLogicException
+     */
+    public function match($order)
+    {
+        if (empty($this->value)) {
+            return true;
+        }
+
+        return pocketlistsProPluginComparision::compare($order->params['payment_id'], $this->value, $this->compare);
+    }
+
+    /**
      * @return array
      * @throws waException
      */
@@ -31,7 +46,7 @@ class pocketlistsProPluginAutomationRuleShopShipping extends pocketlistsProPlugi
 //        }
 
             foreach ($instances as $instance) {
-                $this->possibleValues[$instance['plugin'].$instance['id']] = $instance['name'];
+                $this->possibleValues[$instance['id']] = $instance['name'];
             }
         }
 

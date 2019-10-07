@@ -46,13 +46,17 @@ class pocketlistsProPluginAutomationRuleShopCustomerGroup extends pocketlistsPro
     }
 
     /**
-     * @param $data
+     * @param shopOrder $order
      *
      * @return bool
      */
-    public function match($data)
+    public function match($order)
     {
-        return $data == $this->value;
+        if (empty($this->value)) {
+            return true;
+        }
+
+        return in_array($this->value, (new waUserGroupsModel())->getGroupIds($order->customer_id));
     }
 
     /**

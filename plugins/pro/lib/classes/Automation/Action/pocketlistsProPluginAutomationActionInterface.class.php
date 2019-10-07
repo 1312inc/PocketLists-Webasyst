@@ -13,5 +13,5 @@ interface pocketlistsProPluginAutomationActionInterface extends pocketlistsProPl
     /**
      * @return mixed
      */
-    public function perform();
+    public function execute();
 }
