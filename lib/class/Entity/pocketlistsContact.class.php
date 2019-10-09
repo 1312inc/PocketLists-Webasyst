@@ -8,82 +8,82 @@ class pocketlistsContact
     /**
      * @var waContact
      */
-    private $contact;
+    protected $contact;
 
     /**
      * @var string
      */
-    private $name = '(DELETED USER)';
+    protected $name = '(DELETED USER)';
 
     /**
      * @var string
      */
-    private $username = '(DELETED USER)';
+    protected $username = '(DELETED USER)';
 
     /**
      * @var int
      */
-    private $id = 0;
+    protected $id = 0;
 
     /**
      * @var string
      */
-    private $photoUrl = '/wa-content/img/userpic96@2x.jpg';
+    protected $photoUrl = '/wa-content/img/userpic96@2x.jpg';
 
     /**
      * @var string
      */
-    private $userPic = '/wa-content/img/userpic20@2x.jpg';
+    protected $userPic = '/wa-content/img/userpic20@2x.jpg';
 
     /**
      * @var string
      */
-    private $status = '';
+    protected $status = '';
 
     /**
      * @var string
      */
-    private $teamrole = '';
+    protected $teamrole = '';
 
     /**
      * @var string
      */
-    private $login = 'deleted';
+    protected $login = 'deleted';
 
     /**
      * @var bool
      */
-    private $me = false;
+    protected $me = false;
 
     /**
      * @var bool
      */
-    private $exists = false;
+    protected $exists = false;
 
     /**
      * @var int
      */
-    private $lastActivity = 0;
+    protected $lastActivity = 0;
 
     /**
      * @var array
      */
-    private $listActivities;
+    protected $listActivities;
 
     /**
      * @var string|null
      */
-    private $email;
+    protected $email;
 
     /**
      * @var pocketlistsItemsCount|null
      */
-    private $itemsInfo;
+    protected $itemsInfo;
 
     /**
      * @var string
      */
-    private $locale;
+    protected $locale;
 
     /**
      * pocketlistsContact constructor.

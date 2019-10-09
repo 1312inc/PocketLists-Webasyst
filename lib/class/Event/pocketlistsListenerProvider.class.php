@@ -18,7 +18,7 @@ class pocketlistsListenerProvider implements pocketlistsListenerProviderInterfac
      */
     public function __construct()
     {
-        $this->handlers = pl2()->getCache()->get(self::POCKETLISTS_EVENT_HANDLERS_KEY);
+//        $this->handlers = pl2()->getCache()->get(self::POCKETLISTS_EVENT_HANDLERS_KEY);
 
         if (!is_array($this->handlers)) {
             $this->getAllHandlers();
@@ -52,7 +52,11 @@ class pocketlistsListenerProvider implements pocketlistsListenerProviderInterfac
                     $this->handlers[$eventName] = [];
                 }
 
-                $this->handlers[$eventName][] = $eventHandler;
+                if (is_array($eventHandler[0])) {
+                    $this->handlers[$eventName] += $eventHandler;
+                } else {
+                    $this->handlers[$eventName][] = $eventHandler;
+                }
             }
         }
     }

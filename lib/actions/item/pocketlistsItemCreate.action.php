@@ -145,44 +145,13 @@ class pocketlistsItemCreateAction extends pocketlistsViewAction
                         break;
                 }
 
-                (new pocketlistsNotificationAboutNewItems())->notify($items, $list);
-
-                // log this action
-                foreach ($items as $item) {
-                    if ($assign_contact) {
-                        (new pocketlistsNotificationAboutNewAssign())->notify($item);
-
-                        $this->logAction(
-                            pocketlistsLogAction::ITEM_ASSIGN_TEAM,
-                            [
-                                'list_id'     => $item->getListId(),
-                                'item_id'     => $item->getId(),
-                                'assigned_to' => $item->getAssignedContactId(),
-                            ]
-                        );
-                    }
-
-                    $this->logService->add(
-                        $this->logService->getFactory()->createNewAfterItemAdd(
-                            (new pocketlistsLogContext())
-                                ->setList($list)
-                                ->setItem($item, pocketlistsLogContext::ITEM_MORE_INFO_APP_LINKS)
-                        )
-                    );
-                }
-
-                if (count($items) === 1 && $list->getId()) {
-                    $item = reset($items);
-                    $this->logAction(
-                        pocketlistsLogAction::NEW_ITEM,
-                        [
-                            'item_id' => $item->getId(),
-                            'list_id' => $list->getId(),
-                        ]
-                    );
-                } elseif ($list->getId()) {
-                    $this->logAction(pocketlistsLogAction::NEW_ITEMS, ['list_id' => $list->getId()]);
-                }
+                pl2()->getEventDispatcher()->dispatch(
+                    new pocketlistsEventItemsSave(
+                        pocketlistsEventStorage::ITEM_INSERT,
+                        $items,
+                        ['list' => $list, 'assigned_contact' => $assign_contact]
+                    )
+                );
             }
         }
 

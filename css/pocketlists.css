@@ -195,18 +195,18 @@ label.pl-done-label i.icon16.userpic20 {
     background-position: 0 0;
 } */
 
-.pl-done { display: none; }
+.pl-done {display: none;}
 .pl-done + span { display: block; float:left; width:16px; height:16px; background: rgba(255,255,255,0.2); border: 2px solid rgba(0,0,0,0.2); border-radius: 50%; position: relative; top: 1px; left: 16px; cursor: pointer; transition: background-color 0.2s; }
 .pl-done + span.transparent { border-color: transparent;background: none; }
 .pl-done + span:hover { background: rgba(142,142,142,0.25); }
-.pl-done.pl-priority-green + span, .pl-done.pl-priority-yellow + span, .pl-done.pl-priority-red + span, .pl-done.pl-priority-black + span { background: url('../img/item-bullets-priorities.png') no-repeat; background-size: 80px 20px; border: none; width: 20px; height: 20px; }
+.pl-done.pl-priority-green + span, .pl-done.pl-priority-yellow + span, .pl-done.pl-priority-red + span, .pl-done.pl-priority-black + span {background: url('../img/item-bullets-priorities.png') no-repeat;background-size: 80px 20px;border: none;width: 20px;height: 20px;}
 .pl-done.pl-priority-red + span { background-position: 0 0; }
 .pl-done.pl-priority-yellow + span { background-position: -20px 0; }
 .pl-done.pl-priority-green + span { background-position: -40px 0; }
 .pl-done.pl-priority-black + span { background-position: -60px 0; }
 .pl-done.pl-priority-fire + span { background: url('../img/item-bullets-priority-fire.gif') no-repeat; background-size: 30px 30px; border: none; width: 30px; height: 30px; top: -9px; left: 12px; }
 
-.pl-done:checked + span, .pl-done:disabled:checked + span {background: transparent url('../img/pl-done-checkbox.png') no-repeat !important;background-size: 16px 16px !important; border: none; border-radius: 0; opacity: 0.2; top: 3px; left: 19px; }
+.pl-done:checked + span, .pl-done:disabled:checked + span {background: transparent url('../img/pl-done-checkbox.png') no-repeat !important;background-size: 16px 16px !important;border: none;border-radius: 0;opacity: 0.2;top: 3px;left: 19px;}
 .pl-done + span.pl-add-todo {background: transparent url('../img/pl-add-todo.png') no-repeat !important; background-size: 13px 13px !important; border: none; border-radius: 0; opacity: 0.3; left: 20px; top: 4px; cursor: default; }
 .pl-done + span.pl-add-todo.transparent { background: none !important; }
 
@@ -462,7 +462,7 @@ p .pl-label.pl-pro { position: relative; top: 3px; margin-right: 0; }
 .pl-details-form ul.menu-v.with-icons li.bottom-padded { padding-bottom: 18px; }
 .pl-details-form .pl-unsaved-items-only { display: none !important; }
 .pl-details-form .selected .pl-done + span { background-size: 120px 30px; width: 24px; height: 24px; border-width: 3px; top: -5px; }
-.pl-details-form .selected .pl-done.pl-priority-green + span { background-position-x: -60px; width: 30px; height: 30px; }
+.pl-details-form .selected .pl-done.pl-priority-green + span {background-position-x: -60px;width: 30px;height: 30px;}
 .pl-details-form .selected .pl-done.pl-priority-yellow + span { background-position-x: -30px; width: 30px; height: 30px; }
 .pl-details-form .selected .pl-done.pl-priority-red + span { width: 30px; height: 30px; }
 .pl-details-form .selected .pl-done.pl-priority-black + span { background-position-x: -90px; width: 30px; height: 30px; }

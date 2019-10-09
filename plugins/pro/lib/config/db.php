@@ -9,16 +9,8 @@ return array(
         'created_by' => array('int', 11, 'null' => 0),
         'created_datetime' => array('datetime'),
         'updated_datetime' => array('datetime'),
-        ':keys' => array(
-            'PRIMARY' => 'id',
-        ),
-    ),
-    'pocketlists_pro_automation_rules' => array(
-        'id' => array('int', 11, 'null' => 0, 'autoincrement' => 1),
-        'conditions' => array('text', 'null' => 0),
-        'created_by' => array('int', 11, 'null' => 0),
-        'created_datetime' => array('datetime'),
-        'updated_datetime' => array('datetime'),
+        'execution_count' => array('int', 11),
+        'last_execution_datetime' => array('datetime'),
         ':keys' => array(
             'PRIMARY' => 'id',
         ),

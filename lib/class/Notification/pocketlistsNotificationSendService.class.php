@@ -49,10 +49,10 @@ class pocketlistsNotificationSendService implements pocketlistsNotificationSenda
      */
     public function sendExternal($chunk = 100)
     {
+        $sentCount = 0;
         try {
             $notifications = pl2()->getEntityFactory(pocketlistsNotification::class)->findUnsent($chunk);
 
-            $sentCount = 0;
             foreach ($notifications as $notification) {
                 $this->send($notification);
 

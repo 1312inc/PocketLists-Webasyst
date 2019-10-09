@@ -123,6 +123,7 @@ class pocketlistsConfig extends waAppConfig
 
     /**
      * @return pocketlistsLogService
+     * @throws waException
      */
     public function getLogService()
     {

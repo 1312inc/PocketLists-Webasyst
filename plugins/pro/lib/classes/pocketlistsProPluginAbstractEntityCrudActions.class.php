@@ -29,6 +29,10 @@ abstract class pocketlistsProPluginAbstractEntityCrudActions extends pocketlists
         unset($data['id']);
         pl2()->getHydrator()->hydrate($entity, $data);
 
+        if (method_exists($entity, 'setUpdateDatetime')) {
+            $entity->setUpdatedDatetime(date('Y-m-d H:i:s'));
+        }
+
         if (!$this->getFactory()->update($entity)) {
             $this->setError(sprintf('%s update error', $this->getEntityName()));
         }

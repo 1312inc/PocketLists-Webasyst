@@ -54,13 +54,6 @@ class pocketlistsItemDataAction extends pocketlistsViewItemAction
 
             $oldAssignedId = !empty($item_new_data['id']) ? $item->getAssignedContactId() : 0;
 
-            $logContext = new pocketlistsLogContext();
-            if (!$isNewItem) {
-                $logContext->addParam(
-                    ['item_old' => pl2()->getHydrator()->extract($item, pocketlistsLogContext::ITEM_FIELDS_TO_EXTRACT)]
-                );
-            }
-
             $item = pl2()->getHydrator()->hydrate($item, $item_new_data);
 
             if ($item->getId()) {
@@ -83,25 +76,8 @@ class pocketlistsItemDataAction extends pocketlistsViewItemAction
             }
 
             $saved = $itemFactory->save($item);
-            if ($saved) {
-                if ($item->getAssignedContactId()) {
-                    $us = new pocketlistsUserSettings($item->getAssignedContactId());
-                    // settings are set AND assigned id is updated
-                    if ($us->emailWhenNewAssignToMe() && $oldAssignedId != $item->getAssignedContactId()) {
-                        (new pocketlistsNotificationAboutNewAssign())->notify($item);
-                    }
-                }
-            }
-
-            if ($item->getAssignedContactId() != $oldAssignedId) {
-                $this->logAction(
-                    pocketlistsLogAction::ITEM_ASSIGN,
-                    [
-                        'list_id'     => $item->getListId(),
-                        'item_id'     => $item->getId(),
-                        'assigned_to' => $item->getAssignedContactId(),
-                    ]
-                );
+            if (!$saved) {
+                throw new pocketlistsLogicException('Save item error');
             }
 
             if (!empty($item_new_data['links_delete'])) {
@@ -118,7 +94,6 @@ class pocketlistsItemDataAction extends pocketlistsViewItemAction
                 }
             }
 
-            $withNewAppLinks = 0;
             if (!empty($item_new_data['links'])) {
                 /** @var pocketlistsItemLinkFactory $itemLinkFactory */
                 $itemLinkFactory = pl2()->getEntityFactory(pocketlistsItemLink::class);
@@ -127,35 +102,24 @@ class pocketlistsItemDataAction extends pocketlistsViewItemAction
                     $linkData = $link['model'];
 
                     $itemLinkFactory->createFromDataForItem($item, $linkData);
-                    $withNewAppLinks = pocketlistsLogContext::ITEM_MORE_INFO_APP_LINKS;
                 }
-            }
-
-            $logContext
-                ->setList($item->getList())
-                ->setItem($item, $withNewAppLinks);
-
-            if ($item->getAssignedContactId() && $item->getAssignedContactId() != $oldAssignedId) {
-                $logContext->addParam(['item_action' => pocketlistsLog::ITEM_ACTION_NEW_ASSIGN]);
             }
 
             if ($isNewItem) {
-                $this->logService->add(
-                    $this->logService->getFactory()->createNewAfterItemAdd($logContext)
+                pl2()->getEventDispatcher()->dispatch(
+                    new pocketlistsEventItemsSave(
+                        pocketlistsEventStorage::ITEM_INSERT,
+                        $item,
+                        ['list' => $item->getList(), 'assign_contact' => $item->getAssignedContactId()]
+                    )
                 );
-
-                if ($item->getList()) {
-                    $this->logAction(
-                        pocketlistsLogAction::NEW_ITEM,
-                        [
-                            'item_id' => $item->getId(),
-                            'list_id' => $item->getList()->getId(),
-                        ]
-                    );
-                }
             } else {
-                $this->logService->add(
-                    $this->logService->getFactory()->createNewAfterItemUpdate($logContext)
+                pl2()->getEventDispatcher()->dispatch(
+                    new pocketlistsEventItemsSave(
+                        pocketlistsEventStorage::ITEM_UPDATE,
+                        $item,
+                        ['list' => $item->getList(), 'assign_contact' => $item->getAssignedContactId(), 'old_assign_contact' => $oldAssignedId]
+                    )
                 );
             }
         }

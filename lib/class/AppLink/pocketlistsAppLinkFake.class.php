@@ -130,11 +130,11 @@ class pocketlistsAppLinkFake implements pocketlistsAppLinkInterface
     }
 
     /**
-     * @param pocketlistsUser|null $user
+     * @param pocketlistsContact|null $user
      *
      * @return bool
      */
-    public function userCanAccess(pocketlistsUser $user = null)
+    public function userCanAccess(pocketlistsContact $user = null)
     {
         return false;
     }
