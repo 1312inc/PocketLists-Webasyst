@@ -138,16 +138,16 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
             }
         }
 
-        pl2()->getEntityFactory(pocketlistsItemLink::class)->createFromDataForItem(
-            $item,
-            [
-                'app'         => pocketlistsAppLinkShop::APP,
-                'entity_type' => pocketlistsAppLinkShop::TYPE_ORDER,
-                'entity_id'   => $order->getId(),
-            ]
-        );
-
         if (pl2()->getEntityFactory(pocketlistsItem::class)->insert($item)) {
+            pl2()->getEntityFactory(pocketlistsItemLink::class)->createFromDataForItem(
+                $item,
+                [
+                    'app'         => pocketlistsAppLinkShop::APP,
+                    'entity_type' => pocketlistsAppLinkShop::TYPE_ORDER,
+                    'entity_id'   => $order->getId(),
+                ]
+            );
+
             pl2()->getEventDispatcher()->dispatch(
                 new pocketlistsEventItemsSave(
                     pocketlistsEventStorage::ITEM_INSERT,
