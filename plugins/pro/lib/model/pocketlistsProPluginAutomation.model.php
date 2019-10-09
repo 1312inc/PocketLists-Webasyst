@@ -18,6 +18,6 @@ class pocketlistsProPluginAutomationModel extends pocketlistsModel
      */
     public function getByEventNameAndType($name, $type)
     {
-        return $this->select('*')->where('event = ? and $type = ?', $name, $type)->fetchAll();
+        return $this->select('*')->where('event = ? and type = ?', $name, $type)->fetchAll();
     }
 }

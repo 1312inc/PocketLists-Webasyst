@@ -11,6 +11,8 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
 
     const IDENTIFIER = 'create_item';
 
+    const ORDER_ACTION_PERFORMER_ID = -100500;
+
     /**
      * @var string
      */
@@ -52,6 +54,14 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
     protected $list;
 
     /**
+     * pocketlistsProPluginCreateItemAction constructor.
+     */
+    public function __construct()
+    {
+        $this->list = new pocketlistsNullList();
+    }
+
+    /**
      * @return string
      */
     public function getIdentifier()
@@ -82,32 +92,60 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
     }
 
     /**
+     * @param shopOrder $order
+     *
      * @return mixed
      * @throws waException
      */
-    public function execute()
+    public function execute($order)
     {
         /** @var pocketlistsItemFactory $factory */
         $factory = pl2()->getEntityFactory(pocketlistsItem::class);
 
+        $this->name = $this->replaceVars($this->name, $order);
+
+        $currentUserId = wa()->getUser()->getId();
+        if ($this->assignedTo == self::ORDER_ACTION_PERFORMER_ID && $currentUserId) {
+            $assigned = $currentUserId;
+        } elseif ($this->assignedTo > 0) {
+            $assigned = $this->assignedTo;
+        } else {
+            $assigned = null;
+        }
+
         /** @var pocketlistsItem $item */
         $item = $factory->createNew();
         $item
+            ->setContactId(pocketlistsBot::PL2BOT_ID)
             ->setName($this->name)
-            ->setNote($this->note)
+            ->setNote($this->note ?: null)
             ->setPriority($this->priority)
-            ->setAssignedContactId($this->assignedTo ?: null)
-            ->setList($this->list);
+            ->setAssignedContactId($assigned)
+            ->setList($this->list)
+            ->setCreateDatetime(date('Y-m-d H:i:s'));
 
         if ($this->dueIn) {
             if ($this->duePeriod === self::DUE_PERIOD_DAY) {
-                $due = (new DateTime())->modify(sprintf('%s %s', $this->dueIn, $this->duePeriod))->format('Y-m-d 00:00:00');
+                $due = (new DateTime())
+                    ->modify(sprintf('%s %s', $this->dueIn, $this->duePeriod))
+                    ->format('Y-m-d 00:00:00');
                 $item->setDueDate($due);
             } else {
-                $due = (new DateTime())->modify(sprintf('%s %s', $this->dueIn, $this->duePeriod))->format('Y-m-d H:i:s');
+                $due = (new DateTime())
+                    ->modify(sprintf('%s %s', $this->dueIn, $this->duePeriod))
+                    ->format('Y-m-d H:i:s');
                 $item->setDueDatetime($due);
             }
         }
+
+        pl2()->getEntityFactory(pocketlistsItemLink::class)->createFromDataForItem(
+            $item,
+            [
+                'app'         => pocketlistsAppLinkShop::APP,
+                'entity_type' => pocketlistsAppLinkShop::TYPE_ORDER,
+                'entity_id'   => $order->getId(),
+            ]
+        );
 
         if (pl2()->getEntityFactory(pocketlistsItem::class)->insert($item)) {
             pl2()->getEventDispatcher()->dispatch(
@@ -118,24 +156,47 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
                 )
             );
 
-            pocketlistsLogger::debug(sprintf('item %d created from automation action %s', $item->getId(), $this->getIdentifier()));
+            pocketlistsLogger::debug(
+                sprintf('item %d created from automation action %s', $item->getId(), $this->getIdentifier())
+            );
 
             return true;
         }
 
-        pocketlistsLogger::debug(sprintf('item %d failed to create from automation action %s', $item->getId(), $this->getIdentifier()));
+        pocketlistsLogger::debug(
+            sprintf('item %d failed to create from automation action %s', $item->getId(), $this->getIdentifier())
+        );
 
         return false;
     }
 
     /**
      * @return string
+     * @throws waException
      */
     public function viewHtml()
     {
-        return <<<HTML
+        $view = wa()->getView();
 
-HTML;
+        $assign = 0;
+        if ($this->assignedTo > 0) {
+            $assign = pl2()->getEntityFactory(pocketlistsContact::class)->createNewWithId($this->assignedTo)->getName();
+        } elseif ($this->assignedTo == self::ORDER_ACTION_PERFORMER_ID) {
+            $assign = _wp('Order action performer');
+        }
+
+        $view->assign([
+            'assign' => $assign,
+            'action' => $this,
+            'due' => !empty($this->dueIn) ? sprintf_wp('%d %s', $this->dueIn, $this->duePeriod) : 0,
+        ]);
+
+        return $view->fetch(
+            wa()->getAppPath(
+                '/plugins/pro/templates/actions/automation/actions/createItemView.html',
+                pocketlistsHelper::APP_ID
+            )
+        );
     }
 
     /**
@@ -172,7 +233,10 @@ HTML;
         );
 
         return $view->fetch(
-            wa()->getAppPath('/plugins/pro/templates/actions/automation/actions/createItemEdit.html', pocketlistsHelper::APP_ID)
+            wa()->getAppPath(
+                '/plugins/pro/templates/actions/automation/actions/createItemEdit.html',
+                pocketlistsHelper::APP_ID
+            )
         );
     }
 
@@ -190,9 +254,9 @@ HTML;
         $this->list = !empty($json['list'])
             ? pl2()->getEntityFactory(pocketlistsList::class)->findById($json['list'])
             : null;
-        $this->dueIn = (int)$json['due_in'];
-        $this->duePeriod = $json['due_period'];
-        $this->priority = (int)$json['priority'];
+        $this->dueIn = (int)ifset($json['due_in'], 0);
+        $this->duePeriod = ifset($json['due_period'], self::DUE_PERIOD_MIN);
+        $this->priority = (int)ifset($json['priority'], pocketlistsItem::PRIORITY_NORM);
 
         if (!$this->list instanceof pocketlistsList) {
             $this->list = new pocketlistsNullList();
@@ -275,6 +339,23 @@ HTML;
             return '';
         }
 
-        return  $json;
+        return (string)$json;
+    }
+
+    /**
+     * @param string    $str
+     * @param shopOrder $order
+     *
+     * @return mixed
+     */
+    private function replaceVars($str, shopOrder $order)
+    {
+        $orderParams = $order->params;
+
+        return str_replace(
+            ['{$customer_name}', '{$tracking_number}'],
+            [$order->contact->getName(), ifset($orderParams, 'tracking_number', _wp('No tracking number defuned'))],
+            $str
+        );
     }
 }

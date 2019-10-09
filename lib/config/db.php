@@ -140,7 +140,7 @@ return array(
     'pocketlists_notification' => array(
         'id' => array('int', 11, 'null' => 0, 'autoincrement' => 1),
         'type' => array('varchar', 30, 'null' => 0),
-        'identifier' => array('varchar', 32),
+        'identifier' => array('varchar', 64),
         'handler' => array('text'),
         'created_at' => array('datetime', 'null' => 0),
         'delayed_to' => array('datetime'),
@@ -148,6 +148,8 @@ return array(
         'status' => array('varchar', 255),
         'error' => array('text'),
         'data' => array('text'),
+        'contact_id' => array('int', 11),
+        'direction' => array('varchar', 10, 'default' => 'external'),
         ':keys' => array(
             'PRIMARY' => 'id',
             'pocketlists_notification_status_index' => 'status',

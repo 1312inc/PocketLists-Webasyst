@@ -34,7 +34,7 @@ class pocketlistsProPluginAutomationFactory extends pocketlistsFactory
         $entity
             ->setCreatedBy(pl2()->getUser()->getId())
             ->setCreatedDatetime(date('Y-m-d H:i:s'))
-            ->setEvent(pocketlistsProPluginAutomationShopOrderCreate::NAME);
+            ->setEvent(pocketlistsProPluginAutomationShopOrderActionEvent::NAME);
 
         return $entity;
     }

@@ -6,6 +6,7 @@
 class pocketlistsAppLinkShop extends pocketlistsAppLinkAbstract
 {
     const TYPE_ORDER = 'order';
+    const APP = 'shop';
 
     /**
      * @return bool
@@ -37,7 +38,7 @@ class pocketlistsAppLinkShop extends pocketlistsAppLinkAbstract
      */
     public function getApp()
     {
-        return 'shop';
+        return self::APP;
     }
 
     /**

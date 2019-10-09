@@ -45,6 +45,27 @@ abstract class pocketlistsProPluginAutomationRuleAbstract implements pocketlists
     }
 
     /**
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        return empty($this->getValue());
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        $json = json_encode($this, JSON_UNESCAPED_UNICODE);
+        if ($json === false) {
+            return '';
+        }
+
+        return $json;
+    }
+
+    /**
      * @param null  $selected
      * @param array $types
      *
@@ -81,20 +102,25 @@ abstract class pocketlistsProPluginAutomationRuleAbstract implements pocketlists
         return waHtmlControl::getControl(
             waHtmlControl::HIDDEN,
             'data[rules]['.$this->getIdentifier().'][identifier]',
-            ['value'   => $this->getIdentifier()]
+            ['value' => $this->getIdentifier()]
         );
     }
 
     /**
+     * @param array  $data
+     * @param string $mode
+     *
      * @return string
      */
-    public function __toString()
+    protected function fetchTemplate(array $data = [], $mode = 'view')
     {
-        $json = json_encode($this, JSON_UNESCAPED_UNICODE);
-        if ($json === false) {
-            return '';
-        }
+        $view = wa()->getView();
+        $view->assign($data);
 
-        return  $json;
+        return $view->fetch(
+            wa()->getAppPath(
+                sprintf('plugins/pro/templates/actions/automation/rule/%s.%s.html', $this->getIdentifier(), $mode)
+            )
+        );
     }
 }

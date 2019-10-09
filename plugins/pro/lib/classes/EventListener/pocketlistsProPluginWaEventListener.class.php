@@ -42,13 +42,17 @@ class pocketlistsProPluginWaEventListener
      */
     public function onOrderAction(array $params)
     {
-        pocketlistsLogger::debug('in order action handler');
+        try {
+            pocketlistsLogger::debug('in order action handler');
 
-        $order = new shopOrder($params['order_id']);
-        /** @var shopWorkflowAction $action */
-        $action = (new shopWorkflow())->getActionById($params['action_id']);
+            $order = new shopOrder($params['order_id']);
+            /** @var shopWorkflowAction $action */
+            $action = (new shopWorkflow())->getActionById($params['action_id']);
 
-        $automationEvent = new pocketlistsProPluginAutomationShopOrderActionEvent($order, $action);
-        $automationEvent->applyAutomations();
+            $automationEvent = new pocketlistsProPluginAutomationShopOrderActionEvent($order, $action);
+            $automationEvent->applyAutomations();
+        } catch (Exception $ex) {
+            pocketlistsLogger::error($ex->getMessage());
+        }
     }
 }

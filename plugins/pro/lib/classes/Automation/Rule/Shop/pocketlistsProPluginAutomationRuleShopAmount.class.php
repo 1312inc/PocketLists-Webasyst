@@ -54,7 +54,7 @@ class pocketlistsProPluginAutomationRuleShopAmount extends pocketlistsProPluginA
      */
     public function match($order)
     {
-        if (trim($this->value) === '') {
+        if ($this->isEmpty()) {
             return true;
         }
 
@@ -67,7 +67,13 @@ class pocketlistsProPluginAutomationRuleShopAmount extends pocketlistsProPluginA
      */
     public function viewHtml()
     {
-        return $this->editHtml();
+        if ($this->isEmpty()) {
+            return '';
+        }
+
+        return <<<HTML
+<strong>{$this->getLabel()} {$this->compare} {$this->value} {$this->currency}</strong>
+HTML;
     }
 
     /**

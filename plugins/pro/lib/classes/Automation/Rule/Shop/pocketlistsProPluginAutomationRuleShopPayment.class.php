@@ -8,6 +8,11 @@ class pocketlistsProPluginAutomationRuleShopPayment extends pocketlistsProPlugin
     const IDENTIFIER = 'payment';
 
     /**
+     * @var shopPluginModel
+     */
+    protected static $shopPluginModel;
+
+    /**
      * @var array
      */
     protected $possibleValues;
@@ -36,8 +41,7 @@ class pocketlistsProPluginAutomationRuleShopPayment extends pocketlistsProPlugin
     public function getPossibleValues()
     {
         if ($this->possibleValues === null) {
-            $model = new shopPluginModel();
-            $instances = $model->listPlugins(shopPluginModel::TYPE_PAYMENT, ['all' => true,]);
+            $instances = $this->getShopPluginModel()->listPlugins(shopPluginModel::TYPE_PAYMENT, ['all' => true,]);
 //        foreach ($instances as &$instance) {
 //            $instance['installed'] = isset($plugins[$instance['plugin']]);
 //
@@ -67,7 +71,7 @@ class pocketlistsProPluginAutomationRuleShopPayment extends pocketlistsProPlugin
      */
     public function match($order)
     {
-        if (empty($this->value)) {
+        if ($this->isEmpty()) {
             return true;
         }
 
@@ -76,11 +80,19 @@ class pocketlistsProPluginAutomationRuleShopPayment extends pocketlistsProPlugin
 
     /**
      * @return string
+     * @throws Exception
      */
     public function viewHtml()
     {
+        if ($this->isEmpty()) {
+            return '';
+        }
+
+        $instances = $this->getShopPluginModel()->listPlugins(shopPluginModel::TYPE_PAYMENT, array('all' => true,));
+        $name = ifset($instances, $this->value, 'name', sprintf_wp('!!! Payment with id %s do not exists. Please check !!!', $this->value));
+
         return <<<HTML
-    show html here 
+<strong>{$this->getLabel()} {$this->compare} {$name}</strong>
 HTML;
     }
 
@@ -91,10 +103,10 @@ HTML;
     public function editHtml()
     {
         $options = [['title' => '', 'value' => '']];
-        foreach ($this->getPossibleValues() as $possibleValue) {
+        foreach ($this->getPossibleValues() as $id => $possibleValue) {
             $options[] = [
                 'title' => $possibleValue,
-                'value' => $possibleValue,
+                'value' => $id,
             ];
         }
 
@@ -151,5 +163,17 @@ HTML;
             'value'      => $this->value,
             'compare'    => $this->compare,
         ];
+    }
+
+    /**
+     * @return shopPluginModel
+     */
+    protected function getShopPluginModel()
+    {
+        if (static::$shopPluginModel === null) {
+            static::$shopPluginModel = new shopPluginModel();
+        }
+
+        return static::$shopPluginModel;
     }
 }

@@ -57,7 +57,7 @@ class pocketlistsProPluginAutomationRuleShopAction extends pocketlistsProPluginA
      */
     public function viewHtml()
     {
-        return $this->editHtml();
+        return '';
     }
 
     /**
@@ -66,20 +66,20 @@ class pocketlistsProPluginAutomationRuleShopAction extends pocketlistsProPluginA
      */
     public function editHtml()
     {
-        $options = print_r($this->options, 1);
-
         $input = waHtmlControl::getControl(
             waHtmlControl::HIDDEN,
             'data[rules]['.$this->getIdentifier().'][value]',
             ['value' => $this->value->getId()]
         );
 
+        $style = $this->value->getOption('icon', 'color');
+        $bgColor = $this->value->getOption('button_class', 'gray');
+
         return <<<HTML
-html forms here
  <span class="pl2pro-ss-order-action">
-    <i class="icon16 color" style="background-color: rebeccapurple;"></i>
+    <i class="icon16 {$style}" style="background-color: {$bgColor};"></i>
     {$this->value->getName()}
-    <br>{$options}
+    <br>
     {$input}
     {$this->getHiddenIdentifierControl()}
 </span>

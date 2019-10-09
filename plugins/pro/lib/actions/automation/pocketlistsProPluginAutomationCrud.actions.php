@@ -20,32 +20,6 @@ class pocketlistsProPluginAutomationCrudActions extends pocketlistsProPluginAbst
     }
 
     /**
-     * @param null|array $params
-     *
-     * @return mixed
-     */
-    public function newAction($params = null)
-    {
-        $actionId = waRequest::get('event', '', waRequest::TYPE_STRING_TRIM);
-
-
-        $rules = [
-            (new pocketlistsProPluginAutomationRuleShopAction())->load(['value' => $actionId]),
-            new pocketlistsProPluginAutomationRuleShopPayment(),
-            new pocketlistsProPluginAutomationRuleShopShipping(),
-            new pocketlistsProPluginAutomationRuleShopAmount(),
-            new pocketlistsProPluginAutomationRuleShopStorefront(),
-            new pocketlistsProPluginAutomationRuleShopCustomerGroup(),
-        ];
-
-        $this->view->assign(
-            [
-                'rules' => $rules,
-            ]
-        );
-    }
-
-    /**
      * @return pocketlistsFactory
      * @throws waException
      */

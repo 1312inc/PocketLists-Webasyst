@@ -23,7 +23,7 @@ class pocketlistsProPluginAutomationRuleShopShipping extends pocketlistsProPlugi
      */
     public function match($order)
     {
-        if (empty($this->value)) {
+        if ($this->isEmpty()) {
             return true;
         }
 
@@ -37,8 +37,7 @@ class pocketlistsProPluginAutomationRuleShopShipping extends pocketlistsProPlugi
     public function getPossibleValues()
     {
         if ($this->possibleValues === null) {
-            $model = new shopPluginModel();
-            $instances = $model->listPlugins(shopPluginModel::TYPE_SHIPPING, ['all' => true,]);
+            $instances = $this->getShopPluginModel()->listPlugins(shopPluginModel::TYPE_SHIPPING, ['all' => true]);
 //        foreach ($instances as &$instance) {
 //            $instance['installed'] = isset($plugins[$instance['plugin']]);
 //
@@ -51,5 +50,23 @@ class pocketlistsProPluginAutomationRuleShopShipping extends pocketlistsProPlugi
         }
 
         return $this->possibleValues;
+    }
+
+    /**
+     * @return string
+     * @throws Exception
+     */
+    public function viewHtml()
+    {
+        if ($this->isEmpty()) {
+            return '';
+        }
+
+        $instances = $this->getShopPluginModel()->listPlugins(shopPluginModel::TYPE_SHIPPING, array('all' => true));
+        $name = ifset($instances, $this->value, 'name', sprintf_wp('!!! Shipping with id %s do not exists. Please check !!!', $this->value));
+
+        return <<<HTML
+<strong>{$this->getLabel()} {$this->compare} {$name}</strong>
+HTML;
     }
 }

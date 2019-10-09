@@ -57,15 +57,29 @@ class pocketlistsProPluginAutomationShopOrderActionEvent implements pocketlistsP
 
         pocketlistsLogger::debug(sprintf('run %d automations for shop order actions', count($automations)));
         foreach ($automations as $automation) {
-            pocketlistsLogger::debug(sprintf('automation %d', $automation->getId()));
-            pocketlistsLogger::debug($automation);
+            try {
+                pocketlistsLogger::debug(sprintf('automation %d', $automation->getId()));
+                pocketlistsLogger::debug($automation);
 
-            if (!$this->automationMatches($automation)) {
-                continue;
+                if (!$this->automationMatches($automation)) {
+                    continue;
+                }
+
+                pocketlistsLogger::debug(
+                    sprintf('automation %d passed all rules, now execute action', $automation->getId())
+                );
+                if ($automation->getAction()->execute($this->order)) {
+                    $automation
+                        ->incExecutionCount()
+                        ->setLastExecutionDatetime(date('Y-m-d H:i:s'));
+
+                    pl2()->getEntityFactory(pocketlistsProPluginAutomation::class)->update($automation);
+                }
+            } catch (Exception $ex) {
+                pocketlistsLogger::error(
+                    sprintf("PRO: Automation error. %s\n%s", $ex->getMessage(), $ex->getTraceAsString())
+                );
             }
-
-            pocketlistsLogger::debug(sprintf('automation %d passed all rules, now execute action', $automation->getId()));
-            $automation->getAction()->execute();
         }
     }
 

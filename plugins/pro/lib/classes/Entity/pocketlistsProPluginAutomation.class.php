@@ -5,7 +5,7 @@
  */
 class pocketlistsProPluginAutomation extends pocketlistsEntity
 {
-    const GROUP_SHOP = 'shop';
+    const TYPE_SHOP = 'shop';
 
     /**
      * @var int
@@ -30,7 +30,7 @@ class pocketlistsProPluginAutomation extends pocketlistsEntity
     /**
      * @var string
      */
-    private $group = self::GROUP_SHOP;
+    private $type = self::TYPE_SHOP;
 
     /**
      * @var int
@@ -56,6 +56,16 @@ class pocketlistsProPluginAutomation extends pocketlistsEntity
      * @var
      */
     private $actionJson;
+
+    /**
+     * @var int
+     */
+    private $execution_count = 0;
+
+    /**
+     * @var DateTime|string
+     */
+    private $last_execution_datetime;
 
     /**
      * @return int
@@ -140,19 +150,19 @@ class pocketlistsProPluginAutomation extends pocketlistsEntity
     /**
      * @return string
      */
-    public function getGroup()
+    public function getType()
     {
-        return $this->group;
+        return $this->type;
     }
 
     /**
-     * @param string $group
+     * @param string $type
      *
      * @return pocketlistsProPluginAutomation
      */
-    public function setGroup($group)
+    public function setType($type)
     {
-        $this->group = $group;
+        $this->type = $type;
 
         return $this;
     }
@@ -217,6 +227,58 @@ class pocketlistsProPluginAutomation extends pocketlistsEntity
         return $this;
     }
 
+    /**
+     * @return int
+     */
+    public function getExecutionCount()
+    {
+        return $this->execution_count;
+    }
+
+    /**
+     * @param int $executionCount
+     *
+     * @return pocketlistsProPluginAutomation
+     */
+    public function setExecutionCount($executionCount)
+    {
+        $this->execution_count = $executionCount;
+
+        return $this;
+    }
+
+    /**
+     * @param int $count
+     *
+     * @return pocketlistsProPluginAutomation
+     */
+    public function incExecutionCount($count = 1)
+    {
+        $this->execution_count += $count;
+
+        return $this;
+    }
+
+    /**
+     * @return DateTime|string
+     */
+    public function getLastExecutionDatetime()
+    {
+        return $this->last_execution_datetime;
+    }
+
+    /**
+     * @param DateTime|string $last_execution_datetime
+     *
+     * @return pocketlistsProPluginAutomation
+     */
+    public function setLastExecutionDatetime($last_execution_datetime)
+    {
+        $this->last_execution_datetime = $last_execution_datetime;
+
+        return $this;
+    }
+
     public function afterExtract(array &$fields)
     {
         $rules = $this->rules;
@@ -228,10 +290,20 @@ class pocketlistsProPluginAutomation extends pocketlistsEntity
         $this->actionJson = $action;
     }
 
+    /**
+     * @param array $data
+     *
+     * @return mixed|void
+     * @throws waException
+     */
     public function afterHydrate($data = [])
     {
         if ($this->rules) {
             $rules = [];
+
+            if (!is_array($this->rules)) {
+                $this->rules = json_decode($this->rules, true);
+            }
 
             foreach ($this->rules as $rule) {
                 if (!empty($rule['identifier'])) {
@@ -246,11 +318,20 @@ class pocketlistsProPluginAutomation extends pocketlistsEntity
         }
 
         if ($this->action) {
-            $this->action = (new pocketlistsProPluginCreateItemAction())->load($this->action[pocketlistsProPluginCreateItemAction::IDENTIFIER]);
+            if (!is_array($this->action)) {
+                $this->action = json_decode($this->action, true);
+            }
+
+            $this->action = (new pocketlistsProPluginCreateItemAction())->load($this->action);
             $this->actionJson = json_encode($this->action, JSON_UNESCAPED_UNICODE);
         }
     }
 
+    /**
+     * @param array $fields
+     *
+     * @return array|void
+     */
     public function beforeExtract(array &$fields)
     {
         $rules = $this->rules;

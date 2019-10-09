@@ -31,4 +31,9 @@ interface pocketlistsProPluginAutomationRuleInterface
      * @return bool
      */
     public function match($data);
+
+    /**
+     * @return bool
+     */
+    public function isEmpty();
 }

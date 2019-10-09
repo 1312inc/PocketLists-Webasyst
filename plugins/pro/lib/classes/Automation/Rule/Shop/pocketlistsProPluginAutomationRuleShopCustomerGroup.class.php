@@ -52,7 +52,7 @@ class pocketlistsProPluginAutomationRuleShopCustomerGroup extends pocketlistsPro
      */
     public function match($order)
     {
-        if (empty($this->value)) {
+        if ($this->isEmpty()) {
             return true;
         }
 
@@ -65,7 +65,15 @@ class pocketlistsProPluginAutomationRuleShopCustomerGroup extends pocketlistsPro
      */
     public function viewHtml()
     {
-        return $this->editHtml();
+        if ($this->isEmpty()) {
+            return '';
+        }
+
+        $group = (new waGroupModel())->getName($this->value);
+
+        return <<<HTML
+<strong>{$this->getLabel()} = {$group}</strong>
+HTML;
     }
 
     /**

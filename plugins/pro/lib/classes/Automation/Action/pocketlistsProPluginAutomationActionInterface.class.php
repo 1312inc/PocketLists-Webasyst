@@ -11,7 +11,9 @@ interface pocketlistsProPluginAutomationActionInterface extends pocketlistsProPl
     public function getIdentifier();
 
     /**
+     * @param $params
+     *
      * @return mixed
      */
-    public function execute();
+    public function execute($params);
 }

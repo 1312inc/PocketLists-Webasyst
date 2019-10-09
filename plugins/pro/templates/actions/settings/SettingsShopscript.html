@@ -5,13 +5,41 @@
 <br><br>
 
 <div class="fields form" style="position: relative;">
+    {** @var $action pocketlistsProPluginAutomationSettingsDto **}
     {foreach $shopActions as $action}
-    <div class="field" data-pl2pro-ss-event="{$action.id}">
-        {$action|wa_dumpc}
+    <div class="field" data-pl2pro-ss-event="{$action->id}">
         <div class="name">
-{*            <i class="icon16 color" style="background: #{$action.info.options.style.color|substr:'1'|lower};"></i>*}
-            [`{$action.name}`]
+            <span class="pl2pro-ss-order-action">
+                <i class="icon16 {$action->options['icon']|default:'color'}" style="background-color: {$action->options['button_class']|default:'gray'};"></i>
+                [`{$action->name}`]
+            </span>
         </div>
+
+        <div class="block">
+
+        {** @var $automation pocketlistsProPluginAutomation **}
+        {foreach $action->automations as $automation}
+            <div class="value">
+            <div class="pl2pro-rule-baloon">
+                <div class="pl2pro-rule-header">
+                    <a href="#" class="inline-link pl2pro-label-edit" data-pl2pro-automation-edit="{$automation->getId()}"><i class="icon10 edit"></i> <b><i>[`Edit`]</i></b></a>
+                    <span class="pl2pro-rule-if">[`IF`]</span>
+                    {$action->automationRulesHtml[$automation->getId()]}
+                </div>
+                <div class="pl2pro-rule-body">
+                    {$action->automationActionsHtml[$automation->getId()]}
+                </div>
+                {if $automation->getExecutionCount()}
+                executions: {$automation->getExecutionCount()}<br>
+                last execution: {$automation->getLastExecutionDatetime()|wa_date:'humandatetime'}
+                {/if}
+            </div>
+        </div>
+        {foreachelse}
+            <span class="gray">{sprintf('[`No automation rules are defined for the ‘%s’ order action`]','Выполнен')}</span>
+        {/foreach}
+        </div>
+
         <div class="value">
             <div class="block">
                 <a href="#" class="inline-link pl2pro-ss-add-rule" data-pl2pro-action="automation-add-rule"><i class="icon16 add"></i><b><i>[`Add rule`]</i></b></a>
@@ -21,160 +49,70 @@
 {/foreach}
 </div>
 
-<hr>
-
-<div class="fields form" style="position: relative;">
-    <div class="field">
-        <div class="name">
-            [`New order`]
-        </div>
-        <div class="value">
-            <div class="pl2pro-rule-baloon">
-                <div class="pl2pro-rule-header">
-                    <a href="#" class="inline-link pl2pro-label-edit"><i class="icon10 edit"></i> <b><i>[`Edit`]</i></b></a>
-                    <span class="pl2pro-rule-if">[`IF`]</span>
-                    [`ALL`]
-                </div>
-                <div class="pl2pro-rule-body">
-                    <h4>Позвонить {literal}{$customer_name}{/literal}</h4>
-                    <span class="hint">[`Assigned to`]:</span> RANDOM ( Менеджеры )<br>
-                    <span class="hint">[`Priority`]:</span> [`Normal`]<br>
-                    <span class="hint">[`Due`]:</span> + 5 минут<br>
-                    <span class="hint">[`List`]:</span> [`None`]<br>
-
-                </div>
-            </div>
-        </div>
-        <div class="value">
-            <div class="pl2pro-rule-baloon">
-                <div class="pl2pro-rule-header">
-                    <a href="#" class="inline-link pl2pro-label-edit"><i class="icon10 edit"></i> <b><i>[`Edit`]</i></b></a>
-                    <span class="pl2pro-rule-if">[`IF`]</span>
-                    <strong>
-                        [`Amount`] >= 100000 RUB
-                    </strong>
-                </div>
-                <div class="pl2pro-rule-body">
-                    <h4>Проверить контрагента {literal}{$customer_name}{/literal}</h4>
-                    <span class="hint">[`Assigned to`]:</span> RANDOM ( Бухгалтерия )<br>
-                    <span class="hint">[`Priority`]:</span> [`Urgent`]<br>
-                    <span class="hint">[`Due`]:</span> [`Now`]<br>
-                    <span class="hint">[`List`]:</span> [`None`]<br>
-
-                </div>
-            </div>
-        </div>
-        <div class="value">
-            <div class="block">
-                <a href="#" class="inline-link pl2pro-ss-add-rule"><i class="icon16 add"></i><b><i>[`Add rule`]</i></b></a>
-            </div>
-        </div>
-    </div>
-
-    <div class="field">
-        <div class="name">
-                                    <span class="pl2pro-ss-order-action">
-                                        <i class="icon16 color" style="background-color: limegreen;"></i>
-                                        В обработку
-                                    </span>
-        </div>
-        <div class="value">
-            <div class="block gray">
-                {sprintf('[`No automation rules are defined for the ‘%s’ order action`]','В обработку')}
-            </div>
-            <div class="block">
-                <a href="#" class="inline-link pl2pro-ss-add-rule"><i class="icon16 add"></i><b><i>[`Add rule`]</i></b></a>
-            </div>
-        </div>
-    </div>
-
-    <div class="field">
-        <div class="name">
-                                    <span class="pl2pro-ss-order-action">
-                                        <i class="icon16 color" style="background-color: #09f;"></i>
-                                        Отправлен
-                                    </span>
-        </div>
-        <div class="value">
-            <div class="pl2pro-rule-baloon">
-                <div class="pl2pro-rule-header"">
-                <a href="#" class="inline-link pl2pro-label-edit"><i class="icon10 edit"></i> <b><i>[`Edit`]</i></b></a>
-                <span class="pl2pro-rule-if">[`IF`]</span>
-                <strong>
-                    [`Shipping`] = Почта России
-                </strong>
-                <span class="pl2pro-rule-if">[`AND`]</span>
-                <strong>
-                    [`Payment`] = Наложенный платеж
-                </strong>
-            </div>
-            <div class="pl2pro-rule-body">
-                <h4>Проверить трек-номер {literal}{$tracking_number}{/literal}</h4>
-                <span class="hint">[`Assigned to`]:</span> [`Order action performer`]<br>
-                <span class="hint">[`Priority`]:</span> [`Normal`]<br>
-                <span class="hint">[`Due`]:</span> + 7 дней<br>
-                <span class="hint">[`List`]:</span> [`None`]<br>
-
-            </div>
-        </div>
-    </div>
-    <div class="value">
-        <div class="pl2pro-rule-baloon">
-            <div class="pl2pro-rule-header"">
-            <a href="#" class="inline-link pl2pro-label-edit"><i class="icon10 edit"></i> <b><i>[`Edit`]</i></b></a>
-            <span class="pl2pro-rule-if">[`IF`]</span>
-            <strong>
-                [`Shipping`] = СДЭК
-            </strong>
-        </div>
-        <div class="pl2pro-rule-body">
-            <h4>Проверить трек-номер {literal}{$tracking_number}{/literal}</h4>
-            <span class="hint">[`Assigned to`]:</span> [`Order action performer`]<br>
-            <span class="hint">[`Priority`]:</span> [`Normal`]<br>
-            <span class="hint">[`Due`]:</span> + 5 дней<br>
-            <span class="hint">[`List`]:</span> [`None`]<br>
-
-        </div>
-    </div>
-</div>
-<div class="value">
-    <div class="block">
-        <a href="#" class="inline-link pl2pro-ss-add-rule"><i class="icon16 add"></i><b><i>[`Add rule`]</i></b></a>
-    </div>
-</div>
-</div>
-
-<div class="field">
-    <div class="name">
-                                    <span class="pl2pro-ss-order-action">
-                                        <i class="icon16 color" style="background-color: rebeccapurple;"></i>
-                                        Выполнен
-                                    </span>
-    </div>
-    <div class="value">
-        <div class="block gray">
-            {sprintf('[`No automation rules are defined for the ‘%s’ order action`]','Выполнен')}
-        </div>
-        <div class="block">
-            <a href="#" class="inline-link pl2pro-ss-add-rule"><i class="icon16 add"></i><b><i>[`Add rule`]</i></b></a>
-        </div>
-    </div>
-</div>
-</div>
-
-
-
 <div class="clear-both"></div>
 
 <script>
     $.pocketlists.setTitle();
 
-    $('[data-pl2pro-action="automation-add-rule"]').click(function(){
+    $('[data-pl2pro-action="automation-add-rule"], [data-pl2pro-automation-edit]').click(function(){
+        var id = $(this).data('pl2pro-automation-edit') || 0,
+            eventId = $(this).closest('[data-pl2pro-ss-event]').data('pl2pro-ss-event');
+
         $('#pl2pro-dialog').waDialog({
-            url: '?plugin=pro&module=automation&action=new&event='+ $(this).closest('[data-pl2pro-ss-event]').data('pl2pro-ss-event'),
+            url: '?plugin=pro&module=automation&action=dialog&event=' + eventId + '&id=' + id,
             onLoad: function () {
+                var $this = $(this);
+
+                $this
+                    .on('click', '#pl-item-priority a', function (e) {
+                        e.preventDefault();
+
+                        var $a = $(this),
+                            $checkbox = $a.find('input');
+
+                        $this.find('[data-pl2-pro-item-priority] input').prop('checked', false);
+                        $checkbox.prop('checked', true);
+                        $a.addClass('selected').siblings().removeClass('selected');
+                    })
+                    .on('click', '.close', function (e) {
+                        e.preventDefault();
+                        $this.trigger('close');
+                    })
+                    .on('click', '[data-pl2-pro-item-priority]', function (e) {
+                        e.preventDefault();
+                        var $this = $(this);
+
+                        $this.siblings().prop('checked', false);
+                        $w.find('[name="data[action][priority]"]').val($this.data('pl2-pro-item-priority'));
+                    })
+                    .on('click', '[data-pl2pro-automation-action="delete"]', function (e) {
+                        e.preventDefault();
+
+                        $.post('?plugin=pro&module=automationCrud&action=delete&id='+id, function (r) {
+                            if (r.status === 'ok') {
+                                $.pocketlists_routing.redispatch();
+                            } else {
+                                $.pocketlists.log('some error on automation delete');
+                            }
+
+                            $this.trigger('close');
+                        }, 'json');
+                    })
+                ;
             },
             onSubmit: function (d) {
+                var $form = $(this),
+                    url = '?plugin=pro&module=automationCrud&action=' + (id ? 'update' : 'create');
+
+                $.post(url, $form.serialize(), function (r) {
+                    if (r.status === 'ok') {
+                        $.pocketlists_routing.redispatch();
+                    } else {
+                        $.pocketlists.log('some error on automation crud');
+                    }
+
+                    d.trigger('close');
+                }, 'json');
 
                 return false;
             },
@@ -182,6 +120,7 @@
                 this.remove();
             }
         });
+
         return false;
     });
 </script>

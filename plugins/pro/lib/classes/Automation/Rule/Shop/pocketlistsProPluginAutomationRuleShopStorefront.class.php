@@ -53,7 +53,7 @@ class pocketlistsProPluginAutomationRuleShopStorefront extends pocketlistsProPlu
      */
     public function match($order)
     {
-        if (empty($this->value)) {
+        if ($this->isEmpty()) {
             return true;
         }
 
@@ -68,7 +68,13 @@ class pocketlistsProPluginAutomationRuleShopStorefront extends pocketlistsProPlu
      */
     public function viewHtml()
     {
-        return $this->editHtml();
+        if ($this->isEmpty()) {
+            return '';
+        }
+
+        return <<<HTML
+<strong>{$this->getLabel()} {$this->value}</strong>
+HTML;
     }
 
     /**

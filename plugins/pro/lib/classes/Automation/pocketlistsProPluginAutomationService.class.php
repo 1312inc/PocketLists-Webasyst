@@ -10,7 +10,7 @@ class pocketlistsProPluginAutomationService
     /**
      * @param string $group
      *
-     * @return array
+     * @return pocketlistsProPluginAutomationSettingsDto[]
      */
     public function getAvailableEventsForGroup($group = self::GROUP_SHOP)
     {
@@ -33,11 +33,12 @@ class pocketlistsProPluginAutomationService
                 $name = $action->getName();
 //            }
 
-            $events['order.'.$id] = [
-                'id'      => $id,
-                'name'    => $name,
-                'options' => $action->getOptions(),
-            ];
+            $eventDto = new pocketlistsProPluginAutomationSettingsDto();
+            $eventDto->id = $id;
+            $eventDto->name = $name;
+            $eventDto->options = $action->getOptions();
+
+            $events['shop.'.$id] = $eventDto;
         }
 
         return $events;

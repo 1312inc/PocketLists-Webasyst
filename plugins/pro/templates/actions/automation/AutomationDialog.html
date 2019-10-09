@@ -1,8 +1,7 @@
-
 <div id="pl2pro-dialog" class="dialog width700px height500px" >
     <div class="dialog-background"></div>
 
-    <form method="post" action="?plugin=pro&module=automationCrud&action=create">
+    <form method="post">
         <div class="dialog-window">
             <div class="dialog-content">
                 <div class="dialog-content-indent">
@@ -11,7 +10,7 @@
                     <p>[`Pocket Lists will create a new to-do upon an action performed with any order in Shop-Script if the specified conditions are met.`]</p>
                     <h2 class="heading bordered-bottom" style="padding-bottom: 10px; margin-bottom: 13px;">[`IF`]</h2>
                     <div class="fields form ">
-                        {foreach $rules as $rule}
+                        {foreach $automation->getRules() as $rule}
                         <div class="field">
                             <div class="name">
                                 {$rule->getLabel()}
@@ -26,7 +25,7 @@
                     <br>
                     <h2 class="heading bordered-bottom" style="padding-bottom: 10px; margin-bottom: 13px;">[`THEN`]</h2>
 
-                    {$plAction->editHtml()}
+                    {$automation->getAction()->editHtml()}
 
                 </div>
             </div>
@@ -34,7 +33,11 @@
 
         <div class="dialog-buttons">
             <div class="dialog-buttons-gradient">
-                <div class="block float-right"><a href="#"><i class="icon16 delete"></i>[`Delete rule`]</a></div> <input type="submit" value="[`Save`]" class="button green" /> [`or`] <a href="#">[`cancel`]</a>
+                {if $automation->getId()}
+                    <input type="hidden" name="id" value="{$automation->getId()}"/>
+                    <div class="block float-right"><a href="#" data-pl2pro-automation-action="delete"><i class="icon16 delete"></i>[`Delete rule`]</a></div>
+                {/if}
+                <input type="submit" value="[`Save`]" class="button green" /> [`or`] <a href="#" class="close">[`cancel`]</a>
             </div>
         </div>
     </form>
