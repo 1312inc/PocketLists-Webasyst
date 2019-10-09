@@ -37,12 +37,8 @@ class pocketlistsProPluginAutomationRuleShopShipping extends pocketlistsProPlugi
     public function getPossibleValues()
     {
         if ($this->possibleValues === null) {
+            $this->possibleValues = [];
             $instances = $this->getShopPluginModel()->listPlugins(shopPluginModel::TYPE_SHIPPING, ['all' => true]);
-//        foreach ($instances as &$instance) {
-//            $instance['installed'] = isset($plugins[$instance['plugin']]);
-//
-//            unset($instance);
-//        }
 
             foreach ($instances as $instance) {
                 $this->possibleValues[$instance['id']] = $instance['name'];

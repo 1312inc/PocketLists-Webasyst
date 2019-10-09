@@ -37,16 +37,14 @@ class pocketlistsProPluginAutomationRuleShopPayment extends pocketlistsProPlugin
 
     /**
      * @return array
+     * @throws waException
      */
     public function getPossibleValues()
     {
         if ($this->possibleValues === null) {
+            $this->possibleValues = [];
             $instances = $this->getShopPluginModel()->listPlugins(shopPluginModel::TYPE_PAYMENT, ['all' => true,]);
-//        foreach ($instances as &$instance) {
-//            $instance['installed'] = isset($plugins[$instance['plugin']]);
-//
-//            unset($instance);
-//        }
+
             foreach ($instances as $instance) {
                 $this->possibleValues[$instance['id']] = $instance['name'];
             }
