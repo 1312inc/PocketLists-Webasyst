@@ -23,6 +23,13 @@
     <div class="value">
         <textarea name="data[action][note]">{$action->getNote()}</textarea>
     </div>
+    <div class="value">
+        <p class="hint">
+            [`Following variables can be used in the to-do title and note fields:`]<br>
+            <b>&#123;$customer_name&#125;</b> — [`customer name`]<br>
+            <b>&#123;$tracking_number&#125;</b> — [`shipment tracking number`]
+        </p>
+    </div>
 </div>
 <div class="field">
     <div class="name">
@@ -106,7 +113,7 @@
         [`Due`]
     </div>
     <div class="value no-shift">
-        In <input type="text" class="short numerical" placeholder="0" name="data[action][due_in]" value="{$action->getDueIn()}">
+        [`In`] <input type="text" class="short numerical" placeholder="0" name="data[action][due_in]" value="{$action->getDueIn()}">
         <select name="data[action][due_period]">
             {foreach $duePeriods as $duePeriod => $duePeriodName}
             <option value="{$duePeriod}" {if $action->getDuePeriod() == $duePeriod}selected{/if}>{$duePeriodName}</option>

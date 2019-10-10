@@ -555,3 +555,60 @@ msgstr ""
 #: /wa-apps/pocketlists/plugins/pro/lib/classes/Entity/Log/pocketlistsProPluginLogItem.class.php:60
 msgid "%s updated the label to <span class=\"pl-label\" style=\"background: #%s\">%s</span>"
 msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:30
+msgid "Executions"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:31
+msgid "Last execution"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemEdit.html:109
+msgid "In"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Automation/Rule/Shop/pocketlistsProPluginAutomationRuleShopShipping.class.php:62
+msgid "No shipping method with the ID = %s is defined. Please check if settings need to be updated!"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Automation/Rule/Shop/pocketlistsProPluginAutomationRuleShopPayment.class.php:90
+msgid "No payment option with the ID = %s is defined. Please check if settings need to be updated!"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Automation/Action/pocketlistsProPluginCreateItemAction.class.php:228
+msgid "Minutes"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Automation/Action/pocketlistsProPluginCreateItemAction.class.php:229
+msgid "Hours"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Automation/Action/pocketlistsProPluginCreateItemAction.class.php:230
+msgid "Days"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Automation/Action/pocketlistsProPluginCreateItemAction.class.php:357
+msgid "No tracking number"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Automation/Action/pocketlistsProPluginCreateItemAction.class.php:191
+msgid "%d %s"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/actions/automation/pocketlistsProPluginAutomationCrud.actions.php:18
+#: /wa-apps/pocketlists/plugins/pro/lib/actions/automation/pocketlistsProPluginAutomationDialog.action.php:18
+msgid "Shop-Script app is not installed"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemEdit.html:28
+msgid "Following variables can be used in the to-do title and note fields:"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemEdit.html:29
+msgid "customer name"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemEdit.html:30
+msgid "shipment tracking number"
+msgstr ""

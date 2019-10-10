@@ -87,7 +87,7 @@ class pocketlistsProPluginAutomationRuleShopPayment extends pocketlistsProPlugin
         }
 
         $instances = $this->getShopPluginModel()->listPlugins(shopPluginModel::TYPE_PAYMENT, array('all' => true,));
-        $name = ifset($instances, $this->value, 'name', sprintf_wp('!!! Payment with id %s do not exists. Please check !!!', $this->value));
+        $name = ifset($instances, $this->value, 'name', sprintf_wp('No payment option with the ID = %s is defined. Please check if settings need to be updated!', $this->value));
 
         return <<<HTML
 <strong>{$this->getLabel()} {$this->compare} {$name}</strong>

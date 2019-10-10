@@ -4,41 +4,37 @@
     <form method="post">
         <div class="dialog-window">
             <div class="dialog-content">
-                <div class="dialog-content-indent">
 
-                    <h1>[`‘Order > To-do’ automation rule`]</h1>
-                    <p>[`Pocket Lists will create a new to-do upon an action performed with any order in Shop-Script if the specified conditions are met.`]</p>
-                    <h2 class="heading bordered-bottom" style="padding-bottom: 10px; margin-bottom: 13px;">[`IF`]</h2>
-                    <div class="fields form ">
-                        {foreach $automation->getRules() as $rule}
-                        <div class="field">
-                            <div class="name">
-                                {$rule->getLabel()}
-                            </div>
-                            <div class="value">
-                                {$rule->editHtml()}
-                            </div>
+                <h1>[`‘Order > To-do’ automation rule`]</h1>
+                <p>[`Pocket Lists will create a new to-do upon an action performed with any order in Shop-Script if the specified conditions are met.`]</p>
+                <h2 class="heading bordered-bottom" style="padding-bottom: 10px; margin-bottom: 13px;">[`IF`]</h2>
+                <div class="fields form ">
+                    {foreach $automation->getRules() as $rule}
+                    <div class="field">
+                        <div class="name">
+                            {$rule->getLabel()}
                         </div>
-                        {/foreach}
+                        <div class="value">
+                            {$rule->editHtml()}
+                        </div>
                     </div>
-                    <div class="clear-both"></div>
-                    <br>
-                    <h2 class="heading bordered-bottom" style="padding-bottom: 10px; margin-bottom: 13px;">[`THEN`]</h2>
-
-                    {$automation->getAction()->editHtml()}
-
+                    {/foreach}
                 </div>
+                <div class="clear-both"></div>
+                <br>
+                <h2 class="heading bordered-bottom" style="padding-bottom: 10px; margin-bottom: 13px;">[`THEN`]</h2>
+
+                {$automation->getAction()->editHtml()}
+
             </div>
         </div>
 
         <div class="dialog-buttons">
-            <div class="dialog-buttons-gradient">
-                {if $automation->getId()}
-                    <input type="hidden" name="id" value="{$automation->getId()}"/>
-                    <div class="block float-right"><a href="#" data-pl2pro-automation-action="delete"><i class="icon16 delete"></i>[`Delete rule`]</a></div>
-                {/if}
-                <input type="submit" value="[`Save`]" class="button green" /> [`or`] <a href="#" class="close">[`cancel`]</a>
-            </div>
+            {if $automation->getId()}
+                <input type="hidden" name="id" value="{$automation->getId()}"/>
+                <div class="block float-right"><a href="#" data-pl2pro-automation-action="delete"><i class="icon16 delete"></i>[`Delete rule`]</a></div>
+            {/if}
+            <input type="submit" value="[`Save`]" class="button green" /> [`or`] <a href="#" class="close">[`cancel`]</a>
         </div>
     </form>
 </div>

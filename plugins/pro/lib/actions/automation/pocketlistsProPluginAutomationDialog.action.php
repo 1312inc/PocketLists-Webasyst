@@ -15,7 +15,7 @@ class pocketlistsProPluginAutomationDialogAction extends pocketlistsViewAction
         parent::preExecute();
 
         if (!pl2()->getLinkedApp('shop')->isEnabled()) {
-            throw new pocketlistsLogicException(_wp('No Shop-Script installed'));
+            throw new pocketlistsLogicException(_wp('Shop-Script app is not installed'));
         }
     }
 

@@ -1,50 +1,50 @@
 <h1>[`Shop-Script`]</h1>
 <p>[`Set up the automation rules to make Pocket Lists automatically create and assign to-dos based on actions performed with Shop-Script orders.`]</p>
 
-<h2><em><span style="background: gold;">Скоро!</span> Этот интерфейс заработает в Pocket Lists PRO версии 1.1.0. Релиз — сентябрь/октябрь 2019 года.</em></h2>
-<br><br>
-
 <div class="fields form" style="position: relative;">
     {** @var $action pocketlistsProPluginAutomationSettingsDto **}
     {foreach $shopActions as $action}
+    <div class="field-group">
     <div class="field" data-pl2pro-ss-event="{$action->id}">
         <div class="name">
-            <span class="pl2pro-ss-order-action">
-                <i class="icon16 {$action->options['icon']|default:'color'}" style="background-color: {$action->options['button_class']|default:'gray'};"></i>
-                [`{$action->name}`]
+            <span class="pl2pro-ss-order-action" title="{$action->name}">
+                <i class="icon16 {$action->options['icon']|default:'color'}"{if empty($action->options['icon'])} style="background-color: {$action->options['button_class']|default:'gray'};"{/if}></i>
+                {$action->name}
             </span>
         </div>
-
-        <div class="block">
 
         {** @var $automation pocketlistsProPluginAutomation **}
         {foreach $action->automations as $automation}
             <div class="value">
-            <div class="pl2pro-rule-baloon">
-                <div class="pl2pro-rule-header">
-                    <a href="#" class="inline-link pl2pro-label-edit" data-pl2pro-automation-edit="{$automation->getId()}"><i class="icon10 edit"></i> <b><i>[`Edit`]</i></b></a>
-                    <span class="pl2pro-rule-if">[`IF`]</span>
-                    {$action->automationRulesHtml[$automation->getId()]}
+                <div class="pl2pro-rule-baloon">
+                    <div class="pl2pro-rule-header">
+                        <a href="#" class="inline-link pl2pro-label-edit" data-pl2pro-automation-edit="{$automation->getId()}"><i class="icon10 edit"></i> <b><i>[`Edit`]</i></b></a>
+                        <span class="pl2pro-rule-if">[`IF`]</span>
+                        {$action->automationRulesHtml[$automation->getId()]}
+                    </div>
+                    <div class="pl2pro-rule-body">
+                        {$action->automationActionsHtml[$automation->getId()]}
+                    </div>
+                    {if $automation->getExecutionCount()}
+                        <div class="pl2pro-rule-footer">
+                            [`Executions`]: <b>{$automation->getExecutionCount()}</b><br>
+                            [`Last execution`]: <b>{$automation->getLastExecutionDatetime()|wa_date:'humandatetime'}</b>
+                        </div>
+                    {/if}
                 </div>
-                <div class="pl2pro-rule-body">
-                    {$action->automationActionsHtml[$automation->getId()]}
-                </div>
-                {if $automation->getExecutionCount()}
-                executions: {$automation->getExecutionCount()}<br>
-                last execution: {$automation->getLastExecutionDatetime()|wa_date:'humandatetime'}
-                {/if}
             </div>
-        </div>
         {foreachelse}
-            <span class="gray">{sprintf('[`No automation rules are defined for the ‘%s’ order action`]','Выполнен')}</span>
+            <div class="value">
+                <div class="block" style="padding-left: 0;">
+                    <span class="gray">{sprintf('[`No automation rules are defined for the ‘%s’ order action`]',$action->name)}</span>
+                </div>
+            </div>
         {/foreach}
-        </div>
 
         <div class="value">
-            <div class="block">
-                <a href="#" class="inline-link pl2pro-ss-add-rule" data-pl2pro-action="automation-add-rule"><i class="icon16 add"></i><b><i>[`Add rule`]</i></b></a>
-            </div>
+            <a href="#" class="inline-link pl2pro-ss-add-rule" data-pl2pro-action="automation-add-rule"><i class="icon16 add"></i><b><i>[`Add rule`]</i></b></a>
         </div>
+    </div>
     </div>
 {/foreach}
 </div>

@@ -59,7 +59,7 @@ class pocketlistsProPluginAutomationRuleShopShipping extends pocketlistsProPlugi
         }
 
         $instances = $this->getShopPluginModel()->listPlugins(shopPluginModel::TYPE_SHIPPING, array('all' => true));
-        $name = ifset($instances, $this->value, 'name', sprintf_wp('!!! Shipping with id %s do not exists. Please check !!!', $this->value));
+        $name = ifset($instances, $this->value, 'name', sprintf_wp('No shipping method with the ID = %s is defined. Please check if settings need to be updated!', $this->value));
 
         return <<<HTML
 <strong>{$this->getLabel()} {$this->compare} {$name}</strong>

@@ -354,7 +354,7 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
 
         return str_replace(
             ['{$customer_name}', '{$tracking_number}'],
-            [$order->contact->getName(), ifset($orderParams, 'tracking_number', _wp('No tracking number defuned'))],
+            [$order->contact->getName(), ifset($orderParams, 'tracking_number', _wp('No tracking number'))],
             $str
         );
     }
