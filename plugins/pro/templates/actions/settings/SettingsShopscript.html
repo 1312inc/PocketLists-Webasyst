@@ -62,7 +62,7 @@
             url: '?plugin=pro&module=automation&action=dialog&event=' + eventId + '&id=' + id,
             onLoad: function () {
                 var $this = $(this);
-debugger;
+
                 $this
                     .on('click', '#pl-item-priority a', function (e) {
                         e.preventDefault();
@@ -83,6 +83,7 @@ debugger;
 
                         $.post('?plugin=pro&module=automationCrud&action=delete&id='+id, function (r) {
                             if (r.status === 'ok') {
+                                $.pocketlists_routing.skipScrollToTop = true;
                                 $.pocketlists_routing.redispatch();
                             } else {
                                 $.pocketlists.log('some error on automation delete');
@@ -99,6 +100,7 @@ debugger;
 
                 $.post(url, $form.serialize(), function (r) {
                     if (r.status === 'ok') {
+                        $.pocketlists_routing.skipScrollToTop = true;
                         $.pocketlists_routing.redispatch();
                     } else {
                         $.pocketlists.log('some error on automation crud');

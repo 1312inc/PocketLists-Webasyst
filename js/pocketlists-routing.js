@@ -30,6 +30,7 @@
         },
         // dispatch() ignores the call if prevHash == hash
         prevHash: null,
+        skipScrollToTop: false,
         hash: null,
         /** Current hash. No URI decoding is performed. */
         getHash: function () {
@@ -160,7 +161,11 @@
         postExecute: function () {
             $.pocketlists.reloadSidebar();
             this.heartbeat();
-            $.pocketlists.scrollToContent();
+            if (!this.skipScrollToTop) {
+                $.pocketlists.scrollToContent();
+            } else {
+                this.skipScrollToTop = false;
+            }
         },
 
         heartbeat: function () {
