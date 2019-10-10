@@ -20,6 +20,16 @@ class pocketlistsPocketSettingsDialogAction extends pocketlistsViewPocketAction
             $pocket = pl2()->getEntityFactory(pocketlistsPocket::class)->createNew();
         }
 
-        $this->view->assign(compact('pocket'));
+        /**
+         * UI in main sidebar
+         * @event backend_pocket_dialog
+         *
+         * @param pocketlistsEventInterface $event Event object with pocketlistsPocket object (new or existing)
+         * @return string HTML output
+         */
+        $event = new pocketlistsEvent(pocketlistsEventStorage::WA_POCKET_DIALOG, $pocket);
+        $eventResult = pl2()->waDispatchEvent($event);
+
+        $this->view->assign(['pocket' => $pocket, 'backend_pocket_dialog' => $eventResult]);
     }
 }

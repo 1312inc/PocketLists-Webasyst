@@ -45,6 +45,10 @@
 
                 </div>
 
+                <!-- plugin hook: 'backend_pocket_dialog' -->
+                {* @event backend_pocket_dialog.%plugin_id% *}
+                {if !empty($backend_pocket_dialog)}{foreach $backend_pocket_dialog as $_}{ifset($_)}{/foreach}{/if}
+
             </div>
         </div>
     </div>
