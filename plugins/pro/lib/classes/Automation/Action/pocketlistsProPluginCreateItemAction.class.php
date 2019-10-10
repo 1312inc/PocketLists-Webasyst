@@ -103,6 +103,9 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
         $factory = pl2()->getEntityFactory(pocketlistsItem::class);
 
         $this->name = $this->replaceVars($this->name, $order);
+        if ($this->note) {
+            $this->note = $this->replaceVars($this->note, $order);
+        }
 
         $currentUserId = wa()->getUser()->getId();
         if ($this->assignedTo == self::ORDER_ACTION_PERFORMER_ID && $currentUserId) {

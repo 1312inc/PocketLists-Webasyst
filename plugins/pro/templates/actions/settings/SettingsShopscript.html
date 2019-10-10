@@ -62,7 +62,7 @@
             url: '?plugin=pro&module=automation&action=dialog&event=' + eventId + '&id=' + id,
             onLoad: function () {
                 var $this = $(this);
-
+debugger;
                 $this
                     .on('click', '#pl-item-priority a', function (e) {
                         e.preventDefault();
@@ -70,20 +70,13 @@
                         var $a = $(this),
                             $checkbox = $a.find('input');
 
-                        $this.find('[data-pl2-pro-item-priority] input').prop('checked', false);
+                        $this.find('[data-pl2-pro-item-priority]').prop('checked', false);
                         $checkbox.prop('checked', true);
                         $a.addClass('selected').siblings().removeClass('selected');
                     })
                     .on('click', '.close', function (e) {
                         e.preventDefault();
                         $this.trigger('close');
-                    })
-                    .on('click', '[data-pl2-pro-item-priority]', function (e) {
-                        e.preventDefault();
-                        var $this = $(this);
-
-                        $this.siblings().prop('checked', false);
-                        $w.find('[name="data[action][priority]"]').val($this.data('pl2-pro-item-priority'));
                     })
                     .on('click', '[data-pl2pro-automation-action="delete"]', function (e) {
                         e.preventDefault();
