@@ -100,7 +100,7 @@ HTML;
      */
     public function editHtml()
     {
-        $options = [['title' => '', 'value' => '']];
+        $options = [['title' => _wp('any'), 'value' => '']];
         foreach ($this->getPossibleValues() as $id => $possibleValue) {
             $options[] = [
                 'title' => $possibleValue,

@@ -83,7 +83,7 @@ HTML;
      */
     public function editHtml()
     {
-        $domains = [['title' => '', 'value' => '']];
+        $domains = [['title' => _wp('any'), 'value' => '']];
         foreach ($this->getPossibleValues() as $item) {
             $domains[] = [
                 'title' => $item['name'],
@@ -109,7 +109,7 @@ HTML;
     /**
      * @param array $json
      *
-     * @return pocketlistsProPluginAutomationRuleShopAction
+     * @return $this|pocketlistsProPluginSerializableInterface
      */
     public function load(array $json)
     {

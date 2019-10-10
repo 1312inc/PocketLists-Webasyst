@@ -82,7 +82,7 @@ HTML;
      */
     public function editHtml()
     {
-        $groups = [['title' => '', 'value' => '']];
+        $groups = [['title' => _wp('any'), 'value' => '']];
         foreach ($this->getPossibleValues() as $id => $item) {
             $groups[] = [
                 'title' => $item,
