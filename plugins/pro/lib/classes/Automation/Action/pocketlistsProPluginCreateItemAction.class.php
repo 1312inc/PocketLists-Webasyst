@@ -134,10 +134,10 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
                     ->format('Y-m-d 00:00:00');
                 $item->setDueDate($due);
             } else {
-                $due = (new DateTime())
-                    ->modify(sprintf('%s %s', $this->dueIn, $this->duePeriod))
-                    ->format('Y-m-d H:i:s');
-                $item->setDueDatetime($due);
+                $due = (new DateTime())->modify(sprintf('%s %s', $this->dueIn, $this->duePeriod));
+                $item
+                    ->setDueDate($due->format('Y-m-d 00:00:00'))
+                    ->setDueDatetime($due->format('Y-m-d H:i:s'));
             }
         }
 
