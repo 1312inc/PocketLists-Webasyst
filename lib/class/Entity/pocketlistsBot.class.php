@@ -25,12 +25,12 @@ class pocketlistsBot extends pocketlistsContact
     /**
      * @var string
      */
-    protected $photoUrl = '/wa-content/img/pl2bot@2x.jpg';
+    protected $photoUrl = '/wa-apps/pocketlists/img/pl2bot.png';
 
     /**
      * @var string
      */
-    protected $userPic = '/wa-content/img/pl2bot@2x.jpg';
+    protected $userPic = '/wa-apps/pocketlists/img/pl2bot.png';
 
     /**
      * @var string
