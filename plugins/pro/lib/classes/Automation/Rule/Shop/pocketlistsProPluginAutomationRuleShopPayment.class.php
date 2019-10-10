@@ -73,7 +73,7 @@ class pocketlistsProPluginAutomationRuleShopPayment extends pocketlistsProPlugin
             return true;
         }
 
-        return pocketlistsProPluginComparision::compare($order->params['shipping_id'], $this->value, $this->compare);
+        return pocketlistsProPluginComparision::compare($order->params['payment_id'], $this->value, $this->compare);
     }
 
     /**
