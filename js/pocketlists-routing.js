@@ -19,7 +19,7 @@
             var hash = window.location.hash;
             if (hash === '#/' || !hash) {
                 hash = $.storage.get('/pocketlists/hash/' + that.options.user_id);
-                if (hash && hash != null) {
+                if (hash && hash !== null && hash !== undefined) {
                     $.wa.setHash('#/' + hash);
                 } else {
                     this.dispatch();
