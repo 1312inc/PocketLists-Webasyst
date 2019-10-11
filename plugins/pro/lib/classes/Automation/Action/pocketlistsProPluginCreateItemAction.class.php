@@ -363,6 +363,8 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
                 '{$shipping_address}',
                 '{$order_source}',
                 '{$order_item_names}',
+                '{$customer_phone}',
+                '{$customer_email}}',
             ],
             [
                 $order->contact->getName(),
@@ -379,6 +381,8 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
                         $order->items
                     )
                 ),
+                $order->contact->get('phone', 'default'),
+                $order->contact->get('email', 'default'),
             ],
             $str
         );
