@@ -19,7 +19,9 @@ class pocketlistsContactFactory extends pocketlistsFactory
     public function createNewWithId($contactId)
     {
         if (!isset($this->contactsCache[$contactId])) {
-            $this->contactsCache[$contactId] = new pocketlistsContact(new waContact($contactId));
+            $this->contactsCache[$contactId] = ($contactId == -1312
+                ? new pocketlistsBot(new waContact())
+                : new pocketlistsContact(new waContact($contactId)));
         }
 
         return $this->contactsCache[$contactId];

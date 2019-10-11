@@ -16,6 +16,11 @@ class pocketlistsProPlugin extends waPlugin
     protected static $instance;
 
     /**
+     * @var pocketlistsProPluginAutomationService
+     */
+    protected $automation;
+
+    /**
      * @return pocketlistsProPlugin
      */
     public static function getInstance()
@@ -50,5 +55,17 @@ class pocketlistsProPlugin extends waPlugin
     public function saveEntity(pocketlistsEventInterface $event)
     {
         $event->getName();
+    }
+
+    /**
+     * @return pocketlistsProPluginAutomationService
+     */
+    public function getAutomationService()
+    {
+        if ($this->automation === null) {
+            $this->automation = new pocketlistsProPluginAutomationService();
+        }
+
+        return $this->automation;
     }
 }

@@ -1091,6 +1091,7 @@ class pocketlistsItem extends pocketlistsEntity
 
     /**
      * @return bool
+     * @throws waException
      */
     public function isAssignedtoSomeone()
     {

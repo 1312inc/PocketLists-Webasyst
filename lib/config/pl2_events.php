@@ -1,5 +1,12 @@
 <?php
 
 return [
-//    pocketlistsEventStorage::ITEM_SAVE => ['pocketlistsHelper', 'saveEntity'],
+    pocketlistsEventStorage::ITEM_INSERT => [
+        ['pocketlistsEventListenerItemSave', 'notifyAndLogAboutNew'],
+        ['pocketlistsEventListenerItemSave', 'notifyAndLogAboutNewAssign'],
+    ],
+    pocketlistsEventStorage::ITEM_UPDATE => [
+        ['pocketlistsEventListenerItemSave', 'notificationAndLog'],
+        ['pocketlistsEventListenerItemSave', 'logAboutUpdated'],
+    ]
 ];

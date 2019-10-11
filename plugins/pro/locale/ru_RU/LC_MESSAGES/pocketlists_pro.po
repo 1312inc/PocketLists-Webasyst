@@ -556,3 +556,90 @@ msgstr "%s назначил задачу пользователю %s"
 #: /wa-apps/pocketlists/plugins/pro/lib/classes/Entity/Log/pocketlistsProPluginLogItem.class.php:60
 msgid "%s updated the label to <span class=\"pl-label\" style=\"background: #%s\">%s</span>"
 msgstr "%s обновил маркер задачи на <span class=\"pl-label\" style=\"background: #%s\">%s</span>"
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:30
+msgid "Executions"
+msgstr "Запусков"
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:31
+msgid "Last execution"
+msgstr "Последний запуск"
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemEdit.html:109
+msgid "In"
+msgstr "Через"
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Automation/Rule/Shop/pocketlistsProPluginAutomationRuleShopShipping.class.php:62
+msgid "No shipping method with the ID = %s is defined. Please check if settings need to be updated!"
+msgstr "Способа доставки с идентификатором %s не существует. Пожалуйста, проверьте настройки!"
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Automation/Rule/Shop/pocketlistsProPluginAutomationRuleShopPayment.class.php:90
+msgid "No payment option with the ID = %s is defined. Please check if settings need to be updated!"
+msgstr "Способа оплаты с идентификатором %s не существует. Пожалуйста, проверьте настройки!"
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Automation/Action/pocketlistsProPluginCreateItemAction.class.php:228
+msgid "Minutes"
+msgstr "Минут"
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Automation/Action/pocketlistsProPluginCreateItemAction.class.php:229
+msgid "Hours"
+msgstr "Часов"
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Automation/Action/pocketlistsProPluginCreateItemAction.class.php:230
+msgid "Days"
+msgstr "Дней"
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Automation/Action/pocketlistsProPluginCreateItemAction.class.php:357
+msgid "No tracking number"
+msgstr "Нет номера отправления"
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Automation/Action/pocketlistsProPluginCreateItemAction.class.php:191
+msgid "%d %s"
+msgstr "%d %s"
+
+#: /wa-apps/pocketlists/plugins/pro/lib/actions/automation/pocketlistsProPluginAutomationCrud.actions.php:18
+#: /wa-apps/pocketlists/plugins/pro/lib/actions/automation/pocketlistsProPluginAutomationDialog.action.php:18
+msgid "Shop-Script app is not installed"
+msgstr "Shop-Script не установлен"
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemEdit.html:28
+msgid "Following variables can be used in the to-do title and note fields:"
+msgstr "В заголовке и заметке задачи можно использовать переменные:"
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemEdit.html:29
+msgid "customer name"
+msgstr "имя покупателя"
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemEdit.html:30
+msgid "shipment tracking number"
+msgstr "номер отправления"
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/board/Board.html:64
+msgid "Assigned to %s"
+msgstr "Ответственный: %s"
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Automation/Rule/Shop/pocketlistsProPluginAutomationRuleShopStorefront.class.php:86
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Automation/Rule/Shop/pocketlistsProPluginAutomationRuleShopPayment.class.php:103
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Automation/Rule/Shop/pocketlistsProPluginAutomationRuleShopCustomerGroup.class.php:85
+msgid "any"
+msgstr "не важно"
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemEdit.html:29
+msgid "order ID"
+msgstr "номер заказа"
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemEdit.html:31
+msgid "customer email"
+msgstr "email покупателя"
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemEdit.html:32
+msgid "customer phone number"
+msgstr "телефон покупателя"
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemEdit.html:33
+msgid "shipping address"
+msgstr "адрес доставки заказа"
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemEdit.html:35
+msgid "list of ordered items"
+msgstr "список заказанных товаров"

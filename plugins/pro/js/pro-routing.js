@@ -18,8 +18,8 @@
 
             var hash = window.location.hash;
             if (hash === '#/' || !hash) {
-                hash = $.storage.get('/pocketlists/pro/hash/' + that.options.user_id);
-                if (hash && hash != null) {
+                hash = $.storage.get('/pocketlists/hash/' + that.options.user_id);
+                if (hash && hash !== null && hash !== undefined) {
                     $.wa.setHash('#/' + hash);
                 } else {
                     this.dispatch();
@@ -131,7 +131,7 @@
                         this[actionName + 'Action'].apply(this, attr);
 
                         if (actionName !== 'debug') {
-                            $.storage.set('/pocketlists/pro/hash/' + this.options.user_id, hash.join('/'));
+                            $.storage.set('/pocketlists/hash/' + this.options.user_id, hash.join('/'));
                         }
 
                         this.postExecute();

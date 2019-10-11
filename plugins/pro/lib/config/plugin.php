@@ -2,7 +2,7 @@
 return array(
     'name'     => 'Pocket Lists PRO',
     'img'      => 'img/pl2pro.png',
-    'version'  => '1.0.1',
+    'version'  => '1.1.0',
     'vendor'   => '1021997',
     'handlers' =>
         array(
@@ -66,6 +66,12 @@ return array(
                     'event'        => 'backend_teammate_sidebar',
                     'class'        => 'pocketlistsProPluginHookHandlerTeammateSidebar',
                     'method'       => 'handle',
+                ),
+                array(
+                    'event_app_id' => 'shop',
+                    'event'        => 'order_action.*',
+                    'class'        => 'pocketlistsProPluginWaEventListener',
+                    'method'       => 'onOrderAction',
                 ),
             ),
         ),

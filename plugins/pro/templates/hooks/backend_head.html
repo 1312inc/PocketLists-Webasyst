@@ -4,7 +4,9 @@
 
 <script>
     (function () {
-        $.pocketlists_pro_routing.init({ });
+        $.pocketlists_pro_routing.init({
+            user_id: {$wa->user()->get('id')}
+        });
         $.pocketlists_pro.init();
     }())
 </script>

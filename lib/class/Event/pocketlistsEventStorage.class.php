@@ -18,7 +18,7 @@ final class pocketlistsEventStorage
     const ITEM_DELETE   = 'item_delete';
     const ITEM_UI_LABEL = 'item_ui_label';
 
-    const LOG_INSERT  = 'lod_insert';
+    const LOG_INSERT  = 'log_insert';
 
     const NOTIFICATION_SENT = 'notification.sent';
 
@@ -31,6 +31,7 @@ final class pocketlistsEventStorage
     const WA_BACKEND_LIST_ACCESSES    = 'backend_list_accesses';
     const WA_BACKEND_TEAMMATE_SIDEBAR = 'backend_teammate_sidebar';
     const WA_ITEM_RENDER_LINKED       = 'item.render_linked';
+    const WA_POCKET_DIALOG            = 'backend_pocket_dialog';
 
     const CREATE_NOTIFICATION_CONTENT = 'create_notification_content';
 }
