@@ -364,7 +364,7 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
                 '{$order_source}',
                 '{$order_item_names}',
                 '{$customer_phone}',
-                '{$customer_email}}',
+                '{$customer_email}',
             ],
             [
                 $order->contact->getName(),
