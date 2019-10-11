@@ -613,3 +613,33 @@ msgstr "имя покупателя"
 #: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemEdit.html:30
 msgid "shipment tracking number"
 msgstr "номер отправления"
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/board/Board.html:64
+msgid "Assigned to %s"
+msgstr "Ответственный: %s"
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Automation/Rule/Shop/pocketlistsProPluginAutomationRuleShopStorefront.class.php:86
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Automation/Rule/Shop/pocketlistsProPluginAutomationRuleShopPayment.class.php:103
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Automation/Rule/Shop/pocketlistsProPluginAutomationRuleShopCustomerGroup.class.php:85
+msgid "any"
+msgstr "не важно"
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemEdit.html:29
+msgid "order ID"
+msgstr "номер заказа"
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemEdit.html:31
+msgid "customer email"
+msgstr "email покупателя"
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemEdit.html:32
+msgid "customer phone number"
+msgstr "телефон покупателя"
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemEdit.html:33
+msgid "shipping address"
+msgstr "адрес доставки заказа"
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemEdit.html:35
+msgid "list of ordered items"
+msgstr "список заказанных товаров"

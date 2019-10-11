@@ -26,8 +26,14 @@
     <div class="value">
         <p class="hint">
             [`Following variables can be used in the to-do title and note fields:`]<br>
+            <b>&#123;$order_id&#125;</b> — [`order ID`]<br>
             <b>&#123;$customer_name&#125;</b> — [`customer name`]<br>
-            <b>&#123;$tracking_number&#125;</b> — [`shipment tracking number`]
+            <b>&#123;$customer_email&#125;</b> — [`customer email`]<br>
+            <b>&#123;$customer_phone&#125;</b> — [`customer phone number`]<br>
+            <b>&#123;$shipping_address&#125;</b> — [`shipping address`]<br>
+            <b>&#123;$tracking_number&#125;</b> — [`shipment tracking number`]<br>
+            <b>&#123;$order_item_names&#125;</b> — [`list of ordered items`]
+            {* <b>&#123;$order_source&#125;</b> *}
         </p>
     </div>
 </div>
@@ -49,6 +55,10 @@
 <div class="field">
     <div class="name">
         [`Priority`]
+
+        <style>
+            .pl-details-form .selected .pl-done + span { top: 0 !important; left: 5px  !important; }
+        </style>
     </div>
     <div class="value no-shift" id="pl-item-priority">
         <a href="#" {if $action->getPriority() == pocketlistsItem::PRIORITY_NORM}class="selected"{/if}>
