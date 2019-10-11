@@ -61,6 +61,11 @@
                                     ><span data-pl2pro-done></span>
                                     <span class="item-name">{$item->getName()|escape}</span><br>
                                     <span class="hint">{$item->getNote()|escape}</span>
+                                    <span style="float: right">
+                                        {if $item->isAssignedtoSomeone() }
+                                            <i class="icon16 userpic20" style="background-image: url({$item->getAssignedContact()->getUserpic()})" alt="{$item->getAssignedContact()->getUsername()|escape}" title="{sprintf('[`Assigned to %s`]', $item->getAssignedContact()->getUsername()|escape)}"></i>
+                                        {/if}
+                                    </span>
                                     <div data-pl2-item-links>
                                         {foreach $item->getLinkedEntities() as $linkedEntity}
                                             <div data-pl2-link-preview>
