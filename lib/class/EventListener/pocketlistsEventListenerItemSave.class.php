@@ -61,6 +61,8 @@ class pocketlistsEventListenerItemSave
     {
         $items = $event->getItems();
         $logService = pl2()->getLogService();
+        $params = $event->getParams();
+        $itemsOld = ifempty($params, 'itemsOld', []);
 
         // log this action
         foreach ($items as $item) {
@@ -70,9 +72,16 @@ class pocketlistsEventListenerItemSave
                 ->setList($item->getList())
                 ->setItem($item, pocketlistsLogContext::ITEM_MORE_INFO_APP_LINKS);
 
-            $logContext->addParam(
-                ['item_old' => pl2()->getHydrator()->extract($item, pocketlistsLogContext::ITEM_FIELDS_TO_EXTRACT)]
-            );
+            if (!empty($itemsOld[$item->getId()])) {
+                $logContext->addParam(
+                    [
+                        'item_old' => pl2()->getHydrator()->extract(
+                            $itemsOld[$item->getId()],
+                            pocketlistsLogContext::ITEM_FIELDS_TO_EXTRACT
+                        ),
+                    ]
+                );
+            }
 
             if ($item->getAssignedContactId() && $item->getAssignedContactId() != $event->getOldAssignContactId()) {
                 $logContext->addParam(['item_action' => pocketlistsLog::ITEM_ACTION_NEW_ASSIGN]);

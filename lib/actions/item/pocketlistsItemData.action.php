@@ -21,10 +21,13 @@ class pocketlistsItemDataAction extends pocketlistsViewItemAction
         /** @var pocketlistsItemFactory $itemFactory */
         $itemFactory = pl2()->getEntityFactory(pocketlistsItem::class);
 
+        $itemsOld = [];
         /** @var pocketlistsItem $item */
         if (!empty($item_new_data['id'])) {
             $item = $this->getItem($item_new_data['id']);
-            $itemOld = clone $item;
+            pocketlistsAssert::instance($item, pocketlistsItem::class);
+
+            $itemsOld[$item->getId()] = clone $item;
         } else {
             $item = $itemFactory->createNew();
             $isNewItem = true;
@@ -118,7 +121,12 @@ class pocketlistsItemDataAction extends pocketlistsViewItemAction
                     new pocketlistsEventItemsSave(
                         pocketlistsEventStorage::ITEM_UPDATE,
                         $item,
-                        ['list' => $item->getList(), 'assign_contact' => $item->getAssignedContactId(), 'old_assign_contact' => $oldAssignedId]
+                        [
+                            'list'               => $item->getList(),
+                             'assign_contact'     => $item->getAssignedContactId(),
+                             'old_assign_contact' => $oldAssignedId,
+                             'itemsOld'           => $itemsOld,
+                        ]
                     )
                 );
             }
