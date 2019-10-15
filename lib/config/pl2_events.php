@@ -6,7 +6,6 @@ return [
         ['pocketlistsEventListenerItemSave', 'notifyAndLogAboutNewAssign'],
     ],
     pocketlistsEventStorage::ITEM_UPDATE => [
-        ['pocketlistsEventListenerItemSave', 'notificationAndLog'],
         ['pocketlistsEventListenerItemSave', 'logAboutUpdated'],
     ]
 ];

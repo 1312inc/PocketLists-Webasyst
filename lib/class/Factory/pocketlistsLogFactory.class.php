@@ -198,7 +198,10 @@ class pocketlistsLogFactory extends pocketlistsFactory
         $item = $context->getEntity(pocketlistsLogContext::ITEM_ENTITY);
 
         $params = [
-            pocketlistsLog::ENTITY_ITEM    => ['name' => $item->getName()],
+            pocketlistsLog::ENTITY_ITEM    => [
+                'name' => $item->getName(),
+                'contact_id' => $item->getContactId(),
+            ],
             pocketlistsLog::ENTITY_COMMENT => ['comment' => $comment->getComment()],
         ];
 
@@ -207,6 +210,7 @@ class pocketlistsLogFactory extends pocketlistsFactory
             ->setCreateDatetime(date('Y-m-d H:i:s'))
             ->setAction($action)
             ->setContactId(pl2()->getUser()->getId())
+            ->setAssignedContactId($item->getAssignedContactId())
             ->setParamsArray($params)
             ->fillWithContext($context);
     }

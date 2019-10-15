@@ -15,6 +15,7 @@ class pocketlistsLogContext
 
     const ITEM_FIELDS_TO_EXTRACT = [
         'status',
+        'contact_id',
         'priority',
         'calc_priority',
         'create_datetime',
