@@ -125,7 +125,7 @@ msgstr "Средний"
 #: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:119
 #: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:313
 msgid "Due"
-msgstr "Когда"
+msgstr "Срок"
 
 #: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:21
 #: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:43
@@ -643,3 +643,6 @@ msgstr "адрес доставки заказа"
 #: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemEdit.html:35
 msgid "list of ordered items"
 msgstr "список заказанных товаров"
+
+msgid "To-do due (deadline) may be set depending on the order action time. Leave zero for no due date and time."
+msgstr "Срок (дедлайн) задачи будет рассчитан от времени действия с заказом. Оставьте 0 (ноль), чтобы не ставить срок для задачи."
