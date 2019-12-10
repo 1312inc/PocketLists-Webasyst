@@ -124,6 +124,16 @@
             }
 
             , {
+                "regex": ["(через (\\numeric) минут\\w*)", "(через() минуту)"],
+                "example": "пробежка через два часа",
+                "script": "local res=getNow2()+60*getNumeric(getMatch(2,1));return {ts=res,timed=1};",
+                "rules": {
+                    "1": "numeric|minutes"
+                },
+                "relative": 1
+            }
+
+            , {
                 "regex": ["(через (\\numeric) час\\w*)", "(через() час)"],
                 "example": "пробежка через два часа",
                 "script": "local res=getNow2()+60*60*getNumeric(getMatch(2,1));return {ts=res,timed=1};",
