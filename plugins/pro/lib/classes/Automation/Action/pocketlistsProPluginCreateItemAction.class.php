@@ -54,11 +54,17 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
     protected $list;
 
     /**
+     * @var pocketlistsProPluginLabel
+     */
+    protected $label;
+
+    /**
      * pocketlistsProPluginCreateItemAction constructor.
      */
     public function __construct()
     {
         $this->list = new pocketlistsNullList();
+        $this->label = new pocketlistsProPluginLabel();
     }
 
     /**
@@ -80,14 +86,15 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
     public function jsonSerialize()
     {
         return [
-            'identifier'  => $this->getIdentifier(),
-            'name'        => $this->name,
-            'note'        => $this->note,
+            'identifier' => $this->getIdentifier(),
+            'name' => $this->name,
+            'note' => $this->note,
             'assigned_to' => (int)$this->assignedTo,
-            'priority'    => (int)$this->priority,
-            'due_in'      => (int)$this->dueIn,
-            'due_period'  => $this->duePeriod,
-            'list'        => $this->list ? (int)$this->list->getId() : null,
+            'priority' => (int)$this->priority,
+            'due_in' => (int)$this->dueIn,
+            'due_period' => $this->duePeriod,
+            'list' => $this->list ? (int)$this->list->getId() : null,
+            'label' => $this->label->getId(),
         ];
     }
 
@@ -141,13 +148,17 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
             }
         }
 
+        if ($this->label->getId()) {
+            $this->label->assignToItem($item);
+        }
+
         if (pl2()->getEntityFactory(pocketlistsItem::class)->insert($item)) {
             pl2()->getEntityFactory(pocketlistsItemLink::class)->createFromDataForItem(
                 $item,
                 [
-                    'app'         => pocketlistsAppLinkShop::APP,
+                    'app' => pocketlistsAppLinkShop::APP,
                     'entity_type' => pocketlistsAppLinkShop::TYPE_ORDER,
-                    'entity_id'   => $order->getId(),
+                    'entity_id' => $order->getId(),
                 ]
             );
 
@@ -188,11 +199,13 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
             $assign = _wp('Order action performer');
         }
 
-        $view->assign([
-            'assign' => $assign,
-            'action' => $this,
-            'due' => !empty($this->dueIn) ? sprintf_wp('%d %s', $this->dueIn, $this->duePeriod) : 0,
-        ]);
+        $view->assign(
+            [
+                'assign' => $assign,
+                'action' => $this,
+                'due' => !empty($this->dueIn) ? sprintf_wp('%d %s', $this->dueIn, $this->duePeriod) : 0,
+            ]
+        );
 
         return $view->fetch(
             wa()->getAppPath(
@@ -210,8 +223,8 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
     {
         $view = wa()->getView();
 
-        /** @var pocketlistsListFactory $factory */
-        $factory = pl2()->getEntityFactory(pocketlistsList::class);
+        /** @var pocketlistsListFactory $factoryList */
+        $factoryList = pl2()->getEntityFactory(pocketlistsList::class);
         $users = [];
         $app = pl2()->getLinkedApp('shop');
         foreach (pocketlistsRBAC::getAccessContacts() as $userId) {
@@ -221,16 +234,45 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
             }
         }
 
+        /** @var pocketlistsProPluginLabelFactory $factoryLabel */
+        $factoryLabel = pl2()->getEntityFactory(pocketlistsProPluginLabel::class);
+        /** @var pocketlistsProPluginCreateItemActionLabelDto[] $labels */
+        $labels = [];
+        foreach ($factoryLabel->findAll() as $label) {
+            $labels[] = new pocketlistsProPluginCreateItemActionLabelDto(
+                $label->getId(),
+                $label->getName(),
+                $label->getColor()
+            );
+        }
+
+        /** @var pocketlistsProPluginCreateItemActionListDto[] $lists */
+        $lists = [];
+        /** @var pocketlistsList $list */
+        foreach ($factoryList->findLists() as $list) {
+            $pocket = $list->getPocket();
+            $pocketName = '';
+            if ($pocket instanceof pocketlistsPocket) {
+                $pocketName = $pocket->getName();
+            }
+            $lists[$list->getId()] = new pocketlistsProPluginCreateItemActionListDto(
+                $list->getId(),
+                $list->getName(),
+                $pocketName
+            );
+        }
+
         $view->assign(
             [
-                'action'     => $this,
-                'lists'      => $factory->findLists(),
-                'users'      => $users,
-                'performer'  => pl2()->getUser(),
+                'action' => $this,
+                'lists' => $lists,
+                'labels' => $labels,
+                'users' => $users,
+                'performer' => pl2()->getUser(),
                 'duePeriods' => [
-                    self::DUE_PERIOD_MIN  => _wp('Minutes'),
+                    self::DUE_PERIOD_MIN => _wp('Minutes'),
                     self::DUE_PERIOD_HOUR => _wp('Hours'),
-                    self::DUE_PERIOD_DAY  => _wp('Days'),
+                    self::DUE_PERIOD_DAY => _wp('Days'),
                 ],
             ]
         );
@@ -263,6 +305,12 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
 
         if (!$this->list instanceof pocketlistsList) {
             $this->list = new pocketlistsNullList();
+        }
+        $labelId = (int)ifset($json['label'], 0);
+        if ($labelId) {
+            /** @var pocketlistsProPluginLabelFactory $labelRep */
+            $labelRep = pl2()->getEntityFactory(pocketlistsProPluginLabel::class);
+            $this->label = $labelRep->findById($labelId);
         }
 
         return $this;
@@ -322,6 +370,14 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
     public function getList()
     {
         return $this->list;
+    }
+
+    /**
+     * @return pocketlistsProPluginLabel
+     */
+    public function getLabel()
+    {
+        return $this->label;
     }
 
     /**

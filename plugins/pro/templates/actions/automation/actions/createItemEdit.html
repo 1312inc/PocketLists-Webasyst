@@ -141,7 +141,20 @@
         <select name="data[action][list]">
             <option value="0" {if $action->getList() && $action->getList()->getId() == 0}selected{/if}>[`None`]</option>
             {foreach $lists as $list}
-                <option value="{$list->getId()}" {if $action->getList() && $action->getList()->getId() == $list->getId()}selected{/if}>{$list->getName()|escape}</option>
+                <option value="{$list->id}" {if $action->getList() && $action->getList()->getId() == $list->id}selected{/if}>{$list->pocketName|escape} --> {$list->name|escape}</option>
+            {/foreach}
+        </select>
+    </div>
+</div>
+<div class="field">
+    <div class="name">
+        [`Label`]
+    </div>
+    <div class="value no-shift">
+        <select name="data[action][label]">
+            <option value="0" {if !$action->getLabel()->getId()}selected{/if}>[`None`]</option>
+            {foreach $labels as $label}
+                <option value="{$label->id}" {if $action->getLabel()->getId() == $label->id}selected{/if}>{$label->name|escape}</option>
             {/foreach}
         </select>
     </div>
