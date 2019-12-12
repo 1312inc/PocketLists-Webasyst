@@ -7,5 +7,6 @@ return [
     ],
     pocketlistsEventStorage::ITEM_UPDATE => [
         ['pocketlistsEventListenerItemSave', 'logAboutUpdated'],
+        ['pocketlistsEventListenerItemSave', 'notifyAndLogAboutNewAssign'],
     ]
 ];

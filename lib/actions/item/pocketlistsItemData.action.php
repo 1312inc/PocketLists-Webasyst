@@ -122,10 +122,10 @@ class pocketlistsItemDataAction extends pocketlistsViewItemAction
                         pocketlistsEventStorage::ITEM_UPDATE,
                         $item,
                         [
-                            'list'               => $item->getList(),
-                             'assign_contact'     => $item->getAssignedContactId(),
-                             'old_assign_contact' => $oldAssignedId,
-                             'itemsOld'           => $itemsOld,
+                            'list' => $item->getList(),
+                            'assign_contact_id' => $item->getAssignedContactId(),
+                            'old_assign_contact_id' => $oldAssignedId,
+                            'itemsOld' => $itemsOld,
                         ]
                     )
                 );
