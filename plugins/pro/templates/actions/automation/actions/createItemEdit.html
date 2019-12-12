@@ -141,7 +141,7 @@
         <select name="data[action][list]">
             <option value="0" {if $action->getList() && $action->getList()->getId() == 0}selected{/if}>[`None`]</option>
             {foreach $lists as $list}
-                <option value="{$list->id}" {if $action->getList() && $action->getList()->getId() == $list->id}selected{/if}>{$list->pocketName|escape} --> {$list->name|escape}</option>
+                <option value="{$list->id}" {if $action->getList() && $action->getList()->getId() == $list->id}selected{/if}>{$list->pocketName|escape} > {$list->name|escape}</option>
             {/foreach}
         </select>
     </div>

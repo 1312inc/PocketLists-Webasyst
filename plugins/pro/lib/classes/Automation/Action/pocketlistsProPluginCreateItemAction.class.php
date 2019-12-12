@@ -246,20 +246,19 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
             );
         }
 
-        /** @var pocketlistsProPluginCreateItemActionListDto[] $lists */
+        /** @var pocketlistsPocketFactory $pocketFactory */
+        $pocketFactory = pl2()->getEntityFactory(pocketlistsPocket::class);
+        $allPockets = $pocketFactory->findAllForUser();
+        /** @var pocketlistsListDetailsListsDto[] $lists */
         $lists = [];
-        /** @var pocketlistsList $list */
-        foreach ($factoryList->findLists() as $list) {
-            $pocket = $list->getPocket();
-            $pocketName = '';
-            if ($pocket instanceof pocketlistsPocket) {
-                $pocketName = $pocket->getName();
+        foreach ($allPockets as $pocket) {
+            foreach ($pocket->getUserLists() as $list) {
+                $lists[] = new pocketlistsProPluginCreateItemActionListDto(
+                    $list->getId(),
+                    $list->getNameParsed(),
+                    $pocket->getName()
+                );
             }
-            $lists[$list->getId()] = new pocketlistsProPluginCreateItemActionListDto(
-                $list->getId(),
-                $list->getName(),
-                $pocketName
-            );
         }
 
         $view->assign(
