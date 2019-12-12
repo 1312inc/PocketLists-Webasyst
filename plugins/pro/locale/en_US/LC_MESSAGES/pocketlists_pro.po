@@ -11,7 +11,7 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Basepath: .\n"
 "Language: pro\n"
-"X-Generator: Poedit 2.2.3\n"
+"X-Generator: Poedit 2.2.4\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: .\n"
 
@@ -641,4 +641,17 @@ msgstr ""
 
 #: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemEdit.html:35
 msgid "list of ordered items"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemView.html:24
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemEdit.html:152
+msgid "Label"
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemEdit.html:133
+msgid "To-do due (deadline) may be set depending on the order action time. Leave zero for no due date and time."
+msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Automation/Rule/Shop/pocketlistsProPluginAutomationRuleShopCustomerGroup.class.php:77
+msgid "DELETED CATEGORY"
 msgstr ""
