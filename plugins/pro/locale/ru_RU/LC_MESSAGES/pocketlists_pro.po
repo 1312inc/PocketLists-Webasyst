@@ -12,7 +12,7 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Basepath: .\n"
 "Language: pro\n"
-"X-Generator: Poedit 2.2.3\n"
+"X-Generator: Poedit 2.2.4\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: .\n"
 
@@ -646,3 +646,12 @@ msgstr "список заказанных товаров"
 
 msgid "To-do due (deadline) may be set depending on the order action time. Leave zero for no due date and time."
 msgstr "Срок (дедлайн) задачи будет рассчитан от времени действия с заказом. Оставьте 0 (ноль), чтобы не ставить срок для задачи."
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemView.html:24
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemEdit.html:152
+msgid "Label"
+msgstr "Маркер"
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Automation/Rule/Shop/pocketlistsProPluginAutomationRuleShopCustomerGroup.class.php:77
+msgid "DELETED CATEGORY"
+msgstr ""
