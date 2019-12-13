@@ -44,7 +44,7 @@
         $order_info_wrapper.prepend($list_wrapper);
 
         function canShow() {
-            return (!has_items && !$.storage.get('pocketlists/apps/hide-pl2ss-by-default'));
+            return (has_items && !$.storage.get('pocketlists/apps/hide-pl2ss-by-default'));
         }
 
         $list_wrapper.on('click', '[data-pl2-shop-action="close"]', function (e) {
@@ -112,7 +112,7 @@
 
                 $.post('{$params.plurl}?module=shop&action=loadOrderIcon', { order: order_id }, function (r) {
                     console.log('pl2 item loadOrderIcon response', r);
-debugger;
+
                     if (r.status === 'ok' && r.data) {
                         var $order = $order_list.find('[data-order-id='+r.data.entity_id+']');
 
