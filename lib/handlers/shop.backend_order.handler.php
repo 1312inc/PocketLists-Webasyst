@@ -37,15 +37,16 @@ class pocketlistsShopBackend_orderHandler extends waEventHandler
         $viewParams = array_merge(
             [
                 'wa_app_static_url' => wa()->getAppStaticUrl(pocketlistsHelper::APP_ID),
-                'app'               => $app,
-                'order'             => $params,
-                'plurl'             => wa()->getAppUrl(pocketlistsHelper::APP_ID),
-                'items_undone'      => [],
-                'items_done'        => [],
-                'count_done_items'  => 0,
-                'fileupload'        => 1,
-                'user'              => pl2()->getUser(),
-                'itemAdd'           => $itemAdd,
+                'app' => $app,
+                'order' => $params,
+                'plurl' => wa()->getAppUrl(pocketlistsHelper::APP_ID),
+                'items_undone' => [],
+                'items_done' => [],
+                'count_done_items' => 0,
+                'count_undone_items' => 0,
+                'fileupload' => 1,
+                'user' => pl2()->getUser(),
+                'itemAdd' => $itemAdd,
             ],
             pl2()->getDefaultViewVars()
         );
@@ -75,8 +76,8 @@ class pocketlistsShopBackend_orderHandler extends waEventHandler
                 try {
                     $view->assign(
                         [
-                            'params'               => $viewParams,
-                            'pl2'                  => pl2(),
+                            'params' => $viewParams,
+                            'pl2' => pl2(),
                             'pl2_attachments_path' => wa()->getDataUrl('attachments', true, pocketlistsHelper::APP_ID),
                         ]
                     );
