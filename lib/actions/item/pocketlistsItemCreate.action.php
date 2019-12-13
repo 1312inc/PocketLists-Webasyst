@@ -149,7 +149,10 @@ class pocketlistsItemCreateAction extends pocketlistsViewAction
                     new pocketlistsEventItemsSave(
                         pocketlistsEventStorage::ITEM_INSERT,
                         $items,
-                        ['list' => $list, 'assigned_contact' => $assign_contact]
+                        [
+                            'list' => $list,
+                            'assign_contact_id' => $assign_contact instanceof pocketlistsContact ? $assign_contact->getId() : 0
+                        ]
                     )
                 );
             }

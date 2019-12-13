@@ -156,14 +156,14 @@ class pocketlistsRightConfig extends waRightConfig
     }
 
     /**
-     * @param int    $contact_id
+     * @param int    $contactId
      * @param string $right
      * @param null   $value
      *
      * @return bool
      * @throws waException
      */
-    public function setRights($contact_id, $right, $value = null)
+    public function setRights($contactId, $right, $value = null)
     {
         $right_model = new waContactRightsModel();
 
@@ -179,7 +179,7 @@ class pocketlistsRightConfig extends waRightConfig
                 /** @var pocketlistsListModel $list */
                 foreach ($lists as $list) {
                     if ($right_model->save(
-                        $contact_id,
+                        $contactId,
                         pocketlistsHelper::APP_ID,
                         pocketlistsRBAC::LIST_ITEM.'.'.$list->getId(),
                         $value
@@ -198,7 +198,7 @@ class pocketlistsRightConfig extends waRightConfig
         }
 
         $right_model->save(
-            $contact_id,
+            $contactId,
             pocketlistsHelper::APP_ID,
             $right,
             $value

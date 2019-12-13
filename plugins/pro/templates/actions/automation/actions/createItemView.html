@@ -19,4 +19,8 @@
     {/if}
 
     <span class="hint">[`List`]:</span> {if $action->getList()->getId()}{$action->getList()->getName()|escape}{else}[`None`]{/if}<br>
+
+    {if $action->getLabel()->getId()}
+        <span class="hint">[`Label`]:</span> <span class="pl-label" style="background-color: #{$action->getLabel()->getColor()|escape};">{$action->getLabel()->getName()|escape}</span><br>
+    {/if}
 </section>

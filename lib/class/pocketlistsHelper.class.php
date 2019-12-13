@@ -330,4 +330,18 @@ class pocketlistsHelper
     {
         $params = $event->getParams();
     }
+
+    /**
+     * @return array
+     */
+    public static function arrayFlatten($flatten, $item)
+    {
+        if (is_array($item)) {
+            $flatten = array_reduce($item, 'arrayFlatten', $flatten);
+        } else {
+            $flatten[] = $item;
+        }
+
+        return $flatten;
+    }
 }

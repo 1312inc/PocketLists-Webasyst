@@ -175,7 +175,9 @@
                 <select id="pl-item-list">
                 {if !$item->getListId() || !$list->getId() || $item->getContact()->isMe()}<option value=""{if !$item->getListId() || !$list->getId()} selected="selected"{/if}>[`None`]</option>{/if}
                 {foreach $lists as $l}
-                    <option value="{$l->getId()}" {if ($item->getId() && $item->getListId() == $l->getId())}selected="selected"{/if}>{$l->getNameParsed()|escape|truncate:32}</option>
+                    <option value="{$l->id}" {if ($item->getId() && $item->getListId() == $l->id)}selected="selected"{/if}>
+                        {$l->pocketName|escape} > {$l->nameParsed|escape|truncate:32}
+                    </option>
                 {/foreach}
                 </select>
                 <input type="hidden" name="item[list_id]" value="{$item->getListId()}"/>

@@ -35,10 +35,11 @@ class pocketlistsEventItemsSave extends pocketlistsEvent
     public function __construct($name, $items = null, $params = [])
     {
         parent::__construct($name, null, $params);
+
         $this->items = is_array($items) ? $items : [$items];
         $this->list = ifset($params, 'list', null);
-        $this->assignContactId = ifset($params, 'assign_contact', 0);
-        $this->oldAssignContactId = ifset($params, 'old_assign_contact', 0);
+        $this->assignContactId = ifset($params, 'assign_contact_id', 0);
+        $this->oldAssignContactId = ifset($params, 'old_assign_contact_id', 0);
     }
 
     /**

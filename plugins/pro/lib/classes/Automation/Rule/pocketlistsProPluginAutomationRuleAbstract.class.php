@@ -2,6 +2,8 @@
 
 /**
  * Class pocketlistsProPluginAutomationRuleAbstract
+ *
+ * Класс описывает условия правила, которые должны сработать, чтобы выполнилось действие
  */
 abstract class pocketlistsProPluginAutomationRuleAbstract implements pocketlistsProPluginAutomationRuleInterface, pocketlistsProPluginHtmlEditableInterface, pocketlistsProPluginSerializableInterface
 {

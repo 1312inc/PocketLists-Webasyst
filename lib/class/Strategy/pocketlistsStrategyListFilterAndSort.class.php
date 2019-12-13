@@ -120,6 +120,29 @@ class pocketlistsStrategyListFilterAndSort
     }
 
     /**
+     * @param pocketlistsList[] $lists
+     *
+     * @return pocketlistsList[] $lists
+     */
+    public function sortByPocketAndList(array $lists)
+    {
+        $sorted = [];
+        foreach ($lists as $list) {
+            if (!isset($sorted[$list->getPocket()->getSort()])) {
+                $sorted[$list->getPocket()->getSort()] = [];
+            }if (!isset($sorted[$list->getPocket()->getSort()][$list->getSort()])) {
+                $sorted[$list->getPocket()->getSort()][$list->getSort()] = [];
+            }
+
+            $sorted[$list->getPocket()->getSort()][$list->getSort()][] = $list;
+        }
+
+        $result = array_reduce($sorted, [pocketlistsHelper::class, 'arrayFlatten']);
+
+        return $result;
+    }
+
+    /**
      * @param pocketlistsList $a
      * @param pocketlistsList $b
      *

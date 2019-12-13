@@ -44,7 +44,7 @@
         $order_info_wrapper.prepend($list_wrapper);
 
         function canShow() {
-            return (!has_items && !$.storage.get('pocketlists/apps/hide-pl2ss-by-default')) || has_items;
+            return (has_items && !$.storage.get('pocketlists/apps/hide-pl2ss-by-default'));
         }
 
         $list_wrapper.on('click', '[data-pl2-shop-action="close"]', function (e) {
@@ -121,7 +121,14 @@
 
                             $order.find('.pl2-shop-item-count').remove();
 
+                            var $indicator = $('[data-pl2-action="show-add-item"] .indicator.red');
                             if (r.data.count_entities) {
+                                if ($indicator.length) {
+                                    $indicator.text(r.data.count_entities);
+                                } else {
+                                    $('[data-pl2-action="show-add-item"]').append('<strong class="indicator red" style="top: -0.1rem;">' + r.data.count_entities + '</strong>')
+                                }
+
                                 if ($.order_list.options.view == 'split') {
                                     $order
                                         .find('.details')
@@ -131,6 +138,8 @@
                                         .find('td:last')
                                         .append(pl2);
                                 }
+                            } else {
+                                $indicator.remove();
                             }
                         }
                     }

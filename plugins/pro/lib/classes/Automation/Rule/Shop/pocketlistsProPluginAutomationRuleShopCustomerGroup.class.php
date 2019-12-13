@@ -31,7 +31,11 @@ class pocketlistsProPluginAutomationRuleShopCustomerGroup extends pocketlistsPro
     public function getPossibleValues()
     {
         if ($this->possibleValues === null) {
-            $this->possibleValues = (new waGroupModel())->getNames();
+            $categories = shopCustomer::getAllCategories();
+            $this->possibleValues = array_combine(
+                array_column($categories, 'id'),
+                array_column($categories, 'name')
+            );
         }
 
         return $this->possibleValues;
@@ -56,7 +60,7 @@ class pocketlistsProPluginAutomationRuleShopCustomerGroup extends pocketlistsPro
             return true;
         }
 
-        return in_array($this->value, (new waUserGroupsModel())->getGroupIds($order->customer_id));
+        return !empty((new waContactCategoriesModel())->inCategory($order->contact_id, $this->value));
     }
 
     /**
@@ -69,10 +73,11 @@ class pocketlistsProPluginAutomationRuleShopCustomerGroup extends pocketlistsPro
             return '';
         }
 
-        $group = (new waGroupModel())->getName($this->value);
+        $category = (new waContactCategoryModel())->getById($this->value);
+        $categoryName = ifset($category, 'name', _wp('DELETED CATEGORY'));
 
         return <<<HTML
-<strong>{$this->getLabel()} = {$group}</strong>
+<strong>{$this->getLabel()} = {$categoryName}</strong>
 HTML;
     }
 
@@ -82,33 +87,33 @@ HTML;
      */
     public function editHtml()
     {
-        $groups = [['title' => _wp('any'), 'value' => '']];
+        $category = [['title' => _wp('any'), 'value' => '']];
         foreach ($this->getPossibleValues() as $id => $item) {
-            $groups[] = [
+            $category[] = [
                 'title' => $item,
                 'value' => $id,
             ];
         }
 
-        $groups = waHtmlControl::getControl(
+        $category = waHtmlControl::getControl(
             waHtmlControl::SELECT,
             'data[rules]['.$this->getIdentifier().'][value]',
             [
                 'value'   => $this->value,
-                'options' => $groups,
+                'options' => $category,
             ]
         );
 
         return <<<HTML
 {$this->getHiddenIdentifierControl()}
-{$groups}
+{$category}
 HTML;
     }
 
     /**
      * @param array $json
      *
-     * @return pocketlistsProPluginAutomationRuleShopAction
+     * @return pocketlistsProPluginAutomationRuleShopAction|pocketlistsProPluginSerializableInterface
      */
     public function load(array $json)
     {

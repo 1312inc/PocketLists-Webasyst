@@ -24,6 +24,8 @@
                 });
 
                     $.post(plurl + '?module=shop&action=loadOrdersIcon', { orders: order_ids }, function (r) {
+                        console.log('pl2 item loadOrderIcon response', r);
+
                         if (r.status === 'ok' && r.data) {
                             $.each(r.data, function(i, datum) {
                                 var $order = $this.find('[data-order-id='+datum.entity_id+']');

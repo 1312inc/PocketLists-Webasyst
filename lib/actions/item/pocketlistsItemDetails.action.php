@@ -69,19 +69,31 @@ class pocketlistsItemDetailsAction extends pocketlistsViewItemAction
          * @event backend_item_add.detail
          *
          * @param pocketlistsEventInterface $event Event with pocketlistsItem as object
+         *
          * @return string of html output
          */
         $event = new pocketlistsEvent(pocketlistsEventStorage::WA_BACKEND_ITEM_ADD_DETAIL, $item);
         $eventResult = pl2()->waDispatchEvent($event);
 
+        /** @var pocketlistsPocketFactory $pocketFactory */
+        $pocketFactory = pl2()->getEntityFactory(pocketlistsPocket::class);
+        $allPockets = $pocketFactory->findAllForUser();
+        /** @var pocketlistsListDetailsListsDto[] $lists */
+        $lists = [];
+        foreach ($allPockets as $pocket) {
+            foreach ($pocket->getUserLists() as $list) {
+                $lists[] = new pocketlistsListDetailsListsDto($list->getId(), $list->getNameParsed(), $pocket->getName());
+            }
+        }
+
         $this->view->assign(
             [
-                'fileupload'     => $item->getId(),
-                'item'           => $item,
-                'list'           => $list,
-                'lists'          => $listFactory->findAllActive(),
+                'fileupload' => $item->getId(),
+                'item' => $item,
+                'list' => $list,
+                'lists' => $lists,
                 'assign_user_id' => $assign_user_id,
-                'contacts'       => $contacts,
+                'contacts' => $contacts,
 
                 'backend_item_add' => $eventResult,
             ]
