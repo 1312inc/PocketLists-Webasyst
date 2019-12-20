@@ -47,16 +47,17 @@ class pocketlistsItemLinkFactory extends pocketlistsFactory
     /**
      * @param pocketlistsItem $item
      * @param array           $linkData
+     * @param bool            $checkAccess
      *
      * @return bool|pocketlistsItemLink
      * @throws waException
      */
-    public function createFromDataForItem(pocketlistsItem $item, array $linkData)
+    public function createFromDataForItem(pocketlistsItem $item, array $linkData, $checkAccess = true)
     {
         /** @var pocketlistsAppLinkInterface $app */
         $app = pl2()->getLinkedApp($linkData['app']);
 
-        if (!$app->userCanAccess()) {
+        if ($checkAccess && !$app->userCanAccess()) {
             return false;
         }
 

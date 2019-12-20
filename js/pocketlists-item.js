@@ -374,6 +374,10 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 return;
             }
 
+            if ($item === undefined) {
+                return;
+            }
+
             if ($item.data('pl2-open-details-in-progress')) {
                 return;
             }

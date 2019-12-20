@@ -37,8 +37,6 @@ class pocketlistsProPluginWaEventListener
 
     /**
      * @param array $params
-     *
-     * @throws waException
      */
     public function onOrderAction(array $params)
     {
