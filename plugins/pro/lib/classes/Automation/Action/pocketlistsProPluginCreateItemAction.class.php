@@ -159,7 +159,8 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
                     'app' => pocketlistsAppLinkShop::APP,
                     'entity_type' => pocketlistsAppLinkShop::TYPE_ORDER,
                     'entity_id' => $order->getId(),
-                ]
+                ],
+                false
             );
 
             pl2()->getEventDispatcher()->dispatch(

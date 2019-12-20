@@ -44,7 +44,7 @@
         $order_info_wrapper.prepend($list_wrapper);
 
         function canShow() {
-            return (has_items && !$.storage.get('pocketlists/apps/hide-pl2ss-by-default'));
+            return !$.storage.get('pocketlists/apps/hide-pl2ss-by-default');
         }
 
         $list_wrapper.on('click', '[data-pl2-shop-action="close"]', function (e) {
