@@ -120,6 +120,21 @@
 </div>
 <div class="field">
     <div class="name">
+        [`When`]
+    </div>
+    <div class="value no-shift">
+        [`In`] <input type="text" class="short numerical" placeholder="0" name="data[action][when_in]" value="{$action->getWhenIn()}">
+        <select name="data[action][when_period]">
+            {foreach $duePeriods as $duePeriod => $duePeriodName}
+                <option value="{$duePeriod}" {if $action->getWhenPeriod() == $duePeriod}selected{/if}>{$duePeriodName}</option>
+            {/foreach}
+        </select>
+        [`from the moment the action was performed`]
+        <p class="hint">{$cronMessage|escape}</p>
+    </div>
+</div>
+<div class="field">
+    <div class="name">
         [`Due`]
     </div>
     <div class="value no-shift">

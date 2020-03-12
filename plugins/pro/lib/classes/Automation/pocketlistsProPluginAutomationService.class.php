@@ -79,6 +79,9 @@ class pocketlistsProPluginAutomationService
 
             case pocketlistsProPluginAutomationRuleShopStorefront::IDENTIFIER:
                 return (new pocketlistsProPluginAutomationRuleShopStorefront())->load($data);
+
+            case pocketlistsProPluginAutomationRuleShopState::IDENTIFIER:
+                return (new pocketlistsProPluginAutomationRuleShopState())->load($data);
         }
     }
 }

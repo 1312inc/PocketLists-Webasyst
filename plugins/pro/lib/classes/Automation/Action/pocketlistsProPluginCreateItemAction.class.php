@@ -49,6 +49,16 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
     protected $duePeriod = self::DUE_PERIOD_DAY;
 
     /**
+     * @var int
+     */
+    protected $whenIn = 0;
+
+    /**
+     * @var string
+     */
+    protected $whenPeriod = self::DUE_PERIOD_DAY;
+
+    /**
      * @var pocketlistsList|null
      */
     protected $list;
@@ -93,18 +103,53 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
             'priority' => (int)$this->priority,
             'due_in' => (int)$this->dueIn,
             'due_period' => $this->duePeriod,
+            'when_in' => (int)$this->whenIn,
+            'when_period' => $this->whenPeriod,
             'list' => $this->list ? (int)$this->list->getId() : null,
             'label' => $this->label->getId(),
         ];
     }
 
     /**
-     * @param shopOrder $order
+     * @param pocketlistsProPluginAutomation $automation
+     * @param array                      $params
+     *
+     * @return bool
+     * @throws waException
+     */
+    public function delay(pocketlistsProPluginAutomation $automation, $params)
+    {
+        if (!isset($params['order'], $params['action'])) {
+            return false;
+        }
+
+        $when = (new DateTime())
+            ->modify(sprintf('+%s %s', $this->whenIn, $this->whenPeriod))
+            ->format('Y-m-d H:i:s');
+
+        /** @var pocketlistsProPluginDelayedAutomationFactory $factory */
+        $factory = pl2()->getEntityFactory(pocketlistsProPluginDelayedAutomation::class);
+        $delayed = $factory->createNew()
+            ->setAutomation($automation)
+            ->setApplyDatetime($when)
+            ->setEventData(['order_id' => $params['order']->getId(), 'action_id' => $params['action']->getId()]);
+        $factory->insert($delayed);
+
+        pocketlistsLogger::debug(
+            sprintf('delayed automation %d saved', $delayed->getId())
+        );
+
+        return true;
+    }
+
+    /**
+     * @param pocketlistsProPluginAutomation $automation
+     * @param shopOrder                      $order
      *
      * @return mixed
      * @throws waException
      */
-    public function execute($order)
+    public function execute(pocketlistsProPluginAutomation $automation, $order)
     {
         /** @var pocketlistsItemFactory $factory */
         $factory = pl2()->getEntityFactory(pocketlistsItem::class);
@@ -205,6 +250,7 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
                 'assign' => $assign,
                 'action' => $this,
                 'due' => !empty($this->dueIn) ? sprintf_wp('%d %s', $this->dueIn, $this->duePeriod) : 0,
+                'when' => !empty($this->whenIn) ? sprintf_wp('%d %s', $this->whenIn, $this->whenPeriod) : 0,
             ]
         );
 
@@ -274,6 +320,7 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
                     self::DUE_PERIOD_HOUR => _wp('Hours'),
                     self::DUE_PERIOD_DAY => _wp('Days'),
                 ],
+                'cronMessage' => $this->getCronMessage(pocketlistsProPluginCronManager::APPLY_DELAYED_AUTOMATIONS),
             ]
         );
 
@@ -301,6 +348,8 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
             : null;
         $this->dueIn = (int)ifset($json['due_in'], 0);
         $this->duePeriod = ifset($json['due_period'], self::DUE_PERIOD_MIN);
+        $this->whenIn = (int)ifset($json['when_in'], 0);
+        $this->whenPeriod = ifset($json['when_period'], self::DUE_PERIOD_MIN);
         $this->priority = (int)ifset($json['priority'], pocketlistsItem::PRIORITY_NORM);
 
         if (!$this->list instanceof pocketlistsList) {
@@ -362,6 +411,22 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
     public function getDuePeriod()
     {
         return $this->duePeriod;
+    }
+
+    /**
+     * @return int
+     */
+    public function getWhenIn()
+    {
+        return $this->whenIn;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWhenPeriod()
+    {
+        return $this->whenPeriod;
     }
 
     /**
@@ -442,5 +507,28 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
             ],
             $str
         );
+    }
+
+    /**
+     * @param string $cronJonName
+     *
+     * @return string
+     * @throws waException
+     */
+    private function getCronMessage($cronJonName)
+    {
+        $cronMessage = sprintf_wp(
+            'Setup %s',
+            pocketlistsProPlugin::getInstance()->getCronManager()->getCronJobs($cronJonName)
+        );
+        $lastCron = pocketlistsProPlugin::getInstance()->getCronManager()->getLastRunCronJob($cronJonName);
+        if ($lastCron) {
+            $cronMessage = sprintf_wp(
+                'Last execution time %s',
+                waDateTime::format('humandatetime', $lastCron->format('Y-m-d H:i:s'))
+            );
+        }
+
+        return $cronMessage;
     }
 }

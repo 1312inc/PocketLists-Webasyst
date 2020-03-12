@@ -12,7 +12,11 @@ class pocketlistsLogger
     public static function debug($msg, $file = 'debug.log')
     {
         if (waSystemConfig::isDebug()) {
-            self::log(is_string($msg) ? $msg : print_r($msg, 1), $file);
+            $msg = is_string($msg) ? $msg : print_r($msg, 1);
+            self::log($msg, $file);
+            if (wa()->getEnv() === 'cli') {
+                echo sprintf("%s %s\tpl2: %s\n", date('Y-m-d H:i:s'), microtime(true), $msg);
+            }
         }
     }
 

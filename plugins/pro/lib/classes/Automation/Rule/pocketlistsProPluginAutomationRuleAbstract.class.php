@@ -13,6 +13,16 @@ abstract class pocketlistsProPluginAutomationRuleAbstract implements pocketlists
     protected $nextRule;
 
     /**
+     * @var bool
+     */
+    protected $delayed = false;
+
+    /**
+     * @var bool
+     */
+    protected $skipDelayed = false;
+
+    /**
      * @return string
      */
     public function getIdentifier()
@@ -55,6 +65,18 @@ abstract class pocketlistsProPluginAutomationRuleAbstract implements pocketlists
     }
 
     /**
+     * @param bool $skipDelayed
+     *
+     * @return pocketlistsProPluginAutomationRuleAbstract
+     */
+    public function skipDelayed($skipDelayed)
+    {
+        $this->skipDelayed = $skipDelayed;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function __toString()
@@ -90,7 +112,7 @@ abstract class pocketlistsProPluginAutomationRuleAbstract implements pocketlists
             'data[rules]['.$this->getIdentifier().'][compare]',
             [
                 'options' => $options,
-                'value'   => $selected,
+                'value' => $selected,
             ]
         );
     }
@@ -105,6 +127,22 @@ abstract class pocketlistsProPluginAutomationRuleAbstract implements pocketlists
             waHtmlControl::HIDDEN,
             'data[rules]['.$this->getIdentifier().'][identifier]',
             ['value' => $this->getIdentifier()]
+        );
+    }
+
+    /**
+     * @return string
+     * @throws Exception
+     */
+    protected function getDelayedCheckboxControl()
+    {
+        return waHtmlControl::getControl(
+            waHtmlControl::CHECKBOX,
+            'data[rules]['.$this->getIdentifier().'][delayed]',
+            [
+                'title' => _wp('Delayed check'),
+                'value' => $this->delayed,
+            ]
         );
     }
 

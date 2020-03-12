@@ -68,6 +68,11 @@ class pocketlistsProPluginAutomation extends pocketlistsEntity
     private $last_execution_datetime;
 
     /**
+     * @var
+     */
+    private $delayed;
+
+    /**
      * @return int
      */
     public function getId()

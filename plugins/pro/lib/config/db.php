@@ -15,6 +15,19 @@ return array(
             'PRIMARY' => 'id',
         ),
     ),
+    'pocketlists_pro_delayed_automation' => array(
+        'id' => array('int', 11, 'null' => 0, 'autoincrement' => 1),
+        'automation_id' => array('int', 11, 'null' => 0),
+        'status' => array('smallint', 6, 'null' => 0, 'default' => '0'),
+        'event_data' => array('text', 'null' => 0),
+        'apply_datetime' => array('datetime', 'null' => 0),
+        'created_datetime' => array('datetime', 'null' => 0),
+        'executed_datetime' => array('datetime'),
+        'error' => array('text'),
+        ':keys' => array(
+            'PRIMARY' => 'id',
+        ),
+    ),
     'pocketlists_pro_label' => array(
         'id' => array('int', 11, 'null' => 0, 'autoincrement' => 1),
         'name' => array('mediumtext'),
