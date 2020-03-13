@@ -287,6 +287,9 @@ HTML;
             } else {
                 console.log('pocketlists: notification send error ' + r.error);
             }
+        }, 'json')
+        .fail(function() {
+            console.log('pocketlists: notification send internal error');
         });
         
         $.post('{$pocketlistsPath}sendDirectNotifications', function(r) {
@@ -304,6 +307,9 @@ HTML;
             } else {
                 console.log('pocketlists: notification send error ' + r.error);
             }
+        }, 'json')
+        .fail(function() {
+            console.log('pocketlists: notification send internal error');
         });
     } catch (e) {
         console.log('pocketlists: notification send exception ', e);
