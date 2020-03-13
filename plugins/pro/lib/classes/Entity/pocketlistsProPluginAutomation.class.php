@@ -312,10 +312,14 @@ class pocketlistsProPluginAutomation extends pocketlistsEntity
 
             foreach ($this->rules as $rule) {
                 if (!empty($rule['identifier'])) {
-                    $rules[] = pocketlistsProPlugin::getInstance()->getAutomationService()->createRule(
-                        $rule['identifier'],
-                        $rule
-                    );
+                    try {
+                        $rules[] = pocketlistsProPlugin::getInstance()->getAutomationService()->createRule(
+                            $rule['identifier'],
+                            $rule
+                        );
+                    } catch (Exception $exception) {
+                        pocketlistsLogger::error($exception->getMessage());
+                    }
                 }
             }
             $this->rules = $rules;

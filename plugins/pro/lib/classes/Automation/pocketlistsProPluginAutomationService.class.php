@@ -30,7 +30,7 @@ class pocketlistsProPluginAutomationService
             $id = $action->getId();
 //            $name = $action->getOption('log_record');
 //            if (!$name) {
-                $name = $action->getName();
+            $name = $action->getName();
 //            }
 
             $eventDto = new pocketlistsProPluginAutomationSettingsDto();
@@ -47,17 +47,18 @@ class pocketlistsProPluginAutomationService
     public function getAvailableRules($group = self::GROUP_SHOP)
     {
         $rules = [
-            new pocketlistsProPluginAutomationRuleShopPayment()
+            new pocketlistsProPluginAutomationRuleShopPayment(),
         ];
 
         return $rules;
     }
 
     /**
-     * @param       $identifier
-     * @param array $data
+     * @param string $identifier
+     * @param array  $data
      *
      * @return pocketlistsProPluginAutomationRuleInterface
+     * @throws pocketlistsLogicException
      */
     public function createRule($identifier, array $data)
     {

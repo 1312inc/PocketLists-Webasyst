@@ -3,7 +3,7 @@
 /**
  * Class pocketlistsProPluginAutomationRuleShopAmount
  */
-class pocketlistsProPluginAutomationRuleShopAmount extends pocketlistsProPluginAutomationRuleAbstract
+class pocketlistsProPluginAutomationRuleShopAmount extends pocketlistsProPluginAutomationRuleShop
 {
     const IDENTIFIER = 'order_amount';
 

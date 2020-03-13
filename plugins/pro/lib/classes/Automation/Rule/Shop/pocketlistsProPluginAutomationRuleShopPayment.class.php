@@ -3,7 +3,7 @@
 /**
  * Class pocketlistsProPluginAutomationRuleShopPayment
  */
-class pocketlistsProPluginAutomationRuleShopPayment extends pocketlistsProPluginAutomationRuleAbstract
+class pocketlistsProPluginAutomationRuleShopPayment extends pocketlistsProPluginAutomationRuleShop
 {
     const IDENTIFIER = 'payment';
 

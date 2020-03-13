@@ -3,7 +3,7 @@
 /**
  * Class pocketlistsProPluginAutomationRuleShopStorefront
  */
-class pocketlistsProPluginAutomationRuleShopStorefront extends pocketlistsProPluginAutomationRuleAbstract
+class pocketlistsProPluginAutomationRuleShopStorefront extends pocketlistsProPluginAutomationRuleShop
 {
     const IDENTIFIER = 'storefront';
 

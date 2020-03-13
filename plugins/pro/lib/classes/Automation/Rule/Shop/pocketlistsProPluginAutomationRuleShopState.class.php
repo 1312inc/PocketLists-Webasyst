@@ -3,7 +3,7 @@
 /**
  * Class pocketlistsProPluginAutomationRuleShopState
  */
-class pocketlistsProPluginAutomationRuleShopState extends pocketlistsProPluginAutomationRuleAbstract
+class pocketlistsProPluginAutomationRuleShopState extends pocketlistsProPluginAutomationRuleShop
 {
     const IDENTIFIER = 'order_state';
 

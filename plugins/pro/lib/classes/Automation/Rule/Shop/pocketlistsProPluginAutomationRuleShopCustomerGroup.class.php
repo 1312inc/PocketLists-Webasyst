@@ -3,7 +3,7 @@
 /**
  * Class pocketlistsProPluginAutomationRuleShopCustomerGroup
  */
-class pocketlistsProPluginAutomationRuleShopCustomerGroup extends pocketlistsProPluginAutomationRuleAbstract
+class pocketlistsProPluginAutomationRuleShopCustomerGroup extends pocketlistsProPluginAutomationRuleShop
 {
     const IDENTIFIER = 'customer_group';
 
