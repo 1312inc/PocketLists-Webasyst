@@ -35,6 +35,6 @@ class pocketlistsLogger
      */
     public static function error($msg, $file = 'error.log')
     {
-        waLog::log(is_string($msg) ? $msg : print_r($msg, 1), $file);
+        self::log($msg, $file);
     }
 }
