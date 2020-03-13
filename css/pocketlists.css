@@ -163,6 +163,13 @@ table.pl-calendar td .pl-dots i.icon10 { margin-top: 0.2em; margin-right: 0.2em;
 /* About
 -------- */
 
+.pl-about p { max-width: 80%; }
+
+.pl-upgrade { float: left; margin-bottom: 1rem; width: 100%; }
+.pl-upgrade p { margin-bottom: 0; }
+.pl-upgrade .icon16.star { margin-right: 0.15em; margin-top: 0; }
+.pl-upgrade .pl-wa-plugin-icon { box-shadow: 0 15px 35px rgba(40,40,80,0.1), 0 5px 10px rgba(0,0,0,0.07); border-radius: 5px; width: 200px; height: 110px; float: left;  margin-right: 20px; margin-bottom: 3px; }
+
 .pl-badge-appstore { width: 144px; display: block; }
 
 .pl-roadmap { list-style: none; padding: 0; }
@@ -171,7 +178,7 @@ table.pl-calendar td .pl-dots i.icon10 { margin-top: 0.2em; margin-right: 0.2em;
 .pl-roadmap li .pl-done:checked + span { border: 2px solid transparent; }
 .pl-roadmap li .pl-done.pl-priority-fire + span { width: 25px; height: 25px; background-size: 27px 27px; margin-left: -5px; }
 
-.pl-wa-plugin-icon { box-shadow: 0 15px 35px rgba(40,40,80,0.1), 0 5px 10px rgba(0,0,0,0.07); border-radius: 5px; width: 200px; height: 110px; }
+.pl2ios-app-icon { width: 128px; height: 128px; margin: -19px; }
 
 /* Done checkbox
 ---------------- */
