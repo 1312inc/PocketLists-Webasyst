@@ -89,7 +89,7 @@ class pocketlistsItemCreateAction extends pocketlistsViewAction
                     $item->setNote($ni['note']);
                 }
 
-                if ($this->user->getSettings()->getNaturalInput()) {
+                if (!$item->getDueDate() && $this->user->getSettings()->getNaturalInput()) {
                     $name = $item->getName();
                     $ni = pocketlistsNaturalInput::matchDueDate($name);
                     if ($ni) {
