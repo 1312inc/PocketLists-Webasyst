@@ -1744,8 +1744,8 @@ msgid "https://www.webasyst.com/store/plugin/pocketlists/pro/"
 msgstr "https://www.webasyst.ru/store/plugin/pocketlists/pro/"
 
 #: /wa-apps/pocketlists/templates/actions/about/About.html:178
-msgid "Bullets highlighted with a %s label are available as a part of the paid <a href=\"%s\" target=\"_blank\"><b>Pocket Lists PRO</b></a> plugin."
-msgstr "Возможности, отмеченные значком %s, доступны в виде отдельного платного плагина <a href=\"%s\" target=\"_blank\"><b>Pocket Lists PRO</b></a>."
+msgid "Bullets highlighted with a %s label are available as a part of the paid <a href=\"%s\"><b>Pocket Lists PRO</b></a> plugin."
+msgstr "Возможности, отмеченные значком %s, доступны в виде отдельного платного плагина <a href=\"%s\"><b>Pocket Lists PRO</b></a>."
 
 #: /wa-apps/pocketlists/lib/class/Log/pocketlistsLogContext.class.php:140
 msgid "No %s entity object in log context"

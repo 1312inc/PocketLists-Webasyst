@@ -1,11 +1,24 @@
+{if $wa->user()->isAdmin('installer')}
+    {$_pl2pro_url = $wa_backend_url|cat:'installer/store/plugin/pocketlists/pro/'}
+{else}
+    {$_pl2pro_url = '[`https://www.webasyst.com/store/plugin/pocketlists/pro/`]'}
+{/if}
 <div class="shadowed">
 
     <main class="block double-padded">
 
         {if pocketlistsHelper::hasPlugin('pro')}
-            you are ok
+
+            <h1>Thank you for being a PRO user and supporting Pocket Lists!</h1>
+            link to the Installer
+            rate PRO widget
+
         {else}
-            get it
+
+            <h1>Upgrade to PRO</h1>
+            details
+            link to the Installer
+
         {/if}
 
         <div class="clear-both"></div>
@@ -13,3 +26,9 @@
     </main>
 
 </div>
+
+<script type="text/javascript">
+    (function(){
+        $.pocketlists.setTitle($_('Upgrade to PRO'));
+    }());
+</script>
