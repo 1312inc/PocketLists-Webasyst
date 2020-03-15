@@ -14,9 +14,6 @@ class pocketlistsLogger
         if (waSystemConfig::isDebug()) {
             $msg = is_string($msg) ? $msg : print_r($msg, 1);
             self::log($msg, $file);
-            if (wa()->getEnv() === 'cli') {
-                echo sprintf("%s %s\tpl2: %s\n", date('Y-m-d H:i:s'), microtime(true), $msg);
-            }
         }
     }
 
@@ -27,6 +24,9 @@ class pocketlistsLogger
     public static function log($msg, $file = 'pocketlists.log')
     {
         waLog::log(is_string($msg) ? $msg : print_r($msg, 1), 'pocketlists/'.$file);
+        if (waSystemConfig::isDebug() && wa()->getEnv() === 'cli') {
+            echo sprintf("%s %s\tpl2: %s\n", date('Y-m-d H:i:s'), microtime(true), $msg);
+        }
     }
 
     /**
