@@ -63,7 +63,7 @@ class pocketlistsProPluginAutomationRuleShopCustomerGroup extends pocketlistsPro
             return '';
         }
 
-        $categories = (new waContactCategoryModel())->getByField('id', $this->value);
+        $categories = (new waContactCategoryModel())->getByField('id', $this->value, true);
         $categoryNames = [];
         foreach ($categories as $category) {
             $categoryNames[] = ifset($category, 'name', '');

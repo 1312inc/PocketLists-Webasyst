@@ -68,9 +68,9 @@ class pocketlistsProPluginAutomation extends pocketlistsEntity
     private $last_execution_datetime;
 
     /**
-     * @var
+     * @var bool
      */
-    private $delayed;
+    private $enabled = 1;
 
     /**
      * @return int
@@ -270,6 +270,26 @@ class pocketlistsProPluginAutomation extends pocketlistsEntity
     public function getLastExecutionDatetime()
     {
         return $this->last_execution_datetime;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEnabled()
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * @param bool $enabled
+     *
+     * @return pocketlistsProPluginAutomation
+     */
+    public function setEnabled($enabled)
+    {
+        $this->enabled = $enabled;
+
+        return $this;
     }
 
     /**

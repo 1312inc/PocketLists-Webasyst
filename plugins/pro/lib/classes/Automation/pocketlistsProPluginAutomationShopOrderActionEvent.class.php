@@ -66,6 +66,12 @@ class pocketlistsProPluginAutomationShopOrderActionEvent implements pocketlistsP
             pocketlistsLogger::debug(sprintf('automation %d', $automation->getId()));
             pocketlistsLogger::debug($automation);
 
+            if (!$automation->isEnabled()) {
+                pocketlistsLogger::debug(sprintf('Automation %d is disabled', $automation->getId()));
+
+                continue;
+            }
+
             if ($automation->getAction()->getWhenIn()) {
                 $this->delayAutomation($automation);
             } else {

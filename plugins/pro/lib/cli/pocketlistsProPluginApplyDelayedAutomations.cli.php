@@ -8,7 +8,6 @@ class pocketlistsProPluginApplyDelayedAutomationsCli extends waCliController
     /**
      * @param null $params
      *
-     * @throws waDbException
      * @throws waException
      */
     public function run($params = null)
@@ -25,6 +24,11 @@ class pocketlistsProPluginApplyDelayedAutomationsCli extends waCliController
                 $factory->update($delayedAutomation);
 
                 $automation = $delayedAutomation->getAutomation();
+                if (!$automation->isEnabled()) {
+                    pocketlistsLogger::debug(sprintf('Automation %d is disabled', $automation->getId()));
+
+                    continue;
+                }
 
                 $data = $delayedAutomation->getEventData();
                 $orderId = ifset($data, 'order_id', null);

@@ -11,6 +11,7 @@ return array(
         'updated_datetime' => array('datetime'),
         'execution_count' => array('int', 11),
         'last_execution_datetime' => array('datetime'),
+        'enabled' => array('tinyint', 3, 'unsigned' => 1, 'default' => '1'),
         ':keys' => array(
             'PRIMARY' => 'id',
         ),
