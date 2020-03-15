@@ -1050,7 +1050,7 @@ class pocketlistsItemModel extends pocketlistsModel
 
         $q = $this->buildSqlComponents($sqlParts);
         $items = $this->query(
-            $q,
+            $q.'1',
             [
                 'contact_id' => $contact_id,
                 'list_ids'   => $lists,
