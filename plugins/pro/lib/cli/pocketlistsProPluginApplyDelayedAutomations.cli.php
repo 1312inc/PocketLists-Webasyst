@@ -28,7 +28,7 @@ class pocketlistsProPluginApplyDelayedAutomationsCli extends waCliController
 
                 $data = $delayedAutomation->getEventData();
                 $orderId = ifset($data, 'order_id', null);
-                $order = new shopOrder(['order_id']);
+                $order = new shopOrder($orderId);
                 if (!$order instanceof shopOrder) {
                     throw new pocketlistsLogicException(
                         sprintf('No order %s for delayed automation %s', $orderId, $delayedAutomation->getId())

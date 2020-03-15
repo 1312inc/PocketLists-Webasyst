@@ -23,11 +23,24 @@ abstract class pocketlistsProPluginAutomationRuleAbstract implements pocketlists
     protected $skipDelayed = false;
 
     /**
+     * @var mixed
+     */
+    protected $value;
+
+    /**
      * @return string
      */
     public function getIdentifier()
     {
         return static::IDENTIFIER;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getValue()
+    {
+        return $this->value;
     }
 
     /**
@@ -131,6 +144,34 @@ abstract class pocketlistsProPluginAutomationRuleAbstract implements pocketlists
     }
 
     /**
+     * @param array $options
+     *
+     * @return string
+     */
+    protected function getMultipleSelectControl($options)
+    {
+        return sprintf(
+            '<select name="data[rules][%s][value][]" multiple>%s</select>',
+            $this->getIdentifier(),
+            array_reduce(
+                $options,
+                function ($options, $item) {
+                    $selected = is_array($this->value) ? in_array($item['value'], $this->value) : false;
+                    $options .= sprintf(
+                        '<option value="%s" %s>%s</option>',
+                        $item['value'],
+                        $selected ? 'selected' : '',
+                        $item['title']
+                    );
+
+                    return $options;
+                },
+                ''
+            )
+        );
+    }
+
+    /**
      * @return string
      * @throws Exception
      */
@@ -162,5 +203,27 @@ abstract class pocketlistsProPluginAutomationRuleAbstract implements pocketlists
                 sprintf('plugins/pro/templates/actions/automation/rule/%s.%s.html', $this->getIdentifier(), $mode)
             )
         );
+    }
+
+    /**
+     * @param array $json
+     *
+     * @return array
+     */
+    protected function loadValueAsArray($json)
+    {
+        if (!isset($json['value'])) {
+            return [];
+        }
+
+        if (!empty($json['value']) && !is_array($json['value'])) {
+            return [$json['value']];
+        }
+
+        if (empty($json['value'])) {
+            return [];
+        }
+
+        return $json['value'];
     }
 }

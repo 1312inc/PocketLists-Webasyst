@@ -2,18 +2,16 @@
 
 /**
  * Class pocketlistsProPluginAutomationRuleShopCustomerGroup
+ *
+ * @method array getValue()
+ * @property array $value
  */
 class pocketlistsProPluginAutomationRuleShopCustomerGroup extends pocketlistsProPluginAutomationRuleShop
 {
     const IDENTIFIER = 'customer_group';
 
     /**
-     * @var string
-     */
-    protected $value;
-
-    /**
-     * @var string
+     * @var array
      */
     protected $possibleValues;
 
@@ -42,14 +40,6 @@ class pocketlistsProPluginAutomationRuleShopCustomerGroup extends pocketlistsPro
     }
 
     /**
-     * @return float
-     */
-    public function getValue()
-    {
-        return $this->value;
-    }
-
-    /**
      * @param shopOrder $order
      *
      * @return bool
@@ -73,11 +63,16 @@ class pocketlistsProPluginAutomationRuleShopCustomerGroup extends pocketlistsPro
             return '';
         }
 
-        $category = (new waContactCategoryModel())->getById($this->value);
-        $categoryName = ifset($category, 'name', _wp('DELETED CATEGORY'));
+        $categories = (new waContactCategoryModel())->getByField('id', $this->value);
+        $categoryNames = [];
+        foreach ($categories as $category) {
+            $categoryNames[] = ifset($category, 'name', '');
+        }
+        array_filter($categoryNames);
+        $categoryNames = implode(', ', $categoryNames);
 
         return <<<HTML
-<strong>{$this->getLabel()} = {$categoryName}</strong>
+<strong>{$this->getLabel()} = {$categoryNames}</strong>
 HTML;
     }
 
@@ -95,18 +90,9 @@ HTML;
             ];
         }
 
-        $category = waHtmlControl::getControl(
-            waHtmlControl::SELECT,
-            'data[rules]['.$this->getIdentifier().'][value]',
-            [
-                'value'   => $this->value,
-                'options' => $category,
-            ]
-        );
-
         return <<<HTML
 {$this->getHiddenIdentifierControl()}
-{$category}
+{$this->getMultipleSelectControl($category)}
 HTML;
     }
 
@@ -117,7 +103,7 @@ HTML;
      */
     public function load(array $json)
     {
-        $this->value = $json['value'];
+        $this->value = $this->loadValueAsArray($json);
 
         return $this;
     }

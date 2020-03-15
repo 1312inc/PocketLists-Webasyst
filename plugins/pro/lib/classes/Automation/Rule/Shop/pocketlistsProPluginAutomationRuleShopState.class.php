@@ -2,15 +2,13 @@
 
 /**
  * Class pocketlistsProPluginAutomationRuleShopState
+ *
+ * @method array getValue()
+ * @property array $value
  */
 class pocketlistsProPluginAutomationRuleShopState extends pocketlistsProPluginAutomationRuleShop
 {
     const IDENTIFIER = 'order_state';
-
-    /**
-     * @var string
-     */
-    protected $value;
 
     /**
      * @var string
@@ -34,18 +32,9 @@ class pocketlistsProPluginAutomationRuleShopState extends pocketlistsProPluginAu
     }
 
     /**
-     * @return float
-     */
-    public function getValue()
-    {
-        return $this->value;
-    }
-
-    /**
      * @param shopOrder $order
      *
      * @return bool
-     * @throws pocketlistsLogicException
      */
     public function match($order)
     {
@@ -59,7 +48,16 @@ class pocketlistsProPluginAutomationRuleShopState extends pocketlistsProPluginAu
             return true;
         }
 
-        return pocketlistsProPluginComparision::compare($order->state->getId(), $this->value, $this->compare);
+        switch ($this->compare) {
+            case pocketlistsProPluginComparision::TYPE_EQ:
+                return in_array($order->state->getId(), $this->value);
+
+            case pocketlistsProPluginComparision::TYPE_NEQ:
+                return !in_array($order->state->getId(), $this->value);
+
+            default:
+                return false;
+        }
     }
 
     /**
@@ -72,10 +70,17 @@ class pocketlistsProPluginAutomationRuleShopState extends pocketlistsProPluginAu
             return '';
         }
 
-        $workflowState = (new shopWorkflow())->getStateById($this->value);
-        if (!$workflowState instanceof waWorkflowState) {
-            return '';
+        $workflow = new shopWorkflow();
+        $states = [];
+        foreach ($this->value as $item) {
+            $workflowState = $workflow->getStateById($item);
+            if (!$workflowState instanceof waWorkflowState) {
+                continue;
+            }
+
+            $states[] = $workflowState->getName();
         }
+        $states = implode(', ', $states);
 
         $delayed = '';
         if ($this->delayed) {
@@ -83,7 +88,7 @@ class pocketlistsProPluginAutomationRuleShopState extends pocketlistsProPluginAu
         }
 
         return <<<HTML
-<strong>{$this->getLabel()} {$this->compare} {$workflowState->getName()}{$delayed}</strong>
+<strong>{$this->getLabel()} {$this->compare} {$states}{$delayed}</strong>
 HTML;
     }
 
@@ -105,15 +110,6 @@ HTML;
             ];
         }
 
-        $input = waHtmlControl::getControl(
-            waHtmlControl::SELECT,
-            'data[rules]['.$this->getIdentifier().'][value]',
-            [
-                'value'   => $this->value,
-                'options' => $states,
-            ]
-        );
-
         return <<<HTML
 {$this->getSelectCompareControl(
     $this->compare,
@@ -123,7 +119,7 @@ HTML;
     ]
 )}
 {$this->getHiddenIdentifierControl()}
-{$input}
+{$this->getMultipleSelectControl($states)}
 {$this->getDelayedCheckboxControl()}
 HTML;
     }
@@ -135,7 +131,13 @@ HTML;
      */
     public function load(array $json)
     {
-        $this->value = $json['value'];
+        if (!empty($json['value']) && !is_array($json['value'])) {
+            $this->value = [$json['value']];
+        } elseif (empty($json['value'])) {
+            $this->value = [];
+        } else {
+            $this->value = $json['value'];
+        }
         $this->compare = $json['compare'];
         $this->delayed = ifset($json, 'delayed', false);
 

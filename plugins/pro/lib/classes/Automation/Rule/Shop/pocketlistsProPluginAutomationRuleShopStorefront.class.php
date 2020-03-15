@@ -2,15 +2,13 @@
 
 /**
  * Class pocketlistsProPluginAutomationRuleShopStorefront
+ *
+ * @method array getValue()
+ * @property array $value
  */
 class pocketlistsProPluginAutomationRuleShopStorefront extends pocketlistsProPluginAutomationRuleShop
 {
     const IDENTIFIER = 'storefront';
-
-    /**
-     * @var string
-     */
-    protected $value;
 
     /**
      * @var string
@@ -39,14 +37,6 @@ class pocketlistsProPluginAutomationRuleShopStorefront extends pocketlistsProPlu
     }
 
     /**
-     * @return float
-     */
-    public function getValue()
-    {
-        return $this->value;
-    }
-
-    /**
      * @param shopOrder $order
      *
      * @return bool
@@ -57,9 +47,9 @@ class pocketlistsProPluginAutomationRuleShopStorefront extends pocketlistsProPlu
             return true;
         }
 
-        $storefront = isset($order->params['storefront']) ? $order->params['storefront'] : null;
+        $storefront = isset($order->params['storefront']) ? $order->params['storefront'] : '';
 
-        return $storefront == $this->value;
+        return in_array($storefront, $this->value);
     }
 
     /**
@@ -72,8 +62,10 @@ class pocketlistsProPluginAutomationRuleShopStorefront extends pocketlistsProPlu
             return '';
         }
 
+        $values = implode(', ', $this->value);
+
         return <<<HTML
-<strong>{$this->getLabel()} {$this->value}</strong>
+<strong>{$this->getLabel()} {$values}</strong>
 HTML;
     }
 
@@ -91,18 +83,9 @@ HTML;
             ];
         }
 
-        $domains = waHtmlControl::getControl(
-            waHtmlControl::SELECT,
-            'data[rules]['.$this->getIdentifier().'][value]',
-            [
-                'value'   => $this->value,
-                'options' => $domains,
-            ]
-        );
-
         return <<<HTML
 {$this->getHiddenIdentifierControl()}
-{$domains}
+{$this->getMultipleSelectControl($domains)}
 HTML;
     }
 
@@ -113,7 +96,7 @@ HTML;
      */
     public function load(array $json)
     {
-        $this->value = $json['value'];
+        $this->value = $this->loadValueAsArray($json);
 
         return $this;
     }
