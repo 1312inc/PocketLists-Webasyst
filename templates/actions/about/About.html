@@ -1,11 +1,6 @@
-{if $wa->user()->isAdmin('installer')}
-    {$_pl2pro_url = $wa_backend_url|cat:'installer/store/plugin/pocketlists/pro/'}
-{else}
-    {$_pl2pro_url = '[`https://www.webasyst.com/store/plugin/pocketlists/pro/`]'}
-{/if}
 <div class="shadowed pl-about">
 
-    {if 11}
+    {if !pocketlistsHelper::hasPlugin('pro')}
     <figure class="block double-padded highlighted pl-upgrade">
           <a href="#/upgrade/"><img src="{$wa_url}wa-apps/pocketlists/img/pl2pro-plugin-icon.png" class="pl-wa-plugin-icon" /></a>
           <h3>
@@ -201,7 +196,7 @@
                         </li>
                     </ul>
 
-                    <p><em>{sprintf('[`Bullets highlighted with a %s label are available as a part of the paid <a href="%s" target="_blank"><b>Pocket Lists PRO</b></a> plugin.`]', '<span class="pl-label pl-pro">PRO</span>', $_pl2pro_url)}</em></p>
+                    <p><em>{sprintf('[`Bullets highlighted with a %s label are available as a part of the paid <a href="%s"><b>Pocket Lists PRO</b></a> plugin.`]', '<span class="pl-label pl-pro">PRO</span>', '#/upgrade/')}</em></p>
 
                 </div>
                 <div class="value no-shift">
