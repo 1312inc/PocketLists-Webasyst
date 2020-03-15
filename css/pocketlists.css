@@ -180,6 +180,17 @@ table.pl-calendar td .pl-dots i.icon10 { margin-top: 0.2em; margin-right: 0.2em;
 
 .pl2ios-app-icon { width: 128px; height: 128px; margin: -19px; }
 
+/* Some tiny promotions
+----------------------- */
+
+.pl-tiny-ad { padding: 10px 5px 10px 10px; }
+.pl-tiny-ad-box { background: #ffd; border: 1px solid rgba(0,0,0,0.1); box-shadow: 0 5px 10px -5px rgba(0,0,0,0.1); border-radius: 4px; padding: 10px; }
+.pl-tiny-ad .pl-tiny-ad-close { float: right; font-size: 1.25rem; color: #886; position: relative; top: -0.35rem; margin-left: 1rem; }
+.pl-tiny-ad h5 { font-size: 0.75rem; margin-bottom: 1rem; color: #bb9; }
+.pl-tiny-ad p { font-size: 0.85em; line-height: 1.2em; font-family: 'Helvetica Neue', 'Liberation Sans', Arial, sans-serif; text-align: center; margin: 12px 4px 8px; }
+.pl-tiny-ad img.pl-app-icon { width: 72px; height: 72px; margin: 12px auto; display: block; }
+
+
 /* Done checkbox
 ---------------- */
 
