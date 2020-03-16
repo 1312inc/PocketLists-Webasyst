@@ -97,6 +97,15 @@ HTML;
     }
 
     /**
+     * @return string
+     * @throws Exception
+     */
+    public function editHtmlDisclaimer()
+    {
+        return _wp('For Windows: Hold down the control (ctrl) button to select multiple options.<br> For Mac: Hold down the command button to select multiple options.');
+    }
+
+    /**
      * @param array $json
      *
      * @return pocketlistsProPluginAutomationRuleShopAction|pocketlistsProPluginSerializableInterface

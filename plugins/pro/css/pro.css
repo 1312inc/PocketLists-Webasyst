@@ -50,6 +50,7 @@
 .pl2pro-rule-header .pl2pro-rule-if { opacity: 0.5; }
 .pl2pro-rule-body { background: #fff; padding: 10px 12px; }
 .pl2pro-rule-footer { padding: 0 12px 10px; font-size: 0.9em; color: #aaa; }
+.pl-select-multiple { height: 70px; width: 200px; }
 
 .pl2pro-ss-order-action { border-radius: 15px; padding: 7px 9px 7px; background: #fafafa; border: 1px solid rgba(0,0,0,0.1); box-shadow: 0 5px 10px -5px #eee; margin-left: -4px; margin-top: -3px; white-space: nowrap; text-overflow: ellipsis; max-width: 150px; display: inline-block; overflow: hidden; }
 .pl2pro-ss-order-action .icon16.color { margin-top: -1px; }

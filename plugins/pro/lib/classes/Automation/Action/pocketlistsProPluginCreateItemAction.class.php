@@ -517,14 +517,16 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
      */
     private function getCronMessage($cronJonName)
     {
-        $cronMessage = sprintf_wp(
-            'Setup %s',
-            pocketlistsProPlugin::getInstance()->getCronManager()->getCronJobs($cronJonName)
-        );
+        $cronMessage = '<i class="icon10 exclamation"></i>'.
+            _wp('Delayed actions require CRON to be configured for the Pocket Lists PRO plugin, which is not the case for your installation. Cron the following command every 10 minutes:').
+            '<br><br>'.
+            _wp('Webasyst Cloud: launch the Cloud app &gt; Add Cron job &gt; ').' <code class="highlighted black">php cli.php [Pocket Lists] <b>proPluginApplyDelayedAutomations</b></code>'.
+            '<br><br>'.
+            _wp('Own server:').' <code class="highlighted">'.pocketlistsProPlugin::getInstance()->getCronManager()->getCronJobs($cronJonName).'</code>';
         $lastCron = pocketlistsProPlugin::getInstance()->getCronManager()->getLastRunCronJob($cronJonName);
         if ($lastCron) {
-            $cronMessage = sprintf_wp(
-                'Last execution time %s',
+            $cronMessage = '<i class="icon10 yes"></i>' . sprintf_wp(
+                'Last Cron execution time: %s',
                 waDateTime::format('humandatetime', $lastCron->format('Y-m-d H:i:s'))
             );
         }

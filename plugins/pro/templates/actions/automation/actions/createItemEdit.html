@@ -10,6 +10,25 @@
 </div>
 <div class="field">
     <div class="name">
+        [`When`]
+    </div>
+    <div class="value no-shift">
+        <label><input type="radio"> [`Create immediately`]</label>
+    </div>
+    <div class="value no-shift">
+        <label><input type="radio"> [`Create in`]</label>
+        <input type="text" class="short numerical" placeholder="0" name="data[action][when_in]" value="{$action->getWhenIn()}">
+        <select name="data[action][when_period]">
+            {foreach $duePeriods as $duePeriod => $duePeriodName}
+                <option value="{$duePeriod}" {if $action->getWhenPeriod() == $duePeriod}selected{/if}>{$duePeriodName}</option>
+            {/foreach}
+        </select>
+        [`from the moment the action was performed`]
+        <p class="hint">{$cronMessage}</p>
+    </div>
+</div>
+<div class="field">
+    <div class="name">
         [`Title`]
     </div>
     <div class="value">
@@ -120,21 +139,6 @@
 </div>
 <div class="field">
     <div class="name">
-        [`When`]
-    </div>
-    <div class="value no-shift">
-        [`In`] <input type="text" class="short numerical" placeholder="0" name="data[action][when_in]" value="{$action->getWhenIn()}">
-        <select name="data[action][when_period]">
-            {foreach $duePeriods as $duePeriod => $duePeriodName}
-                <option value="{$duePeriod}" {if $action->getWhenPeriod() == $duePeriod}selected{/if}>{$duePeriodName}</option>
-            {/foreach}
-        </select>
-        [`from the moment the action was performed`]
-        <p class="hint">{$cronMessage|escape}</p>
-    </div>
-</div>
-<div class="field">
-    <div class="name">
         [`Due`]
     </div>
     <div class="value no-shift">
@@ -144,7 +148,7 @@
             <option value="{$duePeriod}" {if $action->getDuePeriod() == $duePeriod}selected{/if}>{$duePeriodName}</option>
             {/foreach}
         </select>
-        [`from the moment the action was performed`]
+        [`from the moment the to-do was created`]
         <p class="hint">[`To-do due (deadline) may be set depending on the order action time. Leave zero for no due date and time.`]</p>
     </div>
 </div>
