@@ -151,7 +151,7 @@ abstract class pocketlistsProPluginAutomationRuleAbstract implements pocketlists
     protected function getMultipleSelectControl($options)
     {
         return sprintf(
-            '<select name="data[rules][%s][value][]" multiple>%s</select>',
+            '<select name="data[rules][%s][value][]" multiple class="pl-select-multiple">%s</select>',
             $this->getIdentifier(),
             array_reduce(
                 $options,

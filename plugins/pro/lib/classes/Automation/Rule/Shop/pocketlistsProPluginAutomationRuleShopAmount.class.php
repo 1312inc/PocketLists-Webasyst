@@ -103,6 +103,15 @@ HTML;
     }
 
     /**
+     * @return string
+     * @throws Exception
+     */
+    public function editHtmlDisclaimer()
+    {
+        return '';
+    }
+
+    /**
      * @param array $json
      *
      * @return $this|pocketlistsProPluginSerializableInterface
