@@ -45,6 +45,10 @@ class pocketlistsItemCreateAction extends pocketlistsViewAction
             $list = $list_id ? $listFactory->findById($list_id) : $listFactory->createNewNullList();
 
             foreach ($data as $i => $d) {
+                if (!empty($d['list_id']) && $list_id != $d['list_id']) {
+                    $list = $listFactory->findById($d['list_id']);
+                }
+
                 pocketlistsHelper::getDueDatetime($d);
 
                 /** @var pocketlistsItem $item */
