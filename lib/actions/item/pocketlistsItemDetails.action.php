@@ -15,6 +15,7 @@ class pocketlistsItemDetailsAction extends pocketlistsViewItemAction
     {
         $id = waRequest::request('id', false, waRequest::TYPE_INT);
         $listId = waRequest::request('list_id', false, waRequest::TYPE_INT);
+        $caller = waRequest::request('caller', '', waRequest::TYPE_STRING_TRIM);
 
         $list = null;
         /** @var pocketlistsListFactory $listFactory */
@@ -80,9 +81,15 @@ class pocketlistsItemDetailsAction extends pocketlistsViewItemAction
         $allPockets = $pocketFactory->findAllForUser();
         /** @var pocketlistsListDetailsListsDto[] $lists */
         $lists = [];
-        foreach ($allPockets as $pocket) {
-            foreach ($pocket->getUserLists() as $list) {
-                $lists[] = new pocketlistsListDetailsListsDto($list->getId(), $list->getNameParsed(), $pocket->getName());
+        if ($caller !== 'list') {
+            foreach ($allPockets as $pocket) {
+                foreach ($pocket->getUserLists() as $list) {
+                    $lists[] = new pocketlistsListDetailsListsDto(
+                        $list->getId(),
+                        $list->getNameParsed(),
+                        $pocket->getName()
+                    );
+                }
             }
         }
 

@@ -34,7 +34,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             appUrl: '',
             wa_url: '',
             fileUpload: 1,
-            userHasLinkedApps: 0
+            userHasLinkedApps: 0,
+            caller: ''
         }, options),
         request_in_action = false;
 
@@ -399,7 +400,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 $.post(o.appUrl + '?module=item&action=details', {
                     id: itemId,
                     list_id: o.list && o.list.list_id ? o.list.list_id : 0,
-                    assign_user_id: o.assignUser || 0
+                    assign_user_id: o.assignUser || 0,
+                    caller: o.caller
                 }, function (html) {
                     $wrapper
                         .html(html)
