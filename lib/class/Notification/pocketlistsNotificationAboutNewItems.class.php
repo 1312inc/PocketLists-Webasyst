@@ -89,6 +89,8 @@ class pocketlistsNotificationAboutNewItems extends pocketlistsBaseNotification
                         'icon'         => $iconFinder->getIconByItemPriority($filteredItem->getPriority()),
                         'name'         => $filteredItem->getName(),
                         'name_parsed'  => $filteredItem->getNameParsed(),
+                        'note' => $filteredItem->getNote(),
+                        'note_parsed' => $filteredItem->getNoteParsed(),
                         'contact_name' => $filteredItem->getContact()->getName(),
                     ];
                 }

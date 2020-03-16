@@ -89,6 +89,8 @@ class pocketlistsNotificationDailyRecap extends pocketlistsBaseNotification
                             'due_datetime' => $item->getDueDatetime(),
                             'due_date' => $item->getDueDate(),
                             'name_parsed' => $item->getNameParsed(),
+                            'note' => $item->getNote(),
+                            'note_parsed' => $item->getNoteParsed(),
                         ];
                     }
 

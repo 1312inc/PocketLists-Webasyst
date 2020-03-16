@@ -167,6 +167,8 @@ class pocketlistsNotificationAboutCompleteItems extends pocketlistsBaseNotificat
                             'complete' => $item->getStatus(),
                             'item'     => [
                                 'name'         => $item->getName(),
+                                'note' => $item->getNote(),
+                                'note_parsed' => $item->getNoteParsed(),
                                 'contact_name' => $item->getCompleteContact()
                                     ? $item->getCompleteContact()->getName()
                                     : '',
