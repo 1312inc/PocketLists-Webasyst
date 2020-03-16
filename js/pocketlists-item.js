@@ -795,7 +795,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     var $textarea = $(this),
                         keycode = (e.keyCode ? e.keyCode : e.which);
 
-                    if(keycode == '13' && !e.shiftKey) {
+                    if(keycode == '13' && !e.shiftKey && !$textarea.is('[name="item[note]"]')) {
                         $textarea.closest('form').trigger('submit');
                         e.preventDefault();
                     } else {
