@@ -43,9 +43,13 @@
 .pl-details-form .pl2pro-item-add .pl2pro-shortcuts-group { margin-left: 2px; }
 .pl-details-form .pl2pro-item-add .pl2pro-shortcut { line-height: 1.5rem !important; }
 
-.pl2pro-rule-baloon { border-radius: 10px; border: 1px solid #ddd; overflow: hidden; margin-bottom: 15px; max-width: 400px; }
+.pl2pro-rule-baloon { border-radius: 10px; border: 1px solid #dde; overflow: hidden; margin-bottom: 15px; max-width: 400px; }
 .pl2pro-rule-baloon .pl2pro-label-edit { float: right; opacity: 0; transition: 0.2s; margin-top: 0px; font-size: 0.9em; }
 .pl2pro-rule-baloon:hover .pl2pro-label-edit { opacity: 1; }
+.pl2pro-rule-baloon.pl2pro-rule-disabled { opacity: 0.5; }
+.pl2pro-rule-baloon.pl2pro-rule-disabled .pl2pro-rule-header { background: #ddd; }
+.pl2pro-rule-baloon.pl2pro-rule-disabled .pl2pro-rule-header span,
+.pl2pro-rule-baloon.pl2pro-rule-disabled h4 { text-decoration: line-through; }
 .pl2pro-rule-header { background: #def; padding: 6px 12px; line-height: 1.5rem; }
 .pl2pro-rule-header .pl2pro-rule-if { opacity: 0.5; }
 .pl2pro-rule-body { background: #fff; padding: 10px 12px; }

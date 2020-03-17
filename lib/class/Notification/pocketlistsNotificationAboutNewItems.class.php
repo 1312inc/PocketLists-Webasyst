@@ -92,6 +92,17 @@ class pocketlistsNotificationAboutNewItems extends pocketlistsBaseNotification
                         'note' => $filteredItem->getNote(),
                         'note_parsed' => $filteredItem->getNoteParsed(),
                         'contact_name' => $filteredItem->getContact()->getName(),
+                        'due'    => $filteredItem->getDueDatetime()
+                            ? waDateTime::format(
+                                'humandatetime',
+                                $filteredItem->getDueDatetime(),
+                                new DateTimeZone($contact->getContact()->getTimezone())
+                            )
+                            : ($filteredItem->getDueDate() ? waDateTime::format(
+                                'humandate',
+                                $filteredItem->getDueDate(),
+                                new DateTimeZone($contact->getContact()->getTimezone())
+                            ) : false),
                     ];
                 }
 

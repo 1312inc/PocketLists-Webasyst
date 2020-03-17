@@ -167,12 +167,12 @@
         </div>
         {/if}
 
-        <div class="field">
+        <div class="field" {if $caller === 'list'} style="display: none;"{/if}>
             <div class="name nowrap">
                 [`List`]
             </div>
             <div class="value no-shift">
-                <select id="pl-item-list" {if $caller === 'list'}disabled{/if}>
+                <select id="pl-item-list">
                 {if !$item->getListId() || !$list->getId() || $item->getContact()->isMe()}<option value=""{if !$item->getListId() || !$list->getId()} selected="selected"{/if}>[`None`]</option>{/if}
                 {foreach $lists as $l}
                     <option value="{$l->id}" {if ($item->getId() && $item->getListId() == $l->id)}selected="selected"{/if}>
