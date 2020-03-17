@@ -81,15 +81,13 @@ class pocketlistsItemDetailsAction extends pocketlistsViewItemAction
         $allPockets = $pocketFactory->findAllForUser();
         /** @var pocketlistsListDetailsListsDto[] $lists */
         $lists = [];
-        if ($caller !== 'list') {
-            foreach ($allPockets as $pocket) {
-                foreach ($pocket->getUserLists() as $list) {
-                    $lists[] = new pocketlistsListDetailsListsDto(
-                        $list->getId(),
-                        $list->getNameParsed(),
-                        $pocket->getName()
-                    );
-                }
+        foreach ($allPockets as $pocket) {
+            foreach ($pocket->getUserLists() as $list) {
+                $lists[] = new pocketlistsListDetailsListsDto(
+                    $list->getId(),
+                    $list->getNameParsed(),
+                    $pocket->getName()
+                );
             }
         }
 
@@ -101,6 +99,7 @@ class pocketlistsItemDetailsAction extends pocketlistsViewItemAction
                 'lists' => $lists,
                 'assign_user_id' => $assign_user_id,
                 'contacts' => $contacts,
+                'caller' => $caller,
 
                 'backend_item_add' => $eventResult,
             ]
