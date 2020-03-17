@@ -53,6 +53,14 @@ class pocketlistsProPluginAutomationRuleShopStorefront extends pocketlistsProPlu
     }
 
     /**
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        return empty(array_filter($this->value));
+    }
+
+    /**
      * @return string
      * @throws Exception
      */
