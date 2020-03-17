@@ -181,9 +181,11 @@ class pocketlistsUserSettings
                 pocketlistsItem::PRIORITY_BLACK,
                 pocketlistsItem::PRIORITY_BURNINHELL,
             ],
+
+            self::ICON_NONE => [-1312],
         ];
 
-        return isset($mapping[$icon]) ? $mapping[$icon] : $mapping[self::ICON_ALL];
+        return isset($mapping[$icon]) ? $mapping[$icon] : $mapping[self::ICON_NONE];
     }
 
     /**

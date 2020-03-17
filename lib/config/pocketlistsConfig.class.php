@@ -266,7 +266,6 @@ class pocketlistsConfig extends waAppConfig
     [data-app="pocketlists"] .indicator { display: none !important; }
 </style>
 HTML;
-
             }
 
             $pocketlistsPath = sprintf(
