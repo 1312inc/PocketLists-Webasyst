@@ -178,7 +178,7 @@ class pocketlistsItemModel extends pocketlistsModel
         $sqlParts['group by'] = ['i.id'];
         $sqlParts['order by'] = ['i.status'];
         if ($status == pocketlistsItem::STATUS_UNDONE) {
-            $sqlParts['order by'][] = 'i.calc_priority DESC';
+            $sqlParts['order by'][] = 'i.calc_priority DESC, ifnull(i.due_datetime, i.due_date) ASC';
         }
         $sqlParts['order by'][] = '(i.complete_datetime IS NULL), i.complete_datetime DESC, i.id DESC';
 
