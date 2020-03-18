@@ -58,13 +58,18 @@ class pocketlistsProPluginDelayedAutomation extends pocketlistsEntity
     /**
      * @var string
      */
-    private $eventDatatJson;
+    private $eventDataJson;
+
+    /**
+     * @var int|null
+     */
+    private $item_id;
 
     public function afterExtract(array &$fields)
     {
         $eventData = $this->event_data;
-        $this->event_data = $this->eventDatatJson;
-        $this->eventDatatJson = $eventData;
+        $this->event_data = $this->eventDataJson;
+        $this->eventDataJson = $eventData;
     }
 
     /**
@@ -80,7 +85,7 @@ class pocketlistsProPluginDelayedAutomation extends pocketlistsEntity
                 $this->event_data = json_decode($this->event_data, true);
             }
 //            $this->action_result = $rules;
-            $this->eventDatatJson = json_encode($this->event_data, JSON_UNESCAPED_UNICODE);
+            $this->eventDataJson = json_encode($this->event_data, JSON_UNESCAPED_UNICODE);
         }
     }
 
@@ -92,8 +97,8 @@ class pocketlistsProPluginDelayedAutomation extends pocketlistsEntity
     public function beforeExtract(array &$fields)
     {
         $eventData = $this->event_data;
-        $this->event_data = $this->eventDatatJson;
-        $this->eventDatatJson = $eventData;
+        $this->event_data = $this->eventDataJson;
+        $this->eventDataJson = $eventData;
     }
 
     /**
@@ -203,7 +208,7 @@ class pocketlistsProPluginDelayedAutomation extends pocketlistsEntity
     public function setEventData($event_data)
     {
         $this->event_data = $event_data;
-        $this->eventDatatJson = json_encode($this->event_data, JSON_UNESCAPED_UNICODE);
+        $this->eventDataJson = json_encode($this->event_data, JSON_UNESCAPED_UNICODE);
 
         return $this;
     }
@@ -290,5 +295,25 @@ class pocketlistsProPluginDelayedAutomation extends pocketlistsEntity
 
     public function setCreatedBy($getId)
     {
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getItemId()
+    {
+        return $this->item_id;
+    }
+
+    /**
+     * @param int|null $item_id
+     *
+     * @return pocketlistsProPluginDelayedAutomation
+     */
+    public function setItemId($item_id)
+    {
+        $this->item_id = $item_id;
+
+        return $this;
     }
 }

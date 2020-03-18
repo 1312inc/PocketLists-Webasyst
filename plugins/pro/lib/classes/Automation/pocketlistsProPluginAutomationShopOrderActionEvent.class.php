@@ -83,20 +83,23 @@ class pocketlistsProPluginAutomationShopOrderActionEvent implements pocketlistsP
     /**
      * @param pocketlistsProPluginAutomation $automation
      *
-     * @return bool
+     * @return pocketlistsProPluginAutomationActionEventResult
      */
     public function executeAutomation(pocketlistsProPluginAutomation $automation)
     {
+        $result = new pocketlistsProPluginAutomationActionEventResult();
+
         try {
             if (!$this->automationMatches($automation, false)) {
-                return false;
+                return $result;
             }
 
             pocketlistsLogger::debug(
                 sprintf('automation %d passed all rules, now execute action', $automation->getId())
             );
 
-            if ($automation->getAction()->execute($automation, $this->order)) {
+            $item = $automation->getAction()->execute($automation, $this->order);
+            if ($item instanceof pocketlistsItem) {
                 $automation
                     ->incExecutionCount()
                     ->setLastExecutionDatetime(date('Y-m-d H:i:s'));
@@ -104,14 +107,17 @@ class pocketlistsProPluginAutomationShopOrderActionEvent implements pocketlistsP
                 pl2()->getEntityFactory(pocketlistsProPluginAutomation::class)->update($automation);
             }
 
-            return true;
+            $result->data = $item;
+            $result->status = true;
+
+            return $result;
         } catch (Exception $ex) {
             pocketlistsLogger::error(
                 sprintf("PRO: Automation error. %s\n%s", $ex->getMessage(), $ex->getTraceAsString())
             );
         }
 
-        return false;
+        return $result;
     }
 
     /**

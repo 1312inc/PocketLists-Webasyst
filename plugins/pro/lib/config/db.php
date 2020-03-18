@@ -25,6 +25,7 @@ return array(
         'created_datetime' => array('datetime', 'null' => 0),
         'executed_datetime' => array('datetime'),
         'error' => array('text'),
+        'item_id' => array('int', 11),
         ':keys' => array(
             'PRIMARY' => 'id',
         ),

@@ -13,10 +13,10 @@
         [`When`]
     </div>
     <div class="value no-shift">
-        <label><input type="radio"> [`Create immediately`]</label>
+        <label><input type="radio" name="data[action][when_type]" value="0" {if !$action->getWhenIn()}checked{/if}> [`Create immediately`]</label>
     </div>
     <div class="value no-shift">
-        <label><input type="radio"> [`Create with a delay in`]</label>
+        <label><input type="radio"  name="data[action][when_type]" value="1" {if $action->getWhenIn()}checked{/if}> [`Create with a delay in`]</label>
         <input type="text" class="short numerical" placeholder="0" name="data[action][when_in]" value="{$action->getWhenIn()}">
         <select name="data[action][when_period]">
             {foreach $duePeriods as $duePeriod => $duePeriodName}

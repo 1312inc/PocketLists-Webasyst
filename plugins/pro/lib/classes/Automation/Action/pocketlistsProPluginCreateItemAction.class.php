@@ -220,7 +220,7 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
                 sprintf('item %d created from automation action %s', $item->getId(), $this->getIdentifier())
             );
 
-            return true;
+            return $item;
         }
 
         pocketlistsLogger::debug(
@@ -348,6 +348,9 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
             : null;
         $this->dueIn = (int)ifset($json['due_in'], 0);
         $this->duePeriod = ifset($json['due_period'], self::DUE_PERIOD_MIN);
+        if (isset($json['when_type']) && $json['when_type'] == 0) {
+            $json['when_in'] = 0;
+        }
         $this->whenIn = (int)ifset($json['when_in'], 0);
         $this->whenPeriod = ifset($json['when_period'], self::DUE_PERIOD_MIN);
         $this->priority = (int)ifset($json['priority'], pocketlistsItem::PRIORITY_NORM);
