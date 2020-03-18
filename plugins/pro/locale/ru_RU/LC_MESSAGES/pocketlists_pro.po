@@ -654,4 +654,63 @@ msgstr "Маркер"
 
 #: /wa-apps/pocketlists/plugins/pro/lib/classes/Automation/Rule/Shop/pocketlistsProPluginAutomationRuleShopCustomerGroup.class.php:77
 msgid "DELETED CATEGORY"
-msgstr ""
+msgstr "УДАЛЕННАЯ КАТЕГОРИЯ"
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/settings/SettingsShopscript.html:21
+msgid "DISABLED"
+msgstr "ВЫКЛЮЧЕНО"
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/AutomationDialog.html:13
+msgid "Enabled"
+msgstr "Включено"
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemView.html:18
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemEdit.html:13
+msgid "When"
+msgstr "Когда"
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemEdit.html:16
+msgid "Create immediately"
+msgstr "Сразу же"
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemEdit.html:19
+msgid "Create with a delay in"
+msgstr "С задержкой через"
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemEdit.html:151
+msgid "from the moment the to-do was created"
+msgstr "с момента выполнения действия с заказом"
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Automation/Rule/pocketlistsProPluginAutomationRuleAbstract.class.php:184
+msgid "Delayed check (this check will be performed at the moment to-do is created rather than order action is performed; recommended only for to-dos created with a delay)"
+msgstr "Отложенная проверка (проверка будет выполнено на момент выполнения этого правила, а не действия с заказом; рекомендуется для действий, выполняемых с задержкой)"
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Automation/Rule/Shop/pocketlistsProPluginAutomationRuleShopState.class.php:23
+msgid "Status"
+msgstr "Статус"
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Automation/Rule/Shop/pocketlistsProPluginAutomationRuleShopState.class.php:91
+msgid "(delayed check)"
+msgstr "(отложенная проверка)"
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Automation/Rule/Shop/pocketlistsProPluginAutomationRuleShopState.class.php:133
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Automation/Rule/Shop/pocketlistsProPluginAutomationRuleShopStorefront.class.php:106
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Automation/Rule/Shop/pocketlistsProPluginAutomationRuleShopCustomerGroup.class.php:105
+msgid "For Windows: Hold down the control (ctrl) button to select multiple options.<br> For Mac: Hold down the command button to select multiple options."
+msgstr "Windows: зажмите Ctrl и выделите нужные пункты.<br> macOS: зажмите Cmd и выделите нужные пункты."
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Automation/Action/pocketlistsProPluginCreateItemAction.class.php:521
+msgid "Delayed actions require CRON to be configured for the Pocket Lists PRO plugin, which is not the case for your installation. Cron the following command every 10 minutes:"
+msgstr "Для работы правил, выполняемых с задержкой, необходимо настроить CRON для плагина Pocket Lists PRO. Добавьте следующую команду к запуску каждые 10 минут:"
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Automation/Action/pocketlistsProPluginCreateItemAction.class.php:523
+msgid "Webasyst Cloud: launch the Cloud app &gt; Add Cron job &gt;"
+msgstr "Облако Webasyst: приложение «Облако» &gt; Добавить задание cron &gt;"
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Automation/Action/pocketlistsProPluginCreateItemAction.class.php:525
+msgid "Own server:"
+msgstr "Свой сервер:"
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Automation/Action/pocketlistsProPluginCreateItemAction.class.php:529
+msgid "Last Cron execution time: %s"
+msgstr "Последний запуск: %s"

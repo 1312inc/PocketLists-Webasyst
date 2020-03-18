@@ -12,7 +12,7 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Language: en_US\n"
-"X-Generator: Poedit 2.2.3\n"
+"X-Generator: Poedit 2.2.4\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: .\n"
 
@@ -1759,4 +1759,45 @@ msgstr ""
 
 #: /wa-apps/pocketlists/lib/class/Log/pocketlistsLogContext.class.php:389
 msgid "No log mapping for %s"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/mails/dailyrecap.html:9
+msgid "<strong>%s</strong> on <em>%s</em>"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/upgrade/Upgrade.html:32
+msgid "Upgrade to PRO"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:7
+msgid "New app by 1312 Inc."
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:8
+msgid "Ad"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:10
+#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:14
+msgid "https://www.webasyst.com/store/app/status/?utm_campaign=pl2webasyst-tiny-ad"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:14
+msgid "<a href=\"%s\" target=\"_blank\">Status app</a> tracks working time and shows whom have been working on what (and whom have been doing nothing too!)"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:176
+msgid "Upgrade to %s"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:8
+msgid "Upgrade to Pocket Lists PRO"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:13
+msgid "Boost your efficiency with the Pocket Lists PRO plugin that instantly enables a robust set of amazing advanced features: <b>Shop-Script automation (auto create to-dos based on actions with orders), kanban board, status labels, quick entry templates,</b> and more."
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:14
+msgid "See details"
 msgstr ""
