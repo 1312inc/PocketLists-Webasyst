@@ -1799,3 +1799,23 @@ msgstr "Работать станет проще, когда рутинные о
 #: /wa-apps/pocketlists/templates/actions/about/About.html:14
 msgid "See details"
 msgstr "Подробнее"
+
+#: /wa-apps/pocketlists/templates/actions/upgrade/Upgrade.html:12
+msgid "Pocket Lists PRO plugin"
+msgstr "Плагин Pocket Lists PRO"
+
+#: /wa-apps/pocketlists/templates/actions/upgrade/Upgrade.html:17
+msgid "Shop-Script automation (auto create to-dos based on actions with orders), kanban board, status labels, quick entry templates, and other advanced features."
+msgstr "Автоматизация связки Shop-Script с Pocket Lists (задачи на основе действий с заказами), канбан-доска, маркеры (статусы), шаблоны быстрого создания задач и другие продвинутые возможности."
+
+#: /wa-apps/pocketlists/templates/actions/upgrade/Upgrade.html:30
+msgid "Buy the plugin"
+msgstr "Купить плагин"
+
+#: /wa-apps/pocketlists/templates/actions/upgrade/Upgrade.html:37
+msgid "Great to see a PRO user here!"
+msgstr "Так держать!"
+
+#: /wa-apps/pocketlists/templates/actions/upgrade/Upgrade.html:38
+msgid "<a href=\"%s\">Pocket Lists PRO</a> plugin is installed and running at full speed. Thank you for being a PRO user and for supporting the project."
+msgstr "Плагин <a href=\"%s\">Pocket Lists PRO</a> установлен и работает в полную силу. Спасибо за покупку плагина и поддержку проекта Pocket Lists!"
