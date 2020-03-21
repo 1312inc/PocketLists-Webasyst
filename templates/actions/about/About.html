@@ -1,7 +1,7 @@
 <div class="shadowed pl-about">
 
     {if !pocketlistsHelper::hasPlugin('pro')}
-    <figure class="block double-padded highlighted pl-upgrade">
+    <figure class="block double-padded highlighted pl-upgrade-ad">
           <a href="#/upgrade/"><img src="{$wa_url}wa-apps/pocketlists/img/pl2pro-plugin-icon.png" class="pl-wa-plugin-icon" /></a>
           <h3>
               <a href="#/upgrade/" class="large">
@@ -9,9 +9,9 @@
                   &nbsp;<i class="icon16 star"></i><i class="icon16 star"></i><i class="icon16 star"></i><i class="icon16 star"></i><i class="icon16 star"></i>
               </a>
           </h3>
-          <p>
+          <p style="margin-bottom: 0;">
               [`Boost your efficiency with the Pocket Lists PRO plugin that instantly enables a robust set of amazing advanced features: <b>Shop-Script automation (auto create to-dos based on actions with orders), kanban board, status labels, quick entry templates,</b> and more.`]
-              <a href="#/upgrade/" class="no-underline">[`See details`] &raquo;</a>
+              <a href="#/upgrade/" class="no-underline">[`See details`]&nbsp;&raquo;</a>
           </p>
           <div class="clear-both"></div>
     </figure>
@@ -156,8 +156,8 @@
 
 
                         <li>
-                            <input type="checkbox" class="pl-done"><span></span>
-                            [`Integration with Webasyst CRM, Tasks, and other apps`]
+                            <input type="checkbox" class="pl-done pl-priority-red"><span></span>
+                            <strong>[`Integration with Webasyst CRM, Tasks, and other apps`]</strong>
                         </li>
                         <li>
                             <input type="checkbox" class="pl-done"><span></span>
@@ -165,7 +165,7 @@
                         </li>
                         <li>
                             <input type="checkbox" class="pl-done pl-priority-yellow"><span></span>
-                            <strong>[`Rest API`]</strong>
+                            [`Rest API`]
                         </li>
 
                         <li>
