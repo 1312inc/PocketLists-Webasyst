@@ -491,19 +491,35 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                         item_id: itemId
                     },
                     done: function (e, data) {
-                        var $attachments = $wrapper.find('[data-pl-item-details-attachments]');
+                        var $attachments = $wrapper.find('[data-pl-item-details-attachments]'),
+                            $list = $attachments.find('ul'),
+                            files = [],
+                            $files = $wrapper.find('[name="item[files]"]');
                         if (data.result.errors) {
                             alert(data.result.errors[0]);
                             return;
                         }
                         $.each(data.result.data.files, function (index, file) {
-                            $attachments.find('ul').append('<li>' +
-                                '<a href="' + file.path + '/' + file.name + '" target="_blank">' + file.name + '</a> ' +
-                                '<a href="#" class="gray" data-pl-attachment-id="' + file.id + '" ' +
-                                'data-pl-attachment-name="' + file.name + '" style="margin-left: 10px;" ' +
-                                'title="' + $_('Delete') + '" style="margin-left: 10px;">&times;</a>' +
-                                '</li>');
+                            if (file.id < 0) {
+                                $list.append('<li>' + file.name + '</li>');
+                                files.push(file.name);
+                            } else {
+                                $list.append('<li>' +
+                                    '<a href="' + file.url + '" target="_blank">' + file.name + '</a> ' +
+                                    '<a href="#" class="gray" data-pl-attachment-id="' + file.id + '" ' +
+                                    'data-pl-attachment-name="' + file.name + '" style="margin-left: 10px;" ' +
+                                    'title="' + $_('Delete') + '" style="margin-left: 10px;">&times;</a>' +
+                                    '</li>');
+                            }
                         });
+                        if (files.length) {
+                            if (!$files.length) {
+                                $list.append('<input type="hidden" name="item[files]" value="' + files.join('|~|') + '"/>');
+                            } else {
+                                files.push($files.val());
+                                $files.val(files.join('|~|'));
+                            }
+                        }
                     },
                     progressall: function (e, data) {
                         var progress = parseInt(data.loaded / data.total * 100, 10);

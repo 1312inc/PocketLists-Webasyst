@@ -110,11 +110,9 @@ class pocketlistsItemCreateAction extends pocketlistsViewAction
                 $item->recalculatePriority();
                 $itemFactory->insert($item);
 
-                $links = pocketlistsNaturalInput::getLinks($item->getName());
-
                 /** @var pocketlistsItemLinkFactory $itemLinkFactory */
                 $itemLinkFactory = pl2()->getEntityFactory(pocketlistsItemLink::class);
-
+                $links = pocketlistsNaturalInput::getLinks($item->getName());
                 if ($links) {
                     $linkDeterminer = new pocketlistsLinkDeterminer();
                     foreach ($links as $link) {
@@ -126,13 +124,42 @@ class pocketlistsItemCreateAction extends pocketlistsViewAction
                         $itemLinkFactory->createFromDataForItem($item, $linkAppTypeId);
                     }
                 }
-
                 if (!empty($d['links'])) {
                     foreach ($d['links'] as $link) {
                         $linkData = $link['model'];
 
                         $itemLinkFactory->createFromDataForItem($item, $linkData);
                     }
+                }
+
+                if (!empty($d['files'])) {
+                    /** @var pocketlistsFactory $attachmentFactory */
+                    $attachmentFactory = pl2()->getEntityFactory(pocketlistsAttachment::class);
+                    $attachments = [];
+                    foreach (explode('|~|', $d['files']) as $file) {
+                        $uploadedFile = pocketlistsUploadedFileVO::createTempFromName($file);
+                        $uploadedPath = $uploadedFile->getFullPath();
+                        $uploadedFile->setItemId($item->getId());
+                        waFiles::move($uploadedPath, $uploadedFile->getFullPath());
+
+                        /** @var pocketlistsAttachment $attachment */
+                        $attachment = $attachmentFactory->createNew();
+                        $attachment
+                            ->setFilename($uploadedFile->getName())
+                            ->setFiletype($uploadedFile->getType())
+                            ->setItemId($item->getId());
+                        $attachmentFactory->insert($attachment);
+                        $attachments[] = $attachment;
+
+                        $this->logService->add(
+                            $this->logService->getFactory()->createNewAttachmentLog(
+                                (new pocketlistsLogContext())
+                                    ->setItem($item)
+                                    ->setAttachment($attachment)
+                            )
+                        );
+                    }
+                    $item->setAttachments($attachments);
                 }
 
                 $inserted[] = $item->getId();

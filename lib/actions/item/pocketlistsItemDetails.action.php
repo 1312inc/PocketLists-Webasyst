@@ -93,7 +93,7 @@ class pocketlistsItemDetailsAction extends pocketlistsViewItemAction
 
         $this->view->assign(
             [
-                'fileupload' => $item->getId(),
+                'fileupload' => true,//$item->getId(),
                 'item' => $item,
                 'list' => $list,
                 'lists' => $lists,

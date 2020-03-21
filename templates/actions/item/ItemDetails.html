@@ -44,7 +44,7 @@
         <textarea class="pl-details-textarea" name="item[note]" data-pl2-textarea-rows="2" placeholder="[`Note`]"{if $item->isDone()} disabled="disabled"{/if}>{$item->getNote()|escape}</textarea>
 
     {*$wa->csrf()*}
-    <div data-pl-item-details-attachments class="pl-already-saved-items-only">
+    <div data-pl-item-details-attachments>
 
         <div class="block double-padded{if $fileupload} pl-add-attachment-dropbox{/if}"{if $fileupload} data-pl-item-details-fileupload{/if}>
 
