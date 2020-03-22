@@ -154,7 +154,7 @@ class pocketlistsItemAddAttachmentController extends pocketlistsJsonController
                     $this->errors[] = sprintf(_w('Failed to upload file %s.'), $file->name).' ('.$file->error.')';
                 }
             } else {
-                $this->errors[] = _w('No item with such ID');
+                $this->errors[] = sprintf_wp('Path %s is not writable', $uploadedFile->getPath());
             }
         } else {
             $this->errors[] = $filevalid;
