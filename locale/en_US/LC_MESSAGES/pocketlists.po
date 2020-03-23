@@ -1821,3 +1821,11 @@ msgstr ""
 #: /wa-apps/pocketlists/templates/actions/upgrade/Upgrade.html:38
 msgid "<a href=\"%s\">Pocket Lists PRO</a> plugin is installed and running at full speed. Thank you for being a PRO user and for supporting the project."
 msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:143
+msgid "See Cron command"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/actions/item/pocketlistsItemAddAttachment.controller.php:157
+msgid "Path %s is not writable"
+msgstr ""
