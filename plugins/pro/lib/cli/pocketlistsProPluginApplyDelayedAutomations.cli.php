@@ -87,5 +87,8 @@ class pocketlistsProPluginApplyDelayedAutomationsCli extends waCliController
             }
         }
         pocketlistsLogger::debug('End execute delayed automations');
+
+        pocketlistsProPlugin::getInstance()->getCronManager()
+            ->saveLastRunCronJob(pocketlistsProPluginCronManager::APPLY_DELAYED_AUTOMATIONS);
     }
 }

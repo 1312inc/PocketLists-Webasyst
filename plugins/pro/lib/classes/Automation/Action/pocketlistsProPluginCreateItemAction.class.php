@@ -530,7 +530,7 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
         if ($lastCron) {
             $cronMessage = '<i class="icon10 yes"></i>' . sprintf_wp(
                 'Last Cron execution time: %s',
-                waDateTime::format('humandatetime', $lastCron->format('Y-m-d H:i:s'))
+                waDateTime::format('humandatetime', $lastCron->format('Y-m-d H:i:s'), date_default_timezone_get())
             );
         }
 
