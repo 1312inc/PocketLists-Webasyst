@@ -714,3 +714,7 @@ msgstr "Свой сервер:"
 #: /wa-apps/pocketlists/plugins/pro/lib/classes/Automation/Action/pocketlistsProPluginCreateItemAction.class.php:529
 msgid "Last Cron execution time: %s"
 msgstr "Последний запуск: %s"
+
+#: /wa-apps/pocketlists/plugins/pro/lib/classes/Automation/Action/pocketlistsProPluginCreateItemAction.class.php:537
+msgid "See Cron command"
+msgstr "Посмотреть команду Cron"
