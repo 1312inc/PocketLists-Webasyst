@@ -649,7 +649,7 @@ msgid "Label"
 msgstr ""
 
 #: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemEdit.html:133
-msgid "To-do due (deadline) may be set depending on the order action time. Leave zero for no due date and time."
+msgid "Leave zero for no due date and time."
 msgstr ""
 
 #: /wa-apps/pocketlists/plugins/pro/lib/classes/Automation/Rule/Shop/pocketlistsProPluginAutomationRuleShopCustomerGroup.class.php:77

@@ -644,8 +644,8 @@ msgstr "адрес доставки заказа"
 msgid "list of ordered items"
 msgstr "список заказанных товаров"
 
-msgid "To-do due (deadline) may be set depending on the order action time. Leave zero for no due date and time."
-msgstr "Срок (дедлайн) задачи будет рассчитан от времени действия с заказом. Оставьте 0 (ноль), чтобы не ставить срок для задачи."
+msgid "Leave zero for no due date and time."
+msgstr "Оставьте 0 (ноль), чтобы не ставить срок для задачи."
 
 #: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemView.html:24
 #: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemEdit.html:152
@@ -679,7 +679,7 @@ msgstr "С задержкой через"
 
 #: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemEdit.html:151
 msgid "from the moment the to-do was created"
-msgstr "с момента выполнения действия с заказом"
+msgstr "с момента создания задачи"
 
 #: /wa-apps/pocketlists/plugins/pro/lib/classes/Automation/Rule/pocketlistsProPluginAutomationRuleAbstract.class.php:184
 msgid "Delayed check (this check will be performed at the moment to-do is created rather than order action is performed; recommended only for to-dos created with a delay)"
