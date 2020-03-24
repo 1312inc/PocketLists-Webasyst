@@ -718,3 +718,7 @@ msgstr ""
 #: /wa-apps/pocketlists/plugins/pro/lib/classes/Automation/Action/pocketlistsProPluginCreateItemAction.class.php:537
 msgid "See Cron command"
 msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemEdit.html:49
+msgid "order amount"
+msgstr ""
