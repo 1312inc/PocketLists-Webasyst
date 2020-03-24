@@ -496,8 +496,8 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
                 $order->contact->getName(),
                 ifset($orderParams, 'tracking_number', _wp('No tracking number')),
                 $order->id_str,
-                $order->total,
-                $order->shipping,
+                waCurrency::format('%2{s}', $order->total, $order->currency),
+                waCurrency::format('%2{s}', $order->shipping, $order->currency),
                 $order->shipping_address_text,
                 $order->source,
                 implode(

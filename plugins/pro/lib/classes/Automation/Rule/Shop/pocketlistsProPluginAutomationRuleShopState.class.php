@@ -61,6 +61,14 @@ class pocketlistsProPluginAutomationRuleShopState extends pocketlistsProPluginAu
     }
 
     /**
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        return empty(array_filter($this->value));
+    }
+
+    /**
      * @return string
      * @throws Exception
      */
@@ -99,10 +107,7 @@ HTML;
     public function editHtml()
     {
         $workflowStates = (new shopWorkflow())->getAllStates();
-        $states = [[
-            'title' => '',
-            'value' => '',
-        ]];
+        $states = [['title' => _wp('any'), 'value' => '']];
         foreach ($workflowStates as $workflowState) {
             $states[] = [
                 'title' => _w($workflowState->getName()),
@@ -148,7 +153,7 @@ HTML;
             $this->value = $json['value'];
         }
         $this->compare = $json['compare'];
-        $this->delayed = ifset($json, 'delayed', false);
+        $this->delayed = (bool)ifset($json, 'delayed', false);
 
         return $this;
     }
@@ -167,7 +172,7 @@ HTML;
             'identifier' => $this->getIdentifier(),
             'value'      => $this->value,
             'compare'    => $this->compare,
-            'delayed'    => true
+            'delayed'    => (bool)$this->delayed
         ];
     }
 }

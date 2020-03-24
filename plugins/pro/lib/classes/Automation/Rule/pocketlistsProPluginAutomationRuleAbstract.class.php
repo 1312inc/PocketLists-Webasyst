@@ -177,14 +177,23 @@ abstract class pocketlistsProPluginAutomationRuleAbstract implements pocketlists
      */
     protected function getDelayedCheckboxControl()
     {
-        return '<br><span class="small">'.waHtmlControl::getControl(
-            waHtmlControl::CHECKBOX,
-            'data[rules]['.$this->getIdentifier().'][delayed]',
-            [
-                'title' => _wp('Delayed check (this check will be performed at the moment to-do is created rather than order action is performed; recommended only for to-dos created with a delay)'),
-                'value' => $this->delayed,
-            ]
-        ).'</span>';
+        return waHtmlControl::getControl(
+                waHtmlControl::HIDDEN,
+                'data[rules]['.$this->getIdentifier().'][delayed]',
+                ['value' => '']
+            )
+            .'<br><span class="small">'
+            .waHtmlControl::getControl(
+                waHtmlControl::CHECKBOX,
+                'data[rules]['.$this->getIdentifier().'][delayed]',
+                [
+                    'title' => _wp(
+                        'Delayed check (this check will be performed at the moment to-do is created rather than order action is performed; recommended only for to-dos created with a delay)'
+                    ),
+                    'value' => $this->delayed,
+                ]
+            )
+            .'</span>';
     }
 
     /**
