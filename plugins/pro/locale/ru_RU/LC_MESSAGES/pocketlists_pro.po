@@ -722,3 +722,7 @@ msgstr "Посмотреть команду Cron"
 #: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemEdit.html:49
 msgid "order amount"
 msgstr "сумма заказа"
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemEdit.html:54
+msgid "shipping cost"
+msgstr "стоимость доставки"

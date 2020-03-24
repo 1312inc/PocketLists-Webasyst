@@ -485,7 +485,7 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
                 '{$tracking_number}',
                 '{$order_id}',
                 '{$order_amount}',
-                '{$shipping_amount}',
+                '{$shipping_cost}',
                 '{$shipping_address}',
                 '{$order_source}',
                 '{$order_item_names}',

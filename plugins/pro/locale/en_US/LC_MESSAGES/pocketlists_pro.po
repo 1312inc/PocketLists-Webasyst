@@ -722,3 +722,7 @@ msgstr ""
 #: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemEdit.html:49
 msgid "order amount"
 msgstr ""
+
+#: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemEdit.html:54
+msgid "shipping cost"
+msgstr ""
