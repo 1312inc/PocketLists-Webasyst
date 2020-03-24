@@ -496,7 +496,7 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
                 $order->contact->getName(),
                 ifset($orderParams, 'tracking_number', _wp('No tracking number')),
                 $order->id_str,
-                $order->total_str,
+                $order->total,
                 $order->shipping,
                 $order->shipping_address_text,
                 $order->source,
