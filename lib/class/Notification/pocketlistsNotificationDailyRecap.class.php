@@ -66,52 +66,73 @@ class pocketlistsNotificationDailyRecap extends pocketlistsBaseNotification
         $sender = new pocketlistsNotificationSendService();
 
         foreach ($users as $user_id => $user) {
-            $contact = $contactFactory->createNewWithId($user_id);
-            if (!$this->canSend($contact)) {
-                continue;
-            }
-
-            if (wa()->getEnv() == 'cli') { // to load locale in cli
-                wa()->setLocale($contact->getContact()->getLocale());
-            }
-
-            $items = $itemFactory->findTodoRecap($contact, $user['setting']);
-
-            $items = (new pocketlistsStrategyItemFilterAndSort($items))->filterDoneUndone()->getProperSortUndone();
-
-            if ($items) {
-                $itemsToSend = [];
-                $iconFinder = new pocketlistsItemIcon();
-                foreach ($items as $item) {
-                    $itemsToSend[$item->getId()] = [
-                        'icon'         => $iconFinder->getIconByItemPriority($item->getPriority()),
-                        'due_datetime' => $item->getDueDatetime(),
-                        'due_date'     => $item->getDueDate(),
-                        'name_parsed'  => $item->getNameParsed(),
-                    ];
+            try {
+                $contact = $contactFactory->createNewWithId($user_id);
+                if (!$this->canSend($contact)) {
+                    continue;
                 }
 
-                $emailContent = new pocketlistsNotificationEmailContent();
-                $emailContent
-                    ->setToContactId($contact->getId())
-                    ->setToEmail($contact->getEmail())
-                    ->setParams(
-                        [
-                            'items'    => $itemsToSend,
-                            'timezone' => new DateTimeZone($contact->getContact()->getTimezone()),
-                        ] + $vars
-                    )
-                    ->setSubject('string:📥 '.sprintf(_w("Daily recap for %s"), waDateTime::format('humandate')))
-                    ->setTemplate('templates/mails/dailyrecap.html');
+                if (wa()->getEnv() == 'cli') { // to load locale in cli
+                    wa()->setLocale($contact->getContact()->getLocale());
+                }
 
-                $notification = $notificationFactory
+                $items = $itemFactory->findTodoRecap($contact, $user['setting']);
+
+                $items = (new pocketlistsStrategyItemFilterAndSort($items))->filterDoneUndone()->getProperSortUndone();
+
+                if ($items) {
+                    $itemsToSend = [];
+                    $iconFinder = new pocketlistsItemIcon();
+                    foreach ($items as $item) {
+                        $itemsToSend[$item->getId()] = [
+                            'icon' => $iconFinder->getIconByItemPriority($item->getPriority()),
+                            'due_datetime' => $item->getDueDatetime(),
+                            'due_date' => $item->getDueDate(),
+                            'name_parsed' => $item->getNameParsed(),
+                            'note' => $item->getNote(),
+                            'note_parsed' => $item->getNoteParsed(),
+                        ];
+                    }
+
+                    $emailContent = new pocketlistsNotificationEmailContent();
+                    $emailContent
+                        ->setToContactId($contact->getId())
+                        ->setToEmail($contact->getEmail())
+                        ->setParams(
+                            [
+                                'items' => $itemsToSend,
+                                'timezone' => new DateTimeZone($contact->getContact()->getTimezone()),
+                            ] + $vars
+                        )
+                        ->setSubject('string:📥 '.sprintf(_w("Daily recap for %s"), waDateTime::format('humandate')))
+                        ->setTemplate('templates/mails/dailyrecap.html');
+
+                    $notification = $notificationFactory
                         ->createNewEmail($emailContent)
                         ->setIdentifier(self::IDENTIFIER);
-                $notificationFactory->insert($notification);
+                    $notificationFactory->insert($notification);
 
-                $sender->send($notification);
+                    $sender->send($notification);
 
-                $csm->set($user_id, 'pocketlists', 'last_recap_cron_time', $time);
+                    $csm->set($user_id, 'pocketlists', 'last_recap_cron_time', $time);
+                }
+            } catch (Exception $ex) {
+                pocketlistsLogger::error(
+                    sprintf(
+                        'Error on sending daily recap for user %s. Error: %s. Trace: %s',
+                        $user_id,
+                        $ex->getMessage(),
+                        $ex->getTraceAsString()
+                    ),
+                    'notifications.log'
+                );
+
+                if (isset($notification)) {
+                    $notification
+                        ->setStatus(pocketlistsNotification::STATUS_FAIL)
+                        ->setError($ex->getMessage());
+                    $notificationFactory->save($notification);
+                }
             }
         }
     }

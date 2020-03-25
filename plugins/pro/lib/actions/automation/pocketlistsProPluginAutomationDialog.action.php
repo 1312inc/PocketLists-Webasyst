@@ -44,6 +44,7 @@ class pocketlistsProPluginAutomationDialogAction extends pocketlistsViewAction
                     new pocketlistsProPluginAutomationRuleShopPayment(),
                     new pocketlistsProPluginAutomationRuleShopShipping(),
                     new pocketlistsProPluginAutomationRuleShopAmount(),
+                    new pocketlistsProPluginAutomationRuleShopState(),
                     new pocketlistsProPluginAutomationRuleShopStorefront(),
                     new pocketlistsProPluginAutomationRuleShopCustomerGroup(),
                 ])

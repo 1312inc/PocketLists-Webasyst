@@ -95,6 +95,7 @@
             userHasLinkedApps: {$user->hasLinkedApps()},
             current_user_id: {$user->getContact()->getId()},
             dueDate: '{if $timestamp}{$timestamp}{/if}',
+            caller: 'todo'
         });
 
         new $.pocketlists.Comments($all_items_wrapper);

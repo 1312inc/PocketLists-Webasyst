@@ -10,6 +10,25 @@
 </div>
 <div class="field">
     <div class="name">
+        [`When`]
+    </div>
+    <div class="value no-shift">
+        <label><input type="radio" name="data[action][when_type]" value="0" {if !$action->getWhenIn()}checked{/if}> [`Create immediately`]</label>
+    </div>
+    <div class="value no-shift">
+        <label><input type="radio"  name="data[action][when_type]" value="1" {if $action->getWhenIn()}checked{/if}> [`Create with a delay in`]</label>
+        <input type="text" class="short numerical" placeholder="0" name="data[action][when_in]" value="{$action->getWhenIn()}">
+        <select name="data[action][when_period]">
+            {foreach $duePeriods as $duePeriod => $duePeriodName}
+                <option value="{$duePeriod}" {if $action->getWhenPeriod() == $duePeriod}selected{/if}>{$duePeriodName}</option>
+            {/foreach}
+        </select>
+        [`from the moment the action was performed`]
+        <p class="hint">{$cronMessage}</p>
+    </div>
+</div>
+<div class="field">
+    <div class="name">
         [`Title`]
     </div>
     <div class="value">
@@ -27,10 +46,12 @@
         <p class="hint">
             [`Following variables can be used in the to-do title and note fields:`]<br>
             <b>&#123;$order_id&#125;</b> — [`order ID`]<br>
+            <b>&#123;$order_amount&#125;</b> — [`order amount`]<br>
             <b>&#123;$customer_name&#125;</b> — [`customer name`]<br>
             <b>&#123;$customer_email&#125;</b> — [`customer email`]<br>
             <b>&#123;$customer_phone&#125;</b> — [`customer phone number`]<br>
             <b>&#123;$shipping_address&#125;</b> — [`shipping address`]<br>
+            <b>&#123;$shipping_cost&#125;</b> — [`shipping cost`]<br>
             <b>&#123;$tracking_number&#125;</b> — [`shipment tracking number`]<br>
             <b>&#123;$order_item_names&#125;</b> — [`list of ordered items`]
             {* <b>&#123;$order_source&#125;</b> *}
@@ -129,8 +150,8 @@
             <option value="{$duePeriod}" {if $action->getDuePeriod() == $duePeriod}selected{/if}>{$duePeriodName}</option>
             {/foreach}
         </select>
-        [`from the moment the action was performed`]
-        <p class="hint">[`To-do due (deadline) may be set depending on the order action time. Leave zero for no due date and time.`]</p>
+        [`from the moment the to-do was created`]
+        <p class="hint">[`Leave zero for no due date and time.`]</p>
     </div>
 </div>
 <div class="field">

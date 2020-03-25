@@ -79,6 +79,8 @@ class pocketlistsNotificationAboutNewAssign extends pocketlistsBaseNotification
                         'icon'        => $iconFinder->getIconByItemPriority($item->getPriority()),
                         'name'        => $item->getName(),
                         'name_parsed' => $item->getNameParsed(),
+                        'note' => $item->getNote(),
+                        'note_parsed' => $item->getNoteParsed(),
                     ],
                 ]
             )

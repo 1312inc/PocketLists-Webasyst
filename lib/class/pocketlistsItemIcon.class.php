@@ -20,10 +20,10 @@ class pocketlistsItemIcon
                 return '⚫';
 
             case pocketlistsItem::PRIORITY_RED:
-                return '‼️';
+                return '🔴';
 
             case pocketlistsItem::PRIORITY_YELLOW:
-                //return '⚠️';
+                return '⚠️';
             case pocketlistsItem::PRIORITY_GREEN:
                 //return '❗';
             case pocketlistsItem::PRIORITY_NORM:

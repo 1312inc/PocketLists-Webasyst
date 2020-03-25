@@ -13,11 +13,34 @@ abstract class pocketlistsProPluginAutomationRuleAbstract implements pocketlists
     protected $nextRule;
 
     /**
+     * @var bool
+     */
+    protected $delayed = false;
+
+    /**
+     * @var bool
+     */
+    protected $skipDelayed = false;
+
+    /**
+     * @var mixed
+     */
+    protected $value;
+
+    /**
      * @return string
      */
     public function getIdentifier()
     {
         return static::IDENTIFIER;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getValue()
+    {
+        return $this->value;
     }
 
     /**
@@ -52,6 +75,18 @@ abstract class pocketlistsProPluginAutomationRuleAbstract implements pocketlists
     public function isEmpty()
     {
         return empty($this->getValue());
+    }
+
+    /**
+     * @param bool $skipDelayed
+     *
+     * @return pocketlistsProPluginAutomationRuleAbstract
+     */
+    public function skipDelayed($skipDelayed)
+    {
+        $this->skipDelayed = $skipDelayed;
+
+        return $this;
     }
 
     /**
@@ -90,7 +125,7 @@ abstract class pocketlistsProPluginAutomationRuleAbstract implements pocketlists
             'data[rules]['.$this->getIdentifier().'][compare]',
             [
                 'options' => $options,
-                'value'   => $selected,
+                'value' => $selected,
             ]
         );
     }
@@ -109,6 +144,59 @@ abstract class pocketlistsProPluginAutomationRuleAbstract implements pocketlists
     }
 
     /**
+     * @param array $options
+     *
+     * @return string
+     */
+    protected function getMultipleSelectControl($options)
+    {
+        return sprintf(
+            '<select name="data[rules][%s][value][]" multiple class="pl-select-multiple">%s</select>',
+            $this->getIdentifier(),
+            array_reduce(
+                $options,
+                function ($options, $item) {
+                    $selected = is_array($this->value) ? in_array($item['value'], $this->value) : false;
+                    $options .= sprintf(
+                        '<option value="%s" %s>%s</option>',
+                        $item['value'],
+                        $selected ? 'selected' : '',
+                        $item['title']
+                    );
+
+                    return $options;
+                },
+                ''
+            )
+        );
+    }
+
+    /**
+     * @return string
+     * @throws Exception
+     */
+    protected function getDelayedCheckboxControl()
+    {
+        return waHtmlControl::getControl(
+                waHtmlControl::HIDDEN,
+                'data[rules]['.$this->getIdentifier().'][delayed]',
+                ['value' => '']
+            )
+            .'<br><span class="small">'
+            .waHtmlControl::getControl(
+                waHtmlControl::CHECKBOX,
+                'data[rules]['.$this->getIdentifier().'][delayed]',
+                [
+                    'title' => _wp(
+                        'Delayed check (this check will be performed at the moment to-do is created rather than order action is performed; recommended only for to-dos created with a delay)'
+                    ),
+                    'value' => $this->delayed,
+                ]
+            )
+            .'</span>';
+    }
+
+    /**
      * @param array  $data
      * @param string $mode
      *
@@ -124,5 +212,27 @@ abstract class pocketlistsProPluginAutomationRuleAbstract implements pocketlists
                 sprintf('plugins/pro/templates/actions/automation/rule/%s.%s.html', $this->getIdentifier(), $mode)
             )
         );
+    }
+
+    /**
+     * @param array $json
+     *
+     * @return array
+     */
+    protected function loadValueAsArray($json)
+    {
+        if (!isset($json['value'])) {
+            return [];
+        }
+
+        if (!empty($json['value']) && !is_array($json['value'])) {
+            return [$json['value']];
+        }
+
+        if (empty($json['value'])) {
+            return [];
+        }
+
+        return $json['value'];
     }
 }

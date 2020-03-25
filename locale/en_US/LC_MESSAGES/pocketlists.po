@@ -12,7 +12,7 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Language: en_US\n"
-"X-Generator: Poedit 2.2.3\n"
+"X-Generator: Poedit 2.2.4\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: .\n"
 
@@ -1746,7 +1746,7 @@ msgid "https://www.webasyst.com/store/plugin/pocketlists/pro/"
 msgstr ""
 
 #: /wa-apps/pocketlists/templates/actions/about/About.html:178
-msgid "Bullets highlighted with a %s label are available as a part of the paid <a href=\"%s\" target=\"_blank\"><b>Pocket Lists PRO</b></a> plugin."
+msgid "Bullets highlighted with a %s label are available as a part of the paid <a href=\"%s\"><b>Pocket Lists PRO</b></a> plugin."
 msgstr ""
 
 #: /wa-apps/pocketlists/lib/class/Log/pocketlistsLogContext.class.php:140
@@ -1759,4 +1759,73 @@ msgstr ""
 
 #: /wa-apps/pocketlists/lib/class/Log/pocketlistsLogContext.class.php:389
 msgid "No log mapping for %s"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/mails/dailyrecap.html:9
+msgid "<strong>%s</strong> on <em>%s</em>"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/upgrade/Upgrade.html:32
+msgid "Upgrade to PRO"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:7
+msgid "New app by 1312 Inc."
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:8
+msgid "Ad"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:10
+#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:14
+msgid "https://www.webasyst.com/store/app/status/?utm_campaign=pl2webasyst-tiny-ad"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:14
+msgid "<a href=\"%s\" target=\"_blank\">Status app</a> tracks working time and shows whom have been working on what (and whom have been doing nothing too!)"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:176
+msgid "Upgrade to %s"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:8
+msgid "Upgrade to Pocket Lists PRO"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:13
+msgid "Boost your efficiency with the Pocket Lists PRO plugin that instantly enables a robust set of amazing advanced features: <b>Shop-Script automation (auto create to-dos based on actions with orders), kanban board, status labels, quick entry templates,</b> and more."
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/about/About.html:14
+msgid "See details"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/upgrade/Upgrade.html:12
+msgid "Pocket Lists PRO plugin"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/upgrade/Upgrade.html:17
+msgid "Shop-Script automation (auto create to-dos based on actions with orders), kanban board, status labels, quick entry templates, and other advanced features."
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/upgrade/Upgrade.html:30
+msgid "Buy the plugin"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/upgrade/Upgrade.html:37
+msgid "Great to see a PRO user here!"
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/upgrade/Upgrade.html:38
+msgid "<a href=\"%s\">Pocket Lists PRO</a> plugin is installed and running at full speed. Thank you for being a PRO user and for supporting the project."
+msgstr ""
+
+#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:143
+msgid "See Cron command"
+msgstr ""
+
+#: /wa-apps/pocketlists/lib/actions/item/pocketlistsItemAddAttachment.controller.php:157
+msgid "Path %s is not writable"
 msgstr ""

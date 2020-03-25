@@ -250,6 +250,9 @@
         debugAction: function () {
             this.load('?module=debug', this.setHtmlContent);
         },
+        upgradeAction: function () {
+            this.load('?module=upgrade', this.setHtmlContent);
+        },
         todoAction: function () {
             this.load('?module=todo', this.setHtmlContent);
         },

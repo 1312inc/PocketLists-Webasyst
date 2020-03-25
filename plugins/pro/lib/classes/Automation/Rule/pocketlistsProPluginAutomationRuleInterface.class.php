@@ -36,4 +36,11 @@ interface pocketlistsProPluginAutomationRuleInterface
      * @return bool
      */
     public function isEmpty();
+
+    /**
+     * @param bool $skipDelayed
+     *
+     * @return pocketlistsProPluginAutomationRuleInterface
+     */
+    public function skipDelayed($skipDelayed);
 }

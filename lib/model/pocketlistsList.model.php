@@ -160,7 +160,7 @@ class pocketlistsListModel extends pocketlistsModel
                 'and' => [1],
                 'or'  => [],
             ],
-            'group by' => ['l.id'],
+            'group by' => ['l.id', 'i.id'],
             'order by' => ['l.sort', 'l.id DESC'],
         ];
     }

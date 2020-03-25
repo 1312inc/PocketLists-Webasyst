@@ -2,8 +2,11 @@
 
 /**
  * Class pocketlistsProPluginAutomationRuleShopPayment
+ *
+ * @method string getValue()
+ * @property string $value
  */
-class pocketlistsProPluginAutomationRuleShopPayment extends pocketlistsProPluginAutomationRuleAbstract
+class pocketlistsProPluginAutomationRuleShopPayment extends pocketlistsProPluginAutomationRuleShop
 {
     const IDENTIFIER = 'payment';
 
@@ -16,11 +19,6 @@ class pocketlistsProPluginAutomationRuleShopPayment extends pocketlistsProPlugin
      * @var array
      */
     protected $possibleValues;
-
-    /**
-     * @var string
-     */
-    protected $value;
 
     /**
      * @var string
@@ -51,14 +49,6 @@ class pocketlistsProPluginAutomationRuleShopPayment extends pocketlistsProPlugin
         }
 
         return $this->possibleValues;
-    }
-
-    /**
-     * @return string
-     */
-    public function getValue()
-    {
-        return $this->value;
     }
 
     /**
@@ -131,6 +121,15 @@ HTML;
 {$compareOptions}
 {$controlOptions}
 HTML;
+    }
+
+    /**
+     * @return string
+     * @throws Exception
+     */
+    public function editHtmlDisclaimer()
+    {
+        return '';
     }
 
     /**

@@ -67,6 +67,8 @@ class pocketlistsNotificationAboutNewComment extends pocketlistsBaseNotification
             'params' => [
                 'item'        => [
                     'name' => $item->getName(),
+                    'note' => $item->getNote(),
+                    'note_parsed' => $item->getNoteParsed(),
                 ],
                 'comment'     => [
                     'name_parsed' => $comment->getCommentParsed(),

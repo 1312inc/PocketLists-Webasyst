@@ -1,6 +1,25 @@
+<div class="pl-sidebar-core">
+
+{if 0}
+<div class="pl-tiny-ad">
+    <div class="pl-tiny-ad-box">
+        <a href="#" class="pl-tiny-ad-close" title="[`Close`]">&times;</a>
+        <h5 class="heading">[`New app by 1312 Inc.`]</h5>
+        <!-- <h5 class="heading">[`Ad`]</h5> -->
+
+        <a href="[`https://www.webasyst.com/store/app/status/?utm_campaign=pl2webasyst-tiny-ad`]" target="_blank">
+            <img src="https://webasyst-926085.c.cdn77.org/wa-data/public/updates/img/43/4943/icon.96x96.png?v=1.1.0" class="pl-app-icon" />
+        </a>
+
+        <p>{sprintf('[`<a href="%s" target="_blank">Status app</a> tracks working time and shows whom have been working on what (and whom have been doing nothing too!)`]', '[`https://www.webasyst.com/store/app/status/?utm_campaign=pl2webasyst-tiny-ad`]')}</p>
+
+    </div>
+</div>
+{/if}
+
 {if !empty($pockets)}
     <!-- POCKETS -->
-    <div class="block pl-sidebar-core" data-pl2-sidebar-wrapper="pockets">
+    <div class="block" data-pl2-sidebar-wrapper="pockets">
         <ul class="menu-v with-icons">
             {foreach $pockets as $pocket}
                 <li data-pl-pocket-id="{$pocket->getId()}">
@@ -18,7 +37,7 @@
     </div>
 
     <div class="hr"></div>
-    
+
 {/if}
 
 <!-- TO-DO STREAMS -->
@@ -152,18 +171,23 @@
         {* @event backend_sidebar.%plugin_id% *}
         {if !empty($backend_sidebar)}{foreach $backend_sidebar as $_}{ifset($_.system_li)}{/foreach}{/if}
 
+        {if !pocketlistsHelper::hasPlugin('pro')}
         <li class="top-padded">
+            <a href="#/upgrade/"><i class="icon16" style="background-image: url('/wa-apps/pocketlists/img/pl2pro-plugin-icon16.png') !important; background-size: 16px 16px; border-radius: 50%;"></i>{sprintf('[`Upgrade to %s`]','<span class="pl-label pl-pro">PRO</span>')}</a>
+        </li>
+        {/if}
+        <li{if pocketlistsHelper::hasPlugin('pro')} class="top-padded"{/if}>
             <a href="#/about/"><i class="icon16" style="background-image: url('/wa-apps/pocketlists/img/pl2webasyst48.png') !important; background-size: 16px 16px;"></i>[`About`]</a>
         </li>
         {if $isAdmin}
         <li>
-            <strong class="count highlighted indicator" style="color: #444; background: gold; font-size: 10px;">NEW!</strong>
             <a href="#/plugins/"><i class="icon16 plugins"></i>[`Plugins`]</a>
         </li>
         {/if}
     </ul>
 </div>
 
+</div>
 
 <script>
     'use strict';
