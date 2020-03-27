@@ -21,19 +21,61 @@ class pocketlistsNotificationSendService implements pocketlistsNotificationSenda
         $content = $notification->getContent();
 
         try {
+            pocketlistsLogger::debug(
+                sprintf(
+                    'Start to send notification: %s, %s (%d)',
+                    $notification->getIdentifier(),
+                    $notification->getType(),
+                    $notification->getId()
+                ),
+                'notifications.log'
+            );
+
             if ($content->send()) {
                 $notification
                     ->setSentAt(date('Y-m-d H:i:s'))
                     ->setStatus(pocketlistsNotification::STATUS_OK);
+
+                pocketlistsLogger::debug(
+                    sprintf(
+                        'Notification was sent: %s, %s (%d)',
+                        $notification->getIdentifier(),
+                        $notification->getType(),
+                        $notification->getId()
+                    ),
+                    'notifications.log'
+                );
             } else {
                 $notification
                     ->setError($content->getError())
                     ->setStatus(pocketlistsNotification::STATUS_FAIL);
+
+                pocketlistsLogger::error(
+                    sprintf(
+                        'Notification was not sent: %s, %s (%d) - %s',
+                        $notification->getIdentifier(),
+                        $notification->getType(),
+                        $notification->getId(),
+                        $notification->getError()
+                    ),
+                    'notifications.log'
+                );
             }
         } catch (Exception $ex) {
             $notification
                 ->setError($ex->getMessage())
                 ->setStatus(pocketlistsNotification::STATUS_FAIL);
+
+            pocketlistsLogger::error(
+                sprintf(
+                    'Notification was not sent: %s, %s (%d) - %s',
+                    $notification->getIdentifier(),
+                    $notification->getType(),
+                    $notification->getId(),
+                    $notification->getError()
+                ),
+                'notifications.log'
+            );
         }
 
         pl2()->getEntityFactory(pocketlistsNotification::class)->update($notification);

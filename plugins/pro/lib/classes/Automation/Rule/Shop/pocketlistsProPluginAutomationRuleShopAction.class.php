@@ -2,15 +2,13 @@
 
 /**
  * Class pocketlistsProPluginAutomationRuleShopAction
+ *
+ * @method shopWorkflowAction|string getValue()
+ * @property shopWorkflowAction $value
  */
-class pocketlistsProPluginAutomationRuleShopAction extends pocketlistsProPluginAutomationRuleAbstract
+class pocketlistsProPluginAutomationRuleShopAction extends pocketlistsProPluginAutomationRuleShop
 {
     const IDENTIFIER = 'action';
-
-    /**
-     * @var shopWorkflowAction
-     */
-    private $value;
 
     /**
      * @var array
@@ -31,14 +29,6 @@ class pocketlistsProPluginAutomationRuleShopAction extends pocketlistsProPluginA
     public function getPossibleValues()
     {
         return [];
-    }
-
-    /**
-     * @return shopWorkflowAction|string
-     */
-    public function getValue()
-    {
-        return $this->value;
     }
 
     /**
@@ -84,6 +74,15 @@ class pocketlistsProPluginAutomationRuleShopAction extends pocketlistsProPluginA
     {$this->getHiddenIdentifierControl()}
 </span>
 HTML;
+    }
+
+    /**
+     * @return string
+     * @throws Exception
+     */
+    public function editHtmlDisclaimer()
+    {
+        return '';
     }
 
     /**

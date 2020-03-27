@@ -2,15 +2,13 @@
 
 /**
  * Class pocketlistsProPluginAutomationRuleShopAmount
+ *
+ * @method float getValue()
+ * @property float $value
  */
-class pocketlistsProPluginAutomationRuleShopAmount extends pocketlistsProPluginAutomationRuleAbstract
+class pocketlistsProPluginAutomationRuleShopAmount extends pocketlistsProPluginAutomationRuleShop
 {
     const IDENTIFIER = 'order_amount';
-
-    /**
-     * @var float
-     */
-    protected $value;
 
     /**
      * @var string
@@ -36,14 +34,6 @@ class pocketlistsProPluginAutomationRuleShopAmount extends pocketlistsProPluginA
     public function getPossibleValues()
     {
         return [];
-    }
-
-    /**
-     * @return float
-     */
-    public function getValue()
-    {
-        return $this->value;
     }
 
     /**
@@ -110,6 +100,15 @@ HTML;
 {$input}
 {$currencies}
 HTML;
+    }
+
+    /**
+     * @return string
+     * @throws Exception
+     */
+    public function editHtmlDisclaimer()
+    {
+        return '';
     }
 
     /**

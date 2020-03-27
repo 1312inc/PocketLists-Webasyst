@@ -15,6 +15,7 @@ class pocketlistsItemDetailsAction extends pocketlistsViewItemAction
     {
         $id = waRequest::request('id', false, waRequest::TYPE_INT);
         $listId = waRequest::request('list_id', false, waRequest::TYPE_INT);
+        $caller = waRequest::request('caller', '', waRequest::TYPE_STRING_TRIM);
 
         $list = null;
         /** @var pocketlistsListFactory $listFactory */
@@ -82,18 +83,23 @@ class pocketlistsItemDetailsAction extends pocketlistsViewItemAction
         $lists = [];
         foreach ($allPockets as $pocket) {
             foreach ($pocket->getUserLists() as $list) {
-                $lists[] = new pocketlistsListDetailsListsDto($list->getId(), $list->getNameParsed(), $pocket->getName());
+                $lists[] = new pocketlistsListDetailsListsDto(
+                    $list->getId(),
+                    $list->getNameParsed(),
+                    $pocket->getName()
+                );
             }
         }
 
         $this->view->assign(
             [
-                'fileupload' => $item->getId(),
+                'fileupload' => true,//$item->getId(),
                 'item' => $item,
                 'list' => $list,
                 'lists' => $lists,
                 'assign_user_id' => $assign_user_id,
                 'contacts' => $contacts,
+                'caller' => $caller,
 
                 'backend_item_add' => $eventResult,
             ]

@@ -2,7 +2,8 @@
 <br>
 <br>
 {foreach $items as $item}
-{$item.icon} {sprintf('[`<strong>%s</strong> by %s`]', $item.name_parsed|nl2br, $item.contact_name|escape)}<br>
+{$item.icon} {sprintf('[`<strong>%s</strong> by %s`]', $item.name_parsed|nl2br, $item.contact_name|escape)} <br>
+{if $item.due}<em>[`Due`]: {$item.due}</em> {/if}{if $item.note_parsed}<span style="color: #777;">{$item.note_parsed}</span>{/if}{if $item.due || $item.note_parsed}<br>{/if}
 {/foreach}
 <br>
 --<br>

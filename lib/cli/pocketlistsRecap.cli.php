@@ -19,8 +19,21 @@ class pocketlistsRecapCli extends waCliController
         $asp = new waAppSettingsModel();
         $asp->set('pocketlists', 'last_recap_cron_time', $time);
 
-        pl2()->getModel(pocketlistsItem::class)->updateCalcPriority();
+        pocketlistsLogger::debug('Daily recap started', 'notifications.log');
 
-        (new pocketlistsNotificationDailyRecap())->notify(array(), $test);
+        try {
+            pl2()->getModel(pocketlistsItem::class)->updateCalcPriority();
+
+            (new pocketlistsNotificationDailyRecap())->notify([], $test);
+        } catch (Exception $ex) {
+            pocketlistsLogger::error(
+                sprintf(
+                    'Error on sending all daily recaps. Error: %s. Trace: %s',
+                    $ex->getMessage(),
+                    $ex->getTraceAsString()
+                ),
+                'notifications.log'
+            );
+        }
     }
 }

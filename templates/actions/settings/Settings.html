@@ -1,5 +1,4 @@
 <div class="shadowed pl-settings">
-
     <div class="sidebar left250px" data-pl2-settings-sidebar>
         <ul class="menu-v with-icons stack">
             <li class="top-padded bottom-padded selected">
@@ -88,11 +87,11 @@
                     </div>
                     <div class="value no-shift">
                         <select name="app_icon">
-                            <option value="{pocketlistsUserSettings::ICON_ALL}" {if !empty($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_ALL}selected="selected"{/if}>[`All my to-dos`]</option>
-                            <option value="{pocketlistsUserSettings::ICON_OVERDUE}" {if !empty($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_OVERDUE}selected="selected"{/if}>[`Only On Fire + Black + Red`]</option>
-                            <option value="{pocketlistsUserSettings::ICON_OVERDUE_TODAY}" {if !empty($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_OVERDUE_TODAY}selected="selected"{/if}>[`Only On Fire + Black + Red + Yellow`]</option>
-                            <option value="{pocketlistsUserSettings::ICON_OVERDUE_TODAY_AND_TOMORROW}" {if !empty($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_OVERDUE_TODAY_AND_TOMORROW}selected="selected"{/if}>[`Only On Fire + Black + Red + Yellow + Green`]</option>
-                            <option value="{pocketlistsUserSettings::ICON_NONE}" {if !empty($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_NONE}selected="selected"{/if}>[`None`]</option>
+                            <option value="{pocketlistsUserSettings::ICON_ALL}" {if isset($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_ALL}selected="selected"{/if}>[`All my to-dos`]</option>
+                            <option value="{pocketlistsUserSettings::ICON_OVERDUE}" {if isset($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_OVERDUE}selected="selected"{/if}>[`Only On Fire + Black + Red`]</option>
+                            <option value="{pocketlistsUserSettings::ICON_OVERDUE_TODAY}" {if isset($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_OVERDUE_TODAY}selected="selected"{/if}>[`Only On Fire + Black + Red + Yellow`]</option>
+                            <option value="{pocketlistsUserSettings::ICON_OVERDUE_TODAY_AND_TOMORROW}" {if isset($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_OVERDUE_TODAY_AND_TOMORROW}selected="selected"{/if}>[`Only On Fire + Black + Red + Yellow + Green`]</option>
+                            <option value="{pocketlistsUserSettings::ICON_NONE}" {if isset($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_NONE}selected="selected"{/if}>[`None`]</option>
                         </select>
                         <p class="hint">[`The counter will count to-dos of the specified colors on your My to-dos list.`]</p>
                     </div>
@@ -126,8 +125,7 @@
                         </select>
 
                         <div class="pl-cron-msg" style="{if empty($settings.daily_recap_on)}display: none;{/if}">
-                        {if !$last_recap_cron_time}
-                            <p class="small"><br><em><i class="icon10 exclamation"></i> [`Daily recap notifications require CRON to be configured, which is not the case for your Pocket Lists app. Cron the following command to run daily:`]</em></p>
+                        {capture "dailyrecap_cron_command"}
                             <ul>
                                 <li style="padding-bottom: 1rem;">
                                     [`Webasyst Cloud`]: {sprintf('[`launch the <a href="%s">Cloud app</a>`]',$wa_backend_url|cat:'hosting/#/cron/')} &gt; <i class="icon10 add"></i> [`Add Cron job`] &gt; <code class="highlighted">php cli.php [Pocket Lists] <b>Recap</b></code>
@@ -136,8 +134,15 @@
                                     [`Own server`]: <code class="highlighted">{$cron_command}</code>
                                 </li>
                             </ul>
+                        {/capture}
+                        {if !$last_recap_cron_time}
+                            <p class="small"><br><em><i class="icon10 exclamation"></i> [`Daily recap notifications require CRON to be configured, which is not the case for your Pocket Lists app. Cron the following command to run daily:`]</em></p>
+                            {$smarty.capture.dailyrecap_cron_command}
                         {else}
-                            <p class="small"><br><em><i class="icon10 yes"></i> [`We’ll keep you up to date and notify you on what’s up next! And when there is nothing planned for the upcoming period, no alerts will be sent.`] <span class="gray">{sprintf('[`Last Cron execution time: %s`]', $last_recap_cron_time|wa_datetime:'humandatetime')}</span></em></p>
+                            <p class="small"><br><em><i class="icon10 yes"></i> [`We’ll keep you up to date and notify you on what’s up next! And when there is nothing planned for the upcoming period, no alerts will be sent.`] <span class="gray">{sprintf('[`Last Cron execution time: %s`]', $last_recap_cron_time|wa_datetime:'humandatetime')}</span></em> <a href="#" class="pl-dailyrecap-cron-command-toggle inline-link"><b><i>[`See Cron command`]</i></b></a></p>
+                            <div style="display: none;" class="pl-dailyrecap-cron-command-info">
+                                {$smarty.capture.dailyrecap_cron_command}
+                            </div>
                         {/if}
                         </div>
                     </div>
@@ -252,5 +257,11 @@
         $('input[name="daily_recap_on"]').on('click', function() {
             $('.pl-cron-msg').toggle(200);
         });
+
+        $('.pl-dailyrecap-cron-command-toggle').click(function(){
+            $('.pl-dailyrecap-cron-command-info').toggle();
+            return false;
+        });
+
     }());
 </script>

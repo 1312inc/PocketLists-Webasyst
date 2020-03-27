@@ -68,6 +68,11 @@ class pocketlistsProPluginAutomation extends pocketlistsEntity
     private $last_execution_datetime;
 
     /**
+     * @var bool
+     */
+    private $enabled = 1;
+
+    /**
      * @return int
      */
     public function getId()
@@ -268,6 +273,26 @@ class pocketlistsProPluginAutomation extends pocketlistsEntity
     }
 
     /**
+     * @return bool
+     */
+    public function isEnabled()
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * @param bool $enabled
+     *
+     * @return pocketlistsProPluginAutomation
+     */
+    public function setEnabled($enabled)
+    {
+        $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    /**
      * @param DateTime|string $last_execution_datetime
      *
      * @return pocketlistsProPluginAutomation
@@ -307,10 +332,14 @@ class pocketlistsProPluginAutomation extends pocketlistsEntity
 
             foreach ($this->rules as $rule) {
                 if (!empty($rule['identifier'])) {
-                    $rules[] = pocketlistsProPlugin::getInstance()->getAutomationService()->createRule(
-                        $rule['identifier'],
-                        $rule
-                    );
+                    try {
+                        $rules[] = pocketlistsProPlugin::getInstance()->getAutomationService()->createRule(
+                            $rule['identifier'],
+                            $rule
+                        );
+                    } catch (Exception $exception) {
+                        pocketlistsLogger::error($exception->getMessage());
+                    }
                 }
             }
             $this->rules = $rules;

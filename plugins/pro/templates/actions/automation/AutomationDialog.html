@@ -7,6 +7,18 @@
 
                 <h1>[`‘Order > To-do’ automation rule`]</h1>
                 <p>[`Pocket Lists will create a new to-do upon an action performed with any order in Shop-Script if the specified conditions are met.`]</p>
+                <div class="fields form">
+                    <div class="field">
+                        <div class="name">
+                            [`Enabled`]
+                        </div>
+                        <div class="value no-shift">
+                            <input type="hidden" name="data[enabled]" value="0"/>
+                            <input type="checkbox" name="data[enabled]" value="1" {if $automation->isEnabled()}checked{/if}/>
+                        </div>
+                    </div>
+                </div>
+                <div class="clear-both"></div>
                 <h2 class="heading bordered-bottom" style="padding-bottom: 10px; margin-bottom: 13px;">[`IF`]</h2>
                 <div class="fields form ">
                     {foreach $automation->getRules() as $rule}
@@ -17,6 +29,14 @@
                         <div class="value">
                             {$rule->editHtml()}
                         </div>
+                        {$_disclaimer = $rule->editHtmlDisclaimer()}
+                        {if $_disclaimer}
+                        <div class="value">
+                            <span class="hint">
+                                {$_disclaimer}
+                            </span>
+                        </div>
+                        {/if}
                     </div>
                     {/foreach}
                 </div>

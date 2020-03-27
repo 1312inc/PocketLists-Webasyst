@@ -6,7 +6,7 @@
 {foreach $items as $item}
 {$format = 'humandate'}
 {if $item.due_datetime}{$format = 'humandatetime'}{/if}
-{$item.icon} {sprintf('[`<strong>%s</strong> on %s`]', $item.name_parsed|nl2br, $item.due_datetime|default:$item.due_date|wa_datetime:$format:$timezone)}<br>
+{$item.icon} {sprintf('[`<strong>%s</strong> on <em>%s</em>`]', $item.name_parsed|nl2br, $item.due_datetime|default:$item.due_date|wa_datetime:$format:$timezone)}<br>
 {/foreach}
 <br>
 --<br>

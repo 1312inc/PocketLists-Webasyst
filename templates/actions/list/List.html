@@ -116,7 +116,8 @@
                 }),
             userHasLinkedApps: {$user->hasLinkedApps()},
             current_user_id: {$user->getContact()->getId()},
-            fileUpload: {$fileupload}
+            fileUpload: {$fileupload},
+            caller: 'list'
         });
 
         new $.pocketlists.Comments($list_wrapper);

@@ -308,6 +308,7 @@ class pocketlistsItem extends pocketlistsEntity
     public function setAttachments($attachments = null)
     {
         $this->attachments = $attachments;
+        $this->attachments_count = is_array($attachments) ? count($attachments) : 0;
 
         return $this;
     }

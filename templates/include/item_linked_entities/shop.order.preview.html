@@ -19,7 +19,7 @@
         </a>
 
         <p>
-            <span class="small black" title="{$extra.order.contact.name}">{$extra.order.contact.name|escape|truncate:32}</span>
+            <span class="small black" title="{$extra.order.contact.name|escape}">{$extra.order.contact.name|escape|truncate:32}</span>
             {if $extra.last_action_datetime}
             <span class="hint">{$extra.last_action_datetime|wa_datetime:'humandatetime'}</span>
             {/if}

@@ -16,11 +16,12 @@
         {** @var $automation pocketlistsProPluginAutomation **}
         {foreach $action->automations as $automation}
             <div class="value">
-                <div class="pl2pro-rule-baloon">
+                <div class="pl2pro-rule-baloon{if !$automation->isEnabled()} pl2pro-rule-disabled{/if}">
                     <div class="pl2pro-rule-header">
+                        {if !$automation->isEnabled()}<strong><em>[`DISABLED`]</em></strong>{/if}
                         <a href="#" class="inline-link pl2pro-label-edit" data-pl2pro-automation-edit="{$automation->getId()}"><i class="icon10 edit"></i> <b><i>[`Edit`]</i></b></a>
                         <span class="pl2pro-rule-if">[`IF`]</span>
-                        {$action->automationRulesHtml[$automation->getId()]}
+                        <span>{$action->automationRulesHtml[$automation->getId()]}</span>
                     </div>
                     <div class="pl2pro-rule-body">
                         {$action->automationActionsHtml[$automation->getId()]}

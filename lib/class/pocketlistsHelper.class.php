@@ -344,4 +344,14 @@ class pocketlistsHelper
 
         return $flatten;
     }
+
+    /**
+     * @param string $name
+     *
+     * @return bool
+     */
+    public static function hasPlugin($name)
+    {
+        return !empty(pl2()->getPluginInfo($name));
+    }
 }

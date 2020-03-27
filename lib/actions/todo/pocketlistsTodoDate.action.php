@@ -39,8 +39,8 @@ class pocketlistsTodoDateAction extends pocketlistsViewAction
                 $date ? [$date] : []
             );
 
-        pl2()->getEventDispatcher()->dispatch(new pocketlistsEvent(pocketlistsEventStorage::ITEM_SAVE, null, $itemsDone));
-        pl2()->getEventDispatcher()->dispatch(new pocketlistsEvent(pocketlistsEventStorage::ITEM_DELETE, null, $itemsDone));
+//        pl2()->getEventDispatcher()->dispatch(new pocketlistsEvent(pocketlistsEventStorage::ITEM_SAVE, null, $itemsDone));
+//        pl2()->getEventDispatcher()->dispatch(new pocketlistsEvent(pocketlistsEventStorage::ITEM_DELETE, null, $itemsDone));
 
         $this->view->assign(
             [

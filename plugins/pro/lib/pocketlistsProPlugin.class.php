@@ -5,6 +5,9 @@
  */
 class pocketlistsProPlugin extends waPlugin
 {
+    const ID_ARR = [pocketlistsHelper::APP_ID, 'pro'];
+    const ID_STR = pocketlistsHelper::APP_ID.'.pro';
+
     /**
      * @var waView
      */
@@ -19,6 +22,11 @@ class pocketlistsProPlugin extends waPlugin
      * @var pocketlistsProPluginAutomationService
      */
     protected $automation;
+
+    /**
+     * @var pocketlistsProPluginCronManager
+     */
+    protected $cronManager;
 
     /**
      * @return pocketlistsProPlugin
@@ -67,5 +75,17 @@ class pocketlistsProPlugin extends waPlugin
         }
 
         return $this->automation;
+    }
+
+    /**
+     * @return pocketlistsProPluginCronManager
+     */
+    public function getCronManager()
+    {
+        if ($this->cronManager === null) {
+            $this->cronManager = new pocketlistsProPluginCronManager();
+        }
+
+        return $this->cronManager;
     }
 }

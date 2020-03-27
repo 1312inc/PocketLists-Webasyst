@@ -17,7 +17,7 @@ class pocketlistsProPluginWaEventListener
             return (new pocketlistsProPluginItemEventListener())->onInsert($event);
         }
 
-        return  [];
+        return [];
     }
 
     /**
@@ -32,7 +32,7 @@ class pocketlistsProPluginWaEventListener
             return (new pocketlistsProPluginItemEventListener())->onUpdate($event);
         }
 
-        return  [];
+        return [];
     }
 
     /**
@@ -50,7 +50,9 @@ class pocketlistsProPluginWaEventListener
             $automationEvent = new pocketlistsProPluginAutomationShopOrderActionEvent($order, $action);
             $automationEvent->applyAutomations();
         } catch (Exception $ex) {
-            pocketlistsLogger::error($ex->getMessage());
+            pocketlistsLogger::error(
+                sprintf("PRO: Automation error. %s\n%s", $ex->getMessage(), $ex->getTraceAsString())
+            );
         }
     }
 }
