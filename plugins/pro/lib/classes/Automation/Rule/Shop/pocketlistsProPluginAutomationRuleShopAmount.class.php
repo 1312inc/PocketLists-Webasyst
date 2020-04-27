@@ -95,7 +95,7 @@ HTML;
         );
 
         return <<<HTML
-{$this->getSelectCompareControl($this->compare)}
+{$this->getSelectCompareControl($this->compare, pocketlistsProPluginComparision::getTypesGTfirst())}
 {$this->getHiddenIdentifierControl()}
 {$input}
 {$currencies}
