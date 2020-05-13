@@ -390,10 +390,6 @@ msgstr "на следующие 7 дней"
 msgid "Daily recap notifications require CRON to be configured, which is not the case for your Pocket Lists app. Cron the following command to run daily:"
 msgstr "Для отправки ежедневных напоминаний необходимо настроить CRON. Добавьте следующую команду к запуску каждый день:"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:68
-msgid "We’ll keep you up to date! And when there is nothing planned for the upcoming period, no alerts will be sent."
-msgstr "Уведомления настроены! Когда ничего не запланировано на предстоящий период, уведомления отправляться не будут."
-
 #: /wa-apps/pocketlists/templates/actions/settings/Settings.html:74
 msgid "When someone assigns me a to-do"
 msgstr "О назначении на меня новых задач"
@@ -716,8 +712,8 @@ msgid "When enabled, Pocket Lists will automatically parse to-do name and set du
 msgstr "Приложение автоматически установит дату и время выполнения задачи по введенному названию.<br> Например, «встреча завтра утром», «позвонить Кириллу в пятницу в 17:00» — Pocket Lists понимает по-русски и по-английски."
 
 #: /wa-apps/pocketlists/templates/actions/settings/Settings.html:80
-msgid "We’ll keep you up to date and notify you on what’s up next! And when there is nothing planned for the upcoming period, no alerts will be sent."
-msgstr "Уведомления настроены! Вы получите сообщение со списком предстоящих дел. Когда ничего не запланировано на предстоящий период, уведомления отправляться не будут."
+msgid "Daily recap and the Cron are configured properly! You will get email notifications when Cron is executed but not more often than daily (every 24 hours). And when there is nothing planned for the upcoming period, no emails will be sent."
+msgstr "Уведомления и команда Cron настроены верно! Вы будете получать сообщения со списком предстоящих дел при каждом следующем запуске Cron, но не чаще чем раз в 24 часа (ведь сводка — ежедневная). Когда ничего не запланировано на предстоящий период, уведомления отправляться не будут."
 
 #: /wa-apps/pocketlists/templates/actions/settings/Settings.html:80
 msgid "Last Cron execution time: %s"
