@@ -31,7 +31,15 @@ class pocketlistsProPluginLabelFactory extends pocketlistsFactory
     {
         $labelId = $item->getDataField('pro_label_id');
         /** @var pocketlistsProPluginLabel $label */
+        $label = $this->getFromCache($labelId);
+        if ($label instanceof pocketlistsProPluginLabel) {
+            return $label;
+        }
+
         $label = $this->findById($labelId);
+        if ($label) {
+            $this->cache($labelId, $label);
+        }
 
         return $label ?: null;
     }
