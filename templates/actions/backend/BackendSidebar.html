@@ -29,11 +29,13 @@
                 </li>
             {/foreach}
         </ul>
+        {if $isAdmin}
         <ul class="menu-v with-icons">
             <li class="small">
                 <a href="#" data-pl2-action="add-pocket"><i class="icon10 add"></i>[`New pocket`]</a>
             </li>
         </ul>
+        {/if}
     </div>
 
     <div class="hr"></div>
@@ -185,6 +187,15 @@
         </li>
         {/if}
     </ul>
+    {if $isAdmin && empty($pockets)}
+        <div data-pl2-sidebar-wrapper="pockets">
+            <ul class="menu-v with-icons">
+                <li class="small top-padded">
+                    <a href="#" data-pl2-action="add-pocket"><i class="icon10 add"></i>[`New pocket`]</a>
+                </li>
+            </ul>
+        </div>
+    {/if}
 </div>
 
 </div>
