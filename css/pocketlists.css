@@ -200,7 +200,7 @@ table.pl-calendar td .pl-dots i.icon10 { margin-top: 0.2em; margin-right: 0.2em;
 .pl-tiny-ad h5 { font-size: 0.75rem; margin-bottom: 1rem; color: #bb9; }
 .pl-tiny-ad p { font-size: 0.85em; line-height: 1.2em; font-family: 'Helvetica Neue', 'Liberation Sans', Arial, sans-serif; text-align: center; margin: 12px 4px 8px; }
 .pl-tiny-ad img.pl-app-icon { width: 72px; height: 72px; margin: 12px auto; display: block; }
-
+.pl-tiny-ad .pl-badge-appstore { width: 112px; display: block; margin: 15px auto 10px; }
 
 /* Done checkbox
 ---------------- */
