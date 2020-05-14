@@ -393,11 +393,18 @@
                 self.scrollToTop(0, 80);
             });
 
-            self.$core_sidebar.on('click', '[data-pl-action="show-all-team"]', function (e) {
+            self.$core_sidebar.on('click.pl2', '[data-pl-action="show-all-team"]', function (e) {
                 e.preventDefault();
 
                 self.$core_sidebar.find('[data-pl-sidebar-block="team"] li').show();
                 $(this).hide();
+            });
+
+            self.$core_sidebar.on('click.pl2', '.pl-tiny-ad-close', function (e) {
+                e.preventDefault();
+
+                $(this).closest('.pl-tiny-ad').hide();
+                $.post('?module=backendJson&action=hideTinyAd');
             });
 
             $(document)

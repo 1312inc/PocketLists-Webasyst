@@ -99,6 +99,11 @@ class pocketlistsBackendJsonActions extends pocketlistsJsonActions
         $this->response = (new pocketlistsNotificationSendService())->sendInternal();
     }
 
+    public function hideTinyAdAction()
+    {
+        $this->getUser()->setSettings(pocketlistsHelper::APP_ID, 'hide_tiny_ad_until', date('Y-m-d', strtotime('+30 days')));
+    }
+
     public function getListItemCountAction()
     {
         wa()->getStorage()->close();
