@@ -153,7 +153,7 @@ class pocketlistsAppLinkShop extends pocketlistsAppLinkAbstract
     public function getAppEntity(pocketlistsItemLink $itemLink)
     {
         try {
-            return new shopOrder($itemLink->getEntityId());
+            return pl2()->getEntityRepository('pocketlistsAppLinkShop')->getOrder($itemLink->getEntityId());
         } catch (waException $ex) {
             return false;
         }

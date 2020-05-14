@@ -39,61 +39,44 @@
 
                     <p><a href="https://apps.apple.com/app/apple-store/id1272049520?pt=502466&amp;ct=Webasyst&amp;mt=8" target="_blank"><img src="{$wa_url}wa-apps/pocketlists/img/badge-appstore{if $wa->locale()=='ru_RU'}-ru{/if}.png" class="pl-badge-appstore"></a></p>
                 </div>
-            </div>
-            <div class="field">
+              </div>
+              <div class="field">
+                  <div class="name nowrap">
+                    [`GitHub`]
+                  </div>
+                  <div class="value no-shift">
+                      <a href="https://github.com/1312inc/pl2webasyst/" target="_blank">
+                          https://github.com/1312inc/pl2webasyst/
+                      </a>
+                      <br><br>
+                  </div>
+                  <div class="value no-shift">
+                      <hr>
+                  </div>
+              </div>
+              <div class="field">
                 <div class="name nowrap">
                   Webasyst
                 </div>
                 <div class="value no-shift">
 
-                    <p>[`With Pocket Lists for Webasyst, our goal is to deliver the best of the Pocket Lists world to the Webasyst collaborative environment and to make the teamwork and collaboration on tasks expectionally easy and friendly.`]</p>
+                    <p>[`<strong>Your feedback is very important!</strong> Please rate Pocket Lists and write a short review about your experience of using the app. Reviews (both positive and negative) really help us to see what is most useful in the app so we can continue delivering new features the right way.`]</p>
 
-                    {if !$wa->user()->isAdmin('installer')}
+                </div>
+                <div class="value">
 
-                        <p><a href="[`https://www.webasyst.com/store/app/pocketlists/`]" target="_blank"><img src="{$wa_url}wa-apps/pocketlists/img/badge-webasyst{if $wa->locale()=='ru_RU'}-ru{/if}.png" class="pl-badge-appstore"></a></p>
-
+                    {if method_exists($wa->installer, 'reviewWidget')}
+                        {$wa->installer->reviewWidget('app/pocketlists', ['is_inline' => true])}
+                    {else}
+                        <p>
+                            {if $wa->user()->isAdmin('installer')}
+                                <a href="{$wa_backend_url}installer/store/app/pocketlists/reviews/" target="_blank"><img src="{$wa_url}wa-apps/pocketlists/img/badge-webasyst{if $wa->locale()=='ru_RU'}-ru{/if}.png" class="pl-badge-appstore"></a>
+                            {else}
+                                <a href="[`https://www.webasyst.com/store/app/pocketlists/`]" target="_blank"><img src="{$wa_url}wa-apps/pocketlists/img/badge-webasyst{if $wa->locale()=='ru_RU'}-ru{/if}.png" class="pl-badge-appstore"></a>
+                            {/if}
+                        </p>
                     {/if}
-                </div>
-              </div>
-              {if $wa->user()->isAdmin('installer')}
-              <div class="field">
 
-                <div class="value">
-                    <a href="{$wa_backend_url}installer/store/app/pocketlists/reviews/" class="bold large">
-                        [`Rate on Webasyst Installer`]
-                    </a>
-                </div>
-                <div class="value">
-                    <p class="hint">[`<strong>Your feedback is very important!</strong> Please rate Pocket Lists and write a short review about your experience of using the app. Reviews (both positive and negative) really help us to see what is most useful in the app so we can continue delivering new features the right way.`]</p>
-                    <p><a href="[`https://www.webasyst.com/store/app/pocketlists/`]" target="_blank"><img src="{$wa_url}wa-apps/pocketlists/img/badge-webasyst{if $wa->locale()=='ru_RU'}-ru{/if}.png" class="pl-badge-appstore"></a></p>
-                </div>
-              </div>
-              {/if}
-            </div>
-            <div class="field-group">
-              <div class="field">
-                <div class="name nowrap">
-                  [`Support`]
-                </div>
-                <div class="value no-shift">
-                    <a href="mailto:hello@pocketlists.com">
-                        hello@pocketlists.com
-                    </a>
-                    <p class="hint">[`We speak English and Russian.`]</p>
-                </div>
-              </div>
-              <div class="field">
-                <div class="name nowrap">
-                  [`GitHub`]
-                </div>
-                <div class="value no-shift">
-                    <a href="https://github.com/1312inc/pl2webasyst/" target="_blank">
-                        https://github.com/1312inc/pl2webasyst/
-                    </a>
-                    <br><br>
-                </div>
-                <div class="value no-shift">
-                    <hr>
                 </div>
               </div>
             </div>

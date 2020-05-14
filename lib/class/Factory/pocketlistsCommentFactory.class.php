@@ -17,6 +17,12 @@ class pocketlistsCommentFactory extends pocketlistsFactory
      */
     public function findForItem(pocketlistsItem $item)
     {
+        $key = "comment_for_item_{$item->getId()}";
+        $comments = $this->getFromCache($key);
+        if ($comments) {
+            return $comments;
+        }
+
         $data = $this->getModel()->getAllByItems($item->getId());
 
         if (isset($data[$item->getId()])) {
@@ -31,6 +37,8 @@ class pocketlistsCommentFactory extends pocketlistsFactory
         foreach ($comments as $comment) {
             $comment->setItem($item);
         }
+
+        $this->cache($key, $comments);
 
         return $comments;
     }

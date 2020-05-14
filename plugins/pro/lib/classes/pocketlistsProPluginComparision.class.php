@@ -68,4 +68,20 @@ class pocketlistsProPluginComparision
             self::TYPE_IN,
         ];
     }
+
+    /**
+     * @return array
+     */
+    public static function getTypesGTfirst()
+    {
+        return [
+            self::TYPE_GT,
+            self::TYPE_EQ,
+            self::TYPE_GTE,
+            self::TYPE_LT,
+            self::TYPE_LTE,
+            self::TYPE_NEQ,
+            self::TYPE_IN,
+        ];
+    }
 }

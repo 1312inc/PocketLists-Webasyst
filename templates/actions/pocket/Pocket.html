@@ -62,6 +62,10 @@
         {$lists_html|default:""}
     </main>
 
+    {if !empty($lists) && count($lists)>3 && method_exists($wa->installer, 'reviewWidget')}
+        {$wa->installer->reviewWidget('app/pocketlists')}
+    {/if}
+
 </div>
 <script>
     (function () {

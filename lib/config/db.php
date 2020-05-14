@@ -18,6 +18,8 @@ return array(
         'create_datetime' => array('datetime'),
         ':keys' => array(
             'PRIMARY' => 'id',
+            'item_id' => 'item_id',
+            'contact_id' => 'contact_id',
         ),
     ),
     'pocketlists_item' => array(
@@ -50,6 +52,9 @@ return array(
             'list_id' => 'list_id',
             'sort' => array('parent_id', 'sort'),
             'key_list_id' => 'key_list_id',
+            'complete_contact_id' => 'complete_contact_id',
+            'contact_id' => 'contact_id',
+            'assigned_contact_id' => 'assigned_contact_id',
         ),
     ),
     'pocketlists_item_link' => array(
