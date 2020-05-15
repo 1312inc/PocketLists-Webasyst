@@ -13,6 +13,8 @@ class pocketlistsJsonController extends waJsonController
     public function run($params = null)
     {
         try {
+            wa()->getStorage()->close();
+
             $this->preExecute();
             $this->execute();
             $this->afterExecute();

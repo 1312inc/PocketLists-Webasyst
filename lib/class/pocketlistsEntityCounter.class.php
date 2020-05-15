@@ -282,11 +282,11 @@ class pocketlistsEntityCounter
      */
     private function getFromCache($key)
     {
-        if (isset($this->cache[$key])) {
-            return $this->cache[$key];
-        }
-
-        return null;
+//        if (isset($this->cache[$key])) {
+//            return $this->cache[$key];
+//        }
+//
+        return wa()->getCache()->get($key);
     }
 
     /**
@@ -296,9 +296,11 @@ class pocketlistsEntityCounter
      *
      * @return pocketlistsItemsCount
      */
-    private function cache($key, pocketlistsItemsCount $count, $ttl = 0)
+    private function cache($key, pocketlistsItemsCount $count, $ttl = 60)
     {
-        $this->cache[$key] = $count;
+//        $this->cache[$key] = $count;
+
+        wa()->getCache()->set($key, $count, $ttl);
 
         return $count;
     }
