@@ -186,13 +186,26 @@
                     list_id = -1;
                 }
             }
-            var id = id || 0;
-            var $list_name = $('#pl-list-name');
+            id = id || 0;
+            var $list_name = $('#pl-list-name'),
+                $content = $('#content');
+
             if ($list_name.length) {
                 $list_name.after('<i class="icon16 loading">');
             }
-            // todo: load list separetly
-            this.load('?module=pocket&id=' + id + '&list_id=' + list_id, this.setHtmlContent);
+
+            if ($content.find('[data-pl2-pocket-wrapper]').data('pl2-pocket-wrapper') == id) {
+                this.load('?module=list&pocket_id=' + id + '&id=' + list_id, function (html) {
+                    $content.find('#pl-list-content').replaceWith(html);
+                    // -_-
+                    $content.find('[data-pl2-wrapper="lists"] [data-pl-list-id] a').removeClass('pl-is-selected');
+                    $content.find('[data-pl2-wrapper="lists"] [data-pl-list-id="'+list_id+'"] a').addClass('pl-is-selected');
+                });
+            } else {
+                this.load('?module=pocket&id=' + id + '&list_id=' + list_id, function (html) {
+                    $content.html(html);
+                });
+            }
         },
         listsAction: function () {
             this.pocketAction();

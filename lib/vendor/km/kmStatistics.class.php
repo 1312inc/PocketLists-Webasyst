@@ -238,7 +238,7 @@ class kmStatistics
         $plitem = [];
         foreach (debug_backtrace() as $i => $item) {
             if (isset($item['class']) && strpos($item['class'], 'pocketlists') === 0) {
-                $plitem[] = sprintf('%s%s%s::%s', $item['class'], $item['type'], $item['function'], $item['line']);
+                $plitem[] = sprintf('%s%s%s::%s', $item['class'], $item['type'], $item['function'], ifset($item, 'line', 0));
             }
         }
 
@@ -309,6 +309,6 @@ class kmStatistics
 
     public function __destruct()
     {
-        $this->exportStatQueries();
+//        $this->exportStatQueries();
     }
 }
