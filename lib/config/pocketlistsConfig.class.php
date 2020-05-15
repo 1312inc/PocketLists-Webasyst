@@ -255,7 +255,10 @@ class pocketlistsConfig extends waAppConfig
             /** @var pocketlistsItemModel $itemModel */
             $itemModel = wa(pocketlistsHelper::APP_ID)->getConfig()->getModel(pocketlistsItem::class);
 
-            $itemModel->updateCalcPriority();
+            $lastUpdateTime = wa()->getUser()->getSettings(pocketlistsHelper::APP_ID, 'last_updateCalcPriority', 0);
+            if (time() - $lastUpdateTime > 300) {
+                $itemModel->updateCalcPriority();
+            }
 
             $count = $this->getUser()->getAppCount();
 
@@ -268,10 +271,7 @@ class pocketlistsConfig extends waAppConfig
 HTML;
             }
 
-            $pocketlistsPath = sprintf(
-                '%spocketlists?module=backendJson&action=',
-                pl2()->getBackendUrl(true)
-            );
+            $pocketlistsPath = sprintf('%spocketlists?module=backendJson&action=', pl2()->getBackendUrl(true));
 
             $script = <<<HTML
 <script>

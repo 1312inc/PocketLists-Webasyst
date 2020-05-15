@@ -209,49 +209,32 @@ class pocketlistsItemModel extends pocketlistsModel
      */
     public function countTodo($contact_id, $date = [], array $calc_priority = [], $status = null)
     {
-        $key = sprintf(
-            '%s/%s/%s/%s/%s/%s',
-            __CLASS__,
-            __METHOD__,
-            $contact_id,
-            implode(',', $date),
-            implode(',', $calc_priority),
-            $status
-        );
+        // get to-do items only from accessed pockets
+        $lists = pocketlistsRBAC::getAccessListForContact($contact_id);
 
-        $data = pl2()->getCache()->get($key);
-        if ($data === null) {
-            // get to-do items only from accessed pockets
-            $lists = pocketlistsRBAC::getAccessListForContact($contact_id);
+        $sqlParts = $this->getTodoSqlComponents($contact_id, $date, $lists, $calc_priority);
 
-            $sqlParts = $this->getTodoSqlComponents($contact_id, $date, $lists, $calc_priority);
-
-            $sqlParts['select'] = ['i.calc_priority calc_priority', 'count(i.id) count'];
-            if ($status !== null) {
-                $sqlParts['where']['and'][] = 'i.status = ' . $status;
-            }
-            $sqlParts['group by'] = ['i.calc_priority'];
-
-            $sql = $this->buildSqlComponents($sqlParts);
-            $itemsCount = $this->query(
-                $sql,
-                [
-                    'list_ids' => $lists,
-                    'contact_id' => $contact_id,
-                    'date' => $date,
-                    'calc_priority' => $calc_priority,
-                ]
-            )->fetchAll();
-
-            $data = array_combine(
-                array_column($itemsCount, 'calc_priority'),
-                array_column($itemsCount, 'count')
-            );
-
-            pl2()->getCache()->set($key, $data, 60);
+        $sqlParts['select'] = ['i.calc_priority calc_priority', 'count(i.id) count'];
+        if ($status !== null) {
+            $sqlParts['where']['and'][] = 'i.status = ' . $status;
         }
+        $sqlParts['group by'] = ['i.calc_priority'];
 
-        return $data;
+        $sql = $this->buildSqlComponents($sqlParts);
+        $itemsCount = $this->query(
+            $sql,
+            [
+                'list_ids' => $lists,
+                'contact_id' => $contact_id,
+                'date' => $date,
+                'calc_priority' => $calc_priority,
+            ]
+        )->fetchAll();
+
+        return array_combine(
+            array_column($itemsCount, 'calc_priority'),
+            array_column($itemsCount, 'count')
+        );
     }
 
     /**
@@ -665,27 +648,25 @@ class pocketlistsItemModel extends pocketlistsModel
      */
     public function getLastActivities($contact_ids = [])
     {
-        $key = 'getLastActivities';
-        $by_contact = "";
+        $by_contact = '';
         if ($contact_ids) {
             if (!is_array($contact_ids)) {
                 $contact_ids = [$contact_ids];
             }
             $by_contact = ' WHERE t.contact_id IN (i:contact_id)';
-            $key .= implode(',',$contact_ids);
         }
 
-        $data = pl2()->getCache()->get($key);
-        if (!$data) {
-            // ох что-то я сомневаюсь
-            $q = <<<SQL
+        // ох что-то я сомневаюсь
+        $q = <<<SQL
 SELECT MAX(t.last_date) last_activity_datetime, t.contact_id contact_id
 FROM (SELECT i.complete_contact_id contact_id, max(i.complete_datetime) last_date
       FROM pocketlists_item i
+      where i.status = 1
       GROUP BY i.complete_contact_id
       UNION
       SELECT i.contact_id contact_id, max(i.create_datetime) last_date
       FROM pocketlists_item i
+      where i.status = 0
       GROUP BY i.contact_id
       UNION
       SELECT c.contact_id contact_id, max(c.create_datetime) last_date
@@ -695,14 +676,10 @@ FROM (SELECT i.complete_contact_id contact_id, max(i.complete_datetime) last_dat
 GROUP BY t.contact_id
 SQL;
 
-            $data = $this->query(
-                $q,
-                ['contact_id' => $contact_ids]
-            )->fetchAll('contact_id', 1);
-            pl2()->getCache()->set($key, $data, 120);
-        }
-
-        return $data;
+        return $this->query(
+            $q,
+            ['contact_id' => $contact_ids]
+        )->fetchAll('contact_id', 1);
     }
 
     /**
@@ -1254,12 +1231,7 @@ SQL;
      */
     public function updateCalcPriority()
     {
-        $lastUpdateTime = wa()->getUser()->getSettings(pocketlistsHelper::APP_ID, 'last_updateCalcPriority', 0);
-        if (time() - $lastUpdateTime < 600) {
-            return;
-        }
-
-        $itemsWithDue = $this->where('due_date is not null or due_datetime is not null')->fetchAll('id');
+        $itemsWithDue = $this->where('status = 0 and due_date is not null or due_datetime is not null')->fetchAll('id');
         foreach ($itemsWithDue as $item) {
             $newCalcPriority = max(
                 pocketlistsHelper::calcPriorityOnDueDate($item['due_date'], $item['due_datetime']),

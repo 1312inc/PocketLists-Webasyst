@@ -83,6 +83,8 @@ class pocketlistsListAction extends pocketlistsViewAction
             $us->set('last_pocket_list_id', json_encode(['list_id' => $list->getId()]));
 
             $im = new pocketlistsItemModel();
+//            $count_undone = 0;
+//            $count_done = 0;
             $count_undone = $im->countByField(
                 [
                     'list_id' => $list->getId(),
@@ -96,10 +98,12 @@ class pocketlistsListAction extends pocketlistsViewAction
                 ]
             );
 
+//            $undone = [];
             $undone = $list->getUndoneItems();
 
 //            $undone = $im->getUndoneByList($list->getId());
 //            $done = $im->getDoneByList($list->getId(), 0, pocketlistsListLazyDoneItemsAction::OFFSET);
+//            $done = [];
             $done = $list->getDoneItems();
             $this->view->assign(
                 [
