@@ -286,7 +286,7 @@ class pocketlistsEntityCounter
 //            return $this->cache[$key];
 //        }
 //
-        return wa()->getCache()->get($key);
+        return pl2()->getCache()->get($key);
     }
 
     /**
@@ -300,7 +300,7 @@ class pocketlistsEntityCounter
     {
 //        $this->cache[$key] = $count;
 
-        wa()->getCache()->set($key, $count, $ttl);
+        pl2()->getCache()->set($key, $count, $ttl);
 
         return $count;
     }
