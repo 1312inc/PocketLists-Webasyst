@@ -512,6 +512,26 @@
                     this_is_the_end = false,
                     html_selector = config.html_selector;//'#pl-complete-log > .menu-v';
 
+                function getItems() {
+                    if (request_in_action) {
+                        return;
+                    }
+                    $loading.show();
+                    request_in_action = true;
+
+                    $.get(config.url, { offset: offset }, function (html) {
+                        $loading.hide();
+                        html = $(html).find(html_selector).html();
+                        if ($.trim(html).length) {
+                            offset++;
+                        } else {
+                            this_is_the_end = true;
+                        }
+                        $(html_selector).append(html);
+                        request_in_action = false;
+                    });
+                }
+
                 $(window).on('scroll.pl2', function () {
                     if (this_is_the_end) {
                         return;
@@ -523,29 +543,18 @@
                     if (prev_scroll_pos < scroll_pos) {
                         if (!is_bottom && scroll_pos >= doc_h) {
                             is_bottom = true;
-                            if (request_in_action) {
-                                return;
-                            }
-                            $loading.show();
-                            request_in_action = true;
 
-                            $.get(config.url, { offset: offset }, function (html) {
-                                $loading.hide();
-                                html = $(html).find(html_selector).html();
-                                if ($.trim(html).length) {
-                                    offset++;
-                                } else {
-                                    this_is_the_end = true;
-                                }
-                                $(html_selector).append(html);
-                                request_in_action = false;
-                            });
+                            getItems();
                         } else {
                             is_bottom = false;
                         }
                     }
                     prev_scroll_pos = scroll_pos;
                 });
+
+                if (config['load_now'] !== undefined) {
+                    getItems();
+                }
             }
         }
     };

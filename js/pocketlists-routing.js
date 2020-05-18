@@ -206,6 +206,9 @@
                     $content.html(html);
                 });
             }
+
+            // todo: load list separately
+            // this.load('?module=pocket&id=' + id + '&list_id=' + list_id, this.setHtmlContent);
         },
         listsAction: function () {
             this.pocketAction();

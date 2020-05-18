@@ -9,7 +9,7 @@
                     {if !$labelInfo->label->getId()}
                         <input type="checkbox" class="pl-done" checked="checked"><span></span>
                     {/if}
-                    <span data-pl2pro-label-count{if $labelInfo->label->getId()} style="color: white;"{/if}>{if $labelInfo->count == 100}99+{else}{$labelInfo->count}{/if}</span>
+                    <span data-pl2pro-label-count{if $labelInfo->label->getId()} style="color: white;"{/if}>{if $labelInfo->count >= 100}99+{else}{$labelInfo->count}{/if}</span>
                 </h3>
                 <span class="hint"{if $labelInfo->label->getId()} style="color: white;"{/if}>{$labelInfo->label->getName()|escape}</span>
             </a>
