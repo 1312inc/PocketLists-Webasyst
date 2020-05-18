@@ -75,7 +75,7 @@ class pocketlistsCommentModel extends pocketlistsModel
         $list_sql = pocketlistsRBAC::filterListAccess($lists, $user_id);
 
         $q = "SELECT 
-                c.id
+                count(c.id)
             FROM {$this->table} c
             LEFT JOIN pocketlists_item as i ON i.id = c.item_id
             left JOIN pocketlists_list as l ON l.id = i.list_id 
@@ -89,7 +89,7 @@ class pocketlistsCommentModel extends pocketlistsModel
                 'list_ids'           => $lists,
                 'user_last_activity' => $user_last_activity,
             ]
-        )->count();
+        )->fetchField();
     }
 
     /**

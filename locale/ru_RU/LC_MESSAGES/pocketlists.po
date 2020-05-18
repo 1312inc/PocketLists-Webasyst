@@ -12,1818 +12,1296 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Basepath: .\n"
 "Language: ru_RU\n"
-"X-Generator: Poedit 2.2.4\n"
+"X-Generator: Poedit 2.3\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: .\n"
 
-#: /wa-apps/pocketlists/templates/actions/archive/Archive.html:13
 msgid "To archive an active list, tap on it’s checkmark."
 msgstr "Чтобы добавить список в архив, щелкните по большой галочке слева от названия списка."
 
-#: /wa-apps/pocketlists/templates/actions/archive/Archive.html:23
 msgid "Archive is empty"
 msgstr "Архив пуст"
 
-#: /wa-apps/pocketlists/templates/actions/archive/Archive.html:24
 msgid "Archiving is a handy way to hide a to-do list instead of deleting it permanently. To archive a list, tap on it’s big checkmark or click <em>Archive list</em> in the list action menu."
 msgstr "Архив — это удобный способ для скрытия ненужных списков вместо их удаления. Чтобы добавить список в архив, щелкните по большой галочке слева от названия списка или выберите <em>В архив</em> в меню действий со списком."
 
-#: /wa-apps/pocketlists/templates/actions/archive/Archive.html:32
-#: /wa-apps/pocketlists/templates/layouts/Default.html:78
 msgid "Archive"
 msgstr "Архив"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemData.html:5
 msgid "Completed by %s"
 msgstr "Выполнен %s"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemData.html:19
 msgid "Edit"
 msgstr "Редактировать"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemData.html:46
 msgid "Assigned to %s"
 msgstr "Ответственный %s"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:7
-#: /wa-apps/pocketlists/templates/actions/list/ListDetails.html:7
 msgid "Title"
 msgstr "Название"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:11
 msgid "Note"
 msgstr "Заметка"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:12
 msgid "Optional text note"
 msgstr "Необязательное текстовое описание"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:16
 msgid "Attachment"
 msgstr "Вложение"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:26
 msgid "Priority"
 msgstr "Приоритет"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:37
-#: /wa-apps/pocketlists/templates/actions/list/ListDetails.html:34
 msgid "Due"
 msgstr "Срок"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:51
-#: /wa-apps/pocketlists/templates/actions/list/ListDetails.html:47
 msgid "Set time"
 msgstr "Указать время"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:52
-#: /wa-apps/pocketlists/templates/actions/list/ListDetails.html:48
 msgid "Clear time"
 msgstr "Только дата"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:58
 msgid "This item is <strong>marked as completed</strong>. Setting priority and due date won’t be visible within the to-do list."
 msgstr "Эта задача уже <strong>отмечена как выполненная</strong>. Установка приоритета и срока не повлияют на отображение задачи в списках."
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:63
 msgid "Repeat"
 msgstr "Повторять"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:66
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:20
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:32
 msgid "None"
 msgstr "Нет"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:67
 msgid "Every Day"
 msgstr "Каждый день"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:68
 msgid "Every Week"
 msgstr "Каждую неделю"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:69
 msgid "Every 2 Weeks"
 msgstr "Каждые 2 недели"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:70
 msgid "Every Month"
 msgstr "Каждый месяц"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:71
 msgid "Every Year"
 msgstr "Каждый год"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:72
 msgid "Custom..."
 msgstr "По-другому…"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:77
 msgid "Location"
 msgstr "Место"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:89
 msgid "Assigned to"
 msgstr "Ответственный"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:98
 msgid "Nobody"
 msgstr "Не указан"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:106
-#: /wa-apps/pocketlists/templates/actions/list/ListDetails.html:56
 msgid "Created"
 msgstr "Создано"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:116
 msgid "Completed"
 msgstr "Выполнено"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:133
 msgid "Delete to-do"
 msgstr "Удалить задачу"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:138
-#: /wa-apps/pocketlists/templates/actions/list/ListDetails.html:77
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:118
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:218
 msgid "Save"
 msgstr "Сохранить"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:139
-#: /wa-apps/pocketlists/templates/actions/list/ListDetails.html:78
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:218
-#: /wa-apps/pocketlists/templates/include/archivelistdialog.html:7
-#: /wa-apps/pocketlists/templates/include/deleteitemdialog.html:8
-#: /wa-apps/pocketlists/templates/include/deletelistdialog.html:8
 msgid "or"
 msgstr "или"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:140
-#: /wa-apps/pocketlists/templates/actions/list/ListDetails.html:79
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:218
-#: /wa-apps/pocketlists/templates/include/archivelistdialog.html:7
-#: /wa-apps/pocketlists/templates/include/deleteitemdialog.html:8
-#: /wa-apps/pocketlists/templates/include/deletelistdialog.html:8
 msgid "cancel"
 msgstr "отмена"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:142
-#: /wa-apps/pocketlists/templates/actions/list/ListDetails.html:81
 msgid "error"
 msgstr "ошибка"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:143
-#: /wa-apps/pocketlists/templates/actions/list/ListDetails.html:82
 msgid "saved"
 msgstr "сохранено"
 
-#: /wa-apps/pocketlists/templates/actions/list/List.html:8
 msgid "More"
 msgstr "Еще"
 
-#: /wa-apps/pocketlists/templates/actions/list/List.html:12
 msgid "Get public link"
 msgstr "Получить ссылку"
 
-#: /wa-apps/pocketlists/templates/actions/list/List.html:16
-#: /wa-apps/pocketlists/templates/actions/list/List.html:42
 msgid "Sort"
 msgstr "Сортировать"
 
-#: /wa-apps/pocketlists/templates/actions/list/List.html:21
 msgid "Email list"
 msgstr "Отправить по почте"
 
-#: /wa-apps/pocketlists/templates/actions/list/List.html:27
 msgid "Print list"
 msgstr "Распечатать"
 
-#: /wa-apps/pocketlists/templates/actions/list/List.html:30
-#: /wa-apps/pocketlists/templates/include/archivelistdialog.html:7
 msgid "Archive list"
 msgstr "Поместить в архив"
 
-#: /wa-apps/pocketlists/templates/actions/list/List.html:33
 msgid "Edit list"
 msgstr "Редактировать список"
 
-#: /wa-apps/pocketlists/templates/actions/list/List.html:38
-#: /wa-apps/pocketlists/templates/actions/list/ListDetails.html:72
-#: /wa-apps/pocketlists/templates/include/deletelistdialog.html:4
-#: /wa-apps/pocketlists/templates/include/deletelistdialog.html:8
 msgid "Delete list"
 msgstr "Удалить список"
 
-#: /wa-apps/pocketlists/templates/actions/list/List.html:44
-#: /wa-apps/pocketlists/lib/class/pocketlistsNotifications.class.php:262
 msgid "New to-do"
 msgstr "Новая задача"
 
-#: /wa-apps/pocketlists/templates/actions/list/List.html:52
 msgid "Unarchive list"
 msgstr "Восстановить из архива"
 
-#: /wa-apps/pocketlists/templates/actions/list/List.html:59
 msgid "Delete"
 msgstr "Удалить"
 
-#: /wa-apps/pocketlists/templates/actions/list/List.html:70
-#: /wa-apps/pocketlists/templates/actions/list/List.html:132
-#: /wa-apps/pocketlists/templates/actions/pocket/Pocket.html:6
 msgid "New list"
 msgstr "Новый список"
 
-#: /wa-apps/pocketlists/templates/actions/list/List.html:102
-#: /wa-apps/pocketlists/templates/actions/logbook/logbook.html:28
-#: /wa-apps/pocketlists/templates/actions/team/Team.html:80
-#: /wa-apps/pocketlists/templates/actions/todo/TodoDate.html:41
-#: /wa-apps/pocketlists/templates/layouts/Default.html:68
 msgid "Logbook"
 msgstr "Журнал"
 
-#: /wa-apps/pocketlists/templates/actions/list/List.html:108
-#: /wa-apps/pocketlists/templates/actions/team/Team.html:88
-#: /wa-apps/pocketlists/templates/actions/todo/TodoDate.html:49
 msgid "Show all %d completed to-do"
 msgid_plural "Show all %d completed to-dos"
 msgstr[0] "Показать все %d выполненную задачу"
 msgstr[1] "Показать все %d выполненные задачи"
 msgstr[2] "Показать все %d выполненных задач"
 
-#: /wa-apps/pocketlists/templates/actions/list/ListDetails.html:11
 msgid "Icon"
 msgstr "Иконка"
 
-#: /wa-apps/pocketlists/templates/actions/list/ListDetails.html:15
 msgid "Change"
 msgstr "Изменить"
 
-#: /wa-apps/pocketlists/templates/actions/list/ListDetails.html:19
-#: /wa-apps/pocketlists/templates/actions/pocket/PocketSettingsDialog.html:21
 msgid "Color"
 msgstr "Цвет"
 
-#: /wa-apps/pocketlists/templates/actions/list/ListDetails.html:94
 msgid "Choose list icon"
 msgstr "Выберите иконку для списка"
 
-#: /wa-apps/pocketlists/templates/actions/list/ListDetails.html:106
 msgid "Cancel"
 msgstr "Отмена"
 
-#: /wa-apps/pocketlists/templates/actions/logbook/logbook.html:15
-#: /wa-apps/pocketlists/templates/actions/todo/TodoDate.html:25
-#: /wa-apps/pocketlists/templates/actions/todo/TodoDate.html:26
 msgid "To-do stream is empty"
 msgstr "Список задач пуст"
 
-#: /wa-apps/pocketlists/templates/actions/logbook/logbook.html:16
 msgid "Logbook is empty"
 msgstr "Журнал пуст"
 
-#: /wa-apps/pocketlists/templates/actions/logbook/logbook.html:17
 msgid "Logbook will automatically collect all to-do items completed by you and your teammates."
 msgstr "В журнал автоматически добавляются задания, выполненные вами и вашей командой."
 
-#: /wa-apps/pocketlists/templates/actions/pocket/Pocket.html:42
 msgid "This pocket is empty. Start by creating a to-do list."
 msgstr "Проект пока не содержит списков. Создайте первый список!"
 
-#: /wa-apps/pocketlists/templates/actions/pocket/PocketSettingsDialog.html:4
 msgid "(unnamed pocket)"
 msgstr "(проект без названия)"
 
-#: /wa-apps/pocketlists/templates/actions/pocket/PocketSettingsDialog.html:6
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:142
 msgid "New pocket"
 msgstr "Новый проект"
 
-#: /wa-apps/pocketlists/templates/actions/pocket/PocketSettingsDialog.html:13
 msgid "Pocket name"
 msgstr "Название проекта"
 
-#: /wa-apps/pocketlists/templates/actions/pocket/PocketSettingsDialog.html:34
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:128
 msgid "Access rights"
 msgstr "Права доступа"
 
-#: /wa-apps/pocketlists/templates/actions/pocket/PocketSettingsDialog.html:37
 msgid "Use Contacts app to customize access rights for pockets."
 msgstr "Используйте приложение «Контакты» для разделения прав доступа по проектам."
 
-#: /wa-apps/pocketlists/templates/actions/pocket/PocketSettingsDialog.html:42
 msgid "Everyone"
 msgstr "Все"
 
-#: /wa-apps/pocketlists/templates/actions/pocket/PocketSettingsDialog.html:44
 msgid "Every user who can access Pocket Lists app will see lists and to-dos in this pocket."
 msgstr "Каждый пользователь Pocket Lists будет иметь доступ к этому проекту."
 
-#: /wa-apps/pocketlists/templates/actions/pocket/PocketSettingsDialog.html:48
 msgid "Limited"
 msgstr "Ограниченный"
 
-#: /wa-apps/pocketlists/templates/actions/pocket/PocketSettingsDialog.html:70
 msgid "Selected users"
 msgstr "Выбрать пользователей"
 
-#: /wa-apps/pocketlists/templates/actions/pocket/PocketSettingsDialog.html:92
 msgid "Start typing name..."
 msgstr "Начните вводить имя…"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:7
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:212
 msgid "My personal settings"
 msgstr "Мои личные настройки"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:12
 msgid "App icon counter"
 msgstr "Счетчик на иконке"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:17
 msgid "Reds"
 msgstr "Красные"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:18
 msgid "Reds + Yellows"
 msgstr "Красные + Желтые"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:19
 msgid "Reds + Yellows + Greens"
 msgstr "Красные + Желтые + Зеленые"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:22
 msgid "Only unassigned to-dos and to-dos assigned to you will be counted in the app icon counter."
 msgstr "В счетчике учитываются задачи, которые либо не назначены ни на кого, либо назначены на вас."
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:28
 msgid "To-do stream inbox"
 msgstr "Входящий список"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:45
 msgid "When you add to-dos to your To-do stream directly, they will be added into the specified to-do list."
 msgstr "Когда вы добавляете задачу в общий поток, она будет автоматически добавлена в выбранный список."
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:51
 msgid "Email me"
 msgstr "Email-уведомления"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:55
 msgid "Daily recap on what’s up next"
 msgstr "Ежедневная сводка о следующих задачах"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:58
 msgid "for today"
 msgstr "на сегодня"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:59
 msgid "for today and tomorrow"
 msgstr "на сегодня и завтра"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:60
 msgid "for next 7 days"
 msgstr "на следующие 7 дней"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:65
 msgid "Daily recap notifications require CRON to be configured, which is not the case for your Pocket Lists app. Cron the following command to run daily:"
 msgstr "Для отправки ежедневных напоминаний необходимо настроить CRON. Добавьте следующую команду к запуску каждый день:"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:68
-msgid "We’ll keep you up to date! And when there is nothing planned for the upcoming period, no alerts will be sent."
-msgstr "Уведомления настроены! Когда ничего не запланировано на предстоящий период, уведомления отправляться не будут."
-
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:74
 msgid "When someone assigns me a to-do"
 msgstr "О назначении на меня новых задач"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:79
 msgid "When someone marks a to-do item as complete"
 msgstr "О выполнении задач"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:82
 msgid "only items I created"
 msgstr "только задач, которые я создал"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:83
 msgid "only items I marked as favorite"
 msgstr "только задач, которые я выделил как избранные"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:84
 msgid "only items on to-do lists I previously marked as favorite"
 msgstr "которые находятся в моих избранных списках дел"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:85
 msgid "any item on any list"
 msgstr "любых задач в общих списках"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:90
 msgid "When someone adds a to-do item"
 msgstr "О создании новых задач"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:93
 msgid "to any list I previously marked as favorite"
 msgstr "которые я выделил как избранные"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:94
 msgid "to just any list"
 msgstr "любых задач"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:100
 msgid "When someone comments a to-do item"
 msgstr "О комментариях к задачам"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:103
 msgid "which I’ve created"
 msgstr "которые я создал"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:104
 msgid "which I previously marked as favorite"
 msgstr "которые я выделил как избранные"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:105
 msgid "in just any list"
 msgstr "любым задачам"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:111
 msgid "When someone creates a new to-do list"
 msgstr "О создании новых списков"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:132
 msgid "Pockets"
 msgstr "Проекты"
 
-#: /wa-apps/pocketlists/templates/actions/team/Team.html:8
 msgid "Invite your teammates!"
 msgstr "Соберите команду!"
 
-#: /wa-apps/pocketlists/templates/actions/team/Team.html:9
 msgid "Use <strong>Contacts app</strong> to add your teammates to Pocket Lists and to start collaborating on to-do lists together."
 msgstr "Используйте <strong>приложение «Контакты»</strong> для предоставления вашей команде доступа к Pocket Lists."
 
-#: /wa-apps/pocketlists/templates/actions/team/Team.html:34
 msgid "No to-dos were assigned to %s yet"
 msgstr "Нет назначенных задач"
 
-#: /wa-apps/pocketlists/templates/actions/team/Team.html:66
 msgid "%s’s to-do list is empty"
 msgstr "%s: нет назначенных задач"
 
-#: /wa-apps/pocketlists/templates/actions/team/Team.html:67
 msgid "To assign a to-do to a user, either select him in to-do item details or add a to-do item above."
 msgstr "Выберите ответственного за задачу в ее свойствах или просто добавьте задачу с помощью ссылки выше."
 
-#: /wa-apps/pocketlists/templates/actions/todo/Todo.html:67
-#: /wa-apps/pocketlists/templates/actions/todo/TodoDate.html:13
 msgid "To-do stream"
 msgstr "Задачи"
 
-#: /wa-apps/pocketlists/templates/actions/todo/TodoDate.html:17
 msgid "Show stream"
 msgstr "Поток задач"
 
-#: /wa-apps/pocketlists/templates/actions/todo/TodoDate.html:27
 msgid "To-do stream automatically collects all important to-dos created by you and your teammates, and shows you what to do next."
 msgstr "Поток задач — это динамический список самых важных задач из всех списков и проектов, созданных вами и вашей командой."
 
-#: /wa-apps/pocketlists/templates/include/archivelistdialog.html:3
 msgid "List completed"
 msgstr "Список выполнен"
 
-#: /wa-apps/pocketlists/templates/include/archivelistdialog.html:4
 msgid "You can either automatically complete all to-do items on this list and continue adding new items, or archive this list to hide it until you need it some day in the future."
 msgstr "Отметьте все задачи этого списка как выполненные или отправьте список в архив, чтобы спрятать его до лучших времен."
 
-#: /wa-apps/pocketlists/templates/include/archivelistdialog.html:7
 msgid "Mark all to-dos as completed"
 msgstr "Список выполнен"
 
-#: /wa-apps/pocketlists/templates/include/deleteitemdialog.html:4
 msgid "Delete item?"
 msgstr "Удалить задачу?"
 
-#: /wa-apps/pocketlists/templates/include/deleteitemdialog.html:5
 msgid "Item will be deleted permanently without the ability to restore. Are you sure?"
 msgstr "Задача будет удалена без возможности восстановления. Вы уверены?"
 
-#: /wa-apps/pocketlists/templates/include/deleteitemdialog.html:8
 msgid "Delete item"
 msgstr "Удалить задачу"
 
-#: /wa-apps/pocketlists/templates/include/deletelistdialog.html:5
 msgid "List will be deleted permanently without the ability to restore. Are you sure?"
 msgstr "Список будет удален без возможности восстановления. Вы уверены?"
 
-#: /wa-apps/pocketlists/templates/layouts/Default.html:35
 msgid "Lists"
 msgstr "Списки"
 
-#: /wa-apps/pocketlists/templates/layouts/Default.html:40
 msgid "To-do"
 msgstr "Задачи"
 
-#: /wa-apps/pocketlists/templates/layouts/Default.html:44
 msgid "Favorites"
 msgstr "Избранные"
 
-#: /wa-apps/pocketlists/templates/layouts/Default.html:51
 msgid "Map"
 msgstr "Карта"
 
-#: /wa-apps/pocketlists/templates/layouts/Default.html:55
 msgid "Tags"
 msgstr "Теги"
 
-#: /wa-apps/pocketlists/templates/layouts/Default.html:60
 msgid "Notes"
 msgstr "Заметки"
 
-#: /wa-apps/pocketlists/templates/layouts/Default.html:65
 msgid "Team"
 msgstr "Команда"
 
-#: /wa-apps/pocketlists/templates/layouts/Default.html:81
 msgid "Settings"
 msgstr "Настройки"
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsNotifications.class.php:47
 msgid "UNDONE"
 msgstr "ВОЗВРАТ"
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsNotifications.class.php:47
 msgid "DONE"
 msgstr "ГОТОВО"
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsNotifications.class.php:240
 msgid "New to-do on your favorite list!"
 msgstr "Новая задача в избранном списке!"
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsNotifications.class.php:281
 msgid "NEW: You’ve been assigned to a to-do"
 msgstr "НОВОЕ: Вам назначена задача"
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsNotifications.class.php:330
 msgid "Daily recap for %s"
 msgstr "Список задач на %s"
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsNotifications.class.php:366
 msgid "New list!"
 msgstr "Новый список!"
 
-#: /wa-apps/pocketlists/lib/config/logs.php:5
 msgid "%s created new list %s"
 msgstr "%s создал новый список «%s»"
 
-#: /wa-apps/pocketlists/lib/config/logs.php:8
 msgid "%s deleted a list"
 msgstr "%s удалил список"
 
-#: /wa-apps/pocketlists/lib/config/logs.php:11
 msgid "%s archived %s"
 msgstr "%s отправил в архив список «%s»"
 
-#: /wa-apps/pocketlists/lib/config/logs.php:15
 msgid "%s added new items to %s"
 msgstr "%s добавил новые задачи в список «%s»"
 
-#: /wa-apps/pocketlists/lib/config/pocketlistsRightConfig.class.php:23
 msgid "No access"
 msgstr "Нет доступа"
 
-#: /wa-apps/pocketlists/lib/config/pocketlistsRightConfig.class.php:24
 msgid "Full access"
 msgstr "Полный доступ"
 
-#: /wa-apps/pocketlists/templates/mails/completeanyitem.html:7
 msgid "Just %d more items left on <a href=\"%s\">%s</a>"
 msgstr "Осталось %d задач в списке «<a href=\"%s\">%s</a>»"
 
-#: /wa-apps/pocketlists/templates/mails/completeanyitem.html:9
 msgid "Woohoo, <a href=\"%s\">%s</a> to-do list has been completed :)"
 msgstr "Ура, список «<a href=\"%s\">%s</a>» полностью выполнен :)"
 
-#: /wa-apps/pocketlists/templates/mails/dailyrecap.html:4
 msgid "Here is your <a href=\"%s\">daily recap</a> for %s:"
 msgstr "Ваш <a href=\"%s\">список задач</a> на %s:"
 
-#: /wa-apps/pocketlists/templates/mails/newassignitem.html:4
 msgid "You’ve been assigned a new to-do"
 msgstr "Вас назначили ответственным по заданию"
 
-#: /wa-apps/pocketlists/templates/mails/newfavoritelistitem.html:4
 msgid "There are new items on your favorite <strong>%s</strong> to-do list:"
 msgstr "В вашем избранном списке <strong>%s</strong> появились новые задачи:"
 
-#: /wa-apps/pocketlists/templates/mails/newitem.html:4
 msgid "There are new items on <strong>%s</strong> to-do list:"
 msgstr "В списке <strong>%s</strong> появились новые задачи:"
 
-#: /wa-apps/pocketlists/templates/mails/dailyrecap.html:1
-#: /wa-apps/pocketlists/templates/mails/newassignitem.html:1
-#: /wa-apps/pocketlists/templates/mails/newfavoritelistitem.html:1
-#: /wa-apps/pocketlists/templates/mails/newitem.html:1
-#: /wa-apps/pocketlists/templates/mails/newitem0.html:1
-#: /wa-apps/pocketlists/templates/mails/newlist.html:1
 msgid "Hi %s,"
 msgstr "Привет, %s!"
 
-#: /wa-apps/pocketlists/templates/mails/dailyrecap.html:7
 msgid "<strong>%s</strong> on %s"
 msgstr "<strong>%s</strong> %s"
 
-#: /wa-apps/pocketlists/templates/mails/newfavoritelistitem.html:8
-#: /wa-apps/pocketlists/templates/mails/newitem.html:8
-#: /wa-apps/pocketlists/templates/mails/newitem0.html:8
 msgid "<strong>%s</strong> by %s"
 msgstr "<strong>%s</strong> %s"
 
-#: /wa-apps/pocketlists/templates/mails/completeanyitem.html:1
 msgid "%s have just completed a to-do <strong>%s</strong>"
 msgstr "%s выполнил задачу <strong>%s</strong>"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemData.html:3
 msgid "Favorite"
 msgstr "В избранные"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemData.html:21
 msgid "Comment"
 msgstr "Комментировать"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemData.html:40
 msgid "Only you can see this item"
 msgstr "Только вы видите эту задачу"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemData.html:79
 msgid "Add comment"
 msgstr "Добавить комментарий"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:16
 msgid "Attachments"
 msgstr "Прикрепленные файлы"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:139
-#: /wa-apps/pocketlists/templates/actions/list/List.html:17
 msgid "List"
 msgstr "Список"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:156
 msgid "Removing to-do item from a list makes it <strong>your private to-do item</strong> hidden from your teammates, and available on your To-do Stream only."
 msgstr "Удаление задачи из всех списков сделает его <strong>видимым только вам</strong> в потоке задачи. Другие пользователи не увидят такую задачу."
 
-#: /wa-apps/pocketlists/templates/actions/list/List.html:144
 msgid "Print"
 msgstr "Распечатать"
 
-#: /wa-apps/pocketlists/templates/actions/list/ListEmailDialog.html:10
 msgid "To"
 msgstr "Кому"
 
-#: /wa-apps/pocketlists/templates/actions/list/ListEmailDialog.html:16
 msgid "Subject"
 msgstr "Тема"
 
-#: /wa-apps/pocketlists/templates/actions/list/ListEmailDialog.html:22
 msgid "Message"
 msgstr "Сообщение"
 
-#: /wa-apps/pocketlists/templates/actions/list/ListEmailDialog.html:36
 msgid "Send"
 msgstr "Отправить"
 
-#: /wa-apps/pocketlists/templates/actions/pocket/PocketSettingsDialog.html:113
 msgid "Delete pocket"
 msgstr "Удалить проект"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:28
 msgid "To-do Stream inbox"
 msgstr "Список для входящих"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:45
 msgid "When you add to-dos to your To-do Stream directly, they will be added into the specified to-do list and thus will be available to your teammates who can access this list. If you want such to-dos be your private to-dos by default, select None."
 msgstr "Когда вы добавляете задачу в поток задач напрямую, она будет сохранена в выбранном списке дел и станет видимой всем сотрудникам, у которых есть доступ к этому списку. Если вы хотите, чтобы все задачи, добавленные в поток, были видны только вам, выберите «Нет»."
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:51
 msgid "Natural input"
 msgstr "Умный ввод"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:55
 msgid "Set due date and time according to to-do name"
 msgstr "Устанавливать срок выполнения по названию задачи"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:56
 msgid "When enabled, Pocket Lists will automatically parse to-do name and set due date and time if it was typed.<br> E.g. “meeting tomorrow morning”, “call James next friday 5pm”."
 msgstr "Приложение автоматически установит дату и время выполнения задачи по введенному названию.<br> Например, «встреча завтра утром», «позвонить Кириллу в пятницу в 17:00» — Pocket Lists понимает по-русски и по-английски."
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:80
-msgid "We’ll keep you up to date and notify you on what’s up next! And when there is nothing planned for the upcoming period, no alerts will be sent."
-msgstr "Уведомления настроены! Вы получите сообщение со списком предстоящих дел. Когда ничего не запланировано на предстоящий период, уведомления отправляться не будут."
+msgid "Daily recap and the Cron are configured properly! You will get email notifications when Cron is executed but not more often than daily (every 24 hours). And when there is nothing planned for the upcoming period, no emails will be sent."
+msgstr "Уведомления и команда Cron настроены верно! Вы будете получать сообщения со списком предстоящих дел при каждом следующем запуске Cron, но не чаще чем раз в 24 часа (ведь сводка — ежедневная). Когда ничего не запланировано на предстоящий период, уведомления отправляться не будут."
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:80
 msgid "Last Cron execution time: %s"
 msgstr "Последний запуск Cron: %s"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:332
 msgid "ALL TO-DO LISTS AND ITEMS FROM THIS PROJECT WILL BE DELETED PERMANENTLY. ARE YOU SURE?"
 msgstr "ВСЕ СПИСКИ И ЗАДАЧИ ЭТОГО ПРОЕКТА БУДУТ УДАЛЕНЫ БЕЗ ВОЗМОЖНОСТИ ВОССТАНОВЛЕНИЯ. ВЫ УВЕРЕНЫ?"
 
-#: /wa-apps/pocketlists/templates/actions/todo/TodoDate.html:5
 msgid "This is <strong>To-do Stream</strong> — your personal dynamic to-do list that automatically collects all important to-dos from all of your lists and presents them in the priority &amp; due order. Most important to-dos are on top. Since this is your personal list, to-do items assigned to your teammates won’t be listed on this list."
 msgstr "Это <strong>Поток задач</strong> — ваш список дел, в котором автоматически собираются задачи из всех списков и сортируются в порядке приоритета и срока выполнения. Самые важные задачи наверху. Это ваш персонифицированный список, и поэтому задачи, назначенные на других пользователей, в нем показаны не будут."
 
-#: /wa-apps/pocketlists/templates/actions/todo/TodoDate.html:8
 msgid "To-dos added to this list directly will be automatically added to <strong>%s</strong> list and thus will be available to your teammates who can access this list. <a href=\"%s\">Configure</a>"
 msgstr "Задачи, добавленные напрямую в поток, будут сохранены в списке <strong>%s</strong> и станут доступными всем пользователям, которые имеют доступ к этому списку. <a href=\"%s\">Выбрать входящий список</a>"
 
-#: /wa-apps/pocketlists/templates/actions/todo/TodoDate.html:10
 msgid "To-dos added to the stream directly will be <em>your private to-dos</em> unless you manually assign them to any to-do list or <a href=\"%s\">select the default stream inbox list</a> in the app settings."
 msgstr "Задачи, добавленные напрямую в поток, будут <strong>видны только вам</strong> до тех пор, пока вы не переместите их в один из общих списков дел или не <a href=\"%s\">выберите список для входящих</a> в настройках, прежде чем добавлять новые задачи в поток."
 
-#: /wa-apps/pocketlists/templates/include/deletelistdialog.html:6
 msgid "All to-do items (either completed or not) will be deleted permanently."
 msgstr "Все задачи (как выполненные, так и нет) будут удалены без возможности восстановления."
 
-#: /wa-apps/pocketlists/templates/mails/completeanyitem.html:2
 msgid "%s have just completed <strong>&#10004; %s</strong>"
 msgstr "%s выполнил задачу <strong>&#10004; %s</strong>"
 
-#: /wa-apps/pocketlists/templates/mails/completeanyitem.html:4
 msgid "To-do has been uncompleted: <strong>&#10006; %s</strong>"
 msgstr "Задача возвращена: <strong>&#10006; %s</strong>"
 
-#: /wa-apps/pocketlists/templates/mails/newassignitem.html:1
 msgid "%s assigned you to a to-do on <a href=\"%s\">%s</a>"
 msgstr "%s назначил вас на задачу <a href=\"%s\">%s</a>"
 
-#: /wa-apps/pocketlists/templates/mails/newcomment.html:1
 msgid "%s commented on <a href=\"%s\">%s</a>"
 msgstr "%s добавил комментарий к <a href=\"%s\">%s</a>"
 
-#: /wa-apps/pocketlists/templates/mails/newfavoritelistitem.html:1
-#: /wa-apps/pocketlists/templates/mails/newitem.html:1
 msgid "There are new items on <a href=\"%s\">%s</a> to-do list:"
 msgstr "В списке <a href=\"%s\">%s</a> новые задачи:"
 
-#: /wa-apps/pocketlists/templates/mails/newlist.html:1
 msgid "%s have just created a new to-do list <strong><a href=\"%s\">%s</a></strong>"
 msgstr "%s создал новый список задач <strong><a href=\"%s\">%s</a></strong>"
 
-#: /wa-apps/pocketlists/js/pocketlists-item.js:301
 msgid "This to-do is assigned to another person. Are you sure you want to mark this item as complete?"
 msgstr "Эта задача назначена на другого пользователя. Вы уверены, что хотите отметить его как выполненное?"
 
-#: /wa-apps/pocketlists/js/pocketlists-item.js:567
 msgid "Close?"
 msgstr "Закрыть?"
 
-#: /wa-apps/pocketlists/lib/actions/item/pocketlistsItemData.action.php:76
-#: /wa-apps/pocketlists/lib/actions/item/pocketlistsItemData.action.php:79
 msgid "Failed to upload file %s."
 msgstr "При загрузке файла %s произошла ошибка."
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsNotifications.class.php:419
-#: /wa-apps/pocketlists/lib/class/pocketlistsNotifications.class.php:453
-#: /wa-apps/pocketlists/lib/class/pocketlistsNotifications.class.php:487
 msgid "New comment on %s"
 msgstr "Новый комментарий к задаче %s"
 
-#: /wa-apps/pocketlists/lib/config/logs.php:5
 msgid "created new list"
 msgstr "создал список"
 
-#: /wa-apps/pocketlists/lib/config/logs.php:8
 msgid "deleted a list"
 msgstr "удалил список"
 
-#: /wa-apps/pocketlists/lib/config/logs.php:11
 msgid "archived"
 msgstr "отправил в архив"
 
-#: /wa-apps/pocketlists/lib/config/logs.php:15
 msgid "added new items to"
 msgstr "добавил новые задачи в"
 
-#: /wa-apps/pocketlists/lib/config/pocketlistsConfig.class.php:41
 msgid "to his personal to-do stream"
 msgstr "в свой поток задач"
 
-#: /wa-apps/pocketlists/templates/actions/favorites/Favorites.html:20
 msgid "Your favorites list is empty"
 msgstr "Избранных задач нет"
 
-#: /wa-apps/pocketlists/templates/actions/favorites/Favorites.html:21
 msgid "Click on a tiny star icon next to to-do name to add it to your personal favorties list."
 msgstr "Щелкните по маленькой звездочке, чтобы добавить задачу в ваш личный список избранных."
 
-#: /wa-apps/pocketlists/templates/actions/pocket/PocketSettingsDialog.html:50
 msgid "Only selected users will be able to access lists and to-dos in this pocket."
 msgstr "Только выбранные пользователи будут иметь доступ к спискам этого проекта."
 
-#: /wa-apps/pocketlists/lib/config/logs.php:18
 msgid "completed"
 msgstr "выполнил задачу"
 
-#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:7
-#: /wa-apps/pocketlists/templates/actions/list/ListEmailDialog.html:28
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:26
-#: /wa-apps/pocketlists/templates/actions/todo/Todo.html:15
-#: /wa-apps/pocketlists/templates/actions/todo/TodoDate.html:4
-#: /wa-apps/pocketlists/templates/actions/todo/TodoDate.html:35
-#: /wa-apps/pocketlists/templates/actions/todo/TodoDate.html:40
-#: /wa-apps/pocketlists/templates/include/monthcalendar.html:50
 msgid "My to-dos"
 msgstr "Мои задачи"
 
-#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:14
-#: /wa-apps/pocketlists/templates/actions/comments/Comments.html:3
 msgid "Comments"
 msgstr "Комментарии"
 
-#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:48
-#: /wa-apps/pocketlists/templates/actions/list/List.html:100
 msgid "Due %s"
 msgstr "Срок: %s"
 
-#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:57
 msgid "Create a to-do list and share it with your teammates."
 msgstr "Создавайте списки дел и работайте над ними совместно с командой."
 
-#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:77
-#: /wa-apps/pocketlists/templates/actions/list/List.html:52
 msgid "Online"
 msgstr "Онлайн"
 
-#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:85
 msgid "Use <a href=\"%s\">Team app</a> to invite teammates and to collaborate using the Pocket Lists app: select a user or a group of users &gt; Access tab &gt; Pocket Lists app &gt; apply the proper access level."
 msgstr "Работайте совместно! Используйте приложение «<a href=\"%s\">Команда</a>», чтобы предоставить доступ коллегам: выберите пользователя или группу пользователей &gt; вкладка «Доступ» &gt; Pocket Lists &gt; настройте подходящий уровень доступа."
 
-#: /wa-apps/pocketlists/templates/actions/comment/Comment.html:12
 msgid "Reply"
 msgstr "Ответить"
 
-#: /wa-apps/pocketlists/templates/actions/comment/Comment.html:18
 msgid "on"
 msgstr "к задаче"
 
-#: /wa-apps/pocketlists/templates/actions/comments/Comments.html:14
-#: /wa-apps/pocketlists/templates/actions/logbook/Logbook.html:18
 msgid "Loading..."
 msgstr "Загрузка…"
 
-#: /wa-apps/pocketlists/templates/actions/comments/Comments.html:66
-#: /wa-apps/pocketlists/js/pocketlists-item.js:595
 msgid "You are about to permanently delete this comment. Delete?"
 msgstr "Комментарий будет удален без возможности восстановления. Удалить?"
 
-#: /wa-apps/pocketlists/templates/actions/favorites/Favorites.html:2
-#: /wa-apps/pocketlists/templates/actions/todo/Todo.html:2
 msgid "Next"
 msgstr "Вперед"
 
-#: /wa-apps/pocketlists/templates/actions/favorites/Favorites.html:3
-#: /wa-apps/pocketlists/templates/actions/todo/Todo.html:3
 msgid "Previous"
 msgstr "Назад"
 
-#: /wa-apps/pocketlists/templates/actions/favorites/FavoritesDate.html:4
 msgid "My favorites"
 msgstr "Мои избранные"
 
-#: /wa-apps/pocketlists/templates/actions/favorites/FavoritesDate.html:16
 msgid "<strong>Your Favorites list is empty.</strong> To add a to-do to your personal favorites list, either click on a tiny little star icon next to a to-do name (in just any to-do list) or add a to-do directly using the form below."
 msgstr "<strong>Ваш список избранных задач пуст.</strong> Добавляйте задачи в свой персональный список избранных с помощью маленькой звездочки справа от названия задачи (в каком бы списке задача не находилась) или добавляя новые задачи в избранные ниже."
 
-#: /wa-apps/pocketlists/templates/actions/favorites/FavoritesDate.html:26
 msgid "All favorites"
 msgstr "Все избранные"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:5
-#: /wa-apps/pocketlists/templates/actions/list/ListDetails.html:5
 msgid "Close"
 msgstr "Закрыть"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:50
-#: /wa-apps/pocketlists/templates/actions/list/List.html:49
 msgid "me"
 msgstr "я"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:110
 msgid "When due is set, it may automatically increase the manually set priority color."
 msgstr "При приближении срока приоритет (цвет) задачи автоматически возрастает и может стать выше выставленного вручную."
 
-#: /wa-apps/pocketlists/templates/actions/list/List.html:18
 msgid "Re-sort list"
 msgstr "Обновить сортировку"
 
-#: /wa-apps/pocketlists/templates/actions/list/List.html:33
 msgid "Edit list details"
 msgstr "Настройки списка"
 
-#: /wa-apps/pocketlists/templates/actions/list/List.html:40
 msgid "Access"
 msgstr "Доступ"
 
-#: /wa-apps/pocketlists/templates/actions/list/List.html:49
 msgid "author"
 msgstr "автор"
 
-#: /wa-apps/pocketlists/templates/actions/list/List.html:61
 msgid "Use <a href=\"%s\">Team app</a> to configure access: select a user or a group of users &gt; Access tab &gt; Pocket Lists app &gt; apply the proper access level."
 msgstr "Для настройки доступа используйте приложение «<a href=\"%s\">Команда</a>»: выберите пользователя или группу пользователей &gt; вкладка «Доступ» &gt; Pocket Lists &gt; настройте подходящий уровень доступа."
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:17
 msgid "Understand “Meeting tomorrow at 10” input (recommended)"
 msgstr "Умный ввод «Встреча завтра в 10» (рекомендуется)"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:18
 msgid "When enabled, the app will automatically parse to-do name and set due date and time if it was typed.<br> Examples: “Meeting tomorrow morning”, “Call James next friday 5pm”, “Pay electricity bill in a week”, “Update working schedule April 25”."
 msgstr "Приложение автоматически установит дату и время выполнения задачи по введенному тексту задачи.<br> Например, «Встреча завтра утром», «Позвонить Кириллу в пятницу в 17:00», «Оплатить аренду через неделю», «Рассылка клиентам 25 апреля»."
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:28
 msgid "My to-dos to self"
 msgstr "Мои задачи себе"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:31
 msgid "To-dos assigned to me by other users"
 msgstr "Задачи, назначенные на меня другими пользователями"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:43
 msgid "To-dos created by me in shared lists"
 msgstr "Задачи, добавленные в общие списки мной"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:46
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:52
 msgid "only in lists which I marked as favorite"
 msgstr "только в списки, которые я добавил в избранные"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:50
 msgid "To-dos created by other users in shared lists"
 msgstr "Задачи, добавленные в общие списки другими пользователями"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:53
 msgid "all Green, Yellow, and Red to-dos from all lists"
 msgstr "все Зеленые + Желтые + Красные задачи"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:58
 msgid "My to-dos is your personal dynamic to-do list that automatically collects all to-dos which you are about to do up next. To-dos to self and to-dos assigned to you by your teammates are included in this list automatically. Most important and urgent to-dos are on top."
 msgstr "Мои задачи — это ваш персональный фильтр предстоящих задач. В фильтр автоматически попадают все задачи, которые вы назначили на себя и которые вам отправили другие пользователи. Самые важные и срочные задачи показываются наверху."
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:59
 msgid "Additionally, you can include other users’s to-dos to be shown on your My to-dos list , which is handy if you want to be sure not to miss any important to-do item, either it is an urgent to-do or a to-do list you follow."
 msgstr "Дополнительно вы можете включить в фильтр задачи, созданные другими пользователями. Это удобно, если вы следите за выполнением важных запланированных задач или задач из отдельных избранных списков."
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:60
 msgid "To-dos assigned to other users will be automatically hidden from your My to-dos list."
 msgstr "Задачи, созданные вами и назначенные на других пользователей, будут скрыты из списка предстоящих задач."
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:76
 msgid "The counter will count to-dos of the specified colors on your My to-dos list."
 msgstr "Приложение автоматически подсчитает количество задач выбранных цветов в фильтре «Мои задачи» и покажет это число на иконке приложения."
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:124
 msgid "When someone sends me a to-do"
 msgstr "О назначении задач на меня"
 
-#: /wa-apps/pocketlists/templates/actions/team/Team.html:28
 msgid "%s’s to-dos (%d)"
 msgstr "Задачи %s (%d)"
 
-#: /wa-apps/pocketlists/templates/actions/team/Team.html:36
-#: /wa-apps/pocketlists/lib/config/pocketlistsRightConfig.class.php:23
 msgid "Shared lists"
 msgstr "Общие списки"
 
-#: /wa-apps/pocketlists/templates/actions/team/Team.html:48
-#: /wa-apps/pocketlists/templates/actions/team/Team.html:53
 msgid "Use Team app to <a href=\"%s\">configure %s’s access</a> to shared lists: select a user or a group of users &gt; Access tab &gt; Pocket Lists app &gt; apply the proper access level."
 msgstr "Настройте <a href=\"%s\">доступ к спискам для %s</a> в приложении «Команда»: выберите пользователя или группу пользователей &gt; вкладка «Доступ» &gt; Pocket Lists &gt; настройте подходящий уровень доступа."
 
-#: /wa-apps/pocketlists/templates/actions/team/Team.html:52
 msgid "You have no lists that you would share with %s in common."
 msgstr "У вас нет общих списков дел с %s."
 
-#: /wa-apps/pocketlists/templates/actions/todo/TodoDate.html:19
-#: /wa-apps/pocketlists/templates/actions/todo/TodoDate.html:20
 msgid "Welcome to Pocket Lists app!"
 msgstr "Добро пожаловать!"
 
-#: /wa-apps/pocketlists/templates/actions/todo/TodoDate.html:21
 msgid "Use Pocket Lists app to keep track on what you need to do up next, to assign to-dos to your teammates, and to collaborate on shared to-do lists."
 msgstr "Pocket Lists позволит вашей команде эффективно работать совместно: вести общие списки дел, планировать работу, назначать задачи друг другу и не пропустить ни одного важного запланированного события."
 
-#: /wa-apps/pocketlists/templates/include/itemadd.html:15
 msgid "Meeting tomorrow at 10"
 msgstr "Встреча завтра в 10"
 
-#: /wa-apps/pocketlists/templates/mails/completeanyitem.html:2
 msgid "%s has just completed <strong>%s</strong>"
 msgstr "%s выполнил задачу <strong>%s</strong>"
 
-#: /wa-apps/pocketlists/templates/mails/completeanyitem.html:4
 msgid "The following to-do has just been uncompleted and rolled back to active status: <strong>%s</strong>"
 msgstr "Задача возвращена в статус невыполненной: <strong>%s</strong>"
 
-#: /wa-apps/pocketlists/templates/mails/completeanyitem.html:20
-#: /wa-apps/pocketlists/templates/mails/dailyrecap.html:14
-#: /wa-apps/pocketlists/templates/mails/newassignitem.html:10
-#: /wa-apps/pocketlists/templates/mails/newcomment.html:9
-#: /wa-apps/pocketlists/templates/mails/newfavoritelistitem.html:10
-#: /wa-apps/pocketlists/templates/mails/newitem.html:10
-#: /wa-apps/pocketlists/templates/mails/newlist.html:5
 msgid "Manage my subscription"
 msgstr "Настройки подписки"
 
-#: /wa-apps/pocketlists/templates/mails/newassignitem.html:2
 msgid "%s sent you <a href=\"%s\">a new to-do</a>"
 msgstr "%s отправил вам <a href=\"%s\">новую задачу</a>"
 
-#: /wa-apps/pocketlists/js/pocketlists-item.js:1072
 msgid "Are you sure you want to delete this file?"
 msgstr "Удалить файл?"
 
-#: /wa-apps/pocketlists/js/pocketlists-list.js:336
 msgid "Archiving the list will temporarily make this list and all it's items invisible. When you need this list in the future, simply unarchive it and continue from just where you stopped. Archive the list?"
 msgstr "Список и все невыполненные задачи этого списка будут временно скрыты в архиве. Восстановить список из архива вы сможете в разделе «Архив». Продолжить?"
 
-#: /wa-apps/pocketlists/js/pocketlists.js:270
 msgid "You are about to leave this page without saving your input. Are you sure?"
 msgstr "Уйти со страницы без сохранения введенной информации?"
 
-#: /wa-apps/pocketlists/lib/actions/item/pocketlistsItemAddAttachment.controller.php:105
 msgid "No item with such ID"
 msgstr "Нет задач с указанным ID"
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsLogAction.class.php:57
 msgid "unarchived"
 msgstr "восстановлен из архива"
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsLogAction.class.php:61
 msgid "added new to-dos to"
 msgstr "добавил новые задачи в список"
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsLogAction.class.php:69
 msgid "commented"
 msgstr "добавил комментарий"
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsLogAction.class.php:73
 msgid "assigned a to-do to"
 msgstr "поставил задачу"
 
-#: /wa-apps/pocketlists/lib/config/app.php:3
 msgid "To-dos"
 msgstr "Задачи"
 
-#: /wa-apps/pocketlists/lib/config/pocketlistsRightConfig.class.php:10
 msgid "Can create to-dos to self"
 msgstr "Работа с персональным списком дел «Мои задачи»"
 
-#: /wa-apps/pocketlists/lib/config/pocketlistsRightConfig.class.php:11
 msgid "Can create shared to-do lists"
 msgstr "Создание новых общих списков дел"
 
-#: /wa-apps/pocketlists/lib/config/pocketlistsRightConfig.class.php:12
 msgid "Can see other users personal to-dos and assign to-dos to teammates"
 msgstr "Просмотр персональных задач других пользователей, назначение задач другим пользователям"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:36
 msgid "in any to-do list"
 msgstr "в любые списки"
 
-#: /wa-apps/pocketlists/templates/actions/team/Team.html:42
 msgid "%d to-do"
 msgid_plural "%d to-dos"
 msgstr[0] "%d задача"
 msgstr[1] "%d задачи"
 msgstr[2] "%d задач"
 
-#: /wa-apps/pocketlists/templates/actions/comments/Comments.html:10
 msgid "<strong>No comments yet.</strong> This page will display a plain list of all to-do item comments posted by you and your teammates. Keep track on this page to make sure not to miss a single discussion."
 msgstr "<strong>Пока комментариев нет.</strong> На этой странице будут отображаться все комментарии, добавленные к задачам вами и вашими коллегами."
 
-#: /wa-apps/pocketlists/templates/include/error.html:4
 msgid "Sorry. You are not allowed to see anything on this page."
 msgstr "Извините, но у вас нет доступа к данным на этой странице."
 
-#: /wa-apps/pocketlists/lib/actions/archive/pocketlistsArchive.action.php:21
-#: /wa-apps/pocketlists/lib/actions/comment/pocketlistsCommentAdd.action.php:18
-#: /wa-apps/pocketlists/lib/actions/list/pocketlistsList.action.php:16
-#: /wa-apps/pocketlists/lib/actions/list/pocketlistsList.action.php:25
-#: /wa-apps/pocketlists/lib/actions/list/pocketlistsList.action.php:63
 msgid "Access denied"
 msgstr "Доступ запрещен"
 
-#: /wa-apps/pocketlists/lib/config/pocketlistsRightConfig.class.php:21
 msgid "archive"
 msgstr "архив"
 
-#: /wa-apps/pocketlists/templates/actions/team/Team.html:36
 msgid "Access to lists"
 msgstr "Доступ ко спискам"
 
-#: /wa-apps/pocketlists/templates/actions/list/ListEmailDialog.html:38
 msgid "No to-dos :)"
 msgstr "Совсем нет задач :)"
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsLogAction.class.php:181
 msgid "to"
 msgstr "к"
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsLogAction.class.php:78
 msgid "added a to-do to self"
 msgstr "поставил себе новую задачу"
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsLogAction.class.php:94
 msgid "sent a new to-do"
 msgstr "поставил новую задачу"
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsLogAction.class.php:171
 msgid "in"
 msgstr "в"
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsLogAction.class.php:181
 msgid "to user"
 msgstr "пользователю"
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsLogAction.class.php:171
 msgid "in list"
 msgstr "в списке"
 
-#: /wa-apps/pocketlists/templates/actions/list/List.html:126
 msgid "List #%d"
 msgstr "Список №%d"
 
-#: /wa-apps/pocketlists/templates/include/itemadd.html:15
 msgid "New to-do (e.g. “meeting tomorrow at 10”)"
 msgstr "Новая задача (например, «встреча завтра в 10»)"
 
-#: /wa-apps/pocketlists/js/pocketlists-item.js:381
 msgid "Show all %d completed to-dos"
 msgstr "Показать все %d выполненные задачи"
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsLogAction.class.php:354
 msgid "DELETED LIST"
 msgstr "СПИСОК УДАЛЕН"
 
-#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:88
 msgid "Show everyone"
 msgstr "Показать всех"
 
-#: /wa-apps/pocketlists/lib/actions/item/pocketlistsItemAddAttachment.controller.php:61
 msgid "Files with extension .%s are not allowed to security considerations."
 msgstr "Загрузка файлов с расширением .%s не разрешена из соображений безопасности."
 
-#: /wa-apps/pocketlists/templates/include/item_linked_entities/shop.order.preview.html:14
 msgid "Unknown state"
 msgstr "Неизвестный статус"
 
-#: /wa-apps/pocketlists/templates/actions/app/App.html:18
 msgid "Better order processing"
 msgstr "Обработка заказов — под контролем!"
 
-#: /wa-apps/pocketlists/templates/actions/app/App.html:19
 msgid "Pocket Lists integrates with Shop-Script and allows you to process orders even better: quickly set reminders linked to Shop-Script orders, assign tasks to sales managers, schedule follow-ups for the future. Pocket Lists will gather all such to-dos in one place and ensure you have your sales under complete control. Learn more about <a href=\"%s\" target=\"_blank\">integration with Shop-Script</a>."
 msgstr "Pocket Lists сделает обработку заказов удобнее и поможет лучше контролировать процесс продаж. Создавайте напоминания и задачи, связанные с заказами Shop-Script, назначайте ответственных, следите за выполнением. Подробнее <a href=\"%s\" target=\"_blank\">об интеграции с Shop-Script</a>."
 
-#: /wa-apps/pocketlists/templates/actions/app/App.html:19
 msgid "https://www.webasyst.com/store/app/pocketlists/shop-script/"
 msgstr "https://www.webasyst.ru/store/app/pocketlists/shop-script/"
 
-#: /wa-apps/pocketlists/templates/actions/logbook/Logbook.html:6
 msgid "To return a to-do back to work, simply unclick its checkmark."
 msgstr "Чтобы вернуть задачу в работу, просто кликните по галочке."
 
-#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:39
 msgid "Store"
 msgstr "Магазин"
 
-#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:44
 msgid "Discussions"
 msgstr "Обсуждения"
 
-#: /wa-apps/pocketlists/templates/actions/todo/TodoDate.html:20
 msgid "Your daily routine"
 msgstr "Ваши планы на день"
 
-#: /wa-apps/pocketlists/templates/actions/todo/TodoDate.html:21
 msgid "<a href=\"%s\">Use Settings</a> page to configure your custom “My To-dos” filter behaviour."
 msgstr "<a href=\"%s\">Настройте</a>, какие именно задачи должны попадать в ваш персональный список задач."
 
-#: /wa-apps/pocketlists/templates/actions/list/ListAccess.html:31
 msgid "List created"
 msgstr "Список создан"
 
-#: /wa-apps/pocketlists/lib/config/pocketlistsRightConfig.class.php:34
 msgid "Limited access"
 msgstr "Ограниченный доступ"
 
-#: /wa-apps/pocketlists/lib/config/app.php:3
-#: /wa-apps/pocketlists/lib/config/install.php:5
-#: /wa-apps/pocketlists/lib/updates/3/1542130750.php:5
 msgid "Pocket Lists"
 msgstr "Pocket Lists"
 
-#: /wa-apps/pocketlists/js/pocketlists-item.js:796
 msgid "Find order by ID"
 msgstr "Введите номер заказа"
 
-#: /wa-apps/pocketlists/templates/actions/pocket/Pocket.html:10
 msgid "Pocket settings"
 msgstr "Настройки проекта"
 
-#: /wa-apps/pocketlists/lib/config/pocketlistsRightConfig.class.php:15
 msgid "Can see Shop-Script to-dos, other users personal to-dos, and assign to-dos to teammates"
 msgstr "Просмотр задач, связанных с заказами Shop-Script, персональных задач других пользователей, назначение задач другим пользователям"
 
-#: /wa-apps/pocketlists/js/pocketlists-pocket.js:121
 msgid "DANGER! Pocket will be deleted with all its content including lists and to-dos. There will be no way to restore this data. Are you sure?"
 msgstr "СТОП, СТОП, СТОП! Проект будет удален вместе со всеми содержимым — списками и задачами. Возможности восстановить эти данные не будет. Вы уверены?"
 
-#: /wa-apps/pocketlists/templates/include/item_linked_entities/shop.order.autocomplete.html:1
 msgid "Order"
 msgstr "Заказ"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:15
 msgid "Add note"
 msgstr "Добавить заметку"
 
-#: /wa-apps/pocketlists/lib/config/pocketlistsRightConfig.class.php:26
 msgid "Can create and see to-dos linked with Shop-Script orders"
 msgstr "Просмотр и работа с задачами, связанными с заказами Shop-Script"
 
-#: /wa-apps/pocketlists/lib/actions/list/pocketlistsList.action.php:46
-#: /wa-apps/pocketlists/lib/actions/list/pocketlistsListLazyDoneItems.action.php:33
 msgid "Not found"
 msgstr "Не найдено"
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsListIcon.class.php:38
 msgid "Work & Office"
 msgstr "Работа и офис"
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsListIcon.class.php:60
 msgid "Shopping"
 msgstr "Шопинг"
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsListIcon.class.php:82
 msgid "Home & Family"
 msgstr "Дом и семья"
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsListIcon.class.php:112
 msgid "Travel & Vacations"
 msgstr "Отдых и путешествия"
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsListIcon.class.php:134
 msgid "Nature & Outdoors"
 msgstr "Природа"
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsListIcon.class.php:160
 msgid "Holidays & Events"
 msgstr "Праздники и события"
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsListIcon.class.php:190
 msgid "School & Education"
 msgstr "Школа и образование"
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsListIcon.class.php:212
 msgid "Hobbies & Games"
 msgstr "Хобби и игры"
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsListIcon.class.php:234
 msgid "Food & Drink"
 msgstr "Еда и напитки"
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsListIcon.class.php:272
 msgid "Health & Medical"
 msgstr "Здоровье"
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsListIcon.class.php:290
 msgid "Sports & Activities"
 msgstr "Спорт"
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsListIcon.class.php:312
 msgid "Toys & Babies"
 msgstr "Дети"
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsListIcon.class.php:330
 msgid "Pets & Animals"
 msgstr "Животные"
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsListIcon.class.php:352
 msgid "Tech & Gadgets"
 msgstr "Технологии и гаджеты"
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsListIcon.class.php:374
 msgid "Signs & Symbols"
 msgstr "Символы и знаки"
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsListIcon.class.php:396
 msgid "Flags"
 msgstr "Флаги"
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsNotifications.class.php:462
 msgid "Stream"
 msgstr "Поток"
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsHelper.class.php:309
 msgid "%d s"
 msgstr "%d с"
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsHelper.class.php:313
 msgid "%d min"
 msgstr "%d мин"
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsHelper.class.php:323
 msgid "%d h"
 msgstr "%d ч"
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsHelper.class.php:327
-#: /wa-apps/pocketlists/lib/class/pocketlistsHelper.class.php:331
 msgid "%d d"
 msgstr "%d д"
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsHelper.class.php:335
 msgid "%d mo"
 msgstr "%d мес"
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsHelper.class.php:340
 msgid "%d y"
 msgstr "%d г"
 
-#: /wa-apps/pocketlists/templates/include/itemadd.html:24
 msgid "Details"
 msgstr "Параметры"
 
-#: /wa-apps/pocketlists/templates/actions/pocket/Pocket.html:32
 msgid "You don’t have access to any list in the pocket. Please contact your admin to request access setup."
 msgstr "У вас нет доступа к спискам этого проекта. Попросите своего администратора открыть доступ."
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:75
 msgid "Updated"
 msgstr "Обновлено"
 
-#: /wa-apps/pocketlists/lib/actions/list/pocketlistsListMoveTo.controller.php:19
 msgid "No pocket/id and list/id params specified"
 msgstr "Не указаны ID проекта и списка"
 
-#: /wa-apps/pocketlists/lib/actions/list/pocketlistsListMoveTo.controller.php:30
 msgid "Pocket and list not found"
 msgstr "Проект и список не найдены"
 
-#: /wa-apps/pocketlists/lib/actions/list/pocketlistsListMoveTo.controller.php:49
 msgid "List move error"
 msgstr "Не получилось переместить список"
 
-#: /wa-apps/pocketlists/lib/config/pocketlistsRightConfig.class.php:81
 msgid "To setup access rights by pocket, set Limited access for at least one pocket"
 msgstr "Для настройки доступа к спискам дел включите доступ хотя бы к одному проекту"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:13
 msgid "Use @ or # symbols to link this to-do with a Shop-Script order."
 msgstr "Используйте символы @, # или № для связи задачи с заказами Shop-Script."
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:108
 msgid "Webasyst Cloud"
 msgstr "В облаке Webasyst"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:108
 msgid "launch the <a href=\"%s\">Cloud app</a>"
 msgstr "запустите приложение «<a href=\"%s\">Облако</a>»"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:108
 msgid "Add Cron job"
 msgstr "Добавить задание cron"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:111
 msgid "Own server"
 msgstr "На своем сервере"
 
-#: /wa-apps/pocketlists/templates/include/itemadd.html:27
 msgid "Only you can see this to-do"
 msgstr "Только вы видите эту задачу"
 
-#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:150
-#: /wa-apps/pocketlists/templates/actions/about/About.html:52
-#: /wa-apps/pocketlists/templates/actions/about/About.html:167
 msgid "About"
 msgstr "О приложении"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:10
 msgid "Rate"
 msgstr "Оценить"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:13
 msgid "https://www.webasyst.com/store/app/pocketlists/reviews/"
 msgstr "https://www.webasyst.ru/store/app/pocketlists/reviews/"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:14
 msgid "Rate on Webasyst Installer"
 msgstr "Оценить в приложении «Инсталлер»"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:19
 msgid "<strong>Your feedback is very important!</strong> Please rate Pocket Lists and write a short review about your experience of using the app. Reviews (both positive and negative) really help us to see what is most useful in the app so we can continue delivering new features the right way."
 msgstr "<strong>Ваши отзывы очень важны!</strong> Пожалуйста, поставьте оценку приложению Pocket Lists и расскажите о своем опыте его использования. Отзывы (и положительные, и отрицательные) помогают нам правильно выбирать направление развития приложения и в первую очередь разрабатывать те функции, которые наиболее востребованы."
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:20
 msgid "https://www.webasyst.com/store/app/pocketlists/"
 msgstr "https://www.webasyst.ru/store/app/pocketlists/"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:25
 msgid "Support"
 msgstr "Поддержка"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:31
 msgid "We speak English and Russian."
 msgstr "Мы говорим по-русски и по-английски."
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:36
 msgid "GitHub"
 msgstr "GitHub"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:55
 msgid "Pocket Lists for Webasyst is an important part of the bigger <a href=\"https://pocketlists.com\" target=\"_blank\"><strong>PocketLists.com project</strong></a> — a suite of apps that are aimed to provide the friendliest to-do list making & collaboration experience."
 msgstr "Pocket Lists для Webasyst является важной частью большого проекта <a href=\"https://pocketlists.com\" target=\"_blank\"><strong>PocketLists.com</strong></a> — сервиса для работы со списками дел и совместной работы."
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:57
 msgid "Pocket Lists is <strong>mostly known for its iOS app</strong> (iPhone, iPad, Apple Watch) designed for personal list making. Get Pocket Lists on the App Store for free."
 msgstr "Pocket Lists <strong>наиболее известен как таск-менеджер для iPhone, iPad и Apple Watch</strong>, предназначенный для персональной работы с списками дел и напоминаниями."
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:59
 msgid "http://itunes.apple.com/us/app/pocket-lists-2/id1272049520?mt=8"
 msgstr "http://itunes.apple.com/ru/app/pocket-lists-2/id1272049520?mt=8"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:61
 msgid "With Pocket Lists for Webasyst, our goal is to deliver the best of the Pocket Lists world to the Webasyst collaborative environment and to make the teamwork and collaboration on tasks expectionally easy and friendly."
 msgstr "Pocket Lists для Webasyst — это большой шаг проекта Pocket Lists в мир командной работы. В рамках Webasyst мы планируем организовать удобнейшую среду для командной работы и связать ее со всеми возможностями, которые предоставляет мобильное приложение Pocket Lists."
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:66
 msgid "Roadmap"
 msgstr "План развития"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:69
 msgid "We have big plans for both iOS and Webasyst apps, and here is the summary of what we are keen to be integrating into Pocket Lists for Webasyst anytime soon (a draft plan):"
 msgstr "План ближайшего развития приложения включает в себя интеграцию Pocket Lists для iOS и Webasyst, а также много полезных прикладных возможностей (план примерный, возможны изменения):"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:73
 msgid "Bring the shared to-do list functionality into Webasyst"
 msgstr "Совместная работа со списками дел в экосистеме Webasyst"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:77
 msgid "Natural input ('... tomorrow 10am') parser"
 msgstr "Парсер умного ввода даты и времени («сделать завтра в 10»)"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:81
 msgid "Integrate with Shop-Script"
 msgstr "Интеграция с Shop-Script"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:82
 msgid "The ability to create to-dos linked with orders"
 msgstr "Связь задач Pocket Lists с заказами Shop-Script"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:86
 msgid "Multiple pockets and sophisticated access rights management"
 msgstr "Проекты и гибкая настройка доступа для сотрудников"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:90
 msgid "To-do search"
 msgstr "Поиск задач"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:94
 msgid "“My To-dos” widget for the dashboard and Webasyst TV"
 msgstr "Виджет «Мои задачи» для дешборда и Webasyst TV"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:98
 msgid "Integration with Webasyst CRM, Tasks, and other apps"
 msgstr "Интеграция CRM, «Задачами» и другими приложениями Webasyst"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:103
 msgid "Repeating to-dos"
 msgstr "Повторяющиеся задачи"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:108
 msgid "Rest API"
 msgstr "Rest API"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:109
-#: /wa-apps/pocketlists/templates/actions/about/About.html:114
 msgid "Mid 2019"
 msgstr "Середина 2019"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:113
 msgid "Integrate Pocket Lists for Webasyst and iOS"
 msgstr "Интеграция Pocket Lists для Webasyst и iOS"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:119
 msgid "Advanced Shop-Script integration"
 msgstr "Продвинутая интеграция с Shop-Script"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:120
 msgid "Automated to-do creation based on order statuses"
 msgstr "Автоматическая постановка задач ответственным сотрудникам при выполнении действий с заказами в Shop-Script"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:124
 msgid "Subtasks"
 msgstr "Подзадачи"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:128
 msgid "Headings / dividers (sublists)"
 msgstr "Разделители / заголовки внутри списков"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:132
 msgid "Pocket Lists for Android"
 msgstr "Pocket Lists для Android"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:133
 msgid "Someday. The real ETA depends on the availability of development resources which are now focused mostly on iOS."
 msgstr "Пока не знаем когда. Но планируем заняться приложением для Android сразу после того, как основные планы по разработке для iOS будут выполнены."
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:137
 msgid "Profit!"
 msgstr "Профит!"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:146
 msgid "Copyright"
 msgstr "Copyright"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:170
 msgid "We wish we could implement new features that easy :)"
 msgstr "Эх, если бы все было так просто :)"
 
-#: /wa-apps/pocketlists/templates/actions/debug/Debug.html:49
 msgid "Respect The Send!"
 msgstr ""
 
-#: /wa-apps/pocketlists/templates/actions/debug/Debug.html:69
 msgid "Go!"
 msgstr ""
 
-#: /wa-apps/pocketlists/templates/actions/debug/Debug.html:109
 msgid "Generate"
 msgstr ""
 
-#: /wa-apps/pocketlists/lib/actions/item/pocketlistsItemAssignTo.controller.php:25
 msgid "Contact not found"
 msgstr ""
 
-#: /wa-apps/pocketlists/lib/class/Exception/pocketlistsNotImplementedException.class.php:17
 msgid "Not implemented for now"
 msgstr ""
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:122
 msgid "When someone adds a to-do item in any shared list"
 msgstr "О создании новых задач в любых общих списках"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:134
 msgid "When someone creates a new shared to-do list"
 msgstr "О создании новых общих списков"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:147
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:158
 msgid "any item on any shared list"
 msgstr "любых задач в общих списках"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:153
 msgid "When someone comments on a to-do item"
 msgstr "О комментариях к задачам"
 
-#: /wa-apps/pocketlists/templates/actions/debug/Debug.html:49
 msgid "Send It!"
 msgstr ""
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:121
 msgid "When"
 msgstr "Когда"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:124
 msgid "Set date"
 msgstr "Дата"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:207
 msgid "close details"
 msgstr "скрыть подробности"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:205
 msgid "Add to-do"
 msgstr "Создать задачу"
 
-#: /wa-apps/pocketlists/templates/include/item_linked_entities/shop.order.preview.html:7
 msgid "Unlink"
 msgstr "Удалить ссылку"
 
-#: /wa-apps/pocketlists/templates/include/itemadd.html:25
 msgid "Show details and use the detailed add mode by default"
 msgstr "Показывать все параметры задачи по умолчанию"
 
-#: /wa-apps/pocketlists/templates/actions/pocket/Pocket.html:36
 msgid "Go ahead! Create a list."
 msgstr "Создайте первый список!"
 
-#: /wa-apps/pocketlists/templates/actions/pocket/Pocket.html:37
 msgid "Pockets and lists help you organize to-dos, ideas, and notes, and flexibly configure access rights for your team."
 msgstr "Проекты и списки помогают организовывать задачи, идеи, заметки и гибко настраивать права доступа к ним для сотрудников."
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:75
 msgid "All my to-dos"
 msgstr "Все мои задачи"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:76
 msgid "Only On Fire + Black + Red"
 msgstr "Только Горит + Черные + Красные"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:77
 msgid "Only On Fire + Black + Red + Yellow"
 msgstr "Только Горит + Черные + Красные + Желтые"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:78
 msgid "Only On Fire + Black + Red + Yellow + Green"
 msgstr "Только Горит + Черные + Красные + Желтые + Зеленые"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:161
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:182
 msgid "only items created by me or assigned to me"
 msgstr "только задачи, которые я создал или которые назначили на меня"
 
-#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:83
 msgid "Calendar"
 msgstr ""
 
-#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:86
 msgid "Places"
 msgstr ""
 
-#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:89
 msgid "Board"
 msgstr ""
 
-#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:96
-#: /wa-apps/pocketlists/templates/actions/search/Search.html:105
 msgid "Search"
 msgstr "Поиск"
 
-#: /wa-apps/pocketlists/templates/actions/search/Search.html:9
 msgid "%s lists found"
 msgstr "Найдено %s списков"
 
-#: /wa-apps/pocketlists/templates/actions/search/Search.html:33
 msgid "No lists found"
 msgstr "Не найдено ни одного списка"
 
-#: /wa-apps/pocketlists/templates/actions/search/Search.html:50
 msgid "%s to-dos found"
 msgstr "Найдено %s задач"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:7
 msgid "Hide details and use the compact add mode by default"
 msgstr "Скрывать параметры задачи по умолчанию"
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:21
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:23
 msgid "Ok, I got it."
 msgstr "Ок, понял."
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:23
 msgid "The to-do item will be saved in the <span class=\"nowrap\"><a href=\"%s\" class=\"gray\" target=\"_blank\">Pocket Lists</a> app</span> and will be visible only to authorized Webasyst users. The customer will not see this to-do."
 msgstr "Задача будет сохранена в приложении <a href=\"%s\" class=\"gray\" target=\"_blank\">Pocket Lists</a> и видна только пользователям бекенда. Покупатель никогда не увидит эту задачу."
 
-#: /wa-apps/pocketlists/templates/actions/item/ItemDetails.html:81
 msgid "The user will see this to-do in his Pocket Lists to-do stream and will be notified about this assignment by email."
 msgstr "Ответственный пользователь увидит эту задачу в своем потоке задач в приложении Pocket Lists и получит уведомление о назначении по email."
 
-#: /wa-apps/pocketlists/templates/actions/debug/Debug.html:140
 msgid "Reset everything"
 msgstr ""
 
-#: /wa-apps/pocketlists/lib/class/pocketlistsLogAction.class.php:114
 msgid "added new to-do"
 msgstr "добавил задачу"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:104
 msgid "Integration with the Team app"
 msgstr "Интеграция с приложением «Команда»"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:115
 msgid "Timelines: detailed activity log of who did what"
 msgstr "История действий: подробный список всего, что делала ваша команда"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:116
 msgid "By pocket, by list, by user"
 msgstr "По проектам, по спискам, по пользователям"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:120
 msgid "Custom to-do statuses"
 msgstr "Статусы задач"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:124
 msgid "Agile board"
 msgstr "Agile: просмотр задач в виде колонок по статусам"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:172
 msgid "Bullets highlighted with a %s label will be available as a part of the paid Pocket Lists PRO plugin."
 msgstr "Пункты, отмеченные значком %s, планируются к выпуску в виде отдельного платного плагина Pocket Lists PRO."
 
-#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:157
 msgid "Plugins"
 msgstr "Плагины"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:109
 msgid "To-do status labels"
 msgstr "Маркеры и статусы задач"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:113
 msgid "Kanban board"
 msgstr "Канбан-доска"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:117
 msgid "To-do shortcuts"
 msgstr "Шаблоны быстрого ввода"
 
-#: /wa-apps/pocketlists/lib/actions/list/pocketlistsListMoveTo.controller.php:24
 msgid "The list is in the pocket already"
 msgstr "Список уже находится в этом проекте"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:176
 msgid "https://www.webasyst.com/store/plugin/pocketlists/pro/"
 msgstr "https://www.webasyst.ru/store/plugin/pocketlists/pro/"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:178
 msgid "Bullets highlighted with a %s label are available as a part of the paid <a href=\"%s\"><b>Pocket Lists PRO</b></a> plugin."
 msgstr "Возможности, отмеченные значком %s, доступны в виде отдельного платного плагина <a href=\"%s\"><b>Pocket Lists PRO</b></a>."
 
-#: /wa-apps/pocketlists/lib/class/Log/pocketlistsLogContext.class.php:140
 msgid "No %s entity object in log context"
 msgstr ""
 
-#: /wa-apps/pocketlists/lib/class/Log/pocketlistsLogContext.class.php:144
 msgid "There should be %s entity in log context"
 msgstr ""
 
-#: /wa-apps/pocketlists/lib/class/Log/pocketlistsLogContext.class.php:389
 msgid "No log mapping for %s"
 msgstr ""
 
-#: /wa-apps/pocketlists/templates/mails/dailyrecap.html:9
 msgid "<strong>%s</strong> on <em>%s</em>"
 msgstr "<strong>%s</strong> <em>%s</em>"
 
-#: /wa-apps/pocketlists/templates/actions/upgrade/Upgrade.html:32
 msgid "Upgrade to PRO"
 msgstr "Апгрейд до PRO"
 
-#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:7
 msgid "New app by 1312 Inc."
 msgstr "Новое приложение от команды 1312"
 
-#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:8
 msgid "Ad"
 msgstr ""
 
-#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:10
-#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:14
 msgid "https://www.webasyst.com/store/app/status/?utm_campaign=pl2webasyst-tiny-ad"
 msgstr ""
 
-#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:14
 msgid "<a href=\"%s\" target=\"_blank\">Status app</a> tracks working time and shows whom have been working on what (and whom have been doing nothing too!)"
 msgstr ""
 
-#: /wa-apps/pocketlists/templates/actions/backend/BackendSidebar.html:176
 msgid "Upgrade to %s"
 msgstr "Апгрейд до %s"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:8
 msgid "Upgrade to Pocket Lists PRO"
 msgstr "Апгрейд до Pocket Lists PRO"
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:13
 msgid "Boost your efficiency with the Pocket Lists PRO plugin that instantly enables a robust set of amazing advanced features: <b>Shop-Script automation (auto create to-dos based on actions with orders), kanban board, status labels, quick entry templates,</b> and more."
 msgstr "Работать станет проще, когда рутинные операции будут автоматизированы. Плагин Pocket Lists PRO добавляет несколько полезнейших продвинутых функций: <b>автоматизацию связки Shop-Script с Pocket Lists (автоматическое создание задач на основе действий с заказами), канбан-доску, маркеры (статусы), шаблоны быстрого создания задач</b>."
 
-#: /wa-apps/pocketlists/templates/actions/about/About.html:14
 msgid "See details"
 msgstr "Подробнее"
 
-#: /wa-apps/pocketlists/templates/actions/upgrade/Upgrade.html:12
 msgid "Pocket Lists PRO plugin"
 msgstr "Плагин Pocket Lists PRO"
 
-#: /wa-apps/pocketlists/templates/actions/upgrade/Upgrade.html:17
 msgid "Shop-Script automation (auto create to-dos based on actions with orders), kanban board, status labels, quick entry templates, and other advanced features."
 msgstr "Автоматизация связки Shop-Script с Pocket Lists (задачи на основе действий с заказами), канбан-доска, маркеры (статусы), шаблоны быстрого создания задач и другие продвинутые возможности."
 
-#: /wa-apps/pocketlists/templates/actions/upgrade/Upgrade.html:30
 msgid "Buy the plugin"
 msgstr "Купить плагин"
 
-#: /wa-apps/pocketlists/templates/actions/upgrade/Upgrade.html:37
 msgid "Great to see a PRO user here!"
 msgstr "Так держать!"
 
-#: /wa-apps/pocketlists/templates/actions/upgrade/Upgrade.html:38
 msgid "<a href=\"%s\">Pocket Lists PRO</a> plugin is installed and running at full speed. Thank you for being a PRO user and for supporting the project."
 msgstr "Плагин <a href=\"%s\">Pocket Lists PRO</a> установлен и работает в полную силу. Спасибо за покупку плагина и поддержку проекта Pocket Lists!"
 
-#: /wa-apps/pocketlists/templates/actions/settings/Settings.html:143
 msgid "See Cron command"
 msgstr "Посмотреть команду Cron"
 
-#: /wa-apps/pocketlists/lib/actions/item/pocketlistsItemAddAttachment.controller.php:157
 msgid "Path %s is not writable"
 msgstr "Нет прав на запись в папку %s"
+
+msgid "https://www.webasyst.com/buy/store/5045/"
+msgstr "https://www.webasyst.ru/buy/store/5045/"
+
+msgid "Failed to upload file %s. Check permissions."
+msgstr "Не удалось загрузить файл %s.  Что-то не так с правами доступа."

@@ -39,11 +39,20 @@ class pocketlistsProPluginHookHandlerPocket extends pocketlistsProPluginAbstract
             $pocketLabelInfo = new pocketlistsProPluginLabelPocketInfoDto();
             $pocketLabelInfo->pocket = $pocket;
             $pocketLabelInfo->label = $factory->createNewDone();
-            $pocketLabelInfo->count = count(
-                pl2()
-                    ->getModel(pocketlistsItem::class)
-                    ->getLogbookItems(false, false, true, $pocket->getId(), 0, 100)
-            );
+
+            $key = sprintf('pocket_%d_done_label', $pocket->getId());
+            $pocketLabelInfo->count = pl2()->getCache()->get($key);
+            if ($pocketLabelInfo->count === null) {
+                $pocketLabelInfo->count = count(
+                    pl2()
+                        ->getModel(pocketlistsItem::class)
+                        ->getLogbookItems(false, false, true, $pocket->getId(), 0, 110)
+                );
+
+                if ($pocketLabelInfo->count === 110) {
+                    pl2()->getCache()->set($key, $pocketLabelInfo->count, 60 * 60 * 24 * 30);
+                }
+            }
 
             $pocketLabelsInfo[] = $pocketLabelInfo;
         }

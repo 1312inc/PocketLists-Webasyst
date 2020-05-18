@@ -1,17 +1,24 @@
 <div class="pl-sidebar-core">
 
-{if 0}
+{if $showTinyAd}
 <div class="pl-tiny-ad">
     <div class="pl-tiny-ad-box">
         <a href="#" class="pl-tiny-ad-close" title="[`Close`]">&times;</a>
-        <h5 class="heading">[`New app by 1312 Inc.`]</h5>
+        <h5 class="heading">РАБОТАЕМ ДОМА</h5>
+        <!-- <h5 class="heading">[`New app by 1312 Inc.`]</h5> -->
         <!-- <h5 class="heading">[`Ad`]</h5> -->
 
-        <a href="[`https://www.webasyst.com/store/app/status/?utm_campaign=pl2webasyst-tiny-ad`]" target="_blank">
-            <img src="https://webasyst-926085.c.cdn77.org/wa-data/public/updates/img/43/4943/icon.96x96.png?v=1.1.0" class="pl-app-icon" />
+        {$_ad_url = 'https://www.webasyst.ru/store/app/status/?utm_campaign=1312_inapp_pl2webasyst_statusapp_2020_1'}
+
+        <a href="{$_ad_url}" target="_blank">
+            <img src="https://www.webasyst.ru/wa-data/public/updates/img/43/4943/icon.96x96.png" class="pl-app-icon" />
         </a>
 
-        <p>{sprintf('[`<a href="%s" target="_blank">Status app</a> tracks working time and shows whom have been working on what (and whom have been doing nothing too!)`]', '[`https://www.webasyst.com/store/app/status/?utm_campaign=pl2webasyst-tiny-ad`]')}</p>
+        <!-- <p>{sprintf('[`<a href="%s" target="_blank">Status app</a> tracks working time and shows whom have been working on what (and whom have been doing nothing too!)`]', $_ad_url)}</p> -->
+
+        <p>{sprintf('Новое приложение от команды разработчиков Pocket Lists — «<a href="%s" target="_blank"><strong>Статус</strong></a>» поможет организовать дистационную работу всей команды и знать, кто, сколько и над чем работает. Даже когда вы не видите друг друга в офисе лично.', $_ad_url)}</p>
+
+        <a href="{$_ad_url}" target="_blank"><img src="{$wa_url}wa-apps/pocketlists/img/badge-webasyst{if $wa->locale()=='ru_RU'}-ru{/if}.png" class="pl-badge-appstore"></a>
 
     </div>
 </div>
@@ -29,11 +36,13 @@
                 </li>
             {/foreach}
         </ul>
+        {if $isAdmin}
         <ul class="menu-v with-icons">
             <li class="small">
                 <a href="#" data-pl2-action="add-pocket"><i class="icon10 add"></i>[`New pocket`]</a>
             </li>
         </ul>
+        {/if}
     </div>
 
     <div class="hr"></div>
@@ -185,6 +194,15 @@
         </li>
         {/if}
     </ul>
+    {if $isAdmin && empty($pockets)}
+        <div data-pl2-sidebar-wrapper="pockets">
+            <ul class="menu-v with-icons">
+                <li class="small top-padded">
+                    <a href="#" data-pl2-action="add-pocket"><i class="icon10 add"></i>[`New pocket`]</a>
+                </li>
+            </ul>
+        </div>
+    {/if}
 </div>
 
 </div>

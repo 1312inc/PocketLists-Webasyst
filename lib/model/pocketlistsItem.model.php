@@ -216,7 +216,7 @@ class pocketlistsItemModel extends pocketlistsModel
 
         $sqlParts['select'] = ['i.calc_priority calc_priority', 'count(i.id) count'];
         if ($status !== null) {
-            $sqlParts['where']['and'][] = 'i.status = '.$status;
+            $sqlParts['where']['and'][] = 'i.status = ' . $status;
         }
         $sqlParts['group by'] = ['i.calc_priority'];
 
@@ -224,19 +224,17 @@ class pocketlistsItemModel extends pocketlistsModel
         $itemsCount = $this->query(
             $sql,
             [
-                'list_ids'      => $lists,
-                'contact_id'    => $contact_id,
-                'date'          => $date,
+                'list_ids' => $lists,
+                'contact_id' => $contact_id,
+                'date' => $date,
                 'calc_priority' => $calc_priority,
             ]
         )->fetchAll();
 
-        $itemsCount = array_combine(
+        return array_combine(
             array_column($itemsCount, 'calc_priority'),
             array_column($itemsCount, 'count')
         );
-
-        return $itemsCount;
     }
 
     /**
@@ -650,41 +648,33 @@ class pocketlistsItemModel extends pocketlistsModel
      */
     public function getLastActivities($contact_ids = [])
     {
-        $by_contact = "";
-        if ($contact_ids && !is_array($contact_ids)) {
-            $contact_ids = [$contact_ids];
-            $by_contact = " WHERE t.contact_id IN (i:contact_id)";
+        $by_contact = '';
+        if ($contact_ids) {
+            if (!is_array($contact_ids)) {
+                $contact_ids = [$contact_ids];
+            }
+            $by_contact = ' WHERE t.contact_id IN (i:contact_id)';
         }
 
         // ох что-то я сомневаюсь
-        $q = "SELECT
-              MAX(t.last_date) last_activity_datetime,
-              t.contact_id contact_id
-            FROM (
-                  SELECT
-                    i.complete_contact_id contact_id,
-                    max(i.complete_datetime) last_date
-                  FROM {$this->table} i
-                  GROUP BY i.complete_contact_id
-
-                  UNION
-
-                  SELECT
-                    i.contact_id contact_id,
-                    max(i.create_datetime) last_date
-                  FROM {$this->table} i
-                  GROUP BY i.contact_id
-                  
-                  UNION
-
-                  SELECT
-                    c.contact_id contact_id,
-                    max(c.create_datetime) last_date
-                  FROM pocketlists_comment c
-                  GROUP BY c.contact_id
-              ) t
-            {$by_contact}
-            GROUP BY t.contact_id";
+        $q = <<<SQL
+SELECT MAX(t.last_date) last_activity_datetime, t.contact_id contact_id
+FROM (SELECT i.complete_contact_id contact_id, max(i.complete_datetime) last_date
+      FROM pocketlists_item i
+      where i.status = 1
+      GROUP BY i.complete_contact_id
+      UNION
+      SELECT i.contact_id contact_id, max(i.create_datetime) last_date
+      FROM pocketlists_item i
+      where i.status = 0
+      GROUP BY i.contact_id
+      UNION
+      SELECT c.contact_id contact_id, max(c.create_datetime) last_date
+      FROM pocketlists_comment c
+      GROUP BY c.contact_id) t
+{$by_contact}
+GROUP BY t.contact_id
+SQL;
 
         return $this->query(
             $q,
@@ -1091,57 +1081,60 @@ class pocketlistsItemModel extends pocketlistsModel
         $user_id = wa()->getUser()->getId();
         $lists = [];
         $list_sql = pocketlistsRBAC::filterListAccess($lists);
-        $q = "SELECT 
-                     i.id item_id,
-                     i.list_id list_id,
-                     i.status status,
-                     i.contact_id contact_id,
-                     i.assigned_contact_id assigned_contact_id,
-                     i.complete_contact_id complete_contact_id,
-                     l.archived list_archived
-                FROM pocketlists_item i
-                LEFT JOIN pocketlists_list l ON l.id = i.list_id
-                WHERE 
-                    {$list_sql}
-                    AND (
-                      i.create_datetime > s:user_last_activity 
-                      OR i.complete_datetime > s:user_last_activity
-                    )";
 
-        $items = $this->query(
-            $q,
-            [
-                'list_ids'           => $lists,
-                'user_last_activity' => $user_last_activity,
-            ]
-        )->fetchAll();
+        $itemsArchiveSql = <<<SQL
+select count(i.id)
+FROM pocketlists_item i
+LEFT JOIN pocketlists_list l ON l.id = i.list_id
+WHERE 
+    {$list_sql}
+    AND (
+      i.create_datetime > s:user_last_activity 
+      OR i.complete_datetime > s:user_last_activity
+    )
+    and l.archived=0 and i.status=0
+SQL;
+
+        $itemsLogbookSql = <<<SQL
+select count(i.id)
+FROM pocketlists_item i
+LEFT JOIN pocketlists_list l ON l.id = i.list_id
+WHERE 
+    {$list_sql}
+    AND (
+      i.create_datetime > s:user_last_activity 
+      OR i.complete_datetime > s:user_last_activity
+    )
+    and i.complete_contact_id<>i:user_id and i.status=1
+SQL;
+
+        $itemsTeamSql = <<<SQL
+select i.assigned_contact_id,
+       count(i.id)
+FROM pocketlists_item i
+FORCE INDEX (assigned_contact_id)
+LEFT JOIN pocketlists_list l ON l.id = i.list_id
+WHERE 
+    {$list_sql}
+    AND (
+      i.create_datetime > s:user_last_activity 
+      OR i.complete_datetime > s:user_last_activity
+    )
+    and i.assigned_contact_id<>i:user_id and i.status=1
+group by i.assigned_contact_id
+SQL;
+
+        $params = [
+            'user_id' => $user_id,
+            'list_ids' => $lists,
+            'user_last_activity' => $user_last_activity,
+        ];
 
         $result = [
-            'list'    => [],
-            'team'    => [],
-            'archive' => 0,
-            'logbook' => 0,
+            'archive' => $this->query($itemsArchiveSql, $params)->fetchField(),
+            'logbook' => $this->query($itemsLogbookSql, $params)->fetchField(),
+            'team' => $this->query($itemsTeamSql, $params)->fetchAll('assigned_contact_id', 1),
         ];
-        foreach ($items as $item) {
-            if ($item['list_id'] && $item['contact_id'] != $user_id && $item['status'] == 0) {
-                if (!isset($result['list'][$item['list_id']])) {
-                    $result['list'][$item['list_id']] = 0;
-                }
-                $result['list'][$item['list_id']]++;
-            }
-            if ($item['assigned_contact_id'] && $item['assigned_contact_id'] != $user_id && $item['status'] == 0) {
-                if (!isset($result['team'][$item['assigned_contact_id']])) {
-                    $result['team'][$item['assigned_contact_id']] = 0;
-                }
-                $result['team'][$item['assigned_contact_id']]++;
-            }
-            if ($item['list_archived'] && $item['status'] == 0) {
-                $result['archive']++;
-            }
-            if ($item['status'] && $item['complete_contact_id'] != $user_id) {
-                $result['logbook']++;
-            }
-        }
 
         return $result;
     }
@@ -1238,7 +1231,7 @@ class pocketlistsItemModel extends pocketlistsModel
      */
     public function updateCalcPriority()
     {
-        $itemsWithDue = $this->where('due_date is not null or due_datetime is not null')->fetchAll('id');
+        $itemsWithDue = $this->where('status = 0 and due_date is not null or due_datetime is not null')->fetchAll('id');
         foreach ($itemsWithDue as $item) {
             $newCalcPriority = max(
                 pocketlistsHelper::calcPriorityOnDueDate($item['due_date'], $item['due_datetime']),
@@ -1249,6 +1242,7 @@ class pocketlistsItemModel extends pocketlistsModel
                 $this->updateById($item['id'], ['calc_priority' => $newCalcPriority]);
             }
         }
+        wa()->getUser()->setSettings(pocketlistsHelper::APP_ID, 'last_updateCalcPriority', time());
     }
 
     /**

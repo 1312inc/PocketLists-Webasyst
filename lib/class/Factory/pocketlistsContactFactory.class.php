@@ -73,9 +73,15 @@ class pocketlistsContactFactory extends pocketlistsFactory
 
         $itemsCounts = pl2()->getEntityCounter()->getAssignedItemsCountAndNames($teammates);
 
-        $last_activities = $sort_by_last_activity
-            ? pl2()->getModel(pocketlistsItem::class)->getLastActivities($teammates_ids)
-            : [];
+        $key = 'getLastActivities';
+//        $key .= implode(',',$contact_ids);
+        $last_activities = pl2()->getCache()->get($key);
+        if ($last_activities === null) {
+            $last_activities = $sort_by_last_activity
+                ? pl2()->getModel(pocketlistsItem::class)->getLastActivities()
+                : [];
+            pl2()->getCache()->set($key, $last_activities, 120);
+        }
 
         foreach ($teammates as $i => $teammate) {
             if ($exclude_me && $teammate->isMe()) {

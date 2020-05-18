@@ -15,7 +15,15 @@ class pocketlistsProPluginApplyDelayedAutomationsCli extends waCliController
         /** @var pocketlistsProPluginDelayedAutomationFactory $factory */
         $factory = pl2()->getEntityFactory(pocketlistsProPluginDelayedAutomation::class);
         $delayed = $factory->findByNewByTime(date('Y-m-d H:i:s'));
-        pocketlistsLogger::debug('Start execute delayed automations');
+        pocketlistsLogger::debug(sprintf('Start execute delayed automations. Found %d to process', count($delayed)));
+
+        $idsToProcess = [];
+        foreach ($delayed as $delayedAutomation) {
+            $idsToProcess[] = $delayedAutomation->getId();
+        }
+        $factory->getModel()->updateById($idsToProcess, ['status' => pocketlistsProPluginDelayedAutomation::STATUS_PROCESS]);
+        pocketlistsLogger::debug('Status of delayed automations updated to 1 (process)');
+
         foreach ($delayed as $delayedAutomation) {
             try {
                 pocketlistsLogger::debug(sprintf('Start delayed automations %s', $delayedAutomation->getId()));

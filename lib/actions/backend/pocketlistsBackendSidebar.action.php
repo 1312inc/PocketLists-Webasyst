@@ -79,11 +79,19 @@ class pocketlistsBackendSidebarAction extends pocketlistsViewAction
         $event = new pocketlistsEvent(pocketlistsEventStorage::WA_BACKEND_SIDEBAR);
         $eventResult = pl2()->waDispatchEvent($event);
 
+        $isAdmin = $this->getUser()->isAdmin('pocketlists');
+        $showTinyAd = $isAdmin
+            && !wa()->appExists('status')
+            && date('Y-m') === '2020-05'
+            && wa()->getLocale() === 'ru_RU'
+            && date('Y-m-d') >= $this->getUser()->getSettings(pocketlistsHelper::APP_ID, 'hide_tiny_ad_until', date('Y-m-d'));
+
         $this->view->assign(compact('pockets', 'linkedApps'));
         $this->view->assign(
             [
                 'backend_sidebar' => $eventResult,
-                'isAdmin'         => $this->getUser()->isAdmin('pocketlists'),
+                'isAdmin' => $isAdmin,
+                'showTinyAd' => $showTinyAd,
             ]
         );
     }

@@ -393,11 +393,18 @@
                 self.scrollToTop(0, 80);
             });
 
-            self.$core_sidebar.on('click', '[data-pl-action="show-all-team"]', function (e) {
+            self.$core_sidebar.on('click.pl2', '[data-pl-action="show-all-team"]', function (e) {
                 e.preventDefault();
 
                 self.$core_sidebar.find('[data-pl-sidebar-block="team"] li').show();
                 $(this).hide();
+            });
+
+            self.$core_sidebar.on('click.pl2', '.pl-tiny-ad-close', function (e) {
+                e.preventDefault();
+
+                $(this).closest('.pl-tiny-ad').hide();
+                $.post('?module=backendJson&action=hideTinyAd');
             });
 
             $(document)
@@ -505,6 +512,26 @@
                     this_is_the_end = false,
                     html_selector = config.html_selector;//'#pl-complete-log > .menu-v';
 
+                function getItems() {
+                    if (request_in_action) {
+                        return;
+                    }
+                    $loading.show();
+                    request_in_action = true;
+
+                    $.get(config.url, { offset: offset }, function (html) {
+                        $loading.hide();
+                        html = $(html).find(html_selector).html();
+                        if ($.trim(html).length) {
+                            offset++;
+                        } else {
+                            this_is_the_end = true;
+                        }
+                        $(html_selector).append(html);
+                        request_in_action = false;
+                    });
+                }
+
                 $(window).on('scroll.pl2', function () {
                     if (this_is_the_end) {
                         return;
@@ -516,29 +543,18 @@
                     if (prev_scroll_pos < scroll_pos) {
                         if (!is_bottom && scroll_pos >= doc_h) {
                             is_bottom = true;
-                            if (request_in_action) {
-                                return;
-                            }
-                            $loading.show();
-                            request_in_action = true;
 
-                            $.get(config.url, { offset: offset }, function (html) {
-                                $loading.hide();
-                                html = $(html).find(html_selector).html();
-                                if ($.trim(html).length) {
-                                    offset++;
-                                } else {
-                                    this_is_the_end = true;
-                                }
-                                $(html_selector).append(html);
-                                request_in_action = false;
-                            });
+                            getItems();
                         } else {
                             is_bottom = false;
                         }
                     }
                     prev_scroll_pos = scroll_pos;
                 });
+
+                if (config['load_now'] !== undefined) {
+                    getItems();
+                }
             }
         }
     };

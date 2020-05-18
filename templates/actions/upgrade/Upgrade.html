@@ -1,7 +1,8 @@
+{$_utm_suffix = '?utm_campaign=1312_inapp_pl2pro_upgrade_2020_1'}
 {if $wa->user()->isAdmin('installer')}
-    {$_pl2pro_url = $wa_backend_url|cat:'installer/store/plugin/pocketlists/pro/'}
+    {$_pl2pro_url = $wa_backend_url|cat:'installer/store/plugin/pocketlists/pro/'|cat:$_utm_suffix}
 {else}
-    {$_pl2pro_url = '[`https://www.webasyst.com/store/plugin/pocketlists/pro/`]'}
+    {$_pl2pro_url = '[`https://www.webasyst.com/store/plugin/pocketlists/pro/`]'|cat:$_utm_suffix}
 {/if}
 
 {capture "pl2proupgradead"}
@@ -17,7 +18,7 @@
           [`Shop-Script automation (auto create to-dos based on actions with orders), kanban board, status labels, quick entry templates, and other advanced features.`]
       </p>
       <p style="margin-bottom: 5px;">
-          <a href="https://www.webasyst.ru/buy/store/5045/" class="button green">[`Buy the plugin`]</a>
+          <a href="[`https://www.webasyst.com/buy/store/5045/`]{$_utm_suffix}" class="button green">[`Buy the plugin`]</a>
       </p>
       <div class="clear-both"></div>
 </figure>

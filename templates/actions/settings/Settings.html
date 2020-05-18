@@ -139,7 +139,7 @@
                             <p class="small"><br><em><i class="icon10 exclamation"></i> [`Daily recap notifications require CRON to be configured, which is not the case for your Pocket Lists app. Cron the following command to run daily:`]</em></p>
                             {$smarty.capture.dailyrecap_cron_command}
                         {else}
-                            <p class="small"><br><em><i class="icon10 yes"></i> [`We’ll keep you up to date and notify you on what’s up next! And when there is nothing planned for the upcoming period, no alerts will be sent.`] <span class="gray">{sprintf('[`Last Cron execution time: %s`]', $last_recap_cron_time|wa_datetime:'humandatetime')}</span></em> <a href="#" class="pl-dailyrecap-cron-command-toggle inline-link"><b><i>[`See Cron command`]</i></b></a></p>
+                            <p class="small"><br><em><i class="icon10 yes"></i> [`Daily recap and the Cron are configured properly! You will get email notifications when Cron is executed but not more often than daily (every 24 hours). And when there is nothing planned for the upcoming period, no emails will be sent.`] <span class="gray">{sprintf('[`Last Cron execution time: %s`]', $last_recap_cron_time|wa_datetime:'humandatetime')}</span></em> <a href="#" class="pl-dailyrecap-cron-command-toggle inline-link"><b><i>[`See Cron command`]</i></b></a></p>
                             <div style="display: none;" class="pl-dailyrecap-cron-command-info">
                                 {$smarty.capture.dailyrecap_cron_command}
                             </div>

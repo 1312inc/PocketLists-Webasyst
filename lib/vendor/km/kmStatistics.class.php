@@ -78,6 +78,14 @@ class kmStatistics
     }
 
     /**
+     * @return kmStatistics
+     */
+    public static function get()
+    {
+        return self::getInstance();
+    }
+
+    /**
      * kmMysqlStat constructor.
      */
     protected function __construct()
@@ -129,6 +137,28 @@ class kmStatistics
     }
 
     /**
+     * @param $sql
+     * @param $callback
+     *
+     * @return mixed
+     */
+    public function addQueryWithTime($sql, $callback)
+    {
+        $timea = microtime(true);
+        $return = $callback();
+
+        $this->app = wa()->getApp();
+//        if (!$this->app) {
+//            return $return;
+//        }
+
+        $this->addQuery($sql);
+        $this->addStatQuery($sql, microtime(true) - $timea);
+
+        return $return;
+    }
+
+    /**
      * @param string $query
      * @param float  $executionTime
      */
@@ -136,8 +166,8 @@ class kmStatistics
     {
         if ($this->app) {
             $method = $this->getMethod();
-            $queryKey = md5($query);
             $query = preg_replace('/\s+/', ' ', $query);
+            $queryKey = md5($query);
             if (!isset($this->statQueries[$this->app][$queryKey])) {
                 $this->statQueries[$this->app][$queryKey] = [
                     'path'           => [],
@@ -208,7 +238,7 @@ class kmStatistics
         $plitem = [];
         foreach (debug_backtrace() as $i => $item) {
             if (isset($item['class']) && strpos($item['class'], 'pocketlists') === 0) {
-                $plitem[] = sprintf('%s%s%s::%s', $item['class'], $item['type'], $item['function'], $item['line']);
+                $plitem[] = sprintf('%s%s%s::%s', $item['class'], $item['type'], $item['function'], ifset($item, 'line', 0));
             }
         }
 
@@ -279,6 +309,6 @@ class kmStatistics
 
     public function __destruct()
     {
-        $this->exportStatQueries();
+//        $this->exportStatQueries();
     }
 }

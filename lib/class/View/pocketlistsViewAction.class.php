@@ -24,6 +24,8 @@ abstract class pocketlistsViewAction extends waViewAction
         try {
             $this->view->assign(pl2()->getDefaultViewVars());
 
+            wa()->getStorage()->close();
+
             $this->runAction($params);
         } catch (pocketlistsException $ex) {
             $this->view->assign(
