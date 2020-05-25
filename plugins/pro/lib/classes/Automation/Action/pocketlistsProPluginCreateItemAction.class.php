@@ -154,9 +154,10 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
         /** @var pocketlistsItemFactory $factory */
         $factory = pl2()->getEntityFactory(pocketlistsItem::class);
 
-        $this->name = $this->replaceVars($this->name, $order);
+        $itemName = $this->replaceVars($this->name, $order);
+        $itemNote = null;
         if ($this->note) {
-            $this->note = $this->replaceVars($this->note, $order);
+            $itemNote = $this->replaceVars($this->note, $order);
         }
 
         $currentUserId = wa()->getUser()->getId();
@@ -172,8 +173,8 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
         $item = $factory->createNew();
         $item
             ->setContactId(pocketlistsBot::PL2BOT_ID)
-            ->setName($this->name)
-            ->setNote($this->note ?: null)
+            ->setName($itemName)
+            ->setNote($itemNote)
             ->setPriority($this->priority)
             ->setAssignedContactId($assigned)
             ->setList($this->list)
