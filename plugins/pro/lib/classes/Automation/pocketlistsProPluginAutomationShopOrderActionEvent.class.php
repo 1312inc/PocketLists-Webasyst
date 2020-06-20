@@ -65,7 +65,7 @@ class pocketlistsProPluginAutomationShopOrderActionEvent implements pocketlistsP
         foreach ($automations as $automation) {
             pocketlistsLogger::debug(sprintf('automation %d', $automation->getId()));
             if (waSystemConfig::isDebug()) {
-                pocketlistsLogger::debug(cash()->getHydrator()->extract($automation));
+                pocketlistsLogger::debug(pl2()->getHydrator()->extract($automation));
             }
 
             if (!$automation->isEnabled()) {
