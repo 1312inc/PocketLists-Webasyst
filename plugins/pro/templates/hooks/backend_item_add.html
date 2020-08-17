@@ -57,6 +57,8 @@
                 labelsExists = {$pl2pro.labelsExists},
                 shortcutsExists = {$pl2pro.shortcutsExists};
 
+            $.pocketlists_pro.log('backend_item_add.html');
+
             var pl2EventsHandlers = {
                 item_add: function (e, data) {
                     $wrapper = data.add_wrapper.find('[data-pl2pro-wrapper]');
@@ -84,27 +86,55 @@
                 }
             };
 
+            // $wrapper = $('[data-pl2pro-wrapper="item-compact-add-'+wrapperTime+'"]').closest('[data-pl-item-add]');
+
+            // $(document)
+            //     .off('item_add.pl2', $.pocketlists_pro.pl2EventsHandlers.item_add)
+            //     .on('item_add.pl2', $.pocketlists_pro.pl2EventsHandlers.item_add)
+            //
+            //     .off('open_new_item_wrapper.pl2 hide_new_item_wrapper.pl2', $.pocketlists_pro.pl2EventsHandlers.open_new_item_wrapper)
+            //     .on('open_new_item_wrapper.pl2 hide_new_item_wrapper.pl2', $.pocketlists_pro.pl2EventsHandlers.open_new_item_wrapper)
+            //
+            //     .off('itemDetailsOpened.pl2', $.pocketlists_pro.pl2EventsHandlers.itemDetailsOpened)
+            //     .on('itemDetailsOpened.pl2', $.pocketlists_pro.pl2EventsHandlers.itemDetailsOpened)
+            //
+            //     .off('itemDetailsClosed.pl2', $.pocketlists_pro.pl2EventsHandlers.itemDetailsClosed)
+            //     .on('itemDetailsClosed.pl2', $.pocketlists_pro.pl2EventsHandlers.itemDetailsClosed)
+            //
+            //     .off('itemAdd.pl2pro')
+            //     .on('itemAdd.pl2pro', init)
+            // ;
+
             $(document)
                 .off('item_add.pl2', pl2EventsHandlers.item_add)
                 .on('item_add.pl2', pl2EventsHandlers.item_add)
 
                 .off('open_new_item_wrapper.pl2 hide_new_item_wrapper.pl2', pl2EventsHandlers.open_new_item_wrapper)
                 .on('open_new_item_wrapper.pl2 hide_new_item_wrapper.pl2', pl2EventsHandlers.open_new_item_wrapper)
+            // ;
+            //
+            // if ($wrapper.length) {
+            //     $wrapper
+                    .off('itemDetailsOpened.pl2', '[data-pl2-item-details]')
+                    .on('itemDetailsOpened.pl2', '[data-pl2-item-details]', pl2EventsHandlers.itemDetailsOpened)
 
-                .off('itemDetailsOpened.pl2', pl2EventsHandlers.itemDetailsOpened)
-                .on('itemDetailsOpened.pl2', pl2EventsHandlers.itemDetailsOpened)
-
-                .off('itemDetailsClosed.pl2', pl2EventsHandlers.itemDetailsClosed)
-                .on('itemDetailsClosed.pl2', pl2EventsHandlers.itemDetailsClosed)
-            ;
+                    .off('itemDetailsClosed.pl2', '[data-pl2-item-details]')
+                    .on('itemDetailsClosed.pl2', '[data-pl2-item-details]', pl2EventsHandlers.itemDetailsClosed)
+                ;
+            // }
 
             function init($wrapper) {
-                $.pocketlists_pro.log('item_add init');
+                // $wrapper = $wrapper.wrapper;
+
+                if (!$wrapper.length) {
+                    return;
+                }
                 if ($wrapper.data('pl2pro-item-add')) {
                     return;
                 }
 
-                $.pocketlists_pro.log('item_add inited');
+                $.pocketlists_pro.log({ 'labels&shortcuts inited': $wrapper });
+
                 $.store && !$.storage && ($.storage = new $.store());
 
                 $wrapper.data('pl2pro-item-add', 1);
