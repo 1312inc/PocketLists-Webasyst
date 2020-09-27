@@ -4,21 +4,31 @@
 <div class="pl-tiny-ad">
     <div class="pl-tiny-ad-box">
         <a href="#" class="pl-tiny-ad-close" title="[`Close`]">&times;</a>
-        <h5 class="heading">РАБОТАЕМ ДОМА</h5>
+        <!-- <h5 class="heading">РАБОТАЕМ ДОМА</h5> -->
         <!-- <h5 class="heading">[`New app by 1312 Inc.`]</h5> -->
         <!-- <h5 class="heading">[`Ad`]</h5> -->
+        <h5 class="heading">[`Новинка!`]</h5>
 
-        {$_ad_url = 'https://www.webasyst.ru/store/app/status/?utm_campaign=1312_inapp_pl2webasyst_statusapp_2020_1'}
+        {$_ad_url = 'https://www.webasyst.ru/store/app/cash/?utm_campaign=1312_inapp_pl2webasyst_cashapp_2020_1'}
 
         <a href="{$_ad_url}" target="_blank">
-            <img src="https://www.webasyst.ru/wa-data/public/updates/img/43/4943/icon.96x96.png" class="pl-app-icon" />
+            <img src="{$wa_url}wa-apps/pocketlists/img/pl2ad-cash-app-144.png" class="pl-app-icon" />
         </a>
 
         <!-- <p>{sprintf('[`<a href="%s" target="_blank">Status app</a> tracks working time and shows whom have been working on what (and whom have been doing nothing too!)`]', $_ad_url)}</p> -->
 
-        <p>{sprintf('Новое приложение от команды разработчиков Pocket Lists — «<a href="%s" target="_blank"><strong>Статус</strong></a>» поможет организовать дистационную работу всей команды и знать, кто, сколько и над чем работает. Даже когда вы не видите друг друга в офисе лично.', $_ad_url)}</p>
+        <p>
+            {sprintf('<b><a href="%s" target="_blank" class="no-underline">Новое приложение Webasyst Cash Flow</a></b> от команды разработчиков Pocket Lists поможет вести финансовый учет, прогнозировать прибыль и избегать кассовых разрывов.', $_ad_url)}
+        </p>
+        {if $wa->shop}
+            <p><b>Дружит с Shop-Script</b>: импортирует данные о продажах интернет-магазина и считает прибыль бизнеса.</p>
+        {/if}
 
-        <a href="{$_ad_url}" target="_blank"><img src="{$wa_url}wa-apps/pocketlists/img/badge-webasyst{if $wa->locale()=='ru_RU'}-ru{/if}.png" class="pl-badge-appstore"></a>
+        <!-- <a href="{$_ad_url}" target="_blank"><img src="{$wa_url}wa-apps/pocketlists/img/badge-webasyst{if $wa->locale()=='ru_RU'}-ru{/if}.png" class="pl-badge-appstore"></a> -->
+
+        <a href="{$_ad_url}" target="_blank" class="pl-tiny-button">Хочу порядок в финансах!</a>
+
+        <p class="hint">Проще, чем бухгалтерия. Эффективнее, чем Excel.</p>
 
     </div>
 </div>

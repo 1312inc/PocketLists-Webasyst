@@ -81,8 +81,8 @@ class pocketlistsBackendSidebarAction extends pocketlistsViewAction
 
         $isAdmin = $this->getUser()->isAdmin('pocketlists');
         $showTinyAd = $isAdmin
-            && !wa()->appExists('status')
-            && date('Y-m') === '2020-05'
+            && !wa()->appExists('cash')
+            && (date('Y-m') === '2020-09' || date('Y-m') === '2020-10' || date('Y-m') === '2020-11')
             && wa()->getLocale() === 'ru_RU'
             && date('Y-m-d') >= $this->getUser()->getSettings(pocketlistsHelper::APP_ID, 'hide_tiny_ad_until', date('Y-m-d'));
 
