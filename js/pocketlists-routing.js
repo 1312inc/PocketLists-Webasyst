@@ -196,7 +196,12 @@
 
             if ($content.find('[data-pl2-pocket-wrapper]').data('pl2-pocket-wrapper') == id) {
                 this.load('?module=list&pocket_id=' + id + '&id=' + list_id, function (html) {
-                    $content.find('#pl-list-content').replaceWith(html);
+                    var $normalWrapper = $content.find('#pl-list-content');
+                    if ($normalWrapper.length) {
+                        $normalWrapper.replaceWith(html);
+                    } else {
+                        $content.find('#pl-list-icon-dialog').after(html);
+                    }
                     // -_-
                     $content.find('[data-pl2-wrapper="lists"] [data-pl-list-id] a').removeClass('pl-is-selected');
                     $content.find('[data-pl2-wrapper="lists"] [data-pl-list-id="'+list_id+'"] a').addClass('pl-is-selected');
