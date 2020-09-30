@@ -132,7 +132,13 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
         $delayed = $factory->createNew()
             ->setAutomation($automation)
             ->setApplyDatetime($when)
-            ->setEventData(['order_id' => $params['order']->getId(), 'action_id' => $params['action']->getId()]);
+            ->setEventData(
+                [
+                    'order_id' => $params['order']->getId(),
+                    'action_id' => $params['action']->getId(),
+                    'action_performer_contact_id' => wa()->getUser()->getId(),
+                ]
+            );
         $factory->insert($delayed);
 
         pocketlistsLogger::debug(
@@ -143,26 +149,25 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
     }
 
     /**
-     * @param pocketlistsProPluginAutomation $automation
-     * @param shopOrder                      $order
+     * @param pocketlistsProPluginAutomation                   $automation
+     * @param pocketlistsProPluginAutomationShopOrderActionDto $params
      *
      * @return mixed
      * @throws waException
      */
-    public function execute(pocketlistsProPluginAutomation $automation, $order)
+    public function execute(pocketlistsProPluginAutomation $automation, $params)
     {
         /** @var pocketlistsItemFactory $factory */
         $factory = pl2()->getEntityFactory(pocketlistsItem::class);
 
-        $itemName = $this->replaceVars($this->name, $order);
+        $itemName = $this->replaceVars($this->name, $params->order);
         $itemNote = null;
         if ($this->note) {
-            $itemNote = $this->replaceVars($this->note, $order);
+            $itemNote = $this->replaceVars($this->note, $params->order);
         }
 
-        $currentUserId = wa()->getUser()->getId();
-        if ($this->assignedTo == self::ORDER_ACTION_PERFORMER_ID && $currentUserId) {
-            $assigned = $currentUserId;
+        if ($this->assignedTo == self::ORDER_ACTION_PERFORMER_ID && $params->actionPerformerContactId) {
+            $assigned = $params->actionPerformerContactId;
         } elseif ($this->assignedTo > 0) {
             $assigned = $this->assignedTo;
         } else {
@@ -204,7 +209,7 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
                 [
                     'app' => pocketlistsAppLinkShop::APP,
                     'entity_type' => pocketlistsAppLinkShop::TYPE_ORDER,
-                    'entity_id' => $order->getId(),
+                    'entity_id' => $params->order->getId(),
                 ],
                 false
             );
@@ -213,7 +218,7 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
                 new pocketlistsEventItemsSave(
                     pocketlistsEventStorage::ITEM_INSERT,
                     $item,
-                    ['list' => $this->list, 'assign_contact' => $this->assignContact]
+                    ['list' => $this->list, 'assign_contact_id' => $assigned]
                 )
             );
 

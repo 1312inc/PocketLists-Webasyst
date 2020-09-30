@@ -113,7 +113,7 @@ class pocketlistsItemDataAction extends pocketlistsViewItemAction
                     new pocketlistsEventItemsSave(
                         pocketlistsEventStorage::ITEM_INSERT,
                         $item,
-                        ['list' => $item->getList(), 'assign_contact' => $item->getAssignedContactId()]
+                        ['list' => $item->getList(), 'assign_contact_id' => $item->getAssignedContactId()]
                     )
                 );
             } else {

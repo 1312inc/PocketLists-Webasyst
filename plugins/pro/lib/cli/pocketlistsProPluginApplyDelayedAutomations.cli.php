@@ -67,7 +67,7 @@ class pocketlistsProPluginApplyDelayedAutomationsCli extends waCliController
                 }
 
                 $automationEvent = new pocketlistsProPluginAutomationShopOrderActionEvent($order, $action);
-                $result = $automationEvent->executeAutomation($automation);
+                $result = $automationEvent->executeAutomation($automation, $delayedAutomation->getEventData());
                 if ($result->status) {
                     $delayedAutomation->setStatus(pocketlistsProPluginDelayedAutomation::STATUS_OK);
                     if ($result->data instanceof pocketlistsItem) {
