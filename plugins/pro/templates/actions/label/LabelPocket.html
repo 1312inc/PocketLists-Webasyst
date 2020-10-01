@@ -50,7 +50,7 @@
 
             new $.pocketlists.Comments($list_wrapper);
 
-            $.pocketlists.setTitle('{$label->getName()|escape}');
+            $.pocketlists.setTitle("{$label->getName()|escape|addslashes}");
         }());
     </script>
 </main>

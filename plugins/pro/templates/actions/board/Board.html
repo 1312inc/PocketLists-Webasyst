@@ -96,7 +96,7 @@
     <script>
         'use strict';
         (function () {
-            $.pocketlists.setTitle('{$pocket->getName()|escape}', true);
+            $.pocketlists.setTitle("{$pocket->getName()|escape|addslashes}", true);
 
             var $wrapper = $('[data-pl2pro-wrapper="board"]'),
                 $columns = $wrapper.find('[data-pl2pro-label]'),

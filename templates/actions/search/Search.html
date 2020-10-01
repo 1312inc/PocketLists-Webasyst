@@ -102,6 +102,6 @@
 
         new $.pocketlists.Comments($all_items_wrapper);
 
-        $.pocketlists.setTitle('{$term|default:'[`Search`]'|escape}');
+        $.pocketlists.setTitle('{$term|default:'[`Search`]'|escape|addslashes}');
     }());
 </script>

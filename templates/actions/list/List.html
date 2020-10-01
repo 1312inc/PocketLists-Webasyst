@@ -123,7 +123,7 @@
 
         new $.pocketlists.Comments($list_wrapper);
 
-        $.pocketlists.setTitle('{$list->getNameParsed()|default:'`New list`'|escape}');
+        $.pocketlists.setTitle("{$list->getNameParsed()|default:'`New list`'|escape|addslashes}");
 
         // {if $list->getId()}
 
