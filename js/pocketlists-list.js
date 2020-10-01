@@ -328,6 +328,11 @@ $.pocketlists.List = function ($list_wrapper, options) {
 
                     $.post('?module=list&action=delete', {list_id: list_id}, function (r) {
                         if (r.status === 'ok') {
+                            var $lists = $('[data-pl2-wrapper="lists"]');
+                            if ($lists.length) {
+                                $lists.find('[data-pl-list-id="' + list_id + '"]').remove();
+                            }
+
                             if (/#\/archive/.test(window.location.hash)) {
                                 $.wa.setHash('#/archive/');
                             } else if (/#\/pocket/.test(window.location.hash)) {
@@ -335,7 +340,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
                             } else {
                                 $.wa.setHash('#/todo/');
                             }
-                            $.pocketlists_routing.redispatch();
+                            // $.pocketlists_routing.redispatch();
                         } else {
                         }
                         d.trigger('close');

@@ -113,7 +113,8 @@
                 {
                     archive: {if $archive|default:0}true{else}false{/if},
                     totalItems: {$count_items_done|default:0 + $count_items_undone|default:0}
-                }),
+                }
+            ),
             userHasLinkedApps: {$user->hasLinkedApps()},
             current_user_id: {$user->getContact()->getId()},
             fileUpload: {$fileupload},
@@ -122,7 +123,7 @@
 
         new $.pocketlists.Comments($list_wrapper);
 
-        $.pocketlists.setTitle('{$list->getNameParsed()|default:'`New list`'|escape}');
+        $.pocketlists.setTitle("{$list->getNameParsed()|default:'`New list`'|escape|addslashes}");
 
         // {if $list->getId()}
 
@@ -130,7 +131,8 @@
             $loading: $('#pl-list-content .lazyloading'),
             html_selector: '#pl-complete-log > .menu-v',
             url: '?module=item&action=lazyDone&type=list&id={$list->getId()}',
-            load_now: true
+            load_now: true,
+            offset: 0
         });
 
         //{/if}

@@ -161,7 +161,7 @@
 
         new $.pocketlists.Comments($all_items_wrapper);
 
-        $.pocketlists.setTitle('{$current_teammate->getName()|escape}');
+        $.pocketlists.setTitle('{$current_teammate->getName()|escape|addslashes}');
 
         $('[data-pl="uho"]').on('click', '[data-pl-action="list-email"]', function (e) {
             e.preventDefault();

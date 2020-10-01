@@ -12,6 +12,8 @@ class pocketlistsItemCompleteController extends pocketlistsComplete
      */
     public function execute()
     {
+        wa()->getStorage()->close();
+
         $status = waRequest::post('status', 0, waRequest::TYPE_INT);
 
         $item = $this->getItem();

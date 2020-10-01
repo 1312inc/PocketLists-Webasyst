@@ -96,7 +96,7 @@
 
                     new $.pocketlists.Comments($all_items_wrapper);
 
-                    $.pocketlists.setTitle('{$list->getName()|escape}');
+                    $.pocketlists.setTitle("{$list->getName()|escape|addslashes}");
                 }());
             </script>
 

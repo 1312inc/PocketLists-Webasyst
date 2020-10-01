@@ -356,7 +356,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     .html('<i class="icon16 pl ellipsis"></i>');
 
                 setItem(null);
-                $(document).trigger('itemDetailsClosed.pl2', { details_wrapper: $addItemTextarea.closest('[data-pl-item-add]') });
+                $addItemTextarea.closest('[data-pl-item-add]').trigger('itemDetailsClosed.pl2', { details_wrapper: $addItemTextarea.closest('[data-pl-item-add]') });
             }
 
             if ($.isFunction(callback)) {
@@ -432,7 +432,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
                     $item.removeData('pl2-open-details-in-progress');
 
-                    $(document).trigger('itemDetailsOpened.pl2', {details_wrapper: $wrapper});
+                    $wrapper.trigger('itemDetailsOpened.pl2', {details_wrapper: $wrapper});
                 });
             };
 

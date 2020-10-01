@@ -65,6 +65,42 @@
             ;
 
             this.inited = true;
+        },
+        pl2EventsHandlers: {
+            item_add: function (e, data) {
+                var $wrapper = data.add_wrapper.find('[data-pl2pro-wrapper]');
+                $.pocketlists_pro.log({ 'item_add': $wrapper });
+
+                $wrapper.removeData('pl2pro-item-add');
+
+                // init($wrapper);
+                $(document).trigger('itemAdd.pl2pro', {wrapper: $wrapper});
+
+            },
+            open_new_item_wrapper: function (e, data) {
+                var $wrapper = data.add_wrapper.find('[data-pl2pro-wrapper]');
+                $.pocketlists_pro.log({ 'open_new_item_wrapper': $wrapper });
+                $wrapper.removeData('pl2pro-item-add');
+
+                // init($wrapper);
+                $wrapper.trigger('itemAdd.pl2pro', {wrapper: $wrapper});
+            },
+            itemDetailsOpened: function (e, data) {
+                var $wrapper = data.details_wrapper.find('[data-pl2pro-wrapper]');
+                $.pocketlists_pro.log({ 'itemDetailsOpened': $wrapper });
+                $wrapper.removeData('pl2pro-item-add');
+
+                // init($wrapper);
+                $(document).trigger('itemAdd.pl2pro', {wrapper: $wrapper});
+            },
+            itemDetailsClosed: function (e, data) {
+                var $wrapper = data.details_wrapper.find('[data-pl2pro-wrapper]');
+                $.pocketlists_pro.log({ 'itemDetailsClosed': $wrapper });
+                $wrapper.removeData('pl2pro-item-add');
+
+                // init($wrapper);
+                $(document).trigger('itemAdd.pl2pro', {wrapper: $wrapper});
+            }
         }
     }
 }(jQuery));

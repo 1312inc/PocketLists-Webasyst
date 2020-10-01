@@ -109,6 +109,7 @@ class pocketlistsProPluginLabelFactory extends pocketlistsFactory
             pocketlistsRBAC::filterListAccess($available_lists, $user->getId()),
             'pp.id = i:pocket_id',
             'i.pro_label_id = i:label_id',
+            'i.status = i:status'
         ];
         $sqlParts['order by'] = ['i.status', 'i.calc_priority desc', 'i.id desc'];
         $sql = $itemModel->buildSqlComponents($sqlParts);
@@ -117,9 +118,10 @@ class pocketlistsProPluginLabelFactory extends pocketlistsFactory
             $sql,
             [
                 'contact_id' => wa()->getUser()->getId(),
-                'pocket_id'  => $pocket->getId(),
-                'label_id'   => $label->getId(),
-                'list_ids'   => $available_lists,
+                'pocket_id' => $pocket->getId(),
+                'label_id' => $label->getId(),
+                'list_ids' => $available_lists,
+                'status' => 0,
             ]
         )->fetchAll();
 

@@ -65,7 +65,7 @@ class pocketlistsProPluginAutomationShopOrderActionEvent implements pocketlistsP
         foreach ($automations as $automation) {
             pocketlistsLogger::debug(sprintf('automation %d', $automation->getId()));
             if (waSystemConfig::isDebug()) {
-                pocketlistsLogger::debug(cash()->getHydrator()->extract($automation));
+                pocketlistsLogger::debug(pl2()->getHydrator()->extract($automation));
             }
 
             if (!$automation->isEnabled()) {
@@ -84,10 +84,11 @@ class pocketlistsProPluginAutomationShopOrderActionEvent implements pocketlistsP
 
     /**
      * @param pocketlistsProPluginAutomation $automation
+     * @param array                          $params
      *
      * @return pocketlistsProPluginAutomationActionEventResult
      */
-    public function executeAutomation(pocketlistsProPluginAutomation $automation)
+    public function executeAutomation(pocketlistsProPluginAutomation $automation, array $params = [])
     {
         $result = new pocketlistsProPluginAutomationActionEventResult();
 
@@ -100,7 +101,13 @@ class pocketlistsProPluginAutomationShopOrderActionEvent implements pocketlistsP
                 sprintf('automation %d passed all rules, now execute action', $automation->getId())
             );
 
-            $item = $automation->getAction()->execute($automation, $this->order);
+            $params = new pocketlistsProPluginAutomationShopOrderActionDto(
+                $this->order,
+                isset($params['action_performer_contact_id'])
+                    ? $params['action_performer_contact_id']
+                    : wa()->getUser()->getId()
+            );
+            $item = $automation->getAction()->execute($automation, $params);
             if ($item instanceof pocketlistsItem) {
                 $automation
                     ->incExecutionCount()

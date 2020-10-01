@@ -78,6 +78,6 @@
             listsWrapper: $lists_wrapper
         });
 
-        $.pocketlists.setTitle('{$pocket->getName()|default:" "|escape}');
+        $.pocketlists.setTitle('{$pocket->getName()|default:" "|escape|addslashes}');
     }());
 </script>
