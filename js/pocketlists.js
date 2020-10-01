@@ -508,7 +508,7 @@
                     is_bottom = false,
                     request_in_action = false,
                     prev_scroll_pos = 0,
-                    offset = 1,
+                    offset = config['offset'] === undefined ? 1 : config['offset'],
                     this_is_the_end = false,
                     html_selector = config.html_selector;//'#pl-complete-log > .menu-v';
 
