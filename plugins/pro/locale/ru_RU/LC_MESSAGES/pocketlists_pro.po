@@ -12,7 +12,7 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Basepath: .\n"
 "Language: pro\n"
-"X-Generator: Poedit 2.2.4\n"
+"X-Generator: Poedit 2.3\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: .\n"
 
@@ -643,6 +643,9 @@ msgstr "адрес доставки заказа"
 #: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemEdit.html:35
 msgid "list of ordered items"
 msgstr "список заказанных товаров"
+
+msgid "customer comment on the order"
+msgstr "комментарий к заказу"
 
 msgid "Leave zero for no due date and time."
 msgstr "Оставьте 0 (ноль), чтобы не ставить срок для задачи."
