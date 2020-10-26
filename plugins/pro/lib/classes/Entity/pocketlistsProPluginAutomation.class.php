@@ -73,6 +73,11 @@ class pocketlistsProPluginAutomation extends pocketlistsEntity
     private $enabled = 1;
 
     /**
+     * @var bool
+     */
+    private $isValid = true;
+
+    /**
      * @return int
      */
     public function getId()
@@ -339,6 +344,9 @@ class pocketlistsProPluginAutomation extends pocketlistsEntity
                         );
                     } catch (Exception $exception) {
                         pocketlistsLogger::error($exception->getMessage());
+                        $this->isValid = false;
+
+                        return;
                     }
                 }
             }
@@ -370,5 +378,13 @@ class pocketlistsProPluginAutomation extends pocketlistsEntity
         $action = $this->action;
         $this->action = $this->actionJson;
         $this->actionJson = $action;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isValid()
+    {
+        return $this->isValid;
     }
 }

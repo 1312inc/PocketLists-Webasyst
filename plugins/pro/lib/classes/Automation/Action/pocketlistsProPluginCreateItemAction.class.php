@@ -160,10 +160,10 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
         /** @var pocketlistsItemFactory $factory */
         $factory = pl2()->getEntityFactory(pocketlistsItem::class);
 
-        $itemName = $this->replaceVars($this->name, $params->order);
+        $itemName = $this->replaceOrderVars($this->name, $params->order);
         $itemNote = null;
         if ($this->note) {
-            $itemNote = $this->replaceVars($this->note, $params->order);
+            $itemNote = $this->replaceOrderVars($this->note, $params->order);
         }
 
         if ($this->assignedTo == self::ORDER_ACTION_PERFORMER_ID && $params->actionPerformerContactId) {
@@ -481,9 +481,13 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
      *
      * @return mixed
      */
-    private function replaceVars($str, shopOrder $order)
+    private function replaceOrderVars($str, shopOrder $order)
     {
         $orderParams = $order->params;
+        $lastLog = $order->log;
+        if (is_array($lastLog)) {
+            $lastLog = reset($lastLog);
+        }
 
         return str_replace(
             [
@@ -497,6 +501,8 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
                 '{$order_item_names}',
                 '{$customer_phone}',
                 '{$customer_email}',
+                '{$order_comment}',
+                '{$action_comment}',
             ],
             [
                 $order->contact->getName(),
@@ -509,7 +515,7 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
                 implode(
                     "\n",
                     array_map(
-                        function ($item) {
+                        static function ($item) {
                             return sprintf('- %s', $item['name']);
                         },
                         $order->items
@@ -517,6 +523,8 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
                 ),
                 $order->contact->get('phone', 'default'),
                 $order->contact->get('email', 'default'),
+                $order->comment,
+                isset($lastLog['text']) ? $lastLog['text'] : '',
             ],
             $str
         );
