@@ -647,6 +647,9 @@ msgstr "список заказанных товаров"
 msgid "customer comment on the order"
 msgstr "комментарий к заказу"
 
+msgid "latest text comment from the order log"
+msgstr "последний текстовый комментарий из истории действий с заказом"
+
 msgid "Leave zero for no due date and time."
 msgstr "Оставьте 0 (ноль), чтобы не ставить срок для задачи."
 
