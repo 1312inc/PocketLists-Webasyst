@@ -89,11 +89,14 @@ HTML;
      * @param array $json
      *
      * @return pocketlistsProPluginAutomationRuleShopAction
+     * @throws pocketlistsProPluginNoShopActionException
      */
     public function load(array $json)
     {
         $this->value = (new shopWorkflow())->getActionById($json['value']);
-        $this->options = $this->value->getOptions();
+        if (!$this->value instanceof shopWorkflowAction) {
+            throw new pocketlistsProPluginNoShopActionException(sprintf('No shop action %s', $json['value']));
+        }
 
         return $this;
     }

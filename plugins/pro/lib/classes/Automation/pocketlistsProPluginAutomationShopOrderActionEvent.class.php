@@ -63,21 +63,25 @@ class pocketlistsProPluginAutomationShopOrderActionEvent implements pocketlistsP
         pocketlistsLogger::debug(sprintf('run %d automations for shop order actions', count($automations)));
         /** @var pocketlistsProPluginAutomation $automation */
         foreach ($automations as $automation) {
-            pocketlistsLogger::debug(sprintf('automation %d', $automation->getId()));
-            if (waSystemConfig::isDebug()) {
-                pocketlistsLogger::debug(pl2()->getHydrator()->extract($automation));
-            }
+            try {
+                pocketlistsLogger::debug(sprintf('automation %d', $automation->getId()));
+                if (waSystemConfig::isDebug()) {
+                    pocketlistsLogger::debug(pl2()->getHydrator()->extract($automation));
+                }
 
-            if (!$automation->isEnabled()) {
-                pocketlistsLogger::debug(sprintf('Automation %d is disabled', $automation->getId()));
+                if (!$automation->isEnabled()) {
+                    pocketlistsLogger::debug(sprintf('Automation %d is disabled', $automation->getId()));
 
-                continue;
-            }
+                    continue;
+                }
 
-            if ($automation->getAction()->getWhenIn()) {
-                $this->delayAutomation($automation);
-            } else {
-                $this->executeAutomation($automation);
+                if ($automation->getAction()->getWhenIn()) {
+                    $this->delayAutomation($automation);
+                } else {
+                    $this->executeAutomation($automation);
+                }
+            } catch (Exception $exception) {
+                pocketlistsLogger::error(sprintf("%s\n%s", $exception->getMessage(), $exception->getTraceAsString()));
             }
         }
     }

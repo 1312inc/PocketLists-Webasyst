@@ -31,33 +31,40 @@ class pocketlistsProPluginSettingsActions extends pocketlistsViewActions
         $automations = $f->findByEventAndType(pocketlistsProPluginAutomationShopOrderActionEvent::NAME, 'shop');
 
         foreach ($automations as $automation) {
-            $actionId = '';
-            $rules = [];
+            try {
+                $actionId = '';
+                $rules = [];
 
-            foreach ($automation->getRules() as $rule) {
-                if ($rule instanceof pocketlistsProPluginAutomationRuleShopAction) {
-                    $actionId = $rule->getValue()->getId();
-                    $shopActions['shop.'.$actionId]->automations[] = $automation;
-                } else {
-                    $rules[] = $rule->viewHtml();
-                }
-            }
-
-            $shopActions['shop.'.$actionId]->automationRulesHtml[$automation->getId()] = implode(
-                _wp(' AND '),
-                array_filter(
-                    $rules,
-                    function ($a) {
-                        return !empty($a);
+                foreach ($automation->getRules() as $rule) {
+                    if ($rule instanceof pocketlistsProPluginAutomationRuleShopAction) {
+                        $actionId = $rule->getValue()->getId();
+                        $shopActions['shop.' . $actionId]->automations[] = $automation;
+                    } else {
+                        $rules[] = $rule->viewHtml();
                     }
-                )
-            );
+                }
 
-            if (empty($shopActions['shop.'.$actionId]->automationRulesHtml[$automation->getId()])) {
-                $shopActions['shop.'.$actionId]->automationRulesHtml[$automation->getId()] = _wp('ALL');
+                $shopActions['shop.' . $actionId]->automationRulesHtml[$automation->getId()] = implode(
+                    _wp(' AND '),
+                    array_filter(
+                        $rules,
+                        static function ($a) {
+                            return !empty($a);
+                        }
+                    )
+                );
+
+                if (empty($shopActions['shop.' . $actionId]->automationRulesHtml[$automation->getId()])) {
+                    $shopActions['shop.' . $actionId]->automationRulesHtml[$automation->getId()] = _wp('ALL');
+                }
+
+                $shopActions['shop.' . $actionId]->automationActionsHtml[$automation->getId()] = $automation->getAction(
+                )->viewHtml();
+            } catch (pocketlistsProPluginNoShopActionException $exception) {
+                pocketlistsLogger::debug($exception->getMessage());
+            } catch (Exception $exception) {
+                pocketlistsLogger::error($exception->getMessage());
             }
-
-            $shopActions['shop.'.$actionId]->automationActionsHtml[$automation->getId()] = $automation->getAction()->viewHtml();
         }
 
         $this->view->assign(['shopActions' => $shopActions]);

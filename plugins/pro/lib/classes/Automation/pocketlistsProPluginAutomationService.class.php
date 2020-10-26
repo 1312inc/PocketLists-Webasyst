@@ -59,6 +59,7 @@ class pocketlistsProPluginAutomationService
      *
      * @return pocketlistsProPluginAutomationRuleInterface
      * @throws pocketlistsLogicException
+     * @throws pocketlistsProPluginNoShopActionException
      */
     public function createRule($identifier, array $data)
     {
