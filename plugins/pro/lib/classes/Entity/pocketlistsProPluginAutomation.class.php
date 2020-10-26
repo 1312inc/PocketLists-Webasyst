@@ -73,6 +73,11 @@ class pocketlistsProPluginAutomation extends pocketlistsEntity
     private $enabled = 1;
 
     /**
+     * @var bool
+     */
+    private $isValid = true;
+
+    /**
      * @return int
      */
     public function getId()
@@ -114,30 +119,9 @@ class pocketlistsProPluginAutomation extends pocketlistsEntity
 
     /**
      * @return pocketlistsProPluginAutomationRuleInterface[]|string
-     * @throws pocketlistsLogicException
-     * @throws pocketlistsProPluginNoShopActionException
      */
     public function getRules()
     {
-        if ($this->rules && $this->rulesJson === null) {
-            $rules = [];
-
-            if (!is_array($this->rules)) {
-                $this->rules = json_decode($this->rules, true);
-            }
-
-            foreach ($this->rules as $rule) {
-                if (!empty($rule['identifier'])) {
-                    $rules[] = pocketlistsProPlugin::getInstance()->getAutomationService()->createRule(
-                        $rule['identifier'],
-                        $rule
-                    );
-                }
-            }
-            $this->rules = $rules;
-            $this->rulesJson = json_encode($this->rules, JSON_UNESCAPED_UNICODE);
-        }
-
         return $this->rules;
     }
 
@@ -158,15 +142,6 @@ class pocketlistsProPluginAutomation extends pocketlistsEntity
      */
     public function getAction()
     {
-        if ($this->action && $this->actionJson === null) {
-            if (!is_array($this->action)) {
-                $this->action = json_decode($this->action, true);
-            }
-
-            $this->action = (new pocketlistsProPluginCreateItemAction())->load($this->action);
-            $this->actionJson = json_encode($this->action, JSON_UNESCAPED_UNICODE);
-        }
-
         return $this->action;
     }
 
@@ -346,6 +321,50 @@ class pocketlistsProPluginAutomation extends pocketlistsEntity
     }
 
     /**
+     * @param array $data
+     *
+     * @return mixed|void
+     * @throws waException
+     */
+    public function afterHydrate($data = [])
+    {
+        if ($this->rules) {
+            $rules = [];
+
+            if (!is_array($this->rules)) {
+                $this->rules = json_decode($this->rules, true);
+            }
+
+            foreach ($this->rules as $rule) {
+                if (!empty($rule['identifier'])) {
+                    try {
+                        $rules[] = pocketlistsProPlugin::getInstance()->getAutomationService()->createRule(
+                            $rule['identifier'],
+                            $rule
+                        );
+                    } catch (Exception $exception) {
+                        pocketlistsLogger::error($exception->getMessage());
+                        $this->isValid = false;
+
+                        return;
+                    }
+                }
+            }
+            $this->rules = $rules;
+            $this->rulesJson = json_encode($this->rules, JSON_UNESCAPED_UNICODE);
+        }
+
+        if ($this->action) {
+            if (!is_array($this->action)) {
+                $this->action = json_decode($this->action, true);
+            }
+
+            $this->action = (new pocketlistsProPluginCreateItemAction())->load($this->action);
+            $this->actionJson = json_encode($this->action, JSON_UNESCAPED_UNICODE);
+        }
+    }
+
+    /**
      * @param array $fields
      *
      * @return array|void
@@ -359,5 +378,13 @@ class pocketlistsProPluginAutomation extends pocketlistsEntity
         $action = $this->action;
         $this->action = $this->actionJson;
         $this->actionJson = $action;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isValid()
+    {
+        return $this->isValid;
     }
 }

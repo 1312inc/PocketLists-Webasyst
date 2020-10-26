@@ -63,6 +63,10 @@ class pocketlistsProPluginAutomationShopOrderActionEvent implements pocketlistsP
         pocketlistsLogger::debug(sprintf('run %d automations for shop order actions', count($automations)));
         /** @var pocketlistsProPluginAutomation $automation */
         foreach ($automations as $automation) {
+            if (!$automation->isValid()) {
+                continue;
+            }
+
             try {
                 pocketlistsLogger::debug(sprintf('automation %d', $automation->getId()));
                 if (waSystemConfig::isDebug()) {

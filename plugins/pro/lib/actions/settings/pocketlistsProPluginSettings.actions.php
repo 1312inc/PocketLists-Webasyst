@@ -31,6 +31,12 @@ class pocketlistsProPluginSettingsActions extends pocketlistsViewActions
         $automations = $f->findByEventAndType(pocketlistsProPluginAutomationShopOrderActionEvent::NAME, 'shop');
 
         foreach ($automations as $automation) {
+            if (!$automation->isValid()) {
+                pocketlistsLogger::debug(sprintf('Automation %s is not valid, skip', $automation->getId()));
+
+                continue;
+            }
+
             try {
                 $actionId = '';
                 $rules = [];
