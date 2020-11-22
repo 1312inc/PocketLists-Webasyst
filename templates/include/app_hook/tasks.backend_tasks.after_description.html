@@ -1,0 +1,5 @@
+<div class="pl-items pl-list-items pl-todo">
+    {if $params.count_undone_items}
+        <a href="{$params.task_url}">{sprintf('Тут есть %d подзадач', $params.count_undone_items)}</a>
+    {/if}
+</div>

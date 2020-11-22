@@ -33,7 +33,6 @@ final class pocketlistsTasksBackendTask
                 return null;
             }
 
-            /** @var waSmarty3View $view */
             $view = new waSmarty3View(wa());
 
             wa(pocketlistsHelper::APP_ID, true);
@@ -80,25 +79,25 @@ final class pocketlistsTasksBackendTask
 
             $return = [];
 
-            foreach (['after_description'] as $hook) {
-                $template = wa()->getAppPath(
-                    sprintf('templates/include/app_hook/tasks.backend_task.%s.html', $hook),
-                    pocketlistsHelper::APP_ID
-                );
+            $hook = $task->attachments ? 'after_attachments' : 'after_description';
 
-                if (file_exists($template)) {
-                    try {
-                        $view->assign(
-                            [
-                                'params' => $viewParams,
-                                'pl2' => pl2(),
-                                'pl2_attachments_path' => wa()->getDataUrl('attachments', true, pocketlistsHelper::APP_ID),
-                            ]
-                        );
-                        $return[$hook] = $view->fetch($template);
-                    } catch (Exception $ex) {
-                        waLog::log(sprintf('%s error %s', $hook, $ex->getMessage()), 'pocketlists/tasks.log');
-                    }
+            $template = wa()->getAppPath(
+                sprintf('templates/include/app_hook/tasks.backend_task.%s.html', $hook),
+                pocketlistsHelper::APP_ID
+            );
+
+            if (file_exists($template)) {
+                try {
+                    $view->assign(
+                        [
+                            'params' => $viewParams,
+                            'pl2' => pl2(),
+                            'pl2_attachments_path' => wa()->getDataUrl('attachments', true, pocketlistsHelper::APP_ID),
+                        ]
+                    );
+                    $return[$hook] = $view->fetch($template);
+                } catch (Exception $ex) {
+                    waLog::log(sprintf('%s error %s', $hook, $ex->getMessage()), 'pocketlists/tasks.log');
                 }
             }
 
