@@ -92,14 +92,14 @@ interface pocketlistsAppLinkInterface
     /**
      * @param pocketlistsItemLink $itemLink
      *
-     * @return mixed
+     * @return string
      */
     public function renderPreview(pocketlistsItemLink $itemLink);
 
     /**
      * @param pocketlistsItemLink $itemLink
      *
-     * @return mixed
+     * @return string
      */
     public function renderAutocomplete(pocketlistsItemLink $itemLink);
 }

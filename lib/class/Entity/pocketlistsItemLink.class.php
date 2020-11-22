@@ -283,7 +283,7 @@ class pocketlistsItemLink extends pocketlistsEntity
     }
 
     /**
-     * @param shopOrder $appEntity
+     * @param shopOrder|array $appEntity
      *
      * @return pocketlistsItemLink
      */

@@ -42,35 +42,6 @@ class pocketlistsAppLinkShop extends pocketlistsAppLinkAbstract
     }
 
     /**
-     * @param string $term
-     * @param array  $params
-     * @param int    $count
-     *
-     * @return array
-     */
-    public function autocomplete($term, $params = [], $count = 10)
-    {
-        $result = [];
-
-        foreach ($this->getTypes() as $entityType) {
-            $method = sprintf('autocomplete%s', ucfirst($entityType));
-            if (method_exists($this, $method)) {
-                $entities = $this->$method($term, $params, $count);
-                if ($entities) {
-                    $result[] = [
-                        'app'      => $this->getApp(),
-                        'type'     => $entityType,
-                        'entities' => $entities,
-                        'params'   => $params
-                    ];
-                }
-            }
-        }
-
-        return $result;
-    }
-
-    /**
      * @param       $term
      * @param array $params
      * @param       $count
@@ -195,25 +166,6 @@ class pocketlistsAppLinkShop extends pocketlistsAppLinkAbstract
     }
 
     /**
-     * @return string
-     */
-    public function getAppIcon()
-    {
-        return sprintf(
-            '<i class="icon16 pl-wa-app-icon" style="background-image: url(%simg/shop.png); background-size: 16px 16px;"></i>',
-            wa()->getAppStaticUrl('shop')
-        );
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'Shop-Script';
-    }
-
-    /**
      * @param      $q
      * @param null $limit
      *
@@ -249,77 +201,11 @@ class pocketlistsAppLinkShop extends pocketlistsAppLinkAbstract
 
     /**
      * @param pocketlistsItemLink $itemLink
-     * @param array               $params
-     *
-     * @return string
-     * @throws waException
-     */
-    public function renderPreview(pocketlistsItemLink $itemLink, $params = [])
-    {
-        if (!$itemLink->getEntityId() || !$itemLink->getEntityType()) {
-            return '';
-        }
-
-        $template = wa()->getAppPath(
-            sprintf(
-                'templates/include/item_linked_entities/%s.%s.preview.html',
-                $this->getApp(),
-                $itemLink->getEntityType()
-            ),
-            pocketlistsHelper::APP_ID
-        );
-
-        $event = new pocketlistsEvent(pocketlistsEventStorage::WA_ITEM_RENDER_LINKED, $this);
-        pl2()->waDispatchEvent($event);
-        $pluginRender = $event->getResponse();
-        $render = !empty($pluginRender['preview']) ? $pluginRender['preview'] : '';
-
-        if ($this->isEnabled() && !$render && file_exists($template)) {
-            if (!$itemLink->getAppEntity()) {
-                return '';
-            }
-
-            $this->getView()->clearAllAssign();
-            $vars = [
-                'link'   => $itemLink,
-                'extra'  => $this->getExtraData($itemLink),
-                'params' => $params,
-            ];
-            $this->getView()->assign($vars);
-
-            $render = $this->getView()->fetch($template);
-        }
-
-        return $render;
-    }
-
-    /**
-     * @param pocketlistsItemLink $itemLink
      *
      * @return string
      */
     public function renderAutocomplete(pocketlistsItemLink $itemLink)
     {
-        $template = wa()->getAppPath(
-            sprintf(
-                'templates/include/item_linked_entities/%s.%s.autocomplete.html',
-                $this->getApp(),
-                $itemLink->getEntityType()
-            ),
-            pocketlistsHelper::APP_ID
-        );
-
-//        $render = wa()->event('item.render_autocomplete', $this);
-
-        if (file_exists($template)) {
-            $this->getView()->clearAllAssign();
-            $this->getView()->assign('link', $itemLink);
-
-            $render = $this->getView()->fetch($template);
-        } else {
-            $render = (string)$this;
-        }
-
-        return $render;
+        return sprintf('<span>%s %s</span>', _w('Order'), shopHelper::encodeOrderId($itemLink->getEntityId()));
     }
 }

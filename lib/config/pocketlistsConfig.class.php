@@ -356,12 +356,12 @@ HTML;
 
     public function getLinkedAppConfigPath()
     {
-        return wa()->getAppPath('lib/config/linked_apps.php', pocketlistsHelper::APP_ID);
+        return $this->getAppConfigPath('linked_apps');
     }
 
     public function getUtf8mb4ColumnsPath()
     {
-        return wa()->getAppPath('lib/config/utf8mb4.php', pocketlistsHelper::APP_ID);
+        return $this->getAppConfigPath('utf8mb4');
     }
 
     public function getLinkedApps()

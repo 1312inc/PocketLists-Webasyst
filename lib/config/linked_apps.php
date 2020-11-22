@@ -1,7 +1,10 @@
 <?php
-return array (
-  'shop' => 
-  array (
-    'enable' => '1',
-  ),
-);
+
+return [
+    'shop' => [
+        'enable' => '1',
+    ],
+    'tasks' => [
+        'enable' => '1',
+    ],
+];

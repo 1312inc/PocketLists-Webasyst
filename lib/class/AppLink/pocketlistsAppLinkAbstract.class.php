@@ -9,6 +9,8 @@ abstract class pocketlistsAppLinkAbstract implements pocketlistsAppLinkInterface
 
     protected $enabled = null;
 
+    protected $info = [];
+
     /**
      * @var waSmarty3View
      */
@@ -24,6 +26,35 @@ abstract class pocketlistsAppLinkAbstract implements pocketlistsAppLinkInterface
         }
 
         return $this->view;
+    }
+
+    /**
+     * @param string $term
+     * @param array  $params
+     * @param int    $count
+     *
+     * @return array
+     */
+    public function autocomplete($term, $params = [], $count = 10)
+    {
+        $result = [];
+
+        foreach ($this->getTypes() as $entityType) {
+            $method = sprintf('autocomplete%s', ucfirst($entityType));
+            if (method_exists($this, $method)) {
+                $entities = $this->$method($term, $params, $count);
+                if ($entities) {
+                    $result[] = [
+                        'app'      => $this->getApp(),
+                        'type'     => $entityType,
+                        'entities' => $entities,
+                        'params'   => $params
+                    ];
+                }
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -45,6 +76,8 @@ abstract class pocketlistsAppLinkAbstract implements pocketlistsAppLinkInterface
     {
         try {
             wa($this->getApp());
+
+            $this->info = wa()->getAppInfo($this->getApp());
         } catch (waException $ex) {
             $this->enabled = false;
         }
@@ -96,6 +129,99 @@ abstract class pocketlistsAppLinkAbstract implements pocketlistsAppLinkInterface
         if ($this->isEnabled() && file_exists($template)) {
             $this->getView()->assign('app', $this);
             $render = $this->getView()->fetch($template);
+        }
+
+        return $render;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->info['name'];
+    }
+
+    public function getAppIcon()
+    {
+        return sprintf(
+            '<i class="icon16 pl-wa-app-icon" style="background-image: url(%s%s); background-size: 16px 16px;"></i>',
+            wa()->getRootUrl(),
+            $this->info['icon'][16]
+        );
+    }
+
+    /**
+     * @param pocketlistsItemLink $itemLink
+     * @param array               $params
+     *
+     * @return string
+     * @throws waException
+     */
+    public function renderPreview(pocketlistsItemLink $itemLink, $params = [])
+    {
+        if (!$itemLink->getEntityId() || !$itemLink->getEntityType()) {
+            return '';
+        }
+
+        $template = wa()->getAppPath(
+            sprintf(
+                'templates/include/item_linked_entities/%s.%s.preview.html',
+                $this->getApp(),
+                $itemLink->getEntityType()
+            ),
+            pocketlistsHelper::APP_ID
+        );
+
+        $event = new pocketlistsEvent(pocketlistsEventStorage::WA_ITEM_RENDER_LINKED, $this);
+        pl2()->waDispatchEvent($event);
+        $pluginRender = $event->getResponse();
+        $render = !empty($pluginRender['preview']) ? $pluginRender['preview'] : '';
+
+        if ($this->isEnabled() && !$render && file_exists($template)) {
+            if (!$itemLink->getAppEntity()) {
+                return '';
+            }
+
+            $this->getView()->clearAllAssign();
+            $vars = [
+                'link'   => $itemLink,
+                'extra'  => $this->getExtraData($itemLink),
+                'params' => $params,
+            ];
+            $this->getView()->assign($vars);
+
+            $render = $this->getView()->fetch($template);
+        }
+
+        return $render;
+    }
+
+    /**
+     * @param pocketlistsItemLink $itemLink
+     *
+     * @return string
+     */
+    public function renderAutocomplete(pocketlistsItemLink $itemLink)
+    {
+        $template = wa()->getAppPath(
+            sprintf(
+                'templates/include/item_linked_entities/%s.%s.autocomplete.html',
+                $this->getApp(),
+                $itemLink->getEntityType()
+            ),
+            pocketlistsHelper::APP_ID
+        );
+
+//        $render = wa()->event('item.render_autocomplete', $this);
+
+        if (file_exists($template)) {
+            $this->getView()->clearAllAssign();
+            $this->getView()->assign('link', $itemLink);
+
+            $render = $this->getView()->fetch($template);
+        } else {
+            $render = (string)$this;
         }
 
         return $render;
