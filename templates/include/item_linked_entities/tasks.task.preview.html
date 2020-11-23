@@ -11,14 +11,12 @@
         <a href="{$extra.link}" target="_blank">
             {$extra.task.project_id}.{$extra.task.number}{if $extra.task.priority == 1 || $extra.task.priority == 2}<i class="icon16 exclamation-red"></i>{/if}
             <strong>{$extra.task.name|escape|truncate:96}</strong>
-            {if $extra.task.state}
-                <span class="pl-label small" style="{str_replace('color:','background-color:',$extra.task.state->getStyle())}">{$extra.task.state->getName()|escape}</span>
-            {/if}
+            <span class="pl-label small {$extra.status.icon_class}">{$extra.status.name|escape}</span>
         </a>
 
         <p>
-            <span class="small black" title="{sprintf('[`Assigned to %s`]', $extra.task.contact.name|escape)}">{$extra.task.contact.name|escape|truncate:32}</span>
-            <span class="hint">{$extra.task.create_datetime|wa_datetime:'humandatetime'}</span>
+            <span class="small black" title="{sprintf('[`Assigned to %s`]', $extra.assign_username|escape)}">{$extra.assign_username|escape|truncate:32}</span>
+            <span class="hint">{$extra.update_datetime|wa_datetime:'humandatetime'}</span>
         </p>
 
     </div>

@@ -3,7 +3,7 @@
 /**
  * Class pocketlistsAppLinkAbstract
  */
-abstract class pocketlistsAppLinkAbstract implements pocketlistsAppLinkInterface
+abstract class pocketlistsAppLinkAbstract
 {
     const LIMIT = 10;
 

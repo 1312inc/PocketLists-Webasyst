@@ -1,7 +1,7 @@
 <?php
 
 
-final class pocketlistsAppLinkTasks extends pocketlistsAppLinkAbstract
+final class pocketlistsAppLinkTasks extends pocketlistsAppLinkAbstract implements pocketlistsAppLinkInterface
 {
     const APP       = 'tasks';
     const TYPE_TASK = 'task';
@@ -24,7 +24,7 @@ final class pocketlistsAppLinkTasks extends pocketlistsAppLinkAbstract
      */
     public function getLinkUrl(pocketlistsItemLink $itemLink)
     {
-        $data = $itemLink->getApp();
+        $data = $itemLink->getAppEntity();
         if (isset($data['project_id'], $data['number'])) {
             return sprintf('%s#/task/%d.%d/', wa()->getAppUrl($this->getApp()), $data['project_id'], $data['number']);
         }
@@ -47,9 +47,18 @@ final class pocketlistsAppLinkTasks extends pocketlistsAppLinkAbstract
 
     public function getExtraData(pocketlistsItemLink $itemLink)
     {
+        $task = $itemLink->getAppEntity();
+        $status = $task->getStatus();
+        $assignContact = $task->getAssignedContact();
+
         return [
             'task' => $itemLink->getAppEntity(),
             'link' => $this->getLinkUrl($itemLink),
+            'status' => $status,
+            'assign_username' => $assignContact
+                ? $assignContact->getName()
+                : _wd(pocketlistsHelper::APP_ID, '(not assigned)'),
+            'update_datetime' => $task->update_datetime,
         ];
     }
 

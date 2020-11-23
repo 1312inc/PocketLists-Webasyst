@@ -270,7 +270,7 @@ class pocketlistsItemLink extends pocketlistsEntity
     }
 
     /**
-     * @return shopOrder
+     * @return shopOrder|tasksTask
      * @throws waException
      */
     public function getAppEntity()
