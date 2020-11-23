@@ -1,4 +1,4 @@
-<div class="pl-link-preview" data-pl2-link-id="{$link->getId()}" data-pl2-link-hash="{$link->getApp()}{$link->getEntityType()}{$link->getEntityId()}">
+<div class="pl-link-preview full-width" data-pl2-link-id="{$link->getId()}" data-pl2-link-hash="{$link->getApp()}{$link->getEntityType()}{$link->getEntityId()}">
     <div class="pl-link-preview-image">
         <a href="{$extra.link}" target="_blank"><img src="{$wa_url}wa-apps/tasks/img/tasks-512.png" class="userpic"></a>
     </div>
@@ -8,10 +8,20 @@
     {/if}
 
     <div class="pl-link-preview-details">
-    {$extra|var_dump}
-        <br>
-    {$link|var_dump}
-        <br>
-    {$params|var_dump}
+        <a href="{$extra.link}" target="_blank">
+            {$extra.task.project_id}.{$extra.task.number}{if $extra.task.priority == 1 || $extra.task.priority == 2}<i class="icon16 exclamation-red"></i>{/if}
+            <strong>{$extra.task.name|escape|truncate:96}</strong>
+            {if $extra.task.state}
+                <span class="pl-label small" style="{str_replace('color:','background-color:',$extra.task.state->getStyle())}">{$extra.task.state->getName()|escape}</span>
+            {/if}
+        </a>
+
+        <p>
+            <span class="small black" title="{sprintf('[`Assigned to %s`]', $extra.task.contact.name|escape)}">{$extra.task.contact.name|escape|truncate:32}</span>
+            <span class="hint">{$extra.task.create_datetime|wa_datetime:'humandatetime'}</span>
+        </p>
+
     </div>
+
+
 </div>

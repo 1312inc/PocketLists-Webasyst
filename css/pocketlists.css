@@ -402,6 +402,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#12000000', e
 #pl-item-add .pl-link-preview { margin-left: 44px; margin-top: 0px; margin-bottom: 10px; }
 #pl-item-add .pl-link-preview-remove { display: none; }
 #pl2-item-details .pl-link-preview-remove { display: block; }
+.pl-link-preview.full-width { display: block; }
 
 .pl-list-content { position: relative; }
 .pl-list-content .pl-item-list-name { display: none !important; }
