@@ -180,6 +180,11 @@ table.pl-calendar td .pl-dots i.icon10 { margin-top: 0.2em; margin-right: 0.2em;
 
 .pl2ios-app-icon { width: 128px; height: 128px; margin: -19px; }
 
+.pl-more-apps { list-style: none; padding: 10px 0 0; }
+.pl-more-apps li { display: inline-block; text-align: center; margin-right: 15px; max-width: 144px; vertical-align: top; line-height: 1.2; }
+.pl-more-apps li a { text-decoration: none; display: block; font-size: 1.2rem; padding: 5px 0 7px; }
+.pl-more-apps li img { width: 96px; height: 96px; }
+
 /* Upgrade
 ---------- */
 
