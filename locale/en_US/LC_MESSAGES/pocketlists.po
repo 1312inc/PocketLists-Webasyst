@@ -1262,9 +1262,6 @@ msgstr ""
 msgid "Ad"
 msgstr ""
 
-msgid "https://www.webasyst.com/store/app/status/?utm_campaign=pl2webasyst-tiny-ad"
-msgstr ""
-
 msgid "<a href=\"%s\" target=\"_blank\">Status app</a> tracks working time and shows whom have been working on what (and whom have been doing nothing too!)"
 msgstr ""
 
@@ -1305,4 +1302,52 @@ msgid "https://www.webasyst.com/buy/store/5045/"
 msgstr ""
 
 msgid "Failed to upload file %s. Check permissions."
+msgstr ""
+
+msgid "Integration with Webasyst Tasks"
+msgstr ""
+
+msgid "New UI"
+msgstr ""
+
+msgid "Private to-dos"
+msgstr ""
+
+msgid "Integration with Webasyst CRM and other apps"
+msgstr ""
+
+msgid "More apps by 1312 Inc."
+msgstr ""
+
+msgid "Check out these thoroughly crafted apps on Webasyst Installer today:"
+msgstr ""
+
+msgid "https://www.webasyst.com/store/app/tasks/"
+msgstr ""
+
+msgid "Teamwork"
+msgstr ""
+
+msgid "Keeps track on all tasks and brings order to chaos"
+msgstr ""
+
+msgid "https://www.webasyst.com/store/app/status/"
+msgstr ""
+
+msgid "Status"
+msgstr ""
+
+msgid "Tracks your team time & work status remotely on WFH"
+msgstr ""
+
+msgid "https://www.webasyst.com/store/app/cash/"
+msgstr ""
+
+msgid "Cash Flow"
+msgstr ""
+
+msgid "Forecasts business cash flow & saves your money"
+msgstr ""
+
+msgid "Task"
 msgstr ""
