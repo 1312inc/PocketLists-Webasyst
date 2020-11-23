@@ -17,8 +17,6 @@ final class pocketlistsTasksBackendTask
         $task = $params['task'];
 
         try {
-            kmwaAssert::instance($task, tasksTask::class);
-
             if (!wa()->getUser()->getRights('pocketlists')) {
                 return null;
             }
