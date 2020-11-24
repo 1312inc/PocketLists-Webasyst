@@ -1328,7 +1328,7 @@ msgid "Teamwork"
 msgstr "Задачи"
 
 msgid "Keeps track on all tasks and brings order to chaos"
-msgstr "Приводит дела компании в порядок — и в офисе, и на удаленке"
+msgstr "Организует работу команды, наводит порядок в задачах и обсуждениях."
 
 msgid "https://www.webasyst.com/store/app/status/"
 msgstr "https://www.webasyst.ru/store/app/status/"
@@ -1337,7 +1337,7 @@ msgid "Status"
 msgstr "Статус"
 
 msgid "Tracks your team time & work status remotely on WFH"
-msgstr "Считает рабочее время, показывает кто и чем занимается"
+msgstr "Считает рабочее время, показывает, у кого какие успехи на удаленке."
 
 msgid "https://www.webasyst.com/store/app/cash/"
 msgstr "https://www.webasyst.ru/store/app/cash/"
@@ -1346,7 +1346,7 @@ msgid "Cash Flow"
 msgstr "Cash Flow"
 
 msgid "Forecasts business cash flow & saves your money"
-msgstr "Прогнозирует расходы, наводит порядок в финансах"
+msgstr "Прогнозирует расходы, помогает правильно вести финансовый учет."
 
 msgid "Task"
 msgstr "Задача"
