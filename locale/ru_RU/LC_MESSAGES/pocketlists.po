@@ -1350,3 +1350,12 @@ msgstr "Прогнозирует расходы, помогает правиль
 
 msgid "Task"
 msgstr "Задача"
+
+msgid "Checklist"
+msgstr "Чеклист"
+
+msgid "%d to-do is pending"
+msgid_plural "%d to-dos are pending"
+msgstr[0] "%d подзадача"
+msgstr[1] "%d подзадачи"
+msgstr[2] "%d подзадач"

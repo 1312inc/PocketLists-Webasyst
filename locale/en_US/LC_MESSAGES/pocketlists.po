@@ -1351,3 +1351,11 @@ msgstr ""
 
 msgid "Task"
 msgstr ""
+
+msgid "Checklist"
+msgstr ""
+
+msgid "%d to-do is pending"
+msgid_plural "%d to-dos are pending"
+msgstr[0] ""
+msgstr[1] ""
