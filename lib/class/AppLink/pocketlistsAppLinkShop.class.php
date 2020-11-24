@@ -3,7 +3,7 @@
 /**
  * Class pocketlistsAppLinkShop
  */
-class pocketlistsAppLinkShop extends pocketlistsAppLinkAbstract
+class pocketlistsAppLinkShop extends pocketlistsAppLinkAbstract implements pocketlistsAppLinkInterface
 {
     const TYPE_ORDER = 'order';
     const APP = 'shop';
