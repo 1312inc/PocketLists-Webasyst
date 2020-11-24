@@ -407,7 +407,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#12000000', e
 #pl-item-add .pl-link-preview { margin-left: 44px; margin-top: 0px; margin-bottom: 10px; }
 #pl-item-add .pl-link-preview-remove { display: none; }
 #pl2-item-details .pl-link-preview-remove { display: block; }
-.pl-link-preview.full-width { display: block; }
 
 .pl-list-content { position: relative; }
 .pl-list-content .pl-item-list-name { display: none !important; }
@@ -628,7 +627,7 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 --------------------- */
 
 .s-order .pl-items { display: block; z-index: 1000; background: #f5faff; box-shadow: 0 -8px 20px -15px rgba(0,0,0,0.1) inset; margin: -20px -32px 20px -20px; position: static; }
-.s-order .pl-items .pl-link-preview { display: none; }
+.s-order .pl-items .pl-link-preview.pl-link-app-shop { display: none; }
 .s-order .pl-items .pl-item-drag-handle { display: none !important; }
 .s-order .pl-items .pl-item { border-bottom: none; border-top: 1px solid rgba(0,0,0,0.1); }
 .s-order .pl-list-items ul.menu-v li .pl-item.pl-item-selected { background: rgba(0,0,0,0.04); }
@@ -659,7 +658,7 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 
 .t-tasks-wrapper .pl-items { margin-top: 1rem; }
 .t-tasks-wrapper .pl-items .fields { width: 100%; }
-.t-tasks-wrapper .pl-items .pl-link-preview { display: none !important; }
+.t-tasks-wrapper .pl-items .pl-link-preview.pl-link-app-tasks { display: none !important; }
 .t-tasks-wrapper .pl-items .pl-item-drag-handle { display: none !important; }
 .t-tasks-wrapper #pl-item-add .pl-details-form { background: transparent; }
 .t-tasks-wrapper #pl-item-add .pl-item { border: none; }
