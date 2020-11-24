@@ -967,8 +967,8 @@ msgstr "Не получилось переместить список"
 msgid "To setup access rights by pocket, set Limited access for at least one pocket"
 msgstr "Для настройки доступа к спискам дел включите доступ хотя бы к одному проекту"
 
-msgid "Use @ or # symbols to link this to-do with a Shop-Script order."
-msgstr "Используйте символы @, # или № для связи задачи с заказами Shop-Script."
+msgid "Use @ or # symbols to link this to-do with a Shop-Script order or a task from the Tasks app."
+msgstr "Используйте символы @, # или № для связи с заказами Shop-Script или задачами из «Задач»."
 
 msgid "Webasyst Cloud"
 msgstr "В облаке Webasyst"
