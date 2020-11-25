@@ -236,6 +236,6 @@ class pocketlistsStrategyItemFilterAndSort
             return 1;
         }
 
-        return 0;
+        return $i1->getId() < $i2->getId();
     }
 }
