@@ -158,4 +158,14 @@ class pocketlistsAppLinkFake implements pocketlistsAppLinkInterface
     {
         return '';
     }
+
+    public function countItemsForApp(array $params)
+    {
+        return 0;
+    }
+
+    public function getItemsForApp(array $params)
+    {
+        return [];
+    }
 }

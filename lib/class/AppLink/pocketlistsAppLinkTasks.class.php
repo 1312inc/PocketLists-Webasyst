@@ -43,7 +43,8 @@ final class pocketlistsAppLinkTasks extends pocketlistsAppLinkAbstract implement
             return pl2()->getEntityRepository('pocketlistsAppLinkTasks')->getTask($itemLink->getEntityId());
         } catch (waException $ex) {
             return false;
-        }    }
+        }
+    }
 
     public function getExtraData(pocketlistsItemLink $itemLink)
     {
@@ -69,7 +70,17 @@ final class pocketlistsAppLinkTasks extends pocketlistsAppLinkAbstract implement
 
     public function userCanAccess(pocketlistsContact $user = null)
     {
-        return true;
+        if (!$this->enabled) {
+            return false;
+        }
+
+        if ($user === null) {
+            $user = wa(pocketlistsHelper::APP_ID)->getConfig()->getUser();
+        }
+
+        $right = $user->getContact()->getRights($this->getApp());
+
+        return !empty($right);
     }
 
     /**
@@ -97,7 +108,24 @@ final class pocketlistsAppLinkTasks extends pocketlistsAppLinkAbstract implement
         $result = [];
 
         $tasksModel = new tasksTaskModel();
-        $tasks = $tasksModel->getAutocomplete($term, $count, true);
+
+        $tasks = [];
+        $i = 0;
+        $tasksRights = new tasksRights();
+        do {
+            $foundTasks = $tasksModel->getAutocomplete($term, $count, true, $count * $i++);
+            if (!$foundTasks) {
+                break;
+            }
+
+            $tasksRights->extendTasksByRightsInfo($foundTasks, wa()->getUser()->getId());
+            $tasks += array_filter(
+                $foundTasks,
+                static function (array $task) {
+                    return $task['rights_info']['can_view'] === true;
+                }
+            );
+        } while (count($tasks) < $count);
 
         /** @var pocketlistsItemLinkFactory $itemlinkFactory */
         $itemlinkFactory = pl2()->getEntityFactory(pocketlistsItemLink::class);
@@ -128,5 +156,15 @@ final class pocketlistsAppLinkTasks extends pocketlistsAppLinkAbstract implement
         }
 
         return $result;
+    }
+
+    public function countItemsForApp(array $params)
+    {
+        return 0;
+    }
+
+    public function getItemsForApp(array $params)
+    {
+        return [];
     }
 }

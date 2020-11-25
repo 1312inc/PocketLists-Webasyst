@@ -6,7 +6,7 @@
 class pocketlistsAppLinkShop extends pocketlistsAppLinkAbstract implements pocketlistsAppLinkInterface
 {
     const TYPE_ORDER = 'order';
-    const APP = 'shop';
+    const APP        = 'shop';
 
     /**
      * @return bool
@@ -86,8 +86,8 @@ class pocketlistsAppLinkShop extends pocketlistsAppLinkAbstract implements pocke
             $result[] = [
                 'label' => $this->renderAutocomplete($linkEntity),
                 'value' => shopHelper::encodeOrderId($order['id']),
-                'data'  => [
-                    'model'   => pl2()->getHydrator()->extract($linkEntity, [], $itemlinkFactory->getDbFields()),
+                'data' => [
+                    'model' => pl2()->getHydrator()->extract($linkEntity, [], $itemlinkFactory->getDbFields()),
                     'preview' => $this->renderPreview($linkEntity, $params),
                 ],
             ];
@@ -145,9 +145,9 @@ class pocketlistsAppLinkShop extends pocketlistsAppLinkAbstract implements pocke
         $order_data_array['state'] = $order['state'];
 
         return [
-            'order'                => $order_data_array,
+            'order' => $order_data_array,
             'last_action_datetime' => $order->last_action_datetime,
-            'link'                 => $this->getLinkUrl($itemLink),
+            'link' => $this->getLinkUrl($itemLink),
         ];
     }
 
@@ -207,5 +207,29 @@ class pocketlistsAppLinkShop extends pocketlistsAppLinkAbstract implements pocke
     public function renderAutocomplete(pocketlistsItemLink $itemLink)
     {
         return sprintf('<span>%s %s</span>', _w('Order'), shopHelper::encodeOrderId($itemLink->getEntityId()));
+    }
+
+    public function countItemsForApp(array $params)
+    {
+        return pl2()->getModel(pocketlistsItem::class)->countAppItems(
+            $this->getApp(),
+            $params['entityType'],
+            $params['entityId'],
+            $params['date'],
+            $params['status']
+        );
+    }
+
+    public function getItemsForApp(array $params)
+    {
+        return pl2()->getModel(pocketlistsItem::class)->getAppItems(
+            $this->getApp(),
+            $params['entityType'],
+            $params['entityId'],
+            $params['date'],
+            $params['status'],
+            $params['limit'],
+            $params['offset']
+        );
     }
 }

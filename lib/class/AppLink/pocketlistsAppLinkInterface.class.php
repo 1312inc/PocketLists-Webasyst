@@ -102,4 +102,18 @@ interface pocketlistsAppLinkInterface
      * @return string
      */
     public function renderAutocomplete(pocketlistsItemLink $itemLink);
+
+    /**
+     * @param array $params
+     *
+     * @return int
+     */
+    public function countItemsForApp(array $params);
+
+    /**
+     * @param array $params
+     *
+     * @return array
+     */
+    public function getItemsForApp(array $params);
 }
