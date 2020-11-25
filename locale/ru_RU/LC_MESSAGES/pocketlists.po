@@ -1352,7 +1352,7 @@ msgid "Task"
 msgstr "Задача"
 
 msgid "Checklist"
-msgstr "Чеклист"
+msgstr "Чек-лист"
 
 msgid "%d to-do is pending"
 msgid_plural "%d to-dos are pending"

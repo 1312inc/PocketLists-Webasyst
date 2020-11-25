@@ -11,7 +11,7 @@
         <a href="{$extra.link}" target="_blank">
             {$extra.task.project_id}.{$extra.task.number}{if $extra.task.priority == 1 || $extra.task.priority == 2}<i class="icon16 exclamation-red"></i>{/if}
             <strong>{$extra.task.name|escape|truncate:96}</strong>
-            <span class="pl-label small" {if $extra.status.params}style="background-color: #{$extra.status.params.button_color}; color: #{$extra.status.params.title_color}"{/if}>{$extra.status.name|escape}</span>
+            <span class="pl-label {$extra.status.icon_class|default:''} small" {if $extra.status.params}style="background-color: #{$extra.status.params.button_color} !important; color: #{$extra.status.params.title_color} !important;"{/if}>{$extra.status.name|escape}</span>
         </a>
 
         <p>
