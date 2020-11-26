@@ -58,6 +58,14 @@ interface pocketlistsAppLinkInterface
     public function getLinkRegexs();
 
     /**
+     * @param array $regex
+     * @param string $type
+     *
+     * @return int|null
+     */
+    public function getEntityIdByLinkRegexs($regex, $type);
+
+    /**
      * @return string
      */
     public function getAppIcon();
@@ -84,10 +92,11 @@ interface pocketlistsAppLinkInterface
 
     /**
      * @param pocketlistsContact|null $user
+     * @param null|string             $accessTo
      *
      * @return bool
      */
-    public function userCanAccess(pocketlistsContact $user = null);
+    public function userCanAccess(pocketlistsContact $user = null, $accessTo = null);
 
     /**
      * @param pocketlistsItemLink $itemLink

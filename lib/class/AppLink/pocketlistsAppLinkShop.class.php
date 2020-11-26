@@ -157,12 +157,29 @@ class pocketlistsAppLinkShop extends pocketlistsAppLinkAbstract implements pocke
     public function getLinkRegexs()
     {
         return [
-            'order' => [
+            self::TYPE_ORDER => [
                 '.*/shop/\?action=orders.*id=(\d+).*',
                 '.*/shop/\?action=orders#/orders/edit/(\d+)/',
                 '.*/shop/#/orders/.*id=(\d+).*',
             ],
         ];
+    }
+
+    /**
+     * @param array $regex
+     * @param string $type
+     *
+     * @return int|null
+     */
+    public function getEntityIdByLinkRegexs($regex, $type)
+    {
+        switch ($type) {
+            case self::TYPE_ORDER:
+                return (int) $regex[1];
+
+            default:
+                return null;
+        }
     }
 
     /**
@@ -186,11 +203,12 @@ class pocketlistsAppLinkShop extends pocketlistsAppLinkAbstract implements pocke
 
     /**
      * @param pocketlistsContact|null $user
+     * @param string|null             $accessTo
      *
      * @return bool
      * @throws waException
      */
-    public function userCanAccess(pocketlistsContact $user = null)
+    public function userCanAccess(pocketlistsContact $user = null, $accessTo = null)
     {
         if ($user === null) {
             $user = wa(pocketlistsHelper::APP_ID)->getConfig()->getUser();

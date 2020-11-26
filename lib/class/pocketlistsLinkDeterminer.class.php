@@ -48,12 +48,15 @@ class pocketlistsLinkDeterminer
             $types = $app->getLinkRegexs();
             foreach ($types as $type => $regexs) {
                 foreach ($regexs as $regex) {
-                    if (preg_match('|'.$regex.'|iu', $link, $matches)) {
-                        return [
-                            'app'         => $app->getApp(),
-                            'entity_type' => $type,
-                            'entity_id'   => $matches[1],
-                        ];
+                    if (preg_match('|' . $regex . '|iu', $link, $matches)) {
+                        $id = $app->getEntityIdByLinkRegexs($matches, $type);
+                        if ($id) {
+                            return [
+                                'app' => $app->getApp(),
+                                'entity_type' => $type,
+                                'entity_id' => $id,
+                            ];
+                        }
                     }
                 }
             }

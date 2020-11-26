@@ -64,7 +64,7 @@ class pocketlistsBackendSidebarAction extends pocketlistsViewAction
 
         $linkedApps = pl2()->getLinkedApp();
         foreach ($linkedApps as $i => $app) {
-            if (!$app->userCanAccess()) {
+            if (!$app->userCanAccess(null, 'sidebar')) {
                 unset($linkedApps[$i]);
             }
         }

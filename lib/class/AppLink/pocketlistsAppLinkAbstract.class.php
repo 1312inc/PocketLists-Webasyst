@@ -78,6 +78,7 @@ abstract class pocketlistsAppLinkAbstract
             wa($this->getApp());
 
             $this->info = wa()->getAppInfo($this->getApp());
+            $this->enabled = true;
         } catch (waException $ex) {
             $this->enabled = false;
         }

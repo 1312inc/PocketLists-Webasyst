@@ -6,6 +6,20 @@ final class pocketlistsAppLinkTasks extends pocketlistsAppLinkAbstract implement
     const APP       = 'tasks';
     const TYPE_TASK = 'task';
 
+    /**
+     * @var tasksTaskModel
+     */
+    private $taskModel;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        if ($this->enabled) {
+            $this->taskModel = new tasksTaskModel();
+        }
+    }
+
     public function getApp()
     {
         return self::APP;
@@ -65,10 +79,40 @@ final class pocketlistsAppLinkTasks extends pocketlistsAppLinkAbstract implement
 
     public function getLinkRegexs()
     {
-        return [];
+        return [
+            self::TYPE_TASK => [
+                '.*/task/(\d+)\.(\d+).*',
+            ],
+        ];
     }
 
-    public function userCanAccess(pocketlistsContact $user = null)
+    /**
+     * @param array  $regex
+     * @param string $type
+     *
+     * @return int|null
+     */
+    public function getEntityIdByLinkRegexs($regex, $type)
+    {
+        switch ($type) {
+            case self::TYPE_TASK:
+                $task = $this->taskModel->getByField(['project_id' => $regex[1], 'number' => $regex[2]]);
+
+                return $task ? (int) $task['id'] : null;
+
+            default:
+                return null;
+        }
+    }
+
+    /**
+     * @param pocketlistsContact|null $user
+     * @param string|null             $accessTo
+     *
+     * @return bool
+     * @throws waException
+     */
+    public function userCanAccess(pocketlistsContact $user = null, $accessTo = null)
     {
         if (!$this->enabled) {
             return false;
@@ -80,7 +124,13 @@ final class pocketlistsAppLinkTasks extends pocketlistsAppLinkAbstract implement
 
         $right = $user->getContact()->getRights($this->getApp());
 
-        return !empty($right);
+        switch ($accessTo) {
+            case 'sidebar':
+                return isset($right['backend']) && $right['backend'] > 1;
+
+            default:
+                return !empty($right);
+        }
     }
 
     /**
