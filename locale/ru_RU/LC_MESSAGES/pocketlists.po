@@ -853,8 +853,8 @@ msgstr "Ограниченный доступ"
 msgid "Pocket Lists"
 msgstr "Pocket Lists"
 
-msgid "Find order by ID"
-msgstr "Введите номер заказа"
+msgid "Find order or task by ID"
+msgstr "Введите номер заказа или задачи"
 
 msgid "Pocket settings"
 msgstr "Настройки проекта"
@@ -967,8 +967,8 @@ msgstr "Не получилось переместить список"
 msgid "To setup access rights by pocket, set Limited access for at least one pocket"
 msgstr "Для настройки доступа к спискам дел включите доступ хотя бы к одному проекту"
 
-msgid "Use @ or # symbols to link this to-do with a Shop-Script order."
-msgstr "Используйте символы @, # или № для связи задачи с заказами Shop-Script."
+msgid "Use @ or # symbols to link this to-do with a Shop-Script order or a task from the Tasks app."
+msgstr "Используйте символы @, # или № для связи с заказами Shop-Script или задачами из «Задач»."
 
 msgid "Webasyst Cloud"
 msgstr "В облаке Webasyst"
@@ -1261,9 +1261,6 @@ msgstr "Новое приложение от команды 1312"
 msgid "Ad"
 msgstr ""
 
-msgid "https://www.webasyst.com/store/app/status/?utm_campaign=pl2webasyst-tiny-ad"
-msgstr ""
-
 msgid "<a href=\"%s\" target=\"_blank\">Status app</a> tracks working time and shows whom have been working on what (and whom have been doing nothing too!)"
 msgstr ""
 
@@ -1305,3 +1302,60 @@ msgstr "https://www.webasyst.ru/buy/store/5045/"
 
 msgid "Failed to upload file %s. Check permissions."
 msgstr "Не удалось загрузить файл %s.  Что-то не так с правами доступа."
+
+msgid "Integration with Webasyst Tasks"
+msgstr "Интеграция с Webasyst Задачи"
+
+msgid "New UI"
+msgstr "Новый интерфейс"
+
+msgid "Private to-dos"
+msgstr "Приватные задачи, которые не видят коллеги"
+
+msgid "Integration with Webasyst CRM and other apps"
+msgstr "Интеграция с Webasyst CRM и другими приложениями"
+
+msgid "More apps by 1312 Inc."
+msgstr "Еще от 1312 Inc."
+
+msgid "Check out these thoroughly crafted apps on Webasyst Installer today:"
+msgstr "Посмотрите другие приложения нашей команды в Инсталлере Webasyst:"
+
+msgid "https://www.webasyst.com/store/app/tasks/"
+msgstr "https://www.webasyst.ru/store/app/tasks/"
+
+msgid "Teamwork"
+msgstr "Задачи"
+
+msgid "Keeps track on all tasks and brings order to chaos"
+msgstr "Организует работу команды, наводит порядок в задачах и обсуждениях."
+
+msgid "https://www.webasyst.com/store/app/status/"
+msgstr "https://www.webasyst.ru/store/app/status/"
+
+msgid "Status"
+msgstr "Статус"
+
+msgid "Tracks your team time & work status remotely on WFH"
+msgstr "Считает рабочее время, показывает, у кого какие успехи на удаленке."
+
+msgid "https://www.webasyst.com/store/app/cash/"
+msgstr "https://www.webasyst.ru/store/app/cash/"
+
+msgid "Cash Flow"
+msgstr "Cash Flow"
+
+msgid "Forecasts business cash flow & saves your money"
+msgstr "Прогнозирует расходы, помогает правильно вести финансовый учет."
+
+msgid "Task"
+msgstr "Задача"
+
+msgid "Checklist"
+msgstr "Чек-лист"
+
+msgid "%d to-do is pending"
+msgid_plural "%d to-dos are pending"
+msgstr[0] "%d подзадача"
+msgstr[1] "%d подзадачи"
+msgstr[2] "%d подзадач"

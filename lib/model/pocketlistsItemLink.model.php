@@ -54,6 +54,36 @@ class pocketlistsItemLinkModel extends pocketlistsModel
     }
 
     /**
+     * @param $app
+     * @param $entityType
+     * @param $entityId
+     *
+     * @return int
+     */
+    public function countUndoneLinkedItems($app, $entityType, $entityId)
+    {
+        $sql = <<<SQL
+select count(pi.id) 
+from pocketlists_item_link pil
+join pocketlists_item pi on pil.item_id = pi.id
+where pil.app = s:app
+    and pil.entity_type = s:entity_type
+    and pil.entity_id = i:entity_id
+    and pi.status = i:status
+SQL;
+
+        return (int) $this->query(
+            $sql,
+            [
+                'app' => $app,
+                'entity_type' => $entityType,
+                'entity_id' => $entityId,
+                'status' => pocketlistsItem::STATUS_UNDONE,
+            ]
+        )->fetchField();
+    }
+
+    /**
      * @param string $app
      * @param string $entityType
      * @param array  $entityIds

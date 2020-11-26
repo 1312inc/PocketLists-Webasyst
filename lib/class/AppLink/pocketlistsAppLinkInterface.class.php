@@ -58,6 +58,14 @@ interface pocketlistsAppLinkInterface
     public function getLinkRegexs();
 
     /**
+     * @param array $regex
+     * @param string $type
+     *
+     * @return int|null
+     */
+    public function getEntityIdByLinkRegexs($regex, $type);
+
+    /**
      * @return string
      */
     public function getAppIcon();
@@ -84,22 +92,37 @@ interface pocketlistsAppLinkInterface
 
     /**
      * @param pocketlistsContact|null $user
+     * @param null|string             $accessTo
      *
      * @return bool
      */
-    public function userCanAccess(pocketlistsContact $user = null);
+    public function userCanAccess(pocketlistsContact $user = null, $accessTo = null);
 
     /**
      * @param pocketlistsItemLink $itemLink
      *
-     * @return mixed
+     * @return string
      */
     public function renderPreview(pocketlistsItemLink $itemLink);
 
     /**
      * @param pocketlistsItemLink $itemLink
      *
-     * @return mixed
+     * @return string
      */
     public function renderAutocomplete(pocketlistsItemLink $itemLink);
+
+    /**
+     * @param array $params
+     *
+     * @return int
+     */
+    public function countItemsForApp(array $params);
+
+    /**
+     * @param array $params
+     *
+     * @return array
+     */
+    public function getItemsForApp(array $params);
 }

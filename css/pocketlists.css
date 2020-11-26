@@ -180,6 +180,11 @@ table.pl-calendar td .pl-dots i.icon10 { margin-top: 0.2em; margin-right: 0.2em;
 
 .pl2ios-app-icon { width: 128px; height: 128px; margin: -19px; }
 
+.pl-more-apps { list-style: none; padding: 10px 0 0; }
+.pl-more-apps li { display: inline-block; text-align: center; margin-right: 15px; max-width: 144px; vertical-align: top; line-height: 1.2; }
+.pl-more-apps li a { text-decoration: none; display: block; font-size: 1.2rem; padding: 5px 0 7px; }
+.pl-more-apps li img { width: 96px; height: 96px; }
+
 /* Upgrade
 ---------- */
 
@@ -398,6 +403,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#12000000', e
 .pl-link-preview-details { display: block; margin-left: 40px; }
 .pl-link-preview-details p { margin-bottom: 0; line-height: 1em; margin-top: 2px; }
 .pl-link-preview-details a .pl-label { margin-left: 0px !important; font-size: 12px; }
+.pl-link-preview-details a .pl-label.status-green-tiny { background: #2bb316; color: #fff; }
 .pl-link-preview-details a:hover .pl-label { background-color: red !important; color: white !important; }
 #pl-item-add .pl-link-preview { margin-left: 44px; margin-top: 0px; margin-bottom: 10px; }
 #pl-item-add .pl-link-preview-remove { display: none; }
@@ -497,7 +503,7 @@ p .pl-label.pl-pro { position: relative; top: 3px; margin-right: 0; }
 .pl-details-form .selected .pl-done.pl-priority-red + span { width: 30px; height: 30px; }
 .pl-details-form .selected .pl-done.pl-priority-black + span { background-position-x: -90px; width: 30px; height: 30px; }
 .pl-details-form .selected .pl-done.pl-priority-fire + span { background-size: 40px 40px; top: -16px; width: 40px; height: 40px; }
-.pl-details-textarea { margin-bottom: 0rem; background: rgba(0,0,0,0.04); border-radius: 4px; border: none; -webkit-appearance: none; width: 100%; min-height: 1.3em; line-height: 1.3em; padding: 5px; outline: 0 none; max-height: 195px; }
+.pl-details-textarea { margin-bottom: 0rem; background: rgba(0,0,0,0.04); border-radius: 4px; border: none; -webkit-appearance: none; width: 100% !important; min-height: 1.3em; line-height: 1.3em; padding: 5px; outline: 0 none; max-height: 195px; }
 .pl-details-textarea.pl-item-name { max-height: 170px; }
 
 #pl-item-add .pl-details-form { margin-top: -12px; padding-left: 49px; padding-right: 45px; background: #fff; position: relative; border-bottom: 1px solid rgba(0,0,0,0.1); }
@@ -622,7 +628,7 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 --------------------- */
 
 .s-order .pl-items { display: block; z-index: 1000; background: #f5faff; box-shadow: 0 -8px 20px -15px rgba(0,0,0,0.1) inset; margin: -20px -32px 20px -20px; position: static; }
-.s-order .pl-items .pl-link-preview { display: none; }
+.s-order .pl-items .pl-link-preview.pl-link-app-shop { display: none; }
 .s-order .pl-items .pl-item-drag-handle { display: none !important; }
 .s-order .pl-items .pl-item { border-bottom: none; border-top: 1px solid rgba(0,0,0,0.1); }
 .s-order .pl-list-items ul.menu-v li .pl-item.pl-item-selected { background: rgba(0,0,0,0.04); }
@@ -650,6 +656,19 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 
 .s-order #pl-complete-log { display: block; }
 .s-order #pl-complete-log ul.menu-v { margin-top: 10px; }
+
+.t-tasks-wrapper .pl-items { margin-top: 1rem; margin-bottom: 2rem; }
+.t-tasks-wrapper .pl-items .fields { width: 100%; }
+.t-tasks-wrapper .pl-items .pl-link-preview.pl-link-app-tasks { display: none !important; }
+.t-tasks-wrapper .pl-items .pl-item-drag-handle { display: none !important; }
+.t-tasks-wrapper #pl-item-add .pl-details-form { background: transparent; }
+.t-tasks-wrapper #pl-item-add .pl-item { border: none; }
+.t-tasks-wrapper #pl-item-add textarea { background: rgba(0,0,0,0.075); }
+.t-tasks-wrapper #pl-item-add textarea:hover { background: rgba(0,0,0,0.09); }
+.t-tasks-wrapper #pl-item-add .pl-item-add-shortcuts { padding-top: 5px; }
+.t-tasks-wrapper #pl-complete-log { display: block; }
+.t-tasks-wrapper .pl-details-form .pl-app-hint-internal { display: none; }
+.t-tasks-wrapper .pl-details-form .pl-app-hint-external { display: none; }
 
 /* @2x
 ------ */

@@ -90,6 +90,17 @@ class pocketlistsAppLinkFake implements pocketlistsAppLinkInterface
     }
 
     /**
+     * @param array $regex
+     * @param string $type
+     *
+     * @return int|null
+     */
+    public function getEntityIdByLinkRegexs($regex, $type)
+    {
+        return  0;
+    }
+
+    /**
      * @return string
      */
     public function getAppIcon()
@@ -131,10 +142,11 @@ class pocketlistsAppLinkFake implements pocketlistsAppLinkInterface
 
     /**
      * @param pocketlistsContact|null $user
+     * @param string|null             $accessTo
      *
      * @return bool
      */
-    public function userCanAccess(pocketlistsContact $user = null)
+    public function userCanAccess(pocketlistsContact $user = null, $accessTo = null)
     {
         return false;
     }
@@ -157,5 +169,15 @@ class pocketlistsAppLinkFake implements pocketlistsAppLinkInterface
     public function renderAutocomplete(pocketlistsItemLink $itemLink)
     {
         return '';
+    }
+
+    public function countItemsForApp(array $params)
+    {
+        return 0;
+    }
+
+    public function getItemsForApp(array $params)
+    {
+        return [];
     }
 }

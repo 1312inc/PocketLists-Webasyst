@@ -1,9 +1,6 @@
 <?php
 
-/**
- * Class pocketlistsWebasystBackend_headerHandler
- */
-class pocketlistsWebasystBackend_headerHandler extends waEventHandler
+final class pocketlistsWebasystBackendHeader
 {
     /**
      * @param $params

@@ -1599,7 +1599,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 if (term === '') {
                     return response([{
                         'value': '',
-                        'label': '<em>' + $_('Find order by ID') + '</em>'
+                        'label': '<em>' + $_('Find order or task by ID') + '</em>'
                     }]);
                 }
 
