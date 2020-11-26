@@ -19,7 +19,7 @@ class pocketlistsAppAction extends pocketlistsViewAction
         /** @var pocketlistsAppLinkInterface $app */
         $app = pl2()->getLinkedApp($app_id);
 
-        if (!$app->userCanAccess()) {
+        if (!$app->userCanAccess(null, 'sidebar')) {
             throw new pocketlistsForbiddenException();
         }
 

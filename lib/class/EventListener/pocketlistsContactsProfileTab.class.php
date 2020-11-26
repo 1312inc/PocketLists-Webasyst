@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Class pocketlistsContactsProfileTabHandler
+ * Class pocketlistsContactsProfileTab
  */
-class pocketlistsContactsProfileTabHandler extends waEventHandler
+final class pocketlistsContactsProfileTab
 {
     /**
      * @param $params

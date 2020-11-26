@@ -3,32 +3,56 @@
 {if $showTinyAd}
 <div class="pl-tiny-ad">
     <div class="pl-tiny-ad-box">
-        <a href="#" class="pl-tiny-ad-close" title="[`Close`]">&times;</a>
-        <!-- <h5 class="heading">РАБОТАЕМ ДОМА</h5> -->
-        <!-- <h5 class="heading">[`New app by 1312 Inc.`]</h5> -->
-        <!-- <h5 class="heading">[`Ad`]</h5> -->
-        <h5 class="heading">[`Новинка!`]</h5>
 
-        {$_ad_url = 'https://www.webasyst.ru/store/app/cash/?utm_source=pl2webasyst&utm_medium=inapp_tiny_ad&utm_campaign=1312_inapp_pl2webasyst_cashapp_2020_1'}
+        {*
+            sorry for coding so hard :)
+
+            <a href="#" class="pl-tiny-ad-close" title="[`Close`]">&times;</a>
+            <!-- <h5 class="heading">РАБОТАЕМ ДОМА</h5> -->
+            <!-- <h5 class="heading">[`New app by 1312 Inc.`]</h5> -->
+            <!-- <h5 class="heading">[`Ad`]</h5> -->
+            <h5 class="heading">Новинка!</h5>
+
+            {$_ad_url = 'https://www.webasyst.ru/store/app/cash/?utm_source=pl2webasyst&utm_medium=inapp_tiny_ad&utm_campaign=1312_inapp_pl2webasyst_cashapp_2020_1'}
+
+            <a href="{$_ad_url}" target="_blank">
+                <img src="{$wa_url}wa-apps/pocketlists/img/pl2ad-cash-app-144.png" class="pl-app-icon" />
+            </a>
+
+            <!-- <p>{sprintf('[`<a href="%s" target="_blank">Status app</a> tracks working time and shows whom have been working on what (and whom have been doing nothing too!)`]', $_ad_url)}</p> -->
+
+            <p>
+                {sprintf('<b><a href="%s" target="_blank" class="no-underline">Новое приложение Webasyst Cash Flow</a></b> от команды разработчиков Pocket Lists поможет вести финансовый учет, прогнозировать прибыль и избегать кассовых разрывов.', $_ad_url)}
+            </p>
+            {if $wa->shop}
+                <p><b>Дружит с Shop-Script</b>: импортирует данные о продажах интернет-магазина и считает прибыль бизнеса.</p>
+            {/if}
+
+            <a href="{$_ad_url}" target="_blank" class="pl-tiny-button">Хочу порядок в финансах!</a>
+
+            <p class="hint">Проще, чем бухгалтерия. Эффективнее, чем Excel.</p>
+
+        *}
+
+        <a href="#" class="pl-tiny-ad-close" title="[`Close`]">&times;</a>
+        <h5 class="heading">Рекомендуем!</h5>
+
+        {$_ad_url = 'https://www.webasyst.ru/store/app/tasks/?utm_source=pl2webasyst&utm_medium=inapp_tiny_ad&utm_campaign=1312_inapp_pl2webasyst_tasksapp_2020_1'}
 
         <a href="{$_ad_url}" target="_blank">
-            <img src="{$wa_url}wa-apps/pocketlists/img/pl2ad-cash-app-144.png" class="pl-app-icon" />
+            <img src="{$wa_url}wa-apps/pocketlists/img/pl2ad-tasks-app-144.png" class="pl-app-icon" />
         </a>
 
         <!-- <p>{sprintf('[`<a href="%s" target="_blank">Status app</a> tracks working time and shows whom have been working on what (and whom have been doing nothing too!)`]', $_ad_url)}</p> -->
 
         <p>
-            {sprintf('<b><a href="%s" target="_blank" class="no-underline">Новое приложение Webasyst Cash Flow</a></b> от команды разработчиков Pocket Lists поможет вести финансовый учет, прогнозировать прибыль и избегать кассовых разрывов.', $_ad_url)}
+            {sprintf('<b><a href="%s" target="_blank" class="no-underline">Обновленное приложение «Задачи»</a> интегрировано с Pocket&nbsp;Lists</b> и отныне развивается командой 1312 Inc.', $_ad_url)}
         </p>
-        {if $wa->shop}
-            <p><b>Дружит с Shop-Script</b>: импортирует данные о продажах интернет-магазина и считает прибыль бизнеса.</p>
-        {/if}
+        <p><b>Поможет организовать работу команды на удаленке</b>, распределить задачи между коллегами, следить за статусом выполнения, вести обсуждения без флуда и закрывать задачи вовремя.</p>
 
-        <!-- <a href="{$_ad_url}" target="_blank"><img src="{$wa_url}wa-apps/pocketlists/img/badge-webasyst{if $wa->locale()=='ru_RU'}-ru{/if}.png" class="pl-badge-appstore"></a> -->
+        <a href="{$_ad_url}" target="_blank" class="pl-tiny-button">Удаленка на 100%</a>
 
-        <a href="{$_ad_url}" target="_blank" class="pl-tiny-button">Хочу порядок в финансах!</a>
-
-        <p class="hint">Проще, чем бухгалтерия. Эффективнее, чем Excel.</p>
+        <p class="hint">Рабочий онлайн-офис — в любое время и в любом месте.</p>
 
     </div>
 </div>
@@ -88,7 +112,7 @@
                 </span>
             {/if}
 
-            <a href="#/app/{$app->getApp()}/">{$app->getAppIcon()}[`Store`]</a>
+            <a href="#/app/{$app->getApp()}/">{$app->getAppIcon()}{$app->getName()}</a>
         </li>
         {/foreach}
 

@@ -928,6 +928,53 @@ SQL;
      * @param string $entity_type
      * @param string $entity_id
      * @param array  $dateBounds
+     * @param null   $status
+     * @param int    $limit
+     * @param int    $offset
+     *
+     * @return array
+     */
+    public function getTasksAppItems(
+        $app = '',
+        $entity_type = '',
+        $entity_id = '',
+        $dateBounds = [],
+        $status = null,
+        $limit = 0,
+        $offset = 0
+    ) {
+        $lists = [];
+        $contact_id = wa()->getUser()->getId();
+//        pocketlistsRBAC::filterListAccess($lists, $contact_id);
+        $list_sql = 1;//pocketlistsRBAC::filterListAccess($lists);
+
+        $query = $this->getAppItemsQueryComponents($app, $entity_type, $entity_id, $dateBounds, $status);
+
+        $q = $this->buildSqlComponents($query, $limit, $offset);
+
+        $items = $this->query(
+            $q,
+            [
+                'contact_id'      => $contact_id,
+                'list_ids'        => $lists,
+                'user_contact_id' => wa()->getUser()->getId(),
+                'app'             => $app,
+                'type'            => $entity_type,
+                'entity_id'       => $entity_id,
+                'date'            => !empty($dateBounds[0]) ? $dateBounds[0] : '',
+                'date2'           => !empty($dateBounds[1]) ? $dateBounds[1] : '',
+                'status'          => (int)$status,
+            ]
+        )->fetchAll();
+
+        return $items ?: [];
+    }
+
+    /**
+     * @param string $app
+     * @param string $entity_type
+     * @param string $entity_id
+     * @param array  $dateBounds
      *
      * @return int
      */

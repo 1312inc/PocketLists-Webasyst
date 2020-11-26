@@ -1,9 +1,6 @@
 <?php
 
-/**
- * Class pocketlistsShopBackend_ordersHandler
- */
-class pocketlistsShopBackend_ordersHandler extends waEventHandler
+final class pocketlistsShopBackendOrders
 {
     /**
      * @param $params
