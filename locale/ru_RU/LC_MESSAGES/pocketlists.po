@@ -853,8 +853,8 @@ msgstr "Ограниченный доступ"
 msgid "Pocket Lists"
 msgstr "Pocket Lists"
 
-msgid "Find order by ID"
-msgstr "Введите номер заказа"
+msgid "Find order or task by ID"
+msgstr "Введите номер заказа или задачи"
 
 msgid "Pocket settings"
 msgstr "Настройки проекта"

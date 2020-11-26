@@ -668,7 +668,7 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 .t-tasks-wrapper #pl-item-add .pl-item-add-shortcuts { padding-top: 5px; }
 .t-tasks-wrapper #pl-complete-log { display: block; }
 .t-tasks-wrapper .pl-details-form .pl-app-hint-internal { display: none; }
-.t-tasks-wrapper .pl-details-form .pl-app-hint-external { display: block; margin-top: 3px; }
+.t-tasks-wrapper .pl-details-form .pl-app-hint-external { display: none; }
 
 /* @2x
 ------ */

@@ -851,7 +851,7 @@ msgstr ""
 msgid "Pocket Lists"
 msgstr ""
 
-msgid "Find order by ID"
+msgid "Find order or task by ID"
 msgstr ""
 
 msgid "Pocket settings"
