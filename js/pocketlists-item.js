@@ -1596,6 +1596,10 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             source: function (request, response) {
                 var term = canShowAutocomplete();
 
+                if (term === false) {
+                    return;
+                }
+
                 if (term === '') {
                     return response([{
                         'value': '',
