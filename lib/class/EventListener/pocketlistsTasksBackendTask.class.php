@@ -13,7 +13,7 @@ final class pocketlistsTasksBackendTask
             return null;
         }
 
-        /** @var tasksTask $task */
+        /** @var tasksTaskObj $task */
         $task = $params['task'];
 
         try {

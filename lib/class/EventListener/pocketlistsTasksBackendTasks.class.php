@@ -28,7 +28,7 @@ final class pocketlistsTasksBackendTasks
 
             $view = new waSmarty3View(wa());
 
-            /** @var tasksTask $task */
+            /** @var tasksTaskObj $task */
             foreach ($params['tasks'] as $task) {
                 $undoneItemsCount = pl2()->getModel(pocketlistsItemLink::class)
                     ->countUndoneLinkedItems(
