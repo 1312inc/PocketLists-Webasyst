@@ -16,4 +16,5 @@ return array(
     'plugins'        => true,
     'rights'         => true,
     'sash_color'     => '#58a8f8',
+    'ui'             => '1.3,2.0',
 );
