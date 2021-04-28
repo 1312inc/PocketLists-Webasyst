@@ -1,0 +1,54 @@
+<div class="pl-details-form">
+<div class="pl-details-form-container">
+
+    {if pocketlistsRBAC::canAssign()}
+    <div class="pl-list-access">
+
+        <a href="#" class="pl-list-details-cancel pl-close" title="[`Close`]">&times;</a>
+
+        <h5 class="heading">[`Access`]</h5>
+        {foreach $list_access_contacts as $list_access_contact_id => $list_access_contact}
+
+            <div class="profile image32px">
+                <div class="image">
+                    <a href="{$wa_backend_url}pocketlists/#/{if $list_access_contact->isMe()}todo{else}team/{$list_access_contact->getLogin()}{/if}/"><img class="userpic" src="{$list_access_contact->getPhotoUrl()}"></a>
+                </div>
+                <div class="details">
+                    <span class="pl-username">
+                        <a href="{$wa_backend_url}pocketlists/#/{if $list_access_contact->isMe()}todo{else}team/{$list_access_contact->getLogin()}{/if}/">{$list_access_contact->getUsername()|default:'%username%'|escape} {if $list_access_contact->isMe()}([`me`]){/if}{* if $list_access_contact.id == $list.contact_id} <span class="pl-label pl-hint">[`author`]</span>{/if *}</a>
+                        {* if $list_access_contact.status == 'online' && !$list_access_contact.me}
+                            <i class="icon10 online" title="[`Online`]"></i>
+                        {/if *}
+                    </span>
+                    <div class="hint">{$list_access_contact->getTeamrole()|escape}</div>
+                </div>
+            </div>
+
+        {/foreach}
+        {if $wa->team}
+            <p class="hint">{sprintf('[`Use <a href="%s">Team app</a> to configure access: select a user or a group of users &gt; Access tab &gt; Pocket Lists app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/')}</p>
+        {/if}
+    </div>
+
+    <div class="fields form">
+    <div class="field-group">
+        <div class="field">
+            <div class="name">[`List created`]</div>
+            <div class="value no-shift">
+                <i class="icon16 userpic20"></i>
+                {$list->getContact()->getUsername()|escape}
+                <span class="hint nowrap">{$list->getCreateDatetime()|wa_datetime:'humandatetime'}</span>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <div class="clear-both"></div>
+
+    <!-- plugin hook: 'backend_list_accesses' -->
+    {* @event backend_list_accesses.%plugin_id% *}
+    {if !empty($backend_list_accesses)}{foreach $backend_list_accesses as $_}{ifset($_)}{/foreach}{/if}
+
+    {/if}
+</div>
+</div>

@@ -120,8 +120,12 @@ abstract class pocketlistsAppLinkAbstract
      */
     public function getBannerHtml()
     {
-       $template = wa()->getAppPath(
-            sprintf('templates/include/item_linked_entities/%s.banner.html', $this->getApp()),
+        $template = wa()->getAppPath(
+            sprintf(
+                'templates/include%s/item_linked_entities/%s.banner.html',
+                wa()->whichUI() === '1.3' ? '-legacy' : '',
+                $this->getApp()
+            ),
             pocketlistsHelper::APP_ID
         );
 
@@ -167,7 +171,8 @@ abstract class pocketlistsAppLinkAbstract
 
         $template = wa()->getAppPath(
             sprintf(
-                'templates/include/item_linked_entities/%s.%s.preview.html',
+                'templates/include%s/item_linked_entities/%s.%s.preview.html',
+                wa()->whichUI() === '1.3' ? '-legacy' : '',
                 $this->getApp(),
                 $itemLink->getEntityType()
             ),
@@ -207,7 +212,8 @@ abstract class pocketlistsAppLinkAbstract
     {
         $template = wa()->getAppPath(
             sprintf(
-                'templates/include/item_linked_entities/%s.%s.autocomplete.html',
+                'templates/include%s/item_linked_entities/%s.%s.autocomplete.html',
+                wa()->whichUI() === '1.3' ? '-legacy' : '',
                 $this->getApp(),
                 $itemLink->getEntityType()
             ),

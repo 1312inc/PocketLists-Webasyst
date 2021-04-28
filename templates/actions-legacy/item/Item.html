@@ -1,0 +1,13 @@
+{if !empty($items)}
+{foreach $items as $i}
+    <li class="pl-item-wrapper" data-id="{$i->getId()}" data-parent-id="{$i->getParentId()}" {if $i->getDueDate()}data-pl-due-date="{$i->getDueDate()}"{/if} {if $i->getDueDatetime()}data-pl-due-datetime="{$i->getDueDatetime()}"{/if} {if $i->isDone() && $i->getCompleteDatetime()}data-pl-complete-datetime="{$i->getCompleteDatetime()}"{/if}>
+    {include '../item/ItemData.html' item=$i inline}
+    {if $i->getChilds()}
+        <ul class="menu-v">
+        {if !isset($archive)}{$archive = false}{/if}
+        {include '../item/Item.html' items=$i->getChilds() archive=$archive inline}
+            </ul>
+    {/if}
+    </li>
+{/foreach}
+{/if}

@@ -66,7 +66,11 @@ final class pocketlistsShopBackendOrder
 
         foreach (['aux_info', 'action_link', 'info_section', 'title_suffix', 'action_button'] as $hook) {
             $template = wa()->getAppPath(
-                sprintf('templates/include/app_hook/shop.backend_order.%s.html', $hook),
+                sprintf(
+                    'templates/include%s/app_hook/shop.backend_order.%s.html',
+                    wa()->whichUI() === '1.3' ? '-legacy' : '',
+                    $hook
+                ),
                 pocketlistsHelper::APP_ID
             );
 

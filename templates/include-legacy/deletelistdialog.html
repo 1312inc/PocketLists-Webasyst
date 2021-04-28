@@ -1,0 +1,11 @@
+<div id="pl-dialog-delete-list-confirm" style="display: none;">
+    <form action="post">
+        <div class="dialog-content">
+            <h1>{$list->getName()|truncate:32|default:'[`Delete list`]'|escape}</h1>
+            <p><i class="icon16 exclamation"></i>[`All to-do items (either completed or not) will be deleted permanently.`]</p>
+        </div>
+        <div class="dialog-buttons">
+            <input type="submit" value="[`Delete list`]" class="button red" /> [`or`] <a class="cancel" href="#">[`cancel`]</a>
+        </div>
+    </form>
+</div>

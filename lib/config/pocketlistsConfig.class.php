@@ -456,6 +456,17 @@ HTML;
         ];
     }
 
+    /**
+     * @param string $template
+     *
+     * @return string
+     * @throws waException
+     */
+    public function getUI2TemplatePath($template)
+    {
+        return sprintf($template, wa()->whichUI() === '1.3' ? '-legacy' : '');
+    }
+
     private function registerGlobal()
     {
         if (!function_exists('pl2')) {

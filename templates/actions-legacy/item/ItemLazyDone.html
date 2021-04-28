@@ -1,0 +1,11 @@
+<div>
+    <!-- completed to-dos log -->
+    <section id="pl-complete-log" class="pl-logbook">
+        <h5 class="heading">[`Logbook`]</h5>
+        <ul class="menu-v">
+            {if !empty($items_done)}
+                {include './Item.html' items=$items_done}
+            {/if}
+        </ul>
+    </section>
+</div>

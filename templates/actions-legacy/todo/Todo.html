@@ -1,0 +1,123 @@
+<nav class="pl-inner-sidebar" data-pl="uho">
+    <a href="#" data-pl-todo-calendar-action="next" class="float-right pl-calendar-nav" title="[`Next`]"><i class="icon16 rarr"></i></a>
+    <a href="#" data-pl-todo-calendar-action="prev" class="float-left pl-calendar-nav" title="[`Previous`]"><i class="icon16 larr"></i></a>
+    <div data-pl-todo-calendar>
+        {$calendar_html}
+    </div>
+</nav>
+
+<!-- ITEMS -->
+<section id="pl-list-todo-items">
+    <main class="blank bordered-right pl-inner-content pl-items pl-list-items pl-todo shadowed" id="pl-list-content">
+        <header class="pl-title">
+            <h1 class="not-padded">
+                [`My to-dos`] <i class="icon16 loading"></i>
+            </h1>
+            <span></span>
+        </header>
+    </main>
+</section>
+
+
+
+<script type="text/javascript">
+    (function(){
+        var $calendar_wrapper = $('[data-pl-todo-calendar]'),
+            month = 0,
+            $items_wrapper = $('#pl-list-todo-items');
+
+        $.pocketlists.setTitle('[`My to-dos`]');
+
+        $('[data-pl-todo-calendar-action]').on('click', function (e) {
+            e.preventDefault();
+            if ($(this).data('pl-todo-calendar-action') === 'next') {
+                month++;
+            } else {
+                month--;
+            }
+
+            $.get('?module=todo&action=month&month=' + month, function (html) {
+                $calendar_wrapper.html(html);
+            });
+        });
+
+        var getStream = function (date, filter) {
+            $.get('?module=todo&action=date' + (date ? ('&date=' + date) : '') + (filter ? ('&filter=' + filter): ''), function (html) {
+                $items_wrapper.html(html);
+            });
+        };
+        getStream();
+
+
+        var setPrintLink = function (date) {
+            var $print_link = $calendar_wrapper.find('[data-pl-action="list-print"]'),
+                href = $print_link.attr('href'),
+                new_href = href.replace(/&date=.*$/, '&date=' + (date ? date : ''));
+
+            $print_link.attr('href', new_href);
+        };
+
+        $calendar_wrapper
+                .on('click', '[data-pl-todo-date]', function () {
+                    var $this = $(this),
+                        date = $this.data('pl-todo-date');
+
+                    $calendar_wrapper.find('[data-pl-todo-date]').removeClass('pl-selected');
+                    $this.addClass('pl-selected');
+
+                    setPrintLink(date);
+                    getStream(date);
+                })
+                .on('mouseenter', '[data-pl-todo-date]', function () {
+                    var date = $(this).data('pl-todo-date'),
+                        $items = $items_wrapper.find('.pl-item-wrapper[data-pl-due-date="' + date + '"]');
+                    if ($items.length) {
+                        $items.addClass('highlighted-background');
+                    }
+                })
+                .on('mouseleave', '[data-pl-todo-date]', function () {
+                    var date = $(this).data('pl-todo-date'),
+                        $items = $items_wrapper.find('.pl-item-wrapper[data-pl-due-date="' + date + '"]');
+                    if ($items.length) {
+                        $items.removeClass('highlighted-background');
+                    }
+                });
+
+        $items_wrapper.on('click', '[pl-todo-stream="date"] a', function (e) {
+            e.preventDefault();
+            $calendar_wrapper.find('[data-pl-todo-date]').removeClass('pl-selected');
+
+            setPrintLink();
+            getStream();
+        });
+
+
+        $('[data-pl="uho"]').on('click', '[data-pl-action="list-email"]', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var date = $('.pl-selected[data-pl-todo-date]').length ? $('.pl-selected[data-pl-todo-date]').data('pl-todo-date') : 'today';
+            $('<div>').waDialog({
+                'url': '?module=list&action=emailDialog&date=' + date,
+                onLoad: function () {
+                },
+                onSubmit: function (d) {
+                    var $this = $(this);
+
+                    $this.after($.pocketlists.$loading);
+                    $.post('?module=list&action=email', $this.serialize(), function(r) {
+                        $.pocketlists.$loading.remove();
+                        if (r.status === 'ok') {
+                            d.trigger('close');
+                        }  else {
+                            alert(r.errors);
+                        }
+                    }, 'json');
+                    return false;
+                },
+                onClose: function () {
+                    this.remove();
+                }
+            });
+        })
+    }());
+</script>

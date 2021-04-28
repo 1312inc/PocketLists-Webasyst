@@ -1,0 +1,58 @@
+<style>
+    .pl2-shop-item-count { float: right; position: relative; top: -1.1rem; font-size: 12px; font-weight: 500; }
+    i.icon16.pl2-shop-icon { background-image: url('{$params.wa_app_static_url}img/pl2webasyst48.png') !important; background-size: 16px 16px; margin-left: 0.2rem; margin-right: 0; }
+    table.zebra.single-lined .pl2-shop-item-count { height: 0 !important; overflow: visible !important; }
+    table.zebra.single-lined .pl2-shop-item-count i.icon16 { float: right; margin-right: 0.5rem; }
+    table.zebra.single-lined .pl2-shop-item-count span { display: none; }
+</style>
+<script>
+    (function ($) {
+        'use strict';
+
+        var wa_app_static_url = '{$params.wa_app_static_url}',
+            plurl = '{$params.plurl}';
+
+        var order_list_handler = function (evt, data) {
+            var $this = $(this);
+
+            $.shop.trace('pl2 append_order_list', data);
+
+            if($.isArray(data)) {
+
+                var order_ids = $.map(data, function (datum) {
+                    return datum['id'];
+                });
+
+                    $.post(plurl + '?module=shop&action=loadOrdersIcon', { orders: order_ids }, function (r) {
+                        console.log('pl2 item loadOrderIcon response', r);
+
+                        if (r.status === 'ok' && r.data) {
+                            $.each(r.data, function(i, datum) {
+                                var $order = $this.find('[data-order-id='+datum.entity_id+']');
+
+                                if ($order.length) {
+                                    var pl2 = '<div class="pl2-shop-item-count" title="{if $wa->locale() == 'ru_RU'}'+datum.count_entities+' задач связаны с этим заказом{else}'+datum.count_entities+' to-dos linked with the order{/if}"><span>'+datum.count_entities+'</span><i class="icon16 pl2-shop-icon"></i></div>';
+
+                                    if ($.order_list.options.view == 'split') {
+                                        $order
+                                            .find('.details')
+                                            .append(pl2);
+                                    } else {
+                                        $order
+                                            .find('td:last')
+                                            .append(pl2);
+                                    }
+
+                                }
+                            });
+                        }
+                    });
+            }
+        };
+
+        $('#maincontent')
+            .off('append_order_list.pl2')
+            .on('append_order_list.pl2', '#order-list', order_list_handler);
+
+    })(jQuery);
+</script>

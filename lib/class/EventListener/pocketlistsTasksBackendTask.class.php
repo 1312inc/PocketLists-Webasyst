@@ -80,7 +80,11 @@ final class pocketlistsTasksBackendTask
             $hook = $task->attachments ? 'after_attachments' : 'after_description';
 
             $template = wa()->getAppPath(
-                sprintf('templates/include/app_hook/tasks.backend_task.%s.html', $hook),
+                sprintf(
+                    'templates/include%s/app_hook/tasks.backend_task.%s.html',
+                    wa()->whichUI() === '1.3' ? '-legacy' : '',
+                    $hook
+                ),
                 pocketlistsHelper::APP_ID
             );
 

@@ -34,7 +34,11 @@ final class pocketlistsShopBackendOrders
 
         foreach (['sidebar_bottom_li'] as $hook) {
             $template = wa()->getAppPath(
-                sprintf('templates/include/app_hook/shop.backend_orders.%s.html', $hook),
+                sprintf(
+                    'templates/include%s/app_hook/shop.backend_orders.%s.html',
+                    wa()->whichUI() === '1.3' ? '-legacy' : '',
+                    $hook
+                ),
                 pocketlistsHelper::APP_ID
             );
 

@@ -1,0 +1,182 @@
+<main data-pl="comments">
+    <div class="block">
+        <h1>[`Comments`]</h1>
+
+        {if $comments}
+        <div class="pl-chat" data-pl-comments="latest-discussions">
+        {foreach $comments as $comment}
+            {include '../comment/Comment.html' comment=$comment comment_page=true inline}
+        {/foreach}
+        </div>
+        {else}
+            <p class="pl-disclaimer">[`<strong>No comments yet.</strong> This page will display a plain list of all to-do item comments posted by you and your teammates. Keep track on this page to make sure not to miss a single discussion.`]</p>
+        {/if}
+    </div>
+    <div class="block lazyloading" style="display: none;">
+        [`Loading...`] <i class="icon16 loading"></i>
+    </div>
+</main>
+
+<script>
+    'use strict';
+    (function () {
+        new $.pocketlists.Comments($('[data-pl="comments"]'), {
+            lazy: true
+        });
+    }());
+    /*(function () {
+        var request_in_action = false,
+            $w = $('[data-pl="comments"]'),
+            load_next_page = null,
+            $loading = $w.find('.lazyloading');
+
+        var addComment = function () {
+            var $this = $(this),
+                $comment_wrapper = $this.closest('[data-pl-comment-id]'),
+                item_id = parseInt($comment_wrapper.data('pl-item-id')),
+                $reply_wrapper = $comment_wrapper.find('.pl-reply'),
+                $userpic = $reply_wrapper.find('.icon16');
+
+            if (!item_id) {
+                return;
+            }
+            if (request_in_action) {
+                return;
+            }
+            request_in_action = true;
+
+            $userpic.hide();
+            $reply_wrapper.prepend($.pocketlists.$loading.css({
+                'margin-top': 1,
+                'margin-left': 12
+            }));
+            $.post(
+                    '?module=comment&action=add',
+                    {
+                        item_id: item_id,
+                        comment: $this.val().trim()
+                    },
+                    function (html) {
+                        $.pocketlists.$loading.removeAttr('style').remove();
+                        $userpic.show();
+
+                        $comment_wrapper.after(html);
+                        $this.val('');
+                        $.pocketlists.resizeTextarea($this);
+                        hideComment.call($this.get(0));
+
+                        request_in_action = false;
+                    }
+            );
+        };
+
+        var deleteComment = function() {
+            if (!confirm($_('You are about to permanently delete this comment. Delete?'))) {
+                return;
+            }
+
+            if (request_in_action) {
+                return;
+            }
+            request_in_action = true;
+
+            var $this = $(this),
+                $comment_wrapper = $this.closest('[data-pl-comment-id]'),
+                comment_id = $comment_wrapper.data('pl-comment-id');
+
+            $.post(
+                    '?module=comment&action=delete',
+                    {
+                        id: comment_id
+                    },
+                    function (r) {
+                        $.pocketlists.$loading.removeAttr('style').remove();
+                        if (r.status === 'ok') {
+                            $comment_wrapper.slideUp(200, function () {
+                                $comment_wrapper.remove();
+                            });
+                        }
+                        request_in_action = false;
+                    },
+                    'json'
+            );
+        };
+
+        var hideComment = function() {
+            $(this).closest('.pl-reply').hide();
+        };
+
+        $w
+                .on('click', '[data-pl-action="comment-reply"]', function (e) {
+                    e.preventDefault();
+                    var $comment_wrapper = $(this).closest('[data-pl-comment-id]'),
+                        $reply_wrapper = $comment_wrapper.find('.pl-reply');
+
+                    $reply_wrapper.show();
+                    setTimeout(function () {
+                        $reply_wrapper.find('textarea').trigger('focus');
+                    }, 400);
+
+                })
+                .on('keydown', '.pl-chat .pl-reply textarea', function(e) {
+                    if (!e.shiftKey && e.which === 13) {
+                        e.preventDefault();
+
+                        addComment.call(this);
+                    } else if (e.which === 27) {
+                        hideComment.call(this);
+                    }
+                })
+                .on('change cut keydown drop paste', '.pl-chat .pl-reply textarea', function () {
+                    var $textarea = $(this);
+                    window.setTimeout(function () {
+                        $.pocketlists.resizeTextarea($textarea)
+                    }, 0);
+                })
+                .on('click', '[data-pl-action="comment-delete"]', function (e) {
+                    e.preventDefault();
+
+                    deleteComment.call(this);
+                });
+
+        var is_bottom = false,
+            prev_scroll_pos = 0,
+            offset = 1,
+            this_is_the_end = false;
+
+        $(window).on('scroll', function () {
+            if (this_is_the_end) {
+               return;
+            }
+
+            var scroll_pos = $(document).scrollTop() + $(window).outerHeight(),
+                doc_h = $(document).outerHeight() - 20;
+
+            if (prev_scroll_pos < scroll_pos) {
+                if (!is_bottom && scroll_pos >= doc_h) {
+                    is_bottom = true;
+                    if (request_in_action) {
+                        return;
+                    }
+                    $loading.show();
+                    request_in_action = true;
+
+                    $.get('?module=comments&offset=' + offset, function (html) {
+                        $loading.hide();
+                        var html = $(html).find('[data-pl-comments="latest-discussions"]').html();
+                        if ($.trim(html).length) {
+                            offset++;
+                        } else {
+                            this_is_the_end = true;
+                        }
+                        $w.find('[data-pl-comments="latest-discussions"]').append(html);
+                        request_in_action = false;
+                    });
+                } else {
+                    is_bottom = false;
+                }
+            }
+            prev_scroll_pos = scroll_pos;
+        });
+    }());*/
+</script>
