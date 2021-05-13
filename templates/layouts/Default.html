@@ -40,14 +40,14 @@
         {if !empty($backend_head)}{foreach $backend_head as $_}{ifset($_)}{/foreach}{/if}
 
         <div id="wa-app">
-
-            <div class="sidebar left200px" data-pl-scroll-to-top id="pl-sidebar-core">
-                {$sidebar}
-            </div>
-
-            <div class="content left200px">
-                <div id="content">
-                    <div class="block double-padded"><i class="icon16 loading"></i></div>
+            <div class="flexbox wrap-mobile">
+                <div class="sidebar hide-sidebar flexbox" data-pl-scroll-to-top id="pl-sidebar-core">
+                    {$sidebar}
+                </div>
+                <div class="content blank">
+                    <div id="content">
+                        <div class="block double-padded"><i class="icon16 loading"></i></div>
+                    </div>
                 </div>
             </div>
         </div>

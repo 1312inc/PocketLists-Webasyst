@@ -1,5 +1,4 @@
-<div class="pl-sidebar-core">
-ui2
+<div class="sidebar-body">
 {if $showTinyAd}
 <div class="pl-tiny-ad">
     <div class="pl-tiny-ad-box">
@@ -60,20 +59,24 @@ ui2
 
 {if !empty($pockets)}
     <!-- POCKETS -->
-    <div class="block" data-pl2-sidebar-wrapper="pockets">
-        <ul class="menu-v with-icons">
+    <div data-pl2-sidebar-wrapper="pockets">
+        <ul class="menu">
             {foreach $pockets as $pocket}
                 <li data-pl-pocket-id="{$pocket->getId()}">
-                    <span class="count">{$pocket->getListsCount()}</span>
-                    <a href="#/pocket/{$pocket->getId()}/"><i
-                                class="icon16 color pl-dark-{$pocket->getColor()}"></i>{$pocket->getName()|escape}</a>
+                    <a href="#/pocket/{$pocket->getId()}/">
+                        <span class="count">{$pocket->getListsCount()}</span>
+                        <span class="icon">
+                            <i class="rounded pl-dark-{$pocket->getColor()}"></i>
+                        </span>
+                        <span>{$pocket->getName()|escape}</span>
+                    </a>
                 </li>
             {/foreach}
         </ul>
         {if $isAdmin}
-        <ul class="menu-v with-icons">
+        <ul class="menu">
             <li class="small">
-                <a href="#" data-pl2-action="add-pocket"><i class="icon10 add"></i>[`New pocket`]</a>
+                <a href="#" data-pl2-action="add-pocket"><i class="fas fa-plus-circle"></i>[`New pocket`]</a>
             </li>
         </ul>
         {/if}
@@ -84,67 +87,63 @@ ui2
 {/if}
 
 <!-- TO-DO STREAMS -->
-<div class="block">
+<ul class="menu">
+    <li data-pl-sidebar="todo">
+        {if $sidebar_todo_count}<span class="count">{$sidebar_todo_count}</span>{/if}
+        {if $sidebar_todo_count_icon && $sidebar_todo_count_icon->getMaxPriority() > 0}<span class="count bold  {pocketlistsViewHelper::getPriorityCssClass($sidebar_todo_count_icon->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}">{$sidebar_todo_count_icon->getCountMaxPriority()}</span>{/if}
+        <a href="#/todo/"><i class="icon16 pl todo"></i>[`My to-dos`]</a>
+    </li>
+    <li>
+        <span class="count" data-pl-sidebar="favorites-count">{$favorites_count_undone->getCount()}</span>
 
-    <ul class="menu-v with-icons">
-        <li data-pl-sidebar="todo">
-            {if $sidebar_todo_count}<span class="count">{$sidebar_todo_count}</span>{/if}
-            {if $sidebar_todo_count_icon && $sidebar_todo_count_icon->getMaxPriority() > 0}<span class="count bold  {pocketlistsViewHelper::getPriorityCssClass($sidebar_todo_count_icon->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}">{$sidebar_todo_count_icon->getCountMaxPriority()}</span>{/if}
-            <a href="#/todo/"><i class="icon16 pl todo"></i>[`My to-dos`]</a>
-        </li>
-        <li>
-            <span class="count" data-pl-sidebar="favorites-count">{$favorites_count_undone->getCount()}</span>
+        {if $favorites_count_undone->getCountMaxPriority() && $favorites_count_undone->getMaxPriority() > 0}
+            <span class="count bold {pocketlistsViewHelper::getPriorityCssClass($favorites_count_undone->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}">
+                {$favorites_count_undone->getCountMaxPriority()}
+            </span>
+        {/if}
 
-            {if $favorites_count_undone->getCountMaxPriority() && $favorites_count_undone->getMaxPriority() > 0}
-                <span class="count bold {pocketlistsViewHelper::getPriorityCssClass($favorites_count_undone->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}">
-                    {$favorites_count_undone->getCountMaxPriority()}
-                </span>
-            {/if}
+        <a href="#/favorites/"><i class="icon16 star"></i>[`Favorites`]</a>
+    </li>
+    {foreach $linkedApps as $app}
+    <li>
+        <span class="count">{$app->countItems()->getCount()}</span>
+        {if $app->countItems()->getCountMaxPriority() && $app->countItems()->getMaxPriority() > 0}
+            <span class="count bold {pocketlistsViewHelper::getPriorityCssClass($app->countItems()->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}">
+                {$app->countItems()->getCountMaxPriority()}
+            </span>
+        {/if}
 
-            <a href="#/favorites/"><i class="icon16 star"></i>[`Favorites`]</a>
-        </li>
-        {foreach $linkedApps as $app}
-        <li>
-            <span class="count">{$app->countItems()->getCount()}</span>
-            {if $app->countItems()->getCountMaxPriority() && $app->countItems()->getMaxPriority() > 0}
-                <span class="count bold {pocketlistsViewHelper::getPriorityCssClass($app->countItems()->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}">
-                    {$app->countItems()->getCountMaxPriority()}
-                </span>
-            {/if}
+        <a href="#/app/{$app->getApp()}/">{$app->getAppIcon()}{$app->getName()}</a>
+    </li>
+    {/foreach}
 
-            <a href="#/app/{$app->getApp()}/">{$app->getAppIcon()}{$app->getName()}</a>
-        </li>
-        {/foreach}
+    <!-- plugin hook: 'backend_sidebar.streams_li' -->
+    {* @event backend_sidebar.%plugin_id% *}
+    {if !empty($backend_sidebar)}{foreach $backend_sidebar as $_}{ifset($_.streams_li)}{/foreach}{/if}
 
-        <!-- plugin hook: 'backend_sidebar.streams_li' -->
-        {* @event backend_sidebar.%plugin_id% *}
-        {if !empty($backend_sidebar)}{foreach $backend_sidebar as $_}{ifset($_.streams_li)}{/foreach}{/if}
+    <li>
+        <a href="#/logbook/"><i class="icon16 pl logbook"></i>[`Completed`]{if $new_items_count.logbook} <span
+                    class="highlighted bold small black">+{$new_items_count.logbook}</span>{/if}</a>
+    </li>
 
-        <li>
-            <a href="#/logbook/"><i class="icon16 pl logbook"></i>[`Completed`]{if $new_items_count.logbook} <span
-                        class="highlighted bold small black">+{$new_items_count.logbook}</span>{/if}</a>
-        </li>
-
-    </ul>
-</div>
+</ul>
 
 <!-- CUSTOM VIEWS -->
-<div class="block" style="padding-top: 0;">
-    <ul class="menu-v with-icons">
-        <li>
-            <a href="#/comments/"><i class="icon16 pl comments"></i>[`Comments`]{if $new_comments_count} <span
-                        class="highlighted bold small black"
-                        title="{$last_activity|wa_datetime}">+{$new_comments_count}</span>{/if}</a>
-        </li>
+<ul class="menu">
+    <li>
+        <a href="#/comments/"><i class="icon16 pl comments"></i>[`Comments`]{if $new_comments_count} <span
+                    class="highlighted bold small black"
+                    title="{$last_activity|wa_datetime}">+{$new_comments_count}</span>{/if}</a>
+    </li>
 
-        <!-- plugin hook: 'backend_sidebar.views_li' -->
-        {* @event backend_sidebar.%plugin_id% *}
-        {if !empty($backend_sidebar)}{foreach $backend_sidebar as $_}{ifset($_.views_li)}{/foreach}{/if}
+    <!-- plugin hook: 'backend_sidebar.views_li' -->
+    {* @event backend_sidebar.%plugin_id% *}
+    {if !empty($backend_sidebar)}{foreach $backend_sidebar as $_}{ifset($_.views_li)}{/foreach}{/if}
 
-    </ul>
-</div>
+</ul>
 
-<div class="block">
+
+<div class="box">
     <input type="search" data-pl2-action="search" placeholder="[`Search`]" class="pl-search-input" />
 </div>
 
@@ -155,13 +154,13 @@ ui2
 <!-- TEAM -->
 {$max_visible_in_team = 5}
 {if pocketlistsRBAC::canAssign()}
-    <div class="block">
+    <div class="box">
         <h5 class="heading">
             {* if $team && count($team) > $max_visible_in_team}<i class="icon16 darr" data-pl-collapsible="team"></i>{/if *}
             [`Team`]
         </h5>
         {if count($team)}
-            <ul class="menu-v with-icons" data-pl-sidebar-block="team"
+            <ul class="menu" data-pl-sidebar-block="team"
                 data-pl-collapsible-wrapper="team">
                 {foreach $team as $team_id => $teammate}
                     <li data-pl-team-id="{$teammate->getId()}"
@@ -190,18 +189,17 @@ ui2
                 {/if}
             </ul>
         {else}
-            <div class="block">
+            <div class="box">
                 <p class="hint align-center">{sprintf('[`Use <a href="%s">Team app</a> to invite teammates and to collaborate using the Pocket Lists app: select a user or a group of users &gt; Access tab &gt; Pocket Lists app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/')}</p>
             </div>
         {/if}
     </div>
 {/if}
-
+</div>
 
 <!-- SYSTEM -->
-<div class="hr"></div>
-<div class="block">
-    <ul class="menu-v with-icons">
+<div class="sidebar-footer shadowed">
+    <ul class="menu">
         <li>
             <a href="#/archive/"><i class="icon16 pl archive"></i>[`Archive`]{if $new_items_count.archive} <span
                         class="highlighted bold small black">+{$new_items_count.archive}</span>{/if}</a>
@@ -230,15 +228,13 @@ ui2
     </ul>
     {if $isAdmin && empty($pockets)}
         <div data-pl2-sidebar-wrapper="pockets">
-            <ul class="menu-v with-icons">
+            <ul class="menu">
                 <li class="small top-padded">
                     <a href="#" data-pl2-action="add-pocket"><i class="icon10 add"></i>[`New pocket`]</a>
                 </li>
             </ul>
         </div>
     {/if}
-</div>
-
 </div>
 
 <script>

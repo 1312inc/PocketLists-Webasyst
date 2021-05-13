@@ -266,7 +266,8 @@ class pocketlistsConfig extends waAppConfig
             if (!$count) {
                 $css = <<<HTML
 <style>
-    [data-app="pocketlists"] .indicator { display: none !important; }
+    [data-app="pocketlists"] .indicator,
+    [data-app="pocketlists"] .badge { display: none !important; }
 </style>
 HTML;
             }
@@ -277,7 +278,7 @@ HTML;
 <script>
 (function() {
     'use strict';
-    
+
     try {
         $.post('{$pocketlistsPath}sendNotifications', function(r) {
             if (r.status === 'ok') {
@@ -290,7 +291,7 @@ HTML;
         .fail(function() {
             console.log('pocketlists: notification send internal error');
         });
-        
+
         $.post('{$pocketlistsPath}sendDirectNotifications', function(r) {
             if (r.status === 'ok') {
                 if (window['pocketlistsAlertBox'] && r.data) {
