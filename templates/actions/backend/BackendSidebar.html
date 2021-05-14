@@ -76,7 +76,10 @@
         {if $isAdmin}
         <ul class="menu">
             <li class="small">
-                <a href="#" data-pl2-action="add-pocket"><i class="fas fa-plus-circle"></i>[`New pocket`]</a>
+                <a href="#" data-pl2-action="add-pocket">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>[`New pocket`]</span>
+                </a>
             </li>
         </ul>
         {/if}
@@ -89,31 +92,37 @@
 <!-- TO-DO STREAMS -->
 <ul class="menu">
     <li data-pl-sidebar="todo">
-        {if $sidebar_todo_count}<span class="count">{$sidebar_todo_count}</span>{/if}
-        {if $sidebar_todo_count_icon && $sidebar_todo_count_icon->getMaxPriority() > 0}<span class="count bold  {pocketlistsViewHelper::getPriorityCssClass($sidebar_todo_count_icon->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}">{$sidebar_todo_count_icon->getCountMaxPriority()}</span>{/if}
-        <a href="#/todo/"><i class="icon16 pl todo"></i>[`My to-dos`]</a>
+        <a href="#/todo/">
+            <i class="fas fa-clipboard-list"></i>
+            <span>[`My to-dos`]</span>
+            {if $sidebar_todo_count}<span class="count">{$sidebar_todo_count}</span>{/if}
+            {if $sidebar_todo_count_icon && $sidebar_todo_count_icon->getMaxPriority() > 0}<span class="count"><span class="badge {pocketlistsViewHelper::getPriorityCssClass($sidebar_todo_count_icon->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}">{$sidebar_todo_count_icon->getCountMaxPriority()}</span></span>{/if}
+        </a>
     </li>
     <li>
-        <span class="count" data-pl-sidebar="favorites-count">{$favorites_count_undone->getCount()}</span>
-
-        {if $favorites_count_undone->getCountMaxPriority() && $favorites_count_undone->getMaxPriority() > 0}
-            <span class="count bold {pocketlistsViewHelper::getPriorityCssClass($favorites_count_undone->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}">
-                {$favorites_count_undone->getCountMaxPriority()}
-            </span>
-        {/if}
-
-        <a href="#/favorites/"><i class="icon16 star"></i>[`Favorites`]</a>
+        <a href="#/favorites/">
+            <i class="fas fa-star"></i>
+            <span>[`Favorites`]</span>
+            <span class="count" data-pl-sidebar="favorites-count">{$favorites_count_undone->getCount()}</span>
+            {if $favorites_count_undone->getCountMaxPriority() && $favorites_count_undone->getMaxPriority() > 0}
+                <span class="count bold {pocketlistsViewHelper::getPriorityCssClass($favorites_count_undone->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}">
+                    {$favorites_count_undone->getCountMaxPriority()}
+                </span>
+            {/if}
+        </a>
     </li>
     {foreach $linkedApps as $app}
     <li>
-        <span class="count">{$app->countItems()->getCount()}</span>
-        {if $app->countItems()->getCountMaxPriority() && $app->countItems()->getMaxPriority() > 0}
-            <span class="count bold {pocketlistsViewHelper::getPriorityCssClass($app->countItems()->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}">
-                {$app->countItems()->getCountMaxPriority()}
-            </span>
-        {/if}
-
-        <a href="#/app/{$app->getApp()}/">{$app->getAppIcon()}{$app->getName()}</a>
+        <a href="#/app/{$app->getApp()}/">
+            <i class="fas fa-tasks"></i>
+            <span>{$app->getAppIcon()}{$app->getName()}</span>
+            <span class="count">{$app->countItems()->getCount()}</span>
+            {if $app->countItems()->getCountMaxPriority() && $app->countItems()->getMaxPriority() > 0}
+                <span class="count bold {pocketlistsViewHelper::getPriorityCssClass($app->countItems()->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}">
+                    {$app->countItems()->getCountMaxPriority()}
+                </span>
+            {/if}
+        </a>
     </li>
     {/foreach}
 
@@ -122,8 +131,13 @@
     {if !empty($backend_sidebar)}{foreach $backend_sidebar as $_}{ifset($_.streams_li)}{/foreach}{/if}
 
     <li>
-        <a href="#/logbook/"><i class="icon16 pl logbook"></i>[`Completed`]{if $new_items_count.logbook} <span
-                    class="highlighted bold small black">+{$new_items_count.logbook}</span>{/if}</a>
+        <a href="#/logbook/">
+            <i class="fas fa-clipboard-check"></i>
+            <span>[`Completed`]</span>
+            {if $new_items_count.logbook} 
+            <span class="count">+{$new_items_count.logbook}</span>
+            {/if}
+        </a>
     </li>
 
 </ul>
@@ -131,9 +145,16 @@
 <!-- CUSTOM VIEWS -->
 <ul class="menu">
     <li>
-        <a href="#/comments/"><i class="icon16 pl comments"></i>[`Comments`]{if $new_comments_count} <span
-                    class="highlighted bold small black"
-                    title="{$last_activity|wa_datetime}">+{$new_comments_count}</span>{/if}</a>
+        <a href="#/comments/">
+            <i class="fas fa-comment"></i>
+            <span>[`Comments`]</span>
+            {if $new_comments_count}
+            <span
+                class="count"
+                title="{$last_activity|wa_datetime}">+{$new_comments_count}
+            </span>
+            {/if}
+        </a>
     </li>
 
     <!-- plugin hook: 'backend_sidebar.views_li' -->
@@ -143,7 +164,7 @@
 </ul>
 
 
-<div class="box">
+<div class="box custom-mb-12">
     <input type="search" data-pl2-action="search" placeholder="[`Search`]" class="pl-search-input" />
 </div>
 
@@ -154,7 +175,7 @@
 <!-- TEAM -->
 {$max_visible_in_team = 5}
 {if pocketlistsRBAC::canAssign()}
-    <div class="box">
+    <div>
         <h5 class="heading">
             {* if $team && count($team) > $max_visible_in_team}<i class="icon16 darr" data-pl-collapsible="team"></i>{/if *}
             [`Team`]
@@ -189,8 +210,8 @@
                 {/if}
             </ul>
         {else}
-            <div class="box">
-                <p class="hint align-center">{sprintf('[`Use <a href="%s">Team app</a> to invite teammates and to collaborate using the Pocket Lists app: select a user or a group of users &gt; Access tab &gt; Pocket Lists app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/')}</p>
+            <div class="box custom-mt-12">
+                <p class="hint">{sprintf('[`Use <a href="%s">Team app</a> to invite teammates and to collaborate using the Pocket Lists app: select a user or a group of users &gt; Access tab &gt; Pocket Lists app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/')}</p>
             </div>
         {/if}
     </div>
@@ -201,11 +222,21 @@
 <div class="sidebar-footer shadowed">
     <ul class="menu">
         <li>
-            <a href="#/archive/"><i class="icon16 pl archive"></i>[`Archive`]{if $new_items_count.archive} <span
-                        class="highlighted bold small black">+{$new_items_count.archive}</span>{/if}</a>
+            <a href="#/archive/">
+                <i class="fas fa-archive"></i>
+                <span>[`Archive`]</span>
+                {if $new_items_count.archive} 
+                <span class="count">
+                    <span class="badge">+{$new_items_count.archive}</span>
+                </span>
+                {/if}
+            </a>
         </li>
         <li>
-            <a href="#/settings/"><i class="icon16 settings"></i>[`Settings`]</a>
+            <a href="#/settings/">
+                <i class="fas fa-sliders-h"></i>
+                <span>[`Settings`]</span>
+            </a>
         </li>
 
         <!-- plugin hook: 'backend_sidebar.system_li' -->
@@ -214,15 +245,28 @@
 
         {if !pocketlistsHelper::hasPlugin('pro')}
         <li class="top-padded">
-            <a href="#/upgrade/"><i class="icon16" style="background-image: url('/wa-apps/pocketlists/img/pl2pro-plugin-icon16.png') !important; background-size: 16px 16px; border-radius: 50%;"></i>{sprintf('[`Upgrade to %s`]','<span class="pl-label pl-pro">PRO</span>')}</a>
+            <a href="#/upgrade/">
+                <span class="icon">
+                    <i style="background-image: url('/wa-apps/pocketlists/img/pl2pro-plugin-icon16.png') !important; border-radius: 50%;"></i>
+                </span>
+                {sprintf('[`Upgrade to %s`]','&nbsp;<span class="badge yellow" style="flex: none;">PRO</span>')}
+            </a>
         </li>
         {/if}
         <li{if pocketlistsHelper::hasPlugin('pro')} class="top-padded"{/if}>
-            <a href="#/about/"><i class="icon16" style="background-image: url('/wa-apps/pocketlists/img/pl2webasyst48.png') !important; background-size: 16px 16px;"></i>[`About`]</a>
+            <a href="#/about/">
+                <span class="icon">
+                    <i style="background-image: url('/wa-apps/pocketlists/img/pl2webasyst48.png') !important;"></i>
+                </span>
+                <span>[`About`]</span>
+            </a>
         </li>
         {if $isAdmin}
         <li>
-            <a href="#/plugins/"><i class="icon16 plugins"></i>[`Plugins`]</a>
+            <a href="#/plugins/">
+                <i class="fas fa-plug"></i>
+                <span>[`Plugins`]</span>
+            </a>
         </li>
         {/if}
     </ul>
@@ -230,7 +274,10 @@
         <div data-pl2-sidebar-wrapper="pockets">
             <ul class="menu">
                 <li class="small top-padded">
-                    <a href="#" data-pl2-action="add-pocket"><i class="icon10 add"></i>[`New pocket`]</a>
+                    <a href="#" data-pl2-action="add-pocket">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>[`New pocket`]</span>
+                    </a>
                 </li>
             </ul>
         </div>

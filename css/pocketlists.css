@@ -339,7 +339,7 @@ input#pl-new-list-input:focus,
 .gray .pl-due-someday { color: #aaa; }
 
 .pl-list-items, .pl-list-title, #pl-item-add { position: relative; z-index: 10; }
-.pl-list-items ul.menu-v { margin: 0; padding: 0; }
+.pl-list-items ul.menu-v { margin: 0; padding: 0; list-style: none; }
 .pl-list-items ul.menu-v li { padding: 0; margin: 0; }
 .pl-list-items ul.menu-v li a { display: inline; }
 .pl-list-items ul.menu-v li a .pl-wa-app-icon { position: relative; top: 3px; left: 3px;}
@@ -718,3 +718,16 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 .search-results #pl-complete-log { display: block;}
 .search-results #pl-complete-log ul.menu-v { margin-top: 10px; }
 .search-results #pl-complete-log-link { display: none;}
+
+/* Version 2
+--------------- */
+
+[data-pl-pocket-color] .rounded {
+    border: 2px solid #fff;
+    border-radius: 50%;
+    transition: .3s border-color;
+}
+
+[data-pl-pocket-color].selected .rounded {
+    border-color: #333;
+}

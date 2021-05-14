@@ -5,13 +5,13 @@
             <input type="hidden" name="pocket[id]" value="{$pocket->getId()|default:0}"/>
 
             {if $pocket->getId()}
-                <h1>{$pocket->getName()|default:'[`(unnamed pocket)`]'|escape|truncate:32}</h1>
+                <h1 class="custom-mt-0">{$pocket->getName()|default:'[`(unnamed pocket)`]'|escape|truncate:32}</h1>
             {else}
-                <h1>[`New pocket`]</h1>
+                <h1 class="custom-mt-0">[`New pocket`]</h1>
             {/if}
 
             <div class="fields form">
-                <div class="field-group">
+                <div class="fields-group">
                     <div class="field">
                         <div class="name nowrap">
                             [`Pocket name`]
@@ -29,8 +29,8 @@
                             <input type="hidden" name="pocket[color]" value="{$pocket->getColor()}"/>
                             {foreach pocketlistsStoreColor::getColors() as $color => $name}
                                 <a href="#" {if $pocket->getColor() == $color}class="selected"{/if}
-                                   data-pl-pocket-color="{$color}"><i
-                                            class="icon16 color pl-dark-{$color}"></i></a>
+                                   data-pl-pocket-color="{$color}">
+                                        <span class="icon"><i class="rounded pl-dark-{$color}"></i></span></a>
                             {/foreach}
                         </div>
                     </div>
@@ -54,15 +54,13 @@
     </div>
 
     <div class="dialog-buttons">
-        {if $pocket->getId()}
-            <div class="block half-padded float-right">
-                <ul class="menu-h">
-                    <li>
-                        <a href="#" data-pl2-action="delete-pocket"><i class="icon16 delete"></i> [`Delete pocket`]</a>
-                    </li>
-                </ul>
+        <div class="flexbox middle">
+            <div class="wide">
+                <input type="submit" value="[`Save`]" class="button green"/> [`or`] <a class="cancel" href="#">[`cancel`]</a>
             </div>
-        {/if}
-        <input type="submit" value="[`Save`]" class="button green"/> [`or`] <a class="cancel" href="#">[`cancel`]</a>
+            {if $pocket->getId()}
+                <a href="#" class="button nobutton" data-pl2-action="delete-pocket"><i class="far fa-trash-alt"></i> [`Delete pocket`]</a>
+            {/if}
+        </div>
     </div>
 </section>

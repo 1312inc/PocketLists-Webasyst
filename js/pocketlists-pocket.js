@@ -16,52 +16,61 @@ $.pocketlists.Pocket = function ($pocket_wrapper, options) {
     var _settingDialog = function () {
         var pocketId = $(this).data('pl2-pocket-id') || 0;
 
-        $('#pl-pocket-dialog').waDialog({
-            'height': '250px',
-            'width': '600px',
-            'url': '?module=pocket&action=settingsDialog&id=' + pocketId,
-            onLoad: function () {
-                var d = this,
-                    $dialogWrapper = $(d);
+        $.get('?module=pocket&action=settingsDialog&id=' + pocketId)
+        .done(function (data) {
+            {
+                $.waDialog({
+                    content: $(data).find('.dialog-content').html(),
+                    footer: $(data).find('.dialog-buttons').html(),
+                    onOpen: function ($dialog, dialogIstance) {
+                        var $dialogWrapper = $dialog;
+        
+                        $dialogWrapper
+                            .on('click', '#pl-pocket-color a', function (e) {
+                                e.preventDefault();
+        
+                                $dialogWrapper.find('#pl-pocket-color input').val($(this).data('pl-pocket-color'));
+                                $(this).addClass('selected')
+                                    .siblings().removeClass('selected')
+                            })
+                            .on('click', '[data-pl2-action="delete-pocket"]', function (e) {
+                                e.preventDefault();
+        
+                                _deletePocket.call(dialogIstance, pocketId);
+                            })
+                            .on('click', '.cancel', function (e) {
+                                e.preventDefault();
 
-                $dialogWrapper
-                    .on('click', '#pl-pocket-color a', function (e) {
-                        e.preventDefault();
-
-                        $dialogWrapper.find('#pl-pocket-color input').val($(this).data('pl-pocket-color'));
-                        $(this).addClass('selected')
-                            .siblings().removeClass('selected')
-                    })
-                    .on('click', '[data-pl2-action="delete-pocket"]', function (e) {
-                        e.preventDefault();
-
-                        _deletePocket.call(d, pocketId);
-                    })
-                ;
-
-                setTimeout(function () {
-                    if (!$dialogWrapper.find('[name="pocket[id]"]').val() == 0) {
-                        $dialogWrapper.find('[name="pocket[name]"]').trigger('focus');
+                                dialogIstance.close();
+                            })
+                            .on('click', '.dialog-footer input[type="submit"]', function (e) {
+                                e.preventDefault();
+  
+                                $(this).after($loading);
+                                $.post('?module=pocket&action=save', $dialogWrapper.find('.form :input').serialize(), function (r) {
+                                    $loading.remove();
+                                    if (r.status === 'ok') {
+                                        dialogIstance.close();
+                                        if (!pocketId) {
+                                            window.location.hash = '#/pocket/' + r.data.id;
+                                        }
+                                        $.pocketlists_routing.redispatch();
+                                    } else {
+                
+                                    }
+                                }, 'json');
+                            })
+                        ;
+        
+                        setTimeout(function () {
+                            if (!$dialogWrapper.find('[name="pocket[id]"]').val() == 0) {
+                                $dialogWrapper.find('[name="pocket[name]"]').trigger('focus');
+                            }
+                        }, 10);
                     }
-                }, 10);
-            },
-            onSubmit: function (d) {
-                d.find('.dialog-buttons input[type="button"]').after($loading);
-                $.post('?module=pocket&action=save', d.find('form').serialize(), function (r) {
-                    $loading.remove();
-                    if (r.status === 'ok') {
-                        d.trigger('close');
-                        if (!pocketId) {
-                            window.location.hash = '#/pocket/' + r.data.id;
-                        }
-                        $.pocketlists_routing.redispatch();
-                    } else {
-
-                    }
-                }, 'json');
-                return false;
+                });  
             }
-        });
+        }) 
     };
 
     var _sidebarHandlers = function () {
@@ -177,7 +186,7 @@ $.pocketlists.Pocket = function ($pocket_wrapper, options) {
 
         $.post('?module=pocket&action=delete', {id: id}, function (r) {
             if (r.status === 'ok') {
-                $(d).trigger('close');
+                d.close();
                 $.wa.setHash('#/todo/');
                 $.pocketlists_routing.redispatch();
             }
