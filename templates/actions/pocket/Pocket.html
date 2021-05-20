@@ -1,5 +1,5 @@
 {* @var pocketlistsPocket $pocket *}
-<div class="flexbox" data-pl2-pocket-wrapper="{$pocket->getId()}">
+<div class="flexbox width-100" data-pl2-pocket-wrapper="{$pocket->getId()}">
     <nav class="sidebar hide-scrollbar width-21rem bordered-left">
 
         <!-- plugin hook: 'backend_pocket.sidebar_section' -->
@@ -8,27 +8,29 @@
 
         <!-- LISTS -->
         <div id="pl-lists" data-pl-scroll-to-top>
-            <div class="pl-lists-header">
-                {if $isAdmin}<a href="#/pocket/{$pocket->getId()}/list/new/" class="count" title="[`New list`]"><i class="icon16 add"></i></a>{/if}
-
-                <h5 class="heading pl-dark-{$pocket->getColor()|default:'none'}-label">
+            <div class="pl-lists-header flexbox middle">
+            
+                <div class="large wide pl-dark-{$pocket->getColor()|default:'none'}-label">
                     [`Lists`]
-                </h5>
+                </div>
+
+                {if $isAdmin}<a href="#/pocket/{$pocket->getId()}/list/new/" class="count" title="[`New list`]"><i class="fas fa-plus-circle"></i></a>{/if}
 
             </div>
             {if !empty($lists)}
-                <ul class="pl-lists" data-pl2-wrapper="lists">
+                <ul class="pl-lists custom-mb-12" data-pl2-wrapper="lists">
                     {foreach $lists as $l}
                         <li data-pl-list-id="{$l->getId()}">
-                            <a href="#/pocket/{$pocket->getId()}/list/{$l->getId()}/"{if $l->getId() == $list_id} class="pl-is-selected"{/if} title="{$l->getName()|escape}">
+                            <a class="flexbox middle space-8" href="#/pocket/{$pocket->getId()}/list/{$l->getId()}/"{if $l->getId() == $list_id} class="pl-is-selected"{/if} title="{$l->getName()|escape}">
+                                
                                 <span data-pl2-list-items class="count">{$l->getItemCount()->getCount()}</span>
 
                                 <span data-pl2-list-calc-priority class="count bold {pocketlistsViewHelper::getPriorityCssClass($l->getItemCount()->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}" {if !$l->getItemCount()->getMaxPriority()}style="display: none;"{/if}>
                                     {$l->getItemCount()->getCountMaxPriority()}
                                 </span>
 
-                                <i class="listicon36"
-                                   style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l->getIcon()|default:'li-list@2x.png'});"></i>
+                                <i class="fas fa-list-ul"></i>
+
                                 <span class="pl-list-name pl-dark-{$l->getColor()|default:'none'}-label">{$l->getName()|escape}</span>
                             </a>
                         </li>
@@ -46,10 +48,10 @@
                     {/if}
                 </div>
             {/if}
-            <div class="block align-center double-padded">
+            <div class="align-center">
                 {if $isAdmin}
-                <a href="#" title="[`Pocket settings`]" data-pl2-action="edit-pocket" data-pl2-pocket-id="{$pocket->getId()}" class="gray">
-                    <i class="icon16 settings"></i><span>[`Pocket settings`]</span>
+                <a href="#" title="[`Pocket settings`]" data-pl2-action="edit-pocket" data-pl2-pocket-id="{$pocket->getId()}" class="button nobutton small">
+                    <i class="fas fa-cog"></i> <span>[`Pocket settings`]</span>
                 </a>
                 {/if}
             </div>

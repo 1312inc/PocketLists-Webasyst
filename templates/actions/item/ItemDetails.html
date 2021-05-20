@@ -132,12 +132,14 @@
             <div class="name">[`Priority`]</div>
             <div class="value no-shift" id="pl-item-priority">
                 <input type="hidden" name="item[priority]" value="{$item->getPriority()}"/>
-                <a href="#" {if $item->getPriority() == pocketlistsItem::PRIORITY_NORM}class="selected"{/if} data-pl-item-priority="{pocketlistsItem::PRIORITY_NORM}"><input type="checkbox" class="pl-done"><span></span></a>
-                <a href="#" {if $item->getPriority() == pocketlistsItem::PRIORITY_GREEN}class="selected"{/if} data-pl-item-priority="{pocketlistsItem::PRIORITY_GREEN}"><input type="checkbox" class="pl-done pl-priority-green"><span></span></a>
-                <a href="#" {if $item->getPriority() == pocketlistsItem::PRIORITY_YELLOW}class="selected"{/if} data-pl-item-priority="{pocketlistsItem::PRIORITY_YELLOW}"><input type="checkbox" class="pl-done pl-priority-yellow"><span></span></a>
-                <a href="#" {if $item->getPriority() == pocketlistsItem::PRIORITY_RED}class="selected"{/if} data-pl-item-priority="{pocketlistsItem::PRIORITY_RED}"><input type="checkbox" class="pl-done pl-priority-red"><span></span></a>
-                <a href="#" {if $item->getPriority() == pocketlistsItem::PRIORITY_BLACK}class="selected"{/if} data-pl-item-priority="{pocketlistsItem::PRIORITY_BLACK}"><input type="checkbox" class="pl-done pl-priority-black"><span></span></a>
-                <a href="#" {if $item->getPriority() == pocketlistsItem::PRIORITY_BURNINHELL}class="selected"{/if} data-pl-item-priority="{pocketlistsItem::PRIORITY_BURNINHELL}"><input type="checkbox" class="pl-done pl-priority-fire"><span></span></a>
+                <div class="flexbox middle">
+                    <a href="#" {if $item->getPriority() == pocketlistsItem::PRIORITY_NORM}class="selected"{/if} data-pl-item-priority="{pocketlistsItem::PRIORITY_NORM}"><input type="checkbox" class="pl-done"><span></span></a>
+                    <a href="#" {if $item->getPriority() == pocketlistsItem::PRIORITY_GREEN}class="selected"{/if} data-pl-item-priority="{pocketlistsItem::PRIORITY_GREEN}"><input type="checkbox" class="pl-done pl-priority-green"><span></span></a>
+                    <a href="#" {if $item->getPriority() == pocketlistsItem::PRIORITY_YELLOW}class="selected"{/if} data-pl-item-priority="{pocketlistsItem::PRIORITY_YELLOW}"><input type="checkbox" class="pl-done pl-priority-yellow"><span></span></a>
+                    <a href="#" {if $item->getPriority() == pocketlistsItem::PRIORITY_RED}class="selected"{/if} data-pl-item-priority="{pocketlistsItem::PRIORITY_RED}"><input type="checkbox" class="pl-done pl-priority-red"><span></span></a>
+                    <a href="#" {if $item->getPriority() == pocketlistsItem::PRIORITY_BLACK}class="selected"{/if} data-pl-item-priority="{pocketlistsItem::PRIORITY_BLACK}"><input type="checkbox" class="pl-done pl-priority-black"><span></span></a>
+                    <a href="#" {if $item->getPriority() == pocketlistsItem::PRIORITY_BURNINHELL}class="selected"{/if} data-pl-item-priority="{pocketlistsItem::PRIORITY_BURNINHELL}"><input type="checkbox" class="pl-done pl-priority-fire"><span></span></a>
+                </div>
             </div>
         </div>
         <div class="field">

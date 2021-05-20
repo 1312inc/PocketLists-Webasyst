@@ -17,29 +17,12 @@
 <main id="pl-list-content" class="pl-list-content">
 
     <div class="pl-items">
-        <header class="pl-list-title pl-title">
+        <header class="pl-list-title pl-title flexbox">
             {if !$print}
             <input type="hidden" name="pocket_id" value="{$pocket->getId()}">
             {/if}
 
-            {if !$new && !$archive}
-                <div class="float-right">
-                    {if pocketlistsRBAC::canAssign()}
-                    <a data-pl-action="list-edit" href="#" class="pl-userpic-bundle" data-pl2-list-edit-action="accesses">
-                        {$max_visible_in_bundle = 5}
-                        {foreach $list_access_contacts as $list_access_contact}
-                            {if $list_access_contact@iteration > $max_visible_in_bundle}{break}{/if}
-                            <i class="userpic" style="background-image: url('{$list_access_contact->getPhotoUrl()}');" title="{$list_access_contact->getName()|escape}"></i>
-                        {/foreach}
-                        {if count($list_access_contacts) > $max_visible_in_bundle}
-                            <i class="userpic" title="{$list_access_contact->getName()|escape}"><span>+{count($list_access_contacts) - $max_visible_in_bundle}</span></i>
-                        {/if}
-                    </a>
-                    {/if}
-                </div>
-            {/if}
-
-            <h1>
+            <div class="wide large">
                 <input type="hidden" value="{if !$list->getId()}-1{else}{$list->getId()}{/if}" id="pl-list-id">
 
                 {if $new && !$archive}
@@ -49,9 +32,26 @@
                 {/if}
 
                 {if pocketlistsRBAC::canAccessToList($list) && !$new}
-                <a data-pl-action="list-edit" href="#" class="pl-list-details-helper" data-pl2-list-edit-action="details"><i class="icon16 pl ellipsis"></i></a>
+                <a data-pl-action="list-edit" href="#" class="pl-list-details-helper" data-pl2-list-edit-action="details"><i class="fas fa-ellipsis-h"></i></a>
                 {/if}
-            </h1>
+            </div>
+
+            {if !$new && !$archive}
+                <div>
+                    {if pocketlistsRBAC::canAssign()}
+                    <a data-pl-action="list-edit" href="#" class="pl-userpic-bundle" data-pl2-list-edit-action="accesses">
+                        {$max_visible_in_bundle = 5}
+                        {foreach $list_access_contacts as $list_access_contact}
+                            {if $list_access_contact@iteration > $max_visible_in_bundle}{break}{/if}
+                            <i class="userpic userpic-20" style="background-image: url('{$list_access_contact->getPhotoUrl()}');" title="{$list_access_contact->getName()|escape}"></i>
+                        {/foreach}
+                        {if count($list_access_contacts) > $max_visible_in_bundle}
+                            <i class="userpic userpic-20" title="{$list_access_contact->getName()|escape}"><span>+{count($list_access_contacts) - $max_visible_in_bundle}</span></i>
+                        {/if}
+                    </a>
+                    {/if}
+                </div>
+            {/if}
         </header>
         <div class="pl-list-items" id="pl-list-items">
 

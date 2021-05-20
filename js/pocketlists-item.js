@@ -338,22 +338,22 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 $wrapper.hide().empty().detach();
                 // });
 
-                var $selectLabel = $currentItem.find('.pl-select-label');
+                var $selectLabel = $currentItem.find('.pl-item__row');
                 if (!$selectLabel.is(':visible')) {
                     $selectLabel.show();
                 }
 
-                $currentItem
-                    .find('.pl-meta')
-                    .css({'position': 'absolute'})
-                    .show()
-                    .animate({'opacity': '1'}, 0, function () {
-                        $(this).css({'position': 'relative'})
-                    })
-                    .end()
-                    .find('.pl-edit')
-                    .removeClass('pl-non-opacity')
-                    .html('<i class="icon16 pl ellipsis"></i>');
+                // $currentItem
+                    // .find('.pl-meta')
+                    // .css({'position': 'absolute'})
+                    // .show()
+                    // .animate({'opacity': '1'}, 0, function () {
+                    //     $(this).css({'position': 'relative'})
+                    // })
+                    // .end()
+                    // .find('.pl-edit')
+                    // .removeClass('pl-non-opacity')
+                    // .html('<i class="icon16 pl ellipsis"></i>');
 
                 setItem(null);
                 $addItemTextarea.closest('[data-pl-item-add]').trigger('itemDetailsClosed.pl2', { details_wrapper: $addItemTextarea.closest('[data-pl-item-add]') });
@@ -1736,10 +1736,11 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             ItemDetails.$el.appendTo($item.find('[data-pl2-item-details]'));
 
             ItemDetails.trigger('show.pl2', [$item, function () {
-                $item.find('.pl-select-label').hide();
-                $item.find('.pl-meta').animate({'opacity': '0', 'height': 0}, 200, function () {
-                    $(this).hide();
-                });
+                // $item.find('.pl-select-label').hide();
+                $item.find('.pl-item__row').hide();
+                // $item.find('.pl-meta').animate({'opacity': '0', 'height': 0}, 200, function () {
+                //     $(this).hide();
+                // });
             }]);
 
             selectItem($item);
