@@ -4,11 +4,15 @@
 /* Layout
 --------- */
 
+.content {
+    max-width: 1200px;
+}
+
 .pl-sidebar-core { }
 .pl-sidebar-core .pl-online { position: absolute; left: 8px; top: 6px; }
 
-.pl-inner-sidebar { background: #f3f3f3; float: right; width: 340px; margin-top: 17px; margin-right: 10px; position: relative; z-index: 10; box-shadow: 0 3px 5px -2px #ccc; }
-.pl-inner-content { position: relative; min-height: 700px; margin-right: 350px; z-index: 11; }
+.pl-inner-sidebar { background: #f3f3f3; width: 340px; }
+/* .pl-inner-content { position: relative; min-height: 700px; margin-right: 350px; z-index: 11; } */
 .pl-inner-content.pl-embedded { margin-right: auto; margin-left: auto; }
 
 /* Misc
@@ -129,8 +133,8 @@ i.listicon48 { background-repeat:no-repeat; height: 32px; width: 32px; backgroun
 ----------- */
 
 table.pl-calendar { width: 100%; margin: 5px 0; }
-table.pl-calendar th { color: #d3d3d3; font-weight: normal; padding-bottom: 5px; font-size: 0.9em; }
-table.pl-calendar td { background: #f9f9f9; padding: 10px 7px; width: 14.28%; height: 25px; vertical-align: top; line-height: 1em; text-align: center; }
+table.pl-calendar th { color: #d3d3d3; font-weight: normal; padding-bottom: 5px; font-size: 0.9em; text-align: center; }
+table.pl-calendar td { background: #f9f9f9; width: 14.28%; height: 25px; line-height: 25px; text-align: center; }
 table.pl-calendar td:hover { background: #ffffee; cursor: pointer; }
 table.pl-calendar td.pl-selected { background: #fffaba; }
 table.pl-calendar td.pl-today { border: 3px solid #fdda3b; }
@@ -468,7 +472,7 @@ p .pl-label.pl-pro { position: relative; top: 3px; margin-right: 0; }
 
 .pl-archive { background: #eee; }
 .pl-archive .pl-title h1 { padding-left: 0; }
-.pl-archive .pl-inner-content { margin-right: 0; }
+/* .pl-archive .pl-inner-content { margin-right: 0; } */
 
 /* Item / List misc details form
 -------------------------------- */
@@ -687,7 +691,7 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
     table.pl-calendar { margin-left: -20px; }
 
     .pl-inner-sidebar { width: 220px; }
-    .pl-inner-content { margin-right: 230px; }
+    /* .pl-inner-content { margin-right: 230px; } */
 
     .pl-details input.long { min-width: 200px !important; width: 200px !important; }
     .pl-details textarea { min-width: 250px !important; }
@@ -709,7 +713,7 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 @media screen and (min-width: 1400px) {
 
     .pl-inner-sidebar { width: 390px; }
-    .pl-inner-content { margin-right: 400px; }
+    /* .pl-inner-content { margin-right: 400px; } */
     .pl-details { width: 390px; }
     .pl-details.sticky { width: 400px; }
 
