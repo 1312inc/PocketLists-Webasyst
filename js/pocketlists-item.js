@@ -1329,9 +1329,10 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         }
         request_in_action = true;
 
-        var $star = $item.find('[class*="star"]'),
+        var $star = $item.find('.pl-favorite'),
             id = parseInt($item.data('id')),
-            status = $star.hasClass('star-empty') ? 1 : 0;
+            status = parseInt($star.data('is-favorite'));
+
         $.post(
             o.appUrl + '?module=item&action=favorite',
             {
@@ -1341,16 +1342,18 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             function (r) {
                 if (r.status === 'ok') {
                     var $favorites_count = $('[data-pl-sidebar="favorites-count"]'),
-                        current_favorites_count = $favorites_count.text();
+                        current_favorites_count = parseInt($favorites_count.text()) || 0;
 
-                    current_favorites_count = current_favorites_count.length && parseInt(current_favorites_count) ? parseInt(current_favorites_count) : 0;
+                    // current_favorites_count = current_favorites_count.length && parseInt(current_favorites_count) ? parseInt(current_favorites_count) : 0;
                     if (status && current_favorites_count >= 0) {
                         current_favorites_count++;
                     } else if (!status && current_favorites_count > 0) {
                         current_favorites_count--;
                     }
-                    $favorites_count.text(current_favorites_count == 0 ? '' : current_favorites_count);
-                    $star.toggleClass('star-empty star');
+                    $favorites_count.text(current_favorites_count === 0 ? '' : current_favorites_count);
+                    
+                    $star.data('is-favorite', 1 - status);
+                    $star.find('[data-icon]').attr('data-prefix', status === 0 ? 'far' : 'fas');
                 } else {
                     alert(r.errors);
                 }
