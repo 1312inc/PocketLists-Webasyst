@@ -98,7 +98,7 @@
 
                     {* COMPLETED BY *}
                     {if $item->getCompleteContact()}
-                    <span class="pl-userpic" title="{sprintf('[`Completed by %s`]', $item->getCompleteContact()->getUsername()|default:'%username%'|escape)}">
+                    <span class="pl-userpic flexbox middle" title="{sprintf('[`Completed by %s`]', $item->getCompleteContact()->getUsername()|default:'%username%'|escape)}">
                         {if $item->getCompleteContact()->getUserpic()}
                             <i class="userpic userpic-20" style="background-image: url({$item->getCompleteContact()->getUserpic()})" alt="{$item->getCompleteContact()->getUsername()|escape}"></i>
                         {/if}

@@ -319,9 +319,9 @@ $.pocketlists.List = function ($list_wrapper, options) {
         if ($dialog_delete.hasClass('dialog')) {
             $dialog_delete.show();
         } else {
-            var dialog_html = "<div class=\"dialog\" id=\"\"> <div class=\"dialog-background\"><\/div> <div class=\"dialog-body\"> <a href=\"#\" class=\"dialog-close js-close-dialog\"><i class=\"fas fa-times\"><\/i><\/a> <div class=\"dialog-content\">"+$dialog_delete.find('.dialog-content').html()+"<\/div> <footer class=\"dialog-footer\"> "+$dialog_delete.find('.dialog-buttons').html()+" <\/footer> <\/div> <\/div> ";
             $.waDialog({
-                html: dialog_html,
+                content: $dialog_delete.find('.dialog-content').html(),
+                footer: $dialog_delete.find('.dialog-buttons').html(),
                 onOpen: function ($dialog, dialog_instance) {
 
                     $dialog
@@ -560,9 +560,9 @@ $.pocketlists.List = function ($list_wrapper, options) {
                 if ($dialog_complete_all.hasClass('dialog')) {
                     $dialog_complete_all.show();
                 } else {
-                    var dialog_html = "<div class=\"dialog\" id=\"\"> <div class=\"dialog-background\"><\/div> <div class=\"dialog-body\"> <a href=\"#\" class=\"dialog-close js-close-dialog\"><i class=\"fas fa-times\"><\/i><\/a> <div class=\"dialog-content\">"+$dialog_complete_all.find('.dialog-content').html()+"<\/div> <footer class=\"dialog-footer\"> "+$dialog_complete_all.find('.dialog-buttons').html()+" <\/footer> <\/div> <\/div> ";
                     $.waDialog({
-                        html: dialog_html,
+                        content: $dialog_complete_all.find('.dialog-content').html(),
+                        footer: $dialog_complete_all.find('.dialog-buttons').html(),
                         onOpen: function ($dialog, dialog_instance) {
 
                             $dialog.on('click', '[data-pl-action]', function (e) {
@@ -574,9 +574,9 @@ $.pocketlists.List = function ($list_wrapper, options) {
                                 $button.after($.pocketlists.$loading);
 
                                 if (action === 'list-complete-all') {
-                                    completeAllItems($dialog);
+                                    completeAllItems(dialog_instance);
                                 } else if (action === 'list-archive') {
-                                    archiveList($dialog);
+                                    archiveList(dialog_instance);
                                 } else if (action === 'cancel') {
                                     dialog_instance.close();
                                 }

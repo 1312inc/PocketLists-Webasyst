@@ -18,7 +18,7 @@
 
             </div>
             {if !empty($lists)}
-                <ul class="pl-lists custom-mb-12" data-pl2-wrapper="lists">
+                <ul class="pl-lists custom-mb-12 menu" data-pl2-wrapper="lists">
                     {foreach $lists as $l}
                         <li data-pl-list-id="{$l->getId()}">
                             <a class="flexbox middle space-8" href="#/pocket/{$pocket->getId()}/list/{$l->getId()}/"{if $l->getId() == $list_id} class="pl-is-selected"{/if} title="{$l->getName()|escape}">

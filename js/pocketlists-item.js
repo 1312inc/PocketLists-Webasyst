@@ -689,46 +689,48 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     if ($dialog_confirm.hasClass('dialog')) {
                         $('body').append($dialog_confirm.show());
                     } else {
-                        $dialog_confirm.waDialog({
-                            'height': '140px',
-                            'min-height': '140px',
-                            'width': '400px',
-                            onLoad: function () {
-                                //var $d = $(this);
-                                //$d.find('h1').text($wrapper.find('input[name="item[name]"]').val());
-                                $('body').append($(this));
-                            },
-                            onSubmit: function (d) {
-                                if (request_in_action) {
-                                    return;
-                                }
-                                request_in_action = true;
+                        $.waDialog({
+                            content: $dialog_confirm.find('.dialog-content').html(),
+                            footer: $dialog_confirm.find('.dialog-buttons').html(),
+                            onOpen: function ($dialog, dialog_instance) {
 
-                                $.post(o.appUrl + '?module=item&action=delete', {id: itemId}, function (r) {
-                                    if (r.status === 'ok') {
-                                        if (!o.standAloneItemAdd) {
-                                            if (o.list) {
-                                                loadListCounts(o.list.list_id);
-                                            }
-                                        }
+                                $dialog
+                                .on('click', '.cancel', function(e) {
+                                    e.preventDefault();
+                                    dialog_instance.close();
+                                })
+                                .on('click', '[type="submit"]', function(e) {
+                                    e.preventDefault();
 
-                                        d.trigger('close');
-                                        hideItemDetails(null, function () {
-                                            removeItem(r.data.id);
-                                            $list_items_wrapper.find('[data-id="' + r.data.id + '"]').remove();
-                                            updateListCountBadge();
-                                        });
-
-                                        $(document).trigger('item_delete.pl2', r.data);
-                                    } else {
-
+                                    if (request_in_action) {
+                                        return;
                                     }
-                                    request_in_action = false;
-                                }, 'json');
-                                return false;
-                            },
-                            onClose: function () {
-                                $wrapper.append($(this));
+                                    request_in_action = true;
+    
+                                    $.post(o.appUrl + '?module=item&action=delete', {id: itemId}, function (r) {
+                                        if (r.status === 'ok') {
+                                            if (!o.standAloneItemAdd) {
+                                                if (o.list) {
+                                                    loadListCounts(o.list.list_id);
+                                                }
+                                            }
+    
+                                            dialog_instance.close();
+                                            hideItemDetails(null, function () {
+                                                removeItem(r.data.id);
+                                                $list_items_wrapper.find('[data-id="' + r.data.id + '"]').remove();
+                                                updateListCountBadge();
+                                            });
+    
+                                            $(document).trigger('item_delete.pl2', r.data);
+                                        } else {
+    
+                                        }
+                                        request_in_action = false;
+                                    }, 'json');
+                                    return false;
+
+                                })
                             }
                         });
                     }
