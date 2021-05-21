@@ -28,8 +28,8 @@
                                 <span data-pl2-list-calc-priority class="count bold {pocketlistsViewHelper::getPriorityCssClass($l->getItemCount()->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}" {if !$l->getItemCount()->getMaxPriority()}style="display: none;"{/if}>
                                     {$l->getItemCount()->getCountMaxPriority()}
                                 </span>
-
-                                <i class="fas fa-list-ul"></i>
+                                
+                                <span class="icon"><i style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l->getIcon()|default:'li-list@2x.png'});"></i></span>
 
                                 <span class="pl-list-name pl-dark-{$l->getColor()|default:'none'}-label">{$l->getName()|escape}</span>
                             </a>

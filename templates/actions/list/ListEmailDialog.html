@@ -1,9 +1,13 @@
-<div class="dialog-background"></div>
+<div class="dialog">
+    <div class="dialog-background"></div>
+    <div class="dialog-body">
+        <header class="dialog-header"><h1>[`Email list`]</h1></header>
+        <div class="dialog-content">
 <form method="post">
     <div class="dialog-window">
         <div class="dialog-content">
 
-                <h1>[`Email list`]</h1>
+                
                 {if !empty($list)}<input type="hidden" name="mail[list_id]" value="{$list->getId()}">{/if}
                 <div class="fields form width100px">
                     <div class="field">
@@ -51,3 +55,7 @@ via Pocket Lists</textarea>
         </div>
     </div>
 </form>
+
+</div>
+</div>
+</div>

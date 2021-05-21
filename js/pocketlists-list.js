@@ -165,10 +165,10 @@ $.pocketlists.List = function ($list_wrapper, options) {
                     e.preventDefault();
                     hideListDetails();
                 })
-                .on('click', '[data-pl-action="list-delete"]', function (e) {
-                    e.preventDefault();
-                    deleteList();
-                })
+                // .on('click', '[data-pl-action="list-delete"]', function (e) {
+                //     e.preventDefault();
+                //     deleteList();
+                // })
                 .on('click', '#pl-list-color a', function (e) {
                     e.preventDefault();
                     var color = $(this).data('pl-list-color');
@@ -190,22 +190,27 @@ $.pocketlists.List = function ($list_wrapper, options) {
                 .on('click', '#pl-list-icon-change a', function (e) {
                     e.preventDefault();
 
-                    $('#pl-list-icon-dialog').waDialog({
-                        onLoad: function () {
-                            var d = $(this);
+                    $.waDialog({
+                        $wrapper: $('#pl-list-icon-dialog'),
+                        onOpen: function ($dialog, dialog_instance) {
 
-                            $('#pl-list-icon-dialog').on('click', 'a[data-pl-list-icon]', function (e) {
+                            $dialog
+                            .on('click', 'a[data-pl-list-icon]', function (e) {
                                 e.preventDefault();
                                 var icon = $(this).data('pl-list-icon'),
                                     $this = $(this);
                                 $wrapper.find('#pl-list-icon-change').find('input').val($(this).data('pl-list-icon'));
 
                                 $this.find('input').val(icon);
-                                $wrapper.find('#pl-list-icon-change .listicon48').css('background-image', 'url(' + icon_path + icon + ')');
+                                $wrapper.find('#pl-list-icon-change .icon i').css('background-image', 'url(' + icon_path + icon + ')');
                                 $wrapper.find('#pl-list-details-save').addClass('yellow');
-                                d.trigger('close');
+                                dialog_instance.close();
                                 return false;
                             })
+                            .on("click", ".cancel", function(e) {
+                                e.preventDefault();
+                                dialog_instance.close();
+                            });
                         }
                     });
                 })
@@ -314,40 +319,49 @@ $.pocketlists.List = function ($list_wrapper, options) {
         if ($dialog_delete.hasClass('dialog')) {
             $dialog_delete.show();
         } else {
-            $dialog_delete.waDialog({
-                'height': '140px',
-                'min-height': '140px',
-                'width': '400px',
-                onLoad: function () {
-                },
-                onSubmit: function (d) {
-                    if (request_in_action) {
-                        return;
-                    }
-                    request_in_action = true;
+            var dialog_html = "<div class=\"dialog\" id=\"\"> <div class=\"dialog-background\"><\/div> <div class=\"dialog-body\"> <a href=\"#\" class=\"dialog-close js-close-dialog\"><i class=\"fas fa-times\"><\/i><\/a> <div class=\"dialog-content\">"+$dialog_delete.find('.dialog-content').html()+"<\/div> <footer class=\"dialog-footer\"> "+$dialog_delete.find('.dialog-buttons').html()+" <\/footer> <\/div> <\/div> ";
+            $.waDialog({
+                html: dialog_html,
+                onOpen: function ($dialog, dialog_instance) {
 
-                    $.post('?module=list&action=delete', {list_id: list_id}, function (r) {
-                        if (r.status === 'ok') {
-                            var $lists = $('[data-pl2-wrapper="lists"]');
-                            if ($lists.length) {
-                                $lists.find('[data-pl-list-id="' + list_id + '"]').remove();
-                            }
+                    $dialog
+                    .on('click', '.cancel', function (e) {
+                        e.preventDefault();
+                        dialog_instance.close();
+                    })
+                    .on('click', '[type="submit"]', function(e) {
+                        e.preventDefault();
 
-                            if (/#\/archive/.test(window.location.hash)) {
-                                $.wa.setHash('#/archive/');
-                            } else if (/#\/pocket/.test(window.location.hash)) {
-                                $.wa.setHash(window.location.hash.replace('/list/'+list_id, ''));
-                            } else {
-                                $.wa.setHash('#/todo/');
-                            }
-                            // $.pocketlists_routing.redispatch();
-                        } else {
+                        if (request_in_action) {
+                            return;
                         }
-                        d.trigger('close');
-                        request_in_action = false;
-                    }, 'json');
-                    return false;
-                }
+                        request_in_action = true;
+    
+                        $.post('?module=list&action=delete', {list_id: list_id}, function (r) {
+                            if (r.status === 'ok') {
+                                var $lists = $('[data-pl2-wrapper="lists"]');
+                                if ($lists.length) {
+                                    $lists.find('[data-pl-list-id="' + list_id + '"]').remove();
+                                }
+    
+                                if (/#\/archive/.test(window.location.hash)) {
+                                    $.wa.setHash('#/archive/');
+                                } else if (/#\/pocket/.test(window.location.hash)) {
+                                    $.wa.setHash(window.location.hash.replace('/list/'+list_id, ''));
+                                } else {
+                                    $.wa.setHash('#/todo/');
+                                }
+                                // $.pocketlists_routing.redispatch();
+                            } else {
+                            }
+                            dialog_instance.close();
+                            request_in_action = false;
+                        }, 'json');
+                        return false;
+                    })
+                    
+                },
+                
             });
         }
     };
@@ -365,7 +379,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
 
         $.post('?module=list&action=archive', {list_id: list_id, archive: 1}, function (r) {
             if (r.status === 'ok') {
-                $dialog && $dialog.trigger('close');
+                $dialog && $dialog.close();
                 if (/#\/pocket/.test(window.location.hash)) {
                     $.wa.setHash(window.location.hash.replace('/list/'+list_id, ''));
                 } else {
@@ -387,7 +401,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
 
         $.post('?module=list&action=complete', {list_id: list_id, status: 1}, function (r) {
             if (r.status === 'ok') {
-                $dialog.trigger('close');
+                $dialog.close();
                 //$.wa.setHash('#/list/' + list_id );
                 $.pocketlists_routing.redispatch();
             } else {
@@ -504,28 +518,40 @@ $.pocketlists.List = function ($list_wrapper, options) {
                 e.preventDefault();
                 e.stopPropagation();
 
-                $('<div>').waDialog({
-                    'url': '?module=list&action=emailDialog&id=' + list_id,
-                    onLoad: function () {
-                    },
-                    onSubmit: function (d) {
-                        var $this = $(this);
+                $.get('?module=list&action=emailDialog&id=' + list_id)
+                .done(function (html) {
 
-                        $this.after($.pocketlists.$loading);
-                        $.post('?module=list&action=email', $this.serialize(), function (r) {
-                            $.pocketlists.$loading.remove();
-                            if (r.status === 'ok') {
-                                d.trigger('close');
-                            } else {
-                                alert(r.errors);
-                            }
-                        }, 'json');
-                        return false;
-                    },
-                    onClose: function () {
-                        this.remove();
-                    }
-                });
+                    $.waDialog({
+                        html: html,
+                        onOpen: function ($dialog, dialog_instance) {
+
+                            $dialog
+                            .on("click", "[type=\"submit\"]", function(e) {
+                                e.preventDefault();
+
+                                var $this = $(this);
+
+                                $this.after($.pocketlists.$loading);
+                                $.post('?module=list&action=email', $this.serialize(), function (r) {
+                                    $.pocketlists.$loading.remove();
+                                    if (r.status === 'ok') {
+                                        dialog_instance.close();
+                                    } else {
+                                        alert(r.errors);
+                                    }
+                                }, 'json');
+                                
+                            })
+                            .on("click", ".cancel", function(e) {
+                                e.preventDefault();
+                                dialog_instance.close();
+                            });
+    
+                        }
+                    });
+
+                })
+
             })
             .on('click', '#pl-list-complete', function (e) {
                 e.stopPropagation();
@@ -534,13 +560,12 @@ $.pocketlists.List = function ($list_wrapper, options) {
                 if ($dialog_complete_all.hasClass('dialog')) {
                     $dialog_complete_all.show();
                 } else {
-                    $dialog_complete_all.waDialog({
-                        'height': '150px',
-                        'min-height': '150px',
-                        'width': '400px',
-                        onLoad: function () {
-                            var $this = $(this);
-                            $this.on('click', '[data-pl-action]', function (e) {
+                    var dialog_html = "<div class=\"dialog\" id=\"\"> <div class=\"dialog-background\"><\/div> <div class=\"dialog-body\"> <a href=\"#\" class=\"dialog-close js-close-dialog\"><i class=\"fas fa-times\"><\/i><\/a> <div class=\"dialog-content\">"+$dialog_complete_all.find('.dialog-content').html()+"<\/div> <footer class=\"dialog-footer\"> "+$dialog_complete_all.find('.dialog-buttons').html()+" <\/footer> <\/div> <\/div> ";
+                    $.waDialog({
+                        html: dialog_html,
+                        onOpen: function ($dialog, dialog_instance) {
+
+                            $dialog.on('click', '[data-pl-action]', function (e) {
                                 e.preventDefault();
 
                                 var $button = $(this),
@@ -549,17 +574,14 @@ $.pocketlists.List = function ($list_wrapper, options) {
                                 $button.after($.pocketlists.$loading);
 
                                 if (action === 'list-complete-all') {
-                                    completeAllItems($this);
+                                    completeAllItems($dialog);
                                 } else if (action === 'list-archive') {
-                                    archiveList($this);
+                                    archiveList($dialog);
                                 } else if (action === 'cancel') {
-                                    $this.trigger('close');
+                                    dialog_instance.close();
                                 }
                             });
-                        },
-                        onClose: function () {
-                            $('#pl-list-complete').prop('checked', false);
-                            $.pocketlists.$loading.remove();
+                        
                         }
                     });
                 }
