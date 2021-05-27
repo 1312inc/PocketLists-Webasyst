@@ -3,6 +3,16 @@
     .t-tasks-wrapper #pl-item-add .pl-done + span.pl-add-todo { background-image: url('{$params.wa_app_static_url}img/pl2webasyst48.png') !important; background-size: 16px 16px !important; opacity: 1; top: 2px; }
 </style>
 
+{if $wa->whichUI() == '2.0'}
+
+    new 2.0
+
+{else}
+
+    old 1.3
+
+{/if}
+
 <main class="pl-items pl-list-items pl-todo"
       id="pl-list-content"
       data-pl2-template="itemadd"
