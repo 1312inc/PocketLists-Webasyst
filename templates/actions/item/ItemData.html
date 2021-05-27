@@ -2,12 +2,11 @@
 {if !$item->getKeyListId()} {* stating Nov 2018, we don't show lists as items; TODO: clean up .key_list_id check in the code with time *}
 
 <div class="pl-item{if $item->getAssignedContactId() != $wa->user()->getId() && !$item->isDone()} pl-item-assigned{/if}{if $item->isDone()} gray{/if}" {if $item->getAssignedContactId()}data-pl-assigned-contact="{$item->getAssignedContactId()}"{/if}>
-    
+
+    {if $item->getListId()}<div class="pl-item-list-name pl-dark-{$item->getList()->getColor()}-label">{$item->getList()->getName()|truncate:32|escape}</div>{/if}
 
     <div class="pl-item__row flexbox space-8">
     {if !$item->isDone() && empty($item->getKeyListId()) && !(isset($archive) && $archive)}<div class="pl-item-drag-handle" title="[`Sort`]" data-pl-action="item-sort"></div>{/if}
-    {if $item->getListId()}<div class="pl-item-list-name pl-dark-{$item->getList()->getColor()}-label">{$item->getList()->getName()|truncate:32|escape}</div>{/if}
-
 
     <label class="pl-done-label">
         {if $item->getKeyListId()}
@@ -85,7 +84,7 @@
         <div class="flexbox middle space-8">
             {if empty($item->getKeyListId())}
                 {if !$item->getKeyListId() && !(isset($archive) && $archive == true)}
-                    
+
                         <a href="#" class="pl-comment pl-comment-count{if $item->getCommentsCount()} pl-comment-count-show{/if} nowrap" title="[`Comment`]">
                             <span class="badge light-gray">
                                 <i class="fas fa-comments"></i> {$item->getCommentsCount()}
@@ -126,7 +125,7 @@
                     </span>
 
                 {/if}
-                
+
             {/if}
             {if !(isset($archive) && $archive)}
                 <a href="#" class="pl-favorite" data-pl-action="item-favorite" data-is-favorite="{if !$item->isFavorite()}1{else}0{/if}" title="[`Favorite`]">

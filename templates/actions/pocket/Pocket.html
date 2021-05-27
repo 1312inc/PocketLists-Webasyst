@@ -8,30 +8,34 @@
 
         <!-- LISTS -->
         <div id="pl-lists" data-pl-scroll-to-top>
-            <div class="pl-lists-header flexbox middle">
-            
-                <div class="large wide pl-dark-{$pocket->getColor()|default:'none'}-label">
+            <h5 class="heading">
+
+                <span class="pl-dark-{$pocket->getColor()|default:'none'}-label">
                     [`Lists`]
-                </div>
+                </span>
 
-                {if $isAdmin}<a href="#/pocket/{$pocket->getId()}/list/new/" class="count" title="[`New list`]"><i class="fas fa-plus-circle"></i></a>{/if}
+                {if $isAdmin}<a href="#/pocket/{$pocket->getId()}/list/new/" class="count action" title="[`New list`]"><i class="fas fa-plus-circle"></i></a>{/if}
 
-            </div>
+            </h5>
             {if !empty($lists)}
-                <ul class="pl-lists custom-mb-12 menu" data-pl2-wrapper="lists">
+                <ul class="pl-lists custom-mb-12" data-pl2-wrapper="lists">
                     {foreach $lists as $l}
                         <li data-pl-list-id="{$l->getId()}">
                             <a class="flexbox middle space-8" href="#/pocket/{$pocket->getId()}/list/{$l->getId()}/"{if $l->getId() == $list_id} class="pl-is-selected"{/if} title="{$l->getName()|escape}">
-                                
-                                <span data-pl2-list-items class="count">{$l->getItemCount()->getCount()}</span>
 
-                                <span data-pl2-list-calc-priority class="count bold {pocketlistsViewHelper::getPriorityCssClass($l->getItemCount()->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}" {if !$l->getItemCount()->getMaxPriority()}style="display: none;"{/if}>
-                                    {$l->getItemCount()->getCountMaxPriority()}
+                                <span>
+                                    <i class="icon" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l->getIcon()|default:'li-list@2x.png'});"></i>
                                 </span>
-                                
-                                <span class="icon"><i style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l->getIcon()|default:'li-list@2x.png'});"></i></span>
 
-                                <span class="pl-list-name pl-dark-{$l->getColor()|default:'none'}-label">{$l->getName()|escape}</span>
+                                <span class="pl-list-name wide pl-dark-{$l->getColor()|default:'none'}-label">{$l->getName()|escape}</span>
+
+                                <span class="count">
+                                    <span data-pl2-list-calc-priority class="badge {pocketlistsViewHelper::getPriorityCssClass($l->getItemCount()->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}" {if !$l->getItemCount()->getMaxPriority()}style="display: none;"{/if}>
+                                        {$l->getItemCount()->getCountMaxPriority()}
+                                    </span>
+                                    <span data-pl2-list-items class="gray">{$l->getItemCount()->getCount()}</span>
+                                </span>
+
                             </a>
                         </li>
                     {/foreach}

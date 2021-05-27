@@ -60,6 +60,14 @@
 {if !empty($pockets)}
     <!-- POCKETS -->
     <div data-pl2-sidebar-wrapper="pockets">
+        <h5 class="heading">
+            <span>[`Pockets`]</span>
+            {if $isAdmin}
+                <a href="#" data-pl2-action="add-pocket" class="count action">
+                    <i class="fas fa-plus-circle"></i>
+                </a>
+            {/if}
+        </h5>
         <ul class="menu">
             {foreach $pockets as $pocket}
                 <li data-pl-pocket-id="{$pocket->getId()}">
@@ -73,23 +81,14 @@
                 </li>
             {/foreach}
         </ul>
-        {if $isAdmin}
-        <ul class="menu">
-            <li class="small">
-                <a href="#" data-pl2-action="add-pocket">
-                    <i class="fas fa-plus-circle"></i>
-                    <span>[`New pocket`]</span>
-                </a>
-            </li>
-        </ul>
-        {/if}
     </div>
-
-    <div class="hr"></div>
 
 {/if}
 
 <!-- TO-DO STREAMS -->
+<h5 class="heading">
+    <span>[`To-dos`]</span>
+</h5>
 <ul class="menu">
     <li data-pl-sidebar="todo">
         <a href="#/todo/">
@@ -134,7 +133,7 @@
         <a href="#/logbook/">
             <i class="fas fa-clipboard-check"></i>
             <span>[`Completed`]</span>
-            {if $new_items_count.logbook} 
+            {if $new_items_count.logbook}
             <span class="count">+{$new_items_count.logbook}</span>
             {/if}
         </a>
@@ -225,7 +224,7 @@
             <a href="#/archive/">
                 <i class="fas fa-archive"></i>
                 <span>[`Archive`]</span>
-                {if $new_items_count.archive} 
+                {if $new_items_count.archive}
                 <span class="count">
                     <span class="badge">+{$new_items_count.archive}</span>
                 </span>
