@@ -1,14 +1,14 @@
 {* @var pocketlistsPocket $pocket *}
-<div class="flexbox width-100" data-pl2-pocket-wrapper="{$pocket->getId()}">
-    <nav class="sidebar hide-scrollbar width-21rem bordered-left">
+<div class="flexbox width-100 wrap-mobile" data-pl2-pocket-wrapper="{$pocket->getId()}">
+    <nav class="sidebar blank width-21rem">
 
         <!-- plugin hook: 'backend_pocket.sidebar_section' -->
         {* @event backend_pocket.%plugin_id% *}
         {if !empty($backend_pocket)}{foreach $backend_pocket as $_}{ifset($_.sidebar_section)}{/foreach}{/if}
 
         <!-- LISTS -->
-        <div id="pl-lists" data-pl-scroll-to-top>
-            <h5 class="heading">
+        <div id="pl-lists" class="custom-mt-12" data-pl-scroll-to-top>
+            <h5 class="heading custom-mb-12">
 
                 <span class="pl-dark-{$pocket->getColor()|default:'none'}-label">
                     [`Lists`]
@@ -18,16 +18,16 @@
 
             </h5>
             {if !empty($lists)}
-                <ul class="pl-lists custom-mb-12" data-pl2-wrapper="lists">
+                <ul class="pl-lists menu custom-mb-12" data-pl2-wrapper="lists">
                     {foreach $lists as $l}
                         <li data-pl-list-id="{$l->getId()}">
-                            <a class="flexbox middle space-8" href="#/pocket/{$pocket->getId()}/list/{$l->getId()}/"{if $l->getId() == $list_id} class="pl-is-selected"{/if} title="{$l->getName()|escape}">
+                            <a href="#/pocket/{$pocket->getId()}/list/{$l->getId()}/"{if $l->getId() == $list_id} class="pl-is-selected"{/if} title="{$l->getName()|escape}">
 
-                                <span>
-                                    <i class="icon" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l->getIcon()|default:'li-list@2x.png'});"></i>
+                                <span class="icon">
+                                    <img src="{$wa_url}wa-apps/pocketlists/img/listicons/{$l->getIcon()|default:'li-list@2x.png'}" alt="">
                                 </span>
 
-                                <span class="pl-list-name wide pl-dark-{$l->getColor()|default:'none'}-label">{$l->getName()|escape}</span>
+                                <span class="pl-list-name pl-dark-{$l->getColor()|default:'none'}-label">{$l->getName()|escape}</span>
 
                                 <span class="count">
                                     <span data-pl2-list-calc-priority class="badge {pocketlistsViewHelper::getPriorityCssClass($l->getItemCount()->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}" {if !$l->getItemCount()->getMaxPriority()}style="display: none;"{/if}>
