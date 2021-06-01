@@ -1,6 +1,8 @@
 {* @var pocketlistsPocket $pocket *}
+{$list_id_requested = waRequest::get('list_id', false, waRequest::TYPE_INT)}
+
 <div class="flexbox width-100 wrap-mobile" data-pl2-pocket-wrapper="{$pocket->getId()}">
-    <nav class="sidebar blank width-21rem">
+    <nav class="sidebar blank width-21rem {if $list_id_requested}mobile-hidden{/if}">
 
         <!-- plugin hook: 'backend_pocket.sidebar_section' -->
         {* @event backend_pocket.%plugin_id% *}
@@ -63,8 +65,12 @@
 
     </nav>
 
+    <div class="mobile-only width-100 custom-p-12 {if !$list_id_requested}mobile-hidden{/if}">
+        <a href="#/pocket/{$pocket->getId()}/" class="button"><i class="fas fa-chevron-left"></i> [`Back`]</a>
+    </div>
+
     <!-- ITEMS -->
-    <main class="content left300px blank bordered-left">
+    <main class="content left300px blank bordered-left {if !$list_id_requested}mobile-hidden{/if}">
         {$lists_html|default:""}
     </main>
 

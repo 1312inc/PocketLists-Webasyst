@@ -747,4 +747,8 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
     .sidebar {
         height: auto;
     }
+
+    .mobile-hidden {
+        display: none !important;
+    }
 }
