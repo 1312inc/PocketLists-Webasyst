@@ -128,8 +128,8 @@
 
             {/if}
             {if !(isset($archive) && $archive)}
-                <a href="#" class="pl-favorite" data-pl-action="item-favorite" data-is-favorite="{if !$item->isFavorite()}1{else}0{/if}" title="[`Favorite`]">
-                    <i class="{if !$item->isFavorite()}far{else}fas{/if} fa-star"></i>
+                <a href="#" class="pl-favorite {if !$item->isFavorite()}text-light-gray{else}text-yellow{/if}" data-pl-action="item-favorite" data-is-favorite="{if !$item->isFavorite()}1{else}0{/if}" title="[`Favorite`]">
+                    <i class="fas fa-star"></i>
                 </a>
             {/if}
         </div>

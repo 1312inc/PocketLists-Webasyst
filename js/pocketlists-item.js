@@ -1355,7 +1355,11 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     $favorites_count.text(current_favorites_count === 0 ? '' : current_favorites_count);
                     
                     $star.data('is-favorite', 1 - status);
-                    $star.find('[data-icon]').attr('data-prefix', status === 0 ? 'far' : 'fas');
+                    if(status === 0) {
+                        $star.removeClass('text-yellow').addClass('text-light-gray');
+                    } else {
+                        $star.removeClass('text-light-gray').addClass('text-yellow');
+                    }
                 } else {
                     alert(r.errors);
                 }

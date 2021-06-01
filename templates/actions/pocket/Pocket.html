@@ -20,24 +20,23 @@
 
             </h5>
             {if !empty($lists)}
-                <ul class="pl-lists menu custom-mb-12" data-pl2-wrapper="lists">
+                <ul class="pl-lists custom-mb-12" data-pl2-wrapper="lists">
                     {foreach $lists as $l}
                         <li data-pl-list-id="{$l->getId()}">
-                            <a href="#/pocket/{$pocket->getId()}/list/{$l->getId()}/"{if $l->getId() == $list_id} class="pl-is-selected"{/if} title="{$l->getName()|escape}">
+                            <a class="flexbox middle space-8" href="#/pocket/{$pocket->getId()}/list/{$l->getId()}/"{if $l->getId() == $list_id} class="pl-is-selected"{/if} title="{$l->getName()|escape}">
 
-                                <span class="icon">
-                                    <img src="{$wa_url}wa-apps/pocketlists/img/listicons/{$l->getIcon()|default:'li-list@2x.png'}" alt="">
-                                </span>
+                                <i class="icon" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l->getIcon()|default:'li-list@2x.png'});"></i>
 
-                                <span class="pl-list-name pl-dark-{$l->getColor()|default:'none'}-label">{$l->getName()|escape}</span>
+                                <span class="pl-list-name wide pl-dark-{$l->getColor()|default:'none'}-label">{$l->getName()|escape}</span>
 
-                                <span class="count">
-                                    <span data-pl2-list-calc-priority class="badge {pocketlistsViewHelper::getPriorityCssClass($l->getItemCount()->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}" {if !$l->getItemCount()->getMaxPriority()}style="display: none;"{/if}>
+                                <span class="count" {if !$l->getItemCount()->getMaxPriority()}style="display: none;"{/if}>
+                                    <span data-pl2-list-calc-priority class="badge {pocketlistsViewHelper::getPriorityCssClass($l->getItemCount()->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}">
                                         {$l->getItemCount()->getCountMaxPriority()}
                                     </span>
+                                </span>
+                                <span class="count">
                                     <span data-pl2-list-items class="gray">{$l->getItemCount()->getCount()}</span>
                                 </span>
-
                             </a>
                         </li>
                     {/foreach}

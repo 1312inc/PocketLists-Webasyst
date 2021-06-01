@@ -42,19 +42,11 @@
 
         <div id="wa-app">
             <div class="flexbox wrap-mobile">
-                <div class="sidebar mobile-friendly width-15rem flexbox" id="ui-main-sidebar">
-                    <nav class="sidebar-mobile-toggle">
-                        <div class="box align-center">
-                            <a href="#" href="javascript:void(0);">
-                                <i class="fas fa-bars"></i>
-                                [`Menu`]
-                            </a>
-                        </div>
-                    </nav>
-                    <div data-pl-scroll-to-top id="pl-sidebar-core" class="sidebar-body">
-                        {$sidebar}
-                    </div>
+  
+                <div data-pl-scroll-to-top id="pl-sidebar-core" class="sidebar flexbox mobile-friendly width-15rem hide-scrollbar">
+                    {$sidebar}
                 </div>
+       
                 <div class="content blank">
                     <div id="content" class="flexbox wrap-mobile">
                         <div class="block double-padded"><i class="icon16 loading"></i></div>
@@ -68,11 +60,6 @@
         account_name: '{$wa->accountName()|escape}',
         isAdmin: {$isAdmin},
         userId: {$wa->user()->get('id')}
-    });
-
-    var $sidebar = $('#ui-main-sidebar');
-    $sidebar.waShowSidebar({
-        direction: "down"
     });
 </script>
 </body>

@@ -342,6 +342,13 @@
         },
         initCollapse: function () {
             var self = this;
+
+            $('#pl-sidebar-core')
+                .removeData('sidebar')
+                .waShowSidebar({
+                    direction: "down"
+                });
+
             $('[data-pl-collapsible]')
                 .off('click.pl2')
                 .on('click.pl2', function (e) {

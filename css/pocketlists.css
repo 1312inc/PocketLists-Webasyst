@@ -99,11 +99,11 @@ ul.menu-v.with-icons i.icon16.color { margin: 2px 7px 1px -18px; width: 12px; he
 .pl-new-list-icons-mix-helper { background-image: url('../img/pl-list-icons-mix.png'); background-size: 200px 200px; width: 200px; height: 200px; margin: 30px auto 20px; }
 
 ul.pl-lists { background: var(--background-color-blank); padding: 0; margin: 0; list-style: none; }
-/* ul.pl-lists li a { text-decoration: none; padding: 1rem; border-bottom: 1px solid #eee; cursor: pointer; }
-ul.pl-lists li a i.icon { background-repeat: no-repeat; height: 36px; width: 36px; background-size: 36px 36px; display: inline-block; text-indent:-9999px; text-decoration:none!important; }
-ul.pl-lists li a .pl-list-name { display: block; font-weight: 500; font-size: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-ul.pl-lists li a .count { font-weight: bolder; padding: 3px 6px 3px; margin-top: 8px; margin-right: 5px; }
-ul.pl-lists li a .count.onfire { padding-left: 7px; padding-right: 7px; } */
+ul.pl-lists li a { text-decoration: none; padding: 1rem; border-bottom: 1px solid #eee; cursor: pointer; }
+ul.pl-lists li a i.icon { background-repeat: no-repeat; height: 42px; width: 42px; background-size: 42px 42px; display: inline-block; text-indent:-9999px; text-decoration:none!important; }
+/* ul.pl-lists li a .pl-list-name { display: block; font-weight: 500; font-size: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } */
+/* ul.pl-lists li a .count { font-weight: bolder; padding: 3px 6px 3px; margin-top: 8px; margin-right: 5px; } */
+/* ul.pl-lists li a .count.onfire { padding-left: 7px; padding-right: 7px; } */
 ul.pl-lists li a:hover { background: rgba(0,0,0,0.03); }
 ul.pl-lists li a.pl-is-selected { background: rgba(0,0,0,0.02); }
 
@@ -737,6 +737,10 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 [data-pl-pocket-color].selected .rounded,
 [data-pl-list-color].selected .rounded {
     border-color: #333;
+}
+
+.badge.indicator.onfire {
+    padding: 0.125em 0.4375em;
 }
 
 @media screen and (max-width: 748px) {
