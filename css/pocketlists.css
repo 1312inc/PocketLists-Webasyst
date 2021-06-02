@@ -471,7 +471,7 @@ p .pl-label.pl-pro { position: relative; top: 3px; margin-right: 0; }
 .pl-logbook .pl-item.gray .pl-label { opacity: 0.4; }
 .pl-logbook .pl-item.gray .pl-link-preview-details .pl-label { opacity: 1; }
 
-.pl-archive { background: #eee; }
+/* .pl-archive { background: #eee; } */
 .pl-archive .pl-title h1 { padding-left: 0; }
 /* .pl-archive .pl-inner-content { margin-right: 0; } */
 

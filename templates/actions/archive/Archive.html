@@ -1,4 +1,4 @@
-<div class="shadowed">
+<div class="flexbox width-100 wrap-mobile"> 
 
     {if empty($lists)}
         <main class="content blank pl-items" id="pl-list-content">
@@ -8,34 +8,41 @@
             </div>
         </main>
     {else}
-        <nav class="sidebar left250px">
-            <ul class="menu-v with-icons stack top-padded">
+        <nav class="sidebar blank width-21rem">
+            <ul class="menu with-icons stack top-padded">
                 {foreach $lists as $l}
                 <li data-pl-list-id="{$l->getId()}" {if $l->getId() == $list->getId()}class="selected"{/if}>
-                    <a href="#/archive/{$l->getId()}/"><i class="icon16" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l->getIcon()|default:'li-list@2x.png'}); background-size: 16px 16px;"></i>{$l->getName()|escape}</a>
+                    <a href="#/archive/{$l->getId()}/">
+                        <i class="icon" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l->getIcon()|default:'li-list@2x.png'}); background-size: 16px 16px;"></i>
+                        <span>{$l->getName()|escape}</span>
+                    </a>
                 </li>
                 {foreachelse}
                 {/foreach}
             </ul>
-            <div class="block double-padded align-center hr">
-                <p class="hint">[`To archive an active list, tap on it’s checkmark.`]</p>
+            <div class="box">
+                <hr />
+                <div class="align-center">
+                    <p class="hint">[`To archive an active list, tap on it’s checkmark.`]</p>
+                </div>
             </div>
         </nav>
-        <main class="content left250px blank bordered-left pl-list-content pl-archive" id="pl-list-content">
+        <main class="content left300px blank bordered-left pl-list-content pl-archive" id="pl-list-content">
             <div class="pl-inner-content pl-items pl-{$list->getColor()}">
                 <header class="pl-list-title pl-title">
-                    <div class="float-right block half-padded">
-                        {if $list->getId()}
-                        <ul class="menu-h">
-                            <li>
-                                <a href="#" data-pl-action="list-unarchive" class="bold"><i class="icon16 pl archive"></i> [`Unarchive list`]</a>
-                            </li>
-                            <li>
-                                <a href="#" data-pl-action="list-delete"><i class="icon16 delete"></i> [`Delete`]</a>
-                            </li>
-                        </ul>
-                        {/if}
+                    {if $list->getId()}
+                    <div class="flexbox">
+                        <div class="wide"></div>
+                        <div class="flexbox space-8">
+                            <div>
+                                <a href="#" data-pl-action="list-unarchive" class="button"><i class="fas fa-inbox"></i> [`Unarchive list`]</a>
+                            </div>
+                            <div>
+                                <a href="#" data-pl-action="list-delete" class="button red"><i class="far fa-trash-alt"></i> [`Delete`]</a>
+                            </div>
+                        </div>
                     </div>
+                    {/if}
                     <h1>
                         <input type="hidden" value="{$list->getId()|default:-1}" id="pl-list-id">
                         <span id="pl-list-name">{$list->getName()|escape}</span>
