@@ -129,11 +129,11 @@
             }
         },
         resizeTextarea: function ($textarea) {
-            if ($textarea.is(':visible')) {
-                $textarea
-                    .css('height', $textarea.data('pl2-textarea-rows') ? 'auto' : 0)
-                    .css('height', $textarea.get(0).scrollHeight - parseInt($textarea.css('padding-top')) - parseInt($textarea.css('padding-bottom')));
-            }
+            // if ($textarea.is(':visible')) {
+            //     $textarea
+            //         .css('height', $textarea.data('pl2-textarea-rows') ? 'auto' : 0)
+            //         .css('height', $textarea.get(0).scrollHeight - parseInt($textarea.css('padding-top')) - parseInt($textarea.css('padding-bottom')));
+            // }
         },
         initNotice: function (wrapper_selector) {
             var $wrapper = $(wrapper_selector);

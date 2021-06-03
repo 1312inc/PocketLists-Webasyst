@@ -303,11 +303,11 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             serializedForm = '';
 
         var showLoading = function ($item) {
-            if (itemId) {
-                $item.find('.pl-edit').addClass('pl-non-opacity').html($.pocketlists.$loading);
-            } else {
-                $item.find('[data-pl2-action="edit-new-item"] .ellipsis').toggleClass('pl ellipsis loading')
-            }
+            // if (itemId) {
+            //     $item.find('.pl-edit').addClass('pl-non-opacity').html($.pocketlists.$loading);
+            // } else {
+            //     $item.find('[data-pl2-action="edit-new-item"] .ellipsis').toggleClass('pl ellipsis loading')
+            // }
         };
 
         var isOpen = function () {
@@ -344,16 +344,16 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 }
 
                 // $currentItem
-                    // .find('.pl-meta')
-                    // .css({'position': 'absolute'})
-                    // .show()
-                    // .animate({'opacity': '1'}, 0, function () {
-                    //     $(this).css({'position': 'relative'})
-                    // })
-                    // .end()
-                    // .find('.pl-edit')
-                    // .removeClass('pl-non-opacity')
-                    // .html('<i class="icon16 pl ellipsis"></i>');
+                //     .find('.pl-meta')
+                //     .css({'position': 'absolute'})
+                //     .show()
+                //     .animate({'opacity': '1'}, 0, function () {
+                //         $(this).css({'position': 'relative'})
+                //     })
+                //     .end()
+                //     .find('.pl-edit')
+                //     .removeClass('pl-non-opacity')
+                //     .html('<i class="icon16 pl ellipsis"></i>');
 
                 setItem(null);
                 $addItemTextarea.closest('[data-pl-item-add]').trigger('itemDetailsClosed.pl2', { details_wrapper: $addItemTextarea.closest('[data-pl-item-add]') });
@@ -1745,11 +1745,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             ItemDetails.$el.appendTo($item.find('[data-pl2-item-details]'));
 
             ItemDetails.trigger('show.pl2', [$item, function () {
-                // $item.find('.pl-select-label').hide();
                 $item.find('.pl-item__row').hide();
-                // $item.find('.pl-meta').animate({'opacity': '0', 'height': 0}, 200, function () {
-                //     $(this).hide();
-                // });
             }]);
 
             selectItem($item);
