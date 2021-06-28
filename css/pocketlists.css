@@ -631,11 +631,6 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 /* Custom jQuery UI styling
 --------------------------- */
 
-.ui-datepicker td { padding: 0 !important; border-width: 0 !important; }
-.ui-datepicker tbody { border-width: 0 !important; }
-.ui-datepicker .ui-state-default { border-width: 0 !important; padding: 11px 9px !important; font-size: 1em !important; }
-.ui-datepicker-today { background: #eee; }
-
 .ui-autocomplete { box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15) !important; border-bottom-left-radius: 4px; border-bottom-right-radius: 4px; border-top: none; overflow: hidden; }
 .ui-autocomplete .ui-menu-item { padding: 0 !important; }
 .ui-autocomplete .ui-menu-item-wrapper { padding: 8px !important; display: block; }
