@@ -1322,7 +1322,6 @@ SQL;
     public function getByTerm($term, &$found = 0, $contact_id = 0, $limit = 300)
     {
         $available_lists = pocketlistsRBAC::getAccessListForContact();
-        $accessed_lists = $available_lists ? ' AND l.id IN (i:list_ids)' : ' AND l.id IS NULL';
 
         if (!$contact_id) {
             $contact_id = wa()->getUser()->getId();
@@ -1334,7 +1333,7 @@ SQL;
                           from pocketlists_list l2
                                  JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) l ON l.id = i.list_id AND l.archived = 0';
 
-        if ($accessed_lists) {
+        if ($available_lists) {
             $sqlParts['where']['and'][] = '(l.id IN (i:list_ids) OR l.id IS NULL) /* ONLY items from accessed pockets or NULL-list items */';
         } else {
             $sqlParts['where']['and'][] = 'l.id IS NULL /* ONLY items from NULL-list items */';
