@@ -106,7 +106,7 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
             'when_in' => (int)$this->whenIn,
             'when_period' => $this->whenPeriod,
             'list' => $this->list ? (int)$this->list->getId() : null,
-            'label' => $this->label->getId(),
+            'label' => $this->label ? $this->label->getId() : null,
         ];
     }
 
@@ -368,7 +368,10 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
         if ($labelId) {
             /** @var pocketlistsProPluginLabelFactory $labelRep */
             $labelRep = pl2()->getEntityFactory(pocketlistsProPluginLabel::class);
-            $this->label = $labelRep->findById($labelId);
+            $actionLabel = $labelRep->findById($labelId);
+            if ($actionLabel instanceof pocketlistsProPluginLabel) {
+                $this->label = $actionLabel;
+            }
         }
 
         return $this;
