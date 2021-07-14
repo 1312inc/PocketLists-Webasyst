@@ -1,3 +1,5 @@
+{include inline file='./includes/Header.inc.html'}
+
 {sprintf('[`There are new items on <a href="%s">%s</a> to-do list:`]', $backend_url|cat:$list.url, $list.name|escape)}
 <br>
 <br>
@@ -9,3 +11,5 @@
 --<br>
 {$default.account_name}<br>
 <a href="{$backend_url}{$default.email_settings_url}" style="color:#aaa;">[`Manage my subscription`]</a>
+
+{include inline file='./includes/Footer.inc.html'}
