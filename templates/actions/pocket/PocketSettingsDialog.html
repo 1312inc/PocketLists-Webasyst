@@ -2,8 +2,6 @@
     <div class="dialog-content">
         <div data-pl2-wrapper="pocket-settings-dialog">
 
-            <input type="hidden" name="pocket[id]" value="{$pocket->getId()|default:0}"/>
-
             {if $pocket->getId()}
                 <h1 class="custom-mt-0">{$pocket->getName()|default:'[`(unnamed pocket)`]'|escape|truncate:32}</h1>
             {else}
@@ -11,6 +9,7 @@
             {/if}
 
             <div class="fields form">
+                <input type="hidden" name="pocket[id]" value="{$pocket->getId()|default:0}"/>
                 <div class="fields-group">
                     <div class="field">
                         <div class="name nowrap for-input">

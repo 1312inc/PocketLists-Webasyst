@@ -191,7 +191,9 @@ $.pocketlists.List = function ($list_wrapper, options) {
                     e.preventDefault();
 
                     $.waDialog({
-                        $wrapper: $('#pl-list-icon-dialog'),
+                        header: $('#pl-list-icon-dialog').find('.dialog-header').html(),
+                        content: $('#pl-list-icon-dialog').find('.dialog-content').html(),
+                        footer: $('#pl-list-icon-dialog').find('.dialog-footer').html(),
                         onOpen: function ($dialog, dialog_instance) {
 
                             $dialog
