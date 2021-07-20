@@ -1,4 +1,4 @@
-<div class="flexbox width-100 wrap-mobile"> 
+<div class="flexbox width-100 wrap-mobile">
 
     {if empty($lists)}
         <main class="content blank pl-items" id="pl-list-content">
@@ -8,8 +8,8 @@
             </div>
         </main>
     {else}
-        <nav class="sidebar blank width-21rem">
-            <ul class="menu with-icons stack top-padded">
+        <nav class="sidebar blank pl-second-sidebar">
+            <ul class="menu">
                 {foreach $lists as $l}
                 <li data-pl-list-id="{$l->getId()}" {if $l->getId() == $list->getId()}class="selected"{/if}>
                     <a href="#/archive/{$l->getId()}/">
@@ -27,7 +27,7 @@
                 </div>
             </div>
         </nav>
-        <main class="content left300px blank bordered-left pl-list-content pl-archive" id="pl-list-content">
+        <main class="content bordered-left pl-list-content pl-archive" id="pl-list-content">
             <div class="pl-inner-content pl-items pl-{$list->getColor()}">
                 <header class="pl-list-title pl-title">
                     {if $list->getId()}

@@ -41,9 +41,15 @@
                 {if $shortcuts@iteration != 1}style="display: none"{/if}
         >
         {* @var pocketlistsProPluginShortcut shortcut *}
-        {foreach $shortcuts as $shortcut}
-            <a href="#" class="inline-link pl2pro-shortcut" title="Alt + {$shortcut@iteration}"><b><i>{$shortcut->getName()|escape}</i></b></a>
-        {/foreach}
+        {if $wa->whichUI() == '1.3'}
+            {foreach $shortcuts as $shortcut}
+                <a href="#" class="inline-link pl2pro-shortcut" title="Alt + {$shortcut@iteration}"><b><i>{$shortcut->getName()|escape}</i></b></a>
+            {/foreach}
+        {else}
+            {foreach $shortcuts as $shortcut}
+                <a href="#" class="small gray pl2pro-shortcut" title="Alt + {$shortcut@iteration}">{$shortcut->getName()|escape}</a>
+            {/foreach}
+        {/if}
         </span>
         {/foreach}
     {/if}

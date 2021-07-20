@@ -2,7 +2,7 @@
 return array(
     'name'     => 'Pocket Lists PRO',
     'img'      => 'img/pl2pro.png',
-    'version'  => '1.2.5',
+    'version'  => '1.2.6',
     'vendor'   => '1021997',
     'handlers' =>
         array(

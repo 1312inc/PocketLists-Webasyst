@@ -4,7 +4,7 @@
 <div class="pl-details-form-container">
 <div class="fields form">
 
-    <a class="pl-enable-item-add-compact-mode pl-unsaved-items-only" href="#" data-pl2-action="close" title="[`Hide details and use the compact add mode by default`]"><i class="fas fa-caret-up"></i></a>
+    <a class="pl-enable-item-add-compact-mode pl-unsaved-items-only" href="#" data-pl2-action="close" title="[`Hide details and use the compact add mode by default`]"><i class="fas fa-chevron-up text-light-gray"></i></a>
 
     <form method="post" id="pl-item-details-form" action="{$plurl}?module=item&amp;action=data" target="pl-item-details-form-iframe" enctype="multipart/form-data">
     {* <a href="#" class="pl-item-details-cancel" class="pl-close" title="[`Close`]">&times;</a> *}
@@ -79,8 +79,8 @@
                 <div class="fields-group">
                     {if $contacts}
                     <div class="field" id="pl-assigned-contact">
-                        <div class="name">[`Assigned to`]</div>
-                        <div class="value no-shift">
+                        <div class="name for-input">[`Assigned to`]</div>
+                        <div class="value">
                             <span>
                                 <i class="userpic userpic-20" data-pl-contact-id="0" style="display: none;"></i>
                                 {foreach $contacts as $contact}
@@ -102,7 +102,7 @@
                     {/if}
                     <div class="field pl-already-saved-items-only">
                         <div class="name">[`Created`]</div>
-                        <div class="value no-shift">
+                        <div class="value">
                             <div class="flexbox middle space-4">
                                 <i class="userpic userpic-20" style="background-image: url({$item->getContact()->getUserPic()})" alt="{$item->getContact()->getUsername()|escape}"></i>
                                 <span>{$item->getContact()->getUsername()|escape}</span>
@@ -113,7 +113,7 @@
                     {if $item->getUpdateDatetime() > $item->getCreateDatetime()}
                         <div class="field pl-already-saved-items-only">
                             <div class="name">[`Updated`]</div>
-                            <div class="value no-shift">
+                            <div class="value">
                                 <span class="nowrap">{$item->getUpdateDatetime()|wa_datetime:'humandatetime'}</span>
                             </div>
                         </div>
@@ -121,7 +121,7 @@
                     {if $item->isDone()}
                         <div class="field">
                             <div class="name">[`Completed`]</div>
-                            <div class="value no-shift">
+                            <div class="value">
                                 {if $item->getCompleteContact()}
                                 <i class="userpic userpic-20" style="background-image: url({$item->getCompleteContact()->getUserPic()})" alt="{$item->getCompleteContact()->getUsername()|escape}"></i>
                                 {$item->getCompleteContact()->getUsername()|escape}
@@ -136,8 +136,8 @@
                 <div class="fields-group">
                     {if !$item->isDone()}
                     <div class="field">
-                        <div class="name">[`Priority`]</div>
-                        <div class="value no-shift" id="pl-item-priority">
+                        <div class="name for-input">[`Priority`]</div>
+                        <div class="value" id="pl-item-priority">
                             <input type="hidden" name="item[priority]" value="{$item->getPriority()}"/>
                             <div class="flexbox middle">
                                 <a href="#" {if $item->getPriority() == pocketlistsItem::PRIORITY_NORM}class="selected"{/if} data-pl-item-priority="{pocketlistsItem::PRIORITY_NORM}"><input type="checkbox" class="pl-done"><span></span></a>
@@ -150,23 +150,23 @@
                         </div>
                     </div>
                     <div class="field">
-                        <div class="name">[`When`]</div>
+                        <div class="name for-input">[`When`]</div>
 
                         <div class="value">
                             <input name="item[due_date]" class="pl-due-date-input" type="text" id="pl-item-due-datetime" value="{$item->getDueDate()}" autocomplete="off" placeholder="[`Set date`]" />
                             <span id="pl-item-due-datetime-time">
                                 {$hour = $item->getDueDatetime()|wa_datetime:'H'}
-                                
+
                                     <select name="item[due_datetime_hours]" class="pl-due-date-input" id="pl-item-due-datetime-hours" value="{$hour}" {if !$item->getDueDatetime()}style="display: none;" disabled="disabled"{/if}>
                                         {for $i=0 to 23}{$h = "%02d"|sprintf:$i}<option value="{$h}" {if $h == $hour}selected="selected"{/if}>{$h}</option>{/for}
                                     </select>
-                                
+
                                 {$minutes = $item->getDueDatetime()|wa_datetime:'i'}
-                                
+
                                     <select name="item[due_datetime_minutes]" class="pl-due-date-input" type="text" id="pl-item-due-datetime-minutes" value="{$minutes}" {if !$item->getDueDatetime()}style="display: none;" disabled="disabled"{/if}>
                                         {for $i=0 to 59 step 5}{$m = "%02d"|sprintf:$i}<option value="{$m}" {if $m == $minutes}selected="selected"{/if}>{$m}</option>{/for}
                                     </select>
-                                
+
                                 <a href="#" id="pl-item-due-datetime-set" class="small inline-link nowrap" {if !$item->getDueDatetime() || $item->getDueDatetime()}style="display: none;"{/if}><b><i>[`Set time`]</i></b></a>
                                 <a href="#" id="pl-item-due-datetime-clear" class="small inline-link nowrap" {if !$item->getDueDatetime()}style="display: none;"{/if}><b><i>[`Clear time`]</i></b></a>
                             </span>
@@ -182,10 +182,10 @@
                     {/if}
 
                     <div class="field" {if $caller === 'list'} style="display: none;"{/if}>
-                        <div class="name nowrap">
+                        <div class="name nowrap for-input">
                             [`List`]
                         </div>
-                        <div class="value no-shift">
+                        <div class="value">
                             <div class="wa-select">
                                 <select id="pl-item-list">
                                 {if !$item->getListId() || !$list->getId() || $item->getContact()->isMe()}<option value=""{if !$item->getListId() || !$list->getId()} selected="selected"{/if}>[`None`]</option>{/if}
@@ -234,15 +234,14 @@
                     <div class="flexbox middle wrap">
                         <div class="flexbox middle space-8 wide">
                             <input type="submit" class="button" value="{if $item->getId()}[`Save`]{else}[`Add to-do`]{/if}"  id="pl-item-details-save"/>
-                            <span>[`or`]</span>
-                            <a href="#" class="pl-item-details-cancel">[`cancel`]</a>
+                            <a href="#" class="pl-item-details-cancel button light-gray">[`Cancel`]</a>
                         </div>
                         <div class="pl-already-saved-items-only">
-                            <a href="#" data-pl-action="item-delete" class="button nobutton nowrap">
+                            <a href="#" data-pl-action="item-delete" class="button nobutton nowrap outlined red">
                                 <i class="fas fa-trash-alt"></i> [`Delete to-do`]
                             </a>
                         </div>
-                    </div>    
+                    </div>
                 </div>
 
             </div>

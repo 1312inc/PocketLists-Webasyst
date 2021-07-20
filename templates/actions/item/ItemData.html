@@ -32,7 +32,7 @@
 
             {if !(isset($archive) && $archive == true)}
                 {* <a href="#" class="pl-edit inline-link"><b><i>[`Edit`]</i></b></a> *}
-                <a href="#" class="pl-edit inline-link"><i class="fas fa-ellipsis-h"></i></a>
+                <a href="#" class="pl-edit inline-link"><i class="fas fa-edit custom-ml-4"></i></a>
             {/if}
 
             {capture "item_extended_data"}
@@ -88,8 +88,9 @@
                     {if !$item->getKeyListId() && !(isset($archive) && $archive == true)}
 
                             <a href="#" class="pl-comment pl-comment-count{if $item->getCommentsCount()} pl-comment-count-show{/if} nowrap" title="[`Comment`]">
-                                <span class="badge light-gray">
-                                    <i class="fas fa-comments"></i> {$item->getCommentsCount()}
+                                <span class="badge light-gray text-blue">
+                                    <i class="fas fa-comments"></i>
+                                    {$item->getCommentsCount()}
                                 </span>
                             </a>
                     {/if}

@@ -28,11 +28,11 @@
                 {if $new && !$archive}
                     <input type="text" placeholder="{sprintf('[`List #%d`]', $new_list_id)}" id="pl-new-list-input" class="bold" />
                 {else}
-                    <span id="pl-list-name"{if $list->getColor()!='none'} class="pl-dark-{$list->getColor()}-label"{/if}>{$list->getNameParsed()|default:' '}</span>
+                    <h1 id="pl-list-name"{if $list->getColor()!='none'} class="pl-dark-{$list->getColor()}-label"{/if}>{$list->getNameParsed()|default:' '}</h1>
                 {/if}
 
                 {if pocketlistsRBAC::canAccessToList($list) && !$new}
-                <a data-pl-action="list-edit" href="#" class="pl-list-details-helper" data-pl2-list-edit-action="details"><i class="fas fa-ellipsis-h"></i></a>
+                    <a data-pl-action="list-edit" href="#" class="pl-list-details-helper button nobutton circle" data-pl2-list-edit-action="details"><i class="fas fa-edit"></i></a>
                 {/if}
             </div>
 
@@ -76,7 +76,9 @@
                 </div>
             </section>
 
-            <a href="#" id="pl-complete-log-link" class="inline-link gray" {if !$count_items_done}style="display:none;"{/if}><b><i>{_w('Show all %d completed to-do', 'Show all %d completed to-dos', $count_items_done|default:0)}</i></b></a>
+            <div class="box align-center custom-mt-16">
+                <a href="#" id="pl-complete-log-link" class="button light-gray small" {if !$count_items_done}style="display:none;"{/if}><i class="fas fa-check"></i> [`Show all completed to-dos`]</a>
+            </div>
         </div>
         <div class="clear-both"></div>
 

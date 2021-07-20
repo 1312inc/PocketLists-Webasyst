@@ -37,7 +37,7 @@
 .pl2pro-item-add.pl2pro-all-labels-shown .pl2pro-shortcuts-group { display: none !important; }
 .pl2pro-item-add.pl2pro-edit-existing { margin-top: 13px !important; margin-bottom: 23px; line-height: 2rem; }
 .pl2pro-item-add.pl2pro-edit-existing .pl2pro-label-tiny-helper { display: none !important; }
-.pl2pro-item-add.pl2pro-edit-existing .pl-label { display: inline-block !important; font-size: 1rem; margin-right: 10px !important; padding: 2px 6px 3px !important; }
+.pl2pro-item-add.pl2pro-edit-existing .pl-label { display: inline-block !important; font-size: 0.875rem; margin-right: 10px !important; padding: 2px 6px 3px !important; }
 .pl2pro-item-add.pl2pro-edit-existing .pl-label.selected { border: 2px solid rgba(0,0,0,0.75); box-shadow: 0 2px 10px rgba(0,0,0,0.2); margin-top: 0 !important; }
 .pl-details-form .pl2pro-item-add { margin-top: 5px; margin-bottom: 10px; }
 .pl-details-form .pl2pro-item-add .pl2pro-shortcuts-group { margin-left: 2px; }

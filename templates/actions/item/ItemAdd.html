@@ -1,12 +1,12 @@
 <div id="pl-item-add" data-pl-item-add>
     <div class="pl-item pl-item__row">
-        
+
         {* <div class="pl-meta">
         <a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
         </div> *}
 
-        <div class="flexbox middle">
-            <label class="pl-done-label">
+        <div class="flexbox">
+            <label class="pl-done-label large">
                 <input type="checkbox" disabled="disabled" class="pl-done">
                 <!-- <span class="pl-add-todo"></span> -->
                 <i class="fas fa-plus"></i>
@@ -26,7 +26,7 @@
                 <textarea rows="1" placeholder="{$_placeholder}" data-pl2-item-textarea class="pl-item-name"></textarea>
                 <a href="#" class="pl-item-add-shortcuts flexbox middle space-4" data-pl2-action="edit-new-item">
                     <i class="userpic userpic-20" style="background-image: url('{$assign_contact_photo|default:$wa->user()->getPhoto(20)}')" data-pl2-item-add="assign-contact"></i>
-                    <i class="fas fa-caret-down" title="[`Show details and use the detailed add mode by default`]"></i>
+                    <i class="fas fa-chevron-down text-light-gray" title="[`Show details and use the detailed add mode by default`]"></i>
                 </a>
 
                 <!-- plugin hook: 'backend_item_add.compact' -->
