@@ -1612,6 +1612,9 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     }]);
                 }
 
+                // Prevent requests if canShowAutocomplete() === false
+                if (!term) return;
+
                 var plresponse = function (data) {
                     if (data.status != 'ok') {
                         return [];
