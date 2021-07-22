@@ -26,7 +26,8 @@
                 <input type="hidden" value="{if !$list->getId()}-1{else}{$list->getId()}{/if}" id="pl-list-id">
 
                 {if $new && !$archive}
-                    <input type="text" placeholder="{sprintf('[`List #%d`]', $new_list_id)}" id="pl-new-list-input" class="bold" />
+                    <input type="text" placeholder="{sprintf('[`List #%d`]', $new_list_id)}" id="pl-new-list-input" class="bold large" />
+                    <p class="hint">[`Type in a list name and hit Enter.`]</p>
                 {else}
                     <h1 id="pl-list-name"{if $list->getColor()!='none'} class="pl-dark-{$list->getColor()}-label"{/if}>{$list->getNameParsed()|default:' '}</h1>
                 {/if}

@@ -87,7 +87,7 @@
                                 <i class="userpic userpic-20" style="background-image: url({$contact->getUserPic()}); {if $contact->getId() == $item->getAssignedContactId()}{else}display: none;{/if}" alt="{$contact->getUsername()|escape}" data-pl-contact-id="{$contact->getId()}"></i>
                                 {/foreach}
                             </span>
-                            <div class="wa-select">
+                            <div class="wa-select small">
                                 <select name="item[assigned_contact_id]">
                                     {$assignUserId = $assign_user_id|default:$item->getAssignedContactId()}
                                     <option value="0" {if !$assignUserId}selected="selected"{/if}>[`Nobody`]</option>
@@ -153,7 +153,7 @@
                         <div class="name for-input">[`When`]</div>
 
                         <div class="value">
-                            <input name="item[due_date]" class="pl-due-date-input" type="text" id="pl-item-due-datetime" value="{$item->getDueDate()}" autocomplete="off" placeholder="[`Set date`]" />
+                            <input name="item[due_date]" class="pl-due-date-input small" type="text" id="pl-item-due-datetime" value="{$item->getDueDate()}" autocomplete="off" placeholder="[`Set date`]" />
                             <span id="pl-item-due-datetime-time">
                                 {$hour = $item->getDueDatetime()|wa_datetime:'H'}
 
@@ -167,8 +167,8 @@
                                         {for $i=0 to 59 step 5}{$m = "%02d"|sprintf:$i}<option value="{$m}" {if $m == $minutes}selected="selected"{/if}>{$m}</option>{/for}
                                     </select>
 
-                                <a href="#" id="pl-item-due-datetime-set" class="small inline-link nowrap" {if !$item->getDueDatetime() || $item->getDueDatetime()}style="display: none;"{/if}><b><i>[`Set time`]</i></b></a>
-                                <a href="#" id="pl-item-due-datetime-clear" class="small inline-link nowrap" {if !$item->getDueDatetime()}style="display: none;"{/if}><b><i>[`Clear time`]</i></b></a>
+                                <a href="#" id="pl-item-due-datetime-set" class="small nowrap" {if !$item->getDueDatetime() || $item->getDueDatetime()}style="display: none;"{/if}>[`Set time`]</a>
+                                <a href="#" id="pl-item-due-datetime-clear" class="small nowrap" {if !$item->getDueDatetime()}style="display: none;"{/if}>[`Clear time`]</a>
                             </span>
                             {if $item->getDueDate()}
                                 <p class="hint">[`When due is set, it may automatically increase the manually set priority color.`]</p>
@@ -186,7 +186,7 @@
                             [`List`]
                         </div>
                         <div class="value">
-                            <div class="wa-select">
+                            <div class="wa-select small">
                                 <select id="pl-item-list">
                                 {if !$item->getListId() || !$list->getId() || $item->getContact()->isMe()}<option value=""{if !$item->getListId() || !$list->getId()} selected="selected"{/if}>[`None`]</option>{/if}
                                 {foreach $lists as $l}

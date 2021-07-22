@@ -15,9 +15,16 @@
 
                     <span class="pl-dark-{$pocket->getColor()|default:'none'}-label large wide middle">
                         {$pocket->getName()}
+
+                        {if $isAdmin}
+                        <a href="#" title="[`Pocket settings`]" data-pl2-action="edit-pocket" data-pl2-pocket-id="{$pocket->getId()}" class="button nobutton smallest circle">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        {/if}
+
                     </span>
 
-                    {if $isAdmin}<span class="count action"><a href="#/pocket/{$pocket->getId()}/list/new/" class="button circle" title="[`New list`]"><i class="fas fa-plus text-white"></i></a></span>{/if}
+                    {if $isAdmin}<span class="count action"><a href="#/pocket/{$pocket->getId()}/list/new/" class="button circle{if empty($lists)} pulsar{/if}" title="[`New list`]"><i class="fas fa-plus text-white"></i></a></span>{/if}
 
                 </h5>
             </div>
@@ -55,13 +62,6 @@
                     {/if}
                 </div>
             {/if}
-            <div class="align-center custom-mt-16">
-                {if $isAdmin}
-                <a href="#" title="[`Pocket settings`]" data-pl2-action="edit-pocket" data-pl2-pocket-id="{$pocket->getId()}" class="button nobutton small">
-                    <i class="fas fa-cog"></i> <span>[`Pocket settings`]</span>
-                </a>
-                {/if}
-            </div>
         </div>
 
     </nav>
@@ -72,10 +72,8 @@
 
     <!-- ITEMS -->
     <main class="content bordered-left {if !$list_id_requested}mobile-hidden{/if}">
-        <div class="article">
-            <div class="article-body custom-pt-16">
-                {$lists_html|default:""}
-            </div>
+        <div class="pl-pseudo-article">
+            {$lists_html|default:""}
         </div>
     </main>
 

@@ -12,6 +12,8 @@
 
 
 <main class="blank bordered-right pl-inner-content pl-items pl-list-items pl-favorites shadowed" id="pl-list-content">
+<div class="pl-pseudo-article">
+
     <div class="pl-alert"{if !empty($undone_items) || $count_done_items} style="display:none;"{/if}>
     [`<strong>Your Favorites list is empty.</strong> To add a to-do to your personal favorites list, either click on a tiny little star icon next to a to-do name (in just any to-do list) or add a to-do directly using the form below.`]
     </div>
@@ -52,7 +54,9 @@
             </div>
         </section>
 
-        <a href="#" id="pl-complete-log-link" class="inline-link gray" {if !$count_done_items}style="display:none;"{/if}><b><i>{_w('Show all %d completed to-do', 'Show all %d completed to-dos', $count_done_items)}</i></b></a>
+        <div class="box align-center custom-mt-16">
+            <a href="#" id="pl-complete-log-link" class="button light-gray small" {if !$count_done_items}style="display:none;"{/if}><i class="fas fa-check"></i> [`Show all completed to-dos`]</a>
+        </div>
         {/if}
 
     </div>
@@ -64,6 +68,8 @@
     {/if}
 
     {include '../../include/itemdetails.html' inline}
+
+</div>
 </main>
 {if !$print}
 <script type="text/javascript">

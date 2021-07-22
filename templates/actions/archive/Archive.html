@@ -2,9 +2,11 @@
 
     {if empty($lists)}
         <main class="content blank pl-items" id="pl-list-content">
+            <div class="pl-pseudo-article">
             <div class="pl-welcome top-padded bottom-padded">
                 <h2>[`Archive is empty`]</h2>
                 <p>[`Archiving is a handy way to hide a to-do list instead of deleting it permanently. To archive a list, tap on it’s big checkmark or click <em>Archive list</em> in the list action menu.`]</p>
+            </div>
             </div>
         </main>
     {else}
@@ -28,33 +30,35 @@
             </div>
         </nav>
         <main class="content bordered-left pl-list-content pl-archive" id="pl-list-content">
+            <div class="pl-pseudo-article">
             <div class="pl-inner-content pl-items pl-{$list->getColor()}">
                 <header class="pl-list-title pl-title">
                     {if $list->getId()}
                     <div class="flexbox">
-                        <div class="wide"></div>
+                        <div class="wide">
+                            <h1>
+                                <input type="hidden" value="{$list->getId()|default:-1}" id="pl-list-id">
+                                <span id="pl-list-name">{$list->getName()|escape}</span>
+
+                                <span class="pl-list-due {$list->getCssClass(pocketlistsViewHelper::CSS_CLASS_DUE_DATETIME)}" {if !$list->getDueDatetime() && !$list->getDueDate()}style="display: none;"{/if}>
+                                {if $list->getDueDatetime()}
+                                {$list->getDueDatetime()|wa_datetime:'humandatetime'}
+                                {elseif $list->getDueDate()}
+                                {$list->getDueDate()|wa_date:'humandate'}
+                                {/if}
+                                </span>
+                            </h1>
+                        </div>
                         <div class="flexbox space-8">
                             <div>
-                                <a href="#" data-pl-action="list-unarchive" class="button"><i class="fas fa-inbox"></i> [`Unarchive list`]</a>
+                                <a href="#" data-pl-action="list-unarchive" class="button light-gray rounded"><i class="fas fa-inbox text-blue"></i> [`Unarchive`]</a>
                             </div>
                             <div>
-                                <a href="#" data-pl-action="list-delete" class="button red"><i class="far fa-trash-alt"></i> [`Delete`]</a>
+                                <a href="#" data-pl-action="list-delete" class="button light-gray circle"><i class="fas fa-trash-alt text-red"></i></a>
                             </div>
                         </div>
                     </div>
                     {/if}
-                    <h1>
-                        <input type="hidden" value="{$list->getId()|default:-1}" id="pl-list-id">
-                        <span id="pl-list-name">{$list->getName()|escape}</span>
-
-                        <span class="pl-list-due {$list->getCssClass(pocketlistsViewHelper::CSS_CLASS_DUE_DATETIME)}" {if !$list->getDueDatetime() && !$list->getDueDate()}style="display: none;"{/if}>
-                        {if $list->getDueDatetime()}
-                        {$list->getDueDatetime()|wa_datetime:'humandatetime'}
-                        {elseif $list->getDueDate()}
-                        {$list->getDueDate()|wa_date:'humandate'}
-                        {/if}
-                        </span>
-                    </h1>
                 </header>
                 <div class="pl-list-items" id="pl-list-items">
 
@@ -81,6 +85,7 @@
                 {include '../../include/archivelistdialog.html' inline}
                 {include '../../include/deletelistdialog.html' inline}
 
+            </div>
             </div>
 
             <script type="text/javascript">
