@@ -76,7 +76,7 @@
                 </div>
             </section>
 
-            <a href="#" id="pl-complete-log-link" class="inline-link gray" {if !$count_done_items}style="display:none;"{/if}><b><i>{_w('Show all %d completed to-do', 'Show all %d completed to-dos', $count_items_done|default:0)}</i></b></a>
+            <a href="#" id="pl-complete-log-link" class="inline-link gray" {if !$count_items_done}style="display:none;"{/if}><b><i>{_w('Show all %d completed to-do', 'Show all %d completed to-dos', $count_items_done|default:0)}</i></b></a>
         </div>
         <div class="clear-both"></div>
 

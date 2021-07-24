@@ -108,7 +108,7 @@
 <ul class="menu">
     <li data-pl-sidebar="todo">
         <a href="#/todo/">
-            <i class="fas fa-check-circle"></i>
+            <i class="fas fa-check"></i>
             <span>[`My to-dos`]</span>
             {if $sidebar_todo_count_icon && $sidebar_todo_count_icon->getMaxPriority() > 0}
                 <span class="count">
@@ -122,10 +122,10 @@
         <a href="#/favorites/">
             <i class="fas fa-star{if $favorites_count_undone->getCountMaxPriority()} text-yellow{/if}"></i>
             <span>[`Favorites`]</span>
-            <span class="count" data-pl-sidebar="favorites-count">{$favorites_count_undone->getCount()}</span>
             {if $favorites_count_undone->getCountMaxPriority() && $favorites_count_undone->getMaxPriority() > 0}
                 <span class="count">
                     <span class="badge {pocketlistsViewHelper::getPriorityCssClass($favorites_count_undone->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}">{$favorites_count_undone->getCountMaxPriority()}</span>
+                    <span data-pl-sidebar="favorites-count">{$favorites_count_undone->getCount()}</span>
                 </span>
             {/if}
         </a>
@@ -135,10 +135,10 @@
         <a href="#/app/{$app->getApp()}/">
             <span class="icon">{$app->getAppIcon()}</span>
             <span>{$app->getName()}</span>
-            <span class="count">{$app->countItems()->getCount()}</span>
             {if $app->countItems()->getCountMaxPriority() && $app->countItems()->getMaxPriority() > 0}
                 <span class="count">
                     <span class="badge {pocketlistsViewHelper::getPriorityCssClass($app->countItems()->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}">{$app->countItems()->getCountMaxPriority()}</span>
+                    {$app->countItems()->getCount()}
                 </span>
             {/if}
         </a>
@@ -201,16 +201,18 @@
                     <li data-pl-team-id="{$teammate->getId()}"
                         {if $teammate@iteration > $max_visible_in_team}style="display: none;"{/if}>
                         <a href="#/team/{$teammate->getLogin()|escape}/">
-                            <span class="count">{$teammate->getItemsInfo()->getCount()}</span>
-
-                            {if $teammate->getItemsInfo()->getMaxPriority()}
-                            <span class="count bold {pocketlistsViewHelper::getPriorityCssClass($teammate->getItemsInfo()->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}">
-                                {$teammate->getItemsInfo()->getCountMaxPriority()}
+                            <span class="count">
+                                {if $teammate->getItemsInfo()->getMaxPriority()}
+                                    <span class="badge {pocketlistsViewHelper::getPriorityCssClass($teammate->getItemsInfo()->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}">{$teammate->getItemsInfo()->getCountMaxPriority()}</span>
+                                {/if}
+                                {$teammate->getItemsInfo()->getCount()}
                             </span>
-                            {/if}
 
-                            <i class="icon16 userpic20{if $teammate->getStatus() == 'online'} pl-user-online{/if}" style="background-image: url({$teammate->getPhotoUrl()})"
-                               alt="{$teammate->getName()|escape}" data-pl-contact-id="{$teammate->getId()}"></i>{$teammate->getName()|escape}
+                            <span class="icon"><i class="userpic{if $teammate->getStatus() == 'online'} pl-user-online{/if}" style="background-image: url({$teammate->getPhotoUrl()})"
+                               alt="{$teammate->getName()|escape}" data-pl-contact-id="{$teammate->getId()}"></i></span>
+
+                            <span>{$teammate->getName()|escape}</span>
+
                             {if !empty($new_items_count.team[$teammate->getId()])} <span
                                     class="highlighted bold small black">+{$new_items_count.team[$teammate->getId()]}</span>{/if}
                         </a>
@@ -264,7 +266,7 @@
         <li{if pocketlistsHelper::hasPlugin('pro')} class="top-padded"{/if}>
             <a href="#/about/">
                 <span class="icon">
-                    <i style="background-image: url('/wa-apps/pocketlists/img/pl2webasyst48.png') !important;"></i>
+                    <i style="background-image: url('/wa-apps/pocketlists/img/pl2webasyst48.png') !important;" class="size-20"></i>
                 </span>
                 <span>[`About`]</span>
             </a>

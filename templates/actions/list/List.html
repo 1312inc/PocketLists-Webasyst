@@ -22,12 +22,12 @@
             <input type="hidden" name="pocket_id" value="{$pocket->getId()}">
             {/if}
 
-            <div class="wide large">
+            <div class="wide">
                 <input type="hidden" value="{if !$list->getId()}-1{else}{$list->getId()}{/if}" id="pl-list-id">
 
                 {if $new && !$archive}
-                    <input type="text" placeholder="{sprintf('[`List #%d`]', $new_list_id)}" id="pl-new-list-input" class="bold large" />
-                    <p class="hint">[`Type in a list name and hit Enter.`]</p>
+                    <input type="text" placeholder="{sprintf('[`List #%d`]', $new_list_id)}" id="pl-new-list-input" class="bold larger" />
+                    <p class="hint"><i class="fas fa-thumbs-up"></i> [`Type in new list name and hit Enter.`]</p>
                 {else}
                     <h1 id="pl-list-name"{if $list->getColor()!='none'} class="pl-dark-{$list->getColor()}-label"{/if}>{$list->getNameParsed()|default:' '}</h1>
                 {/if}
@@ -44,10 +44,10 @@
                         {$max_visible_in_bundle = 5}
                         {foreach $list_access_contacts as $list_access_contact}
                             {if $list_access_contact@iteration > $max_visible_in_bundle}{break}{/if}
-                            <i class="userpic userpic-20" style="background-image: url('{$list_access_contact->getPhotoUrl()}');" title="{$list_access_contact->getName()|escape}"></i>
+                            <i class="userpic" style="background-image: url('{$list_access_contact->getPhotoUrl()}');" title="{$list_access_contact->getName()|escape}"></i>
                         {/foreach}
                         {if count($list_access_contacts) > $max_visible_in_bundle}
-                            <i class="userpic userpic-20" title="{$list_access_contact->getName()|escape}"><span>+{count($list_access_contacts) - $max_visible_in_bundle}</span></i>
+                            <i class="userpic" title="{$list_access_contact->getName()|escape}"><span>+{count($list_access_contacts) - $max_visible_in_bundle}</span></i>
                         {/if}
                     </a>
                     {/if}

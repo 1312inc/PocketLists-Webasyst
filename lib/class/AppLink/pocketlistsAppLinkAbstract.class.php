@@ -152,7 +152,7 @@ abstract class pocketlistsAppLinkAbstract
         return sprintf(
             '<i class="icon16 pl-wa-app-icon" style="background-image: url(%s%s); background-size: 16px 16px;"></i>',
             wa()->getRootUrl(),
-            $this->info['icon'][16]
+            $this->info['icon'][48]
         );
     }
 

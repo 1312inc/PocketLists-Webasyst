@@ -1,6 +1,6 @@
 {if $pocketLabelStat}
 <div class="pl-views" data-pl2pro-pocket-sidebar-labels>
-    {* <div class="pl-view-box"><a class="pl-view-widget" href="#/pro/pocketActivity/{$pocket->getId()}/">Activity</a></div> *} 
+    {* <div class="pl-view-box"><a class="pl-view-widget" href="#/pro/pocketActivity/{$pocket->getId()}/">Activity</a></div> *}
     {foreach $pocketLabelStat as $labelInfo}
         <div class="pl-view-box x3" data-pl2pro-label="{$labelInfo->label->getId()}"{if !$labelInfo->count} style="display: none;"{/if}>
             <a class="pl-view-widget"
