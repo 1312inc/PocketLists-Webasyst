@@ -8,63 +8,6 @@
 </nav>
 
 <div class="sidebar-body hide-scrollbar">
-{if $showTinyAd}
-<div class="pl-tiny-ad">
-    <div class="pl-tiny-ad-box">
-
-        {*
-            sorry for coding so hard :)
-
-            <a href="#" class="pl-tiny-ad-close" title="[`Close`]">&times;</a>
-            <!-- <h5 class="heading">РАБОТАЕМ ДОМА</h5> -->
-            <!-- <h5 class="heading">[`New app by 1312 Inc.`]</h5> -->
-            <!-- <h5 class="heading">[`Ad`]</h5> -->
-            <h5 class="heading">Новинка!</h5>
-
-            {$_ad_url = 'https://www.webasyst.ru/store/app/cash/?utm_source=pl2webasyst&utm_medium=inapp_tiny_ad&utm_campaign=1312_inapp_pl2webasyst_cashapp_2020_1'}
-
-            <a href="{$_ad_url}" target="_blank">
-                <img src="{$wa_url}wa-apps/pocketlists/img/pl2ad-cash-app-144.png" class="pl-app-icon" />
-            </a>
-
-            <!-- <p>{sprintf('[`<a href="%s" target="_blank">Status app</a> tracks working time and shows whom have been working on what (and whom have been doing nothing too!)`]', $_ad_url)}</p> -->
-
-            <p>
-                {sprintf('<b><a href="%s" target="_blank" class="no-underline">Новое приложение Webasyst Cash Flow</a></b> от команды разработчиков Pocket Lists поможет вести финансовый учет, прогнозировать прибыль и избегать кассовых разрывов.', $_ad_url)}
-            </p>
-            {if $wa->shop}
-                <p><b>Дружит с Shop-Script</b>: импортирует данные о продажах интернет-магазина и считает прибыль бизнеса.</p>
-            {/if}
-
-            <a href="{$_ad_url}" target="_blank" class="pl-tiny-button">Хочу порядок в финансах!</a>
-
-            <p class="hint">Проще, чем бухгалтерия. Эффективнее, чем Excel.</p>
-
-        *}
-
-        <a href="#" class="pl-tiny-ad-close" title="[`Close`]">&times;</a>
-        <h5 class="heading">Рекомендуем!</h5>
-
-        {$_ad_url = 'https://www.webasyst.ru/store/app/tasks/?utm_source=pl2webasyst&utm_medium=inapp_tiny_ad&utm_campaign=1312_inapp_pl2webasyst_tasksapp_2020_1'}
-
-        <a href="{$_ad_url}" target="_blank">
-            <img src="{$wa_url}wa-apps/pocketlists/img/pl2ad-tasks-app-144.png" class="pl-app-icon" />
-        </a>
-
-        <!-- <p>{sprintf('[`<a href="%s" target="_blank">Status app</a> tracks working time and shows whom have been working on what (and whom have been doing nothing too!)`]', $_ad_url)}</p> -->
-
-        <p>
-            {sprintf('<b><a href="%s" target="_blank" class="no-underline">Обновленное приложение «Задачи»</a> интегрировано с Pocket&nbsp;Lists</b> и отныне развивается командой 1312 Inc.', $_ad_url)}
-        </p>
-        <p><b>Поможет организовать работу команды на удаленке</b>, распределить задачи между коллегами, следить за статусом выполнения, вести обсуждения без флуда и закрывать задачи вовремя.</p>
-
-        <a href="{$_ad_url}" target="_blank" class="pl-tiny-button">Удаленка на 100%</a>
-
-        <p class="hint">Рабочий онлайн-офис — в любое время и в любом месте.</p>
-
-    </div>
-</div>
-{/if}
 
 <div class="box custom-mt-4">
     <form class="state-with-inner-icon left">
@@ -209,7 +152,7 @@
                                 {$teammate->getItemsInfo()->getCount()}
                                 {if !empty($new_items_count.team[$teammate->getId()])} <span
                                         class="highlighted bold small black">+{$new_items_count.team[$teammate->getId()]}</span>{/if}
-                                        
+
                             </span>
 
                             <span class="icon"><i class="userpic{if $teammate->getStatus() == 'online'} pl-user-online{/if}" style="background-image: url({$teammate->getPhotoUrl()})"
@@ -238,6 +181,7 @@
 
 <!-- SYSTEM -->
 <div class="sidebar-footer shadowed">
+
     <ul class="menu">
         <li>
             <a href="#/archive/">
@@ -301,6 +245,50 @@
             </ul>
         </div>
     {/if}
+
+    {if $showTinyAd}
+    <div class="pl-tiny-ad">
+        <div class="pl-tiny-ad-box">
+
+            <div class="flexbox space-8 custom-mb-8">
+                <h6 class="heading wide custom-m-0">[`More apps by 1312 Inc.`]</h6>
+                <a href="#" class="pl-tiny-ad-close" title="[`Close`]"><i class="fas fa-times"></i></a>
+            </div>
+
+            <div class="flexbox space-8{if $tinyAd.adtype == 'plugin'} vertical{/if}">
+                <a href="{$tinyAd.appurl}" target="_blank">
+                    <img src="{$tinyAd.image}" class="pl-app-icon{if $tinyAd.adtype == 'plugin'} pl-plugin-icon{/if}" />
+                </a>
+                <div class="wide">
+                    <h5 class="custom-mb-4 nowrap">
+                        <a href="{$tinyAd.appurl}" target="_blank">{$tinyAd.title}</a>
+                        <span class="badge red bold pl-app-discount-badge">&minus;{$tinyAd.discount}%</span>
+                    </h5>
+                    <p class="custom-mt-0">{$tinyAd.subtitle}</p>
+                </div>
+            </div>
+
+            <p class="align-center semibold gray">{$tinyAd.teaser}</p>
+
+            <a href="{$tinyAd.appurl}" target="_blank" class="button green pl-tiny-ad-action-button">[`Show promocode`]</a>
+
+            <script>
+                ( function($) {
+                    var dialog_html = "<div class=\"dialog pl-tiny-ad-dialog\" id=\"\"> <div class=\"dialog-background\"><\/div> <div class=\"dialog-body\"> <a href=\"#\" class=\"dialog-close js-close-dialog\"><i class=\"fas fa-times\"><\/i><\/a> <div class=\"dialog-content\"> <div class=\"flexbox space-16\"> <a href=\"{$tinyAd.appurl}\" target=\"_blank\"> <img src=\"{$tinyAd.image}\" class=\"pl-app-icon\" /> </a> <div class=\"wide\"> <h3 class=\"custom-mb-12 nowrap\"> <a href=\"{$tinyAd.appurl}\" target=\"_blank\">{$tinyAd.title}</a> <span class=\"badge red bold pl-app-discount-badge\">&minus;{$tinyAd.discount}%</span> </h3> <p class=\"custom-mt-0\">{$tinyAd.body}</p> <a href=\"{$tinyAd.buyurl}\" class=\"button larger green\" target=\"_blank\">[`Buy now with promocode`] </a>  <a href=\"{$tinyAd.appurl}\" class=\"button larger green nobutton\" target=\"_blank\">[`Learn more`]</a> </div> </div> <\/div> <footer class=\"dialog-footer align-center\"> <p class=\"custom-mb-8\">[`Use this promocode to get a discount`] </p> <input type=\"text\" class=\"bold align-center\" value=\"{$tinyAd.promocode}\" style=\"border-style: dashed; font-size: 1.5rem;\"> <\/footer> <\/div> <\/div> ";
+
+                    $(".pl-tiny-ad-action-button").on("click", function() {
+                        var dialog = $.waDialog({
+                            html: dialog_html
+                        });
+                        return false;
+                    });
+                })(jQuery);
+            </script>
+
+        </div>
+    </div>
+    {/if}
+
 </div>
 
 <script>

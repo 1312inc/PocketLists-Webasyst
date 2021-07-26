@@ -164,9 +164,9 @@ table.pl-calendar td .pl-dots i.icon { margin-top: 0.2em; margin-right: 0.2em; }
 .pl-about p { max-width: 85%; }
 
 .pl-upgrade-ad { margin: 0; }
-.pl-upgrade-ad p { margin-bottom: 15px; }
-.pl-upgrade-ad .icon16.star { margin-right: 0.15em; margin-top: 0; }
-.pl-upgrade-ad .pl-wa-plugin-icon { box-shadow: 0 15px 35px rgba(40,40,80,0.1), 0 5px 10px rgba(0,0,0,0.07); border-radius: 5px; width: 200px; height: 110px; float: left;  margin-right: 20px; margin-bottom: 3px; }
+.pl-upgrade-ad p { margin-bottom: 15px; font-size: 0.9375rem; }
+/* .pl-upgrade-ad .icon16.star { margin-right: 0.15em; margin-top: 0; } */
+.pl-upgrade-ad .pl-wa-plugin-icon { box-shadow: 0 15px 35px rgba(40,40,80,0.1), 0 5px 10px rgba(0,0,0,0.07); border-radius: 5px; width: 200px; height: 110px; margin-right: 20px; margin-bottom: 3px; }
 
 .pl-badge-appstore { width: 144px; display: block; }
 
@@ -179,8 +179,8 @@ table.pl-calendar td .pl-dots i.icon { margin-top: 0.2em; margin-right: 0.2em; }
 .pl2ios-app-icon { width: 128px; height: 128px; margin: -19px; }
 
 .pl-more-apps { list-style: none; padding: 10px 0 0; }
-.pl-more-apps li { display: inline-block; text-align: center; margin-right: 15px; margin-top: 0 !important; max-width: 144px; vertical-align: top; line-height: 1.25; }
-.pl-more-apps li a { text-decoration: none; display: block; font-size: 1.2rem; padding: 5px 0 7px; }
+.pl-more-apps li { display: block; margin-bottom: 20px; margin-top: 10px !important; vertical-align: top; line-height: 1.25; }
+.pl-more-apps li p { font-size: 0.9375rem; }
 .pl-more-apps li img { width: 96px; height: 96px; }
 
 /* Upgrade
@@ -189,7 +189,6 @@ table.pl-calendar td .pl-dots i.icon { margin-top: 0.2em; margin-right: 0.2em; }
 .pl-upgrade-cover { background: #eee url('../img/pl2pro-background.png') repeat-x; background-size: 100% auto; height: 250px; max-height: 22vh; background-position: center center; }
 
 .pl-upgrade-content { max-width: 750px; line-height: 1.4em; margin: 0.5rem auto; }
-.pl-upgrade-content ul { font-family: 'Lucida Grande', 'Lucida Sans Unicode', 'Helvetica Neue', 'Liberation Sans', Arial, sans-serif }
 .pl-upgrade-content ul li { margin-bottom: 1rem; }
 .pl-upgrade-content img { max-width: 90%; margin: 10px auto 20px; }
 .pl-upgrade-content code { background: #eee; border-radius: 3px; padding: 2px 3px; }
@@ -197,14 +196,21 @@ table.pl-calendar td .pl-dots i.icon { margin-top: 0.2em; margin-right: 0.2em; }
 /* Some tiny promotions
 ----------------------- */
 
-.pl-tiny-ad { padding: 10px 5px 10px 10px; }
-.pl-tiny-ad-box { background: #ffd; border: 1px solid rgba(0,0,0,0.1); box-shadow: 0 5px 10px -5px rgba(0,0,0,0.1); border-radius: 4px; padding: 10px; }
-.pl-tiny-ad .pl-tiny-ad-close { float: right; font-size: 1.25rem; color: #886; position: relative; top: -0.35rem; margin-left: 1rem; }
-.pl-tiny-ad h5 { font-size: 0.75rem; margin-bottom: 1rem; color: #bb9; }
-.pl-tiny-ad p { font-size: 0.85em; line-height: 1.2em; font-family: 'Helvetica Neue', 'Liberation Sans', Arial, sans-serif; text-align: center; margin: 12px 4px 8px; }
-.pl-tiny-ad img.pl-app-icon { width: 72px; height: 72px; margin: 12px auto; display: block; }
-.pl-tiny-ad .pl-badge-appstore { width: 112px; display: block; margin: 15px auto 10px; }
-.pl-tiny-ad a.pl-tiny-button { background: #fff; border: 1px solid black; border-radius: 4px; display: block; margin: 15px auto 10px; padding: 8px 10px; text-align: center; color: #03c; text-decoration: none; font-weight: bold; box-shadow: 0 5px 10px -5px rgba(0,0,0,0.15); }
+.pl-tiny-ad { font-size: 0.8125rem; line-height: 1.25; }
+.pl-tiny-ad-box { border: 2px dashed var(--border-color-hard); border-radius: 0.5rem; padding: 10px; margin: 0.5rem 0.75rem 0.75rem; background: var(--background-color-blank); }
+.pl-tiny-ad .pl-tiny-ad-close { font-size: 1rem; color: #886; padding-right: 0.25rem; }
+.pl-tiny-ad h5 { font-size: 1rem; }
+.pl-tiny-ad img.pl-app-icon { width: 64px; height: 64px; }
+.pl-tiny-ad img.pl-app-icon.pl-plugin-icon { width: 100%; margin-bottom: 0.5rem; height: auto; }
+.pl-tiny-ad .pl-app-discount-badge { font-size: 0.6125rem; font-weight: bold; position: relative; top: -2px; }
+.pl-tiny-ad .pl-tiny-ad-action-button { display: block; width: 100%; text-align: center; font-size: 0.875rem; }
+
+.pl-tiny-ad-dialog img.pl-app-icon { width: 96px; height: 96px; }
+.pl-tiny-ad-dialog img.pl-app-icon.pl-plugin-icon { width: 200px; height: 110px; }
+.pl-tiny-ad-dialog .pl-app-discount-badge { font-size: 0.875rem; font-weight: bold; }
+.pl-tiny-ad-dialog p { font-size: 0.9375rem; }
+/* .pl-tiny-ad .pl-badge-appstore { width: 112px; display: block; margin: 15px auto 10px; } */
+/* .pl-tiny-ad a.pl-tiny-button { background: #fff; border: 1px solid black; border-radius: 4px; display: block; margin: 15px auto 10px; padding: 8px 10px; text-align: center; color: #03c; text-decoration: none; font-weight: bold; box-shadow: 0 5px 10px -5px rgba(0,0,0,0.15); } */
 
 /* Done checkbox
 ---------------- */
@@ -305,7 +311,7 @@ textarea.pl-item-name {
 .pl-chat textarea { margin-left: 0px; border-radius: 5px; padding-left: 8px; width: 80%; min-width: 150px; max-height: 110px; padding-right: 5px; padding-left: 12px; font-size: 0.875rem; }
 /* .pl-unsaved { background: rgba(183,0,0,0.06) !important; 2px 3px 0nt; color: #f55 !important; } */
 
-.pl-title { padding: 1rem 1.25rem; }
+.pl-title { padding: 1rem 1.25rem 0; }
 .pl-title h1 { margin: 0; line-height: 1.1em; display: inline-block; }
 .pl-title h1 .pl-done + span {left: -34px; top: 2px; width: 22px; height: 22px; position: absolute; z-index: 1;}
 .pl-title h1 .pl-done:checked + span,

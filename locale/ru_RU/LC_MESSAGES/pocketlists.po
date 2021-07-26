@@ -1359,3 +1359,9 @@ msgid_plural "%d to-dos are pending"
 msgstr[0] "%d подзадача"
 msgstr[1] "%d подзадачи"
 msgstr[2] "%d подзадач"
+
+msgid "Free"
+msgstr "Бесплатно"
+
+msgid "Installed"
+msgstr "Установлено"
