@@ -151,8 +151,8 @@ table.pl-calendar td .pl-dots i.icon { margin-top: 0.2em; margin-right: 0.2em; }
 ----------- */
 
 #pl-settings-form { overflow: visible; }
-#pl-settings-form .heading i.icon16 { margin-left: -0.2em; }
-#pl-settings-form .field p { margin-right: 150px; }
+/* #pl-settings-form .heading i.icon16 { margin-left: -0.2em; } */
+/* #pl-settings-form .field p { margin-right: 150px; } */
 #pl-save-settings { margin-right: 10px; }
 
 .pl-pocket-access { line-height: 1.5em; padding: 10px; }
@@ -733,6 +733,13 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 
 /* Version 2
 --------------- */
+
+:root {
+    --button-light-gray-background-color-hover: rgba(0, 0, 0, 0.1);
+}
+[data-theme="dark"] {
+    --button-light-gray-background-color-hover: rgba(255, 255, 255, 0.25);
+}
 
 [data-pl-pocket-color] .rounded,
 [data-pl-list-color] .rounded {

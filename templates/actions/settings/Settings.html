@@ -14,19 +14,18 @@
         </ul>
     </div>
 
-    <div class="content left300px bordered-left blank">
+    <div class="content bordered-left blank">
 
-        <main class="pl-pseudo-article" data-pl2-settings-content>
+        <div class="article">
+        <main class="article-body" data-pl2-settings-content>
 
             <div class="fields form">
                 <form method="post" id="pl-settings-form">
 
-                <div class="flexbox space-8">
-                    <i class="userpic userpic-20" style="background-image: url({$wa->user()->getPhoto(20)});"></i>
-                    <div class="heading custom-m-0">
-                        [`My personal settings`]
-                    </div>
-                </div>
+                <h1>
+                    <span class="icon custom-mr-4"><i class="userpic" style="background-image: url({$wa->user()->getPhoto(96)});"></i></span>
+                    [`My personal settings`]
+                </h1>
 
                 <div class="fields-group">
 
@@ -135,7 +134,7 @@
                   </div>
 
                   <div class="field">
-                    <div class="name nowrap">
+                    <div class="name nowrap for-input">
                       [`App icon counter`]
                       <span class="badge red">1</span>
                     </div>
@@ -171,7 +170,7 @@
                             [`Daily recap on what’s up next`]
                         </label>
 
-                        <div class="wa-select">
+                        <div class="wa-select small">
                         <select name="daily_recap">
                             <option
                                     value="{pocketlistsUserSettings::DAILY_RECAP_FOR_TODAY}"
@@ -191,7 +190,7 @@
                         </select>
                         </div>
 
-                        <div class="pl-cron-msg custom-my-12" style="{if empty($settings.daily_recap_on)}display: none;{/if}">
+                        <blockquote class="pl-cron-msg custom-my-12" style="{if empty($settings.daily_recap_on)}display: none;{/if}">
                         {capture "dailyrecap_cron_command"}
                             <ul class="small">
                                 <li>
@@ -211,7 +210,7 @@
                                 {$smarty.capture.dailyrecap_cron_command}
                             </div>
                         {/if}
-                        </div>
+                        </blockquote>
 
                         <div>
                         <label>
@@ -280,7 +279,7 @@
                             [`When someone marks a to-do item as complete`]
                         </label>
                     </div>
-                        <div class="wa-select">
+                        <div class="wa-select small">
                         <select name="email_complete_item">
                             <option
                                     value="{pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_COMPLETES_ITEM_I_CREATED}"
@@ -316,7 +315,7 @@
                         </label>
                         </div>
 
-                        <div class="wa-select">
+                        <div class="wa-select small">
                         <select name="email_comment_item">
                             <option
                                     value="{pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_ITEM}"
@@ -349,9 +348,9 @@
                 </div>
                 </form>
             </div>
-            <div class="clear-both"></div>
 
         </main>
+        </div>
 
     </div>
 

@@ -8,8 +8,13 @@
     <div class="clear-left"></div>
     <div class="fields form">
         <div class="field">
+            <div class="name for-input"></div>
             <div class="value no-shift">
-                <a href="#" class="inline-link" data-pl2pro-shortcuts-action="add"><i class="icon16 add"></i><b><i>[`Add group`]</i></b></a>
+                {if $wa->whichUI() == '1.3'}
+                    <a href="#" class="inline-link" data-pl2pro-shortcuts-action="add"><i class="icon16 add"></i><b><i>[`Add group`]</i></b></a>
+                {else}
+                    <a href="#" class="button rounded light-gray custom-mt-16" data-pl2pro-shortcuts-action="add"><i class="fas fa-plus-circle custom-mr-4"></i><span>[`Add group`]</span></a>
+                {/if}
             </div>
         </div>
     </div>
@@ -17,16 +22,16 @@
 
 <div class="clear-both"></div>
 
-{if method_exists($wa->installer, 'reviewWidget')}
+{* if method_exists($wa->installer, 'reviewWidget')}
     {$wa->installer->reviewWidget('plugin/pocketlists/pro')}
-{/if}
+{/if *}
 
 <script type="text/x-jquery-tmpl" id="pl2pro-shortcuts">
 {literal}
     <div class="field" data-pl2pro-shortcuts-group="${groupId}">
         <div class="name">${group}</div>
         <div class="value">
-            <input type="hidden" data-pl2pro-shortcuts-input id="pl2pro-shortcut-input-${id}">
+            <input type="hidden" data-pl2pro-shortcuts-input id="pl2pro-shortcut-input-${id}" class="pl2pro-shortcut-input">
             <p style="display: none; margin-top: 10px;" data-pl2pro-shortcuts-buttons>
                 <input type="button" class="button green" value="[`Save`]">
                 <i class="icon16 yes" style="display:none"></i>

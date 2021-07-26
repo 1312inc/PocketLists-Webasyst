@@ -20,29 +20,34 @@
         </td>
     </tr>
     <tr>
-        <td class="min-width">
+        <td class="min-width" style="border-bottom: none;">
 
         </td>
-        <td>
-            <a href="#" class="inline-link" data-pl2pro-label-action="create"><i class="icon16 add"></i><b><i>[`Add status`]</i></b></a>
+        <td style="border-bottom: none;">
+            {if $wa->whichUI() == '1.3'}
+                <a href="#" class="inline-link" data-pl2pro-label-action="create"><i class="icon16 add"></i><b><i>[`Add status`]</i></b></a>
+            {else}
+                <a href="#" data-pl2pro-label-action="create" class="button rounded light-gray"><i class="fas fa-plus-circle custom-mr-4"></i><span>[`Add status`]</span></a>
+            {/if}
         </td>
     </tr>
     </tbody>
 </table>
 
-{if method_exists($wa->installer, 'reviewWidget')}
+{* if method_exists($wa->installer, 'reviewWidget')}
     {$wa->installer->reviewWidget('plugin/pocketlists/pro')}
-{/if}
+{/if *}
 
 <script type="text/x-jquery-tmpl" id="pl2pro-label">
 {literal}
     <tr data-pl2pro-label-id="${id}">
         <td class="min-width">
             <a title="[`Sort`]"><i class="icon16 sort"></i></a>
+            <a title="[`Sort`]"><i class="fas fa-bars text-light-gray"></i></a>
         </td>
         <td class="bordered">
             <span class="pl-label" style="background: #${color};">${name}</span>
-            <a href="#" class="inline-link pl2pro-label-edit" data-pl2pro-label-action="update"><i class="icon10 edit"></i> <b><i>[`Edit`]</i></b></a>
+            <a href="#" class="pl2pro-label-edit" data-pl2pro-label-action="update"><i class="icon10 edit"></i><i class="fas fa-edit" style="font-size: 12px;"></i> <span>[`Edit`]</span></a>
         </td>
     </tr>
 {/literal}
@@ -53,15 +58,16 @@
     <tr data-pl2pro-label-id="${id}" data-pl2pro-label-form>
         <td class="min-width">
             <a title="[`Sort`]"><i class="icon16 sort"></i></a>
+            <a title="[`Sort`]"><i class="fas fa-bars text-light-gray"></i></a>
         </td>
         <td class="bordered">
-            <a href="#" class="inline-link pl2pro-label-delete" data-pl2pro-label-action="delete"><i class="icon16 delete"></i>[`Delete`]</a>
-            <input type="text" class="large bold" value="${name}" name="data[name]">
+            <a href="#" class="small pl2pro-label-delete" data-pl2pro-label-action="delete"><i class="icon16 delete"></i><i class="fas fa-trash-alt custom-mr-4 text-red"></i><span class="text-red">[`Delete`]</span></a>
+            <input type="text" class="bold short" value="${name}" name="data[name]">
             <input type="hidden" value="${id}" name="id">
-            #<input type="text" class="short" value="${color}" name="data[color]"><a href="#"><i class="icon16 color" style="background-color: #${color};"></i></a>
+            #<input type="text" class="short shortest" value="${color}" name="data[color]"><a href="#"><i class="icon16 color" style="background-color: #${color};"></i><i class="icon rounded" style="background-color: #${color};"></i></a>
             <span style="margin-left: 10px;" data-pl2pro-label-buttons>
-                <input type="button" value="[`Save`]">
-                [`or`] <a href="#" class="cancel">[`close`]</a>
+                <input type="button" class="button small" value="[`Save`]">
+                <a href="#" class="cancel button small light-gray">[`Close`]</a>
                 <i class="icon16 yes" style="display:none"></i>
             </span>
             <div id="colorpicker-wrapper" style="display:none"></div>
