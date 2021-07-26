@@ -62,7 +62,7 @@
             <ul class="pl-attachments">
                 {foreach $item->getAttachments() as $attachment}
                 {if $attachment->getFiletype() == 'image'}<li><a href="{$pl2_attachments_path}/{$item->getId()}/{$attachment->getFilename()}" target="_blank"><img src="{$pl2_attachments_path}/{$item->getId()}/{$attachment->getFilename()}"></a></li>
-                {else}<li class="pl-no-preview"><a href="{$pl2_attachments_path}/{$item->getId()}/{$attachment->getFilename()}" target="_blank"><i class="fas fa-cloud-download-alt"></i>{$attachment->getFilename()|truncate:128}</a></li>
+                {else}<li class="pl-no-preview"><a href="{$pl2_attachments_path}/{$item->getId()}/{$attachment->getFilename()}" target="_blank"><i class="fas fa-cloud-download-alt custom-mr-4"></i><span>{$attachment->getFilename()|truncate:128}</span></a></li>
                 {/if}
                 {/foreach}
             </ul>
@@ -88,7 +88,7 @@
                     {if !$item->getKeyListId() && !(isset($archive) && $archive == true)}
 
                             <a href="#" class="pl-comment pl-comment-count{if $item->getCommentsCount()} pl-comment-count-show{/if} nowrap" title="[`Comment`]">
-                                <span class="badge blue">
+                                <span class="badge blue small">
                                     <i class="fas fa-comments"></i>
                                     {$item->getCommentsCount()}
                                 </span>

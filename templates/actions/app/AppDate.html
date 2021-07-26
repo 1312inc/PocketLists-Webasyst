@@ -1,4 +1,4 @@
-<main class="blank bordered-right pl-inner-content pl-items pl-list-items pl-todo shadowed" id="pl-list-content">
+<main class="blank pl-inner-content pl-items pl-list-items pl-todo" id="pl-list-content">
 <div class="pl-pseudo-article">
 
     <header class="pl-title">
@@ -16,7 +16,7 @@
             <span></span>
         {else}
             <h1 class="not-padded" pl-todo-stream="date">
-                {if !$print} <a href="#" class="back">&larr; {$app->getName()}</a>{/if}
+                {if !$print} <a href="#" class="button light-gray circle back" style="font-size: 20px; position: relative; top: -4px;" title="[`My to-dos`]"><i class="fas fa-arrow-left"></i></a>{/if}
                 <span>{waDateTime::date(waDateTime::getFormat('humandate'), $date)}</span>
             </h1>
         {/if}

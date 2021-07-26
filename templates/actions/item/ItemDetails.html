@@ -15,7 +15,7 @@
 
         <div class="flexbox middle">
             <div class="pl-padded-left">
-                <i class="fas fa-plus"></i>
+                <i class="fas fa-plus text-light-gray" style="position: relative; left: 4px; top: 0px;"></i>
             </div>
             <textarea class="pl-details-textarea pl-item-name" name="item[name]" placeholder="[`New to-do`]" {if $item->isDone()} disabled="disabled"{/if}>{$item->getName()|escape}</textarea>
         </div>
@@ -34,7 +34,7 @@
                     {/foreach}{/if}
                     <!-- /plugin hook: 'backend_item_add.detail' -->
 
-                    {if $wa->shop}<p class="hint pl-app-hint-internal">[`Use @ or # symbols to link this to-do with a Shop-Script order or a task from the Tasks app.`]{* <a href="#" class="inline-link"><b><i>[`Ok, I got it.`]</i></b></a> *}</p>{/if}
+                    {if $wa->shop}<p class="hint pl-app-hint-internal"><i class="fas fa-link"></i> [`Use @ or # symbols to link this to-do with a Shop-Script order or a task from the Tasks app.`]{* <a href="#" class="inline-link"><b><i>[`Ok, I got it.`]</i></b></a> *}</p>{/if}
 
                     <p class="hint pl-app-hint-external"><i class="icon16 pl pl2app"></i>{sprintf('[`The to-do item will be saved in the <span class="nowrap"><a href="%s" class="gray" target="_blank">Pocket Lists</a> app</span> and will be visible only to authorized Webasyst users. The customer will not see this to-do.`]', $wa_backend_url|cat:'pocketlists/')}{* <a href="#" class="inline-link"><b><i>[`Ok, I got it.`]</i></b></a> *}</p>
 
@@ -48,18 +48,20 @@
 
                 </div>
 
-                <textarea class="pl-details-textarea" style="height: 6rem;" name="item[note]" data-pl2-textarea-rows="2" placeholder="[`Note`]"{if $item->isDone()} disabled="disabled"{/if}>{$item->getNote()|escape}</textarea>
+                <textarea class="pl-details-textarea hint" style="height: 6rem;" name="item[note]" data-pl2-textarea-rows="2" placeholder="[`Note`]"{if $item->isDone()} disabled="disabled"{/if}>{$item->getNote()|escape}</textarea>
 
                 {*$wa->csrf()*}
                 <div data-pl-item-details-attachments>
 
-                    <div class="block double-padded{if $fileupload} pl-add-attachment-dropbox{/if}"{if $fileupload} data-pl-item-details-fileupload{/if}>
+                    <div class="box{if $fileupload} pl-add-attachment-dropbox{/if}"{if $fileupload} data-pl-item-details-fileupload{/if}>
 
-                        <ul class="menu-v">
+                        <ul class="menu zebra{if count($item->getAttachments())} custom-mb-16{/if}">
                         {foreach $item->getAttachments() as $attachment}
                             <li>
-                                <a href="#" class="gray float-right" data-pl-attachment-id="{$attachment->getId()}" data-pl-attachment-name="{$attachment->getFilename()}" style="margin-left: 10px;">&times;</a>
-                                <a href="{$pl2_attachments_path}{$attachment->getFilename()}" target="_blank">{$attachment->getFilename()|truncate:128}</a>
+                                <span class="item">
+                                    <a href="#" class="count gray small" data-pl-attachment-id="{$attachment->getId()}" data-pl-attachment-name="{$attachment->getFilename()}" style="margin-left: 10px;"><i class="fas fa-trash-alt"></i></a>
+                                    <a href="{$pl2_attachments_path}{$attachment->getFilename()}" target="_blank">{$attachment->getFilename()|truncate:128}</a>
+                                </span>
                             </li>
                         {/foreach}
                         </ul>
@@ -79,15 +81,15 @@
                 <div class="fields-group">
                     {if $contacts}
                     <div class="field" id="pl-assigned-contact">
-                        <div class="name for-input">[`Assigned to`]</div>
+                        <div class="name for-input small">[`Assigned to`]</div>
                         <div class="value">
                             <span>
-                                <i class="userpic userpic-20" data-pl-contact-id="0" style="display: none;"></i>
+                                <i class="userpic valign-middle userpic-20" data-pl-contact-id="0" style="display: none;"></i>
                                 {foreach $contacts as $contact}
-                                <i class="userpic userpic-20" style="background-image: url({$contact->getUserPic()}); {if $contact->getId() == $item->getAssignedContactId()}{else}display: none;{/if}" alt="{$contact->getUsername()|escape}" data-pl-contact-id="{$contact->getId()}"></i>
+                                <i class="userpic valign-middle userpic-20 custom-mr-4" style="background-image: url({$contact->getUserPic()}); {if $contact->getId() == $item->getAssignedContactId()}{else}display: none;{/if}" alt="{$contact->getUsername()|escape}" data-pl-contact-id="{$contact->getId()}"></i>
                                 {/foreach}
                             </span>
-                            <div class="wa-select small">
+                            <div class="wa-select smaller">
                                 <select name="item[assigned_contact_id]">
                                     {$assignUserId = $assign_user_id|default:$item->getAssignedContactId()}
                                     <option value="0" {if !$assignUserId}selected="selected"{/if}>[`Nobody`]</option>
@@ -101,8 +103,8 @@
                     </div>
                     {/if}
                     <div class="field pl-already-saved-items-only">
-                        <div class="name">[`Created`]</div>
-                        <div class="value">
+                        <div class="name small">[`Created`]</div>
+                        <div class="value small">
                             <div class="flexbox middle space-4">
                                 <i class="userpic userpic-20" style="background-image: url({$item->getContact()->getUserPic()})" alt="{$item->getContact()->getUsername()|escape}"></i>
                                 <span>{$item->getContact()->getUsername()|escape}</span>
@@ -112,16 +114,16 @@
                     </div>
                     {if $item->getUpdateDatetime() > $item->getCreateDatetime()}
                         <div class="field pl-already-saved-items-only">
-                            <div class="name">[`Updated`]</div>
-                            <div class="value">
+                            <div class="name small">[`Updated`]</div>
+                            <div class="value small">
                                 <span class="nowrap">{$item->getUpdateDatetime()|wa_datetime:'humandatetime'}</span>
                             </div>
                         </div>
                     {/if}
                     {if $item->isDone()}
                         <div class="field">
-                            <div class="name">[`Completed`]</div>
-                            <div class="value">
+                            <div class="name small">[`Completed`]</div>
+                            <div class="value small">
                                 {if $item->getCompleteContact()}
                                 <i class="userpic userpic-20" style="background-image: url({$item->getCompleteContact()->getUserPic()})" alt="{$item->getCompleteContact()->getUsername()|escape}"></i>
                                 {$item->getCompleteContact()->getUsername()|escape}
@@ -136,10 +138,10 @@
                 <div class="fields-group">
                     {if !$item->isDone()}
                     <div class="field">
-                        <div class="name for-input">[`Priority`]</div>
+                        <div class="name for-input small">[`Priority`]</div>
                         <div class="value" id="pl-item-priority">
                             <input type="hidden" name="item[priority]" value="{$item->getPriority()}"/>
-                            <div class="flexbox middle">
+                            <div class="flexbox middle" style="min-height: 2em;">
                                 <a href="#" {if $item->getPriority() == pocketlistsItem::PRIORITY_NORM}class="selected"{/if} data-pl-item-priority="{pocketlistsItem::PRIORITY_NORM}"><input type="checkbox" class="pl-done"><span></span></a>
                                 <a href="#" {if $item->getPriority() == pocketlistsItem::PRIORITY_GREEN}class="selected"{/if} data-pl-item-priority="{pocketlistsItem::PRIORITY_GREEN}"><input type="checkbox" class="pl-done pl-priority-green"><span></span></a>
                                 <a href="#" {if $item->getPriority() == pocketlistsItem::PRIORITY_YELLOW}class="selected"{/if} data-pl-item-priority="{pocketlistsItem::PRIORITY_YELLOW}"><input type="checkbox" class="pl-done pl-priority-yellow"><span></span></a>
@@ -150,10 +152,10 @@
                         </div>
                     </div>
                     <div class="field">
-                        <div class="name for-input">[`When`]</div>
+                        <div class="name for-input small">[`When`]</div>
 
                         <div class="value">
-                            <input name="item[due_date]" class="pl-due-date-input small" type="text" id="pl-item-due-datetime" value="{$item->getDueDate()}" autocomplete="off" placeholder="[`Set date`]" />
+                            <input name="item[due_date]" class="pl-due-date-input small bold" type="text" id="pl-item-due-datetime" value="{$item->getDueDate()}" autocomplete="off" placeholder="[`Set date`]" />
                             <span id="pl-item-due-datetime-time">
                                 {$hour = $item->getDueDatetime()|wa_datetime:'H'}
 
@@ -182,11 +184,11 @@
                     {/if}
 
                     <div class="field" {if $caller === 'list'} style="display: none;"{/if}>
-                        <div class="name nowrap for-input">
+                        <div class="name small nowrap for-input">
                             [`List`]
                         </div>
                         <div class="value">
-                            <div class="wa-select small">
+                            <div class="wa-select smaller">
                                 <select id="pl-item-list">
                                 {if !$item->getListId() || !$list->getId() || $item->getContact()->isMe()}<option value=""{if !$item->getListId() || !$list->getId()} selected="selected"{/if}>[`None`]</option>{/if}
                                 {foreach $lists as $l}
@@ -237,7 +239,7 @@
                             <a href="#" class="pl-item-details-cancel button light-gray custom-ml-8">[`Cancel`]</a>
                         </div>
                         <div class="pl-already-saved-items-only">
-                            <a href="#" data-pl-action="item-delete" class="button nobutton nowrap outlined red">
+                            <a href="#" data-pl-action="item-delete" class="button nowrap light-gray text-red">
                                 <i class="fas fa-trash-alt"></i> [`Delete to-do`]
                             </a>
                         </div>

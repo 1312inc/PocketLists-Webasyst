@@ -2,7 +2,7 @@
     <div class="pl-cue{if $comment->isMy()} pl-my-cue{/if}{if $comment->isRecentlyCreated() && !$comment->isMy()} pl-new-comment{/if}">
         <div class="pl-cue-inner small">
             <div class="pl-bubble">
-                {if $comment->isMy() && $comment->canBeDeleted() && !(isset($archive) && $archive)}<a href="#" class="pl-delete-comment" data-pl-action="comment-delete" title="[`Delete`]"><i class="fas fa-times"></i></a>{/if}
+                {if $comment->isMy() && $comment->canBeDeleted() && !(isset($archive) && $archive)}<a href="#" class="pl-delete-comment" data-pl-action="comment-delete" title="[`Delete`]"><i class="fas fa-times small"></i></a>{/if}
                 {$comment->getCommentParsed()|nl2br|default:''}
 
             </div><span class="pl-bubble-arrow"></span>

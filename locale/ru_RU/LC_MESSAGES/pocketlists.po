@@ -1142,7 +1142,7 @@ msgid "Show details and use the detailed add mode by default"
 msgstr "Показывать все параметры задачи по умолчанию"
 
 msgid "Go ahead! Create a list."
-msgstr "Создайте первый список!"
+msgstr "Создайте список дел"
 
 msgid "Pockets and lists help you organize to-dos, ideas, and notes, and flexibly configure access rights for your team."
 msgstr "Проекты и списки помогают организовывать задачи, идеи, заметки и гибко настраивать права доступа к ним для сотрудников."

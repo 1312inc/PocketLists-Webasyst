@@ -504,12 +504,12 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                                 $list.append('<li>' + file.name + '</li>');
                                 files.push(file.name);
                             } else {
-                                $list.append('<li>' +
+                                $list.append('<li><span class="item">' +
                                     '<a href="' + file.url + '" target="_blank">' + file.name + '</a> ' +
-                                    '<a href="#" class="gray" data-pl-attachment-id="' + file.id + '" ' +
+                                    '<a href="#" class="count small gray" data-pl-attachment-id="' + file.id + '" ' +
                                     'data-pl-attachment-name="' + file.name + '" style="margin-left: 10px;" ' +
-                                    'title="' + $_('Delete') + '" style="margin-left: 10px;">&times;</a>' +
-                                    '</li>');
+                                    'title="' + $_('Delete') + '" style="margin-left: 10px;"><i class="fas fa-trash-alt"></i></a>' +
+                                    '</span></li>');
                             }
                         });
                         if (files.length) {
@@ -706,7 +706,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                                         return;
                                     }
                                     request_in_action = true;
-    
+
                                     $.post(o.appUrl + '?module=item&action=delete', {id: itemId}, function (r) {
                                         if (r.status === 'ok') {
                                             if (!o.standAloneItemAdd) {
@@ -714,17 +714,17 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                                                     loadListCounts(o.list.list_id);
                                                 }
                                             }
-    
+
                                             dialog_instance.close();
                                             hideItemDetails(null, function () {
                                                 removeItem(r.data.id);
                                                 $list_items_wrapper.find('[data-id="' + r.data.id + '"]').remove();
                                                 updateListCountBadge();
                                             });
-    
+
                                             $(document).trigger('item_delete.pl2', r.data);
                                         } else {
-    
+
                                         }
                                         request_in_action = false;
                                     }, 'json');
@@ -1353,7 +1353,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                         current_favorites_count--;
                     }
                     $favorites_count.text(current_favorites_count === 0 ? '' : current_favorites_count);
-                    
+
                     $star.data('is-favorite', 1 - status);
                     if(status === 0) {
                         $star.removeClass('text-yellow').addClass('text-light-gray');

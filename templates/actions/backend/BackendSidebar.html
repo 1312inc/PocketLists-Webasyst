@@ -205,7 +205,11 @@
                                 {if $teammate->getItemsInfo()->getMaxPriority()}
                                     <span class="badge {pocketlistsViewHelper::getPriorityCssClass($teammate->getItemsInfo()->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}">{$teammate->getItemsInfo()->getCountMaxPriority()}</span>
                                 {/if}
+
                                 {$teammate->getItemsInfo()->getCount()}
+                                {if !empty($new_items_count.team[$teammate->getId()])} <span
+                                        class="highlighted bold small black">+{$new_items_count.team[$teammate->getId()]}</span>{/if}
+                                        
                             </span>
 
                             <span class="icon"><i class="userpic{if $teammate->getStatus() == 'online'} pl-user-online{/if}" style="background-image: url({$teammate->getPhotoUrl()})"
@@ -213,8 +217,6 @@
 
                             <span>{$teammate->getName()|escape}</span>
 
-                            {if !empty($new_items_count.team[$teammate->getId()])} <span
-                                    class="highlighted bold small black">+{$new_items_count.team[$teammate->getId()]}</span>{/if}
                         </a>
                     </li>
                 {/foreach}

@@ -1,30 +1,65 @@
 <div class="shadowed">
 
-    <main class="block double-padded" style="position: relative;" data-pl2pro-wrapper="board">
+    <main class="box block double-padded" style="position: relative;" data-pl2pro-wrapper="board">
 
         <div class="pl2pro-board-container">
 
-            <!-- <h1>[`All pockets`]</h1> -->
-            {if !$pocket->getId()}
-                <div class="pl2pro-board-header">
-                    {if count($pockets) > 0}
-                        <div class="float-right block half-padded">
-                            <ul class="menu-h dropdown">
-                                <li>
-                                    <a href="javascript:void(0);" class="inline-link"><b><i>[`Filter by pocket`]</i></b> <i class="icon10 darr"></i></a>
-                                    <ul class="menu-v">
+            {if $wa->whichUI() == '1.3'}
+                {if !$pocket->getId()}
+                    <div class="pl2pro-board-header">
+                        {if count($pockets) > 0}
+                            <div class="float-right block half-padded">
+                                <ul class="menu-h dropdown">
+                                    <li>
+                                        <a href="javascript:void(0);" class="inline-link"><b><i>[`Filter by pocket`]</i></b> <i class="icon10 darr"></i></a>
+                                        <ul class="menu-v">
+                                            {foreach $pockets as $p}
+                                                <li><a href="#/pro/board/{$p->getId()}/">{$p->getName()|escape}</a></li>
+                                            {/foreach}
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        {/if}
+                        <h1>[`All pockets`]</h1>
+                    </div>
+                {else}
+                    <h1 class="pl2pro-board-header"><a href="#/pro/board/" class="back">&larr; [`All pockets`]</a> <span class="pl-dark-{$pocket->getColor()}-label">{$pocket->getName()|escape}</span></h1>
+                {/if}
+            {else}
+                <div class="flexbox middle">
+                    <div>
+                        {if !$pocket->getId()}
+                            <h1>[`All pockets`]</h1>
+                        {else}
+                            <h1 class="pl2pro-board-header">
+                                <a href="#/pro/board/" class="back button light-gray circle" style="font-size: 20px; position: relative; top: -4px;"><i class="fas fa-arrow-left"></i></a>
+                                <span class="pl-dark-{$pocket->getColor()}-label">{$pocket->getName()|escape}</span>
+                            </h1>
+                        {/if}
+                    </div>
+                    {if !$pocket->getId() && count($pockets) > 0}
+                        <div>
+
+                            <div class="dropdown" id="pl-kanban-board-filter">
+                                <a href="javascript:void(0);" class="dropdown-toggle button light-gray custom-ml-8 custom-mt-12 small rounded">[`Filter by pocket`]</a>
+                                <div class="dropdown-body">
+                                    <ul class="menu">
                                         {foreach $pockets as $p}
-                                            <li><a href="#/pro/board/{$p->getId()}/">{$p->getName()|escape}</a></li>
+                                            <li><a href="#/pro/board/{$p->getId()}/"><span>{$p->getName()|escape}</span></a></li>
                                         {/foreach}
                                     </ul>
-                                </li>
-                            </ul>
+                                </div>
+                                <script>
+                                    ( function($) {
+                                        $("#pl-kanban-board-filter").waDropdown();
+                                    })(jQuery);
+                                </script>
+                            </div>
+
                         </div>
                     {/if}
-                    <h1>[`All pockets`]</h1>
                 </div>
-            {else}
-                <h1 class="pl2pro-board-header"><a href="#/pro/board/" class="back">&larr; [`All pockets`]</a> <span class="pl-dark-{$pocket->getColor()}-label">{$pocket->getName()|escape}</span></h1>
             {/if}
 
             <div class="pl2pro-board">
