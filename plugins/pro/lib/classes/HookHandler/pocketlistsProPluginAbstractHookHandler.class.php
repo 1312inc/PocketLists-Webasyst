@@ -25,7 +25,12 @@ abstract class pocketlistsProPluginAbstractHookHandler implements pocketlistsHoo
      */
     protected function getViewTemplate($name)
     {
-        return sprintf('%s/templates/hooks/%s.html', $this->plugin->getPath(), $name);
+        return sprintf(
+            '%s/templates/hooks%s/%s.html',
+            $this->plugin->getPath(),
+            pl2()->getUI2TemplatePath(),
+            $name
+        );
     }
 
     /**

@@ -36,7 +36,7 @@ final class pocketlistsShopBackendOrders
             $template = wa()->getAppPath(
                 sprintf(
                     'templates/include%s/app_hook/shop.backend_orders.%s.html',
-                    wa()->whichUI() === '1.3' ? '-legacy' : '',
+                    pl2()->getUI2TemplatePath(null, 'shop'),
                     $hook
                 ),
                 pocketlistsHelper::APP_ID

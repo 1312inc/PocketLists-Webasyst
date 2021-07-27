@@ -66,63 +66,62 @@
         var id = $(this).data('pl2pro-automation-edit') || 0,
             eventId = $(this).closest('[data-pl2pro-ss-event]').data('pl2pro-ss-event');
 
-        $.get('?plugin=pro&module=automation&action=dialog&event=' + eventId + '&id=' + id)
-        .done(function (html)
-        {
-            $.waDialog({
-                html: html,
-                onOpen: function ($dialog, dialog_instance) {
-                    $dialog
-                        .on("click", ".cancel", function(e) {
-                            e.preventDefault();
-                            dialog_instance.close();
-                        })
-                        .on('click', '#pl-item-priority a', function (e) {
-                            e.preventDefault();
+        $('#pl2pro-dialog').waDialog({
+            url: '?plugin=pro&module=automation&action=dialog&event=' + eventId + '&id=' + id,
+            onLoad: function () {
+                var $this = $(this);
 
-                            var $a = $(this),
-                                $checkbox = $a.find('input');
-
-                            $dialog.find('[data-pl2-pro-item-priority]').prop('checked', false);
-                            $checkbox.prop('checked', true);
-                            $a.addClass('selected').siblings().removeClass('selected');
-                        })
-                        .on('click', '[data-pl2pro-automation-action="delete"]', function (e) {
-                            e.preventDefault();
-                            $dialog.find(':input').prop('disable', true);
-
-                            $.post('?plugin=pro&module=automationCrud&action=delete&id=' + id, function (r) {
-                                if (r.status === 'ok') {
-                                    $.pocketlists_routing.skipScrollToTop = true;
-                                    $.pocketlists_routing.redispatch();
-                                } else {
-                                    $.pocketlists.log('some error on automation delete');
-                                }
-
-                                dialog_instance.close();
-                            }, 'json');
-                        });
-
-                    var $form = $dialog.find('form'),
-                        url = '?plugin=pro&module=automationCrud&action=' + (id ? 'update' : 'create');
-
-                    $form.on('submit', function(e) {
+                $this
+                    .on('click', '#pl-item-priority a', function (e) {
                         e.preventDefault();
-                        $dialog.find(':input').prop('disable', true);
 
-                        $.post(url, $form.serialize(), function (r) {
+                        var $a = $(this),
+                            $checkbox = $a.find('input');
+
+                        $this.find('[data-pl2-pro-item-priority]').prop('checked', false);
+                        $checkbox.prop('checked', true);
+                        $a.addClass('selected').siblings().removeClass('selected');
+                    })
+                    .on('click', '.close', function (e) {
+                        e.preventDefault();
+                        $this.trigger('close');
+                    })
+                    .on('click', '[data-pl2pro-automation-action="delete"]', function (e) {
+                        e.preventDefault();
+
+                        $.post('?plugin=pro&module=automationCrud&action=delete&id='+id, function (r) {
                             if (r.status === 'ok') {
                                 $.pocketlists_routing.skipScrollToTop = true;
                                 $.pocketlists_routing.redispatch();
                             } else {
-                                $.pocketlists.log('some error on automation crud');
+                                $.pocketlists.log('some error on automation delete');
                             }
 
-                            dialog_instance.close();
+                            $this.trigger('close');
                         }, 'json');
-                    });
-                }
-            });
+                    })
+                ;
+            },
+            onSubmit: function (d) {
+                var $form = $(this),
+                    url = '?plugin=pro&module=automationCrud&action=' + (id ? 'update' : 'create');
+
+                $.post(url, $form.serialize(), function (r) {
+                    if (r.status === 'ok') {
+                        $.pocketlists_routing.skipScrollToTop = true;
+                        $.pocketlists_routing.redispatch();
+                    } else {
+                        $.pocketlists.log('some error on automation crud');
+                    }
+
+                    d.trigger('close');
+                }, 'json');
+
+                return false;
+            },
+            onClose: function () {
+                this.remove();
+            }
         });
 
         return false;

@@ -123,7 +123,7 @@ abstract class pocketlistsAppLinkAbstract
         $template = wa()->getAppPath(
             sprintf(
                 'templates/include%s/item_linked_entities/%s.banner.html',
-                wa()->whichUI() === '1.3' ? '-legacy' : '',
+                pl2()->getUI2TemplatePath(),
                 $this->getApp()
             ),
             pocketlistsHelper::APP_ID
@@ -172,7 +172,7 @@ abstract class pocketlistsAppLinkAbstract
         $template = wa()->getAppPath(
             sprintf(
                 'templates/include%s/item_linked_entities/%s.%s.preview.html',
-                wa()->whichUI() === '1.3' ? '-legacy' : '',
+                pl2()->getUI2TemplatePath(),
                 $this->getApp(),
                 $itemLink->getEntityType()
             ),
@@ -213,7 +213,7 @@ abstract class pocketlistsAppLinkAbstract
         $template = wa()->getAppPath(
             sprintf(
                 'templates/include%s/item_linked_entities/%s.%s.autocomplete.html',
-                wa()->whichUI() === '1.3' ? '-legacy' : '',
+                pl2()->getUI2TemplatePath(),
                 $this->getApp(),
                 $itemLink->getEntityType()
             ),

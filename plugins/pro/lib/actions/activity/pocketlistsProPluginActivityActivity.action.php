@@ -51,7 +51,11 @@ class pocketlistsProPluginActivityActivityAction extends pocketlistsProPluginAbs
             $activityLogs[] = pocketlistsProPluginLogFactory::createFromLog($log);
         }
 
-        $this->setTemplate(wa()->getAppPath('plugins/pro/templates/actions/activity/Activity.html'));
+        $this->setTemplate(
+            wa()->getAppPath(
+                sprintf('plugins/pro/templates/actions%s/activity/Activity.html', pl2()->getUI2TemplatePath())
+            )
+        );
 
         $this->view->assign(
             [

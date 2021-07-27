@@ -463,9 +463,11 @@ HTML;
      * @return string
      * @throws waException
      */
-    public function getUI2TemplatePath($template)
+    public function getUI2TemplatePath($template = null, $app = null)
     {
-        return sprintf($template, wa()->whichUI() === '1.3' ? '-legacy' : '');
+        $suffix = wa()->whichUI($app) === '1.3' ? '-legacy' : '';
+
+        return $template ? sprintf($template, $suffix) : $suffix;
     }
 
     private function registerGlobal()

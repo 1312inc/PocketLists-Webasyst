@@ -1,12 +1,11 @@
-<div class="dialog">
+<div id="pl2pro-dialog" class="dialog width700px height500px" >
     <div class="dialog-background"></div>
-    <div class="dialog-body">
-        <header class="dialog-header"><h1>[`‘Order > To-do’ automation rule`]</h1></header>
-        <div class="dialog-content">
 
     <form method="post">
         <div class="dialog-window">
             <div class="dialog-content">
+
+                <h1>[`‘Order > To-do’ automation rule`]</h1>
                 <p>[`Pocket Lists will create a new to-do upon an action performed with any order in Shop-Script if the specified conditions are met.`]</p>
                 <div class="fields form">
                     <div class="field">
@@ -55,10 +54,7 @@
                 <input type="hidden" name="id" value="{$automation->getId()}"/>
                 <div class="block float-right"><a href="#" data-pl2pro-automation-action="delete"><i class="icon16 delete"></i>[`Delete rule`]</a></div>
             {/if}
-            <input type="submit" value="[`Save`]" class="button green" /> [`or`] <a href="#" class="cancel">[`cancel`]</a>
+            <input type="submit" value="[`Save`]" class="button green" /> [`or`] <a href="#" class="close">[`cancel`]</a>
         </div>
     </form>
-
-        </div>
-    </div>
 </div>

@@ -21,7 +21,7 @@ final class pocketlistsWebasystBackendHeader
         $template = wa()->getAppPath(
             sprintf(
                 'templates/include%s/app_hook/webasyst.backend_header.%s.html',
-                wa()->whichUI() === '1.3' ? '-legacy' : '',
+                pl2()->getUI2TemplatePath(null, 'webasyst'),
                 $hook
             ),
             pocketlistsHelper::APP_ID

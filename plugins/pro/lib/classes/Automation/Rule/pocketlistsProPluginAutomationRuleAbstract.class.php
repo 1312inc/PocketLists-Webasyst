@@ -122,7 +122,7 @@ abstract class pocketlistsProPluginAutomationRuleAbstract implements pocketlists
 
         return waHtmlControl::getControl(
             waHtmlControl::SELECT,
-            'data[rules]['.$this->getIdentifier().'][compare]',
+            'data[rules][' . $this->getIdentifier() . '][compare]',
             [
                 'options' => $options,
                 'value' => $selected,
@@ -138,7 +138,7 @@ abstract class pocketlistsProPluginAutomationRuleAbstract implements pocketlists
     {
         return waHtmlControl::getControl(
             waHtmlControl::HIDDEN,
-            'data[rules]['.$this->getIdentifier().'][identifier]',
+            'data[rules][' . $this->getIdentifier() . '][identifier]',
             ['value' => $this->getIdentifier()]
         );
     }
@@ -179,13 +179,13 @@ abstract class pocketlistsProPluginAutomationRuleAbstract implements pocketlists
     {
         return waHtmlControl::getControl(
                 waHtmlControl::HIDDEN,
-                'data[rules]['.$this->getIdentifier().'][delayed]',
+                'data[rules][' . $this->getIdentifier() . '][delayed]',
                 ['value' => '']
             )
-            .'<br><span class="small">'
-            .waHtmlControl::getControl(
+            . '<br><span class="small">'
+            . waHtmlControl::getControl(
                 waHtmlControl::CHECKBOX,
-                'data[rules]['.$this->getIdentifier().'][delayed]',
+                'data[rules][' . $this->getIdentifier() . '][delayed]',
                 [
                     'title' => _wp(
                         'Delayed check (this check will be performed at the moment to-do is created rather than order action is performed; recommended only for to-dos created with a delay)'
@@ -193,7 +193,7 @@ abstract class pocketlistsProPluginAutomationRuleAbstract implements pocketlists
                     'value' => $this->delayed,
                 ]
             )
-            .'</span>';
+            . '</span>';
     }
 
     /**
@@ -209,7 +209,12 @@ abstract class pocketlistsProPluginAutomationRuleAbstract implements pocketlists
 
         return $view->fetch(
             wa()->getAppPath(
-                sprintf('plugins/pro/templates/actions/automation/rule/%s.%s.html', $this->getIdentifier(), $mode)
+                sprintf(
+                    'plugins/pro/templates/actions%s/automation/rule/%s.%s.html',
+                    pl2()->getUI2TemplatePath(),
+                    $this->getIdentifier(),
+                    $mode
+                )
             )
         );
     }

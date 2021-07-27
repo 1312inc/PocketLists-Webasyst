@@ -81,6 +81,7 @@ class pocketlistsTeamAction extends pocketlistsViewAction
         }
 
         $external = waRequest::request('external', 0, waRequest::TYPE_INT);
+        $externalApp = waRequest::request('external_app', null, waRequest::TYPE_STRING_TRIM);
 
         /**
          * UI hook in teammate right sidebar
@@ -92,7 +93,7 @@ class pocketlistsTeamAction extends pocketlistsViewAction
         $event = new pocketlistsEvent(
             pocketlistsEventStorage::WA_BACKEND_TEAMMATE_SIDEBAR,
             $teammate,
-            ['external' => $external]
+            ['external' => $external, 'external_app' => $externalApp]
         );
         $eventResult = pl2()->waDispatchEvent($event);
 
@@ -102,9 +103,12 @@ class pocketlistsTeamAction extends pocketlistsViewAction
                 'print'                 => waRequest::get('print', false),
                 'user'                  => $this->user,
                 'external'              => $external,
+                'externalApp'           => $externalApp,
                 'itemAdd'               => (new pocketlistsItemAddAction(['teammate' => $teammate, 'external' => $external]))->display(false),
                 'backend_teammate_sidebar' => $eventResult,
             ]
         );
+
+        $this->setTemplate(pl2()->getUI2TemplatePath('templates/actions%s/team/Team.html', $externalApp));
     }
 }

@@ -59,7 +59,7 @@ final class pocketlistsTasksBackendTasks
                 $template = wa()->getAppPath(
                     sprintf(
                         'templates/include%s/app_hook/tasks.backend_tasks.%s.html',
-                        wa()->whichUI() === '1.3' ? '-legacy' : '',
+                        pl2()->getUI2TemplatePath(null, 'tasks'),
                         $hook
                     ),
                     pocketlistsHelper::APP_ID

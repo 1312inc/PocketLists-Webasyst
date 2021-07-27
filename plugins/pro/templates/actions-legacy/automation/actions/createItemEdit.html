@@ -1,0 +1,185 @@
+{** @var $action pocketlistsProPluginCreateItemAction **}
+<div class="fields form pl-details-form" id="pl2-pro-automation-{$action->getIdentifier()}">
+<div class="field">
+    <div class="name">
+        [`Action`]
+    </div>
+    <div class="value no-shift">
+        <strong>[`Create a to-do`]</strong>
+    </div>
+</div>
+<div class="field">
+    <div class="name">
+        [`When`]
+    </div>
+    <div class="value no-shift">
+        <label><input type="radio" name="data[action][when_type]" value="0" {if !$action->getWhenIn()}checked{/if}> [`Create immediately`]</label>
+    </div>
+    <div class="value no-shift">
+        <label><input type="radio"  name="data[action][when_type]" value="1" {if $action->getWhenIn()}checked{/if}> [`Create with a delay in`]</label>
+        <input type="text" class="short numerical" placeholder="0" name="data[action][when_in]" value="{$action->getWhenIn()}">
+        <select name="data[action][when_period]">
+            {foreach $duePeriods as $duePeriod => $duePeriodName}
+                <option value="{$duePeriod}" {if $action->getWhenPeriod() == $duePeriod}selected{/if}>{$duePeriodName}</option>
+            {/foreach}
+        </select>
+        [`from the moment the action was performed`]
+        <p class="hint">{$cronMessage}</p>
+    </div>
+</div>
+<div class="field">
+    <div class="name">
+        [`Title`]
+    </div>
+    <div class="value">
+        <input type="text" class="long bold" placeholder="[`New to-do`]" name="data[action][name]" value="{$action->getName()}">
+    </div>
+</div>
+<div class="field">
+    <div class="name">
+        [`Note`]
+    </div>
+    <div class="value">
+        <textarea name="data[action][note]">{$action->getNote()}</textarea>
+    </div>
+    <div class="value">
+        <p class="hint">
+            [`Following variables can be used in the to-do title and note fields:`]<br>
+            <b>&#123;$order_id&#125;</b> — [`order ID`]<br>
+            <b>&#123;$order_amount&#125;</b> — [`order amount`]<br>
+            <b>&#123;$customer_name&#125;</b> — [`customer name`]<br>
+            <b>&#123;$customer_email&#125;</b> — [`customer email`]<br>
+            <b>&#123;$customer_phone&#125;</b> — [`customer phone number`]<br>
+            <b>&#123;$shipping_address&#125;</b> — [`shipping address`]<br>
+            <b>&#123;$shipping_cost&#125;</b> — [`shipping cost`]<br>
+            <b>&#123;$tracking_number&#125;</b> — [`shipment tracking number`]<br>
+            <b>&#123;$order_item_names&#125;</b> — [`list of ordered items`]<br>
+            <b>&#123;$order_comment&#125;</b> — [`customer comment on the order`]<br>
+            <b>&#123;$action_comment&#125;</b> — [`latest text comment from the order log`]
+            {* <b>&#123;$order_source&#125;</b> *}
+        </p>
+    </div>
+</div>
+<div class="field">
+    <div class="name">
+        [`Assigned to`]
+    </div>
+    <div class="value no-shift">
+        <select name="data[action][assigned_to]">
+            <option value="0" {if $action->getAssignedTo() == 0}selected{/if}>[`Nobody`]</option>
+            <option value="{pocketlistsProPluginCreateItemAction::ORDER_ACTION_PERFORMER_ID}" {if $action->getAssignedTo() == pocketlistsProPluginCreateItemAction::ORDER_ACTION_PERFORMER_ID}selected{/if}>[`Order action performer`]</option>
+<!--            <option>{sprintf('[`Random user from the “%s” group`]','Group 1')}</option>-->
+        {foreach $users as $user}
+            <option value="{$user->getId()}" {if $action->getAssignedTo() == $user->getid()}selected{/if}>{$user->getName()|escape}</option>
+        {/foreach}
+        </select>
+    </div>
+</div>
+<div class="field">
+    <div class="name">
+        [`Priority`]
+
+        <style>
+            .pl-details-form .selected .pl-done + span { top: 0 !important; left: 5px  !important; }
+        </style>
+    </div>
+    <div class="value no-shift" id="pl-item-priority">
+        <a href="#" {if $action->getPriority() == pocketlistsItem::PRIORITY_NORM}class="selected"{/if}>
+            <input name="data[action][priority]"
+                   type="checkbox"
+                   class="pl-done"
+                   data-pl2-pro-item-priority="{pocketlistsItem::PRIORITY_NORM}"
+                   {if $action->getPriority() == pocketlistsItem::PRIORITY_NORM}checked{/if}
+                   value="{pocketlistsItem::PRIORITY_NORM}">
+            <span></span>
+        </a>
+        <a href="#" {if $action->getPriority() == pocketlistsItem::PRIORITY_GREEN}class="selected"{/if}>
+            <input name="data[action][priority]"
+                   type="checkbox"
+                   class="pl-done pl-priority-green"
+                   data-pl2-pro-item-priority="{pocketlistsItem::PRIORITY_GREEN}"
+                   {if $action->getPriority() == pocketlistsItem::PRIORITY_GREEN}checked{/if}
+                   value="{pocketlistsItem::PRIORITY_GREEN}">
+            <span></span>
+        </a>
+        <a href="#" {if $action->getPriority() == pocketlistsItem::PRIORITY_YELLOW}class="selected"{/if}>
+            <input name="data[action][priority]"
+                   type="checkbox"
+                   class="pl-done pl-priority-yellow"
+                   data-pl2-pro-item-priority="{pocketlistsItem::PRIORITY_YELLOW}"
+                   {if $action->getPriority() == pocketlistsItem::PRIORITY_YELLOW}checked{/if}
+                   value="{pocketlistsItem::PRIORITY_YELLOW}">
+            <span></span>
+        </a>
+        <a href="#" {if $action->getPriority() == pocketlistsItem::PRIORITY_RED}class="selected"{/if}>
+            <input name="data[action][priority]"
+                   type="checkbox"
+                   class="pl-done pl-priority-red"
+                   data-pl2-pro-item-priority="{pocketlistsItem::PRIORITY_RED}"
+                   {if $action->getPriority() == pocketlistsItem::PRIORITY_RED}checked{/if}
+                   value="{pocketlistsItem::PRIORITY_RED}">
+            <span></span>
+        </a>
+        <a href="#" {if $action->getPriority() == pocketlistsItem::PRIORITY_BLACK}class="selected"{/if}>
+            <input name="data[action][priority]"
+                   type="checkbox"
+                   class="pl-done pl-priority-black"
+                   data-pl2-pro-item-priority="{pocketlistsItem::PRIORITY_BLACK}"
+                   {if $action->getPriority() == pocketlistsItem::PRIORITY_BLACK}checked{/if}
+                   value="{pocketlistsItem::PRIORITY_BLACK}">
+            <span></span>
+        </a>
+        <a href="#" {if $action->getPriority() == pocketlistsItem::PRIORITY_BURNINHELL}class="selected"{/if}>
+            <input name="data[action][priority]"
+                   type="checkbox"
+                   class="pl-done pl-priority-fire"
+                   data-pl2-pro-item-priority="{pocketlistsItem::PRIORITY_BURNINHELL}"
+                   {if $action->getPriority() == pocketlistsItem::PRIORITY_BURNINHELL}checked{/if}
+                   value="{pocketlistsItem::PRIORITY_BURNINHELL}">
+            <span></span>
+        </a>
+    </div>
+{*    <input type="hidden" name="data[action][priority]" value="{$action->getPriority()}"/>*}
+</div>
+<div class="field">
+    <div class="name">
+        [`Due`]
+    </div>
+    <div class="value no-shift">
+        [`In`] <input type="text" class="short numerical" placeholder="0" name="data[action][due_in]" value="{$action->getDueIn()}">
+        <select name="data[action][due_period]">
+            {foreach $duePeriods as $duePeriod => $duePeriodName}
+            <option value="{$duePeriod}" {if $action->getDuePeriod() == $duePeriod}selected{/if}>{$duePeriodName}</option>
+            {/foreach}
+        </select>
+        [`from the moment the to-do was created`]
+        <p class="hint">[`Leave zero for no due date and time.`]</p>
+    </div>
+</div>
+<div class="field">
+    <div class="name">
+        [`List`]
+    </div>
+    <div class="value no-shift">
+        <select name="data[action][list]">
+            <option value="0" {if $action->getList() && $action->getList()->getId() == 0}selected{/if}>[`None`]</option>
+            {foreach $lists as $list}
+                <option value="{$list->id}" {if $action->getList() && $action->getList()->getId() == $list->id}selected{/if}>{$list->pocketName|escape} > {$list->name|escape}</option>
+            {/foreach}
+        </select>
+    </div>
+</div>
+<div class="field">
+    <div class="name">
+        [`Label`]
+    </div>
+    <div class="value no-shift">
+        <select name="data[action][label]">
+            <option value="0" {if !$action->getLabel()->getId()}selected{/if}>[`None`]</option>
+            {foreach $labels as $label}
+                <option value="{$label->id}" {if $action->getLabel()->getId() == $label->id}selected{/if}>{$label->name|escape}</option>
+            {/foreach}
+        </select>
+    </div>
+</div>
+</div>
