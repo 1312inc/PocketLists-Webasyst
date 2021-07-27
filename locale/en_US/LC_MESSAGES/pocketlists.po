@@ -12,7 +12,7 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Language: en_US\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 3.0\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: .\n"
 
@@ -1356,6 +1356,82 @@ msgid "Checklist"
 msgstr ""
 
 msgid "%d to-do is pending"
-msgid_plural "%d to-dos are pending"
-msgstr[0] ""
-msgstr[1] ""
+msgstr ""
+
+msgid "Buy now with promocode"
+msgstr ""
+
+msgid "Use this promocode until it expires:"
+msgstr ""
+
+msgid "Promocode"
+msgstr ""
+
+msgid "Buy now"
+msgstr ""
+
+msgid "Back"
+msgstr ""
+
+msgid "We wish everyone could enjoy the power the Pocket Lists PRO plugin has to offer. This promocode will help you the get the plugin up and running at the best price possible."
+msgstr ""
+
+msgid "Show all completed to-dos"
+msgstr ""
+
+msgid "Unarchive"
+msgstr ""
+
+msgid "Menu"
+msgstr ""
+
+msgid "Show promocode"
+msgstr ""
+
+msgid "About the app"
+msgstr ""
+
+msgid "Installed"
+msgstr ""
+
+msgid "Promocode:"
+msgstr ""
+
+msgid "Our flagship app."
+msgstr ""
+
+msgid "Amazing companion/upgrade for Pocket Lists when it’s time for real collaboration on <em>bigger and more complex tasks</em>. Assignments, task statuses, deadlines, kanban board, more — the app help bringing the order to any complex teamwork."
+msgstr ""
+
+msgid "Forecasts and saves your money."
+msgstr ""
+
+msgid "Shows exact cash on hand balance for any date in the future. This app could have been a <em>life saver</em> for most businesses which did not survive a cash gap because of not knowing it’s coming."
+msgstr ""
+
+msgid "Free"
+msgstr ""
+
+msgid "Remote team leader’s best friend."
+msgstr ""
+
+msgid "Visualizes how you and your teammates work. Tracks working hours. Amazingly useful for WFH and any <em>we-don't-see-each-other-in-the-office</em> working patterns."
+msgstr ""
+
+msgid "List name"
+msgstr ""
+
+msgid "Type in new list name and hit Enter."
+msgstr ""
+
+msgid "When tasks become bigger and more complex."
+msgstr ""
+
+msgid "Promocode for our flagship Webasyst app."
+msgstr ""
+
+msgid "Forecasts and saves your business money."
+msgstr ""
+
+msgid "Promocode for managing money the smarter way."
+msgstr ""

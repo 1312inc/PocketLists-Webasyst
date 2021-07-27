@@ -18,8 +18,15 @@
           [`Shop-Script automation (auto create to-dos based on actions with orders), kanban board, status labels, quick entry templates, and other advanced features.`]
       </p>
       <p style="margin-bottom: 5px;">
-          <a href="[`https://www.webasyst.com/buy/store/5045/`]{$_utm_suffix}" class="button green">[`Buy the plugin`]</a>
+          <a href="[`https://www.webasyst.com/buy/store/5045/`]{$_utm_suffix}" class="button green">[`Buy now with promocode`]</a>
       </p>
+      <div class="block double-padded align-center" style="padding-bottom: 5px;">
+          <p class="small">
+              [`Use this promocode until it expires:`]
+              <span class="indicator red" style="top: 0;">&minus;20%</span>
+          </p>
+          <input type="text" class="bold align-center larger text-green" value="B87K2IZFCZ" style="border-style: dashed; font-size: 20px;">
+      </div>
       <div class="clear-both"></div>
 </figure>
 {/capture}
@@ -50,7 +57,14 @@
 
                     <p>Плагин сделает командную работу в Pocket Lists максимально эффективной. Вот как это работает:</p>
                     <ul>
-                        <li><strong>Автоматическое создание задач на основе действий с заказами в Shop-Script</strong>. Когда выполняется какое-либо действие с заказом (например, заказ создается, уходит в отгрузку или отмечается выполненным), автоматически создается задача в Pocket Lists. Правила создания таких задач, назначение на менеджеров, сроки и приоритеты — все это гибко настраивается.<br><br>
+                        <li><span class="pl-label pl-dark-green">Главная фишка</span><strong>Автоматическое создание задач на основе действий с заказами в Shop-Script</strong>. Когда выполняется какое-либо действие с заказом (например, заказ создается, уходит в отгрузку или отмечается выполненным), автоматически создается задача в Pocket Lists.<br><br> Например:<br><br>
+                          <ul style="font-size: 13px;">
+                            <li>Заказ <code style="color: green;">В обработку</code> &rarr; автоматически создать задачу <code>Сборка заказа &#123;$order_id&#125;</code> и назначить менеджеру Валере.</li>
+                            <li>Заказ <code style="color: blue;">Отправлен</code> &rarr; автоматически создать задачу <code>Проверить трек &#123;$tracking_number&#125;</code>. Но создать не сразу, а через 72 часа, если статус заказа не изменился.</li>
+                            <li>Заказ <code style="color: purple;">Выполнен</code> &rarr; сразу же задачу маркетологу <code>Попросить написать отзыв о товаре &#123;$customer_name&#125; / &#123;$customer_phone&#125;. Заказывал &#123;$ordered_items&#125;</code>.</li>
+                            <li>Заказ <code style="color: red;">Возврат</code> &rarr; задачу директору <code>Проверить, кто накосячил с заказом №&#123;$order_id&#125;</code>.</li>
+                          </ul>
+                          И так далее. Все очень гибко настраивается!<br><br>
                           <img src="https://1312.io/wa-data/public/site/img/webasyst/pl2pro100/ru-pl2pro-ss-automation-120.png" />
                         </li>
                         <li><strong>Шаблоны быстрого ввода</strong>: <code>Оплатить ...</code>, <code>Связаться ...</code>, <code>Напомнить ...</code>, <code>Отгрузить ...</code>, <code>Уточнить ...</code> — подобные задачи ставятся изо дня в день. Ускорьте их постановку с помощью быстрых шаблонов, которые заменят ручной ввод. Создавайте задачи в несколько кликов:<br><br>

@@ -34,56 +34,9 @@
                       <br><br>
                   </div>
               </div>
-              {* TEMPORARILY COMMENTED
-              <div class="field">
-                <div class="name nowrap">
-                  Webasyst
-                </div>
-                <div class="value no-shift">
-
-                    <p>[`<strong>Your feedback is very important!</strong> Please rate Pocket Lists and write a short review about your experience of using the app. Reviews (both positive and negative) really help us to see what is most useful in the app so we can continue delivering new features the right way.`]</p>
-
-                </div>
-                <div class="value">
-
-                    {if method_exists($wa->installer, 'reviewWidget')}
-                        <div style="display: flex;">
-                            <div style="flex: 0 0 auto; padding-right: 20px;">
-                                {$wa->installer->reviewWidget('app/pocketlists', ['is_inline' => true])}
-                            </div>
-                            {if pocketlistsHelper::hasPlugin('pro')}
-                            <div style="flex: 0 0 auto;">
-                                {$wa->installer->reviewWidget('plugin/pocketlists/pro', ['is_inline' => true])}
-                            </div>
-                            {/if}
-                        </div>
-                    {else}
-                        <p>
-                            {if $wa->user()->isAdmin('installer')}
-                                <a href="{$wa_backend_url}installer/store/app/pocketlists/reviews/" target="_blank"><img src="{$wa_url}wa-apps/pocketlists/img/badge-webasyst{if $wa->locale()=='ru_RU'}-ru{/if}.png" class="pl-badge-appstore"></a>
-                            {else}
-                                <a href="[`https://www.webasyst.com/store/app/pocketlists/`]" target="_blank"><img src="{$wa_url}wa-apps/pocketlists/img/badge-webasyst{if $wa->locale()=='ru_RU'}-ru{/if}.png" class="pl-badge-appstore"></a>
-                            {/if}
-                        </p>
-                    {/if}
-
-                </div>
-              </div>
-              *}
             </div>
 
-            <div class="field-group">
-              <div class="field">
-                <div class="name">
-                  [`Copyright`]
-                </div>
-                <div class="value">
-                    <span class="gray">&copy;</span> <a href="https://1312.io" target="_blank">1312 Inc.</a>
-                </div>
-              </div>
-            </div>
-
-            <hr class="custom-mt-32">
+            <hr class="custom-mt-12">
 
             <div class="fields-group">
 
@@ -98,26 +51,25 @@
                       <ul class="pl-more-apps">
                           <li>
                               <div class="flexbox space-12 width-100">
-                                  <a href="[`https://www.webasyst.com/store/app/tasks/`]{$_utm_suffix}" target="_blank">
+                                  <a href="[`https://www.webasyst.com/store/app/tasks/`]{$_utm_suffix}" target="_blank" class="pl-more-apps-app-icon">
                                       <img src="{$wa_url}wa-apps/pocketlists/img/pl2ad-tasks-app-144.png" alt="[`Teamwork`]">
                                   </a>
                                   <div class="custom-pt-4">
-                                      <a href="[`https://www.webasyst.com/store/app/tasks/`]{$_utm_suffix}" class="bold large" target="_blank">[`Teamwork`]</a>
-                                      {if !$wa->tasks}<a href="#" class="button smaller green custom-ml-4"><i class="fas fa-percent smaller"></i> [`Promocode is available`]</a>{else}<span class="button smaller light-gray custom-ml-4"><i class="fas fa-check"></i> [`Installed`]</span>{/if}
-                                      <p class="custom-mt-4 custom-mb-8">[`Keeps track on all tasks and brings order to chaos`]</p>
-                                  </div>
-                              </div>
-                          </li>
-                          <li>
-                              <div class="flexbox space-12 width-100">
-                                  <a href="[`https://www.webasyst.com/store/app/cash/`]{$_utm_suffix}" target="_blank">
-                                      <img src="{$wa_url}wa-apps/pocketlists/img/pl2ad-cash-app-144.png" alt="[`Cash Flow`]">
-                                  </a>
-                                  <div class="custom-pt-4">
-                                      <a href="[`https://www.webasyst.com/store/app/cash/`]{$_utm_suffix}" class="bold large" target="_blank">[`Cash Flow`]</a>
-                                      {if !$wa->cash}<a href="#" class="button smaller green custom-ml-4"><i class="fas fa-percent smaller"></i> [`Promocode is available`]</a>{else}<span class="button smaller light-gray custom-ml-4"><i class="fas fa-check"></i> [`Installed`]</span>{/if}
-                                      <p class="custom-mt-4 custom-mb-8">
-                                          [`Forecasts business cash flow & saves your money`]
+                                      <div class="flexbox middle space-12 width-80">
+                                          <span class="wide">
+                                              <a href="[`https://www.webasyst.com/store/app/tasks/`]{$_utm_suffix}" class="bold large" target="_blank">[`Teamwork`]</a>
+                                          </span>
+                                          <span class="nowrap">
+                                              {if $wa->tasks}
+                                                <span class="button smaller light-gray custom-ml-4"><i class="fas fa-check text-green"></i> [`Installed`]</span>
+                                              {else}
+                                                <span class="small">[`Promocode:`] <code>8LGZRIQEOJ</code> <span class="badge red small">&minus;15%</span></span>
+                                              {/if}
+                                          </span>
+                                      </div>
+
+                                      <p class="custom-mt-8 custom-mb-12">
+                                          <i class="fas fa-crown text-yellow"></i> <strong>[`Our flagship app.`]</strong> [`Amazing companion/upgrade for Pocket Lists when it’s time for real collaboration on <em>bigger and more complex tasks</em>. Assignments, task statuses, deadlines, kanban board, more — the app help bringing the order to any complex teamwork.`]
                                       </p>
 
                                   </div>
@@ -125,13 +77,53 @@
                           </li>
                           <li>
                               <div class="flexbox space-12 width-100">
-                                  <a href="[`https://www.webasyst.com/store/app/status/`]{$_utm_suffix}" target="_blank">
+                                  <a href="[`https://www.webasyst.com/store/app/cash/`]{$_utm_suffix}" target="_blank" class="pl-more-apps-app-icon">
+                                      <img src="{$wa_url}wa-apps/pocketlists/img/pl2ad-cash-app-144.png" alt="[`Cash Flow`]">
+                                  </a>
+                                  <div class="custom-pt-4">
+                                      <div class="flexbox middle space-12 width-80">
+                                          <span class="wide">
+                                              <a href="[`https://www.webasyst.com/store/app/cash/`]{$_utm_suffix}" class="bold large" target="_blank">[`Cash Flow`]</a>
+                                          </span>
+                                          <span class="nowrap">
+                                              {if $wa->cash}
+                                                <span class="button smaller light-gray custom-ml-4"><i class="fas fa-check text-green"></i> [`Installed`]</span>
+                                              {else}
+                                                <span class="small">[`Promocode:`] <code>LHNHBFAKYZ</code> <span class="badge red small">&minus;15%</span></span>
+                                              {/if}
+                                          </span>
+                                      </div>
+
+                                      <p class="custom-mt-8 custom-mb-12">
+                                          <strong>[`Forecasts and saves your money.`]</strong>
+                                          [`Shows exact cash on hand balance for any date in the future. This app could have been a <em>life saver</em> for most businesses which did not survive a cash gap because of not knowing it’s coming.`]
+                                      </p>
+
+                                  </div>
+                              </div>
+                          </li>
+                          <li>
+                              <div class="flexbox space-12 width-100">
+                                  <a href="[`https://www.webasyst.com/store/app/status/`]{$_utm_suffix}" target="_blank" class="pl-more-apps-app-icon">
                                       <img src="{$wa_url}wa-apps/pocketlists/img/pl2ad-status-app-144.png" alt="[`Status`]">
                                   </a>
                                   <div class="custom-pt-4">
-                                      <a href="[`https://www.webasyst.com/store/app/status/`]{$_utm_suffix}" class="bold large" target="_blank">[`Status`]</a>
-                                      {if !$wa->status}<span class="button smaller light-gray custom-ml-4">[`Free`]</span>{else}<span class="button smaller light-gray custom-ml-4"><i class="fas fa-check"></i> [`Installed`]</span>{/if}
-                                      <p class="custom-mt-4">[`Tracks your team time & work status remotely on WFH`]</p>
+                                      <div class="flexbox middle space-12 width-80">
+                                          <span class="wide">
+                                              <a href="[`https://www.webasyst.com/store/app/status/`]{$_utm_suffix}" class="bold large" target="_blank">[`Status`]</a>
+                                          </span>
+                                          <span class="nowrap">
+                                              {if $wa->status}
+                                                <span class="button smaller light-gray custom-ml-4"><i class="fas fa-check text-green"></i> [`Installed`]</span>
+                                              {else}
+                                                <a href="[`https://www.webasyst.com/store/app/status/`]{$_utm_suffix}" class="button smaller outlined custom-ml-4" target="_blank">[`Free`]</a>
+                                              {/if}
+                                          </span>
+                                      </div>
+                                      <p class="custom-mt-8 custom-mb-12">
+                                          <strong>[`Remote team leader’s best friend.`]</strong>
+                                          [`Visualizes how you and your teammates work. Tracks working hours. Amazingly useful for WFH and any <em>we-don't-see-each-other-in-the-office</em> working patterns.`]
+                                      </p>
                                   </div>
                               </div>
                           </li>
@@ -142,9 +134,54 @@
 
             </div>
 
-        </div>
+            <hr class="custom-mt-32">
 
-        <div class="clear-both"></div>
+            <div class="fields-group">
+                <div class="field">
+                  <div class="name nowrap">
+                    Webasyst
+                  </div>
+                  <div class="value no-shift">
+
+                      <p>[`<strong>Your feedback is very important!</strong> Please rate Pocket Lists and write a short review about your experience of using the app. Reviews (both positive and negative) really help us to see what is most useful in the app so we can continue delivering new features the right way.`]</p>
+
+
+                      {if method_exists($wa->installer, 'reviewWidget')}
+                          <div style="display: flex;">
+                              <div style="flex: 0 0 auto; padding-right: 20px;">
+                                  {* $wa->installer->reviewWidget('app/pocketlists', ['is_inline' => true]) *}
+                              </div>
+                              {if pocketlistsHelper::hasPlugin('pro')}
+                              <div style="flex: 0 0 auto;">
+                                  {* $wa->installer->reviewWidget('plugin/pocketlists/pro', ['is_inline' => true]) *}
+                              </div>
+                              {/if}
+                          </div>
+                      {else}
+                          <p>
+                              {if $wa->user()->isAdmin('installer')}
+                                  <a href="{$wa_backend_url}installer/store/app/pocketlists/reviews/" target="_blank"><img src="{$wa_url}wa-apps/pocketlists/img/badge-webasyst{if $wa->locale()=='ru_RU'}-ru{/if}.png" class="pl-badge-appstore"></a>
+                              {else}
+                                  <a href="[`https://www.webasyst.com/store/app/pocketlists/`]" target="_blank"><img src="{$wa_url}wa-apps/pocketlists/img/badge-webasyst{if $wa->locale()=='ru_RU'}-ru{/if}.png" class="pl-badge-appstore"></a>
+                              {/if}
+                          </p>
+                      {/if}
+
+                  </div>
+                </div>
+
+                <div class="field">
+                    <div class="name">
+                      [`Copyright`]
+                    </div>
+                    <div class="value">
+                        <span class="gray">&copy;</span> <a href="https://1312.io" target="_blank">1312 Inc.</a>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
 
     </main>
 
