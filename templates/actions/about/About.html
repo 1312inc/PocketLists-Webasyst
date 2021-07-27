@@ -149,11 +149,11 @@
                       {if method_exists($wa->installer, 'reviewWidget')}
                           <div style="display: flex;">
                               <div style="flex: 0 0 auto; padding-right: 20px;">
-                                  {* $wa->installer->reviewWidget('app/pocketlists', ['is_inline' => true]) *}
+                                  {$wa->installer->reviewWidget('app/pocketlists', ['is_inline' => true])}
                               </div>
                               {if pocketlistsHelper::hasPlugin('pro')}
                               <div style="flex: 0 0 auto;">
-                                  {* $wa->installer->reviewWidget('plugin/pocketlists/pro', ['is_inline' => true]) *}
+                                  {$wa->installer->reviewWidget('plugin/pocketlists/pro', ['is_inline' => true])}
                               </div>
                               {/if}
                           </div>
