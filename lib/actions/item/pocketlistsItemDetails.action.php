@@ -104,5 +104,12 @@ class pocketlistsItemDetailsAction extends pocketlistsViewItemAction
                 'backend_item_add' => $eventResult,
             ]
         );
+
+        $this->setTemplate(
+            pl2()->getUI2TemplatePath(
+                'templates/actions%s/item/ItemDetails.html',
+                waRequest::request('external_app', null, waRequest::TYPE_STRING_TRIM)
+            )
+        );
     }
 }

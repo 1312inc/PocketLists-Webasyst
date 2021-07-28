@@ -29,6 +29,7 @@ final class pocketlistsWebasystBackendHeader
 
         $data = [
             'pl2_app_static_url' => wa()->getAppStaticUrl(pocketlistsHelper::APP_ID),
+            'externalApp' => 'webasyst',
         ];
 
         return array (

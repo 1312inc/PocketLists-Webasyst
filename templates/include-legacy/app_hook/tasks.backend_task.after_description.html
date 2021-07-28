@@ -105,7 +105,8 @@
             appUrl: '{$params.plurl}',
             userHasLinkedApps: {$params.user->hasLinkedApps()},
             wa_url: '{$wa_url}',
-            fileUpload: {$params.fileupload}
+            fileUpload: {$params.fileupload},
+            externalApp: 'tasks'
         });
 
         new $.pocketlists.Comments($list_wrapper, {

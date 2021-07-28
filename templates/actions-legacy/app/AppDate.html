@@ -75,6 +75,7 @@
             },
             userHasLinkedApps: {$user->hasLinkedApps()},
             dueDate: '{if $timestamp}{$timestamp}{/if}',
+            externalApp: '{$externalApp|default:''}'
         });
 
         new $.pocketlists.Comments($all_items_wrapper);
@@ -82,7 +83,7 @@
         $.pocketlists.lazyItems({
             $loading: $('#pl-list-content .lazyloading'),
             html_selector: '#pl-complete-log > .menu-v',
-            url: '?module=item&action=lazyDone&type=app&app={$app->getApp()}'
+            url: '?module=item&action=lazyDone&type=app&app={$app->getApp()}&external_app={$externalApp|default:''|escape}'
         });
     }());
 </script>

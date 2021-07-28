@@ -63,7 +63,8 @@
                 archive: false,
                 userHasLinkedApps: {$current_user->hasLinkedApps()},
                 current_user_id: {$current_user->getContact()->getId()},
-                fileUpload: true
+                fileUpload: true,
+                externalApp: '{$externalApp|default:''}'
             });
 
             new $.pocketlists.Comments($list_wrapper);

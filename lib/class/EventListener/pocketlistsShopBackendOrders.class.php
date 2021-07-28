@@ -27,9 +27,10 @@ final class pocketlistsShopBackendOrders
 
         $viewParams = [
             'wa_app_static_url' => wa()->getAppStaticUrl(pocketlistsHelper::APP_ID),
-            'app'               => $app,
-            'plurl'             => wa()->getAppUrl(pocketlistsHelper::APP_ID),
-            'user'              => pl2()->getUser(),
+            'app' => $app,
+            'plurl' => wa()->getAppUrl(pocketlistsHelper::APP_ID),
+            'user' => pl2()->getUser(),
+            'externalApp' => 'shop',
         ];
 
         foreach (['sidebar_bottom_li'] as $hook) {

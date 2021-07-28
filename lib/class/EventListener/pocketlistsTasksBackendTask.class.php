@@ -56,6 +56,7 @@ final class pocketlistsTasksBackendTask
                     'fileupload' => 1,
                     'user' => pl2()->getUser(),
                     'itemAdd' => $itemAdd,
+                    'externalApp' => 'tasks',
                 ],
                 pl2()->getDefaultViewVars()
             );

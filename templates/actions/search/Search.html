@@ -99,7 +99,8 @@
             filter: 'search',
             userHasLinkedApps: {$user->hasLinkedApps()},
             current_user_id: {$user->getContact()->getId()},
-            fileUpload: {$fileupload}
+            fileUpload: {$fileupload},
+            externalApp: '{$externalApp|default:''}'
         });
 
         new $.pocketlists.Comments($all_items_wrapper);

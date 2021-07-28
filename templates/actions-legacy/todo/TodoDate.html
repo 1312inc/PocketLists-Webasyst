@@ -95,7 +95,8 @@
             userHasLinkedApps: {$user->hasLinkedApps()},
             current_user_id: {$user->getContact()->getId()},
             dueDate: '{if $timestamp}{$timestamp}{/if}',
-            caller: 'todo'
+            caller: 'todo',
+            externalApp: '{$externalApp|default:''}'
         });
 
         new $.pocketlists.Comments($all_items_wrapper);
@@ -103,7 +104,7 @@
         $.pocketlists.lazyItems({
             $loading: $('#pl-list-content .lazyloading'),
             html_selector: '#pl-complete-log > .menu-v',
-            url: '?module=item&action=lazyDone&type=todo&date={$date}'
+            url: '?module=item&action=lazyDone&type=todo&date={$date}&external_app={$externalApp|default:''|escape}&external_app={$externalApp|default:''|escape}'
         });
     }());
 </script>

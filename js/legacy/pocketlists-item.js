@@ -35,7 +35,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             wa_url: '',
             fileUpload: 1,
             userHasLinkedApps: 0,
-            caller: ''
+            caller: '',
+            externalApp: null
         }, options),
         request_in_action = false;
 
@@ -401,7 +402,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     id: itemId,
                     list_id: o.list && o.list.list_id ? o.list.list_id : 0,
                     assign_user_id: o.assignUser || 0,
-                    caller: o.caller
+                    caller: o.caller,
+                    external_app: o.externalApp
                 }, function (html) {
                     $wrapper
                         .html(html)
@@ -950,7 +952,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 list_id: o.list ? o.list.list_id : 0,
                 data: data,
                 assigned_contact_id: o.assignUser ? o.assignUser : false,
-                filter: o.filter
+                filter: o.filter,
+                external_app: o.externalApp
             },
             eventData = {
                 response: itemData,

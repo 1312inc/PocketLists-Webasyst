@@ -87,7 +87,8 @@
             dueDate: '{if $timestamp}{$timestamp}{/if}',
             filter: 'favorites',
             userHasLinkedApps: {$user->hasLinkedApps()},
-            current_user_id: {$user->getContact()->getId()}
+            current_user_id: {$user->getContact()->getId()},
+            externalApp: '{$externalApp|default:''}'
         });
 
         new $.pocketlists.Comments($all_items_wrapper);
@@ -95,7 +96,7 @@
         $.pocketlists.lazyItems({
             $loading: $('#pl-list-content .lazyloading'),
             html_selector: '#pl-complete-log > .menu-v',
-            url: '?module=item&action=lazyDone&type=favorites&date={$date}'
+            url: '?module=item&action=lazyDone&type=favorites&date={$date}&external_app={$externalApp|default:''|escape}'
         });
     }());
 </script>

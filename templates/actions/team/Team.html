@@ -165,7 +165,8 @@
             standAloneItemAdd: {if $external}1{else}0{/if},
             appUrl: '{$plurl}',
             wa_url: '{$wa_url}',
-            fileUpload: {if $external}0{else}1{/if}
+            fileUpload: {if $external}0{else}1{/if},
+            externalApp: '{$externalApp|default:''}'
         });
 
         new $.pocketlists.Comments($all_items_wrapper);
@@ -202,7 +203,7 @@
         $.pocketlists.lazyItems({
             $loading: $('#pl-list-content .lazyloading'),
             html_selector: '#pl-complete-log > .menu-v',
-            url: '?module=item&action=lazyDone&type=team&teammate={$current_teammate->getId()}'
+            url: '?module=item&action=lazyDone&type=team&teammate={$current_teammate->getId()}&external_app={$externalApp|default:''|escape}'
         });
     }())
 </script>

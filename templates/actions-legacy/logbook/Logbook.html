@@ -37,7 +37,8 @@
             enableChangeLevel: false,
             enableSortItems: false,
             userHasLinkedApps: {$user->hasLinkedApps()},
-            current_user_id: {$user->getContact()->getId()}
+            current_user_id: {$user->getContact()->getId()},
+            externalApp: '{$externalApp|default:''}'
         });
         new $.pocketlists.Comments($all_items_wrapper);
 

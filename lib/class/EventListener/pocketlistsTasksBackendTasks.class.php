@@ -50,6 +50,7 @@ final class pocketlistsTasksBackendTasks
                         'plurl' => wa()->getAppUrl(pocketlistsHelper::APP_ID),
                         'user' => pl2()->getUser(),
                         'count_undone_items' => $undoneItemsCount,
+                        'externalApp' => 'tasks',
                     ],
                     pl2()->getDefaultViewVars()
                 );

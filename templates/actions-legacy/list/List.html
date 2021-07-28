@@ -118,7 +118,8 @@
             userHasLinkedApps: {$user->hasLinkedApps()},
             current_user_id: {$user->getContact()->getId()},
             fileUpload: {$fileupload},
-            caller: 'list'
+            caller: 'list',
+            externalApp: '{$externalApp|default:''}'
         });
 
         new $.pocketlists.Comments($list_wrapper);
@@ -130,7 +131,7 @@
         $.pocketlists.lazyItems({
             $loading: $('#pl-list-content .lazyloading'),
             html_selector: '#pl-complete-log > .menu-v',
-            url: '?module=item&action=lazyDone&type=list&id={$list->getId()}',
+            url: '?module=item&action=lazyDone&type=list&id={$list->getId()}&external_app={$externalApp|default:''|escape}',
             load_now: true,
             offset: 0
         });

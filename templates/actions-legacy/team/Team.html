@@ -22,10 +22,10 @@
 {if ($wa->locale() == 'ru_RU')}<script type="text/javascript" src="{$wa_url}wa-content/js/jquery-ui/i18n/jquery.ui.datepicker-ru_RU.js"></script>{/if}
 <script type="text/javascript" src="{$wa_url}wa-content/js/jquery-plugins/fileupload/jquery.iframe-transport.js"></script>
 <script type="text/javascript" src="{$wa_url}wa-content/js/jquery-plugins/fileupload/jquery.fileupload.js"></script>
-<script type="text/javascript" src="{$wa_app_static_url}js/pocketlists.js?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
-<script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-item.js?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
-<script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-comment.js?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
-<link type="text/css" rel="stylesheet" href="{$wa_app_static_url}css/pocketlists.css?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}">
+<script type="text/javascript" src="{$wa_app_static_url}js/legacy/pocketlists.js?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
+<script type="text/javascript" src="{$wa_app_static_url}js/legacy/pocketlists-item.js?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
+<script type="text/javascript" src="{$wa_app_static_url}js/legacy/pocketlists-comment.js?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
+<link type="text/css" rel="stylesheet" href="{$wa_app_static_url}css/legacy/pocketlists.css?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}">
 {/if}
 
 <!-- TEAM -->
@@ -86,7 +86,7 @@
 </nav>
 {/if}
 {/if}
-
+1.3
 <!-- ITEMS -->
 <main class="pl-inner-content pl-items pl-teammate-items {if $external}pl-embedded{else}shadowed{/if}" id="pl-list-content">
 
@@ -156,7 +156,8 @@
             standAloneItemAdd: {if $external}1{else}0{/if},
             appUrl: '{$plurl}',
             wa_url: '{$wa_url}',
-            fileUpload: {if $external}0{else}1{/if}
+            fileUpload: {if $external}0{else}1{/if},
+            externalApp: '{$externalApp|default:''}'
         });
 
         new $.pocketlists.Comments($all_items_wrapper);
@@ -193,7 +194,7 @@
         $.pocketlists.lazyItems({
             $loading: $('#pl-list-content .lazyloading'),
             html_selector: '#pl-complete-log > .menu-v',
-            url: '?module=item&action=lazyDone&type=team&teammate={$current_teammate->getId()}'
+            url: '?module=item&action=lazyDone&type=team&teammate={$current_teammate->getId()}&external_app={$externalApp|default:''|escape}'
         });
     }())
 </script>

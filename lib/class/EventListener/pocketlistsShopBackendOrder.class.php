@@ -45,6 +45,7 @@ final class pocketlistsShopBackendOrder
                 'fileupload' => 1,
                 'user' => pl2()->getUser(),
                 'itemAdd' => $itemAdd,
+                'externalApp' => 'shop',
             ],
             pl2()->getDefaultViewVars()
         );

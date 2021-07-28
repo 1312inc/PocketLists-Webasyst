@@ -103,7 +103,8 @@
                             }
                         ),
                         current_user_id: "{$user->getContact()->getId()}",
-                        userHasLinkedApps: {$user->hasLinkedApps()}
+                        userHasLinkedApps: {$user->hasLinkedApps()},
+                        externalApp: '{$externalApp|default:''}'
                     });
 
                     new $.pocketlists.Comments($all_items_wrapper);

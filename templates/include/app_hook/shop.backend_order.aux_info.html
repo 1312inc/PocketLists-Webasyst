@@ -93,7 +93,8 @@
             appUrl: '{$params.plurl}',
             userHasLinkedApps: {$params.user->hasLinkedApps()},
             wa_url: '{$wa_url}',
-            fileUpload: {$params.fileupload}
+            fileUpload: {$params.fileupload},
+            externalApp: 'shop'
         });
 
         new $.pocketlists.Comments($list_wrapper, {
