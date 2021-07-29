@@ -1415,7 +1415,7 @@ msgid "Forecasts and saves your money."
 msgstr "Считает расходы, прогнозирует прибыль."
 
 msgid "Shows exact cash on hand balance for any date in the future. This app could have been a <em>life saver</em> for most businesses which did not survive a cash gap because of not knowing it’s coming."
-msgstr "Показывает точный баланс в кассе на любой день в будущем. Cash Flow мог бы реально спасти жизни многих компанией, которые не пережили кассового разрыва из-за незнания, когда он наступит и почему."
+msgstr "Показывает точный баланс в кассе на любой день в будущем. Приложение могло бы реально спасти жизни многих компанией, которые не пережили кассового разрыва из-за незнания, когда он наступит и почему."
 
 msgid "Remote team leader’s best friend."
 msgstr "Лучший друг руководителя на удаленке."

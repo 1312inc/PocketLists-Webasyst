@@ -132,7 +132,7 @@ class pocketlistsBackendSidebarAction extends pocketlistsViewAction
                     'appurl' => $_webasyst_base_url . 'store/app/cash/?utm_source=pl2webasyst&utm_medium=inapp_tiny_ad&utm_campaign=1312_inapp_pl2webasyst_cashapp_wa'.$_whichUI,
                     'buyurl' => $_webasyst_base_url . 'buy/store/5136/?utm_source=pl2webasyst&utm_medium=inapp_tiny_ad&utm_campaign=1312_inapp_pl2webasyst_cashapp_wa'.$_whichUI,
                     'image' => wa()->getAppStaticUrl() . 'img/pl2ad-cash-app-144.png',
-                    'title' => 'Cash Flow',
+                    'title' => _w('Cash Flow'),
                     'subtitle' => _w('Forecasts and saves your business money.'),
                     'teaser' => _w('Promocode for managing money the smarter way.'),
                     'body' => '<strong>' . _w('Forecasts and saves your money.') . '</strong>' . ' ' .
