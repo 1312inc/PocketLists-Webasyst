@@ -2,10 +2,9 @@
     <div class="dialog-background"></div>
     <div class="dialog-body">
         <header class="dialog-header"><h1>[`‘Order > To-do’ automation rule`]</h1></header>
-        <div class="dialog-content">
 
-    <form method="post">
-        <div class="dialog-window">
+        <form method="post">
+
             <div class="dialog-content">
                 <p>[`Pocket Lists will create a new to-do upon an action performed with any order in Shop-Script if the specified conditions are met.`]</p>
                 <div class="fields form">
@@ -15,7 +14,8 @@
                         </div>
                         <div class="value no-shift">
                             <input type="hidden" name="data[enabled]" value="0"/>
-                            <input type="checkbox" name="data[enabled]" value="1" {if $automation->isEnabled()}checked{/if}/>
+                            <input type="checkbox" name="data[enabled]" value="1"
+                                   {if $automation->isEnabled()}checked{/if}/>
                         </div>
                     </div>
                 </div>
@@ -23,22 +23,22 @@
                 <h2 class="heading bordered-bottom" style="padding-bottom: 10px; margin-bottom: 13px;">[`IF`]</h2>
                 <div class="fields form ">
                     {foreach $automation->getRules() as $rule}
-                    <div class="field">
-                        <div class="name">
-                            {$rule->getLabel()}
-                        </div>
-                        <div class="value">
-                            {$rule->editHtml()}
-                        </div>
-                        {$_disclaimer = $rule->editHtmlDisclaimer()}
-                        {if $_disclaimer}
-                        <div class="value">
+                        <div class="field">
+                            <div class="name">
+                                {$rule->getLabel()}
+                            </div>
+                            <div class="value">
+                                {$rule->editHtml()}
+                            </div>
+                            {$_disclaimer = $rule->editHtmlDisclaimer()}
+                            {if $_disclaimer}
+                                <div class="value">
                             <span class="hint">
                                 {$_disclaimer}
                             </span>
+                                </div>
+                            {/if}
                         </div>
-                        {/if}
-                    </div>
                     {/foreach}
                 </div>
                 <div class="clear-both"></div>
@@ -48,17 +48,18 @@
                 {$automation->getAction()->editHtml()}
 
             </div>
-        </div>
 
-        <div class="dialog-buttons">
-            {if $automation->getId()}
-                <input type="hidden" name="id" value="{$automation->getId()}"/>
-                <div class="block float-right"><a href="#" data-pl2pro-automation-action="delete"><i class="icon16 delete"></i>[`Delete rule`]</a></div>
-            {/if}
-            <input type="submit" value="[`Save`]" class="button green" /> [`or`] <a href="#" class="cancel">[`cancel`]</a>
-        </div>
-    </form>
+            <footer class="dialog-footer">
+                {if $automation->getId()}
+                    <input type="hidden" name="id" value="{$automation->getId()}"/>
+                    <div class="block float-right"><a href="#" data-pl2pro-automation-action="delete"><i
+                                    class="icon16 delete"></i>[`Delete rule`]</a></div>
+                {/if}
+                <input type="submit" value="[`Save`]" class="button green"/> [`or`] <a href="#"
+                                                                                       class="cancel">[`cancel`]</a>
+            </footer>
 
-        </div>
+        </form>
+
     </div>
 </div>
