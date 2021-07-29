@@ -1391,6 +1391,9 @@ msgstr ""
 msgid "About the app"
 msgstr ""
 
+msgid "About the plugin"
+msgstr ""
+
 msgid "Installed"
 msgstr ""
 

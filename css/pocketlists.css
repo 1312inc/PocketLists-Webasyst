@@ -167,7 +167,7 @@ table.pl-calendar td .pl-dots i.icon { margin-top: 0.2em; margin-right: 0.2em; }
 .pl-upgrade-ad p { margin-bottom: 15px; font-size: 0.9375rem; }
 /* .pl-upgrade-ad .icon16.star { margin-right: 0.15em; margin-top: 0; } */
 .pl-upgrade-ad .pl-wa-plugin-icon { flex: 0 0 200px; }
-.pl-upgrade-ad .pl-wa-plugin-icon img { box-shadow: 0 15px 35px rgba(40,40,80,0.1), 0 5px 10px rgba(0,0,0,0.07); border-radius: 5px; width: 200px; height: 110px; }
+.pl-upgrade-ad .pl-wa-plugin-icon img { box-shadow: 0 15px 25px rgba(40,40,80,0.1), 0 3px 8px rgba(0,0,0,0.07); border-radius: 5px; width: 200px; height: 110px; }
 
 .pl-badge-appstore { width: 144px; display: block; }
 
@@ -200,13 +200,13 @@ table.pl-calendar td .pl-dots i.icon { margin-top: 0.2em; margin-right: 0.2em; }
 .pl-tiny-ad .pl-tiny-ad-close { font-size: 1rem; color: #886; padding-right: 0.25rem; }
 .pl-tiny-ad h5 { font-size: 1rem; }
 .pl-tiny-ad img.pl-app-icon { width: 64px; height: 64px; }
-.pl-tiny-ad img.pl-app-icon.pl-plugin-icon { width: 100%; margin-bottom: 0.5rem; height: auto; }
+.pl-tiny-ad img.pl-app-icon.pl-plugin-icon { width: 100%; margin-bottom: 0.5rem; height: auto; box-shadow: 0 15px 25px rgba(40,40,80,0.1), 0 3px 8px rgba(0,0,0,0.07); }
 .pl-tiny-ad .pl-app-discount-badge { font-size: 0.6875rem; font-weight: bold; position: relative; top: -2px; }
 .pl-tiny-ad .pl-tiny-ad-action-button { display: block; width: 100%; text-align: center; font-size: 0.875rem; }
 
 .pl-tiny-ad-dialog img.pl-app-icon { width: 96px; height: 96px; }
-.pl-tiny-ad-dialog img.pl-app-icon.pl-plugin-icon { width: 200px; height: 110px; }
-.pl-tiny-ad-dialog .pl-app-discount-badge { font-size: 0.875rem; font-weight: bold; }
+.pl-tiny-ad-dialog img.pl-app-icon.pl-plugin-icon { width: 200px; height: 110px; box-shadow: 0 15px 25px rgba(40,40,80,0.1), 0 3px 8px rgba(0,0,0,0.07); }
+.pl-tiny-ad-dialog .pl-app-discount-badge { font-size: 1.25rem; font-weight: bold; }
 .pl-tiny-ad-dialog p { font-size: 0.9375rem; line-height: 1.4; }
 /* .pl-tiny-ad .pl-badge-appstore { width: 112px; display: block; margin: 15px auto 10px; } */
 /* .pl-tiny-ad a.pl-tiny-button { background: #fff; border: 1px solid black; border-radius: 4px; display: block; margin: 15px auto 10px; padding: 8px 10px; text-align: center; color: #03c; text-decoration: none; font-weight: bold; box-shadow: 0 5px 10px -5px rgba(0,0,0,0.15); } */

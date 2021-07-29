@@ -1399,6 +1399,9 @@ msgstr "Показать промокод"
 msgid "About the app"
 msgstr "О приложении"
 
+msgid "About the plugin"
+msgstr "О плагине"
+
 msgid "Promocode:"
 msgstr "Промокод:"
 
@@ -1409,7 +1412,7 @@ msgid "Amazing companion/upgrade for Pocket Lists when it’s time for real coll
 msgstr "Когда задач становится слишком много, и в списки и напоминания Pocket Lists они не помещаются, помогут «Webasyst Задачи» — мощный трекер задач (таск-менеджер), разработанный для команд от 2 до 100 человек. Реально помогает навести порядок в работе команды. Показывает дедлайны и текущий статус работ. Ни одна задача не потеряется."
 
 msgid "Forecasts and saves your money."
-msgstr "Считает деньги, прогнозирует прибыль."
+msgstr "Считает расходы, прогнозирует прибыль."
 
 msgid "Shows exact cash on hand balance for any date in the future. This app could have been a <em>life saver</em> for most businesses which did not survive a cash gap because of not knowing it’s coming."
 msgstr "Показывает точный баланс в кассе на любой день в будущем. Cash Flow мог бы реально спасти жизни многих компанией, которые не пережили кассового разрыва из-за незнания, когда он наступит и почему."
@@ -1433,7 +1436,7 @@ msgid "Promocode for our flagship Webasyst app."
 msgstr "Промокод на наше главное приложение для Webasyst."
 
 msgid "Forecasts and saves your business money."
-msgstr "Считает деньги. Прогнозирует прибыль."
+msgstr "Считает расходы. Прогнозирует прибыль."
 
 msgid "Promocode for managing money the smarter way."
 msgstr "Промокод для тех, кто хочет легко вести учет финансов и зарабатывать больше."
