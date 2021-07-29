@@ -38,12 +38,8 @@
 
                                 <span class="pl-list-name wide pl-dark-{$l->getColor()|default:'none'}-label">{$l->getName()|escape}</span>
 
-                                <span class="count" {if !$l->getItemCount()->getMaxPriority()}style="display: none;"{/if}>
-                                    <span data-pl2-list-calc-priority class="badge {pocketlistsViewHelper::getPriorityCssClass($l->getItemCount()->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}">
-                                        {$l->getItemCount()->getCountMaxPriority()}
-                                    </span>
-                                </span>
                                 <span class="count">
+                                    <span data-pl2-list-calc-priority class="badge {pocketlistsViewHelper::getPriorityCssClass($l->getItemCount()->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}" {if !$l->getItemCount()->getMaxPriority()}style="display: none;"{/if}>{$l->getItemCount()->getCountMaxPriority()}</span>
                                     <span data-pl2-list-items class="gray">{$l->getItemCount()->getCount()}</span>
                                 </span>
                             </a>

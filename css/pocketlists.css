@@ -78,7 +78,7 @@ ul.menu-v.with-icons i.icon16.color { margin: 2px 7px 1px -18px; width: 12px; he
 .indicator.red { background-color: #dd1713; }
 .indicator.yellow { background-color: #f2aa42; color: #fff; }
 .indicator.green { background-color: #78b03e; color: #fff; }
-.count.indicator { margin-right: 3px; }
+.count .indicator { margin-right: 3px; }
 
 .pl-droppable { transition: background-color 0.4s; }
 .highlighted-background { background-color: #fffaba !important; }
@@ -217,6 +217,7 @@ table.pl-calendar td .pl-dots i.icon { margin-top: 0.2em; margin-right: 0.2em; }
 label.pl-done-label,
 .pl-padded-left {
     flex: 0 0 2rem;
+    min-height: 1rem;
 }
 #pl-item-add label.pl-done-label { padding-top: 3px; }
 /* label.pl-done-label .listicon48 {
@@ -246,9 +247,9 @@ label.pl-done-label i.icon16.userpic20 {
 .pl-done.pl-priority-yellow + span { background-position: -20px 0; }
 .pl-done.pl-priority-green + span { background-position: -40px 0; }
 .pl-done.pl-priority-black + span { background-position: -60px 0; }
-.pl-done.pl-priority-fire + span { background: url('../img/item-bullets-priority-fire.gif') no-repeat; background-size: 2rem 2rem; border: none; width: 2rem; height: 2rem; top: -0.75rem; left: -0.25rem; position: relative; }
+.pl-done.pl-priority-fire:not(:checked) + span { background: url('../img/item-bullets-priority-fire.gif') no-repeat; background-size: 2rem 2rem; border: none; width: 2rem; height: 2rem; top: 0.25rem; left: 0.75rem; position: absolute; }
 
-.pl-done:checked + span, .pl-done:disabled:checked + span {background: transparent url('../img/pl-done-checkbox.png') no-repeat !important;background-size: 16px 16px !important;border: none;border-radius: 0;opacity: 0.2;top: 3px;left: 19px;}
+.pl-done:checked + span, .pl-done:disabled:checked + span {background: transparent url('../img/pl-done-checkbox.png') no-repeat !important;background-size: 16px 16px !important;border: none;border-radius: 0;opacity: 0.2; top: 3px; left: 2px; position: relative; }
 .pl-done + .pl-add-todo { top: 4px; left: 4px; position: relative; }
 /* .pl-done + span.pl-add-todo {background: transparent url('../img/pl-add-todo.png') no-repeat !important; background-size: 13px 13px !important; border: none; border-radius: 0; opacity: 0.3; left: 20px; top: 4px; cursor: default; } */
 /* .pl-done + span.pl-add-todo.transparent { background: none !important; } */
@@ -350,9 +351,12 @@ textarea.pl-item-name {
 .pl-item { position: relative; border-bottom: 1px solid var(--border-color-soft); padding: 0.875rem 1.25rem 0.75rem; }
 .pl-list-items ul.menu-v li .pl-item { transition: 0.1s; }
 .pl-list-items ul.menu-v li .pl-item:hover { background: var(--background-color-table-row-hover); }
-.pl-list-items ul.menu-v li .pl-item.pl-item-selected { box-shadow: 0 -2.5rem 3rem -3.5rem rgba(0,0,0,.5), 0 3rem 3rem -3.5rem rgba(0,0,0,.5); background: var(--background-color-blank); padding-top: 1.5rem; padding-bottom: 1.5rem; }
+.pl-list-items ul.menu-v li .pl-item.pl-item-selected { box-shadow: 0 -0.5rem 1rem -1.5rem rgba(0,0,0,.5), 0 1rem 1rem -1.5rem rgba(0,0,0,.5); background: var(--background-color-blank); padding-top: 1.5rem; padding-bottom: 1.5rem; }
 .pl-list-items ul.menu-v li .pl-item.pl-item-selected .pl-item-drag-handle { display: none !important; }
-/* .pl-list-items ul.menu-v li .pl-item.pl-item-selected .pl-done.pl-priority-fire + span { top: 0.25rem; } */
+.pl-list-items ul.menu-v li .pl-item.pl-item-selected .pl-item-list-name { position: absolute; opacity: 0; }
+.pl-list-items ul.menu-v li .pl-item.pl-item-selected .pl-done.pl-priority-fire:not(:checked) + span { top: 0.75rem; }
+.pl-list-items ul.menu-v li .pl-item.pl-item-selected .pl-edit,
+.pl-list-items ul.menu-v li .pl-item.pl-item-selected .pl-comment { opacity: 1; }
 #pl-item-add .pl-item.pl-item-selected { background: transparent; box-shadow: none; padding-top: 0.875rem; padding-bottom: 1.5rem; }
 .pl-list-items ul.menu-v li label.pl-select-label { position: relative; cursor: auto; line-height: 1.25; }
 .pl-list-items ul.menu-v li ul { padding-left: 0; margin: 0; }
@@ -366,7 +370,7 @@ textarea.pl-item-name {
 .pl-list-items ul.menu-v li ul li ul li ul li ul li ul li ul li ul li ul li .pl-item { padding-left: 212px; }
 .pl-list-items ul.menu-v li ul li ul li ul li ul li ul li ul li ul li ul li ul li .pl-item { padding-left: 238px; }
 
-.pl-item .pl-item-list-name { color: rgba(0,0,0,0.4); font-weight: bold; margin-left: 2rem; font-size: 0.8125rem; }
+.pl-item .pl-item-list-name { color: rgba(0,0,0,0.4); font-weight: bold; margin-left: 2rem; font-size: 0.75rem; }
 .pl-item .pl-item-list-name.pl-dark-none-label { color: #aaa !important; }
 /* .pl-item .pl-meta { display: inline-block; float: right; margin: 0 0 0 20px; padding: 4px 16px 16px; position: relative; z-index: 1; } */
 /* .pl-item .pl-favorite { display: inline-block; float: right; margin-left: 3px; margin-top: -6px; } */
@@ -505,7 +509,7 @@ p .pl-label.pl-pro { position: relative; top: 3px; margin-right: 0; }
 .pl-details-form .pl-app-hint-external { display: none; }
 .pl-details-form .pl-details-linked-entities { margin-bottom: 1rem; }
 .pl-details-form .pl-done + span { margin-right: 6px; left: 0; top: 0; }
-.pl-details-form .pl-done.pl-priority-fire + span { top: -0.5rem; }
+.pl-details-form .pl-done.pl-priority-fire + span { top: -0.5rem !important; position: relative; left: 0; }
 .pl-details-form ul.menu-v.with-icons li { padding: 5px 2px 5px 24px; margin-left: -4px; }
 .pl-details-form ul.menu-v.with-icons li.top-padded { padding-top: 18px; }
 .pl-details-form ul.menu-v.with-icons li.bottom-padded { padding-bottom: 18px; }
@@ -516,7 +520,7 @@ p .pl-label.pl-pro { position: relative; top: 3px; margin-right: 0; }
 .pl-details-form .selected .pl-done.pl-priority-yellow + span { background-position-x: -30px; width: 30px; height: 30px; }
 .pl-details-form .selected .pl-done.pl-priority-red + span { width: 30px; height: 30px; }
 .pl-details-form .selected .pl-done.pl-priority-black + span { background-position-x: -90px; width: 30px; height: 30px; }
-.pl-details-form .selected .pl-done.pl-priority-fire + span { background-size: 3rem 3rem; top: -2.25rem; width: 3rem; height: 3rem; position: absolute; }
+.pl-details-form .selected .pl-done.pl-priority-fire + span { background-size: 3rem 3rem; top: -2.25rem !important; width: 3rem; height: 3rem; position: absolute; }
 .pl-details-textarea.pl-item-name { max-height: 170px; }
 
 #pl-item-add .pl-item-details { box-shadow: 0 3rem 3rem -3.5rem rgba(0,0,0,.5); }
