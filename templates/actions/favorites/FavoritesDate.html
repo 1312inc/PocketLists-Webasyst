@@ -25,7 +25,7 @@
         <span></span>
         {else}
         <h1 class="not-padded" pl-todo-stream="date">
-            {if !$print} <a href="#" class="back">&larr; [`All favorites`]</a>{/if}
+            {if !$print} <a href="#" class="back button light-gray circle" style="font-size: 20px; position: relative; top: -4px;" title="[`All favorites`]"><i class="fas fa-arrow-left"></i></a>{/if}
             <span>{waDateTime::date(waDateTime::getFormat('humandate'), $date)}</span>
         </h1>
         {/if}

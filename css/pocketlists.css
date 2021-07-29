@@ -132,8 +132,8 @@ i.listicon48 { background-repeat:no-repeat; height: 32px; width: 32px; backgroun
 ----------- */
 
 table.pl-calendar { width: 100%; margin: 0; }
-table.pl-calendar th { color: #d3d3d3; font-weight: normal; padding-bottom: 5px; font-size: 0.9em; text-align: center; vertical-align: top; }
-table.pl-calendar td { width: 14.28%; height: 25px; line-height: 25px; text-align: center; color: var(--text-color); }
+table.pl-calendar th { color: #d3d3d3; font-weight: normal; padding-bottom: 5px; font-size: 0.9em; text-align: center; }
+table.pl-calendar td { width: 14.28%; height: 25px; line-height: 25px; text-align: center; color: var(--text-color); vertical-align: top; }
 table.pl-calendar td:hover { background: var(--highlighted-yellow); cursor: pointer; }
 table.pl-calendar td.pl-selected { background: var(--accent-color); font-weight: bold; }
 table.pl-calendar td.pl-today { border: 3px solid var(--yellow); border-radius: 0.125rem; font-weight: 500; }
@@ -311,7 +311,7 @@ textarea.pl-item-name {
 .pl-chat textarea { margin-left: 0px; border-radius: 5px; padding-left: 8px; width: 80%; min-width: 150px; max-height: 110px; padding-right: 5px; padding-left: 12px; font-size: 0.875rem; }
 /* .pl-unsaved { background: rgba(183,0,0,0.06) !important; 2px 3px 0nt; color: #f55 !important; } */
 
-.pl-title { padding: 1rem 1.25rem 0; }
+.pl-title { padding: 1rem 1.25rem; }
 .pl-title h1 { margin: 0; line-height: 1.1em; display: inline-block; }
 .pl-title h1 .pl-done + span {left: -34px; top: 2px; width: 22px; height: 22px; position: absolute; z-index: 1;}
 .pl-title h1 .pl-done:checked + span,
@@ -486,7 +486,7 @@ p .pl-label.pl-pro { position: relative; top: 3px; margin-right: 0; }
 .pl-logbook .pl-item.gray .pl-link-preview-details .pl-label { opacity: 1; }
 
 /* .pl-archive { background: #eee; } */
-.pl-archive .pl-title h1 { padding-left: 0; }
+/* .pl-archive .pl-title h1 { padding-left: 0; } */
 /* .pl-archive .pl-inner-content { margin-right: 0; } */
 
 /* Item / List misc details form

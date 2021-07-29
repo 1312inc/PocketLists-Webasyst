@@ -1,13 +1,14 @@
 <div class="dialog">
     <div class="dialog-background"></div>
     <div class="dialog-body">
-        <header class="dialog-header"><h1>[`Email list`]</h1></header>
-
         <form method="post">
 
             <div class="dialog-content">
+
+                <h1>[`Email list`]</h1>
+
                 {if !empty($list)}<input type="hidden" name="mail[list_id]" value="{$list->getId()}">{/if}
-                <div class="fields form width100px">
+                <div class="fields vertical">
                     <div class="field">
                         <div class="name">[`To`]</div>
                         <div class="value">
@@ -37,9 +38,9 @@
                     <div class="field">
                         <div class="name">[`Message`]</div>
                         <div class="value">
-                            <textarea name="mail[body]"
+                            <textarea name="mail[body]" class="width-100 small"
                                       style="height: 170px;">{foreach $items as $item}&#9679; {$item->getName()}
-                                    {foreachelse}[`No to-dos :)`]
+{foreachelse}[`No to-dos :)`]
                                 {/foreach}
 
 via Pocket Lists</textarea>
@@ -50,8 +51,8 @@ via Pocket Lists</textarea>
             </div>
 
             <footer class="dialog-footer">
-                <input type="submit" value="[`Send`]" class="button green">
-                [`or`] <a class="cancel" href="#">[`cancel`]</a>
+                <input type="submit" value="[`Send`]" class="button">
+                <a class="cancel button light-gray" href="#">[`Cancel`]</a>
             </footer>
 
         </form>
