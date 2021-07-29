@@ -273,30 +273,42 @@
             var $label = $(this).closest('[data-pl2pro-label-id]'),
                 labelId = $label.data('pl2pro-label-id');
 
-            $('<div>').waDialog({
-                url: '?plugin=pro&module=label&action=deleteDialog&id=' + labelId,
-                width: '400px',
-                height: '200px',
-                disableButtonsOnSubmit: true,
-                onSubmit: function (d) {
-                    $.post(
-                        '?plugin=pro&module=labelCrud&action=delete',
-                        $(d).find('form').serialize(),
-                        function (r) {
-                            if (r.status === 'ok') {
-                                $label.remove();
-                                initSortable();
-                            } else {
-                                console.log(r.errors);
-                            }
-                        },
-                        'json'
-                    );
+            $.get('?plugin=pro&module=label&action=deleteDialog&id=' + labelId)
+            .done(function (html) {
 
-                    d.trigger('close');
-                    return false;
-                }
+                $.waDialog({
+                    html: html,
+                    onOpen: function ($dialog, dialog_instance) {
+                        var $form = $dialog.find('form');
+
+                        $form
+                        .on("submit", function (e) {
+                            e.preventDefault();
+
+                            $.post(
+                                '?plugin=pro&module=labelCrud&action=delete',
+                                $form.serialize(),
+                                function (r) {
+                                    if (r.status === 'ok') {
+                                        $label.remove();
+                                        initSortable();
+                                    } else {
+                                        console.log(r.errors);
+                                    }
+                                    dialog_instance.close();
+                                },
+                                'json'
+                            );
+                        })
+                        .on("click", ".cancel", function(e) {
+                            e.preventDefault();
+                            dialog_instance.close();
+                        });
+                    }
+                });
+
             });
+
         });
 
         $labels.on('click', '[data-pl2pro-label-action="update"]', function (e) {

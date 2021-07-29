@@ -176,27 +176,36 @@
         $('[data-pl="uho"]').on('click', '[data-pl-action="list-email"]', function (e) {
             e.preventDefault();
             e.stopPropagation();
-            $('<div>').waDialog({
-                'url': '?module=list&action=emailDialog&teammate={$current_teammate->getLogin()|escape}',
-                onLoad: function () {
-                },
-                onSubmit: function (d) {
-                    var $this = $(this);
 
-                    $this.after($.pocketlists.$loading);
-                    $.post('?module=list&action=email', $this.serialize(), function(r) {
-                        $.pocketlists.$loading.remove();
-                        if (r.status === 'ok') {
-                            d.trigger('close');
-                        }  else {
-                            alert(r.errors);
-                        }
-                    }, 'json');
-                    return false;
-                },
-                onClose: function () {
-                    this.remove();
-                }
+            $.get('?module=list&action=emailDialog&teammate={$current_teammate->getLogin()|escape}')
+            .done(function (html) {
+
+                $.waDialog({
+                    html: html,
+                    onOpen: function ($dialog, dialog_instance) {
+                        var $form = $dialog.find('form');
+
+                        $form
+                        .on("submit", function (e) {
+                            e.preventDefault();
+
+                            $form.after($.pocketlists.$loading);
+                            $.post('?module=list&action=email', $form.serialize(), function (r) {
+                                $.pocketlists.$loading.remove();
+                                if (r.status === 'ok') {
+                                    dialog_instance.close();
+                                } else {
+                                    alert(r.errors);
+                                }
+                            }, 'json');
+                        })
+                        .on("click", ".cancel", function(e) {
+                            e.preventDefault();
+                            dialog_instance.close();
+                        });
+                    }
+                });
+
             });
         });
 

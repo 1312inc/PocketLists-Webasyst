@@ -2,18 +2,17 @@
     <div class="dialog-background"></div>
     <div class="dialog-body">
         <header class="dialog-header"><h1>[`Email list`]</h1></header>
-        <div class="dialog-content">
-<form method="post">
-    <div class="dialog-window">
-        <div class="dialog-content">
 
-                
+        <form method="post">
+
+            <div class="dialog-content">
                 {if !empty($list)}<input type="hidden" name="mail[list_id]" value="{$list->getId()}">{/if}
                 <div class="fields form width100px">
                     <div class="field">
                         <div class="name">[`To`]</div>
                         <div class="value">
-                            <input type="email" placeholder="email@address" name="mail[to]" class="long bold" value="{$email}"/>
+                            <input type="email" placeholder="email@address" name="mail[to]" class="long bold"
+                                   value="{$email}"/>
                         </div>
                     </div>
                     <div class="field">
@@ -32,30 +31,30 @@
                             {else}
                                 [`My to-dos`] - {$smarty.now|wa_datetime:'humandate'}
                             {/if}
-                            {/strip}" name="mail[subject]"  class="long bold" />
+                            {/strip}" name="mail[subject]" class="long bold"/>
                         </div>
                     </div>
                     <div class="field">
                         <div class="name">[`Message`]</div>
                         <div class="value">
-                            <textarea name="mail[body]" style="height: 170px;">{foreach $items as $item}&#9679; {$item->getName()}
-{foreachelse}[`No to-dos :)`]
-{/foreach}
+                            <textarea name="mail[body]"
+                                      style="height: 170px;">{foreach $items as $item}&#9679; {$item->getName()}
+                                    {foreachelse}[`No to-dos :)`]
+                                {/foreach}
 
 via Pocket Lists</textarea>
                             {*include '../item/ItemEmail.html' items=$items*}
                         </div>
                     </div>
                 </div>
+            </div>
 
-        </div>
-        <div class="dialog-buttons">
-            <input type="submit" value="[`Send`]" class="button green">
+            <footer class="dialog-footer">
+                <input type="submit" value="[`Send`]" class="button green">
                 [`or`] <a class="cancel" href="#">[`cancel`]</a>
-        </div>
-    </div>
-</form>
+            </footer>
 
-</div>
-</div>
+        </form>
+
+    </div>
 </div>
