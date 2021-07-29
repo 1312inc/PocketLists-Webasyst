@@ -98,8 +98,8 @@ class pocketlistsBackendSidebarAction extends pocketlistsViewAction
                 $_tinyAds[] = array(
                     'adtype' => 'plugin',
                     'heading' => _w('Promocode'),
-                    'appurl' => $_webasyst_base_url . 'store/plugin/pocketlists/pro/?utm_source=pl2webasyst&utm_medium=inapp_fullpage_ad&utm_campaign=1312_inapp_pl2pro_upgrade_wa'.$_whichUI,
-                    'buyurl' => $_webasyst_base_url . 'buy/store/5045/?utm_source=pl2webasyst&utm_medium=inapp_fullpage_ad&utm_campaign=1312_inapp_pl2pro_upgrade_wa'.$_whichUI,
+                    'appurl' => $_webasyst_base_url . 'store/plugin/pocketlists/pro/?utm_source=pl2webasyst&utm_medium=inapp_tiny_ad&utm_campaign=1312_inapp_pl2pro_upgrade_wa'.$_whichUI,
+                    'buyurl' => $_webasyst_base_url . 'buy/store/5045/?utm_source=pl2webasyst&utm_medium=inapp_tiny_ad&utm_campaign=1312_inapp_pl2pro_upgrade_wa'.$_whichUI,
                     'image' => wa()->getAppStaticUrl() . 'img/pl2ad-pro-plugin.png',
                     'title' => 'Pocket Lists PRO',
                     'subtitle' => 'Поможет поднять обработку заказов на 80 уровень.',

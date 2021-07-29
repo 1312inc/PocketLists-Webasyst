@@ -1343,7 +1343,7 @@ msgid "https://www.webasyst.com/store/app/cash/"
 msgstr "https://www.webasyst.ru/store/app/cash/"
 
 msgid "Cash Flow"
-msgstr "Cash Flow"
+msgstr "Деньги"
 
 msgid "Forecasts business cash flow & saves your money"
 msgstr "Прогнозирует расходы, помогает правильно вести финансовый учет."

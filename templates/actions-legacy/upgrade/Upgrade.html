@@ -1,5 +1,5 @@
-{$_utm_suffix = '?utm_source=pl2webasyst&utm_medium=inapp_fullpage_ad&utm_campaign=1312_inapp_pl2pro_upgrade_2020_1'}
-{if $wa->user()->isAdmin('installer')}
+{$_utm_suffix = '?utm_source=pl2webasyst&utm_medium=inapp_fullpage_ad&utm_campaign=1312_inapp_pl2pro_upgrade_wa1'}
+{if 000000 && $wa->user()->isAdmin('installer')}
     {$_pl2pro_url = $wa_backend_url|cat:'installer/store/plugin/pocketlists/pro/'|cat:$_utm_suffix}
 {else}
     {$_pl2pro_url = '[`https://www.webasyst.com/store/plugin/pocketlists/pro/`]'|cat:$_utm_suffix}
@@ -7,9 +7,9 @@
 
 {capture "pl2proupgradead"}
 <figure class="block double-padded highlighted pl-upgrade-ad">
-      <a href="{$_pl2pro_url}"><img src="{$wa_url}wa-apps/pocketlists/img/pl2pro-plugin-icon{if $wa->locale() != 'ru_RU'}-en{/if}.png" class="pl-wa-plugin-icon" /></a>
+      <a href="{$_pl2pro_url}" target="_blank"><img src="{$wa_url}wa-apps/pocketlists/img/pl2pro-plugin-icon{if $wa->locale() != 'ru_RU'}-en{/if}.png" class="pl-wa-plugin-icon" /></a>
       <h3>
-          <a href="{$_pl2pro_url}" class="large">
+          <a href="{$_pl2pro_url}" class="large" target="_blank">
               [`Pocket Lists PRO plugin`]
               &nbsp;<span class="nowrap"><i class="icon16 star"></i><i class="icon16 star"></i><i class="icon16 star"></i><i class="icon16 star"></i><i class="icon16 star"></i></span>
           </a>
@@ -18,7 +18,7 @@
           [`Shop-Script automation (auto create to-dos based on actions with orders), kanban board, status labels, quick entry templates, and other advanced features.`]
       </p>
       <p style="margin-bottom: 5px;">
-          <a href="[`https://www.webasyst.com/buy/store/5045/`]{$_utm_suffix}" class="button green">[`Buy now with promocode`]</a>
+          <a href="[`https://www.webasyst.com/buy/store/5045/`]{$_utm_suffix}" class="button green" target="_blank">[`Buy now with promocode`]</a>
       </p>
       <div class="block double-padded align-center" style="padding-bottom: 5px;">
           <p class="small">
