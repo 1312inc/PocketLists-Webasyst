@@ -71,9 +71,9 @@ class pocketlistsTeamAction extends pocketlistsViewAction
 
             $this->view->assign(
                 [
-                    'lists'            => $lists,
-                    'items_done'       => $itemsDone,
-                    'items'            => $itemsUndone,
+                    'lists' => $lists,
+                    'items_done' => $itemsDone,
+                    'items' => $itemsUndone,
                     'count_done_items' => $countDoneItems,
                     'current_teammate' => $teammate,
                 ]
@@ -85,9 +85,11 @@ class pocketlistsTeamAction extends pocketlistsViewAction
 
         /**
          * UI hook in teammate right sidebar
+         *
          * @event backend_teammate_sidebar
          *
          * @param pocketlistsEventInterface $event Event with pocketlistsContact object and external flag in params array
+         *
          * @return string html output
          */
         $event = new pocketlistsEvent(
@@ -99,12 +101,18 @@ class pocketlistsTeamAction extends pocketlistsViewAction
 
         $this->view->assign(
             [
-                'teammates'             => $teammates,
-                'print'                 => waRequest::get('print', false),
-                'user'                  => $this->user,
-                'external'              => $external,
-                'externalApp'           => $externalApp,
-                'itemAdd'               => (new pocketlistsItemAddAction(['teammate' => $teammate, 'external' => $external]))->display(false),
+                'teammates' => $teammates,
+                'print' => waRequest::get('print', false),
+                'user' => $this->user,
+                'external' => $external,
+                'externalApp' => $externalApp,
+                'itemAdd' => (new pocketlistsItemAddAction(
+                    [
+                        'teammate' => $teammate,
+                        'external' => $external,
+                        'externalApp' => $externalApp,
+                    ]
+                ))->display(false),
                 'backend_teammate_sidebar' => $eventResult,
             ]
         );

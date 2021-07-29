@@ -29,7 +29,8 @@ final class pocketlistsShopBackendOrder
         $hasItems = pl2()->getModel(pocketlistsItemLink::class)->countLinkedItems('shop', 'order', $params['id']);
 
         wa('pocketlists', true);
-        $itemAdd = (new pocketlistsItemAddAction(['external' => true]))->display(false);
+        $itemAdd = (new pocketlistsItemAddAction(['external' => true, 'externalApp' => 'shop']))
+            ->display(false);
         wa('shop', true);
 
         $viewParams = array_merge(

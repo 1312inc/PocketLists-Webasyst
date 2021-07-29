@@ -34,7 +34,8 @@ final class pocketlistsTasksBackendTask
             $view = new waSmarty3View(wa());
 
             wa(pocketlistsHelper::APP_ID, true);
-            $itemAdd = (new pocketlistsItemAddAction(['external' => true]))->display(false);
+            $itemAdd = (new pocketlistsItemAddAction(['external' => true, 'externalApp' => 'tasks']))
+                ->display(false);
             wa(pocketlistsAppLinkTasks::APP, true);
 
             $hasItems = pl2()->getModel(pocketlistsItemLink::class)->countLinkedItems(
