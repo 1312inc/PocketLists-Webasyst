@@ -23,7 +23,7 @@
                             {if $wa->whichUI() == '1.3'}
                                 <a href="#" class="inline-link pl2pro-label-edit" data-pl2pro-automation-edit="{$automation->getId()}"><i class="icon10 edit"></i> <b><i>[`Edit`]</i></b></a>
                             {else}
-                                <a href="#" class="button light-gray circle pl2pro-label-edit" data-pl2pro-automation-edit="{$automation->getId()}"><i class="fas fa-edit"></i></a>
+                                <a href="#" class="pl2pro-label-edit custom-ml-8" data-pl2pro-automation-edit="{$automation->getId()}"><i class="fas fa-edit"></i></a>
                             {/if}
                             <span class="pl2pro-rule-if">[`IF`]</span>
                             <span>{$action->automationRulesHtml[$automation->getId()]}</span>

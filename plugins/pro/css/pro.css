@@ -14,12 +14,12 @@
 
 .pl2pro-labels { min-width: 400px; }
 .pl2pro-labels td { padding: 15px 20px 15px 0; }
-.pl2pro-labels td.bordered { border-bottom: 1px solid #ddd; }
+.pl2pro-labels td.bordered { border-bottom: 1px solid var(--border-color-soft); }
 .pl2pro-labels td.min-width { width: 1%; padding-left: 16px; }
 .pl2pro-labels td .pl-done + span { left: 0 !important; top: 0 !important; }
 .pl2pro-labels td .pl-label { padding: 3px 6px 4px !important; font-size: 1em; }
 .pl2pro-labels td .icon16.color { margin-top: 8px; margin-left: 4px; }
-.pl2pro-labels td .pl2pro-label-delete { float: right; margin-top: 8px; }
+.pl2pro-labels td .pl2pro-label-delete { float: right; }
 .pl2pro-labels td .pl2pro-label-edit { opacity: 0; transition: 0.2s; position: relative; top: -2px; font-size: 12px; margin-left: 8px; }
 .pl2pro-labels td:hover .pl2pro-label-edit { opacity: 1; }
 
@@ -44,19 +44,20 @@
 .pl-details-form .pl2pro-item-add .pl2pro-shortcut { line-height: 1.5rem !important; }
 
 .pl2pro-ss-automation-form .field { margin-bottom: 2.5rem; }
-.pl2pro-rule-baloon { border-radius: 10px; border: 1px solid var(--border-color-soft); overflow: hidden; margin-bottom: 15px; width: 100%; font-size: 0.875rem; }
+.pl2pro-rule-baloon { border-radius: 10px; border: 1px solid var(--border-color-soft); overflow: hidden; margin-bottom: 15px; width: 100%; font-size: 0.875rem; box-shadow: 0 0.5rem 1.5rem -1rem var(--dialog-shadow-color); }
 .pl2pro-rule-baloon .pl2pro-label-edit { float: right; margin-top: 0px; font-size: 1rem; }
 .pl2pro-rule-baloon.pl2pro-rule-disabled { opacity: 0.5; }
 /* .pl2pro-rule-baloon.pl2pro-rule-disabled .pl2pro-rule-header { background: var(--); } */
 .pl2pro-rule-baloon.pl2pro-rule-disabled .pl2pro-rule-header span,
 .pl2pro-rule-baloon.pl2pro-rule-disabled h4 { text-decoration: line-through; }
-.pl2pro-rule-header { background: var(--highlighted-blue); padding: 6px 12px; line-height: 1.5rem; }
+.pl2pro-rule-header { background: var(--highlighted-blue); padding: 6px 12px; line-height: 1.25rem; font-size: 0.9375rem; }
 .pl2pro-rule-header .pl2pro-rule-if { opacity: 0.5; }
 .pl2pro-rule-body { background: var(--background-color-blank); padding: 10px 12px; }
+.pl2pro-rule-body h4 { font-size: 1.125rem; }
 .pl2pro-rule-footer { padding: 0 12px 10px; font-size: 0.75rem; color: var(--gray); }
 .pl-select-multiple { height: 70px; width: 200px; }
 
-.pl2pro-ss-order-action { border-radius: 24px; padding: 7px 11px 7px; background: #fafafa; border: 1px solid rgba(0,0,0,0.1); box-shadow: 0 5px 10px -5px #eee; margin-left: -4px; margin-top: -3px; white-space: nowrap; text-overflow: ellipsis; max-width: 150px; display: inline-block; overflow: hidden; }
+.pl2pro-ss-order-action { border-radius: 24px; padding: 7px 11px 7px; background: var(--background-color); border: 1px solid rgba(0,0,0,0.1); box-shadow: 0 5px 10px -5px #eee; margin-left: -4px; margin-top: -3px; white-space: nowrap; text-overflow: ellipsis; max-width: 130px; display: inline-block; overflow: hidden; }
 .pl2pro-ss-order-action .icon16.color { margin-top: -1px; }
 
 .pl2pro-board-container { display: flex; flex-direction: column; }
@@ -83,8 +84,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', e
 .pl2pro-column-items li span.item-name { font-weight: 500; line-height: 1.3rem; }
 .pl2pro-column-items li span.item-assignee { float: right; margin: 3px 0; }
 .pl2pro-column-items li .pl-done + span { left: -10px; top: 0px; }
-.pl2pro-column-items li .pl-done:checked + span { border: 2px solid transparent; width: 16px !important; height: 16px !important; background-size: 16px 16px !important; top: -2px !important; }
-.pl2pro-column-items li .pl-done.pl-priority-fire + span { width: 25px; height: 25px; background-size: 27px 27px; margin-left: -5px; top: -6px; }
+.pl2pro-column-items li .pl-done:checked + span { border: 2px solid transparent; width: 16px !important; height: 16px !important; background-size: 16px 16px !important; top: -2px !important; margin-left: 9px !important; }
+.pl2pro-column-items li .pl-done.pl-priority-fire + span { width: 32px; height: 32px; background-size: 32px 32px; margin-left: -16px; top: -6px; position: relative; }
 .pl2pro-column-items li.gray { box-shadow: none; }
 .pl2pro-column-items li:hover { background: var(--highlighted-yellow); box-shadow: 0 2px 12px -5px rgba(0,0,0,0.15); }
 .pl2pro-column-items li .pl-link-preview { min-width: 0; }
