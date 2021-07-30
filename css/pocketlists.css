@@ -419,8 +419,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#12000000', e
 .pl-link-preview-remove a:hover { color: #f20 !important; }
 .pl-link-preview-details { display: block; margin-left: 40px; font-size: 0.875rem; }
 .pl-link-preview-details p { margin-bottom: 0; line-height: 1em; margin-top: 2px; }
-.pl-link-preview-details a .pl-label { margin-left: 0px !important; font-size: 12px; }
+.pl-link-preview-details a .pl-label { margin-left: 0px !important; font-size: 10px; position: relative; top: 3px; }
 .pl-link-preview-details a .pl-label.status-green-tiny { background: #2bb316; color: #fff; }
+.pl-link-preview-details a .float-right { float: right; }
 .pl-link-preview-details a:hover .pl-label { background-color: red !important; color: white !important; }
 #pl-item-add .pl-link-preview { margin-left: 44px; margin-top: 0px; margin-bottom: 10px; }
 #pl-item-add .pl-link-preview-remove { display: none; }
@@ -783,7 +784,7 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
         display: none !important;
     }
     .pl-link-preview { min-width: 170px;}
-    .pl-link-preview-details { display: block; overflow: hidden; max-width: 170px; }
+    .pl-link-preview-details { display: block; overflow: hidden; max-width: 100%; }
     .pl-details,
     .pl-details.sticky { width: 280px; }
     .pl-item-discussion { min-width: 0; }
