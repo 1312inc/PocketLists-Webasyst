@@ -165,8 +165,8 @@
                 {/foreach}
                 {if $max_visible_in_team < count($team)}
                     <li>
-                        <a class="pl-team-showall-link inline-link" data-pl-action="show-all-team"
-                           href="#"><b><i>[`Show everyone`] ({count($team)})</i></b></a>
+                        <a class="pl-team-showall-link" data-pl-action="show-all-team"
+                           href="#">[`Show everyone`] ({count($team)})</a>
                     </li>
                 {/if}
             </ul>
@@ -237,7 +237,7 @@
         </li>
 
     </ul>
-    {if 1||$isAdmin && empty($pockets)}
+    {if $isAdmin && empty($pockets)}
         <div data-pl2-sidebar-wrapper="pockets">
             <ul class="menu">
                 <li class="small top-padded">
