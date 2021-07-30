@@ -1661,7 +1661,6 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     link = ui.item.data,
                     hash = link.model.app + link.model.entity_type + link.model.entity_id;
 
-                debugger;
                 if (linked[hash] === undefined) {
                     linked[hash] = link;
                     showLinkedPreview(link);
