@@ -942,6 +942,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             $.each(data, function (i) {
                 if (data[i]['links'] === undefined) {
                     data[i]['links'] = [{model: o.defaultLinkedEntity}];
+                } else {
+                    data[i]['links']['defaultLinkedEntity'] = {model: o.defaultLinkedEntity};
                 }
             });
         }
@@ -1606,6 +1608,10 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     }]);
                 }
 
+                if (term === false) {
+                    return;
+                }
+
                 var plresponse = function (data) {
                     if (data.status != 'ok') {
                         return [];
@@ -1655,6 +1661,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                     link = ui.item.data,
                     hash = link.model.app + link.model.entity_type + link.model.entity_id;
 
+                debugger;
                 if (linked[hash] === undefined) {
                     linked[hash] = link;
                     showLinkedPreview(link);

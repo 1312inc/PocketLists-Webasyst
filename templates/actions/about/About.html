@@ -60,7 +60,7 @@
                                               <a href="[`https://www.webasyst.com/store/app/tasks/`]{$_utm_suffix}" class="bold large" target="_blank">[`Teamwork`] <i class="fas fa-external-link-alt opacity-40 smaller custom-ml-4"></i></a>
                                           </span>
                                           <span class="nowrap">
-                                              {if $wa->tasks}
+                                              {if $pl2->appExists('tasks')}
                                                 <span class="button smaller light-gray custom-ml-4"><i class="fas fa-check text-green"></i> [`Installed`]</span>
                                               {else}
                                                 <span class="small">[`Promocode:`] <code>8LGZRIQEOJ</code> <span class="badge red small">&minus;15%</span></span>
@@ -86,7 +86,7 @@
                                               <a href="[`https://www.webasyst.com/store/app/cash/`]{$_utm_suffix}" class="bold large" target="_blank">[`Cash Flow`] <i class="fas fa-external-link-alt opacity-40 smaller custom-ml-4"></i></a>
                                           </span>
                                           <span class="nowrap">
-                                              {if $wa->cash}
+                                              {if $pl2->appExists('cash')}
                                                 <span class="button smaller light-gray custom-ml-4"><i class="fas fa-check text-green"></i> [`Installed`]</span>
                                               {else}
                                                 <span class="small">[`Promocode:`] <code>LHNHBFAKYZ</code> <span class="badge red small">&minus;15%</span></span>
@@ -113,7 +113,7 @@
                                               <a href="[`https://www.webasyst.com/store/app/status/`]{$_utm_suffix}" class="bold large" target="_blank">[`Status`] <i class="fas fa-external-link-alt opacity-40 smaller custom-ml-4"></i></a>
                                           </span>
                                           <span class="nowrap">
-                                              {if $wa->status}
+                                              {if $pl2->appExists('status')}
                                                 <span class="button smaller light-gray custom-ml-4"><i class="fas fa-check text-green"></i> [`Installed`]</span>
                                               {else}
                                                 <a href="[`https://www.webasyst.com/store/app/status/`]{$_utm_suffix}" class="button smaller outlined custom-ml-4" target="_blank">[`Free`]</a>

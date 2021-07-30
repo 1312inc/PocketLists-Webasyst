@@ -944,6 +944,8 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
             $.each(data, function (i) {
                 if (data[i]['links'] === undefined) {
                     data[i]['links'] = [{model: o.defaultLinkedEntity}];
+                } else {
+                    data[i]['links']['defaultLinkedEntity'] = {model: o.defaultLinkedEntity};
                 }
             });
         }
@@ -1616,7 +1618,9 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 }
 
                 // Prevent requests if canShowAutocomplete() === false
-                if (!term) return;
+                if (term === false) {
+                    return;
+                }
 
                 var plresponse = function (data) {
                     if (data.status != 'ok') {

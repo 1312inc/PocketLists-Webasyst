@@ -470,6 +470,11 @@ HTML;
         return $template ? sprintf($template, $suffix) : $suffix;
     }
 
+    public function appExists($app)
+    {
+        return wa()->appExists($app);
+    }
+
     private function registerGlobal()
     {
         if (!function_exists('pl2')) {
