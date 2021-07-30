@@ -237,12 +237,12 @@
         </li>
 
     </ul>
-    {if $isAdmin && empty($pockets)}
+    {if 1||$isAdmin && empty($pockets)}
         <div data-pl2-sidebar-wrapper="pockets">
             <ul class="menu">
                 <li class="small top-padded">
                     <a href="#" data-pl2-action="add-pocket">
-                        <i class="fas fa-plus-circle"></i>
+                        <i class="fas fa-plus" style="font-size: 12px !important; margin-top: 1px !important; margin-left: 2px !important;"></i>
                         <span>[`New pocket`]</span>
                     </a>
                 </li>

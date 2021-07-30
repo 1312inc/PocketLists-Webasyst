@@ -12,7 +12,6 @@ body { background: var(--background-color-blank); }
 
 .pl-second-sidebar { width: 24rem; overflow: visible; }
 .pl-inner-sidebar { background: var(--background-color); width: 340px; flex-shrink: 0; min-height: calc(100vh - 4rem); }
-/* .pl-inner-content { position: relative; min-height: 700px; margin-right: 350px; z-index: 11; } */
 .pl-inner-content.pl-embedded { margin-right: auto; margin-left: auto; }
 
 .pl-pseudo-article { max-width: 880px; margin: 1rem auto; }
@@ -67,13 +66,13 @@ body { background: var(--background-color-blank); }
 .pl-teammate-userpic { width: 96px; height: 96px; border: 3px solid #fff; margin-bottom: 20px; }
 .pl-teammate-lists li a { font-weight: 500; }
 .pl-teammate-lists li a:hover span { color: red !important; }
-.pl-teammate-nolists-disclaimer { font-size: 0.9em; color: #aaa; text-align: center; }
-.pl-teammate-nolists-disclaimer a { color: #888; }
+.pl-teammate-nolists-disclaimer { font-size: 0.9em; color: var(--gray); text-align: center; }
+.pl-teammate-nolists-disclaimer a { color: var(--gray); }
 
 ul.menu-v.with-icons i.icon10.online { margin-top: 3px; }
 ul.menu-v.with-icons i.icon16.color { margin: 2px 7px 1px -18px; width: 12px; height: 12px; }
 
-.pl-team-showall-link { font-size: 0.95em; color: #aaa !important; }
+.pl-team-showall-link { font-size: 0.95em; color: var(--gray) !important; }
 
 .indicator.onfire { background: #f22 url('../img/item-bullets-priority-fire.gif') no-repeat; background-size: 95px 95px; background-position: center -25px; color: #fff; padding: 3px 5px 3px 5px; top: -1px; }
 .indicator.black { background-color: #222; color: #fff; }
@@ -100,16 +99,12 @@ ul.menu-v.with-icons i.icon16.color { margin: 2px 7px 1px -18px; width: 12px; he
 .pl-lists-header .pl-pocket-settings { position: relative; top: 6px; opacity: 0.5; }
 .pl-lists-header .pl-pocket-settings:hover { opacity: 1; }
 
-.pl-lists-empty p { font-size: 0.9em; color: #aaa; }
-
 .pl-new-list-icons-mix-helper { background-image: url('../img/pl-list-icons-mix.png'); background-size: 200px 200px; width: 200px; height: 200px; margin: 30px auto 20px; }
 
 ul.pl-lists { background: var(--background-color-blank); padding: 0; margin: 0; list-style: none; }
 ul.pl-lists li a { text-decoration: none; padding: 0.75rem 0.875rem; border-bottom: 1px solid var(--border-color-soft); cursor: pointer; }
 ul.pl-lists li a i.icon { background-repeat: no-repeat; height: 36px; width: 36px; background-size: 36px 36px; display: inline-block; text-indent:-9999px; text-decoration:none!important; }
 ul.pl-lists li a .pl-list-name { font-weight: 500; font-size: 1.06125rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-/* ul.pl-lists li a .count { font-weight: bolder; padding: 3px 6px 3px; margin-top: 8px; margin-right: 5px; } */
-/* ul.pl-lists li a .count.onfire { padding-left: 7px; padding-right: 7px; } */
 ul.pl-lists li a:hover { background: rgba(0,0,0,0.03); }
 ul.pl-lists li a.pl-is-selected { background: rgba(0,0,0,0.02); }
 
@@ -139,9 +134,7 @@ table.pl-calendar td { width: 14.28%; height: 25px; line-height: 25px; text-alig
 table.pl-calendar td:hover { background: var(--highlighted-yellow); cursor: pointer; }
 table.pl-calendar td.pl-selected { background: var(--accent-color); font-weight: bold; }
 table.pl-calendar td.pl-today { border: 3px solid var(--yellow); border-radius: 0.125rem; font-weight: 500; }
-/*table.pl-calendar td.pl-today:hover { background: #ecf7ff; }*/
 table.pl-calendar td.pl-not-this-month { opacity: 0.5; }
-/* table.pl-calendar td.pl-not-this-month:hover { background: #e2e2e2; } */
 table.pl-calendar td .pl-date { color: var(--gray); font-size: 0.875rem; }
 table.pl-calendar td.pl-selected .pl-date { color: var(--white); }
 table.pl-calendar td .pl-dots { font-size: 0.25rem; line-height: 0; letter-spacing: 0; margin-top: 0.2em; white-space: nowrap;}
@@ -237,13 +230,13 @@ label.pl-done-label,
 .pl-welcome .pl-forbidden { width: 180px; height: 180px; margin: 0 auto; background: transparent url('../img/pl-forbidden.png') no-repeat; background-size: 180px 180px; opacity: 0.13; }
 .pl-welcome .pl-shopscript { width: 180px; height: 180px; margin: 0 auto; background: transparent url('../img/pl-shopscript.png') no-repeat; background-size: 180px 180px; opacity: 0.13; }
 .pl-welcome h1,
-.pl-welcome h2 { margin-top: 20px; color: #333; }
-.pl-welcome p { color: #888; font-size: 0.9em; }
+.pl-welcome h2 { margin-top: 20px; }
+.pl-welcome p { font-size: 0.875rem; }
 .pl-welcome p a { text-decoration: none; }
 .pl-welcome.top-padded { padding-top: 70px; }
 .pl-welcome.bottom-padded { padding-bottom: 40px; }
 
-.pl-inner-item-add-placeholder { opacity: 0; height: 0; background: #ddd; margin: 0; cursor: pointer; z-index: 3; transition: 0.2s; }
+.pl-inner-item-add-placeholder { opacity: 0; height: 0; background: var(--light-gray); margin: 0; cursor: pointer; z-index: 3; transition: 0.2s; }
 #wa.pl-keypress-alt .pl-item-wrapper:hover .pl-inner-item-add-placeholder { opacity: 1; height: 10px; }
 
 input#pl-new-list-input,
@@ -279,7 +272,6 @@ textarea.pl-item-name {
 .pl-enable-item-add-compact-mode { position: absolute; right: 32px; top: 20px; z-index: 30; }
 
 .pl-chat textarea { margin-left: 0px; border-radius: 5px; padding-left: 8px; width: 80%; min-width: 150px; max-height: 110px; padding-right: 5px; padding-left: 12px; font-size: 0.875rem; }
-/* .pl-unsaved { background: rgba(183,0,0,0.06) !important; 2px 3px 0nt; color: #f55 !important; } */
 
 .pl-title { padding: 1rem 1.25rem; }
 .pl-title h1 { margin: 0; line-height: 1.1em; display: inline-block; }
@@ -316,7 +308,6 @@ textarea.pl-item-name {
 .pl-list-items, .pl-list-title, #pl-item-add { position: relative; z-index: 10; }
 .pl-list-items ul.menu-v { margin: 0; padding: 0; list-style: none; }
 .pl-list-items ul.menu-v li { padding: 0; margin: 0; }
-/* .pl-list-items ul.menu-v li a { display: inline; } */
 .pl-list-items ul.menu-v li a .pl-wa-app-icon { position: relative; top: 3px; left: 3px;}
 .pl-item { position: relative; border-bottom: 1px solid var(--border-color-soft); padding: 0.875rem 1.25rem 0.75rem; }
 .pl-list-items ul.menu-v li .pl-item { transition: 0.1s; }
@@ -590,7 +581,6 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 .t-tasks-wrapper #pl-item-add .pl-item { border: none; }
 .t-tasks-wrapper #pl-item-add textarea { background: rgba(0,0,0,0.075); }
 .t-tasks-wrapper #pl-item-add textarea:hover { background: rgba(0,0,0,0.09); }
-/* .t-tasks-wrapper #pl-item-add .pl-item-add-shortcuts { padding-top: 5px; } */
 .t-tasks-wrapper #pl-complete-log { display: block; }
 .t-tasks-wrapper .pl-details-form .pl-app-hint-internal { display: none; }
 .t-tasks-wrapper .pl-details-form .pl-app-hint-external { display: none; }
