@@ -5,7 +5,7 @@
 .pl-view-box { flex: 1; }
 .pl-view-box.x2 { max-width: 50%; }
 .pl-view-box.x3 { max-width: 33%; }
-.pl-view-widget { display: block; background: var(--background-color); min-height: 40px; padding: 5px 9px; margin: 14px 0 0 13px; border-radius: 5px; }
+.pl-view-widget { display: block; background: var(--background-color); min-height: 40px; padding: 8px 13px; margin: 14px 0 0 13px; border-radius: 5px; }
 .pl-view-widget h3 { font-size: 1.25rem; color: #aaa; margin-bottom: 0; }
 .pl-view-widget h3 i.icon16.color { width: 16px; height: 16px; margin-right: 0; position: relative; top: 6px; }
 .pl-view-widget h3 .pl-done:checked + span { float: right; margin-top: 5px; margin-right: 3px; }
@@ -80,7 +80,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', e
 .pl2pro-column.ui-droppable-active { background: transparent !important }
 .pl2pro-column.ui-droppable-active:hover .pl2pro-column-content { background: rgba(0,0,0,0.06); }
 .pl2pro-column-items { list-style: none; padding: 0; margin-top: 10px; cursor: move; }
-.pl2pro-column-items li { padding: 13px 15px 15px 20px; font-size: 15px; background: var(--background-color-blank); transition: background-color 0.2s; border-radius: 5px; margin-bottom: 10px; box-shadow: 0 2px 8px -4px rgba(0,0,0,0.1); }
+.pl2pro-column-items li { padding: 13px 15px 15px 20px; font-size: 15px; background: var(--background-color-blank); transition: background-color 0.2s; border-radius: 5px; margin-bottom: 10px; box-shadow: 0 2px 8px -4px rgba(0,0,0,0.1); overflow: hidden; }
 .pl2pro-column-items li span.item-name { font-weight: 500; line-height: 1.3rem; }
 .pl2pro-column-items li span.item-assignee { float: right; margin: 3px 0; }
 .pl2pro-column-items li .pl-done + span { left: -10px; top: 0px; }

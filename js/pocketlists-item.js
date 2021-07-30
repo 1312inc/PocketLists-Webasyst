@@ -599,7 +599,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                         links_delete = $name.data('pl2-linked-entities-delete')
                     ;
 
-                    $form.find('#pl-item-details-save').after($.pocketlists.$loading);
+                    //$form.find('#pl-item-details-save').after($.pocketlists.$loading);
                     if (itemId) {
                         if (links) {
                             var link_i = 0;

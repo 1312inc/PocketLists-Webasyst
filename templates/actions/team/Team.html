@@ -31,62 +31,61 @@
 <!-- TEAM -->
 {if !$external}
 <nav class="pl-inner-sidebar" data-pl="uho" style="order: 2;">
-    <div class="box">
 
-        <div class="align-center">
-            {if $wa->team}
-            <a href="{$wa_backend_url}team/u/{$current_teammate->getLogin()}/">
-                <img src="{$current_teammate->getPhotoUrl()}" class="userpic pl-teammate-userpic">
-            </a>
-            {else}
-                <img src="{$current_teammate->getPhotoUrl()}" class="userpic pl-teammate-userpic">
-            {/if}
-        </div>
 
-        <h5 class="heading">{sprintf('[`%s’s to-dos (%d)`]', $current_teammate->getName()|default:' '|escape, count($items))}</h5>
-        <ul class="menu">
-            <li><a href="#" data-pl-action="list-email"><i class="fas fa-at black"></i><span>[`Email list`]</span></a></li>
-            <li><a href="?module=team&amp;teammate={$current_teammate->getLogin()|escape}&amp;print=true" target="_blank"><i class="fas fa-print"></i><span>[`Print list`]</span></a></li>
-        </ul>
-
-        {if count($lists)}
-            <h5 class="heading">[`Access to lists`] ({count($lists)})</h5>
-            <ul class="menu pl-teammate-lists" data-pl-sidebar-block="lists">
-                {foreach $lists as $l}
-                    {if $l->getId()}
-                        <li>
-                            <a href="#/pocket/{$l->getPocketId()}/list/{$l->getId()}/">
-                                <span class="icon"><i class="size-20" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l->getIcon()|default:'li-list@2x.png'});"></i></span>
-                                {if $l->getColor()}<span class="pl-dark-{$l->getColor()}-label">{$l->getName()|escape}</span>{else}{$l->getName()|escape|default:'(no name)'}{/if}
-                                <span class="count hint nowrap" {if empty($l->getItemsCount())}style="display:none"{/if}>{_w('%d to-do', '%d to-dos', $l->getItemsCount())}</span>
-                                {* <span class="hint nowrap" {if empty($l.last_contact_ativity)}style="display:none"{/if}>{$l.last_contact_ativity|wa_datetime:'humandatetime'}</span> *}
-                            </a>
-                        </li>
-                    {/if}
-                {/foreach}
-            </ul>
-            {if $wa->team}
-                <div class="box custom-pt-0">
-                    <p class="hint">{sprintf('[`Use Team app to <a href="%s">configure %s’s access</a> to shared lists: select a user or a group of users &gt; Access tab &gt; Pocket Lists app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/u/'|cat:$current_teammate->getLogin()|cat:'/', $current_teammate->getName()|default:' '|escape)}</p>
-                </div>
-            {/if}
+    <div class="align-center custom-mt-32">
+        {if $wa->team}
+        <a href="{$wa_backend_url}team/u/{$current_teammate->getLogin()}/">
+            <img src="{$current_teammate->getPhotoUrl()}" class="userpic pl-teammate-userpic">
+        </a>
         {else}
-            <hr>
+            <img src="{$current_teammate->getPhotoUrl()}" class="userpic pl-teammate-userpic">
+        {/if}
+    </div>
+
+    <h5 class="heading">{sprintf('[`%s’s to-dos (%d)`]', $current_teammate->getName()|default:' '|escape, count($items))}</h5>
+    <ul class="menu">
+        <li><a href="#" data-pl-action="list-email"><i class="fas fa-at black"></i><span>[`Email list`]</span></a></li>
+        <li><a href="?module=team&amp;teammate={$current_teammate->getLogin()|escape}&amp;print=true" target="_blank"><i class="fas fa-print"></i><span>[`Print list`]</span></a></li>
+    </ul>
+
+    {if count($lists)}
+        <h5 class="heading">[`Access to lists`] ({count($lists)})</h5>
+        <ul class="menu pl-teammate-lists" data-pl-sidebar-block="lists">
+            {foreach $lists as $l}
+                {if $l->getId()}
+                    <li>
+                        <a href="#/pocket/{$l->getPocketId()}/list/{$l->getId()}/">
+                            <span class="icon"><i class="size-20" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l->getIcon()|default:'li-list@2x.png'});"></i></span>
+                            {if $l->getColor()}<span class="pl-dark-{$l->getColor()}-label">{$l->getName()|escape}</span>{else}{$l->getName()|escape|default:'(no name)'}{/if}
+                            <span class="count hint nowrap" {if empty($l->getItemsCount())}style="display:none"{/if}>{_w('%d to-do', '%d to-dos', $l->getItemsCount())}</span>
+                            {* <span class="hint nowrap" {if empty($l.last_contact_ativity)}style="display:none"{/if}>{$l.last_contact_ativity|wa_datetime:'humandatetime'}</span> *}
+                        </a>
+                    </li>
+                {/if}
+            {/foreach}
+        </ul>
+        {if $wa->team}
             <div class="box custom-pt-0">
-                <p class="pl-teammate-nolists-disclaimer">
-                    {sprintf('[`You have no lists that you would share with %s in common.`]', $current_teammate->getName()|default:' '|escape)}
-                    {if $wa->team}
-                        {sprintf('[`Use Team app to <a href="%s">configure %s’s access</a> to shared lists: select a user or a group of users &gt; Access tab &gt; Pocket Lists app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/u/'|cat:$current_teammate->getLogin()|cat:'/', $current_teammate->getName()|default:' '|escape)}
-                    {/if}
-                </p>
+                <p class="hint">{sprintf('[`Use Team app to <a href="%s">configure %s’s access</a> to shared lists: select a user or a group of users &gt; Access tab &gt; Pocket Lists app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/u/'|cat:$current_teammate->getLogin()|cat:'/', $current_teammate->getName()|default:' '|escape)}</p>
             </div>
         {/if}
+    {else}
+        <hr>
+        <div class="box custom-pt-0">
+            <p class="pl-teammate-nolists-disclaimer">
+                {sprintf('[`You have no lists that you would share with %s in common.`]', $current_teammate->getName()|default:' '|escape)}
+                {if $wa->team}
+                    {sprintf('[`Use Team app to <a href="%s">configure %s’s access</a> to shared lists: select a user or a group of users &gt; Access tab &gt; Pocket Lists app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/u/'|cat:$current_teammate->getLogin()|cat:'/', $current_teammate->getName()|default:' '|escape)}
+                {/if}
+            </p>
+        </div>
+    {/if}
 
-        <!-- plugin hook: 'backend_teammate_sidebar' -->
-        {* @event backend_teammate_sidebar.%plugin_id% *}
-        {if !empty($backend_teammate_sidebar)}{foreach $backend_teammate_sidebar as $_}<div class="box custom-pt-0">{ifset($_)}</div>{/foreach}{/if}
+    <!-- plugin hook: 'backend_teammate_sidebar' -->
+    {* @event backend_teammate_sidebar.%plugin_id% *}
+    {if !empty($backend_teammate_sidebar)}{foreach $backend_teammate_sidebar as $_}<div class="box custom-pt-0">{ifset($_)}</div>{/foreach}{/if}
 
-    </div>
 </nav>
 {/if}
 {/if}
