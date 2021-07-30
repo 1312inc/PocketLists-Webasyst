@@ -48,7 +48,7 @@
 
                 </div>
 
-                <textarea class="pl-details-textarea hint" style="height: 6rem;" name="item[note]" data-pl2-textarea-rows="2" placeholder="[`Note`]"{if $item->isDone()} disabled="disabled"{/if}>{$item->getNote()|escape}</textarea>
+                <textarea class="pl-details-textarea smallest" style="height: 6rem;" name="item[note]" data-pl2-textarea-rows="2" placeholder="[`Note`]"{if $item->isDone()} disabled="disabled"{/if}>{$item->getNote()|escape}</textarea>
 
                 {*$wa->csrf()*}
                 <div data-pl-item-details-attachments>

@@ -10,17 +10,23 @@
 
         <!-- LISTS -->
         <div id="pl-lists" data-pl-scroll-to-top>
-            <div class="box">
+            <div class="box custom-mt-8">
                 <h5 class="flexbox width-100 space-8">
 
                     <span class="pl-dark-{$pocket->getColor()|default:'none'}-label large wide middle">
-                        {$pocket->getName()}
+                        <span class="flexbox space-4">
+                            <span class="middle">
+                                {$pocket->getName()}
+                            </span>
 
-                        {if $isAdmin}
-                        <a href="#" title="[`Pocket settings`]" data-pl2-action="edit-pocket" data-pl2-pocket-id="{$pocket->getId()}" class="button nobutton circle" style="font-size: 1rem;">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                        {/if}
+                            {if $isAdmin}
+                                <span>
+                                    <a href="#" title="[`Pocket settings`]" data-pl2-action="edit-pocket" data-pl2-pocket-id="{$pocket->getId()}" class="button nobutton circle" style="font-size: 0.875rem;">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                </span>
+                            {/if}
+                        </span>
 
                     </span>
 
@@ -38,7 +44,7 @@
 
                                 <span class="pl-list-name wide pl-dark-{$l->getColor()|default:'none'}-label">{$l->getName()|escape}</span>
 
-                                <span class="count">
+                                <span class="count nowrap">
                                     <span data-pl2-list-calc-priority class="badge {pocketlistsViewHelper::getPriorityCssClass($l->getItemCount()->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}" {if !$l->getItemCount()->getMaxPriority()}style="display: none;"{/if}>{$l->getItemCount()->getCountMaxPriority()}</span>
                                     <span data-pl2-list-items class="gray">{$l->getItemCount()->getCount()}</span>
                                 </span>
@@ -62,8 +68,8 @@
 
     </nav>
 
-    <div class="mobile-only width-100 custom-p-12 {if !$list_id_requested}mobile-hidden{/if}">
-        <a href="#/pocket/{$pocket->getId()}/" class="button"><i class="fas fa-chevron-left"></i> [`Back`]</a>
+    <div class="mobile-only width-100 custom-pb-0 box {if !$list_id_requested}mobile-hidden{/if}">
+        <a href="#/pocket/{$pocket->getId()}/" class="button circle light-gray larger"><i class="fas fa-arrow-left"></i></a>
     </div>
 
     <!-- ITEMS -->

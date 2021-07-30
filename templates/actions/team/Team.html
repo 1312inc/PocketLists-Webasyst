@@ -45,7 +45,7 @@
 
         <h5 class="heading">{sprintf('[`%s’s to-dos (%d)`]', $current_teammate->getName()|default:' '|escape, count($items))}</h5>
         <ul class="menu">
-            <li><a href="#" data-pl-action="list-email"><i class="fas fa-at text-black"></i><span>[`Email list`]</span></a></li>
+            <li><a href="#" data-pl-action="list-email"><i class="fas fa-at black"></i><span>[`Email list`]</span></a></li>
             <li><a href="?module=team&amp;teammate={$current_teammate->getLogin()|escape}&amp;print=true" target="_blank"><i class="fas fa-print"></i><span>[`Print list`]</span></a></li>
         </ul>
 

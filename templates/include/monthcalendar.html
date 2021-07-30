@@ -4,9 +4,13 @@
 {foreach $months as $month_name => $month}
 
 <div class="box custom-mb-24">
-    <h5 class="heading custom-mb-12 large">
-        {_ws($month_name)} {$year}
-    </h5>
+    <div class="flexbox custom-mt-16 custom-mb-16">
+        <a href="#" data-pl-todo-calendar-action="prev" class="pl-calendar-nav" title="[`Previous`]"><i class="fas fa-chevron-left"></i></a>
+        <h5 class="align-center gray wide custom-my-0">
+            {_ws($month_name)} {$year}
+        </h5>
+        <a href="#" data-pl-todo-calendar-action="next" class="pl-calendar-nav" title="[`Next`]"><i class="fas fa-chevron-right"></i></a>
+    </div>
 
 <table class="pl-calendar">
     <thead>
@@ -49,7 +53,7 @@
 <div>
     <h5 class="heading custom-mb-12">[`My to-dos`]</h5>
     <ul class="menu">
-        <li><a href="#" data-pl-action="list-email"><i class="fas fa-at text-black"></i><span>[`Email list`]</span></a></li>
+        <li><a href="#" data-pl-action="list-email"><i class="fas fa-at black"></i><span>[`Email list`]</span></a></li>
         <li><a href="?module={$type}&amp;action=date&amp;print=true&amp;date=" data-pl-action="list-print" target="_blank"><i class="fas fa-print"></i><span>[`Print list`]</span></a></li>
     </ul>
 </div>

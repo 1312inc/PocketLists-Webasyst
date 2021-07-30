@@ -1,5 +1,5 @@
-<div class="shadowed">
-    <nav class="sidebar left300px">
+<div class="flexbox width-100">
+    <nav class="sidebar blank pl-second-sidebar">
 
         <!-- LISTS -->
         <div id="pl-lists" data-pl-scroll-to-top>
@@ -11,6 +11,23 @@
                 {/if}
             </div>
             {if !empty($lists)}
+                {* <ul class="pl-lists custom-mb-12" data-pl2-wrapper="lists">
+                    {foreach $lists as $l}
+                        <li data-pl-list-id="{$l->getId()}">
+                            <a class="flexbox middle space-12" href="#/pocket/{$pocket->getId()}/list/{$l->getId()}/"{if $l->getId() == $list_id} class="pl-is-selected"{/if} title="{$l->getName()|escape}">
+
+                                <i class="icon" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l->getIcon()|default:'li-list@2x.png'});"></i>
+
+                                <span class="pl-list-name wide pl-dark-{$l->getColor()|default:'none'}-label">{$l->getName()|escape}</span>
+
+                                <span class="count nowrap">
+                                    <span data-pl2-list-calc-priority class="badge {pocketlistsViewHelper::getPriorityCssClass($l->getItemCount()->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}" {if !$l->getItemCount()->getMaxPriority()}style="display: none;"{/if}>{$l->getItemCount()->getCountMaxPriority()}</span>
+                                    <span data-pl2-list-items class="gray">{$l->getItemCount()->getCount()}</span>
+                                </span>
+                            </a>
+                        </li>
+                    {/foreach}
+                </ul> *}
                 <ul class="pl-lists" data-pl2-wrapper="lists">
                     {foreach $lists as $l}
                         <li data-pl-list-id="{$l->getId()}" {if $l->isArchived()}class="highlighted"{/if}>
@@ -18,11 +35,15 @@
                             {if $l->isArchived()}
                             {$url = '/archive/'|cat:{$l->getId()}}
                             {/if}
-                            <a href="#{$url}/" title="{$l->getName()|escape}">
-                                <span class="count {$l->getCssClass(pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}">{$l->getItemsCount()}</span>
-                                <i class="listicon36"
+                            <a class="flexbox middle space-12" href="#{$url}/" title="{$l->getName()|escape}">
+                                <i class="icon"
                                    style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l->getIcon()|default:'li-list@2x.png'});"></i>
-                                <span class="pl-list-name pl-dark-{$l->getColor()|default:'none'}-label">{$l->getName()|escape}</span>
+
+                                <span class="pl-list-name wide pl-dark-{$l->getColor()|default:'none'}-label">{$l->getName()|escape}</span>
+
+                                <!-- <span class="count">
+                                    <span class="badge {$l->getCssClass(pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}">{$l->getItemsCount()}</span>
+                                </span> -->
                             </a>
                         </li>
                     {/foreach}
@@ -39,7 +60,8 @@
     </nav>
 
     <!-- ITEMS -->
-    <main class="content left300px blank bordered-left search-results">
+    <main class="content blank bordered-left search-results">
+    <div class="pl-pseudo-article">
 
         <main id="pl-list-content" class="pl-list-content">
 
@@ -74,8 +96,8 @@
                         </div>
                     </section>
 
-                    <<div class="box align-center custom-mt-16">
-                        <a href="#" id="pl-complete-log-link" class="button light-gray small" {if !$count_done_items}style="display:none;"{/if}><i class="fas fa-check"></i> [`Show all completed to-dos`]</a>
+                    <div class="box align-center custom-mt-16">
+                        <a href="#" id="pl-complete-log-link" class="button light-gray small" {if !$count_items_done}style="display:none;"{/if}><i class="fas fa-check"></i> [`Show all completed to-dos`]</a>
                     </div>
                 </div>
                 <div class="clear-both"></div>
@@ -83,7 +105,10 @@
             </div>
 
             {include '../../include/itemdetails.html' inline}
+
         </main>
+
+    </div>
     </main>
 
 </div>
