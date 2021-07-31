@@ -5,18 +5,18 @@
  */
 class pocketlistsRBAC
 {
-    const RIGHT_NONE        = 0;
-    const RIGHT_ACCESS      = 1;
-    const RIGHT_FULL_ACCESS = 2;
-    const RIGHT_LIMITED     = 3;
-    const RIGHT_ADMIN       = 99;
+    public const RIGHT_NONE        = 0;
+    public const RIGHT_ACCESS      = 1;
+    public const RIGHT_FULL_ACCESS = 2;
+    public const RIGHT_LIMITED     = 3;
+    public const RIGHT_ADMIN       = 99;
 
-    const CAN_ASSIGN          = 'canassign';
-    const CAN_CREATE_TODOS    = 'cancreatetodos';
-    const CAN_USE_SHOP_SCRIPT = 'canuseshopscript';
+    public const CAN_ASSIGN          = 'canassign';
+    public const CAN_CREATE_TODOS    = 'cancreatetodos';
+    public const CAN_USE_SHOP_SCRIPT = 'canuseshopscript';
 
-    const POCKET_ITEM = 'pocket';
-    const LIST_ITEM   = 'list';
+    public const POCKET_ITEM = 'pocket';
+    public const LIST_ITEM   = 'list';
 
     private static $lists   = [];
     private static $pockets = [];
@@ -51,7 +51,7 @@ class pocketlistsRBAC
             }
         } else {
             self::addPocketUserRight($user_id, 0, self::RIGHT_NONE);
-            $pockets = $user->getRights(pocketlistsHelper::APP_ID, self::POCKET_ITEM.'.%');
+            $pockets = $user->getRights(pocketlistsHelper::APP_ID, self::POCKET_ITEM . '.%');
             foreach ($pockets as $pocketId => $rightValue) {
                 self::addPocketUserRight($user_id, $pocketId, $rightValue);
 
@@ -74,7 +74,7 @@ class pocketlistsRBAC
 
             // соберем все остальные листы
             self::addListUserRight($user_id, 0, true);
-            $accessedLists = $user->getRights(pocketlistsHelper::APP_ID, self::LIST_ITEM.'.%');
+            $accessedLists = $user->getRights(pocketlistsHelper::APP_ID, self::LIST_ITEM . '.%');
             if ($accessedLists) {
                 foreach ($accessedLists as $accessedListId => $rightValue) {
                     self::addListUserRight($user_id, $accessedListId, true);
@@ -137,7 +137,7 @@ class pocketlistsRBAC
      *
      * @return array
      */
-    public static function getAccessContacts(pocketlistsList $list = null)
+    public static function getAccessContacts(pocketlistsList $list = null): array
     {
         $wcr = new waContactRightsModel();
         $query = sprintf(
@@ -145,7 +145,7 @@ class pocketlistsRBAC
             self::haveFullAdminSQL(),
             self::haveFullAccessSQL(),
             $list && $list->getId() ? self::haveAccessToListSQL($list) : self::haveAccessSQL(),
-            $list && $list->getPocketId() ? ' OR '.self::havePocketFullAccessSQL($list->getPocketId()) : ''
+            $list && $list->getPocketId() ? ' OR ' . self::havePocketFullAccessSQL($list->getPocketId()) : ''
         );
 
         $contact_ids = $wcr->query($query)->fetchAll();
@@ -182,11 +182,11 @@ class pocketlistsRBAC
         }
 
         switch (true) {
-            case $user->getRights(pocketlistsHelper::APP_ID, self::LIST_ITEM.'.'.$list->getId()):
+            case $user->getRights(pocketlistsHelper::APP_ID, self::LIST_ITEM . '.' . $list->getId()):
             case $list->getPocketId()
                 && $user->getRights(
                     pocketlistsHelper::APP_ID,
-                    self::POCKET_ITEM.'.'.$list->getPocketId()
+                    self::POCKET_ITEM . '.' . $list->getPocketId()
                 ) == self::RIGHT_ADMIN:
                 self::addListUserRight($user_id, $list->getId(), true);
                 break;
@@ -255,7 +255,7 @@ class pocketlistsRBAC
      */
     public static function filterListAccess(&$lists, $user_id = false)
     {
-        $user_id = $user_id ? (int)$user_id : wa()->getUser()->getId();
+        $user_id = $user_id ? (int) $user_id : wa()->getUser()->getId();
         $list_sql = null;
         $lists_user = self::getAccessListForContact($user_id);
         if (!self::isAdmin($user_id)) {
@@ -282,9 +282,9 @@ class pocketlistsRBAC
         }
 
         if (is_array($list_sql)) {
-            $list_sql = '('.implode(' OR ', $list_sql).')';
+            $list_sql = '(' . implode(' OR ', $list_sql) . ')';
         } elseif ($list_sql) {
-            $list_sql = '('.$list_sql.')';
+            $list_sql = '(' . $list_sql . ')';
         } else {
             $list_sql = "(l.id IS NULL /* null list */ AND i.contact_id = {$user_id} /* other null lists */)";
         }
@@ -310,9 +310,9 @@ class pocketlistsRBAC
                 }
             }
         } else {
-            $pockets = $user->getRights(pocketlistsHelper::APP_ID, self::POCKET_ITEM.'.%');
+            $pockets = $user->getRights(pocketlistsHelper::APP_ID, self::POCKET_ITEM . '.%');
             foreach ($pockets as $pocketId => $rightValue) {
-                self::addPocketUserRight($user->getId(), $pocketId, (int)$rightValue);
+                self::addPocketUserRight($user->getId(), $pocketId, (int) $rightValue);
             }
         }
     }
@@ -328,7 +328,7 @@ class pocketlistsRBAC
             self::$pockets[$userId] = [];
         }
 
-        self::$pockets[$userId][$pocketId] = (int)$rightValue;
+        self::$pockets[$userId][$pocketId] = (int) $rightValue;
     }
 
     /**
@@ -350,13 +350,13 @@ class pocketlistsRBAC
      */
     private static function haveFullAdminSQL()
     {
-        return " (app_id = 'webasyst' AND name = 'backend' AND value = 1) ";
+        return " (app_id = 'webasyst' AND name = 'backend' AND value in (1,2)) ";
     }
 
     /**
      * @return string
      */
-    private static function haveFullAccessSQL()
+    private static function haveFullAccessSQL(): string
     {
         return sprintf(
             " (app_id = '%s' AND name = 'backend' AND value = %s)",
@@ -365,10 +365,7 @@ class pocketlistsRBAC
         );
     }
 
-    /**
-     * @return string
-     */
-    private static function havePocketFullAccessSQL($pocket_id)
+    private static function havePocketFullAccessSQL(int $pocket_id): string
     {
         return sprintf(
             " (app_id = '%s' AND name = '%s.%s' AND value = %s)",
