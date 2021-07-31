@@ -87,19 +87,22 @@ $.pocketlists.Pocket = function ($pocket_wrapper, options) {
         }
 
         $lists_wrapper.sortable({
-            item: '[data-pl-list-id]',
-            distance: 5,
-            placeholder: 'pl-list-placeholder',
-            opacity: 0.75,
-            appendTo: 'body',
-            tolerance: 'pointer',
-            classes: {
-                'ui-sortable-helper': 'shadowed'
-            },
-            start: function (e, ui) {
-                ui.placeholder.height(ui.helper.outerHeight());
-            },
-            stop: function (event, ui) {
+            draggable: '[data-pl-list-id]',
+            delay: 200,
+            delayOnTouchOnly: true,
+            animation: 150,
+            forceFallback: true,
+            ghostClass:'pl-list-placeholder',
+            // chosenClass:'album-list-chosen',
+            // dragClass:'album-list-drag',
+            onEnd: function(event) {
+                let $item = $(event.item);
+                /* хак для предотвращения срабатывания клика по элементу после его перетаскивания*/
+                let $link = $item.find('[onclick]'),
+                    href = $link.attr('onclick');
+                $link.attr('onclick', 'javascript:void(0);');
+                setTimeout(() => $link.attr('onclick', href),500)
+
                 var getLists = function () {
                     var data = [];
                     $lists_wrapper.find('[data-pl-list-id]').each(function (i) {

@@ -873,24 +873,21 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
     function initSortable() {
         if (o.enableSortItems) {
             $sortable_items.sortable({
-                item: item_selector,
-                handle: '[data-pl-action="item-sort"]',
-                distance: 5,
-                opacity: 0.75,
-                appendTo: 'body',
-                // connectWith: '[data-pl-items="done"] ul.menu-v',
-                placeholder: 'pl-item-placeholder',
-                tolerance: 'pointer',
-                start: function (e, ui) {
-                    ui.placeholder.height(ui.helper.outerHeight());
-                },
-                classes: {
-                    'ui-sortable-helper': 'shadowed'
-                },
-                // forcePlaceholderSize: true,
-                // forceHelperSize: true,
-                stop: function (event, ui) {
-                    var $item = ui.item;
+                draggable: item_selector,
+                delay: 200,
+                delayOnTouchOnly: true,
+                animation: 150,
+                forceFallback: true,
+                ghostClass:'pl-item-placeholder',
+                // chosenClass:'album-list-chosen',
+                // dragClass:'album-list-drag',
+                onEnd: function(event) {
+                    let $item = $(event.item);
+                    /* хак для предотвращения срабатывания клика по элементу после его перетаскивания*/
+                    let $link = $item.find('[onclick]'),
+                        href = $link.attr('onclick');
+                    $link.attr('onclick', 'javascript:void(0);');
+                    setTimeout(() => $link.attr('onclick', href),500)
 
                     if ($item.hasClass('pl-dropped')) {
                         $(this).sortable('cancel');
