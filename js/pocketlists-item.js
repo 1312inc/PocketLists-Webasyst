@@ -1411,7 +1411,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
         if (o.list && o.list.list_id) {
             $('#pl-lists')
                 .find('[data-pl-list-id="' + o.list.list_id + '"]')
-                .find('.count:first').text($undone_items_wrapper.find('[data-id]').length);
+                .find('.count [data-pl2-list-items]').text($undone_items_wrapper.find('[data-id]').length);
         }
     }
     function isEmptyList() {
