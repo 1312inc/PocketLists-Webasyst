@@ -99,20 +99,23 @@
 
         function initSortable() {
             $labels.find('tbody').sortable({
-                items: 'tr[data-pl2pro-label-id]',
-                distance: 5,
-                // placeholder: 'pl-list-placeholder',
-                opacity: 0.75,
-                appendTo: 'body',
-                tolerance: 'pointer',
-                classes: {
-                    'ui-sortable-helper': 'shadowed'
-                },
-                start: function (e, ui) {
-                    ui.placeholder.height(ui.helper.outerHeight());
-                },
-                stop: function (event, ui) {
-                    var getLabels = function () {
+                draggable: 'tr[data-pl2pro-label-id]',
+                delay: 200,
+                delayOnTouchOnly: true,
+                animation: 150,
+                forceFallback: true,
+                // ghostClass:'pl-item-placeholder',
+                // chosenClass:'album-list-chosen',
+                // dragClass:'album-list-drag',
+                onEnd: function(event) {
+                    let $item = $(event.item);
+                    /* хак для предотвращения срабатывания клика по элементу после его перетаскивания*/
+                    let $link = $item.find('[onclick]'),
+                        href = $link.attr('onclick');
+                    $link.attr('onclick', 'javascript:void(0);');
+                    setTimeout(() => $link.attr('onclick', href),500)
+
+                    let getLabels = function () {
                         var data = [];
                         $labels.find('[data-pl2pro-label-id]').each(function (i) {
                             data.push($(this).data('pl2pro-label-id'));
@@ -121,7 +124,7 @@
                         return data;
                     };
 
-                    var updateSort = function () {
+                    let updateSort = function () {
                         $.post(
                             '?plugin=pro&module=label&action=saveOrder',
                             {
