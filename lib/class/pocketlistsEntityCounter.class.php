@@ -187,10 +187,11 @@ class pocketlistsEntityCounter
     {
         $key = sprintf('items|list|%s', $list->getId());
 
-        $count = $this->getFromCache($key);
-        if ($count instanceof pocketlistsItemsCount) {
-            return $count;
-        }
+        // todo: оставить кеш, но инвалидировать в нужный момент
+//        $count = $this->getFromCache($key);
+//        if ($count instanceof pocketlistsItemsCount) {
+//            return $count;
+//        }
 
         /** @var pocketlistsItemModel $itemModel */
         $itemModel = pl2()->getModel(pocketlistsItem::class);

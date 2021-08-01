@@ -5,10 +5,10 @@
  */
 class pocketlistsViewHelper
 {
-    const CSS_CLASS_PRIORITY       = 'priority';
-    const CSS_CLASS_DUE_DATETIME   = 'due-datetime';
-    const CSS_CLASS_DUE_DATE       = 'due-date';
-    const CSS_CLASS_LIST_INDICATOR = 'list-indicator';
+    public const CSS_CLASS_PRIORITY = 'priority';
+    public const CSS_CLASS_DUE_DATETIME    = 'due-datetime';
+    public const CSS_CLASS_DUE_DATE       = 'due-date';
+    public const CSS_CLASS_LIST_INDICATOR = 'list-indicator';
 
     /**
      * @param int    $priority

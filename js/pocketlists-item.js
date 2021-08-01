@@ -721,7 +721,9 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                                             hideItemDetails(null, function () {
                                                 removeItem(r.data.id);
                                                 $list_items_wrapper.find('[data-id="' + r.data.id + '"]').remove();
-                                                updateListCountBadge();
+                                                if (o.list) {
+                                                    loadListCounts(o.list.list_id);
+                                                }
                                             });
 
                                             $(document).trigger('item_delete.pl2', r.data);
@@ -1047,7 +1049,6 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
                 if (!o.standAloneItemAdd) {
                     hideEmptyListMessage();
-                    updateListCountBadge();
                     updateSort();
                     if (o.list) {
                         loadListCounts(o.list.list_id);
@@ -1064,6 +1065,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
     }
 
     function loadListCounts(list_id) {
+        updateListCountBadge();
         $.getJSON(o.appUrl + '?module=backendJson&action=getListItemCount', {id: list_id}, function(r) {
             if (r.status === 'ok') {
                 var $list = $('#pl-lists').find('[data-pl-list-id="' + list_id + '"]');
@@ -1073,7 +1075,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
                 if (r.data.count && r.data.max_priority) {
                     $list.find('[data-pl2-list-calc-priority]')
-                        .addClass('count bold ' + r.data.class)
+                        .addClass('badge ' + r.data.class)
                         .text(r.data.count_max_priority)
                         .show();
                 }
@@ -1102,7 +1104,6 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                 if (item_list_id != item_list_id_new) {
                     loadListCounts(item_list_id_new);
                     removeItem($form.find('input[name="item\[id\]"]').val());
-                    updateListCountBadge();
                 }
 
             }
@@ -1241,7 +1242,6 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                             }
 
                             // always update list count icon
-                            updateListCountBadge();
                             $show_logbook_items.show().find('i').text($_('Show all %d completed to-dos').replace('%d', $done_items_wrapper.find('[data-id]').length)); // update "complete items" heading
 
                             if (!o.standAloneItemAdd) {
