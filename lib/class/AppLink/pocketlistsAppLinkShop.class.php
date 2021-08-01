@@ -103,7 +103,7 @@ class pocketlistsAppLinkShop extends pocketlistsAppLinkAbstract implements pocke
      */
     public function getLinkUrl(pocketlistsItemLink $itemLink)
     {
-        return sprintf('%s#/orders/id=%s/', wa()->getAppUrl('shop'), $itemLink->getEntityId());
+        return sprintf('%s?action=orders#/order/%s/', wa()->getAppUrl('shop'), $itemLink->getEntityId());
     }
 
     /**

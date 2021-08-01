@@ -573,7 +573,7 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 .s-order #pl-complete-log { display: block; }
 .s-order #pl-complete-log ul.menu-v { margin-top: 10px; }
 
-.t-tasks-wrapper .pl-items { margin-top: 1rem; margin-bottom: 2rem; }
+.t-tasks-wrapper .pl-items { margin-top: 1rem; margin-bottom: 2rem; z-index: 1; }
 .t-tasks-wrapper .pl-items .fields { width: 100%; }
 .t-tasks-wrapper .pl-items .pl-link-preview.pl-link-app-tasks { display: none !important; }
 .t-tasks-wrapper .pl-items .pl-item-drag-handle { display: none !important; }
