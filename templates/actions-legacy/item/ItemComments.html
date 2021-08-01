@@ -1,0 +1,20 @@
+<div class="pl-comments-form pl-chat" data-pl2-item-id="{$item->getId()}">
+    <div class="pl-chat-contents">
+
+        {$wa->csrf()}
+        <input type="hidden" name="item[id]" value="{$item->getId()}"/>
+        <input type="hidden" id="pl-item-list-id" value="{$item->getListId()}"/>
+
+        {foreach $item->getComments() as $comment}
+            {include '../comment/Comment.html' comment=$comment inline}
+        {/foreach}
+
+    </div>
+    <div class="pl-chat-reply">
+        <div class="pl-reply"{if $item->isDone()} style="display:none;"{/if}>
+            <i class="icon16 userpic20" style="background-image: url({$wa->user()->getPhoto(20)})"
+               alt="{$wa->user()->get('name')|escape}"></i>
+            <textarea rows="1" placeholder="[`Add comment`]"></textarea>
+        </div>
+    </div>
+</div>

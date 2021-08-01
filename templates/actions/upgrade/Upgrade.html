@@ -1,34 +1,53 @@
-{$_utm_suffix = '?utm_source=pl2webasyst&utm_medium=inapp_fullpage_ad&utm_campaign=1312_inapp_pl2pro_upgrade_2020_1'}
-{if $wa->user()->isAdmin('installer')}
+{$_utm_suffix = '?utm_source=pl2webasyst&utm_medium=inapp_fullpage_ad&utm_campaign=1312_inapp_pl2pro_upgrade_wa2'}
+{if 00000 && $wa->user()->isAdmin('installer')}
     {$_pl2pro_url = $wa_backend_url|cat:'installer/store/plugin/pocketlists/pro/'|cat:$_utm_suffix}
 {else}
     {$_pl2pro_url = '[`https://www.webasyst.com/store/plugin/pocketlists/pro/`]'|cat:$_utm_suffix}
 {/if}
 
 {capture "pl2proupgradead"}
-<figure class="block double-padded highlighted pl-upgrade-ad">
-      <a href="{$_pl2pro_url}"><img src="{$wa_url}wa-apps/pocketlists/img/pl2pro-plugin-icon.png" class="pl-wa-plugin-icon" /></a>
-      <h3>
-          <a href="{$_pl2pro_url}" class="large">
-              [`Pocket Lists PRO plugin`]
-              &nbsp;<span class="nowrap"><i class="icon16 star"></i><i class="icon16 star"></i><i class="icon16 star"></i><i class="icon16 star"></i><i class="icon16 star"></i></span>
-          </a>
-      </h3>
-      <p>
-          [`Shop-Script automation (auto create to-dos based on actions with orders), kanban board, status labels, quick entry templates, and other advanced features.`]
-      </p>
-      <p style="margin-bottom: 5px;">
-          <a href="[`https://www.webasyst.com/buy/store/5045/`]{$_utm_suffix}" class="button green">[`Buy the plugin`]</a>
-      </p>
-      <div class="clear-both"></div>
+<figure class="box pl-upgrade-ad">
+    <div class="flexbox space-12">
+        <a href="{$_pl2pro_url}" class="pl-wa-plugin-icon" target="_blank"><img src="{$wa_url}wa-apps/pocketlists/img/pl2pro-plugin-icon{if $wa->locale() != 'ru_RU'}-en{/if}.png" /></a>
+        <div class="wide">
+          <h6 class="custom-my-8">
+              <a href="{$_pl2pro_url}" class="large" target="_blank">
+                  [`Pocket Lists PRO plugin`]
+              </a>
+              <span class="badge indicator onfire">&minus;20%</span>
+          </h6>
+          <p class="custom-mt-8">
+              [`We wish everyone could enjoy the power the Pocket Lists PRO plugin has to offer. This promocode will help you the get the plugin up and running at the best price possible.`]
+          </p>
+
+          <p class="custom-mb-8 small">
+              [`Use this promocode until it expires:`]
+          </p>
+          <input type="text" class="bold align-center larger" value="9UVHYK63V8" style="border-style: dashed;">
+
+          <p>
+              <a href="[`https://www.webasyst.com/buy/store/5045/`]{$_utm_suffix}" class="button green larger" target="_blank">[`Buy now with promocode`]</a>
+              <a href="{$_pl2pro_url}" class="button nobutton larger" target="_blank">[`About the plugin`] <i class="fas fa-external-link-alt opacity-40 small custom-ml-4"></i></a>
+          </p>
+
+        </div>
+    </div>
+
+    <div class="align-center custom-mb-20">
+
+    </div>
+
+    <div class="align-center custom-mb-20">
+
+    </div>
+
+
 </figure>
 {/capture}
 
-<div class="shadowed">
+<div class="article">
 
-    <div class="pl-upgrade-cover"></div>
-
-    <main class="block double-padded">
+    <main class="article-body">
 
         <article class="pl-upgrade-content">
 
@@ -48,9 +67,18 @@
 
                     {$smarty.capture.pl2proupgradead}
 
-                    <p>Плагин сделает командную работу в Pocket Lists максимально эффективной. Вот как это работает:</p>
-                    <ul>
-                        <li><strong>Автоматическое создание задач на основе действий с заказами в Shop-Script</strong>. Когда выполняется какое-либо действие с заказом (например, заказ создается, уходит в отгрузку или отмечается выполненным), автоматически создается задача в Pocket Lists. Правила создания таких задач, назначение на менеджеров, сроки и приоритеты — все это гибко настраивается.<br><br>
+                    <h3>Что дает плагин PRO?</h3>
+
+                    <p>Плагин сделает работу Pocket Lists максимально эффективной. Вот как это работает:</p>
+                    <ul class="separated">
+                        <li><span class="badge squared bold custom-mr-4 green">Главная фишка</span><strong>Автоматическое создание задач на основе действий с заказами в Shop-Script</strong>. Когда выполняется какое-либо действие с заказом (например, заказ создается, уходит в отгрузку или отмечается выполненным), автоматически создается задача в Pocket Lists.<br><br> Например:<br><br>
+                          <ul class="small">
+                            <li>Заказ <code style="color: var(--green);">В обработку</code> &rarr; автоматически создать задачу <code>Сборка заказа &#123;$order_id&#125;</code> и назначить менеджеру Валере.</li>
+                            <li>Заказ <code style="color: var(--blue);">Отправлен</code> &rarr; автоматически создать задачу <code>Проверить трек &#123;$tracking_number&#125;</code>. Но создать не сразу, а через 72 часа, если статус заказа не изменился.</li>
+                            <li>Заказ <code style="color: var(--purple);">Выполнен</code> &rarr; сразу же задачу маркетологу <code>Попросить написать отзыв о товаре &#123;$customer_name&#125; / &#123;$customer_phone&#125;. Заказывал &#123;$ordered_items&#125;</code>.</li>
+                            <li>Заказ <code style="color: var(--red);">Возврат</code> &rarr; задачу директору <code>Проверить, кто накосячил с заказом №&#123;$order_id&#125;</code>.</li>
+                          </ul>
+                          И так далее. Все очень гибко настраивается!<br><br>
                           <img src="https://1312.io/wa-data/public/site/img/webasyst/pl2pro100/ru-pl2pro-ss-automation-120.png" />
                         </li>
                         <li><strong>Шаблоны быстрого ввода</strong>: <code>Оплатить ...</code>, <code>Связаться ...</code>, <code>Напомнить ...</code>, <code>Отгрузить ...</code>, <code>Уточнить ...</code> — подобные задачи ставятся изо дня в день. Ускорьте их постановку с помощью быстрых шаблонов, которые заменят ручной ввод. Создавайте задачи в несколько кликов:<br><br>

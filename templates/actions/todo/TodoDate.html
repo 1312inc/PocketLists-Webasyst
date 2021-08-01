@@ -11,16 +11,8 @@
 {/if}
 
 
-<main class="blank bordered-right pl-inner-content pl-items pl-list-items pl-todo shadowed" id="pl-list-content">
-
-    <div id="pl-stream-notice" class="pl-alert" style="display: none;">
-        <a href="javascript:void(0)" class="close pl-alert-close bigger">&times;</a>
-        <div class="pl-welcome" id="pl-welcome-msg">
-            <div class="pl-jumbodone" title="[`Welcome to Pocket Lists app!`]"></div>
-            <h2>[`Your daily routine`]</h2>
-            <p>[`My to-dos is your personal dynamic to-do list that automatically collects all to-dos which you are about to do up next. To-dos to self and to-dos assigned to you by your teammates are included in this list automatically. Most important and urgent to-dos are on top.`] {sprintf('[`<a href="%s">Use Settings</a> page to configure your custom “My To-dos” filter behaviour.`]','#/settings/')}</p>
-        </div>
-    </div>
+<main class="blank pl-inner-content pl-items pl-list-items pl-todo" id="pl-list-content">
+<div class="pl-pseudo-article">
 
     <header class="pl-title">
         {* <div class="float-right">
@@ -37,7 +29,7 @@
         <span></span>
         {else}
         <h1 class="not-padded" pl-todo-stream="date">
-            {if !$print} <a href="#" class="back">&larr; [`My to-dos`]</a>{/if}
+            {if !$print} <a href="#" class="button light-gray circle" style="font-size: 20px; position: relative; top: -4px;" title="[`My to-dos`]"><i class="fas fa-arrow-left"></i></a>{/if}
             <span>{waDateTime::date(waDateTime::getFormat('humandate'), $date)}</span>
         </h1>
         {/if}
@@ -66,7 +58,9 @@
             </div>
         </section>
 
-        <a href="#" id="pl-complete-log-link" class="inline-link gray" {if !$count_done_items}style="display:none;"{/if}><b><i>{_w('Show all %d completed to-do', 'Show all %d completed to-dos', $count_done_items)}</i></b></a>
+        <div class="box align-center custom-mt-16">
+            <a href="#" id="pl-complete-log-link" class="button light-gray small" {if !$count_done_items}style="display:none;"{/if}><i class="fas fa-check"></i> [`Show all completed to-dos`]</a>
+        </div>
         {/if}
 
     </div>
@@ -78,6 +72,7 @@
     {/if}
 
     {include '../../include/itemdetails.html' inline}
+</div>
 </main>
 {if !$print}
 <script type="text/javascript">
@@ -95,7 +90,8 @@
             userHasLinkedApps: {$user->hasLinkedApps()},
             current_user_id: {$user->getContact()->getId()},
             dueDate: '{if $timestamp}{$timestamp}{/if}',
-            caller: 'todo'
+            caller: 'todo',
+            externalApp: '{$externalApp|default:''}'
         });
 
         new $.pocketlists.Comments($all_items_wrapper);
@@ -103,7 +99,7 @@
         $.pocketlists.lazyItems({
             $loading: $('#pl-list-content .lazyloading'),
             html_selector: '#pl-complete-log > .menu-v',
-            url: '?module=item&action=lazyDone&type=todo&date={$date}'
+            url: '?module=item&action=lazyDone&type=todo&date={$date}&external_app={$externalApp|default:''|escape}'
         });
     }());
 </script>

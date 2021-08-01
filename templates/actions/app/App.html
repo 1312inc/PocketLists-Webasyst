@@ -1,22 +1,21 @@
-<nav class="pl-inner-sidebar" data-pl="uho">
-    <a href="#" data-pl-todo-calendar-action="next" class="float-right pl-calendar-nav" title="[`Next`]"><i class="icon16 rarr"></i></a>
-    <a href="#" data-pl-todo-calendar-action="prev" class="float-left pl-calendar-nav" title="[`Previous`]"><i class="icon16 larr"></i></a>
-    <div data-pl-todo-calendar>
-        {$calendar_html}
-    </div>
-</nav>
-
 <!-- ITEMS -->
-<section id="pl-list-todo-items">
-    <main class="blank bordered-right pl-inner-content pl-items pl-list-items pl-todo shadowed" id="pl-list-content">
+<section id="pl-list-todo-items" class="wide">
+    <main class="blank pl-inner-content pl-items pl-list-items pl-todo" id="pl-list-content">
+    <div class="pl-pseudo-article">
         <header class="pl-title">
             <h1 class="not-padded">
                 {$app->getName()} <i class="icon16 loading"></i>
             </h1>
         </header>
+    </div>
     </main>
 </section>
 
+<nav class="pl-inner-sidebar" data-pl="uho">
+    <div data-pl-todo-calendar>
+        {$calendar_html}
+    </div>
+</nav>
 
 <script type="text/javascript">
     (function(){

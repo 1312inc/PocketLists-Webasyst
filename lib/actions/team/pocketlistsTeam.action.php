@@ -71,9 +71,9 @@ class pocketlistsTeamAction extends pocketlistsViewAction
 
             $this->view->assign(
                 [
-                    'lists'            => $lists,
-                    'items_done'       => $itemsDone,
-                    'items'            => $itemsUndone,
+                    'lists' => $lists,
+                    'items_done' => $itemsDone,
+                    'items' => $itemsUndone,
                     'count_done_items' => $countDoneItems,
                     'current_teammate' => $teammate,
                 ]
@@ -81,30 +81,42 @@ class pocketlistsTeamAction extends pocketlistsViewAction
         }
 
         $external = waRequest::request('external', 0, waRequest::TYPE_INT);
+        $externalApp = waRequest::request('external_app', null, waRequest::TYPE_STRING_TRIM);
 
         /**
          * UI hook in teammate right sidebar
+         *
          * @event backend_teammate_sidebar
          *
          * @param pocketlistsEventInterface $event Event with pocketlistsContact object and external flag in params array
+         *
          * @return string html output
          */
         $event = new pocketlistsEvent(
             pocketlistsEventStorage::WA_BACKEND_TEAMMATE_SIDEBAR,
             $teammate,
-            ['external' => $external]
+            ['external' => $external, 'external_app' => $externalApp]
         );
         $eventResult = pl2()->waDispatchEvent($event);
 
         $this->view->assign(
             [
-                'teammates'             => $teammates,
-                'print'                 => waRequest::get('print', false),
-                'user'                  => $this->user,
-                'external'              => $external,
-                'itemAdd'               => (new pocketlistsItemAddAction(['teammate' => $teammate, 'external' => $external]))->display(false),
+                'teammates' => $teammates,
+                'print' => waRequest::get('print', false),
+                'user' => $this->user,
+                'external' => $external,
+                'externalApp' => $externalApp,
+                'itemAdd' => (new pocketlistsItemAddAction(
+                    [
+                        'teammate' => $teammate,
+                        'external' => $external,
+                        'externalApp' => $externalApp,
+                    ]
+                ))->display(false),
                 'backend_teammate_sidebar' => $eventResult,
             ]
         );
+
+        $this->setTemplate(pl2()->getUI2TemplatePath('templates/actions%s/team/Team.html', $externalApp));
     }
 }

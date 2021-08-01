@@ -1,6 +1,5 @@
-<main class="blank bordered-right pl-inner-content pl-items pl-list-items pl-todo shadowed" id="pl-list-content">
-
-    {$app->getBannerHtml()}
+<main class="blank pl-inner-content pl-items pl-list-items pl-todo" id="pl-list-content">
+<div class="pl-pseudo-article">
 
     <header class="pl-title">
          {*<div class="float-right">*}
@@ -17,7 +16,7 @@
             <span></span>
         {else}
             <h1 class="not-padded" pl-todo-stream="date">
-                {if !$print} <a href="#" class="back">&larr; {$app->getName()}</a>{/if}
+                {if !$print} <a href="#" class="button light-gray circle back" style="font-size: 20px; position: relative; top: -4px;" title="[`My to-dos`]"><i class="fas fa-arrow-left"></i></a>{/if}
                 <span>{waDateTime::date(waDateTime::getFormat('humandate'), $date)}</span>
             </h1>
         {/if}
@@ -45,7 +44,9 @@
             </div>
         </section>
 
-        <a href="#" id="pl-complete-log-link" class="inline-link gray" {if !$count_done_items}style="display:none;"{/if}><b><i>{_w('Show all %d completed to-do', 'Show all %d completed to-dos', $count_done_items)}</i></b></a>
+        <div class="box align-center custom-mt-16">
+            <a href="#" id="pl-complete-log-link" class="button light-gray small" {if !$count_done_items}style="display:none;"{/if}><i class="fas fa-check"></i> [`Show all completed to-dos`]</a>
+        </div>
 
     </div>
 
@@ -53,6 +54,8 @@
 
     {$itemAdd}
     {include '../../include/itemdetails.html' inline}
+
+</div>
 </main>
 
 <script type="text/javascript">
@@ -75,6 +78,7 @@
             },
             userHasLinkedApps: {$user->hasLinkedApps()},
             dueDate: '{if $timestamp}{$timestamp}{/if}',
+            externalApp: '{$externalApp|default:''}'
         });
 
         new $.pocketlists.Comments($all_items_wrapper);
@@ -82,7 +86,7 @@
         $.pocketlists.lazyItems({
             $loading: $('#pl-list-content .lazyloading'),
             html_selector: '#pl-complete-log > .menu-v',
-            url: '?module=item&action=lazyDone&type=app&app={$app->getApp()}'
+            url: '?module=item&action=lazyDone&type=app&app={$app->getApp()}&external_app={$externalApp|default:''|escape}&external_app={$externalApp|default:''|escape}'
         });
     }());
 </script>

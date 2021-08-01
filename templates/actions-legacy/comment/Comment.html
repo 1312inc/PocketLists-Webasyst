@@ -1,0 +1,30 @@
+<div data-pl-comment-id="{$comment->getId()}" {if !empty($comment->getItemId())}data-pl-item-id="{$comment->getItemId()}"{/if}>
+    <div class="pl-cue{if $comment->isMy()} pl-my-cue{/if}{if $comment->isRecentlyCreated() && !$comment->isMy()} pl-new-comment{/if}">
+        <div class="pl-cue-inner">
+            <div class="pl-bubble">
+                {if $comment->isMy() && $comment->canBeDeleted() && !(isset($archive) && $archive)}<a href="#" class="pl-delete-comment" data-pl-action="comment-delete" title="[`Delete`]">&times;</a>{/if}
+                {$comment->getCommentParsed()|nl2br|default:''}
+
+            </div><span class="pl-bubble-arrow"></span>
+
+            {if isset($comment_page)}
+            <div class="pl-reply-link">
+                <a href="#" class="inline-link" data-pl-action="comment-reply"><b><i><strong>[`Reply`]</strong></i></b></a>
+            </div>
+            {/if}
+
+            <i class="icon16 userpic20" style="background-image: url({$comment->getContact()->getUserpic()})" alt="{$comment->getContact()->getUsername()|escape}"></i> {$comment->getContact()->getUsername()|escape}
+            {if isset($comment_page)}
+            [`on`]
+            <a href="{if $comment->getListId() && $comment->getPocketId()}#/pocket/{$comment->getPocketId()}/list/{$comment->getListId()}/{else if $comment->getContact()->isMe()}#/todo/{else}#/team/{$comment->getContact()->getLogin()}{/if}">{$comment->getItemName()|truncate:64|escape}</a>
+            {/if}
+            <span class="hint nowrap">{$comment->getCreateDatetime()|wa_datetime:'humandatetime'}</span>
+        </div>
+    </div>
+{*    {if isset($comment_page)}*}
+    <div class="pl-reply" style="display:none;">
+        <i class="icon16 userpic20" style="background-image: url({$wa->user()->getPhoto(20)})" alt="{$wa->user()->getName()|escape}"></i>
+        <textarea rows="1" placeholder="[`Add comment`]"></textarea>
+    </div>
+{*    {/if}*}
+</div>

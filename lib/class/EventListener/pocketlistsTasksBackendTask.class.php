@@ -34,7 +34,8 @@ final class pocketlistsTasksBackendTask
             $view = new waSmarty3View(wa());
 
             wa(pocketlistsHelper::APP_ID, true);
-            $itemAdd = (new pocketlistsItemAddAction(['external' => true]))->display(false);
+            $itemAdd = (new pocketlistsItemAddAction(['external' => true, 'externalApp' => 'tasks']))
+                ->display(false);
             wa(pocketlistsAppLinkTasks::APP, true);
 
             $hasItems = pl2()->getModel(pocketlistsItemLink::class)->countLinkedItems(
@@ -56,6 +57,7 @@ final class pocketlistsTasksBackendTask
                     'fileupload' => 1,
                     'user' => pl2()->getUser(),
                     'itemAdd' => $itemAdd,
+                    'externalApp' => 'tasks',
                 ],
                 pl2()->getDefaultViewVars()
             );
@@ -80,7 +82,11 @@ final class pocketlistsTasksBackendTask
             $hook = $task->attachments ? 'after_attachments' : 'after_description';
 
             $template = wa()->getAppPath(
-                sprintf('templates/include/app_hook/tasks.backend_task.%s.html', $hook),
+                sprintf(
+                    'templates/include%s/app_hook/tasks.backend_task.%s.html',
+                    pl2()->getUI2TemplatePath(null, 'tasks'),
+                    $hook
+                ),
                 pocketlistsHelper::APP_ID
             );
 

@@ -1,53 +1,64 @@
-<div class="shadowed">
+<div class="flexbox width-100 wrap-mobile">
 
     {if empty($lists)}
         <main class="content blank pl-items" id="pl-list-content">
+            <div class="pl-pseudo-article">
             <div class="pl-welcome top-padded bottom-padded">
                 <h2>[`Archive is empty`]</h2>
                 <p>[`Archiving is a handy way to hide a to-do list instead of deleting it permanently. To archive a list, tap on it’s big checkmark or click <em>Archive list</em> in the list action menu.`]</p>
             </div>
+            </div>
         </main>
     {else}
-        <nav class="sidebar left250px">
-            <ul class="menu-v with-icons stack top-padded">
+        <nav class="sidebar blank pl-second-sidebar">
+            <ul class="menu">
                 {foreach $lists as $l}
                 <li data-pl-list-id="{$l->getId()}" {if $l->getId() == $list->getId()}class="selected"{/if}>
-                    <a href="#/archive/{$l->getId()}/"><i class="icon16" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l->getIcon()|default:'li-list@2x.png'}); background-size: 16px 16px;"></i>{$l->getName()|escape}</a>
+                    <a href="#/archive/{$l->getId()}/">
+                        <i class="icon" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l->getIcon()|default:'li-list@2x.png'}); background-size: 16px 16px;"></i>
+                        <span>{$l->getName()|escape}</span>
+                    </a>
                 </li>
                 {foreachelse}
                 {/foreach}
             </ul>
-            <div class="block double-padded align-center hr">
-                <p class="hint">[`To archive an active list, tap on it’s checkmark.`]</p>
+            <div class="box">
+                <hr />
+                <div class="align-center">
+                    <p class="hint">[`To archive an active list, tap on it’s checkmark.`]</p>
+                </div>
             </div>
         </nav>
-        <main class="content left250px blank bordered-left pl-list-content pl-archive" id="pl-list-content">
+        <main class="content bordered-left pl-list-content pl-archive" id="pl-list-content">
+            <div class="pl-pseudo-article">
             <div class="pl-inner-content pl-items pl-{$list->getColor()}">
                 <header class="pl-list-title pl-title">
-                    <div class="float-right block half-padded">
-                        {if $list->getId()}
-                        <ul class="menu-h">
-                            <li>
-                                <a href="#" data-pl-action="list-unarchive" class="bold"><i class="icon16 pl archive"></i> [`Unarchive list`]</a>
-                            </li>
-                            <li>
-                                <a href="#" data-pl-action="list-delete"><i class="icon16 delete"></i> [`Delete`]</a>
-                            </li>
-                        </ul>
-                        {/if}
-                    </div>
-                    <h1>
-                        <input type="hidden" value="{$list->getId()|default:-1}" id="pl-list-id">
-                        <span id="pl-list-name">{$list->getName()|escape}</span>
+                    {if $list->getId()}
+                    <div class="flexbox">
+                        <div class="wide">
+                            <h1>
+                                <input type="hidden" value="{$list->getId()|default:-1}" id="pl-list-id">
+                                <span id="pl-list-name">{$list->getName()|escape}</span>
 
-                        <span class="pl-list-due {$list->getCssClass(pocketlistsViewHelper::CSS_CLASS_DUE_DATETIME)}" {if !$list->getDueDatetime() && !$list->getDueDate()}style="display: none;"{/if}>
-                        {if $list->getDueDatetime()}
-                        {$list->getDueDatetime()|wa_datetime:'humandatetime'}
-                        {elseif $list->getDueDate()}
-                        {$list->getDueDate()|wa_date:'humandate'}
-                        {/if}
-                        </span>
-                    </h1>
+                                <span class="pl-list-due {$list->getCssClass(pocketlistsViewHelper::CSS_CLASS_DUE_DATETIME)}" {if !$list->getDueDatetime() && !$list->getDueDate()}style="display: none;"{/if}>
+                                {if $list->getDueDatetime()}
+                                {$list->getDueDatetime()|wa_datetime:'humandatetime'}
+                                {elseif $list->getDueDate()}
+                                {$list->getDueDate()|wa_date:'humandate'}
+                                {/if}
+                                </span>
+                            </h1>
+                        </div>
+                        <div class="flexbox space-8">
+                            <div>
+                                <a href="#" data-pl-action="list-unarchive" class="button light-gray rounded nowrap"><i class="fas fa-inbox text-blue"></i> [`Unarchive`]</a>
+                            </div>
+                            <div>
+                                <a href="#" data-pl-action="list-delete" class="button light-gray circle"><i class="fas fa-trash-alt text-red"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    {/if}
                 </header>
                 <div class="pl-list-items" id="pl-list-items">
 
@@ -75,6 +86,7 @@
                 {include '../../include/deletelistdialog.html' inline}
 
             </div>
+            </div>
 
             <script type="text/javascript">
                 'use strict';
@@ -91,7 +103,8 @@
                             }
                         ),
                         current_user_id: "{$user->getContact()->getId()}",
-                        userHasLinkedApps: {$user->hasLinkedApps()}
+                        userHasLinkedApps: {$user->hasLinkedApps()},
+                        externalApp: '{$externalApp|default:''}'
                     });
 
                     new $.pocketlists.Comments($all_items_wrapper);

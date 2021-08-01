@@ -12,7 +12,7 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Basepath: .\n"
 "Language: ru_RU\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 3.0\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: .\n"
 
@@ -1142,7 +1142,7 @@ msgid "Show details and use the detailed add mode by default"
 msgstr "Показывать все параметры задачи по умолчанию"
 
 msgid "Go ahead! Create a list."
-msgstr "Создайте первый список!"
+msgstr "Создайте список дел"
 
 msgid "Pockets and lists help you organize to-dos, ideas, and notes, and flexibly configure access rights for your team."
 msgstr "Проекты и списки помогают организовывать задачи, идеи, заметки и гибко настраивать права доступа к ним для сотрудников."
@@ -1259,7 +1259,7 @@ msgid "New app by 1312 Inc."
 msgstr "Новое приложение от команды 1312"
 
 msgid "Ad"
-msgstr ""
+msgstr "Реклама"
 
 msgid "<a href=\"%s\" target=\"_blank\">Status app</a> tracks working time and shows whom have been working on what (and whom have been doing nothing too!)"
 msgstr ""
@@ -1343,7 +1343,7 @@ msgid "https://www.webasyst.com/store/app/cash/"
 msgstr "https://www.webasyst.ru/store/app/cash/"
 
 msgid "Cash Flow"
-msgstr "Cash Flow"
+msgstr "Деньги"
 
 msgid "Forecasts business cash flow & saves your money"
 msgstr "Прогнозирует расходы, помогает правильно вести финансовый учет."
@@ -1359,3 +1359,84 @@ msgid_plural "%d to-dos are pending"
 msgstr[0] "%d подзадача"
 msgstr[1] "%d подзадачи"
 msgstr[2] "%d подзадач"
+
+msgid "Free"
+msgstr "Бесплатно"
+
+msgid "Installed"
+msgstr "Установлено"
+
+msgid "Buy now with promocode"
+msgstr "Купить с промокодом"
+
+msgid "Use this promocode until it expires:"
+msgstr "Используйте промокод, пока он не истек:"
+
+msgid "Promocode"
+msgstr "Промокод"
+
+msgid "Buy now"
+msgstr "Купить сейчас"
+
+msgid "Back"
+msgstr "Назад"
+
+msgid "We wish everyone could enjoy the power the Pocket Lists PRO plugin has to offer. This promocode will help you the get the plugin up and running at the best price possible."
+msgstr "Мы хотим, чтобы продвинутые возможности Pocket Lists PRO максимально помогали нашим пользователям. Промокод позволить получить скидку, и у всех останется хорошее настроение."
+
+msgid "Show all completed to-dos"
+msgstr "Показать выполненные задачи"
+
+msgid "Unarchive"
+msgstr "Восстановить"
+
+msgid "Menu"
+msgstr "Меню"
+
+msgid "Show promocode"
+msgstr "Показать промокод"
+
+msgid "About the app"
+msgstr "О приложении"
+
+msgid "About the plugin"
+msgstr "О плагине"
+
+msgid "Promocode:"
+msgstr "Промокод:"
+
+msgid "Our flagship app."
+msgstr "Наше главное и лучшее приложение."
+
+msgid "Amazing companion/upgrade for Pocket Lists when it’s time for real collaboration on <em>bigger and more complex tasks</em>. Assignments, task statuses, deadlines, kanban board, more — the app help bringing the order to any complex teamwork."
+msgstr "Когда задач становится слишком много, и в списки и напоминания Pocket Lists они не помещаются, помогут «Webasyst Задачи» — мощный трекер задач (таск-менеджер), разработанный для команд от 2 до 100 человек. Реально помогает навести порядок в работе команды. Показывает дедлайны и текущий статус работ. Ни одна задача не потеряется."
+
+msgid "Forecasts and saves your money."
+msgstr "Считает расходы, прогнозирует прибыль."
+
+msgid "Shows exact cash on hand balance for any date in the future. This app could have been a <em>life saver</em> for most businesses which did not survive a cash gap because of not knowing it’s coming."
+msgstr "Показывает точный баланс в кассе на любой день в будущем. Приложение могло бы реально спасти жизни многих компанией, которые не пережили кассового разрыва из-за незнания, когда он наступит и почему."
+
+msgid "Remote team leader’s best friend."
+msgstr "Лучший друг руководителя на удаленке."
+
+msgid "Visualizes how you and your teammates work. Tracks working hours. Amazingly useful for WFH and any <em>we-don't-see-each-other-in-the-office</em> working patterns."
+msgstr "Красиво показывает, как работаете вы и ваша команда. Считает рабочие часы. Крайне полезный инструмент для работы на удаленке, когда вы не видите друг друга в офисе лично."
+
+msgid "List name"
+msgstr "Название списка"
+
+msgid "Type in new list name and hit Enter."
+msgstr "Введите название нового списка и нажмите Энтер."
+
+msgid "When tasks become bigger and more complex."
+msgstr "Наводит порядок в работе компании."
+
+msgid "Promocode for our flagship Webasyst app."
+msgstr "Промокод на наше главное приложение для Webasyst."
+
+msgid "Forecasts and saves your business money."
+msgstr "Считает расходы. Прогнозирует прибыль."
+
+msgid "Promocode for managing money the smarter way."
+msgstr "Промокод для тех, кто хочет легко вести учет финансов и зарабатывать больше."

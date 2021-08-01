@@ -1,0 +1,25 @@
+<div class="pl-link-preview pl-link-app-tasks" data-pl2-link-id="{$link->getId()}" data-pl2-link-hash="{$link->getApp()}{$link->getEntityType()}{$link->getEntityId()}">
+    <div class="pl-link-preview-image">
+        <a href="{$extra.link}" target="_blank"><img src="{$wa_url}wa-apps/tasks/img/tasks-512.png" class="userpic"></a>
+    </div>
+
+    {if isset($params, $params.allow_delete) && !empty($params.allow_delete)}
+    <div class="pl-link-preview-remove"><a href="#" data-pl2-link-action="delete" title="[`Unlink`]">&times;</a></div>
+    {/if}
+
+    <div class="pl-link-preview-details">
+        <a href="{$extra.link}" target="_blank">
+            {$extra.task.project_id}.{$extra.task.number}{if $extra.task.priority == 1 || $extra.task.priority == 2}<i class="icon16 exclamation-red"></i>{/if}
+            <strong>{$extra.task.name|escape|truncate:96}</strong>
+            <span class="pl-label {$extra.status.icon_class|default:''} small" {if $extra.status.params}style="background-color: #{$extra.status.params.button_color} !important; color: #{$extra.status.params.title_color} !important;"{/if}>{$extra.status.name|escape}</span>
+        </a>
+
+        <p>
+            <span class="small black" title="{sprintf('[`Assigned to %s`]', $extra.assign_username|escape)}">{$extra.assign_username|escape|truncate:32}</span>
+            <span class="hint">{$extra.update_datetime|wa_datetime:'humandatetime'}</span>
+        </p>
+
+    </div>
+
+
+</div>

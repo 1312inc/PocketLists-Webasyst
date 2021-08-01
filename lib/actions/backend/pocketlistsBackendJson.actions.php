@@ -101,7 +101,11 @@ class pocketlistsBackendJsonActions extends pocketlistsJsonActions
 
     public function hideTinyAdAction()
     {
-        $this->getUser()->setSettings(pocketlistsHelper::APP_ID, 'hide_tiny_ad_until', date('Y-m-d', strtotime('+30 days')));
+        $this->getUser()->setSettings(
+            pocketlistsHelper::APP_ID,
+            'hide_tiny_ad_until',
+            date('Y-m-d', strtotime('+30 days'))
+        );
     }
 
     public function getListItemCountAction()
@@ -133,12 +137,12 @@ class pocketlistsBackendJsonActions extends pocketlistsJsonActions
 
         $this->response = [
             'count_max_priority' => $count->getCountMaxPriority(),
-            'max_priority'       => $count->getMaxPriority(),
-            'class'              => pocketlistsViewHelper::getPriorityCssClass(
+            'max_priority' => $count->getMaxPriority(),
+            'class' => pocketlistsViewHelper::getPriorityCssClass(
                 $count->getMaxPriority(),
                 pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR
             ),
-            'count'              => $count->getCount(),
+            'count' => $count->getCount(),
         ];
     }
 }

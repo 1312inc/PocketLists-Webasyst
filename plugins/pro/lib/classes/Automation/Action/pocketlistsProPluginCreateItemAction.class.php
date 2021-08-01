@@ -99,20 +99,20 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
             'identifier' => $this->getIdentifier(),
             'name' => $this->name,
             'note' => $this->note,
-            'assigned_to' => (int)$this->assignedTo,
-            'priority' => (int)$this->priority,
-            'due_in' => (int)$this->dueIn,
+            'assigned_to' => (int) $this->assignedTo,
+            'priority' => (int) $this->priority,
+            'due_in' => (int) $this->dueIn,
             'due_period' => $this->duePeriod,
-            'when_in' => (int)$this->whenIn,
+            'when_in' => (int) $this->whenIn,
             'when_period' => $this->whenPeriod,
-            'list' => $this->list ? (int)$this->list->getId() : null,
-            'label' => $this->label->getId(),
+            'list' => $this->list ? (int) $this->list->getId() : null,
+            'label' => $this->label ? $this->label->getId() : null,
         ];
     }
 
     /**
      * @param pocketlistsProPluginAutomation $automation
-     * @param array                      $params
+     * @param array                          $params
      *
      * @return bool
      * @throws waException
@@ -262,7 +262,10 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
 
         return $view->fetch(
             wa()->getAppPath(
-                '/plugins/pro/templates/actions/automation/actions/createItemView.html',
+                sprintf(
+                    '/plugins/pro/templates/actions%s/automation/actions/createItemView.html',
+                    pl2()->getUI2TemplatePath()
+                ),
                 pocketlistsHelper::APP_ID
             )
         );
@@ -332,7 +335,10 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
 
         return $view->fetch(
             wa()->getAppPath(
-                '/plugins/pro/templates/actions/automation/actions/createItemEdit.html',
+                sprintf(
+                    '/plugins/pro/templates/actions%s/automation/actions/createItemEdit.html',
+                    pl2()->getUI2TemplatePath()
+                ),
                 pocketlistsHelper::APP_ID
             )
         );
@@ -348,27 +354,30 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
     {
         $this->name = ifset($json['name'], '');
         $this->note = ifset($json['note'], '');
-        $this->assignedTo = (int)ifset($json['assigned_to'], 0);
+        $this->assignedTo = (int) ifset($json['assigned_to'], 0);
         $this->list = !empty($json['list'])
             ? pl2()->getEntityFactory(pocketlistsList::class)->findById($json['list'])
             : null;
-        $this->dueIn = (int)ifset($json['due_in'], 0);
+        $this->dueIn = (int) ifset($json['due_in'], 0);
         $this->duePeriod = ifset($json['due_period'], self::DUE_PERIOD_MIN);
         if (isset($json['when_type']) && $json['when_type'] == 0) {
             $json['when_in'] = 0;
         }
-        $this->whenIn = (int)ifset($json['when_in'], 0);
+        $this->whenIn = (int) ifset($json['when_in'], 0);
         $this->whenPeriod = ifset($json['when_period'], self::DUE_PERIOD_MIN);
-        $this->priority = (int)ifset($json['priority'], pocketlistsItem::PRIORITY_NORM);
+        $this->priority = (int) ifset($json['priority'], pocketlistsItem::PRIORITY_NORM);
 
         if (!$this->list instanceof pocketlistsList) {
             $this->list = new pocketlistsNullList();
         }
-        $labelId = (int)ifset($json['label'], 0);
+        $labelId = (int) ifset($json['label'], 0);
         if ($labelId) {
             /** @var pocketlistsProPluginLabelFactory $labelRep */
             $labelRep = pl2()->getEntityFactory(pocketlistsProPluginLabel::class);
-            $this->label = $labelRep->findById($labelId);
+            $actionLabel = $labelRep->findById($labelId);
+            if ($actionLabel instanceof pocketlistsProPluginLabel) {
+                $this->label = $actionLabel;
+            }
         }
 
         return $this;
@@ -472,7 +481,7 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
             return '';
         }
 
-        return (string)$json;
+        return (string) $json;
     }
 
     /**
@@ -538,21 +547,29 @@ class pocketlistsProPluginCreateItemAction implements pocketlistsProPluginAutoma
      */
     private function getCronMessage($cronJonName)
     {
-        $cronCommandInfo = _wp('Webasyst Cloud: launch the Cloud app &gt; Add Cron job &gt; ').' <code class="highlighted black">php cli.php [Pocket Lists] <b>proPluginApplyDelayedAutomations</b></code>'.
-        '<BR><BR>'.
-        _wp('Own server:').' <code class="highlighted">'.pocketlistsProPlugin::getInstance()->getCronManager()->getCronJobs($cronJonName).'</code>';
-        $cronMessage = '<i class="icon10 exclamation"></i>'.
-            _wp('Delayed actions require CRON to be configured for the Pocket Lists PRO plugin, which is not the case for your installation. Cron the following command every 10 minutes:').
-            '<br><br>'.
+        $cronCommandInfo = _wp(
+                'Webasyst Cloud: launch the Cloud app &gt; Add Cron job &gt; '
+            ) . ' <code class="highlighted black">php cli.php [Pocket Lists] <b>proPluginApplyDelayedAutomations</b></code>' .
+            '<BR><BR>' .
+            _wp('Own server:') . ' <code class="highlighted">' . pocketlistsProPlugin::getInstance()
+                ->getCronManager()
+                ->getCronJobs($cronJonName) . '</code>';
+        $cronMessage = '<i class="icon10 exclamation"></i>' .
+            _wp(
+                'Delayed actions require CRON to be configured for the Pocket Lists PRO plugin, which is not the case for your installation. Cron the following command every 10 minutes:'
+            ) .
+            '<br><br>' .
             $cronCommandInfo;
 
         $lastCron = pocketlistsProPlugin::getInstance()->getCronManager()->getLastRunCronJob($cronJonName);
         if ($lastCron) {
             $cronMessage = '<i class="icon10 yes"></i>' . sprintf_wp(
-                'Last Cron execution time: %s',
-                waDateTime::format('humandatetime', $lastCron->format('Y-m-d H:i:s'), date_default_timezone_get())
-            ).
-            ' <a href="javascript:alert(\''.strip_tags( str_replace('<BR><BR>','\n\n',$cronCommandInfo)).'\');">'._wp('See Cron command').'</a>';
+                    'Last Cron execution time: %s',
+                    waDateTime::format('humandatetime', $lastCron->format('Y-m-d H:i:s'), date_default_timezone_get())
+                ) .
+                ' <a href="javascript:alert(\'' . strip_tags(
+                    str_replace('<BR><BR>', '\n\n', $cronCommandInfo)
+                ) . '\');">' . _wp('See Cron command') . '</a>';
         }
 
         return $cronMessage;

@@ -1,0 +1,267 @@
+<div class="shadowed pl-settings">
+    <div class="sidebar left250px" data-pl2-settings-sidebar>
+        <ul class="menu-v with-icons stack">
+            <li class="top-padded bottom-padded selected">
+                <a href="#/settings/">
+                    <i class="icon16 userpic20" style="background-image: url({$wa->user()->getPhoto(20)});"></i> [`My personal settings`]
+                </a>
+            </li>
+
+            <!-- plugin hook: 'backend_settings.sidebar_li' -->
+            {* @event backend_settings.%plugin_id% *}
+            {if !empty($backend_settings)}{foreach $backend_settings as $_}{ifset($_.sidebar_li)}{/foreach}{/if}
+        </ul>
+    </div>
+
+    <div class="content left250px bordered-left blank">
+
+        <main class="block double-padded" data-pl2-settings-content>
+
+            <div class="fields form">
+                <form method="post" id="pl-settings-form">
+                <h6 class="heading"><i class="icon16 userpic20" style="background-image: url({$wa->user()->getPhoto(20)});"></i> [`My personal settings`]</h6>
+                <br>
+                <div class="field-group">
+
+                  <div class="field">
+                    <div class="name nowrap">
+                      [`Natural input`]
+                    </div>
+                    <div class="value no-shift">
+                      <label>
+                          <input type="hidden" name="natural_input_on" value="0"/>
+                          <input type="checkbox" name="natural_input_on" {if !empty($settings.natural_input_on)}checked="checked"{/if}/> [`Understand “Meeting tomorrow at 10” input (recommended)`]
+                          <p class="hint">[`When enabled, the app will automatically parse to-do name and set due date and time if it was typed.<br> Examples: “Meeting tomorrow morning”, “Call James next friday 5pm”, “Pay electricity bill in a week”, “Update working schedule April 25”.`]</p>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="field">
+                    <div class="name nowrap">
+                      [`My to-dos`]
+                    </div>
+                    <div class="value no-shift">
+                        <label><input type="checkbox" disabled checked> [`My to-dos to self`]</label>
+                    </div>
+                    <div class="value no-shift">
+                        <label><input type="checkbox" disabled checked> [`To-dos assigned to me by other users`]</label>
+                    </div>
+                    <div class="value no-shift">
+                        <label>
+                            <input type="hidden" name="created_by_me_in_shared_on" value="0"/>
+                            <input type="checkbox" name="created_by_me_in_shared_on" {if !empty($settings.created_by_me_in_shared_on)}checked="checked"{/if}> [`To-dos created by me in shared lists`]
+                        </label>
+
+                        {* DEPRECATED *}
+                            <select name="created_by_me_in_shared" style="display: none;">
+                                <option value="0" selected="selected">[`in any to-do list`]</option>
+                                <option value="1">[`only in lists which I marked as favorite`]</option>
+                            </select>
+                        {* / DEPRECATED *}
+                    </div>
+                    <div class="value no-shift">
+                        <label>
+                            <input type="hidden" name="created_by_others_in_shared_on" value="0"/>
+                            <input type="checkbox" name="created_by_others_in_shared_on" {if !empty($settings.created_by_others_in_shared_on)}checked="checked"{/if}> [`To-dos created by other users in shared lists`]: [`all Green, Yellow, and Red to-dos from all lists`]
+                        </label>
+
+                        {* DEPRECATED *}
+                        <select name="created_by_others_in_shared" style="display: none;">
+                            <option value="0">[`only in lists which I marked as favorite`]</option>
+                            <option value="1" selected="selected">[`all Green, Yellow, and Red to-dos from all lists`]</option>
+                        </select>
+                        {* / DEPRECATED *}
+                    </div>
+
+                    <div class="value no-shift">
+                        <p class="hint">[`My to-dos is your personal dynamic to-do list that automatically collects all to-dos which you are about to do up next. To-dos to self and to-dos assigned to you by your teammates are included in this list automatically. Most important and urgent to-dos are on top.`]</p>
+                        <p class="hint">[`Additionally, you can include other users’s to-dos to be shown on your My to-dos list , which is handy if you want to be sure not to miss any important to-do item, either it is an urgent to-do or a to-do list you follow.`]</p>
+                        <p class="hint">[`To-dos assigned to other users will be automatically hidden from your My to-dos list.`]</p>
+                    </div>
+                  </div>
+
+                  <div class="field">
+                    <div class="name nowrap">
+                      [`App icon counter`]
+                      <span class="indicator red">1</span>
+                    </div>
+                    <div class="value no-shift">
+                        <select name="app_icon">
+                            <option value="{pocketlistsUserSettings::ICON_ALL}" {if isset($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_ALL}selected="selected"{/if}>[`All my to-dos`]</option>
+                            <option value="{pocketlistsUserSettings::ICON_OVERDUE}" {if isset($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_OVERDUE}selected="selected"{/if}>[`Only On Fire + Black + Red`]</option>
+                            <option value="{pocketlistsUserSettings::ICON_OVERDUE_TODAY}" {if isset($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_OVERDUE_TODAY}selected="selected"{/if}>[`Only On Fire + Black + Red + Yellow`]</option>
+                            <option value="{pocketlistsUserSettings::ICON_OVERDUE_TODAY_AND_TOMORROW}" {if isset($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_OVERDUE_TODAY_AND_TOMORROW}selected="selected"{/if}>[`Only On Fire + Black + Red + Yellow + Green`]</option>
+                            <option value="{pocketlistsUserSettings::ICON_NONE}" {if isset($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_NONE}selected="selected"{/if}>[`None`]</option>
+                        </select>
+                        <p class="hint">[`The counter will count to-dos of the specified colors on your My to-dos list.`]</p>
+                    </div>
+                  </div>
+
+                  <div class="field">
+                    <div class="name">
+                      [`Email me`]
+                    </div>
+                    <div class="value no-shift">
+                        <label>
+                            <input type="hidden" name="daily_recap_on" value="0"/>
+                            <input value="1" type="checkbox" name="daily_recap_on" {if !empty($settings.daily_recap_on)}checked="checked"{/if}> [`Daily recap on what’s up next`]
+                        </label>
+                        <select name="daily_recap">
+                            <option
+                                    value="{pocketlistsUserSettings::DAILY_RECAP_FOR_TODAY}"
+                                    {if !empty($settings.daily_recap) && $settings.daily_recap == pocketlistsUserSettings::DAILY_RECAP_FOR_TODAY}selected="selected"{/if}>
+                                [`for today`]
+                            </option>
+                            <option
+                                    value="{pocketlistsUserSettings::DAILY_RECAP_FOR_TODAY_AND_TOMORROW}"
+                                    {if !empty($settings.daily_recap) && $settings.daily_recap == pocketlistsUserSettings::DAILY_RECAP_FOR_TODAY_AND_TOMORROW}selected="selected"{/if}>
+                                [`for today and tomorrow`]
+                            </option>
+                            <option
+                                    value="{pocketlistsUserSettings::DAILY_RECAP_FOR_NEXT_7_DAYS}"
+                                    {if !empty($settings.daily_recap) && $settings.daily_recap == pocketlistsUserSettings::DAILY_RECAP_FOR_NEXT_7_DAYS}selected="selected"{/if}>
+                                [`for next 7 days`]
+                            </option>
+                        </select>
+
+                        <div class="pl-cron-msg" style="{if empty($settings.daily_recap_on)}display: none;{/if}">
+                        {capture "dailyrecap_cron_command"}
+                            <ul>
+                                <li style="padding-bottom: 1rem;">
+                                    [`Webasyst Cloud`]: {sprintf('[`launch the <a href="%s">Cloud app</a>`]',$wa_backend_url|cat:'hosting/#/cron/')} &gt; <i class="icon10 add"></i> [`Add Cron job`] &gt; <code class="highlighted">php cli.php [Pocket Lists] <b>Recap</b></code>
+                                </li>
+                                <li>
+                                    [`Own server`]: <code class="highlighted">{$cron_command}</code>
+                                </li>
+                            </ul>
+                        {/capture}
+                        {if !$last_recap_cron_time}
+                            <p class="small"><br><em><i class="icon10 exclamation"></i> [`Daily recap notifications require CRON to be configured, which is not the case for your Pocket Lists app. Cron the following command to run daily:`]</em></p>
+                            {$smarty.capture.dailyrecap_cron_command}
+                        {else}
+                            <p class="small"><br><em><i class="icon10 yes"></i> [`Daily recap and the Cron are configured properly! You will get email notifications when Cron is executed but not more often than daily (every 24 hours). And when there is nothing planned for the upcoming period, no emails will be sent.`] <span class="gray">{sprintf('[`Last Cron execution time: %s`]', $last_recap_cron_time|wa_datetime:'humandatetime')}</span></em> <a href="#" class="pl-dailyrecap-cron-command-toggle inline-link"><b><i>[`See Cron command`]</i></b></a></p>
+                            <div style="display: none;" class="pl-dailyrecap-cron-command-info">
+                                {$smarty.capture.dailyrecap_cron_command}
+                            </div>
+                        {/if}
+                        </div>
+                    </div>
+                    <div class="value no-shift">
+                        <label>
+                            <input type="hidden" name="email_assign_me" value="0"/>
+                            <input value="1" type="checkbox" name="email_assign_me" {if !empty($settings.email_assign_me)}checked="checked"{/if}> [`When someone assigns me a to-do`]
+                        </label>
+                    </div>
+                    <div class="value no-shift">
+                        <label>
+                            <input type="hidden" name="email_add_item_on" value="0"/>
+                            <input value="1" type="checkbox" name="email_add_item_on" {if !empty($settings.email_add_item_on)}checked="checked"{/if}> [`When someone adds a to-do item in any shared list`]
+                        </label>
+                        {* DEPRECATED *}
+                            <select style="display: none;">
+                                <option value="0">[`only items on to-do lists I previously marked as favorite`]</option>
+                                <option value="1" selected="selected">[`to just any list`]</option>
+                            </select>
+                        {* / DEPRECATED *}
+                    </div>
+                    <div class="value no-shift">
+                        <label>
+                            <input type="hidden" name="email_create_list_on" value="0"/>
+                            <input value="1" type="checkbox" name="email_create_list_on" {if !empty($settings.email_create_list_on)}checked="checked"{/if}> [`When someone creates a new shared to-do list`]
+                        </label>
+                    </div>
+                    <div class="value no-shift">
+                        <label>
+                            <input type="hidden" name="email_complete_item_on" value="0"/>
+                            <input value="1" type="checkbox" name="email_complete_item_on" {if !empty($settings.email_complete_item_on)}checked="checked"{/if}> [`When someone marks a to-do item as complete`]
+                        </label>
+                        <select name="email_complete_item">
+                            <option
+                                    value="{pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_COMPLETES_ITEM_I_CREATED}"
+                                    {if isset($settings.email_complete_item) && $settings.email_complete_item == pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_COMPLETES_ITEM_I_CREATED}selected="selected"{/if}>
+                                [`only items created by me or assigned to me`]
+                            </option>
+                            <option
+                                    value="{pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_COMPETES_ITEM_I_FAVORITE}"
+                                    {if isset($settings.email_complete_item) && $settings.email_complete_item == pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_COMPETES_ITEM_I_FAVORITE}selected="selected"{/if}>
+                                [`only items I marked as favorite`]
+                            </option>
+                                {* DEPRECATED *}
+                                <!-- <option value="2" {if isset($settings.email_complete_item) && $settings.email_complete_item == 2}selected="selected"{/if}>[`only items on to-do lists I previously marked as favorite`]</option> -->
+                            <option value="3" {if isset($settings.email_complete_item) && $settings.email_complete_item == 3}selected="selected"{/if}>[`any item on any shared list`]</option>
+                        </select>
+                    </div>
+                    <div class="value no-shift">
+                        <label>
+                            <input type="hidden" name="email_comment_item_on" value="0"/>
+                            <input value="1" type="checkbox" name="email_comment_item_on" {if !empty($settings.email_comment_item_on)}checked="checked"{/if}> [`When someone comments on a to-do item`]
+                        </label>
+                        <select name="email_comment_item">
+                            <option
+                                    value="{pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_ITEM}"
+                                    {if isset($settings.email_comment_item) && $settings.email_comment_item == pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_ITEM}selected="selected"{/if}>
+                                [`only items created by me or assigned to me`]
+                            </option>
+                            <option
+                                    value="{pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_FAVORITE_ITEM}"
+                                    {if isset($settings.email_comment_item) && $settings.email_comment_item == pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_FAVORITE_ITEM}selected="selected"{/if}>
+                                [`only items I marked as favorite`]
+                            </option>
+                            <option
+                                    value="{pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_ANY_LIST_ITEM}"
+                                    {if isset($settings.email_comment_item) && $settings.email_comment_item == pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_ANY_LIST_ITEM}selected="selected"{/if}>
+                                [`any item on any shared list`]
+                            </option>
+                        </select>
+                    </div>
+                  </div>
+
+                  <div class="field">
+                    <div class="value no-shift submit">
+                        <br>
+                        <input type="submit" value="[`Save`]" id="pl-save-settings" class="button green" />
+                        <i class="icon16 yes" style="display: none;"></i>
+                    </div>
+                  </div>
+                </div>
+                </form>
+            </div>
+            <div class="clear-both"></div>
+
+        </main>
+
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    (function(){
+        $.pocketlists.setTitle($_('My personal settings'));
+
+        var $loading = $('<i class="icon16 loading">');
+        $('#pl-save-settings').on('click', function(e) {
+            var $this = $(this);
+            e.preventDefault();
+            $this.after($loading);
+            $.post('?module=settings&action=save', $('#pl-settings-form').serialize(), function(r){
+                $loading.remove();
+                if (r.status==='ok') {
+                    $.pocketlists.updateAppCounter();
+                    $this.next('.icon16.yes').show(200).delay(3000).hide(200);
+                } else {
+                    alert('error while saving');
+                }
+            }, 'json')
+        });
+
+        $('input[name="daily_recap_on"]').on('click', function() {
+            $('.pl-cron-msg').toggle(200);
+        });
+
+        $('.pl-dailyrecap-cron-command-toggle').click(function(){
+            $('.pl-dailyrecap-cron-command-info').toggle();
+            return false;
+        });
+
+    }());
+</script>

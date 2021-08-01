@@ -51,9 +51,9 @@ class pocketlistsBackendSidebarAction extends pocketlistsViewAction
         );
         $this->view->assign(
             [
-                'new_comments_count'     => $commentModel->getLastActivityComments($last_activity),
-                'new_items_count'        => $itemModel->getLastActivityItems($last_activity),
-                'last_activity'          => $last_activity,
+                'new_comments_count' => $commentModel->getLastActivityComments($last_activity),
+                'new_items_count' => $itemModel->getLastActivityItems($last_activity),
+                'last_activity' => $last_activity,
                 'favorites_count_undone' => $favoritesCount,
             ]
         );
@@ -80,18 +80,15 @@ class pocketlistsBackendSidebarAction extends pocketlistsViewAction
         $eventResult = pl2()->waDispatchEvent($event);
 
         $isAdmin = $this->getUser()->isAdmin('pocketlists');
-        $showTinyAd = $isAdmin
-            && !wa()->appExists('tasks')
-            && (date('Y-m') === '2020-11' || date('Y-m') === '2020-12' || date('Y-m') === '2021-01')
-            && wa()->getLocale() === 'ru_RU'
-            && date('Y-m-d') >= $this->getUser()->getSettings(pocketlistsHelper::APP_ID, 'hide_tiny_ad_until', date('Y-m-d'));
+        $tinyAd = (new pocketlistsTinyAddService())->getAds($this->getUser());
 
         $this->view->assign(compact('pockets', 'linkedApps'));
         $this->view->assign(
             [
                 'backend_sidebar' => $eventResult,
                 'isAdmin' => $isAdmin,
-                'showTinyAd' => $showTinyAd,
+                'showTinyAd' => count($tinyAd),
+                'tinyAd' => $tinyAd,
             ]
         );
     }

@@ -1,50 +1,43 @@
 {$wa->globals('pl2_external', true)}
-<style>
-    .t-tasks-wrapper #pl-item-add .pl-done + span.pl-add-todo { background-image: url('{$params.wa_app_static_url}img/pl2webasyst48.png') !important; background-size: 16px 16px !important; opacity: 1; top: 2px; }
-</style>
 
 <main class="pl-items pl-list-items pl-todo"
       id="pl-list-content"
       data-pl2-template="itemadd"
 >
-    <div class="fields width100px">
-        <div class="field">
-            <div class="name" style="margin-top: 15px;">
-                [`Subtasks`]
-            </div>
-            <div class="value">
-                <div class="pl-list-items" id="pl-list-items">
-                    <section id="pl-undone-items" data-pl-items="undone">
-                        <ul class="menu-v">
-                            {if !empty($params.items_undone)}
-                            {include '../../actions/item/Item.html' parent_id=0 items=$params.items_undone}
-                            {/if}
-                        </ul>
-                    </section>
+    <h3 class="custom-mt-32">
+        <i style="background-image: url('{$params.wa_app_static_url}img/pl2webasyst48.png') !important; background-size: 24px 24px !important; display: inline-block; width: 24px; height: 24px; position: relative; top: 3px; margin-right: 4px;"></i>
+        [`Checklist`]
+    </h3>
 
-                    <section id="pl-complete-log" class="pl-logbook">
-                        <ul class="menu-v">
-                            {if $params.count_done_items}
-                            {include '../../actions/item/Item.html' parent_id=0 items=$params.items_done}
-                            {/if}
-                        </ul>
-                    </section>
-
-                </div>
-
-                {if $params.app->userCanAccess()}
-                    {$params.itemAdd}
+    <div class="pl-list-items" id="pl-list-items">
+        <section id="pl-undone-items" data-pl-items="undone">
+            <ul class="menu-v">
+                {if !empty($params.items_undone)}
+                {include '../../actions/item/Item.html' parent_id=0 items=$params.items_undone}
                 {/if}
-                {include '../../include/itemdetails.html' inline}
-            </div>
-        </div>
+            </ul>
+        </section>
+
+        <section id="pl-complete-log" class="pl-logbook">
+            <ul class="menu-v">
+                {if $params.count_done_items}
+                {include '../../actions/item/Item.html' parent_id=0 items=$params.items_done}
+                {/if}
+            </ul>
+        </section>
+
     </div>
-    <div class="clear-both"></div>
+
+    {if $params.app->userCanAccess()}
+        {$params.itemAdd}
+    {/if}
+    {include '../../include/itemdetails.html' inline}
+
 </main>
-<script type="text/javascript" src="{$params.wa_app_static_url}js/pocketlists.js?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
-<script type="text/javascript" src="{$params.wa_app_static_url}js/pocketlists-item.js?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
-<script type="text/javascript" src="{$params.wa_app_static_url}js/pocketlists-comment.js?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
-<link type="text/css" rel="stylesheet" href="{$params.wa_app_static_url}css/pocketlists.css?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}">
+<script type="text/javascript" src="{$params.wa_app_static_url}js/pocketlists.js?v2{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
+<script type="text/javascript" src="{$params.wa_app_static_url}js/pocketlists-item.js?v2{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
+<script type="text/javascript" src="{$params.wa_app_static_url}js/pocketlists-comment.js?v2{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
+<link type="text/css" rel="stylesheet" href="{$params.wa_app_static_url}css/pocketlists.css?v2{if !waSystemConfig::isDebug()}{$wa->version()}{/if}">
 
 <script>
     (function(){
@@ -105,7 +98,8 @@
             appUrl: '{$params.plurl}',
             userHasLinkedApps: {$params.user->hasLinkedApps()},
             wa_url: '{$wa_url}',
-            fileUpload: {$params.fileupload}
+            fileUpload: {$params.fileupload},
+            externalApp: 'tasks'
         });
 
         new $.pocketlists.Comments($list_wrapper, {

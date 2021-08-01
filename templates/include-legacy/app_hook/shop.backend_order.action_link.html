@@ -1,0 +1,9 @@
+<li>
+    <a href="#" data-pl2-action="show-add-item"
+       class="pl2-shop-link-action_link">{* if !empty($params.count_undone_items)}<span class="count">{$params.count_undone_items}</span>{/if *}
+        <i class="icon16"
+           style="background-image: url('{$wa_url}wa-apps/pocketlists/img/pl2webasyst48.png'); background-size: 16px 16px;"></i>
+        <span>{if $wa->locale() == 'ru_RU'}Задачи{else}To-dos{/if}</span>
+        {if $params.count_undone_items}<strong class="indicator red" style="top: -0.1rem;">{$params.count_undone_items}</strong>{/if}
+    </a>
+</li>

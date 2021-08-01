@@ -11,10 +11,9 @@
 {/if}
 
 
-<main class="blank bordered-right pl-inner-content pl-items pl-list-items pl-favorites shadowed" id="pl-list-content">
-    <div class="pl-alert"{if !empty($undone_items) || $count_done_items} style="display:none;"{/if}>
-    [`<strong>Your Favorites list is empty.</strong> To add a to-do to your personal favorites list, either click on a tiny little star icon next to a to-do name (in just any to-do list) or add a to-do directly using the form below.`]
-    </div>
+<main class="blank pl-inner-content pl-items pl-list-items pl-favorites" id="pl-list-content">
+<div class="pl-pseudo-article">
+
     <header class="pl-title">
         {if !$date}
         <h1 class="not-padded">
@@ -23,7 +22,7 @@
         <span></span>
         {else}
         <h1 class="not-padded" pl-todo-stream="date">
-            {if !$print} <a href="#" class="back">&larr; [`All favorites`]</a>{/if}
+            {if !$print} <a href="#" class="back button light-gray circle" style="font-size: 20px; position: relative; top: -4px;" title="[`All favorites`]"><i class="fas fa-arrow-left"></i></a>{/if}
             <span>{waDateTime::date(waDateTime::getFormat('humandate'), $date)}</span>
         </h1>
         {/if}
@@ -52,7 +51,9 @@
             </div>
         </section>
 
-        <a href="#" id="pl-complete-log-link" class="inline-link gray" {if !$count_done_items}style="display:none;"{/if}><b><i>{_w('Show all %d completed to-do', 'Show all %d completed to-dos', $count_done_items)}</i></b></a>
+        <div class="box align-center custom-mt-16">
+            <a href="#" id="pl-complete-log-link" class="button light-gray small" {if !$count_done_items}style="display:none;"{/if}><i class="fas fa-check"></i> [`Show all completed to-dos`]</a>
+        </div>
         {/if}
 
     </div>
@@ -64,6 +65,8 @@
     {/if}
 
     {include '../../include/itemdetails.html' inline}
+
+</div>
 </main>
 {if !$print}
 <script type="text/javascript">
@@ -81,7 +84,8 @@
             dueDate: '{if $timestamp}{$timestamp}{/if}',
             filter: 'favorites',
             userHasLinkedApps: {$user->hasLinkedApps()},
-            current_user_id: {$user->getContact()->getId()}
+            current_user_id: {$user->getContact()->getId()},
+            externalApp: '{$externalApp|default:''}'
         });
 
         new $.pocketlists.Comments($all_items_wrapper);
@@ -89,7 +93,7 @@
         $.pocketlists.lazyItems({
             $loading: $('#pl-list-content .lazyloading'),
             html_selector: '#pl-complete-log > .menu-v',
-            url: '?module=item&action=lazyDone&type=favorites&date={$date}'
+            url: '?module=item&action=lazyDone&type=favorites&date={$date}&external_app={$externalApp|default:''|escape}'
         });
     }());
 </script>

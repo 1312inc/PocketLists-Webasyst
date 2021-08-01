@@ -51,9 +51,10 @@ final class pocketlistsContactsProfileTab
                 'id' => 'pl2items',
                 'title' => _w('Pocket Lists'),
                 'url' => sprintf(
-                    '%spocketlists/?module=team&teammate=%s&external=1',
+                    '%spocketlists/?module=team&teammate=%s&external=1&external_app=%s',
                     $backend_url,
-                    $user->getLogin()
+                    $user->getLogin(),
+                    $old_app
                 ),
             ];
         } catch (waException $ex) {

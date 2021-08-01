@@ -1,0 +1,111 @@
+<div class="shadowed">
+
+    {if empty($lists)}
+        <main class="content blank pl-items" id="pl-list-content">
+            <div class="pl-welcome top-padded bottom-padded">
+                <h2>[`Archive is empty`]</h2>
+                <p>[`Archiving is a handy way to hide a to-do list instead of deleting it permanently. To archive a list, tap on it’s big checkmark or click <em>Archive list</em> in the list action menu.`]</p>
+            </div>
+        </main>
+    {else}
+        <nav class="sidebar left250px">
+            <ul class="menu-v with-icons stack top-padded">
+                {foreach $lists as $l}
+                <li data-pl-list-id="{$l->getId()}" {if $l->getId() == $list->getId()}class="selected"{/if}>
+                    <a href="#/archive/{$l->getId()}/"><i class="icon16" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l->getIcon()|default:'li-list@2x.png'}); background-size: 16px 16px;"></i>{$l->getName()|escape}</a>
+                </li>
+                {foreachelse}
+                {/foreach}
+            </ul>
+            <div class="block double-padded align-center hr">
+                <p class="hint">[`To archive an active list, tap on it’s checkmark.`]</p>
+            </div>
+        </nav>
+        <main class="content left250px blank bordered-left pl-list-content pl-archive" id="pl-list-content">
+            <div class="pl-inner-content pl-items pl-{$list->getColor()}">
+                <header class="pl-list-title pl-title">
+                    <div class="float-right block half-padded">
+                        {if $list->getId()}
+                        <ul class="menu-h">
+                            <li>
+                                <a href="#" data-pl-action="list-unarchive" class="bold"><i class="icon16 pl archive"></i> [`Unarchive list`]</a>
+                            </li>
+                            <li>
+                                <a href="#" data-pl-action="list-delete"><i class="icon16 delete"></i> [`Delete`]</a>
+                            </li>
+                        </ul>
+                        {/if}
+                    </div>
+                    <h1>
+                        <input type="hidden" value="{$list->getId()|default:-1}" id="pl-list-id">
+                        <span id="pl-list-name">{$list->getName()|escape}</span>
+
+                        <span class="pl-list-due {$list->getCssClass(pocketlistsViewHelper::CSS_CLASS_DUE_DATETIME)}" {if !$list->getDueDatetime() && !$list->getDueDate()}style="display: none;"{/if}>
+                        {if $list->getDueDatetime()}
+                        {$list->getDueDatetime()|wa_datetime:'humandatetime'}
+                        {elseif $list->getDueDate()}
+                        {$list->getDueDate()|wa_date:'humandate'}
+                        {/if}
+                        </span>
+                    </h1>
+                </header>
+                <div class="pl-list-items" id="pl-list-items">
+
+                    <section id="pl-undone-items" data-pl-items="undone">
+                        <ul class="menu-v">
+                            {if !empty($items)}
+                            {include '../item/Item.html' parent_id=0 items=$items}
+                            {/if}
+                        </ul>
+                    </section>
+
+                    <!-- completed to-dos log -->
+                    <section id="pl-complete-log1" class="pl-logbook">
+                        <ul class="menu-v">
+                            {if !empty($items_done)}
+                            {include '../item/Item.html' items=$items_done}
+                            {/if}
+                        </ul>
+                    </section>
+
+                </div>
+                <div class="clear-both"></div>
+
+                {include '../../include-legacy/archivelistdialog.html' inline}
+                {include '../../include-legacy/deletelistdialog.html' inline}
+
+            </div>
+
+            <script type="text/javascript">
+                'use strict';
+                (function () {
+                    var $all_items_wrapper = $('#pl-list-items');
+
+                    new $.pocketlists.Items($all_items_wrapper, {
+                        enableChangeLevel: false,
+                        archive: true,
+                        list: new $.pocketlists.List(
+                            $('.pl-list-title'),
+                            {
+                                archive: true
+                            }
+                        ),
+                        current_user_id: "{$user->getContact()->getId()}",
+                        userHasLinkedApps: {$user->hasLinkedApps()},
+                        externalApp: '{$externalApp|default:''}'
+                    });
+
+                    new $.pocketlists.Comments($all_items_wrapper);
+
+                    $.pocketlists.setTitle("{$list->getName()|escape|addslashes}");
+                }());
+            </script>
+
+
+
+        </main>
+    {/if}
+</div>
+<script text="text/javascript">
+    $.pocketlists.setTitle('[`Archive`]');
+</script>

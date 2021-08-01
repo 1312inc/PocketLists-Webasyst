@@ -132,7 +132,7 @@
             if ($textarea.is(':visible')) {
                 $textarea
                     .css('height', $textarea.data('pl2-textarea-rows') ? 'auto' : 0)
-                    .css('height', $textarea.get(0).scrollHeight - parseInt($textarea.css('padding-top')) - parseInt($textarea.css('padding-bottom')));
+                    .css('height', $textarea.get(0).scrollHeight);
             }
         },
         initNotice: function (wrapper_selector) {
@@ -238,19 +238,22 @@
             }
 
             $pocket_wrapper.sortable({
-                item: '[data-pl-pocket-id]',
-                distance: 5,
-                placeholder: 'pl-list-placeholder',
-                opacity: 0.75,
-                appendTo: 'body',
-                tolerance: 'pointer',
-                classes: {
-                    'ui-sortable-helper': 'shadowed'
-                },
-                start: function (e, ui) {
-                    ui.placeholder.height(ui.helper.outerHeight());
-                },
-                stop: function (event, ui) {
+                draggable: '[data-pl-pocket-id]',
+                delay: 200,
+                delayOnTouchOnly: true,
+                animation: 150,
+                forceFallback: true,
+                ghostClass:'pl-list-placeholder',
+                // chosenClass:'album-list-chosen',
+                // dragClass:'album-list-drag',
+                onEnd: function(event) {
+                    let $item = $(event.item);
+                    /* хак для предотвращения срабатывания клика по элементу после его перетаскивания*/
+                    let $link = $item.find('[onclick]'),
+                        href = $link.attr('onclick');
+                    $link.attr('onclick', 'javascript:void(0);');
+                    setTimeout(() => $link.attr('onclick', href),500)
+
                     var getPockets = function () {
                         var data = [];
                         $pocket_wrapper.find('[data-pl-pocket-id]').each(function (i) {
@@ -291,7 +294,7 @@
             self.$core_sidebar.find('a').each(function (e) {
                 if (!$(this).data('pl2-onbeforeunload')) {
                     $(this).on('click.pl2', function (e) {
-                        var msg = msg || $_('You are about to leave this page without saving your input. Are you sure?');
+                        var msg = msg || $_('You are about to leave this page without saving your input. Arse you sure?');
                         if ($el) {
                             $el.data('can_blur', false);
                         }
@@ -342,6 +345,13 @@
         },
         initCollapse: function () {
             var self = this;
+
+            $('#pl-sidebar-core')
+                .removeData('sidebar')
+                .waShowSidebar({
+                    direction: "down"
+                });
+
             $('[data-pl-collapsible]')
                 .off('click.pl2')
                 .on('click.pl2', function (e) {

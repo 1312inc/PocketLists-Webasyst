@@ -51,7 +51,7 @@ class pocketlistsListAction extends pocketlistsViewAction
                         'message' => _w('Not found'),
                     ]
                 );
-                $this->setTemplate('templates/include/error.html');
+                $this->setTemplate(pl2()->getUI2TemplatePath('templates/include%s/error.html'));
 
                 return;
             }
@@ -64,7 +64,7 @@ class pocketlistsListAction extends pocketlistsViewAction
                         'message' => _w('Access denied'),
                     ]
                 );
-                $this->setTemplate('templates/include/error.html');
+                $this->setTemplate(pl2()->getUI2TemplatePath('templates/include%s/error.html'));
 
                 return;
             }
@@ -126,7 +126,7 @@ class pocketlistsListAction extends pocketlistsViewAction
                         'message' => _w('Access denied'),
                     ]
                 );
-                $this->setTemplate('templates/include/error.html');
+                $this->setTemplate(pl2()->getUI2TemplatePath('templates/include%s/error.html'));
 
                 return;
             }

@@ -16,6 +16,7 @@ class pocketlistsItemDetailsAction extends pocketlistsViewItemAction
         $id = waRequest::request('id', false, waRequest::TYPE_INT);
         $listId = waRequest::request('list_id', false, waRequest::TYPE_INT);
         $caller = waRequest::request('caller', '', waRequest::TYPE_STRING_TRIM);
+        $externalApp = waRequest::request('external_app', null, waRequest::TYPE_STRING_TRIM);
 
         $list = null;
         /** @var pocketlistsListFactory $listFactory */
@@ -73,7 +74,11 @@ class pocketlistsItemDetailsAction extends pocketlistsViewItemAction
          *
          * @return string of html output
          */
-        $event = new pocketlistsEvent(pocketlistsEventStorage::WA_BACKEND_ITEM_ADD_DETAIL, $item);
+        $event = new pocketlistsEvent(
+            pocketlistsEventStorage::WA_BACKEND_ITEM_ADD_DETAIL,
+            $item,
+            ['externalApp' => $externalApp]
+        );
         $eventResult = pl2()->waDispatchEvent($event);
 
         /** @var pocketlistsPocketFactory $pocketFactory */
@@ -103,6 +108,10 @@ class pocketlistsItemDetailsAction extends pocketlistsViewItemAction
 
                 'backend_item_add' => $eventResult,
             ]
+        );
+
+        $this->setTemplate(
+            pl2()->getUI2TemplatePath('templates/actions%s/item/ItemDetails.html', $externalApp)
         );
     }
 }

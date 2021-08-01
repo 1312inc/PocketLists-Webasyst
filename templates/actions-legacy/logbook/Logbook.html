@@ -1,0 +1,53 @@
+<div class="shadowed">
+    <main class="content pl-items pl-logbook" id="pl-list-content">
+    {if !empty($items)}
+        <header class="pl-title">
+            <h1 style="margin-bottom: 8px;">[`Logbook`]</h1>
+            <p class="pl-disclaimer">[`Logbook will automatically collect all to-do items completed by you and your teammates.`] [`To return a to-do back to work, simply unclick its checkmark.`]</p>
+        </header>
+        <div class="pl-list-items" id="pl-complete-log" style="display: block;" data-pl-items="undone">
+            <ul class="menu-v">
+                {include '../item/Item.html' items=$items}
+            </ul>
+        </div>
+    {else}
+        <div class="pl-welcome top-padded bottom-padded">
+            <div class="pl-jumbodone" title="[`To-do stream is empty`]"></div>
+            <h2>[`Logbook is empty`]</h2>
+            <p>[`Logbook will automatically collect all to-do items completed by you and your teammates.`]</p>
+        </div>
+    {/if}
+
+    <div class="block double-padded lazyloading" style="display: none;">
+        <i class="icon16 loading"></i> [`Loading...`]
+    </div>
+
+    <div class="clear-both"></div>
+
+    {include '../../include-legacy/itemdetails.html' inline}
+
+    </main>
+</div>
+<script type="text/javascript">
+    (function () {
+        var $all_items_wrapper = $('#pl-list-content');
+
+        new $.pocketlists.Items($all_items_wrapper, {
+            enableAddLinkOnHover: false,
+            enableChangeLevel: false,
+            enableSortItems: false,
+            userHasLinkedApps: {$user->hasLinkedApps()},
+            current_user_id: {$user->getContact()->getId()},
+            externalApp: '{$externalApp|default:''}'
+        });
+        new $.pocketlists.Comments($all_items_wrapper);
+
+        $.pocketlists.setTitle($_('Logbook'));
+
+        $.pocketlists.lazyItems({
+            $loading: $('#pl-list-content .lazyloading'),
+            html_selector: '[data-pl-items="undone"] > .menu-v',
+            url: '?module=logbook'
+        });
+    }());
+</script>

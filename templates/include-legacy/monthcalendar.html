@@ -1,0 +1,57 @@
+<!-- CALENDAR -->
+
+{foreach $days as $year => $months}
+{foreach $months as $month_name => $month}
+
+<div class="block double-padded align-center">
+    <h5 class="heading">
+        {_ws($month_name)} {$year}
+    </h5>
+
+
+<table class="pl-calendar">
+    <thead>
+    <tr class="small">
+        {if $week_first_sunday}<th>{_ws('Sun')}</th>{/if}
+        <th>{_ws('Mon')}</th>
+        <th>{_ws('Tue')}</th>
+        <th>{_ws('Wed')}</th>
+        <th>{_ws('Thu')}</th>
+        <th>{_ws('Fri')}</th>
+        <th>{_ws('Sat')}</th>
+        {if !$week_first_sunday}<th>{_ws('Sun')}</th>{/if}
+    </tr>
+    </thead>
+    <tbody>
+
+
+    {foreach $month.weeks as $week}
+    <tr>
+        {foreach $week as $day}
+        <td data-pl-todo-date="{$day.date.date}" class="{if $day.date.month != $month.num}pl-not-this-month{/if} {if $day.date.month == $today_month && $day.date.day == $today &&  $month.num == $today_month}pl-today{/if} ui-droppable"{if $day.hide} style="visibility: hidden;border: none;"{/if}>
+        <span class="pl-date">{$day.date.day}</span>
+
+        <div class="pl-dots">
+            {foreach $day.lists.gray as $list_color name=foo}{if $smarty.foreach.foo.index == 3}{break}{/if}<i class="icon10 color pl-dark-none"></i>{/foreach}<!--
+                        -->{foreach $day.lists.color as $list_color => $item_dots}{foreach $item_dots as $dot name=foo}{if $smarty.foreach.foo.index == 3}{break}{/if}<i class="icon10 color pl-dark-{$list_color}"></i>{/foreach}{/foreach}
+        </div>
+        </td>
+        {/foreach}
+    </tr>
+    {/foreach}
+    </tbody>
+
+</table>
+</div>
+{/foreach} {*month*}
+{/foreach} {*year*}
+
+{if $type != 'app'}
+<div class="block double-padded">
+    <h5 class="heading">[`My to-dos`]</h5>
+    <ul class="menu-v with-icons">
+        <li><a href="#" data-pl-action="list-email"><i class="icon16 email"></i>[`Email list`]</a></li>
+        <li><a href="?module={$type}&amp;action=date&amp;print=true&amp;date=" data-pl-action="list-print" target="_blank"><i class="icon16 print"></i>[`Print list`]</a></li>
+    </ul>
+</div>
+{/if}

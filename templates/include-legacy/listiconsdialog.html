@@ -1,0 +1,31 @@
+<div id="pl-list-icon-dialog" class="dialog large">
+    <div class="dialog-background"></div>
+    <div class="dialog-window">
+        <div class="dialog-content">
+            <div class="dialog-content-indent">
+                <h1>{$list->getName()|default:'[`Choose list icon`]'|escape}</h1>
+                <div data-pl-icons-path="{$wa_url}wa-apps/pocketlists/img/listicons/" class="pl-icon-library">
+                    {foreach $list_icons as $group => $icons}
+                        {if $group}<h5 class="heading">{$group}</h5>{/if}
+                        <ul>
+                            {foreach $icons as $group => $icon}
+                                <li>
+                                    <a href="#" data-pl-list-icon="{$icon}"
+                                       {if $icon== $list->getIcon()}class="selected" {/if}><i class="listicon48"
+                                                                                        style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$icon});"></i></a>
+                                </li>
+                            {/foreach}
+                        </ul>
+                    {/foreach}
+                </div>
+            </div>
+        </div>
+        <div class="dialog-buttons">
+            <div class="dialog-buttons-gradient">
+                <div class="block">
+                    <a class="cancel gray" href="#">[`Cancel`]</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

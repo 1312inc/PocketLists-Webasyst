@@ -2,18 +2,17 @@
     <div class="dialog-content">
         <div data-pl2-wrapper="pocket-settings-dialog">
 
-            <input type="hidden" name="pocket[id]" value="{$pocket->getId()|default:0}"/>
-
             {if $pocket->getId()}
-                <h1>{$pocket->getName()|default:'[`(unnamed pocket)`]'|escape|truncate:32}</h1>
+                <h1 class="custom-mt-0">{$pocket->getName()|default:'[`(unnamed pocket)`]'|escape|truncate:32}</h1>
             {else}
-                <h1>[`New pocket`]</h1>
+                <h1 class="custom-mt-0">[`New pocket`]</h1>
             {/if}
 
             <div class="fields form">
-                <div class="field-group">
+                <input type="hidden" name="pocket[id]" value="{$pocket->getId()|default:0}"/>
+                <div class="fields-group">
                     <div class="field">
-                        <div class="name nowrap">
+                        <div class="name nowrap for-input">
                             [`Pocket name`]
                         </div>
                         <div class="value">
@@ -22,24 +21,24 @@
                         </div>
                     </div>
                     <div class="field">
-                        <div class="name nowrap">
+                        <div class="name for-input">
                             [`Color`]
                         </div>
-                        <div class="value no-shift" id="pl-pocket-color">
+                        <div class="value" id="pl-pocket-color">
                             <input type="hidden" name="pocket[color]" value="{$pocket->getColor()}"/>
                             {foreach pocketlistsStoreColor::getColors() as $color => $name}
                                 <a href="#" {if $pocket->getColor() == $color}class="selected"{/if}
-                                   data-pl-pocket-color="{$color}"><i
-                                            class="icon16 color pl-dark-{$color}"></i></a>
+                                   data-pl-pocket-color="{$color}">
+                                        <span class="icon size-32 custom-mr-4"><i class="rounded pl-dark-{$color}"></i></span></a>
                             {/foreach}
                         </div>
                     </div>
                     <div class="field">
-                        <div class="name">
+                        <div class="name for-checkbox">
                             [`Access rights`]
                         </div>
-                        <div class="value no-shift">
-                            <p class="hint">{sprintf('[`Use <a href="%s">Team app</a> to configure access: select a user or a group of users &gt; Access tab &gt; Pocket Lists app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/')}</p>
+                        <div class="value">
+                            <p class="gray small">{sprintf('[`Use <a href="%s">Team app</a> to configure access: select a user or a group of users &gt; Access tab &gt; Pocket Lists app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/')}</p>
                         </div>
                     </div>
 
@@ -54,15 +53,14 @@
     </div>
 
     <div class="dialog-buttons">
-        {if $pocket->getId()}
-            <div class="block half-padded float-right">
-                <ul class="menu-h">
-                    <li>
-                        <a href="#" data-pl2-action="delete-pocket"><i class="icon16 delete"></i> [`Delete pocket`]</a>
-                    </li>
-                </ul>
+        <div class="flexbox middle">
+            <div class="wide">
+                <input type="submit" value="[`Save`]" class="button green"/>
+                <a class="cancel button light-gray" href="#">[`Cancel`]</a>
             </div>
-        {/if}
-        <input type="submit" value="[`Save`]" class="button green"/> [`or`] <a class="cancel" href="#">[`cancel`]</a>
+            {if $pocket->getId()}
+                <a href="#" class="button light-gray text-red" data-pl2-action="delete-pocket"><i class="fas fa-trash-alt"></i> [`Delete pocket`]</a>
+            {/if}
+        </div>
     </div>
 </section>

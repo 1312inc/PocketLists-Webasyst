@@ -1,0 +1,108 @@
+<div class="shadowed">
+    <nav class="sidebar left300px">
+
+        <!-- LISTS -->
+        <div id="pl-lists" data-pl-scroll-to-top>
+            <div class="pl-lists-header">
+                {if !empty($lists)}
+                <h5 class="gray">
+                    {sprintf('[`%s lists found`]', ($lists_count >= 300) ? ($lists_count|cat:'+') : $lists_count)}
+                </h5>
+                {/if}
+            </div>
+            {if !empty($lists)}
+                <ul class="pl-lists" data-pl2-wrapper="lists">
+                    {foreach $lists as $l}
+                        <li data-pl-list-id="{$l->getId()}" {if $l->isArchived()}class="highlighted"{/if}>
+                            {$url = '/pocket/'|cat:$l->getPocketId()|cat:'/list/'|cat:{$l->getId()}}
+                            {if $l->isArchived()}
+                            {$url = '/archive/'|cat:{$l->getId()}}
+                            {/if}
+                            <a href="#{$url}/" title="{$l->getName()|escape}">
+                                <span class="count {$l->getCssClass(pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}">{$l->getItemsCount()}</span>
+                                <i class="listicon36"
+                                   style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l->getIcon()|default:'li-list@2x.png'});"></i>
+                                <span class="pl-list-name pl-dark-{$l->getColor()|default:'none'}-label">{$l->getName()|escape}</span>
+                            </a>
+                        </li>
+                    {/foreach}
+                </ul>
+            {else}
+                <div class="block double-padded align-center pl-lists-empty">
+                    <p>
+                        [`No lists found`]
+                    </p>
+                </div>
+            {/if}
+        </div>
+
+    </nav>
+
+    <!-- ITEMS -->
+    <main class="content left300px blank bordered-left search-results">
+
+        <main id="pl-list-content" class="pl-list-content">
+
+            <div class="pl-items">
+                <header class="pl-list-title pl-title">
+                    <h1>
+                        {$term|escape}
+                        <span class="hint">{sprintf('[`%s to-dos found`]', ($items_count >= 300) ? ($items_count|cat:'+') : $items_count)}</span>
+                    </h1>
+                </header>
+
+                <div class="pl-list-items" id="pl-list-items">
+
+                    <section id="pl-undone-items" data-pl-items="undone">
+                        <ul class="menu-v">
+                            {if !empty($items)}
+                                {include '../item/Item.html' parent_id=0 items=$items}
+                            {/if}
+                        </ul>
+                    </section>
+
+                    <!-- completed to-dos log -->
+                    <section id="pl-complete-log" class="pl-logbook">
+                        <h5 class="heading">[`Logbook`]</h5>
+                        <ul class="menu-v">
+                            {if !empty($items_done)}
+                                {include '../item/Item.html' items=$items_done}
+                            {/if}
+                        </ul>
+                        <div class="block double-padded lazyloading" style="display: none;">
+                            <i class="icon16 loading"></i> [`Loading...`]
+                        </div>
+                    </section>
+
+                    <a href="#" id="pl-complete-log-link" class="inline-link gray" {if empty($items_done)}style="display:none;"{/if}><b><i>{_w('Show all %d completed to-do', 'Show all %d completed to-dos', $count_items_done|default:0)}</i></b></a>
+                </div>
+                <div class="clear-both"></div>
+
+            </div>
+
+            {include '../../include-legacy/itemdetails.html' inline}
+        </main>
+    </main>
+
+</div>
+<script>
+    (function () {
+        var $all_items_wrapper = $('#pl-list-items');
+
+        new $.pocketlists.Items($all_items_wrapper, {
+            enableAddLinkOnHover: false,
+            enableChangeLevel: false,
+            enableSortItems: false,
+            archive: false,
+            filter: 'search',
+            userHasLinkedApps: {$user->hasLinkedApps()},
+            current_user_id: {$user->getContact()->getId()},
+            fileUpload: {$fileupload},
+            externalApp: '{$externalApp|default:''}'
+        });
+
+        new $.pocketlists.Comments($all_items_wrapper);
+
+        $.pocketlists.setTitle('{$term|default:'[`Search`]'|escape|addslashes}');
+    }());
+</script>
