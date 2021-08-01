@@ -1333,7 +1333,7 @@ SQL;
                           from pocketlists_list l2
                                  JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) l ON l.id = i.list_id AND l.archived = 0';
 
-        if ($available_lists) {
+        if (count($available_lists)) {
             $sqlParts['where']['and'][] = '(l.id IN (i:list_ids) OR l.id IS NULL) /* ONLY items from accessed pockets or NULL-list items */';
         } else {
             $sqlParts['where']['and'][] = 'l.id IS NULL /* ONLY items from NULL-list items */';

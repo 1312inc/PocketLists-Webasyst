@@ -26,67 +26,63 @@ class pocketlistsRBAC
      *
      * @param int $contact_id
      *
-     * @return mixed
+     * @return array
      * @throws waDbException
      * @throws waException
      */
-    public static function getAccessListForContact($contact_id = 0)
+    public static function getAccessListForContact($contact_id = 0): array
     {
         $user = self::getContact($contact_id);
         $user_id = $user->getId();
 
-        if (isset(self::$lists[$user_id])) {
-            return array_keys(self::$lists[$user_id]);
-        }
-
-        /** @var pocketlistsListModel $listModel */
-        $listModel = pl2()->getModel(pocketlistsList::class);
-
-        if (self::isAdmin($user_id)) {
-            $lists = $listModel->getAll('id');
-            if ($lists) {
-                foreach ($lists as $list) {
-                    self::addListUserRight($user_id, $list['id'], true);
-                }
-            }
-        } else {
-            self::addPocketUserRight($user_id, 0, self::RIGHT_NONE);
-            $pockets = $user->getRights(pocketlistsHelper::APP_ID, self::POCKET_ITEM . '.%');
-            foreach ($pockets as $pocketId => $rightValue) {
-                self::addPocketUserRight($user_id, $pocketId, $rightValue);
-
-                switch (true) {
-                    // полный доступ к покету - возьмем все листы
-                    case $rightValue == self::RIGHT_ADMIN:
-                        $lists = $listModel->getAllLists(false, $pocketId);
-                        foreach ($lists as $list) {
-                            self::addListUserRight($user_id, $list['id'], true);
-                        }
-                        break;
-
-                    // в другом случае либо нет доступа, либо доступ к листам сохраняется отдельно
-                    case $rightValue == self::RIGHT_LIMITED:
-                    case $rightValue == self::RIGHT_NONE:
-                    default:
-                        break;
-                }
-            }
-
-            // соберем все остальные листы
-            self::addListUserRight($user_id, 0, true);
-            $accessedLists = $user->getRights(pocketlistsHelper::APP_ID, self::LIST_ITEM . '.%');
-            if ($accessedLists) {
-                foreach ($accessedLists as $accessedListId => $rightValue) {
-                    self::addListUserRight($user_id, $accessedListId, true);
-                }
-            }
-        }
-
         if (!isset(self::$lists[$user_id])) {
             self::$lists[$user_id] = [];
+
+            /** @var pocketlistsListModel $listModel */
+            $listModel = pl2()->getModel(pocketlistsList::class);
+
+            if (self::isAdmin($user_id)) {
+                $lists = $listModel->getAll('id');
+                if ($lists) {
+                    foreach ($lists as $list) {
+                        self::addListUserRight($user_id, $list['id'], true);
+                    }
+                }
+            } else {
+                self::addPocketUserRight($user_id, 0, self::RIGHT_NONE);
+                $pockets = $user->getRights(pocketlistsHelper::APP_ID, self::POCKET_ITEM . '.%');
+                foreach ($pockets as $pocketId => $rightValue) {
+                    self::addPocketUserRight($user_id, $pocketId, $rightValue);
+
+                    switch (true) {
+                        // полный доступ к покету - возьмем все листы
+                        case $rightValue == self::RIGHT_ADMIN:
+                            $lists = $listModel->getAllLists(false, $pocketId);
+                            foreach ($lists as $list) {
+                                self::addListUserRight($user_id, $list['id'], true);
+                            }
+                            break;
+
+                        // в другом случае либо нет доступа, либо доступ к листам сохраняется отдельно
+                        case $rightValue == self::RIGHT_LIMITED:
+                        case $rightValue == self::RIGHT_NONE:
+                        default:
+                            break;
+                    }
+                }
+
+                // соберем все остальные листы
+                self::addListUserRight($user_id, 0, true);
+                $accessedLists = $user->getRights(pocketlistsHelper::APP_ID, self::LIST_ITEM . '.%');
+                if ($accessedLists) {
+                    foreach ($accessedLists as $accessedListId => $rightValue) {
+                        self::addListUserRight($user_id, $accessedListId, true);
+                    }
+                }
+            }
         }
 
-        return array_keys(self::$lists[$user_id]);
+        return array_filter(array_keys(self::$lists[$user_id]));
     }
 
     /**
