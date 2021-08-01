@@ -37,7 +37,7 @@ body { background: var(--background-color-blank); }
 .pl-dark-yellow-label { color: #ffcc00 !important; }
 .pl-dark-brown-label { color: #996e4d !important; }
 .pl-dark-orange-label { color: #ff9400 !important; }
-.pl-dark-none-label { color: #222 !important; }
+.pl-dark-none-label { color: var(--text-color-stronger) !important; }
 
 .pl-dark-gray-border { border-color: #aaa !important; }
 .pl-dark-green-border { border-color: #4dd963 !important; }
