@@ -266,7 +266,8 @@ class pocketlistsConfig extends waAppConfig
             if (!$count) {
                 $css = <<<HTML
 <style>
-    [data-app="pocketlists"] .indicator { display: none !important; }
+    [data-app="pocketlists"] .indicator,
+    [data-app="pocketlists"] .badge { display: none !important; }
 </style>
 HTML;
             }
@@ -277,7 +278,7 @@ HTML;
 <script>
 (function() {
     'use strict';
-    
+
     try {
         $.post('{$pocketlistsPath}sendNotifications', function(r) {
             if (r.status === 'ok') {
@@ -290,7 +291,7 @@ HTML;
         .fail(function() {
             console.log('pocketlists: notification send internal error');
         });
-        
+
         $.post('{$pocketlistsPath}sendDirectNotifications', function(r) {
             if (r.status === 'ok') {
                 if (window['pocketlistsAlertBox'] && r.data) {
@@ -454,6 +455,24 @@ HTML;
             'wa_app_static_url'    => wa()->getAppStaticUrl(pocketlistsHelper::APP_ID),
             'pl2'                  => pl2(),
         ];
+    }
+
+    /**
+     * @param string $template
+     *
+     * @return string
+     * @throws waException
+     */
+    public function getUI2TemplatePath($template = null, $app = null)
+    {
+        $suffix = wa()->whichUI($app) === '1.3' ? '-legacy' : '';
+
+        return $template ? sprintf($template, $suffix) : $suffix;
+    }
+
+    public function appExists($app)
+    {
+        return wa()->appExists($app);
     }
 
     private function registerGlobal()

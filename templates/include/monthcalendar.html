@@ -3,11 +3,14 @@
 {foreach $days as $year => $months}
 {foreach $months as $month_name => $month}
 
-<div class="block double-padded align-center">
-    <h5 class="heading">
-        {_ws($month_name)} {$year}
-    </h5>
-
+<div class="box custom-mb-24">
+    <div class="flexbox custom-mt-16 custom-mb-16">
+        <a href="#" data-pl-todo-calendar-action="prev" class="pl-calendar-nav" title="[`Previous`]"><i class="fas fa-chevron-left"></i></a>
+        <h5 class="align-center gray wide custom-my-0">
+            {_ws($month_name)} {$year}
+        </h5>
+        <a href="#" data-pl-todo-calendar-action="next" class="pl-calendar-nav" title="[`Next`]"><i class="fas fa-chevron-right"></i></a>
+    </div>
 
 <table class="pl-calendar">
     <thead>
@@ -32,8 +35,8 @@
         <span class="pl-date">{$day.date.day}</span>
 
         <div class="pl-dots">
-            {foreach $day.lists.gray as $list_color name=foo}{if $smarty.foreach.foo.index == 3}{break}{/if}<i class="icon10 color pl-dark-none"></i>{/foreach}<!--
-                        -->{foreach $day.lists.color as $list_color => $item_dots}{foreach $item_dots as $dot name=foo}{if $smarty.foreach.foo.index == 3}{break}{/if}<i class="icon10 color pl-dark-{$list_color}"></i>{/foreach}{/foreach}
+            {foreach $day.lists.gray as $list_color name=foo}{if $smarty.foreach.foo.index == 3}{break}{/if}<i class="icon rounded pl-dark-none"></i>{/foreach}<!--
+                        -->{foreach $day.lists.color as $list_color => $item_dots}{foreach $item_dots as $dot name=foo}{if $smarty.foreach.foo.index == 3}{break}{/if}<i class="icon rounded pl-dark-{$list_color}"></i>{/foreach}{/foreach}
         </div>
         </td>
         {/foreach}
@@ -47,11 +50,11 @@
 {/foreach} {*year*}
 
 {if $type != 'app'}
-<div class="block double-padded">
-    <h5 class="heading">[`My to-dos`]</h5>
-    <ul class="menu-v with-icons">
-        <li><a href="#" data-pl-action="list-email"><i class="icon16 email"></i>[`Email list`]</a></li>
-        <li><a href="?module={$type}&amp;action=date&amp;print=true&amp;date=" data-pl-action="list-print" target="_blank"><i class="icon16 print"></i>[`Print list`]</a></li>
+<div>
+    <h5 class="heading custom-mb-12">[`My to-dos`]</h5>
+    <ul class="menu">
+        <li><a href="#" data-pl-action="list-email"><i class="fas fa-at black"></i><span>[`Email list`]</span></a></li>
+        <li><a href="?module={$type}&amp;action=date&amp;print=true&amp;date=" data-pl-action="list-print" target="_blank"><i class="fas fa-print"></i><span>[`Print list`]</span></a></li>
     </ul>
 </div>
 {/if}

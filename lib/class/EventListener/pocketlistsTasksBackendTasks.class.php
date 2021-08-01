@@ -50,6 +50,7 @@ final class pocketlistsTasksBackendTasks
                         'plurl' => wa()->getAppUrl(pocketlistsHelper::APP_ID),
                         'user' => pl2()->getUser(),
                         'count_undone_items' => $undoneItemsCount,
+                        'externalApp' => 'tasks',
                     ],
                     pl2()->getDefaultViewVars()
                 );
@@ -57,7 +58,11 @@ final class pocketlistsTasksBackendTasks
                 $hook = $task->attachments ? 'after_attachments' : 'after_description';
 
                 $template = wa()->getAppPath(
-                    sprintf('templates/include/app_hook/tasks.backend_tasks.%s.html', $hook),
+                    sprintf(
+                        'templates/include%s/app_hook/tasks.backend_tasks.%s.html',
+                        pl2()->getUI2TemplatePath(null, 'tasks'),
+                        $hook
+                    ),
                     pocketlistsHelper::APP_ID
                 );
 

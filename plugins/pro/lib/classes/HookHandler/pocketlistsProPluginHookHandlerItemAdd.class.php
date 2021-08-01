@@ -27,24 +27,25 @@ class pocketlistsProPluginHookHandlerItemAdd extends pocketlistsProPluginAbstrac
         $label = $label ?: new pocketlistsProPluginLabel();
         $labels = $factoryLabel->findAll();
         $shortcutsGroups = $factoryShortcut->findAllGrouped();
-        $isNew = (int)!($item instanceof pocketlistsItem && $item->getId());
+        $isNew = (int) !($item instanceof pocketlistsItem && $item->getId());
 
         $this->getView()->assign(
             [
                 'pl2pro' => [
-                    'itemLabel'        => $label,
-                    'labels'           => $labels,
+                    'itemLabel' => $label,
+                    'labels' => $labels,
                     'shortcutsGrouped' => $shortcutsGroups,
-                    'isNew'            => $isNew,
-                    'shortcutsExists'  => (int)($shortcutsGroups && $isNew),
-                    'labelsExists'     => (int)$labels,
+                    'isNew' => $isNew,
+                    'shortcutsExists' => (int) ($shortcutsGroups && $isNew),
+                    'labelsExists' => (int) $labels,
 
                     'wa_app_static_url' => wa()->getAppStaticUrl(pocketlistsHelper::APP_ID),
-                    'external'         => !empty($eventParams['external'])
+                    'external' => !empty($eventParams['external']),
+                    'externalApp' => $eventParams['externalApp'] ?? null,
                 ],
             ]
         );
 
-        return $this->getView()->fetch($this->getViewTemplate('backend_item_add'));
+        return $this->getView()->fetch($this->getViewTemplate('backend_item_add', $eventParams['externalApp'] ?? null));
     }
 }

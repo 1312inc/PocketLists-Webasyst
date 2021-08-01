@@ -1,0 +1,243 @@
+<div class="shadowed">
+
+    <main class="block double-padded">
+
+        <h3 style="color: red; border-bottom: 1px solid #ddd; padding-bottom: 16px; margin-bottom: 24px;">YOU ARE NOT SUPPOSED TO BE HERE!</h3>
+
+        <div class="fields form">
+            <form method="post" id="pl-settings-form">
+                <h6 class="heading">Debug</h6>
+                <br>
+                <div class="field-group">
+
+                    <div class="field">
+                        <div class="name nowrap">
+                            Shop-Script integration
+                        </div>
+                        <div class="value no-shift">
+                            <label>
+                                <input type="radio" name="apps[shop][enable]" value="1"
+                                       {if !empty($apps['shop']['enable'])}checked="checked"{/if}/> ON
+                            </label>
+                            <label>
+                                <input type="radio" name="apps[shop][enable]" value="0"
+                                       {if empty($apps['shop']['enable'])}checked="checked"{/if}/> OFF
+                            </label>
+                        </div>
+
+                    </div>
+
+                    <div class="field">
+                        <div class="value no-shift">
+                            <input type="submit" value="[`Save`]" id="pl-save-settings" class="button green"/>
+                            <i class="icon16 yes" style="display: none;"></i>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <form method="post" id="pl-recap-form">
+                <h6 class="heading">Email</h6>
+                <br>
+                <div class="field-group">
+
+                    <div class="field">
+                        <div class="name nowrap">
+                            Daily Recap Email
+                        </div>
+                        <div class="value">
+                            <input type="submit" value="[`Send It!`]" id="pl-send-recap" class="button blue"/>
+                            <i class="icon16 yes" style="display: none;"></i>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </form>
+
+            <form method="post" id="pl-fixtures-form">
+                <h6 class="heading">100500 ITEM GENERATOR</h6>
+                <br>
+                <div class="field-group">
+
+                    <div class="field">
+                        <div class="name nowrap">
+                            Lists
+                        </div>
+                        <div class="value no-shift">
+                            <input type="text" value="10" placeholder="10" name="fixtures[lists]"/>
+                        </div>
+                        <div class="value no-shift">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="name nowrap">
+                            Items per list (+-)
+                        </div>
+                        <div class="value no-shift">
+                            <input type="text" value="500" placeholder="500" name="fixtures[items]"/>
+                        </div>
+                        <div class="value no-shift">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="name nowrap">
+                            % compeled
+                        </div>
+                        <div class="value no-shift">
+                            <input type="text" value="30" placeholder="500" name="fixtures[items_completed]"/>
+                        </div>
+                        <div class="value no-shift">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="name nowrap">
+                            % assigned
+                        </div>
+                        <div class="value no-shift">
+                            <input type="text" value="15" placeholder="500" name="fixtures[items_assigned]"/>
+                        </div>
+                        <div class="value no-shift">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="name nowrap">
+                            % linked with SS
+                        </div>
+                        <div class="value no-shift">
+                            <input type="text" value="40" placeholder="500" name="fixtures[items_linked_ss]"/>
+                        </div>
+                        <div class="value no-shift">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="name nowrap">
+                            % items with comments
+                        </div>
+                        <div class="value no-shift">
+                            <input type="text" value="40" placeholder="500" name="fixtures[items_with_comments]"/>
+                        </div>
+                        <div class="value no-shift">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="value no-shift">
+                            <br>
+                            <input type="submit" value="[`Generate`]" id="pl-generate-fixture" class="button yellow"/>
+                            <i class="icon16 yes" style="display: none;"></i>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <form method="post" id="pl-reset-form">
+                <hr>
+                <h6 class="heading">Total reset</h6>
+                <br>
+                <div class="field-group">
+
+                    <div class="field">
+                        <div class="name nowrap">
+                            Reinstall the app
+                        </div>
+                        <div class="value">
+                            <input type="submit" value="[`Reset everything`]" id="pl-do-reset" class="button red"/>
+                            <i class="icon16 yes" style="display: none;"></i>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </form>
+
+        </div>
+
+        <div class="clear-both"></div>
+
+    </main>
+
+</div>
+
+<script type="text/javascript">
+    (function () {
+        $.pocketlists.setTitle('Debug');
+
+        var $loading = $('<i class="icon16 loading">');
+        $('#pl-save-settings').on('click', function (e) {
+            var $this = $(this);
+            e.preventDefault();
+            $this.after($loading);
+            $.post('?module=debug&action=save', $('#pl-settings-form').serialize(), function (r) {
+                $loading.remove();
+                if (r.status === 'ok') {
+                    $this.next('.icon16.yes').show(200, function () {
+                        $.pocketlists_routing.redispatch();
+                    }).delay(3000).hide(200);
+                } else {
+                    alert('error while saving');
+                }
+            }, 'json')
+        });
+
+        $('#pl-generate-fixture').on('click', function (e) {
+            var $this = $(this);
+            e.preventDefault();
+            $this.after($loading);
+            $.post('?module=debug&action=fixtures', $('#pl-fixtures-form').serialize(), function (r) {
+                $loading.remove();
+                if (r.status === 'ok') {
+                    $this.next('.icon16.yes').show(200, function () {
+                        $.pocketlists_routing.redispatch();
+                    }).delay(3000).hide(200);
+                } else {
+                    alert('error while generating');
+                }
+            }, 'json')
+        });
+
+        $('#pl-send-recap').on('click', function (e) {
+            var $this = $(this);
+            e.preventDefault();
+            $this.after($loading);
+            $.post('?module=debug&action=recap', $('#pl-recap-form').serialize(), function (r) {
+                $loading.remove();
+                if (r.status === 'ok') {
+                    $this.next('.icon16.yes').show(200, function () {
+                        // $.pocketlists_routing.redispatch();
+                    }).delay(3000).hide(200);
+                } else {
+                    alert('error while recaping');
+                }
+            }, 'json')
+        });
+
+        $('#pl-do-reset').on('click', function (e) {
+            var $this = $(this);
+            e.preventDefault();
+
+            if (!confirm('Sure???!!!')) {
+                return;
+            }
+
+            $this.after($loading);
+            $.post('?module=debug&action=reset', $('#pl-reset-form').serialize(), function (r) {
+                $loading.remove();
+                if (r.status === 'ok') {
+                    $this.next('.icon16.yes').show(200, function () {
+                        $.pocketlists_routing.redispatch();
+                    }).delay(3000).hide(200);
+                } else {
+                    alert('error while reseting');
+                }
+            }, 'json')
+        })
+    }());
+</script>

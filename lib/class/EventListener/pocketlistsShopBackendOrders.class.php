@@ -27,14 +27,19 @@ final class pocketlistsShopBackendOrders
 
         $viewParams = [
             'wa_app_static_url' => wa()->getAppStaticUrl(pocketlistsHelper::APP_ID),
-            'app'               => $app,
-            'plurl'             => wa()->getAppUrl(pocketlistsHelper::APP_ID),
-            'user'              => pl2()->getUser(),
+            'app' => $app,
+            'plurl' => wa()->getAppUrl(pocketlistsHelper::APP_ID),
+            'user' => pl2()->getUser(),
+            'externalApp' => 'shop',
         ];
 
         foreach (['sidebar_bottom_li'] as $hook) {
             $template = wa()->getAppPath(
-                sprintf('templates/include/app_hook/shop.backend_orders.%s.html', $hook),
+                sprintf(
+                    'templates/include%s/app_hook/shop.backend_orders.%s.html',
+                    pl2()->getUI2TemplatePath(null, 'shop'),
+                    $hook
+                ),
                 pocketlistsHelper::APP_ID
             );
 

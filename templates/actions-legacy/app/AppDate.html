@@ -1,0 +1,89 @@
+<main class="blank bordered-right pl-inner-content pl-items pl-list-items pl-todo shadowed" id="pl-list-content">
+
+    {$app->getBannerHtml()}
+
+    <header class="pl-title">
+         {*<div class="float-right">*}
+            {*<ul class="menu-h">*}
+                {*<li class="pl-list-favorite">*}
+                   {*<a href="#/settings/" title="[`Settings`]"><i class="icon16 settings"></i></a>*}
+                {*</li>*}
+            {*</ul>*}
+        {*</div> *}
+        {if !$date}
+            <h1 class="not-padded">
+                {$app->getName()}
+            </h1>
+            <span></span>
+        {else}
+            <h1 class="not-padded" pl-todo-stream="date">
+                {if !$print} <a href="#" class="back">&larr; {$app->getName()}</a>{/if}
+                <span>{waDateTime::date(waDateTime::getFormat('humandate'), $date)}</span>
+            </h1>
+        {/if}
+    </header>
+
+    <div class="pl-list-items" id="pl-list-items">
+
+        <section id="pl-undone-items" data-pl-items="undone">
+            <ul class="menu-v">
+                {if !empty($undone_items)}
+                    {include '../item/Item.html' parent_id=0 items=$undone_items}
+                {/if}
+            </ul>
+        </section>
+
+        <section id="pl-complete-log" class="pl-logbook">
+            <h5 class="heading">[`Logbook`]</h5>
+            <ul class="menu-v">
+                {if $count_done_items}
+                    {include '../item/Item.html' parent_id=0 items=$done_items}
+                {/if}
+            </ul>
+            <div class="block double-padded lazyloading" style="display: none;">
+                <i class="icon16 loading"></i> [`Loading...`]
+            </div>
+        </section>
+
+        <a href="#" id="pl-complete-log-link" class="inline-link gray" {if !$count_done_items}style="display:none;"{/if}><b><i>{_w('Show all %d completed to-do', 'Show all %d completed to-dos', $count_done_items)}</i></b></a>
+
+    </div>
+
+    <div class="clear-both"></div>
+
+    {$itemAdd}
+    {include '../../include-legacy/itemdetails.html' inline}
+</main>
+
+<script type="text/javascript">
+    (function(){
+        $.pocketlists.initNotice('#pl-{$app->getApp()}-notice');
+
+        var $all_items_wrapper = $('#pl-list-content');
+
+        new $.pocketlists.Items($all_items_wrapper, {
+            enableAddLinkOnHover: false,
+            enableChangeLevel: false,
+            enableSortItems: false,
+//            assignUser: parseInt('{$wa->user()->getId()}'),
+            {*showMessageOnEmptyList: {if $date}false{else}true{/if},*}
+            current_user_id: {$wa->user()->get('id')},
+            defaultLinkedEntity: {
+                app: '{$app->getApp()}',
+                entity_type: null,
+                entity_id: null
+            },
+            userHasLinkedApps: {$user->hasLinkedApps()},
+            dueDate: '{if $timestamp}{$timestamp}{/if}',
+            externalApp: '{$externalApp|default:''}'
+        });
+
+        new $.pocketlists.Comments($all_items_wrapper);
+
+        $.pocketlists.lazyItems({
+            $loading: $('#pl-list-content .lazyloading'),
+            html_selector: '#pl-complete-log > .menu-v',
+            url: '?module=item&action=lazyDone&type=app&app={$app->getApp()}&external_app={$externalApp|default:''|escape}'
+        });
+    }());
+</script>

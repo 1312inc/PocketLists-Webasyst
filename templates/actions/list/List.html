@@ -17,13 +17,28 @@
 <main id="pl-list-content" class="pl-list-content">
 
     <div class="pl-items">
-        <header class="pl-list-title pl-title">
+        <header class="pl-list-title pl-title flexbox">
             {if !$print}
             <input type="hidden" name="pocket_id" value="{$pocket->getId()}">
             {/if}
 
+            <div class="wide">
+                <input type="hidden" value="{if !$list->getId()}-1{else}{$list->getId()}{/if}" id="pl-list-id">
+
+                {if $new && !$archive}
+                    <input type="text" placeholder="{sprintf('[`List #%d`]', $new_list_id)}" id="pl-new-list-input" class="bold larger" />
+                    <p class="hint"><i class="fas fa-thumbs-up"></i> [`Type in new list name and hit Enter.`]</p>
+                {else}
+                    <h1 id="pl-list-name"{if $list->getColor()!='none'} class="pl-dark-{$list->getColor()}-label"{/if}>{$list->getNameParsed()|default:' '}</h1>
+                {/if}
+
+                {if pocketlistsRBAC::canAccessToList($list) && !$new}
+                    <a data-pl-action="list-edit" href="#" class="pl-list-details-helper button nobutton circle" data-pl2-list-edit-action="details" style="font-size: 1rem;"><i class="fas fa-edit"></i></a>
+                {/if}
+            </div>
+
             {if !$new && !$archive}
-                <div class="float-right">
+                <div>
                     {if pocketlistsRBAC::canAssign()}
                     <a data-pl-action="list-edit" href="#" class="pl-userpic-bundle" data-pl2-list-edit-action="accesses">
                         {$max_visible_in_bundle = 5}
@@ -38,20 +53,6 @@
                     {/if}
                 </div>
             {/if}
-
-            <h1>
-                <input type="hidden" value="{if !$list->getId()}-1{else}{$list->getId()}{/if}" id="pl-list-id">
-
-                {if $new && !$archive}
-                    <input type="text" placeholder="{sprintf('[`List #%d`]', $new_list_id)}" id="pl-new-list-input" class="bold" />
-                {else}
-                    <span id="pl-list-name"{if $list->getColor()!='none'} class="pl-dark-{$list->getColor()}-label"{/if}>{$list->getNameParsed()|default:' '}</span>
-                {/if}
-
-                {if pocketlistsRBAC::canAccessToList($list) && !$new}
-                <a data-pl-action="list-edit" href="#" class="pl-list-details-helper" data-pl2-list-edit-action="details"><i class="icon16 pl ellipsis"></i></a>
-                {/if}
-            </h1>
         </header>
         <div class="pl-list-items" id="pl-list-items">
 
@@ -76,7 +77,9 @@
                 </div>
             </section>
 
-            <a href="#" id="pl-complete-log-link" class="inline-link gray" {if !$count_items_done}style="display:none;"{/if}><b><i>{_w('Show all %d completed to-do', 'Show all %d completed to-dos', $count_items_done|default:0)}</i></b></a>
+            <div class="box align-center custom-mt-16">
+                <a href="#" id="pl-complete-log-link" class="button light-gray small" {if !$count_items_done}style="display:none;"{/if}><i class="fas fa-check"></i> [`Show all completed to-dos`]</a>
+            </div>
         </div>
         <div class="clear-both"></div>
 
@@ -118,7 +121,8 @@
             userHasLinkedApps: {$user->hasLinkedApps()},
             current_user_id: {$user->getContact()->getId()},
             fileUpload: {$fileupload},
-            caller: 'list'
+            caller: 'list',
+            externalApp: '{$externalApp|default:''}'
         });
 
         new $.pocketlists.Comments($list_wrapper);
@@ -130,7 +134,7 @@
         $.pocketlists.lazyItems({
             $loading: $('#pl-list-content .lazyloading'),
             html_selector: '#pl-complete-log > .menu-v',
-            url: '?module=item&action=lazyDone&type=list&id={$list->getId()}',
+            url: '?module=item&action=lazyDone&type=list&id={$list->getId()}&external_app={$externalApp|default:''|escape}',
             load_now: true,
             offset: 0
         });

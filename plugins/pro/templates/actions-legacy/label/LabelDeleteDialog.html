@@ -1,0 +1,15 @@
+<div>
+    <div class="dialog-content" data-pl2pro-label="{$id}" data-pl2pro-labels-items="{$itemsWithLabelsCount}">
+        <h1>[`Delete status`]</h1>
+        {if $itemsWithLabelsCount > 0}
+            <p>{sprintf('[`The status label will be permanently deleted leaving all <strong>%d&nbsp;to-dos</strong> currently marked with this status unlabelled. Delete the status label?`]', $itemsWithLabelsCount)}</p>
+        {else}
+            <p>[`The status label will be permanently deleted. Are you sure?`]</p>
+        {/if}
+    </div>
+    <div class="dialog-buttons">
+        <input type="hidden" name="id" value="{$id}"/>
+        <button name="delete" class="button red">[`Delete`]</button>
+        [`or`] <a href="#" class="cancel">[`cancel`]</a>
+    </div>
+</div>

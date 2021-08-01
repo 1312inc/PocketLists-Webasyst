@@ -1,4 +1,4 @@
-<div class="shadowed">
+<div class="pl-pseudo-article">
     <main class="content pl-items pl-logbook" id="pl-list-content">
     {if !empty($items)}
         <header class="pl-title">
@@ -37,7 +37,8 @@
             enableChangeLevel: false,
             enableSortItems: false,
             userHasLinkedApps: {$user->hasLinkedApps()},
-            current_user_id: {$user->getContact()->getId()}
+            current_user_id: {$user->getContact()->getId()},
+            externalApp: '{$externalApp|default:''}'
         });
         new $.pocketlists.Comments($all_items_wrapper);
 

@@ -123,5 +123,12 @@ class pocketlistsItemLazyDoneAction extends pocketlistsViewAction
 //                'fileupload'           => 1,
 //            ]
 //        );
+
+        $this->setTemplate(
+            pl2()->getUI2TemplatePath(
+                'templates/actions%s/item/ItemLazyDone.html',
+                waRequest::request('external_app')
+            )
+        );
     }
 }

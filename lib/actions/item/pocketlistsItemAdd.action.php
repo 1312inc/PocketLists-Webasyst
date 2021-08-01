@@ -15,6 +15,7 @@ class pocketlistsItemAddAction extends pocketlistsViewItemAction
         if (isset($this->params['teammate']) && $this->params['teammate'] instanceof pocketlistsContact) {
             $this->view->assign('assign_contact_photo', $this->params['teammate']->getUserpic());
         }
+        $externalApp = $this->params['externalApp'] ?? null;
 
         /**
          * UI hook in item add compact mode
@@ -26,9 +27,16 @@ class pocketlistsItemAddAction extends pocketlistsViewItemAction
         $event = new pocketlistsEvent(
             pocketlistsEventStorage::WA_BACKEND_ITEM_ADD_COMPACT,
             null,
-            ['external' => !empty($this->params['external'])]
+            ['external' => !empty($this->params['external']), 'externalApp' => $externalApp]
         );
         $eventResult = pl2()->waDispatchEvent($event);
         $this->view->assign('backend_item_add', $eventResult);
+
+        $this->setTemplate(
+            pl2()->getUI2TemplatePath(
+                'templates/actions%s/item/ItemAdd.html',
+                $externalApp
+            )
+        );
     }
 }

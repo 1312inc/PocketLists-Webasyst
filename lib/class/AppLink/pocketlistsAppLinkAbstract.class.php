@@ -120,8 +120,12 @@ abstract class pocketlistsAppLinkAbstract
      */
     public function getBannerHtml()
     {
-       $template = wa()->getAppPath(
-            sprintf('templates/include/item_linked_entities/%s.banner.html', $this->getApp()),
+        $template = wa()->getAppPath(
+            sprintf(
+                'templates/include%s/item_linked_entities/%s.banner.html',
+                pl2()->getUI2TemplatePath(),
+                $this->getApp()
+            ),
             pocketlistsHelper::APP_ID
         );
 
@@ -148,7 +152,7 @@ abstract class pocketlistsAppLinkAbstract
         return sprintf(
             '<i class="icon16 pl-wa-app-icon" style="background-image: url(%s%s); background-size: 16px 16px;"></i>',
             wa()->getRootUrl(),
-            $this->info['icon'][16]
+            $this->info['icon'][48]
         );
     }
 
@@ -167,7 +171,8 @@ abstract class pocketlistsAppLinkAbstract
 
         $template = wa()->getAppPath(
             sprintf(
-                'templates/include/item_linked_entities/%s.%s.preview.html',
+                'templates/include%s/item_linked_entities/%s.%s.preview.html',
+                pl2()->getUI2TemplatePath(),
                 $this->getApp(),
                 $itemLink->getEntityType()
             ),
@@ -207,7 +212,8 @@ abstract class pocketlistsAppLinkAbstract
     {
         $template = wa()->getAppPath(
             sprintf(
-                'templates/include/item_linked_entities/%s.%s.autocomplete.html',
+                'templates/include%s/item_linked_entities/%s.%s.autocomplete.html',
+                pl2()->getUI2TemplatePath(),
                 $this->getApp(),
                 $itemLink->getEntityType()
             ),

@@ -29,7 +29,8 @@ final class pocketlistsShopBackendOrder
         $hasItems = pl2()->getModel(pocketlistsItemLink::class)->countLinkedItems('shop', 'order', $params['id']);
 
         wa('pocketlists', true);
-        $itemAdd = (new pocketlistsItemAddAction(['external' => true]))->display(false);
+        $itemAdd = (new pocketlistsItemAddAction(['external' => true, 'externalApp' => 'shop']))
+            ->display(false);
         wa('shop', true);
 
         $viewParams = array_merge(
@@ -45,6 +46,7 @@ final class pocketlistsShopBackendOrder
                 'fileupload' => 1,
                 'user' => pl2()->getUser(),
                 'itemAdd' => $itemAdd,
+                'externalApp' => 'shop',
             ],
             pl2()->getDefaultViewVars()
         );
@@ -66,7 +68,11 @@ final class pocketlistsShopBackendOrder
 
         foreach (['aux_info', 'action_link', 'info_section', 'title_suffix', 'action_button'] as $hook) {
             $template = wa()->getAppPath(
-                sprintf('templates/include/app_hook/shop.backend_order.%s.html', $hook),
+                sprintf(
+                    'templates/include%s/app_hook/shop.backend_order.%s.html',
+                    pl2()->getUI2TemplatePath(null, 'shop'),
+                    $hook
+                ),
                 pocketlistsHelper::APP_ID
             );
 

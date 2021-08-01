@@ -28,12 +28,12 @@ class pocketlistsContact
     /**
      * @var string
      */
-    protected $photoUrl = '/wa-content/img/userpic96@2x.jpg';
+    protected $photoUrl = '/wa-content/img/userpic.svg';
 
     /**
      * @var string
      */
-    protected $userPic = '/wa-content/img/userpic20@2x.jpg';
+    protected $userPic = '/wa-content/img/userpic.svg';
 
     /**
      * @var string

@@ -1,0 +1,53 @@
+<div class="dialog-background"></div>
+<form method="post">
+    <div class="dialog-window">
+        <div class="dialog-content">
+
+                <h1>[`Email list`]</h1>
+                {if !empty($list)}<input type="hidden" name="mail[list_id]" value="{$list->getId()}">{/if}
+                <div class="fields form width100px">
+                    <div class="field">
+                        <div class="name">[`To`]</div>
+                        <div class="value">
+                            <input type="email" placeholder="email@address" name="mail[to]" class="long bold" value="{$email}"/>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="name">[`Subject`]</div>
+                        <div class="value">
+                            <input type="text" value="{strip}
+                            {if !empty($list)}
+                                {$list->getNameParsed()}
+                            {elseif !empty($favorite)}
+                                [`Favorites`]
+                                {if !empty($date)} - {$date|wa_date:'humandate'}{/if}
+                            {elseif !empty($date)}
+                                {$date|wa_date:'humandate'}
+                            {elseif !empty($teammate)}
+                                {$teammate}
+                            {else}
+                                [`My to-dos`] - {$smarty.now|wa_datetime:'humandate'}
+                            {/if}
+                            {/strip}" name="mail[subject]"  class="long bold" />
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="name">[`Message`]</div>
+                        <div class="value">
+                            <textarea name="mail[body]" style="height: 170px;">{foreach $items as $item}&#9679; {$item->getName()}
+{foreachelse}[`No to-dos :)`]
+{/foreach}
+
+via Pocket Lists</textarea>
+                            {*include '../item/ItemEmail.html' items=$items*}
+                        </div>
+                    </div>
+                </div>
+
+        </div>
+        <div class="dialog-buttons">
+            <input type="submit" value="[`Send`]" class="button green">
+                [`or`] <a class="cancel" href="#">[`cancel`]</a>
+        </div>
+    </div>
+</form>

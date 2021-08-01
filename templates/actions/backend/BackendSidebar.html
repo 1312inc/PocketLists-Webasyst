@@ -1,152 +1,129 @@
-<div class="pl-sidebar-core">
-
-{if $showTinyAd}
-<div class="pl-tiny-ad">
-    <div class="pl-tiny-ad-box">
-
-        {*
-            sorry for coding so hard :)
-
-            <a href="#" class="pl-tiny-ad-close" title="[`Close`]">&times;</a>
-            <!-- <h5 class="heading">РАБОТАЕМ ДОМА</h5> -->
-            <!-- <h5 class="heading">[`New app by 1312 Inc.`]</h5> -->
-            <!-- <h5 class="heading">[`Ad`]</h5> -->
-            <h5 class="heading">Новинка!</h5>
-
-            {$_ad_url = 'https://www.webasyst.ru/store/app/cash/?utm_source=pl2webasyst&utm_medium=inapp_tiny_ad&utm_campaign=1312_inapp_pl2webasyst_cashapp_2020_1'}
-
-            <a href="{$_ad_url}" target="_blank">
-                <img src="{$wa_url}wa-apps/pocketlists/img/pl2ad-cash-app-144.png" class="pl-app-icon" />
-            </a>
-
-            <!-- <p>{sprintf('[`<a href="%s" target="_blank">Status app</a> tracks working time and shows whom have been working on what (and whom have been doing nothing too!)`]', $_ad_url)}</p> -->
-
-            <p>
-                {sprintf('<b><a href="%s" target="_blank" class="no-underline">Новое приложение Webasyst Cash Flow</a></b> от команды разработчиков Pocket Lists поможет вести финансовый учет, прогнозировать прибыль и избегать кассовых разрывов.', $_ad_url)}
-            </p>
-            {if $wa->shop}
-                <p><b>Дружит с Shop-Script</b>: импортирует данные о продажах интернет-магазина и считает прибыль бизнеса.</p>
-            {/if}
-
-            <a href="{$_ad_url}" target="_blank" class="pl-tiny-button">Хочу порядок в финансах!</a>
-
-            <p class="hint">Проще, чем бухгалтерия. Эффективнее, чем Excel.</p>
-
-        *}
-
-        <a href="#" class="pl-tiny-ad-close" title="[`Close`]">&times;</a>
-        <h5 class="heading">Рекомендуем!</h5>
-
-        {$_ad_url = 'https://www.webasyst.ru/store/app/tasks/?utm_source=pl2webasyst&utm_medium=inapp_tiny_ad&utm_campaign=1312_inapp_pl2webasyst_tasksapp_2020_1'}
-
-        <a href="{$_ad_url}" target="_blank">
-            <img src="{$wa_url}wa-apps/pocketlists/img/pl2ad-tasks-app-144.png" class="pl-app-icon" />
+<nav class="sidebar-mobile-toggle">
+    <div class="box align-center">
+        <a href="#" href="javascript:void(0);">
+            <i class="fas fa-bars"></i>
+            [`Menu`]
         </a>
-
-        <!-- <p>{sprintf('[`<a href="%s" target="_blank">Status app</a> tracks working time and shows whom have been working on what (and whom have been doing nothing too!)`]', $_ad_url)}</p> -->
-
-        <p>
-            {sprintf('<b><a href="%s" target="_blank" class="no-underline">Обновленное приложение «Задачи»</a> интегрировано с Pocket&nbsp;Lists</b> и отныне развивается командой 1312 Inc.', $_ad_url)}
-        </p>
-        <p><b>Поможет организовать работу команды на удаленке</b>, распределить задачи между коллегами, следить за статусом выполнения, вести обсуждения без флуда и закрывать задачи вовремя.</p>
-
-        <a href="{$_ad_url}" target="_blank" class="pl-tiny-button">Удаленка на 100%</a>
-
-        <p class="hint">Рабочий онлайн-офис — в любое время и в любом месте.</p>
-
     </div>
+</nav>
+
+<div class="sidebar-body hide-scrollbar">
+
+<div class="box custom-mt-4">
+    <form class="state-with-inner-icon left">
+        <input type="search" data-pl2-action="search" placeholder="[`Search`]" class="pl-search-input solid" />
+        <button class="icon"><i class="fas fa-search"></i></button>
+    </form>
 </div>
-{/if}
 
 {if !empty($pockets)}
     <!-- POCKETS -->
-    <div class="block" data-pl2-sidebar-wrapper="pockets">
-        <ul class="menu-v with-icons">
+    <div data-pl2-sidebar-wrapper="pockets">
+        <ul class="menu custom-mt-4">
             {foreach $pockets as $pocket}
                 <li data-pl-pocket-id="{$pocket->getId()}">
-                    <span class="count">{$pocket->getListsCount()}</span>
-                    <a href="#/pocket/{$pocket->getId()}/"><i
-                                class="icon16 color pl-dark-{$pocket->getColor()}"></i>{$pocket->getName()|escape}</a>
+                    <a href="#/pocket/{$pocket->getId()}/">
+                        <span class="count">{$pocket->getListsCount()}</span>
+                        <span class="icon">
+                            <i class="rounded pl-dark-{$pocket->getColor()}"></i>
+                        </span>
+                        <span>{$pocket->getName()|escape}</span>
+                    </a>
                 </li>
             {/foreach}
+            {if $isAdmin}
+                <li class="small">
+                    <a href="#" data-pl2-action="add-pocket" class="count action">
+                        <i class="fas fa-plus" style="font-size: 12px !important; margin-top: 1px !important; margin-left: 2px !important;"></i>
+                        <span class="gray">[`New pocket`]</span>
+                    </a>
+                </li>
+            {/if}
         </ul>
-        {if $isAdmin}
-        <ul class="menu-v with-icons">
-            <li class="small">
-                <a href="#" data-pl2-action="add-pocket"><i class="icon10 add"></i>[`New pocket`]</a>
-            </li>
-        </ul>
-        {/if}
     </div>
-
-    <div class="hr"></div>
 
 {/if}
 
 <!-- TO-DO STREAMS -->
-<div class="block">
-
-    <ul class="menu-v with-icons">
-        <li data-pl-sidebar="todo">
+<h5 class="heading">
+    <span>[`To-dos`]</span>
+</h5>
+<ul class="menu">
+    <li data-pl-sidebar="todo">
+        <a href="#/todo/">
+            <i class="fas fa-check"></i>
+            <span>[`My to-dos`]</span>
+            {if $sidebar_todo_count_icon && $sidebar_todo_count_icon->getMaxPriority() > 0}
+                <span class="count">
+                    <span class="badge {pocketlistsViewHelper::getPriorityCssClass($sidebar_todo_count_icon->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}">{$sidebar_todo_count_icon->getCountMaxPriority()}</span>
+                </span>
+            {/if}
             {if $sidebar_todo_count}<span class="count">{$sidebar_todo_count}</span>{/if}
-            {if $sidebar_todo_count_icon && $sidebar_todo_count_icon->getMaxPriority() > 0}<span class="count bold  {pocketlistsViewHelper::getPriorityCssClass($sidebar_todo_count_icon->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}">{$sidebar_todo_count_icon->getCountMaxPriority()}</span>{/if}
-            <a href="#/todo/"><i class="icon16 pl todo"></i>[`My to-dos`]</a>
-        </li>
-        <li>
-            <span class="count" data-pl-sidebar="favorites-count">{$favorites_count_undone->getCount()}</span>
-
+        </a>
+    </li>
+    <li>
+        <a href="#/favorites/">
+            <i class="fas fa-star{if $favorites_count_undone->getCountMaxPriority()} text-yellow{/if}"></i>
+            <span>[`Favorites`]</span>
             {if $favorites_count_undone->getCountMaxPriority() && $favorites_count_undone->getMaxPriority() > 0}
-                <span class="count bold {pocketlistsViewHelper::getPriorityCssClass($favorites_count_undone->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}">
-                    {$favorites_count_undone->getCountMaxPriority()}
+                <span class="count">
+                    <span class="badge {pocketlistsViewHelper::getPriorityCssClass($favorites_count_undone->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}">{$favorites_count_undone->getCountMaxPriority()}</span>
+                    <span data-pl-sidebar="favorites-count">{$favorites_count_undone->getCount()}</span>
                 </span>
             {/if}
-
-            <a href="#/favorites/"><i class="icon16 star"></i>[`Favorites`]</a>
-        </li>
-        {foreach $linkedApps as $app}
-        <li>
-            <span class="count">{$app->countItems()->getCount()}</span>
+        </a>
+    </li>
+    {foreach $linkedApps as $app}
+    <li>
+        <a href="#/app/{$app->getApp()}/">
+            <span class="icon">{$app->getAppIcon()}</span>
+            <span>{$app->getName()}</span>
             {if $app->countItems()->getCountMaxPriority() && $app->countItems()->getMaxPriority() > 0}
-                <span class="count bold {pocketlistsViewHelper::getPriorityCssClass($app->countItems()->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}">
-                    {$app->countItems()->getCountMaxPriority()}
+                <span class="count">
+                    <span class="badge {pocketlistsViewHelper::getPriorityCssClass($app->countItems()->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}">{$app->countItems()->getCountMaxPriority()}</span>
+                    {$app->countItems()->getCount()}
                 </span>
             {/if}
+        </a>
+    </li>
+    {/foreach}
 
-            <a href="#/app/{$app->getApp()}/">{$app->getAppIcon()}{$app->getName()}</a>
-        </li>
-        {/foreach}
+    <!-- plugin hook: 'backend_sidebar.streams_li' -->
+    {* @event backend_sidebar.%plugin_id% *}
+    {if !empty($backend_sidebar)}{foreach $backend_sidebar as $_}{ifset($_.streams_li)}{/foreach}{/if}
 
-        <!-- plugin hook: 'backend_sidebar.streams_li' -->
-        {* @event backend_sidebar.%plugin_id% *}
-        {if !empty($backend_sidebar)}{foreach $backend_sidebar as $_}{ifset($_.streams_li)}{/foreach}{/if}
+    <li>
+        <a href="#/logbook/">
+            <i class="fas fa-tasks"></i>
+            <span>[`Completed`]</span>
+            {if $new_items_count.logbook}
+            <span class="count">+{$new_items_count.logbook}</span>
+            {/if}
+        </a>
+    </li>
 
-        <li>
-            <a href="#/logbook/"><i class="icon16 pl logbook"></i>[`Completed`]{if $new_items_count.logbook} <span
-                        class="highlighted bold small black">+{$new_items_count.logbook}</span>{/if}</a>
-        </li>
-
-    </ul>
-</div>
+</ul>
 
 <!-- CUSTOM VIEWS -->
-<div class="block" style="padding-top: 0;">
-    <ul class="menu-v with-icons">
-        <li>
-            <a href="#/comments/"><i class="icon16 pl comments"></i>[`Comments`]{if $new_comments_count} <span
-                        class="highlighted bold small black"
-                        title="{$last_activity|wa_datetime}">+{$new_comments_count}</span>{/if}</a>
-        </li>
+<ul class="menu">
+    <li>
+        <a href="#/comments/">
+            <i class="fas fa-comment{if $new_comments_count > 0} text-blue{/if}"></i>
+            <span>[`Comments`]</span>
+            {if $new_comments_count}
+            <span
+                class="count"
+                title="{$last_activity|wa_datetime}">+{$new_comments_count}
+            </span>
+            {/if}
+        </a>
+    </li>
 
-        <!-- plugin hook: 'backend_sidebar.views_li' -->
-        {* @event backend_sidebar.%plugin_id% *}
-        {if !empty($backend_sidebar)}{foreach $backend_sidebar as $_}{ifset($_.views_li)}{/foreach}{/if}
+    <!-- plugin hook: 'backend_sidebar.views_li' -->
+    {* @event backend_sidebar.%plugin_id% *}
+    {if !empty($backend_sidebar)}{foreach $backend_sidebar as $_}{ifset($_.views_li)}{/foreach}{/if}
 
-    </ul>
-</div>
-
-<div class="block">
-    <input type="search" data-pl2-action="search" placeholder="[`Search`]" class="pl-search-input" />
-</div>
+</ul>
 
 <!-- plugin hook: 'backend_sidebar.section_block' -->
 {* @event backend_sidebar.%plugin_id% *}
@@ -155,89 +132,166 @@
 <!-- TEAM -->
 {$max_visible_in_team = 5}
 {if pocketlistsRBAC::canAssign()}
-    <div class="block">
+    <div>
         <h5 class="heading">
             {* if $team && count($team) > $max_visible_in_team}<i class="icon16 darr" data-pl-collapsible="team"></i>{/if *}
             [`Team`]
         </h5>
         {if count($team)}
-            <ul class="menu-v with-icons" data-pl-sidebar-block="team"
+            <ul class="menu" data-pl-sidebar-block="team"
                 data-pl-collapsible-wrapper="team">
                 {foreach $team as $team_id => $teammate}
                     <li data-pl-team-id="{$teammate->getId()}"
                         {if $teammate@iteration > $max_visible_in_team}style="display: none;"{/if}>
                         <a href="#/team/{$teammate->getLogin()|escape}/">
-                            <span class="count">{$teammate->getItemsInfo()->getCount()}</span>
+                            <span class="count">
+                                {if $teammate->getItemsInfo()->getMaxPriority()}
+                                    <span class="badge {pocketlistsViewHelper::getPriorityCssClass($teammate->getItemsInfo()->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}">{$teammate->getItemsInfo()->getCountMaxPriority()}</span>
+                                {/if}
 
-                            {if $teammate->getItemsInfo()->getMaxPriority()}
-                            <span class="count bold {pocketlistsViewHelper::getPriorityCssClass($teammate->getItemsInfo()->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}">
-                                {$teammate->getItemsInfo()->getCountMaxPriority()}
+                                {$teammate->getItemsInfo()->getCount()}
+                                {if !empty($new_items_count.team[$teammate->getId()])} <span
+                                        class="highlighted bold small black">+{$new_items_count.team[$teammate->getId()]}</span>{/if}
+
                             </span>
-                            {/if}
 
-                            <i class="icon16 userpic20{if $teammate->getStatus() == 'online'} pl-user-online{/if}" style="background-image: url({$teammate->getPhotoUrl()})"
-                               alt="{$teammate->getName()|escape}" data-pl-contact-id="{$teammate->getId()}"></i>{$teammate->getName()|escape}
-                            {if !empty($new_items_count.team[$teammate->getId()])} <span
-                                    class="highlighted bold small black">+{$new_items_count.team[$teammate->getId()]}</span>{/if}
+                            <span class="icon"><i class="userpic{if $teammate->getStatus() == 'online'} pl-user-online{/if}" style="background-image: url({$teammate->getPhotoUrl()})"
+                               alt="{$teammate->getName()|escape}" data-pl-contact-id="{$teammate->getId()}"></i></span>
+
+                            <span>{$teammate->getName()|escape}</span>
+
                         </a>
                     </li>
                 {/foreach}
                 {if $max_visible_in_team < count($team)}
                     <li>
-                        <a class="pl-team-showall-link inline-link" data-pl-action="show-all-team"
-                           href="#"><b><i>[`Show everyone`] ({count($team)})</i></b></a>
+                        <a class="pl-team-showall-link" data-pl-action="show-all-team"
+                           href="#">[`Show everyone`] ({count($team)})</a>
                     </li>
                 {/if}
             </ul>
         {else}
-            <div class="block">
-                <p class="hint align-center">{sprintf('[`Use <a href="%s">Team app</a> to invite teammates and to collaborate using the Pocket Lists app: select a user or a group of users &gt; Access tab &gt; Pocket Lists app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/')}</p>
+            <div class="box align-center custom-mt-12">
+                <p class="hint">{sprintf('[`Use <a href="%s">Team app</a> to invite teammates and to collaborate using the Pocket Lists app: select a user or a group of users &gt; Access tab &gt; Pocket Lists app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/')}</p>
             </div>
         {/if}
     </div>
 {/if}
 
-
 <!-- SYSTEM -->
-<div class="hr"></div>
-<div class="block">
-    <ul class="menu-v with-icons">
-        <li>
-            <a href="#/archive/"><i class="icon16 pl archive"></i>[`Archive`]{if $new_items_count.archive} <span
-                        class="highlighted bold small black">+{$new_items_count.archive}</span>{/if}</a>
-        </li>
-        <li>
-            <a href="#/settings/"><i class="icon16 settings"></i>[`Settings`]</a>
-        </li>
+<hr>
+<ul class="menu">
+    <li>
+        <a href="#/archive/">
+            <i class="fas fa-archive text-brown"></i>
+            <span>[`Archive`]</span>
+            {if $new_items_count.archive}
+            <span class="count">
+                <span class="badge">+{$new_items_count.archive}</span>
+            </span>
+            {/if}
+        </a>
+    </li>
+    <li>
+        <a href="#/settings/">
+            <i class="fas fa-cog"></i>
+            <span>[`Settings`]</span>
+        </a>
+    </li>
+    {if $isAdmin}
+    <li>
+        <a href="#/plugins/">
+            <i class="fas fa-plug"></i>
+            <span>[`Plugins`]</span>
+        </a>
+    </li>
+    {/if}
 
-        <!-- plugin hook: 'backend_sidebar.system_li' -->
-        {* @event backend_sidebar.%plugin_id% *}
-        {if !empty($backend_sidebar)}{foreach $backend_sidebar as $_}{ifset($_.system_li)}{/foreach}{/if}
+    <!-- plugin hook: 'backend_sidebar.system_li' -->
+    {* @event backend_sidebar.%plugin_id% *}
+    {if !empty($backend_sidebar)}{foreach $backend_sidebar as $_}{ifset($_.system_li)}{/foreach}{/if}
+</ul>
+
+</div>
+
+<!-- PROMO -->
+<div class="sidebar-footer shadowed">
+
+    <ul class="menu">
 
         {if !pocketlistsHelper::hasPlugin('pro')}
         <li class="top-padded">
-            <a href="#/upgrade/"><i class="icon16" style="background-image: url('/wa-apps/pocketlists/img/pl2pro-plugin-icon16.png') !important; background-size: 16px 16px; border-radius: 50%;"></i>{sprintf('[`Upgrade to %s`]','<span class="pl-label pl-pro">PRO</span>')}</a>
+            <a href="#/upgrade/">
+                <i class="fas fa-percent text-orange"></i>
+                <span>{sprintf('[`Upgrade to %s`]','&nbsp;<span class="badge yellow text-black" style="flex: none;">PRO</span>')}</span>
+            </a>
         </li>
         {/if}
         <li{if pocketlistsHelper::hasPlugin('pro')} class="top-padded"{/if}>
-            <a href="#/about/"><i class="icon16" style="background-image: url('/wa-apps/pocketlists/img/pl2webasyst48.png') !important; background-size: 16px 16px;"></i>[`About`]</a>
+            <a href="#/about/">
+                <span class="icon">
+                    <i style="background-image: url('/wa-apps/pocketlists/img/pl2webasyst48.png') !important;" class="size-20"></i>
+                </span>
+                <span>[`About`]</span>
+            </a>
         </li>
-        {if $isAdmin}
-        <li>
-            <a href="#/plugins/"><i class="icon16 plugins"></i>[`Plugins`]</a>
-        </li>
-        {/if}
+
     </ul>
     {if $isAdmin && empty($pockets)}
         <div data-pl2-sidebar-wrapper="pockets">
-            <ul class="menu-v with-icons">
+            <ul class="menu">
                 <li class="small top-padded">
-                    <a href="#" data-pl2-action="add-pocket"><i class="icon10 add"></i>[`New pocket`]</a>
+                    <a href="#" data-pl2-action="add-pocket">
+                        <i class="fas fa-plus" style="font-size: 12px !important; margin-top: 1px !important; margin-left: 2px !important;"></i>
+                        <span>[`New pocket`]</span>
+                    </a>
                 </li>
             </ul>
         </div>
     {/if}
-</div>
+
+    {if $showTinyAd && !empty($tinyAd)}
+    <div class="pl-tiny-ad">
+        <div class="pl-tiny-ad-box">
+
+            <div class="flexbox space-8 custom-mb-8">
+                <h6 class="heading wide custom-m-0">{$tinyAd.heading}</h6>
+                <a href="#" class="pl-tiny-ad-close" title="[`Close`]"><i class="fas fa-times"></i></a>
+            </div>
+
+            <div class="flexbox space-8{if $tinyAd.adtype == 'plugin'} vertical{/if}">
+                <a href="{$tinyAd.appurl}" target="_blank">
+                    <img src="{$tinyAd.image}" class="pl-app-icon{if $tinyAd.adtype == 'plugin'} pl-plugin-icon{/if}" />
+                </a>
+                <div class="wide">
+                    <h5 class="custom-mb-4">
+                        <a href="{$tinyAd.appurl}" target="_blank">{$tinyAd.title}</a>
+                        <span class="badge indicator onfire bold pl-app-discount-badge">&minus;{$tinyAd.discount}%</span>
+                    </h5>
+                    <p class="custom-mt-0">{$tinyAd.subtitle}</p>
+                </div>
+            </div>
+
+            <p class="align-center semibold gray">{$tinyAd.teaser}</p>
+
+            <a href="{$tinyAd.buyurl}" target="_blank" class="button green pl-tiny-ad-action-button">[`Show promocode`]</a>
+
+            <script>
+                ( function($) {
+                    var dialog_html = "<div class=\"dialog pl-tiny-ad-dialog\" id=\"\"> <div class=\"dialog-background\"><\/div> <div class=\"dialog-body\"> <a href=\"#\" class=\"dialog-close js-close-dialog\"><i class=\"fas fa-times\"><\/i><\/a> <div class=\"dialog-content\"> <div class=\"flexbox space-16 wrap-mobile\"> <a href=\"{$tinyAd.appurl}\" target=\"_blank\"> <img src=\"{$tinyAd.image}\" class=\"pl-app-icon{if $tinyAd.adtype == 'plugin'} pl-plugin-icon{/if}\" /> </a> <div class=\"wide\"> <h3 class=\"custom-mb-12 nowrap\"> <a href=\"{$tinyAd.appurl}\" target=\"_blank\">{$tinyAd.title}</a> <span class=\"badge indicator onfire bold pl-app-discount-badge\">&minus;{$tinyAd.discount}%</span> </h3> <p class=\"custom-mt-0\">{$tinyAd.body}</p> </div> </div> <\/div> <footer class=\"dialog-footer align-center\"> <p class=\"custom-mb-8\">[`Use this promocode until it expires:`] </p> <input type=\"text\" class=\"bold align-center\" value=\"{$tinyAd.promocode}\" style=\"border-style: dashed; font-size: 1.5rem;\"> <div class=\"custom-mt-20\"> <a href=\"{$tinyAd.buyurl}\" class=\"button large green\" target=\"_blank\">[`Buy now with promocode`] </a>  <a href=\"{$tinyAd.appurl}\" class=\"button large nobutton\" target=\"_blank\">{if $tinyAd.adtype == 'plugin'}[`About the plugin`]{else}[`About the app`]{/if} <i class=\"fas fa-external-link-alt opacity-40 small custom-ml-4\"></i></a> </div> <\/footer> <\/div> <\/div> ";
+
+                    $(".pl-tiny-ad-action-button").on("click", function() {
+                        var dialog = $.waDialog({
+                            html: dialog_html
+                        });
+                        return false;
+                    });
+                })(jQuery);
+            </script>
+
+        </div>
+    </div>
+    {/if}
 
 </div>
 

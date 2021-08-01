@@ -1,0 +1,139 @@
+<section id="pl2-internal-notification">
+    <style>
+        #pl2-internal-notification .alert-area {
+            max-height: 100%;
+            position: fixed;
+            bottom: 5px;
+            left: 20px;
+            right: 20px;
+            z-index: 999;
+        }
+
+        #pl2-internal-notification .alert-box {
+            font-size: 12px;
+            color: white;
+            background: rgba(0, 0, 0, 0.6);
+            line-height: 1.3em;
+            padding: 10px 15px;
+            margin: 5px 10px;
+            position: relative;
+            border-radius: 5px;
+            transition: opacity 0.5s ease-in;
+        }
+
+        #pl2-internal-notification .alert-box.hide {
+            opacity: 0;
+        }
+
+        #pl2-internal-notification .alert-close {
+            background: transparent;
+            width: 12px;
+            height: 12px;
+            position: absolute;
+            top: 15px;
+            right: 15px;
+        }
+
+        #pl2-internal-notification .alert-content {
+            margin-right: 15px;
+        }
+
+        #pl2-internal-notification .alert-close:after,
+        #pl2-internal-notification .alert-close:before {
+            width: 32px;
+            height: 32px;
+            display: block;
+            position: absolute;
+        }
+        #pl2-internal-notification .alert-close:before {
+            content: '';
+            background: url({$pl2_app_static_url}/img/pl2webasyst96.png) no-repeat center;
+            background-size: 22px;
+            top: -14px;
+            left: -5px;
+        }
+        #pl2-internal-notification .alert-close:after {
+            content: '';
+            font-size: 3em;
+            color: white;
+            width: 22px;
+            height: 22px;
+            top: -10px;
+            left: -1px;
+        }
+        #pl2-internal-notification .alert-close:hover:after {
+            content: '×';
+        }
+        #pl2-internal-notification .alert-close:hover:before {
+            background-image: none;
+        }
+
+        @media (max-width: 767px) and (min-width: 481px) {
+            #pl2-internal-notification .alert-area {
+                left: 100px;
+                right: 100px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            #pl2-internal-notification .alert-area {
+                width: 350px;
+                left: auto;
+                right: 0;
+            }
+        }
+    </style>
+    <script>
+        'use strict';
+
+        (function (w) {
+            w['pocketlistsAlertBox'] = w['pocketlistsAlertBox'] || function(id, option) {
+                this.show = function(msg) {
+                    if (typeof msg === 'undefined' || msg === null || msg['title'] === 'undefined' || msg['text'] === 'undefined') {
+                        throw '"msg parameter is empty"';
+                    }
+
+                    else {
+                        var alertArea = document.querySelector(id),
+                            alertBox = document.createElement('DIV'),
+                            alertContent = document.createElement('DIV'),
+                            alertClose = document.createElement('A'),
+                            alertClass = this;
+
+                        alertContent.classList.add('alert-content');
+                        alertContent.innerText = msg.text;
+                        alertClose.classList.add('alert-close');
+                        alertClose.innerText = '×';
+                        alertClose.setAttribute('href', '#');
+                        alertBox.classList.add('alert-box');
+                        alertBox.appendChild(alertContent);
+                        if (!option.hideCloseButton || typeof option.hideCloseButton === 'undefined') {
+                            alertBox.appendChild(alertClose);
+                        }
+                        alertArea.appendChild(alertBox);
+                        alertClose.addEventListener('click', function(event) {
+                            event.preventDefault();
+                            alertClass.hide(alertBox);
+                        });
+                        if (!option.persistent) {
+                            var alertTimeout = setTimeout(function() {
+                                alertClass.hide(alertBox);
+                                clearTimeout(alertTimeout);
+                            }, option.closeTime);
+                        }
+                    }
+                };
+
+                this.hide = function(alertBox) {
+                    alertBox.classList.add('hide');
+                    var disperseTimeout = setTimeout(function() {
+                        alertBox.parentNode.removeChild(alertBox);
+                        clearTimeout(disperseTimeout);
+                    }, 500);
+                };
+            };
+        })(window);
+
+    </script>
+    <div id="pl2-notification-area" class="alert-area"></div>
+</section>

@@ -1,6 +1,6 @@
 {if !empty($pl2pro['external'])}
-    <link href="{$pl2pro['wa_app_static_url']}plugins/pro/css/pro.css" rel="stylesheet" type="text/css">
-    <script type="text/javascript" src="{$pl2pro['wa_app_static_url']}plugins/pro/js/pro.js?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
+    <link href="{$pl2pro['wa_app_static_url']}plugins/pro/css/pro.css?v2{if !waSystemConfig::isDebug()}{$wa->version()}{/if}" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="{$pl2pro['wa_app_static_url']}plugins/pro/js/pro.js?v2{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
     <script>
         (function () {
             $.pocketlists_pro.init();
@@ -42,7 +42,7 @@
         >
         {* @var pocketlistsProPluginShortcut shortcut *}
         {foreach $shortcuts as $shortcut}
-            <a href="#" class="inline-link pl2pro-shortcut" title="Alt + {$shortcut@iteration}"><b><i>{$shortcut->getName()|escape}</i></b></a>
+            <a href="#" class="small gray pl2pro-shortcut" title="Alt + {$shortcut@iteration}">{$shortcut->getName()|escape}</a>
         {/foreach}
         </span>
         {/foreach}

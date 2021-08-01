@@ -64,8 +64,8 @@ class pocketlistsProPluginSettingsActions extends pocketlistsViewActions
                     $shopActions['shop.' . $actionId]->automationRulesHtml[$automation->getId()] = _wp('ALL');
                 }
 
-                $shopActions['shop.' . $actionId]->automationActionsHtml[$automation->getId()] = $automation->getAction(
-                )->viewHtml();
+                $shopActions['shop.' . $actionId]->automationActionsHtml[$automation->getId()] = $automation->getAction()
+                    ->viewHtml();
             } catch (pocketlistsProPluginNoShopActionException $exception) {
                 pocketlistsLogger::debug($exception->getMessage());
             } catch (Exception $exception) {

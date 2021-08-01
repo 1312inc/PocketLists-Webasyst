@@ -1,0 +1,248 @@
+{* @var pocketlistsItem $item *}
+{* @var pocketlistsAttachment $attachment *}
+<div class="pl-details-form">
+<div class="pl-details-form-container">
+<div class="fields form">
+
+    <a class="pl-enable-item-add-compact-mode pl-unsaved-items-only" href="#" data-pl2-action="close" title="[`Hide details and use the compact add mode by default`]"><i class="icon16 pl caret-up"></i></a>
+
+    <form method="post" id="pl-item-details-form" action="{$plurl}?module=item&amp;action=data" target="pl-item-details-form-iframe" enctype="multipart/form-data">
+    {* <a href="#" class="pl-item-details-cancel" class="pl-close" title="[`Close`]">&times;</a> *}
+    {$wa->csrf()}
+    <input type="hidden" name="item[id]" value="{$item->getId()}"/>
+    <input type="hidden" id="pl-item-list-id" value="{$item->getListId()}"/>
+    <!-- core -->
+
+
+        <textarea class="pl-details-textarea pl-item-name" name="item[name]" placeholder="[`New to-do`]" {if $item->isDone()} disabled="disabled"{/if}>{$item->getName()|escape}</textarea>
+
+        <div class="pl-details-primary-hint-wrapper">
+
+            <!-- plugin hook: 'backend_item_add.detail' -->
+            {* @event backend_item_add.%plugin_id% *}
+            {if !empty($backend_item_add)}{foreach $backend_item_add as $plugin_id => $_}
+                <!-- plugin {$plugin_id} -->
+                {ifset($_)}
+                <!-- /plugin {$plugin_id} -->
+            {/foreach}{/if}
+            <!-- /plugin hook: 'backend_item_add.detail' -->
+
+            {if $wa->shop}<p class="hint pl-app-hint-internal">[`Use @ or # symbols to link this to-do with a Shop-Script order or a task from the Tasks app.`]{* <a href="#" class="inline-link"><b><i>[`Ok, I got it.`]</i></b></a> *}</p>{/if}
+
+            <p class="hint pl-app-hint-external"><i class="icon16 pl pl2app"></i>{sprintf('[`The to-do item will be saved in the <span class="nowrap"><a href="%s" class="gray" target="_blank">Pocket Lists</a> app</span> and will be visible only to authorized Webasyst users. The customer will not see this to-do.`]', $wa_backend_url|cat:'pocketlists/')}{* <a href="#" class="inline-link"><b><i>[`Ok, I got it.`]</i></b></a> *}</p>
+
+            <div data-pl2-item-links class="pl-details-linked-entities">
+                {foreach $item->getLinkedEntities() as $linkedEntity}
+                    <div data-pl2-link-preview>
+                        {$linkedEntity->getAppLink()->renderPreview($linkedEntity, [allow_delete => 1])}
+                    </div>
+                {/foreach}
+            </div>
+
+        </div>
+
+        <textarea class="pl-details-textarea" name="item[note]" data-pl2-textarea-rows="2" placeholder="[`Note`]"{if $item->isDone()} disabled="disabled"{/if}>{$item->getNote()|escape}</textarea>
+
+    {*$wa->csrf()*}
+    <div data-pl-item-details-attachments>
+
+        <div class="block double-padded{if $fileupload} pl-add-attachment-dropbox{/if}"{if $fileupload} data-pl-item-details-fileupload{/if}>
+
+            <ul class="menu-v">
+            {foreach $item->getAttachments() as $attachment}
+                <li>
+                    <a href="#" class="gray float-right" data-pl-attachment-id="{$attachment->getId()}" data-pl-attachment-name="{$attachment->getFilename()}" style="margin-left: 10px;">&times;</a>
+                    <a href="{$pl2_attachments_path}{$attachment->getFilename()}" target="_blank">{$attachment->getFilename()|truncate:128}</a>
+                </li>
+            {/foreach}
+            </ul>
+            {if $fileupload}
+            <input type="file" name="files[]" multiple="">
+            {/if}
+        </div>
+
+        {if $fileupload}
+        <div id="progress" class="progress" style="width: 100%; height: 2px;">
+            <div class="progress-bar progress-bar-success" style="background-color: #00aa00"></div>
+        </div>
+        {/if}
+
+    </div>
+
+    <div class="field-group">
+        {if $contacts}
+        <div class="field" id="pl-assigned-contact">
+            <div class="name">[`Assigned to`]</div>
+            <div class="value no-shift">
+                <span>
+                    <i class="icon16 userpic20" data-pl-contact-id="0" style="display: none;"></i>
+                    {foreach $contacts as $contact}
+                    <i class="icon16 userpic20" style="background-image: url({$contact->getUserPic()}); {if $contact->getId() == $item->getAssignedContactId()}{else}display: none;{/if}" alt="{$contact->getUsername()|escape}" data-pl-contact-id="{$contact->getId()}"></i>
+                    {/foreach}
+                </span>
+                <select name="item[assigned_contact_id]">
+                    {$assignUserId = $assign_user_id|default:$item->getAssignedContactId()}
+                    <option value="0" {if !$assignUserId}selected="selected"{/if}>[`Nobody`]</option>
+                    {foreach $contacts as $contact}
+                    <option value="{$contact->getId()}" {if $assignUserId == $contact->getId()}selected="selected"{/if}>{$contact->getUsername()|escape|truncate:64}{if $contact->isMe()} ([`me`]){/if}</option>
+                    {/foreach}
+                </select>
+                <p class="hint" style="display: none;" data-pl2-item-assign-hint>[`The user will see this to-do in his Pocket Lists to-do stream and will be notified about this assignment by email.`]</p>
+            </div>
+        </div>
+        {/if}
+        <div class="field pl-already-saved-items-only">
+            <div class="name">[`Created`]</div>
+            <div class="value no-shift">
+                <i class="icon16 userpic20" style="background-image: url({$item->getContact()->getUserPic()})" alt="{$item->getContact()->getUsername()|escape}"></i>
+
+                {$item->getContact()->getUsername()|escape}
+                <span class="hint nowrap">{$item->getCreateDatetime()|wa_datetime:'humandatetime'}</span>
+            </div>
+        </div>
+        {if $item->getUpdateDatetime() > $item->getCreateDatetime()}
+            <div class="field pl-already-saved-items-only">
+                <div class="name">[`Updated`]</div>
+                <div class="value no-shift">
+                    <span class="nowrap">{$item->getUpdateDatetime()|wa_datetime:'humandatetime'}</span>
+                </div>
+            </div>
+        {/if}
+        {if $item->isDone()}
+            <div class="field">
+                <div class="name">[`Completed`]</div>
+                <div class="value no-shift">
+                    {if $item->getCompleteContact()}
+                    <i class="icon16 userpic20" style="background-image: url({$item->getCompleteContact()->getUserPic()})" alt="{$item->getCompleteContact()->getUsername()|escape}"></i>
+                    {$item->getCompleteContact()->getUsername()|escape}
+                    <span class="hint nowrap">{$item->getCompleteDatetime()|wa_datetime:'humandatetime'}</span>
+                    {/if}
+                </div>
+            </div>
+        {/if}
+        <div class="clear-both"></div>
+    </div>
+
+    <!-- notifications -->
+    <div class="field-group">
+        {if !$item->isDone()}
+        <div class="field">
+            <div class="name">[`Priority`]</div>
+            <div class="value no-shift" id="pl-item-priority">
+                <input type="hidden" name="item[priority]" value="{$item->getPriority()}"/>
+                <a href="#" {if $item->getPriority() == pocketlistsItem::PRIORITY_NORM}class="selected"{/if} data-pl-item-priority="{pocketlistsItem::PRIORITY_NORM}"><input type="checkbox" class="pl-done"><span></span></a>
+                <a href="#" {if $item->getPriority() == pocketlistsItem::PRIORITY_GREEN}class="selected"{/if} data-pl-item-priority="{pocketlistsItem::PRIORITY_GREEN}"><input type="checkbox" class="pl-done pl-priority-green"><span></span></a>
+                <a href="#" {if $item->getPriority() == pocketlistsItem::PRIORITY_YELLOW}class="selected"{/if} data-pl-item-priority="{pocketlistsItem::PRIORITY_YELLOW}"><input type="checkbox" class="pl-done pl-priority-yellow"><span></span></a>
+                <a href="#" {if $item->getPriority() == pocketlistsItem::PRIORITY_RED}class="selected"{/if} data-pl-item-priority="{pocketlistsItem::PRIORITY_RED}"><input type="checkbox" class="pl-done pl-priority-red"><span></span></a>
+                <a href="#" {if $item->getPriority() == pocketlistsItem::PRIORITY_BLACK}class="selected"{/if} data-pl-item-priority="{pocketlistsItem::PRIORITY_BLACK}"><input type="checkbox" class="pl-done pl-priority-black"><span></span></a>
+                <a href="#" {if $item->getPriority() == pocketlistsItem::PRIORITY_BURNINHELL}class="selected"{/if} data-pl-item-priority="{pocketlistsItem::PRIORITY_BURNINHELL}"><input type="checkbox" class="pl-done pl-priority-fire"><span></span></a>
+            </div>
+        </div>
+        <div class="field">
+            <div class="name">[`When`]</div>
+
+            <div class="value">
+                <input name="item[due_date]" class="pl-due-date-input" type="text" id="pl-item-due-datetime" value="{$item->getDueDate()}" autocomplete="off" placeholder="[`Set date`]" />
+                <span id="pl-item-due-datetime-time">
+                    {$hour = $item->getDueDatetime()|wa_datetime:'H'}
+                    <select name="item[due_datetime_hours]" class="pl-due-date-input" id="pl-item-due-datetime-hours" value="{$hour}" {if !$item->getDueDatetime()}style="display: none;" disabled="disabled"{/if}>
+                        {for $i=0 to 23}{$h = "%02d"|sprintf:$i}<option value="{$h}" {if $h == $hour}selected="selected"{/if}>{$h}</option>{/for}
+                    </select>
+                    {$minutes = $item->getDueDatetime()|wa_datetime:'i'}
+                    <select name="item[due_datetime_minutes]" class="pl-due-date-input" type="text" id="pl-item-due-datetime-minutes" value="{$minutes}" {if !$item->getDueDatetime()}style="display: none;" disabled="disabled"{/if}>
+                        {for $i=0 to 59 step 5}{$m = "%02d"|sprintf:$i}<option value="{$m}" {if $m == $minutes}selected="selected"{/if}>{$m}</option>{/for}
+                    </select>
+                    <a href="#" id="pl-item-due-datetime-set" class="small inline-link nowrap" {if !$item->getDueDatetime() || $item->getDueDatetime()}style="display: none;"{/if}><b><i>[`Set time`]</i></b></a>
+                    <a href="#" id="pl-item-due-datetime-clear" class="small inline-link nowrap" {if !$item->getDueDatetime()}style="display: none;"{/if}><b><i>[`Clear time`]</i></b></a>
+                </span>
+                {if $item->getDueDate()}
+                    <p class="hint">[`When due is set, it may automatically increase the manually set priority color.`]</p>
+                {/if}
+            </div>
+            <div class="clear-both"></div>
+        </div>
+        {else}
+        <div class="field">
+            <div class="value"><p class="hint">[`This item is <strong>marked as completed</strong>. Setting priority and due date won’t be visible within the to-do list.`]</p></div>
+        </div>
+        {/if}
+
+        <div class="field" {if $caller === 'list'} style="display: none;"{/if}>
+            <div class="name nowrap">
+                [`List`]
+            </div>
+            <div class="value no-shift">
+                <select id="pl-item-list">
+                {if !$item->getListId() || !$list->getId() || $item->getContact()->isMe()}<option value=""{if !$item->getListId() || !$list->getId()} selected="selected"{/if}>[`None`]</option>{/if}
+                {foreach $lists as $l}
+                    <option value="{$l->id}" {if ($item->getId() && $item->getListId() == $l->id)}selected="selected"{/if}>
+                        {$l->pocketName|escape} > {$l->nameParsed|escape|truncate:32}
+                    </option>
+                {/foreach}
+                </select>
+                <input type="hidden" name="item[list_id]" value="{$item->getListId()}"/>
+                {* DEPRECATED FEB 2017 <div id="pl-null-list-msg"{if $list} style="display: none;"{/if}>
+                    <span class="hint"><i class="icon10 lock-bw"></i>[`Removing to-do item from a list makes it <strong>your private to-do item</strong> hidden from your teammates, and available on your To-do Stream only.`]</span>
+                </div> *}
+            </div>
+        </div>
+
+        {*
+        <div class="field">
+            <div class="name">[`Repeat`]</div>
+            <div class="value no-shift">
+                <select name="item[repeat]">
+                    <option>[`None`]</option>
+                    <option>[`Every Day`]</option>
+                    <option>[`Every Week`]</option>
+                    <option>[`Every 2 Weeks`]</option>
+                    <option>[`Every Month`]</option>
+                    <option>[`Every Year`]</option>
+                    <option>[`Custom...`]</option>
+                </select>
+            </div>
+        </div>
+        <div class="field">
+            <div class="name">[`Location`]</div>
+            <div class="value no-shift">
+                @ Lumberjack
+                <input type="hidden" name="item[location_id]"/>
+            </div>
+        </div>
+        *}
+    </div>
+
+    <div class="field-group" style="margin-bottom: 0;">
+        <div class="field">
+
+            <div class="float-right block half-padded">
+                <ul class="menu-v with-icons">
+                    <li class="pl-already-saved-items-only">
+                        <a href="#" data-pl-action="item-delete" class="nowrap">
+                            <i class="icon16 delete"></i>[`Delete to-do`]
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <input type="submit" class="button green" value="{if $item->getId()}[`Save`]{else}[`Add to-do`]{/if}"  id="pl-item-details-save"/>
+            [`or`]
+            <a href="#" class="pl-item-details-cancel">[`cancel`]</a>
+
+            <span class="error" style="display: none;">[`error`]</span>
+            <span class="success" style="display: none;">[`saved`]</span>
+
+        </div>
+    </div>
+
+    </form>
+    <iframe id="pl-item-details-form-iframe" name="pl-item-details-form-iframe" style="display:none;"></iframe>
+
+    <div class="clear-both"></div>
+
+</div>
+
+</div>
+</div>
+
+{include '../../include-legacy/deleteitemdialog.html' inline}

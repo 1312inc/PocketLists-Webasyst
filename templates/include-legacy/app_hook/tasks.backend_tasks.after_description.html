@@ -1,0 +1,22 @@
+<style>
+    .t-tasks-wrapper .pl-subtasks-preview { margin: 15px 0 20px; }
+    .t-tasks-wrapper .pl-subtasks-preview i.icon16.pl2-app-icon { background-image: url('{$params.wa_app_static_url}img/pl2webasyst48.png') !important; background-size: 16px 16px; margin-left: 0.2rem; margin-right: 0; }
+</style>
+{if $params.count_undone_items}
+    <div class="pl-subtasks-preview">
+        <div class="fields width100px">
+            <div class="field">
+                <div class="name">
+                    [`Subtasks`]
+                </div>
+                <div class="value">
+                    <a href="{$params.task_url}">
+                        <i class="icon16 pl2-app-icon"></i>
+                        <strong class="highlighted">{sprintf( _wp('%d to-do is pending', '%d to-dos are pending', $params.count_undone_items), $params.count_undone_items)}</strong>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="clear-both"></div>
+    </div>
+{/if}

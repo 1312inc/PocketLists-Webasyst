@@ -1,6 +1,19 @@
 (function ($) {
     'use strict';
 
+    var waLoading = $.waLoading();
+
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            if (settings.url.includes('?module=') && !settings.url.includes('?module=backend')) {
+                waLoading.animate(6000, 99, true);
+                this.complete = function () {
+                    waLoading.done();
+                };
+            }
+        },
+    });
+
     $.storage = new $.store();
     $.pocketlists_routing = {
         options: {

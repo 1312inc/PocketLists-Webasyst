@@ -1,0 +1,120 @@
+{$_utm_suffix = '?utm_source=pl2webasyst&utm_medium=inapp_fullpage_ad&utm_campaign=1312_inapp_pl2pro_upgrade_wa1'}
+{if 000000 && $wa->user()->isAdmin('installer')}
+    {$_pl2pro_url = $wa_backend_url|cat:'installer/store/plugin/pocketlists/pro/'|cat:$_utm_suffix}
+{else}
+    {$_pl2pro_url = '[`https://www.webasyst.com/store/plugin/pocketlists/pro/`]'|cat:$_utm_suffix}
+{/if}
+
+{capture "pl2proupgradead"}
+<figure class="block double-padded highlighted pl-upgrade-ad">
+      <a href="{$_pl2pro_url}" target="_blank"><img src="{$wa_url}wa-apps/pocketlists/img/pl2pro-plugin-icon{if $wa->locale() != 'ru_RU'}-en{/if}.png" class="pl-wa-plugin-icon" /></a>
+      <h3>
+          <a href="{$_pl2pro_url}" class="large" target="_blank">
+              [`Pocket Lists PRO plugin`]
+              &nbsp;<span class="nowrap"><i class="icon16 star"></i><i class="icon16 star"></i><i class="icon16 star"></i><i class="icon16 star"></i><i class="icon16 star"></i></span>
+          </a>
+      </h3>
+      <p>
+          [`Shop-Script automation (auto create to-dos based on actions with orders), kanban board, status labels, quick entry templates, and other advanced features.`]
+      </p>
+      <p style="margin-bottom: 5px;">
+          <a href="[`https://www.webasyst.com/buy/store/5045/`]{$_utm_suffix}" class="button green" target="_blank">[`Buy now with promocode`]</a>
+      </p>
+      <div class="block double-padded align-center" style="padding-bottom: 5px;">
+          <p class="small">
+              [`Use this promocode until it expires:`]
+              <span class="indicator red" style="top: 0;">&minus;20%</span>
+          </p>
+          <input type="text" class="bold align-center larger text-green" value="B87K2IZFCZ" style="border-style: dashed; font-size: 20px;">
+      </div>
+      <div class="clear-both"></div>
+</figure>
+{/capture}
+
+<div class="shadowed">
+
+    <div class="pl-upgrade-cover"></div>
+
+    <main class="block double-padded">
+
+        <article class="pl-upgrade-content">
+
+            {if pocketlistsHelper::hasPlugin('pro')}
+
+                <br>
+                <h1 class="top-padded align-center">[`Great to see a PRO user here!`]</h1>
+                <p class="align-center">{sprintf('[`<a href="%s">Pocket Lists PRO</a> plugin is installed and running at full speed. Thank you for being a PRO user and for supporting the project.`]', $_pl2pro_url)}
+
+            {else}
+
+                {if $wa->locale() == 'ru_RU'}
+
+                    <h1>Апгрейд до Pocket Lists PRO</h1>
+
+                    <p>Установите плагин Pocket Lists PRO, настройте автоматические задачи и напоминания менеджерам по действиям с заказами Shop-Script — и больше <strong>никогда не упустите ни одной продажи!</strong></p>
+
+                    {$smarty.capture.pl2proupgradead}
+
+                    <p>Плагин сделает командную работу в Pocket Lists максимально эффективной. Вот как это работает:</p>
+                    <ul>
+                        <li><span class="pl-label pl-dark-green">Главная фишка</span><strong>Автоматическое создание задач на основе действий с заказами в Shop-Script</strong>. Когда выполняется какое-либо действие с заказом (например, заказ создается, уходит в отгрузку или отмечается выполненным), автоматически создается задача в Pocket Lists.<br><br> Например:<br><br>
+                          <ul style="font-size: 13px;">
+                            <li>Заказ <code style="color: green;">В обработку</code> &rarr; автоматически создать задачу <code>Сборка заказа &#123;$order_id&#125;</code> и назначить менеджеру Валере.</li>
+                            <li>Заказ <code style="color: blue;">Отправлен</code> &rarr; автоматически создать задачу <code>Проверить трек &#123;$tracking_number&#125;</code>. Но создать не сразу, а через 72 часа, если статус заказа не изменился.</li>
+                            <li>Заказ <code style="color: purple;">Выполнен</code> &rarr; сразу же задачу маркетологу <code>Попросить написать отзыв о товаре &#123;$customer_name&#125; / &#123;$customer_phone&#125;. Заказывал &#123;$ordered_items&#125;</code>.</li>
+                            <li>Заказ <code style="color: red;">Возврат</code> &rarr; задачу директору <code>Проверить, кто накосячил с заказом №&#123;$order_id&#125;</code>.</li>
+                          </ul>
+                          И так далее. Все очень гибко настраивается!<br><br>
+                          <img src="https://1312.io/wa-data/public/site/img/webasyst/pl2pro100/ru-pl2pro-ss-automation-120.png" />
+                        </li>
+                        <li><strong>Шаблоны быстрого ввода</strong>: <code>Оплатить ...</code>, <code>Связаться ...</code>, <code>Напомнить ...</code>, <code>Отгрузить ...</code>, <code>Уточнить ...</code> — подобные задачи ставятся изо дня в день. Ускорьте их постановку с помощью быстрых шаблонов, которые заменят ручной ввод. Создавайте задачи в несколько кликов:<br><br>
+                            <img src="https://1312.io/wa-data/public/site/img/webasyst/pl2pro100/ru-pl2pro-shortcuts-ss.gif" />
+                        <br><br>
+                            Клик по шаблону или нажатие <code>Alt + #</code> (# — порядковый номером шаблона) — и готово! Список шаблонов настраивается произвольным образом с возможностью группировки в блоки, которые будут последовательно предлагаться по мере ввода текста задачи.</li>
+                        <li><strong>Маркеры задач</strong> позволят типизировать задачи:<br><br>
+                          <img src="https://1312.io/wa-data/public/site/img/webasyst/pl2pro100/ru-pl2pro-labels.png" />
+                          <br><br>
+                          Маркеры — универсальны. В качестве маркеров могут выступать как типы задач (<em>звонок, встреча, отгрузка, платеж, идея, пожелание и т.д.</em>), так и статусы (<em>в работе, тестируется, опубликовано, бэклог и т.п.</em>) или же все вместе. Настройте список маркеров именно так, как будет удобно для вашего рабочего процесса.</li>
+                      <li><strong>Канбан</strong>: наглядное представление всех задач по созданным вами маркерам. Если сделки в Webasyst CRM слишком сложны для вашего рабочего процесса, то канбан-доска в Pocket Lists PRO станет отличной альтернативой и отправной точкой!<br><br>
+                          <img src="https://1312.io/wa-data/public/site/img/webasyst/pl2pro100/ru-pl2pro-kanban.gif" /></li>
+                      <li><strong>История действий</strong>: подробная хронология всего, что происходит в Pocket Lists: кто какую задачу добавил и выполнил, в каком проекте какой список создал и т.д. Следите за хронологией в рамках всей компании, отдельного сотрудника, проекта или списка.<br><br>
+                          <img src="https://1312.io/wa-data/public/site/img/webasyst/pl2pro100/ru-pl2pro-activity.png" />
+                      </li>
+                    </ul>
+
+                    {$smarty.capture.pl2proupgradead}
+
+                {else}
+
+                    <h1>Upgrade to Pocket Lists PRO</h1>
+
+                    <p>Install the Pocket Lists PRO plugin and get the best teamwork experience the Pocket Lists app has to offer.</p>
+
+                    {$smarty.capture.pl2proupgradead}
+
+                    <p>The plugin improves the functionality of the Pocket Lists app with a set of advanced features:</p>
+                    <ul>
+                      <li><strong>Status labels</strong>: status labels enable you to mark to-dos with colors and text labels for better and a more sophisticated organization. The list of available labels is system-wide and applicable for all to-dos no matter of a pocket or a list.</li>
+                      <li><strong>Kanban board</strong>: brings all tasks into a kanban view based on status labels.</li>
+                      <li><strong>Shortcuts (quick entry templates)</strong>: shortcuts help you create to-dos even faster. When creating a new to-do item, shortcuts will be offered as suggestions depending on your current input and will allow you to add to-dos with simple clicks instead of a keyboard input.</li>
+                      <li><strong>Activity</strong>: a chronological log of all actions performed with to-dos, lists, and pockets.</li>
+                      <li><strong>Advanced Shop-Script integration</strong>: automated to-do creation based on actions performed with orders.</li>
+                    </ul>
+
+                {/if}
+
+            {/if}
+
+        </article>
+
+        <div class="clear-both"></div>
+
+    </main>
+
+</div>
+
+<script type="text/javascript">
+    (function(){
+        $.pocketlists.setTitle($_('Upgrade to PRO'));
+    }());
+</script>

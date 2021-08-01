@@ -1,0 +1,38 @@
+<div id="pl-item-add" data-pl-item-add>
+    <div class="pl-item">
+        {* <div class="pl-meta">
+        <a href="#" class="pl-favorite"><i class="icon16 star-empty"></i></a>
+    </div> *}
+        <label class="pl-done-label">
+            <input type="checkbox" disabled="disabled" class="pl-done">
+            <span class="pl-add-todo"></span>
+        </label>
+        <label class="pl-select-label">
+            <input type="checkbox" class="pl-is-selected">
+            {if $wa->locale() == 'ru_RU'}
+                {* a tiny friendly hack that localizes into-another-app-embedded strings (i.e. Shop-Script) *}
+                {$_placeholder = 'Новая задача'}
+            {else}
+                {$_placeholder = '[`New to-do`]'}
+            {/if}
+            {if isset($this_is_stream) && empty($undone_items) && !$count_done_items && !$date}
+                {* another friendly hack that promotes app Natural Input feature on the very empty launch *}
+                {$_placeholder = '[`New to-do (e.g. “meeting tomorrow at 10”)`]'}
+            {/if}
+            <textarea rows="1" placeholder="{$_placeholder}" data-pl2-item-textarea class="pl-item-name"></textarea>
+            <a href="#" class="pl-item-add-shortcuts" data-pl2-action="edit-new-item">
+                <i class="icon16 userpic20" style="background-image: url('{$assign_contact_photo|default:$wa->user()->getPhoto(20)}')" data-pl2-item-add="assign-contact"></i>
+                <i class="icon16 pl caret-down" title="[`Show details and use the detailed add mode by default`]"></i>
+            </a>
+
+            <!-- plugin hook: 'backend_item_add.compact' -->
+            {* @event backend_item_add.%plugin_id% *}
+            {if !empty($backend_item_add)}{foreach $backend_item_add as $_}{ifset($_)}{/foreach}{/if}
+
+        </label>
+
+        <div data-pl2-item-links>
+        </div>
+    </div>
+    <div data-pl2-item-details class="pl-item-details"></div>
+</div>

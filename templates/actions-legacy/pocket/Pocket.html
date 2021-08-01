@@ -1,0 +1,83 @@
+{* @var pocketlistsPocket $pocket *}
+<div class="shadowed" data-pl2-pocket-wrapper="{$pocket->getId()}">
+    <nav class="sidebar left300px">
+
+        <!-- plugin hook: 'backend_pocket.sidebar_section' -->
+        {* @event backend_pocket.%plugin_id% *}
+        {if !empty($backend_pocket)}{foreach $backend_pocket as $_}{ifset($_.sidebar_section)}{/foreach}{/if}
+
+        <!-- LISTS -->
+        <div id="pl-lists" data-pl-scroll-to-top>
+            <div class="pl-lists-header">
+                {if $isAdmin}<a href="#/pocket/{$pocket->getId()}/list/new/" class="count" title="[`New list`]"><i class="icon16 add"></i></a>{/if}
+
+                <h5 class="heading pl-dark-{$pocket->getColor()|default:'none'}-label">
+                    [`Lists`]
+                </h5>
+
+            </div>
+            {if !empty($lists)}
+                <ul class="pl-lists" data-pl2-wrapper="lists">
+                    {foreach $lists as $l}
+                        <li data-pl-list-id="{$l->getId()}">
+                            <a href="#/pocket/{$pocket->getId()}/list/{$l->getId()}/"{if $l->getId() == $list_id} class="pl-is-selected"{/if} title="{$l->getName()|escape}">
+                                <span data-pl2-list-items class="count">{$l->getItemCount()->getCount()}</span>
+
+                                <span data-pl2-list-calc-priority class="count bold {pocketlistsViewHelper::getPriorityCssClass($l->getItemCount()->getMaxPriority(), pocketlistsViewHelper::CSS_CLASS_LIST_INDICATOR)}" {if !$l->getItemCount()->getMaxPriority()}style="display: none;"{/if}>
+                                    {$l->getItemCount()->getCountMaxPriority()}
+                                </span>
+
+                                <i class="listicon36"
+                                   style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l->getIcon()|default:'li-list@2x.png'});"></i>
+                                <span class="pl-list-name pl-dark-{$l->getColor()|default:'none'}-label">{$l->getName()|escape}</span>
+                            </a>
+                        </li>
+                    {/foreach}
+                </ul>
+            {else}
+                <div class="block double-padded align-center pl-lists-empty">
+                    {if $isAdmin}
+                        <div class="pl-new-list-icons-mix-helper"></div>
+                        <h2 class="align-center">[`Go ahead! Create a list.`]</h2>
+                        <p class="align-center gray">[`Pockets and lists help you organize to-dos, ideas, and notes, and flexibly configure access rights for your team.`]</p>
+
+                    {else}
+                        <p>[`You don’t have access to any list in the pocket. Please contact your admin to request access setup.`]</p>
+                    {/if}
+                </div>
+            {/if}
+            <div class="block align-center double-padded">
+                {if $isAdmin}
+                <a href="#" title="[`Pocket settings`]" data-pl2-action="edit-pocket" data-pl2-pocket-id="{$pocket->getId()}" class="gray">
+                    <i class="icon16 settings"></i><span>[`Pocket settings`]</span>
+                </a>
+                {/if}
+            </div>
+        </div>
+
+    </nav>
+
+    <!-- ITEMS -->
+    <main class="content left300px blank bordered-left">
+        {$lists_html|default:""}
+    </main>
+
+    {if !empty($lists) && count($lists)>3 && method_exists($wa->installer, 'reviewWidget')}
+        {$wa->installer->reviewWidget('app/pocketlists')}
+    {/if}
+
+</div>
+<script>
+    (function () {
+        var $pocketWrapper = $('[data-pl2-pocket-wrapper]');
+        var $lists_wrapper = $pocketWrapper.find('[data-pl2-wrapper="lists"]');
+
+        new $.pocketlists.Pocket($pocketWrapper, {
+            current_user_id: {$wa->user()->get('id')},
+            isAdmin: {$isAdmin},
+            listsWrapper: $lists_wrapper
+        });
+
+        $.pocketlists.setTitle('{$pocket->getName()|default:" "|escape|addslashes}');
+    }());
+</script>

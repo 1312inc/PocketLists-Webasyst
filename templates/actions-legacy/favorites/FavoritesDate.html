@@ -1,0 +1,100 @@
+{if $print}
+<html>
+<head>
+    <title>[`My favorites`]{if $date} - {$date|wa_date:'humandate'}{/if} &mdash; {$wa->accountName()}</title>
+    <link type="text/css" rel="stylesheet" href="{$wa_app_static_url}css/legacy/pocketlists-print.css">
+</head>
+<body>
+<div class="pl-print-button">
+    <button onclick="window.print();">[`Print`]</button>
+</div>
+{/if}
+
+
+<main class="blank bordered-right pl-inner-content pl-items pl-list-items pl-favorites shadowed" id="pl-list-content">
+    <div class="pl-alert"{if !empty($undone_items) || $count_done_items} style="display:none;"{/if}>
+    [`<strong>Your Favorites list is empty.</strong> To add a to-do to your personal favorites list, either click on a tiny little star icon next to a to-do name (in just any to-do list) or add a to-do directly using the form below.`]
+    </div>
+    <header class="pl-title">
+        {if !$date}
+        <h1 class="not-padded">
+            [`Favorites`]
+        </h1>
+        <span></span>
+        {else}
+        <h1 class="not-padded" pl-todo-stream="date">
+            {if !$print} <a href="#" class="back">&larr; [`All favorites`]</a>{/if}
+            <span>{waDateTime::date(waDateTime::getFormat('humandate'), $date)}</span>
+        </h1>
+        {/if}
+    </header>
+
+    <div class="pl-list-items" id="pl-list-items">
+
+        <section id="pl-undone-items" data-pl-items="undone">
+            <ul class="menu-v">
+                {if !empty($undone_items)}
+                {include '../item/Item.html' parent_id=0 items=$undone_items}
+                {/if}
+            </ul>
+        </section>
+
+        {if !$print}
+        <section id="pl-complete-log" class="pl-logbook">
+            <h5 class="heading">[`Logbook`]</h5>
+            <ul class="menu-v">
+                {if $count_done_items}
+                {include '../item/Item.html' parent_id=0 items=$done_items}
+                {/if}
+            </ul>
+            <div class="block double-padded lazyloading" style="display: none;">
+                <i class="icon16 loading"></i> [`Loading...`]
+            </div>
+        </section>
+
+        <a href="#" id="pl-complete-log-link" class="inline-link gray" {if !$count_done_items}style="display:none;"{/if}><b><i>{_w('Show all %d completed to-do', 'Show all %d completed to-dos', $count_done_items)}</i></b></a>
+        {/if}
+
+    </div>
+
+    <div class="clear-both"></div>
+
+    {if !$print}
+        {$itemAdd}
+    {/if}
+
+    {include '../../include-legacy/itemdetails.html' inline}
+</main>
+{if !$print}
+<script type="text/javascript">
+    (function(){
+        $.pocketlists.initNotice('#pl-stream-notice');
+
+        var $all_items_wrapper = $('#pl-list-items');
+
+        new $.pocketlists.Items($all_items_wrapper, {
+            enableAddLinkOnHover: false,
+            enableChangeLevel: false,
+            enableSortItems: false,
+//            assignUser: parseInt('{$wa->user()->getId()}'),
+            showMessageOnEmptyList: {if $date}false{else}true{/if},
+            dueDate: '{if $timestamp}{$timestamp}{/if}',
+            filter: 'favorites',
+            userHasLinkedApps: {$user->hasLinkedApps()},
+            current_user_id: {$user->getContact()->getId()},
+            externalApp: '{$externalApp|default:''}'
+        });
+
+        new $.pocketlists.Comments($all_items_wrapper);
+
+        $.pocketlists.lazyItems({
+            $loading: $('#pl-list-content .lazyloading'),
+            html_selector: '#pl-complete-log > .menu-v',
+            url: '?module=item&action=lazyDone&type=favorites&date={$date}&external_app={$externalApp|default:''|escape}'
+        });
+    }());
+</script>
+{else}
+</body>
+</html>
+{/if}

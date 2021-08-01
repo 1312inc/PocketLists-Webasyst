@@ -1,0 +1,162 @@
+{$wa->globals('pl2_external', true)}
+<style>
+    .t-tasks-wrapper #pl-item-add .pl-done + span.pl-add-todo { background-image: url('{$params.wa_app_static_url}img/pl2webasyst48.png') !important; background-size: 16px 16px !important; opacity: 1; top: 2px; }
+</style>
+
+<main class="pl-items pl-list-items pl-todo"
+      id="pl-list-content"
+      data-pl2-template="itemadd"
+>
+    <div class="fields width100px">
+        <div class="field">
+            <div class="name" style="margin-top: 15px;">
+                [`Subtasks`]
+            </div>
+            <div class="value">
+                <div class="pl-list-items" id="pl-list-items">
+                    <section id="pl-undone-items" data-pl-items="undone">
+                        <ul class="menu-v">
+                            {if !empty($params.items_undone)}
+                            {include '../../actions-legacy/item/Item.html' parent_id=0 items=$params.items_undone}
+                            {/if}
+                        </ul>
+                    </section>
+
+                    <section id="pl-complete-log" class="pl-logbook">
+                        <ul class="menu-v">
+                            {if $params.count_done_items}
+                            {include '../../actions-legacy/item/Item.html' parent_id=0 items=$params.items_done}
+                            {/if}
+                        </ul>
+                    </section>
+
+                </div>
+
+                {if $params.app->userCanAccess()}
+                    {$params.itemAdd}
+                {/if}
+                {include '../../include-legacy/itemdetails.html' inline}
+            </div>
+        </div>
+    </div>
+    <div class="clear-both"></div>
+</main>
+<script type="text/javascript" src="{$params.wa_app_static_url}js/legacy/pocketlists.js?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
+<script type="text/javascript" src="{$params.wa_app_static_url}js/legacy/pocketlists-item.js?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
+<script type="text/javascript" src="{$params.wa_app_static_url}js/legacy/pocketlists-comment.js?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
+<link type="text/css" rel="stylesheet" href="{$params.wa_app_static_url}css/legacy/pocketlists.css?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}">
+
+<script>
+    (function(){
+        var $order_info_wrapper = $('#s-split-order-wrapper'),
+            $list_wrapper = $('#pl-list-content'),
+            $toggle_link = $('[data-pl2-action="show-add-item"]'),
+            has_items = /*{if empty($params.count_undone_items) && empty($params.count_done_items)}*/false/*{else}*/true/*{/if}*/;
+
+        $order_info_wrapper.prepend($list_wrapper);
+
+        function canShow() {
+            return !$.storage.get('pocketlists/apps/hide-pl2ss-by-default');
+        }
+
+        $list_wrapper.on('click', '[data-pl2-shop-action="close"]', function (e) {
+            e.preventDefault();
+
+            $.storage.set('pocketlists/apps/hide-pl2ss-by-default', 1);
+            $list_wrapper.slideUp(200, function() {
+                $('[data-pl2-action="show-add-item"]').find('span').css('background', 'greenyellow');
+                setTimeout(function () {
+                    $('[data-pl2-action="show-add-item"]').find('span').css('background', 'white');
+                }, 1312);
+            });
+        });
+
+        // if (!canShow()) {
+        //     $list_wrapper.hide();
+        // } else {
+        //     setTimeout(function() {
+        //         $list_wrapper.slideDown();
+        //     }, 131.2);
+        // }
+
+        $toggle_link.on('click', function (e) {
+            e.preventDefault();
+
+            $.storage.del('pocketlists/apps/hide-pl2ss-by-default');
+
+            $list_wrapper.slideToggle(200, function () {
+                if ($list_wrapper.is(':visible')) {
+                    $list_wrapper.find('#pl-item-add textarea').trigger('focus');
+                }
+            });
+        });
+
+        var Items = new $.pocketlists.Items($list_wrapper, {
+            enableAddLinkOnHover: false,
+            enableChangeLevel: false,
+            enableSortItems: false,
+            current_user_id: {$wa->user()->getId()},
+            standAloneItemAdd: 1,
+            defaultLinkedEntity: {
+                app: '{$params.app->getApp()}',
+                entity_type: 'task',
+                entity_id: {$params.task->id}
+            },
+            appUrl: '{$params.plurl}',
+            userHasLinkedApps: {$params.user->hasLinkedApps()},
+            wa_url: '{$wa_url}',
+            fileUpload: {$params.fileupload},
+            externalApp: 'tasks'
+        });
+
+        new $.pocketlists.Comments($list_wrapper, {
+            standAloneItemAdd: true,
+            appUrl: '{$params.plurl}',
+            wa_url: '{$wa_url}'
+        });
+
+        var order_id = parseInt($('#s-order-items [data-id]').data('id')),
+            $order_list = $('#order-list');
+
+        $(document)
+            .off('item_delete.pl2 item_add.pl2 item_complete.pl2 item_move.pl2 item_update.pl2')
+            .on('item_delete.pl2 item_add.pl2 item_complete.pl2 item_move.pl2 item_update.pl2', function (e, data) {
+                console.log('pl2 item captured', e.type, data);
+
+                $.post('{$params.plurl}?module=shop&action=loadOrderIcon', { order: order_id }, function (r) {
+                    console.log('pl2 item loadOrderIcon response', r);
+
+                    if (r.status === 'ok' && r.data) {
+                        var $order = $order_list.find('[data-order-id='+r.data.entity_id+']');
+
+                        if ($order.length) {
+                            var pl2 = '<div class="pl2-shop-item-count" title="{if $wa->locale() == 'ru_RU'}'+r.data.count_entities+' задач связаны с этим заказом{else}'+r.data.count_entities+' to-dos linked with the order{/if}"><span>'+r.data.count_entities+'</span><i class="icon16 pl2-shop-icon"></i></div>';
+
+                            $order.find('.pl2-shop-item-count').remove();
+
+                            var $indicator = $('[data-pl2-action="show-add-item"] .indicator.red');
+                            if (r.data.count_entities) {
+                                if ($indicator.length) {
+                                    $indicator.text(r.data.count_entities);
+                                } else {
+                                    $('[data-pl2-action="show-add-item"]').append('<strong class="indicator red" style="top: -0.1rem;">' + r.data.count_entities + '</strong>')
+                                }
+
+                                if ($.order_list.options.view == 'split') {
+                                    $order
+                                        .find('.details')
+                                        .append(pl2);
+                                } else {
+                                    $order
+                                        .find('td:last')
+                                        .append(pl2);
+                                }
+                            } else {
+                                $indicator.remove();
+                            }
+                        }
+                    }
+                });
+            })
+    }());
+</script>

@@ -1,0 +1,75 @@
+<div class="pl-details-form">
+<div class="pl-details-form-container">
+
+    <div class="fields form">
+        <form method="post">
+            {* <a href="#" class="pl-list-details-cancel" class="pl-close" title="[`Close`]">&times;</a> *}
+            <input type="hidden" name="list[id]" value="{$list->getId()}"/>
+            <!-- core -->
+            <div class="field-group">
+                <div class="field">
+                    <div class="value"><input type="text" class="bold large long" name="list[name]" value="{$list->getName()|escape}" /></div>
+                </div>
+                <div class="field" id="pl-list-icon-change">
+                    <div class="name"><br>[`Icon`]</div>
+                    <div class="value">
+                        <input type="hidden" name="list[icon]" value="{$list->getIcon()}"/>
+                        <a href="#" class="small"><i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$list->getIcon()});"></i><br>
+                        [`Change`]</a>
+                    </div>
+                </div>
+                <div class="field" id="pl-list-color">
+                    <div class="name">[`Color`]</div>
+                    <div class="value no-shift" id="pl-list-priority">
+                        <input type="hidden" name="list[color]" value="{$list->getColor()|default:pocketlistsStoreColor::NONE}"/>
+                        {foreach pocketlistsStoreColor::getColors() as $color => $name}
+                            <a href="#" {if $list->getColor() == $color}class="selected"{/if} data-pl-list-color="{$color}"><i class="icon16 color pl-dark-{$color}"></i></a>
+                        {/foreach}
+                    </div>
+                </div>
+            </div>
+
+            <div class="field-group">
+                <div class="field">
+                    <div class="value">
+
+                        <input type="submit" class="button green" value="[`Save`]"  id="pl-list-details-save"/>
+                        [`or`]
+                        <a href="#" class="pl-list-details-cancel">[`cancel`]</a>
+
+                        <span class="error" style="display: none;">[`error`]</span>
+                        <span class="success" style="display: none;">[`saved`]</span>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <hr>
+
+    <ul class="menu-v with-icons">
+        <li class="bottom-padded">
+            <a class="pl-link-box bold" href="#" data-pl-action="list-sort">
+                <i class="icon16 update"></i>[`Re-sort list`] <span class="hint">A—z</span>
+            </a>
+        </li>
+        <li>
+            <a href="javascript:void(0);" id="pl-list-complete"><i class="icon16 pl logbook"></i>[`Mark all to-dos as completed`]</a>
+        </li>
+        <li>
+            <a href="#" data-pl-action="list-email"><i class="icon16 email"></i>[`Email list`]</a>
+        </li>
+        <li>
+            <a href="?module=list&amp;id={$list->getId()}&amp;print=true" target="_blank"><i class="icon16 print"></i>[`Print list`]</a>
+        </li>
+        <li>
+            <a href="#" data-pl-action="list-archive"><i class="icon16 pl archive"></i>[`Archive list`]</a>
+        </li>
+        <li class="top-padded">
+            <a class="pl-delete-box" href="#" data-pl-action="list-delete"><i class="icon16 delete"></i>[`Delete list`]</a>
+        </li>
+    </ul>
+
+<div class="clear-both"></div>
+</div>
+</div>

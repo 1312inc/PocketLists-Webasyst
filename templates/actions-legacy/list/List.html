@@ -1,0 +1,143 @@
+{if $print|default:0}
+<html>
+<head>
+    <title>{$list->getNameParsed()} &mdash; {$wa->accountName()}</title>
+    <link type="text/css" rel="stylesheet" href="{$wa_app_static_url}css/legacy/pocketlists-print.css">
+</head>
+<body>
+    <div class="pl-print-button">
+        <button onclick="window.print();">[`Print`]</button>
+    </div>
+{/if}
+
+{if !$print|default:0}
+{include '../../include-legacy/listiconsdialog.html' inline}
+{/if}
+
+<main id="pl-list-content" class="pl-list-content">
+
+    <div class="pl-items">
+        <header class="pl-list-title pl-title">
+            {if !$print}
+            <input type="hidden" name="pocket_id" value="{$pocket->getId()}">
+            {/if}
+
+            {if !$new && !$archive}
+                <div class="float-right">
+                    {if pocketlistsRBAC::canAssign()}
+                    <a data-pl-action="list-edit" href="#" class="pl-userpic-bundle" data-pl2-list-edit-action="accesses">
+                        {$max_visible_in_bundle = 5}
+                        {foreach $list_access_contacts as $list_access_contact}
+                            {if $list_access_contact@iteration > $max_visible_in_bundle}{break}{/if}
+                            <i class="userpic" style="background-image: url('{$list_access_contact->getPhotoUrl()}');" title="{$list_access_contact->getName()|escape}"></i>
+                        {/foreach}
+                        {if count($list_access_contacts) > $max_visible_in_bundle}
+                            <i class="userpic" title="{$list_access_contact->getName()|escape}"><span>+{count($list_access_contacts) - $max_visible_in_bundle}</span></i>
+                        {/if}
+                    </a>
+                    {/if}
+                </div>
+            {/if}
+
+            <h1>
+                <input type="hidden" value="{if !$list->getId()}-1{else}{$list->getId()}{/if}" id="pl-list-id">
+
+                {if $new && !$archive}
+                    <input type="text" placeholder="{sprintf('[`List #%d`]', $new_list_id)}" id="pl-new-list-input" class="bold" />
+                {else}
+                    <span id="pl-list-name"{if $list->getColor()!='none'} class="pl-dark-{$list->getColor()}-label"{/if}>{$list->getNameParsed()|default:' '}</span>
+                {/if}
+
+                {if pocketlistsRBAC::canAccessToList($list) && !$new}
+                <a data-pl-action="list-edit" href="#" class="pl-list-details-helper" data-pl2-list-edit-action="details"><i class="icon16 pl ellipsis"></i></a>
+                {/if}
+            </h1>
+        </header>
+        <div class="pl-list-items" id="pl-list-items">
+
+            <section id="pl-undone-items" data-pl-items="undone">
+                <ul class="menu-v">
+                {if !empty($items)}
+                    {include '../item/Item.html' parent_id=0 items=$items}
+                {/if}
+                </ul>
+            </section>
+
+            <!-- completed to-dos log -->
+            <section id="pl-complete-log" class="pl-logbook">
+                <h5 class="heading">[`Logbook`]</h5>
+                <ul class="menu-v">
+                {if !empty($items_done)}
+                    {include '../item/Item.html' items=$items_done}
+                {/if}
+                </ul>
+                <div class="block double-padded lazyloading" style="display: none;">
+                    <i class="icon16 loading"></i> [`Loading...`]
+                </div>
+            </section>
+
+            <a href="#" id="pl-complete-log-link" class="inline-link gray" {if !$count_items_done}style="display:none;"{/if}><b><i>{_w('Show all %d completed to-do', 'Show all %d completed to-dos', $count_items_done|default:0)}</i></b></a>
+        </div>
+        <div class="clear-both"></div>
+
+        {if !$print|default:0}
+
+            {include '../../include-legacy/archivelistdialog.html' inline}
+
+            {if $list->getId()}
+            {include '../../include-legacy/deletelistdialog.html' inline}
+            {$itemAdd}
+            {/if}
+
+        {/if}
+    </div>
+
+    {include '../../include-legacy/listdetails.html' list_access_contacts=$list_access_contacts inline}
+    {include '../../include-legacy/itemdetails.html' inline}
+</main>
+
+{if $print|default:0}
+</body>
+</html>
+{else}
+<script type="text/javascript">
+    'use strict';
+    (function () {
+        var $list_wrapper = $('#pl-list-items');
+
+        new $.pocketlists.Items($list_wrapper, {
+            enableChangeLevel: false,
+            archive: {if $archive|default:0}true{else}false{/if},
+            list: new $.pocketlists.List(
+                $('.pl-list-title'),
+                {
+                    archive: {if $archive|default:0}true{else}false{/if},
+                    totalItems: {$count_items_done|default:0 + $count_items_undone|default:0}
+                }
+            ),
+            userHasLinkedApps: {$user->hasLinkedApps()},
+            current_user_id: {$user->getContact()->getId()},
+            fileUpload: {$fileupload},
+            caller: 'list',
+            externalApp: '{$externalApp|default:''}'
+        });
+
+        new $.pocketlists.Comments($list_wrapper);
+
+        $.pocketlists.setTitle("{$list->getNameParsed()|default:'`New list`'|escape|addslashes}");
+
+        // {if $list->getId()}
+
+        $.pocketlists.lazyItems({
+            $loading: $('#pl-list-content .lazyloading'),
+            html_selector: '#pl-complete-log > .menu-v',
+            url: '?module=item&action=lazyDone&type=list&id={$list->getId()}&external_app={$externalApp|default:''|escape}',
+            load_now: true,
+            offset: 0
+        });
+
+        //{/if}
+
+    }())
+</script>
+{/if}

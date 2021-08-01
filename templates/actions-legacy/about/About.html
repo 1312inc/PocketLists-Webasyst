@@ -1,0 +1,276 @@
+<div class="shadowed pl-about">
+
+    {if !pocketlistsHelper::hasPlugin('pro')}
+    <figure class="block double-padded highlighted pl-upgrade-ad">
+          <a href="#/upgrade/"><img src="{$wa_url}wa-apps/pocketlists/img/pl2pro-plugin-icon.png" class="pl-wa-plugin-icon" /></a>
+          <h3>
+              <a href="#/upgrade/" class="large">
+                  [`Upgrade to Pocket Lists PRO`]
+                  &nbsp;<i class="icon16 star"></i><i class="icon16 star"></i><i class="icon16 star"></i><i class="icon16 star"></i><i class="icon16 star"></i>
+              </a>
+          </h3>
+          <p style="margin-bottom: 0;">
+              [`Boost your efficiency with the Pocket Lists PRO plugin that instantly enables a robust set of amazing advanced features: <b>Shop-Script automation (auto create to-dos based on actions with orders), kanban board, status labels, quick entry templates,</b> and more.`]
+              <a href="#/upgrade/" class="no-underline">[`See details`]&nbsp;&raquo;</a>
+          </p>
+          <div class="clear-both"></div>
+    </figure>
+    {/if}
+
+    <main class="block double-padded">
+
+        <div class="fields">
+
+            <div class="field-group">
+              <div class="field">
+                <div class="name">
+                  [`About`]
+                </div>
+                <div class="value">
+
+                    <p>
+                        <a href="https://apps.apple.com/app/apple-store/id1272049520?pt=502466&amp;ct=Webasyst&amp;mt=8" target="_blank"><img src="{$wa_url}wa-apps/pocketlists/img/pl2ios-wink-animation.gif" class="pl2ios-app-icon" /></a>
+                    </p>
+
+                    <p>
+                        [`Pocket Lists for Webasyst is an important part of the bigger <a href="https://pocketlists.com" target="_blank"><strong>PocketLists.com project</strong></a> — a suite of apps that are aimed to provide the friendliest to-do list making & collaboration experience.`]
+                        [`Pocket Lists is <strong>mostly known for its iOS app</strong> (iPhone, iPad, Apple Watch) designed for personal list making. Get Pocket Lists on the App Store for free.`]
+                    </p>
+
+                    <p><a href="https://apps.apple.com/app/apple-store/id1272049520?pt=502466&amp;ct=Webasyst&amp;mt=8" target="_blank"><img src="{$wa_url}wa-apps/pocketlists/img/badge-appstore{if $wa->locale()=='ru_RU'}-ru{/if}.png" class="pl-badge-appstore"></a></p>
+                </div>
+              </div>
+              <div class="field">
+                  <div class="name nowrap">
+                    [`GitHub`]
+                  </div>
+                  <div class="value no-shift">
+                      <a href="https://github.com/1312inc/PocketLists-Webasyst/" target="_blank">
+                          https://github.com/1312inc/PocketLists-Webasyst/
+                      </a>
+                      <br><br>
+                  </div>
+                  <div class="value no-shift">
+                      <hr>
+                  </div>
+              </div>
+              <div class="field">
+                <div class="name nowrap">
+                  Webasyst
+                </div>
+                <div class="value no-shift">
+
+                    <p>[`<strong>Your feedback is very important!</strong> Please rate Pocket Lists and write a short review about your experience of using the app. Reviews (both positive and negative) really help us to see what is most useful in the app so we can continue delivering new features the right way.`]</p>
+
+                </div>
+                <div class="value">
+
+                    {if method_exists($wa->installer, 'reviewWidget')}
+                        <div style="display: flex;">
+                            <div style="flex: 0 0 auto; padding-right: 20px;">
+                                {$wa->installer->reviewWidget('app/pocketlists', ['is_inline' => true])}
+                            </div>
+                            {if pocketlistsHelper::hasPlugin('pro')}
+                            <div style="flex: 0 0 auto;">
+                                {$wa->installer->reviewWidget('plugin/pocketlists/pro', ['is_inline' => true])}
+                            </div>
+                            {/if}
+                        </div>
+                    {else}
+                        <p>
+                            {if $wa->user()->isAdmin('installer')}
+                                <a href="{$wa_backend_url}installer/store/app/pocketlists/reviews/" target="_blank"><img src="{$wa_url}wa-apps/pocketlists/img/badge-webasyst{if $wa->locale()=='ru_RU'}-ru{/if}.png" class="pl-badge-appstore"></a>
+                            {else}
+                                <a href="[`https://www.webasyst.com/store/app/pocketlists/`]" target="_blank"><img src="{$wa_url}wa-apps/pocketlists/img/badge-webasyst{if $wa->locale()=='ru_RU'}-ru{/if}.png" class="pl-badge-appstore"></a>
+                            {/if}
+                        </p>
+                    {/if}
+
+                </div>
+              </div>
+            </div>
+            <div class="fields-group">
+              <div class="field">
+                <div class="name">
+                  [`Roadmap`]
+                </div>
+                <div class="value">
+                    <p>[`We have big plans for both iOS and Webasyst apps, and here is the summary of what we are keen to be integrating into Pocket Lists for Webasyst anytime soon (a draft plan):`]</p>
+                    <ul class="pl-roadmap">
+                        <li class="gray">
+                            <input type="checkbox" class="pl-done" checked="checked"><span></span>
+                            [`Bring the shared to-do list functionality into Webasyst`]
+                        </li>
+                        <li class="gray">
+                            <input type="checkbox" class="pl-done" checked="checked"><span></span>
+                            [`Natural input ('... tomorrow 10am') parser`]
+                        </li>
+                        <li class="gray">
+                            <input type="checkbox" class="pl-done" checked="checked"><span></span>
+                            <strong>[`Integrate with Shop-Script`]</strong>
+                            <span class="hint">[`The ability to create to-dos linked with orders`]</span>
+                        </li>
+                        <li class="gray">
+                            <input type="checkbox" class="pl-done" checked="checked"><span></span>
+                            [`Multiple pockets and sophisticated access rights management`]
+                        </li>
+                        <li class="gray">
+                            <input type="checkbox" class="pl-done" checked="checked"><span></span>
+                            [`To-do search`]
+                        </li>
+                        <li class="gray">
+                            <input type="checkbox" class="pl-done" checked="checked"><span></span>
+                            [`Integration with the Team app`]
+                        </li>
+
+                        <li class="gray">
+                            <input type="checkbox" class="pl-done" checked="checked"><span></span>
+                            <span class="pl-label pl-pro">PRO</span> [`To-do status labels`]
+                        </li>
+                        <li class="gray">
+                            <input type="checkbox" class="pl-done" checked="checked"><span></span>
+                            <span class="pl-label pl-pro">PRO</span> [`Kanban board`]
+                        </li>
+                        <li class="gray">
+                            <input type="checkbox" class="pl-done" checked="checked"><span></span>
+                            <span class="pl-label pl-pro">PRO</span> [`To-do shortcuts`]
+                        </li>
+                        <li class="gray">
+                            <input type="checkbox" class="pl-done" checked="checked"><span></span>
+                            <span class="pl-label pl-pro">PRO</span> [`Timelines: detailed activity log of who did what`]<br>
+                            <span class="hint">[`By pocket, by list, by user`]</span>
+                        </li>
+                        <li class="gray">
+                            <input type="checkbox" class="pl-done" checked="checked"><span></span>
+                            <span class="pl-label pl-pro">PRO</span> <strong>[`Advanced Shop-Script integration`]</strong><br>
+                            <span class="hint">[`Automated to-do creation based on order statuses`]</span>
+                        </li>
+                        <li class="gray">
+                            <input type="checkbox" class="pl-done" checked="checked"><span></span>
+                            <strong>[`Integration with Webasyst Tasks`]</strong>
+                        </li>
+
+                        <li class="gray">
+                            <input type="checkbox" class="pl-done" checked="checked"><span></span>
+                            <strong>[`New UI`]</strong>
+                        </li>
+                        <li>
+                            <input type="checkbox" class="pl-done pl-priority-green"><span></span>
+                            [`Private to-dos`]
+                        </li>
+                        <li>
+                            <input type="checkbox" class="pl-done"><span></span>
+                            [`Integration with Webasyst CRM and other apps`]
+                        </li>
+                        <li>
+                            <input type="checkbox" class="pl-done"><span></span>
+                            [`“My To-dos” widget for the dashboard and Webasyst TV`]
+                        </li>
+                        <li>
+                            <input type="checkbox" class="pl-done pl-priority-yellow"><span></span>
+                            [`Rest API`]
+                        </li>
+
+                        <li>
+                            <input type="checkbox" class="pl-done pl-priority-yellow"><span></span>
+                            <strong>[`Integrate Pocket Lists for Webasyst and iOS`]</strong>
+                        </li>
+
+                        <li>
+                            <input type="checkbox" class="pl-done"><span></span>
+                            <span class="pl-label pl-pro">PRO</span> [`Repeating to-dos`]
+                        </li>
+                        <li>
+                            <input type="checkbox" class="pl-done"><span></span>
+                            <span class="pl-label pl-pro">PRO</span> [`Subtasks`]
+                        </li>
+
+                        <li>
+                            <input type="checkbox" class="pl-done"><span></span>
+                            [`Headings / dividers (sublists)`]
+                        </li>
+                        <li>
+                            <input type="checkbox" class="pl-done pl-priority-green"><span style="margin-bottom: 2rem;"></span>
+                            [`Pocket Lists for Android`]<br>
+                            <span class="hint">[`Someday. The real ETA depends on the availability of development resources which are now focused mostly on iOS.`]</span>
+                        </li>
+                        <li>
+                            <input type="checkbox" class="pl-done"><span></span>
+                            [`Profit!`]
+                        </li>
+                    </ul>
+
+                    <p><em>{sprintf('[`Bullets highlighted with a %s label are available as a part of the paid <a href="%s"><b>Pocket Lists PRO</b></a> plugin.`]', '<span class="pl-label pl-pro">PRO</span>', '#/upgrade/')}</em></p>
+
+                </div>
+                <div class="value no-shift">
+                    <hr>
+                </div>
+              </div>
+
+              {$_utm_suffix = '?utm_source=pl2webasyst&utm_medium=inapp_about&utm_campaign=1312_inapp_pl2about_wa1'}
+              <div class="field-group">
+                <div class="field">
+                  <div class="name">
+                    [`More apps by 1312 Inc.`]
+                  </div>
+                  <div class="value">
+                      [`Check out these thoroughly crafted apps on Webasyst Installer today:`]
+                      <ul class="pl-more-apps">
+                          <li>
+                              <a href="[`https://www.webasyst.com/store/app/tasks/`]{$_utm_suffix}" target="_blank">
+                                  <img src="{$wa_url}wa-apps/pocketlists/img/pl2ad-tasks-app-144.png" alt="[`Teamwork`]">
+                              </a>
+                              <a href="[`https://www.webasyst.com/store/app/tasks/`]{$_utm_suffix}" class="bold" target="_blank">[`Teamwork`]</a>
+                              <span class="gray">[`Keeps track on all tasks and brings order to chaos`]</span>
+                          </li>
+                          <li>
+                              <a href="[`https://www.webasyst.com/store/app/cash/`]{$_utm_suffix}" target="_blank">
+                                  <img src="{$wa_url}wa-apps/pocketlists/img/pl2ad-cash-app-144.png" alt="[`Cash Flow`]">
+                              </a>
+                              <a href="[`https://www.webasyst.com/store/app/cash/`]{$_utm_suffix}" class="bold" target="_blank">[`Cash Flow`]</a>
+                              <span class="gray">[`Forecasts business cash flow & saves your money`]</span>
+                          </li>
+                          <li>
+                              <a href="[`https://www.webasyst.com/store/app/status/`]{$_utm_suffix}" target="_blank">
+                                  <img src="{$wa_url}wa-apps/pocketlists/img/pl2ad-status-app-144.png" alt="[`Status`]">
+                              </a>
+                              <a href="[`https://www.webasyst.com/store/app/status/`]{$_utm_suffix}" class="bold" target="_blank">[`Status`]</a>
+                              <span class="gray">[`Tracks your team time & work status remotely on WFH`]</span>
+                          </li>
+                      </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div class="field-group">
+                <div class="field">
+                  <div class="name">
+                    [`Copyright`]
+                  </div>
+                  <div class="value">
+                      <span class="gray">&copy;</span> <a href="https://1312.io" target="_blank">1312 Inc.</a>
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+
+        </div>
+
+        <div class="clear-both"></div>
+
+    </main>
+
+</div>
+
+<script type="text/javascript">
+    (function(){
+        $.pocketlists.setTitle($_('About'));
+
+        $('.pl-roadmap li .pl-done + span').click(function(){
+            alert( $_('We wish we could implement new features that easy :)') );
+        });
+    }());
+</script>

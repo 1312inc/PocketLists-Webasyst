@@ -5,13 +5,14 @@
     <title>{$wa->appName()} &mdash; {$wa->accountName()}</title>
     {$wa->css()}
     <link type="text/css" rel="stylesheet" href="{$wa_app_static_url}css/jquery-ui.min.css">
-    <link type="text/css" rel="stylesheet" href="{$wa_app_static_url}css/pocketlists.css?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}">
+    <link type="text/css" rel="stylesheet" href="{$wa_app_static_url}css/pocketlists.css?v2{if !waSystemConfig::isDebug()}{$wa->version()}{/if}">
     <!--<link href="{$wa_url}wa-content/css/jquery-ui/base/jquery.ui.autocomplete.css" rel="stylesheet" type="text/css" />-->
 
     <script type="text/javascript" src="{$wa_url}wa-content/js/jquery/jquery-1.8.2.min.js"></script>
     <script type="text/javascript" src="{$wa_url}wa-content/js/jquery-plugins/jquery.history.js"></script>
     <script type="text/javascript" src="{$wa_url}wa-content/js/jquery-plugins/jquery.store.js"></script>
-    <script type="text/javascript" src="{$wa_url}wa-content/js/jquery-wa/wa.dialog.js"></script>
+    <!-- <script type="text/javascript" src="{$wa_url}wa-content/js/jquery-wa/wa.dialog.js"></script> -->
+    <script src="{$wa_url}wa-content/js/jquery-wa/wa.js?v=2.0.0"></script>
     <script type="text/javascript" src="{$wa_app_static_url}js/jquery-ui.min.js"></script>
     <script type="text/javascript" src="{$wa_app_static_url}js/jquery.ui.widget.js"></script>
     {if ($wa->locale() == 'ru_RU')}<script type="text/javascript" src="{$wa_url}wa-content/js/jquery-ui/i18n/jquery.ui.datepicker-ru_RU.js"></script>{/if}
@@ -21,14 +22,14 @@
 
     <script type="text/javascript" src="{$wa_url}wa-content/js/jquery-wa/wa.core.js"></script>
 
-    <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-routing.js?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
-    <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists.js?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
-    <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-pocket.js?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
-    <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-list.js?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
-    <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-item.js?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
-    <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-comment.js?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
+    <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-routing.js?v2{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
+    <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists.js?v2{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
+    <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-pocket.js?v2{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
+    <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-list.js?v2{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
+    <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-item.js?v2{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
+    <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-comment.js?v2{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
 
-    <script type="text/javascript" src="?action=loc&amp;v={if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
+    <script type="text/javascript" src="?action=loc&amp;v=2{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
 
 </head>
 <body>
@@ -40,14 +41,15 @@
         {if !empty($backend_head)}{foreach $backend_head as $_}{ifset($_)}{/foreach}{/if}
 
         <div id="wa-app">
+            <div class="flexbox wrap-mobile">
 
-            <div class="sidebar left200px" data-pl-scroll-to-top id="pl-sidebar-core">
-                {$sidebar}
-            </div>
+                <div data-pl-scroll-to-top id="pl-sidebar-core" class="sidebar flexbox mobile-friendly width-adaptive hide-scrollbar">
+                    {$sidebar}
+                </div>
 
-            <div class="content left200px">
-                <div id="content">
-                    <div class="block double-padded"><i class="icon16 loading"></i></div>
+                <div class="content blank">
+                    <div id="content" class="flexbox wrap-mobile">
+                    </div>
                 </div>
             </div>
         </div>

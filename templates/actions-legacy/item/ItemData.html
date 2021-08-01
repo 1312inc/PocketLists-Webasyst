@@ -1,0 +1,123 @@
+{* @var pocketlistsItem $item *}
+{if !$item->getKeyListId()} {* stating Nov 2018, we don't show lists as items; TODO: clean up .key_list_id check in the code with time *}
+
+<div class="pl-item{if $item->getAssignedContactId() != $wa->user()->getId() && !$item->isDone()} pl-item-assigned{/if}{if $item->isDone()} gray{/if}" {if $item->getAssignedContactId()}data-pl-assigned-contact="{$item->getAssignedContactId()}"{/if}>
+    {if !$item->isDone() && empty($item->getKeyListId()) && !(isset($archive) && $archive)}<div class="pl-item-drag-handle" title="[`Sort`]" data-pl-action="item-sort"></div>{/if}
+
+    {if $item->getListId()}<div class="pl-item-list-name pl-dark-{$item->getList()->getColor()}-label">{$item->getList()->getName()|truncate:32|escape}</div>{/if}
+
+    <div class="pl-meta">
+        {if !(isset($archive) && $archive)}
+            <a href="#" class="pl-favorite" data-pl-action="item-favorite" title="[`Favorite`]"><i class="icon16 star{if !$item->isFavorite()}-empty{/if}"></i></a>
+        {/if}
+        {if empty($item->getKeyListId())}
+            {if $item->isDone()}
+
+                {* COMPLETED BY *}
+                {if $item->getCompleteContact()}
+                <span class="pl-userpic" title="{sprintf('[`Completed by %s`]', $item->getCompleteContact()->getUsername()|default:'%username%'|escape)}">
+                    {if $item->getCompleteContact()->getUserpic()}
+                        <i class="icon16 userpic20" style="background-image: url({$item->getCompleteContact()->getUserpic()})" alt="{$item->getCompleteContact()->getUsername()|escape}"></i>
+                    {/if}
+                </span>
+                {/if}
+
+                <span class="pl-lastaction-datetime hint">{$item->getCompleteDatetime()|wa_date:'humandatetime'}</span>
+
+            {else}
+
+                <span class="pl-userpic" title="{sprintf('%s by %s', $item->getCreateDatetime()|wa_date:'humandatetime', $item->getContact()->getUsername()|default:'%username%'|escape)}">
+
+                    {* AUTHOR / LAST ACTOR *}
+                    <i class="icon16 userpic20" style="background-image: url({$item->getContact()->getUserpic()})" alt="{$item->getContact()->getUsername()|escape}"></i>
+
+                    {* &rarr; ASSIGNED TO *}
+                    {if $item->isAssignedtoSomeone() }
+                         <span class="pl-assignee-arrow">&#9658;</span>
+                         <i class="icon16 userpic20" style="background-image: url({$item->getAssignedContact()->getUserpic()})" alt="{$item->getAssignedContact()->getUsername()|escape}" title="{sprintf('[`Assigned to %s`]', $item->getAssignedContact()->getUsername()|escape)}"></i>
+                    {/if}
+
+                </span>
+
+                <span class="pl-lastaction-datetime hint" title="{if $item->getUpdateDatetime()}{$item->getUpdateDatetime()|wa_date:'humandatetime'}{else}{$item->getCreateDatetime()|wa_date:'humandatetime'}{/if}">
+                    {* TODO: replace with timediff *}
+                    {$item->getAgeTime()}
+                </span>
+
+            {/if}
+            {if !$item->getKeyListId() && !(isset($archive) && $archive == true)}<a href="#" class="pl-comment pl-comment-count{if $item->getCommentsCount()} pl-comment-count-show{/if}" title="[`Comment`]"><i class="icon16 pl comments"></i>{$item->getCommentsCount()}</a>{/if}
+        {/if}
+    </div>
+
+    <label class="pl-done-label">
+        {if $item->getKeyListId()}
+            <i class="listicon48" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$item->getList()->getIcon()|default:'li-list@2x.png'});"></i>
+        {else}
+            <input type="checkbox" class="pl-done {$item->getCssClass(pocketlistsViewHelper::CSS_CLASS_PRIORITY)}" {if $item->isDone()}checked="checked"{/if}{if isset($archive) && $archive == true}disabled{/if} data-pl2-item-priority="{$item->getCalcPriority()}">
+            <span{if $item->getList()->getColor() !='none'} class="pl-dark-{$item->getList()->getColor()}-border"{/if} title="[`Completed`]"></span>
+        {/if}
+    </label>
+    <label class="pl-select-label">
+        <input type="checkbox" class="pl-is-selected" {if (isset($archive) && $archive == true) || $item->getKeyListId()}disabled{/if}>
+        <span class="pl-item-name{if $item->getCalcPriority() == pocketlistsItem::PRIORITY_BURNINHELL} bold red{/if}">
+            {if $item->getKeyListId()}
+                <a href="#/pocket/{$item->getPocketId()}/list/{$item->getListId()}/"><strong class="pl-dark-{$item->getList()->getColor()}-label">{$item->getNameParsed()|default:'&nbsp;'|nl2br}</strong></a>
+            {else}
+                {$item->getNameParsed()|default:'&nbsp;'|nl2br}
+                {* if $item.list_id == NULL && (empty($item.assigned_contact_id) || $item.assigned_contact_id == $wa->user()->getId())}<i class="icon10 lock-bw" title="[`Only you can see this item`]"></i>{/if *}
+            {/if}
+        </span>
+
+        {if !(isset($archive) && $archive == true)}
+            {* <a href="#" class="pl-edit inline-link"><b><i>[`Edit`]</i></b></a> *}
+            <a href="#" class="pl-edit inline-link"><i class="icon16 pl ellipsis"></i></a>
+        {/if}
+
+        {capture "item_extended_data"}
+        {foreach $pl2->event(pocketlistsEventStorage::ITEM_UI_LABEL, $item) as $response}
+            {$response}
+        {/foreach}
+        {/capture}
+        {if $smarty.capture.item_extended_data|trim ne ""}
+            <br>
+            {$smarty.capture.item_extended_data}
+        {/if}
+
+        {if $item->getDueDatetime()}
+            <br>
+            <span class="pl-due {$item->getCssClass(pocketlistsViewHelper::CSS_CLASS_DUE_DATETIME)}">{$item->getDueDatetime()|wa_date:'humandatetime'}</span>
+        {elseif $item->getDueDate()}
+            <br>
+            <span class="pl-due {$item->getCssClass(pocketlistsViewHelper::CSS_CLASS_DUE_DATE)}">{waDateTime::date(waDateTime::getFormat('humandate'), $item->getDueDate())}</span>
+        {/if}
+
+        {if $item->getNote()}<p class="pl-item-note">{$item->getNoteParsed()|nl2br}</p>{/if}
+        {if $item->getAttachmentsCount()}
+          <ul class="pl-attachments">
+            {foreach $item->getAttachments() as $attachment}
+              {if $attachment->getFiletype() == 'image'}<li><a href="{$pl2_attachments_path}/{$item->getId()}/{$attachment->getFilename()}" target="_blank"><img src="{$pl2_attachments_path}/{$item->getId()}/{$attachment->getFilename()}"></a></li>
+              {else}<li class="pl-no-preview"><a href="{$pl2_attachments_path}/{$item->getId()}/{$attachment->getFilename()}" target="_blank"><i class="icon16 download"></i>{$attachment->getFilename()|truncate:128}</a></li>
+              {/if}
+            {/foreach}
+          </ul>
+        {/if}
+
+        <div data-pl2-item-links>
+        {foreach $item->getLinkedEntities() as $linkedEntity}
+            <div data-pl2-link-preview>
+                {$linkedEntity->getAppLink()->renderPreview($linkedEntity)}
+            </div>
+        {/foreach}
+        </div>
+
+        <div class="pl-item-discussion" {if !$item->getCommentsCount() || $item->isDone()}style="display: none;"{/if}>
+            {include './ItemComments.html' item=$item inline}
+        </div>
+
+    </label>
+    <div data-pl2-item-details class="pl-item-details"></div>
+
+</div>
+<div class="pl-inner-item-add-placeholder"></div>
+
+{/if}
