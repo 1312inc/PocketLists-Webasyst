@@ -1695,7 +1695,6 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
         // old jq ui hack
         if ($textarea.data("ui-autocomplete") !== undefined) {
-            debugger;
             $textarea.data("ui-autocomplete")._renderItem = function (ul, item) {
                 return $("<li>")
                     .append($(item.label).addClass('ui-menu-item-wrapper'))
