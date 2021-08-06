@@ -110,8 +110,13 @@ class pocketlistsItemDetailsAction extends pocketlistsViewItemAction
             ]
         );
 
-        $this->setTemplate(
-            pl2()->getUI2TemplatePath('templates/actions%s/item/ItemDetails.html', $externalApp)
+        $template = pl2()->getUI2TemplatePath('templates/actions%s/item/ItemDetails.html', $externalApp);
+
+        pocketlistsHelper::logDebug(
+            sprintf('Load template for app %s: %s', $externalApp, $template),
+            'pocketlists/template_debug.log'
         );
+
+        $this->setTemplate($template);
     }
 }

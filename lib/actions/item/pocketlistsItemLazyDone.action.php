@@ -85,7 +85,9 @@ class pocketlistsItemLazyDoneAction extends pocketlistsViewAction
                 break;
 
             case 'team':
-                $teammate = pl2()->getEntityFactory(pocketlistsContact::class)->createNewWithId(waRequest::request('teammate', 0));
+                $teammate = pl2()->getEntityFactory(pocketlistsContact::class)->createNewWithId(
+                    waRequest::request('teammate', 0)
+                );
 
                 $done = $itemFactory
                     ->setOffset($offset * pocketlistsFactory::DEFAULT_LIMIT)
@@ -124,11 +126,14 @@ class pocketlistsItemLazyDoneAction extends pocketlistsViewAction
 //            ]
 //        );
 
-        $this->setTemplate(
-            pl2()->getUI2TemplatePath(
-                'templates/actions%s/item/ItemLazyDone.html',
-                waRequest::request('external_app')
-            )
+        $externalApp = waRequest::request('external_app');
+        $template = pl2()->getUI2TemplatePath('templates/actions%s/item/ItemLazyDone.html', $externalApp);
+
+        pocketlistsHelper::logDebug(
+            sprintf('Load template for app %s: %s', $externalApp, $template),
+            'pocketlists/template_debug.log'
         );
+
+        $this->setTemplate($template);
     }
 }

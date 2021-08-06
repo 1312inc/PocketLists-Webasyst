@@ -66,6 +66,16 @@ final class pocketlistsShopBackendOrder
             }
         }
 
+        pocketlistsHelper::logDebug(
+            sprintf(
+                'UI. Shop: %s. Pl2: %s. Default: %s',
+                wa()->whichUI('shop'),
+                wa()->whichUI('pocketlists'),
+                wa()->whichUI()
+            ),
+            'pocketlists/template_debug.log'
+        );
+
         foreach (['aux_info', 'action_link', 'info_section', 'title_suffix', 'action_button'] as $hook) {
             $template = wa()->getAppPath(
                 sprintf(
@@ -77,6 +87,11 @@ final class pocketlistsShopBackendOrder
             );
 
             if (file_exists($template)) {
+                pocketlistsHelper::logDebug(
+                    sprintf('Load template for shop hook %s: %s. %s', $hook, $template, __CLASS__),
+                    'pocketlists/template_debug.log'
+                );
+
                 try {
                     $view->assign(
                         [
