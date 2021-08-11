@@ -26,14 +26,14 @@ final class pocketlistsShopBackendOrder
             return $return;
         }
 
-        pocketlistsHelper::logDebug(
+        waLog::log(
             sprintf(
                 'UI. Shop: %s. Pl2: %s. Default: %s',
                 wa()->whichUI('shop'),
                 wa()->whichUI('pocketlists'),
                 wa()->whichUI()
             ),
-            'template_debug.log'
+            'pocketlists/template_debug.log'
         );
 
         $hasItems = pl2()->getModel(pocketlistsItemLink::class)->countLinkedItems('shop', 'order', $params['id']);
@@ -86,9 +86,9 @@ final class pocketlistsShopBackendOrder
                 pocketlistsHelper::APP_ID
             );
 
-            pocketlistsHelper::logDebug(
+            waLog::log(
                 sprintf('Load template for shop hook %s: %s. %s', $hook, $template, __CLASS__),
-                'template_debug.log'
+                'pocketlists/template_debug.log'
             );
 
             if (file_exists($template)) {

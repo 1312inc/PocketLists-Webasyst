@@ -38,7 +38,7 @@ class pocketlistsItemAddAction extends pocketlistsViewItemAction
 
         pocketlistsHelper::logDebug(
             sprintf('Load template for app %s: %s', $externalApp, $template),
-            'pocketlists/template_debug.log'
+            'template_debug.log'
         );
 
         $this->setTemplate($template);
