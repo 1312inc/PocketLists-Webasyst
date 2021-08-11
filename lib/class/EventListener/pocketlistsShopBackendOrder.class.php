@@ -26,6 +26,16 @@ final class pocketlistsShopBackendOrder
             return $return;
         }
 
+        pocketlistsHelper::logDebug(
+            sprintf(
+                'UI. Shop: %s. Pl2: %s. Default: %s',
+                wa()->whichUI('shop'),
+                wa()->whichUI('pocketlists'),
+                wa()->whichUI()
+            ),
+            'template_debug.log'
+        );
+
         $hasItems = pl2()->getModel(pocketlistsItemLink::class)->countLinkedItems('shop', 'order', $params['id']);
 
         wa('pocketlists', true);
@@ -66,16 +76,6 @@ final class pocketlistsShopBackendOrder
             }
         }
 
-        pocketlistsHelper::logDebug(
-            sprintf(
-                'UI. Shop: %s. Pl2: %s. Default: %s',
-                wa()->whichUI('shop'),
-                wa()->whichUI('pocketlists'),
-                wa()->whichUI()
-            ),
-            'pocketlists/template_debug.log'
-        );
-
         foreach (['aux_info', 'action_link', 'info_section', 'title_suffix', 'action_button'] as $hook) {
             $template = wa()->getAppPath(
                 sprintf(
@@ -86,12 +86,12 @@ final class pocketlistsShopBackendOrder
                 pocketlistsHelper::APP_ID
             );
 
-            if (file_exists($template)) {
-                pocketlistsHelper::logDebug(
-                    sprintf('Load template for shop hook %s: %s. %s', $hook, $template, __CLASS__),
-                    'pocketlists/template_debug.log'
-                );
+            pocketlistsHelper::logDebug(
+                sprintf('Load template for shop hook %s: %s. %s', $hook, $template, __CLASS__),
+                'template_debug.log'
+            );
 
+            if (file_exists($template)) {
                 try {
                     $view->assign(
                         [
@@ -102,7 +102,7 @@ final class pocketlistsShopBackendOrder
                     );
                     $return[$hook] = $view->fetch($template);
                 } catch (Exception $ex) {
-                    waLog::log(sprintf('%s error %s', $hook, $ex->getMessage()), 'pocketlists/shop.log');
+                    pocketlistsHelper::logError(sprintf('%s error %s', $hook, $ex->getMessage()), $ex);
                 }
             }
         }

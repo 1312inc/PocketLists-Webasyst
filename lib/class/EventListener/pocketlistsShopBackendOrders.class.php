@@ -40,7 +40,7 @@ final class pocketlistsShopBackendOrders
                 wa()->whichUI('pocketlists'),
                 wa()->whichUI()
             ),
-            'pocketlists/template_debug.log'
+            'template_debug.log'
         );
 
         foreach (['sidebar_bottom_li'] as $hook) {
@@ -56,7 +56,7 @@ final class pocketlistsShopBackendOrders
             if (file_exists($template)) {
                 pocketlistsHelper::logDebug(
                     sprintf('Load template for shop hook %s: %s. %s', $hook, $template, __CLASS__),
-                    'pocketlists/template_debug.log'
+                    'template_debug.log'
                 );
 
                 if (method_exists($this, $hook)) {
