@@ -129,11 +129,6 @@ class pocketlistsItemLazyDoneAction extends pocketlistsViewAction
         $externalApp = waRequest::request('external_app');
         $template = pl2()->getUI2TemplatePath('templates/actions%s/item/ItemLazyDone.html', $externalApp);
 
-        pocketlistsHelper::logDebug(
-            sprintf('Load template for app %s: %s', $externalApp, $template),
-            'template_debug.log'
-        );
-
         $this->setTemplate($template);
     }
 }
