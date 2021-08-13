@@ -19,9 +19,11 @@ class pocketlistsItemAddAction extends pocketlistsViewItemAction
 
         /**
          * UI hook in item add compact mode
+         *
          * @event backend_item_add.compact
          *
          * @param pocketlistsEventInterface $event Event with external flag in params array (external means called from non-pocketlists app)
+         *
          * @return string html output
          */
         $event = new pocketlistsEvent(
@@ -32,11 +34,8 @@ class pocketlistsItemAddAction extends pocketlistsViewItemAction
         $eventResult = pl2()->waDispatchEvent($event);
         $this->view->assign('backend_item_add', $eventResult);
 
-        $this->setTemplate(
-            pl2()->getUI2TemplatePath(
-                'templates/actions%s/item/ItemAdd.html',
-                $externalApp
-            )
-        );
+        $template = pl2()->getUI2TemplatePath('templates/actions%s/item/ItemAdd.html', $externalApp);
+
+        $this->setTemplate($template);
     }
 }

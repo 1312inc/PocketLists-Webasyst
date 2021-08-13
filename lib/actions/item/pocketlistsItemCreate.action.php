@@ -191,11 +191,9 @@ class pocketlistsItemCreateAction extends pocketlistsViewAction
 
         $this->view->assign('items', $items);
 
-        $this->setTemplate(
-            pl2()->getUI2TemplatePath(
-                'templates/actions%s/item/Item.html',
-                waRequest::request('external_app', null, waRequest::TYPE_STRING_TRIM)
-            )
-        );
+        $externalApp = waRequest::request('external_app', null, waRequest::TYPE_STRING_TRIM);
+        $template = pl2()->getUI2TemplatePath('templates/actions%s/item/Item.html', $externalApp);
+
+        $this->setTemplate($template);
     }
 }

@@ -87,7 +87,7 @@ final class pocketlistsShopBackendOrder
                     );
                     $return[$hook] = $view->fetch($template);
                 } catch (Exception $ex) {
-                    waLog::log(sprintf('%s error %s', $hook, $ex->getMessage()), 'pocketlists/shop.log');
+                    pocketlistsHelper::logError(sprintf('%s error %s', $hook, $ex->getMessage()), $ex);
                 }
             }
         }

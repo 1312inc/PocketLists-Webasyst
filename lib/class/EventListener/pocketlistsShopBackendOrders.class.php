@@ -44,12 +44,16 @@ final class pocketlistsShopBackendOrders
             );
 
             if (file_exists($template)) {
-                if (method_exists($this, $hook)) {
-                    $viewParams = array_merge($viewParams, $this->$hook());
-                }
+                try {
+                    if (method_exists($this, $hook)) {
+                        $viewParams = array_merge($viewParams, $this->$hook());
+                    }
 
-                $view->assign('params', $viewParams);
-                $return[$hook] = $view->fetch($template);
+                    $view->assign('params', $viewParams);
+                    $return[$hook] = $view->fetch($template);
+                } catch (Exception $ex) {
+                    pocketlistsHelper::logError(sprintf('%s error %s', $hook, $ex->getMessage()), $ex);
+                }
             }
         }
 
