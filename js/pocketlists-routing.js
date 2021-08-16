@@ -18,7 +18,8 @@
     $.pocketlists_routing = {
         options: {
             user_id: 0,
-            $content: $('#content')
+            $content: $('#content'),
+            debug: false
         },
         init: function (options) {
             var that = this;
@@ -141,16 +142,15 @@
                     var attr = hash.slice(attrMarker);
                     if (typeof(this[actionName + 'Action']) == 'function') {
                         this.preExecute(actionName);
-                        console.info('dispatch', [actionName + 'Action', attr]);
+                        this.options.debug && console.info('dispatch', [actionName + 'Action', attr]);
                         this[actionName + 'Action'].apply(this, attr);
 
                         if (actionName !== 'debug') {
                             $.storage.set('/pocketlists/hash/' + this.options.user_id, hash.join('/'));
                         }
                         this.postExecute(actionName);
-                    }
-                    else {
-                        console.info('Invalid action name:', actionName + 'Action');
+                    } else {
+                        this.options.debug && console.info('Invalid action name:', actionName + 'Action');
                     }
                 } else {
                     this.preExecute();

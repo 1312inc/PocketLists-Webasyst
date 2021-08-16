@@ -5,7 +5,8 @@
         $loading: $('<i class="icon16 loading">'),
         $wa: null,
         defaults: {
-            isAdmin: false
+            isAdmin: false,
+            debug: false
         },
         options: {},
         reloadSidebarInAction: false,
@@ -460,6 +461,9 @@
         },
         log: function (msg) {
             console.log('pocketlists log', msg);
+        },
+        debugLog: function (msg) {
+            this.options.debug && console.log('pocketlists log', msg);
         },
         flexHack: function () {
             var $compensation = $('#pl-chat-waapps-height-compensation');
