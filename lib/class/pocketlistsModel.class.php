@@ -23,14 +23,15 @@ class pocketlistsModel extends waModel
     }
 
     /**
-     * @todo: вынести в отдельный сервис
      * @param array $query
      * @param int   $limit
      * @param int   $offset
+     * @param bool  $calcFoundRows
      *
      * @return string
+     * @todo: вынести в отдельный сервис
      */
-    public function buildSqlComponents(array $query, $limit = 0, $offset = 0)
+    public function buildSqlComponents(array $query, $limit = 0, $offset = 0, $calcFoundRows = false)
     {
         $where = [];
 
@@ -46,13 +47,14 @@ class pocketlistsModel extends waModel
         }
 
         $q = sprintf('
-            select %s
+            select %s %s
             from %s
             %s
             %s
             %s
             %s
             %s',
+            $calcFoundRows ? ' SQL_CALC_FOUND_ROWS ' : '',
             implode(",\n", $query['select']),
             implode(",\n", $query['from']),
             implode("\n", $query['join']),
