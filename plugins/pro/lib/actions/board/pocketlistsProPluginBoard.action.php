@@ -5,7 +5,7 @@
  */
 class pocketlistsProPluginBoardAction extends pocketlistsProPluginAbstractViewAction
 {
-    const ON_PAGE = 50;
+    const ON_PAGE = 99;
 
     /**
      * @param null $params
@@ -40,6 +40,9 @@ class pocketlistsProPluginBoardAction extends pocketlistsProPluginAbstractViewAc
                 ->setLimit(self::ON_PAGE)
                 ->findItemsByLabelAndPocket($label, $pocket);
             $labelItems->count = $labelFactory->getLastFoundCount();
+            if ($labelItems->count > 99) {
+                $labelItems->count = '99+';
+            }
 
             $allItems[$labelItems->label->getId()] = $labelItems;
         }
@@ -51,6 +54,9 @@ class pocketlistsProPluginBoardAction extends pocketlistsProPluginAbstractViewAc
             ->setLimit(self::ON_PAGE)
             ->findDoneItemsByAllLabelsAndPocket();
         $labelItems->count = $labelFactory->getLastFoundCount();
+        if ($labelItems->count > 99) {
+            $labelItems->count = '99+';
+        }
         $labelItems->isDone = true;
 
         $allItems[$labelItems->label->getId()] = $labelItems;
