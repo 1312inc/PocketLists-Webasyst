@@ -451,6 +451,9 @@
         log: function (msg) {
             console.log('pocketlists log', msg);
         },
+        debugLog: function (msg) {
+            this.options.debug && console.log('pocketlists log', msg);
+        },
         flexHack: function () {
             var $compensation = $('#pl-chat-waapps-height-compensation');
             if (this.hasGlobalScrollbar() && !$compensation.is(':visible')) {

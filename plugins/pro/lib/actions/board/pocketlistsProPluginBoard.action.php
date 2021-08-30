@@ -5,6 +5,8 @@
  */
 class pocketlistsProPluginBoardAction extends pocketlistsProPluginAbstractViewAction
 {
+    const ON_PAGE = 99;
+
     /**
      * @param null $params
      *
@@ -30,15 +32,17 @@ class pocketlistsProPluginBoardAction extends pocketlistsProPluginAbstractViewAc
             }
         }
 
-        /** @var pocketlistsProPluginLabel $label */
         foreach ($allLabels as $label) {
             $labelItems = new pocketlistsProPluginLabelItemsDto();
             $labelItems->label = $label;
             $labelItems->items = $labelFactory
                 ->setOffset(0)
-                ->setLimit(50)
+                ->setLimit(self::ON_PAGE)
                 ->findItemsByLabelAndPocket($label, $pocket);
-            $labelItems->count = count($labelItems->items);
+            $labelItems->count = $labelFactory->getLastFoundCount();
+            if ($labelItems->count > 99) {
+                $labelItems->count = '99+';
+            }
 
             $allItems[$labelItems->label->getId()] = $labelItems;
         }
@@ -47,9 +51,12 @@ class pocketlistsProPluginBoardAction extends pocketlistsProPluginAbstractViewAc
         $labelItems->label = $labelFactory->createNewDone();
         $labelItems->items = $labelFactory
             ->setOffset(0)
-            ->setLimit(50)
+            ->setLimit(self::ON_PAGE)
             ->findDoneItemsByAllLabelsAndPocket();
-        $labelItems->count = count($labelItems->items);
+        $labelItems->count = $labelFactory->getLastFoundCount();
+        if ($labelItems->count > 99) {
+            $labelItems->count = '99+';
+        }
         $labelItems->isDone = true;
 
         $allItems[$labelItems->label->getId()] = $labelItems;

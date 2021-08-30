@@ -128,7 +128,7 @@
                     var attr = hash.slice(attrMarker);
                     if (typeof(this[actionName + 'Action']) == 'function') {
                         this.preExecute(actionName);
-                        console.info('dispatch', [actionName + 'Action', attr]);
+                        this.options.debug && console.info('dispatch', [actionName + 'Action', attr]);
                         this[actionName + 'Action'].apply(this, attr);
 
                         if (actionName !== 'debug') {
@@ -137,7 +137,7 @@
                         this.postExecute(actionName);
                     }
                     else {
-                        console.info('Invalid action name:', actionName + 'Action');
+                        this.options.debug && console.info('Invalid action name:', actionName + 'Action');
                     }
                 } else {
                     this.preExecute();

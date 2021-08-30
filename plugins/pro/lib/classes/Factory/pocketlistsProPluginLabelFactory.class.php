@@ -10,6 +10,8 @@ class pocketlistsProPluginLabelFactory extends pocketlistsFactory
 {
     protected $entity = 'pocketlistsProPluginLabel';
 
+    private $lastFoundCount = 0;
+
     /**
      * @return pocketlistsProPluginLabel
      */
@@ -195,12 +197,16 @@ class pocketlistsProPluginLabelFactory extends pocketlistsFactory
         pocketlistsPocket $pocket = null,
         pocketlistsContact $user = null
     ) {
+        $found = 0;
         $itemsData = $this->getItemsByLabelAndPocket(
             $label->getId(),
+            $found,
             pocketlistsItem::STATUS_UNDONE,
             $pocket ? $pocket->getId() : null,
             $user instanceof pocketlistsContact ? $user->getId() : pl2()->getUser()->getId()
         );
+
+        $this->lastFoundCount = $found;
 
         return pl2()->getEntityFactory(pocketlistsItem::class)->generateWithData($itemsData, true);
     }
@@ -213,13 +219,21 @@ class pocketlistsProPluginLabelFactory extends pocketlistsFactory
      */
     public function findDoneItemsByAllLabelsAndPocket(pocketlistsPocket $pocket = null)
     {
+        $found = 0;
         $itemsData = $this->getItemsByLabelAndPocket(
             null,
+            $found,
             pocketlistsItem::STATUS_DONE,
             $pocket ? $pocket->getId() : null
         );
+        $this->lastFoundCount = $found;
 
         return pl2()->getEntityFactory(pocketlistsItem::class)->generateWithData($itemsData, true);
+    }
+
+    public function getLastFoundCount(): int
+    {
+        return $this->lastFoundCount;
     }
 
     /**
@@ -234,6 +248,7 @@ class pocketlistsProPluginLabelFactory extends pocketlistsFactory
      */
     private function getItemsByLabelAndPocket(
         $labelId,
+        &$found,
         $status = pocketlistsItem::STATUS_UNDONE,
         $pocketId = 0,
         $contactId = 0
@@ -244,6 +259,7 @@ class pocketlistsProPluginLabelFactory extends pocketlistsFactory
         /** @var pocketlistsItemModel $itemModel */
         $itemModel = pl2()->getModel(pocketlistsItem::class);
         $sqlParts = $itemModel->getQueryComponents();
+
 //        $sqlParts = $itemModel->getTodoSqlComponents($contactId, [], $available_lists);
         $sqlParts['join'] += [
             'left join (select i2.name, l2.*
@@ -287,11 +303,11 @@ class pocketlistsProPluginLabelFactory extends pocketlistsFactory
 
         $sqlParts['order by'] = ['i.calc_priority desc', 'i.id'];
 
-        $sql = $itemModel->buildSqlComponents($sqlParts, $this->getLimit(), $this->getOffset());
+        $sql = $itemModel->buildSqlComponents($sqlParts, $this->getLimit(), $this->getOffset(), true);
 
         $this->resetLimitAndOffset();
 
-        return $itemModel->query(
+        $data = $itemModel->query(
             $sql,
             [
                 'contact_id' => $contactId,
@@ -299,7 +315,10 @@ class pocketlistsProPluginLabelFactory extends pocketlistsFactory
                 'status'     => $status,
                 'pocket_id'  => $pocketId,
                 'list_ids'   => $available_lists,
-            ]
-        )->fetchAll();
+            ])->fetchAll();
+
+        $found = (int)$itemModel->query('SELECT FOUND_ROWS()')->fetchField();
+
+        return $data;
     }
 }
