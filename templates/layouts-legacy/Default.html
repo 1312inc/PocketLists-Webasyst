@@ -57,7 +57,7 @@
         account_name: '{$wa->accountName()|escape}',
         isAdmin: {$isAdmin},
         userId: {$wa->user()->get('id')},
-        debug: {$wa->debug()|default:false}
+        debug: {if $wa->debug()}1{else}0{/if}
     });
 </script>
 </body>
