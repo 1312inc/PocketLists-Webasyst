@@ -38,8 +38,13 @@ class pocketlistsProPluginAutomationService
             $eventDto->name = $name;
             $eventDto->options = $action->getOptions();
 
-            $events['shop.'.$id] = $eventDto;
+            $events['shop.' . $id] = $eventDto;
         }
+
+        $id1312 = uniqid('1312_', true);
+        $events['shop.' . $id1312] = new pocketlistsProPluginAutomationSettingsDto();
+        $events['shop.' . $id1312]->id = $id1312;
+        $events['shop.' . $id1312]->name = _w('== DELETED ACTION ==');
 
         return $events;
     }

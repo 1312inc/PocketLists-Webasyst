@@ -3,7 +3,9 @@
     <script type="text/javascript" src="{$pl2pro['wa_app_static_url']}plugins/pro/js/pro.js?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
     <script>
         (function () {
-            $.pocketlists_pro.init();
+            $.pocketlists_pro.init({
+                debug: {if waSystemConfig::isDebug()}true{else}false{/if}
+            });
         }())
     </script>
 {/if}

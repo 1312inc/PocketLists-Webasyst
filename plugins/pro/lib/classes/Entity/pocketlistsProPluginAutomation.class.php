@@ -342,6 +342,7 @@ class pocketlistsProPluginAutomation extends pocketlistsEntity
                             $rule['identifier'],
                             $rule
                         );
+                    } catch (pocketlistsProPluginNoShopActionException $exception) {
                     } catch (Exception $exception) {
                         pocketlistsLogger::error($exception->getMessage());
                         $this->isValid = false;

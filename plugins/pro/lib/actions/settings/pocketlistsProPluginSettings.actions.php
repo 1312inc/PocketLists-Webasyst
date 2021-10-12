@@ -22,17 +22,16 @@ class pocketlistsProPluginSettingsActions extends pocketlistsViewActions
     {
         $automation = pocketlistsProPlugin::getInstance()->getAutomationService();
 
-        /** @var pocketlistsProPluginAutomationSettingsDto[] $shopActions */
         $shopActions = $automation->getAvailableEventsForGroup();
+
+        $deletedAction = end($shopActions);
 
         /** @var pocketlistsProPluginAutomationFactory $f */
         $f = pl2()->getEntityFactory(pocketlistsProPluginAutomation::class);
-        /** @var pocketlistsProPluginAutomation[] $automations */
         $automations = $f->findByEventAndType(pocketlistsProPluginAutomationShopOrderActionEvent::NAME, 'shop');
-
         foreach ($automations as $automation) {
             if (!$automation->isValid()) {
-                pocketlistsLogger::debug(sprintf('Automation %s is not valid, skip', $automation->getId()));
+                pocketlistsLogger::debug(sprintf('Automation %s is not valid, skip', $automation->getId())  );
 
                 continue;
             }
@@ -44,11 +43,15 @@ class pocketlistsProPluginSettingsActions extends pocketlistsViewActions
                 foreach ($automation->getRules() as $rule) {
                     if ($rule instanceof pocketlistsProPluginAutomationRuleShopAction) {
                         $actionId = $rule->getValue()->getId();
-                        $shopActions['shop.' . $actionId]->automations[] = $automation;
                     } else {
                         $rules[] = $rule->viewHtml();
                     }
                 }
+
+                if (!$actionId) {
+                    $actionId = $deletedAction->id;
+                }
+                $shopActions['shop.' . $actionId]->automations[] = $automation;
 
                 $shopActions['shop.' . $actionId]->automationRulesHtml[$automation->getId()] = implode(
                     _wp(' AND '),
@@ -73,7 +76,7 @@ class pocketlistsProPluginSettingsActions extends pocketlistsViewActions
             }
         }
 
-        $this->view->assign(['shopActions' => $shopActions]);
+        $this->view->assign(['shopActions' => $shopActions, 'deletedActionId' => $deletedAction->id]);
     }
 
     public function shortcutsAction()
