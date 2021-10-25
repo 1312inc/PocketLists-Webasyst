@@ -74,6 +74,11 @@ class pocketlistsProPluginSettingsActions extends pocketlistsViewActions
             } catch (Exception $exception) {
                 pocketlistsLogger::error($exception->getMessage());
             }
+
+            // не показывать когда нет правил
+            if (empty($shopActions['shop.'.$deletedAction->id]->automations)) {
+                unset($shopActions['shop.'.$deletedAction->id]);
+            }
         }
 
         $this->view->assign(['shopActions' => $shopActions, 'deletedActionId' => $deletedAction->id]);
