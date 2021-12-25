@@ -31,7 +31,7 @@ class pocketlistsProPluginSettingsActions extends pocketlistsViewActions
         $automations = $f->findByEventAndType(pocketlistsProPluginAutomationShopOrderActionEvent::NAME, 'shop');
         foreach ($automations as $automation) {
             if (!$automation->isValid()) {
-                pocketlistsLogger::debug(sprintf('Automation %s is not valid, skip', $automation->getId())  );
+                pocketlistsLogger::debug(sprintf('Automation %s is not valid, skip', $automation->getId()));
 
                 continue;
             }
@@ -76,12 +76,18 @@ class pocketlistsProPluginSettingsActions extends pocketlistsViewActions
             }
 
             // не показывать когда нет правил
-            if (empty($shopActions['shop.'.$deletedAction->id]->automations)) {
-                unset($shopActions['shop.'.$deletedAction->id]);
+            if (empty($shopActions['shop.' . $deletedAction->id]->automations)) {
+                unset($shopActions['shop.' . $deletedAction->id]);
             }
         }
 
-        $this->view->assign(['shopActions' => $shopActions, 'deletedActionId' => $deletedAction->id]);
+        $this->view->assign(
+            [
+                'shopActions' => $shopActions,
+                'deletedActionId' => $deletedAction->id,
+                'settings' => (new pocketlistsProPluginSettings())->getSettings(),
+            ]
+        );
     }
 
     public function shortcutsAction()

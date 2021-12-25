@@ -2,6 +2,29 @@
 <p>[`Set up the automation rules to make Pocket Lists automatically create and assign to-dos based on actions performed with Shop-Script orders.`]</p>
 
 <div class="fields form pl2pro-ss-automation-form" style="position: relative;">
+
+    <div class="fields-group">
+        <div class="field">
+            <div class="name nowrap">
+                [`Log runs`]
+            </div>
+            <div class="value no-shift">
+                <label>
+                    <input type="hidden" name="settings[log_runs]" value="0"/>
+                    <span class="wa-checkbox">
+                            <input type="checkbox" name="settings[log_runs]"  value="1" {if !empty($settings.log_runs)}checked="checked"{/if}/>
+                            <span>
+                                <span class="icon">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                            </span>
+                            </span>
+                    [`Record runs to the Shop-Script order processing log`]
+                </label>
+            </div>
+        </div>
+    </div>
+
     {** @var $action pocketlistsProPluginAutomationSettingsDto **}
     {foreach $shopActions as $action}
     <div class="field-group">
@@ -59,6 +82,13 @@
 
 <script>
     $.pocketlists.setTitle();
+
+    var saveSettings = function (e) {
+        var fields = $('.pl2pro-ss-automation-form').find('[name^="settings["]');
+        $.post('?plugin=pro&module=settings&action=save', fields.serialize());
+    }
+
+    $('.pl2pro-ss-automation-form').on('change', '[name^="settings["]', saveSettings);
 
     $('[data-pl2pro-action="automation-add-rule"], [data-pl2pro-automation-edit]').click(function(){
         var id = $(this).data('pl2pro-automation-edit') || 0,
