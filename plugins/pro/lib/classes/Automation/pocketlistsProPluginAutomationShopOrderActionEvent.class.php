@@ -129,7 +129,7 @@ class pocketlistsProPluginAutomationShopOrderActionEvent implements pocketlistsP
 
                 if ($this->settings->isRunLogs()) {
                     $msg = sprintf_wp(
-                        'Created pocketlists item "%s" (%d) because of action %s (%s)%s.',
+                        'Pocket Lists: new to-do "%s" (id: %d) based on order action %s (%s)%s.',
                         $item->getName(),
                         $item->getId(),
                         $this->action->getName(),
