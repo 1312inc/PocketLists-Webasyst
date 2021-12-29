@@ -51,9 +51,9 @@
 {/foreach}
 </div>
 
-{* if method_exists($wa->installer, 'reviewWidget')}
+{if method_exists($wa->installer, 'reviewWidget')}
     {$wa->installer->reviewWidget('plugin/pocketlists/pro')}
-{/if *}
+{/if}
 
 <div class="clear-both"></div>
 
