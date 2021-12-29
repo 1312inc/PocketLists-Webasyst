@@ -732,3 +732,9 @@ msgstr "сумма заказа"
 #: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemEdit.html:54
 msgid "shipping cost"
 msgstr "стоимость доставки"
+
+msgid "Debug"
+msgstr "Отладка"
+
+msgid "Record runs to the Shop-Script order history"
+msgstr "Фиксировать факты автоматического создания задач в истории обработки заказов в Shop-Script"

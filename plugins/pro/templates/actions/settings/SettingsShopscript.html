@@ -3,28 +3,6 @@
 
 <div class="fields form pl2pro-ss-automation-form" style="position: relative;">
 
-    <div class="fields-group">
-        <div class="field">
-            <div class="name nowrap">
-                [`Log runs`]
-            </div>
-            <div class="value no-shift">
-                <label>
-                    <input type="hidden" name="settings[log_runs]" value="0"/>
-                    <span class="wa-checkbox">
-                            <input type="checkbox" name="settings[log_runs]"  value="1" {if !empty($settings.log_runs)}checked="checked"{/if}/>
-                            <span>
-                                <span class="icon">
-                                    <i class="fas fa-check"></i>
-                                </span>
-                            </span>
-                            </span>
-                    [`Record runs to the Shop-Script order processing log`]
-                </label>
-            </div>
-        </div>
-    </div>
-
     {** @var $action pocketlistsProPluginAutomationSettingsDto **}
     {foreach $shopActions as $action}
     <div class="field-group">
@@ -71,7 +49,30 @@
         </div>
     </div>
     </div>
-{/foreach}
+    {/foreach}
+
+    <div class="fields-group">
+        <div class="field">
+            <div class="name nowrap">
+                [`Debug`]
+            </div>
+            <div class="value no-shift">
+                <label>
+                    <input type="hidden" name="settings[log_runs]" value="0"/>
+                    <span class="wa-checkbox">
+                            <input type="checkbox" name="settings[log_runs]"  value="1" {if !empty($settings.log_runs)}checked="checked"{/if}/>
+                            <span>
+                                <span class="icon">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                            </span>
+                            </span>
+                    [`Record runs to the Shop-Script order history`]
+                </label>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 {* if method_exists($wa->installer, 'reviewWidget')}
