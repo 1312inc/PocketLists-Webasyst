@@ -79,9 +79,9 @@
         </div>
     </main>
 
-    {* if !empty($lists) && count($lists)>3 && method_exists($wa->installer, 'reviewWidget')}
+    {if !empty($lists) && count($lists)>3 && method_exists($wa->installer, 'reviewWidget')}
         {$wa->installer->reviewWidget('app/pocketlists')}
-    {/if *}
+    {/if}
 
 </div>
 <script>

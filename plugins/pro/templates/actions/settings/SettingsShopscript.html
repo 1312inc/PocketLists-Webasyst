@@ -2,6 +2,7 @@
 <p>[`Set up the automation rules to make Pocket Lists automatically create and assign to-dos based on actions performed with Shop-Script orders.`]</p>
 
 <div class="fields form pl2pro-ss-automation-form" style="position: relative;">
+
     {** @var $action pocketlistsProPluginAutomationSettingsDto **}
     {foreach $shopActions as $action}
     <div class="field-group">
@@ -42,25 +43,53 @@
                 <p class="gray custom-mb-12">{sprintf('[`No automation rules are defined for the ‘%s’ order action`]',$action->name)}</p>
             {/foreach}
 
-            {if $wa->whichUI() == '1.3'}
-                <a href="#" class="inline-link pl2pro-ss-add-rule" data-pl2pro-action="automation-add-rule"><i class="icon16 add"></i><b><i>[`Add rule`]</i></b></a>
-            {else}
+            {if $action->id !== $deletedActionId}
                 <a href="#" class="button light-gray smaller rounded pl2pro-ss-add-rule" data-pl2pro-action="automation-add-rule"><i class="fas fa-plus-circle text-blue custom-mr-4"></i><span>[`Add rule`]</span></i></b></a>
             {/if}
         </div>
     </div>
     </div>
-{/foreach}
+    {/foreach}
+
+    <div class="fields-group">
+        <div class="field">
+            <div class="name nowrap">
+                [`Debug`]
+            </div>
+            <div class="value no-shift">
+                <label>
+                    <input type="hidden" name="settings[log_runs]" value="0"/>
+                    <span class="wa-checkbox">
+                            <input type="checkbox" name="settings[log_runs]"  value="1" {if !empty($settings.log_runs)}checked="checked"{/if}/>
+                            <span>
+                                <span class="icon">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                            </span>
+                            </span>
+                    [`Record runs to the Shop-Script order history`]
+                </label>
+            </div>
+        </div>
+    </div>
+
 </div>
 
-{* if method_exists($wa->installer, 'reviewWidget')}
+{if method_exists($wa->installer, 'reviewWidget')}
     {$wa->installer->reviewWidget('plugin/pocketlists/pro')}
-{/if *}
+{/if}
 
 <div class="clear-both"></div>
 
 <script>
     $.pocketlists.setTitle();
+
+    var saveSettings = function (e) {
+        var fields = $('.pl2pro-ss-automation-form').find('[name^="settings["]');
+        $.post('?plugin=pro&module=settings&action=save', fields.serialize());
+    }
+
+    $('.pl2pro-ss-automation-form').on('change', '[name^="settings["]', saveSettings);
 
     $('[data-pl2pro-action="automation-add-rule"], [data-pl2pro-automation-edit]').click(function(){
         var id = $(this).data('pl2pro-automation-edit') || 0,

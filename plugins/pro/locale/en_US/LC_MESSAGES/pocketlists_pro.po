@@ -726,3 +726,9 @@ msgstr ""
 #: /wa-apps/pocketlists/plugins/pro/templates/actions/automation/actions/createItemEdit.html:54
 msgid "shipping cost"
 msgstr ""
+
+msgid "Debug"
+msgstr ""
+
+msgid "Record runs to the Shop-Script order history"
+msgstr ""

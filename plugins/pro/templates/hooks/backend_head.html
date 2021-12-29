@@ -7,6 +7,8 @@
         $.pocketlists_pro_routing.init({
             user_id: {$wa->user()->get('id')}
         });
-        $.pocketlists_pro.init();
+        $.pocketlists_pro.init({
+            debug: {if waSystemConfig::isDebug()}true{else}false{/if}
+        });
     }())
 </script>

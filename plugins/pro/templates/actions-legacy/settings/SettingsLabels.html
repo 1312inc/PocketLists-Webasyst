@@ -34,9 +34,9 @@
     </tbody>
 </table>
 
-{* if method_exists($wa->installer, 'reviewWidget')}
+{if method_exists($wa->installer, 'reviewWidget')}
     {$wa->installer->reviewWidget('plugin/pocketlists/pro')}
-{/if *}
+{/if}
 
 <script type="text/x-jquery-tmpl" id="pl2pro-label">
 {literal}

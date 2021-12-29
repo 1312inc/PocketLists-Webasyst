@@ -60,8 +60,8 @@ final class pocketlistsTinyAddService
                         _w(
                             'Amazing companion/upgrade for Pocket Lists when it’s time for real collaboration on <em>bigger and more complex tasks</em>. Assignments, task statuses, deadlines, kanban board, more — the app help bringing the order to any complex teamwork.'
                         ),
-                    'promocode' => 'NCGR5G9ZUE',
-                    'discount' => '35',
+                    'promocode' => 'X97JNTWP8I',
+                    'discount' => '15',
                 ];
             }
             if (!wa()->appExists('cash')) {
@@ -78,8 +78,8 @@ final class pocketlistsTinyAddService
                         _w(
                             'Shows exact cash on hand balance for any date in the future. This app could have been a <em>life saver</em> for most businesses which did not survive a cash gap because of not knowing it’s coming.'
                         ),
-                    'promocode' => 'Z0J7OV1AHH',
-                    'discount' => '25',
+                    'promocode' => 'Z3NTSO2IHE',
+                    'discount' => '15',
                 ];
             }
 

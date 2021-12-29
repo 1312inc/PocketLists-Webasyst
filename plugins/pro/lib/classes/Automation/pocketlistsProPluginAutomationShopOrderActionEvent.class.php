@@ -23,6 +23,11 @@ class pocketlistsProPluginAutomationShopOrderActionEvent implements pocketlistsP
     private $failedRule;
 
     /**
+     * @var pocketlistsProPluginSettings
+     */
+    private $settings;
+
+    /**
      * pocketlistsProPluginAutomationShopOrderActionEvent constructor.
      *
      * @param shopOrder          $order
@@ -32,6 +37,7 @@ class pocketlistsProPluginAutomationShopOrderActionEvent implements pocketlistsP
     {
         $this->order = $order;
         $this->action = $action;
+        $this->settings = new pocketlistsProPluginSettings();
     }
 
     /**
@@ -111,9 +117,7 @@ class pocketlistsProPluginAutomationShopOrderActionEvent implements pocketlistsP
 
             $params = new pocketlistsProPluginAutomationShopOrderActionDto(
                 $this->order,
-                isset($params['action_performer_contact_id'])
-                    ? $params['action_performer_contact_id']
-                    : wa()->getUser()->getId()
+                $params['action_performer_contact_id'] ?? wa()->getUser()->getId()
             );
             $item = $automation->getAction()->execute($automation, $params);
             if ($item instanceof pocketlistsItem) {
@@ -122,6 +126,18 @@ class pocketlistsProPluginAutomationShopOrderActionEvent implements pocketlistsP
                     ->setLastExecutionDatetime(date('Y-m-d H:i:s'));
 
                 pl2()->getEntityFactory(pocketlistsProPluginAutomation::class)->update($automation);
+
+                if ($this->settings->isRunLogs()) {
+                    $msg = sprintf_wp(
+                        'Pocket Lists: new to-do "%s" (id: %d) based on order action %s (%s)%s.',
+                        $item->getName(),
+                        $item->getId(),
+                        $this->action->getName(),
+                        $this->action->getId(),
+                        wa()->getEnv() === 'cli' ? ' - delayed': ''
+                    );
+                    $this->order->log($msg);
+                }
             }
 
             $result->data = $item;
