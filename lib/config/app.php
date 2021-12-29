@@ -2,7 +2,7 @@
 return array(
     'name'           => /*_w*/('Pocket Lists'),
     'icon'           => 'img/pocketlists.png',
-    'version'        => '4.0.3',
+    'version'        => '4.0.4',
     'vendor'         => '1021997',
     'frontend'       => true,
     'routing_params' => array(
