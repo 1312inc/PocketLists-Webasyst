@@ -137,7 +137,7 @@
             <hr class="custom-mt-32">
 
             <div class="fields-group">
-                <div class="field">
+                <div class="field custom-mb-32">
                   <div class="name nowrap">
                     Webasyst
                   </div>
@@ -145,14 +145,13 @@
 
                       <p>[`<strong>Your feedback is very important!</strong> Please rate Pocket Lists and write a short review about your experience of using the app. Reviews (both positive and negative) really help us to see what is most useful in the app so we can continue delivering new features the right way.`]</p>
 
-
                       {if method_exists($wa->installer, 'reviewWidget')}
                           <div style="display: flex;">
-                              <div style="flex: 0 0 auto; padding-right: 20px;">
+                              <div style="flex: 0 0 auto; width: 280px; padding-right: 20px;">
                                   {$wa->installer->reviewWidget('app/pocketlists', ['is_inline' => true])}
                               </div>
                               {if pocketlistsHelper::hasPlugin('pro')}
-                              <div style="flex: 0 0 auto;">
+                              <div style="flex: 0 0 auto; width: 280px;">
                                   {$wa->installer->reviewWidget('plugin/pocketlists/pro', ['is_inline' => true])}
                               </div>
                               {/if}
