@@ -413,7 +413,7 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
 
                     $wrapper
                         .css({'max-height': labelH + 18 + 'px'}, 200)
-                        .animate({'max-height': 999 + 'px'}, 200)
+                        .animate({'max-height': 9999 + 'px'}, 200)
                         .animate({}, 200, function () {
                             if (listIsVisible()) {
                                 o.list.list_details.trigger('hide.pl2');
