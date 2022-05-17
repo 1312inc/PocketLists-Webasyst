@@ -151,7 +151,7 @@
 
                 function labels() {
                     var $labels = $wrapper.find('[data-pl2pro-label]'),
-                        labelId = $.storage.get('pocketlists/pro/label'),
+                        labelId = parseInt($.storage.get('pocketlists/pro/label')),
                         labelsAreHidden = function () {
                             return !!$labels.filter(':hidden').length;
                         };

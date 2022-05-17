@@ -30,7 +30,7 @@
             if (count) {
                 setIcon(count);
             } else {
-                $.get('?module=backendJson&action=appCount', function (r) {
+                $.get('?module=backendJson&action=appCount&background_process=1', function (r) {
                     if (r.status === 'ok') {
                         setIcon(r.data);
                     }
@@ -505,7 +505,7 @@
         },
         sendNotifications: function (appUrl) {
             appUrl = appUrl || '';
-            $.post(appUrl + '?module=backendJson&action=sendNotifications', function(r) {
+            $.post(appUrl + '?module=backendJson&action=sendNotifications&background_process=1', function(r) {
                 if (r.status === 'ok') {
                     var sent = parseInt(r.data);
                     sent && console.log('pocketlists: notification send ' + sent);
