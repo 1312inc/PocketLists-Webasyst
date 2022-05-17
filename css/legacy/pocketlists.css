@@ -180,9 +180,16 @@ table.pl-calendar td .pl-dots i.icon10 { margin-top: 0.2em; margin-right: 0.2em;
 .pl2ios-app-icon { width: 128px; height: 128px; margin: -19px; }
 
 .pl-more-apps { list-style: none; padding: 10px 0 0; }
-.pl-more-apps li { display: inline-block; text-align: center; margin-right: 15px; max-width: 144px; vertical-align: top; line-height: 1.2; }
-.pl-more-apps li a { text-decoration: none; display: block; font-size: 1.2rem; padding: 5px 0 7px; }
+.pl-more-apps li { display: block; margin-bottom: 20px; margin-top: 10px !important; vertical-align: top; line-height: 1.25; }
+.pl-more-apps li .pl-more-apps-app-icon { flex: 0 0 96px; }
+.pl-more-apps li p { font-size: 1rem; max-width: 75%; margin-top: 0.5rem; }
+.pl-more-apps li a.large { text-decoration: none; font-size: 1.5rem; }
 .pl-more-apps li img { width: 96px; height: 96px; }
+.pl2flexbox { display: flex; }
+.pl2flexbox.space-12 > * { margin-right: 12px; }
+.pl2flexbox.width-80 { width: 80%; }
+.pl2flexbox.width-100 { width: 100%; }
+.pl2flexbox > .wide { flex: 1; }
 
 /* Upgrade
 ---------- */
