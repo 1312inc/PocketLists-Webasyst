@@ -5,14 +5,14 @@ msgstr ""
 "PO-Revision-Date: \n"
 "Last-Translator: pocketlists\n"
 "Language-Team: pocketlists\n"
+"Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Basepath: .\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Language: en_US\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 3.0.1\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: .\n"
 
@@ -1256,6 +1256,9 @@ msgstr ""
 msgid "Upgrade to PRO"
 msgstr ""
 
+msgid "Upgrade"
+msgstr ""
+
 msgid "New app by 1312 Inc."
 msgstr ""
 
@@ -1299,6 +1302,15 @@ msgid "Path %s is not writable"
 msgstr ""
 
 msgid "https://www.webasyst.com/buy/store/5045/"
+msgstr ""
+
+msgid "https://www.webasyst.com/buy/store/1811/"
+msgstr ""
+
+msgid "https://www.webasyst.com/buy/store/5136/"
+msgstr ""
+
+msgid "https://www.webasyst.com/buy/store/4943/"
 msgstr ""
 
 msgid "Failed to upload file %s. Check permissions."

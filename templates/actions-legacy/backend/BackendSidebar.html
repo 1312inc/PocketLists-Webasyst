@@ -22,9 +22,13 @@
                 {$tinyAd.teaser}
             </p>
 
+            <p class="align-center">
+                <strong>{date( 'd.m.Y', $smarty.now )}</strong>
+            </p>
+
             <p class="align-center semibold gray">
                 [`Promocode`]
-                <span class="badge indicator onfire bold pl-app-discount-badge">&minus;{$tinyAd.discount}%</span>
+                <span class="badge indicator onfire bold pl-app-discount-badge" style="font-size: 1rem;">&minus;{$tinyAd.discount}%</span>
             </p>
             <input type="text" class="bold align-center" value="{$tinyAd.promocode}" style="border-style: dashed; font-size: 1rem;">
 
