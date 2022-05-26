@@ -56,7 +56,7 @@
               </div>
 
 
-              {$_utm_suffix = '?utm_source=pl2webasyst&utm_medium=inapp_about&utm_campaign=1312_inapp_pl2about_wa1'}
+              {$_utm_suffix = 'utm_source=pl2webasyst&utm_medium=inapp_about&utm_campaign=1312_inapp_pl2about_wa1'}
               <div class="field-group">
                 <div class="field">
                   <div class="name">
@@ -67,47 +67,53 @@
                       <ul class="pl-more-apps">
                           <li>
                               <div class="pl2flexbox space-12 width-100">
-                                  <a href="[`https://www.webasyst.com/store/app/tasks/`]{$_utm_suffix}" target="_blank" class="pl-more-apps-app-icon">
+                                  <a href="[`https://www.webasyst.com/store/app/tasks/`]?{$_utm_suffix}" target="_blank" class="pl-more-apps-app-icon">
                                       <img src="{$wa_url}wa-apps/pocketlists/img/pl2ad-tasks-app-144.png" alt="[`Teamwork`]">
                                   </a>
                                   <div class="custom-pt-4">
                                       <div class="pl2flexbox middle space-12 width-80">
                                           <span class="wide">
-                                              <a href="[`https://www.webasyst.com/store/app/tasks/`]{$_utm_suffix}" class="bold large" target="_blank">[`Teamwork`]</a>
+                                              <a href="[`https://www.webasyst.com/store/app/tasks/`]?{$_utm_suffix}" class="bold large" target="_blank">[`Teamwork`] <i class="fas fa-external-link-alt hint"></i></a>
                                           </span>
-                                          <span class="nowrap">
-                                              {if $pl2->appExists('tasks')}
-                                                <span class="button smaller light-gray custom-ml-4"><i class="fas fa-check text-green"></i> [`Installed`]</span>
-                                              {else}
-                                                <span class="large">[`Promocode:`] <code class="highlighted">A0YET9THVX</code> <span class="badge indicator onfire" style="font-size: 1.375rem; font-weight: bold; top: 0;">&minus;35%</span></span>
-                                              {/if}
-                                          </span>
+                                          {if $pl2->appExists('tasks')}
+                                            <span class="nowrap">
+                                                <span class="smaller light-gray custom-ml-4"><i class="fas fa-check text-green"></i> [`Installed`]</span>
+                                            </span>
+                                          {/if}
                                       </div>
 
                                       <p class="custom-mt-8 custom-mb-12">
                                           <strong>[`Our flagship app.`]</strong> [`Amazing companion/upgrade for Pocket Lists when it’s time for real collaboration on <em>bigger and more complex tasks</em>. Assignments, task statuses, deadlines, kanban board, more — the app help bringing the order to any complex teamwork.`]
                                       </p>
 
+                                      {if !$pl2->appExists('tasks')}
+                                          <p class="nowrap small custom-mb-24">
+                                            [`Promocode:`]
+                                            <code style="font-size: 1.5rem;">A0YET9THVX</code>
+                                            <span class="badge indicator onfire" style="font-size: 1.25rem; font-weight: bold; top: 0;">&minus;35%</span>
+                                            <strong>{date( 'd.m.Y', $smarty.now )}</strong>
+                                            <a class="button small green rounded custom-ml-4" href="[`https://www.webasyst.com/buy/store/1811/`]?buy_type=lease_year&{$_utm_suffix}" target="_blank" >[`Buy now`]</a>
+                                          </p>
+                                      {/if}
+
                                   </div>
                               </div>
                           </li>
                           <li>
                               <div class="pl2flexbox space-12 width-100">
-                                  <a href="[`https://www.webasyst.com/store/app/cash/`]{$_utm_suffix}" target="_blank" class="pl-more-apps-app-icon">
+                                  <a href="[`https://www.webasyst.com/store/app/cash/`]?{$_utm_suffix}" target="_blank" class="pl-more-apps-app-icon">
                                       <img src="{$wa_url}wa-apps/pocketlists/img/pl2ad-cash-app-144.png" alt="[`Cash Flow`]">
                                   </a>
                                   <div class="custom-pt-4">
                                       <div class="pl2flexbox middle space-12 width-80">
                                           <span class="wide">
-                                              <a href="[`https://www.webasyst.com/store/app/cash/`]{$_utm_suffix}" class="bold large" target="_blank">[`Cash Flow`]</a>
+                                              <a href="[`https://www.webasyst.com/store/app/cash/`]?{$_utm_suffix}" class="bold large" target="_blank">[`Cash Flow`] <i class="fas fa-external-link-alt hint"></i></a>
                                           </span>
-                                          <span class="nowrap">
-                                              {if $pl2->appExists('cash')}
-                                                <span class="button smaller light-gray custom-ml-4"><i class="fas fa-check text-green"></i> [`Installed`]</span>
-                                              {else}
-                                                <span class="large">[`Promocode:`] <code class="highlighted">D5HFMUYFA6</code> <span class="badge indicator yellow" style="font-size: 1.375rem; font-weight: bold; top: 0;">&minus;25%</span></span>
-                                              {/if}
-                                          </span>
+                                          {if $pl2->appExists('cash')}
+                                            <span class="nowrap">
+                                                <span class="smaller light-gray custom-ml-4"><i class="fas fa-check text-green"></i> [`Installed`]</span>
+                                            </span>
+                                          {/if}
                                       </div>
 
                                       <p class="custom-mt-8 custom-mb-12">
@@ -115,31 +121,48 @@
                                           [`Shows exact cash on hand balance for any date in the future. This app could have been a <em>life saver</em> for most businesses which did not survive a cash gap because of not knowing it’s coming.`]
                                       </p>
 
+                                      {if !$pl2->appExists('cash')}
+                                          <p class="nowrap small custom-mb-24">
+                                            [`Promocode:`]
+                                            <code style="font-size: 1.5rem;">D5HFMUYFA6</code>
+                                            <span class="badge indicator yellow" style="font-size: 1.25rem; font-weight: bold; top: 0;">&minus;25%</span>
+                                            <strong>{date( 'd.m.Y', $smarty.now )}</strong>
+                                            <a class="button small green rounded custom-ml-4" href="[`https://www.webasyst.com/buy/store/5136/`]?buy_type=lease_year&{$_utm_suffix}" target="_blank" >[`Buy now`]</a>
+                                          </p>
+                                      {/if}
+
                                   </div>
                               </div>
                           </li>
                           <li>
                               <div class="pl2flexbox space-12 width-100">
-                                  <a href="[`https://www.webasyst.com/store/app/status/`]{$_utm_suffix}" target="_blank" class="pl-more-apps-app-icon">
+                                  <a href="[`https://www.webasyst.com/store/app/status/`]?{$_utm_suffix}" target="_blank" class="pl-more-apps-app-icon">
                                       <img src="{$wa_url}wa-apps/pocketlists/img/pl2ad-status-app-144.png" alt="[`Status`]">
                                   </a>
                                   <div class="custom-pt-4">
                                       <div class="pl2flexbox middle space-12 width-80">
                                           <span class="wide">
-                                              <a href="[`https://www.webasyst.com/store/app/status/`]{$_utm_suffix}" class="bold large" target="_blank">[`Status`]</a>
+                                              <a href="[`https://www.webasyst.com/store/app/status/`]?{$_utm_suffix}" class="bold large" target="_blank">[`Status`] <i class="fas fa-external-link-alt hint"></i></a>
                                           </span>
-                                          <span class="nowrap">
-                                              {if $pl2->appExists('status')}
-                                                <span class="button smaller light-gray custom-ml-4"><i class="fas fa-check text-green"></i> [`Installed`]</span>
-                                              {else}
-                                                <span class="large">[`Promocode:`] <code class="highlighted">8GE66T3775</code> <span class="badge indicator green" style="font-size: 1.375rem; font-weight: bold; top: 0;">&minus;15%</span></span>
-                                              {/if}
-                                          </span>
+                                          {if $pl2->appExists('status')}
+                                            <span class="nowrap">
+                                                <span class="smaller light-gray custom-ml-4"><i class="fas fa-check text-green"></i> [`Installed`]</span>
+                                            </span>
+                                          {/if}
                                       </div>
                                       <p class="custom-mt-8 custom-mb-12">
                                           <strong>[`Remote team leader’s best friend.`]</strong>
                                           [`Visualizes how you and your teammates work. Tracks working hours. Amazingly useful for WFH and any <em>we-don't-see-each-other-in-the-office</em> working patterns.`]
                                       </p>
+                                      {if !$pl2->appExists('status')}
+                                          <p class="nowrap small custom-mb-24">
+                                            [`Promocode:`]
+                                            <code style="font-size: 1.5rem;">8GE66T3775</code>
+                                            <span class="badge indicator green" style="font-size: 1.25rem; font-weight: bold; top: 0;">&minus;15%</span>
+                                            <strong>{date( 'd.m.Y', $smarty.now )}</strong>
+                                            <a class="button small green rounded custom-ml-4" href="[`https://www.webasyst.com/buy/store/4943/`]?buy_type=lease_year&{$_utm_suffix}" target="_blank" >[`Buy now`]</a>
+                                          </p>
+                                      {/if}
                                   </div>
                               </div>
                           </li>
