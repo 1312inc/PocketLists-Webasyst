@@ -33,7 +33,7 @@ final class pocketlistsTasksBackendTask
 
             $view = new waSmarty3View(wa());
 
-            wa(pocketlistsHelper::APP_ID, true);
+            wa('pocketlists', true);
             $itemAdd = (new pocketlistsItemAddAction(['external' => true, 'externalApp' => 'tasks']))
                 ->display(false);
             wa(pocketlistsAppLinkTasks::APP, true);
