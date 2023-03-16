@@ -119,16 +119,16 @@
                         var $order = $order_list.find('[data-order-id='+r.data.entity_id+']');
 
                         if ($order.length) {
-                            var pl2 = '<div class="pl2-shop-item-count" title="{if $wa->locale() == 'ru_RU'}'+r.data.count_entities+' задач связаны с этим заказом{else}'+r.data.count_entities+' to-dos linked with the order{/if}"><span>'+r.data.count_entities+'</span><i class="icon16 pl2-shop-icon"></i></div>';
+                            var pl2 = '<div class="pl2-shop-item-count" title="{if $wa->locale() == 'ru_RU'}'+r.data.count_entities+' задач связаны с этим заказом{else}'+r.data.count_entities+' to-dos linked with the order{/if}"><span>'+r.data.count_entities+'</span><i class="icon pl2-shop-icon"></i></div>';
 
                             $order.find('.pl2-shop-item-count').remove();
 
-                            var $indicator = $('[data-pl2-action="show-add-item"] .indicator.red');
+                            var $indicator = $('[data-pl2-action="show-add-item"] .badge.red');
                             if (r.data.count_entities) {
                                 if ($indicator.length) {
                                     $indicator.text(r.data.count_entities);
                                 } else {
-                                    $('[data-pl2-action="show-add-item"]').append('<strong class="indicator red" style="top: -0.1rem;">' + r.data.count_entities + '</strong>')
+                                    $('[data-pl2-action="show-add-item"]').append('<strong class="badge red" style="top: -0.1rem;">' + r.data.count_entities + '</strong>')
                                 }
 
                                 if ($.order_list.options.view == 'split') {

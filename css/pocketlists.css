@@ -543,15 +543,15 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 /* Embedded interface
 --------------------- */
 
-.s-order .pl-items { display: block; z-index: 1000; background: #f5faff; box-shadow: 0 -8px 20px -15px rgba(0,0,0,0.1) inset; margin: -20px -32px 20px -20px; position: static; }
+.s-order .pl-items { display: block; z-index: 1000; background: var(--background-color); margin: -20px -32px 20px -20px; position: static; }
 .s-order .pl-items .pl-link-preview.pl-link-app-shop { display: none; }
 .s-order .pl-items .pl-item-drag-handle { display: none !important; }
 .s-order .pl-items .pl-item { border-bottom: none; border-top: 1px solid rgba(0,0,0,0.1); }
-.s-order .pl-list-items ul.menu-v li .pl-item.pl-item-selected { background: rgba(0,0,0,0.04); }
+.s-order .pl-list-items ul.menu-v li .pl-item.pl-item-selected { border-radius: 1rem; border: none; }
 .s-order .pl-items .pl-item .pl-item-details #pl2-item-details { background: transparent; }
 .s-order #pl-item-add { display: block; }
-.s-order #pl-item-add .pl-item { border-top: none; padding-top: 21px; padding-right: 26px; }
-.s-order #pl-item-add .pl-item .pl-select-label { padding-bottom: 18px; }
+.s-order #pl-item-add .pl-item { border-top: none; padding-top: 21px; padding-right: 72px; }
+.s-order #pl-item-add .pl-item .pl-select-label { padding-bottom: 8px; }
 .s-order #pl-complete-log li:first-child .pl-item { border-top: none; }
 .s-order input#pl-new-list-input,
 .s-order #pl-item-add textarea { background: #eaf1f9; }
@@ -566,9 +566,9 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 .s-order .pl-details.sticky .pl-chat-contents { margin-bottom: 40px; }
 .s-order .pl-details-form .pl-app-hint-internal { display: none; }
 .s-order .pl-details-form .pl-app-hint-external { display: block; margin-top: 3px; }
-.s-order .pl-shop-close { position: absolute; padding: 15px 3px; display: block; right: 5px; margin: 0; z-index: 30; font-size: 1.8rem; color: var(--gray) !important; }
+.s-order .pl-shop-close { position: absolute; padding: 9px 3px; display: block; right: 5px; margin: 0; z-index: 30; font-size: 1.8rem; color: var(--gray) !important; }
 .s-order .pl-shop-close:hover { color: #000 !important; }
-.s-order .pl-enable-item-add-compact-mode { right: 53px; }
+.s-order .pl-enable-item-add-compact-mode { right: 93px; }
 
 .s-order #pl-complete-log { display: block; }
 .s-order #pl-complete-log ul.menu-v { margin-top: 10px; }
