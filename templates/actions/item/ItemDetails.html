@@ -81,7 +81,7 @@
 
                 </div>
 
-                <div class="fields-group">
+                <div class="fields-group custom-mt-12">
                     {if $contacts}
                     <div class="field" id="pl-assigned-contact">
                         <div class="name for-input small">[`Assigned to`]</div>
@@ -135,10 +135,7 @@
                             </div>
                         </div>
                     {/if}
-                </div>
 
-                <!-- notifications -->
-                <div class="fields-group">
                     {if !$item->isDone()}
                     <div class="field">
                         <div class="name for-input small">[`Priority`]</div>
@@ -235,17 +232,15 @@
                     *}
                 </div>
 
-                <div class="fields-group">
-                    <div class="flexbox middle wrap">
-                        <div class="flexbox middle space-8 wide">
-                            <input type="submit" class="button" value="{if $item->getId()}[`Save`]{else}[`Add to-do`]{/if}"  id="pl-item-details-save"/>
-                            <a href="#" class="pl-item-details-cancel button light-gray custom-ml-8">[`Cancel`]</a>
-                        </div>
-                        <div class="pl-already-saved-items-only">
-                            <a href="#" data-pl-action="item-delete" class="button nowrap light-gray text-red">
-                                <i class="fas fa-trash-alt"></i> [`Delete to-do`]
-                            </a>
-                        </div>
+                <div class="flexbox middle wrap custom-m-20">
+                    <div class="flexbox middle space-8 wide">
+                        <input type="submit" class="button" value="{if $item->getId()}[`Save`]{else}[`Add to-do`]{/if}"  id="pl-item-details-save"/>
+                        <a href="#" class="pl-item-details-cancel button light-gray custom-ml-8">[`Cancel`]</a>
+                    </div>
+                    <div class="pl-already-saved-items-only">
+                        <a href="#" data-pl-action="item-delete" class="button nowrap light-gray text-red">
+                            <i class="fas fa-trash-alt"></i> [`Delete to-do`]
+                        </a>
                     </div>
                 </div>
 

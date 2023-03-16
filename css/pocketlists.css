@@ -405,7 +405,7 @@ p .pl-label.pl-pro { position: relative; top: 3px; margin-right: 0; }
 .pl-attachments li i.icon16 { margin-left: -4px; }
 .pl-attachments li label { background: var(--background-color); border-radius: 10px; padding: 4px 6px; font-size: 0.9em; color: var(--gray); }
 .pl-attachments li label input[type="checkbox"] { margin-top: -4px; }
-.pl-add-attachment-dropbox { border: 2px dashed var(--border-color-input); border-radius: 3px; padding: 20px; margin-top: 1rem; }
+.pl-add-attachment-dropbox { border: 2px dashed var(--border-color-soft); border-radius: 1rem; padding: 20px; margin-top: 1rem; }
 .pl-add-attachment-dropbox ul.menu-v li { margin-bottom: 10px; }
 .pl-add-attachment-dropbox ul.menu-v li a { display: block; }
 .pl-add-attachment-dropbox ul.menu-v li a.gray { color: var(--gray); }
@@ -460,7 +460,7 @@ p .pl-label.pl-pro { position: relative; top: 3px; margin-right: 0; }
 .pl-details-textarea.pl-item-name { max-height: 170px; }
 
 #pl-item-add .pl-item-details { box-shadow: 0 3rem 3rem -3.5rem rgba(0,0,0,.5); }
-#pl-item-add .pl-details-form { padding: 0.875rem 1.25rem 1.75rem; background: var(--background-color-blank); position: relative; }
+#pl-item-add .pl-details-form { padding: 0.875rem 1.25rem 0.5rem; background: var(--background-color-blank); position: relative; }
 #pl-item-add .pl-details-form .fields,
 #pl-item-add .pl-details-form .field-group,
 #pl-item-add .pl-details-form .field,

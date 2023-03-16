@@ -5,7 +5,6 @@
 
     {** @var $action pocketlistsProPluginAutomationSettingsDto **}
     {foreach $shopActions as $action}
-    <div class="field-group">
     <div class="field" data-pl2pro-ss-event="{$action->id}">
         <div class="name for-checkbox">
             <span class="pl2pro-ss-order-action" title="{$action->name}">
@@ -48,28 +47,25 @@
             {/if}
         </div>
     </div>
-    </div>
     {/foreach}
 
-    <div class="fields-group">
-        <div class="field">
-            <div class="name nowrap">
-                [`Debug`]
-            </div>
-            <div class="value no-shift">
-                <label>
-                    <input type="hidden" name="settings[log_runs]" value="0"/>
-                    <span class="wa-checkbox">
-                            <input type="checkbox" name="settings[log_runs]"  value="1" {if !empty($settings.log_runs)}checked="checked"{/if}/>
-                            <span>
-                                <span class="icon">
-                                    <i class="fas fa-check"></i>
-                                </span>
+    <div class="field">
+        <div class="name nowrap">
+            [`Debug`]
+        </div>
+        <div class="value no-shift">
+            <label>
+                <input type="hidden" name="settings[log_runs]" value="0"/>
+                <span class="wa-checkbox">
+                        <input type="checkbox" name="settings[log_runs]"  value="1" {if !empty($settings.log_runs)}checked="checked"{/if}/>
+                        <span>
+                            <span class="icon">
+                                <i class="fas fa-check"></i>
                             </span>
-                            </span>
-                    [`Record runs to the Shop-Script order history`]
-                </label>
-            </div>
+                        </span>
+                        </span>
+                [`Record runs to the Shop-Script order history`]
+            </label>
         </div>
     </div>
 
