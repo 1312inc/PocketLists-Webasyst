@@ -31,7 +31,7 @@
                                 var $order = $this.find('[data-order-id='+datum.entity_id+']');
 
                                 if ($order.length) {
-                                    var pl2 = '<div class="pl2-shop-item-count" title="{if $wa->locale() == 'ru_RU'}'+datum.count_entities+' задач связаны с этим заказом{else}'+datum.count_entities+' to-dos linked with the order{/if}"><span>'+datum.count_entities+'</span><i class="icon16 pl2-shop-icon"></i></div>';
+                                    var pl2 = '<div class="pl2-shop-item-count" title="{if $wa->locale() == 'ru_RU'}'+datum.count_entities+' задач связаны с этим заказом{else}'+datum.count_entities+' to-dos linked with the order{/if}"><span>'+datum.count_entities+'</span><i class="icon pl2-shop-icon"></i></div>';
 
                                     if ($.order_list.options.view == 'split') {
                                         $order

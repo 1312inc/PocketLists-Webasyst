@@ -10,38 +10,36 @@
 
             <div class="fields form">
                 <input type="hidden" name="pocket[id]" value="{$pocket->getId()|default:0}"/>
-                <div class="fields-group">
-                    <div class="field">
-                        <div class="name nowrap for-input">
-                            [`Pocket name`]
-                        </div>
-                        <div class="value">
-                            <input type="text" class="large bold" name="pocket[name]"
-                                   value="{$pocket->getName()|escape}"/>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <div class="name for-input">
-                            [`Color`]
-                        </div>
-                        <div class="value" id="pl-pocket-color">
-                            <input type="hidden" name="pocket[color]" value="{$pocket->getColor()}"/>
-                            {foreach pocketlistsStoreColor::getColors() as $color => $name}
-                                <a href="#" {if $pocket->getColor() == $color}class="selected"{/if}
-                                   data-pl-pocket-color="{$color}">
-                                        <span class="icon size-32 custom-mr-4"><i class="rounded pl-dark-{$color}"></i></span></a>
-                            {/foreach}
-                        </div>
-                    </div>
-                    <div class="field">
-                        <div class="name for-checkbox">
-                            [`Access rights`]
-                        </div>
-                        <div class="value">
-                            <p class="gray small">{sprintf('[`Use <a href="%s">Team app</a> to configure access: select a user or a group of users &gt; Access tab &gt; Pocket Lists app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/')}</p>
-                        </div>
-                    </div>
 
+                <div class="field">
+                    <div class="name nowrap for-input">
+                        [`Pocket name`]
+                    </div>
+                    <div class="value">
+                        <input type="text" class="large bold" name="pocket[name]"
+                               value="{$pocket->getName()|escape}"/>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="name for-input">
+                        [`Color`]
+                    </div>
+                    <div class="value" id="pl-pocket-color">
+                        <input type="hidden" name="pocket[color]" value="{$pocket->getColor()}"/>
+                        {foreach pocketlistsStoreColor::getColors() as $color => $name}
+                            <a href="#" {if $pocket->getColor() == $color}class="selected"{/if}
+                               data-pl-pocket-color="{$color}">
+                                    <span class="icon size-32 custom-mr-4"><i class="rounded pl-dark-{$color}"></i></span></a>
+                        {/foreach}
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="name for-checkbox">
+                        [`Access rights`]
+                    </div>
+                    <div class="value">
+                        <p class="gray small">{sprintf('[`Use <a href="%s">Team app</a> to configure access: select a user or a group of users &gt; Access tab &gt; Pocket Lists app &gt; apply the proper access level.`]', $wa_backend_url|cat:'team/')}</p>
+                    </div>
                 </div>
 
                 <!-- plugin hook: 'backend_pocket_dialog' -->
