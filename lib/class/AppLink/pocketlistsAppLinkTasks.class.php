@@ -153,7 +153,7 @@ final class pocketlistsAppLinkTasks extends pocketlistsAppLinkAbstract implement
      * @return array
      * @throws waException
      */
-    protected function autocompleteTask($term, $params = [], $count)
+    protected function autocompleteTask($term, $params = [], $count = 0)
     {
         $result = [];
 

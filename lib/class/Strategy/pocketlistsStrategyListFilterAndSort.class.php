@@ -114,7 +114,7 @@ class pocketlistsStrategyListFilterAndSort
      */
     public function sortUnarchivedByActivity()
     {
-        usort($this->unArchived, [$this, 'sortByActivity']);
+        @usort($this->unArchived, [$this, 'sortByActivity']);
 
         return $this->unArchived;
     }
