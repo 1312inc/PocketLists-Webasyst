@@ -49,7 +49,7 @@ class pocketlistsAppLinkShop extends pocketlistsAppLinkAbstract implements pocke
      * @return array
      * @throws waException
      */
-    protected function autocompleteOrder($term, $params = [], $count)
+    protected function autocompleteOrder($term, $params = [], $count = 0)
     {
         $result = [];
 

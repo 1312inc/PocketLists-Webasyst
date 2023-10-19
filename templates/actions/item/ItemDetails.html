@@ -37,9 +37,9 @@
                     {if $wa->shop}<p class="hint pl-app-hint-internal"><i class="fas fa-link"></i> [`Use @ or # symbols to link this to-do with a Shop-Script order or a task from the Tasks app.`]{* <a href="#" class="inline-link"><b><i>[`Ok, I got it.`]</i></b></a> *}</p>{/if}
 
                     {if !pocketlistsHelper::hasPlugin('pro')}
-                        <p class="hint pl-app-hint-external float-right" style="margin-top: 0;"><a href="{$wa_backend_url}pocketlists/#/upgrade/" target="_blank" class="gray nowrap" style="text-decoration: none !important; padding: 0;"><i class="icon10 star"></i> [`Upgrade to PRO`]</a></p>
+                        <p class="hint pl-app-hint-external float-right" style="margin-top: 0; float: right;"><a href="{$wa_backend_url}pocketlists/#/upgrade/" target="_blank" class="gray nowrap" style="text-decoration: none !important; padding: 0;"><i class="fas fa-star text-yellow"></i> [`Upgrade to PRO`]</a></p>
                     {/if}
-                    <p class="hint pl-app-hint-external"><i class="icon16 pl pl2app"></i>{sprintf('[`The to-do item will be saved in the <span class="nowrap"><a href="%s" class="gray" target="_blank">Pocket Lists</a> app</span> and will be visible only to authorized Webasyst users. The customer will not see this to-do.`]', $wa_backend_url|cat:'pocketlists/')}{* <a href="#" class="inline-link"><b><i>[`Ok, I got it.`]</i></b></a> *}</p>
+                    <p class="hint pl-app-hint-external">{sprintf('[`The to-do item will be saved in the <span class="nowrap"><a href="%s" class="gray" target="_blank">Pocket Lists</a> app</span> and will be visible only to authorized Webasyst users. The customer will not see this to-do.`]', $wa_backend_url|cat:'pocketlists/')}{* <a href="#" class="inline-link"><b><i>[`Ok, I got it.`]</i></b></a> *}</p>
 
                     <div data-pl2-item-links class="pl-details-linked-entities">
                         {foreach $item->getLinkedEntities() as $linkedEntity}

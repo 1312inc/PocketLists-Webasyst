@@ -559,16 +559,16 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 .s-order #pl-item-add textarea:hover { background: #eaf1f9; }
 .s-order input#pl-new-list-input:focus,
 .s-order #pl-item-add textarea:focus { background: #e7eef3; z-index: 7; }
-.s-order #pl-item-add .pl-details-form { background: transparent; border-bottom: none; padding-right: 76px; }
+.s-order #pl-item-add .pl-details-form { background: transparent; border-bottom: none; padding-right: 76px; padding-top: 21px; }
 .s-order .pl-details .pl-chat-reply { position: fixed; bottom: 0; width: 420px; padding: 0; background: #fff; }
 .s-order .pl-details .pl-chat-contents { margin-bottom: 130px; }
 .s-order .pl-details.sticky { top: 83px; }
 .s-order .pl-details.sticky .pl-chat-contents { margin-bottom: 40px; }
 .s-order .pl-details-form .pl-app-hint-internal { display: none; }
 .s-order .pl-details-form .pl-app-hint-external { display: block; margin-top: 3px; }
-.s-order .pl-shop-close { position: absolute; padding: 9px 3px; display: block; right: 5px; margin: 0; z-index: 30; font-size: 1.8rem; color: var(--gray) !important; }
+.s-order .pl-shop-close { position: absolute; padding: 16px 3px; display: block; right: 5px; margin: 0; z-index: 30; font-size: 1.8rem; color: var(--gray) !important; }
 .s-order .pl-shop-close:hover { color: #000 !important; }
-.s-order .pl-enable-item-add-compact-mode { right: 93px; }
+.s-order .pl-enable-item-add-compact-mode { right: 93px; top: 28px; }
 
 .s-order #pl-complete-log { display: block; }
 .s-order #pl-complete-log ul.menu-v { margin-top: 10px; }
