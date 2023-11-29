@@ -1,0 +1,18 @@
+<script>(function() {
+    const task_counts = {$task_counts|json_encode};
+
+    setTimeout(function() {
+        if (!task_counts) {
+            return;
+        }
+
+        const badge_html = '<span class="badge"><span style="display:none;">(</span>%s<span style="display:none;">)</span></span>';
+        $('#t-tasks-wrapper .t-task-outer-container[data-task-id]').each(function() {
+            const $li = $(this),
+                task_id = $li.data('task-id');
+            if (task_counts[task_id]) {
+                $li.find('.count .t-date-wrapper').parent().prepend($(badge_html.replace('%s', task_counts[task_id])));
+            }
+        });
+    }, 1);
+}());</script>

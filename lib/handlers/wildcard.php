@@ -37,4 +37,10 @@ return [
         'class' => 'pocketlistsTasksBackendTasks',
         'method' => ['execute'],
     ],
+    [
+        'event_app_id' => 'tasks',
+        'event' => '/^controller_after\.(tasksTasksAction|tasksTasksSidebarItemAction)$/',
+        'class' => 'pocketlistsTasksBackendTasks',
+        'method' => ['controllerAfterHook'],
+    ],
 ];
