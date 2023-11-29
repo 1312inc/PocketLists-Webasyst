@@ -52,6 +52,11 @@ final class pocketlistsTasksBackendTasks
 
             $this->ensureTasksData($params['tasks']);
 
+            if (wa('tasks')->whichUI() === '2.0') {
+                // no need to do anything else in modern version of Tasks that only supports ui 2.0
+                return;
+            }
+
             $default_vars = [
                 'wa_app_static_url' => wa()->getAppStaticUrl(pocketlistsHelper::APP_ID),
                 'app' => $app,
@@ -99,7 +104,7 @@ final class pocketlistsTasksBackendTasks
                             $hook => $view->fetch($template),
                         ];
                     } catch (Exception $ex) {
-                        waLog::log(sprintf('%s error %s', $hook, $ex->getMessage()), 'pocketlists/tasks.log');
+                        waLog::log(sprintf('backend_tasks render error %s\n%s', $ex->getMessage(), $ex->getTraceAsString()), 'pocketlists/tasks.log');
                     }
                 }
             }
@@ -108,6 +113,7 @@ final class pocketlistsTasksBackendTasks
                 return ['tasks' => $return];
             }
         } catch (Exception $ex) {
+            waLog::log(sprintf('backend_tasks error %s\n%s', $ex->getMessage(), $ex->getTraceAsString()), 'pocketlists/tasks.log');
         }
 
         return null;
@@ -141,7 +147,7 @@ final class pocketlistsTasksBackendTasks
             ]);
             echo $view->fetch($template);
         } catch (Exception $ex) {
-            waLog::log(sprintf('controller_after error %s', $ex->getMessage()), 'pocketlists/tasks.log');
+            waLog::log(sprintf('controller_after error %s\n%s', $ex->getMessage(), $ex->getTraceAsString()), 'pocketlists/tasks.log');
         }
         
     }
