@@ -53,9 +53,9 @@
 
             $.storage.set('pocketlists/apps/hide-pl2ss-by-default', 1);
             $list_wrapper.slideUp(200, function() {
-                $('[data-pl2-action="show-add-item"]').find('span').css('background', 'greenyellow');
+                $('[data-pl2-action="show-add-item"]').css('background', 'var(--highlighted-green)');
                 setTimeout(function () {
-                    $('[data-pl2-action="show-add-item"]').find('span').css('background', 'white');
+                    $('[data-pl2-action="show-add-item"]').css('background', 'transparent');
                 }, 1312);
             });
         });
@@ -63,9 +63,7 @@
         if (!canShow()) {
             $list_wrapper.hide();
         } else {
-            setTimeout(function() {
-                $list_wrapper.slideDown();
-            }, 131.2);
+            $list_wrapper.slideDown(0);
         }
 
         $toggle_link.on('click', function (e) {
