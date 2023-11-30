@@ -120,7 +120,7 @@ final class pocketlistsTasksBackendTasks
     }
 
     /**
-     * 
+     *
      */
     public function controllerAfterHook(&$params, $event_name) {
         $template = wa()->getAppPath(
@@ -144,11 +144,18 @@ final class pocketlistsTasksBackendTasks
             $view =  wa('tasks')->getView();
             $view->assign([
                 'task_counts' => $task_counts,
+                'params' => [
+                    'wa_app_static_url' => wa()->getAppStaticUrl(pocketlistsHelper::APP_ID),
+                    'app' => pl2()->getLinkedApp(pocketlistsAppLinkTasks::APP),
+                    'plurl' => wa()->getAppUrl(pocketlistsHelper::APP_ID),
+                    'user' => pl2()->getUser(),
+                    'externalApp' => 'tasks',
+                ] + pl2()->getDefaultViewVars(),
             ]);
             echo $view->fetch($template);
         } catch (Exception $ex) {
             waLog::log(sprintf('controller_after error %s\n%s', $ex->getMessage(), $ex->getTraceAsString()), 'pocketlists/tasks.log');
         }
-        
+
     }
 }
