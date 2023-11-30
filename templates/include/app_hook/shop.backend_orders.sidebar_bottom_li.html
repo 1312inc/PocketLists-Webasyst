@@ -14,17 +14,21 @@
     <i class="icon pl2-shop-icon"></i>
 </div>
 
-<script>$(function() { "use strict";
+<script>(function() { "use strict";
 
     var wa_app_static_url = {$params.wa_app_static_url|json_encode},
         plurl = {$params.plurl|json_encode};
-
     var $template = $('#pl2-order-icon-template').detach().removeAttr('id');
+    if (!$template.length) {
+        return; // paranoid
+    }
     var title_msg = $template.attr('title');
 
-    $('#s-content')
-        .off('append_order_list.pl2')
-        .on('append_order_list.pl2', '#order-list', order_list_handler);
+    $(function() {
+        $('#s-content')
+            .off('append_order_list.pl2')
+            .on('append_order_list.pl2', '#order-list', order_list_handler);
+    });
 
     function order_list_handler(evt, data) {
         var $this = $(this);
@@ -47,6 +51,7 @@
                     return;
                 }
 
+                $order.find('.pl2-shop-item-count').remove();
                 var $count_wrapper = $template.clone();
                 $count_wrapper.attr('title', title_msg.replace('%s', datum.count_entities));
                 $count_wrapper.find('.js-item-count').html(datum.count_entities);
@@ -61,4 +66,4 @@
         });
     }
 
-});</script>
+}());</script>
