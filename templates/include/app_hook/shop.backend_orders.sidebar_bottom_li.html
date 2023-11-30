@@ -1,16 +1,15 @@
 <style>
-    .pl2-shop-item-count { float: right; position: relative; top: -1.1rem; font-size: 12px; font-weight: 500; }
-    i.icon.pl2-shop-icon { background-image: url('{$params.wa_app_static_url}img/pl2webasyst48.png') !important; background-size: 16px 16px; margin-left: 0.2rem; margin-right: 0; }
-    table.zebra.single-lined .pl2-shop-item-count { height: 0 !important; overflow: visible !important; }
-    table.zebra.single-lined .pl2-shop-item-count i.icon16 { float: right; margin-right: 0.5rem; }
-    table.zebra.single-lined .pl2-shop-item-count span { display: none; }
+    .pl2-shop-item-count { float: right; position: relative; top: 0.125rem; font-weight: 500; margin-left: 0.25rem; }
+    i.icon.pl2-shop-icon { background-image: url('{$params.wa_app_static_url}img/pl2webasyst48.png') !important; background-size: 16px 16px; margin-left: 0; top: 2px; position: relative; margin-right: 0; }
+    table.zebra.single-lined .pl2-shop-item-count { display: inline; float: none; top: -1px; margin-right: 0.25rem; }
+    table.zebra.single-lined .pl2-shop-item-count span { color: var(--black); }
 </style>
 
 {*
  * This <div> will be cloned into each .item.order inside ul#order-list
  *}
 <div id="pl2-order-icon-template" class="pl2-shop-item-count" title="[`%s to-dos linked with the order`]">
-    <span class="js-item-count"></span>
+    <span class="js-item-count small bold"></span>
     <i class="icon pl2-shop-icon"></i>
 </div>
 
@@ -57,9 +56,9 @@
                 $count_wrapper.find('.js-item-count').html(datum.count_entities);
 
                 if ($.order_list.options.view == 'split') {
-                    $order.find('.details').append($count_wrapper);
+                    $order.find('.details').find('.tablebox').after($count_wrapper);
                 } else {
-                    $order.find('td:last').append($count_wrapper);
+                    $order.find('td:last').find('div').prepend($count_wrapper);
                 }
 
             });
