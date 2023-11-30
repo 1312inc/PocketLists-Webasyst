@@ -1,58 +1,64 @@
 <style>
     .pl2-shop-item-count { float: right; position: relative; top: -1.1rem; font-size: 12px; font-weight: 500; }
-    i.icon16.pl2-shop-icon { background-image: url('{$params.wa_app_static_url}img/pl2webasyst48.png') !important; background-size: 16px 16px; margin-left: 0.2rem; margin-right: 0; }
+    i.icon.pl2-shop-icon { background-image: url('{$params.wa_app_static_url}img/pl2webasyst48.png') !important; background-size: 16px 16px; margin-left: 0.2rem; margin-right: 0; }
     table.zebra.single-lined .pl2-shop-item-count { height: 0 !important; overflow: visible !important; }
     table.zebra.single-lined .pl2-shop-item-count i.icon16 { float: right; margin-right: 0.5rem; }
     table.zebra.single-lined .pl2-shop-item-count span { display: none; }
 </style>
-<script>
-    (function ($) {
-        'use strict';
 
-        var wa_app_static_url = '{$params.wa_app_static_url}',
-            plurl = '{$params.plurl}';
+{*
+ * This <div> will be cloned into each .item.order inside ul#order-list
+ *}
+<div id="pl2-order-icon-template" class="pl2-shop-item-count" title="[`%s to-dos linked with the order`]">
+    <span class="js-item-count"></span>
+    <i class="icon pl2-shop-icon"></i>
+</div>
 
-        var order_list_handler = function (evt, data) {
-            var $this = $(this);
+<script>$(function() { "use strict";
 
-            $.shop.trace('pl2 append_order_list', data);
+    var wa_app_static_url = {$params.wa_app_static_url|json_encode},
+        plurl = {$params.plurl|json_encode};
 
-            if($.isArray(data)) {
+    var $template = $('#pl2-order-icon-template').detach().removeAttr('id');
+    var title_msg = $template.attr('title');
 
-                var order_ids = $.map(data, function (datum) {
-                    return datum['id'];
-                });
+    $('#s-content')
+        .off('append_order_list.pl2')
+        .on('append_order_list.pl2', '#order-list', order_list_handler);
 
-                    $.post(plurl + '?module=shop&action=loadOrdersIcon', { orders: order_ids }, function (r) {
-                        console.log('pl2 item loadOrderIcon response', r);
+    function order_list_handler(evt, data) {
+        var $this = $(this);
+        if(!$.isArray(data) || !data.length) {
+            return;
+        }
 
-                        if (r.status === 'ok' && r.data) {
-                            $.each(r.data, function(i, datum) {
-                                var $order = $this.find('[data-order-id='+datum.entity_id+']');
+        var order_ids = $.map(data, function (datum) {
+            return datum['id'];
+        });
 
-                                if ($order.length) {
-                                    var pl2 = '<div class="pl2-shop-item-count" title="{if $wa->locale() == 'ru_RU'}'+datum.count_entities+' задач связаны с этим заказом{else}'+datum.count_entities+' to-dos linked with the order{/if}"><span>'+datum.count_entities+'</span><i class="icon pl2-shop-icon"></i></div>';
-
-                                    if ($.order_list.options.view == 'split') {
-                                        $order
-                                            .find('.details')
-                                            .append(pl2);
-                                    } else {
-                                        $order
-                                            .find('td:last')
-                                            .append(pl2);
-                                    }
-
-                                }
-                            });
-                        }
-                    });
+        $.post(plurl + '?module=shop&action=loadOrdersIcon', { orders: order_ids }, function (r) {
+            if (r.status !== 'ok' || !r.data) {
+                return;
             }
-        };
 
-        $('#maincontent')
-            .off('append_order_list.pl2')
-            .on('append_order_list.pl2', '#order-list', order_list_handler);
+            $.each(r.data, function(i, datum) {
+                var $order = $this.find('[data-order-id='+datum.entity_id+']');
+                if (!$order.length) {
+                    return;
+                }
 
-    })(jQuery);
-</script>
+                var $count_wrapper = $template.clone();
+                $count_wrapper.attr('title', title_msg.replace('%s', datum.count_entities));
+                $count_wrapper.find('.js-item-count').html(datum.count_entities);
+
+                if ($.order_list.options.view == 'split') {
+                    $order.find('.details').append($count_wrapper);
+                } else {
+                    $order.find('td:last').append($count_wrapper);
+                }
+
+            });
+        });
+    }
+
+});</script>
