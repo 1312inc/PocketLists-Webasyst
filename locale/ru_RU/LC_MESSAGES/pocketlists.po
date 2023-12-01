@@ -1452,3 +1452,7 @@ msgstr "Считает расходы. Прогнозирует прибыль."
 
 msgid "Promocode for managing money the smarter way."
 msgstr "Промокод для тех, кто хочет легко вести учет финансов и зарабатывать больше."
+
+msgid "%s to-dos linked with the order"
+msgstr "%s задач связаны с этим заказом"
+
