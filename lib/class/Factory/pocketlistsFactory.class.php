@@ -249,6 +249,7 @@ class pocketlistsFactory
              */
             $event = new pocketlistsEvent(pocketlistsEventStorage::ENTITY_INSERT_AFTER, $entity);
             pl2()->getEventDispatcher()->dispatch($event);
+            pl2()->waDispatchEvent($event);
 
             return true;
         }
