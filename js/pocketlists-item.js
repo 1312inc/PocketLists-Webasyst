@@ -628,7 +628,12 @@ $.pocketlists.Items = function ($list_items_wrapper, options) {
                             data = {};
 
                         $.each(formValues, function () {
-                            data[this.name.replace('item[','').replace(']','')] = this.value;
+                            var m = this.name.match(/^item\[(.*)\]$/);
+                            if (m && m[1]) {
+                                data[m[1]] = this.value;
+                            } else {
+                                data[this.name] = this.value;
+                            }
                         });
 
                         if (links) {
