@@ -51,24 +51,28 @@ class pocketlistsProPluginSettingsActions extends pocketlistsViewActions
                 if (!$actionId) {
                     $actionId = $deletedAction->id;
                 }
-                $shopActions['shop.' . $actionId]->automations[] = $automation;
 
-                $shopActions['shop.' . $actionId]->automationRulesHtml[$automation->getId()] = implode(
-                    _wp(' AND '),
-                    array_filter(
-                        $rules,
-                        static function ($a) {
-                            return !empty($a);
-                        }
-                    )
-                );
+                if (!empty($shopActions['shop.' . $actionId]))
+                {
+                    $shopActions['shop.' . $actionId]->automations[] = $automation;
 
-                if (empty($shopActions['shop.' . $actionId]->automationRulesHtml[$automation->getId()])) {
-                    $shopActions['shop.' . $actionId]->automationRulesHtml[$automation->getId()] = _wp('ALL');
+                    $shopActions['shop.' . $actionId]->automationRulesHtml[$automation->getId()] = implode(
+                        _wp(' AND '),
+                        array_filter(
+                            $rules,
+                            static function ($a) {
+                                return !empty($a);
+                            }
+                        )
+                    );
+
+                    if (empty($shopActions['shop.' . $actionId]->automationRulesHtml[$automation->getId()])) {
+                        $shopActions['shop.' . $actionId]->automationRulesHtml[$automation->getId()] = _wp('ALL');
+                    }
+
+                    $shopActions['shop.' . $actionId]->automationActionsHtml[$automation->getId()] = $automation->getAction()
+                      ->viewHtml();
                 }
-
-                $shopActions['shop.' . $actionId]->automationActionsHtml[$automation->getId()] = $automation->getAction()
-                    ->viewHtml();
             } catch (pocketlistsProPluginNoShopActionException $exception) {
                 pocketlistsLogger::debug($exception->getMessage());
             } catch (Exception $exception) {
