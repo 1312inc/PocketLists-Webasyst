@@ -756,7 +756,7 @@ class pocketlistsItem extends pocketlistsEntity
     }
 
     /**
-     * @param DateTime|null $create_datetime
+     * @param string $create_datetime
      *
      * @return $this
      */

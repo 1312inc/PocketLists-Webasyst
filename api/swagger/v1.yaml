@@ -1,0 +1,105 @@
+# validate https://editor.swagger.io/
+openapi: 3.0.0
+info:
+  title: 'Pocket Lists API'
+  description: ''
+  version: 1.0.0
+servers:
+  - url: /api.php
+    description: Current host server
+
+paths:
+#  /pocketlists.item.add:
+#  /pocketlists.item.delete:
+#  /pocketlists.item.get:
+#  /pocketlists.item.update:
+  /pocketlists.list.add:
+    put:
+      security:
+        - BearerAuth: [ ]
+      summary: Добавить новый список
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - pocket_id
+              properties:
+                name:
+                  type: string
+                  description: Название списка
+                type:
+                  type: string
+                  default: checklist
+                  description: |
+                    Тип списка
+                    + checklist - перечень дел
+                    + notes - заметки
+                  enum:
+                    - checklist
+                    - notes
+                pocket_id:
+                  type: string
+                  description: ID проекта
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  params:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        description: ''
+        400:
+          description: Invalid request data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        403:
+          description: Access denied to the Pocket Lists app or this API method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        404:
+          description: Pocket not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        405:
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        500:
+          description: Internal server error.
+#  /pocketlists.list.delete:
+#  /pocketlists.list.get:
+#  /pocketlists.list.update:
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+
+  schemas:
+    errorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error code
+        error_description:
+          type: string
+          description: Error description

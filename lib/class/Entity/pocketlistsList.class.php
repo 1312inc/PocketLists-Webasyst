@@ -431,7 +431,7 @@ class pocketlistsList extends pocketlistsItem
      */
     public function getKeyItemId()
     {
-        return $this->key_item_id;
+        return (int) $this->key_item_id;
     }
 
     /**
