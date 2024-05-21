@@ -38,7 +38,8 @@ class pocketlistsListAddMethod extends pocketlistsApiAbstractMethod
         $list_factory->save($list);
 
         $this->response = [
-            'id' => $list->getKeyItemId()
+            'list_id' => $list->getId(),
+            'item_id' => $list->getKeyItemId()
         ];
     }
 }

@@ -51,12 +51,12 @@ paths:
               schema:
                 type: object
                 properties:
-                  params:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                        description: ''
+                  list_id:
+                    type: integer
+                    description: ID списка
+                  item_id:
+                    type: integer
+                    description: ID элемента
         400:
           description: Invalid request data.
           content:
