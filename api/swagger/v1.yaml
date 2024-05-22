@@ -84,7 +84,100 @@ paths:
         500:
           description: Internal server error.
 #  /pocketlists.list.delete:
-#  /pocketlists.list.get:
+  /pocketlists.list.get:
+    get:
+      security:
+        - BearerAuth: [ ]
+      summary: Получить список
+      parameters:
+        - in: query
+          name: id
+          description: ID списка
+          schema:
+            type: integer
+        - in: query
+          name: starting_from
+          description: Временная метка, начиная с которой возвращаются записи
+          schema:
+            type: integer
+        - in: query
+          name: limit
+          description: Размер порции списка (по умолчанию 30, максимум 500)
+          schema:
+            type: integer
+        - in: query
+          name: offset
+          description: Смещение списка (по умолчанию 0)
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: ''
+                    name:
+                      type: string
+                      description: ''
+                    contact_id:
+                      type: integer
+                      description: ''
+                    pocket_id:
+                      type: integer
+                      description: ''
+                    type:
+                      type: string
+                      description: ''
+                    icon:
+                      type: string
+                      description: ''
+                    color:
+                      type: string
+                      description: ''
+                    sort:
+                      type: integer
+                      description: ''
+                    create_datetime:
+                      type: string
+                      format: date-time
+                      description: ''
+                    update_datetime:
+                      type: string
+                      format: date-time
+                      description: ''
+        400:
+          description: Invalid request data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        403:
+          description: Access denied to the Pocket Lists app or this API method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        404:
+          description: Not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        405:
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        500:
+          description: Internal server error.
 #  /pocketlists.list.update:
 
 components:
