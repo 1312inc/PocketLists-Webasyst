@@ -122,36 +122,36 @@ paths:
                   properties:
                     id:
                       type: integer
-                      description: ''
+                      description: List identifier
                     name:
                       type: string
-                      description: ''
+                      description: Name list
                     contact_id:
                       type: integer
-                      description: ''
+                      description: Contact identifier
                     pocket_id:
                       type: integer
-                      description: ''
+                      description: Pocket identifier
                     type:
                       type: string
-                      description: ''
+                      description: List type
                     icon:
                       type: string
-                      description: ''
+                      description: Icon
                     color:
                       type: string
-                      description: ''
+                      description: Color
                     sort:
                       type: integer
-                      description: ''
+                      description: Sort
                     create_datetime:
                       type: string
                       format: date-time
-                      description: ''
+                      description: Create datetime
                     update_datetime:
                       type: string
                       format: date-time
-                      description: ''
+                      description: Update datetime
         400:
           description: Invalid request data.
           content:
