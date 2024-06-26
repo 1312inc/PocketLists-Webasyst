@@ -178,7 +178,190 @@ paths:
                 $ref: '#/components/schemas/errorResponse'
         500:
           description: Internal server error.
-#  /pocketlists.list.update:
+  /pocketlists.list.update:
+    put:
+      security:
+        - BearerAuth: [ ]
+      summary: Редактировать список
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - id
+              properties:
+                id:
+                  type: integer
+                  description: List identifier
+                name:
+                  type: string
+                  description: Name list
+                icon:
+                  type: string
+                  description: Icon
+                color:
+                  type: string
+                  description: Color
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pocket_id:
+                    type: integer
+                    description: Pocket identifier
+                  type:
+                    type: string
+                    description: |
+                      Тип списка
+                      + checklist - перечень дел
+                      + notes - заметки
+                    enum:
+                      - checklist
+                      - notes
+                  icon:
+                    type: string
+                    description: Icon
+                  archived:
+                    type: boolean
+                    description: Перемещен в архив
+                  hash:
+                    type: string
+                    nullable: true
+                    description: Hash
+                  color:
+                    type: string
+                    description: Color
+                  passcode:
+                    type: string
+                    nullable: true
+                    description: Passcode
+                  key_item_id:
+                    type: integer
+                    description: Key item identifier
+                  items_count:
+                    type: integer
+                    nullable: true
+                    description: Items count
+                  max_priority:
+                    type: integer
+                    description: Max priority
+                  min_due_date:
+                    type: string
+                    nullable: true
+                    format: date
+                    description: Min due date
+                  min_due_datetime:
+                    type: string
+                    nullable: true
+                    format: date-time
+                    description: Min due date time
+                  id:
+                    type: integer
+                    description: List identifier
+                  contact_id:
+                    type: integer
+                    description: Contact identifier
+                  sort:
+                    type: integer
+                    description: Sort
+                  create_datetime:
+                    type: string
+                    format: date-time
+                    description: Create datetime
+                  update_datetime:
+                    type: string
+                    format: date-time
+                    description: Update datetime
+                  complete_datetime:
+                    type: string
+                    format: date-time
+                    nullable: true
+                    description: Complete datetime
+                  complete_contact_id:
+                    type: integer
+                    nullable: true
+                    description: Complete contact identifier
+                  name:
+                    type: string
+                    description: Name list
+                  status:
+                    type: integer
+                    description: Status
+                  has_children:
+                    type: boolean
+                    description: Has children
+                  priority:
+                    type: integer
+                    description: Priority
+                  calc_priority:
+                    type: integer
+                    description: Calc priority
+                  parent_id:
+                    type: integer
+                    nullable: true
+                    description: Parent identifier
+                  list_id:
+                    type: integer
+                    nullable: true
+                    description: List identifier
+                  note:
+                    type: string
+                    nullable: true
+                    description: Note
+                  due_date:
+                    type: string
+                    format: date
+                    nullable: true
+                    description: Due date
+                  due_datetime:
+                    type: string
+                    format: date-time
+                    nullable: true
+                    description: Due datetime
+                  location_id:
+                    type: integer
+                    nullable: true
+                    description: Location identifier
+                  amount:
+                    type: number
+                    description: Amount
+                  currency_iso3:
+                    type: string
+                    nullable: true
+                    description: Currency ISO3
+                  assigned_contact_id:
+                    type: integer
+                    nullable: true
+                    description: Assigned contact identifier
+                  repeat:
+                    type: string
+                    nullable: true
+                    description: Repeat
+                  key_list_id:
+                    type: integer
+                    description: Key list identifier
+                  favorite:
+                    type: boolean
+                    description: Favorite
+        404:
+          description: Not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        405:
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        500:
+          description: Internal server error.
 
 components:
   securitySchemes:

@@ -211,7 +211,7 @@ class pocketlistsList extends pocketlistsItem
      */
     public function getMaxPriority()
     {
-        return $this->max_priority;
+        return (int) $this->max_priority;
     }
 
     /**
@@ -227,7 +227,7 @@ class pocketlistsList extends pocketlistsItem
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getMinDueDate()
     {
@@ -247,7 +247,7 @@ class pocketlistsList extends pocketlistsItem
     }
 
     /**
-     * @return string
+     * @return string|string
      */
     public function getMinDueDatetime()
     {
@@ -291,7 +291,7 @@ class pocketlistsList extends pocketlistsItem
      */
     public function getPocketId()
     {
-        return $this->pocket_id;
+        return (int) $this->pocket_id;
     }
 
     /**
@@ -351,7 +351,7 @@ class pocketlistsList extends pocketlistsItem
      */
     public function isArchived()
     {
-        return $this->archived;
+        return (bool) $this->archived;
     }
 
     /**
@@ -367,7 +367,7 @@ class pocketlistsList extends pocketlistsItem
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getHash()
     {
