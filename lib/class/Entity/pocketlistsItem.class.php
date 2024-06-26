@@ -429,7 +429,7 @@ class pocketlistsItem extends pocketlistsEntity
      */
     public function isFavorite()
     {
-        return $this->favorite;
+        return (bool) $this->favorite;
     }
 
     /**
@@ -557,7 +557,7 @@ class pocketlistsItem extends pocketlistsEntity
      */
     public function getId()
     {
-        return $this->id;
+        return (int) $this->id;
     }
 
     /**
@@ -587,7 +587,7 @@ class pocketlistsItem extends pocketlistsEntity
      */
     public function setListId($list_id)
     {
-        $this->list_id = $list_id ?: null;
+        $this->list_id = $list_id ? (int) $list_id : null;
 
         return $this;
     }
@@ -597,7 +597,7 @@ class pocketlistsItem extends pocketlistsEntity
      */
     public function getContactId()
     {
-        return $this->contact_id;
+        return (int) $this->contact_id;
     }
 
     /**
@@ -627,7 +627,7 @@ class pocketlistsItem extends pocketlistsEntity
      */
     public function setParentId($parent_id)
     {
-        $this->parent_id = $parent_id;
+        $this->parent_id = $parent_id ? (int) $parent_id : null;
 
         return $this;
     }
@@ -637,7 +637,7 @@ class pocketlistsItem extends pocketlistsEntity
      */
     public function getSort()
     {
-        return $this->sort;
+        return (int) $this->sort;
     }
 
     /**
@@ -657,7 +657,7 @@ class pocketlistsItem extends pocketlistsEntity
      */
     public function isHasChildren()
     {
-        return $this->has_children;
+        return (bool) $this->has_children;
     }
 
     /**
@@ -677,7 +677,7 @@ class pocketlistsItem extends pocketlistsEntity
      */
     public function getStatus()
     {
-        return $this->status;
+        return (int) $this->status;
     }
 
     /**
@@ -697,7 +697,7 @@ class pocketlistsItem extends pocketlistsEntity
      */
     public function getPriority()
     {
-        return $this->priority;
+        return (int) $this->priority;
     }
 
     /**
@@ -776,7 +776,7 @@ class pocketlistsItem extends pocketlistsEntity
     }
 
     /**
-     * @param DateTime|null $update_datetime
+     * @param DateTime|string|null $update_datetime
      *
      * @return $this
      */
@@ -822,7 +822,7 @@ class pocketlistsItem extends pocketlistsEntity
      */
     public function setCompleteContactId($complete_contact_id)
     {
-        $this->complete_contact_id = $complete_contact_id;
+        $this->complete_contact_id = $complete_contact_id ? (int) $complete_contact_id : null;
 
         return $this;
     }
@@ -924,7 +924,7 @@ class pocketlistsItem extends pocketlistsEntity
      */
     public function setLocationId($location_id)
     {
-        $this->location_id = $location_id;
+        $this->location_id = $location_id ? (int) $location_id : null;
 
         return $this;
     }
@@ -938,13 +938,13 @@ class pocketlistsItem extends pocketlistsEntity
     }
 
     /**
-     * @param float|null $amount
+     * @param float $amount
      *
      * @return $this
      */
     public function setAmount($amount)
     {
-        $this->amount = $amount;
+        $this->amount = (float) $amount;
 
         return $this;
     }
@@ -984,7 +984,7 @@ class pocketlistsItem extends pocketlistsEntity
      */
     public function setAssignedContactId($assigned_contact_id = null)
     {
-        $this->assigned_contact_id = !empty($assigned_contact_id) ? (int)$assigned_contact_id : null;
+        $this->assigned_contact_id = empty($assigned_contact_id) ? null : (int) $assigned_contact_id;
 
         return $this;
     }
@@ -1067,7 +1067,7 @@ class pocketlistsItem extends pocketlistsEntity
      */
     public function setKeyListId($key_list_id)
     {
-        $this->key_list_id = $key_list_id;
+        $this->key_list_id = $key_list_id ? (int) $key_list_id : null;
 
         return $this;
     }
