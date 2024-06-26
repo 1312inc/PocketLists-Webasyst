@@ -83,7 +83,22 @@ paths:
                 $ref: '#/components/schemas/errorResponse'
         500:
           description: Internal server error.
-#  /pocketlists.list.delete:
+  /pocketlists.list.delete:
+    delete:
+      security:
+        - BearerAuth: [ ]
+      summary: Удалить список
+      parameters:
+        - in: query
+          name: list_id
+          description: List identifier
+          schema:
+            type: integer
+      responses:
+        204:
+          description: OK
+        500:
+          description: Internal server error.
   /pocketlists.list.get:
     get:
       security:
