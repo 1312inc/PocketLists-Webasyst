@@ -479,25 +479,16 @@ class pocketlistsItemModel extends pocketlistsModel
      */
     public function getQuery()
     {
-        return "SELECT
-                  i.*,
-                  IF(uf.contact_id, 1, 0) favorite,
-                  /*pl.name list_name,
-                  pl.sort list_sort,
-                  pl.type list_type,
-                  pl.icon list_icon,
-                  pl.archived list_archived,
-                  pl.hash list_hash,
-                  pl.color list_color,*/
-                  (select count(*) from pocketlists_attachment pa where pa.item_id = i.id) attachments_count,
-                  (select count(*) from pocketlists_comment pc where pc.item_id = i.id) comments_count,  
-                  (select count(*) from pocketlists_item_link pil where pil.item_id = i.id) linked_entities_count  
-                FROM {$this->table} i
-                LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
-                /*LEFT JOIN (select i2.name, l2.*
-                  from pocketlists_list l2
-                         JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) pl ON pl.id = i.list_id*/
-                 ";
+        return "
+            SELECT
+                i.*,
+                IF(uf.contact_id, 1, 0) favorite,
+                (select count(*) from pocketlists_attachment pa where pa.item_id = i.id) attachments_count,
+                (select count(*) from pocketlists_comment pc where pc.item_id = i.id) comments_count,  
+                (select count(*) from pocketlists_item_link pil where pil.item_id = i.id) linked_entities_count  
+            FROM {$this->table} i
+            LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
+        ";
     }
 
     /**
