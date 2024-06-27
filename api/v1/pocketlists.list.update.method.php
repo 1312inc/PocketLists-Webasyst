@@ -61,7 +61,6 @@ class pocketlistsListUpdateMethod extends pocketlistsApiAbstractMethod
                 'amount'              => $list->getAmount(),
                 'currency_iso3'       => $list->getCurrencyIso3(),
                 'assigned_contact_id' => $list->getAssignedContactId(),
-
                 'repeat'              => $list->getRepeat(),
                 'key_list_id'         => $list->getKeyListId(),
                 'favorite'            => $list->isFavorite(),
