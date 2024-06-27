@@ -52,14 +52,10 @@ class pocketlistsListGetMethod extends pocketlistsApiAbstractMethod
         if (!empty($accessed_pockets)) {
             $condition = '1 = 1';
             if ($id) {
-                $access_lists = pocketlistsRBAC::getAccessListForContact(pl2()->getUser()->getId());
-                if (!in_array($id, $access_lists)) {
-                    throw new waAPIException('forbidden', _w('Access denied'), 403);
-                }
-                $condition .= ' AND pl.id = '.$id;
+                $condition .= ' AND pl.id = i:id';
             }
             if ($starting_from) {
-                $condition .= " AND update_datetime > '$starting_from'";
+                $condition .= " AND update_datetime >= s:starting_from";
             }
 
             /** @var pocketlistsPocketModel $pocket_model */
@@ -71,12 +67,32 @@ class pocketlistsListGetMethod extends pocketlistsApiAbstractMethod
                 ORDER BY pl.sort, pli.update_datetime DESC, pli.create_datetime DESC
                 LIMIT i:offset, i:limit
             ", [
+                'id' => (int) $id,
                 'pocket_ids' => $accessed_pockets,
+                'starting_from' => $starting_from,
                 'offset' => (int) $offset,
                 'limit'  => (int) $limit
             ])->fetchAll();
         }
 
-        $this->response = array_values($lists);
+        $this->response = $this->filterFields(
+            $lists,
+            [
+                'id',
+                'contact_id',
+                'pocket_id',
+                'sort',
+                'create_datetime',
+                'update_datetime'
+            ],
+            [
+                'id' => 'int',
+                'contact_id' => 'int',
+                'pocket_id' => 'int',
+                'sort' => 'int',
+                'create_datetime' => 'datetime',
+                'update_datetime' => 'datetime'
+            ]
+        );
     }
 }
