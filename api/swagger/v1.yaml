@@ -9,7 +9,78 @@ servers:
     description: Current host server
 
 paths:
-#  /pocketlists.item.add:
+  /pocketlists.item.add:
+    put:
+      security:
+        - BearerAuth: [ ]
+      summary: Добавить новый айтем
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - list_id
+              properties:
+                list_id:
+                  type: integer
+                  description: List identifier
+                name:
+                  type: string
+                  description: Name
+                note:
+                  type: string
+                  description: Note
+                assigned_contact_id:
+                  type: integer
+                  nullable: true
+                  description: Assigned contact identifier
+                priority:
+                  type: integer
+                  description: Priority
+                due_datetime:
+                  type: string
+                  format: date-time
+                  nullable: true
+                  description: Due datetime
+                files:
+                  type: array
+                  description: Files
+                  items:
+                    type: object
+                    properties:
+                      file:
+                        type: string
+                        format: byte
+                        description: File binary content
+                      file_name:
+                        type: string
+                        description: File name
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: ID айтема
+        400:
+          description: Invalid request data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        404:
+          description: Pocket not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        500:
+          description: Internal server error.
 #  /pocketlists.item.delete:
   /pocketlists.item.get:
     get:
@@ -50,102 +121,7 @@ paths:
               schema:
                 type: array
                 items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                      description: Item identifier
-                    list_id:
-                      type: integer
-                      nullable: true
-                      description: List identifier
-                    contact_id:
-                      type: integer
-                      description: Contact identifier
-                    parent_id:
-                      type: integer
-                      description: Parent identifier
-                    sort:
-                      type: integer
-                      description: Sort
-                    has_children:
-                      type: boolean
-                      description: Has children
-                    status:
-                      type: integer
-                      description: Status
-                    priority:
-                      type: integer
-                      description: Priority
-                    calc_priority:
-                      type: integer
-                      description: Calc priority
-                    create_datetime:
-                      type: string
-                      format: date-time
-                      description: Create datetime
-                    update_datetime:
-                      type: string
-                      format: date-time
-                      nullable: true
-                      description: Update datetime
-                    complete_datetime:
-                      type: string
-                      format: date-time
-                      nullable: true
-                      description: Complete datetime
-                    complete_contact_id:
-                      type: integer
-                      nullable: true
-                      description: Complete contact identifier
-                    name:
-                      type: string
-                      description: Name item
-                    note:
-                      type: string
-                      description: Note item
-                    due_date:
-                      type: string
-                      format: date
-                      nullable: true
-                      description: Due date
-                    due_datetime:
-                      type: string
-                      format: date-time
-                      nullable: true
-                      description: Due datetime
-                    location_id:
-                      type: integer
-                      nullable: true
-                      description: Location identifier
-                    amount:
-                      type: number
-                      description: Amount
-                    currency_iso3:
-                      type: string
-                      description: Currency ISO3
-                    assigned_contact_id:
-                      type: integer
-                      nullable: true
-                      description: Assigned contact identifier
-                    repeat:
-                      type: integer
-                      description: Repeat
-                    key_list_id:
-                      type: integer
-                      description: Key list identifier
-                    favorite:
-                      type: boolean
-                      description: Favorite
-                    attachments_count:
-                      type: integer
-                      description: Attachments count
-                    comments_count:
-                      type: integer
-                      description: Comments count
-                    linked_entities_count:
-                      type: integer
-                      description: Linked entities count
+                  $ref: '#/components/schemas/item'
         500:
           description: Internal server error.
 #  /pocketlists.item.update:
@@ -192,7 +168,7 @@ paths:
                     description: ID списка
                   item_id:
                     type: integer
-                    description: ID элемента
+                    description: ID айтема
         400:
           description: Invalid request data.
           content:
@@ -521,6 +497,103 @@ components:
       scheme: bearer
 
   schemas:
+    item:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Item identifier
+        list_id:
+          type: integer
+          nullable: true
+          description: List identifier
+        contact_id:
+          type: integer
+          description: Contact identifier
+        parent_id:
+          type: integer
+          description: Parent identifier
+        sort:
+          type: integer
+          description: Sort
+        has_children:
+          type: boolean
+          description: Has children
+        status:
+          type: integer
+          description: Status
+        priority:
+          type: integer
+          description: Priority
+        calc_priority:
+          type: integer
+          description: Calc priority
+        create_datetime:
+          type: string
+          format: date-time
+          description: Create datetime
+        update_datetime:
+          type: string
+          format: date-time
+          nullable: true
+          description: Update datetime
+        complete_datetime:
+          type: string
+          format: date-time
+          nullable: true
+          description: Complete datetime
+        complete_contact_id:
+          type: integer
+          nullable: true
+          description: Complete contact identifier
+        name:
+          type: string
+          description: Name item
+        note:
+          type: string
+          description: Note item
+        due_date:
+          type: string
+          format: date
+          nullable: true
+          description: Due date
+        due_datetime:
+          type: string
+          format: date-time
+          nullable: true
+          description: Due datetime
+        location_id:
+          type: integer
+          nullable: true
+          description: Location identifier
+        amount:
+          type: number
+          description: Amount
+        currency_iso3:
+          type: string
+          description: Currency ISO3
+        assigned_contact_id:
+          type: integer
+          nullable: true
+          description: Assigned contact identifier
+        repeat:
+          type: integer
+          description: Repeat
+        key_list_id:
+          type: integer
+          description: Key list identifier
+        favorite:
+          type: boolean
+          description: Favorite
+        attachments_count:
+          type: integer
+          description: Attachments count
+        comments_count:
+          type: integer
+          description: Comments count
+        linked_entities_count:
+          type: integer
+          description: Linked entities count
     errorResponse:
       type: object
       properties:
