@@ -25,7 +25,7 @@ class pocketlistsAttachment extends pocketlistsEntity
     /**
      * @var string
      */
-    private $filetype = '';
+    private $filetype = null;
 
     /**
      * @var pocketlistsItem
