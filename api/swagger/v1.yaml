@@ -124,7 +124,69 @@ paths:
                   $ref: '#/components/schemas/item'
         500:
           description: Internal server error.
-#  /pocketlists.item.update:
+  /pocketlists.item.update:
+    put:
+      security:
+        - BearerAuth: [ ]
+      summary: Редактировать айтем
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - id
+                - list_id
+              properties:
+                id:
+                  type: integer
+                  description: Item identifier
+                list_id:
+                  type: integer
+                  description: List identifier
+                name:
+                  type: string
+                  description: Item name
+                note:
+                  type: string
+                  description: Note
+                assigned_contact_id:
+                  type: integer
+                  description: Assigned contact identifier
+                priority:
+                  type: integer
+                  description: Priority
+                due_datetime:
+                  type: string
+                  format: date-time
+                  description: Due datetime
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/item'
+        400:
+          description: Invalid request data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        403:
+          description: Access denied to the Pocket Lists app or this API method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        404:
+          description: Not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        500:
+          description: Internal server error.
   /pocketlists.list.add:
     put:
       security:
@@ -495,7 +557,6 @@ components:
     BearerAuth:
       type: http
       scheme: bearer
-
   schemas:
     item:
       type: object
