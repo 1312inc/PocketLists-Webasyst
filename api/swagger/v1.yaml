@@ -640,6 +640,49 @@ paths:
                     params:
                       type: string
                       description: Params, JSON
+        500:
+          description: Internal server error.
+  /pocketlists.pocket.add:
+    put:
+      security:
+        - BearerAuth: [ ]
+      summary: Добавить новый проект
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  description: Название проекта
+                color:
+                  type: string
+                  description: Цвет
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: ID проекта
+        400:
+          description: Invalid request data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        500:
+          description: Internal server error.
+#  /pocketlists.pocket.delete:
+#  /pocketlists.pocket.get:
+#  /pocketlists.pocket.update:
   /pocketlists.system.getCurrentTimestamp:
     get:
       security:
