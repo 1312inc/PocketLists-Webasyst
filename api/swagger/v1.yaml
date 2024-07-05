@@ -566,6 +566,80 @@ paths:
                 $ref: '#/components/schemas/errorResponse'
         500:
           description: Internal server error.
+  /pocketlists.log.get:
+    get:
+      security:
+        - BearerAuth: [ ]
+      summary: Получить историю
+      parameters:
+        - in: query
+          name: offset
+          description: Смещение списка (по умолчанию 0)
+          schema:
+            type: integer
+        - in: query
+          name: limit
+          description: Размер порции списка (по умолчанию 30, максимум 500)
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      description: Log identifier
+                    action:
+                      type: string
+                      description: Action
+                    entity_type:
+                      type: string
+                      description: Entity type
+                    contact_id:
+                      type: integer
+                      description: Contact identifier
+                    pocket_id:
+                      type: integer
+                      description: Pocket identifier
+                    list_id:
+                      type: integer
+                      description: List identifier
+                    item_id:
+                      type: integer
+                      description: Item identifier
+                    comment_id:
+                      type: integer
+                      nullable: true
+                      description: Comment identifier
+                    attachment_id:
+                      type: integer
+                      nullable: true
+                      description: Attachment identifier
+                    location_id:
+                      type: integer
+                      nullable: true
+                      description: Location identifier
+                    additional_id:
+                      type: integer
+                      nullable: true
+                      description: Additional identifier
+                    assigned_contact_id:
+                      type: integer
+                      nullable: true
+                      description: Assigned contact identifier
+                    create_datetime:
+                      type: string
+                      format: datetime
+                      description: Create datetime
+                    params:
+                      type: string
+                      description: Params, JSON
   /pocketlists.system.getCurrentTimestamp:
     get:
       security:
