@@ -119,13 +119,13 @@ paths:
           schema:
             type: integer
         - in: query
-          name: limit
-          description: Размер порции списка (по умолчанию 30, максимум 500)
+          name: offset
+          description: Смещение списка (по умолчанию 0)
           schema:
             type: integer
         - in: query
-          name: offset
-          description: Смещение списка (по умолчанию 0)
+          name: limit
+          description: Размер порции списка (по умолчанию 30, максимум 500)
           schema:
             type: integer
       responses:
@@ -305,13 +305,13 @@ paths:
           schema:
             type: integer
         - in: query
-          name: limit
-          description: Размер порции списка (по умолчанию 30, максимум 500)
+          name: offset
+          description: Смещение списка (по умолчанию 0)
           schema:
             type: integer
         - in: query
-          name: offset
-          description: Смещение списка (по умолчанию 0)
+          name: limit
+          description: Размер порции списка (по умолчанию 30, максимум 500)
           schema:
             type: integer
       responses:
