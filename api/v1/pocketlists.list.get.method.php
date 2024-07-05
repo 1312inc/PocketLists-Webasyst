@@ -5,8 +5,6 @@ class pocketlistsListGetMethod extends pocketlistsApiAbstractMethod
     const MAX_LIMIT = 500;
     const DEFAULT_LIMIT = 30;
 
-    protected $method = self::METHOD_GET;
-
     public function execute()
     {
         $lists = [];
@@ -46,6 +44,8 @@ class pocketlistsListGetMethod extends pocketlistsApiAbstractMethod
             } elseif ($offset < 1) {
                 throw new waAPIException('negative_value', _w('The parameter has a negative value'), 400);
             }
+        } else {
+            $offset = 0;
         }
 
         $accessed_pockets = pocketlistsRBAC::getAccessPocketForContact(pl2()->getUser()->getId());
