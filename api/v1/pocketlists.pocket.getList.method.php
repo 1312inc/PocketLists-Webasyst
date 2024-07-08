@@ -1,6 +1,6 @@
 <?php
 
-class pocketlistsPocketGetMethod extends pocketlistsApiAbstractMethod
+class pocketlistsPocketGetListMethod extends pocketlistsApiAbstractMethod
 {
     public function execute()
     {

@@ -1,6 +1,6 @@
 <?php
 
-class pocketlistsLogGetMethod extends pocketlistsApiAbstractMethod
+class pocketlistsLogGetListMethod extends pocketlistsApiAbstractMethod
 {
     const MAX_LIMIT = 500;
     const DEFAULT_LIMIT = 30;

@@ -1,6 +1,6 @@
 <?php
 
-class pocketlistsItemGetMethod extends pocketlistsApiAbstractMethod
+class pocketlistsItemGetListMethod extends pocketlistsApiAbstractMethod
 {
     const MAX_LIMIT = 500;
     const DEFAULT_LIMIT = 30;
