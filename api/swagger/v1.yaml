@@ -97,7 +97,7 @@ paths:
           description: OK
         500:
           description: Internal server error.
-  /pocketlists.item.get:
+  /pocketlists.item.getList:
     get:
       security:
         - BearerAuth: [ ]
@@ -288,7 +288,7 @@ paths:
           description: OK
         500:
           description: Internal server error.
-  /pocketlists.list.get:
+  /pocketlists.list.getList:
     get:
       security:
         - BearerAuth: [ ]
@@ -566,7 +566,7 @@ paths:
                 $ref: '#/components/schemas/errorResponse'
         500:
           description: Internal server error.
-  /pocketlists.log.get:
+  /pocketlists.log.getList:
     get:
       security:
         - BearerAuth: [ ]
@@ -680,8 +680,23 @@ paths:
                 $ref: '#/components/schemas/errorResponse'
         500:
           description: Internal server error.
-#  /pocketlists.pocket.delete:
-  /pocketlists.pocket.get:
+  /pocketlists.pocket.delete:
+    delete:
+      security:
+        - BearerAuth: [ ]
+      summary: Удалить проект
+      parameters:
+        - in: query
+          name: pocket_id
+          description: Pocket identifier
+          schema:
+            type: integer
+      responses:
+        204:
+          description: OK
+        500:
+          description: Internal server error.
+  /pocketlists.pocket.getList:
     get:
       security:
         - BearerAuth: [ ]
@@ -730,7 +745,53 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/errorResponse'
-#  /pocketlists.pocket.update:
+  /pocketlists.pocket.update:
+    put:
+      security:
+        - BearerAuth: [ ]
+      summary: Редактировать проект
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - id
+              properties:
+                id:
+                  type: integer
+                  description: Pocket identifier
+                name:
+                  type: string
+                  description: Название проекта
+                color:
+                  type: string
+                  description: Цвет
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: Pocket identifier
+        400:
+          description: Invalid request data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        404:
+          description: Not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        500:
+          description: Internal server error.
   /pocketlists.system.getCurrentTimestamp:
     get:
       security:
