@@ -680,7 +680,22 @@ paths:
                 $ref: '#/components/schemas/errorResponse'
         500:
           description: Internal server error.
-#  /pocketlists.pocket.delete:
+  /pocketlists.pocket.delete:
+    delete:
+      security:
+        - BearerAuth: [ ]
+      summary: Удалить проект
+      parameters:
+        - in: query
+          name: pocket_id
+          description: Pocket identifier
+          schema:
+            type: integer
+      responses:
+        204:
+          description: OK
+        500:
+          description: Internal server error.
   /pocketlists.pocket.getList:
     get:
       security:
