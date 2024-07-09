@@ -21,6 +21,23 @@ class pocketlistsPocketGetListMethod extends pocketlistsApiAbstractMethod
             $pockets = $plp->getAllPockets($this->getUser()->getId());;
         }
 
-        $this->response = $pockets;
+        $this->response = [
+            'offset' => 0,
+            'limit'  => self::DEFAULT_LIMIT,
+            'count'  => count($pockets),
+            'data'   => $this->filterFields(
+                $pockets,
+                [
+                    'id',
+                    'sort',
+                    'name',
+                    'color',
+                    'passcode'
+                ],
+                [
+                    'id' => 'int'
+                ]
+            )
+        ];
     }
 }

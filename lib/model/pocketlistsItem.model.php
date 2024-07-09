@@ -477,10 +477,10 @@ class pocketlistsItemModel extends pocketlistsModel
     /**
      * @return string
      */
-    public function getQuery()
+    public function getQuery($calc = false)
     {
         return "
-            SELECT
+            SELECT".($calc ? ' SQL_CALC_FOUND_ROWS' : '')."
                 i.*,
                 IF(uf.contact_id, 1, 0) favorite,
                 (select count(*) from pocketlists_attachment pa where pa.item_id = i.id) attachments_count,

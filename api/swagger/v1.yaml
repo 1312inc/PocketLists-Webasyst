@@ -134,9 +134,27 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/item'
+                type: object
+                properties:
+                  offset:
+                    type: integer
+                    description: Offset
+                  limit:
+                    type: integer
+                    description: Limit
+                  count:
+                    type: integer
+                    description: Count
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/item'
+        400:
+          description: Invalid request data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
         500:
           description: Internal server error.
   /pocketlists.item.update:
@@ -320,42 +338,54 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                      description: List identifier
-                    name:
-                      type: string
-                      description: Name list
-                    contact_id:
-                      type: integer
-                      description: Contact identifier
-                    pocket_id:
-                      type: integer
-                      description: Pocket identifier
-                    type:
-                      type: string
-                      description: List type
-                    icon:
-                      type: string
-                      description: Icon
-                    color:
-                      type: string
-                      description: Color
-                    sort:
-                      type: integer
-                      description: Sort
-                    create_datetime:
-                      type: string
-                      format: date-time
-                      description: Create datetime
-                    update_datetime:
-                      type: string
-                      format: date-time
-                      description: Update datetime
+                type: object
+                properties:
+                  offset:
+                    type: integer
+                    description: Offset
+                  limit:
+                    type: integer
+                    description: Limit
+                  count:
+                    type: integer
+                    description: Count
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: List identifier
+                        name:
+                          type: string
+                          description: Name list
+                        contact_id:
+                          type: integer
+                          description: Contact identifier
+                        pocket_id:
+                          type: integer
+                          description: Pocket identifier
+                        type:
+                          type: string
+                          description: List type
+                        icon:
+                          type: string
+                          description: Icon
+                        color:
+                          type: string
+                          description: Color
+                        sort:
+                          type: integer
+                          description: Sort
+                        create_datetime:
+                          type: string
+                          format: date-time
+                          description: Create datetime
+                        update_datetime:
+                          type: string
+                          format: date-time
+                          description: Update datetime
         400:
           description: Invalid request data.
           content:
@@ -713,26 +743,38 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                      description: Pocket identifier
-                    sort:
-                      type: integer
-                      description: Sort
-                    name:
-                      type: string
-                      description: Pocket name
-                    color:
-                      type: string
-                      description: Color
-                    passcode:
-                      type: string
-                      nullable: true
-                      description: Passcode
+                type: object
+                properties:
+                  offset:
+                    type: integer
+                    description: Offset
+                  limit:
+                    type: integer
+                    description: Limit
+                  count:
+                    type: integer
+                    description: Count
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: Pocket identifier
+                        sort:
+                          type: integer
+                          description: Sort
+                        name:
+                          type: string
+                          description: Pocket name
+                        color:
+                          type: string
+                          description: Color
+                        passcode:
+                          type: string
+                          nullable: true
+                          description: Passcode
         400:
           description: Invalid request data.
           content:
