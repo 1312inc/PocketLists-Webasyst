@@ -43,30 +43,31 @@ class pocketlistsUsersGetMethod extends pocketlistsApiAbstractMethod
             'limit'  => self::DEFAULT_LIMIT,
             'count'  => count($result),
             'data'   => $this->filterFields(
-            $result,
-            [
-                'id',
-                'name',
-                'username',
-                'photo_url',
-                'user_pic',
-                'status',
-                'team_role',
-                'login',
-                'me',
-                'exists',
-                'last_activity',
-                'list_activities',
-                'email',
-                'locale',
-                'items_info'
-            ],
-            [
-                'id' => 'int',
-                'me' => 'bool',
-                'exists' => 'bool',
-                'last_activity' => 'datetime',
-            ]
-        )];
+                $result,
+                [
+                    'id',
+                    'name',
+                    'username',
+                    'photo_url',
+                    'user_pic',
+                    'status',
+                    'team_role',
+                    'login',
+                    'me',
+                    'exists',
+                    'last_activity',
+                    'list_activities',
+                    'email',
+                    'locale',
+                    'items_info'
+                ],
+                [
+                    'id' => 'int',
+                    'me' => 'bool',
+                    'exists' => 'bool',
+                    'last_activity' => 'datetime',
+                ]
+            )
+        ];
     }
 }

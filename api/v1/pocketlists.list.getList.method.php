@@ -4,7 +4,6 @@ class pocketlistsListGetListMethod extends pocketlistsApiAbstractMethod
 {
     public function execute()
     {
-        $lists = [];
         $id = $this->get('id');
         $starting_from = $this->get('starting_from');
         $limit = $this->get('limit');
@@ -31,7 +30,7 @@ class pocketlistsListGetListMethod extends pocketlistsApiAbstractMethod
             } elseif ($limit < 1) {
                 throw new waAPIException('negative_value', _w('The parameter has a negative value'), 400);
             }
-            $limit = min($limit, self::MAX_LIMIT);
+            $limit = (int) min($limit, self::MAX_LIMIT);
         } else {
             $limit = self::DEFAULT_LIMIT;
         }
@@ -41,10 +40,13 @@ class pocketlistsListGetListMethod extends pocketlistsApiAbstractMethod
             } elseif ($offset < 1) {
                 throw new waAPIException('negative_value', _w('The parameter has a negative value'), 400);
             }
+            $offset = intval($offset);
         } else {
             $offset = 0;
         }
 
+        $lists = [];
+        $total_count = 0;
         $accessed_pockets = pocketlistsRBAC::getAccessPocketForContact(pl2()->getUser()->getId());
         if (!empty($accessed_pockets)) {
             $condition = '1 = 1';
@@ -58,7 +60,7 @@ class pocketlistsListGetListMethod extends pocketlistsApiAbstractMethod
             /** @var pocketlistsPocketModel $pocket_model */
             $pocket_model = pl2()->getModel(pocketlistsPocket::class);
             $lists = $pocket_model->query("
-                SELECT pl.id, pli.name, pli.contact_id, pl.pocket_id, pl.type, pl.icon, pl.color, pl.sort, pli.create_datetime, pli.update_datetime FROM pocketlists_list pl
+                SELECT SQL_CALC_FOUND_ROWS pl.id, pli.name, pli.contact_id, pl.pocket_id, pl.type, pl.icon, pl.color, pl.sort, pli.create_datetime, pli.update_datetime FROM pocketlists_list pl
                 LEFT JOIN pocketlists_item pli ON pli.id = pl.key_item_id
                 WHERE pl.pocket_id IN (i:pocket_ids) AND $condition AND pl.archived = 0
                 ORDER BY pl.sort, pli.update_datetime DESC, pli.create_datetime DESC
@@ -67,29 +69,35 @@ class pocketlistsListGetListMethod extends pocketlistsApiAbstractMethod
                 'id' => (int) $id,
                 'pocket_ids' => $accessed_pockets,
                 'starting_from' => $starting_from,
-                'offset' => (int) $offset,
-                'limit'  => (int) $limit
+                'offset' => $offset,
+                'limit'  => $limit
             ])->fetchAll();
+            $total_count = (int) $pocket_model->query('SELECT FOUND_ROWS()')->fetchField();
         }
 
-        $this->response = $this->filterFields(
-            $lists,
-            [
-                'id',
-                'contact_id',
-                'pocket_id',
-                'sort',
-                'create_datetime',
-                'update_datetime'
-            ],
-            [
-                'id' => 'int',
-                'contact_id' => 'int',
-                'pocket_id' => 'int',
-                'sort' => 'int',
-                'create_datetime' => 'datetime',
-                'update_datetime' => 'datetime'
-            ]
-        );
+        $this->response = [
+            'offset' => $offset,
+            'limit'  => $limit,
+            'count'  => $total_count,
+            'data'   => $this->filterFields(
+                $lists,
+                [
+                    'id',
+                    'contact_id',
+                    'pocket_id',
+                    'sort',
+                    'create_datetime',
+                    'update_datetime'
+                ],
+                [
+                    'id' => 'int',
+                    'contact_id' => 'int',
+                    'pocket_id' => 'int',
+                    'sort' => 'int',
+                    'create_datetime' => 'datetime',
+                    'update_datetime' => 'datetime'
+                ]
+            )
+        ];
     }
 }
