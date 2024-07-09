@@ -566,7 +566,7 @@ paths:
                 $ref: '#/components/schemas/errorResponse'
         500:
           description: Internal server error.
-  /pocketlists.log.getList:
+  /pocketlists.log.get:
     get:
       security:
         - BearerAuth: [ ]
