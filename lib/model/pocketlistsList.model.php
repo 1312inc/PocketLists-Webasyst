@@ -355,7 +355,7 @@ class pocketlistsListModel extends pocketlistsModel
         return $this->query(
             $q,
             ['contact_id' => $contact_ids]
-        )->fetchAll('list_id', 1);
+        )->fetchAll('list_id');
     }
 
     /**
