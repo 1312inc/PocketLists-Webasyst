@@ -8,6 +8,9 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
     public const METHOD_DELETE = 'DELETE';
     public const METHOD_PATCH  = 'PATCH';
 
+    const MAX_LIMIT = 500;
+    const DEFAULT_LIMIT = 30;
+
     private $request_body = null;
 
     /**

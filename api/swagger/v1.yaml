@@ -566,7 +566,7 @@ paths:
                 $ref: '#/components/schemas/errorResponse'
         500:
           description: Internal server error.
-  /pocketlists.log.getList:
+  /pocketlists.log.get:
     get:
       security:
         - BearerAuth: [ ]
@@ -805,6 +805,100 @@ paths:
               schema:
                 type: integer
                 description: Current timestamp
+  /pocketlists.users.get:
+    get:
+      security:
+        - BearerAuth: [ ]
+      summary: Список команды
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  offset:
+                    type: integer
+                    description: Offset
+                  limit:
+                    type: integer
+                    description: Limit
+                  count:
+                    type: integer
+                    description: Count
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        username:
+                          type: string
+                        photo_url:
+                          type: string
+                        user_pic:
+                          type: string
+                        status:
+                          type: string
+                        team_role:
+                          type: string
+                        login:
+                          type: string
+                        me:
+                          type: boolean
+                        exists:
+                          type: boolean
+                        last_activity:
+                          type: string
+                          format: datetime
+                        email:
+                          type: string
+                        locale:
+                          type: string
+                        list_activities:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              list_id:
+                                type: integer
+                              contact_id:
+                                type: integer
+                              last_date:
+                                type: string
+                                format: datetime
+                        items_info:
+                          type: object
+                          properties:
+                            count:
+                              type: integer
+                            count_priority:
+                              type: integer
+                            max_priority:
+                              type: integer
+                            count_max_priority:
+                              type: integer
+                            count_priorities:
+                              type: object
+                              properties:
+                                0:
+                                  type: integer
+                                1:
+                                  type: integer
+                                2:
+                                  type: integer
+                                3:
+                                  type: integer
+                                4:
+                                  type: integer
+                                5:
+                                  type: integer
+        500:
+          description: Internal server error.
 
 components:
   securitySchemes:

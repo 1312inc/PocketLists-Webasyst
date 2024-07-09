@@ -2,9 +2,6 @@
 
 class pocketlistsItemGetListMethod extends pocketlistsApiAbstractMethod
 {
-    const MAX_LIMIT = 500;
-    const DEFAULT_LIMIT = 30;
-
     public function execute()
     {
         $while = 'WHERE 1 = 1';

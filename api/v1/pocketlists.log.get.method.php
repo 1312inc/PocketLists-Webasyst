@@ -1,10 +1,7 @@
 <?php
 
-class pocketlistsLogGetListMethod extends pocketlistsApiAbstractMethod
+class pocketlistsLogGetMethod extends pocketlistsApiAbstractMethod
 {
-    const MAX_LIMIT = 500;
-    const DEFAULT_LIMIT = 30;
-
     public function execute()
     {
         $offset = $this->get('offset');
