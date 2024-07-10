@@ -31,6 +31,8 @@
 
     <script type="text/javascript" src="?action=loc&amp;v=2{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
 
+    {if !$smarty.get.new}
+
     <script type="module" crossorigin src="{$wa_app_static_url}client/assets/index-FBA1Gy56.js"></script>
     <link rel="stylesheet" crossorigin href="{$wa_app_static_url}client/assets/index-AxK0WxBE.css">
 
@@ -41,7 +43,11 @@
           apiBaseUrl: "https://sandbox4000.pocketlists.com/api/v1/",
         }
     </script>
+
+    {/if}
 </head>
+
+{if $smarty.get.new}
 <body style="background-color: var(--background-color);">
     <div id="wa">
         {$wa->header()}
@@ -60,6 +66,38 @@
             <div id="app"></div>
         </div>
     </div>
-
 </body>
+{else}
+<body>
+    <div id="wa">
+        {$wa->header()}
+
+        <!-- plugin hook: 'backend_head' -->
+        {* @event backend_head.%plugin_id% *}
+        {if !empty($backend_head)}{foreach $backend_head as $_}{ifset($_)}{/foreach}{/if}
+
+        <div id="wa-app">
+            <div class="flexbox wrap-mobile">
+
+                <div data-pl-scroll-to-top id="pl-sidebar-core" class="sidebar flexbox mobile-friendly width-adaptive hide-scrollbar">
+                    {$sidebar}
+                </div>
+
+                <div class="content blank">
+                    <div id="content" class="flexbox wrap-mobile">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript">
+    $.pocketlists.init({
+        account_name: '{$wa->accountName()|escape}',
+        isAdmin: {$isAdmin},
+        userId: {$wa->user()->get('id')},
+        debug: {if $wa->debug()}1{else}0{/if}
+    });
+</script>
+</body>
+{/if}
 </html>
