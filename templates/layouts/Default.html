@@ -31,7 +31,7 @@
 
     <script type="text/javascript" src="?action=loc&amp;v=2{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
 
-    {if !$smarty.get.new}
+    {if $smarty.get.new}
 
     <script type="module" crossorigin src="{$wa_app_static_url}client/assets/index-FBA1Gy56.js"></script>
     <link rel="stylesheet" crossorigin href="{$wa_app_static_url}client/assets/index-AxK0WxBE.css">
