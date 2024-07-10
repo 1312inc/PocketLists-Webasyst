@@ -847,7 +847,7 @@ paths:
               schema:
                 type: integer
                 description: Current timestamp
-  /pocketlists.users.get:
+  /pocketlists.user.getList:
     get:
       security:
         - BearerAuth: [ ]
