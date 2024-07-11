@@ -5,11 +5,16 @@
  */
 class pocketlistsModel extends waModel
 {
+    /** @var int */
+    private $autocommit_mode = 0;
+
     /**
      * pocketlistsModel constructor.
      *
-     * @param null $type
-     * @param bool $writable
+     * @param $type
+     * @param $writable
+     * @throws waDbException
+     * @throws waException
      */
     public function __construct($type = null, $writable = false)
     {
@@ -20,6 +25,33 @@ class pocketlistsModel extends waModel
         } catch (Exception $ex) {
             waLog::log('PLEASE UPDATE YOUR MYSQL DATABASE. ' . $ex->getMessage());
         }
+    }
+
+    /**
+     * @param int $flag
+     */
+    public function autocommit($flag)
+    {
+        $this->exec('SET autocommit = '.(int) $flag);
+    }
+
+    public function startTransaction()
+    {
+        $this->autocommit_mode = $this->query('SELECT @@autocommit')->fetchField();
+        $this->autocommit(0);
+        $this->exec('start transaction');
+    }
+
+    public function commit()
+    {
+        $this->exec('commit');
+        $this->autocommit($this->autocommit_mode);
+    }
+
+    public function rollback()
+    {
+        $this->exec('rollback');
+        $this->autocommit($this->autocommit_mode);
     }
 
     /**

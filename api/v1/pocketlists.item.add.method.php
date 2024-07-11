@@ -6,86 +6,161 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
 
     public function execute()
     {
-        $_json = $this->readBodyAsJson();
-        $list_id = (int) ifset($_json, 'list_id', 0);
-        $name = (string) ifset($_json, 'name', '');
-        $note = (string) ifset($_json, 'note', '');
-        $assigned_contact_id = ifset($_json, 'assigned_contact_id', null);
-        $priority = (int) ifset($_json, 'priority', 0);
-        $due_datetime = ifset($_json, 'due_datetime', null);
-        $files = ifset($_json, 'files', null);
-
-        if (empty($list_id)) {
-            throw new waAPIException('required_param', sprintf_wp('Missing required parameter: “%s”.', 'list_id'), 400);
-        } elseif ($list_id < 1) {
-            throw new waAPIException('not_found', _w('List not found'), 404);
+        $items = $this->readBodyAsJson();
+        if (empty($items)) {
+            throw new waAPIException('required_param', _w('Missing data'), 400);
+        } elseif (!is_array($items)) {
+            throw new waAPIException('type_error', _w('Type error data'), 400);
         }
 
-        /** @var pocketlistsListFactory $list_factory */
-        $list_factory = pl2()->getEntityFactory(pocketlistsList::class);
-        $list = $list_factory->findById($list_id);
-        if (empty($list)) {
-            throw new waAPIException('not_found', _w('List not found'), 404);
+        $err = false;
+        $assign_contacts = [];
+        $list_ids = array_unique(array_column($items, 'list_id'));
+        $assigned_contact_ids = array_unique(array_column($items, 'assigned_contact_id'));
+
+        if (!empty($list_ids)) {
+            /** @var pocketlistsListModel $list_model */
+            $list_model = pl2()->getModel(pocketlistsList::class);
+            $list_ids = $list_model->select('id')->where('id IN (:list_ids)', ['list_ids' => $list_ids])->fetchAll(null, true);
         }
-
-        /** @var pocketlistsItemFactory $item_factory */
-        $item_factory = pl2()->getEntityFactory(pocketlistsItem::class);
-
-        /** @var pocketlistsItem $item */
-        $item = $item_factory->createNew();
-
-        $match_note = pocketlistsNaturalInput::matchNote($name);
-        if ($match_note) {
-            if (empty($note)) {
-                $name = $match_note['name'];
-                $note = $match_note['note'];
+        if (!empty($assigned_contact_ids)) {
+            /** @var pocketlistsContact $_assign_contact */
+            foreach (pl2()->getEntityFactory(pocketlistsContact::class)->createNewWithIds($assigned_contact_ids) as $_assign_contact) {
+                if ($_assign_contact->isExists()) {
+                    $assign_contacts[$_assign_contact->getId()] = $_assign_contact;
+                }
             }
         }
-        if ($assigned_contact_id) {
-            $assign_contact = pl2()->getEntityFactory(pocketlistsContact::class)->createNewWithId($assigned_contact_id);
-            if ($assign_contact->isExists()) {
-                $item->setAssignedContact($assign_contact);
+
+        /** validate */
+        foreach ($items as &$_item) {
+            /** set default */
+            $_item = [
+                'list_id'             => ifset($_item, 'list_id', 0),
+                'name'                => ifset($_item, 'name', ''),
+                'note'                => ifset($_item, 'note', ''),
+                'assigned_contact_id' => ifset($_item, 'assigned_contact_id', null),
+                'priority'            => ifset($_item, 'priority', 0),
+                'contact_id'          => $this->getUser()->getId(),
+                'files'               => ifset($_item, 'files', []),
+                'create_datetime'     => date('Y-m-d H:i:s'),
+                'due_datetime'        => ifset($_item, 'due_datetime', null),
+                'due_date'            => null,
+                'amount'              => 0,
+                'repeat'              => 0,
+                'errors'              => []
+            ];
+
+            if (empty($_item['list_id'])) {
+                $_item['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'list_id');
+            } elseif (!is_numeric($_item['list_id'])) {
+                $_item['errors'][] = _w('Invalid type list_id');
+            } elseif ($_item['list_id'] < 1 || !in_array($_item['list_id'], $list_ids)) {
+                $_item['errors'][] = _w('List not found');
+            }
+
+            if (!is_string($_item['name'])) {
+                $_item['errors'][] = _w('Invalid type name');
+            }
+
+            if ($_item['assigned_contact_id']) {
+                if (!is_numeric($_item['assigned_contact_id'])) {
+                    $_item['errors'][] = _w('Invalid type assigned_contact_id');
+                } elseif (!array_key_exists($_item['assigned_contact_id'], $assign_contacts)) {
+                    $_item['errors'][] = _w('Assigned contact not found');
+                }
+            }
+
+            if ($_item['priority']) {
+                if (!is_numeric($_item['priority'])) {
+                    $_item['errors'][] = _w('Invalid type priority');
+                } elseif (!in_array($_item['priority'], [1, 2, 3, 4, 5])) {
+                    $_item['errors'][] = _w('Unknown value priority');
+                }
             } else {
-                throw new waAPIException('not_found', _w('Contact not found'), 404);
+                $match_priority = pocketlistsNaturalInput::matchPriority($_item['name']);
+                if ($match_priority) {
+                    $_item['name'] = $match_priority['name'];
+                    $_item['priority'] = (int) $match_priority['priority'];
+                }
             }
-        }
-        if ($priority) {
-            if (!in_array($priority, [1, 2, 3, 4, 5])) {
-                throw new waAPIException('unknown_value', _w('Unknown priority'), 400);
+
+            $match_note = pocketlistsNaturalInput::matchNote($_item['name']);
+            if ($match_note) {
+                if (empty($_item['note'])) {
+                    $_item['name'] = $match_note['name'];
+                    $_item['note'] = $match_note['note'];
+                } elseif (!is_string($_item['note'])) {
+                    $_item['errors'][] = _w('Invalid type note');
+                }
             }
-        } else {
-            $match_priority = pocketlistsNaturalInput::matchPriority($name);
-            if ($match_priority) {
-                $name = $match_priority['name'];
-                $priority = (int) $match_priority['priority'];
+
+            if (isset($_item['due_datetime'])) {
+                if (!is_string($_item['due_datetime'])) {
+                    $_item['errors'][] = _w('Invalid type due_datetime');
+                } else {
+                    $dt = date_create($_item['due_datetime']);
+                    if ($dt) {
+                        $_item['due_date'] = $dt->format('Y-m-d');
+                        $_item['due_datetime'] = $dt->format('Y-m-d H:i:s');
+                    } else {
+                        $_item['errors'][] = _w('Unknown value due_datetime');
+                    }
+                }
             }
-        }
-        if (isset($due_datetime)) {
-            $dt = date_create($due_datetime);
-            if ($dt) {
-                $item->setDueDate($dt->format('Y-m-d'))
-                    ->setDueDatetime($dt->format('Y-m-d H:i:s'));
+
+            if (!empty($_item['files'])) {
+                if (is_array($_item['files'])) {
+                    foreach ($_item['files'] as $_file) {
+                        if (empty($_file['file'])) {
+                            $_item['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'file');
+                        }
+                        if (empty($_file['file_name'])) {
+                            $_item['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'file_name');
+                        }
+                    }
+                } else {
+                    $_item['errors'][] = _w('Invalid type files');
+                }
+            }
+
+            if (empty($_item['errors'])) {
+                unset($_item['errors']);
             } else {
-                throw new waAPIException('unknown_value', _w('Unknown date'), 400);
+                $err = true;
+                $_item['files'] = [];
             }
         }
 
-        $item->setName($name)
-            ->setListId($list_id)
-            ->setContact($this->getUser())
-            ->setCreateDatetime(date('Y-m-d H:i:s'))
-            ->setPriority($priority)
-            ->setNote($note);
-
-        if ($item_factory->insert($item)) {
-            $this->response = ['id' => $item->getId()];
-
-            if ($files) {
-                $attachments = $this->updateFiles($item->getId(), $files);
-                $item->setAttachments($attachments);
+        if (!$err) {
+            $item_model = pl2()->getModel(pocketlistsItem::class);
+            $item_model->startTransaction();
+            try {
+                $result = $item_model->multipleInsert($items);
+                if ($result->getResult()) {
+                    $last_id = $result->lastInsertId();
+                    $rows_count = $result->affectedRows();
+                    if ($rows_count === count($items)) {
+                        foreach ($items as &$_item) {
+                            $_item['id'] = $last_id++;
+                            if (!empty($_item['files'])) {
+                                $attachments = $this->updateFiles($_item['id'], $_item['files']);
+                                $_item['files'] = count($attachments);
+                            }
+                        }
+                    } else {
+                        throw new waAPIException('error', _w('Error on transaction'));
+                    }
+                    $item_model->commit();
+                } else {
+                    $item_model->rollback();
+                }
+            } catch (Exception $ex) {
+                $item_model->rollback();
+                throw new waAPIException('error', sprintf_wp('Error on transaction import save: %s', $ex->getMessage()));
             }
-        } else {
-            throw new waAPIException('error', _w('Error creating the element'));
         }
+
+        $this->response = $items;
     }
 }
