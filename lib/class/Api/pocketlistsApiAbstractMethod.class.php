@@ -108,6 +108,9 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
     protected function updateFiles($item_id, $files = [])
     {
         $attachments = [];
+        $file_vo = new pocketlistsUploadedFileVO();
+        $temp_path = $file_vo->getPath();
+        waFiles::create($temp_path, true);
 
         /** @var pocketlistsFactory $attachment_factory */
         $attachment_factory = pl2()->getEntityFactory(pocketlistsAttachment::class);
@@ -115,23 +118,21 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
             $item_file = base64_decode(ifset($_file, 'file', null));
 
             /** download to temp directory */
-            $name = md5(uniqid(__METHOD__)).$_file['file_name'];
-            $temp_path = wa()->getTempPath('files');
-            waFiles::create($temp_path, true);
-            $tmp_name = "$temp_path/$name";
-            if (!file_put_contents($tmp_name, $item_file)) {
+            $file_vo->setName(md5(uniqid(__METHOD__)).$_file['file_name']);
+            $tmp_name = $temp_path.DIRECTORY_SEPARATOR.$file_vo->getName();
+            if (!file_put_contents($file_vo->getFullPath(), $item_file)) {
                 throw new waAPIException('server_error', _w('File could not be saved.'), 500);
             }
 
             /** @var pocketlistsUploadedFileVO $uploaded_file */
-            $uploaded_file = pocketlistsUploadedFileVO::createTempFromName($name);
+            $uploaded_file = pocketlistsUploadedFileVO::createTempFromName($file_vo->getName());
             $uploaded_file->setItemId($item_id)->setName($_file['file_name']);
 
             waFiles::move($tmp_name, $uploaded_file->getFullPath());
 
             /** @var pocketlistsAttachment $attachment */
             $attachment = $attachment_factory->createNew();
-            $attachment->setFilename($_file['file_name'])->setItemId($item_id);
+            $attachment->setFilename($_file['file_name'])->setItemId($item_id)->setFiletype($uploaded_file->getType());
             $attachment_factory->insert($attachment);
             $attachments[] = $attachment;
         }

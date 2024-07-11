@@ -18,55 +18,69 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - list_id
-              properties:
-                list_id:
-                  type: integer
-                  description: List identifier
-                name:
-                  type: string
-                  description: Name
-                note:
-                  type: string
-                  description: Note
-                assigned_contact_id:
-                  type: integer
-                  nullable: true
-                  description: Assigned contact identifier
-                priority:
-                  type: integer
-                  description: Priority
-                due_datetime:
-                  type: string
-                  format: date-time
-                  nullable: true
-                  description: Due datetime
-                files:
-                  type: array
-                  description: Files
-                  items:
-                    type: object
-                    properties:
-                      file:
-                        type: string
-                        format: byte
-                        description: File binary content
-                      file_name:
-                        type: string
-                        description: File name
+              type: array
+              items:
+                type: object
+                required:
+                  - list_id
+                properties:
+                  list_id:
+                    type: integer
+                    description: List identifier
+                  name:
+                    type: string
+                    description: Name
+                  note:
+                    type: string
+                    description: Note
+                  assigned_contact_id:
+                    type: integer
+                    nullable: true
+                    description: Assigned contact identifier
+                  priority:
+                    type: integer
+                    description: Priority
+                  due_datetime:
+                    type: string
+                    format: date-time
+                    nullable: true
+                    description: Due datetime
+                  files:
+                    type: array
+                    description: Files
+                    items:
+                      required:
+                        - file
+                        - file_name
+                      type: object
+                      properties:
+                        file:
+                          type: string
+                          format: byte
+                          description: File binary content
+                        file_name:
+                          type: string
+                          description: File name
       responses:
         200:
           description: OK
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                    description: ID айтема
+                type: array
+                items:
+                  allOf:
+                    - $ref: '#/components/schemas/item'
+                    - type: object
+                      properties:
+                        errors:
+                          type: array
+                          items:
+                            type: string
+                            description: Error description
+                        attachment:
+                          type: integer
+                          description: Count attachment files
         400:
           description: Invalid request data.
           content:
@@ -847,7 +861,7 @@ paths:
               schema:
                 type: integer
                 description: Current timestamp
-  /pocketlists.users.get:
+  /pocketlists.user.getList:
     get:
       security:
         - BearerAuth: [ ]
