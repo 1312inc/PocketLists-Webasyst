@@ -99,16 +99,25 @@ paths:
     delete:
       security:
         - BearerAuth: [ ]
-      summary: Удалить айтем
+      summary: Удаление айтемов
       parameters:
         - in: query
-          name: item_id
-          description: Item identifier
+          name: id[]
+          description: Item identifiers
+          required: true
           schema:
-            type: integer
+            type: array
+            items:
+              type: integer
       responses:
         204:
           description: OK
+        400:
+          description: Invalid request data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
         500:
           description: Internal server error.
   /pocketlists.item.getList:
@@ -341,16 +350,25 @@ paths:
     delete:
       security:
         - BearerAuth: [ ]
-      summary: Удалить список
+      summary: Удаление списков
       parameters:
         - in: query
-          name: list_id
+          name: id[]
           description: List identifier
+          required: true
           schema:
-            type: integer
+            type: array
+            items:
+              type: integer
       responses:
         204:
           description: OK
+        400:
+          description: Invalid request data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
         500:
           description: Internal server error.
   /pocketlists.list.getList:

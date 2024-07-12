@@ -7,20 +7,21 @@ class pocketlistsItemDeleteMethod extends pocketlistsApiAbstractMethod
     public function execute()
     {
         $this->http_status_code = 204;
-        $item_id = (int) $this->get('item_id');
+        $item_ids = $this->get('id');
 
-        if ($item_id < 1) {
-            return null;
+        if (empty($item_ids)) {
+            throw new waAPIException('required_param', sprintf_wp('Missing required parameter: “%s”.', 'id', 400));
+        } elseif (!is_array($item_ids)) {
+            throw new waAPIException('error_type', sprintf_wp('Invalid type %s', 'id'), 400);
         }
 
+        /** @var pocketlistsItemFactory $plf */
         $plf = pl2()->getEntityFactory(pocketlistsItem::class);
-        $item = $plf->findById($item_id);
-        if (!$item) {
-            return null;
-        }
+        $item_ids = array_unique($item_ids);
 
-        if (!$plf->delete($item)) {
-            throw new waAPIException('error', _w('Error while deleting item'));
+        $items = $plf->findByFields('id', $item_ids, true);
+        foreach ($items as $item) {
+            $plf->delete($item);
         }
     }
 }
