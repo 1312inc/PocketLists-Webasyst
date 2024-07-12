@@ -15,15 +15,18 @@ class pocketlistsLogModel extends pocketlistsModel
      * @param bool  $includeNullList
      * @param int   $offset
      * @param int   $limit
+     * @param bool  $calc
      *
      * @return array
+     * @throws waDbException
      */
     public function getLastAll(
         $availableLists = [],
         $availablePockets = [],
         $includeNullList = false,
         $offset = 0,
-        $limit = self::LIMIT
+        $limit = self::LIMIT,
+        $calc = false
     ) {
         $queryComponents = $this->getQueryComponents();
 
@@ -43,7 +46,7 @@ class pocketlistsLogModel extends pocketlistsModel
                 )'];
         }
 
-        $sql = $this->buildSqlComponents($queryComponents, $limit, $offset);
+        $sql = $this->buildSqlComponents($queryComponents, $limit, $offset, $calc);
 
         $data = $this->query(
             $sql,
