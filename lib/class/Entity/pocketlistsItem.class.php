@@ -553,11 +553,11 @@ class pocketlistsItem extends pocketlistsEntity
     }
 
     /**
-     * @return int
+     * @return int|null
      */
     public function getId()
     {
-        return (int) $this->id;
+        return $this->id;
     }
 
     /**

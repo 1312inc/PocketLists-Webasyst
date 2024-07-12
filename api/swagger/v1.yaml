@@ -243,41 +243,74 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - name
-                - pocket_id
-              properties:
-                name:
-                  type: string
-                  description: Название списка
-                type:
-                  type: string
-                  default: checklist
-                  description: |
-                    Тип списка
-                    + checklist - перечень дел
-                    + notes - заметки
-                  enum:
-                    - checklist
-                    - notes
-                pocket_id:
-                  type: string
-                  description: ID проекта
+              type: array
+              items:
+                type: object
+                required:
+                  - name
+                  - pocket_id
+                properties:
+                  pocket_id:
+                    type: integer
+                    description: ID проекта
+                  name:
+                    type: string
+                    description: Название списка
+                  color:
+                    type: string
+                    description: Color
+                  icon:
+                    type: string
+                    description: Icon
+                  type:
+                    type: string
+                    default: checklist
+                    description: |
+                      Тип списка
+                      + checklist - перечень дел
+                      + notes - заметки
+                    enum:
+                      - checklist
+                      - notes
       responses:
         200:
           description: OK
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  list_id:
-                    type: integer
-                    description: ID списка
-                  item_id:
-                    type: integer
-                    description: ID айтема
+                type: array
+                items:
+                  allOf:
+                    - type: object
+                      properties:
+                        errors:
+                          type: array
+                          items:
+                            type: string
+                            description: Error description
+                    - type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: ID списка
+                        pocket_id:
+                          type: integer
+                          description: Pocket identifier
+                        name:
+                          type: string
+                          description: Name list
+                        color:
+                          type: string
+                          description: Color
+                        icon:
+                          type: string
+                          description: Icon
+                        type:
+                          type: string
+                          description: List type
+                        key_item_id:
+                          type: integer
+                          description: Key item
         400:
           description: Invalid request data.
           content:
