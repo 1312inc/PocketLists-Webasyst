@@ -5,6 +5,9 @@
  */
 class pocketlistsConfig extends waAppConfig
 {
+    const API_CLIENT_ID = 'POCKETLISTS-WEB-SPA';
+    const API_TOKEN_SCOPE = 'pocketlists';
+
     /**
      * @var array
      */

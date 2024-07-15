@@ -15,7 +15,6 @@ class pocketlistsDefaultLayout extends waLayout
             $us->saveDefaults();
         }
         $this->executeAction('sidebar', new pocketlistsBackendSidebarAction());
-        $this->view->assign('isAdmin', (int)pocketlistsRBAC::isAdmin());
 
         /**
          * @event backend_head
@@ -26,6 +25,17 @@ class pocketlistsDefaultLayout extends waLayout
         $event = new pocketlistsEvent(pocketlistsEventStorage::WA_BACKEND_HEAD);
         $eventResult = pl2()->waDispatchEvent($event);
 
-        $this->view->assign($event->getName(), $eventResult);
+        // API token for SPA
+        $token = (new waApiTokensModel())->getToken(
+            pocketlistsConfig::API_CLIENT_ID,
+            wa()->getUser()->getId(),
+            pocketlistsConfig::API_TOKEN_SCOPE
+        );
+
+        $this->view->assign([
+            pocketlistsEventStorage::WA_BACKEND_HEAD => $eventResult,
+            'isAdmin' => (int) pocketlistsRBAC::isAdmin(),
+            'spa_api_token' => $token
+        ]);
     }
 }
