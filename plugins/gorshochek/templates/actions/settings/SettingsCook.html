@@ -1,0 +1,71 @@
+<h3>Волшебный горшочек</h3>
+
+<div>
+    <label>
+        <span class="wa-radio">
+            <input type="radio" name="entity" value="POCKET">
+            <span></span>
+        </span>
+        POCKET
+    </label>
+</div>
+<div>
+    <label>
+        <span class="wa-radio">
+            <input type="radio" name="entity" value="LIST">
+            <span></span>
+        </span>
+        LIST
+    </label>
+</div>
+<div>
+    <label>
+        <span class="wa-radio">
+            <input type="radio" name="entity" value="ITEM" checked>
+            <span></span>
+        </span>
+        ITEM
+    </label>
+</div>
+<div class="custom-mt-8">
+    <input type="text" name="entity_count" value="{pocketlistsGorshochekPluginSettingsCookAction::DEFAULT_COUNT}">
+</div>
+<br>
+<div class="custom-mb-8 hint">
+    <span class="js-cook-info"></span>
+</div>
+<button class="js-pot-cook" type="button">Горшочек, вари!</button>
+
+<script>
+    let cleanup = false;
+    let timer = undefined;
+    let process_id = undefined;
+    let url = '?plugin=gorshochek&action=run';
+    let $cook_info = $('.js-cook-info');
+
+    let step = function () {
+        let entity = $('input[name="entity"]:checked').val();
+        let entity_count = $('input[name="entity_count"]').val();
+        timer = setInterval(function () {
+            $.post(url, { processid: process_id, entity: entity, entity_count: entity_count, cleanup: cleanup }, function (response) {
+                if (response) {
+                    if (response.processid) {
+                        process_id = response.processid;
+                    }
+                    if (response.text) {
+                        $cook_info.text(response.text);
+                    }
+                    if (response.ready) {
+                        clearInterval(timer);
+                        cleanup = true;
+                    }
+                }
+            }, 'json');
+        }, 2000);
+    }
+
+    $('.js-pot-cook').on('click', function () {
+        $(this).attr('disabled', true);
+        step();
+    });
+</script>
