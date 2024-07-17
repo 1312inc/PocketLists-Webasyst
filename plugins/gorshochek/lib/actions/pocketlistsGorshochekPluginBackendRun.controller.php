@@ -194,14 +194,23 @@ class pocketlistsGorshochekPluginBackendRunController extends waLongActionContro
                     'note'                => $note,
                     'priority'            => $this->genPriority(),
                     'contact_id'          => $this->getUser()->getId(),
-                    'create_datetime'     => date('Y-m-d H:i:s'),
-                    'files'               => [],
-                    'assigned_contact_id' => null,
+                    'create_datetime'     => date('Y-m-d H:i:s', $this->genTimestamp()),
                     'due_datetime'        => null,
                     'due_date'            => null,
+                    'assigned_contact_id' => null,
+                    'files'               => [],
                     'amount'              => 0,
                     'repeat'              => 0,
                 ];
+                if (mt_rand(1, 3) % 3 === 0) {
+                    $is_future = (mt_rand(1, 3) % 3 === 0);
+                    $time = $this->genTimestamp($is_future);
+                    if (mt_rand(1, 2) % 2 === 0) {
+                        $gen_data['due_datetime'] = date('Y-m-d H:i:s', $time);
+                    } else {
+                        $gen_data['due_date'] = date('Y-m-d', $time);
+                    }
+                }
                 break;
             default:
                 $gen_data = [];
@@ -257,6 +266,30 @@ class pocketlistsGorshochekPluginBackendRunController extends waLongActionContro
     }
 
     /**
+     * -3 года ----------------- сегодня ----------------- +1 год
+     * @param $is_future
+     * @return int
+     */
+    private function genTimestamp($is_future = false)
+    {
+        static $past;
+        static $future;
+        if (empty($past)) {
+            $past = strtotime('-3 year');
+        }
+        if (empty($future)) {
+            $future = strtotime('+1 year');
+        }
+        if ($is_future) {
+            $time = mt_rand(time(), $future);
+        } else {
+            $time = mt_rand($past, time());
+        }
+
+        return $time;
+    }
+
+    /**
      * @return string|null
      * @throws waException
      */
@@ -293,6 +326,11 @@ class pocketlistsGorshochekPluginBackendRunController extends waLongActionContro
         return ifset($this->data, 'list_ids', $rand, null);
     }
 
+    /**
+     * @param $entity_type
+     * @return array|false|mixed|string
+     * @throws waException
+     */
     private function genName($entity_type)
     {
         static $names;
@@ -311,15 +349,15 @@ class pocketlistsGorshochekPluginBackendRunController extends waLongActionContro
         switch ($entity_type) {
             case 'pocket':
             case 'list':
-                return ifset($names, $rand, md5(microtime())).'-'.mt_rand(1, 5000);
+                return trim(ifset($names, $rand, md5(microtime()))).'-'.mt_rand(1, 5000);
             case 'item':
                 // файл сверстан так, что четные идут на название, нечетные на заметку
                 if ($rand % 2 === 1) {
                     $rand++;
                 }
                 return [
-                    ifset($names, $rand, md5(microtime())),
-                    ifset($names, $rand + 1, md5(microtime()))
+                    trim(ifset($names, $rand, md5(microtime()))),
+                    trim(ifset($names, $rand + 1, md5(microtime())))
                 ];
         }
 
