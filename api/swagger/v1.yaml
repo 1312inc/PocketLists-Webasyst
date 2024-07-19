@@ -434,6 +434,9 @@ paths:
                         type:
                           type: string
                           description: List type
+                          enum:
+                            - checklist
+                            - notes
                         icon:
                           type: string
                           description: Icon

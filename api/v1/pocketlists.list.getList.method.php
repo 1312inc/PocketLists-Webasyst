@@ -83,9 +83,13 @@ class pocketlistsListGetListMethod extends pocketlistsApiAbstractMethod
                 $lists,
                 [
                     'id',
+                    'name',
                     'contact_id',
                     'pocket_id',
                     'sort',
+                    'type',
+                    'icon',
+                    'color',
                     'create_datetime',
                     'update_datetime'
                 ],
