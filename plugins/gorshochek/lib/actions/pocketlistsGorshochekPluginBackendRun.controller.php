@@ -225,7 +225,7 @@ class pocketlistsGorshochekPluginBackendRunController extends waLongActionContro
     private function genColor()
     {
         if (empty($this->data['color'])) {
-            $this->data['color'] = pocketlistsStoreColor::getColors();
+            $this->data['color'] = array_keys(pocketlistsStoreColor::getColors());
         }
         $rand = mt_rand(0, count($this->data['color']) - 1);
 
