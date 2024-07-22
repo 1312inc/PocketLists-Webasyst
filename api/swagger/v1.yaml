@@ -9,6 +9,57 @@ servers:
     description: Current host server
 
 paths:
+  /pocketlists.comment.add:
+    put:
+      security:
+        - BearerAuth: [ ]
+      summary: Добавить новый комментарий
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - item_id
+                - comment
+              properties:
+                item_id:
+                  type: integer
+                  description: Item identifier
+                comment:
+                  type: string
+                  description: Content of comment
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: Comment identifier
+        400:
+          description: Invalid request data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        403:
+          description: Access denied to the Pocket Lists app or this API method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        404:
+          description: Pocket not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        500:
+          description: Internal server error.
   /pocketlists.item.add:
     put:
       security:
