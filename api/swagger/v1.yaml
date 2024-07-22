@@ -28,7 +28,7 @@ paths:
                   description: Item identifier
                 comment:
                   type: string
-                  description: Content of comment
+                  description: Comment text
       responses:
         200:
           description: OK
@@ -101,31 +101,63 @@ paths:
                   data:
                     type: array
                     items:
-                      type: object
-                      properties:
-                        id:
-                          type: integer
-                        item_id:
-                          type: integer
-                        item_name:
-                          type: string
-                        list_id:
-                          type: integer
-                        list_name:
-                          type: string
-                        list_color:
-                          type: string
-                        contact_id:
-                          type: integer
-                        comment:
-                          type: string
-                        create_datetime:
-                          type: string
-                          format: datetime
-                        pocket_id:
-                          type: integer
-                        pocket_name:
-                          type: string
+                      allOf:
+                        - $ref: '#/components/schemas/item'
+                        - type: object
+                          properties:
+                            item_name:
+                              type: string
+                              description: Item name
+                            list_id:
+                              type: integer
+                              description: List identifier
+                            list_name:
+                              type: string
+                              description: List name
+                            list_color:
+                              type: string
+                              description: List color
+                            pocket_id:
+                              type: integer
+                              description: Pocket identifier
+                            pocket_name:
+                              type: string
+                              description: Pocket name
+        404:
+          description: Not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        500:
+          description: Internal server error.
+  /pocketlists.comment.update:
+    put:
+      security:
+        - BearerAuth: [ ]
+      summary: Update comment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - id
+                - comment
+              properties:
+                id:
+                  type: integer
+                  description: Comment identifier
+                comment:
+                  type: string
+                  description: Comment text
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/comment'
         404:
           description: Not found.
           content:
@@ -1250,6 +1282,25 @@ components:
         linked_entities_count:
           type: integer
           description: Linked entities count
+    comment:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Comment identifier
+        item_id:
+          type: integer
+          description: Item identifier
+        contact_id:
+          type: integer
+          description: Contact identifier
+        comment:
+          type: string
+          description: Comment text
+        create_datetime:
+          type: string
+          format: datetime
+          description: Create datetime
     errorResponse:
       type: object
       properties:
