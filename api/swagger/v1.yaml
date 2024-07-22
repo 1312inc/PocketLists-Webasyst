@@ -60,6 +60,80 @@ paths:
                 $ref: '#/components/schemas/errorResponse'
         500:
           description: Internal server error.
+  /pocketlists.comment.getList:
+    get:
+      security:
+        - BearerAuth: [ ]
+      summary: Get comments
+      parameters:
+        - in: query
+          name: item_id
+          description: ID айтема
+          schema:
+            type: integer
+        - in: query
+          name: offset
+          description: Смещение списка (по умолчанию 0)
+          schema:
+            type: integer
+        - in: query
+          name: limit
+          description: Размер порции списка (по умолчанию 30, максимум 500)
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  offset:
+                    type: integer
+                    description: Offset
+                  limit:
+                    type: integer
+                    description: Limit
+                  count:
+                    type: integer
+                    description: Count
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        item_id:
+                          type: integer
+                        item_name:
+                          type: string
+                        list_id:
+                          type: integer
+                        list_name:
+                          type: string
+                        list_color:
+                          type: string
+                        contact_id:
+                          type: integer
+                        comment:
+                          type: string
+                        create_datetime:
+                          type: string
+                          format: datetime
+                        pocket_id:
+                          type: integer
+                        pocket_name:
+                          type: string
+        404:
+          description: Not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        500:
+          description: Internal server error.
   /pocketlists.item.add:
     put:
       security:
