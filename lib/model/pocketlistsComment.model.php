@@ -93,11 +93,12 @@ class pocketlistsCommentModel extends pocketlistsModel
     }
 
     /**
+     * @param bool $calc
      * @return string
      */
-    private function getSql()
+    public function getSql($calc = false)
     {
-        return "SELECT 
+        return "SELECT".($calc ? ' SQL_CALC_FOUND_ROWS' : '')."
                 c.id id,
                 c.item_id item_id,
                 i.name item_name,

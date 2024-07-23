@@ -9,6 +9,188 @@ servers:
     description: Current host server
 
 paths:
+  /pocketlists.comment.add:
+    put:
+      security:
+        - BearerAuth: [ ]
+      summary: Добавить новый комментарий
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - item_id
+                - comment
+              properties:
+                item_id:
+                  type: integer
+                  description: Item identifier
+                comment:
+                  type: string
+                  description: Comment text
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: Comment identifier
+        400:
+          description: Invalid request data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        403:
+          description: Access denied to the Pocket Lists app or this API method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        404:
+          description: Pocket not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        500:
+          description: Internal server error.
+  /pocketlists.comment.delete:
+    delete:
+      security:
+        - BearerAuth: [ ]
+      summary: Удаление комментариев
+      parameters:
+        - in: query
+          name: id[]
+          description: Comment identifiers
+          required: true
+          schema:
+            type: array
+            items:
+              type: integer
+      responses:
+        204:
+          description: OK
+        400:
+          description: Invalid request data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        500:
+          description: Internal server error.
+  /pocketlists.comment.getList:
+    get:
+      security:
+        - BearerAuth: [ ]
+      summary: Get comments
+      parameters:
+        - in: query
+          name: item_id
+          description: ID айтема
+          schema:
+            type: integer
+        - in: query
+          name: offset
+          description: Смещение списка (по умолчанию 0)
+          schema:
+            type: integer
+        - in: query
+          name: limit
+          description: Размер порции списка (по умолчанию 30, максимум 500)
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  offset:
+                    type: integer
+                    description: Offset
+                  limit:
+                    type: integer
+                    description: Limit
+                  count:
+                    type: integer
+                    description: Count
+                  data:
+                    type: array
+                    items:
+                      allOf:
+                        - $ref: '#/components/schemas/item'
+                        - type: object
+                          properties:
+                            item_name:
+                              type: string
+                              description: Item name
+                            list_id:
+                              type: integer
+                              description: List identifier
+                            list_name:
+                              type: string
+                              description: List name
+                            list_color:
+                              type: string
+                              description: List color
+                            pocket_id:
+                              type: integer
+                              description: Pocket identifier
+                            pocket_name:
+                              type: string
+                              description: Pocket name
+        404:
+          description: Not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        500:
+          description: Internal server error.
+  /pocketlists.comment.update:
+    put:
+      security:
+        - BearerAuth: [ ]
+      summary: Update comment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - id
+                - comment
+              properties:
+                id:
+                  type: integer
+                  description: Comment identifier
+                comment:
+                  type: string
+                  description: Comment text
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/comment'
+        404:
+          description: Not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        500:
+          description: Internal server error.
   /pocketlists.item.add:
     put:
       security:
@@ -1125,6 +1307,25 @@ components:
         linked_entities_count:
           type: integer
           description: Linked entities count
+    comment:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Comment identifier
+        item_id:
+          type: integer
+          description: Item identifier
+        contact_id:
+          type: integer
+          description: Contact identifier
+        comment:
+          type: string
+          description: Comment text
+        create_datetime:
+          type: string
+          format: datetime
+          description: Create datetime
     errorResponse:
       type: object
       properties:
