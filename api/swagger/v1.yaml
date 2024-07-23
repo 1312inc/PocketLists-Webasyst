@@ -60,6 +60,31 @@ paths:
                 $ref: '#/components/schemas/errorResponse'
         500:
           description: Internal server error.
+  /pocketlists.comment.delete:
+    delete:
+      security:
+        - BearerAuth: [ ]
+      summary: Удаление комментариев
+      parameters:
+        - in: query
+          name: id[]
+          description: Comment identifiers
+          required: true
+          schema:
+            type: array
+            items:
+              type: integer
+      responses:
+        204:
+          description: OK
+        400:
+          description: Invalid request data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        500:
+          description: Internal server error.
   /pocketlists.comment.getList:
     get:
       security:
