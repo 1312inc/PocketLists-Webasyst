@@ -46,6 +46,20 @@ class pocketlistsLogService
                     $log
                 )
             );
+
+            pocketlistsWebSoket::getInstance()->sendWebsocketData([
+                'id'                  => $log->getId(),
+                'action'              => $log->getAction(),
+                'entity_type'         => $log->getEntityType(),
+                'contact_id'          => $log->getContactId(),
+                'pocket_id'           => $log->getPocketId(),
+                'list_id'             => $log->getListId(),
+                'item_id'             => $log->getItemId(),
+                'comment_id'          => $log->getCommentId(),
+                'attachment_id'       => $log->getAttachmentId(),
+                'assigned_contact_id' => $log-> getAssignedContactId(),
+                'params'              => $log->getParams()
+            ]);
         }
 
         return $ok;
