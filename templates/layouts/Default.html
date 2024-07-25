@@ -91,6 +91,19 @@
         </div>
     </div>
 <script type="text/javascript">
+    var pl_ws;
+    $.get('?module=ws&action=url', data => {
+        if (data.status === 'ok') {
+            console.log(data.data.ws_url);
+            pl_ws = new WebSocket(data.data.ws_url);
+            pl_ws.onopen = (event) => {
+                pl_ws.send('Hello world');
+            };
+            pl_ws.onmessage = (event) => {
+                console.log(event.data);
+            };
+        }
+    });
     $.pocketlists.init({
         account_name: '{$wa->accountName()|escape}',
         isAdmin: {$isAdmin},
