@@ -946,6 +946,55 @@ paths:
                 $ref: '#/components/schemas/errorResponse'
         500:
           description: Internal server error.
+  /pocketlists.log.getSummary:
+    get:
+      security:
+        - BearerAuth: [ ]
+      summary: Получить статистику изменений
+      parameters:
+        - in: query
+          name: starting_from
+          description: Временная метка, начиная с которой возвращаются записи
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  starting_from:
+                    type: integer
+                    description: Временная метка, начиная с которой возвращаются записи
+                  ending_to:
+                    type: integer
+                    description: Текущая временная метка
+                  data:
+                    type: object
+                    properties:
+                      pockets:
+                        type: integer
+                      lists:
+                        type: integer
+                      items:
+                        type: integer
+                      comments:
+                        type: integer
+                      attachments:
+                        type: integer
+                      location:
+                        type: integer
+        400:
+          description: Invalid request data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        500:
+          description: Internal server error.
   /pocketlists.pocket.add:
     put:
       security:
