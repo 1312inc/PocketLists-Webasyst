@@ -15,7 +15,6 @@ class pocketlistsLogModel extends pocketlistsModel
      * @param bool  $includeNullList
      * @param int   $offset
      * @param int   $limit
-     * @param bool  $calc
      *
      * @return array
      * @throws waDbException
@@ -25,8 +24,7 @@ class pocketlistsLogModel extends pocketlistsModel
         $availablePockets = [],
         $includeNullList = false,
         $offset = 0,
-        $limit = self::LIMIT,
-        $calc = false
+        $limit = self::LIMIT
     ) {
         $queryComponents = $this->getQueryComponents();
 
@@ -46,7 +44,7 @@ class pocketlistsLogModel extends pocketlistsModel
                 )'];
         }
 
-        $sql = $this->buildSqlComponents($queryComponents, $limit, $offset, $calc);
+        $sql = $this->buildSqlComponents($queryComponents, $limit, $offset);
 
         $data = $this->query(
             $sql,

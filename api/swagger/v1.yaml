@@ -853,6 +853,12 @@ paths:
       summary: Получить историю
       parameters:
         - in: query
+          name: starting_from
+          description: Временная метка, начиная с которой возвращаются записи
+          required: true
+          schema:
+            type: integer
+        - in: query
           name: offset
           description: Смещение списка (по умолчанию 0)
           schema:
@@ -932,6 +938,12 @@ paths:
                         params:
                           type: string
                           description: Params, JSON
+        400:
+          description: Invalid request data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
         500:
           description: Internal server error.
   /pocketlists.pocket.add:
