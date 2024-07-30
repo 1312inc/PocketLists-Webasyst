@@ -13,7 +13,7 @@ class pocketlistsItemGetListMethod extends pocketlistsApiAbstractMethod
         $while = 'WHERE 1 = 1';
         if (isset($id)) {
             if (!is_numeric($id)) {
-                throw new waAPIException('unknown_value', _w('Unknown value'), 400);
+                throw new waAPIException('error_type', sprintf_wp('Invalid type %s', 'id'), 400);
             } elseif ($id < 1) {
                 throw new waAPIException('not_found', _w('Item not found'), 404);
             }
@@ -21,7 +21,7 @@ class pocketlistsItemGetListMethod extends pocketlistsApiAbstractMethod
         }
         if (isset($list_id)) {
             if (!is_numeric($list_id)) {
-                throw new waAPIException('unknown_value', _w('Unknown value'), 400);
+                throw new waAPIException('error_type', sprintf_wp('Invalid type %s', 'list_id'), 400);
             } elseif ($list_id < 1) {
                 throw new waAPIException('not_found', _w('List not found'), 404);
             }
@@ -29,7 +29,7 @@ class pocketlistsItemGetListMethod extends pocketlistsApiAbstractMethod
         }
         if (isset($starting_from)) {
             if (!is_numeric($starting_from)) {
-                throw new waAPIException('unknown_value', _w('Unknown value'), 400);
+                throw new waAPIException('error_type', sprintf_wp('Invalid type %s', 'starting_from'), 400);
             } elseif ($starting_from < 1) {
                 throw new waAPIException('negative_value', _w('The parameter has a negative value'), 400);
             }
@@ -38,7 +38,7 @@ class pocketlistsItemGetListMethod extends pocketlistsApiAbstractMethod
         }
         if (isset($limit)) {
             if (!is_numeric($limit)) {
-                throw new waAPIException('unknown_value', _w('Unknown value'), 400);
+                throw new waAPIException('error_type', sprintf_wp('Invalid type %s', 'limit'), 400);
             } elseif ($limit < 1) {
                 throw new waAPIException('negative_value', _w('The parameter has a negative value'), 400);
             }
@@ -48,7 +48,7 @@ class pocketlistsItemGetListMethod extends pocketlistsApiAbstractMethod
         }
         if (isset($offset)) {
             if (!is_numeric($offset)) {
-                throw new waAPIException('unknown_value', _w('Unknown value'), 400);
+                throw new waAPIException('error_type', sprintf_wp('Invalid type %s', 'offset'), 400);
             } elseif ($offset < 0) {
                 throw new waAPIException('negative_value', _w('The parameter has a negative value'), 400);
             }
@@ -67,8 +67,30 @@ class pocketlistsItemGetListMethod extends pocketlistsApiAbstractMethod
             'starting_from' => $starting_from,
             'limit'         => $limit,
             'offset'        => $offset
-        ])->fetchAll();
+        ])->fetchAll('id');
         $total_count = (int) $plim->query('SELECT FOUND_ROWS()')->fetchField();
+        $path = wa()->getDataUrl('attachments', true, pocketlistsHelper::APP_ID);
+        $attachments = pl2()->getEntityFactory(pocketlistsAttachment::class)->findByFields(
+            'item_id',
+            array_keys($items),
+            true
+        );
+
+        /** @var pocketlistsAttachment $_attachment */
+        foreach ($attachments as $_attachment) {
+            $name = $_attachment->getFilename();
+            $item_id = $_attachment->getItemId();
+            if (!isset($items[$item_id]['attachments'])) {
+                $items[$item_id]['attachments'] = [];
+            }
+            $items[$item_id]['attachments'][] = [
+                'id'        => $_attachment->getId(),
+                'item_id'   => $item_id,
+                'file_name' => $name,
+                'file_type' => $_attachment->getFiletype(),
+                'path'      => "$path/$item_id/$name"
+            ];
+        }
 
         $this->response = [
             'offset' => $offset,
@@ -103,7 +125,8 @@ class pocketlistsItemGetListMethod extends pocketlistsApiAbstractMethod
                     'favorite',
                     'attachments_count',
                     'comments_count',
-                    'linked_entities_count'
+                    'linked_entities_count',
+                    'attachments'
                 ],
                 [
                     'id' => 'int',
