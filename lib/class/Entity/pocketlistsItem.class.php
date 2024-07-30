@@ -484,7 +484,7 @@ class pocketlistsItem extends pocketlistsEntity
      */
     public function getAttachmentsCount()
     {
-        return $this->attachments_count ? (int) $this->attachments_count : null;
+        return $this->attachments_count;
     }
 
     /**

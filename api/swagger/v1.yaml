@@ -67,20 +67,36 @@ paths:
       security:
         - BearerAuth: [ ]
       summary: Удалить аттачменты
-      parameters:
-        - in: query
-          name: id[]
-          description: Attachment identifiers
-          required: true
-          schema:
-            type: array
-            items:
-              type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/item_attach'
       responses:
         200:
           description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: '#/components/schemas/item_attach'
+                    - type: object
+                      properties:
+                        error:
+                          type: string
+                          description: Description error
         400:
           description: Invalid request data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        403:
+          description: Access denied to the Pocket Lists app or this API method.
           content:
             application/json:
               schema:
@@ -305,7 +321,7 @@ paths:
                     format: date-time
                     nullable: true
                     description: Due datetime
-                  files:
+                  attachments:
                     type: array
                     description: Files
                     items:
@@ -473,6 +489,22 @@ paths:
                   type: string
                   format: date-time
                   description: Due datetime
+                attachments:
+                  type: array
+                  description: Files
+                  items:
+                    required:
+                      - file
+                      - file_name
+                    type: object
+                    properties:
+                      file:
+                        type: string
+                        format: byte
+                        description: File binary content
+                      file_name:
+                        type: string
+                        description: File name
       responses:
         200:
           description: OK
@@ -1468,6 +1500,20 @@ components:
                   type: integer
                 5:
                   type: integer
+    item_attach:
+      type: object
+      required:
+        - item_id
+        - attachment_id
+      properties:
+        item_id:
+          type: integer
+          description: Item identifier
+        attachment_id:
+          type: array
+          items:
+            type: integer
+            description: Attachment identifier
     errorResponse:
       type: object
       properties:
