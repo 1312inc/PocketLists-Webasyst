@@ -62,6 +62,31 @@ paths:
                 $ref: '#/components/schemas/errorResponse'
         500:
           description: Internal server error.
+  /pocketlists.attachment.delete:
+    delete:
+      security:
+        - BearerAuth: [ ]
+      summary: Удалить аттачменты
+      parameters:
+        - in: query
+          name: id[]
+          description: Attachment identifiers
+          required: true
+          schema:
+            type: array
+            items:
+              type: integer
+      responses:
+        200:
+          description: OK
+        400:
+          description: Invalid request data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        500:
+          description: Internal server error.
   /pocketlists.comment.add:
     put:
       security:
