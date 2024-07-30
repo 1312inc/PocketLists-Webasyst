@@ -89,6 +89,30 @@ class pocketlistsListAddMethod extends pocketlistsApiAbstractMethod
             }
         }
 
-        $this->response = $lists;
+        $this->response = $this->filterFields(
+            $lists,
+            [
+                'id',
+                'name',
+                'contact_id',
+                'pocket_id',
+                'type',
+                'icon',
+                'color',
+                'sort',
+                'create_datetime',
+                'update_datetime',
+                'key_item_id',
+            ],
+            [
+                'id' => 'int',
+                'contact_id' => 'int',
+                'pocket_id' => 'int',
+                'sort' => 'int',
+                'create_datetime' => 'datetime',
+                'update_datetime' => 'datetime',
+                'key_item_id' => 'int'
+            ]
+        );
     }
 }

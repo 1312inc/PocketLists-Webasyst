@@ -554,29 +554,7 @@ paths:
                           items:
                             type: string
                             description: Error description
-                    - type: object
-                      properties:
-                        id:
-                          type: integer
-                          description: ID списка
-                        pocket_id:
-                          type: integer
-                          description: Pocket identifier
-                        name:
-                          type: string
-                          description: Name list
-                        color:
-                          type: string
-                          description: Color
-                        icon:
-                          type: string
-                          description: Icon
-                        type:
-                          type: string
-                          description: List type
-                        key_item_id:
-                          type: integer
-                          description: Key item
+                    - $ref: '#/components/schemas/list'
         400:
           description: Invalid request data.
           content:
@@ -672,45 +650,7 @@ paths:
                     type: integer
                     description: Count
                   data:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: integer
-                          description: List identifier
-                        name:
-                          type: string
-                          description: Name list
-                        contact_id:
-                          type: integer
-                          description: Contact identifier
-                        pocket_id:
-                          type: integer
-                          description: Pocket identifier
-                        type:
-                          type: string
-                          description: List type
-                          enum:
-                            - checklist
-                            - notes
-                        icon:
-                          type: string
-                          description: Icon
-                        color:
-                          type: string
-                          description: Color
-                        sort:
-                          type: integer
-                          description: Sort
-                        create_datetime:
-                          type: string
-                          format: date-time
-                          description: Create datetime
-                        update_datetime:
-                          type: string
-                          format: date-time
-                          description: Update datetime
+                    $ref: '#/components/schemas/list'
         400:
           description: Invalid request data.
           content:
@@ -1153,26 +1093,7 @@ paths:
                     type: integer
                     description: Count
                   data:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: integer
-                          description: Pocket identifier
-                        sort:
-                          type: integer
-                          description: Sort
-                        name:
-                          type: string
-                          description: Pocket name
-                        color:
-                          type: string
-                          description: Color
-                        passcode:
-                          type: string
-                          nullable: true
-                          description: Passcode
+                    $ref: '#/components/schemas/pocket'
         400:
           description: Invalid request data.
           content:
@@ -1270,73 +1191,7 @@ paths:
                   data:
                     type: array
                     items:
-                      type: object
-                      properties:
-                        id:
-                          type: integer
-                        name:
-                          type: string
-                        username:
-                          type: string
-                        photo_url:
-                          type: string
-                        user_pic:
-                          type: string
-                        status:
-                          type: string
-                        team_role:
-                          type: string
-                        login:
-                          type: string
-                        me:
-                          type: boolean
-                        exists:
-                          type: boolean
-                        last_activity:
-                          type: string
-                          format: datetime
-                        email:
-                          type: string
-                        locale:
-                          type: string
-                        list_activities:
-                          type: array
-                          items:
-                            type: object
-                            properties:
-                              list_id:
-                                type: integer
-                              contact_id:
-                                type: integer
-                              last_date:
-                                type: string
-                                format: datetime
-                        items_info:
-                          type: object
-                          properties:
-                            count:
-                              type: integer
-                            count_priority:
-                              type: integer
-                            max_priority:
-                              type: integer
-                            count_max_priority:
-                              type: integer
-                            count_priorities:
-                              type: object
-                              properties:
-                                0:
-                                  type: integer
-                                1:
-                                  type: integer
-                                2:
-                                  type: integer
-                                3:
-                                  type: integer
-                                4:
-                                  type: integer
-                                5:
-                                  type: integer
+                      $ref: '#/components/schemas/user'
         500:
           description: Internal server error.
 
@@ -1363,6 +1218,68 @@ components:
           type: string
         error:
           type: string
+    pocket:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+            description: Pocket identifier
+          sort:
+            type: integer
+            description: Sort
+          name:
+            type: string
+            description: Pocket name
+          color:
+            type: string
+            description: Color
+          passcode:
+            type: string
+            nullable: true
+            description: Passcode
+    list:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: List identifier
+        name:
+          type: string
+          description: Name list
+        contact_id:
+          type: integer
+          description: Contact identifier
+        pocket_id:
+          type: integer
+          description: Pocket identifier
+        type:
+          type: string
+          description: List type
+          enum:
+            - checklist
+            - notes
+        icon:
+          type: string
+          description: Icon
+        color:
+          type: string
+          description: Color
+        sort:
+          type: integer
+          description: Sort
+        create_datetime:
+          type: string
+          format: date-time
+          description: Create datetime
+        update_datetime:
+          type: string
+          format: date-time
+          description: Update datetime
+        key_item_id:
+          type: integer
+          description: Key item
     item:
       type: object
       properties:
@@ -1483,6 +1400,74 @@ components:
           type: string
           format: datetime
           description: Create datetime
+    user:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        username:
+          type: string
+        photo_url:
+          type: string
+        user_pic:
+          type: string
+        status:
+          type: string
+        team_role:
+          type: string
+        login:
+          type: string
+        me:
+          type: boolean
+        exists:
+          type: boolean
+        last_activity:
+          type: string
+          format: datetime
+        email:
+          type: string
+        locale:
+          type: string
+        list_activities:
+          type: array
+          items:
+            type: object
+            properties:
+              list_id:
+                type: integer
+              contact_id:
+                type: integer
+              last_date:
+                type: string
+                format: datetime
+        items_info:
+          type: object
+          properties:
+            count:
+              type: integer
+            count_priority:
+              type: integer
+            max_priority:
+              type: integer
+            count_max_priority:
+              type: integer
+            count_priorities:
+              type: object
+              properties:
+                0:
+                  type: integer
+                1:
+                  type: integer
+                2:
+                  type: integer
+                3:
+                  type: integer
+                4:
+                  type: integer
+                5:
+                  type: integer
     errorResponse:
       type: object
       properties:
