@@ -42,7 +42,7 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
                 'assigned_contact_id' => ifset($_item, 'assigned_contact_id', null),
                 'priority'            => ifset($_item, 'priority', 0),
                 'contact_id'          => $this->getUser()->getId(),
-                'attachments'         => ifset($_item, 'files', []),
+                'attachments'         => ifset($_item, 'attachments', []),
                 'create_datetime'     => date('Y-m-d H:i:s'),
                 'due_datetime'        => ifset($_item, 'due_datetime', null),
                 'due_date'            => null,

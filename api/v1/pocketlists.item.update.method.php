@@ -14,6 +14,7 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
         $assigned_contact_id = ifset($_json, 'assigned_contact_id', 0);
         $priority = ifset($_json, 'priority', 0);
         $due_datetime = ifset($_json, 'due_datetime', '');
+        $attachments = ifset($_json, 'attachments', null);
 
         /** @var pocketlistsItem $item */
         if (!is_numeric($item_id)) {
@@ -87,6 +88,17 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
                 throw new waAPIException('unknown_value', _w('Unknown date'), 400);
             }
         }
+        if (!is_null($attachments)) {
+            if (empty($attachments)) {
+                /** @var pocketlistsAttachmentFactory $attachment_factory */
+                $attachment_factory = pl2()->getEntityFactory(pocketlistsAttachment::class);
+                $attachment_factory->deleteAllByItem($item);
+                $item->setAttachmentsCount(0);
+            } else {
+                $attachments = $this->updateFiles($item_id, $attachments);
+                $item->setAttachmentsCount($item->getAttachmentsCount() + count(array_column($attachments, 'id')));
+            }
+        }
 
         $item->setName($name)
             ->setNote($note)
@@ -128,7 +140,8 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
             'favorite'              => $item->isFavorite(),
             'attachments_count'     => $item->getAttachmentsCount(),
             'comments_count'        => $item->getCommentsCount(),
-            'linked_entities_count' => $item->getLinkedEntitiesCount()
+            'linked_entities_count' => $item->getLinkedEntitiesCount(),
+            'attachments'           => $attachments
         ]], [
             'id',
             'list_id',
@@ -156,7 +169,8 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
             'favorite',
             'attachments_count',
             'comments_count',
-            'linked_entities_count'
+            'linked_entities_count',
+            'attachments'
         ], [
             'id' => 'int',
             'list_id' => 'int',
