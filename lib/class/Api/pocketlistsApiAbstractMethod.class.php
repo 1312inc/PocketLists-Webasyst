@@ -99,34 +99,59 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
      * @param int $item_id
      * @param array $files [
      *      'file' => --base64--,
-     *      'file_name' => 'abc'.jpg'
+     *      'file_name' => 'abc.jpg'
      * ]
-     * @return pocketlistsAttachment[]
-     * @throws waAPIException
+     * @return array
      * @throws waException
      */
     protected function updateFiles($item_id, $files = [])
     {
-        $attachments = [];
         $file_vo = new pocketlistsUploadedFileVO();
         $temp_path = $file_vo->getPath();
         waFiles::create($temp_path, true);
 
         /** @var pocketlistsFactory $attachment_factory */
         $attachment_factory = pl2()->getEntityFactory(pocketlistsAttachment::class);
-        foreach ((array) $files as $_file) {
+        foreach ($files as &$_file) {
+            if (!isset($_file['file'], $_file['file_name'])) {
+                continue;
+            }
+            $extension = pathinfo($_file['file_name'], PATHINFO_EXTENSION);
+            if (in_array($extension, ['php', 'phtml', 'htaccess'])) {
+                $_file['file'] = '';
+                $_file['error'] = sprintf_wp('Files with extension .%s are not allowed to security considerations.', $extension);
+                continue;
+            }
             $item_file = base64_decode(ifset($_file, 'file', null));
+            $_file['file'] = '';
 
             /** download to temp directory */
             $file_vo->setName(md5(uniqid(__METHOD__)).$_file['file_name']);
             $tmp_name = $temp_path.DIRECTORY_SEPARATOR.$file_vo->getName();
             if (!file_put_contents($file_vo->getFullPath(), $item_file)) {
-                throw new waAPIException('server_error', _w('File could not be saved.'), 500);
+                $_file['error'] = _w('File could not be saved.');
+                continue;
             }
 
-            /** @var pocketlistsUploadedFileVO $uploaded_file */
             $uploaded_file = pocketlistsUploadedFileVO::createTempFromName($file_vo->getName());
             $uploaded_file->setItemId($item_id)->setName($_file['file_name']);
+
+            if (!preg_match('//u', $_file['file_name'])) {
+                $tmp_name = @iconv('windows-1251', 'utf-8//ignore', $_file['file_name']);
+                if ($tmp_name) {
+                    $_file['file_name'] = $tmp_name;
+                }
+            }
+            if (file_exists($uploaded_file->getFullPath())) {
+                $i = strrpos($_file['file_name'], '.');
+                $_file['file_name'] = substr($_file['file_name'], 0, $i);
+                $i = 1;
+                while (file_exists(sprintf('%s%s-%s.%s', $uploaded_file->getPath(), $_file['file_name'], $i, $extension))) {
+                    $i++;
+                }
+                $_file['file_name'] = sprintf('%s-%s.%s', $_file['file_name'], $i, $extension);
+                $uploaded_file->setName($_file['file_name']);
+            }
 
             waFiles::move($tmp_name, $uploaded_file->getFullPath());
 
@@ -134,9 +159,10 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
             $attachment = $attachment_factory->createNew();
             $attachment->setFilename($_file['file_name'])->setItemId($item_id)->setFiletype($uploaded_file->getType());
             $attachment_factory->insert($attachment);
-            $attachments[] = $attachment;
+            $_file['id'] = $attachment->getId();
+            $_file['filetype'] = $attachment->getFiletype();
         }
 
-        return $attachments;
+        return $files;
     }
 }

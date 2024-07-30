@@ -42,7 +42,7 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
                 'assigned_contact_id' => ifset($_item, 'assigned_contact_id', null),
                 'priority'            => ifset($_item, 'priority', 0),
                 'contact_id'          => $this->getUser()->getId(),
-                'files'               => ifset($_item, 'files', []),
+                'attachments'         => ifset($_item, 'files', []),
                 'create_datetime'     => date('Y-m-d H:i:s'),
                 'due_datetime'        => ifset($_item, 'due_datetime', null),
                 'due_date'            => null,
@@ -109,9 +109,9 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
                 }
             }
 
-            if (!empty($_item['files'])) {
-                if (is_array($_item['files'])) {
-                    foreach ($_item['files'] as $_file) {
+            if (!empty($_item['attachments'])) {
+                if (is_array($_item['attachments'])) {
+                    foreach ($_item['attachments'] as $_file) {
                         if (empty($_file['file'])) {
                             $_item['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'file');
                         }
@@ -128,7 +128,7 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
                 unset($_item['errors']);
             } else {
                 $err = true;
-                $_item['files'] = [];
+                $_item['attachments'] = [];
             }
         }
 
@@ -143,9 +143,8 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
                     if ($rows_count === count($items)) {
                         foreach ($items as &$_item) {
                             $_item['id'] = $last_id++;
-                            if (!empty($_item['files'])) {
-                                $attachments = $this->updateFiles($_item['id'], $_item['files']);
-                                $_item['files'] = count($attachments);
+                            if (!empty($_item['attachments'])) {
+                                $_item['attachments'] = $this->updateFiles($_item['id'], $_item['attachments']);
                             }
                         }
                     } else {
@@ -157,10 +156,67 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
                 }
             } catch (Exception $ex) {
                 $item_model->rollback();
-                throw new waAPIException('error', sprintf_wp('Error on transaction import save: %s', $ex->getMessage()));
+                throw new waAPIException('error', sprintf_wp('Error on transaction import save: %s', $ex->getMessage()), 400);
             }
         }
 
-        $this->response = $items;
+        $this->response = $this->filterFields(
+            $items,
+            [
+                'id',
+                'list_id',
+                'contact_id',
+                'parent_id',
+                'sort',
+                'has_children',
+                'status',
+                'priority',
+                'calc_priority',
+                'create_datetime',
+                'update_datetime',
+                'complete_datetime',
+                'complete_contact_id',
+                'name',
+                'note',
+                'due_date',
+                'due_datetime',
+                'location_id',
+                'amount',
+                'currency_iso3',
+                'assigned_contact_id',
+                'repeat',
+                'key_list_id',
+                'favorite',
+                'attachments_count',
+                'comments_count',
+                'linked_entities_count',
+                'attachments'
+            ],
+            [
+                'id' => 'int',
+                'list_id' => 'int',
+                'contact_id' => 'int',
+                'parent_id' => 'int',
+                'sort' => 'int',
+                'has_children' => 'bool',
+                'status' => 'int',
+                'priority' => 'int',
+                'calc_priority' => 'int',
+                'create_datetime' => 'datetime',
+                'update_datetime' => 'datetime',
+                'complete_datetime' => 'datetime',
+                'complete_contact_id' => 'int',
+                'due_datetime' => 'datetime',
+                'location_id' => 'int',
+                'amount' => 'float',
+                'assigned_contact_id' => 'int',
+                'repeat' => 'int',
+                'key_list_id' => 'int',
+                'favorite' => 'bool',
+                'attachments_count' => 'int',
+                'comments_count' => 'int',
+                'linked_entities_count' => 'int'
+            ]
+        );
     }
 }
