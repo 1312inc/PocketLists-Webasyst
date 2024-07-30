@@ -9,6 +9,59 @@ servers:
     description: Current host server
 
 paths:
+  /pocketlists.attachment.add:
+    put:
+      security:
+        - BearerAuth: [ ]
+      summary: Добавить новые аттачменты
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                required:
+                  - item_id
+                  - file
+                  - file_name
+                type: object
+                properties:
+                  item_id:
+                    type: integer
+                    description: Item identifier
+                  file:
+                    type: string
+                    format: byte
+                    description: File binary content
+                  file_name:
+                    type: string
+                    description: File name
+
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: '#/components/schemas/attachment'
+                    - type: object
+                      properties:
+                        errors:
+                          type: array
+                          items:
+                            type: string
+                            description: Error description
+        400:
+          description: Invalid request data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        500:
+          description: Internal server error.
   /pocketlists.comment.add:
     put:
       security:
@@ -260,9 +313,6 @@ paths:
                           items:
                             type: string
                             description: Error description
-                        attachment:
-                          type: integer
-                          description: Count attachment files
         400:
           description: Invalid request data.
           content:
@@ -1271,6 +1321,23 @@ components:
       type: http
       scheme: bearer
   schemas:
+    attachment:
+      type: object
+      properties:
+        id:
+          type: integer
+        item_id:
+          type: integer
+        file_name:
+          type: string
+        file_type:
+          type: string
+          enum:
+            - image
+        path:
+          type: string
+        error:
+          type: string
     item:
       type: object
       properties:
@@ -1368,6 +1435,10 @@ components:
         linked_entities_count:
           type: integer
           description: Linked entities count
+        attachments:
+          type: array
+          items:
+            $ref: '#/components/schemas/attachment'
     comment:
       type: object
       properties:
