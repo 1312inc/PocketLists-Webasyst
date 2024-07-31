@@ -5,6 +5,7 @@ return array(
         'item_id' => array('int', 11, 'null' => 0),
         'filename' => array('text'),
         'filetype' => array('enum', "'image'"),
+        'uuid' => array('varchar', 36),
         ':keys' => array(
             'PRIMARY' => 'id',
             'item_id' => 'item_id',
@@ -16,6 +17,7 @@ return array(
         'contact_id' => array('int', 11),
         'comment' => array('text'),
         'create_datetime' => array('datetime'),
+        'uuid' => array('varchar', 36),
         ':keys' => array(
             'PRIMARY' => 'id',
             'item_id' => 'item_id',
@@ -46,6 +48,7 @@ return array(
         'assigned_contact_id' => array('int', 11),
         'repeat' => array('int', 11),
         'key_list_id' => array('int', 11),
+        'uuid' => array('varchar', 36),
         ':keys' => array(
             'PRIMARY' => 'id',
             'parent' => 'parent_id',
@@ -114,6 +117,7 @@ return array(
         'location_latitude' => array('decimal', "10,0"),
         'location_longitude' => array('decimal', "10,0"),
         'location_radius' => array('decimal', "10,0"),
+        'uuid' => array('varchar', 36),
         ':keys' => array(
             'PRIMARY' => 'id',
         ),
@@ -166,6 +170,7 @@ return array(
         'name' => array('varchar', 200),
         'color' => array('enum', "'none','red','green','blue','yellow','purple'", 'null' => 0, 'default' => 'blue'),
         'passcode' => array('varchar', 32),
+        'uuid' => array('varchar', 36),
         ':keys' => array(
             'PRIMARY' => 'id',
             'sort' => 'sort',

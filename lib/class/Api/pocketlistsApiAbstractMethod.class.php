@@ -113,7 +113,12 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
         /** @var pocketlistsFactory $attachment_factory */
         $attachment_factory = pl2()->getEntityFactory(pocketlistsAttachment::class);
         foreach ($files as &$_file) {
-            if (!isset($_file['file'], $_file['file_name'])) {
+            $_file += [
+                'file' => '',
+                'file_name' => '',
+                'uuid' => null
+            ];
+            if (empty($_file['file']) || empty($_file['file_name'])) {
                 continue;
             }
             $extension = pathinfo($_file['file_name'], PATHINFO_EXTENSION);
@@ -157,7 +162,10 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
 
             /** @var pocketlistsAttachment $attachment */
             $attachment = $attachment_factory->createNew();
-            $attachment->setFilename($_file['file_name'])->setItemId($item_id)->setFiletype($uploaded_file->getType());
+            $attachment->setFilename($_file['file_name'])
+                ->setItemId($item_id)
+                ->setFiletype($uploaded_file->getType())
+                ->setUuid($_file['uuid']);
             $attachment_factory->insert($attachment);
             $_file['id'] = $attachment->getId();
             $_file['filetype'] = $attachment->getFiletype();

@@ -28,6 +28,11 @@ class pocketlistsAttachment extends pocketlistsEntity
     private $filetype = null;
 
     /**
+     * @var string|null
+     */
+    private $uuid;
+
+    /**
      * @var pocketlistsItem
      */
     private $item;
@@ -108,6 +113,25 @@ class pocketlistsAttachment extends pocketlistsEntity
     public function setFiletype($filetype)
     {
         $this->filetype = $filetype;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUuid()
+    {
+        return $this->uuid;
+    }
+
+    /**
+     * @param $uuid
+     * @return pocketlistsAttachment
+     */
+    public function setUuid($uuid)
+    {
+        $this->uuid = (empty($uuid) ? null : trim($uuid));
 
         return $this;
     }

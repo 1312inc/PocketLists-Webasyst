@@ -138,6 +138,11 @@ class pocketlistsItem extends pocketlistsEntity
     protected $key_list_id;
 
     /**
+     * @var string|null
+     */
+    private $uuid;
+
+    /**
      * @var int
      */
     private $comments_count = 0;
@@ -1068,6 +1073,25 @@ class pocketlistsItem extends pocketlistsEntity
     public function setKeyListId($key_list_id)
     {
         $this->key_list_id = $key_list_id ? (int) $key_list_id : null;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUuid()
+    {
+        return $this->uuid;
+    }
+
+    /**
+     * @param $uuid
+     * @return pocketlistsItem
+     */
+    public function setUuid($uuid)
+    {
+        $this->uuid = (empty($uuid) ? null : trim($uuid));
 
         return $this;
     }

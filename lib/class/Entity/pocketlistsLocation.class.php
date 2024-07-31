@@ -26,6 +26,11 @@ class pocketlistsLocation extends pocketlistsEntity
     private $location_radius;
 
     /**
+     * @var string|null
+     */
+    private $uuid;
+
+    /**
      * @return int
      */
     public function getId()
@@ -101,6 +106,25 @@ class pocketlistsLocation extends pocketlistsEntity
     public function setLocationRadius($location_radius)
     {
         $this->location_radius = $location_radius;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUuid()
+    {
+        return $this->uuid;
+    }
+
+    /**
+     * @param $uuid
+     * @return pocketlistsLocation
+     */
+    public function setUuid($uuid)
+    {
+        $this->uuid = (empty($uuid) ? null : trim($uuid));
 
         return $this;
     }

@@ -96,6 +96,11 @@ class pocketlistsList extends pocketlistsItem
     private $keyItem;
 
     /**
+     * @var string|null
+     */
+    private $uuid;
+
+    /**
      * @var string
      */
     private $lastContactActivity = '';
