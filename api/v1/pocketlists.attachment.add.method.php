@@ -24,7 +24,7 @@ class pocketlistsAttachmentAddMethod extends pocketlistsApiAbstractMethod
         }
 
         /** validate */
-        foreach ($files as &$_file) {
+        foreach ($files as $_file) {
             $errors = [];
             if (empty($_file['item_id'])) {
                 $errors[] = sprintf_wp('Missing required parameter: “%s”.', 'item_id');
@@ -44,6 +44,10 @@ class pocketlistsAttachmentAddMethod extends pocketlistsApiAbstractMethod
                 $errors[] = sprintf_wp('Missing required parameter: “%s”.', 'file');
             } elseif (!is_string($_file['file'])) {
                 $errors[] = sprintf_wp('Invalid type %s', 'file');
+            }
+
+            if (!empty($_file['uuid']) && !is_string($_file['uuid'])) {
+                $errors[] = sprintf_wp('Invalid type %s', 'uuid');
             }
 
             $hash = md5(mt_rand(0, mt_rand(5000, 100000)));
@@ -90,6 +94,7 @@ class pocketlistsAttachmentAddMethod extends pocketlistsApiAbstractMethod
                 'file_name',
                 'file_type',
                 'path',
+                'uuid',
                 'errors'
             ],
             [

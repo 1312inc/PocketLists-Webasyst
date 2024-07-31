@@ -59,14 +59,10 @@ class pocketlistsCommentGetListMethod extends pocketlistsApiAbstractMethod
                     'id',
                     'item_id',
                     'item_name',
-                    'list_id',
-                    'list_name',
-                    'list_color',
                     'contact_id',
                     'comment',
                     'create_datetime',
-                    'pocket_id',
-                    'pocket_name'
+                    'uuid'
                 ],
                 [
                     'id' => 'int',
