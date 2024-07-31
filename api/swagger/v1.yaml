@@ -36,7 +36,10 @@ paths:
                   file_name:
                     type: string
                     description: File name
-
+                  uuid:
+                    type: string
+                    nullable: true
+                    description: UUID value
       responses:
         200:
           description: OK
@@ -123,17 +126,17 @@ paths:
                 comment:
                   type: string
                   description: Comment text
+                uuid:
+                  type: string
+                  nullable: true
+                  description: UUID value
       responses:
         200:
           description: OK
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                    description: Comment identifier
+                $ref: '#/components/schemas/comment'
         400:
           description: Invalid request data.
           content:
@@ -220,28 +223,7 @@ paths:
                   data:
                     type: array
                     items:
-                      allOf:
-                        - $ref: '#/components/schemas/item'
-                        - type: object
-                          properties:
-                            item_name:
-                              type: string
-                              description: Item name
-                            list_id:
-                              type: integer
-                              description: List identifier
-                            list_name:
-                              type: string
-                              description: List name
-                            list_color:
-                              type: string
-                              description: List color
-                            pocket_id:
-                              type: integer
-                              description: Pocket identifier
-                            pocket_name:
-                              type: string
-                              description: Pocket name
+                      $ref: '#/components/schemas/comment'
         404:
           description: Not found.
           content:
@@ -321,6 +303,10 @@ paths:
                     format: date-time
                     nullable: true
                     description: Due datetime
+                  uuid:
+                    type: string
+                    nullable: true
+                    description: UUID value
                   attachments:
                     type: array
                     description: Files
@@ -337,6 +323,10 @@ paths:
                         file_name:
                           type: string
                           description: File name
+                        uuid:
+                          type: string
+                          nullable: true
+                          description: UUID value
       responses:
         200:
           description: OK
@@ -505,6 +495,10 @@ paths:
                       file_name:
                         type: string
                         description: File name
+                      uuid:
+                        type: string
+                        nullable: true
+                        description: UUID value
       responses:
         200:
           description: OK
@@ -570,6 +564,10 @@ paths:
                     enum:
                       - checklist
                       - notes
+                  uuid:
+                    type: string
+                    nullable: true
+                    description: UUID value
       responses:
         200:
           description: OK
@@ -579,6 +577,7 @@ paths:
                 type: array
                 items:
                   allOf:
+                    - $ref: '#/components/schemas/list'
                     - type: object
                       properties:
                         errors:
@@ -586,7 +585,6 @@ paths:
                           items:
                             type: string
                             description: Error description
-                    - $ref: '#/components/schemas/list'
         400:
           description: Invalid request data.
           content:
@@ -1063,17 +1061,16 @@ paths:
                 color:
                   type: string
                   description: Цвет
+                uuid:
+                  type: string
+                  description: UUID value
       responses:
         200:
           description: OK
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                    description: ID проекта
+                $ref: '#/components/schemas/pocket'
         400:
           description: Invalid request data.
           content:
@@ -1252,6 +1249,10 @@ components:
             - image
         path:
           type: string
+        uuid:
+          type: string
+          nullable: true
+          description: UUID value
         error:
           type: string
     pocket:
@@ -1273,6 +1274,10 @@ components:
           type: string
           nullable: true
           description: Passcode
+        uuid:
+          type: string
+          nullable: true
+          description: UUID value
     list:
       type: object
       properties:
@@ -1314,6 +1319,10 @@ components:
         key_item_id:
           type: integer
           description: Key item
+        uuid:
+          type: string
+          nullable: true
+          description: UUID value
     item:
       type: object
       properties:
@@ -1399,6 +1408,10 @@ components:
         key_list_id:
           type: integer
           description: Key list identifier
+        uuid:
+          type: string
+          nullable: true
+          description: UUID value
         favorite:
           type: boolean
           description: Favorite
@@ -1424,6 +1437,9 @@ components:
         item_id:
           type: integer
           description: Item identifier
+        item_name:
+          type: string
+          description: Name item
         contact_id:
           type: integer
           description: Contact identifier
@@ -1434,6 +1450,10 @@ components:
           type: string
           format: datetime
           description: Create datetime
+        uuid:
+          type: string
+          nullable: true
+          description: UUID value
     user:
       type: object
       properties:

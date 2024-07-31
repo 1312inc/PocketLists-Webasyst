@@ -9,6 +9,7 @@ class pocketlistsCommentAddMethod extends pocketlistsApiAbstractMethod
         $_json = $this->readBodyAsJson();
         $item_id = ifset($_json, 'item_id', null);
         $comment_text = ifset($_json, 'comment', null);
+        $uuid = ifset($_json, 'uuid', null);
 
         if (!isset($item_id)) {
             throw new waAPIException('required_param', sprintf_wp('Missing required parameter: “%s”.', 'item_id'), 400);
@@ -24,6 +25,9 @@ class pocketlistsCommentAddMethod extends pocketlistsApiAbstractMethod
             throw new waAPIException('type_error', sprintf_wp('Type error parameter: “%s”.', 'comment'), 400);
         }
 
+        if (isset($uuid) && !is_string($uuid)) {
+            throw new waAPIException('type_error', sprintf_wp('Type error parameter: “%s”.', 'uuid'), 400);
+        }
 
         /** @var pocketlistsItemFactory $item_factory */
         $item_factory = pl2()->getEntityFactory(pocketlistsItem::class);
@@ -45,14 +49,21 @@ class pocketlistsCommentAddMethod extends pocketlistsApiAbstractMethod
         $comment->setItem($item)
             ->setContactId(wa()->getUser()->getId())
             ->setComment($comment_text)
-            ->setCreateDatetime(date('Y-m-d H:i:s'));
+            ->setCreateDatetime(date('Y-m-d H:i:s'))
+            ->setUuid($uuid);
 
         if (!$comment_factory->insert($comment)) {
             throw new waAPIException('type_error', _w('Error while adding new item comment'), 400);
         }
 
         $this->response = [
-            'id' => $comment->getId()
+            'id'              => $comment->getId(),
+            'item_id'         => $comment->getItemId(),
+            'item_name'       => $comment->getItemName(),
+            'contact_id'      => $comment->getContactId(),
+            'comment'         => $comment->getComment(),
+            'create_datetime' => $comment->getCreateDatetime(),
+            'uuid'            => $comment->getUuid()
         ];
     }
 }

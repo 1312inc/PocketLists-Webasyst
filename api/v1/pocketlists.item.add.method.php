@@ -13,7 +13,7 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
             throw new waAPIException('type_error', _w('Type error data'), 400);
         }
 
-        $err = false;
+        $errors_exists = false;
         $assign_contacts = [];
         $list_ids = array_unique(array_column($items, 'list_id'));
         $assigned_contact_ids = array_unique(array_column($items, 'assigned_contact_id'));
@@ -36,13 +36,14 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
         foreach ($items as &$_item) {
             /** set default */
             $_item = [
-                'list_id'             => ifset($_item, 'list_id', 0),
+                'list_id'             => ifset($_item, 'list_id', null),
                 'name'                => ifset($_item, 'name', ''),
                 'note'                => ifset($_item, 'note', ''),
                 'assigned_contact_id' => ifset($_item, 'assigned_contact_id', null),
                 'priority'            => ifset($_item, 'priority', 0),
                 'contact_id'          => $this->getUser()->getId(),
                 'attachments'         => ifset($_item, 'attachments', []),
+                'uuid'                => ifset($_item, 'uuid', null),
                 'create_datetime'     => date('Y-m-d H:i:s'),
                 'due_datetime'        => ifset($_item, 'due_datetime', null),
                 'due_date'            => null,
@@ -51,21 +52,21 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
                 'errors'              => []
             ];
 
-            if (empty($_item['list_id'])) {
+            if (!isset($_item['list_id'])) {
                 $_item['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'list_id');
             } elseif (!is_numeric($_item['list_id'])) {
-                $_item['errors'][] = _w('Invalid type list_id');
+                $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'list_id');
             } elseif ($_item['list_id'] < 1 || !in_array($_item['list_id'], $list_ids)) {
                 $_item['errors'][] = _w('List not found');
             }
 
             if (!is_string($_item['name'])) {
-                $_item['errors'][] = _w('Invalid type name');
+                $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'name');
             }
 
             if ($_item['assigned_contact_id']) {
                 if (!is_numeric($_item['assigned_contact_id'])) {
-                    $_item['errors'][] = _w('Invalid type assigned_contact_id');
+                    $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'assigned_contact_id');
                 } elseif (!array_key_exists($_item['assigned_contact_id'], $assign_contacts)) {
                     $_item['errors'][] = _w('Assigned contact not found');
                 }
@@ -73,7 +74,7 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
 
             if ($_item['priority']) {
                 if (!is_numeric($_item['priority'])) {
-                    $_item['errors'][] = _w('Invalid type priority');
+                    $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'priority');
                 } elseif (!in_array($_item['priority'], [1, 2, 3, 4, 5])) {
                     $_item['errors'][] = _w('Unknown value priority');
                 }
@@ -91,13 +92,13 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
                     $_item['name'] = $match_note['name'];
                     $_item['note'] = $match_note['note'];
                 } elseif (!is_string($_item['note'])) {
-                    $_item['errors'][] = _w('Invalid type note');
+                    $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'note');
                 }
             }
 
             if (isset($_item['due_datetime'])) {
                 if (!is_string($_item['due_datetime'])) {
-                    $_item['errors'][] = _w('Invalid type due_datetime');
+                    $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'due_datetime');
                 } else {
                     $dt = date_create($_item['due_datetime']);
                     if ($dt) {
@@ -120,19 +121,26 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
                         }
                     }
                 } else {
-                    $_item['errors'][] = _w('Invalid type files');
+                    $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'files');
                 }
+            }
+
+            if (isset($_item['uuid']) && !is_string($_item['uuid'])) {
+                $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'uuid');
+
             }
 
             if (empty($_item['errors'])) {
                 unset($_item['errors']);
             } else {
-                $err = true;
+                $errors_exists = true;
                 $_item['attachments'] = [];
             }
         }
 
-        if (!$err) {
+        if ($errors_exists) {
+            $this->http_status_code = 400;
+        } else {
             $item_model = pl2()->getModel(pocketlistsItem::class);
             $item_model->startTransaction();
             try {
@@ -185,12 +193,14 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
                 'currency_iso3',
                 'assigned_contact_id',
                 'repeat',
+                'uuid',
                 'key_list_id',
                 'favorite',
                 'attachments_count',
                 'comments_count',
                 'linked_entities_count',
-                'attachments'
+                'attachments',
+                'errors'
             ],
             [
                 'id' => 'int',

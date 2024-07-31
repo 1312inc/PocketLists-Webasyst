@@ -109,7 +109,8 @@ class pocketlistsCommentModel extends pocketlistsModel
                 c.comment comment,
                 c.create_datetime create_datetime,
                 p.id pocket_id,
-                p.name pocket_name
+                p.name pocket_name,
+                c.uuid
             FROM {$this->table} c
             LEFT JOIN pocketlists_item as i ON i.id = c.item_id
             LEFT JOIN pocketlists_list as l ON l.id = i.list_id

@@ -60,7 +60,7 @@ class pocketlistsListGetListMethod extends pocketlistsApiAbstractMethod
             /** @var pocketlistsPocketModel $pocket_model */
             $pocket_model = pl2()->getModel(pocketlistsPocket::class);
             $lists = $pocket_model->query("
-                SELECT SQL_CALC_FOUND_ROWS pl.id, pli.name, pli.contact_id, pl.pocket_id, pl.type, pl.icon, pl.color, pl.sort, pli.create_datetime, pli.update_datetime FROM pocketlists_list pl
+                SELECT SQL_CALC_FOUND_ROWS pl.id, pli.name, pli.contact_id, pl.pocket_id, pl.type, pl.icon, pl.color, pl.sort, pli.create_datetime, pli.update_datetime, pli.uuid FROM pocketlists_list pl
                 LEFT JOIN pocketlists_item pli ON pli.id = pl.key_item_id
                 WHERE pl.pocket_id IN (i:pocket_ids) AND $condition AND pl.archived = 0
                 ORDER BY pl.sort, pli.update_datetime DESC, pli.create_datetime DESC
@@ -91,7 +91,8 @@ class pocketlistsListGetListMethod extends pocketlistsApiAbstractMethod
                     'icon',
                     'color',
                     'create_datetime',
-                    'update_datetime'
+                    'update_datetime',
+                    'uuid'
                 ],
                 [
                     'id' => 'int',

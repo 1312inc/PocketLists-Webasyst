@@ -31,6 +31,11 @@ class pocketlistsPocket extends pocketlistsEntity
     private $passcode;
 
     /**
+     * @var string
+     */
+    private $uuid;
+
+    /**
      * @var pocketlistsList[]
      */
     private $lists;
@@ -165,6 +170,25 @@ class pocketlistsPocket extends pocketlistsEntity
     public function setPasscode($passcode)
     {
         $this->passcode = $passcode;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUuid()
+    {
+        return $this->uuid;
+    }
+
+    /**
+     * @param $uuid
+     * @return pocketlistsPocket
+     */
+    public function setUuid($uuid)
+    {
+        $this->uuid = (empty($uuid) ? null : trim($uuid));
 
         return $this;
     }

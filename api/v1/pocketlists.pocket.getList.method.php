@@ -32,7 +32,8 @@ class pocketlistsPocketGetListMethod extends pocketlistsApiAbstractMethod
                     'sort',
                     'name',
                     'color',
-                    'passcode'
+                    'passcode',
+                    'uuid'
                 ],
                 [
                     'id' => 'int'
