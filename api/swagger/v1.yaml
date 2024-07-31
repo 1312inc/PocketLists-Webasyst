@@ -1125,7 +1125,9 @@ paths:
                     type: integer
                     description: Count
                   data:
-                    $ref: '#/components/schemas/pocket'
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/pocket'
         400:
           description: Invalid request data.
           content:
@@ -1251,26 +1253,24 @@ components:
         error:
           type: string
     pocket:
-      type: array
-      items:
-        type: object
-        properties:
-          id:
-            type: integer
-            description: Pocket identifier
-          sort:
-            type: integer
-            description: Sort
-          name:
-            type: string
-            description: Pocket name
-          color:
-            type: string
-            description: Color
-          passcode:
-            type: string
-            nullable: true
-            description: Passcode
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Pocket identifier
+        sort:
+          type: integer
+          description: Sort
+        name:
+          type: string
+          description: Pocket name
+        color:
+          type: string
+          description: Color
+        passcode:
+          type: string
+          nullable: true
+          description: Passcode
     list:
       type: object
       properties:
