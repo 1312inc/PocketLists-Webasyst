@@ -682,7 +682,9 @@ paths:
                     type: integer
                     description: Count
                   data:
-                    $ref: '#/components/schemas/list'
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/list'
         400:
           description: Invalid request data.
           content:
