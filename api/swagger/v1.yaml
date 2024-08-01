@@ -1116,6 +1116,14 @@ paths:
                     type: string
                     nullable: true
                     description: Channel identifier
+        400:
+          description: Invalid request data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        500:
+          description: Internal server error.
 
 components:
   securitySchemes:
