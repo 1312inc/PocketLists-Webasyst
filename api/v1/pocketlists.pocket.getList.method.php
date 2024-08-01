@@ -4,19 +4,20 @@ class pocketlistsPocketGetListMethod extends pocketlistsApiAbstractMethod
 {
     public function execute()
     {
-        $id = $this->get('id');
+        $ids = $this->get('id');
 
-        if (isset($id)) {
-            if (!is_numeric($id)) {
-                throw new waAPIException('unknown_value', _w('Unknown id value'), 400);
-            } elseif ($id < 1) {
-                throw new waAPIException('not_found', _w('Pocket not found'), 404);
+        if (isset($ids)) {
+            if (!is_array($ids)) {
+                throw new waAPIException('error_type', sprintf_wp('Invalid type %s', 'id'), 400);
             }
+            $ids = array_unique(array_filter($ids, function ($_i) {
+                return is_numeric($_i) && $_i > 0;
+            }));
         }
 
         $plp = pl2()->getModel(pocketlistsPocket::class);
-        if ($id) {
-            $pockets = [$plp->getById($id)];
+        if ($ids) {
+            $pockets = $plp->getByField('id', $ids, true);
         } else {
             $pockets = $plp->getAllPockets($this->getUser()->getId());;
         }
