@@ -72,7 +72,8 @@ class pocketlistsAttachmentAddMethod extends pocketlistsApiAbstractMethod
                                 $result[$_hash] += [
                                     'id'        => (int) ifset($pl_attachment, 'id', 0),
                                     'file_type' => ifset($pl_attachment, 'filetype', ''),
-                                    'path'      => "$path/$_item_id/".ifset($pl_attachment, 'file_name', '')
+                                    'path'      => "$path/$_item_id/".ifset($pl_attachment, 'file_name', ''),
+                                    'uuid'      => null
                                 ];
                             } else {
                                 $this->http_status_code = 400;

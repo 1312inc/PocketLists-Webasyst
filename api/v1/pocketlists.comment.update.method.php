@@ -36,12 +36,14 @@ class pocketlistsCommentUpdateMethod extends pocketlistsApiAbstractMethod
             'contact_id'      => $comment->getContactId(),
             'comment'         => $comment->getComment(),
             'create_datetime' => $comment->getCreateDatetime(),
+            'uuid'            => $comment->getUuid(),
         ]], [
             'id',
             'item_id',
             'contact_id',
             'comment',
             'create_datetime',
+            'uuid',
         ], [
             'id' => 'int',
             'item_id' => 'int',
