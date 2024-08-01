@@ -141,6 +141,7 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
             'attachments_count'     => $item->getAttachmentsCount(),
             'comments_count'        => $item->getCommentsCount(),
             'linked_entities_count' => $item->getLinkedEntitiesCount(),
+            'uuid'                  => $item->getUuid(),
             'attachments'           => $attachments
         ]], [
             'id',
@@ -170,6 +171,7 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
             'attachments_count',
             'comments_count',
             'linked_entities_count',
+            'uuid',
             'attachments'
         ], [
             'id' => 'int',

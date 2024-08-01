@@ -36,7 +36,14 @@ class pocketlistsPocketUpdateMethod extends pocketlistsApiAbstractMethod
         }
 
         if ($pocket_factory->save($pocket)) {
-            $this->response = ['id' => $pocket_id];
+            $this->response = [
+                'id'       => (int) $pocket->getId(),
+                'sort'     => (int) $pocket->getSort(),
+                'name'     => $pocket->getName(),
+                'color'    => $pocket->getColor(),
+                'passcode' => $pocket->getPasscode(),
+                'uuid'     => $pocket->getUuid()
+            ];
         } else {
             throw new waAPIException('error', _w('Some error on save pocket'), 500);
         }

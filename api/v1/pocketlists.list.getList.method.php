@@ -60,7 +60,7 @@ class pocketlistsListGetListMethod extends pocketlistsApiAbstractMethod
             /** @var pocketlistsPocketModel $pocket_model */
             $pocket_model = pl2()->getModel(pocketlistsPocket::class);
             $lists = $pocket_model->query("
-                SELECT SQL_CALC_FOUND_ROWS pl.id, pli.name, pli.contact_id, pl.pocket_id, pl.type, pl.icon, pl.color, pl.sort, pli.create_datetime, pli.update_datetime, pli.uuid FROM pocketlists_list pl
+                SELECT SQL_CALC_FOUND_ROWS pl.*, pli.contact_id, pli.parent_id, pli.has_children, pli.status, pli.priority, pli.calc_priority, pli.create_datetime, pli.update_datetime, pli.complete_datetime, pli.complete_contact_id, pli.name, pli.due_date, pli.due_datetime, pli.location_id, pli.amount, pli.currency_iso3, pli.assigned_contact_id, pli.repeat, pli.key_list_id, pli.uuid FROM pocketlists_list pl
                 LEFT JOIN pocketlists_item pli ON pli.id = pl.key_item_id
                 WHERE pl.pocket_id IN (i:pocket_ids) AND $condition AND pl.archived = 0
                 ORDER BY pl.sort, pli.update_datetime DESC, pli.create_datetime DESC
@@ -83,24 +83,55 @@ class pocketlistsListGetListMethod extends pocketlistsApiAbstractMethod
                 $lists,
                 [
                     'id',
-                    'name',
                     'contact_id',
-                    'pocket_id',
+                    'parent_id',
                     'sort',
-                    'type',
-                    'icon',
-                    'color',
+                    'has_children',
+                    'status',
+                    'priority',
+                    'calc_priority',
                     'create_datetime',
                     'update_datetime',
-                    'uuid'
+                    'complete_datetime',
+                    'complete_contact_id',
+                    'name',
+                    'due_date',
+                    'due_datetime',
+                    'location_id',
+                    'amount',
+                    'currency_iso3',
+                    'assigned_contact_id',
+                    'repeat',
+                    'uuid',
+                    'pocket_id',
+                    'type',
+                    'icon',
+                    'archived',
+                    'hash',
+                    'color',
+                    'passcode',
+                    'key_item_id',
                 ],
                 [
                     'id' => 'int',
                     'contact_id' => 'int',
-                    'pocket_id' => 'int',
+                    'parent_id' => 'int',
                     'sort' => 'int',
+                    'status' => 'int',
+                    'priority' => 'int',
+                    'calc_priority' => 'int',
                     'create_datetime' => 'datetime',
-                    'update_datetime' => 'datetime'
+                    'update_datetime' => 'datetime',
+                    'complete_datetime' => 'datetime',
+                    'complete_contact_id' => 'int',
+                    'due_datetime' => 'datetime',
+                    'location_id' => 'int',
+                    'amount' => 'float',
+                    'assigned_contact_id' => 'int',
+                    'repeat' => 'int',
+                    'pocket_id' => 'int',
+                    'archived' => 'int',
+                    'key_item_id' => 'int'
                 ]
             )
         ];

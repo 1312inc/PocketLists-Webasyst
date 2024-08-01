@@ -126,6 +126,7 @@ class pocketlistsItemGetListMethod extends pocketlistsApiAbstractMethod
                     'attachments_count',
                     'comments_count',
                     'linked_entities_count',
+                    'uuid',
                     'attachments'
                 ],
                 [

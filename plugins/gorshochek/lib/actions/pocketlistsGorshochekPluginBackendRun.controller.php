@@ -174,7 +174,8 @@ class pocketlistsGorshochekPluginBackendRunController extends waLongActionContro
             case 'pocket':
                 $gen_data = [
                     'name'  => $this->genName($entity_type),
-                    'color' => $this->genColor()
+                    'color' => $this->genColor(),
+                    'uuid'  => $this->getUuid(2)
                 ];
                 break;
             case 'list':
@@ -183,7 +184,8 @@ class pocketlistsGorshochekPluginBackendRunController extends waLongActionContro
                     'name'      => $this->genName($entity_type),
                     'type'      => $this->genType(),
                     'icon'      => $this->genIcon(),
-                    'color'     => $this->genColor()
+                    'color'     => $this->genColor(),
+                    'uuid'  => $this->getUuid(3)
                 ];
                 break;
             case 'item':
@@ -201,6 +203,7 @@ class pocketlistsGorshochekPluginBackendRunController extends waLongActionContro
                     'files'               => [],
                     'amount'              => 0,
                     'repeat'              => 0,
+                    'uuid'  => $this->getUuid(10)
                 ];
                 if (mt_rand(1, 3) % 3 === 0) {
                     $is_future = (mt_rand(1, 3) % 3 === 0);
@@ -362,5 +365,16 @@ class pocketlistsGorshochekPluginBackendRunController extends waLongActionContro
         }
 
         return reset($names);
+    }
+
+    /**
+     * @param $fill
+     * @return string|null
+     */
+    private function getUuid($fill)
+    {
+        $rand = mt_rand(0, 100);
+
+        return ($rand % $fill === 0 ? waString::uuid() : null);
     }
 }
