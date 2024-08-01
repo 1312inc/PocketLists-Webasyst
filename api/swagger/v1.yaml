@@ -394,10 +394,12 @@ paths:
       summary: Get items
       parameters:
         - in: query
-          name: id
-          description: ID айтема
+          name: id[]
+          description: Item identifiers
           schema:
-            type: integer
+            type: array
+            items:
+              type: integer
         - in: query
           name: list_id
           description: ID списка
@@ -623,7 +625,7 @@ paths:
       parameters:
         - in: query
           name: id[]
-          description: List identifier
+          description: List identifiers
           required: true
           schema:
             type: array
@@ -647,10 +649,12 @@ paths:
       summary: Получить список
       parameters:
         - in: query
-          name: id
-          description: ID списка
+          name: id[]
+          description: List identifiers
           schema:
-            type: integer
+            type: array
+            items:
+              type: integer
         - in: query
           name: starting_from
           description: Временная метка, начиная с которой возвращаются записи
@@ -968,10 +972,12 @@ paths:
       summary: Получить проект
       parameters:
         - in: query
-          name: id
-          description: ID проекта
+          name: id[]
+          description: Pocket identifiers
           schema:
-            type: integer
+            type: array
+            items:
+              type: integer
       responses:
         200:
           description: OK

@@ -4,21 +4,22 @@ class pocketlistsListGetListMethod extends pocketlistsApiAbstractMethod
 {
     public function execute()
     {
-        $id = $this->get('id');
+        $ids = $this->get('id');
         $starting_from = $this->get('starting_from');
         $limit = $this->get('limit');
         $offset = $this->get('offset');
 
-        if (isset($id)) {
-            if (!is_numeric($id)) {
-                throw new waAPIException('unknown_value', _w('Unknown value'), 400);
-            } elseif ($id < 1) {
-                throw new waAPIException('not_found', _w('List not found'), 404);
+        if (isset($ids)) {
+            if (!is_array($ids)) {
+                throw new waAPIException('error_type', sprintf_wp('Invalid type %s', 'id'), 400);
             }
+            $ids = array_unique(array_filter($ids, function ($_i) {
+                return is_numeric($_i) && $_i > 0;
+            }));
         }
         if (isset($starting_from)) {
             if (!is_numeric($starting_from)) {
-                throw new waAPIException('unknown_value', _w('Unknown value'), 400);
+                throw new waAPIException('error_type', sprintf_wp('Invalid type %s', 'starting_from'), 400);
             } elseif ($starting_from < 1) {
                 throw new waAPIException('negative_value', _w('The parameter has a negative value'), 400);
             }
@@ -26,7 +27,7 @@ class pocketlistsListGetListMethod extends pocketlistsApiAbstractMethod
         }
         if (isset($limit)) {
             if (!is_numeric($limit)) {
-                throw new waAPIException('unknown_value', _w('Unknown value'), 400);
+                throw new waAPIException('error_type', sprintf_wp('Invalid type %s', 'limit'), 400);
             } elseif ($limit < 1) {
                 throw new waAPIException('negative_value', _w('The parameter has a negative value'), 400);
             }
@@ -36,7 +37,7 @@ class pocketlistsListGetListMethod extends pocketlistsApiAbstractMethod
         }
         if (isset($offset)) {
             if (!is_numeric($offset)) {
-                throw new waAPIException('unknown_value', _w('Unknown value'), 400);
+                throw new waAPIException('error_type', sprintf_wp('Invalid type %s', 'offset'), 400);
             } elseif ($offset < 1) {
                 throw new waAPIException('negative_value', _w('The parameter has a negative value'), 400);
             }
@@ -50,8 +51,8 @@ class pocketlistsListGetListMethod extends pocketlistsApiAbstractMethod
         $accessed_pockets = pocketlistsRBAC::getAccessPocketForContact(pl2()->getUser()->getId());
         if (!empty($accessed_pockets)) {
             $condition = '1 = 1';
-            if ($id) {
-                $condition .= ' AND pl.id = i:id';
+            if ($ids) {
+                $condition .= ' AND pl.id IN (i:ids)';
             }
             if ($starting_from) {
                 $condition .= " AND update_datetime >= s:starting_from";
@@ -66,11 +67,11 @@ class pocketlistsListGetListMethod extends pocketlistsApiAbstractMethod
                 ORDER BY pl.sort, pli.update_datetime DESC, pli.create_datetime DESC
                 LIMIT i:offset, i:limit
             ", [
-                'id' => (int) $id,
-                'pocket_ids' => $accessed_pockets,
+                'ids'           => $ids,
+                'pocket_ids'    => $accessed_pockets,
                 'starting_from' => $starting_from,
-                'offset' => $offset,
-                'limit'  => $limit
+                'offset'        => $offset,
+                'limit'         => $limit
             ])->fetchAll();
             $total_count = (int) $pocket_model->query('SELECT FOUND_ROWS()')->fetchField();
         }

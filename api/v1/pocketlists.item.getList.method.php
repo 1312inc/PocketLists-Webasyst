@@ -4,20 +4,21 @@ class pocketlistsItemGetListMethod extends pocketlistsApiAbstractMethod
 {
     public function execute()
     {
-        $id = $this->get('id');
+        $ids = $this->get('id');
         $list_id = $this->get('list_id');
         $starting_from = $this->get('starting_from');
         $limit = $this->get('limit');
         $offset = $this->get('offset');
 
         $while = 'WHERE 1 = 1';
-        if (isset($id)) {
-            if (!is_numeric($id)) {
+        if (isset($ids)) {
+            if (!is_array($ids)) {
                 throw new waAPIException('error_type', sprintf_wp('Invalid type %s', 'id'), 400);
-            } elseif ($id < 1) {
-                throw new waAPIException('not_found', _w('Item not found'), 404);
             }
-            $while .= ' AND i.id = i:item_id';
+            $ids = array_unique(array_filter($ids, function ($_i) {
+                return is_numeric($_i) && $_i > 0;
+            }));
+            $while .= ' AND i.id IN (i:item_ids)';
         }
         if (isset($list_id)) {
             if (!is_numeric($list_id)) {
@@ -61,7 +62,7 @@ class pocketlistsItemGetListMethod extends pocketlistsApiAbstractMethod
         $sql = $plim->getQuery(true);
         $items = $plim->query(
             "$sql $while ORDER BY i.parent_id, i.sort ASC, i.id DESC LIMIT i:offset, i:limit", [
-            'item_id'       => (int) $id,
+            'item_ids'      => $ids,
             'list_id'       => (int) $list_id,
             'contact_id'    => $this->getUser()->getId(),
             'starting_from' => $starting_from,
