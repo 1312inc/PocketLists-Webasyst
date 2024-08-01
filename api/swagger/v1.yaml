@@ -1144,8 +1144,10 @@ components:
           type: string
           enum:
             - image
-        path:
+        url:
           type: string
+          format: uri
+          description: File URL
         uuid:
           type: string
           nullable: true
@@ -1352,8 +1354,10 @@ components:
           type: string
         photo_url:
           type: string
+          format: uri
         user_pic:
           type: string
+          format: uri
         status:
           type: string
         team_role:

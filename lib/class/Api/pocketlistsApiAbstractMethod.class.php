@@ -112,11 +112,13 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
 
         /** @var pocketlistsFactory $attachment_factory */
         $attachment_factory = pl2()->getEntityFactory(pocketlistsAttachment::class);
+        $path = wa()->getDataUrl("attachments/$item_id/", true, pocketlistsHelper::APP_ID, true);
         foreach ($files as &$_file) {
             $_file += [
-                'file' => '',
+                'file'      => '',
                 'file_name' => '',
-                'uuid' => null
+                'url'       => '',
+                'uuid'      => null
             ];
             if (empty($_file['file']) || empty($_file['file_name'])) {
                 continue;
@@ -151,7 +153,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                 $i = strrpos($_file['file_name'], '.');
                 $_file['file_name'] = substr($_file['file_name'], 0, $i);
                 $i = 1;
-                while (file_exists(sprintf('%s%s-%s.%s', $uploaded_file->getPath(), $_file['file_name'], $i, $extension))) {
+                while (file_exists(sprintf('%s%s-%s.%s', $uploaded_file->getPath().DIRECTORY_SEPARATOR, $_file['file_name'], $i, $extension))) {
                     $i++;
                 }
                 $_file['file_name'] = sprintf('%s-%s.%s', $_file['file_name'], $i, $extension);
@@ -167,8 +169,11 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                 ->setFiletype($uploaded_file->getType())
                 ->setUuid($_file['uuid']);
             $attachment_factory->insert($attachment);
-            $_file['id'] = $attachment->getId();
-            $_file['filetype'] = $attachment->getFiletype();
+            $_file = [
+                'id'       => $attachment->getId(),
+                'url'      => $path.$_file['file_name'],
+                'filetype' => $attachment->getFiletype(),
+            ] + $_file;
         }
 
         return $files;

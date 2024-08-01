@@ -8,6 +8,7 @@ class pocketlistsUserGetListMethod extends pocketlistsApiAbstractMethod
         /** @var pocketlistsContactFactory $contactFactory */
         $contactFactory = pl2()->getEntityFactory(pocketlistsContact::class);
         $teammates = $contactFactory->getTeammates(pocketlistsRBAC::getAccessContacts(), true, true, true);
+        $root_url = rtrim(wa()->getRootUrl(true), '/');
 
         /** @var pocketlistsContact $_teammate */
         foreach ((array) $teammates as $_teammate) {
@@ -17,8 +18,8 @@ class pocketlistsUserGetListMethod extends pocketlistsApiAbstractMethod
                 'id'              => $_teammate->getId(),
                 'name'            => $_teammate->getName(),
                 'username'        => $_teammate->getUsername(),
-                'photo_url'       => $_teammate->getPhotoUrl(),
-                'user_pic'        => $_teammate->getUserPic(),
+                'photo_url'       => $root_url.$_teammate->getPhotoUrl(),
+                'user_pic'        => $root_url.$_teammate->getUserPic(),
                 'status'          => $_teammate->getStatus(),
                 'team_role'       => $_teammate->getTeamrole(),
                 'login'           => $_teammate->getLogin(),
