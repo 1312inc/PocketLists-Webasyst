@@ -61,7 +61,6 @@ class pocketlistsAttachmentAddMethod extends pocketlistsApiAbstractMethod
         }
 
         if (!$err) {
-            $path = wa()->getDataUrl('attachments', true, pocketlistsHelper::APP_ID);
             foreach ($attachments as $_item_id => $_attachments) {
                 try {
                     $pl_attachments = $this->updateFiles($_item_id, $_attachments);
@@ -69,12 +68,7 @@ class pocketlistsAttachmentAddMethod extends pocketlistsApiAbstractMethod
                         foreach ($_attachments as $_hash => $_at) {
                             $pl_attachment = current($pl_attachments);
                             if (empty($pl_attachment['error'])) {
-                                $result[$_hash] += [
-                                    'id'        => (int) ifset($pl_attachment, 'id', 0),
-                                    'file_type' => ifset($pl_attachment, 'filetype', ''),
-                                    'path'      => "$path/$_item_id/".ifset($pl_attachment, 'file_name', ''),
-                                    'uuid'      => null
-                                ];
+                                $result[$_hash] += $pl_attachment;
                             } else {
                                 $this->http_status_code = 400;
                                 $result[$_hash]['errors'] = [$pl_attachment['error']];
@@ -94,7 +88,7 @@ class pocketlistsAttachmentAddMethod extends pocketlistsApiAbstractMethod
                 'item_id',
                 'file_name',
                 'file_type',
-                'path',
+                'url',
                 'uuid',
                 'errors'
             ],
