@@ -34,10 +34,10 @@ class pocketlistsWebSoket
      * @return mixed
      * @throws waException
      */
-    public function getWebsocketUrl($channel = self::DEFAULT_CHANNEL)
+    public function getWebsocketUrl($channel = null)
     {
         if ($this->services_api->isConnected()) {
-            $ws_url = $this->services_api->getWebsocketUrl($channel);
+            $ws_url = $this->services_api->getWebsocketUrl($channel ?? self::DEFAULT_CHANNEL);
             if (empty($ws_url)) {
                 throw new waException(_w('Webasyst websocket API error.'));
             }
@@ -53,11 +53,11 @@ class pocketlistsWebSoket
      * @param string $channel
      * @return void
      */
-    public function sendWebsocketData($data, $channel = self::DEFAULT_CHANNEL)
+    public function sendWebsocketData($data, $channel = null)
     {
         if (!empty($data) && $this->services_api->isConnected()) {
             try {
-                $this->services_api->sendWebsocketMessage($data, $channel);
+                $this->services_api->sendWebsocketMessage($data, $channel ?? self::DEFAULT_CHANNEL);
             } catch (Throwable $e) {
             }
         }

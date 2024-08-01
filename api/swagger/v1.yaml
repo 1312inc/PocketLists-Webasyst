@@ -1089,6 +1089,33 @@ paths:
                       $ref: '#/components/schemas/user'
         500:
           description: Internal server error.
+  /pocketlists.ws.getUrl:
+    get:
+      security:
+        - BearerAuth: [ ]
+      summary: Получить адрес подключения к websocket.
+      parameters:
+        - in: query
+          name: channel
+          description: Channel identifier
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    format: uri
+                    description: URL websocket
+                  channel:
+                    type: string
+                    nullable: true
+                    description: Channel identifier
 
 components:
   securitySchemes:
