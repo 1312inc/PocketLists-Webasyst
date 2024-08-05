@@ -1,6 +1,6 @@
 <?php
 
-class pocketlistsWsGetUrlMethod extends pocketlistsApiAbstractMethod
+class pocketlistsSystemGetWebsocketUrlMethod extends pocketlistsApiAbstractMethod
 {
     public function execute()
     {

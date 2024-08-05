@@ -1095,7 +1095,7 @@ paths:
                       $ref: '#/components/schemas/user'
         500:
           description: Internal server error.
-  /pocketlists.ws.getUrl:
+  /pocketlists.system.getWebsocketUrl:
     get:
       security:
         - BearerAuth: [ ]
