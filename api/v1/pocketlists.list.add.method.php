@@ -34,11 +34,11 @@ class pocketlistsListAddMethod extends pocketlistsApiAbstractMethod
                 'icon'                => ifset($_list, 'icon', pocketlistsList::DEFAULT_ICON),
                 'color'               => ifset($_list, 'color', pocketlistsStoreColor::NONE),
                 'uuid'                => ifset($_list, 'uuid', null),
+                'sort'                => ifset($_list, 'sort', '0'),
                 'errors'              => [],
                 'id'                  => null,
                 'contact_id'          => null,
                 'parent_id'           => null,
-                'sort'                => null,
                 'has_children'        => null,
                 'status'              => null,
                 'priority'            => null,
@@ -88,6 +88,10 @@ class pocketlistsListAddMethod extends pocketlistsApiAbstractMethod
                 $_list['errors'][] = _w('Unknown value color');
             }
 
+            if (!is_string($_list['sort'])) {
+                $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'sort');
+            }
+
             if (isset($_list['uuid']) && !is_string($_list['uuid'])) {
                 $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'uuid');
             }
@@ -114,6 +118,7 @@ class pocketlistsListAddMethod extends pocketlistsApiAbstractMethod
                     ->setPocketId($_list['pocket_id'])
                     ->setColor($_list['color'])
                     ->setIcon($_list['icon'])
+                    ->setSort($_list['sort'])
                     ->setContact($this->getUser())
                     ->setCreateDatetime(date('Y-m-d H:i:s'))
                     ->setUuid($_list['uuid']);
@@ -159,7 +164,6 @@ class pocketlistsListAddMethod extends pocketlistsApiAbstractMethod
                 'id' => 'int',
                 'contact_id' => 'int',
                 'parent_id' => 'int',
-                'sort' => 'int',
                 'status' => 'int',
                 'priority' => 'int',
                 'calc_priority' => 'int',

@@ -566,6 +566,9 @@ paths:
                   icon:
                     type: string
                     description: Icon
+                  sort:
+                    type: string
+                    description: Sort
                   type:
                     type: string
                     default: checklist
@@ -748,6 +751,9 @@ paths:
                 color:
                   type: string
                   description: Color
+                sort:
+                  type: string
+                  description: Sort
       responses:
         200:
           description: OK
@@ -755,6 +761,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/list'
+        400:
+          description: Invalid request data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
         404:
           description: Not found.
           content:

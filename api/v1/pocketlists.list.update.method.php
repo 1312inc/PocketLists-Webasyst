@@ -7,13 +7,26 @@ class pocketlistsListUpdateMethod extends pocketlistsApiAbstractMethod
     public function execute()
     {
         $_json = $this->readBodyAsJson();
-        $list_id = (int) ifset($_json, 'id', 0);
-        $name = (string) ifset($_json, 'name', '');
-        $icon = (string) ifset($_json, 'icon', pocketlistsList::DEFAULT_ICON);
-        $color = (string) ifset($_json, 'color', '');
+        $list_id = ifset($_json, 'id', 0);
+        $name = ifset($_json, 'name', '');
+        $icon = ifset($_json, 'icon', pocketlistsList::DEFAULT_ICON);
+        $color = ifset($_json, 'color', '');
+        $sort = ifset($_json, 'sort', '0');
 
         /** @var pocketlistsList $list */
-        if (empty($list_id) || $list_id < 1 || !$list = pl2()->getEntityFactory(pocketlistsList::class)->findById($list_id)) {
+        if (!is_numeric($list_id)) {
+            throw new waAPIException('type_error', sprintf_wp('Type error parameter: “%s”.', 'id'), 400);
+        } elseif (!is_string($name)) {
+            throw new waAPIException('type_error', sprintf_wp('Type error parameter: “%s”.', 'name'), 400);
+        } elseif (!is_string($icon)) {
+            throw new waAPIException('type_error', sprintf_wp('Type error parameter: “%s”.', 'icon'), 400);
+        } elseif (!is_string($color)) {
+            throw new waAPIException('type_error', sprintf_wp('Type error parameter: “%s”.', 'color'), 400);
+        } elseif (!array_key_exists($color, pocketlistsStoreColor::getColors())) {
+            throw new waAPIException('type_error', _w('Unknown value color'), 400);
+        } elseif (!is_string($sort)) {
+            throw new waAPIException('type_error', sprintf_wp('Type error parameter: “%s”.', 'sort'), 400);
+        } elseif (empty($list_id) || $list_id < 1 || !$list = pl2()->getEntityFactory(pocketlistsList::class)->findById($list_id)) {
             throw new waAPIException('not_found', _w('List not found'), 404);
         }
 
@@ -24,6 +37,7 @@ class pocketlistsListUpdateMethod extends pocketlistsApiAbstractMethod
             $list->setColor($color);
         }
         $list->setIcon($icon)
+            ->setSort($sort)
             ->setUpdateDatetime(date('Y-m-d H:i:s'))
             ->setContact($this->getUser());
         if (pl2()->getEntityFactory(pocketlistsList::class)->save($list)) {
