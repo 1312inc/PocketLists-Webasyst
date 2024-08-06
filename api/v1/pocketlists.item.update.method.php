@@ -11,9 +11,10 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
         $list_id = ifset($_json, 'list_id', 0);
         $name = ifset($_json, 'name', '');
         $note = ifset($_json, 'note', '');
+        $sort = ifset($_json, 'sort', '0');
         $assigned_contact_id = ifset($_json, 'assigned_contact_id', 0);
         $priority = ifset($_json, 'priority', 0);
-        $due_datetime = ifset($_json, 'due_datetime', '');
+        $due_datetime = ifset($_json, 'due_datetime', '0');
         $attachments = ifset($_json, 'attachments', null);
 
         /** @var pocketlistsItem $item */
@@ -29,6 +30,8 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
             throw new waAPIException('type_error', sprintf_wp('Type error parameter: “%s”.', 'name'), 400);
         } elseif (!is_string($note)) {
             throw new waAPIException('type_error', sprintf_wp('Type error parameter: “%s”.', 'note'), 400);
+        } elseif (!is_string($sort)) {
+            throw new waAPIException('type_error', sprintf_wp('Type error parameter: “%s”.', 'sort'), 400);
         } elseif (!is_string($due_datetime)) {
             throw new waAPIException('type_error', sprintf_wp('Type error parameter: “%s”.', 'due_datetime'), 400);
         } elseif (empty($item_id)) {
@@ -102,6 +105,7 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
 
         $item->setName($name)
             ->setNote($note)
+            ->setSort($sort)
             ->setPriority($priority)
             ->setAssignedContactId($assigned_contact_id)
             ->setUpdateDatetime(date('Y-m-d H:i:s'));
@@ -178,7 +182,6 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
             'list_id' => 'int',
             'contact_id' => 'int',
             'parent_id' => 'int',
-            'sort' => 'int',
             'has_children' => 'bool',
             'status' => 'int',
             'priority' => 'int',

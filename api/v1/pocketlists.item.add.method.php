@@ -39,6 +39,7 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
                 'list_id'             => ifset($_item, 'list_id', null),
                 'name'                => ifset($_item, 'name', ''),
                 'note'                => ifset($_item, 'note', ''),
+                'sort'                => ifset($_item, 'sort', '0'),
                 'assigned_contact_id' => ifset($_item, 'assigned_contact_id', null),
                 'priority'            => ifset($_item, 'priority', 0),
                 'contact_id'          => $this->getUser()->getId(),
@@ -62,6 +63,10 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
 
             if (!is_string($_item['name'])) {
                 $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'name');
+            }
+
+            if (!is_string($_item['sort'])) {
+                $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'sorts');
             }
 
             if ($_item['assigned_contact_id']) {
@@ -207,7 +212,6 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
                 'list_id' => 'int',
                 'contact_id' => 'int',
                 'parent_id' => 'int',
-                'sort' => 'int',
                 'has_children' => 'bool',
                 'status' => 'int',
                 'priority' => 'int',
