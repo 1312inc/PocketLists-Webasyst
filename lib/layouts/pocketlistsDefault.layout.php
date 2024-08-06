@@ -32,10 +32,22 @@ class pocketlistsDefaultLayout extends waLayout
             pocketlistsConfig::API_TOKEN_SCOPE
         );
 
+        $user_get_list = new pocketlistsUserGetListMethod();
+        $response = $user_get_list->getResponse(true);
+        $users = ifset($response, 'data', []);
+
+        $pocket_get_list = new pocketlistsPocketGetListMethod();
+        $response = $pocket_get_list->getResponse(true);
+        $pockets = ifset($response, 'data', []);
+
         $this->view->assign([
             pocketlistsEventStorage::WA_BACKEND_HEAD => $eventResult,
             'isAdmin' => (int) pocketlistsRBAC::isAdmin(),
-            'spa_api_token' => $token
+            'spa_api_token' => $token,
+            'users' => waUtils::jsonEncode($users),
+            'pockets' => waUtils::jsonEncode($pockets),
+            'locale' => wa()->getLocale(),
+            'framework_version' => wa()->getVersion('webasyst')
         ]);
     }
 }

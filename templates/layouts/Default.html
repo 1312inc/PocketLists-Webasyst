@@ -41,6 +41,10 @@
             baseUrl: '{$wa_app_url}',
             apiToken: '{$spa_api_token}',
             apiBaseUrl: '{$wa_url}api.php',
+            users: '{$users}',
+            pockets: '{$pockets}',
+            locale: '{$locale}',
+            framework_version: '{$framework_version}',
         }
     </script>
 
@@ -58,7 +62,7 @@
 
         {if $wa->isSingleAppMode()}
             <div class="hidden">
-                {$wa->headerSingleAppUser()}            
+                {$wa->headerSingleAppUser()}
             </div>  
         {/if}
                     
