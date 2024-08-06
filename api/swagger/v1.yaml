@@ -805,56 +805,7 @@ paths:
                   data:
                     type: array
                     items:
-                      type: object
-                      properties:
-                        id:
-                          type: integer
-                          description: Log identifier
-                        action:
-                          type: string
-                          description: Action
-                        entity_type:
-                          type: string
-                          description: Entity type
-                        contact_id:
-                          type: integer
-                          description: Contact identifier
-                        pocket_id:
-                          type: integer
-                          description: Pocket identifier
-                        list_id:
-                          type: integer
-                          description: List identifier
-                        item_id:
-                          type: integer
-                          description: Item identifier
-                        comment_id:
-                          type: integer
-                          nullable: true
-                          description: Comment identifier
-                        attachment_id:
-                          type: integer
-                          nullable: true
-                          description: Attachment identifier
-                        location_id:
-                          type: integer
-                          nullable: true
-                          description: Location identifier
-                        additional_id:
-                          type: integer
-                          nullable: true
-                          description: Additional identifier
-                        assigned_contact_id:
-                          type: integer
-                          nullable: true
-                          description: Assigned contact identifier
-                        create_datetime:
-                          type: string
-                          format: datetime
-                          description: Create datetime
-                        params:
-                          type: string
-                          description: Params, JSON
+                      $ref: '#/components/schemas/log'
         400:
           description: Invalid request data.
           content:
@@ -1419,6 +1370,57 @@ components:
                   type: integer
                 5:
                   type: integer
+    log:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Log identifier
+        action:
+          type: string
+          description: Action
+        entity_type:
+          type: string
+          description: Entity type
+        contact_id:
+          type: integer
+          description: Contact identifier
+        pocket_id:
+          type: integer
+          description: Pocket identifier
+        list_id:
+          type: integer
+          description: List identifier
+        item_id:
+          type: integer
+          description: Item identifier
+        comment_id:
+          type: integer
+          nullable: true
+          description: Comment identifier
+        attachment_id:
+          type: integer
+          nullable: true
+          description: Attachment identifier
+        location_id:
+          type: integer
+          nullable: true
+          description: Location identifier
+        additional_id:
+          type: integer
+          nullable: true
+          description: Additional identifier
+        assigned_contact_id:
+          type: integer
+          nullable: true
+          description: Assigned contact identifier
+        create_datetime:
+          type: string
+          format: datetime
+          description: Create datetime
+        params:
+          type: string
+          description: Params, JSON
     item_attach:
       type: object
       required:
