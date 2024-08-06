@@ -28,7 +28,7 @@ class pocketlistsItem extends pocketlistsEntity
     protected $contact_id;
 
     /**
-     * @var int
+     * @var string
      */
     protected $sort;
 
@@ -638,15 +638,15 @@ class pocketlistsItem extends pocketlistsEntity
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getSort()
     {
-        return (int) $this->sort;
+        return $this->sort;
     }
 
     /**
-     * @param int $sort
+     * @param string $sort
      *
      * @return $this
      */

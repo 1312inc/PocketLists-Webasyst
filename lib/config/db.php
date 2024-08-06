@@ -29,7 +29,7 @@ return array(
         'list_id' => array('int', 11),
         'contact_id' => array('int', 11),
         'parent_id' => array('int', 11, 'null' => 0, 'default' => '0'),
-        'sort' => array('int', 11, 'null' => 0, 'default' => '0'),
+        'sort' => array('varchar', 32, 'null' => 0, 'default' => '0'),
         'has_children' => array('tinyint', 1, 'null' => 0, 'default' => '0'),
         'status' => array('tinyint', 1, 'null' => 0, 'default' => '0'),
         'priority' => array('tinyint', 1, 'null' => 0, 'default' => '0'),
@@ -91,7 +91,7 @@ return array(
     'pocketlists_list' => array(
         'id' => array('int', 11, 'null' => 0, 'autoincrement' => 1),
         'pocket_id' => array('int', 11, 'null' => 0, 'default' => '0'),
-        'sort' => array('int', 11, 'null' => 0, 'default' => '0'),
+        'sort' => array('varchar', 32, 'null' => 0, 'default' => '0'),
         'type' => array('enum', "'checklist','notes'"),
         'icon' => array('varchar', 64),
         'archived' => array('tinyint', 1, 'default' => '0'),
