@@ -150,7 +150,7 @@ return array(
     ),
     'pocketlists_pocket' => array(
         'id' => array('int', 11, 'unsigned' => 1, 'null' => 0, 'autoincrement' => 1),
-        'sort' => array('int', 11, 'null' => 0, 'default' => '0'),
+        'sort' => array('varchar', 32, 'null' => 0, 'default' => '0'),
         'name' => array('varchar', 200),
         'color' => array('enum', "'none','red','green','blue','yellow','purple'", 'null' => 0, 'default' => 'blue'),
         'passcode' => array('varchar', 32),

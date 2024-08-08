@@ -29,3 +29,17 @@ try {
     }
 } catch (waDbException $wdb_ex) {
 }
+
+try {
+    $sort_type = $model->query("
+        SELECT DATA_TYPE 
+        FROM INFORMATION_SCHEMA.COLUMNS 
+        WHERE TABLE_NAME = 'pocketlists_pocket' AND COLUMN_NAME = 'sort'
+    ")->fetchField('DATA_TYPE');
+    if ($sort_type == 'int') {
+        $model->exec("
+            ALTER TABLE pocketlists_pocket MODIFY COLUMN sort VARCHAR(32) DEFAULT '0' NOT NULL
+        ");
+    }
+} catch (waDbException $wdb_ex) {
+}

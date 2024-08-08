@@ -11,9 +11,9 @@ class pocketlistsPocket extends pocketlistsEntity
     private $id;
 
     /**
-     * @var int
+     * @var string
      */
-    private $sort = 0;
+    private $sort = '0';
 
     /**
      * @var string
@@ -95,7 +95,7 @@ class pocketlistsPocket extends pocketlistsEntity
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getSort()
     {
@@ -103,7 +103,7 @@ class pocketlistsPocket extends pocketlistsEntity
     }
 
     /**
-     * @param int $sort
+     * @param string $sort
      *
      * @return pocketlistsPocket
      */
