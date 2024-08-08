@@ -900,6 +900,9 @@ paths:
                 color:
                   type: string
                   description: Цвет
+                sort:
+                  type: string
+                  description: Sort
                 uuid:
                   type: string
                   description: UUID value
@@ -1002,6 +1005,9 @@ paths:
                 color:
                   type: string
                   description: Цвет
+                sort:
+                  type: string
+                  description: Sort
       responses:
         200:
           description: OK
@@ -1136,7 +1142,7 @@ components:
           type: integer
           description: Pocket identifier
         sort:
-          type: integer
+          type: string
           description: Sort
         name:
           type: string
