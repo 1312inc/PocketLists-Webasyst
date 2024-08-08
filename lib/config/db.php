@@ -73,14 +73,6 @@ return array(
             'item_id' => 'item_id',
         ),
     ),
-    'pocketlists_item_sort' => array(
-        'list_id' => array('int', 11, 'null' => 0),
-        'item_id' => array('int', 11, 'null' => 0),
-        'sort' => array('int', 11),
-        ':keys' => array(
-            'PRIMARY' => array('list_id', 'item_id'),
-        ),
-    ),
     'pocketlists_item_tags' => array(
         'item_id' => array('int', 11, 'null' => 0),
         'tag_id' => array('int', 11, 'null' => 0),
@@ -102,14 +94,6 @@ return array(
         ':keys' => array(
             'PRIMARY' => 'id',
             'pocket_id' => 'pocket_id',
-        ),
-    ),
-    'pocketlists_list_sort' => array(
-        'list_id' => array('int', 11, 'null' => 0),
-        'contact_id' => array('int', 11, 'null' => 0),
-        'sort' => array('int', 11),
-        ':keys' => array(
-            'PRIMARY' => array('list_id', 'contact_id'),
         ),
     ),
     'pocketlists_location' => array(
