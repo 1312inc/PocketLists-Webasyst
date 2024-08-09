@@ -1356,18 +1356,6 @@ components:
           type: string
         locale:
           type: string
-        list_activities:
-          type: array
-          items:
-            type: object
-            properties:
-              list_id:
-                type: integer
-              contact_id:
-                type: integer
-              last_date:
-                type: string
-                format: datetime
         items_info:
           type: object
           properties:

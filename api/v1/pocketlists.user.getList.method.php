@@ -15,21 +15,20 @@ class pocketlistsUserGetListMethod extends pocketlistsApiAbstractMethod
             /** @var pocketlistsItemsCount $items_info */
             $items_info = $_teammate->getItemsInfo();
             $result[] = [
-                'id'              => $_teammate->getId(),
-                'name'            => $_teammate->getName(),
-                'username'        => $_teammate->getUsername(),
-                'photo_url'       => $root_url.$_teammate->getPhotoUrl(),
-                'user_pic'        => $root_url.$_teammate->getUserPic(),
-                'status'          => $_teammate->getStatus(),
-                'team_role'       => $_teammate->getTeamrole(),
-                'login'           => $_teammate->getLogin(),
-                'me'              => $_teammate->isMe(),
-                'exists'          => $_teammate->isExists(),
-                'last_activity'   => $_teammate->getLastActivity(),
-                'email'           => $_teammate->getEmail(),
-                'locale'          => $_teammate->getLocale(),
-                'list_activities' => array_values($_teammate->getListActivities()),
-                'items_info'      => [
+                'id'            => $_teammate->getId(),
+                'name'          => $_teammate->getName(),
+                'username'      => $_teammate->getUsername(),
+                'photo_url'     => $root_url.$_teammate->getPhotoUrl(),
+                'user_pic'      => $root_url.$_teammate->getUserPic(),
+                'status'        => $_teammate->getStatus(),
+                'team_role'     => $_teammate->getTeamrole(),
+                'login'         => $_teammate->getLogin(),
+                'me'            => $_teammate->isMe(),
+                'exists'        => $_teammate->isExists(),
+                'last_activity' => $_teammate->getLastActivity(),
+                'email'         => $_teammate->getEmail(),
+                'locale'        => $_teammate->getLocale(),
+                'items_info'    => [
                     'count'              => $items_info->getCount(),
                     'count_priority'     => $items_info->getCountPriority(),
                     'max_priority'       => $items_info->getMaxPriority(),
@@ -57,7 +56,6 @@ class pocketlistsUserGetListMethod extends pocketlistsApiAbstractMethod
                     'me',
                     'exists',
                     'last_activity',
-                    'list_activities',
                     'email',
                     'locale',
                     'items_info'
