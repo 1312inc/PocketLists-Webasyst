@@ -41,7 +41,7 @@ class pocketlistsLogGetMethod extends pocketlistsApiAbstractMethod
         $query_components = $log_model->getQueryComponents();
         $query_components['where']['and'][] = 'l.create_datetime >= s:starting_from';
         $logs = $log_model->query(
-            $log_model->buildSqlComponents($query_components, $limit, $offset),
+            $log_model->buildSqlComponents($query_components, $limit, $offset, true),
             [
                 'starting_from' => date('Y-m-d H:i:s', $starting_from),
             ]
