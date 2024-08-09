@@ -5,9 +5,9 @@ class pocketlistsUserGetListMethod extends pocketlistsApiAbstractMethod
     public function execute()
     {
         $result = [];
-        /** @var pocketlistsContactFactory $contactFactory */
-        $contactFactory = pl2()->getEntityFactory(pocketlistsContact::class);
-        $teammates = $contactFactory->getTeammates(pocketlistsRBAC::getAccessContacts(), true, true, true);
+        /** @var pocketlistsContactFactory $contact_factory */
+        $contact_factory = pl2()->getEntityFactory(pocketlistsContact::class);
+        $teammates = $contact_factory->getTeammates(pocketlistsRBAC::getAccessContacts(), true, false, true);
         $root_url = rtrim(wa()->getConfig()->getHostUrl(), '/');
 
         /** @var pocketlistsContact $_teammate */
