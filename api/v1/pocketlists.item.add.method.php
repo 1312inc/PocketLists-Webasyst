@@ -44,6 +44,8 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
                 'priority'            => ifset($_item, 'priority', 0),
                 'contact_id'          => $this->getUser()->getId(),
                 'attachments'         => ifset($_item, 'attachments', []),
+                'prev_item_id'        => ifset($_item, 'prev_item_id', null),
+                'prev_item_uuid'      => ifset($_item, 'prev_item_uuid', null),
                 'uuid'                => ifset($_item, 'uuid', null),
                 'create_datetime'     => date('Y-m-d H:i:s'),
                 'due_datetime'        => ifset($_item, 'due_datetime', null),
@@ -147,6 +149,7 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
             $this->http_status_code = 400;
         } else {
             $item_model = pl2()->getModel(pocketlistsItem::class);
+            $items = $this->sorting($item_model, $items);
             $item_model->startTransaction();
             try {
                 $result = $item_model->multipleInsert($items);
@@ -232,5 +235,50 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
                 'linked_entities_count' => 'int'
             ]
         );
+    }
+
+    private function sorting(pocketlistsItemModel $item_model, $items = [])
+    {
+        $prev_by_id = [];
+        $prev_by_uuid = [];
+        $prev_item_ids = array_unique(array_column($items, 'prev_item_id'));
+        $prev_item_uuids = array_unique(array_column($items, 'prev_item_uuid'));
+
+        if ($prev_item_ids || $prev_item_uuids) {
+            $prev_items = $item_model->select('id, list_id, sort, uuid')
+                ->where('id IN (:ids) OR uuid IN (:uuids)', ['ids' => $prev_item_ids, 'uuids' => $prev_item_uuids])
+                ->fetchAll();
+            foreach ($prev_items as $_prev_items) {
+                if (empty($_prev_items['uuid'])) {
+                    $prev_by_id[$_prev_items['id']] = $_prev_items;
+                } else {
+                    $prev_by_uuid[$_prev_items['uuid']] = $_prev_items;
+                }
+            }
+            unset($prev_items, $prev_item_ids, $prev_item_uuids);
+        }
+
+        foreach ($items as &$_item) {
+            if (isset($_item['prev_item_id']) ) {
+                $sort = ifempty($prev_by_id, $_item['prev_item_id'], 'sort', '0');
+                $list_id = ifempty($prev_by_id, $_item['prev_item_id'], 'list_id', null);
+            } elseif (isset($_item['prev_item_uuid'])) {
+                $sort = ifempty($prev_by_uuid, $_item['prev_item_uuid'], 'sort', '0');
+                $list_id = ifempty($prev_by_uuid, $_item['prev_item_uuid'], 'list_id', null);
+            }
+
+            if (isset($sort, $list_id) && $list_id == $_item['list_id']) {
+                try {
+                    $rank = lexorankRank::fromString($sort);
+                    $rank = lexorankRank::after($rank);
+                    $sort = $rank->get();
+                } catch (Exception $e) {
+                }
+                $_item['sort'] = $sort;
+                unset($sort, $list_id);
+            }
+        }
+
+        return $items;
     }
 }

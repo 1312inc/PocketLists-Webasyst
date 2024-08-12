@@ -47,11 +47,6 @@ final class lexorankRank
         if ($invalidChars !== []) {
             throw new Exception('Rank provided contains an invalid Char. Rank Provided: '.$rank.' - Invalid char: '.implode(', ', array_values($invalidChars)));
         }
-
-        $lastChar = substr($rank, -1);
-        if ($lastChar === self::MIN_CHAR) {
-            throw new Exception('The last char of the rank ('.$rank.') can\'t be equal to the min char ('.self::MIN_CHAR.').');
-        }
     }
 
     /**

@@ -306,6 +306,14 @@ paths:
                     format: date-time
                     nullable: true
                     description: Due datetime
+                  prev_item_id:
+                    type: integer
+                    nullable: true
+                    description: Предыдущий идентификатор айтема для сортировки
+                  prev_item_uuid:
+                    type: string
+                    nullable: true
+                    description: Предыдущий UUID айтема для сортировки
                   uuid:
                     type: string
                     nullable: true
