@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>{$wa->appName()} &mdash; {$wa->accountName()}</title>
+    {$wa->css()}
+</head>
+
+
+<body style="background-color: var(--background-color);">
+    <div id="wa">
+        {$wa->header()}
+
+        <!-- plugin hook: 'backend_head' -->
+        {* @event backend_head.%plugin_id% *}
+        {if !empty($backend_head)}{foreach $backend_head as $_}{ifset($_)}{/foreach}{/if}
+
+        {if $wa->isSingleAppMode()}
+            <div class="hidden">
+                {$wa->headerSingleAppUser()}
+            </div>
+        {/if}
+
+        <div id="wa-app">
+            <div id="app"></div>
+        </div>
+    </div>
+</body>
+</html>

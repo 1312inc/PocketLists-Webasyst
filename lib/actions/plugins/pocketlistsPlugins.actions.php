@@ -18,5 +18,6 @@ class pocketlistsPluginsActions extends waPluginsActions
         if (!$this->getUser()->isAdmin('pocketlists')) {
             throw new waRightsException(_ws('Access denied'));
         }
+        $this->setLayout(new pocketlistsStaticLayout());
     }
 }

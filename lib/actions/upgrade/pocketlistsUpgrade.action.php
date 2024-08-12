@@ -7,6 +7,7 @@ class pocketlistsUpgradeAction extends waViewAction
 {
     public function execute()
     {
+        $this->setLayout(new pocketlistsStaticLayout());
         $this->view->assign('admin', pocketlistsRBAC::isAdmin());
     }
 }

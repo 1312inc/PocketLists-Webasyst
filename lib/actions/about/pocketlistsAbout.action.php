@@ -7,6 +7,6 @@ class pocketlistsAboutAction extends pocketlistsViewAction
 {
     public function runAction($params = null)
     {
-
+        $this->setLayout(new pocketlistsStaticLayout());
     }
 }
