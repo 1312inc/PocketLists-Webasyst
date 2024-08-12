@@ -222,11 +222,14 @@ class pocketlistsConfig extends waAppConfig
                 'kmStorage',
                 'kmStatistics',
             ],
+            'wa-apps/pocketlists/lib/vendor/lexorank/' => [
+                'Rank'
+            ]
         ];
-
+        $path_root = waConfig::get('wa_path_root');
         foreach ($customClasses as $path => $classes) {
             foreach ($classes as $class) {
-                $file = wa()->getAppPath('lib/vendor/km/'.$class.'.class.php', 'pocketlists');
+                $file = $path_root.DIRECTORY_SEPARATOR.$path.$class.'.class.php';
                 if (!class_exists($class, false) && file_exists($file)) {
                     waAutoload::getInstance()->add($class, $path.$class.'.class.php');
                 }
