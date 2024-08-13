@@ -603,6 +603,14 @@ paths:
                     - $ref: '#/components/schemas/list'
                     - type: object
                       properties:
+                        status_code:
+                          type: string
+                          description: Status code
+                          enum:
+                            - ok
+                            - error
+                    - type: object
+                      properties:
                         errors:
                           type: array
                           items:

@@ -13,7 +13,6 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
             throw new waAPIException('type_error', _w('Type error data'), 400);
         }
 
-        $errors_exists = false;
         $assign_contacts = [];
         $list_ids = array_unique(array_column($items, 'list_id'));
         $assigned_contact_ids = array_unique(array_column($items, 'assigned_contact_id'));
@@ -52,7 +51,8 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
                 'due_date'            => null,
                 'amount'              => 0,
                 'repeat'              => 0,
-                'errors'              => []
+                'errors'              => [],
+                'status_code'         => null,
             ];
 
             if (!isset($_item['list_id'])) {
@@ -140,25 +140,27 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
             if (empty($_item['errors'])) {
                 unset($_item['errors']);
             } else {
-                $errors_exists = true;
                 $_item['attachments'] = [];
+                $_item['status_code'] = 'error';
             }
         }
 
-        if ($errors_exists) {
-            $this->http_status_code = 400;
-        } else {
+        $items_ok = array_filter($items, function ($i) {
+            return is_null($i['status_code']);
+        });
+        $items_err = array_diff_key($items, $items_ok);
+        if (!empty($items_ok)) {
             $item_model = pl2()->getModel(pocketlistsItem::class);
-            $items = $this->sorting($item_model, $items);
-            $item_model->startTransaction();
+            $items_ok = $this->sorting($item_model, $items_ok);
             try {
-                $result = $item_model->multipleInsert($items);
+                $result = $item_model->multipleInsert($items_ok);
                 if ($result->getResult()) {
                     $last_id = $result->lastInsertId();
                     $rows_count = $result->affectedRows();
-                    if ($rows_count === count($items)) {
-                        foreach ($items as &$_item) {
+                    if ($rows_count === count($items_ok)) {
+                        foreach ($items_ok as &$_item) {
                             $_item['id'] = $last_id++;
+                            $_item['status_code'] = 'ok';
                             if (!empty($_item['attachments'])) {
                                 $_item['attachments'] = $this->updateFiles($_item['id'], $_item['attachments']);
                             }
@@ -166,18 +168,16 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
                     } else {
                         throw new waAPIException('error', _w('Error on transaction'));
                     }
-                    $item_model->commit();
                 } else {
-                    $item_model->rollback();
+                    throw new waAPIException('error', _w('Error on transaction'));
                 }
             } catch (Exception $ex) {
-                $item_model->rollback();
                 throw new waAPIException('error', sprintf_wp('Error on transaction import save: %s', $ex->getMessage()), 400);
             }
         }
 
         $this->response = $this->filterFields(
-            $items,
+            array_merge($items_ok, $items_err),
             [
                 'id',
                 'list_id',
@@ -208,7 +208,8 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
                 'comments_count',
                 'linked_entities_count',
                 'attachments',
-                'errors'
+                'errors',
+                'status_code'
             ],
             [
                 'id' => 'int',
