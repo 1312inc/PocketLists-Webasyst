@@ -31,8 +31,8 @@
 
     <script type="text/javascript" src="?action=loc&amp;v=2{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
 
-    <script type="module" crossorigin src="{$wa_app_static_url}client/assets/index-r4wdQ7RO.js"></script>
-    <link rel="stylesheet" crossorigin href="{$wa_app_static_url}client/assets/index-AxK0WxBE.css">
+    <script type="module" crossorigin src="{$wa_app_static_url}client/assets/index-XXxQ8LFM.js"></script>
+    <link rel="stylesheet" crossorigin href="{$wa_app_static_url}client/assets/index-g2VNCcZh.css">
 
     <script>
         window.appState = {
@@ -64,7 +64,36 @@
         {/if}
                     
         <div id="wa-app">
-            <div id="app"></div>
+            <div id="app">
+                <div data-vue-fragment="sidebar-footer">
+                    <ul class="menu">
+                        <li>
+                            <a href="{$wa_app_url}plugins">
+                                <i class="fas fa-plug"></i>
+                                <span>Плагины</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{$wa_app_url}settings">
+                                <i class="fas fa-cog"></i>
+                                <span>Настройки</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{$wa_app_url}upgrade">
+                                <i class="fas fa-wrench"></i>
+                                <span>Апгрейд</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{$wa_app_url}about">
+                                <i class="fas fa-info-circle"></i>
+                                <span>О приложении</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 </body>
