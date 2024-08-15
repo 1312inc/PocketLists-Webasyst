@@ -4,8 +4,25 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>{$wa->appName()} &mdash; {$wa->accountName()}</title>
     {$wa->css()}
-</head>
+    <link type="text/css" rel="stylesheet" href="{$wa_app_static_url}css/jquery-ui.min.css">
+    <link type="text/css" rel="stylesheet" href="{$wa_app_static_url}css/pocketlists.css?v2{if !waSystemConfig::isDebug()}{$wa->version()}{/if}">
+    <!--<link href="{$wa_url}wa-content/css/jquery-ui/base/jquery.ui.autocomplete.css" rel="stylesheet" type="text/css" />-->
 
+    <script type="text/javascript" src="{$wa_url}wa-content/js/jquery/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="{$wa_url}wa-content/js/jquery-plugins/jquery.history.js"></script>
+    <script type="text/javascript" src="{$wa_url}wa-content/js/jquery-plugins/jquery.store.js"></script>
+    <!-- <script type="text/javascript" src="{$wa_url}wa-content/js/jquery-wa/wa.dialog.js"></script> -->
+    <script src="{$wa_url}wa-content/js/jquery-wa/wa.js?v=2.0.0"></script>
+    <script type="text/javascript" src="{$wa_app_static_url}js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="{$wa_app_static_url}js/jquery.ui.widget.js"></script>
+    {if ($wa->locale() == 'ru_RU')}<script type="text/javascript" src="{$wa_url}wa-content/js/jquery-ui/i18n/jquery.ui.datepicker-ru_RU.js"></script>{/if}
+    <script type="text/javascript" src="{$wa_url}wa-content/js/jquery-plugins/fileupload/jquery.iframe-transport.js"></script>
+    <script type="text/javascript" src="{$wa_url}wa-content/js/jquery-plugins/fileupload/jquery.fileupload.js"></script>
+    <script type="text/javascript" src="{$wa_url}wa-content/js/jquery-plugins/jquery.tmpl.min.js"></script>
+
+    <script type="text/javascript" src="{$wa_url}wa-content/js/jquery-wa/wa.core.js"></script>
+
+</head>
 
 <body style="background-color: var(--background-color);">
     <div id="wa">
@@ -21,7 +38,51 @@
             </div>
         {/if}
 
-        <div id="wa-app">
+        <div id="wa-app" class="flexbox">
+            <div class="sidebar flexbox">
+                <div class="sidebar-header">
+                    <!-- sidebar fixed header, e.g. action button -->
+                    <ul class="menu">
+                        <li>
+                            <a href="{$wa_app_url}">Back to Lists</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="sidebar-body">
+                    <!-- sidebar main scrollable content -->
+                </div>
+                <div class="sidebar-footer shadowed">
+                    <ul class="menu">
+                        <li>
+                            <a href="{$wa_app_url}plugins/">
+                                <i class="fas fa-plug"></i>
+                                <span>Плагины</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{$wa_app_url}settings/">
+                                <i class="fas fa-cog"></i>
+                                <span>Настройки</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{$wa_app_url}upgrade/">
+                                <i class="fas fa-wrench"></i>
+                                <span>Апгрейд</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{$wa_app_url}about/">
+                                <i class="fas fa-info-circle"></i>
+                                <span>О приложении</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="content">
+                {$content}
+            </div>
             
         </div>
     </div>
