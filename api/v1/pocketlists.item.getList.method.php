@@ -123,10 +123,6 @@ class pocketlistsItemGetListMethod extends pocketlistsApiAbstractMethod
                     'assigned_contact_id',
                     'repeat',
                     'key_list_id',
-                    'favorite',
-                    'attachments_count',
-                    'comments_count',
-                    'linked_entities_count',
                     'uuid',
                     'attachments'
                 ],
@@ -135,7 +131,7 @@ class pocketlistsItemGetListMethod extends pocketlistsApiAbstractMethod
                     'list_id' => 'int',
                     'contact_id' => 'int',
                     'parent_id' => 'int',
-                    'has_children' => 'bool',
+                    'has_children' => 'int',
                     'status' => 'int',
                     'priority' => 'int',
                     'calc_priority' => 'int',
@@ -148,11 +144,7 @@ class pocketlistsItemGetListMethod extends pocketlistsApiAbstractMethod
                     'amount' => 'float',
                     'assigned_contact_id' => 'int',
                     'repeat' => 'int',
-                    'key_list_id' => 'int',
-                    'favorite' => 'bool',
-                    'attachments_count' => 'int',
-                    'comments_count' => 'int',
-                    'linked_entities_count' => 'int'
+                    'key_list_id' => 'int'
                 ]
             )
         ];

@@ -350,6 +350,22 @@ paths:
                     - $ref: '#/components/schemas/item'
                     - type: object
                       properties:
+                        prev_item_id:
+                          nullable: true
+                          default: null
+                          description: Предыдущий идентификатор айтема для сортировки
+                        prev_item_uuid:
+                          nullable: true
+                          default: null
+                          description: Предыдущий UUID айтема для сортировки
+                        status_code:
+                          type: string
+                          description: Status code
+                          enum:
+                            - ok
+                            - error
+                    - type: object
+                      properties:
                         errors:
                           type: array
                           items:
@@ -601,14 +617,6 @@ paths:
                 items:
                   allOf:
                     - $ref: '#/components/schemas/list'
-                    - type: object
-                      properties:
-                        status_code:
-                          type: string
-                          description: Status code
-                          enum:
-                            - ok
-                            - error
                     - type: object
                       properties:
                         errors:
@@ -1210,110 +1218,128 @@ components:
               type: integer
               description: Key item
     item:
-      type: object
-      properties:
-        id:
-          type: integer
-          description: Entity identifier
-        list_id:
-          type: integer
-          nullable: true
-          description: List identifier
-        contact_id:
-          type: integer
-          description: Contact identifier
-        parent_id:
-          type: integer
-          description: Parent identifier
-        sort:
-          type: string
-          description: Sort
-        has_children:
-          type: boolean
-          description: Has children
-        status:
-          type: integer
-          description: Status
-        priority:
-          type: integer
-          description: Priority
-        calc_priority:
-          type: integer
-          description: Calc priority
-        create_datetime:
-          type: string
-          format: date-time
-          description: Create datetime
-        update_datetime:
-          type: string
-          format: date-time
-          nullable: true
-          description: Update datetime
-        complete_datetime:
-          type: string
-          format: date-time
-          nullable: true
-          description: Complete datetime
-        complete_contact_id:
-          type: integer
-          nullable: true
-          description: Complete contact identifier
-        name:
-          type: string
-          description: Name item
-        note:
-          type: string
-          description: Note item
-        due_date:
-          type: string
-          format: date
-          nullable: true
-          description: Due date
-        due_datetime:
-          type: string
-          format: date-time
-          nullable: true
-          description: Due datetime
-        location_id:
-          type: integer
-          nullable: true
-          description: Location identifier
-        amount:
-          type: number
-          description: Amount
-        currency_iso3:
-          type: string
-          description: Currency ISO3
-        assigned_contact_id:
-          type: integer
-          nullable: true
-          description: Assigned contact identifier
-        repeat:
-          type: integer
-          description: Repeat
-        key_list_id:
-          type: integer
-          description: Key list identifier
-        uuid:
-          type: string
-          nullable: true
-          description: UUID value
-        favorite:
-          type: boolean
-          description: Favorite
-        attachments_count:
-          type: integer
-          description: Attachments count
-        comments_count:
-          type: integer
-          description: Comments count
-        linked_entities_count:
-          type: integer
-          description: Linked entities count
-        attachments:
-          type: array
-          items:
-            $ref: '#/components/schemas/attachment'
+      allOf:
+        - type: object
+          properties:
+            attachments:
+              type: array
+              items:
+                $ref: '#/components/schemas/attachment'
+        - type: object
+          properties:
+            id:
+              type: integer
+              nullable: true
+              default: null
+              description: Entity identifier
+            list_id:
+              type: integer
+              nullable: true
+              default: null
+              description: List identifier
+            contact_id:
+              type: integer
+              nullable: false
+              description: Contact identifier
+            parent_id:
+              type: integer
+              nullable: false
+              default: null
+              description: Parent identifier
+            sort:
+              type: string
+              default: '0'
+              description: Sort
+            has_children:
+              type: integer
+              default: 0
+              description: Has children
+            status:
+              type: integer
+              default: 0
+              description: Status
+            priority:
+              type: integer
+              default: 0
+              description: Priority
+            calc_priority:
+              type: integer
+              default: 0
+              description: Calc priority
+            create_datetime:
+              type: string
+              format: date-time
+              description: Create datetime
+            update_datetime:
+              type: string
+              format: date-time
+              nullable: true
+              default: null
+              description: Update datetime
+            complete_datetime:
+              type: string
+              format: date-time
+              nullable: true
+              default: null
+              description: Complete datetime
+            complete_contact_id:
+              type: integer
+              nullable: true
+              default: null
+              description: Complete contact identifier
+            name:
+              type: string
+              default: ''
+              description: Name item
+            note:
+              type: string
+              default: ''
+              description: Note item
+            due_date:
+              type: string
+              format: date
+              nullable: true
+              default: null
+              description: Due date
+            due_datetime:
+              type: string
+              format: date-time
+              nullable: true
+              default: null
+              description: Due datetime
+            location_id:
+              type: integer
+              nullable: true
+              default: null
+              description: Location identifier
+            amount:
+              type: number
+              default: 0
+              description: Amount
+            currency_iso3:
+              type: string
+              nullable: true
+              default: null
+              description: Currency ISO3
+            assigned_contact_id:
+              type: integer
+              nullable: true
+              default: null
+              description: Assigned contact identifier
+            repeat:
+              type: integer
+              default: 0
+              description: Repeat
+            key_list_id:
+              type: integer
+              nullable: true
+              default: null
+              description: Key list identifier
+            uuid:
+              type: string
+              nullable: true
+              default: null
+              description: UUID value
     comment:
       type: object
       properties:

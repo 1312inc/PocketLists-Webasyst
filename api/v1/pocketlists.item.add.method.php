@@ -32,25 +32,37 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
         }
 
         /** validate */
+        $user_id = $this->getUser()->getId();
         foreach ($items as &$_item) {
             /** set default */
             $_item = [
+                'id'                  => null,
                 'list_id'             => ifset($_item, 'list_id', null),
+                'contact_id'          => $user_id,
+                'parent_id'           => 0,
+                'sort'                => ifset($_item, 'sort', '0'),
+                'has_children'        => 0,
+                'status'              => 0,
+                'priority'            => ifset($_item, 'priority', 0),
+                'calc_priority'       => 0,
+                'create_datetime'     => date('Y-m-d H:i:s'),
+                'update_datetime'     => null,
+                'complete_datetime'   => null,
+                'complete_contact_id' => null,
                 'name'                => ifset($_item, 'name', ''),
                 'note'                => ifset($_item, 'note', ''),
-                'sort'                => ifset($_item, 'sort', '0'),
+                'due_date'            => null,
+                'due_datetime'        => ifset($_item, 'due_datetime', null),
+                'location_id'         => null,
+                'amount'              => 0,
+                'currency_iso3'       => null,
                 'assigned_contact_id' => ifset($_item, 'assigned_contact_id', null),
-                'priority'            => ifset($_item, 'priority', 0),
-                'contact_id'          => $this->getUser()->getId(),
+                'repeat'              => 0,
+                'key_list_id'         => null,
+                'uuid'                => ifset($_item, 'uuid', null),
                 'attachments'         => ifset($_item, 'attachments', []),
                 'prev_item_id'        => ifset($_item, 'prev_item_id', null),
                 'prev_item_uuid'      => ifset($_item, 'prev_item_uuid', null),
-                'uuid'                => ifset($_item, 'uuid', null),
-                'create_datetime'     => date('Y-m-d H:i:s'),
-                'due_datetime'        => ifset($_item, 'due_datetime', null),
-                'due_date'            => null,
-                'amount'              => 0,
-                'repeat'              => 0,
                 'errors'              => [],
                 'status_code'         => null,
             ];
@@ -201,13 +213,11 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
                 'currency_iso3',
                 'assigned_contact_id',
                 'repeat',
-                'uuid',
                 'key_list_id',
-                'favorite',
-                'attachments_count',
-                'comments_count',
-                'linked_entities_count',
+                'uuid',
                 'attachments',
+                'prev_item_id',
+                'prev_item_uuid',
                 'errors',
                 'status_code'
             ],
@@ -216,7 +226,7 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
                 'list_id' => 'int',
                 'contact_id' => 'int',
                 'parent_id' => 'int',
-                'has_children' => 'bool',
+                'has_children' => 'int',
                 'status' => 'int',
                 'priority' => 'int',
                 'calc_priority' => 'int',
@@ -229,11 +239,7 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
                 'amount' => 'float',
                 'assigned_contact_id' => 'int',
                 'repeat' => 'int',
-                'key_list_id' => 'int',
-                'favorite' => 'bool',
-                'attachments_count' => 'int',
-                'comments_count' => 'int',
-                'linked_entities_count' => 'int'
+                'key_list_id' => 'int'
             ]
         );
     }
