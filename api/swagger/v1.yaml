@@ -485,63 +485,82 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - id
-                - list_id
-              properties:
-                id:
-                  type: integer
-                  description: Item identifier
-                list_id:
-                  type: integer
-                  description: List identifier
-                name:
-                  type: string
-                  description: Item name
-                note:
-                  type: string
-                  description: Note
-                sort:
-                  type: string
-                  description: Sort
-                assigned_contact_id:
-                  type: integer
-                  description: Assigned contact identifier
-                priority:
-                  type: integer
-                  description: Priority
-                due_datetime:
-                  type: string
-                  format: date-time
-                  description: Due datetime
-                attachments:
-                  type: array
-                  description: Files
-                  items:
-                    required:
-                      - file
-                      - file_name
-                    type: object
-                    properties:
-                      file:
-                        type: string
-                        format: byte
-                        description: File binary content
-                      file_name:
-                        type: string
-                        description: File name
-                      uuid:
-                        type: string
-                        nullable: true
-                        description: UUID value
+              type: array
+              items:
+                type: object
+                required:
+                  - id
+                properties:
+                  id:
+                    type: integer
+                    description: Item identifier
+                  list_id:
+                    type: integer
+                    description: List identifier
+                  name:
+                    type: string
+                    description: Item name
+                  note:
+                    type: string
+                    description: Note
+                  sort:
+                    type: string
+                    description: Sort
+                  assigned_contact_id:
+                    type: integer
+                    description: Assigned contact identifier
+                  priority:
+                    type: integer
+                    description: Priority
+                  due_datetime:
+                    type: string
+                    format: date-time
+                    description: Due datetime
+                  attachments:
+                    type: array
+                    description: Files
+                    items:
+                      required:
+                        - file
+                        - file_name
+                      type: object
+                      properties:
+                        file:
+                          type: string
+                          format: byte
+                          description: File binary content
+                        file_name:
+                          type: string
+                          description: File name
+                        uuid:
+                          type: string
+                          nullable: true
+                          description: UUID value
       responses:
         200:
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/item'
+                type: array
+                items:
+                  allOf:
+                    - $ref: '#/components/schemas/item'
+                    - type: object
+                      properties:
+                        status_code:
+                          type: string
+                          description: Status code
+                          enum:
+                            - ok
+                            - error
+                    - type: object
+                      properties:
+                        errors:
+                          type: array
+                          items:
+                            type: string
+                            description: Error description
         400:
           description: Invalid request data.
           content:
