@@ -265,27 +265,80 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
             unset($prev_items, $prev_item_ids, $prev_item_uuids);
         }
 
-        foreach ($items as &$_item) {
-            if (isset($_item['prev_item_id']) ) {
-                $sort = ifempty($prev_by_id, $_item['prev_item_id'], 'sort', '0');
-                $list_id = ifempty($prev_by_id, $_item['prev_item_id'], 'list_id', null);
-            } elseif (isset($_item['prev_item_uuid'])) {
-                $sort = ifempty($prev_by_uuid, $_item['prev_item_uuid'], 'sort', '0');
-                $list_id = ifempty($prev_by_uuid, $_item['prev_item_uuid'], 'list_id', null);
+        $iter = count($items);
+        $iter = $iter * $iter;
+        do {
+            $iter--;
+            $counter = 1;
+            $ext_item = array_pop($items);
+            $ext_uuid = ifset($ext_item, 'uuid', null);
+            $ext_prev_uuid = ifset($ext_item, 'prev_item_uuid', null);
+            if (is_null($ext_uuid) && is_null($ext_prev_uuid)) {
+                array_unshift($items, $ext_item);
+                continue;
             }
-
-            if (isset($sort, $list_id) && $list_id == $_item['list_id']) {
-                try {
-                    $rank = lexorankRank::fromString($sort);
-                    $rank = lexorankRank::after($rank);
-                    $sort = $rank->get();
-                } catch (Exception $e) {
+            foreach ($items as $int_item) {
+                $curr_uuid = ifset($int_item, 'uuid', null);
+                $curr_prev_uuid = ifset($int_item, 'prev_item_uuid', null);
+                if (isset($ext_uuid, $curr_prev_uuid) && $ext_uuid === $curr_prev_uuid) {
+                    // вставляем НАД текущим
+                    $counter--;
+                    $items = array_merge(
+                        array_slice($items, 0, $counter),
+                        [$ext_item],
+                        array_slice($items, $counter)
+                    );
+                    break;
+                } elseif (isset($ext_prev_uuid, $curr_uuid) && $ext_prev_uuid === $curr_uuid) {
+                    // вставляем ПОД текущим
+                    $items = array_merge(
+                        array_slice($items, 0, $counter),
+                        [$ext_item],
+                        array_slice($items, $counter)
+                    );
+                    break;
                 }
-                $_item['sort'] = $sort;
-                unset($sort, $list_id);
+                $counter++;
             }
+        } while ($iter > 1);
+
+        $srt = '0';
+        foreach ($items as &$_item) {
+            $sort = '0';
+            if (isset($_item['prev_item_id']) ) {
+                $list_id = ifempty($prev_by_id, $_item['prev_item_id'], 'list_id', null);
+                if ($list_id == $_item['list_id'] &&  $sort = ifempty($prev_by_id, $_item['prev_item_id'], 'sort', '0')) {
+                    $sort = $this->getSort($sort);
+                }
+            } elseif (isset($_item['prev_item_uuid'])) {
+                $list_id = ifempty($prev_by_uuid, $_item['prev_item_uuid'], 'list_id', null);
+                if ($list_id == $_item['list_id'] && $sort = ifempty($prev_by_id, $_item['prev_item_uuid'], 'sort', '0')) {
+                    $sort = $this->getSort($sort);
+                } else {
+                    $srt = $this->getSort($srt);
+                    $sort = $srt;
+                }
+            }
+            $_item['sort'] = $sort;
         }
 
         return $items;
+    }
+
+    /**
+     * @param $sort
+     * @return string
+     */
+    private function getSort($sort = '0')
+    {
+        try {
+            $rank = lexorankRank::fromString($sort);
+            $rank = lexorankRank::after($rank);
+            $sort = $rank->get();
+        } catch (Exception $e) {
+            $sort = '0';
+        }
+
+        return $sort;
     }
 }
