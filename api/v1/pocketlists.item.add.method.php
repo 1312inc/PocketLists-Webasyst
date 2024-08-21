@@ -67,12 +67,12 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
                 'status_code'         => null,
             ];
 
-            if (!isset($_item['list_id'])) {
-                $_item['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'list_id');
-            } elseif (!is_numeric($_item['list_id'])) {
-                $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'list_id');
-            } elseif ($_item['list_id'] < 1 || !in_array($_item['list_id'], $list_ids)) {
-                $_item['errors'][] = _w('List not found');
+            if (isset($_item['list_id'])) {
+                if (!is_numeric($_item['list_id'])) {
+                    $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'list_id');
+                } elseif ($_item['list_id'] < 1 || !in_array($_item['list_id'], $list_ids)) {
+                    $_item['errors'][] = _w('List not found');
+                }
             }
 
             if (!is_string($_item['name'])) {

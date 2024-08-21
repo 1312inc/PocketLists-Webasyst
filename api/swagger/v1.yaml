@@ -279,8 +279,6 @@ paths:
               type: array
               items:
                 type: object
-                required:
-                  - list_id
                 properties:
                   list_id:
                     type: integer
@@ -351,10 +349,12 @@ paths:
                     - type: object
                       properties:
                         prev_item_id:
+                          type: string
                           nullable: true
                           default: null
                           description: Предыдущий идентификатор айтема для сортировки
                         prev_item_uuid:
+                          type: string
                           nullable: true
                           default: null
                           description: Предыдущий UUID айтема для сортировки
