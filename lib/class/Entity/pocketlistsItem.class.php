@@ -28,9 +28,14 @@ class pocketlistsItem extends pocketlistsEntity
     protected $contact_id;
 
     /**
+     * @var int
+     */
+    protected $sort = 0;
+
+    /**
      * @var string
      */
-    protected $sort;
+    protected $rank = '';
 
     /**
      * @var DateTime|null
@@ -638,21 +643,41 @@ class pocketlistsItem extends pocketlistsEntity
     }
 
     /**
-     * @return string
+     * @return int
      */
     public function getSort()
     {
-        return $this->sort;
+        return (int) $this->sort;
     }
 
     /**
-     * @param string $sort
+     * @param int $sort
      *
      * @return $this
      */
     public function setSort($sort)
     {
-        $this->sort = $sort;
+        $this->sort = (int) $sort;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRank()
+    {
+        return (string) $this->rank;
+    }
+
+    /**
+     * @param string $rank
+     *
+     * @return $this
+     */
+    public function setRank($rank)
+    {
+        $this->rank = (string) $rank;
 
         return $this;
     }

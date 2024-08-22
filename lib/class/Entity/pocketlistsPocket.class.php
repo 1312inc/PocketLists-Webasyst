@@ -11,9 +11,14 @@ class pocketlistsPocket extends pocketlistsEntity
     private $id;
 
     /**
+     * @var int
+     */
+    private $sort = 0;
+
+    /**
      * @var string
      */
-    private $sort = '0';
+    private $rank = '';
 
     /**
      * @var string
@@ -110,6 +115,26 @@ class pocketlistsPocket extends pocketlistsEntity
     public function setSort($sort)
     {
         $this->sort = $sort;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRank()
+    {
+        return (string) $this->rank;
+    }
+
+    /**
+     * @param string $rank
+     *
+     * @return $this
+     */
+    public function setRank($rank)
+    {
+        $this->rank = (string) $rank;
 
         return $this;
     }

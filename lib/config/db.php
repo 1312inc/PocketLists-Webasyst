@@ -29,7 +29,8 @@ return array(
         'list_id' => array('int', 11),
         'contact_id' => array('int', 11),
         'parent_id' => array('int', 11, 'null' => 0, 'default' => '0'),
-        'sort' => array('varchar', 32, 'null' => 0, 'default' => '0'),
+        'sort' => array('int', 11, 'null' => 0, 'default' => '0'),
+        'rank' => array('varchar', 16, 'null' => 0, 'default' => ''),
         'has_children' => array('tinyint', 1, 'null' => 0, 'default' => '0'),
         'status' => array('tinyint', 1, 'null' => 0, 'default' => '0'),
         'priority' => array('tinyint', 1, 'null' => 0, 'default' => '0'),
@@ -53,7 +54,7 @@ return array(
             'PRIMARY' => 'id',
             'parent' => 'parent_id',
             'list_id' => 'list_id',
-            'sort' => array('parent_id', 'sort'),
+            'sort' => array('parent_id', 'sort', 'rank'),
             'key_list_id' => 'key_list_id',
             'complete_contact_id' => 'complete_contact_id',
             'contact_id' => 'contact_id',
@@ -83,7 +84,8 @@ return array(
     'pocketlists_list' => array(
         'id' => array('int', 11, 'null' => 0, 'autoincrement' => 1),
         'pocket_id' => array('int', 11, 'null' => 0, 'default' => '0'),
-        'sort' => array('varchar', 32, 'null' => 0, 'default' => '0'),
+        'sort' => array('int', 11, 'null' => 0, 'default' => '0'),
+        'rank' => array('varchar', 16, 'null' => 0, 'default' => ''),
         'type' => array('enum', "'checklist','notes'"),
         'icon' => array('varchar', 64),
         'archived' => array('tinyint', 1, 'default' => '0'),
@@ -94,6 +96,7 @@ return array(
         ':keys' => array(
             'PRIMARY' => 'id',
             'pocket_id' => 'pocket_id',
+            'sort' => array('sort', 'rank')
         ),
     ),
     'pocketlists_location' => array(
@@ -150,14 +153,15 @@ return array(
     ),
     'pocketlists_pocket' => array(
         'id' => array('int', 11, 'unsigned' => 1, 'null' => 0, 'autoincrement' => 1),
-        'sort' => array('varchar', 32, 'null' => 0, 'default' => '0'),
+        'sort' => array('int', 11, 'null' => 0, 'default' => '0'),
+        'rank' => array('varchar', 16, 'null' => 0, 'default' => ''),
         'name' => array('varchar', 200),
         'color' => array('enum', "'none','red','green','blue','yellow','purple'", 'null' => 0, 'default' => 'blue'),
         'passcode' => array('varchar', 32),
         'uuid' => array('varchar', 36),
         ':keys' => array(
             'PRIMARY' => 'id',
-            'sort' => 'sort',
+            'sort' => array('sort', 'rank')
         ),
     ),
     'pocketlists_tag' => array(
