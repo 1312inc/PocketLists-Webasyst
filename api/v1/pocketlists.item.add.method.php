@@ -40,7 +40,8 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
                 'list_id'             => ifset($_item, 'list_id', null),
                 'contact_id'          => $user_id,
                 'parent_id'           => 0,
-                'sort'                => ifset($_item, 'sort', '0'),
+                'sort'                => ifset($_item, 'sort', 0),
+                'rank'                => ifset($_item, 'rank', ''),
                 'has_children'        => 0,
                 'status'              => 0,
                 'priority'            => ifset($_item, 'priority', 0),
@@ -79,8 +80,12 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
                 $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'name');
             }
 
-            if (!is_string($_item['sort'])) {
-                $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'sorts');
+            if (!is_numeric($_item['sort'])) {
+                $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'sort');
+            }
+
+            if (!is_string($_item['rank'])) {
+                $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'rank');
             }
 
             if ($_item['assigned_contact_id']) {
@@ -196,6 +201,7 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
                 'contact_id',
                 'parent_id',
                 'sort',
+                'rank',
                 'has_children',
                 'status',
                 'priority',
@@ -226,6 +232,7 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
                 'list_id' => 'int',
                 'contact_id' => 'int',
                 'parent_id' => 'int',
+                'sort' => 'int',
                 'has_children' => 'int',
                 'status' => 'int',
                 'priority' => 'int',
@@ -248,18 +255,28 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
     {
         $prev_by_id = [];
         $prev_by_uuid = [];
-        $prev_item_ids = array_unique(array_column($items, 'prev_item_id'));
-        $prev_item_uuids = array_unique(array_column($items, 'prev_item_uuid'));
+        $prev_item_ids = array_unique(array_filter(array_column($items, 'prev_item_id')));
+        $prev_item_uuids = array_unique(array_filter(array_column($items, 'prev_item_uuid')));
 
         if ($prev_item_ids || $prev_item_uuids) {
-            $prev_items = $item_model->select('id, list_id, sort, uuid')
-                ->where('id IN (:ids) OR uuid IN (:uuids)', ['ids' => $prev_item_ids, 'uuids' => $prev_item_uuids])
+            $where = [];
+            $params = [];
+            if ($prev_item_ids) {
+                $where[] = 'id IN (:ids)';
+                $params['ids'] = $prev_item_ids;
+            }
+            if ($prev_item_uuids) {
+                $where[] = 'uuid IN (:uuids)';
+                $params['uuids'] = $prev_item_uuids;
+            }
+            $prev_items = $item_model->select('id, list_id, sort, `rank`, uuid')
+                ->where(implode(' OR ', $where), $params)
                 ->fetchAll();
             foreach ($prev_items as $_prev_items) {
-                if (empty($_prev_items['uuid'])) {
-                    $prev_by_id[$_prev_items['id']] = $_prev_items;
-                } else {
+                if (!empty($_prev_items['uuid'])) {
                     $prev_by_uuid[$_prev_items['uuid']] = $_prev_items;
+                } else {
+                    $prev_by_id[$_prev_items['id']] = $_prev_items;
                 }
             }
             unset($prev_items, $prev_item_ids, $prev_item_uuids);
@@ -288,6 +305,7 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
                         [$ext_item],
                         array_slice($items, $counter)
                     );
+                    unset($ext_item);
                     break;
                 } elseif (isset($ext_prev_uuid, $curr_uuid) && $ext_prev_uuid === $curr_uuid) {
                     // вставляем ПОД текущим
@@ -296,49 +314,37 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
                         [$ext_item],
                         array_slice($items, $counter)
                     );
+                    unset($ext_item);
                     break;
                 }
                 $counter++;
             }
+            if (isset($ext_item)) {
+                array_unshift($items, $ext_item);
+            }
         } while ($iter > 1);
 
-        $srt = '0';
+        $sort = 0;
         foreach ($items as &$_item) {
-            $sort = '0';
             if (isset($_item['prev_item_id']) ) {
                 $list_id = ifempty($prev_by_id, $_item['prev_item_id'], 'list_id', null);
-                if ($list_id == $_item['list_id'] &&  $sort = ifempty($prev_by_id, $_item['prev_item_id'], 'sort', '0')) {
-                    $sort = $this->getSort($sort);
+                if ($list_id == $_item['list_id'] && $_item['sort'] === 0) {
+                    $_item['sort'] = ifempty($prev_by_id, $_item['prev_item_id'], 'sort', 0);
+                    ++$_item['sort'];
                 }
             } elseif (isset($_item['prev_item_uuid'])) {
                 $list_id = ifempty($prev_by_uuid, $_item['prev_item_uuid'], 'list_id', null);
-                if ($list_id == $_item['list_id'] && $sort = ifempty($prev_by_id, $_item['prev_item_uuid'], 'sort', '0')) {
-                    $sort = $this->getSort($sort);
-                } else {
-                    $srt = $this->getSort($srt);
-                    $sort = $srt;
+                if ($list_id == $_item['list_id'] && $_item['sort'] === 0) {
+                    $_item['sort'] = ifempty($prev_by_uuid, $_item['prev_item_uuid'], 'sort', 0);
+                    ++$_item['sort'];
+                } elseif ($_item['sort'] === 0) {
+                    $_item['sort'] = $sort++;
                 }
+            } elseif (isset($_item['uuid']) && $_item['sort'] === 0) {
+                $_item['sort'] = $sort++;
             }
-            $_item['sort'] = $sort;
         }
 
         return $items;
-    }
-
-    /**
-     * @param $sort
-     * @return string
-     */
-    private function getSort($sort = '0')
-    {
-        try {
-            $rank = lexorankRank::fromString($sort);
-            $rank = lexorankRank::after($rank);
-            $sort = $rank->get();
-        } catch (Exception $e) {
-            $sort = '0';
-        }
-
-        return $sort;
     }
 }

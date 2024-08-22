@@ -61,7 +61,7 @@ class pocketlistsItemGetListMethod extends pocketlistsApiAbstractMethod
         $plim = pl2()->getModel(pocketlistsItem::class);
         $sql = $plim->getQuery(true);
         $items = $plim->query(
-            "$sql $while ORDER BY i.parent_id, i.sort ASC, i.id DESC LIMIT i:offset, i:limit", [
+            "$sql $while ORDER BY i.parent_id, i.sort, i.rank ASC, i.id DESC LIMIT i:offset, i:limit", [
             'item_ids'      => $ids,
             'list_id'       => (int) $list_id,
             'contact_id'    => $this->getUser()->getId(),
@@ -105,6 +105,7 @@ class pocketlistsItemGetListMethod extends pocketlistsApiAbstractMethod
                     'contact_id',
                     'parent_id',
                     'sort',
+                    'rank',
                     'has_children',
                     'status',
                     'priority',
@@ -131,6 +132,7 @@ class pocketlistsItemGetListMethod extends pocketlistsApiAbstractMethod
                     'list_id' => 'int',
                     'contact_id' => 'int',
                     'parent_id' => 'int',
+                    'sort' => 'int',
                     'has_children' => 'int',
                     'status' => 'int',
                     'priority' => 'int',

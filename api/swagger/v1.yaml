@@ -290,8 +290,11 @@ paths:
                     type: string
                     description: Note
                   sort:
-                    type: string
+                    type: integer
                     description: Sort
+                  rank:
+                    type: string
+                    description: Sort rank
                   assigned_contact_id:
                     type: integer
                     nullable: true
@@ -304,6 +307,10 @@ paths:
                     format: date-time
                     nullable: true
                     description: Due datetime
+                  uuid:
+                    type: string
+                    nullable: true
+                    description: UUID value
                   prev_item_id:
                     type: integer
                     nullable: true
@@ -312,10 +319,6 @@ paths:
                     type: string
                     nullable: true
                     description: Предыдущий UUID айтема для сортировки
-                  uuid:
-                    type: string
-                    nullable: true
-                    description: UUID value
                   attachments:
                     type: array
                     description: Files
@@ -504,8 +507,11 @@ paths:
                     type: string
                     description: Note
                   sort:
-                    type: string
+                    type: integer
                     description: Sort
+                  rank:
+                    type: string
+                    description: Sort rank
                   assigned_contact_id:
                     type: integer
                     description: Assigned contact identifier
@@ -1185,8 +1191,13 @@ components:
           type: integer
           description: Pocket identifier
         sort:
-          type: string
+          type: integer
+          default: 0
           description: Sort
+        rank:
+          type: string
+          default: ''
+          description: Sort rank
         name:
           type: string
           description: Pocket name
@@ -1266,9 +1277,13 @@ components:
               default: null
               description: Parent identifier
             sort:
-              type: string
-              default: '0'
+              type: integer
+              default: 0
               description: Sort
+            rank:
+              type: string
+              default: ''
+              description: Sort rank
             has_children:
               type: integer
               default: 0

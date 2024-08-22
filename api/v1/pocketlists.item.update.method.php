@@ -49,7 +49,8 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
                 'list_id'             => ifset($_item, 'list_id', null),
                 'contact_id'          => $user_id,
                 'parent_id'           => 0,
-                'sort'                => ifset($_item, 'sort', '0'),
+                'sort'                => ifset($_item, 'sort', 0),
+                'rank'                => ifset($_item, 'rank', ''),
                 'has_children'        => 0,
                 'status'              => 0,
                 'priority'            => ifset($_item, 'priority', 0),
@@ -116,8 +117,11 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
                 $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'note');
             }
 
-            if (!is_string($_item['sort'])) {
+            if (!is_numeric($_item['sort'])) {
                 $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'sort');
+            }
+            if (!is_string($_item['rank'])) {
+                $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'rank');
             }
 
             if ($_item['due_datetime']) {
@@ -175,6 +179,7 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
                 'contact_id',
                 'parent_id',
                 'sort',
+                'rank',
                 'has_children',
                 'status',
                 'priority',
@@ -202,6 +207,7 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
                 'list_id' => 'int',
                 'contact_id' => 'int',
                 'parent_id' => 'int',
+                'sort' => 'int',
                 'has_children' => 'int',
                 'status' => 'int',
                 'priority' => 'int',
