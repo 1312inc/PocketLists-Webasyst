@@ -12,8 +12,8 @@
         reloadSidebarInAction: false,
         dropInAction: false,
         skipHighlightSidebar: false,
-        scrollToContent: function() {
-            this.scrollToTop(80, $('#content').offset().top);
+        scrollToContent: function () {
+            this.scrollToTop(80, (typeof $('#content').offset() == 'undefined' ? 0 : $('#content').offset().top));
         },
         updateAppCounter: function (count) {
             var self = this;
