@@ -616,8 +616,11 @@ paths:
                     type: string
                     description: Icon
                   sort:
-                    type: string
+                    type: integer
                     description: Sort
+                  rank:
+                    type: string
+                    description: Sort rank
                   type:
                     type: string
                     default: checklist
@@ -801,8 +804,11 @@ paths:
                   type: string
                   description: Color
                 sort:
-                  type: string
+                  type: integer
                   description: Sort
+                rank:
+                  type: string
+                  description: Sort rank
       responses:
         200:
           description: OK

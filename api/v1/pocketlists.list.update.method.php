@@ -11,7 +11,8 @@ class pocketlistsListUpdateMethod extends pocketlistsApiAbstractMethod
         $name = ifset($_json, 'name', '');
         $icon = ifset($_json, 'icon', pocketlistsList::DEFAULT_ICON);
         $color = ifset($_json, 'color', '');
-        $sort = ifset($_json, 'sort', '0');
+        $sort = ifset($_json, 'sort', 0);
+        $rank = ifset($_json, 'rank', '');
 
         /** @var pocketlistsList $list */
         if (!is_numeric($list_id)) {
@@ -24,8 +25,10 @@ class pocketlistsListUpdateMethod extends pocketlistsApiAbstractMethod
             throw new waAPIException('type_error', sprintf_wp('Type error parameter: “%s”.', 'color'), 400);
         } elseif (!array_key_exists($color, pocketlistsStoreColor::getColors())) {
             throw new waAPIException('type_error', _w('Unknown value color'), 400);
-        } elseif (!is_string($sort)) {
+        } elseif (!is_numeric($sort)) {
             throw new waAPIException('type_error', sprintf_wp('Type error parameter: “%s”.', 'sort'), 400);
+        } elseif (!is_string($rank)) {
+            throw new waAPIException('type_error', sprintf_wp('Type error parameter: “%s”.', 'rank'), 400);
         } elseif (empty($list_id) || $list_id < 1 || !$list = pl2()->getEntityFactory(pocketlistsList::class)->findById($list_id)) {
             throw new waAPIException('not_found', _w('List not found'), 404);
         }
@@ -38,6 +41,7 @@ class pocketlistsListUpdateMethod extends pocketlistsApiAbstractMethod
         }
         $list->setIcon($icon)
             ->setSort($sort)
+            ->setRank($rank)
             ->setUpdateDatetime(date('Y-m-d H:i:s'))
             ->setContact($this->getUser());
         if (pl2()->getEntityFactory(pocketlistsList::class)->save($list)) {
@@ -46,6 +50,7 @@ class pocketlistsListUpdateMethod extends pocketlistsApiAbstractMethod
                 'contact_id'          => $list->getContactId(),
                 'parent_id'           => $list->getParentId(),
                 'sort'                => $list->getSort(),
+                'rank'                => $list->getRank(),
                 'has_children'        => $list->isHasChildren(),
                 'status'              => $list->getStatus(),
                 'priority'            => $list->getPriority(),

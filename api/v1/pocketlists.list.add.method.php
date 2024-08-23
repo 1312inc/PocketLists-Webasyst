@@ -28,15 +28,17 @@ class pocketlistsListAddMethod extends pocketlistsApiAbstractMethod
         foreach ($lists as &$_list) {
             /** set default */
             $_list = [
+                'id'                  => null,
                 'pocket_id'           => ifset($_list, 'pocket_id', null),
-                'name'                => ifset($_list, 'name', null),
+                'sort'                => ifset($_list, 'sort', 0),
+                'rank'                => ifset($_list, 'rank', ''),
                 'type'                => ifset($_list, 'type', pocketlistsList::TYPE_CHECKLIST),
                 'icon'                => ifset($_list, 'icon', pocketlistsList::DEFAULT_ICON),
+                'archived'            => null,
+                'hash'                => null,
                 'color'               => ifset($_list, 'color', pocketlistsStoreColor::NONE),
-                'uuid'                => ifset($_list, 'uuid', null),
-                'sort'                => ifset($_list, 'sort', '0'),
-                'errors'              => [],
-                'id'                  => null,
+                'passcode'            => null,
+                'key_item_id'         => null,
                 'contact_id'          => null,
                 'parent_id'           => null,
                 'has_children'        => null,
@@ -47,6 +49,8 @@ class pocketlistsListAddMethod extends pocketlistsApiAbstractMethod
                 'update_datetime'     => null,
                 'complete_datetime'   => null,
                 'complete_contact_id' => null,
+                'name'                => ifset($_list, 'name', null),
+                'note'                => null,
                 'due_date'            => null,
                 'due_datetime'        => null,
                 'location_id'         => null,
@@ -54,10 +58,8 @@ class pocketlistsListAddMethod extends pocketlistsApiAbstractMethod
                 'currency_iso3'       => null,
                 'assigned_contact_id' => null,
                 'repeat'              => null,
-                'archived'            => null,
-                'hash'                => null,
-                'passcode'            => null,
-                'key_item_id'         => null
+                'uuid'                => ifset($_list, 'uuid', null),
+                'errors'              => [],
             ];
 
             if (!isset($_list['pocket_id'])) {
@@ -88,8 +90,12 @@ class pocketlistsListAddMethod extends pocketlistsApiAbstractMethod
                 $_list['errors'][] = _w('Unknown value color');
             }
 
-            if (!is_string($_list['sort'])) {
+            if (!is_numeric($_list['sort'])) {
                 $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'sort');
+            }
+
+            if (!is_string($_list['rank'])) {
+                $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'rank');
             }
 
             if (isset($_list['uuid']) && !is_string($_list['uuid'])) {
@@ -119,6 +125,7 @@ class pocketlistsListAddMethod extends pocketlistsApiAbstractMethod
                     ->setColor($_list['color'])
                     ->setIcon($_list['icon'])
                     ->setSort($_list['sort'])
+                    ->setRank($_list['rank'])
                     ->setContact($this->getUser())
                     ->setCreateDatetime(date('Y-m-d H:i:s'))
                     ->setUuid($_list['uuid']);
@@ -134,6 +141,7 @@ class pocketlistsListAddMethod extends pocketlistsApiAbstractMethod
                 'contact_id',
                 'parent_id',
                 'sort',
+                'rank',
                 'has_children',
                 'status',
                 'priority',
@@ -164,6 +172,7 @@ class pocketlistsListAddMethod extends pocketlistsApiAbstractMethod
                 'id' => 'int',
                 'contact_id' => 'int',
                 'parent_id' => 'int',
+                'sort' => 'int',
                 'status' => 'int',
                 'priority' => 'int',
                 'calc_priority' => 'int',

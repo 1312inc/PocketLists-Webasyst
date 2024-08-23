@@ -64,7 +64,7 @@ class pocketlistsListGetListMethod extends pocketlistsApiAbstractMethod
                 SELECT SQL_CALC_FOUND_ROWS pl.*, pli.contact_id, pli.parent_id, pli.has_children, pli.status, pli.priority, pli.calc_priority, pli.create_datetime, pli.update_datetime, pli.complete_datetime, pli.complete_contact_id, pli.name, pli.due_date, pli.due_datetime, pli.location_id, pli.amount, pli.currency_iso3, pli.assigned_contact_id, pli.repeat, pli.key_list_id, pli.uuid FROM pocketlists_list pl
                 LEFT JOIN pocketlists_item pli ON pli.id = pl.key_item_id
                 WHERE pl.pocket_id IN (i:pocket_ids) AND $condition AND pl.archived = 0
-                ORDER BY pl.sort, pli.update_datetime DESC, pli.create_datetime DESC
+                ORDER BY pl.sort, pl.rank, pli.update_datetime DESC, pli.create_datetime DESC
                 LIMIT i:offset, i:limit
             ", [
                 'ids'           => $ids,
@@ -87,6 +87,7 @@ class pocketlistsListGetListMethod extends pocketlistsApiAbstractMethod
                     'contact_id',
                     'parent_id',
                     'sort',
+                    'rank',
                     'has_children',
                     'status',
                     'priority',
@@ -117,6 +118,7 @@ class pocketlistsListGetListMethod extends pocketlistsApiAbstractMethod
                     'id' => 'int',
                     'contact_id' => 'int',
                     'parent_id' => 'int',
+                    'sort' => 'int',
                     'status' => 'int',
                     'priority' => 'int',
                     'calc_priority' => 'int',
