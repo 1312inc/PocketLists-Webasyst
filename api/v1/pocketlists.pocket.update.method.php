@@ -10,7 +10,8 @@ class pocketlistsPocketUpdateMethod extends pocketlistsApiAbstractMethod
         $pocket_id = ifset($_json, 'id', null);
         $name = ifset($_json, 'name', null);
         $color = ifset($_json, 'color', null);
-        $sort = ifset($_json, 'sort', '0');
+        $sort = ifset($_json, 'sort', 0);
+        $rank = ifset($_json, 'rank', '');
 
         if (!isset($pocket_id)) {
             throw new waAPIException('required_param', sprintf_wp('Missing required parameter: “%s”.', 'id'), 400);
@@ -22,8 +23,10 @@ class pocketlistsPocketUpdateMethod extends pocketlistsApiAbstractMethod
             throw new waAPIException('type_error', sprintf_wp('Type error parameter: “%s”.', 'name'), 400);
         } elseif (isset($color) && (!is_string($color) || !array_key_exists($color, pocketlistsStoreColor::getColors()))) {
             throw new waAPIException('unknown_value', _w('Unknown color'), 400);
-        } elseif (!is_string($sort)) {
+        } elseif (!is_numeric($sort)) {
             throw new waAPIException('type_error', sprintf_wp('Type error parameter: “%s”.', 'sort'), 400);
+        } elseif (!is_string($rank)) {
+            throw new waAPIException('type_error', sprintf_wp('Type error parameter: “%s”.', 'rank'), 400);
         }
 
         /** @var pocketlistsPocketFactory $pocket_factory */
@@ -34,7 +37,8 @@ class pocketlistsPocketUpdateMethod extends pocketlistsApiAbstractMethod
         }
 
         $pocket->setName($name)
-            ->setSort($sort);
+            ->setSort($sort)
+            ->setRank($rank);
         if (isset($color)) {
             $pocket->setColor($color);
         }
@@ -43,6 +47,7 @@ class pocketlistsPocketUpdateMethod extends pocketlistsApiAbstractMethod
             $this->response = [
                 'id'       => (int) $pocket->getId(),
                 'sort'     => $pocket->getSort(),
+                'rank'     => $pocket->getRank(),
                 'name'     => $pocket->getName(),
                 'color'    => $pocket->getColor(),
                 'passcode' => $pocket->getPasscode(),
@@ -51,6 +56,5 @@ class pocketlistsPocketUpdateMethod extends pocketlistsApiAbstractMethod
         } else {
             throw new waAPIException('error', _w('Some error on save pocket'), 500);
         }
-
     }
 }

@@ -956,8 +956,11 @@ paths:
                   type: string
                   description: Цвет
                 sort:
-                  type: string
+                  type: integer
                   description: Sort
+                rank:
+                  type: string
+                  description: Sort rank
                 uuid:
                   type: string
                   description: UUID value
@@ -1061,8 +1064,11 @@ paths:
                   type: string
                   description: Цвет
                 sort:
-                  type: string
+                  type: integer
                   description: Sort
+                rank:
+                  type: string
+                  description: Sort rank
       responses:
         200:
           description: OK

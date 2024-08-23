@@ -31,13 +31,15 @@ class pocketlistsPocketGetListMethod extends pocketlistsApiAbstractMethod
                 [
                     'id',
                     'sort',
+                    'rank',
                     'name',
                     'color',
                     'passcode',
                     'uuid'
                 ],
                 [
-                    'id' => 'int'
+                    'id' => 'int',
+                    'sort' => 'int'
                 ]
             )
         ];

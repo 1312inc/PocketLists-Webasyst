@@ -9,7 +9,8 @@ class pocketlistsPocketAddMethod extends pocketlistsApiAbstractMethod
         $_json = $this->readBodyAsJson();
         $name = ifset($_json, 'name', null);
         $color = ifset($_json, 'color', null);
-        $sort = ifset($_json, 'sort', '0');
+        $sort = ifset($_json, 'sort', 0);
+        $rank = ifset($_json, 'rank', '');
         $uuid = ifset($_json, 'uuid', null);
 
         if (!isset($name)) {
@@ -18,8 +19,10 @@ class pocketlistsPocketAddMethod extends pocketlistsApiAbstractMethod
             throw new waAPIException('type_error', sprintf_wp('Type error parameter: “%s”.', 'name'), 400);
         } elseif (isset($color) && (!is_string($color) || !array_key_exists($color, pocketlistsStoreColor::getColors()))) {
             throw new waAPIException('unknown_value', _w('Unknown color'), 400);
-        } elseif (!is_string($sort)) {
+        } elseif (!is_numeric($sort)) {
             throw new waAPIException('type_error', sprintf_wp('Type error parameter: “%s”.', 'sort'), 400);
+        } elseif (!is_string($rank)) {
+            throw new waAPIException('type_error', sprintf_wp('Type error parameter: “%s”.', 'rank'), 400);
         } elseif (isset($uuid) && !is_string($uuid)) {
             throw new waAPIException('type_error', sprintf_wp('Type error parameter: “%s”.', 'uuid'), 400);
         }
@@ -31,7 +34,8 @@ class pocketlistsPocketAddMethod extends pocketlistsApiAbstractMethod
         $pocket = $pocket_factory->createNew();
 
         $pocket->setName($name)
-            ->setSort($sort);
+            ->setSort($sort)
+            ->setRank($rank);
         if (isset($color)) {
             $pocket->setColor($color);
         }
@@ -52,6 +56,7 @@ class pocketlistsPocketAddMethod extends pocketlistsApiAbstractMethod
         return $this->response = [
             'id'       => $pocket->getId(),
             'sort'     => $pocket->getSort(),
+            'rank'     => $pocket->getRank(),
             'name'     => $pocket->getName(),
             'color'    => $pocket->getColor(),
             'passcode' => $pocket->getPasscode(),
