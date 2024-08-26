@@ -57,7 +57,7 @@ class pocketlistsLogService
                 'item_id'             => $log->getItemId(),
                 'comment_id'          => $log->getCommentId(),
                 'attachment_id'       => $log->getAttachmentId(),
-                'assigned_contact_id' => $log-> getAssignedContactId(),
+                'assigned_contact_id' => $log->getAssignedContactId(),
                 'params'              => $log->getParams()
             ]);
         }

@@ -154,16 +154,26 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
         if (!empty($items_ok)) {
             $item_model = pl2()->getModel(pocketlistsItem::class);
             try {
-                foreach ($items_ok as &$_items_ok) {
-                    $result = $item_model->updateById($_items_ok['id'], $_items_ok);
+                $item = pl2()->getEntityFactory(pocketlistsItem::class)->createNew();
+                foreach ($items_ok as &$_item_ok) {
+                    $result = $item_model->updateById($_item_ok['id'], $_item_ok);
                     if ($result) {
-                        $_items_ok['status_code'] = 'ok';
-                        if (!empty($_items_ok['attachments'])) {
-                            $_items_ok['attachments'] = $this->updateFiles($_items_ok['id'], $_items_ok['attachments']);
+                        $_item_ok['status_code'] = 'ok';
+                        if (!empty($_item_ok['attachments'])) {
+                            $_item_ok['attachments'] = $this->updateFiles($_item_ok['id'], $_item_ok['attachments']);
                         }
+                        $item_clone = clone $item;
+                        $item = pl2()->getHydrator()->hydrate($item_clone, $_item_ok);
+                        pl2()->getLogService()->add(
+                            pl2()->getLogService()->getFactory()->createNewItemLog(
+                                (new pocketlistsLogContext())->setItem($item),
+                                pocketlistsLog::ACTION_UPDATE
+                            )
+                        );
+                        unset($item_clone);
                     } else {
-                        $_items_ok['status_code'] = 'error';
-                        $_items_ok['errors'][] = _w('Failed to update');
+                        $_item_ok['status_code'] = 'error';
+                        $_item_ok['errors'][] = _w('Failed to update');
                     }
                 }
             } catch (Exception $ex) {
