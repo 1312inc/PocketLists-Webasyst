@@ -13,20 +13,20 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
             throw new waAPIException('type_error', _w('Type error data'), 400);
         }
 
-        $items_in_db = [];
         $assign_contacts = [];
-        $list_id_available = [];
         $user_id = $this->getUser()->getId();
         $item_ids = array_unique(array_column($items, 'id'));
         $list_ids = array_unique(array_column($items, 'list_id'));
         $assigned_contact_ids = array_unique(array_column($items, 'assigned_contact_id'));
 
-        if (!empty($item_ids)) {
-            /** @var pocketlistsItemModel $item_model */
-            $item_model = pl2()->getModel(pocketlistsItem::class);
-            $items_in_db = $item_model->select('*')->where('id IN (:item_ids)', ['item_ids' => $item_ids])->fetchAll('id');
-            $list_id_available = pocketlistsRBAC::getAccessListForContact($user_id);
+        if (empty($item_ids)) {
+            throw new waAPIException('type_error', _w('Type error data'), 400);
         }
+
+        /** @var pocketlistsItemModel $item_model */
+        $item_model = pl2()->getModel(pocketlistsItem::class);
+        $items_in_db = $item_model->select('*')->where('id IN (:item_ids)', ['item_ids' => $item_ids])->fetchAll('id');
+        $list_id_available = pocketlistsRBAC::getAccessListForContact($user_id);
         if (!empty($list_ids)) {
             /** @var pocketlistsListModel $list_model */
             $list_model = pl2()->getModel(pocketlistsList::class);
