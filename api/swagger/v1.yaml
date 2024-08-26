@@ -361,29 +361,12 @@ paths:
                           nullable: true
                           default: null
                           description: Предыдущий UUID айтема для сортировки
-                        status_code:
-                          type: string
-                          description: Status code
-                          enum:
-                            - ok
-                            - error
-                    - type: object
-                      properties:
-                        errors:
-                          type: array
-                          items:
-                            type: string
-                            description: Error description
         400:
           description: Invalid request data.
           content:
             application/json:
               schema:
-                anyOf:
-                  - $ref: '#/components/schemas/errorResponse'
-                  - type: array
-                    items:
-                      $ref: '#/components/schemas/item'
+                $ref: '#/components/schemas/errorResponse'
         404:
           description: Pocket not found.
           content:
@@ -550,23 +533,7 @@ paths:
               schema:
                 type: array
                 items:
-                  allOf:
-                    - $ref: '#/components/schemas/item'
-                    - type: object
-                      properties:
-                        status_code:
-                          type: string
-                          description: Status code
-                          enum:
-                            - ok
-                            - error
-                    - type: object
-                      properties:
-                        errors:
-                          type: array
-                          items:
-                            type: string
-                            description: Error description
+                  $ref: '#/components/schemas/item'
         400:
           description: Invalid request data.
           content:
@@ -1261,6 +1228,7 @@ components:
               description: Key item
     item:
       allOf:
+        - $ref: '#/components/schemas/extended_status'
         - type: object
           properties:
             attachments:
@@ -1544,3 +1512,17 @@ components:
         error_description:
           type: string
           description: Error description
+    extended_status:
+      type: object
+      properties:
+        status_code:
+          type: string
+          description: Status code
+          enum:
+            - ok
+            - error
+        errors:
+          type: array
+          items:
+            type: string
+            description: Error description
