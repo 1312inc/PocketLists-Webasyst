@@ -222,9 +222,6 @@ class pocketlistsConfig extends waAppConfig
                 'kmStorage',
                 'kmStatistics',
             ],
-            'wa-apps/pocketlists/lib/vendor/lexorank/' => [
-                'Rank'
-            ]
         ];
         $path_root = waConfig::get('wa_path_root');
         foreach ($customClasses as $path => $classes) {
