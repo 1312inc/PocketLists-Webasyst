@@ -13,14 +13,20 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
             throw new waAPIException('type_error', _w('Type error data'), 400);
         }
 
+        $sort_info = [];
         $assign_contacts = [];
-        $list_ids = array_unique(array_column($items, 'list_id'));
-        $assigned_contact_ids = array_unique(array_column($items, 'assigned_contact_id'));
+        $list_ids = array_unique(array_filter(array_column($items, 'list_id')));
+        $assigned_contact_ids = array_unique(array_filter(array_column($items, 'assigned_contact_id')));
 
         if (!empty($list_ids)) {
             /** @var pocketlistsListModel $list_model */
             $list_model = pl2()->getModel(pocketlistsList::class);
-            $list_ids = $list_model->select('id')->where('id IN (:list_ids)', ['list_ids' => $list_ids])->fetchAll(null, true);
+            $sort_info = $list_model->query("
+                SELECT list_id, MIN(sort) AS sort_min, MAX(sort) AS sort_max FROM pocketlists_item
+                WHERE list_id IN (:list_ids)
+                GROUP BY list_id
+            ", ['list_ids' => $list_ids])->fetchAll('list_id');
+            $list_ids = array_keys($sort_info);
         }
         if (!empty($assigned_contact_ids)) {
             /** @var pocketlistsContact $_assign_contact */
@@ -40,8 +46,8 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
                 'list_id'             => ifset($_item, 'list_id', null),
                 'contact_id'          => $user_id,
                 'parent_id'           => 0,
-                'sort'                => ifset($_item, 'sort', 0),
-                'rank'                => ifset($_item, 'rank', ''),
+                'sort'                => ifset($_item, 'sort', null),
+                'rank'                => ifset($_item, 'rank', null),
                 'has_children'        => 0,
                 'status'              => 0,
                 'priority'            => ifset($_item, 'priority', 0),
@@ -80,12 +86,16 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
                 $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'name');
             }
 
-            if (!is_numeric($_item['sort'])) {
+            if (isset($_item['sort']) && !is_numeric($_item['sort'])) {
                 $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'sort');
             }
 
-            if (!is_string($_item['rank'])) {
-                $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'rank');
+            if (isset($_item['rank'])) {
+                if (!is_string($_item['rank'])) {
+                    $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'rank');
+                } elseif ($_item['rank'] !== '' && !pocketlistsSortRank::rankValidate($_item['rank'])) {
+                    $_item['errors'][] = _w('Invalid rank value');
+                }
             }
 
             if ($_item['assigned_contact_id']) {
@@ -168,7 +178,7 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
         $items_err = array_diff_key($items, $items_ok);
         if (!empty($items_ok)) {
             $item_model = pl2()->getModel(pocketlistsItem::class);
-            $items_ok = $this->sorting($item_model, $items_ok);
+            $items_ok = $this->sorting($item_model, $items_ok, $sort_info);
             try {
                 $result = $item_model->multipleInsert($items_ok);
                 if ($result->getResult()) {
@@ -249,102 +259,5 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
                 'key_list_id' => 'int'
             ]
         );
-    }
-
-    private function sorting(pocketlistsItemModel $item_model, $items = [])
-    {
-        $prev_by_id = [];
-        $prev_by_uuid = [];
-        $prev_item_ids = array_unique(array_filter(array_column($items, 'prev_item_id')));
-        $prev_item_uuids = array_unique(array_filter(array_column($items, 'prev_item_uuid')));
-
-        if ($prev_item_ids || $prev_item_uuids) {
-            $where = [];
-            $params = [];
-            if ($prev_item_ids) {
-                $where[] = 'id IN (:ids)';
-                $params['ids'] = $prev_item_ids;
-            }
-            if ($prev_item_uuids) {
-                $where[] = 'uuid IN (:uuids)';
-                $params['uuids'] = $prev_item_uuids;
-            }
-            $prev_items = $item_model->select('id, list_id, sort, `rank`, uuid')
-                ->where(implode(' OR ', $where), $params)
-                ->fetchAll();
-            foreach ($prev_items as $_prev_items) {
-                if (!empty($_prev_items['uuid'])) {
-                    $prev_by_uuid[$_prev_items['uuid']] = $_prev_items;
-                } else {
-                    $prev_by_id[$_prev_items['id']] = $_prev_items;
-                }
-            }
-            unset($prev_items, $prev_item_ids, $prev_item_uuids);
-        }
-
-        $iter = count($items);
-        $iter = $iter * $iter;
-        do {
-            $iter--;
-            $counter = 1;
-            $ext_item = array_pop($items);
-            $ext_uuid = ifset($ext_item, 'uuid', null);
-            $ext_prev_uuid = ifset($ext_item, 'prev_item_uuid', null);
-            if (is_null($ext_uuid) && is_null($ext_prev_uuid)) {
-                array_unshift($items, $ext_item);
-                continue;
-            }
-            foreach ($items as $int_item) {
-                $curr_uuid = ifset($int_item, 'uuid', null);
-                $curr_prev_uuid = ifset($int_item, 'prev_item_uuid', null);
-                if (isset($ext_uuid, $curr_prev_uuid) && $ext_uuid === $curr_prev_uuid) {
-                    // вставляем НАД текущим
-                    $counter--;
-                    $items = array_merge(
-                        array_slice($items, 0, $counter),
-                        [$ext_item],
-                        array_slice($items, $counter)
-                    );
-                    unset($ext_item);
-                    break;
-                } elseif (isset($ext_prev_uuid, $curr_uuid) && $ext_prev_uuid === $curr_uuid) {
-                    // вставляем ПОД текущим
-                    $items = array_merge(
-                        array_slice($items, 0, $counter),
-                        [$ext_item],
-                        array_slice($items, $counter)
-                    );
-                    unset($ext_item);
-                    break;
-                }
-                $counter++;
-            }
-            if (isset($ext_item)) {
-                array_unshift($items, $ext_item);
-            }
-        } while ($iter > 1);
-
-        $sort = 0;
-        foreach ($items as &$_item) {
-            if (isset($_item['prev_item_id']) ) {
-                $list_id = ifempty($prev_by_id, $_item['prev_item_id'], 'list_id', null);
-                if ($list_id == $_item['list_id'] && $_item['sort'] === 0) {
-                    $_item['sort'] = ifempty($prev_by_id, $_item['prev_item_id'], 'sort', 0);
-                    ++$_item['sort'];
-                }
-            } elseif (isset($_item['prev_item_uuid'])) {
-                $list_id = ifempty($prev_by_uuid, $_item['prev_item_uuid'], 'list_id', null);
-                if ($list_id == $_item['list_id'] && $_item['sort'] === 0) {
-                    $_item['sort'] = ifempty($prev_by_uuid, $_item['prev_item_uuid'], 'sort', 0);
-                    ++$_item['sort'];
-                } elseif ($_item['sort'] === 0) {
-                    $_item['sort'] = $sort++;
-                }
-            } elseif (isset($_item['uuid']) && $_item['sort'] === 0) {
-                $_item['sort'] = $sort++;
-            }
-        }
-
-        return $items;
     }
 }

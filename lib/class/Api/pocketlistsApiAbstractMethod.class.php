@@ -181,4 +181,154 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
 
         return $files;
     }
+
+    protected function sorting(pocketlistsItemModel $item_model, $items = [], $sort_info = [])
+    {
+        $prev_by_id = [];
+        $prev_by_uuid = [];
+        $prev_item_ids = array_unique(array_filter(array_column($items, 'prev_item_id')));
+        $prev_item_uuids = array_unique(array_filter(array_column($items, 'prev_item_uuid')));
+
+        if ($prev_item_ids || $prev_item_uuids) {
+            $where = [];
+            $params = [];
+            if ($prev_item_ids) {
+                $where[] = 't.id IN (:ids)';
+                $where[] = 'prev_id IN (:ids)';
+                $params['ids'] = $prev_item_ids;
+            }
+            if ($prev_item_uuids) {
+                $where[] = 't.uuid IN (:uuids)';
+                $where[] = 'prev_uuid IN (:uuids)';
+                $params['uuids'] = $prev_item_uuids;
+            }
+
+            $item_model->exec("SET @prev_item_id := 0, @prev_item_uuid := ''");
+            $prev_items = $item_model->query(" 
+                SELECT * FROM (
+                    SELECT id, list_id, sort, `rank`, uuid, 
+                        @prev_id AS prev_id,
+                        @prev_uuid AS prev_uuid,
+                        @prev_id := id AS _,
+                        @prev_uuid := IF(uuid IS NOT NULL, uuid, NULL) AS __
+                        FROM pocketlists_item
+                        ORDER BY list_id, sort, `rank`
+                ) AS t
+                WHERE ".implode(' OR ', $where), $params
+            )->fetchAll();
+
+            foreach ($prev_items as $_prev_item) {
+                $_prev_item = array_diff_key($_prev_item, array_fill_keys(['_', '__'], 0));
+                if (in_array($_prev_item['id'], $prev_item_ids) || in_array($_prev_item['uuid'], $prev_item_uuids)) {
+                    if (!empty($_prev_item['uuid'])) {
+                        $prev_by_uuid[$_prev_item['uuid']] = $_prev_item;
+                    } else {
+                        $prev_by_id[$_prev_item['id']] = $_prev_item;
+                    }
+                } else {
+                    if (ifset($prev_by_id, $_prev_item['prev_id'], [])) {
+                        $prev_by_id[$_prev_item['prev_id']] += [
+                            'next_sort' => $_prev_item['sort'],
+                            'next_rank' => $_prev_item['rank']
+                        ];
+                    } elseif (ifset($prev_by_uuid, $_prev_item['prev_uuid'], [])) {
+                        $prev_by_uuid[$_prev_item['prev_uuid']] += [
+                            'next_sort' => $_prev_item['sort'],
+                            'next_rank' => $_prev_item['rank']
+                        ];
+                    }
+                }
+            }
+            unset($prev_items, $prev_item_ids, $prev_item_uuids);
+        }
+
+        /** сортировка по prev_item_uuid */
+        $iter = count($items);
+        $iter = $iter * $iter;
+        do {
+            $iter--;
+            $counter = 1;
+            $ext_item = array_pop($items);
+            $ext_uuid = ifset($ext_item, 'uuid', null);
+            $ext_prev_uuid = ifset($ext_item, 'prev_item_uuid', null);
+            if (is_null($ext_uuid) && is_null($ext_prev_uuid)) {
+                array_unshift($items, $ext_item);
+                continue;
+            }
+            foreach ($items as $int_item) {
+                $curr_uuid = ifset($int_item, 'uuid', null);
+                $curr_prev_uuid = ifset($int_item, 'prev_item_uuid', null);
+                if (isset($ext_uuid, $curr_prev_uuid) && $ext_uuid === $curr_prev_uuid) {
+                    // вставляем НАД текущим
+                    $counter--;
+                    $items = array_merge(
+                        array_slice($items, 0, $counter),
+                        [$ext_item],
+                        array_slice($items, $counter)
+                    );
+                    unset($ext_item);
+                    break;
+                } elseif (isset($ext_prev_uuid, $curr_uuid) && $ext_prev_uuid === $curr_uuid) {
+                    // вставляем ПОД текущим
+                    $items = array_merge(
+                        array_slice($items, 0, $counter),
+                        [$ext_item],
+                        array_slice($items, $counter)
+                    );
+                    unset($ext_item);
+                    break;
+                }
+                $counter++;
+            }
+            if (isset($ext_item)) {
+                array_unshift($items, $ext_item);
+            }
+        } while ($iter > 1);
+
+        $p_sort_rank = pocketlistsSortRank::getInstance();
+        foreach ($items as &$_item) {
+            if (isset($_item['sort'])) {
+                $_item['rank'] = ifset($_item, 'rank', '');
+                continue;
+            }
+            if (!isset($_item['list_id'])) {
+                $_item['sort'] = 0;
+                $_item['rank'] = '';
+                continue;
+            }
+
+            $srt = 0;
+            $rnk = '';
+            if (isset($_item['prev_item_id']) || isset($_item['prev_item_uuid'])) {
+                if (isset($_item['prev_item_id'])) {
+                    $extreme_item = ifempty($prev_by_id, $_item['prev_item_id'], []);
+                } else {
+                    $extreme_item = ifempty($prev_by_uuid, $_item['prev_item_uuid'], []);
+                }
+                $list_id = ifempty($extreme_item, 'list_id', null);
+                if ($list_id == $_item['list_id']) {
+                    $p_sort_rank->new(
+                        (int) ifset($extreme_item, 'sort', 0),
+                        ifempty($extreme_item, 'rank', '0')
+                    );
+                    list($srt, $rnk) = $p_sort_rank->between(
+                        (int) ifset($extreme_item, 'next_sort', 0),
+                        ifempty($extreme_item, 'next_rank', '0')
+                    );
+                } elseif (is_null($list_id)) {
+                    /** добавляем в конец списка */
+                    $p_sort_rank->new((int) ifset($sort_info, $_item['list_id'], 'sort_max', 0), '0');
+                    list($srt) = $p_sort_rank->next();
+                }
+            } else {
+                /** добавляем в начало списка */
+                $p_sort_rank->new((int) ifset($sort_info, $_item['list_id'], 'sort_min', 0), '0');
+                list($srt) = $p_sort_rank->previous();
+            }
+            $_item['sort'] = $srt;
+            $_item['rank'] = $rnk;
+        }
+
+        return $items;
+    }
 }

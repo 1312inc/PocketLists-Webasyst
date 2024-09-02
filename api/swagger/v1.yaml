@@ -294,7 +294,8 @@ paths:
                     description: Sort
                   rank:
                     type: string
-                    description: Sort rank
+                    maxLength: 8
+                    description: Sort rank, [0-9A-z]
                   assigned_contact_id:
                     type: integer
                     nullable: true
