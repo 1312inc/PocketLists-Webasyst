@@ -495,7 +495,8 @@ paths:
                     description: Sort
                   rank:
                     type: string
-                    description: Sort rank
+                    maxLength: 8
+                    description: Sort rank, [0-9A-z]
                   assigned_contact_id:
                     type: integer
                     description: Assigned contact identifier
@@ -506,6 +507,10 @@ paths:
                     type: string
                     format: date-time
                     description: Due datetime
+                  prev_item_id:
+                    type: integer
+                    nullable: true
+                    description: Предыдущий идентификатор айтема для сортировки
                   attachments:
                     type: array
                     description: Files
