@@ -48,7 +48,7 @@ class pocketlistsLogService
             );
 
             pocketlistsWebSoket::getInstance()->sendWebsocketData([
-                'X-PL-API-Client'     => waRequest::server('HTTP_X_PL_API_CLIENT', ''),
+                'client'     => waRequest::server('HTTP_X_PL_API_CLIENT', ''),
                 'id'                  => $log->getId(),
                 'action'              => $log->getAction(),
                 'entity_type'         => $log->getEntityType(),
