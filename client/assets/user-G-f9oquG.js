@@ -1,1 +1,0 @@
-import{d as i,r,c as n,a2 as d}from"./index-W95aWh-7.js";const m=i("user",()=>{const e=r([]),s=n(()=>e.value.find(o=>o.me)),{data:t,isFetching:a,execute:u,statusCode:c}=d("pocketlists.user.getList",{immediate:!1}).get().json();return{users:e,isFetching:a,me:s,fetch:async()=>{await u(),c.value===200&&t.value&&"data"in t.value&&(e.value=t.value.data)}}});export{m as u};
