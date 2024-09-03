@@ -182,7 +182,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
         return $files;
     }
 
-    protected function sorting(pocketlistsItemModel $item_model, $items = [], $sort_info = [])
+    protected function sorting(pocketlistsItemModel $item_model, $items = [])
     {
         $prev_by_id = [];
         $prev_by_uuid = [];
@@ -286,6 +286,11 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
         } while ($iter > 1);
 
         $p_sort_rank = pocketlistsSortRank::getInstance();
+        $sort_info = $item_model->query("
+            SELECT list_id, MIN(sort) AS sort_min, MAX(sort) AS sort_max FROM pocketlists_item
+            WHERE list_id IN (:list_ids)
+            GROUP BY list_id
+        ", ['list_ids' => array_column($items, 'list_id')])->fetchAll('list_id');
         foreach ($items as &$_item) {
             if (isset($_item['sort'])) {
                 $_item['rank'] = ifset($_item, 'rank', '');
@@ -321,9 +326,12 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                     list($srt) = $p_sort_rank->next();
                 }
             } else {
-                /** добавляем в начало списка */
-                $p_sort_rank->new((int) ifset($sort_info, $_item['list_id'], 'sort_min', 0), '0');
-                list($srt) = $p_sort_rank->previous();
+                $sort_min = ifset($sort_info, $_item['list_id'], 'sort_min', null);
+                if (!is_null($sort_min)) {
+                    /** добавляем в начало списка */
+                    $p_sort_rank->new((int) ifset($sort_info, $_item['list_id'], 'sort_min', 0), '0');
+                    list($srt) = $p_sort_rank->previous();
+                }
             }
             $_item['sort'] = $srt;
             $_item['rank'] = $rnk;

@@ -13,7 +13,6 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
             throw new waAPIException('type_error', _w('Type error data'), 400);
         }
 
-        $sort_info = [];
         $assign_contacts = [];
         $list_ids = array_unique(array_filter(array_column($items, 'list_id')));
         $assigned_contact_ids = array_unique(array_filter(array_column($items, 'assigned_contact_id')));
@@ -21,12 +20,9 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
         if (!empty($list_ids)) {
             /** @var pocketlistsListModel $list_model */
             $list_model = pl2()->getModel(pocketlistsList::class);
-            $sort_info = $list_model->query("
-                SELECT list_id, MIN(sort) AS sort_min, MAX(sort) AS sort_max FROM pocketlists_item
-                WHERE list_id IN (:list_ids)
-                GROUP BY list_id
-            ", ['list_ids' => $list_ids])->fetchAll('list_id');
-            $list_ids = array_keys($sort_info);
+            $list_ids = $list_model->select('id')
+                ->where('id IN (:list_ids)', ['list_ids' => $list_ids])
+                ->fetchAll(null, true);
         }
         if (!empty($assigned_contact_ids)) {
             /** @var pocketlistsContact $_assign_contact */
@@ -178,7 +174,7 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
         $items_err = array_diff_key($items, $items_ok);
         if (!empty($items_ok)) {
             $item_model = pl2()->getModel(pocketlistsItem::class);
-            $items_ok = $this->sorting($item_model, $items_ok, $sort_info);
+            $items_ok = $this->sorting($item_model, $items_ok);
             try {
                 $result = $item_model->multipleInsert($items_ok);
                 if ($result->getResult()) {
