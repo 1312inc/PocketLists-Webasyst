@@ -616,15 +616,7 @@ paths:
               schema:
                 type: array
                 items:
-                  allOf:
-                    - $ref: '#/components/schemas/list'
-                    - type: object
-                      properties:
-                        errors:
-                          type: array
-                          items:
-                            type: string
-                            description: Error description
+                  $ref: '#/components/schemas/list'
         400:
           description: Invalid request data.
           content:

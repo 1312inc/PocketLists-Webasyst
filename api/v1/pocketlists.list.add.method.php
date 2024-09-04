@@ -14,7 +14,6 @@ class pocketlistsListAddMethod extends pocketlistsApiAbstractMethod
             throw new waAPIException('type_error', _w('Type error data'), 400);
         }
 
-        $err = false;
         $pocket_ids = array_unique(array_column($lists, 'pocket_id'));
         $pocket_access = pocketlistsRBAC::getAccessPocketForContact($this->getUser());
 
@@ -60,6 +59,7 @@ class pocketlistsListAddMethod extends pocketlistsApiAbstractMethod
                 'repeat'              => null,
                 'uuid'                => ifset($_list, 'uuid', null),
                 'errors'              => [],
+                'status_code'         => null,
             ];
 
             if (!isset($_list['pocket_id'])) {
@@ -105,19 +105,23 @@ class pocketlistsListAddMethod extends pocketlistsApiAbstractMethod
             if (empty($_list['errors'])) {
                 unset($_list['errors']);
             } else {
-                $err = true;
+                $_list['status_code'] = 'error';
             }
         }
         unset($_list);
 
-        if (!$err) {
+        $lists_ok = array_filter($lists, function ($l) {
+            return is_null($l['status_code']);
+        });
+        $lists_err = array_diff_key($lists, $lists_ok);
+        if (!empty($lists_ok)) {
             /** @var pocketlistsListFactory $list_factory */
             $list_factory = pl2()->getEntityFactory(pocketlistsList::class);
 
             /** @var pocketlistsList $list */
             $list = pl2()->getEntityFactory(pocketlistsList::class)->createNew();
 
-            foreach ($lists as &$_list) {
+            foreach ($lists_ok as &$_list) {
                 $list_clone = clone $list;
                 $list_clone->setName($_list['name'])
                     ->setType($_list['type'])
@@ -130,12 +134,14 @@ class pocketlistsListAddMethod extends pocketlistsApiAbstractMethod
                     ->setCreateDatetime(date('Y-m-d H:i:s'))
                     ->setUuid($_list['uuid']);
                 $list_factory->save($list_clone);
+                $_list['id'] = $list_clone->getId();
                 $_list['key_item_id'] = $list_clone->getKeyItemId();
+                $_list['status_code'] = 'ok';
             }
         }
 
         $this->response = $this->filterFields(
-            $lists,
+            array_merge($lists_ok, $lists_err),
             [
                 'id',
                 'contact_id',
@@ -167,8 +173,9 @@ class pocketlistsListAddMethod extends pocketlistsApiAbstractMethod
                 'color',
                 'passcode',
                 'key_item_id',
-            ],
-            [
+                'errors',
+                'status_code',
+            ], [
                 'id' => 'int',
                 'contact_id' => 'int',
                 'parent_id' => 'int',
