@@ -220,10 +220,10 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
             foreach ($prev_items as $_prev_item) {
                 $_prev_item = array_diff_key($_prev_item, array_fill_keys(['_', '__'], 0));
                 if (in_array($_prev_item['id'], $prev_item_ids) || in_array($_prev_item['uuid'], $prev_item_uuids)) {
-                    if (!empty($_prev_item['uuid'])) {
-                        $prev_by_uuid[$_prev_item['uuid']] = $_prev_item;
-                    } else {
+                    if (!empty($_prev_item['id'])) {
                         $prev_by_id[$_prev_item['id']] = $_prev_item;
+                    } else {
+                        $prev_by_uuid[$_prev_item['uuid']] = $_prev_item;
                     }
                 } else {
                     if (ifset($prev_by_id, $_prev_item['prev_id'], [])) {
