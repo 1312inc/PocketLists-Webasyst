@@ -585,6 +585,14 @@ paths:
                   color:
                     type: string
                     description: Color
+                    default: none
+                    enum:
+                      - none
+                      - red
+                      - green
+                      - blue
+                      - yellow
+                      - purple
                   icon:
                     type: string
                     description: Icon
@@ -768,6 +776,14 @@ paths:
                 color:
                   type: string
                   description: Color
+                  default: none
+                  enum:
+                    - none
+                    - red
+                    - green
+                    - blue
+                    - yellow
+                    - purple
                 sort:
                   type: integer
                   description: Sort

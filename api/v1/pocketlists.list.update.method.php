@@ -10,7 +10,7 @@ class pocketlistsListUpdateMethod extends pocketlistsApiAbstractMethod
         $list_id = ifset($_json, 'id', 0);
         $name = ifset($_json, 'name', '');
         $icon = ifset($_json, 'icon', pocketlistsList::DEFAULT_ICON);
-        $color = ifset($_json, 'color', '');
+        $color = ifset($_json, 'color', pocketlistsStoreColor::NONE);
         $sort = ifset($_json, 'sort', 0);
         $rank = ifset($_json, 'rank', '');
 
