@@ -256,21 +256,23 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                 $params['uuids'] = $prev_item_uuids;
             }
 
-            $item_model->exec("SET @prev_item_id := 0, @prev_item_uuid := ''");
+            $item_model->exec("SET @prev_item_id := 0, @lst_id := 0, @prev_item_uuid := ''");
             $prev_items = $item_model->query(" 
                 SELECT * FROM (
                     SELECT id, list_id, sort, `rank`, uuid, 
                         @prev_id AS prev_id,
+                        IF(@lst_id <> list_id, 0, list_id) AS lst_id,
                         @prev_uuid AS prev_uuid,
                         @prev_id := id AS _,
-                        @prev_uuid := IF(uuid IS NOT NULL, uuid, NULL) AS __
+                        @lst_id := list_id AS __,
+                        @prev_uuid := IF(uuid IS NOT NULL, uuid, NULL) AS ___
                         FROM pocketlists_item
                         ORDER BY list_id, sort, `rank`
                 ) AS t
-                WHERE ".implode(' OR ', $where), $params
+                WHERE t.lst_id <> 0 AND (".implode(' OR ', $where).")", $params
             )->fetchAll();
 
-            $arr_1 = array_fill_keys(['_', '__'], 0);
+            $arr_1 = array_fill_keys(['lst_id', '_', '__', '___'], 0);
             $arr_2 = array_fill_keys(['next_sort', 'next_rank'], null);
             foreach ($prev_items as $_prev_item) {
                 $_prev_item = array_diff_key($_prev_item, $arr_1) + $arr_2;
