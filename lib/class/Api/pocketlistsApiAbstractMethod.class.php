@@ -189,6 +189,59 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
         $prev_item_ids = array_unique(array_filter(array_column($items, 'prev_item_id')));
         $prev_item_uuids = array_unique(array_filter(array_column($items, 'prev_item_uuid')));
 
+        /** сортировка по prev_item_ id/uuid */
+        $iter = count($items);
+        $iter = $iter * $iter;
+        do {
+            $iter--;
+            $counter = 1;
+            $ext_item = array_pop($items);
+            $ext_id = ifset($ext_item, 'id', null);
+            $ext_prev_id = ifset($ext_item, 'prev_item_id', null);
+            $ext_uuid = ifset($ext_item, 'uuid', null);
+            $ext_prev_uuid = ifset($ext_item, 'prev_item_uuid', null);
+            if (!isset($ext_id, $ext_prev_id) && !isset($ext_uuid, $ext_prev_uuid)) {
+                array_unshift($items, $ext_item);
+                continue;
+            }
+            foreach ($items as $int_item) {
+                $curr_id = ifset($int_item, 'id', null);
+                $curr_prev_id = ifset($int_item, 'prev_item_id', null);
+                $curr_uuid = ifset($int_item, 'uuid', null);
+                $curr_prev_uuid = ifset($int_item, 'prev_item_uuid', null);
+                if (
+                    (isset($ext_id, $curr_prev_id) && $ext_id === $curr_prev_id)
+                    || (isset($ext_uuid, $curr_prev_uuid) && $ext_uuid === $curr_prev_uuid)
+                ) {
+                    // вставляем НАД текущим
+                    $counter--;
+                    $items = array_merge(
+                        array_slice($items, 0, $counter),
+                        [$ext_item],
+                        array_slice($items, $counter)
+                    );
+                    unset($ext_item);
+                    break;
+                } elseif (
+                    (isset($ext_prev_id, $curr_id) && $ext_prev_id === $curr_id)
+                    || (isset($ext_prev_uuid, $curr_uuid) && $ext_prev_uuid === $curr_uuid)
+                ) {
+                    // вставляем ПОД текущим
+                    $items = array_merge(
+                        array_slice($items, 0, $counter),
+                        [$ext_item],
+                        array_slice($items, $counter)
+                    );
+                    unset($ext_item);
+                    break;
+                }
+                $counter++;
+            }
+            if (isset($ext_item)) {
+                array_unshift($items, $ext_item);
+            }
+        } while ($iter > 1);
+
         if ($prev_item_ids || $prev_item_uuids) {
             $where = [];
             $params = [];
@@ -237,51 +290,8 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                     }
                 }
             }
-            unset($prev_items, $prev_item_ids, $prev_item_uuids);
+            unset($prev_items, $_prev_item, $prev_item_ids, $prev_item_uuids, $params, $where, $arr_1, $arr_2);
         }
-
-        /** сортировка по prev_item_uuid */
-        $iter = count($items);
-        $iter = $iter * $iter;
-        do {
-            $iter--;
-            $counter = 1;
-            $ext_item = array_pop($items);
-            $ext_uuid = ifset($ext_item, 'uuid', null);
-            $ext_prev_uuid = ifset($ext_item, 'prev_item_uuid', null);
-            if (is_null($ext_uuid) && is_null($ext_prev_uuid)) {
-                array_unshift($items, $ext_item);
-                continue;
-            }
-            foreach ($items as $int_item) {
-                $curr_uuid = ifset($int_item, 'uuid', null);
-                $curr_prev_uuid = ifset($int_item, 'prev_item_uuid', null);
-                if (isset($ext_uuid, $curr_prev_uuid) && $ext_uuid === $curr_prev_uuid) {
-                    // вставляем НАД текущим
-                    $counter--;
-                    $items = array_merge(
-                        array_slice($items, 0, $counter),
-                        [$ext_item],
-                        array_slice($items, $counter)
-                    );
-                    unset($ext_item);
-                    break;
-                } elseif (isset($ext_prev_uuid, $curr_uuid) && $ext_prev_uuid === $curr_uuid) {
-                    // вставляем ПОД текущим
-                    $items = array_merge(
-                        array_slice($items, 0, $counter),
-                        [$ext_item],
-                        array_slice($items, $counter)
-                    );
-                    unset($ext_item);
-                    break;
-                }
-                $counter++;
-            }
-            if (isset($ext_item)) {
-                array_unshift($items, $ext_item);
-            }
-        } while ($iter > 1);
 
         $p_sort_rank = pocketlistsSortRank::getInstance();
         $sort_info = $item_model->query("
@@ -321,6 +331,19 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                             (int) ifset($extreme_item, 'next_sort', 0),
                             ifempty($extreme_item, 'next_rank', '0')
                         );
+                    }
+
+                    /** обновляем sort/rank если в сортировке участвует сущность на которую ссылается через prev_ */
+                    if (!empty($prev_by_id[$_item['id']])) {
+                        $prev_by_id[$_item['id']]['sort'] = $srt;
+                        $prev_by_id[$_item['id']]['rank'] = $rnk;
+                        $prev_by_id[$_item['id']]['next_sort'] = $extreme_item['next_sort'];
+                        $prev_by_id[$_item['id']]['next_rank'] = $extreme_item['next_rank'];
+                    } elseif (!empty($prev_by_uuid[$_item['id']])) {
+                        $prev_by_uuid[$_item['id']]['sort'] = $srt;
+                        $prev_by_uuid[$_item['id']]['rank'] = $rnk;
+                        $prev_by_uuid[$_item['id']]['next_sort'] = $extreme_item['next_sort'];
+                        $prev_by_uuid[$_item['id']]['next_rank'] = $extreme_item['next_rank'];
                     }
                 } elseif (is_null($list_id)) {
                     /** добавляем в конец списка */
