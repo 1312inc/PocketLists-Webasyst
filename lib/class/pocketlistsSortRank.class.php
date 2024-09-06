@@ -4,7 +4,7 @@ final class pocketlistsSortRank
 {
     const MAX_RANK_LEN = 8;
 
-    const COLLECTION = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+    const COLLECTION = '0123456789abcdefghijklmnopqrstuvwxyz';
 
     private static pocketlistsSortRank $instance;
 
@@ -47,7 +47,7 @@ final class pocketlistsSortRank
         } elseif (!is_string($rank)) {
             throw new Exception('Sort is not an string type');
         }
-        $rank = (empty($rank) ? reset($this->collection) : $rank);
+        $rank = (empty($rank) ? reset($this->collection) : mb_strtolower($rank));
         $this->sort = $sort;
         $this->matrix = $this->convertToMatrix($rank);
         if (count($this->matrix) > self::MAX_RANK_LEN) {
@@ -73,7 +73,7 @@ final class pocketlistsSortRank
             return false;
         }
 
-        $chars = str_split($rank);
+        $chars = str_split(mb_strtolower($rank));
         if (count($chars) > self::MAX_RANK_LEN) {
             return false;
         }
@@ -129,11 +129,14 @@ final class pocketlistsSortRank
             throw new Exception('Sort is not an string type');
         }
         if ($next_sort != $this->sort) {
-            $next_sort -= ceil(($next_sort - $this->sort) / 2);
+            $next_sort -= (int) ceil(($next_sort - $this->sort) / 2);
+        }
+        if ($next_sort === $this->sort && empty($next_rank)) {
+            $next_rank = implode('', array_fill(0, self::MAX_RANK_LEN, end($this->collection)));
         }
         $current_matrix = array_reverse($this->matrix);
         $next_matrix = array_reverse($this->convertToMatrix($next_rank));
-        $count = max(count($next_matrix), count($current_matrix));
+        $count = min(count($next_matrix), count($current_matrix));
         $difference = [];
         for ($i = 0; $i < $count; $i++) {
             $_l = ifset($current_matrix, $i, null);
@@ -147,9 +150,15 @@ final class pocketlistsSortRank
             }
         }
 
+        $is_inc = true;
         $next_matrix = [];
         foreach ($difference as $_i => $_diff) {
-            $next_matrix[] = (int) ifset($current_matrix, $_i, $this->count_chars) - $_diff;
+            $_m = (int) ifset($current_matrix, $_i, $this->count_chars) - $_diff;
+            $is_inc = $is_inc && $current_matrix[$_i] === $_m;
+            $next_matrix[] = $_m;
+        }
+        if ($is_inc && count($next_matrix) < self::MAX_RANK_LEN) {
+            $next_matrix[] = (int) ceil($this->count_chars / 2);
         }
 
         return [$next_sort, $this->convertToRank(array_reverse($next_matrix))];
@@ -163,7 +172,7 @@ final class pocketlistsSortRank
     private function convertToMatrix($rank)
     {
         $matrix = [];
-        $chars = (is_string($rank) ? str_split($rank) : '');
+        $chars = (is_string($rank) ? str_split(mb_strtolower($rank)) : '');
         if (!empty($chars)) {
             for ($i = count($chars) - 1; $i >= 0; $i--) {
                 $_char = array_pop($chars);
