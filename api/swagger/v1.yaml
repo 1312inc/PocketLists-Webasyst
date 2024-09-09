@@ -760,43 +760,47 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - id
-              properties:
-                id:
-                  type: integer
-                  description: List identifier
-                name:
-                  type: string
-                  description: Name list
-                icon:
-                  type: string
-                  description: Icon
-                color:
-                  type: string
-                  description: Color
-                  default: none
-                  enum:
-                    - none
-                    - red
-                    - green
-                    - blue
-                    - yellow
-                    - purple
-                sort:
-                  type: integer
-                  description: Sort
-                rank:
-                  type: string
-                  description: Sort rank
+              type: array
+              items:
+                type: object
+                required:
+                  - id
+                properties:
+                  id:
+                    type: integer
+                    description: List identifier
+                  name:
+                    type: string
+                    description: Name list
+                  icon:
+                    type: string
+                    description: Icon
+                  color:
+                    type: string
+                    description: Color
+                    default: none
+                    enum:
+                      - none
+                      - red
+                      - green
+                      - blue
+                      - yellow
+                      - purple
+                  sort:
+                    type: integer
+                    description: Sort
+                  rank:
+                    type: string
+                    description: Sort rank
       responses:
         200:
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/list'
+                type: array
+                items:
+                  $ref: '#/components/schemas/list'
         400:
           description: Invalid request data.
           content:
