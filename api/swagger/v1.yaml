@@ -759,7 +759,7 @@ paths:
         500:
           description: Internal server error.
   /pocketlists.list.update:
-    put:
+    patch:
       security:
         - BearerAuth: [ ]
       summary: Редактировать список
@@ -773,6 +773,13 @@ paths:
                 required:
                   - id
                 properties:
+                  action:
+                    type: string
+                    default: patch
+                    description: Обновить или пропатчить сущность
+                    enum:
+                      - patch
+                      - update
                   id:
                     type: integer
                     description: List identifier

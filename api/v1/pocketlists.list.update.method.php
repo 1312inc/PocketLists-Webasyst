@@ -2,7 +2,7 @@
 
 class pocketlistsListUpdateMethod extends pocketlistsApiAbstractMethod
 {
-    protected $method = self::METHOD_PUT;
+    protected $method = self::METHOD_PATCH;
 
     public function execute()
     {
@@ -32,41 +32,43 @@ class pocketlistsListUpdateMethod extends pocketlistsApiAbstractMethod
 
         /** validate */
         foreach ($lists as &$_list) {
+            $action = (ifset($_list, 'action', null) === self::ACTIONS[1] ? self::ACTIONS[1] : self::ACTIONS[0]);
             /** set default */
             $_list = [
+                'action'              => $action,
                 'id'                  => ifset($_list, 'id', null),
                 'pocket_id'           => null,
                 'sort'                => ifset($_list, 'sort', 0),
                 'rank'                => ifset($_list, 'rank', ''),
                 'type'                => null,
-                'icon'                => ifset($_list, 'icon', pocketlistsList::DEFAULT_ICON),
-                'archived'            => null,
+                'icon'                => ifset($_list, 'icon', ($action === self::ACTIONS[0] ? null : pocketlistsList::DEFAULT_ICON)),
+                'archived'            => 0,
                 'hash'                => null,
-                'color'               => ifset($_list, 'color', pocketlistsStoreColor::NONE),
+                'color'               => ifset($_list, 'color', ($action === self::ACTIONS[0] ? null : pocketlistsStoreColor::NONE)),
                 'passcode'            => null,
                 'key_item_id'         => null,
-                'contact_id'          => null,
-                'parent_id'           => null,
-                'has_children'        => null,
-                'status'              => null,
-                'priority'            => null,
-                'calc_priority'       => null,
+                'contact_id'          => 0,
+                'parent_id'           => 0,
+                'has_children'        => 0,
+                'status'              => 0,
+                'priority'            => 0,
+                'calc_priority'       => 0,
                 'create_datetime'     => null,
-                'update_datetime'     => null,
+                'update_datetime'     => date('Y-m-d H:i:s'),
                 'complete_datetime'   => null,
                 'complete_contact_id' => null,
-                'name'                => ifset($_list, 'name', ''),
+                'name'                => ifset($_list, 'name', ($action === self::ACTIONS[0] ? null : '')),
                 'note'                => null,
                 'due_date'            => null,
                 'due_datetime'        => null,
                 'location_id'         => null,
-                'amount'              => null,
+                'amount'              => 0,
                 'currency_iso3'       => null,
                 'assigned_contact_id' => null,
-                'repeat'              => null,
+                'repeat'              => 0,
                 'uuid'                => null,
                 'errors'              => [],
-                'status_code'         => null,
+                'status_code'         => 'ok',
             ];
 
             if (empty($_list['id'])) {
@@ -81,18 +83,20 @@ class pocketlistsListUpdateMethod extends pocketlistsApiAbstractMethod
                 $_list['errors'][] = _w('List access denied');
             }
 
-            if (!is_string($_list['name'])) {
+            if (isset($_list['name']) && !is_string($_list['name'])) {
                 $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'name');
             }
 
-            if (!is_string($_list['icon'])) {
+            if (isset($_list['icon']) && !is_string($_list['icon'])) {
                 $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'icon');
             }
 
-            if (!is_string($_list['color'])) {
-                $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'color');
-            } elseif (!array_key_exists($_list['color'], pocketlistsStoreColor::getColors())) {
-                $_list['errors'][] = _w('Unknown value color');
+            if (isset($_list['color'])) {
+                if (!is_string($_list['color'])) {
+                    $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'color');
+                } elseif (!array_key_exists($_list['color'], pocketlistsStoreColor::getColors())) {
+                    $_list['errors'][] = _w('Unknown value color');
+                }
             }
 
             if (!is_numeric($_list['sort'])) {
@@ -104,7 +108,17 @@ class pocketlistsListUpdateMethod extends pocketlistsApiAbstractMethod
             }
 
             if (empty($_list['errors'])) {
-                $_list = array_replace($lists_in_db[$_list['id']], array_filter($_list));
+                if ($_list['action'] == self::ACTIONS[0]) {
+                    // patch
+                    $_list = array_replace($lists_in_db[$_list['id']], array_filter($_list));
+                } else {
+                    // update
+                    $_list += $lists_in_db[$_list['id']];
+                    $_list['type'] = $lists_in_db[$_list['id']]['type'];
+                    $_list['pocket_id'] = $lists_in_db[$_list['id']]['pocket_id'];
+                    $_list['key_item_id'] = $lists_in_db[$_list['id']]['key_item_id'];
+                    $_list['create_datetime'] = $lists_in_db[$_list['id']]['create_datetime'];
+                }
                 unset($_list['errors']);
             } else {
                 $_list['status_code'] = 'error';
@@ -113,7 +127,7 @@ class pocketlistsListUpdateMethod extends pocketlistsApiAbstractMethod
         unset($_list);
 
         $lists_ok = array_filter($lists, function ($l) {
-            return is_null($l['status_code']);
+            return $l['status_code'] === 'ok';
         });
         $lists_err = array_diff_key($lists, $lists_ok);
         if (!empty($lists_ok)) {
@@ -127,7 +141,6 @@ class pocketlistsListUpdateMethod extends pocketlistsApiAbstractMethod
                 pl2()->getHydrator()->hydrate($list_clone, $_list);
                 $list_clone->setUpdateDatetime(date('Y-m-d H:i:s'));
                 $list_factory->save($list_clone);
-                $_list['status_code'] = 'ok';
             }
         }
 
