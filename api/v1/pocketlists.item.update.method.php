@@ -71,7 +71,7 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
                 'repeat'              => 0,
                 'key_list_id'         => null,
                 'uuid'                => ifset($_item, 'uuid', null),
-                'prev_item_id'        => ifset($_item, 'prev_item_id', null),
+                'prev_item_id'        => (array_key_exists('prev_item_id', $_item) ? ifset($_item, 'prev_item_id', 0) : null),
                 'attachments'         => ifset($_item, 'attachments', []),
                 'errors'              => [],
                 'status_code'         => 'ok',
@@ -148,8 +148,11 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
             if (empty($_item['errors'])) {
                 if ($_item['action'] == self::ACTIONS[0]) {
                     // patch
-                    $_item = array_replace($items_in_db[$_item['id']], array_filter($_item));
+                    $_item = array_replace($items_in_db[$_item['id']], array_filter($_item, function ($i) {return !is_null($i);}));
                     if (isset($_item['prev_item_id'])) {
+                        if ($_item['prev_item_id'] === 0) {
+                            $_item['prev_item_id'] = null;
+                        }
                         $_item['sort'] = null;
                         $_item['rank'] = null;
                     }
