@@ -149,6 +149,10 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
                 if ($_item['action'] == self::ACTIONS[0]) {
                     // patch
                     $_item = array_replace($items_in_db[$_item['id']], array_filter($_item));
+                    if (isset($_item['prev_item_id'])) {
+                        $_item['sort'] = null;
+                        $_item['rank'] = null;
+                    }
                 } else {
                     // update
                     $_item += $items_in_db[$_item['id']];
