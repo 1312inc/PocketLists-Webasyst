@@ -2,7 +2,7 @@
 
 class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
 {
-    protected $method = self::METHOD_PUT;
+    protected $method = self::METHOD_PATCH;
 
     public function execute()
     {
@@ -45,6 +45,7 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
         foreach ($items as &$_item) {
             /** set default */
             $_item = [
+                'action'              => (ifset($_item, 'action', null) === self::ACTIONS[1] ? self::ACTIONS[1] : self::ACTIONS[0]),
                 'id'                  => ifset($_item, 'id', null),
                 'list_id'             => ifset($_item, 'list_id', null),
                 'contact_id'          => $user_id,
@@ -55,8 +56,8 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
                 'status'              => 0,
                 'priority'            => ifset($_item, 'priority', 0),
                 'calc_priority'       => 0,
-                'create_datetime'     => date('Y-m-d H:i:s'),
-                'update_datetime'     => null,
+                'create_datetime'     => null,
+                'update_datetime'     => date('Y-m-d H:i:s'),
                 'complete_datetime'   => null,
                 'complete_contact_id' => null,
                 'name'                => ifset($_item, 'name', ''),
@@ -73,7 +74,7 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
                 'prev_item_id'        => ifset($_item, 'prev_item_id', null),
                 'attachments'         => ifset($_item, 'attachments', []),
                 'errors'              => [],
-                'status_code'         => null,
+                'status_code'         => 'ok',
             ];
 
             if (empty($_item['id'])) {
@@ -145,7 +146,13 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
             }
 
             if (empty($_item['errors'])) {
-                $_item += $items_in_db[$_item['id']];
+                if ($_item['action'] == self::ACTIONS[0]) {
+                    // patch
+                    $_item = array_replace($items_in_db[$_item['id']], array_filter($_item));
+                } else {
+                    // update
+                    $_item += $items_in_db[$_item['id']];
+                }
                 unset($_item['errors']);
             } else {
                 $_item['attachments'] = [];
@@ -154,7 +161,7 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
         }
 
         $items_ok = array_filter($items, function ($i) {
-            return is_null($i['status_code']);
+            return $i['status_code'] === 'ok';
         });
         $items_err = array_diff_key($items, $items_ok);
         if (!empty($items_ok)) {
@@ -165,7 +172,6 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
                 foreach ($items_ok as &$_item_ok) {
                     $result = $item_model->updateById($_item_ok['id'], $_item_ok);
                     if ($result) {
-                        $_item_ok['status_code'] = 'ok';
                         if (!empty($_item_ok['attachments'])) {
                             $_item_ok['attachments'] = $this->updateFiles($_item_ok['id'], $_item_ok['attachments']);
                         }

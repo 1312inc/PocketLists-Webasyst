@@ -7,6 +7,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
     public const METHOD_PUT    = 'PUT';
     public const METHOD_DELETE = 'DELETE';
     public const METHOD_PATCH  = 'PATCH';
+    public const ACTIONS  = ['patch', 'update'];
 
     const MAX_LIMIT = 500;
     const DEFAULT_LIMIT = 30;
