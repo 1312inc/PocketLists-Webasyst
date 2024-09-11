@@ -2,7 +2,7 @@
 
 class pocketlistsCommentUpdateMethod extends pocketlistsApiAbstractMethod
 {
-    protected $method = self::METHOD_PUT;
+    protected $method = self::METHOD_PATCH;
 
     public function execute()
     {
