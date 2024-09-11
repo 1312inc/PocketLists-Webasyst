@@ -1040,6 +1040,13 @@ paths:
                 color:
                   type: string
                   description: Цвет
+                  enum:
+                    - none
+                    - red
+                    - green
+                    - blue
+                    - yellow
+                    - purple
                 sort:
                   type: integer
                   description: Sort

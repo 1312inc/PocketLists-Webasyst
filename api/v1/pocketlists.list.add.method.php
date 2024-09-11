@@ -80,7 +80,7 @@ class pocketlistsListAddMethod extends pocketlistsApiAbstractMethod
 
             if (!is_string($_list['type'])) {
                 $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'type');
-            } elseif (!in_array($_list['type'], ['checklist', 'notes'])) {
+            } elseif (!in_array($_list['type'], [pocketlistsList::TYPE_CHECKLIST, pocketlistsList::TYPE_NOTES])) {
                 $_list['errors'][] = _w('Unknown value type');
             }
 
