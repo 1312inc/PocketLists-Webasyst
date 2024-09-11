@@ -270,13 +270,16 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                         FROM pocketlists_item
                         ORDER BY list_id, sort, `rank`
                 ) AS t
-                WHERE t.lst_id <> 0 AND (".implode(' OR ', $where).")", $params
+                WHERE ".implode(' OR ', $where), $params
             )->fetchAll();
 
-            $arr_1 = array_fill_keys(['lst_id', '_', '__', '___'], 0);
+            $arr_1 = array_fill_keys(['_', '__', '___'], 0);
             $arr_2 = array_fill_keys(['next_sort', 'next_rank'], null);
             foreach ($prev_items as $_prev_item) {
                 $_prev_item = array_diff_key($_prev_item, $arr_1) + $arr_2;
+                if ($_prev_item['prev_id'] === '0') {
+                    $_prev_item['prev_id'] = null;
+                }
                 if (in_array($_prev_item['id'], $prev_item_ids) || in_array($_prev_item['uuid'], $prev_item_uuids)) {
                     if (!empty($_prev_item['id'])) {
                         $prev_by_id[$_prev_item['id']] = $_prev_item;
