@@ -1127,7 +1127,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/errorResponse'
   /pocketlists.pocket.update:
-    put:
+    patch:
       security:
         - BearerAuth: [ ]
       summary: Редактировать проект
@@ -1139,6 +1139,13 @@ paths:
               required:
                 - id
               properties:
+                action:
+                  type: string
+                  default: patch
+                  description: Обновить или пропатчить сущность
+                  enum:
+                    - patch
+                    - update
                 id:
                   type: integer
                   description: Pocket identifier
@@ -1148,6 +1155,13 @@ paths:
                 color:
                   type: string
                   description: Цвет
+                  enum:
+                    - none
+                    - red
+                    - green
+                    - blue
+                    - yellow
+                    - purple
                 sort:
                   type: integer
                   description: Sort
