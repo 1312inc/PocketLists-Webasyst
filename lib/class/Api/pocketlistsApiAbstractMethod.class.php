@@ -287,7 +287,10 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                         $prev_by_uuid[$_prev_item['uuid']] = $_prev_item;
                     }
                 } else {
-                    if (ifset($prev_by_id, $_prev_item['prev_id'], [])) {
+                    if (
+                        ifset($prev_by_id, $_prev_item['prev_id'], [])
+                        && $prev_by_id[$_prev_item['prev_id']]['list_id'] == $_prev_item['list_id']
+                    ) {
                         $prev_by_id[$_prev_item['prev_id']]['next_sort'] = $_prev_item['sort'];
                         $prev_by_id[$_prev_item['prev_id']]['next_rank'] = $_prev_item['rank'];
                     } elseif (ifset($prev_by_uuid, $_prev_item['prev_uuid'], [])) {
