@@ -188,6 +188,12 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
                                 $_item['attachments'] = $this->updateFiles($_item['id'], $_item['attachments']);
                             }
                         }
+                        unset($_item);
+                        pocketlistsLogService::multipleAdd(
+                            pocketlistsLog::ENTITY_ITEM,
+                            pocketlistsLog::ACTION_ADD,
+                            $items_ok
+                        );
                     } else {
                         throw new waAPIException('error', _w('Error on transaction'));
                     }

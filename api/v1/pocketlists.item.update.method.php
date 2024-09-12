@@ -175,27 +175,23 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
             $item_model = pl2()->getModel(pocketlistsItem::class);
             $items_ok = $this->sorting($item_model, $items_ok);
             try {
-                $item = pl2()->getEntityFactory(pocketlistsItem::class)->createNew();
                 foreach ($items_ok as &$_item_ok) {
                     $result = $item_model->updateById($_item_ok['id'], $_item_ok);
                     if ($result) {
                         if (!empty($_item_ok['attachments'])) {
                             $_item_ok['attachments'] = $this->updateFiles($_item_ok['id'], $_item_ok['attachments']);
                         }
-                        $item_clone = clone $item;
-                        $item = pl2()->getHydrator()->hydrate($item_clone, $_item_ok);
-                        pl2()->getLogService()->add(
-                            pl2()->getLogService()->getFactory()->createNewItemLog(
-                                (new pocketlistsLogContext())->setItem($item),
-                                pocketlistsLog::ACTION_UPDATE
-                            )
-                        );
-                        unset($item_clone);
                     } else {
                         $_item_ok['status_code'] = 'error';
                         $_item_ok['errors'][] = _w('Failed to update');
                     }
                 }
+                unset($_item_ok);
+                pl2()->getLogService()->multipleAdd(
+                    pocketlistsLog::ENTITY_ITEM,
+                    pocketlistsLog::ACTION_UPDATE,
+                    $items_ok
+                );
             } catch (Exception $ex) {
                 throw new waAPIException('error', sprintf_wp('Error on transaction import save: %s', $ex->getMessage()), 400);
             }
