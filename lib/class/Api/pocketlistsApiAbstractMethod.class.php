@@ -185,14 +185,6 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
 
     protected function sorting(pocketlistsItemModel $item_model, $items = [])
     {
-$log_file_name = 'temp_sort_'.time().'.log';
-pocketlistsHelper::logDebug([-1 => 'ALL_SORT_ITEMS'] + $items, $log_file_name);
-$ibl = $item_model->select('id, list_id, sort, `rank`, key_list_id, uuid')
-    ->where('list_id IN (:list_ids)', ['list_ids' => array_unique(array_column($items, 'list_id'))])
-    ->order('list_id, sort, `rank`')
-    ->fetchAll();
-pocketlistsHelper::logDebug([-1 => 'ITEMS_BY_LISTS'] + $ibl, $log_file_name);
-
         $prev_by_id = [];
         $prev_by_uuid = [];
         $prev_item_ids = array_unique(array_filter(array_column($items, 'prev_item_id')));
@@ -250,7 +242,6 @@ pocketlistsHelper::logDebug([-1 => 'ITEMS_BY_LISTS'] + $ibl, $log_file_name);
                 array_unshift($items, $ext_item);
             }
         } while ($iter > 1);
-pocketlistsHelper::logDebug([-1 => '$PREV_ITEM_IDS'] + $prev_item_ids, $log_file_name);
 
         if ($prev_item_ids || $prev_item_uuids) {
             $where = [];
@@ -281,7 +272,6 @@ pocketlistsHelper::logDebug([-1 => '$PREV_ITEM_IDS'] + $prev_item_ids, $log_file
                 ) AS t
                 WHERE ".implode(' OR ', $where), $params
             )->fetchAll();
-pocketlistsHelper::logDebug([-1 => '$ALL_PREV_ITEMS'] + $prev_items, $log_file_name);
 
             $arr_1 = array_fill_keys(['_', '__', '___'], 0);
             $arr_2 = array_fill_keys(['next_sort', 'next_rank'], null);
@@ -311,7 +301,6 @@ pocketlistsHelper::logDebug([-1 => '$ALL_PREV_ITEMS'] + $prev_items, $log_file_n
             }
             unset($prev_items, $_prev_item, $prev_item_ids, $prev_item_uuids, $params, $where, $arr_1, $arr_2);
         }
-pocketlistsHelper::logDebug([-1 => '$PREV_BY_ID'] + $prev_by_id, $log_file_name);
 
         $p_sort_rank = pocketlistsSortRank::getInstance();
         $sort_info = $item_model->query("
@@ -319,42 +308,34 @@ pocketlistsHelper::logDebug([-1 => '$PREV_BY_ID'] + $prev_by_id, $log_file_name)
             WHERE list_id IN (:list_ids)
             GROUP BY list_id
         ", ['list_ids' => array_column($items, 'list_id')])->fetchAll('list_id');
-pocketlistsHelper::logDebug([-1 => '$SORT_INFO'] + $sort_info, $log_file_name);
         foreach ($items as &$_item) {
-pocketlistsHelper::logDebug([0 => 'SORT', 'item_id' => $_item['id']], $log_file_name);
             if (isset($_item['sort'])) {
                 $_item['rank'] = ifset($_item, 'rank', '');
                 continue;
             }
-pocketlistsHelper::logDebug([0 => 'SORT', 'step' => 1], $log_file_name);
             if (!isset($_item['list_id'])) {
                 $_item['sort'] = 0;
                 $_item['rank'] = '';
                 continue;
             }
-pocketlistsHelper::logDebug([0 => 'SORT', 'step' => 2], $log_file_name);
+
             $srt = 0;
             $rnk = '';
             if (isset($_item['prev_item_id']) || isset($_item['prev_item_uuid'])) {
-pocketlistsHelper::logDebug([0 => 'SORT', 'step' => 3], $log_file_name);
                 if (isset($_item['prev_item_id'])) {
                     $extreme_item = ifempty($prev_by_id, $_item['prev_item_id'], []);
                 } else {
                     $extreme_item = ifempty($prev_by_uuid, $_item['prev_item_uuid'], []);
                 }
-pocketlistsHelper::logDebug([0 => 'SORT', 'step' => 3.1], $log_file_name);
                 $list_id = ifempty($extreme_item, 'list_id', null);
                 if ($list_id == $_item['list_id']) {
-pocketlistsHelper::logDebug([0 => 'SORT', 'step' => 3.2], $log_file_name);
                     $p_sort_rank->new(
                         (int) ifset($extreme_item, 'sort', 0),
                         ifempty($extreme_item, 'rank', '0')
                     );
                     if (empty($extreme_item['next_sort'])) {
-pocketlistsHelper::logDebug([0 => 'SORT', 'step' => 3.3], $log_file_name);
                         list($srt) = $p_sort_rank->next();
                     } else {
-pocketlistsHelper::logDebug([0 => 'SORT', 'step' => 3.4], $log_file_name);
                         list($srt, $rnk) = $p_sort_rank->between(
                             (int) ifset($extreme_item, 'next_sort', 0),
                             ifempty($extreme_item, 'next_rank', '0')
@@ -363,38 +344,33 @@ pocketlistsHelper::logDebug([0 => 'SORT', 'step' => 3.4], $log_file_name);
 
                     /** обновляем sort/rank если в сортировке участвует сущность на которую ссылается через prev_ */
                     if (!empty($prev_by_id[$_item['id']])) {
-pocketlistsHelper::logDebug([0 => 'SORT', 'step' => 3.5], $log_file_name);
                         $prev_by_id[$_item['id']]['sort'] = $srt;
                         $prev_by_id[$_item['id']]['rank'] = $rnk;
                         $prev_by_id[$_item['id']]['next_sort'] = $extreme_item['next_sort'];
                         $prev_by_id[$_item['id']]['next_rank'] = $extreme_item['next_rank'];
                     } elseif (!empty($prev_by_uuid[$_item['id']])) {
-pocketlistsHelper::logDebug([0 => 'SORT', 'step' => 3.6], $log_file_name);
                         $prev_by_uuid[$_item['id']]['sort'] = $srt;
                         $prev_by_uuid[$_item['id']]['rank'] = $rnk;
                         $prev_by_uuid[$_item['id']]['next_sort'] = $extreme_item['next_sort'];
                         $prev_by_uuid[$_item['id']]['next_rank'] = $extreme_item['next_rank'];
                     }
                 } elseif (is_null($list_id)) {
-pocketlistsHelper::logDebug([0 => 'SORT', 'step' => 3.7], $log_file_name);
                     /** добавляем в конец списка */
                     $p_sort_rank->new((int) ifset($sort_info, $_item['list_id'], 'sort_max', 0), '0');
                     list($srt) = $p_sort_rank->next();
                 }
             } else {
-pocketlistsHelper::logDebug([0 => 'SORT', 'step' => 4], $log_file_name);
                 $sort_min = ifset($sort_info, $_item['list_id'], 'sort_min', null);
                 if (!is_null($sort_min)) {
                     /** добавляем в начало списка */
                     $p_sort_rank->new((int) ifset($sort_info, $_item['list_id'], 'sort_min', 0), '0');
                     list($srt) = $p_sort_rank->previous();
-pocketlistsHelper::logDebug([0 => 'SORT', 'step' => 4.1], $log_file_name);
                 }
             }
             $_item['sort'] = $srt;
             $_item['rank'] = $rnk;
         }
-pocketlistsHelper::logDebug([-1 => '$ITEMS_RESULT'] + $items, $log_file_name);
+
         return $items;
     }
 }
