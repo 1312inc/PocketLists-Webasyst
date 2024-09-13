@@ -248,12 +248,12 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
             $params = [];
             if ($prev_item_ids) {
                 $where[] = 't.id IN (:ids)';
-                $where[] = 'prev_id IN (:ids)';
+                $where[] = 't.prev_id IN (:ids)';
                 $params['ids'] = $prev_item_ids;
             }
             if ($prev_item_uuids) {
                 $where[] = 't.uuid IN (:uuids)';
-                $where[] = 'prev_uuid IN (:uuids)';
+                $where[] = 't.prev_uuid IN (:uuids)';
                 $params['uuids'] = $prev_item_uuids;
             }
 
