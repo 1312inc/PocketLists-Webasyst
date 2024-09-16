@@ -257,18 +257,19 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                 $params['uuids'] = $prev_item_uuids;
             }
 
-            $item_model->exec("SET @prev_item_id := 0, @lst_id := 0, @prev_item_uuid := ''");
+            $item_model->exec("SET @prev_id := 0, @l_id := 0, @prev_uuid := ''");
             $prev_items = $item_model->query(" 
                 SELECT * FROM (
-                    SELECT id, list_id, sort, `rank`, uuid, 
-                        @prev_id AS prev_id,
-                        IF(@lst_id <> list_id, 0, list_id) AS lst_id,
-                        @prev_uuid AS prev_uuid,
-                        @prev_id := id AS _,
-                        @lst_id := list_id AS __,
-                        @prev_uuid := IF(uuid IS NOT NULL, uuid, NULL) AS ___
-                        FROM pocketlists_item
-                        ORDER BY list_id, sort, `rank`
+                    SELECT 
+                        id, name, list_id, sort, `rank`, uuid,
+                        IF(@l_id = list_id, list_id, 0) AS lst_id,
+                        IF(@l_id = list_id, @prev_id, 0) AS prev_id,
+                        IF(@l_id = list_id, @prev_uuid, '') AS prev_uuid, 
+                        @l_id := list_id AS _,
+                        @prev_id := id AS __,
+                        @prev_uuid := uuid AS ___
+                    FROM pocketlists_item t1
+                    ORDER BY t1.list_id, t1.sort, t1.`rank`
                 ) AS t
                 WHERE ".implode(' OR ', $where), $params
             )->fetchAll();
@@ -370,6 +371,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
             $_item['sort'] = $srt;
             $_item['rank'] = $rnk;
         }
+        unset($_item);
 
         return $items;
     }
