@@ -15,12 +15,14 @@ class pocketlistsAttachmentAddMethod extends pocketlistsApiAbstractMethod
 
         $err = false;
         $result = [];
+        $items = [];
         $attachments = [];
         $item_ids = array_unique(array_column($files, 'item_id'));
         if (!empty($item_ids)) {
             /** @var pocketlistsItemModel $item_model */
             $item_model = pl2()->getModel(pocketlistsItem::class);
-            $item_ids = $item_model->select('id')->where('id IN (:item_ids)', ['item_ids' => $item_ids])->fetchAll(null, true);
+            $items = $item_model->select('id, list_id')->where('id IN (:item_ids)', ['item_ids' => $item_ids])->fetchAll('id');
+            $item_ids = array_keys($items);
         }
 
         /** validate */
@@ -52,6 +54,7 @@ class pocketlistsAttachmentAddMethod extends pocketlistsApiAbstractMethod
 
             $hash = md5(mt_rand(0, mt_rand(5000, 100000)));
             $result[$hash] = $_file;
+            $result[$hash]['file'] = null;
             if (empty($errors)) {
                 $attachments[$_file['item_id']][$hash] = $_file;
             } else {
@@ -65,10 +68,12 @@ class pocketlistsAttachmentAddMethod extends pocketlistsApiAbstractMethod
                 try {
                     $pl_attachments = $this->updateFiles($_item_id, $_attachments);
                     if (count($_attachments) === count($pl_attachments)) {
+                        $list_id = ifset($items, $_item_id, 'list_id', null);
                         foreach ($_attachments as $_hash => $_at) {
                             $pl_attachment = current($pl_attachments);
                             if (empty($pl_attachment['error'])) {
                                 $result[$_hash] += $pl_attachment;
+                                $result[$_hash] += ['list_id' => $list_id];
                             } else {
                                 $this->http_status_code = 400;
                                 $result[$_hash]['errors'] = [$pl_attachment['error']];
@@ -79,6 +84,14 @@ class pocketlistsAttachmentAddMethod extends pocketlistsApiAbstractMethod
                 } catch (waException $e) {
                 }
             }
+
+            pocketlistsLogService::multipleAdd(
+                pocketlistsLog::ENTITY_ATTACHMENT,
+                pocketlistsLog::ACTION_ADD,
+                array_values(array_filter($result, function ($a) {
+                    return empty($a['errors']);
+                }))
+            );
         }
 
         $this->response = $this->filterFields(

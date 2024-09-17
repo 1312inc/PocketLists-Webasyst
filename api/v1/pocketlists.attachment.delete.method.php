@@ -77,13 +77,27 @@ class pocketlistsAttachmentDeleteMethod extends pocketlistsApiAbstractMethod
         }
 
         if (!$invalid) {
+            $logs = [];
             foreach ($attachments as $_attachment) {
                 try {
-                    $plf->delete($_attachment);
+                    if ($plf->delete($_attachment)) {
+                        $logs[] = [
+                            'id'       => $_attachment->getId(),
+                            'list_id'  => ifempty($items, $_attachment->getItemId(), 'list_id', null),
+                            'item_id'  => $_attachment->getItemId(),
+                            'filename' => $_attachment->getFilename(),
+                            'filetype' => $_attachment->getFiletype()
+                        ];
+                    }
                 } catch (waException $we) {
 
                 }
             }
+            pocketlistsLogService::multipleAdd(
+                pocketlistsLog::ENTITY_ATTACHMENT,
+                pocketlistsLog::ACTION_DELETE,
+                $logs
+            );
         }
 
         $this->response = $data;
