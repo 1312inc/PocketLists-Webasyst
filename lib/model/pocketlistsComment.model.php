@@ -30,6 +30,19 @@ class pocketlistsCommentModel extends pocketlistsModel
         )->fetchAll('item_id', 2);
     }
 
+    public function getById($ids)
+    {
+        if (!is_array($ids)) {
+            $ids = [$ids];
+        }
+
+        return $this->query("
+            {$this->getSql()}
+            WHERE c.id IN (i:ids)
+            ", ['ids' => $ids]
+        )->fetchAll('id');
+    }
+
     /**
      * @param int $start
      * @param int $limit

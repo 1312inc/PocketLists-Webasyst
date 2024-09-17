@@ -18,7 +18,13 @@ class pocketlistsCommentUpdateMethod extends pocketlistsApiAbstractMethod
             throw new waAPIException('type_error', sprintf_wp('Type error parameter: “%s”.', 'id'), 400);
         } elseif (!is_string($comment_text)) {
             throw new waAPIException('type_error', sprintf_wp('Type error parameter: “%s”.', 'comment'), 400);
-        } elseif ($comment_id < 1 || !$comment = pl2()->getEntityFactory(pocketlistsComment::class)->findById($comment_id)) {
+        } elseif ($comment_id < 1) {
+            throw new waAPIException('not_found', _w('Comment not found'), 404);
+        }
+
+        $comments = pl2()->getEntityFactory(pocketlistsComment::class)->findById([$comment_id]);
+        $comment = reset($comments);
+        if (empty($comment)) {
             throw new waAPIException('not_found', _w('Comment not found'), 404);
         }
 
@@ -30,14 +36,24 @@ class pocketlistsCommentUpdateMethod extends pocketlistsApiAbstractMethod
             throw new waAPIException('error', _w('Some error on save comment'), 500);
         }
 
-        $this->response = $this->filterFields([[
+        $result = [
             'id'              => $comment->getId(),
             'item_id'         => $comment->getItemId(),
             'contact_id'      => $comment->getContactId(),
             'comment'         => $comment->getComment(),
             'create_datetime' => $comment->getCreateDatetime(),
             'uuid'            => $comment->getUuid(),
-        ]], [
+        ];
+        pocketlistsLogService::multipleAdd(
+            pocketlistsLog::ENTITY_COMMENT,
+            pocketlistsLog::ACTION_UPDATE,
+            [$result + [
+                'list_id'   => $comment->getListId(),
+                'pocket_id' => $comment->getPocketId()
+            ]]
+        );
+
+        $this->response = $this->filterFields([$result], [
             'id',
             'item_id',
             'contact_id',

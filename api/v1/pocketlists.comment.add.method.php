@@ -56,14 +56,22 @@ class pocketlistsCommentAddMethod extends pocketlistsApiAbstractMethod
             throw new waAPIException('type_error', _w('Error while adding new item comment'), 400);
         }
 
-        $this->response = [
-            'id'              => $comment->getId(),
-            'item_id'         => $comment->getItemId(),
+        $result = [
+            'id'         => $comment->getId(),
+            'item_id'    => $comment->getItemId(),
+            'contact_id' => $comment->getContactId(),
+            'comment'    => $comment->getComment(),
+            'uuid'       => $comment->getUuid()
+        ];
+        pocketlistsLogService::multipleAdd(
+            pocketlistsLog::ENTITY_COMMENT,
+            pocketlistsLog::ACTION_ADD,
+            [$result + ['list_id' => $item->getListId()]]
+        );
+
+        $this->response = $result + [
             'item_name'       => $comment->getItemName(),
-            'contact_id'      => $comment->getContactId(),
-            'comment'         => $comment->getComment(),
             'create_datetime' => $comment->getCreateDatetime(),
-            'uuid'            => $comment->getUuid()
         ];
     }
 }

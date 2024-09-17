@@ -19,9 +19,23 @@ class pocketlistsCommentDeleteMethod extends pocketlistsApiAbstractMethod
         $plf = pl2()->getEntityFactory(pocketlistsComment::class);
         $comment_ids = array_unique($comment_ids);
 
-        $comments = $plf->findByFields('id', $comment_ids, true);
+        $logs = [];
+        $comments = $plf->findById($comment_ids);
         foreach ($comments as $comment) {
             $plf->delete($comment);
+            $logs[] = [
+                'id'         => $comment->getId(),
+                'item_id'    => $comment->getItemId(),
+                'list_id'    => $comment->getListId(),
+                'pocket_id'  => $comment->getPocketId(),
+                'contact_id' => $comment->getContactId(),
+                'comment'    => $comment->getComment(),
+            ];
         }
+        pocketlistsLogService::multipleAdd(
+            pocketlistsLog::ENTITY_COMMENT,
+            pocketlistsLog::ACTION_DELETE,
+            $logs
+        );
     }
 }
