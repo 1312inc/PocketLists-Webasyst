@@ -66,6 +66,17 @@ class pocketlistsPocketUpdateMethod extends pocketlistsApiAbstractMethod
                 'passcode' => $pocket->getPasscode(),
                 'uuid'     => $pocket->getUuid()
             ];
+            pocketlistsLogService::multipleAdd(
+                pocketlistsLog::ENTITY_POCKET,
+                pocketlistsLog::ACTION_UPDATE,
+                [[
+                    'pocket_id' => $pocket_id,
+                    'name'  => $name,
+                    'color' => $color,
+                    'sort'  => $sort,
+                    'rank'  => $rank
+                ]]
+            );
         } else {
             throw new waAPIException('error', _w('Some error on save pocket'), 500);
         }

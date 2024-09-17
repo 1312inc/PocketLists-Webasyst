@@ -49,6 +49,18 @@ class pocketlistsPocketAddMethod extends pocketlistsApiAbstractMethod
                 pocketlistsRBAC::POCKET_ITEM.'.'.$pocket->getId(),
                 pocketlistsRBAC::RIGHT_ADMIN
             );
+            pocketlistsLogService::multipleAdd(
+                pocketlistsLog::ENTITY_POCKET,
+                pocketlistsLog::ACTION_ADD,
+                [[
+                    'pocket_id' => $pocket->getId(),
+                    'name'  => $name,
+                    'color' => $color,
+                    'sort'  => $sort,
+                    'rank'  => $rank,
+                    'uuid'  => $uuid
+                ]]
+            );
         } else {
             throw new waAPIException('error', _w('Some error on save pocket'), 500);
         }
