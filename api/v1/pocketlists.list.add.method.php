@@ -138,6 +138,12 @@ class pocketlistsListAddMethod extends pocketlistsApiAbstractMethod
                 $_list['key_item_id'] = $list_clone->getKeyItemId();
                 $_list['status_code'] = 'ok';
             }
+            unset($_list);
+            pocketlistsLogService::multipleAdd(
+                pocketlistsLog::ENTITY_LIST,
+                pocketlistsLog::ACTION_ADD,
+                $lists_ok
+            );
         }
 
         $this->response = $this->filterFields(

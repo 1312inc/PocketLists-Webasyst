@@ -19,9 +19,22 @@ class pocketlistsListDeleteMethod extends pocketlistsApiAbstractMethod
         $plf = pl2()->getEntityFactory(pocketlistsList::class);
         $list_ids = array_unique($list_ids);
 
+        $logs = [];
         $lists = $plf->findByFields('id', $list_ids, true);
         foreach ($lists as $list) {
             $plf->delete($list);
+            $logs[] = [
+                'id'        => $list->getId(),
+                'pocket_id' => $list->getPocketId(),
+                'name'      => $list->getName()
+            ];
+        }
+        if ($logs) {
+            pocketlistsLogService::multipleAdd(
+                pocketlistsLog::ENTITY_LIST,
+                pocketlistsLog::ACTION_DELETE,
+                $logs
+            );
         }
     }
 }

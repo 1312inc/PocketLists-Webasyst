@@ -107,7 +107,7 @@ class pocketlistsLogService
 
         foreach ($logs as &$_log) {
             $id = ifset($_log, 'id', null);
-            unset($_log['id'], $_log['action']);
+            unset($_log['id'], $_log['action'], $_log['contact_id']);
             $params = [
                 $entity => array_filter(array_diff_key($_log, $default), function ($l) {return !(is_null($l) || $l === []);})
             ];

@@ -136,12 +136,17 @@ class pocketlistsListUpdateMethod extends pocketlistsApiAbstractMethod
 
             /** @var pocketlistsList $list */
             $list = pl2()->getEntityFactory(pocketlistsList::class)->createNew();
-            foreach ($lists_ok as &$_list) {
+            foreach ($lists_ok as $_list) {
                 $list_clone = clone $list;
                 pl2()->getHydrator()->hydrate($list_clone, $_list);
                 $list_clone->setUpdateDatetime(date('Y-m-d H:i:s'));
                 $list_factory->save($list_clone);
             }
+            pl2()->getLogService()->multipleAdd(
+                pocketlistsLog::ENTITY_LIST,
+                pocketlistsLog::ACTION_UPDATE,
+                $lists_ok
+            );
         }
 
         $this->response = $this->filterFields(
