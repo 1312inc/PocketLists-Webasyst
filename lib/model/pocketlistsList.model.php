@@ -46,7 +46,7 @@ class pocketlistsListModel extends pocketlistsModel
               l.id IN (i:id)
             ORDER BY l.sort, l.id DESC",
             ['id' => $id, 'contact_id' => wa()->getUser()->getId()]
-        )->fetchAll();
+        )->fetchAll('id');
 
         return count($id) === 1 ? reset($lists) : $lists;
     }

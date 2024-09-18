@@ -783,6 +783,9 @@ paths:
                   id:
                     type: integer
                     description: List identifier
+                  pocket_id:
+                    type: integer
+                    description: ID проекта
                   name:
                     type: string
                     description: Name list

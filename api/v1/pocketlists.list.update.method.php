@@ -22,13 +22,19 @@ class pocketlistsListUpdateMethod extends pocketlistsApiAbstractMethod
 
         /** @var pocketlistsListModel $list_model */
         $list_model = pl2()->getModel(pocketlistsList::class);
-        $lists_in_db = $list_model->query(
-            $list_model->buildSqlComponents(
-                $list_model->getAllListsSqlComponents(0, $list_ids)
-            ),
-            ['list_ids' => $list_ids]
-        )->fetchAll('id');
+        $lists_in_db = $list_model->getById($list_ids);
+        $lists_in_db = (isset($lists_in_db['id']) ? [$lists_in_db['id'] => $lists_in_db] : $lists_in_db);
         $lists_id_available = pocketlistsRBAC::getAccessListForContact($this->getUser());
+
+        $pockets_in_db = [];
+        $pocket_ids = array_filter(array_unique(array_column($lists, 'pocket_id')), function ($i) {
+            return $i > 0;
+        });
+        if ($pocket_ids) {
+            $pocket_model = pl2()->getModel(pocketlistsPocket::class);
+            /** @var pocketlistsPocket $pocket */
+            $pockets_in_db = $pocket_model->getById($pocket_ids);
+        }
 
         /** validate */
         foreach ($lists as &$_list) {
@@ -37,7 +43,7 @@ class pocketlistsListUpdateMethod extends pocketlistsApiAbstractMethod
             $_list = [
                 'action'              => $action,
                 'id'                  => ifset($_list, 'id', null),
-                'pocket_id'           => null,
+                'pocket_id'           => ifset($_list, 'pocket_id', null),
                 'sort'                => ifset($_list, 'sort', 0),
                 'rank'                => ifset($_list, 'rank', ''),
                 'type'                => null,
@@ -81,6 +87,14 @@ class pocketlistsListUpdateMethod extends pocketlistsApiAbstractMethod
 
             if (!in_array($_list['id'], $lists_id_available)) {
                 $_list['errors'][] = _w('List access denied');
+            }
+
+            if (isset($_list['pocket_id'])) {
+                if (!is_numeric($_list['pocket_id'])) {
+                    $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'pocket_id');
+                } elseif ($_list['pocket_id'] < 1 || !array_key_exists($_list['pocket_id'], $pockets_in_db)) {
+                    $_list['errors'][] = _w('Pocket not found');
+                }
             }
 
             if (isset($_list['name']) && !is_string($_list['name'])) {
