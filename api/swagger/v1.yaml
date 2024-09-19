@@ -463,6 +463,61 @@ paths:
                 $ref: '#/components/schemas/errorResponse'
         500:
           description: Internal server error.
+  /pocketlists.item.getStream:
+    get:
+      security:
+        - BearerAuth: [ ]
+      summary: Get items
+      parameters:
+        - in: query
+          name: filter
+          required: true
+          description: Filter value
+          example: /todos/upnext, /todos/user/ID, /todos/search/KEYWORD
+          schema:
+            type: string
+        - in: query
+          name: offset
+          description: Смещение списка (по умолчанию 0)
+          schema:
+            type: integer
+        - in: query
+          name: limit
+          description: Размер порции списка (по умолчанию 30, максимум 500)
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  filter:
+                    type: string
+                    description: Filter value
+                  offset:
+                    type: integer
+                    description: Offset
+                  limit:
+                    type: integer
+                    description: Limit
+                  count:
+                    type: integer
+                    description: Count
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/item'
+        400:
+          description: Invalid request data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        500:
+          description: Internal server error.
   /pocketlists.item.update:
     patch:
       security:
