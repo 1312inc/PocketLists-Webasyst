@@ -334,7 +334,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                         (int) ifset($extreme_item, 'sort', 0),
                         ifempty($extreme_item, 'rank', '0')
                     );
-                    if (empty($extreme_item['next_sort'])) {
+                    if (!isset($extreme_item['next_sort'])) {
                         list($srt) = $p_sort_rank->next();
                     } else {
                         list($srt, $rnk) = $p_sort_rank->between(
