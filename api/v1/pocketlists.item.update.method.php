@@ -60,8 +60,8 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
                 'update_datetime'     => date('Y-m-d H:i:s'),
                 'complete_datetime'   => null,
                 'complete_contact_id' => null,
-                'name'                => ifset($_item, 'name', ''),
-                'note'                => ifset($_item, 'note', ''),
+                'name'                => ifset($_item, 'name', null),
+                'note'                => ifset($_item, 'note', null),
                 'due_date'            => null,
                 'due_datetime'        => ifset($_item, 'due_datetime', null),
                 'location_id'         => null,
@@ -111,11 +111,11 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
                 }
             }
 
-            if (!is_string($_item['name'])) {
+            if (isset($_item['name']) && !is_string($_item['name'])) {
                 $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'name');
             }
 
-            if (!is_string($_item['note'])) {
+            if (isset($_item['note']) && !is_string($_item['note'])) {
                 $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'note');
             }
 
