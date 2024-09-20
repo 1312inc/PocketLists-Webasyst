@@ -1,36 +1,69 @@
 <h3>Волшебный горшочек</h3>
 
-<div>
-    <label>
-        <span class="wa-radio">
-            <input type="radio" name="entity" value="POCKET">
-            <span></span>
-        </span>
-        POCKET
-    </label>
+<div class="fields">
+    <div class="field">
+        <div class="name">[`Сущность`]</div>
+        <div class="value">
+            <div class="wa-select">
+                <select name="entity">
+                    <option value="POCKET">[`POCKET`]</option>
+                    <option value="LIST">[`LIST`]</option>
+                    <option value="ITEM" selected>[`ITEM`]</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="field">
+        <div class="name">[`Количество`]</div>
+        <div class="value">
+            <input type="text" name="entity_count" value="{pocketlistsGorshochekPluginSettingsCookAction::DEFAULT_COUNT}">
+        </div>
+    </div>
+
+    <div class="field">
+        <div class="name">[`By user`]</div>
+        <div class="value">
+            <div class="wa-select">
+                <select name="by_user">
+                    <option value="0">[`All users random`]</option>
+                    <option value="{$curr_user->getId()}">[`Only me`]</option>
+                    {foreach $all_users as $_user}
+                    <option value="{$_user->getId()}">{$_user->getName()}</option>
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="field">
+        <div class="name">[`Assign to user`]</div>
+        <div class="value">
+            <div class="wa-select">
+                <select name="assign">
+                    <option value="0">[`No assignee`]</option>
+                    {foreach $all_users as $_user}
+                    <option value="{$_user->getId()}">{$_user->getName()}</option>
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="field">
+        <div class="name">[`List`]</div>
+        <div class="value">
+            <div class="wa-select">
+                <select name="list">
+                    <option value="random">[`Fill lists randomly`]</option>
+                    <option value="no">[`No list`]</option>
+                </select>
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-    <label>
-        <span class="wa-radio">
-            <input type="radio" name="entity" value="LIST">
-            <span></span>
-        </span>
-        LIST
-    </label>
-</div>
-<div>
-    <label>
-        <span class="wa-radio">
-            <input type="radio" name="entity" value="ITEM" checked>
-            <span></span>
-        </span>
-        ITEM
-    </label>
-</div>
-<div class="custom-mt-8">
-    <input type="text" name="entity_count" value="{pocketlistsGorshochekPluginSettingsCookAction::DEFAULT_COUNT}">
-</div>
-<br>
+
+
 <div class="custom-mb-8 hint">
     <span class="js-cook-info"></span>
 </div>
@@ -44,10 +77,21 @@
     let $cook_info = $('.js-cook-info');
 
     let step = function () {
-        let entity = $('input[name="entity"]:checked').val();
+        let entity = $('select[name="entity"]:checked').val();
         let entity_count = $('input[name="entity_count"]').val();
+        let by_user = $('select[name="by_user"]').val();
+        let assign = $('select[name="assign"]').val();
+        let list = $('select[name="list"]').val();
         timer = setInterval(function () {
-            $.post(url, { processid: process_id, entity: entity, entity_count: entity_count, cleanup: cleanup }, function (response) {
+            $.post(url, {
+                processid: process_id,
+                entity: entity,
+                entity_count: entity_count,
+                by_user: by_user,
+                assign: assign,
+                list: list,
+                cleanup: cleanup
+            }, function (response) {
                 if (response) {
                     if (response.processid) {
                         process_id = response.processid;
@@ -67,5 +111,14 @@
     $('.js-pot-cook').on('click', function () {
         $(this).attr('disabled', true);
         step();
+    });
+
+    $('select[name="entity"]').on('change', function (event) {
+        let div_list = $('select[name="list"]').closest('div.field');
+        if ($(event.target).val() === 'ITEM') {
+            div_list.show();
+        } else {
+            div_list.hide();
+        }
     });
 </script>
