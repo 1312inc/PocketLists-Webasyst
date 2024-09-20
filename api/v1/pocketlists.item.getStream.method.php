@@ -165,9 +165,30 @@ class pocketlistsItemGetStreamMethod extends pocketlistsApiAbstractMethod
             'offset'     => $offset
         ])->fetchAll('id');
 
-        return [
-            $items,
-            (int) $plim->query('SELECT FOUND_ROWS()')->fetchField()
-        ];
+        $total_count = (int) $plim->query('SELECT FOUND_ROWS()')->fetchField();
+        $path = wa()->getDataUrl('attachments', true, pocketlistsHelper::APP_ID);
+        $attachments = pl2()->getEntityFactory(pocketlistsAttachment::class)->findByFields(
+            'item_id',
+            array_keys($items),
+            true
+        );
+
+        /** @var pocketlistsAttachment $_attachment */
+        foreach ($attachments as $_attachment) {
+            $name = $_attachment->getFilename();
+            $item_id = $_attachment->getItemId();
+            if (!isset($items[$item_id]['attachments'])) {
+                $items[$item_id]['attachments'] = [];
+            }
+            $items[$item_id]['attachments'][] = [
+                'id'        => $_attachment->getId(),
+                'item_id'   => $item_id,
+                'file_name' => $name,
+                'file_type' => $_attachment->getFiletype(),
+                'path'      => "$path/$item_id/$name"
+            ];
+        }
+
+        return [$items, $total_count];
     }
 }
