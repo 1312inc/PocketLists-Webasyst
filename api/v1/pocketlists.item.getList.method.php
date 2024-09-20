@@ -10,7 +10,9 @@ class pocketlistsItemGetListMethod extends pocketlistsApiAbstractMethod
         $limit = $this->get('limit');
         $offset = $this->get('offset');
 
-        $while = 'WHERE 1 = 1';
+        $items = [];
+        $total_count = 0;
+        $where = 'i.list_id IN (:list_ids)';
         if (isset($ids)) {
             if (!is_array($ids)) {
                 throw new waAPIException('error_type', sprintf_wp('Invalid type %s', 'id'), 400);
@@ -21,7 +23,6 @@ class pocketlistsItemGetListMethod extends pocketlistsApiAbstractMethod
             if (empty($ids)) {
                 throw new waAPIException('not_found', _w('Items not found'), 404);
             }
-            $while .= ' AND i.id IN (i:item_ids)';
         }
         if (isset($list_id)) {
             if (!is_numeric($list_id)) {
@@ -29,7 +30,7 @@ class pocketlistsItemGetListMethod extends pocketlistsApiAbstractMethod
             } elseif ($list_id < 1) {
                 throw new waAPIException('not_found', _w('List not found'), 404);
             }
-            $while .= ' AND i.list_id = i:list_id';
+            $where .= ' AND i.list_id IN (:list_ids)';
         }
         if (isset($starting_from)) {
             if (!is_numeric($starting_from)) {
@@ -38,7 +39,7 @@ class pocketlistsItemGetListMethod extends pocketlistsApiAbstractMethod
                 throw new waAPIException('negative_value', _w('The parameter has a negative value'), 400);
             }
             $starting_from = date('Y-m-d H:i:s', $starting_from);
-            $while .= ' AND i.update_datetime >= s:starting_from';
+            $where .= ' AND i.update_datetime >= s:starting_from';
         }
         if (isset($limit)) {
             if (!is_numeric($limit)) {
@@ -61,39 +62,49 @@ class pocketlistsItemGetListMethod extends pocketlistsApiAbstractMethod
             $offset = 0;
         }
 
-        $plim = pl2()->getModel(pocketlistsItem::class);
-        $sql = $plim->getQuery(true);
-        $items = $plim->query(
-            "$sql $while ORDER BY i.parent_id, i.sort, i.rank ASC, i.id DESC LIMIT i:offset, i:limit", [
-            'item_ids'      => $ids,
-            'list_id'       => (int) $list_id,
-            'contact_id'    => $this->getUser()->getId(),
-            'starting_from' => $starting_from,
-            'limit'         => $limit,
-            'offset'        => $offset
-        ])->fetchAll('id');
-        $total_count = (int) $plim->query('SELECT FOUND_ROWS()')->fetchField();
-        $path = wa()->getDataUrl('attachments', true, pocketlistsHelper::APP_ID);
-        $attachments = pl2()->getEntityFactory(pocketlistsAttachment::class)->findByFields(
-            'item_id',
-            array_keys($items),
-            true
-        );
-
-        /** @var pocketlistsAttachment $_attachment */
-        foreach ($attachments as $_attachment) {
-            $name = $_attachment->getFilename();
-            $item_id = $_attachment->getItemId();
-            if (!isset($items[$item_id]['attachments'])) {
-                $items[$item_id]['attachments'] = [];
+        $list_ids = pocketlistsRBAC::getAccessListForContact(pl2()->getUser()->getId());
+        if (isset($list_id)) {
+            if (in_array($list_id, $list_ids)) {
+                $list_ids = [$list_id];
+            } else {
+                $list_ids = [];
             }
-            $items[$item_id]['attachments'][] = [
-                'id'        => $_attachment->getId(),
-                'item_id'   => $item_id,
-                'file_name' => $name,
-                'file_type' => $_attachment->getFiletype(),
-                'path'      => "$path/$item_id/$name"
-            ];
+        }
+        if (!empty($list_ids)) {
+            $plim = pl2()->getModel(pocketlistsItem::class);
+            $sql = $plim->getQuery(true);
+            $items = $plim->query(
+                "$sql WHERE $where ORDER BY i.parent_id, i.sort, i.rank ASC, i.id DESC LIMIT i:offset, i:limit", [
+                'item_ids'      => $ids,
+                'list_ids'      => $list_ids,
+                'contact_id'    => $this->getUser()->getId(),
+                'starting_from' => $starting_from,
+                'limit'         => $limit,
+                'offset'        => $offset
+            ])->fetchAll('id');
+            $total_count = (int) $plim->query('SELECT FOUND_ROWS()')->fetchField();
+            $path = wa()->getDataUrl('attachments', true, pocketlistsHelper::APP_ID);
+            $attachments = pl2()->getEntityFactory(pocketlistsAttachment::class)->findByFields(
+                'item_id',
+                array_keys($items),
+                true
+            );
+
+            /** @var pocketlistsAttachment $_attachment */
+            foreach ($attachments as $_attachment) {
+                $name = $_attachment->getFilename();
+                $item_id = $_attachment->getItemId();
+                if (!isset($items[$item_id]['attachments'])) {
+                    $items[$item_id]['attachments'] = [];
+                }
+                $items[$item_id]['attachments'][] = [
+                    'id'        => $_attachment->getId(),
+                    'item_id'   => $item_id,
+                    'file_name' => $name,
+                    'file_type' => $_attachment->getFiletype(),
+                    'path'      => "$path/$item_id/$name"
+                ];
+            }
         }
 
         $this->response = [
