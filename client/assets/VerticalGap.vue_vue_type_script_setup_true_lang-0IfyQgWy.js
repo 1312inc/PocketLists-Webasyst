@@ -1,1 +1,0 @@
-import{e as p,h as s,A as a,O as o,o as r}from"./index-JSN2fVTL.js";const c=p({__name:"VerticalGap",props:{space:{}},setup(t){return(e,l)=>(r(),s("div",{class:o(["tw-flex tw-flex-col",{"tw-gap-2":e.$props.space===2,"tw-gap-4":e.$props.space===4,"tw-gap-6":e.$props.space===6,"tw-gap-8":e.$props.space===8}])},[a(e.$slots,"default")],2))}});export{c as _};
