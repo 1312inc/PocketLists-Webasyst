@@ -118,7 +118,12 @@ class pocketlistsItemGetStreamMethod extends pocketlistsApiAbstractMethod
             throw new waAPIException('unknown_value', _w('Unknown filter value'), 400);
         }
 
-        $where = '1 = 1';
+        $available_list_ids = pocketlistsRBAC::getAccessListForContact(pl2()->getUser()->getId());
+        if (empty($available_list_ids)) {
+            return [[], 0];
+        }
+
+        $where = 'i.list_id IN (:list_ids)';
         $sort  = '1 = 1';
         $plim  = pl2()->getModel(pocketlistsItem::class);
         switch ($filter_split[1]) {
@@ -131,7 +136,7 @@ class pocketlistsItemGetStreamMethod extends pocketlistsApiAbstractMethod
                 $sort = 'i.priority DESC';
                 break;
             case 'user':
-                /** todos/user/ID */
+                /** /todos/user/ID */
                 if (
                     !isset($filter_split[2])
                     || !is_numeric($filter_split[2])
@@ -143,7 +148,10 @@ class pocketlistsItemGetStreamMethod extends pocketlistsApiAbstractMethod
                 $where .= ' AND assigned_contact_id = '.(int) $filter_split[2];
                 break;
             case 'search':
-                /** todos/search/KEYWORD */
+                /** /todos/search/KEYWORD */
+                if (!isset($filter_split[2])) {
+                    throw new waAPIException('empty_value', _w('Empty value'), 400);
+                }
                 $where .= " AND i.name LIKE '%".$plim->escape($filter_split[2])."%'";
                 break;
         }
@@ -151,6 +159,7 @@ class pocketlistsItemGetStreamMethod extends pocketlistsApiAbstractMethod
         $sql = $plim->getQuery(true);
         $items = $plim->query(
             "$sql WHERE $where ORDER BY $sort LIMIT i:offset, i:limit", [
+            'list_ids'   => $available_list_ids,
             'contact_id' => $this->getUser()->getId(),
             'limit'      => $limit,
             'offset'     => $offset
