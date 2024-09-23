@@ -473,7 +473,7 @@ paths:
           name: filter
           required: true
           description: Filter value
-          example: /todos/upnext, /todos/user/ID, /todos/search/KEYWORD
+          example: /upnext, /user/ID, /search/KEYWORD
           schema:
             type: string
         - in: query

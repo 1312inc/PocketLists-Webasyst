@@ -102,8 +102,7 @@ class pocketlistsItemGetStreamMethod extends pocketlistsApiAbstractMethod
 
     private function getItems($filter, $limit, $offset)
     {
-        $available_filters = ['todos'];
-        $available_subfilters = [
+        $available_filters = [
             'upnext',
             'priority',
             'user',
@@ -111,9 +110,8 @@ class pocketlistsItemGetStreamMethod extends pocketlistsApiAbstractMethod
         ];
         $filter_split = explode('/', $filter);
         if (
-            !in_array(count($filter_split), [2, 3])
+            !in_array(count($filter_split), [1, 2])
             || !in_array($filter_split[0], $available_filters)
-            || !in_array($filter_split[1], $available_subfilters)
         ) {
             throw new waAPIException('unknown_value', _w('Unknown filter value'), 400);
         }
@@ -126,33 +124,39 @@ class pocketlistsItemGetStreamMethod extends pocketlistsApiAbstractMethod
         $where = 'i.list_id IN (:list_ids)';
         $sort  = '1 = 1';
         $plim  = pl2()->getModel(pocketlistsItem::class);
-        switch ($filter_split[1]) {
+        switch ($filter_split[0]) {
             case 'upnext':
-                /** /todos/upnext */
+                /** /upnext */
+                if (!empty($filter_split[1])) {
+                    throw new waAPIException('unknown_value', _w('Unknown filter value'), 400);
+                }
                 $sort = 'i.calc_priority DESC, i.due_date ASC';
                 break;
             case 'priority':
-                /** /todos/priority */
+                /** /priority */
+                if (!empty($filter_split[1])) {
+                    throw new waAPIException('unknown_value', _w('Unknown filter value'), 400);
+                }
                 $sort = 'i.priority DESC';
                 break;
             case 'user':
-                /** /todos/user/ID */
+                /** /user/ID */
                 if (
-                    !isset($filter_split[2])
-                    || !is_numeric($filter_split[2])
-                    || $filter_split[2] < 1
-                    || $filter_split[2] != (int) $filter_split[2]
+                    !isset($filter_split[1])
+                    || !is_numeric($filter_split[1])
+                    || $filter_split[1] < 1
+                    || $filter_split[1] != (int) $filter_split[1]
                 ) {
                     throw new waAPIException('unknown_value', _w('Unknown user'), 400);
                 }
-                $where .= ' AND assigned_contact_id = '.(int) $filter_split[2];
+                $where .= ' AND assigned_contact_id = '.(int) $filter_split[1];
                 break;
             case 'search':
-                /** /todos/search/KEYWORD */
-                if (!isset($filter_split[2])) {
+                /** /search/KEYWORD */
+                if (!isset($filter_split[1]) || !empty($filter_split[2])) {
                     throw new waAPIException('empty_value', _w('Empty value'), 400);
                 }
-                $where .= " AND i.name LIKE '%".$plim->escape($filter_split[2])."%'";
+                $where .= " AND i.name LIKE '%".$plim->escape($filter_split[1])."%'";
                 break;
         }
 
