@@ -8,12 +8,18 @@ class pocketlistsGorshochekPluginBackendRunController extends waLongActionContro
     protected function init()
     {
         $entity_count = waRequest::post('entity_count', 0, waRequest::TYPE_INT);
-        $entity_type = waRequest::post('entity', 'item', waRequest::TYPE_STRING_TRIM);
+        $entity_type = waRequest::post('entity', 'ITEM', waRequest::TYPE_STRING_TRIM);
+        $by_user = waRequest::post('by_user', 0, waRequest::TYPE_INT);
+        $assign = waRequest::post('assign', 0, waRequest::TYPE_INT);
+        $list = waRequest::post('list', '', waRequest::TYPE_STRING_TRIM);
 
         $this->data = [
-            'counter' => 0,
-            'count_all' => $entity_count,
-            'entity_type' => $entity_type
+            'counter'     => 0,
+            'count_all'   => $entity_count,
+            'entity_type' => $entity_type,
+            'by_user'     => (empty($by_user) ? pocketlistsRBAC::getAccessContacts() : [$by_user]),
+            'assign'      => $assign,
+            'list'        => $list
         ];
     }
 
@@ -185,7 +191,7 @@ class pocketlistsGorshochekPluginBackendRunController extends waLongActionContro
                     'type'      => $this->genType(),
                     'icon'      => $this->genIcon(),
                     'color'     => $this->genColor(),
-                    'uuid'  => $this->getUuid(3)
+                    'uuid'      => $this->getUuid(3)
                 ];
                 break;
             case 'item':
@@ -195,15 +201,15 @@ class pocketlistsGorshochekPluginBackendRunController extends waLongActionContro
                     'name'                => $name,
                     'note'                => $note,
                     'priority'            => $this->genPriority(),
-                    'contact_id'          => $this->getUser()->getId(),
+                    'contact_id'          => $this->genContactId(),
                     'create_datetime'     => date('Y-m-d H:i:s', $this->genTimestamp()),
                     'due_datetime'        => null,
                     'due_date'            => null,
-                    'assigned_contact_id' => null,
+                    'assigned_contact_id' => $this->genContactId(true),
                     'files'               => [],
                     'amount'              => 0,
                     'repeat'              => 0,
-                    'uuid'  => $this->getUuid(10)
+                    'uuid'                => $this->getUuid(10)
                 ];
                 if (mt_rand(1, 3) % 3 === 0) {
                     $is_future = (mt_rand(1, 3) % 3 === 0);
@@ -220,6 +226,17 @@ class pocketlistsGorshochekPluginBackendRunController extends waLongActionContro
         }
 
         return $gen_data;
+    }
+
+    private function genContactId($is_assigned = false)
+    {
+        if ($is_assigned) {
+            return ifset($this->data, 'assign', null);
+        }
+
+        $rand = mt_rand(0, count($this->data['by_user']) - 1);
+
+        return ifset($this->data, 'by_user', $rand, null);
     }
 
     /**
@@ -317,6 +334,9 @@ class pocketlistsGorshochekPluginBackendRunController extends waLongActionContro
      */
     private function genListId()
     {
+        if ($this->data['list'] === 'no') {
+            return null;
+        }
         if (empty($this->data['list_ids'])) {
             /** @var pocketlistsListModel $list_model */
             $list_model = pl2()->getModel(pocketlistsList::class);
