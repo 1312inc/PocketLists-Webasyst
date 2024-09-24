@@ -2,6 +2,8 @@
 
 class pocketlistsGorshochekPluginBackendRunController extends waLongActionController
 {
+    const DEFAULT_COUNT = 100;
+
     /**
      * @return void
      */
@@ -12,14 +14,20 @@ class pocketlistsGorshochekPluginBackendRunController extends waLongActionContro
         $by_user = waRequest::post('by_user', 0, waRequest::TYPE_INT);
         $assign = waRequest::post('assign', 0, waRequest::TYPE_INT);
         $list = waRequest::post('list', '', waRequest::TYPE_STRING_TRIM);
+        $comment_in = waRequest::post('comment_in', '', waRequest::TYPE_STRING_TRIM);
+        $comment_entity_id = waRequest::post('comment_entity_id', 0, waRequest::TYPE_INT);
+        $is_log = !!waRequest::post('is_log', 0, waRequest::TYPE_INT);
 
         $this->data = [
-            'counter'     => 0,
-            'count_all'   => $entity_count,
-            'entity_type' => $entity_type,
-            'by_user'     => (empty($by_user) ? pocketlistsRBAC::getAccessContacts() : [$by_user]),
-            'assign'      => $assign,
-            'list'        => $list
+            'counter'           => 0,
+            'count_all'         => $entity_count,
+            'entity_type'       => $entity_type,
+            'by_user'           => (empty($by_user) ? pocketlistsRBAC::getAccessContacts() : [$by_user]),
+            'assign'            => $assign,
+            'list'              => $list,
+            'comment_in'        => $comment_in,
+            'comment_entity_id' => $comment_entity_id,
+'is_log'            => $is_log
         ];
     }
 
@@ -36,6 +44,9 @@ class pocketlistsGorshochekPluginBackendRunController extends waLongActionContro
                 break;
             case 'LIST':
                 $count = $this->addList();
+                break;
+            case 'COMMENT':
+                $count = $this->addComment();
                 break;
             case 'ITEM':
             default:
@@ -170,6 +181,26 @@ class pocketlistsGorshochekPluginBackendRunController extends waLongActionContro
         return $result;
     }
 
+    private function addComment()
+    {
+        $result = 0;
+        /** @var pocketlistsCommentFactory $comment_factory */
+        $comment_factory = pl2()->getEntityFactory(pocketlistsComment::class);
+
+        /** @var pocketlistsComment $comment */
+        $comment = $comment_factory->createNew();
+
+        while (empty($result)) {
+            $gen_data = $this->generatorData('comment');
+            $comment = pl2()->getHydrator()->hydrate($comment, $gen_data);
+            if ($comment_factory->save($comment)) {
+                $result++;
+            }
+        }
+
+        return $result;
+    }
+
     /**
      * @param $entity_type
      * @return array
@@ -220,6 +251,15 @@ class pocketlistsGorshochekPluginBackendRunController extends waLongActionContro
                         $gen_data['due_date'] = date('Y-m-d', $time);
                     }
                 }
+                break;
+            case 'comment':
+                $gen_data = [
+                    'item_id'         => $this->genItemId(),
+                    'contact_id'      => $this->genContactId(),
+                    'comment'         => $this->genName($entity_type),
+                    'create_datetime' => date('Y-m-d H:i:s', $this->genTimestamp()),
+                    'uuid'            => $this->getUuid(10)
+                ];
                 break;
             default:
                 $gen_data = [];
@@ -349,6 +389,35 @@ class pocketlistsGorshochekPluginBackendRunController extends waLongActionContro
         return ifset($this->data, 'list_ids', $rand, null);
     }
 
+    private function genItemId()
+    {
+        if (empty($this->data['item_ids'])) {
+            if ($this->data['comment_in'] === 'item') {
+                $this->data['item_ids'] = [$this->data['comment_entity_id']];
+            } else {
+                $and = 'list_id IS NOT NULL';
+                if ($this->data['comment_in'] === 'list') {
+                    $and = 'list_id = i:list_id';
+                }
+                /** @var pocketlistsItemModel $item_model */
+                $item_model = pl2()->getModel(pocketlistsItem::class);
+                $this->data['item_ids'] = $item_model->query("
+                    SELECT id FROM pocketlists_item
+                    WHERE key_list_id IS NULL AND $and
+                    ORDER BY RAND()
+                    LIMIT i:limit
+                ", [
+                    'list_id' => (int) $this->data['comment_entity_id'],
+                    'limit'   => max(self::DEFAULT_COUNT, (int) $this->data['count_all'])
+                ])->fetchAll();
+                $this->data['item_ids'] = array_column($this->data['item_ids'], 'id');
+            }
+        }
+        $rand = mt_rand(0, count($this->data['item_ids']) - 1);
+
+        return ifset($this->data, 'item_ids', $rand, null);
+    }
+
     /**
      * @param $entity_type
      * @return array|false|mixed|string
@@ -382,6 +451,8 @@ class pocketlistsGorshochekPluginBackendRunController extends waLongActionContro
                     trim(ifset($names, $rand, md5(microtime()))),
                     trim(ifset($names, $rand + 1, md5(microtime())))
                 ];
+            case 'comment':
+                return trim(ifset($names, $rand, md5(microtime())));
         }
 
         return reset($names);

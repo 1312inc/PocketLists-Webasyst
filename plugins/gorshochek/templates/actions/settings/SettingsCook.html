@@ -9,6 +9,7 @@
                     <option value="POCKET">[`POCKET`]</option>
                     <option value="LIST">[`LIST`]</option>
                     <option value="ITEM" selected>[`ITEM`]</option>
+                    <option value="COMMENT">[`COMMENT`]</option>
                 </select>
             </div>
         </div>
@@ -17,7 +18,7 @@
     <div class="field">
         <div class="name">[`Количество`]</div>
         <div class="value">
-            <input type="text" name="entity_count" value="{pocketlistsGorshochekPluginSettingsCookAction::DEFAULT_COUNT}">
+            <input type="text" name="entity_count" value="{pocketlistsGorshochekPluginBackendRunController::DEFAULT_COUNT}">
         </div>
     </div>
 
@@ -61,10 +62,41 @@
             </div>
         </div>
     </div>
+
+    <div class="field">
+        <div class="name">[`В куда`]</div>
+        <div class="value">
+            <div class="wa-select">
+                <select name="comment_in">
+                    <option value="all">[`All items randomly`]</option>
+                    <option value="item">[`Specific item only`]</option>
+                    <option value="list">[`Specific list only`]</option>
+                </select>
+            </div>
+            <input type="text" name="comment_entity_id" value="" title="Entity ID" placeholder="1312">
+        </div>
+    </div>
+
+    <div class="field">
+        <div class="name">[`Логирование`]</div>
+        <div class="value">
+            <label>
+                <span class="wa-checkbox">
+                    <input type="checkbox" name="log">
+                    <span>
+                        <span class="icon">
+                            <i class="fas fa-check"></i>
+                        </span>
+                    </span>
+                </span>
+                [`Логировать сваренные данные`]
+            </label>
+        </div>
+    </div>
 </div>
 
 
-<div class="custom-mb-8 hint">
+<div class="custom-my-8 hint">
     <span class="js-cook-info"></span>
 </div>
 <button class="js-pot-cook" type="button">Горшочек, вари!</button>
@@ -77,11 +109,14 @@
     let $cook_info = $('.js-cook-info');
 
     let step = function () {
-        let entity = $('select[name="entity"]:checked').val();
+        let entity = $('select[name="entity"]').val();
         let entity_count = $('input[name="entity_count"]').val();
         let by_user = $('select[name="by_user"]').val();
         let assign = $('select[name="assign"]').val();
         let list = $('select[name="list"]').val();
+        let comment_in = $('select[name="comment_in"]').val();
+        let comment_entity_id = $('input[name="comment_entity_id"]').val();
+        let log = $('input[name="log"]').is(':checked');
         timer = setInterval(function () {
             $.post(url, {
                 processid: process_id,
@@ -90,6 +125,9 @@
                 by_user: by_user,
                 assign: assign,
                 list: list,
+                comment_in: comment_in,
+                comment_entity_id: comment_entity_id,
+                is_log: (log === true ? 1 : 0),
                 cleanup: cleanup
             }, function (response) {
                 if (response) {
@@ -114,11 +152,39 @@
     });
 
     $('select[name="entity"]').on('change', function (event) {
+        let div_by_user = $('select[name="by_user"]').closest('div.field');
+        let div_assign = $('select[name="assign"]').closest('div.field');
         let div_list = $('select[name="list"]').closest('div.field');
-        if ($(event.target).val() === 'ITEM') {
-            div_list.show();
-        } else {
-            div_list.hide();
+        let div_comment_in = $('select[name="comment_in"]').closest('div.field');
+        let comment_entity_id = div_comment_in.find('input[name="comment_entity_id"]');
+        comment_entity_id.hide();
+        switch ($(event.target).val()) {
+            case 'POCKET':
+            case 'LIST':
+                div_by_user.hide();
+                div_assign.hide();
+                div_list.hide();
+                div_comment_in.hide();
+                break;
+            case 'ITEM':
+                div_by_user.show();
+                div_assign.show();
+                div_list.show();
+                div_comment_in.hide();
+                break;
+            case 'COMMENT':
+                div_by_user.show();
+                div_assign.hide();
+                div_list.hide();
+                div_comment_in.show();
+                div_comment_in.on('change', function (e) {
+                    if ($(e.target).val() === 'all') {
+                        comment_entity_id.hide();
+                    } else {
+                        comment_entity_id.show();
+                    }
+                });
+                break;
         }
-    });
+    }).trigger('change');
 </script>
