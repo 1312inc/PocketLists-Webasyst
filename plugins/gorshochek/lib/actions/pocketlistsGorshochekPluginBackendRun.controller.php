@@ -21,13 +21,14 @@ class pocketlistsGorshochekPluginBackendRunController extends waLongActionContro
         $this->data = [
             'counter'           => 0,
             'count_all'         => $entity_count,
-            'entity_type'       => $entity_type,
+            'entity_type'       => strtolower($entity_type),
             'by_user'           => (empty($by_user) ? pocketlistsRBAC::getAccessContacts() : [$by_user]),
             'assign'            => $assign,
             'list'              => $list,
             'comment_in'        => $comment_in,
             'comment_entity_id' => $comment_entity_id,
-'is_log'            => $is_log
+            'is_log'            => $is_log,
+            'send_log'          => []
         ];
     }
 
@@ -39,16 +40,16 @@ class pocketlistsGorshochekPluginBackendRunController extends waLongActionContro
     protected function step()
     {
         switch ($this->data['entity_type']) {
-            case 'POCKET':
+            case 'pocket':
                 $count = $this->addPocket();
                 break;
-            case 'LIST':
+            case 'list':
                 $count = $this->addList();
                 break;
-            case 'COMMENT':
+            case 'comment':
                 $count = $this->addComment();
                 break;
-            case 'ITEM':
+            case 'item':
             default:
                 $count = $this->addItem();
         }
@@ -62,7 +63,24 @@ class pocketlistsGorshochekPluginBackendRunController extends waLongActionContro
      */
     protected function isDone()
     {
-        return $this->data['counter'] >= $this->data['count_all'];
+        $is_done = $this->data['counter'] >= $this->data['count_all'];
+
+        if ($this->data['is_log'] && !empty($this->data['send_log'])) {
+            if ($is_done || count($this->data['send_log']) >= self::DEFAULT_COUNT) {
+                try {
+                    pocketlistsLogService::multipleAdd(
+                        $this->data['entity_type'],
+                        pocketlistsLog::ACTION_ADD,
+                        $this->data['send_log']
+                    );
+                } catch (Exception $e) {}
+                $this->data['send_log'] = [];
+            }
+        } else {
+            $this->data['send_log'] = [];
+        }
+
+        return $is_done;
     }
 
     /**
@@ -124,6 +142,7 @@ class pocketlistsGorshochekPluginBackendRunController extends waLongActionContro
             $gen_data = $this->generatorData('item');
             $item = pl2()->getHydrator()->hydrate($item, $gen_data);
             if ($item_factory->insert($item)) {
+                $this->data['send_log'][] = $gen_data + ['item_id' => $item->getId()];
                 $result++;
             }
         }
@@ -149,6 +168,7 @@ class pocketlistsGorshochekPluginBackendRunController extends waLongActionContro
             $gen_data = $this->generatorData('list');
             $list = pl2()->getHydrator()->hydrate($list, $gen_data);
             if ($list_factory->save($list)) {
+                $this->data['send_log'][] = $gen_data + ['list_id' => $list->getId()];
                 $result++;
             }
         }
@@ -174,6 +194,7 @@ class pocketlistsGorshochekPluginBackendRunController extends waLongActionContro
             $gen_data = $this->generatorData('pocket');
             $pocket = pl2()->getHydrator()->hydrate($pocket, $gen_data);
             if ($pocket_factory->save($pocket)) {
+                $this->data['send_log'][] = $gen_data + ['pocket_id' => $pocket->getId()];
                 $result++;
             }
         }
@@ -194,6 +215,7 @@ class pocketlistsGorshochekPluginBackendRunController extends waLongActionContro
             $gen_data = $this->generatorData('comment');
             $comment = pl2()->getHydrator()->hydrate($comment, $gen_data);
             if ($comment_factory->save($comment)) {
+                $this->data['send_log'][] = $gen_data + ['comment_id' => $comment->getId()];
                 $result++;
             }
         }
