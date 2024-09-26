@@ -63,7 +63,7 @@ class pocketlistsCommentAddMethod extends pocketlistsApiAbstractMethod
             'comment'    => $comment->getComment(),
             'uuid'       => $comment->getUuid()
         ];
-        pocketlistsLogService::multipleAdd(
+        $this->saveLog(
             pocketlistsLog::ENTITY_COMMENT,
             pocketlistsLog::ACTION_ADD,
             [$result + ['list_id' => $item->getListId()]]

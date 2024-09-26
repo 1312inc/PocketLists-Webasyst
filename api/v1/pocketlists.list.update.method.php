@@ -156,8 +156,8 @@ class pocketlistsListUpdateMethod extends pocketlistsApiAbstractMethod
                 $list_clone->setUpdateDatetime(date('Y-m-d H:i:s'));
                 $list_factory->save($list_clone);
             }
-            pl2()->getLogService()->multipleAdd(
-                pocketlistsLog::ENTITY_LIST,
+            $this->saveLog(
+            pocketlistsLog::ENTITY_LIST,
                 pocketlistsLog::ACTION_UPDATE,
                 $lists_ok
             );

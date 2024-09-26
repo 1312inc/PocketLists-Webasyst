@@ -93,7 +93,7 @@ class pocketlistsAttachmentDeleteMethod extends pocketlistsApiAbstractMethod
 
                 }
             }
-            pocketlistsLogService::multipleAdd(
+            $this->saveLog(
                 pocketlistsLog::ENTITY_ATTACHMENT,
                 pocketlistsLog::ACTION_DELETE,
                 $logs

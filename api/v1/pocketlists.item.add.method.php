@@ -189,7 +189,7 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
                             }
                         }
                         unset($_item);
-                        pocketlistsLogService::multipleAdd(
+                        $this->saveLog(
                             pocketlistsLog::ENTITY_ITEM,
                             pocketlistsLog::ACTION_ADD,
                             $items_ok

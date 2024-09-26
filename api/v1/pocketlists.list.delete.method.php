@@ -30,7 +30,7 @@ class pocketlistsListDeleteMethod extends pocketlistsApiAbstractMethod
             ];
         }
         if ($logs) {
-            pocketlistsLogService::multipleAdd(
+            $this->saveLog(
                 pocketlistsLog::ENTITY_LIST,
                 pocketlistsLog::ACTION_DELETE,
                 $logs

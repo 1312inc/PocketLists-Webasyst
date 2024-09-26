@@ -22,7 +22,7 @@ class pocketlistsPocketDeleteMethod extends pocketlistsApiAbstractMethod
         if (!$plf->delete($pocket)) {
             throw new waAPIException('error', _w('Error while deleting pocket'));
         }
-        pocketlistsLogService::multipleAdd(
+        $this->saveLog(
             pocketlistsLog::ENTITY_POCKET,
             pocketlistsLog::ACTION_DELETE,
             [[

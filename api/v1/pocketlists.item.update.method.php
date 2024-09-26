@@ -187,8 +187,8 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
                     }
                 }
                 unset($_item_ok);
-                pl2()->getLogService()->multipleAdd(
-                    pocketlistsLog::ENTITY_ITEM,
+                $this->saveLog(
+                pocketlistsLog::ENTITY_ITEM,
                     pocketlistsLog::ACTION_UPDATE,
                     $items_ok
                 );

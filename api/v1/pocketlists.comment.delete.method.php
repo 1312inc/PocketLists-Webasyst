@@ -32,7 +32,7 @@ class pocketlistsCommentDeleteMethod extends pocketlistsApiAbstractMethod
                 'comment'    => $comment->getComment(),
             ];
         }
-        pocketlistsLogService::multipleAdd(
+        $this->saveLog(
             pocketlistsLog::ENTITY_COMMENT,
             pocketlistsLog::ACTION_DELETE,
             $logs

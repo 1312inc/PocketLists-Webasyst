@@ -44,7 +44,7 @@ class pocketlistsCommentUpdateMethod extends pocketlistsApiAbstractMethod
             'create_datetime' => $comment->getCreateDatetime(),
             'uuid'            => $comment->getUuid(),
         ];
-        pocketlistsLogService::multipleAdd(
+        $this->saveLog(
             pocketlistsLog::ENTITY_COMMENT,
             pocketlistsLog::ACTION_UPDATE,
             [$result + [

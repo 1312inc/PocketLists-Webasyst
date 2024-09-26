@@ -49,7 +49,7 @@ class pocketlistsPocketAddMethod extends pocketlistsApiAbstractMethod
                 pocketlistsRBAC::POCKET_ITEM.'.'.$pocket->getId(),
                 pocketlistsRBAC::RIGHT_ADMIN
             );
-            pocketlistsLogService::multipleAdd(
+            $this->saveLog(
                 pocketlistsLog::ENTITY_POCKET,
                 pocketlistsLog::ACTION_ADD,
                 [[

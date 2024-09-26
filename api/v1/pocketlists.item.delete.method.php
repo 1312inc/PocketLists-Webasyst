@@ -24,17 +24,15 @@ class pocketlistsItemDeleteMethod extends pocketlistsApiAbstractMethod
         foreach ($items as $item) {
             $plf->delete($item);
             $logs[] = [
-                'id'      => (int) $item->getId(),
+                'id'      => $item->getId(),
                 'list_id' => $item->getListId(),
                 'name'    => $item->getName()
             ];
         }
-        if ($logs) {
-            pocketlistsLogService::multipleAdd(
-                pocketlistsLog::ENTITY_ITEM,
-                pocketlistsLog::ACTION_DELETE,
-                $logs
-            );
-        }
+        $this->saveLog(
+            pocketlistsLog::ENTITY_ITEM,
+            pocketlistsLog::ACTION_DELETE,
+            $logs
+        );
     }
 }

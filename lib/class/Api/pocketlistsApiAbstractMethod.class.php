@@ -69,6 +69,8 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                             $res[$key] = doubleval($el[$key]);
                         } elseif ($field_types[$key] === 'datetime') {
                             $res[$key] = $this->formatDatetimeToISO8601($el[$key]);
+                        } elseif ($field_types[$key] === 'date') {
+
                         } else {
                             $res[$key] = $el[$key];
                         }
@@ -374,5 +376,83 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
         unset($_item);
 
         return $items;
+    }
+
+    /**
+     * @param $entity
+     * @param $action
+     * @param $logs
+     * @return void
+     * @throws waException
+     */
+    protected function saveLog($entity, $action, $logs = [])
+    {
+        if ($logs) {
+            $logs = $this->filterFields(
+                $logs,
+                [
+                    'id',
+                    'list_id',
+                    'contact_id',
+                    'parent_id',
+                    'sort',
+                    'rank',
+                    'has_children',
+                    'status',
+                    'priority',
+                    'calc_priority',
+                    'create_datetime',
+                    'update_datetime',
+                    'complete_datetime',
+                    'complete_contact_id',
+                    'name',
+                    'note',
+                    'due_date',
+                    'due_datetime',
+                    'location_id',
+                    'amount',
+                    'currency_iso3',
+                    'assigned_contact_id',
+                    'repeat',
+                    'key_list_id',
+                    'uuid',
+                    'pocket_id',
+                    'type',
+                    'icon',
+                    'archived',
+                    'color',
+                    'passcode',
+                    'key_item_id',
+                    'item_id',
+                    'file_name',
+                    'file_type',
+                    'url',
+                    'item_name',
+                    'comment'
+                ], [
+                    'id' => 'int',
+                    'item_id' => 'int',
+                    'list_id' => 'int',
+                    'contact_id' => 'int',
+                    'parent_id' => 'int',
+                    'pocket_id' => 'int',
+                    'sort' => 'int',
+                    'has_children' => 'int',
+                    'status' => 'int',
+                    'priority' => 'int',
+                    'calc_priority' => 'int',
+                    'complete_contact_id' => 'int',
+                    'location_id' => 'int',
+                    'amount' => 'float',
+                    'assigned_contact_id' => 'int',
+                    'repeat' => 'int',
+                    'archived' => 'int',
+                    'key_list_id' => 'int',
+                    'key_item_id' => 'int'
+                ]
+            );
+
+            pocketlistsLogService::multipleAdd($entity, $action, $logs);
+        }
     }
 }

@@ -84,8 +84,7 @@ class pocketlistsAttachmentAddMethod extends pocketlistsApiAbstractMethod
                 } catch (waException $e) {
                 }
             }
-
-            pocketlistsLogService::multipleAdd(
+            $this->saveLog(
                 pocketlistsLog::ENTITY_ATTACHMENT,
                 pocketlistsLog::ACTION_ADD,
                 array_values(array_filter($result, function ($a) {

@@ -66,7 +66,7 @@ class pocketlistsPocketUpdateMethod extends pocketlistsApiAbstractMethod
                 'passcode' => $pocket->getPasscode(),
                 'uuid'     => $pocket->getUuid()
             ];
-            pocketlistsLogService::multipleAdd(
+            $this->saveLog(
                 pocketlistsLog::ENTITY_POCKET,
                 pocketlistsLog::ACTION_UPDATE,
                 [[

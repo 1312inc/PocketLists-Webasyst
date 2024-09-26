@@ -139,7 +139,7 @@ class pocketlistsListAddMethod extends pocketlistsApiAbstractMethod
                 $_list['status_code'] = 'ok';
             }
             unset($_list);
-            pocketlistsLogService::multipleAdd(
+            $this->saveLog(
                 pocketlistsLog::ENTITY_LIST,
                 pocketlistsLog::ACTION_ADD,
                 $lists_ok
