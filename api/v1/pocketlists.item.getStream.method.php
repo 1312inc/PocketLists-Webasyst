@@ -104,6 +104,7 @@ class pocketlistsItemGetStreamMethod extends pocketlistsApiAbstractMethod
     {
         $available_filters = [
             'upnext',
+            'due',
             'priority',
             'user',
             'search'
@@ -131,6 +132,13 @@ class pocketlistsItemGetStreamMethod extends pocketlistsApiAbstractMethod
                     throw new waAPIException('unknown_value', _w('Unknown filter value'), 400);
                 }
                 $sort = 'i.calc_priority DESC, i.due_date ASC';
+                break;
+            case 'due':
+                /** /due */
+                if (!empty($filter_split[1])) {
+                    throw new waAPIException('unknown_value', _w('Unknown filter value'), 400);
+                }
+                $sort = 'i.due_date ASC';
                 break;
             case 'priority':
                 /** /priority */
