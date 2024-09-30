@@ -608,7 +608,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/item'
+                  allOf:
+                    - $ref: '#/components/schemas/item'
+                    - type: object
+                      properties:
+                        prev_item_id:
+                          type: string
+                          nullable: true
+                          default: null
+                          description: Предыдущий идентификатор айтема для сортировки
         400:
           description: Invalid request data.
           content:

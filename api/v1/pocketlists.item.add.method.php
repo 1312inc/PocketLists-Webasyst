@@ -174,7 +174,7 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
         $items_err = array_diff_key($items, $items_ok);
         if (!empty($items_ok)) {
             $item_model = pl2()->getModel(pocketlistsItem::class);
-            $items_ok = $this->sorting($item_model, $items_ok);
+            $items_ok = $this->sorting('item', $items_ok);
             try {
                 $result = $item_model->multipleInsert($items_ok);
                 if ($result->getResult()) {

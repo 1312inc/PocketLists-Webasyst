@@ -185,197 +185,243 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
         return $files;
     }
 
-    protected function sorting(pocketlistsItemModel $item_model, $items = [])
+    protected function sorting($entity_type, $entities = [])
     {
         $prev_by_id = [];
         $prev_by_uuid = [];
-        $prev_item_ids = array_unique(array_filter(array_column($items, 'prev_item_id')));
-        $prev_item_uuids = array_unique(array_filter(array_column($items, 'prev_item_uuid')));
+        $key_id = 'prev_'.$entity_type.'_id';
+        $key_uuid = 'prev_'.$entity_type.'_uuid';
+        $prev_entity_ids = array_unique(array_filter(array_column($entities, $key_id)));
+        $prev_entity_uuids = array_unique(array_filter(array_column($entities, $key_uuid)));
 
-        /** сортировка по prev_item_ id/uuid */
-        $iter = count($items);
+        switch ($entity_type) {
+            case 'pocket':
+                $parent_key = '';
+                break;
+            case 'list':
+                $parent_key = 'pocket_id';
+                break;
+            case 'item':
+            default:
+                $parent_key = 'list_id';
+        }
+
+        /** сортировка по prev_entity_ id/uuid */
+        $iter = count($entities);
         $iter = $iter * $iter;
         do {
             $iter--;
             $counter = 1;
-            $ext_item = array_pop($items);
-            $ext_id = ifset($ext_item, 'id', null);
-            $ext_prev_id = ifset($ext_item, 'prev_item_id', null);
-            $ext_uuid = ifset($ext_item, 'uuid', null);
-            $ext_prev_uuid = ifset($ext_item, 'prev_item_uuid', null);
+            $ext_entity = array_pop($entities);
+            $ext_id = ifset($ext_entity, 'id', null);
+            $ext_prev_id = ifset($ext_entity, $key_id, null);
+            $ext_uuid = ifset($ext_entity, 'uuid', null);
+            $ext_prev_uuid = ifset($ext_entity, $key_uuid, null);
             if (!isset($ext_id, $ext_prev_id) && !isset($ext_uuid, $ext_prev_uuid)) {
-                array_unshift($items, $ext_item);
+                array_unshift($entities, $ext_entity);
                 continue;
             }
-            foreach ($items as $int_item) {
-                $curr_id = ifset($int_item, 'id', null);
-                $curr_prev_id = ifset($int_item, 'prev_item_id', null);
-                $curr_uuid = ifset($int_item, 'uuid', null);
-                $curr_prev_uuid = ifset($int_item, 'prev_item_uuid', null);
+            foreach ($entities as $int_entity) {
+                $curr_id = ifset($int_entity, 'id', null);
+                $curr_prev_id = ifset($int_entity, $key_id, null);
+                $curr_uuid = ifset($int_entity, 'uuid', null);
+                $curr_prev_uuid = ifset($int_entity, $key_uuid, null);
                 if (
                     (isset($ext_id, $curr_prev_id) && $ext_id === $curr_prev_id)
                     || (isset($ext_uuid, $curr_prev_uuid) && $ext_uuid === $curr_prev_uuid)
                 ) {
                     // вставляем НАД текущим
                     $counter--;
-                    $items = array_merge(
-                        array_slice($items, 0, $counter),
-                        [$ext_item],
-                        array_slice($items, $counter)
+                    $entities = array_merge(
+                        array_slice($entities, 0, $counter),
+                        [$ext_entity],
+                        array_slice($entities, $counter)
                     );
-                    unset($ext_item);
+                    unset($ext_entity);
                     break;
                 } elseif (
                     (isset($ext_prev_id, $curr_id) && $ext_prev_id === $curr_id)
                     || (isset($ext_prev_uuid, $curr_uuid) && $ext_prev_uuid === $curr_uuid)
                 ) {
                     // вставляем ПОД текущим
-                    $items = array_merge(
-                        array_slice($items, 0, $counter),
-                        [$ext_item],
-                        array_slice($items, $counter)
+                    $entities = array_merge(
+                        array_slice($entities, 0, $counter),
+                        [$ext_entity],
+                        array_slice($entities, $counter)
                     );
-                    unset($ext_item);
+                    unset($ext_entity);
                     break;
                 }
                 $counter++;
             }
-            if (isset($ext_item)) {
-                array_unshift($items, $ext_item);
+            if (isset($ext_entity)) {
+                array_unshift($entities, $ext_entity);
             }
         } while ($iter > 1);
 
-        if ($prev_item_ids || $prev_item_uuids) {
+        $model = pl2()->getModel();
+        if ($prev_entity_ids || $prev_entity_uuids) {
             $where = [];
             $params = [];
-            if ($prev_item_ids) {
+            if ($prev_entity_ids) {
                 $where[] = 't.id IN (:ids)';
                 $where[] = 't.prev_id IN (:ids)';
-                $params['ids'] = $prev_item_ids;
+                $params['ids'] = $prev_entity_ids;
             }
-            if ($prev_item_uuids) {
+            if ($prev_entity_uuids) {
                 $where[] = 't.uuid IN (:uuids)';
                 $where[] = 't.prev_uuid IN (:uuids)';
-                $params['uuids'] = $prev_item_uuids;
+                $params['uuids'] = $prev_entity_uuids;
             }
 
-            $item_model->exec("SET @prev_id := 0, @l_id := 0, @prev_uuid := ''");
-            $prev_items = $item_model->query(" 
-                SELECT * FROM (
-                    SELECT 
+            $model->exec("SET @prev_id := 0, @grp_id := 0, @prev_uuid := ''");
+            switch ($entity_type) {
+                case 'pocket':
+                    break;
+                case 'list':
+                    $sub_sql = "SELECT 
+                        pl.id, pi.name, pl.pocket_id, pl.sort, pl.`rank`, pi.uuid,
+                        IF(@grp_id = pl.pocket_id, pl.pocket_id, 0) AS grp_id,
+                        IF(@grp_id = pl.pocket_id, @prev_id, 0) AS prev_id,
+                        IF(@grp_id = pl.pocket_id, @prev_uuid, '') AS prev_uuid, 
+                        @grp_id:= pl.pocket_id AS _,
+                        @prev_id := pl.id AS __,
+                        @prev_uuid := pi.uuid AS ___
+                    FROM pocketlists_list pl
+                    LEFT JOIN pocketlists_item pi ON pl.key_item_id = pi.id 
+                    ORDER BY pl.pocket_id, pl.sort, pl.`rank`";
+                    break;
+                case 'item':
+                default:
+                    $sub_sql = "SELECT 
                         id, name, list_id, sort, `rank`, uuid,
-                        IF(@l_id = list_id, list_id, 0) AS lst_id,
-                        IF(@l_id = list_id, @prev_id, 0) AS prev_id,
-                        IF(@l_id = list_id, @prev_uuid, '') AS prev_uuid, 
-                        @l_id := list_id AS _,
+                        IF(@grp_id = list_id, list_id, 0) AS lst_id,
+                        IF(@grp_id = list_id, @prev_id, 0) AS prev_id,
+                        IF(@grp_id = list_id, @prev_uuid, '') AS prev_uuid, 
+                        @grp_id := list_id AS _,
                         @prev_id := id AS __,
                         @prev_uuid := uuid AS ___
                     FROM pocketlists_item t1
-                    ORDER BY t1.list_id, t1.sort, t1.`rank`
-                ) AS t
+                    ORDER BY t1.list_id, t1.sort, t1.`rank`";
+            }
+            $prev_entities = $model->query(" 
+                SELECT * FROM ($sub_sql) AS t
                 WHERE ".implode(' OR ', $where), $params
             )->fetchAll();
 
             $arr_1 = array_fill_keys(['_', '__', '___'], 0);
             $arr_2 = array_fill_keys(['next_sort', 'next_rank'], null);
-            foreach ($prev_items as $_prev_item) {
-                $_prev_item = array_diff_key($_prev_item, $arr_1) + $arr_2;
-                if ($_prev_item['prev_id'] === '0') {
-                    $_prev_item['prev_id'] = null;
+            foreach ($prev_entities as $_prev_entity) {
+                $_prev_entity = array_diff_key($_prev_entity, $arr_1) + $arr_2;
+                if ($_prev_entity['prev_id'] === '0') {
+                    $_prev_entity['prev_id'] = null;
                 }
-                if (in_array($_prev_item['id'], $prev_item_ids) || in_array($_prev_item['uuid'], $prev_item_uuids)) {
-                    if (!empty($_prev_item['id'])) {
-                        $prev_by_id[$_prev_item['id']] = $_prev_item;
+                if (in_array($_prev_entity['id'], $prev_entity_ids) || in_array($_prev_entity['uuid'], $prev_entity_uuids)) {
+                    if (!empty($_prev_entity['id'])) {
+                        $prev_by_id[$_prev_entity['id']] = $_prev_entity;
                     } else {
-                        $prev_by_uuid[$_prev_item['uuid']] = $_prev_item;
+                        $prev_by_uuid[$_prev_entity['uuid']] = $_prev_entity;
                     }
                 } else {
                     if (
-                        ifset($prev_by_id, $_prev_item['prev_id'], [])
-                        && $prev_by_id[$_prev_item['prev_id']]['list_id'] == $_prev_item['list_id']
+                        ifset($prev_by_id, $_prev_entity['prev_id'], [])
+                        && $prev_by_id[$_prev_entity['prev_id']][$parent_key] == $_prev_entity[$parent_key]
                     ) {
-                        $prev_by_id[$_prev_item['prev_id']]['next_sort'] = $_prev_item['sort'];
-                        $prev_by_id[$_prev_item['prev_id']]['next_rank'] = $_prev_item['rank'];
-                    } elseif (ifset($prev_by_uuid, $_prev_item['prev_uuid'], [])) {
-                        $prev_by_uuid[$_prev_item['prev_uuid']]['next_sort'] = $_prev_item['sort'];
-                        $prev_by_uuid[$_prev_item['prev_uuid']]['next_rank'] = $_prev_item['rank'];
+                        $prev_by_id[$_prev_entity['prev_id']]['next_sort'] = $_prev_entity['sort'];
+                        $prev_by_id[$_prev_entity['prev_id']]['next_rank'] = $_prev_entity['rank'];
+                    } elseif (ifset($prev_by_uuid, $_prev_entity['prev_uuid'], [])) {
+                        $prev_by_uuid[$_prev_entity['prev_uuid']]['next_sort'] = $_prev_entity['sort'];
+                        $prev_by_uuid[$_prev_entity['prev_uuid']]['next_rank'] = $_prev_entity['rank'];
                     }
                 }
             }
-            unset($prev_items, $_prev_item, $prev_item_ids, $prev_item_uuids, $params, $where, $arr_1, $arr_2);
+            unset($prev_entities, $_prev_entity, $prev_entity_ids, $prev_entity_uuids, $params, $where, $arr_1, $arr_2);
         }
 
         $p_sort_rank = pocketlistsSortRank::getInstance();
-        $sort_info = $item_model->query("
-            SELECT list_id, MIN(sort) AS sort_min, MAX(sort) AS sort_max FROM pocketlists_item
-            WHERE list_id IN (:list_ids)
-            GROUP BY list_id
-        ", ['list_ids' => array_column($items, 'list_id')])->fetchAll('list_id');
-        foreach ($items as &$_item) {
-            if (isset($_item['sort'])) {
-                $_item['rank'] = ifset($_item, 'rank', '');
+        switch ($entity_type) {
+            case 'pocket':
+                break;
+            case 'list':
+                $sort_info = $model->query("
+                    SELECT pocket_id AS grp_id, MIN(sort) AS sort_min, MAX(sort) AS sort_max FROM pocketlists_list
+                    WHERE pocket_id IN (:pocket_ids)
+                    GROUP BY pocket_id
+                ", ['pocket_ids' => array_unique(array_column($entities, $parent_key))])->fetchAll('grp_id');
+                break;
+            case 'item':
+            default:
+                $sort_info = $model->query("
+                    SELECT list_id AS grp_id, MIN(sort) AS sort_min, MAX(sort) AS sort_max FROM pocketlists_item
+                    WHERE list_id IN (:list_ids)
+                    GROUP BY list_id
+                ", ['list_ids' => array_unique(array_column($entities, $parent_key))])->fetchAll('grp_id');
+        }
+        foreach ($entities as &$_entity) {
+            if (isset($_entity['sort'])) {
+                $_entity['rank'] = ifset($_entity, 'rank', '');
                 continue;
             }
-            if (!isset($_item['list_id'])) {
-                $_item['sort'] = 0;
-                $_item['rank'] = '';
+            if (!isset($_entity[$parent_key])) {
+                $_entity['sort'] = 0;
+                $_entity['rank'] = '';
                 continue;
             }
 
             $srt = 0;
             $rnk = '';
-            if (isset($_item['prev_item_id']) || isset($_item['prev_item_uuid'])) {
-                if (isset($_item['prev_item_id'])) {
-                    $extreme_item = ifempty($prev_by_id, $_item['prev_item_id'], []);
+            if (isset($_entity[$key_id]) || isset($_entity[$key_uuid])) {
+                if (isset($_entity[$key_id])) {
+                    $extreme_entity = ifempty($prev_by_id, $_entity[$key_id], []);
                 } else {
-                    $extreme_item = ifempty($prev_by_uuid, $_item['prev_item_uuid'], []);
+                    $extreme_entity = ifempty($prev_by_uuid, $_entity[$key_uuid], []);
                 }
-                $list_id = ifempty($extreme_item, 'list_id', null);
-                if ($list_id == $_item['list_id']) {
+                $group_id = ifempty($extreme_entity, $parent_key, null);
+                if ($group_id == $_entity[$parent_key]) {
                     $p_sort_rank->new(
-                        (int) ifset($extreme_item, 'sort', 0),
-                        ifempty($extreme_item, 'rank', '0')
+                        (int) ifset($extreme_entity, 'sort', 0),
+                        ifempty($extreme_entity, 'rank', '0')
                     );
-                    if (!isset($extreme_item['next_sort'])) {
+                    if (!isset($extreme_entity['next_sort'])) {
                         list($srt) = $p_sort_rank->next();
                     } else {
                         list($srt, $rnk) = $p_sort_rank->between(
-                            (int) ifset($extreme_item, 'next_sort', 0),
-                            ifempty($extreme_item, 'next_rank', '0')
+                            (int) ifset($extreme_entity, 'next_sort', 0),
+                            ifempty($extreme_entity, 'next_rank', '0')
                         );
                     }
 
                     /** обновляем sort/rank если в сортировке участвует сущность на которую ссылается через prev_ */
-                    if (!empty($prev_by_id[$_item['id']])) {
-                        $prev_by_id[$_item['id']]['sort'] = $srt;
-                        $prev_by_id[$_item['id']]['rank'] = $rnk;
-                        $prev_by_id[$_item['id']]['next_sort'] = $extreme_item['next_sort'];
-                        $prev_by_id[$_item['id']]['next_rank'] = $extreme_item['next_rank'];
-                    } elseif (!empty($prev_by_uuid[$_item['id']])) {
-                        $prev_by_uuid[$_item['id']]['sort'] = $srt;
-                        $prev_by_uuid[$_item['id']]['rank'] = $rnk;
-                        $prev_by_uuid[$_item['id']]['next_sort'] = $extreme_item['next_sort'];
-                        $prev_by_uuid[$_item['id']]['next_rank'] = $extreme_item['next_rank'];
+                    if (!empty($prev_by_id[$_entity['id']])) {
+                        $prev_by_id[$_entity['id']]['sort'] = $srt;
+                        $prev_by_id[$_entity['id']]['rank'] = $rnk;
+                        $prev_by_id[$_entity['id']]['next_sort'] = $extreme_entity['next_sort'];
+                        $prev_by_id[$_entity['id']]['next_rank'] = $extreme_entity['next_rank'];
+                    } elseif (!empty($prev_by_uuid[$_entity['id']])) {
+                        $prev_by_uuid[$_entity['id']]['sort'] = $srt;
+                        $prev_by_uuid[$_entity['id']]['rank'] = $rnk;
+                        $prev_by_uuid[$_entity['id']]['next_sort'] = $extreme_entity['next_sort'];
+                        $prev_by_uuid[$_entity['id']]['next_rank'] = $extreme_entity['next_rank'];
                     }
-                } elseif (is_null($list_id)) {
+                } elseif (is_null($group_id)) {
                     /** добавляем в конец списка */
-                    $p_sort_rank->new((int) ifset($sort_info, $_item['list_id'], 'sort_max', 0), '0');
+                    $p_sort_rank->new((int) ifset($sort_info, $_entity[$parent_key], 'sort_max', 0), '0');
                     list($srt) = $p_sort_rank->next();
                 }
             } else {
-                $sort_min = ifset($sort_info, $_item['list_id'], 'sort_min', null);
+                $sort_min = ifset($sort_info, $_entity[$parent_key], 'sort_min', null);
                 if (!is_null($sort_min)) {
                     /** добавляем в начало списка */
-                    $p_sort_rank->new((int) ifset($sort_info, $_item['list_id'], 'sort_min', 0), '0');
+                    $p_sort_rank->new((int) ifset($sort_info, $_entity[$parent_key], 'sort_min', 0), '0');
                     list($srt) = $p_sort_rank->previous();
                 }
             }
-            $_item['sort'] = $srt;
-            $_item['rank'] = $rnk;
+            $_entity['sort'] = $srt;
+            $_entity['rank'] = $rnk;
         }
-        unset($_item);
+        unset($_entity);
 
-        return $items;
+        return $entities;
     }
 
     /**
