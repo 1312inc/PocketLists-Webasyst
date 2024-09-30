@@ -44,8 +44,8 @@ class pocketlistsListUpdateMethod extends pocketlistsApiAbstractMethod
                 'action'              => $action,
                 'id'                  => ifset($_list, 'id', null),
                 'pocket_id'           => ifset($_list, 'pocket_id', null),
-                'sort'                => ifset($_list, 'sort', 0),
-                'rank'                => ifset($_list, 'rank', ''),
+                'sort'                => ifset($_list, 'sort', null),
+                'rank'                => ifset($_list, 'rank', null),
                 'type'                => null,
                 'icon'                => ifset($_list, 'icon', ($action === self::ACTIONS[0] ? null : pocketlistsList::DEFAULT_ICON)),
                 'archived'            => 0,
@@ -73,6 +73,7 @@ class pocketlistsListUpdateMethod extends pocketlistsApiAbstractMethod
                 'assigned_contact_id' => null,
                 'repeat'              => 0,
                 'uuid'                => null,
+                'prev_list_id'        => (array_key_exists('prev_list_id', $_list) ? ifset($_list, 'prev_list_id', 0) : null),
                 'errors'              => [],
                 'status_code'         => 'ok',
             ];
@@ -113,18 +114,29 @@ class pocketlistsListUpdateMethod extends pocketlistsApiAbstractMethod
                 }
             }
 
-            if (!is_numeric($_list['sort'])) {
+            if (isset($_list['sort']) && !is_numeric($_list['sort'])) {
                 $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'sort');
             }
 
-            if (!is_string($_list['rank'])) {
-                $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'rank');
+            if (isset($_list['rank'])) {
+                if (!is_string($_list['rank'])) {
+                    $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'rank');
+                } elseif ($_list['rank'] !== '' && !pocketlistsSortRank::rankValidate($_list['rank'])) {
+                    $_list['errors'][] = _w('Invalid rank value');
+                }
             }
 
             if (empty($_list['errors'])) {
                 if ($_list['action'] == self::ACTIONS[0]) {
                     // patch
-                    $_list = array_replace($lists_in_db[$_list['id']], array_filter($_list));
+                    $_list = array_replace($lists_in_db[$_list['id']], array_filter($_list, function ($l) {return !is_null($l);}));
+                    if (isset($_list['prev_list_id'])) {
+                        if ($_list['prev_list_id'] === 0) {
+                            $_list['prev_list_id'] = null;
+                        }
+                        $_list['sort'] = null;
+                        $_list['rank'] = null;
+                    }
                 } else {
                     // update
                     $_list += $lists_in_db[$_list['id']];
@@ -150,6 +162,7 @@ class pocketlistsListUpdateMethod extends pocketlistsApiAbstractMethod
 
             /** @var pocketlistsList $list */
             $list = pl2()->getEntityFactory(pocketlistsList::class)->createNew();
+            $lists_ok = $this->sorting('list', $lists_ok);
             foreach ($lists_ok as $_list) {
                 $list_clone = clone $list;
                 pl2()->getHydrator()->hydrate($list_clone, $_list);
@@ -196,6 +209,7 @@ class pocketlistsListUpdateMethod extends pocketlistsApiAbstractMethod
                 'color',
                 'passcode',
                 'key_item_id',
+                'prev_list_id',
                 'errors',
                 'status_code',
             ], [

@@ -693,6 +693,14 @@ paths:
                     type: string
                     nullable: true
                     description: UUID value
+                  prev_list_id:
+                    type: integer
+                    nullable: true
+                    description: Предыдущий идентификатор списка для сортировки
+                  prev_list_uuid:
+                    type: string
+                    nullable: true
+                    description: Предыдущий UUID списка для сортировки
       responses:
         200:
           description: OK
@@ -701,7 +709,20 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/list'
+                  allOf:
+                    - $ref: '#/components/schemas/list'
+                    - type: object
+                      properties:
+                        prev_list_id:
+                          type: string
+                          nullable: true
+                          default: null
+                          description: Предыдущий идентификатор списка для сортировки
+                        prev_list_uuid:
+                          type: string
+                          nullable: true
+                          default: null
+                          description: Предыдущий UUID списка для сортировки
         400:
           description: Invalid request data.
           content:
@@ -879,6 +900,10 @@ paths:
                   rank:
                     type: string
                     description: Sort rank
+                  prev_list_id:
+                    type: integer
+                    nullable: true
+                    description: Предыдущий идентификатор списка для сортировки
       responses:
         200:
           description: OK
@@ -887,7 +912,15 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/list'
+                  allOf:
+                    - $ref: '#/components/schemas/list'
+                    - type: object
+                      properties:
+                        prev_list_id:
+                          type: string
+                          nullable: true
+                          default: null
+                          description: Предыдущий идентификатор листа для сортировки
         400:
           description: Invalid request data.
           content:
