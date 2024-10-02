@@ -13,6 +13,7 @@ class pocketlistsPocketUpdateMethod extends pocketlistsApiAbstractMethod
         $color = ifset($_json, 'color', null);
         $sort = ifset($_json, 'sort', null);
         $rank = ifset($_json, 'rank', null);
+        $prev_pocket_id = ifset($_json, 'prev_pocket_id', null);
 
         if (!isset($pocket_id)) {
             throw new waAPIException('required_param', sprintf_wp('Missing required parameter: “%s”.', 'id'), 400);
@@ -47,8 +48,16 @@ class pocketlistsPocketUpdateMethod extends pocketlistsApiAbstractMethod
             // patch
             $name = ifset($name, $pocket->getName());
             $color = ifset($color, $pocket->getColor());
-            $sort = ifset($sort, $pocket->getSort());
-            $rank = ifset($rank, $pocket->getRank());
+            if (isset($prev_pocket_id)) {
+                list($sort, $rank) = $this->sortingPocket([
+                    'sort' => $sort,
+                    'rank' => $rank,
+                    'prev_pocket_id' => $prev_pocket_id,
+                ]);
+            } else {
+                $sort = ifset($sort, $pocket->getSort());
+                $rank = ifset($rank, $pocket->getRank());
+            }
         }
 
         $pocket->setName($name)
@@ -65,7 +74,7 @@ class pocketlistsPocketUpdateMethod extends pocketlistsApiAbstractMethod
                 'color'    => $pocket->getColor(),
                 'passcode' => $pocket->getPasscode(),
                 'uuid'     => $pocket->getUuid()
-            ];
+            ] + (isset($prev_pocket_id) ? ['prev_pocket_id' => (int) $prev_pocket_id] : []);
             $this->saveLog(
                 pocketlistsLog::ENTITY_POCKET,
                 pocketlistsLog::ACTION_UPDATE,

@@ -1162,13 +1162,34 @@ paths:
                 uuid:
                   type: string
                   description: UUID value
+                prev_pocket_id:
+                  type: integer
+                  nullable: true
+                  description: Предыдущий идентификатор проекта для сортировки
+                prev_pocket_uuid:
+                  type: string
+                  nullable: true
+                  description: Предыдущий UUID проекта для сортировки
       responses:
         200:
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/pocket'
+                allOf:
+                  - $ref: '#/components/schemas/pocket'
+                  - type: object
+                    properties:
+                      prev_pocket_id:
+                        type: string
+                        nullable: true
+                        default: null
+                        description: Предыдущий идентификатор списка для сортировки
+                      prev_pocket_uuid:
+                        type: string
+                        nullable: true
+                        default: null
+                        description: Предыдущий UUID списка для сортировки
         400:
           description: Invalid request data.
           content:
@@ -1281,13 +1302,25 @@ paths:
                 rank:
                   type: string
                   description: Sort rank
+                prev_pocket_id:
+                  type: integer
+                  nullable: true
+                  description: Предыдущий идентификатор проекта для сортировки
       responses:
         200:
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/pocket'
+                allOf:
+                  - $ref: '#/components/schemas/pocket'
+                  - type: object
+                    properties:
+                      prev_pocket_id:
+                        type: string
+                        nullable: true
+                        default: null
+                        description: Предыдущий идентификатор списка для сортировки
         400:
           description: Invalid request data.
           content:
