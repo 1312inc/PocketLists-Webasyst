@@ -108,9 +108,7 @@ class pocketlistsLogService
         foreach ($logs as &$_log) {
             $id = ifset($_log, 'id', null);
             unset($_log['id'], $_log['action'], $_log['contact_id']);
-            $params = [
-                $entity => array_filter(array_diff_key($_log, $default), function ($l) {return !(is_null($l) || $l === []);})
-            ];
+            $params = [$entity => $_log];
             $_log = array_intersect_key($_log, $default) + $default;
             $_log['params'] = json_encode($params, JSON_UNESCAPED_UNICODE);
             if ($id) {
