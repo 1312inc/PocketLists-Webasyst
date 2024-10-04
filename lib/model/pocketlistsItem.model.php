@@ -492,13 +492,14 @@ class pocketlistsItemModel extends pocketlistsModel
     }
 
     /**
+     * @param $calc
      * @return array
      */
-    public function getQueryComponents()
+    public function getQueryComponents($calc = false)
     {
         return [
             'select'   => [
-                '*'                     => 'i.*',
+                '*'                     => ($calc ? ' SQL_CALC_FOUND_ROWS ' : '').'i.*',
                 'favorite'              => 'IF(uf.contact_id, 1, 0) favorite',
                 'attachments_count'     => '(select count(*) from pocketlists_attachment pa where pa.item_id = i.id) attachments_count',
                 'comments_count'        => '(select count(*) from pocketlists_comment pc where pc.item_id = i.id) comments_count',

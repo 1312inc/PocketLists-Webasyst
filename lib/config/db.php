@@ -101,9 +101,9 @@ return array(
     ),
     'pocketlists_location' => array(
         'id' => array('int', 11, 'null' => 0, 'autoincrement' => 1),
-        'location_latitude' => array('decimal', "10,0"),
-        'location_longitude' => array('decimal', "10,0"),
-        'location_radius' => array('decimal', "10,0"),
+        'location_latitude' => array('decimal', '10,8'),
+        'location_longitude' => array('decimal', '10,8'),
+        'location_radius' => array('int', 11),
         'uuid' => array('varchar', 36),
         ':keys' => array(
             'PRIMARY' => 'id',

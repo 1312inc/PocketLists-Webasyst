@@ -107,7 +107,8 @@ class pocketlistsItemGetStreamMethod extends pocketlistsApiAbstractMethod
             'due',
             'priority',
             'user',
-            'search'
+            'search',
+            'nearby'
         ];
         $filter_split = explode('/', $filter);
         if (
@@ -122,32 +123,32 @@ class pocketlistsItemGetStreamMethod extends pocketlistsApiAbstractMethod
             return [[], 0];
         }
 
-        $where = 'i.list_id IN (:list_ids)';
-        $sort  = '1 = 1';
         $plim  = pl2()->getModel(pocketlistsItem::class);
+        $sql_parts = $plim->getQueryComponents(true);
+        $sql_parts['where']['and'][] = 'i.list_id IN (:list_ids)';
         switch ($filter_split[0]) {
             case 'upnext':
                 /** /upnext */
                 if (!empty($filter_split[1])) {
                     throw new waAPIException('unknown_value', _w('Unknown filter value'), 400);
                 }
-                $where .= ' AND i.due_date IS NOT NULL';
-                $sort = 'i.calc_priority DESC, i.due_date, i.due_datetime ASC';
+                $sql_parts['where']['and'][] = 'i.due_date IS NOT NULL';
+                $sql_parts['order by'][] = 'i.calc_priority DESC, i.due_date, i.due_datetime ASC';
                 break;
             case 'due':
                 /** /due */
                 if (!empty($filter_split[1])) {
                     throw new waAPIException('unknown_value', _w('Unknown filter value'), 400);
                 }
-                $where .= ' AND i.due_date IS NOT NULL';
-                $sort = 'i.due_date, i.due_datetime ASC';
+                $sql_parts['where']['and'][] = 'i.due_date IS NOT NULL';
+                $sql_parts['order by'][] = 'i.due_date, i.due_datetime ASC';
                 break;
             case 'priority':
                 /** /priority */
                 if (!empty($filter_split[1])) {
                     throw new waAPIException('unknown_value', _w('Unknown filter value'), 400);
                 }
-                $sort = 'i.priority DESC';
+                $sql_parts['order by'][] = 'i.priority DESC';
                 break;
             case 'user':
                 /** /user/ID */
@@ -159,20 +160,38 @@ class pocketlistsItemGetStreamMethod extends pocketlistsApiAbstractMethod
                 ) {
                     throw new waAPIException('unknown_value', _w('Unknown user'), 400);
                 }
-                $where .= ' AND assigned_contact_id = '.(int) $filter_split[1];
+                $sql_parts['where']['and'][] = 'assigned_contact_id = '.(int) $filter_split[1];
                 break;
             case 'search':
                 /** /search/KEYWORD */
-                if (!isset($filter_split[1]) || !empty($filter_split[2])) {
+                if (!isset($filter_split[1])) {
                     throw new waAPIException('empty_value', _w('Empty value'), 400);
                 }
-                $where .= " AND i.name LIKE '%".$plim->escape($filter_split[1])."%'";
+                $sql_parts['where']['and'][] = "i.name LIKE '%".$plim->escape($filter_split[1])."%'";
+                break;
+            case 'nearby':
+                /** /nearby or /nearby/28.635896,-106.075763 */
+                if (empty($filter_split[1])) {
+                    $sql_parts['where']['and'][] = 'i.location_id IS NOT NULL';
+                } else {
+                    $locations = explode(',', $filter_split[1]);
+                    if (count($locations) !== 2) {
+                        throw new waAPIException('unknown_value', _w('Unknown value'), 400);
+                    }
+                    list($latitude, $longitude) = $locations;
+                    if (!is_numeric($latitude) || !is_numeric($longitude)) {
+                        throw new waAPIException('unknown_value', _w('Unknown value'), 400);
+                    }
+                    $sql_parts['select']['pl.*'] = 'pl.*, ABS('.$plim->escape($latitude).'-pl.location_latitude)+ABS('.$plim->escape($longitude).'-pl.location_longitude) AS sm';
+                    $sql_parts['join']['pl'] = 'LEFT JOIN pocketlists_location pl ON i.location_id = pl.id AND pl.location_latitude IS NOT NULL AND pl.location_longitude IS NOT NULL';
+                    $sql_parts['where']['and'][] = 'pl.location_latitude IS NOT NULL AND pl.location_longitude IS NOT NULL';
+                    $sql_parts['order by'][] = 'sm';
+                }
                 break;
         }
-
-        $sql = $plim->getQuery(true);
+        $sql = $plim->buildSqlComponents($sql_parts);
         $items = $plim->query(
-            "$sql WHERE $where ORDER BY $sort LIMIT i:offset, i:limit", [
+            "$sql LIMIT i:offset, i:limit", [
             'list_ids'   => $available_list_ids,
             'contact_id' => $this->getUser()->getId(),
             'limit'      => $limit,

@@ -480,6 +480,7 @@ paths:
             + **priority**: айтемы сортированные по приоритету 
             + **user/55**: айтемы назначенные на указанного пользователя
             + **search/KEYWORD**: айтемы содержащие ключевое слово
+            + **nearby**, **nearby/28.635896,-106.075763**: айтемы поблизости
           example: upnext, user/ID, search/KEYWORD
           schema:
             type: string
