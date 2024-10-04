@@ -131,16 +131,16 @@ class pocketlistsItemGetStreamMethod extends pocketlistsApiAbstractMethod
                 if (!empty($filter_split[1])) {
                     throw new waAPIException('unknown_value', _w('Unknown filter value'), 400);
                 }
-                $where .= ' AND (i.due_date IS NOT NULL OR i.due_datetime IS NOT NULL)';
-                $sort = 'i.calc_priority DESC, i.due_date ASC';
+                $where .= ' AND i.due_date IS NOT NULL';
+                $sort = 'i.calc_priority DESC, i.due_date, i.due_datetime ASC';
                 break;
             case 'due':
                 /** /due */
                 if (!empty($filter_split[1])) {
                     throw new waAPIException('unknown_value', _w('Unknown filter value'), 400);
                 }
-                $where .= ' AND (i.due_date IS NOT NULL OR i.due_datetime IS NOT NULL)';
-                $sort = 'i.due_date ASC';
+                $where .= ' AND i.due_date IS NOT NULL';
+                $sort = 'i.due_date, i.due_datetime ASC';
                 break;
             case 'priority':
                 /** /priority */
