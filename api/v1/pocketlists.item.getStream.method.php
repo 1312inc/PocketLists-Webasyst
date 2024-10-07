@@ -182,10 +182,11 @@ class pocketlistsItemGetStreamMethod extends pocketlistsApiAbstractMethod
                     if (!is_numeric($latitude) || !is_numeric($longitude)) {
                         throw new waAPIException('unknown_value', _w('Unknown value'), 400);
                     }
-                    $sql_parts['select']['pl.*'] = 'pl.*, ABS('.$plim->escape($latitude).'-pl.location_latitude)+ABS('.$plim->escape($longitude).'-pl.location_longitude) AS sm';
+                    $radius_earth = 6371000;
+                    $sql_parts['select']['pl.*'] = 'CEILING(SQRT(POW(PI()*('.$plim->escape($latitude).'-pl.location_latitude)/180, 2)+POW(PI()*('.$plim->escape($longitude)."-pl.location_longitude)/180, 2))*$radius_earth) AS meter";
                     $sql_parts['join']['pl'] = 'LEFT JOIN pocketlists_location pl ON i.location_id = pl.id AND pl.location_latitude IS NOT NULL AND pl.location_longitude IS NOT NULL';
                     $sql_parts['where']['and'][] = 'pl.location_latitude IS NOT NULL AND pl.location_longitude IS NOT NULL';
-                    $sql_parts['order by'][] = 'sm';
+                    $sql_parts['order by'][] = 'meter';
                 }
                 break;
         }
