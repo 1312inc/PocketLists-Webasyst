@@ -264,14 +264,11 @@ class pocketlistsGorshochekPluginBackendRunController extends waLongActionContro
                     'repeat'              => 0,
                     'uuid'                => $this->getUuid(10)
                 ];
-                if (mt_rand(1, 3) % 3 === 0) {
+                if (mt_rand(1, 4) % 4 === 0) {
                     $is_future = (mt_rand(1, 3) % 3 === 0);
                     $time = $this->genTimestamp($is_future);
-                    if (mt_rand(1, 2) % 2 === 0) {
-                        $gen_data['due_datetime'] = date('Y-m-d H:i:s', $time);
-                    } else {
-                        $gen_data['due_date'] = date('Y-m-d', $time);
-                    }
+                    $gen_data['due_date'] = date('Y-m-d', $time);
+                    $gen_data['due_datetime'] = date('Y-m-d H:i:s', $time);
                 }
                 break;
             case 'comment':
