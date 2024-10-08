@@ -139,17 +139,18 @@ class pocketlistsListModel extends pocketlistsModel
 
 
     /**
+     * @param $calc
      * @return array
      */
-    public function getQueryComponents()
+    public function getQueryComponents($calc = false)
     {
         return [
             'select'   => [
-                'i.*',
-                'l.*',
-                "greatest(i.priority, max(i2.priority)) 'max_priority'",
-                "greatest(i.due_date, max(i2.due_date)) 'min_due_date'",
-                "greatest(i.due_datetime, max(i2.due_datetime)) 'min_due_datetime'",
+                '*'        => ($calc ? ' SQL_CALC_FOUND_ROWS ' : '').'i.*',
+                'l'        => 'l.*',
+                'max_pr'   => "greatest(i.priority, max(i2.priority)) 'max_priority'",
+                'min_due'  => "greatest(i.due_date, max(i2.due_date)) 'min_due_date'",
+                'min_time' => "greatest(i.due_datetime, max(i2.due_datetime)) 'min_due_datetime'",
             ],
             'from'     => ['l' => "{$this->table} l"],
             'join'     => [
@@ -157,7 +158,7 @@ class pocketlistsListModel extends pocketlistsModel
                 'left join pocketlists_item i2 ON i2.status = 0 and i2.list_id = l.id',
             ],
             'where'    => [
-                'and' => [1],
+                'and' => [],
                 'or'  => [],
             ],
             'group by' => ['l.id', 'i.id'],

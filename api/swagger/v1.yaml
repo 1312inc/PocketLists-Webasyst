@@ -823,7 +823,17 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/list'
+                      allOf:
+                        - $ref: '#/components/schemas/list'
+                        - type: object
+                          properties:
+                            items:
+                              type: object
+                              properties:
+                                count:
+                                  type: integer
+                                priority_count:
+                                  type: integer
         400:
           description: Invalid request data.
           content:

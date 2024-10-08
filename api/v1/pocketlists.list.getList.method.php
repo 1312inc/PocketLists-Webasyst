@@ -50,30 +50,59 @@ class pocketlistsListGetListMethod extends pocketlistsApiAbstractMethod
         $total_count = 0;
         $accessed_pockets = pocketlistsRBAC::getAccessPocketForContact(pl2()->getUser()->getId());
         if (!empty($accessed_pockets)) {
-            $condition = '1 = 1';
+            /** @var pocketlistsListModel $list_model */
+            $list_model = pl2()->getModel(pocketlistsList::class);
+            $sql_parts = $list_model->getQueryComponents(true);
+            $sql_parts['select'] = array_slice($sql_parts['select'], 0, 2);
+            $sql_parts['where']['and'] = [
+                'l.pocket_id IN (i:pocket_ids)',
+                'l.archived = 0'
+            ];
             if ($ids) {
-                $condition .= ' AND pl.id IN (i:ids)';
+                $sql_parts['where']['and'][] = 'l.id IN (i:ids)';
             }
             if ($starting_from) {
-                $condition .= " AND update_datetime >= s:starting_from";
+                $sql_parts['where']['and'][] = 'update_datetime >= s:starting_from';
             }
-
-            /** @var pocketlistsPocketModel $pocket_model */
-            $pocket_model = pl2()->getModel(pocketlistsPocket::class);
-            $lists = $pocket_model->query("
-                SELECT SQL_CALC_FOUND_ROWS pl.*, pli.contact_id, pli.parent_id, pli.has_children, pli.status, pli.priority, pli.calc_priority, pli.create_datetime, pli.update_datetime, pli.complete_datetime, pli.complete_contact_id, pli.name, pli.due_date, pli.due_datetime, pli.location_id, pli.amount, pli.currency_iso3, pli.assigned_contact_id, pli.repeat, pli.key_list_id, pli.uuid FROM pocketlists_list pl
-                LEFT JOIN pocketlists_item pli ON pli.id = pl.key_item_id
-                WHERE pl.pocket_id IN (i:pocket_ids) AND $condition AND pl.archived = 0
-                ORDER BY pl.sort, pl.rank, pli.update_datetime DESC, pli.create_datetime DESC
-                LIMIT i:offset, i:limit
-            ", [
+            $sql_parts['order by'] = ['l.sort, l.rank, i.update_datetime, i.create_datetime DESC'];
+            $sql = $list_model->buildSqlComponents($sql_parts);
+            $lists = $list_model->query(
+                "$sql LIMIT i:offset, i:limit", [
                 'ids'           => $ids,
                 'pocket_ids'    => $accessed_pockets,
                 'starting_from' => $starting_from,
-                'offset'        => $offset,
-                'limit'         => $limit
-            ])->fetchAll();
-            $total_count = (int) $pocket_model->query('SELECT FOUND_ROWS()')->fetchField();
+                'limit'         => $limit,
+                'offset'        => $offset
+            ])->fetchAll('id');
+            $total_count = (int) $list_model->query('SELECT FOUND_ROWS()')->fetchField();
+
+            if ($lists) {
+                $summary = $list_model->query(
+                    $list_model->buildSqlComponents([
+                        'select'   => ['*' => 'list_id, priority, COUNT(id) AS cnt'],
+                        'from'     => ['pi' => 'pocketlists_item'],
+                        'join'     => [],
+                        'where'    => ['and' => [$ids ? 'list_id IN (i:ids)' : 'list_id IS NOT NULL']],
+                        'group by' => ['list_id, priority'],
+                        'order by' => ['list_id, priority']
+                    ]), ['ids' => $ids]
+                )->fetchAll();
+                $priority_count = [];
+                if ($summary) {
+                    foreach ($summary as $_summ) {
+                        $priority_count[$_summ['list_id']][$_summ['priority']] = $_summ['cnt'];
+                    }
+                    unset($summary);
+                }
+                foreach ($lists as &$_list) {
+                    $data = ifset($priority_count, $_list['id'], null);
+                    $_list['items'] = [
+                        'count' => ($data ? array_sum($data) : 0),
+                        'priority_count' => (int) ($data ? array_pop($data) : 0)
+                    ];
+                }
+                unset($_list);
+            }
         }
 
         $this->response = [
@@ -113,8 +142,8 @@ class pocketlistsListGetListMethod extends pocketlistsApiAbstractMethod
                     'color',
                     'passcode',
                     'key_item_id',
-                ],
-                [
+                    'items'
+                ], [
                     'id' => 'int',
                     'contact_id' => 'int',
                     'parent_id' => 'int',
