@@ -23,6 +23,7 @@ class pocketlistsItemGetListMethod extends pocketlistsApiAbstractMethod
             if (empty($ids)) {
                 throw new waAPIException('not_found', _w('Items not found'), 404);
             }
+            $where .= ' AND i.id IN (i:item_ids)';
         }
         if (isset($list_id)) {
             if (!is_numeric($list_id)) {
