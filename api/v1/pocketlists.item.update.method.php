@@ -54,7 +54,7 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
                 'rank'                => ifset($_item, 'rank', null),
                 'has_children'        => 0,
                 'status'              => 0,
-                'priority'            => ifset($_item, 'priority', 0),
+                'priority'            => ifset($_item, 'priority', null),
                 'calc_priority'       => 0,
                 'create_datetime'     => null,
                 'update_datetime'     => date('Y-m-d H:i:s'),
