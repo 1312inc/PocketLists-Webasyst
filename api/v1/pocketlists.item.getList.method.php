@@ -12,7 +12,6 @@ class pocketlistsItemGetListMethod extends pocketlistsApiAbstractMethod
 
         $items = [];
         $total_count = 0;
-        $where = 'i.list_id IN (:list_ids)';
         if (isset($ids)) {
             if (!is_array($ids)) {
                 throw new waAPIException('error_type', sprintf_wp('Invalid type %s', 'id'), 400);
@@ -23,7 +22,6 @@ class pocketlistsItemGetListMethod extends pocketlistsApiAbstractMethod
             if (empty($ids)) {
                 throw new waAPIException('not_found', _w('Items not found'), 404);
             }
-            $where .= ' AND i.id IN (i:item_ids)';
         }
         if (isset($list_id)) {
             if (!is_numeric($list_id)) {
@@ -31,7 +29,6 @@ class pocketlistsItemGetListMethod extends pocketlistsApiAbstractMethod
             } elseif ($list_id < 1) {
                 throw new waAPIException('not_found', _w('List not found'), 404);
             }
-            $where .= ' AND i.list_id IN (:list_ids)';
         }
         if (isset($starting_from)) {
             if (!is_numeric($starting_from)) {
@@ -40,7 +37,6 @@ class pocketlistsItemGetListMethod extends pocketlistsApiAbstractMethod
                 throw new waAPIException('negative_value', _w('The parameter has a negative value'), 400);
             }
             $starting_from = date('Y-m-d H:i:s', $starting_from);
-            $where .= ' AND i.update_datetime >= s:starting_from';
         }
         if (isset($limit)) {
             if (!is_numeric($limit)) {
@@ -72,10 +68,21 @@ class pocketlistsItemGetListMethod extends pocketlistsApiAbstractMethod
             }
         }
         if (!empty($list_ids)) {
-            $plim = pl2()->getModel(pocketlistsItem::class);
-            $sql = $plim->getQuery(true);
-            $items = $plim->query(
-                "$sql WHERE $where ORDER BY i.parent_id, i.sort, i.rank ASC, i.id DESC LIMIT i:offset, i:limit", [
+            $item_model = pl2()->getModel(pocketlistsItem::class);
+            $sql_parts = $item_model->getQueryComponents(true);
+            $sql_parts['where']['and'][] = 'i.list_id IN (i:list_ids)';
+            $sql_parts['order by'] = ['i.parent_id, i.sort, i.rank ASC', 'i.id DESC'];
+
+            if ($ids) {
+                $sql_parts['where']['and'][] = 'i.id IN (i:item_ids)';
+            }
+            if ($starting_from) {
+                $sql_parts['where']['and'][] = 'i.update_datetime >= s:starting_from';
+            }
+
+            $sql = $item_model->buildSqlComponents($sql_parts);
+            $items = $item_model->query(
+                "$sql LIMIT i:offset, i:limit", [
                 'item_ids'      => $ids,
                 'list_ids'      => $list_ids,
                 'contact_id'    => $this->getUser()->getId(),
@@ -83,7 +90,7 @@ class pocketlistsItemGetListMethod extends pocketlistsApiAbstractMethod
                 'limit'         => $limit,
                 'offset'        => $offset
             ])->fetchAll('id');
-            $total_count = (int) $plim->query('SELECT FOUND_ROWS()')->fetchField();
+            $total_count = (int) $item_model->query('SELECT FOUND_ROWS()')->fetchField();
             $path = wa()->getDataUrl('attachments', true, pocketlistsHelper::APP_ID);
             $attachments = pl2()->getEntityFactory(pocketlistsAttachment::class)->findByFields(
                 'item_id',
@@ -140,7 +147,8 @@ class pocketlistsItemGetListMethod extends pocketlistsApiAbstractMethod
                     'repeat',
                     'key_list_id',
                     'uuid',
-                    'attachments'
+                    'attachments',
+                    'comments_count'
                 ],
                 [
                     'id' => 'int',
@@ -161,7 +169,8 @@ class pocketlistsItemGetListMethod extends pocketlistsApiAbstractMethod
                     'amount' => 'float',
                     'assigned_contact_id' => 'int',
                     'repeat' => 'int',
-                    'key_list_id' => 'int'
+                    'key_list_id' => 'int',
+                    'comments_count' => 'int'
                 ]
             )
         ];
