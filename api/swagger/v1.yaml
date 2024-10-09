@@ -307,7 +307,12 @@ paths:
                     type: string
                     format: date-time
                     nullable: true
-                    description: Due datetime
+                    description: Дата и точное время выполнения
+                  due_date:
+                    type: string
+                    format: date
+                    nullable: true
+                    description: Дата выполнения весь день
                   uuid:
                     type: string
                     nullable: true
