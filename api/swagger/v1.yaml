@@ -581,7 +581,13 @@ paths:
                   due_datetime:
                     type: string
                     format: date-time
-                    description: Due datetime
+                    nullable: true
+                    description: Дата и точное время выполнения
+                  due_date:
+                    type: string
+                    format: date
+                    nullable: true
+                    description: Дата выполнения весь день
                   prev_item_id:
                     type: integer
                     nullable: true
