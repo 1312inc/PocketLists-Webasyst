@@ -35,7 +35,9 @@ class pocketlistsCommentAddMethod extends pocketlistsApiAbstractMethod
         /** @var pocketlistsItem $item */
         $item = $item_factory->findById($item_id);
 
-        if ($item->getListId() === null) {
+        if (empty($item)) {
+            throw new waAPIException('not_found', _w('Item not found'), 404);
+        } elseif ($item->getListId() === null) {
             throw new waAPIException('not_found', _w('List not found'), 404);
         } elseif (!pocketlistsRBAC::canAccessToList($item->getList())) {
             throw new waAPIException('forbidden', _w('Access denied'), 403);
