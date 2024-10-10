@@ -14,10 +14,12 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
         }
 
         $assign_contacts = [];
+        $attachment_uuids = [];
         $user_id = $this->getUser()->getId();
         $item_ids = array_unique(array_column($items, 'id'));
         $list_ids = array_unique(array_column($items, 'list_id'));
         $assigned_contact_ids = array_unique(array_column($items, 'assigned_contact_id'));
+        $attachments = array_column($items, 'attachments');
 
         if (empty($item_ids)) {
             throw new waAPIException('type_error', _w('Type error data'), 400);
@@ -39,6 +41,14 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
                     $assign_contacts[$_assign_contact->getId()] = $_assign_contact;
                 }
             }
+        }
+        if (!empty($attachments)) {
+            foreach ($attachments as $_attachment) {
+                $attachment_uuids = array_merge($attachment_uuids, array_column($_attachment, 'uuid'));
+            }
+            unset($attachments);
+            $attachment_uuids = $this->getEntitiesByUuid('attachment', $attachment_uuids);
+            $attachment_uuids = array_keys($attachment_uuids);
         }
 
         /** validate */
@@ -154,6 +164,24 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
                     } else {
                         $_item['errors'][] = _w('Unknown value due_date');
                     }
+                }
+            }
+
+            if (!empty($_item['attachments'])) {
+                if (is_array($_item['attachments'])) {
+                    foreach ($_item['attachments'] as $_file) {
+                        if (empty($_file['file'])) {
+                            $_item['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'file');
+                        }
+                        if (empty($_file['file_name'])) {
+                            $_item['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'file_name');
+                        }
+                        if (!empty($_file['uuid']) && in_array($_file['uuid'], $attachment_uuids)) {
+                            $_item['errors'][] = _w('Attachment with UUID exists');
+                        }
+                    }
+                } else {
+                    $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'files');
                 }
             }
 

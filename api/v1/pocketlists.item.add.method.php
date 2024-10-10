@@ -14,8 +14,11 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
         }
 
         $assign_contacts = [];
+        $attachment_uuids = [];
         $list_ids = array_unique(array_filter(array_column($items, 'list_id')));
         $assigned_contact_ids = array_unique(array_filter(array_column($items, 'assigned_contact_id')));
+        $uuids = array_column($items, 'uuid');
+        $attachments = array_column($items, 'attachments');
 
         if (!empty($list_ids)) {
             /** @var pocketlistsListModel $list_model */
@@ -31,6 +34,18 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
                     $assign_contacts[$_assign_contact->getId()] = $_assign_contact;
                 }
             }
+        }
+        if (!empty($uuids)) {
+            $uuids = $this->getEntitiesByUuid('item', $uuids);
+            $uuids = array_keys($uuids);
+        }
+        if (!empty($attachments)) {
+            foreach ($attachments as $_attachment) {
+                $attachment_uuids = array_merge($attachment_uuids, array_column($_attachment, 'uuid'));
+            }
+            unset($attachments);
+            $attachment_uuids = $this->getEntitiesByUuid('attachment', $attachment_uuids);
+            $attachment_uuids = array_keys($attachment_uuids);
         }
 
         /** validate */
@@ -160,15 +175,21 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
                         if (empty($_file['file_name'])) {
                             $_item['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'file_name');
                         }
+                        if (!empty($_file['uuid']) && in_array($_file['uuid'], $attachment_uuids)) {
+                            $_item['errors'][] = _w('Attachment with UUID exists');
+                        }
                     }
                 } else {
                     $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'files');
                 }
             }
 
-            if (isset($_item['uuid']) && !is_string($_item['uuid'])) {
-                $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'uuid');
-
+            if (isset($_item['uuid'])) {
+                if (!is_string($_item['uuid'])) {
+                    $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'uuid');
+                } elseif (in_array($_item['uuid'], $uuids)) {
+                    $_item['errors'][] = _w('Item with UUID exists');
+                }
             }
 
             if (empty($_item['errors'])) {
@@ -249,8 +270,7 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
                 'prev_item_uuid',
                 'errors',
                 'status_code'
-            ],
-            [
+            ], [
                 'id' => 'int',
                 'list_id' => 'int',
                 'contact_id' => 'int',

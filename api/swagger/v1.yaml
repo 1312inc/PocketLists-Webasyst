@@ -39,7 +39,7 @@ paths:
                   uuid:
                     type: string
                     nullable: true
-                    description: UUID value
+                    description: Unique UUID value
       responses:
         200:
           description: OK
@@ -129,7 +129,7 @@ paths:
                 uuid:
                   type: string
                   nullable: true
-                  description: UUID value
+                  description: Unique UUID value
       responses:
         200:
           description: OK
@@ -316,7 +316,7 @@ paths:
                   uuid:
                     type: string
                     nullable: true
-                    description: UUID value
+                    description: Unique UUID value
                   prev_item_id:
                     type: integer
                     nullable: true
@@ -344,7 +344,7 @@ paths:
                         uuid:
                           type: string
                           nullable: true
-                          description: UUID value
+                          description: Unique UUID value
       responses:
         200:
           description: OK
@@ -616,7 +616,7 @@ paths:
                         uuid:
                           type: string
                           nullable: true
-                          description: UUID value
+                          description: Unique UUID value
       responses:
         200:
           description: OK
@@ -709,7 +709,7 @@ paths:
                   uuid:
                     type: string
                     nullable: true
-                    description: UUID value
+                    description: Unique UUID value
                   prev_list_id:
                     type: integer
                     nullable: true
@@ -1188,7 +1188,7 @@ paths:
                   description: Sort rank
                 uuid:
                   type: string
-                  description: UUID value
+                  description: Unique UUID value
                 prev_pocket_id:
                   type: integer
                   nullable: true

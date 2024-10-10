@@ -18,11 +18,16 @@ class pocketlistsAttachmentAddMethod extends pocketlistsApiAbstractMethod
         $items = [];
         $attachments = [];
         $item_ids = array_unique(array_column($files, 'item_id'));
+        $uuids = array_column($files, 'uuid');
         if (!empty($item_ids)) {
             /** @var pocketlistsItemModel $item_model */
             $item_model = pl2()->getModel(pocketlistsItem::class);
             $items = $item_model->select('id, list_id')->where('id IN (:item_ids)', ['item_ids' => $item_ids])->fetchAll('id');
             $item_ids = array_keys($items);
+        }
+        if (!empty($uuids)) {
+            $uuids = $this->getEntitiesByUuid('attachment', $uuids);
+            $uuids = array_keys($uuids);
         }
 
         /** validate */
@@ -48,8 +53,12 @@ class pocketlistsAttachmentAddMethod extends pocketlistsApiAbstractMethod
                 $errors[] = sprintf_wp('Invalid type %s', 'file');
             }
 
-            if (!empty($_file['uuid']) && !is_string($_file['uuid'])) {
-                $errors[] = sprintf_wp('Invalid type %s', 'uuid');
+            if (!empty($_file['uuid'])) {
+                if (!is_string($_file['uuid'])) {
+                    $errors[] = sprintf_wp('Invalid type %s', 'uuid');
+                } elseif (in_array($_file['uuid'], $uuids)) {
+                    $errors[] = _w('Attachment with UUID exists');
+                }
             }
 
             $hash = md5(mt_rand(0, mt_rand(5000, 100000)));
@@ -103,8 +112,7 @@ class pocketlistsAttachmentAddMethod extends pocketlistsApiAbstractMethod
                 'url',
                 'uuid',
                 'errors'
-            ],
-            [
+            ], [
                 'id' => 'int',
                 'item_id' => 'int'
             ]

@@ -16,11 +16,16 @@ class pocketlistsListAddMethod extends pocketlistsApiAbstractMethod
 
         $pocket_ids = array_unique(array_column($lists, 'pocket_id'));
         $pocket_access = pocketlistsRBAC::getAccessPocketForContact($this->getUser());
+        $uuids = array_column($lists, 'uuid');
 
         if (!empty($pocket_ids)) {
             /** @var pocketlistsPocketModel $pocket_model */
             $pocket_model = pl2()->getModel(pocketlistsPocket::class);
             $pocket_ids = $pocket_model->select('id')->where('id IN (:pocket_ids)', ['pocket_ids' => $pocket_ids])->fetchAll(null, true);
+        }
+        if (!empty($uuids)) {
+            $uuids = $this->getEntitiesByUuid('list', $uuids);
+            $uuids = array_keys($uuids);
         }
 
         /** validate */
@@ -104,8 +109,12 @@ class pocketlistsListAddMethod extends pocketlistsApiAbstractMethod
                 }
             }
 
-            if (isset($_list['uuid']) && !is_string($_list['uuid'])) {
-                $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'uuid');
+            if (isset($_list['uuid'])) {
+                if (!is_string($_list['uuid'])) {
+                    $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'uuid');
+                } elseif (in_array($_list['uuid'], $uuids)) {
+                    $_list['errors'][] = _w('List with UUID exists');
+                }
             }
 
             if (empty($_list['errors'])) {

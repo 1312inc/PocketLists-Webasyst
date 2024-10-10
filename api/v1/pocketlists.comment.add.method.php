@@ -25,8 +25,14 @@ class pocketlistsCommentAddMethod extends pocketlistsApiAbstractMethod
             throw new waAPIException('type_error', sprintf_wp('Type error parameter: “%s”.', 'comment'), 400);
         }
 
-        if (isset($uuid) && !is_string($uuid)) {
-            throw new waAPIException('type_error', sprintf_wp('Type error parameter: “%s”.', 'uuid'), 400);
+        if (isset($uuid)) {
+            if (!is_string($uuid)) {
+                throw new waAPIException('type_error', sprintf_wp('Type error parameter: “%s”.', 'uuid'), 400);
+            }
+            $uuids = $this->getEntitiesByUuid('comment', $uuid);
+            if (!empty($uuids)) {
+                throw new waAPIException('invalid_value', _w('Comment with UUID exists'), 400);
+            }
         }
 
         /** @var pocketlistsItemFactory $item_factory */

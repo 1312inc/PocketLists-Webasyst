@@ -29,8 +29,14 @@ class pocketlistsPocketAddMethod extends pocketlistsApiAbstractMethod
             } elseif ($rank !== '' && !pocketlistsSortRank::rankValidate($rank)) {
                 throw new waAPIException('invalid_value', _w('Invalid rank value'), 400);
             }
-        } elseif (isset($uuid) && !is_string($uuid)) {
-            throw new waAPIException('type_error', sprintf_wp('Type error parameter: “%s”.', 'uuid'), 400);
+        } elseif (isset($uuid)) {
+            if (!is_string($uuid)) {
+                throw new waAPIException('type_error', sprintf_wp('Type error parameter: “%s”.', 'uuid'), 400);
+            }
+            $uuids = $this->getEntitiesByUuid('pocket', $uuid);
+            if (!empty($uuids)) {
+                throw new waAPIException('invalid_value', _w('Pocket with UUID exists'), 400);
+            }
         }
 
         /** @var pocketlistsPocketFactory $pocket_factory */

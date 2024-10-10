@@ -578,4 +578,33 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
             pocketlistsLogService::multipleAdd($entity, $action, $logs);
         }
     }
+
+    /**
+     * @param string $entity
+     * @param array $uuids
+     * @return array
+     * @throws waDbException
+     * @throws waException
+     */
+    protected function getEntitiesByUuid($entity, $uuids = [])
+    {
+        if (
+            !in_array($entity, ['pocket', 'list', 'item', 'comment', 'attachment'])
+            || empty($uuids)
+        ) {
+            return [];
+        } elseif (!is_array($uuids)) {
+            $uuids = [$uuids];
+        }
+
+        $model = pl2()->getModel();
+        $table = 'pocketlists_'.$entity;
+
+        return $model->query(
+            "SELECT * FROM $table ent"
+            .($entity === 'list' ? ' JOIN pocketlists_item pi ON pi.id = ent.key_item_id ' : ' ')
+            ."WHERE uuid IN (s:uuids)",
+            ['uuids' => array_unique($uuids)]
+        )->fetchAll('uuid');
+    }
 }
