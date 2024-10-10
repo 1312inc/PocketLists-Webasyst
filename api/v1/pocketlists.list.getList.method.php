@@ -96,9 +96,10 @@ class pocketlistsListGetListMethod extends pocketlistsApiAbstractMethod
                 }
                 foreach ($lists as &$_list) {
                     $data = ifset($priority_count, $_list['id'], null);
+                    $max_priority = ($data ? max(array_keys($data)) : null);
                     $_list['items'] = [
                         'count' => ($data ? array_sum($data) : 0),
-                        'priority_count' => (int) ($data ? array_pop($data) : 0)
+                        'priority_count' => (int) ifset($data, $max_priority, 0)
                     ];
                 }
                 unset($_list);
