@@ -837,19 +837,29 @@ paths:
                     type: integer
                     description: Count
                   data:
-                    type: array
-                    items:
-                      allOf:
-                        - $ref: '#/components/schemas/list'
-                        - type: object
-                          properties:
+                    type: object
+                    properties:
+                      entities:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/list'
+                      extended_data:
+                        type: object
+                        properties:
+                          counters:
+                            type: array
                             items:
                               type: object
                               properties:
+                                id:
+                                  type: integer
+                                  description: List identifiers
                                 count:
                                   type: integer
+                                  description: Общее количество айтемов в списке
                                 priority_count:
                                   type: integer
+                                  description: Количество айтемов с максимальным приоритетом
         400:
           description: Invalid request data.
           content:
