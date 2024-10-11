@@ -844,22 +844,19 @@ paths:
                         items:
                           $ref: '#/components/schemas/list'
                       extended_data:
-                        type: object
-                        properties:
-                          counters:
-                            type: array
-                            items:
-                              type: object
-                              properties:
-                                id:
-                                  type: integer
-                                  description: List identifiers
-                                count:
-                                  type: integer
-                                  description: Общее количество айтемов в списке
-                                priority_count:
-                                  type: integer
-                                  description: Количество айтемов с максимальным приоритетом
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              description: List identifiers
+                            count:
+                              type: integer
+                              description: Общее количество айтемов в списке
+                            priority_count:
+                              type: integer
+                              description: Количество айтемов с максимальным приоритетом
         400:
           description: Invalid request data.
           content:
