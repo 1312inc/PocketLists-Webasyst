@@ -41,7 +41,7 @@ class pocketlistsItemGetStreamMethod extends pocketlistsApiAbstractMethod
         list($items, $total_count) = $this->getItems($filter, $limit, $offset);
 
         $this->response = [
-            'filter' => "/$filter",
+            'filter' => $filter,
             'offset' => $offset,
             'limit'  => $limit,
             'count'  => $total_count,
@@ -74,8 +74,7 @@ class pocketlistsItemGetStreamMethod extends pocketlistsApiAbstractMethod
                     'key_list_id',
                     'uuid',
                     'attachments'
-                ],
-                [
+                ], [
                     'id' => 'int',
                     'list_id' => 'int',
                     'contact_id' => 'int',
@@ -128,7 +127,7 @@ class pocketlistsItemGetStreamMethod extends pocketlistsApiAbstractMethod
         $sql_parts['where']['and'][] = 'i.list_id IN (:list_ids)';
         switch ($filter_split[0]) {
             case 'upnext':
-                /** /upnext */
+                /** upnext */
                 if (!empty($filter_split[1])) {
                     throw new waAPIException('unknown_value', _w('Unknown filter value'), 400);
                 }
@@ -136,7 +135,7 @@ class pocketlistsItemGetStreamMethod extends pocketlistsApiAbstractMethod
                 $sql_parts['order by'][] = 'i.calc_priority DESC, i.due_date, i.due_datetime ASC';
                 break;
             case 'due':
-                /** /due */
+                /** due */
                 if (!empty($filter_split[1])) {
                     throw new waAPIException('unknown_value', _w('Unknown filter value'), 400);
                 }
@@ -144,14 +143,14 @@ class pocketlistsItemGetStreamMethod extends pocketlistsApiAbstractMethod
                 $sql_parts['order by'][] = 'i.due_date, i.due_datetime ASC';
                 break;
             case 'priority':
-                /** /priority */
+                /** priority */
                 if (!empty($filter_split[1])) {
                     throw new waAPIException('unknown_value', _w('Unknown filter value'), 400);
                 }
                 $sql_parts['order by'][] = 'i.priority DESC';
                 break;
             case 'user':
-                /** /user/ID */
+                /** user/ID */
                 if (
                     !isset($filter_split[1])
                     || !is_numeric($filter_split[1])
@@ -163,14 +162,14 @@ class pocketlistsItemGetStreamMethod extends pocketlistsApiAbstractMethod
                 $sql_parts['where']['and'][] = 'assigned_contact_id = '.(int) $filter_split[1];
                 break;
             case 'search':
-                /** /search/KEYWORD */
+                /** search/KEYWORD */
                 if (!isset($filter_split[1])) {
                     throw new waAPIException('empty_value', _w('Empty value'), 400);
                 }
                 $sql_parts['where']['and'][] = "i.name LIKE '%".$plim->escape($filter_split[1])."%'";
                 break;
             case 'nearby':
-                /** /nearby or /nearby/28.635896,-106.075763 */
+                /** nearby or nearby/28.635896,-106.075763 */
                 if (empty($filter_split[1])) {
                     $sql_parts['where']['and'][] = 'i.location_id IS NOT NULL';
                 } else {
