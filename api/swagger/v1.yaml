@@ -837,26 +837,9 @@ paths:
                     type: integer
                     description: Count
                   data:
-                    type: object
-                    properties:
-                      entities:
-                        type: array
-                        items:
-                          $ref: '#/components/schemas/list'
-                      extended_data:
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            id:
-                              type: integer
-                              description: List identifiers
-                            count:
-                              type: integer
-                              description: Общее количество айтемов в списке
-                            priority_count:
-                              type: integer
-                              description: Количество айтемов с максимальным приоритетом
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/list'
         400:
           description: Invalid request data.
           content:
@@ -1538,6 +1521,17 @@ components:
             key_item_id:
               type: integer
               description: Key item
+        - type: object
+          properties:
+            extended_data:
+              type: object
+              properties:
+                count:
+                  type: integer
+                  description: Общее количество айтемов в списке
+                priority_count:
+                  type: integer
+                  description: Количество айтемов с максимальным приоритетом
     item:
       allOf:
         - $ref: '#/components/schemas/extended_status'

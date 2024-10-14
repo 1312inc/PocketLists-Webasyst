@@ -48,7 +48,6 @@ class pocketlistsListGetListMethod extends pocketlistsApiAbstractMethod
 
         $lists = [];
         $total_count = 0;
-        $extended_data = [];
         $accessed_pockets = pocketlistsRBAC::getAccessPocketForContact(pl2()->getUser()->getId());
         if (!empty($accessed_pockets)) {
             /** @var pocketlistsListModel $list_model */
@@ -98,8 +97,7 @@ class pocketlistsListGetListMethod extends pocketlistsApiAbstractMethod
                 foreach ($lists as &$_list) {
                     $data = ifset($priority_count, $_list['id'], null);
                     $max_priority = ($data ? max(array_keys($data)) : null);
-                    $extended_data[] = [
-                        'id' => (int) $_list['id'],
+                    $_list['extended_data'] = [
                         'count' => ($data ? array_sum($data) : 0),
                         'priority_count' => (int) ifset($data, $max_priority, 0)
                     ];
@@ -112,65 +110,63 @@ class pocketlistsListGetListMethod extends pocketlistsApiAbstractMethod
             'offset' => $offset,
             'limit'  => $limit,
             'count'  => $total_count,
-            'data'   => [
-                'entities' => $this->filterFields(
-                    $lists,
-                    [
-                        'id',
-                        'contact_id',
-                        'parent_id',
-                        'sort',
-                        'rank',
-                        'has_children',
-                        'status',
-                        'priority',
-                        'calc_priority',
-                        'create_datetime',
-                        'update_datetime',
-                        'complete_datetime',
-                        'complete_contact_id',
-                        'name',
-                        'due_date',
-                        'due_datetime',
-                        'location_id',
-                        'amount',
-                        'currency_iso3',
-                        'assigned_contact_id',
-                        'repeat',
-                        'uuid',
-                        'pocket_id',
-                        'type',
-                        'icon',
-                        'archived',
-                        'hash',
-                        'color',
-                        'passcode',
-                        'key_item_id',
-                        'items'
-                    ], [
-                        'id' => 'int',
-                        'contact_id' => 'int',
-                        'parent_id' => 'int',
-                        'sort' => 'int',
-                        'status' => 'int',
-                        'priority' => 'int',
-                        'calc_priority' => 'int',
-                        'create_datetime' => 'datetime',
-                        'update_datetime' => 'datetime',
-                        'complete_datetime' => 'datetime',
-                        'complete_contact_id' => 'int',
-                        'due_datetime' => 'datetime',
-                        'location_id' => 'int',
-                        'amount' => 'float',
-                        'assigned_contact_id' => 'int',
-                        'repeat' => 'int',
-                        'pocket_id' => 'int',
-                        'archived' => 'int',
-                        'key_item_id' => 'int'
-                    ]
-                ),
-                'extended_data' => $extended_data
-            ]
+            'data'   => $this->filterFields(
+                $lists,
+                [
+                    'id',
+                    'contact_id',
+                    'parent_id',
+                    'sort',
+                    'rank',
+                    'has_children',
+                    'status',
+                    'priority',
+                    'calc_priority',
+                    'create_datetime',
+                    'update_datetime',
+                    'complete_datetime',
+                    'complete_contact_id',
+                    'name',
+                    'due_date',
+                    'due_datetime',
+                    'location_id',
+                    'amount',
+                    'currency_iso3',
+                    'assigned_contact_id',
+                    'repeat',
+                    'uuid',
+                    'pocket_id',
+                    'type',
+                    'icon',
+                    'archived',
+                    'hash',
+                    'color',
+                    'passcode',
+                    'key_item_id',
+                    'items',
+                    'extended_data'
+                ], [
+                    'id' => 'int',
+                    'contact_id' => 'int',
+                    'parent_id' => 'int',
+                    'sort' => 'int',
+                    'status' => 'int',
+                    'priority' => 'int',
+                    'calc_priority' => 'int',
+                    'create_datetime' => 'datetime',
+                    'update_datetime' => 'datetime',
+                    'complete_datetime' => 'datetime',
+                    'complete_contact_id' => 'int',
+                    'due_datetime' => 'datetime',
+                    'location_id' => 'int',
+                    'amount' => 'float',
+                    'assigned_contact_id' => 'int',
+                    'repeat' => 'int',
+                    'pocket_id' => 'int',
+                    'archived' => 'int',
+                    'key_item_id' => 'int'
+                ]
+            )
         ];
     }
 }
