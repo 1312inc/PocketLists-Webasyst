@@ -115,28 +115,32 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - item_id
-                - comment
-              properties:
-                item_id:
-                  type: integer
-                  description: Item identifier
-                comment:
-                  type: string
-                  description: Comment text
-                uuid:
-                  type: string
-                  nullable: true
-                  description: Unique UUID value
+              type: array
+              items:
+                type: object
+                required:
+                  - item_id
+                  - comment
+                properties:
+                  item_id:
+                    type: integer
+                    description: Item identifier
+                  comment:
+                    type: string
+                    description: Comment text
+                  uuid:
+                    type: string
+                    nullable: true
+                    description: Unique UUID value
       responses:
         200:
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/comment'
+                type: array
+                items:
+                  $ref: '#/components/schemas/comment'
         400:
           description: Invalid request data.
           content:
@@ -1661,31 +1665,33 @@ components:
               default: null
               description: UUID value
     comment:
-      type: object
-      properties:
-        id:
-          type: integer
-          description: Comment identifier
-        item_id:
-          type: integer
-          description: Item identifier
-        item_name:
-          type: string
-          description: Name item
-        contact_id:
-          type: integer
-          description: Contact identifier
-        comment:
-          type: string
-          description: Comment text
-        create_datetime:
-          type: string
-          format: datetime
-          description: Create datetime
-        uuid:
-          type: string
-          nullable: true
-          description: UUID value
+      allOf:
+        - $ref: '#/components/schemas/extended_status'
+        - type: object
+          properties:
+            id:
+              type: integer
+              description: Comment identifier
+            item_id:
+              type: integer
+              description: Item identifier
+            item_name:
+              type: string
+              description: Name item
+            contact_id:
+              type: integer
+              description: Contact identifier
+            comment:
+              type: string
+              description: Comment text
+            create_datetime:
+              type: string
+              format: datetime
+              description: Create datetime
+            uuid:
+              type: string
+              nullable: true
+              description: UUID value
     user:
       type: object
       properties:

@@ -6,80 +6,130 @@ class pocketlistsCommentAddMethod extends pocketlistsApiAbstractMethod
 
     public function execute()
     {
-        $_json = $this->readBodyAsJson();
-        $item_id = ifset($_json, 'item_id', null);
-        $comment_text = ifset($_json, 'comment', null);
-        $uuid = ifset($_json, 'uuid', null);
-
-        if (!isset($item_id)) {
-            throw new waAPIException('required_param', sprintf_wp('Missing required parameter: “%s”.', 'item_id'), 400);
-        } elseif (!is_numeric($item_id)) {
-            throw new waAPIException('type_error', sprintf_wp('Type error parameter: “%s”.', 'item_id'), 400);
-        } elseif ($item_id < 1) {
-            throw new waAPIException('not_found', _w('Item not found'), 404);
+        $comments = $this->readBodyAsJson();
+        if (empty($comments)) {
+            throw new waAPIException('required_param', _w('Missing data'), 400);
+        } elseif (!is_array($comments)) {
+            throw new waAPIException('type_error', _w('Type error data'), 400);
         }
 
-        if (!isset($comment_text)) {
-            throw new waAPIException('required_param', sprintf_wp('Missing required parameter: “%s”.', 'comment'), 400);
-        } elseif (!is_string($comment_text)) {
-            throw new waAPIException('type_error', sprintf_wp('Type error parameter: “%s”.', 'comment'), 400);
-        }
+        $items = [];
+        $item_ids = array_unique(array_filter(array_column($comments, 'item_id')));
+        $uuids = array_column($comments, 'uuid');
 
-        if (isset($uuid)) {
-            if (!is_string($uuid)) {
-                throw new waAPIException('type_error', sprintf_wp('Type error parameter: “%s”.', 'uuid'), 400);
+        /** @var pocketlistsCommentModel $model */
+        $model = pl2()->getModel(pocketlistsComment::class);
+        if (!empty($item_ids)) {
+            $items = $model->query("
+                SELECT id, list_id, name FROM pocketlists_item
+                WHERE id IN (i:item_ids) AND key_list_id IS NULL
+            ", ['item_ids' => $item_ids])->fetchAll('id');
+        }
+        if (!empty($uuids)) {
+            $uuids = $this->getEntitiesByUuid('comment', $uuids);
+            $uuids = array_keys($uuids);
+        }
+        /** validate */
+        $user_id = $this->getUser()->getId();
+        $list_access = pocketlistsRBAC::getAccessListForContact($user_id);
+        foreach ($comments as &$_comment) {
+            /** set default */
+            $item_id = ifset($_comment, 'item_id', null);
+            $_comment = [
+                'id'              => null,
+                'item_id'         => $item_id,
+                'item_name'       => ifset($items, $item_id, 'name', null),
+                'contact_id'      => $user_id,
+                'comment'         => ifset($_comment, 'comment', null),
+                'create_datetime' => date('Y-m-d H:i:s'),
+                'uuid'            => ifset($_comment, 'uuid', null),
+                'list_id'         => ifset($items, $item_id, 'list_id', null),
+                'errors'          => [],
+                'status_code'     => null,
+            ];
+
+            if (!isset($_comment['item_id'])) {
+                $_comment['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'item_id');
+            } elseif (!is_numeric($_comment['item_id'])) {
+                $_comment['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'item_id');
+            } elseif ($_comment['item_id'] < 1 || !array_key_exists($_comment['item_id'], $items)) {
+                $_comment['errors'][] = _w('Item not found');
+            } elseif (!in_array($_comment['list_id'], $list_access)) {
+                $_comment['errors'][] = _w('Access denied');
             }
-            $uuids = $this->getEntitiesByUuid('comment', $uuid);
-            if (!empty($uuids)) {
-                throw new waAPIException('invalid_value', _w('Comment with UUID exists'), 400);
+
+            if (!isset($_comment['comment'])) {
+                $_comment['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'comment');
+            } elseif (!is_string($_comment['comment'])) {
+                $_comment['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'comment');
+            }
+
+            if (isset($_comment['uuid'])) {
+                if (!is_string($_comment['uuid'])) {
+                    $_comment['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'uuid');
+                } elseif (in_array($_comment['uuid'], $uuids)) {
+                    $_comment['errors'][] =  _w('Comment with UUID exists');
+                }
+            }
+
+            if (empty($_comment['errors'])) {
+                unset($_comment['errors']);
+            } else {
+                $_comment['status_code'] = 'error';
             }
         }
 
-        /** @var pocketlistsItemFactory $item_factory */
-        $item_factory = pl2()->getEntityFactory(pocketlistsItem::class);
-
-        /** @var pocketlistsItem $item */
-        $item = $item_factory->findById($item_id);
-
-        if (empty($item)) {
-            throw new waAPIException('not_found', _w('Item not found'), 404);
-        } elseif ($item->getListId() === null) {
-            throw new waAPIException('not_found', _w('List not found'), 404);
-        } elseif (!pocketlistsRBAC::canAccessToList($item->getList())) {
-            throw new waAPIException('forbidden', _w('Access denied'), 403);
+        $comments_ok = array_filter($comments, function ($c) {
+            return is_null($c['status_code']);
+        });
+        $comments_err = array_diff_key($comments, $comments_ok);
+        if (!empty($comments_ok)) {
+            try {
+                $comments_ok = array_values($comments_ok);
+                $result = $model->multipleInsert($comments_ok);
+                if ($result->getResult()) {
+                    $last_id = $result->lastInsertId();
+                    $rows_count = $result->affectedRows();
+                    if ($rows_count === count($comments_ok)) {
+                        foreach ($comments_ok as &$_comment) {
+                            $_comment['id'] = $last_id++;
+                            $_comment['status_code'] = 'ok';
+                        }
+                        unset($_comment);
+                        $this->saveLog(
+                            pocketlistsLog::ENTITY_COMMENT,
+                            pocketlistsLog::ACTION_ADD,
+                            $comments_ok
+                        );
+                    } else {
+                        throw new waAPIException('error', _w('Error on transaction'));
+                    }
+                } else {
+                    throw new waAPIException('error', _w('Error on transaction'));
+                }
+            } catch (Exception $ex) {
+                throw new waAPIException('error', sprintf_wp('Error on transaction import save: %s', $ex->getMessage()), 400);
+            }
         }
 
-        /** @var pocketlistsCommentFactory $comment_factory */
-        $comment_factory = pl2()->getEntityFactory(pocketlistsComment::class);
-
-        /** @var pocketlistsComment $comment */
-        $comment = $comment_factory->createNew();
-        $comment->setItem($item)
-            ->setContactId(wa()->getUser()->getId())
-            ->setComment($comment_text)
-            ->setCreateDatetime(date('Y-m-d H:i:s'))
-            ->setUuid($uuid);
-
-        if (!$comment_factory->insert($comment)) {
-            throw new waAPIException('type_error', _w('Error while adding new item comment'), 400);
-        }
-
-        $result = [
-            'id'         => $comment->getId(),
-            'item_id'    => $comment->getItemId(),
-            'contact_id' => $comment->getContactId(),
-            'comment'    => $comment->getComment(),
-            'uuid'       => $comment->getUuid()
-        ];
-        $this->saveLog(
-            pocketlistsLog::ENTITY_COMMENT,
-            pocketlistsLog::ACTION_ADD,
-            [$result + ['list_id' => $item->getListId()]]
+        return $this->response = $this->filterFields(
+            array_merge($comments_ok, $comments_err),
+            [
+                'id',
+                'item_id',
+                'item_name',
+                'contact_id',
+                'comment',
+                'create_datetime',
+                'uuid',
+                'errors',
+                'status_code',
+            ], [
+                'id' => 'int',
+                'item_id' => 'int',
+                'contact_id' => 'int',
+                'create_datetime' => 'datetime',
+            ]
         );
-
-        $this->response = $result + [
-            'item_name'       => $comment->getItemName(),
-            'create_datetime' => $comment->getCreateDatetime(),
-        ];
     }
 }
