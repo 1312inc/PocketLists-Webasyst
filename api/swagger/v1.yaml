@@ -1674,6 +1674,14 @@ components:
               nullable: true
               default: null
               description: UUID value
+        - type: object
+          properties:
+            extended_data:
+              type: object
+              properties:
+                comments_count:
+                  type: integer
+                  description: Количество комментариев
     comment:
       allOf:
         - $ref: '#/components/schemas/extended_status'

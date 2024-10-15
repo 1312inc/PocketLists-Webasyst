@@ -91,6 +91,14 @@ class pocketlistsItemGetListMethod extends pocketlistsApiAbstractMethod
                 'offset'        => $offset
             ])->fetchAll('id');
             $total_count = (int) $item_model->query('SELECT FOUND_ROWS()')->fetchField();
+
+            foreach ($items as &$_item) {
+                $_item['extended_data'] = [
+                    'comments_count' => (int) $_item['comments_count']
+                ];
+            }
+            unset($_item);
+
             $path = wa()->getDataUrl('attachments', true, pocketlistsHelper::APP_ID);
             $attachments = pl2()->getEntityFactory(pocketlistsAttachment::class)->findByFields(
                 'item_id',
@@ -148,9 +156,8 @@ class pocketlistsItemGetListMethod extends pocketlistsApiAbstractMethod
                     'key_list_id',
                     'uuid',
                     'attachments',
-                    'comments_count'
-                ],
-                [
+                    'extended_data'
+                ], [
                     'id' => 'int',
                     'list_id' => 'int',
                     'contact_id' => 'int',
