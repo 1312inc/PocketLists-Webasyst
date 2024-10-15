@@ -90,7 +90,7 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
             if (empty($_item['id'])) {
                 $_item['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'id');
             } elseif (!is_numeric($_item['id'])) {
-                $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'item_id');
+                $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'id');
             } elseif (!array_key_exists($_item['id'], $items_in_db)) {
                 $_item['errors'][] = _w('Item not found');
             }
