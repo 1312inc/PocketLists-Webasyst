@@ -245,24 +245,34 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - id
-                - comment
-              properties:
-                id:
-                  type: integer
-                  description: Comment identifier
-                comment:
-                  type: string
-                  description: Comment text
+              type: array
+              items:
+                type: object
+                required:
+                  - id
+                  - comment
+                properties:
+                  id:
+                    type: integer
+                    description: Comment identifier
+                  comment:
+                    type: string
+                    description: Comment text
       responses:
         200:
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/comment'
+                type: array
+                items:
+                  $ref: '#/components/schemas/comment'
+        400:
+          description: Invalid request data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
         404:
           description: Not found.
           content:

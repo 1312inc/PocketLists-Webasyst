@@ -6,66 +6,109 @@ class pocketlistsCommentUpdateMethod extends pocketlistsApiAbstractMethod
 
     public function execute()
     {
-        $_json = $this->readBodyAsJson();
-        $comment_id = ifset($_json, 'id', null);
-        $comment_text = ifset($_json, 'comment', null);
 
-        if (!isset($comment_id)) {
-            throw new waAPIException('required_param', sprintf_wp('Missing required parameter: “%s”.', 'id'), 400);
-        } elseif (!isset($comment_text)) {
-            throw new waAPIException('required_param', sprintf_wp('Missing required parameter: “%s”.', 'comment'), 400);
-        } elseif (!is_numeric($comment_id)) {
-            throw new waAPIException('type_error', sprintf_wp('Type error parameter: “%s”.', 'id'), 400);
-        } elseif (!is_string($comment_text)) {
-            throw new waAPIException('type_error', sprintf_wp('Type error parameter: “%s”.', 'comment'), 400);
-        } elseif ($comment_id < 1) {
-            throw new waAPIException('not_found', _w('Comment not found'), 404);
+        $comments = $this->readBodyAsJson();
+        if (empty($comments)) {
+            throw new waAPIException('required_param', _w('Missing data'), 400);
+        } elseif (!is_array($comments)) {
+            throw new waAPIException('type_error', _w('Type error data'), 400);
         }
 
-        $comments = pl2()->getEntityFactory(pocketlistsComment::class)->findById([$comment_id]);
-        $comment = reset($comments);
-        if (empty($comment)) {
-            throw new waAPIException('not_found', _w('Comment not found'), 404);
+        $comment_ids = array_unique(array_column($comments, 'id'));
+        if (empty($comment_ids)) {
+            throw new waAPIException('type_error', _w('Type error data'), 400);
         }
 
-        /** @var pocketlistsCommentFactory $comment_factory */
-        $comment_factory = pl2()->getEntityFactory(pocketlistsComment::class);
-        $comment->setComment($comment_text);
-        $saved = $comment_factory->save($comment);
-        if (!$saved) {
-            throw new waAPIException('error', _w('Some error on save comment'), 500);
+
+        /** @var pocketlistsCommentModel $item_model */
+        $comment_model = pl2()->getModel(pocketlistsComment::class);
+        $comment_in_db = $comment_model->getById($comment_ids);
+        $list_id_available = pocketlistsRBAC::getAccessListForContact($this->getUser()->getId());
+
+        /** validate */
+        foreach ($comments as &$_comment) {
+            /** set default */
+            $comment_id = ifset($_comment, 'id', null);
+            $_comment = [
+                'id'              => $comment_id,
+                'item_id'         => null,
+                'item_name'       => null,
+                'contact_id'      => null,
+                'comment'         => ifset($_comment, 'comment', null),
+                'create_datetime' => null,
+                'uuid'            => null,
+                'list_id'         => ifset($comment_in_db, $comment_id, 'list_id', null),
+                'errors'          => [],
+                'status_code'     => 'ok'
+            ];
+
+            if (empty($_comment['id'])) {
+                $_comment['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'id');
+            } elseif (!is_numeric($_comment['id'])) {
+                $_comment['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'id');
+            } elseif (!array_key_exists($_comment['id'], $comment_in_db)) {
+                $_comment['errors'][] = _w('Comment not found');
+            } elseif (empty($comment_in_db[$_comment['id']]['list_id']) || !in_array($comment_in_db[$_comment['id']]['list_id'], $list_id_available)) {
+                $_comment['errors'][] = _w('Access denied');
+            }
+
+            if (!isset($_comment['comment'])) {
+                $_comment['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'comment');
+            } elseif (!is_string($_comment['comment'])) {
+                $_comment['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'comment');
+            }
+
+            if (empty($_comment['errors'])) {
+                $_comment = array_replace($comment_in_db[$_comment['id']], array_filter($_comment, function ($c) {return !is_null($c);}));
+                $_comment += $comment_in_db[$_comment['id']];
+                unset($_comment['errors']);
+            } else {
+                $_comment['status_code'] = 'error';
+            }
         }
 
-        $result = [
-            'id'              => $comment->getId(),
-            'item_id'         => $comment->getItemId(),
-            'contact_id'      => $comment->getContactId(),
-            'comment'         => $comment->getComment(),
-            'create_datetime' => $comment->getCreateDatetime(),
-            'uuid'            => $comment->getUuid(),
-        ];
-        $this->saveLog(
-            pocketlistsLog::ENTITY_COMMENT,
-            pocketlistsLog::ACTION_UPDATE,
-            [$result + [
-                'list_id'   => $comment->getListId(),
-                'pocket_id' => $comment->getPocketId()
-            ]]
+        $comments_ok = array_filter($comments, function ($c) {
+            return $c['status_code'] === 'ok';
+        });
+        $comments_err = array_diff_key($comments, $comments_ok);
+        if (!empty($comments_ok)) {
+            try {
+                foreach ($comments_ok as &$_comment_ok) {
+                    $result = $comment_model->updateById($_comment_ok['id'], $_comment_ok);
+                    if (!$result) {
+                        $_comment_ok['status_code'] = 'error';
+                        $_comment_ok['errors'][] = _w('Failed to update');
+                    }
+                }
+                unset($_comment_ok);
+                $this->saveLog(
+                    pocketlistsLog::ENTITY_COMMENT,
+                    pocketlistsLog::ACTION_UPDATE,
+                    $comments_ok
+                );
+            } catch (Exception $ex) {
+                throw new waAPIException('error', sprintf_wp('Error on transaction import save: %s', $ex->getMessage()), 400);
+            }
+        }
+
+        $this->response = $this->filterFields(
+            array_merge($comments_ok, $comments_err),
+            [
+                'id',
+                'item_id',
+                'item_name',
+                'contact_id',
+                'comment',
+                'create_datetime',
+                'uuid',
+                'errors',
+                'status_code'
+            ], [
+                'id' => 'int',
+                'item_id' => 'int',
+                'contact_id' => 'int',
+                'create_datetime' => 'datetime',
+            ]
         );
-
-        $this->response = $this->filterFields([$result], [
-            'id',
-            'item_id',
-            'contact_id',
-            'comment',
-            'create_datetime',
-            'uuid',
-        ], [
-            'id' => 'int',
-            'item_id' => 'int',
-            'contact_id' => 'int',
-            'create_datetime' => 'datetime',
-        ]);
-        $this->response = reset($this->response);
     }
 }
