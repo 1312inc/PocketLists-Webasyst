@@ -157,20 +157,47 @@ class pocketlistsListUpdateMethod extends pocketlistsApiAbstractMethod
         });
         $lists_err = array_diff_key($lists, $lists_ok);
         if (!empty($lists_ok)) {
+            $summary = $list_model->query(
+                $list_model->buildSqlComponents([
+                    'select'   => ['*' => 'list_id, priority, COUNT(id) AS cnt'],
+                    'from'     => ['pi' => 'pocketlists_item'],
+                    'join'     => [],
+                    'where'    => ['and' => [$list_ids ? 'list_id IN (i:ids)' : 'list_id IS NOT NULL']],
+                    'group by' => ['list_id, priority'],
+                    'order by' => ['list_id, priority']
+                ]), ['ids' => $list_ids]
+            )->fetchAll();
+            $priority_count = [];
+            if ($summary) {
+                foreach ($summary as $_summ) {
+                    $priority_count[$_summ['list_id']][$_summ['priority']] = $_summ['cnt'];
+                }
+                unset($summary);
+            }
+
             /** @var pocketlistsListFactory $list_factory */
             $list_factory = pl2()->getEntityFactory(pocketlistsList::class);
 
             /** @var pocketlistsList $list */
             $list = pl2()->getEntityFactory(pocketlistsList::class)->createNew();
             $lists_ok = $this->sorting('list', $lists_ok);
-            foreach ($lists_ok as $_list) {
+            foreach ($lists_ok as &$_list) {
                 $list_clone = clone $list;
                 pl2()->getHydrator()->hydrate($list_clone, $_list);
                 $list_clone->setUpdateDatetime(date('Y-m-d H:i:s'));
                 $list_factory->save($list_clone);
+
+                $data = ifset($priority_count, $_list['id'], null);
+                $max_priority = ($data ? max(array_keys($data)) : null);
+                $max_priority = ($max_priority == 0 ? null : $max_priority);
+                $_list['extended_data'] = [
+                    'count' => ($data ? array_sum($data) : 0),
+                    'priority_count' => (int) ifset($data, $max_priority, 0)
+                ];
             }
+            unset($_list);
             $this->saveLog(
-            pocketlistsLog::ENTITY_LIST,
+                pocketlistsLog::ENTITY_LIST,
                 pocketlistsLog::ACTION_UPDATE,
                 $lists_ok
             );
@@ -210,6 +237,7 @@ class pocketlistsListUpdateMethod extends pocketlistsApiAbstractMethod
                 'passcode',
                 'key_item_id',
                 'prev_list_id',
+                'extended_data',
                 'errors',
                 'status_code',
             ], [

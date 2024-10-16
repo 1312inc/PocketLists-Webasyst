@@ -152,6 +152,10 @@ class pocketlistsListAddMethod extends pocketlistsApiAbstractMethod
                 $_list['id'] = $list_clone->getId();
                 $_list['key_item_id'] = $list_clone->getKeyItemId();
                 $_list['status_code'] = 'ok';
+                $_list['extended_data'] = [
+                    'count' => 0,
+                    'priority_count' => 0
+                ];
             }
             unset($_list);
             $this->saveLog(
@@ -196,6 +200,7 @@ class pocketlistsListAddMethod extends pocketlistsApiAbstractMethod
                 'key_item_id',
                 'prev_list_id',
                 'prev_list_uuid',
+                'extended_data',
                 'errors',
                 'status_code',
             ], [
