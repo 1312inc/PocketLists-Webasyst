@@ -48,6 +48,7 @@ class pocketlistsDefaultLayout extends waLayout
             'users' => waUtils::jsonEncode($users),
             'pockets' => waUtils::jsonEncode($pockets),
             'locale' => wa()->getLocale(),
+            'timezone' => wa()->getUser()->getTimezone(),
             'framework_version' => wa()->getVersion('webasyst')
         ]);
     }
