@@ -49,7 +49,7 @@ class pocketlistsListAddMethod extends pocketlistsApiAbstractMethod
                 'status'              => null,
                 'priority'            => null,
                 'calc_priority'       => null,
-                'create_datetime'     => null,
+                'create_datetime'     => date('Y-m-d H:i:s'),
                 'update_datetime'     => null,
                 'complete_datetime'   => null,
                 'complete_contact_id' => null,
@@ -146,7 +146,7 @@ class pocketlistsListAddMethod extends pocketlistsApiAbstractMethod
                     ->setSort($_list['sort'])
                     ->setRank($_list['rank'])
                     ->setContact($this->getUser())
-                    ->setCreateDatetime(date('Y-m-d H:i:s'))
+                    ->setCreateDatetime($_list['create_datetime'])
                     ->setUuid($_list['uuid']);
                 $list_factory->save($list_clone);
                 $_list['id'] = $list_clone->getId();

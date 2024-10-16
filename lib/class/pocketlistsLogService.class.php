@@ -109,6 +109,7 @@ class pocketlistsLogService
             $id = ifset($_log, 'id', null);
             unset($_log['id'], $_log['action'], $_log['contact_id']);
             $params = [$entity => $_log];
+            unset($_log['create_datetime']);
             $_log = array_intersect_key($_log, $default) + $default;
             $_log['params'] = json_encode($params, JSON_UNESCAPED_UNICODE);
             if ($id) {
