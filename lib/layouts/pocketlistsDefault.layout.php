@@ -39,6 +39,7 @@ class pocketlistsDefaultLayout extends waLayout
         $pocket_get_list = new pocketlistsPocketGetListMethod();
         $response = $pocket_get_list->getResponse(true);
         $pockets = ifset($response, 'data', []);
+        $user_tz = wa()->getUser()->get('timezone');
 
         $this->view->assign([
             pocketlistsEventStorage::WA_BACKEND_HEAD => $eventResult,
@@ -48,7 +49,7 @@ class pocketlistsDefaultLayout extends waLayout
             'users' => waUtils::jsonEncode($users),
             'pockets' => waUtils::jsonEncode($pockets),
             'locale' => wa()->getLocale(),
-            'timezone' => wa()->getUser()->getTimezone(),
+            'timezone' => (empty($user_tz) ? 'auto' : $user_tz),
             'framework_version' => wa()->getVersion('webasyst')
         ]);
     }
