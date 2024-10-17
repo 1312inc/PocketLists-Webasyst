@@ -1366,19 +1366,30 @@ paths:
                 $ref: '#/components/schemas/errorResponse'
         500:
           description: Internal server error.
-  /pocketlists.system.getCurrentTimestamp:
+  /pocketlists.system.getTime:
     get:
       security:
         - BearerAuth: [ ]
-      summary: Получить текущую временную метку
+      summary: Получить информацию о времени
       responses:
         200:
           description: OK
           content:
             application/json:
               schema:
-                type: integer
-                description: Current timestamp
+                type: object
+                properties:
+                  timestamp:
+                    type: integer
+                    description: Текущая временная метка
+                  datetime:
+                    type: string
+                    format: date-time
+                    description: Текущее системное время
+                  user_timezone:
+                    type: string
+                    default: 'auto'
+                    description: Часовой пояс из профиля пользователя
   /pocketlists.user.getList:
     get:
       security:
