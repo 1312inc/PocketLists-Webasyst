@@ -94,6 +94,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
         }
         try {
             $dt = new DateTime((string) $sql_dt);
+            $dt->setTimezone(new DateTimeZone('UTC'));
             return $dt->format('Y-m-d\TH:i:s.u\Z');
         } catch (Exception $ex) {
             return $sql_dt;
