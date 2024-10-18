@@ -501,7 +501,7 @@ paths:
             Примеры фильтров:
             + **upnext**: айтемы сортированные по приоритету и дате выполнения
             + **due**: айтемы сортированные по возрастанию даты выполнения
-            + **priority**: айтемы сортированные по приоритету 
+            + **priority**: айтемы сортированные по приоритету
             + **user/55**: айтемы назначенные на указанного пользователя
             + **search/KEYWORD**: айтемы содержащие ключевое слово
             + **nearby**, **nearby/28.635896,-106.075763**: айтемы поблизости
@@ -1370,7 +1370,7 @@ paths:
     get:
       security:
         - BearerAuth: [ ]
-      summary: Получить информацию о времени
+      summary: Возвращает текущее время в часовом поясе UTC.
       responses:
         200:
           description: OK
@@ -1381,11 +1381,11 @@ paths:
                 properties:
                   timestamp:
                     type: integer
-                    description: Текущая временная метка
+                    description: Текущий UNIX timestamp (UTC)
                   datetime:
                     type: string
                     format: date-time
-                    description: Текущее системное время
+                    description: Текущее время в формате ISO 8601 (UTC)
                   user_timezone:
                     type: string
                     default: 'auto'
