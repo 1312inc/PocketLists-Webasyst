@@ -321,7 +321,7 @@ paths:
                     type: string
                     format: date-time
                     nullable: true
-                    description: Дата и точное время выполнения
+                    description: Дата и точное время выполнения (UTC)
                   due_date:
                     type: string
                     format: date
@@ -601,7 +601,7 @@ paths:
                     type: string
                     format: date-time
                     nullable: true
-                    description: Дата и точное время выполнения
+                    description: Дата и точное время выполнения (UTC)
                   due_date:
                     type: string
                     format: date
@@ -1614,19 +1614,19 @@ components:
             create_datetime:
               type: string
               format: date-time
-              description: Create datetime
+              description: Create datetime (UTC)
             update_datetime:
               type: string
               format: date-time
               nullable: true
               default: null
-              description: Update datetime
+              description: Update datetime (UTC)
             complete_datetime:
               type: string
               format: date-time
               nullable: true
               default: null
-              description: Complete datetime
+              description: Complete datetime (UTC)
             complete_contact_id:
               type: integer
               nullable: true
@@ -1651,7 +1651,7 @@ components:
               format: date-time
               nullable: true
               default: null
-              description: Due datetime
+              description: Due datetime (UTC)
             location_id:
               type: integer
               nullable: true
@@ -1716,7 +1716,7 @@ components:
             create_datetime:
               type: string
               format: datetime
-              description: Create datetime
+              description: Create datetime (UTC)
             uuid:
               type: string
               nullable: true
@@ -1826,7 +1826,7 @@ components:
         create_datetime:
           type: string
           format: datetime
-          description: Create datetime
+          description: Create datetime (UTC)
         params:
           type: string
           description: Params, JSON
