@@ -17,6 +17,7 @@ return array(
         'contact_id' => array('int', 11),
         'comment' => array('text'),
         'create_datetime' => array('datetime'),
+        'client_touch_datetime' => array('datetime'),
         'uuid' => array('varchar', 36),
         ':keys' => array(
             'PRIMARY' => 'id',
@@ -43,6 +44,7 @@ return array(
         'note' => array('text'),
         'due_date' => array('date'),
         'due_datetime' => array('datetime'),
+        'client_touch_datetime' => array('datetime'),
         'location_id' => array('int', 11),
         'amount' => array('decimal', "10,0"),
         'currency_iso3' => array('varchar', 3),

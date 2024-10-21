@@ -128,6 +128,11 @@ paths:
                   comment:
                     type: string
                     description: Comment text
+                  client_touch_datetime:
+                    type: string
+                    format: date-time
+                    nullable: true
+                    description: Дата и точное время
                   uuid:
                     type: string
                     nullable: true
@@ -317,16 +322,21 @@ paths:
                   priority:
                     type: integer
                     description: Priority
-                  due_datetime:
-                    type: string
-                    format: date-time
-                    nullable: true
-                    description: Дата и точное время выполнения (UTC)
                   due_date:
                     type: string
                     format: date
                     nullable: true
                     description: Дата выполнения весь день
+                  due_datetime:
+                    type: string
+                    format: date-time
+                    nullable: true
+                    description: Дата и точное время выполнения (UTC)
+                  client_touch_datetime:
+                    type: string
+                    format: date-time
+                    nullable: true
+                    description: Дата и точное время
                   uuid:
                     type: string
                     nullable: true
@@ -704,6 +714,11 @@ paths:
                   icon:
                     type: string
                     description: Icon
+                  client_touch_datetime:
+                    type: string
+                    format: date-time
+                    nullable: true
+                    description: Дата и точное время
                   sort:
                     type: integer
                     description: Sort
@@ -1652,6 +1667,12 @@ components:
               nullable: true
               default: null
               description: Due datetime (UTC)
+            client_touch_datetime:
+              type: string
+              format: date-time
+              nullable: true
+              default: null
+              description: datetime
             location_id:
               type: integer
               nullable: true
@@ -1717,6 +1738,11 @@ components:
               type: string
               format: datetime
               description: Create datetime (UTC)
+            client_touch_datetime:
+              type: string
+              format: date-time
+              nullable: true
+              description: Дата и точное время
             uuid:
               type: string
               nullable: true

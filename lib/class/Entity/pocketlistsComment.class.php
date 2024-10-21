@@ -63,6 +63,11 @@ class pocketlistsComment extends pocketlistsEntity
     private $create_datetime;
 
     /**
+     * @var string
+     */
+    private $client_touch_datetime;
+
+    /**
      * @var string|null
      */
     private $uuid;
@@ -257,6 +262,18 @@ class pocketlistsComment extends pocketlistsEntity
     public function setCreateDatetime($create_datetime)
     {
         $this->create_datetime = $create_datetime;
+
+        return $this;
+    }
+
+    public function getClientTouchDatetime()
+    {
+        return $this->client_touch_datetime;
+    }
+
+    public function setClientTouchDatetime($client_touch_datetime)
+    {
+        $this->client_touch_datetime = $client_touch_datetime;
 
         return $this;
     }

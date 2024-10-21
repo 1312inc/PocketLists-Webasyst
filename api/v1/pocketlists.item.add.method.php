@@ -53,36 +53,37 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
         foreach ($items as &$_item) {
             /** set default */
             $_item = [
-                'id'                  => null,
-                'list_id'             => ifset($_item, 'list_id', null),
-                'contact_id'          => $user_id,
-                'parent_id'           => 0,
-                'sort'                => ifset($_item, 'sort', null),
-                'rank'                => ifset($_item, 'rank', null),
-                'has_children'        => 0,
-                'status'              => 0,
-                'priority'            => ifset($_item, 'priority', 0),
-                'calc_priority'       => 0,
-                'create_datetime'     => date('Y-m-d H:i:s'),
-                'update_datetime'     => null,
-                'complete_datetime'   => null,
-                'complete_contact_id' => null,
-                'name'                => ifset($_item, 'name', ''),
-                'note'                => ifset($_item, 'note', ''),
-                'due_date'            => ifset($_item, 'due_date', null),
-                'due_datetime'        => ifset($_item, 'due_datetime', null),
-                'location_id'         => null,
-                'amount'              => 0,
-                'currency_iso3'       => null,
-                'assigned_contact_id' => ifset($_item, 'assigned_contact_id', null),
-                'repeat'              => 0,
-                'key_list_id'         => null,
-                'uuid'                => ifset($_item, 'uuid', null),
-                'attachments'         => ifset($_item, 'attachments', []),
-                'prev_item_id'        => ifset($_item, 'prev_item_id', null),
-                'prev_item_uuid'      => ifset($_item, 'prev_item_uuid', null),
-                'errors'              => [],
-                'status_code'         => null,
+                'id'                    => null,
+                'list_id'               => ifset($_item, 'list_id', null),
+                'contact_id'            => $user_id,
+                'parent_id'             => 0,
+                'sort'                  => ifset($_item, 'sort', null),
+                'rank'                  => ifset($_item, 'rank', null),
+                'has_children'          => 0,
+                'status'                => 0,
+                'priority'              => ifset($_item, 'priority', 0),
+                'calc_priority'         => 0,
+                'create_datetime'       => date('Y-m-d H:i:s'),
+                'update_datetime'       => null,
+                'complete_datetime'     => null,
+                'complete_contact_id'   => null,
+                'name'                  => ifset($_item, 'name', ''),
+                'note'                  => ifset($_item, 'note', ''),
+                'due_date'              => ifset($_item, 'due_date', null),
+                'due_datetime'          => ifset($_item, 'due_datetime', null),
+                'client_touch_datetime' => ifset($_item, 'client_touch_datetime', null),
+                'location_id'           => null,
+                'amount'                => 0,
+                'currency_iso3'         => null,
+                'assigned_contact_id'   => ifset($_item, 'assigned_contact_id', null),
+                'repeat'                => 0,
+                'key_list_id'           => null,
+                'uuid'                  => ifset($_item, 'uuid', null),
+                'attachments'           => ifset($_item, 'attachments', []),
+                'prev_item_id'          => ifset($_item, 'prev_item_id', null),
+                'prev_item_uuid'        => ifset($_item, 'prev_item_uuid', null),
+                'errors'                => [],
+                'status_code'           => null,
             ];
 
             if (isset($_item['list_id'])) {
@@ -162,6 +163,19 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
                         $_item['due_date'] = $dt->format('Y-m-d');
                     } else {
                         $_item['errors'][] = _w('Unknown value due_date');
+                    }
+                }
+            }
+
+            if (isset($_item['client_touch_datetime'])) {
+                if (!is_string($_item['client_touch_datetime'])) {
+                    $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'client_touch_datetime');
+                } else {
+                    $dt = date_create($_item['client_touch_datetime']);
+                    if ($dt) {
+                        $_item['client_touch_datetime'] = $dt->format('Y-m-d H:i:s');
+                    } else {
+                        $_item['errors'][] = _w('Unknown value client_touch_datetime');
                     }
                 }
             }
@@ -258,6 +272,7 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
                 'note',
                 'due_date',
                 'due_datetime',
+                'client_touch_datetime',
                 'location_id',
                 'amount',
                 'currency_iso3',
@@ -285,6 +300,7 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
                 'complete_datetime' => 'datetime',
                 'complete_contact_id' => 'int',
                 'due_datetime' => 'datetime',
+                'client_touch_datetime' => 'datetime',
                 'location_id' => 'int',
                 'amount' => 'float',
                 'assigned_contact_id' => 'int',

@@ -113,6 +113,11 @@ class pocketlistsItem extends pocketlistsEntity
     protected $due_datetime;
 
     /**
+     * @var DateTime|null
+     */
+    protected $client_touch_datetime;
+
+    /**
      * @var int|null
      */
     protected $location_id;
@@ -935,6 +940,18 @@ class pocketlistsItem extends pocketlistsEntity
     {
         $this->due_datetime = !empty($due_datetime) ? $due_datetime : null;
         $this->recalculatePriority();
+
+        return $this;
+    }
+
+    public function getClientTouchDatetime()
+    {
+        return $this->client_touch_datetime;
+    }
+
+    public function setClientTouchDatetime($client_touch_datetime = null)
+    {
+        $this->client_touch_datetime = empty($client_touch_datetime) ? null : $client_touch_datetime;
 
         return $this;
     }

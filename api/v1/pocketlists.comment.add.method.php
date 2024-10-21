@@ -36,16 +36,17 @@ class pocketlistsCommentAddMethod extends pocketlistsApiAbstractMethod
             /** set default */
             $item_id = ifset($_comment, 'item_id', null);
             $_comment = [
-                'id'              => null,
-                'item_id'         => $item_id,
-                'item_name'       => ifset($items, $item_id, 'name', null),
-                'contact_id'      => $user_id,
-                'comment'         => ifset($_comment, 'comment', null),
-                'create_datetime' => date('Y-m-d H:i:s'),
-                'uuid'            => ifset($_comment, 'uuid', null),
-                'list_id'         => ifset($items, $item_id, 'list_id', null),
-                'errors'          => [],
-                'status_code'     => null,
+                'id'                    => null,
+                'item_id'               => $item_id,
+                'item_name'             => ifset($items, $item_id, 'name', null),
+                'contact_id'            => $user_id,
+                'comment'               => ifset($_comment, 'comment', null),
+                'create_datetime'       => date('Y-m-d H:i:s'),
+                'client_touch_datetime' => ifset($_comment, 'client_touch_datetime', null),
+                'uuid'                  => ifset($_comment, 'uuid', null),
+                'list_id'               => ifset($items, $item_id, 'list_id', null),
+                'errors'                => [],
+                'status_code'           => null,
             ];
 
             if (!isset($_comment['item_id'])) {
@@ -62,6 +63,19 @@ class pocketlistsCommentAddMethod extends pocketlistsApiAbstractMethod
                 $_comment['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'comment');
             } elseif (!is_string($_comment['comment'])) {
                 $_comment['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'comment');
+            }
+
+            if (isset($_comment['client_touch_datetime'])) {
+                if (!is_string($_comment['client_touch_datetime'])) {
+                    $_comment['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'client_touch_datetime');
+                } else {
+                    $dt = date_create($_comment['client_touch_datetime']);
+                    if ($dt) {
+                        $_comment['client_touch_datetime'] = $dt->format('Y-m-d H:i:s');
+                    } else {
+                        $_comment['errors'][] = _w('Unknown value client_touch_datetime');
+                    }
+                }
             }
 
             if (isset($_comment['uuid'])) {
@@ -121,6 +135,7 @@ class pocketlistsCommentAddMethod extends pocketlistsApiAbstractMethod
                 'contact_id',
                 'comment',
                 'create_datetime',
+                'client_touch_datetime',
                 'uuid',
                 'errors',
                 'status_code',
@@ -129,6 +144,7 @@ class pocketlistsCommentAddMethod extends pocketlistsApiAbstractMethod
                 'item_id' => 'int',
                 'contact_id' => 'int',
                 'create_datetime' => 'datetime',
+                'client_touch_datetime' => 'datetime',
             ]
         );
     }
