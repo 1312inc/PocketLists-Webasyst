@@ -45,7 +45,7 @@ class pocketlistsDefaultLayout extends waLayout
             pocketlistsEventStorage::WA_BACKEND_HEAD => $eventResult,
             'isAdmin' => (int) pocketlistsRBAC::isAdmin(),
             'spa_api_token' => $token,
-            'is_premium' => pocketlistsLicensing::isPremium(),
+            'is_premium' => (pocketlistsLicensing::isPremium() ? 1 : 0),
             'users' => waUtils::jsonEncode($users),
             'pockets' => waUtils::jsonEncode($pockets),
             'locale' => wa()->getLocale(),
