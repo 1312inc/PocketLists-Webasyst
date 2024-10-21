@@ -11,6 +11,16 @@ class pocketlistsLocation extends pocketlistsEntity
     private $id;
 
     /**
+     * @var string
+     */
+    private $name;
+
+    /**
+     * @var string
+     */
+    private $color;
+
+    /**
      * @var float
      */
     private $location_latitude;
@@ -46,6 +56,30 @@ class pocketlistsLocation extends pocketlistsEntity
     public function setId($id)
     {
         $this->id = $id;
+
+        return $this;
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function setName($name)
+    {
+        $this->name = (string) $name;
+
+        return $this;
+    }
+
+    public function getColor()
+    {
+        return $this->color;
+    }
+
+    public function setColor($color)
+    {
+        $this->color = (string) $color;
 
         return $this;
     }

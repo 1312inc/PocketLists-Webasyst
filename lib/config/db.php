@@ -103,6 +103,8 @@ return array(
     ),
     'pocketlists_location' => array(
         'id' => array('int', 11, 'null' => 0, 'autoincrement' => 1),
+        'name' => array('varchar', 255, 'default' => ''),
+        'color' => array('varchar', 32, 'default' => ''),
         'location_latitude' => array('decimal', '10,8'),
         'location_longitude' => array('decimal', '10,8'),
         'location_radius' => array('int', 11),
