@@ -12,6 +12,7 @@ class pocketlistsLogService
         pocketlistsLog::ENTITY_LIST,
         pocketlistsLog::ENTITY_ITEM,
         pocketlistsLog::ENTITY_COMMENT,
+        pocketlistsLog::ENTITY_LOCATION,
         pocketlistsLog::ENTITY_ATTACHMENT
     ];
     const ACTIONS = [

@@ -20,6 +20,7 @@ class pocketlistsLog extends pocketlistsEntity
     const ENTITY_LIST       = 'list';
     const ENTITY_ITEM       = 'item';
     const ENTITY_COMMENT    = 'comment';
+    const ENTITY_LOCATION   = 'location';
     const ENTITY_ATTACHMENT = 'attachment';
 
     const ITEM_ACTION_NEW_ASSIGN = 'new_assign';

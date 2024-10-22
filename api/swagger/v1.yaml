@@ -987,6 +987,60 @@ paths:
                 $ref: '#/components/schemas/errorResponse'
         500:
           description: Internal server error.
+  /pocketlists.location.add:
+    put:
+      security:
+        - BearerAuth: [ ]
+      summary: Добавить новую локацию
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Название локации
+                  color:
+                    type: string
+                    description: Цвет локации
+                  location_latitude:
+                    type: number
+                    description: Широта локации в градусах
+                  location_longitude:
+                    type: number
+                    description: Долгота локации в градусах
+                  location_radius:
+                    type: integer
+                    description: Радиус локации в метрах
+                  uuid:
+                    type: string
+                    description: Unique UUID value
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/location'
+        400:
+          description: Invalid request data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        404:
+          description: Pocket not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        500:
+          description: Internal server error.
   /pocketlists.location.getList:
     get:
       security:
@@ -1804,25 +1858,32 @@ components:
               nullable: true
               description: UUID value
     location:
-      type: object
-      properties:
-        id:
-          type: integer
-          description: Location identifier
-        name:
-          type: string
-        color:
-          type: string
-        location_latitude:
-          type: number
-        location_longitude:
-          type: number
-        location_radius:
-          type: integer
-        uuid:
-          type: string
-          nullable: true
-          description: UUID value
+      allOf:
+        - $ref: '#/components/schemas/extended_status'
+        - type: object
+          properties:
+            id:
+              type: integer
+              description: Location identifier
+            name:
+              type: string
+              description: Location name
+            color:
+              type: string
+              description: Location color
+            location_latitude:
+              type: number
+              description: Location latitude
+            location_longitude:
+              type: number
+              description: Location longitude
+            location_radius:
+              type: integer
+              description: Location radius
+            uuid:
+              type: string
+              nullable: true
+              description: UUID value
     user:
       type: object
       properties:

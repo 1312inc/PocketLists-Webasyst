@@ -547,7 +547,10 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                     'file_type',
                     'url',
                     'item_name',
-                    'comment'
+                    'comment',
+                    'location_latitude',
+                    'location_longitude',
+                    'location_radius'
                 ], [
                     'id' => 'int',
                     'item_id' => 'int',
@@ -571,7 +574,10 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                     'repeat' => 'int',
                     'archived' => 'int',
                     'key_list_id' => 'int',
-                    'key_item_id' => 'int'
+                    'key_item_id' => 'int',
+                    'location_latitude' => 'float',
+                    'location_longitude' => 'float',
+                    'location_radius' => 'int'
                 ]
             );
             if ($action !== pocketlistsLog::ACTION_ADD) {
@@ -594,7 +600,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
     protected function getEntitiesByUuid($entity, $uuids = [])
     {
         if (
-            !in_array($entity, ['pocket', 'list', 'item', 'comment', 'attachment'])
+            !in_array($entity, ['pocket', 'list', 'item', 'comment', 'attachment', 'location'])
             || empty($uuids)
         ) {
             return [];
