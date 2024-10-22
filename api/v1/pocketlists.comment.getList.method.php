@@ -8,14 +8,14 @@ class pocketlistsCommentGetListMethod extends pocketlistsApiAbstractMethod
         $limit = $this->get('limit');
         $offset = $this->get('offset');
 
-        $while = 'WHERE 1 = 1';
+        $where = 'WHERE 1 = 1';
         if (isset($item_id)) {
             if (!is_numeric($item_id)) {
                 throw new waAPIException('unknown_value', _w('Unknown value'), 400);
             } elseif ($item_id < 1) {
                 throw new waAPIException('not_found', _w('Item not found'), 404);
             }
-            $while .= ' AND c.item_id = i:item_id';
+            $where .= ' AND c.item_id = i:item_id';
         }
         if (isset($limit)) {
             if (!is_numeric($limit)) {
@@ -41,7 +41,7 @@ class pocketlistsCommentGetListMethod extends pocketlistsApiAbstractMethod
         $plcm = pl2()->getModel(pocketlistsComment::class);
         $sql = $plcm->getSql(true);
         $comments = $plcm->query(
-            "$sql $while ORDER BY c.create_datetime LIMIT i:offset, i:limit", [
+            "$sql $where ORDER BY c.create_datetime LIMIT i:offset, i:limit", [
             'item_id' => (int) $item_id,
             'limit'   => $limit,
             'offset'  => $offset
