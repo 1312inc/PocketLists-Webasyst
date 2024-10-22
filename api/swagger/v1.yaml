@@ -987,6 +987,62 @@ paths:
                 $ref: '#/components/schemas/errorResponse'
         500:
           description: Internal server error.
+  /pocketlists.location.getList:
+    get:
+      security:
+        - BearerAuth: [ ]
+      summary: Получить локацию
+      parameters:
+        - in: query
+          name: location_id
+          description: Location identifier
+          schema:
+            type: integer
+        - in: query
+          name: offset
+          description: Смещение списка (по умолчанию 0)
+          schema:
+            type: integer
+        - in: query
+          name: limit
+          description: Размер порции списка (по умолчанию 30, максимум 500)
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  offset:
+                    type: integer
+                    description: Offset
+                  limit:
+                    type: integer
+                    description: Limit
+                  count:
+                    type: integer
+                    description: Count
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/location'
+        400:
+          description: Invalid request data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        404:
+          description: Not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        500:
+          description: Internal server error.
   /pocketlists.log.get:
     get:
       security:
@@ -1747,6 +1803,26 @@ components:
               type: string
               nullable: true
               description: UUID value
+    location:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Location identifier
+        name:
+          type: string
+        color:
+          type: string
+        location_latitude:
+          type: number
+        location_longitude:
+          type: number
+        location_radius:
+          type: integer
+        uuid:
+          type: string
+          nullable: true
+          description: UUID value
     user:
       type: object
       properties:
