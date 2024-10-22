@@ -30,16 +30,17 @@ class pocketlistsCommentUpdateMethod extends pocketlistsApiAbstractMethod
             /** set default */
             $comment_id = ifset($_comment, 'id', null);
             $_comment = [
-                'id'              => $comment_id,
-                'item_id'         => null,
-                'item_name'       => null,
-                'contact_id'      => null,
-                'comment'         => ifset($_comment, 'comment', null),
-                'create_datetime' => null,
-                'uuid'            => null,
-                'list_id'         => ifset($comment_in_db, $comment_id, 'list_id', null),
-                'errors'          => [],
-                'status_code'     => 'ok'
+                'id'                    => $comment_id,
+                'item_id'               => null,
+                'item_name'             => null,
+                'contact_id'            => null,
+                'comment'               => ifset($_comment, 'comment', null),
+                'create_datetime'       => null,
+                'client_touch_datetime' => null,
+                'uuid'                  => null,
+                'list_id'               => ifset($comment_in_db, $comment_id, 'list_id', null),
+                'errors'                => [],
+                'status_code'           => 'ok'
             ];
 
             if (empty($_comment['id'])) {
@@ -100,6 +101,7 @@ class pocketlistsCommentUpdateMethod extends pocketlistsApiAbstractMethod
                 'contact_id',
                 'comment',
                 'create_datetime',
+                'client_touch_datetime',
                 'uuid',
                 'errors',
                 'status_code'
@@ -108,6 +110,7 @@ class pocketlistsCommentUpdateMethod extends pocketlistsApiAbstractMethod
                 'item_id' => 'int',
                 'contact_id' => 'int',
                 'create_datetime' => 'datetime',
+                'client_touch_datetime' => 'datetime',
             ]
         );
     }
