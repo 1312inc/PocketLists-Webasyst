@@ -201,7 +201,6 @@ class pocketlistsItemGetStreamMethod extends pocketlistsApiAbstractMethod
         ])->fetchAll('id');
 
         $total_count = (int) $plim->query('SELECT FOUND_ROWS()')->fetchField();
-        $path = wa()->getDataUrl('attachments', true, pocketlistsHelper::APP_ID);
         $attachments = pl2()->getEntityFactory(pocketlistsAttachment::class)->findByFields(
             'item_id',
             array_keys($items),
@@ -220,7 +219,8 @@ class pocketlistsItemGetStreamMethod extends pocketlistsApiAbstractMethod
                 'item_id'   => $item_id,
                 'file_name' => $name,
                 'file_type' => $_attachment->getFiletype(),
-                'path'      => "$path/$item_id/$name"
+                'url'       => wa()->getDataUrl("attachments/$item_id/", true, pocketlistsHelper::APP_ID, true).$name,
+                'uuid'      => $_attachment->getUuid()
             ];
         }
 

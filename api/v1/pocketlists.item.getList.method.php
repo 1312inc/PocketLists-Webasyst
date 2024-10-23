@@ -118,7 +118,8 @@ class pocketlistsItemGetListMethod extends pocketlistsApiAbstractMethod
                     'item_id'   => $item_id,
                     'file_name' => $name,
                     'file_type' => $_attachment->getFiletype(),
-                    'path'      => "$path/$item_id/$name"
+                    'url'       => wa()->getDataUrl("attachments/$item_id/", true, pocketlistsHelper::APP_ID, true).$name,
+                    'uuid'      => $_attachment->getUuid()
                 ];
             }
         }
