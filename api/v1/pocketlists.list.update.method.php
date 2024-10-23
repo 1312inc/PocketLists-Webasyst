@@ -48,6 +48,7 @@ class pocketlistsListUpdateMethod extends pocketlistsApiAbstractMethod
                 'rank'                  => ifset($_list, 'rank', null),
                 'type'                  => null,
                 'icon'                  => ifset($_list, 'icon', ($action === self::ACTIONS[0] ? null : pocketlistsList::DEFAULT_ICON)),
+                'icon_url'              => null,
                 'archived'              => 0,
                 'hash'                  => null,
                 'color'                 => ifset($_list, 'color', ($action === self::ACTIONS[0] ? null : pocketlistsStoreColor::NONE)),
@@ -158,6 +159,8 @@ class pocketlistsListUpdateMethod extends pocketlistsApiAbstractMethod
         });
         $lists_err = array_diff_key($lists, $lists_ok);
         if (!empty($lists_ok)) {
+            $priority_count = [];
+            $static_url = wa()->getAppStaticUrl(null, true).'img/listicons/';
             $summary = $list_model->query(
                 $list_model->buildSqlComponents([
                     'select'   => ['*' => 'list_id, priority, COUNT(id) AS cnt'],
@@ -168,7 +171,6 @@ class pocketlistsListUpdateMethod extends pocketlistsApiAbstractMethod
                     'order by' => ['list_id, priority']
                 ]), ['ids' => $list_ids]
             )->fetchAll();
-            $priority_count = [];
             if ($summary) {
                 foreach ($summary as $_summ) {
                     $priority_count[$_summ['list_id']][$_summ['priority']] = $_summ['cnt'];
@@ -191,6 +193,7 @@ class pocketlistsListUpdateMethod extends pocketlistsApiAbstractMethod
                 $data = ifset($priority_count, $_list['id'], null);
                 $max_priority = ($data ? max(array_keys($data)) : null);
                 $max_priority = ($max_priority == 0 ? null : $max_priority);
+                $_list['icon_url'] = $static_url.$_list['icon'];
                 $_list['extended_data'] = [
                     'count' => ($data ? array_sum($data) : 0),
                     'priority_count' => (int) ifset($data, $max_priority, 0)
@@ -233,6 +236,7 @@ class pocketlistsListUpdateMethod extends pocketlistsApiAbstractMethod
                 'pocket_id',
                 'type',
                 'icon',
+                'icon_url',
                 'archived',
                 'hash',
                 'color',

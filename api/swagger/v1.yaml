@@ -1744,6 +1744,10 @@ components:
             icon:
               type: string
               description: Icon
+            icon_url:
+              type: string
+              format: uri
+              description: URL icon
             archived:
               type: integer
               description: Is archived

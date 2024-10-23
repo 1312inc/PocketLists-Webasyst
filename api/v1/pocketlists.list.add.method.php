@@ -38,6 +38,7 @@ class pocketlistsListAddMethod extends pocketlistsApiAbstractMethod
                 'rank'                  => ifset($_list, 'rank', null),
                 'type'                  => ifset($_list, 'type', pocketlistsList::TYPE_CHECKLIST),
                 'icon'                  => ifset($_list, 'icon', pocketlistsList::DEFAULT_ICON),
+                'icon_url'              => null,
                 'archived'              => null,
                 'hash'                  => null,
                 'color'                 => ifset($_list, 'color', pocketlistsStoreColor::NONE),
@@ -144,6 +145,7 @@ class pocketlistsListAddMethod extends pocketlistsApiAbstractMethod
         });
         $lists_err = array_diff_key($lists, $lists_ok);
         if (!empty($lists_ok)) {
+            $static_url = wa()->getAppStaticUrl(null, true).'img/listicons/';
             /** @var pocketlistsListFactory $list_factory */
             $list_factory = pl2()->getEntityFactory(pocketlistsList::class);
 
@@ -166,6 +168,7 @@ class pocketlistsListAddMethod extends pocketlistsApiAbstractMethod
                 $list_factory->save($list_clone);
                 $_list['id'] = $list_clone->getId();
                 $_list['key_item_id'] = $list_clone->getKeyItemId();
+                $_list['icon_url'] = $static_url.$_list['icon'];
                 $_list['status_code'] = 'ok';
                 $_list['extended_data'] = [
                     'count' => 0,
@@ -209,6 +212,7 @@ class pocketlistsListAddMethod extends pocketlistsApiAbstractMethod
                 'pocket_id',
                 'type',
                 'icon',
+                'icon_url',
                 'archived',
                 'hash',
                 'color',

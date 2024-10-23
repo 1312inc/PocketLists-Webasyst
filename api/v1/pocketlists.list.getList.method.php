@@ -77,6 +77,8 @@ class pocketlistsListGetListMethod extends pocketlistsApiAbstractMethod
             $total_count = (int) $list_model->query('SELECT FOUND_ROWS()')->fetchField();
 
             if ($lists) {
+                $priority_count = [];
+                $static_url = wa()->getAppStaticUrl(null, true).'img/listicons/';
                 $summary = $list_model->query(
                     $list_model->buildSqlComponents([
                         'select'   => ['*' => 'list_id, priority, COUNT(id) AS cnt'],
@@ -87,7 +89,6 @@ class pocketlistsListGetListMethod extends pocketlistsApiAbstractMethod
                         'order by' => ['list_id, priority']
                     ]), ['ids' => $ids]
                 )->fetchAll();
-                $priority_count = [];
                 if ($summary) {
                     foreach ($summary as $_summ) {
                         $priority_count[$_summ['list_id']][$_summ['priority']] = $_summ['cnt'];
@@ -98,6 +99,7 @@ class pocketlistsListGetListMethod extends pocketlistsApiAbstractMethod
                     $data = ifset($priority_count, $_list['id'], null);
                     $max_priority = ($data ? max(array_keys($data)) : null);
                     $max_priority = ($max_priority == 0 ? null : $max_priority);
+                    $_list['icon_url'] = $static_url.$_list['icon'];
                     $_list['extended_data'] = [
                         'count' => ($data ? array_sum($data) : 0),
                         'priority_count' => (int) ifset($data, $max_priority, 0)
@@ -140,6 +142,7 @@ class pocketlistsListGetListMethod extends pocketlistsApiAbstractMethod
                     'pocket_id',
                     'type',
                     'icon',
+                    'icon_url',
                     'archived',
                     'hash',
                     'color',
