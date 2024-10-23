@@ -69,7 +69,7 @@ paths:
     delete:
       security:
         - BearerAuth: [ ]
-      summary: Удалить аттачменты
+      summary: Удалить аттачмент
       requestBody:
         content:
           application/json:
@@ -170,7 +170,7 @@ paths:
     delete:
       security:
         - BearerAuth: [ ]
-      summary: Удаление комментариев
+      summary: Удалить комментарий
       parameters:
         - in: query
           name: id[]
@@ -409,7 +409,7 @@ paths:
     delete:
       security:
         - BearerAuth: [ ]
-      summary: Удаление айтемов
+      summary: Удалить айтем
       parameters:
         - in: query
           name: id[]
@@ -799,7 +799,7 @@ paths:
     delete:
       security:
         - BearerAuth: [ ]
-      summary: Удаление списков
+      summary: Удалить список
       parameters:
         - in: query
           name: id[]
@@ -1035,6 +1035,31 @@ paths:
                 $ref: '#/components/schemas/errorResponse'
         404:
           description: Pocket not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        500:
+          description: Internal server error.
+  /pocketlists.location.delete:
+    delete:
+      security:
+        - BearerAuth: [ ]
+      summary: Удалить локацию
+      parameters:
+        - in: query
+          name: id[]
+          description: Location identifiers
+          required: true
+          schema:
+            type: array
+            items:
+              type: integer
+      responses:
+        204:
+          description: OK
+        400:
+          description: Invalid request data.
           content:
             application/json:
               schema:
