@@ -377,20 +377,7 @@ paths:
               schema:
                 type: array
                 items:
-                  allOf:
-                    - $ref: '#/components/schemas/item'
-                    - type: object
-                      properties:
-                        prev_item_id:
-                          type: string
-                          nullable: true
-                          default: null
-                          description: Предыдущий идентификатор айтема для сортировки
-                        prev_item_uuid:
-                          type: string
-                          nullable: true
-                          default: null
-                          description: Предыдущий UUID айтема для сортировки
+                  $ref: '#/components/schemas/item'
         400:
           description: Invalid request data.
           content:
@@ -649,15 +636,7 @@ paths:
               schema:
                 type: array
                 items:
-                  allOf:
-                    - $ref: '#/components/schemas/item'
-                    - type: object
-                      properties:
-                        prev_item_id:
-                          type: string
-                          nullable: true
-                          default: null
-                          description: Предыдущий идентификатор айтема для сортировки
+                  $ref: '#/components/schemas/item'
         400:
           description: Invalid request data.
           content:

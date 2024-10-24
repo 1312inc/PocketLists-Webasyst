@@ -281,8 +281,6 @@ class pocketlistsItemAddMethod extends pocketlistsApiAbstractMethod
                 'key_list_id',
                 'uuid',
                 'attachments',
-                'prev_item_id',
-                'prev_item_uuid',
                 'errors',
                 'status_code'
             ], [

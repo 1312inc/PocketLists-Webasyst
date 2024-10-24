@@ -267,7 +267,6 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
                 'repeat',
                 'key_list_id',
                 'uuid',
-                'prev_item_id',
                 'attachments',
                 'errors',
                 'status_code'
