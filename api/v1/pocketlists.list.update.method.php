@@ -242,7 +242,6 @@ class pocketlistsListUpdateMethod extends pocketlistsApiAbstractMethod
                 'color',
                 'passcode',
                 'key_item_id',
-                'prev_list_id',
                 'extended_data',
                 'errors',
                 'status_code',

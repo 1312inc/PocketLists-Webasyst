@@ -734,20 +734,7 @@ paths:
               schema:
                 type: array
                 items:
-                  allOf:
-                    - $ref: '#/components/schemas/list'
-                    - type: object
-                      properties:
-                        prev_list_id:
-                          type: string
-                          nullable: true
-                          default: null
-                          description: Предыдущий идентификатор списка для сортировки
-                        prev_list_uuid:
-                          type: string
-                          nullable: true
-                          default: null
-                          description: Предыдущий UUID списка для сортировки
+                  $ref: '#/components/schemas/list'
         400:
           description: Invalid request data.
           content:
@@ -937,15 +924,7 @@ paths:
               schema:
                 type: array
                 items:
-                  allOf:
-                    - $ref: '#/components/schemas/list'
-                    - type: object
-                      properties:
-                        prev_list_id:
-                          type: string
-                          nullable: true
-                          default: null
-                          description: Предыдущий идентификатор листа для сортировки
+                  $ref: '#/components/schemas/list'
         400:
           description: Invalid request data.
           content:
