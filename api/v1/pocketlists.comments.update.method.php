@@ -1,6 +1,6 @@
 <?php
 
-class pocketlistsCommentUpdateMethod extends pocketlistsApiAbstractMethod
+class pocketlistsCommentsUpdateMethod extends pocketlistsApiAbstractMethod
 {
     protected $method = self::METHOD_PATCH;
 

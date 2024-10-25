@@ -1,6 +1,6 @@
 <?php
 
-class pocketlistsItemGetStreamMethod extends pocketlistsApiAbstractMethod
+class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
 {
     public function execute()
     {

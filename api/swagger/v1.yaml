@@ -9,7 +9,7 @@ servers:
     description: Current host server
 
 paths:
-  /pocketlists.attachment.add:
+  /pocketlists.attachments.add:
     put:
       security:
         - BearerAuth: [ ]
@@ -65,7 +65,7 @@ paths:
                 $ref: '#/components/schemas/errorResponse'
         500:
           description: Internal server error.
-  /pocketlists.attachment.delete:
+  /pocketlists.attachments.delete:
     delete:
       security:
         - BearerAuth: [ ]
@@ -106,7 +106,7 @@ paths:
                 $ref: '#/components/schemas/errorResponse'
         500:
           description: Internal server error.
-  /pocketlists.comment.add:
+  /pocketlists.comments.add:
     put:
       security:
         - BearerAuth: [ ]
@@ -166,7 +166,7 @@ paths:
                 $ref: '#/components/schemas/errorResponse'
         500:
           description: Internal server error.
-  /pocketlists.comment.delete:
+  /pocketlists.comments.delete:
     delete:
       security:
         - BearerAuth: [ ]
@@ -191,7 +191,7 @@ paths:
                 $ref: '#/components/schemas/errorResponse'
         500:
           description: Internal server error.
-  /pocketlists.comment.getList:
+  /pocketlists.comments.get:
     get:
       security:
         - BearerAuth: [ ]
@@ -241,7 +241,7 @@ paths:
                 $ref: '#/components/schemas/errorResponse'
         500:
           description: Internal server error.
-  /pocketlists.comment.update:
+  /pocketlists.comments.update:
     patch:
       security:
         - BearerAuth: [ ]
@@ -286,7 +286,7 @@ paths:
                 $ref: '#/components/schemas/errorResponse'
         500:
           description: Internal server error.
-  /pocketlists.item.add:
+  /pocketlists.items.add:
     put:
       security:
         - BearerAuth: [ ]
@@ -392,7 +392,7 @@ paths:
                 $ref: '#/components/schemas/errorResponse'
         500:
           description: Internal server error.
-  /pocketlists.item.delete:
+  /pocketlists.items.delete:
     delete:
       security:
         - BearerAuth: [ ]
@@ -417,7 +417,7 @@ paths:
                 $ref: '#/components/schemas/errorResponse'
         500:
           description: Internal server error.
-  /pocketlists.item.getList:
+  /pocketlists.items.get:
     get:
       security:
         - BearerAuth: [ ]
@@ -484,7 +484,7 @@ paths:
                 $ref: '#/components/schemas/errorResponse'
         500:
           description: Internal server error.
-  /pocketlists.item.getStream:
+  /pocketlists.items.getStream:
     get:
       security:
         - BearerAuth: [ ]
@@ -547,7 +547,7 @@ paths:
                 $ref: '#/components/schemas/errorResponse'
         500:
           description: Internal server error.
-  /pocketlists.item.update:
+  /pocketlists.items.update:
     patch:
       security:
         - BearerAuth: [ ]
@@ -657,7 +657,7 @@ paths:
                 $ref: '#/components/schemas/errorResponse'
         500:
           description: Internal server error.
-  /pocketlists.list.add:
+  /pocketlists.lists.add:
     put:
       security:
         - BearerAuth: [ ]
@@ -761,7 +761,7 @@ paths:
                 $ref: '#/components/schemas/errorResponse'
         500:
           description: Internal server error.
-  /pocketlists.list.delete:
+  /pocketlists.lists.delete:
     delete:
       security:
         - BearerAuth: [ ]
@@ -786,7 +786,7 @@ paths:
                 $ref: '#/components/schemas/errorResponse'
         500:
           description: Internal server error.
-  /pocketlists.list.getList:
+  /pocketlists.lists.get:
     get:
       security:
         - BearerAuth: [ ]
@@ -861,7 +861,7 @@ paths:
                 $ref: '#/components/schemas/errorResponse'
         500:
           description: Internal server error.
-  /pocketlists.list.update:
+  /pocketlists.lists.update:
     patch:
       security:
         - BearerAuth: [ ]
@@ -945,7 +945,7 @@ paths:
                 $ref: '#/components/schemas/errorResponse'
         500:
           description: Internal server error.
-  /pocketlists.location.add:
+  /pocketlists.locations.add:
     put:
       security:
         - BearerAuth: [ ]
@@ -999,7 +999,7 @@ paths:
                 $ref: '#/components/schemas/errorResponse'
         500:
           description: Internal server error.
-  /pocketlists.location.delete:
+  /pocketlists.locations.delete:
     delete:
       security:
         - BearerAuth: [ ]
@@ -1024,7 +1024,7 @@ paths:
                 $ref: '#/components/schemas/errorResponse'
         500:
           description: Internal server error.
-  /pocketlists.location.getList:
+  /pocketlists.locations.get:
     get:
       security:
         - BearerAuth: [ ]
@@ -1080,7 +1080,7 @@ paths:
                 $ref: '#/components/schemas/errorResponse'
         500:
           description: Internal server error.
-  /pocketlists.location.update:
+  /pocketlists.locations.update:
     patch:
       security:
         - BearerAuth: [ ]

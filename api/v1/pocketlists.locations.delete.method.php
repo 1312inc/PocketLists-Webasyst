@@ -1,6 +1,6 @@
 <?php
 
-class pocketlistsLocationDeleteMethod extends pocketlistsApiAbstractMethod
+class pocketlistsLocationsDeleteMethod extends pocketlistsApiAbstractMethod
 {
     protected $method = self::METHOD_DELETE;
 

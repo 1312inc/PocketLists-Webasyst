@@ -1,8 +1,8 @@
 <?php
 
-class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
+class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
 {
-    protected $method = self::METHOD_PATCH;
+    protected $method = self::METHOD_PUT;
 
     public function execute()
     {
@@ -15,24 +15,17 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
 
         $assign_contacts = [];
         $attachment_uuids = [];
-        $user_id = $this->getUser()->getId();
-        $item_ids = array_unique(array_column($items, 'id'));
-        $list_ids = array_unique(array_column($items, 'list_id'));
-        $assigned_contact_ids = array_unique(array_column($items, 'assigned_contact_id'));
+        $list_ids = array_unique(array_filter(array_column($items, 'list_id')));
+        $assigned_contact_ids = array_unique(array_filter(array_column($items, 'assigned_contact_id')));
+        $uuids = array_column($items, 'uuid');
         $attachments = array_column($items, 'attachments');
 
-        if (empty($item_ids)) {
-            throw new waAPIException('type_error', _w('Type error data'), 400);
-        }
-
-        /** @var pocketlistsItemModel $item_model */
-        $item_model = pl2()->getModel(pocketlistsItem::class);
-        $items_in_db = $item_model->select('*')->where('id IN (:item_ids)', ['item_ids' => $item_ids])->fetchAll('id');
-        $list_id_available = pocketlistsRBAC::getAccessListForContact($user_id);
         if (!empty($list_ids)) {
             /** @var pocketlistsListModel $list_model */
             $list_model = pl2()->getModel(pocketlistsList::class);
-            $list_ids = $list_model->select('id')->where('id IN (:list_ids)', ['list_ids' => $list_ids])->fetchAll(null, true);
+            $list_ids = $list_model->select('id')
+                ->where('id IN (:list_ids)', ['list_ids' => $list_ids])
+                ->fetchAll(null, true);
         }
         if (!empty($assigned_contact_ids)) {
             /** @var pocketlistsContact $_assign_contact */
@@ -41,6 +34,10 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
                     $assign_contacts[$_assign_contact->getId()] = $_assign_contact;
                 }
             }
+        }
+        if (!empty($uuids)) {
+            $uuids = $this->getEntitiesByUuid('item', $uuids);
+            $uuids = array_keys($uuids);
         }
         if (!empty($attachments)) {
             foreach ($attachments as $_attachment) {
@@ -52,11 +49,11 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
         }
 
         /** validate */
+        $user_id = $this->getUser()->getId();
         foreach ($items as &$_item) {
             /** set default */
             $_item = [
-                'action'                => (ifset($_item, 'action', null) === self::ACTIONS[1] ? self::ACTIONS[1] : self::ACTIONS[0]),
-                'id'                    => ifset($_item, 'id', null),
+                'id'                    => null,
                 'list_id'               => ifset($_item, 'list_id', null),
                 'contact_id'            => $user_id,
                 'parent_id'             => 0,
@@ -64,17 +61,17 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
                 'rank'                  => ifset($_item, 'rank', null),
                 'has_children'          => 0,
                 'status'                => 0,
-                'priority'              => ifset($_item, 'priority', null),
+                'priority'              => ifset($_item, 'priority', 0),
                 'calc_priority'         => 0,
-                'create_datetime'       => null,
-                'update_datetime'       => date('Y-m-d H:i:s'),
+                'create_datetime'       => date('Y-m-d H:i:s'),
+                'update_datetime'       => null,
                 'complete_datetime'     => null,
                 'complete_contact_id'   => null,
-                'name'                  => ifset($_item, 'name', null),
-                'note'                  => ifset($_item, 'note', null),
+                'name'                  => ifset($_item, 'name', ''),
+                'note'                  => ifset($_item, 'note', ''),
                 'due_date'              => ifset($_item, 'due_date', null),
                 'due_datetime'          => ifset($_item, 'due_datetime', null),
-                'client_touch_datetime' => null,
+                'client_touch_datetime' => ifset($_item, 'client_touch_datetime', null),
                 'location_id'           => null,
                 'amount'                => 0,
                 'currency_iso3'         => null,
@@ -82,27 +79,34 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
                 'repeat'                => 0,
                 'key_list_id'           => null,
                 'uuid'                  => ifset($_item, 'uuid', null),
-                'prev_item_id'          => (array_key_exists('prev_item_id', $_item) ? ifset($_item, 'prev_item_id', 0) : null),
                 'attachments'           => ifset($_item, 'attachments', []),
+                'prev_item_id'          => ifset($_item, 'prev_item_id', null),
+                'prev_item_uuid'        => ifset($_item, 'prev_item_uuid', null),
                 'errors'                => [],
-                'status_code'           => 'ok',
+                'status_code'           => null,
             ];
 
-            if (empty($_item['id'])) {
-                $_item['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'id');
-            } elseif (!is_numeric($_item['id'])) {
-                $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'id');
-            } elseif (!array_key_exists($_item['id'], $items_in_db)) {
-                $_item['errors'][] = _w('Item not found');
-            }
-
-            if ($_item['list_id']) {
+            if (isset($_item['list_id'])) {
                 if (!is_numeric($_item['list_id'])) {
                     $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'list_id');
-                } elseif (!in_array($_item['list_id'], $list_ids)) {
+                } elseif ($_item['list_id'] < 1 || !in_array($_item['list_id'], $list_ids)) {
                     $_item['errors'][] = _w('List not found');
-                } elseif (!in_array($_item['list_id'], $list_id_available)) {
-                    $_item['errors'][] = _w('Access denied');
+                }
+            }
+
+            if (!is_string($_item['name'])) {
+                $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'name');
+            }
+
+            if (isset($_item['sort']) && !is_numeric($_item['sort'])) {
+                $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'sort');
+            }
+
+            if (isset($_item['rank'])) {
+                if (!is_string($_item['rank'])) {
+                    $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'rank');
+                } elseif ($_item['rank'] !== '' && !pocketlistsSortRank::rankValidate($_item['rank'])) {
+                    $_item['errors'][] = _w('Invalid rank value');
                 }
             }
 
@@ -120,29 +124,25 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
                 } elseif (!in_array($_item['priority'], [1, 2, 3, 4, 5])) {
                     $_item['errors'][] = _w('Unknown value priority');
                 }
-            }
-
-            if (isset($_item['name']) && !is_string($_item['name'])) {
-                $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'name');
-            }
-
-            if (isset($_item['note']) && !is_string($_item['note'])) {
-                $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'note');
-            }
-
-            if (isset($_item['sort']) && !is_numeric($_item['sort'])) {
-                $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'sort');
-            }
-
-            if (isset($_item['rank'])) {
-                if (!is_string($_item['rank'])) {
-                    $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'rank');
-                } elseif ($_item['rank'] !== '' && !pocketlistsSortRank::rankValidate($_item['rank'])) {
-                    $_item['errors'][] = _w('Invalid rank value');
+            } else {
+                $match_priority = pocketlistsNaturalInput::matchPriority($_item['name']);
+                if ($match_priority) {
+                    $_item['name'] = $match_priority['name'];
+                    $_item['priority'] = (int) $match_priority['priority'];
                 }
             }
 
-            if ($_item['due_datetime']) {
+            $match_note = pocketlistsNaturalInput::matchNote($_item['name']);
+            if ($match_note) {
+                if (empty($_item['note'])) {
+                    $_item['name'] = $match_note['name'];
+                    $_item['note'] = $match_note['note'];
+                } elseif (!is_string($_item['note'])) {
+                    $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'note');
+                }
+            }
+
+            if (isset($_item['due_datetime'])) {
                 if (!is_string($_item['due_datetime'])) {
                     $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'due_datetime');
                 } else {
@@ -154,16 +154,28 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
                         $_item['errors'][] = _w('Unknown value due_datetime');
                     }
                 }
-            } elseif ($_item['due_date']) {
+            } elseif (isset($_item['due_date'])) {
                 if (!is_string($_item['due_date'])) {
                     $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'due_date');
                 } else {
                     $dt = date_create($_item['due_date']);
                     if ($dt) {
                         $_item['due_date'] = $dt->format('Y-m-d');
-                        $_item['due_datetime'] = '';
                     } else {
                         $_item['errors'][] = _w('Unknown value due_date');
+                    }
+                }
+            }
+
+            if (isset($_item['client_touch_datetime'])) {
+                if (!is_string($_item['client_touch_datetime'])) {
+                    $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'client_touch_datetime');
+                } else {
+                    $dt = date_create($_item['client_touch_datetime']);
+                    if ($dt) {
+                        $_item['client_touch_datetime'] = $dt->format('Y-m-d H:i:s');
+                    } else {
+                        $_item['errors'][] = _w('Unknown value client_touch_datetime');
                     }
                 }
             }
@@ -186,21 +198,15 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
                 }
             }
 
-            if (empty($_item['errors'])) {
-                if ($_item['action'] == self::ACTIONS[0]) {
-                    // patch
-                    $_item = array_replace($items_in_db[$_item['id']], array_filter($_item, function ($i) {return !is_null($i);}));
-                    if (isset($_item['prev_item_id'])) {
-                        if ($_item['prev_item_id'] === 0) {
-                            $_item['prev_item_id'] = null;
-                        }
-                        $_item['sort'] = null;
-                        $_item['rank'] = null;
-                    }
-                } else {
-                    // update
-                    $_item += $items_in_db[$_item['id']];
+            if (isset($_item['uuid'])) {
+                if (!is_string($_item['uuid'])) {
+                    $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'uuid');
+                } elseif (in_array($_item['uuid'], $uuids)) {
+                    $_item['errors'][] = _w('Item with UUID exists');
                 }
+            }
+
+            if (empty($_item['errors'])) {
                 unset($_item['errors']);
             } else {
                 $_item['attachments'] = [];
@@ -209,30 +215,37 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
         }
 
         $items_ok = array_filter($items, function ($i) {
-            return $i['status_code'] === 'ok';
+            return is_null($i['status_code']);
         });
         $items_err = array_diff_key($items, $items_ok);
         if (!empty($items_ok)) {
             $item_model = pl2()->getModel(pocketlistsItem::class);
             $items_ok = $this->sorting('item', $items_ok);
             try {
-                foreach ($items_ok as &$_item_ok) {
-                    $result = $item_model->updateById($_item_ok['id'], $_item_ok);
-                    if ($result) {
-                        if (!empty($_item_ok['attachments'])) {
-                            $_item_ok['attachments'] = $this->updateFiles($_item_ok['id'], $_item_ok['attachments']);
+                $result = $item_model->multipleInsert($items_ok);
+                if ($result->getResult()) {
+                    $last_id = $result->lastInsertId();
+                    $rows_count = $result->affectedRows();
+                    if ($rows_count === count($items_ok)) {
+                        foreach ($items_ok as &$_item) {
+                            $_item['id'] = $last_id++;
+                            $_item['status_code'] = 'ok';
+                            if (!empty($_item['attachments'])) {
+                                $_item['attachments'] = $this->updateFiles($_item['id'], $_item['attachments']);
+                            }
                         }
+                        unset($_item);
+                        $this->saveLog(
+                            pocketlistsLog::ENTITY_ITEM,
+                            pocketlistsLog::ACTION_ADD,
+                            $items_ok
+                        );
                     } else {
-                        $_item_ok['status_code'] = 'error';
-                        $_item_ok['errors'][] = _w('Failed to update');
+                        throw new waAPIException('error', _w('Error on transaction'));
                     }
+                } else {
+                    throw new waAPIException('error', _w('Error on transaction'));
                 }
-                unset($_item_ok);
-                $this->saveLog(
-                pocketlistsLog::ENTITY_ITEM,
-                    pocketlistsLog::ACTION_UPDATE,
-                    $items_ok
-                );
             } catch (Exception $ex) {
                 throw new waAPIException('error', sprintf_wp('Error on transaction import save: %s', $ex->getMessage()), 400);
             }
@@ -291,6 +304,7 @@ class pocketlistsItemUpdateMethod extends pocketlistsApiAbstractMethod
                 'assigned_contact_id' => 'int',
                 'repeat' => 'int',
                 'key_list_id' => 'int'
-        ]);
+            ]
+        );
     }
 }

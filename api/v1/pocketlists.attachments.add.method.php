@@ -1,6 +1,6 @@
 <?php
 
-class pocketlistsAttachmentAddMethod extends pocketlistsApiAbstractMethod
+class pocketlistsAttachmentsAddMethod extends pocketlistsApiAbstractMethod
 {
     protected $method = self::METHOD_PUT;
 
