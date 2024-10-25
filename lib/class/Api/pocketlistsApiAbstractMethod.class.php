@@ -14,6 +14,12 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
 
     private $request_body = null;
 
+    public function __construct()
+    {
+        parent::__construct();
+        wa()->getStorage()->close();
+    }
+
     /**
      * @return mixed|null
      */
