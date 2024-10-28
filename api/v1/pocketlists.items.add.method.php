@@ -60,7 +60,7 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                 'sort'                  => ifset($_item, 'sort', null),
                 'rank'                  => ifset($_item, 'rank', null),
                 'has_children'          => 0,
-                'status'                => 0,
+                'status'                => (ifset($_item, 'status', 0) ? pocketlistsItem::STATUS_DONE : pocketlistsItem::STATUS_UNDONE),
                 'priority'              => ifset($_item, 'priority', 0),
                 'calc_priority'         => 0,
                 'create_datetime'       => date('Y-m-d H:i:s'),
