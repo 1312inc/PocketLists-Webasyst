@@ -50,7 +50,8 @@ class pocketlistsDefaultLayout extends waLayout
             'pockets' => waUtils::jsonEncode($pockets),
             'locale' => wa()->getLocale(),
             'timezone' => (empty($user_tz) ? 'auto' : $user_tz),
-            'framework_version' => wa()->getVersion('webasyst')
+            'framework_version' => wa()->getVersion('webasyst'),
+            'pl_debug_mode' => (wa()->getSetting('pl_debug_mode', 0) ? 1 : 0)
         ]);
     }
 }
