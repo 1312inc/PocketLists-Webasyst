@@ -594,6 +594,12 @@ paths:
                     type: string
                     maxLength: 8
                     description: Sort rank, [0-9A-z]
+                  status:
+                    type: integer
+                    description: Item status undone/done
+                    enum:
+                      - 0
+                      - 1
                   assigned_contact_id:
                     type: integer
                     description: Assigned contact identifier

@@ -63,7 +63,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 'sort'                  => ifset($_item, 'sort', null),
                 'rank'                  => ifset($_item, 'rank', null),
                 'has_children'          => 0,
-                'status'                => 0,
+                'status'                => (ifset($_item, 'status', 0) ? pocketlistsItem::STATUS_DONE : pocketlistsItem::STATUS_UNDONE),
                 'priority'              => ifset($_item, 'priority', null),
                 'calc_priority'         => 0,
                 'create_datetime'       => null,
