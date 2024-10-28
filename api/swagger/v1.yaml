@@ -1561,7 +1561,7 @@ paths:
                     type: string
                     default: 'auto'
                     description: Часовой пояс из профиля пользователя
-  /pocketlists.user.getList:
+  /pocketlists.users.get:
     get:
       security:
         - BearerAuth: [ ]
