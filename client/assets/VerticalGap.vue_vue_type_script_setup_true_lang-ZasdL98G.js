@@ -1,1 +1,0 @@
-import{d as e,c as s,A as a,K as o,o as r}from"./index-WJ6N7InX.js";const n=e({__name:"VerticalGap",props:{space:{}},setup(t){return(p,l)=>(r(),s("div",{class:o(["tw-flex tw-flex-col",{"tw-gap-2":p.$props.space===2,"tw-gap-4":p.$props.space===4,"tw-gap-6":p.$props.space===6,"tw-gap-8":p.$props.space===8}])},[a(p.$slots,"default")],2))}});export{n as _};
