@@ -32,7 +32,7 @@ class pocketlistsDefaultLayout extends waLayout
             pocketlistsConfig::API_TOKEN_SCOPE
         );
 
-        $user_get_list = new pocketlistsUserGetListMethod();
+        $user_get_list = new pocketlistsUsersGetMethod();
         $response = $user_get_list->getResponse(true);
         $users = ifset($response, 'data', []);
 
