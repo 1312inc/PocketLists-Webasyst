@@ -36,7 +36,7 @@ class pocketlistsCommentsUpdateMethod extends pocketlistsApiAbstractMethod
                 'contact_id'            => null,
                 'comment'               => ifset($_comment, 'comment', null),
                 'create_datetime'       => null,
-                'client_touch_datetime' => null,
+                'client_touch_datetime' => ifset($_comment, 'client_touch_datetime', null),
                 'uuid'                  => null,
                 'list_id'               => ifset($comment_in_db, $comment_id, 'list_id', null),
                 'errors'                => [],
@@ -57,6 +57,19 @@ class pocketlistsCommentsUpdateMethod extends pocketlistsApiAbstractMethod
                 $_comment['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'comment');
             } elseif (!is_string($_comment['comment'])) {
                 $_comment['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'comment');
+            }
+
+            if (isset($_comment['client_touch_datetime'])) {
+                if (!is_string($_comment['client_touch_datetime'])) {
+                    $_comment['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'client_touch_datetime');
+                } else {
+                    $dt = date_create($_comment['client_touch_datetime']);
+                    if ($dt) {
+                        $_comment['client_touch_datetime'] = $dt->format('Y-m-d H:i:s');
+                    } else {
+                        $_comment['errors'][] = _w('Unknown value client_touch_datetime');
+                    }
+                }
             }
 
             if (empty($_comment['errors'])) {

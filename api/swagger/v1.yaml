@@ -263,6 +263,11 @@ paths:
                   comment:
                     type: string
                     description: Comment text
+                  client_touch_datetime:
+                    type: string
+                    format: date-time
+                    nullable: true
+                    description: Дата и точное время
       responses:
         200:
           description: OK
@@ -616,6 +621,11 @@ paths:
                     format: date
                     nullable: true
                     description: Дата выполнения весь день
+                  client_touch_datetime:
+                    type: string
+                    format: date-time
+                    nullable: true
+                    description: Дата и точное время
                   prev_item_id:
                     type: integer
                     nullable: true
@@ -691,6 +701,9 @@ paths:
                   name:
                     type: string
                     description: Название списка
+                  icon:
+                    type: string
+                    description: Icon
                   color:
                     type: string
                     description: Color
@@ -702,9 +715,6 @@ paths:
                       - blue
                       - yellow
                       - purple
-                  icon:
-                    type: string
-                    description: Icon
                   client_touch_datetime:
                     type: string
                     format: date-time
@@ -918,6 +928,11 @@ paths:
                       - blue
                       - yellow
                       - purple
+                  client_touch_datetime:
+                    type: string
+                    format: date-time
+                    nullable: true
+                    description: Дата и точное время
                   sort:
                     type: integer
                     description: Sort

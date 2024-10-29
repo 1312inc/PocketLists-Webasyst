@@ -74,7 +74,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 'note'                  => ifset($_item, 'note', null),
                 'due_date'              => ifset($_item, 'due_date', null),
                 'due_datetime'          => ifset($_item, 'due_datetime', null),
-                'client_touch_datetime' => null,
+                'client_touch_datetime' => ifset($_item, 'client_touch_datetime', null),
                 'location_id'           => null,
                 'amount'                => 0,
                 'currency_iso3'         => null,
@@ -164,6 +164,19 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                         $_item['due_datetime'] = '';
                     } else {
                         $_item['errors'][] = _w('Unknown value due_date');
+                    }
+                }
+            }
+
+            if (isset($_item['client_touch_datetime'])) {
+                if (!is_string($_item['client_touch_datetime'])) {
+                    $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'client_touch_datetime');
+                } else {
+                    $dt = date_create($_item['client_touch_datetime']);
+                    if ($dt) {
+                        $_item['client_touch_datetime'] = $dt->format('Y-m-d H:i:s');
+                    } else {
+                        $_item['errors'][] = _w('Unknown value client_touch_datetime');
                     }
                 }
             }

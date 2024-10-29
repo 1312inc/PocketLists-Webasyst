@@ -68,7 +68,7 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                 'note'                  => null,
                 'due_date'              => null,
                 'due_datetime'          => null,
-                'client_touch_datetime' => null,
+                'client_touch_datetime' => ifset($_list, 'client_touch_datetime', null),
                 'location_id'           => null,
                 'amount'                => 0,
                 'currency_iso3'         => null,
@@ -113,6 +113,19 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                     $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'color');
                 } elseif (!array_key_exists($_list['color'], pocketlistsStoreColor::getColors())) {
                     $_list['errors'][] = _w('Unknown value color');
+                }
+            }
+
+            if (isset($_list['client_touch_datetime'])) {
+                if (!is_string($_list['client_touch_datetime'])) {
+                    $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'client_touch_datetime');
+                } else {
+                    $dt = date_create($_list['client_touch_datetime']);
+                    if ($dt) {
+                        $_list['client_touch_datetime'] = $dt->format('Y-m-d H:i:s');
+                    } else {
+                        $_list['errors'][] = _w('Unknown value client_touch_datetime');
+                    }
                 }
             }
 

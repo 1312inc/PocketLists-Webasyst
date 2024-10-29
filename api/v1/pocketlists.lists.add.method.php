@@ -93,6 +93,10 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                 $_list['errors'][] = _w('Unknown value type');
             }
 
+            if (isset($_list['icon']) && !is_string($_list['icon'])) {
+                $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'icon');
+            }
+
             if (!is_string($_list['color'])) {
                 $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'color');
             } elseif (!array_key_exists($_list['color'], pocketlistsStoreColor::getColors())) {
