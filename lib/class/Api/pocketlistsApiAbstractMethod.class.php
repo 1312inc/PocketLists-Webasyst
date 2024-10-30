@@ -147,7 +147,8 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                 'file'      => '',
                 'file_name' => '',
                 'url'       => '',
-                'uuid'      => null
+                'uuid'      => null,
+                'errors'    => []
             ];
             if (empty($_file['file']) || empty($_file['file_name'])) {
                 continue;
@@ -155,7 +156,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
             $extension = pathinfo($_file['file_name'], PATHINFO_EXTENSION);
             if (in_array($extension, ['php', 'phtml', 'htaccess'])) {
                 $_file['file'] = '';
-                $_file['error'] = sprintf_wp('Files with extension .%s are not allowed to security considerations.', $extension);
+                $_file['errors'][] = sprintf_wp('Files with extension .%s are not allowed to security considerations.', $extension);
                 continue;
             }
             $item_file = base64_decode(ifset($_file, 'file', null));
@@ -165,7 +166,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
             $file_vo->setName(md5(uniqid(__METHOD__)).$_file['file_name']);
             $tmp_name = $temp_path.DIRECTORY_SEPARATOR.$file_vo->getName();
             if (!file_put_contents($file_vo->getFullPath(), $item_file)) {
-                $_file['error'] = _w('File could not be saved.');
+                $_file['errors'][] = _w('File could not be saved.');
                 continue;
             }
 

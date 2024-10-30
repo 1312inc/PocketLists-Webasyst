@@ -8,12 +8,23 @@ class pocketlistsAttachmentsAddMethod extends pocketlistsApiAbstractMethod
     {
         $files = $this->readBodyAsJson();
         if (empty($files)) {
-            throw new waAPIException('required_param', _w('Missing data'), 400);
+            $this->http_status_code = 400;
+            $this->response = [
+                'status_code' => 'error',
+                'error'       => _w('Missing `data`'),
+                'data'        => []
+            ];
+            return;
         } elseif (!is_array($files)) {
-            throw new waAPIException('type_error', _w('Type error data'), 400);
+            $this->http_status_code = 400;
+            $this->response = [
+                'status_code' => 'error',
+                'error'       => _w('Type error `data`'),
+                'data'        => []
+            ];
+            return;
         }
 
-        $err = false;
         $result = [];
         $items = [];
         $attachments = [];
@@ -31,48 +42,67 @@ class pocketlistsAttachmentsAddMethod extends pocketlistsApiAbstractMethod
         }
 
         /** validate */
-        foreach ($files as $_file) {
-            $errors = [];
+        foreach ($files as &$_file) {
+            /** set default */
+            $_file = [
+                'id'        => null,
+                'item_id'   => ifset($_file, 'item_id', null),
+                'file_name' => ifset($_file, 'file_name', null),
+                'file_type' => pocketlistsAttachment::TYPE_IMAGE,
+                'url'       => '',
+                'uuid'      => ifset($_file, 'uuid', null),
+                'file'      => ifset($_file, 'file', null),
+                'success'   => null,
+                'errors'    => [],
+            ];
+
             if (empty($_file['item_id'])) {
-                $errors[] = sprintf_wp('Missing required parameter: “%s”.', 'item_id');
+                $_file['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'item_id');
             } elseif (!is_numeric($_file['item_id'])) {
-                $errors[] = sprintf_wp('Invalid type %s', 'item_id');
+                $_file['errors'][] = sprintf_wp('Invalid type %s', 'item_id');
             } elseif ($_file['item_id'] < 1 || !in_array($_file['item_id'], $item_ids)) {
-                $errors[] = _w('Item not found');
+                $_file['errors'][] = _w('Item not found');
             }
 
             if (empty($_file['file_name'])) {
-                $errors[] = sprintf_wp('Missing required parameter: “%s”.', 'file_name');
+                $_file['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'file_name');
             } elseif (!is_string($_file['file_name'])) {
-                $errors[] = sprintf_wp('Invalid type %s', 'file_name');
+                $_file['errors'][] = sprintf_wp('Invalid type %s', 'file_name');
             }
 
             if (empty($_file['file'])) {
-                $errors[] = sprintf_wp('Missing required parameter: “%s”.', 'file');
+                $_file['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'file');
             } elseif (!is_string($_file['file'])) {
-                $errors[] = sprintf_wp('Invalid type %s', 'file');
+                $_file['errors'][] = sprintf_wp('Invalid type %s', 'file');
             }
 
             if (!empty($_file['uuid'])) {
                 if (!is_string($_file['uuid'])) {
-                    $errors[] = sprintf_wp('Invalid type %s', 'uuid');
+                    $_file['errors'][] = sprintf_wp('Invalid type %s', 'uuid');
                 } elseif (in_array($_file['uuid'], $uuids)) {
-                    $errors[] = _w('Attachment with UUID exists');
+                    $_file['errors'][] = _w('Attachment with UUID exists');
                 }
             }
 
-            $hash = md5(mt_rand(0, mt_rand(5000, 100000)));
+            $hash = md5(mt_rand(0, mt_rand(5000, 100000)).microtime());
+            if (isset($result[$hash])) {
+                $hash = md5(mt_rand(0, mt_rand(5000, 100000)));
+            }
             $result[$hash] = $_file;
-            $result[$hash]['file'] = null;
-            if (empty($errors)) {
+            if (empty($_file['errors'])) {
+                $result[$hash]['file'] = null;
                 $attachments[$_file['item_id']][$hash] = $_file;
             } else {
-                $err = true;
-                $result[$hash]['errors'] = $errors;
+                $result[$hash]['errors'] = $_file['errors'];
+                $result[$hash]['success'] = false;
             }
         }
 
-        if (!$err) {
+        $result_ok = array_filter($result, function ($c) {
+            return is_null($c['success']);
+        });
+        $result_err = array_diff_key($result, $result_ok);
+        if (!empty($result_ok)) {
             foreach ($attachments as $_item_id => $_attachments) {
                 try {
                     $pl_attachments = $this->updateFiles($_item_id, $_attachments);
@@ -81,11 +111,11 @@ class pocketlistsAttachmentsAddMethod extends pocketlistsApiAbstractMethod
                         foreach ($_attachments as $_hash => $_at) {
                             $pl_attachment = current($pl_attachments);
                             if (empty($pl_attachment['error'])) {
-                                $result[$_hash] += $pl_attachment;
-                                $result[$_hash] += ['list_id' => $list_id];
+                                $result_ok[$_hash] = $pl_attachment;
+                                $result_ok[$_hash]['list_id'] = $list_id;
+                                $result_ok[$_hash]['success'] = 'ok';
                             } else {
-                                $this->http_status_code = 400;
-                                $result[$_hash]['errors'] = [$pl_attachment['error']];
+                                $result_ok[$_hash]['errors'] = [$pl_attachment['error']];
                             }
                             next($pl_attachments);
                         }
@@ -102,16 +132,15 @@ class pocketlistsAttachmentsAddMethod extends pocketlistsApiAbstractMethod
             );
         }
 
-        $this->response = $this->filterFields(
-            $result,
+        $this->response['data'] = $this->responseWrapper(
+            array_merge($result_ok, $result_err),
             [
                 'id',
                 'item_id',
                 'file_name',
                 'file_type',
                 'url',
-                'uuid',
-                'errors'
+                'uuid'
             ], [
                 'id' => 'int',
                 'item_id' => 'int'
