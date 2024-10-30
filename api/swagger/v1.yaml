@@ -2084,26 +2084,53 @@ components:
           items:
             type: integer
             description: Attachment identifier
-    errorResponse:
-      type: object
-      properties:
-        error:
-          type: string
-          description: Error code
-        error_description:
-          type: string
-          description: Error description
-    extended_status:
-      type: object
-      properties:
-        status_code:
-          type: string
-          description: Status code
-          enum:
-            - ok
-            - error
-        errors:
-          type: array
-          items:
-            type: string
-            description: Error description
+    response:
+      allOf:
+        - type: object
+          properties:
+            status_code:
+              type: string
+              description: Status code
+              enum:
+                - ok
+                - error
+            error:
+              type: string
+              description: Error description
+            data:
+              type: array
+              items:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Status code
+                  errors:
+                    type: array
+                    items:
+                      type: string
+                      description: Error description
+                  data:
+                    anyOf:
+                      - $ref: '#/components/schemas/attachment'
+#                      - $ref: '#/components/schemas/comment'
+#                      - $ref: '#/components/schemas/item'
+#                      - $ref: '#/components/schemas/list'
+#                      - $ref: '#/components/schemas/location'
+#                      - $ref: '#/components/schemas/log'
+#                      - $ref: '#/components/schemas/pocket'
+#                      - $ref: '#/components/schemas/user'
+        - type: object
+          properties:
+            meta:
+              type: object
+              properties:
+                offset:
+                  type: integer
+                  description: Offset
+                limit:
+                  type: integer
+                  description: Limit
+                count:
+                  type: integer
+                  description: Count

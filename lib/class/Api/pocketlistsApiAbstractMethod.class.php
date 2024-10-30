@@ -18,6 +18,11 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
     {
         parent::__construct();
         wa()->getStorage()->close();
+        $this->response = [
+            'status_code' => 'ok',
+            'error'       => '',
+            'data'        => []
+        ];
     }
 
     /**
@@ -49,6 +54,42 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
     }
 
     /**
+     * @param array $data
+     * @param array $fields
+     * @param array $field_types
+     * @return array
+     */
+    protected function singleFilterFields($data, array $fields, array $field_types = [])
+    {
+        $res = [];
+        foreach (array_keys($data) as $key) {
+            if (in_array($key, $fields)) {
+                if (!isset($field_types[$key]) || $data[$key] === null) {
+                    $res[$key] = $data[$key];
+                    continue;
+                }
+                if ($field_types[$key] === 'int') {
+                    $res[$key] = intval($data[$key]);
+                } elseif ($field_types[$key] === 'bool') {
+                    $res[$key] = boolval($data[$key]);
+                } elseif ($field_types[$key] === 'float') {
+                    $res[$key] = floatval($data[$key]);
+                } elseif ($field_types[$key] === 'double') {
+                    $res[$key] = doubleval($data[$key]);
+                } elseif ($field_types[$key] === 'datetime') {
+                    $res[$key] = $this->formatDatetimeToISO8601($data[$key]);
+                } elseif ($field_types[$key] === 'date') {
+
+                } else {
+                    $res[$key] = $data[$key];
+                }
+            }
+        }
+
+        return $res;
+    }
+
+    /**
      * @param $data
      * @param array $fields
      * @param array $field_types
@@ -58,31 +99,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
     {
         if (!empty($data) && is_array($data)) {
             return array_map(function ($el) use ($fields, $field_types) {
-                $res = [];
-                foreach (array_keys($el) as $key) {
-                    if (in_array($key, $fields)) {
-                        if (!isset($field_types[$key]) || $el[$key] === null) {
-                            $res[$key] = $el[$key];
-                            continue;
-                        }
-                        if ($field_types[$key] === 'int') {
-                            $res[$key] = intval($el[$key]);
-                        } elseif ($field_types[$key] === 'bool') {
-                            $res[$key] = boolval($el[$key]);
-                        } elseif ($field_types[$key] === 'float') {
-                            $res[$key] = floatval($el[$key]);
-                        } elseif ($field_types[$key] === 'double') {
-                            $res[$key] = doubleval($el[$key]);
-                        } elseif ($field_types[$key] === 'datetime') {
-                            $res[$key] = $this->formatDatetimeToISO8601($el[$key]);
-                        } elseif ($field_types[$key] === 'date') {
-
-                        } else {
-                            $res[$key] = $el[$key];
-                        }
-                    }
-                }
-                return $res;
+                return $this->singleFilterFields($el, $fields, $field_types);
             }, array_values($data));
         }
 
@@ -623,5 +640,27 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
             ."WHERE uuid IN (s:uuids)",
             ['uuids' => array_unique($uuids)]
         )->fetchAll('uuid');
+    }
+
+    /**
+     * @param array $data
+     * @param array$fields
+     * @param array $field_types
+     * @return array
+     */
+    protected function responseWrapper($data = [], $fields = [], array $field_types = [])
+    {
+        if (!is_array($data)) {
+            return  [];
+        }
+        foreach ($data as &$_data) {
+            $_data = [
+                'success' => !empty($_data['success']),
+                'errors'  => ifset($_data, 'errors', []),
+                'data'    => $this->singleFilterFields(ifset($_data, []), $fields, $field_types)
+            ];
+        }
+
+        return array_values($data);
     }
 }
