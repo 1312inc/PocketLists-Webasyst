@@ -14,35 +14,83 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
         $total_count = 0;
         if (isset($ids)) {
             if (!is_array($ids)) {
-                throw new waAPIException('error_type', sprintf_wp('Invalid type %s', 'id'), 400);
+                $this->http_status_code = 400;
+                $this->response = [
+                    'status_code' => 'error',
+                    'error'       => sprintf_wp('Invalid type %s', 'id'),
+                    'data'        => []
+                ];
+                return;
             }
             $ids = array_unique(array_filter($ids, function ($_i) {
                 return is_numeric($_i) && $_i > 0;
             }));
             if (empty($ids)) {
-                throw new waAPIException('not_found', _w('Items not found'), 404);
+                $this->http_status_code = 400;
+                $this->response = [
+                    'status_code' => 'error',
+                    'error'       => _w('Items not found'),
+                    'data'        => []
+                ];
+                return;
             }
         }
         if (isset($list_id)) {
             if (!is_numeric($list_id)) {
-                throw new waAPIException('error_type', sprintf_wp('Invalid type %s', 'list_id'), 400);
+                $this->http_status_code = 400;
+                $this->response = [
+                    'status_code' => 'error',
+                    'error'       => sprintf_wp('Invalid type %s', 'list_id'),
+                    'data'        => []
+                ];
+                return;
             } elseif ($list_id < 1) {
-                throw new waAPIException('not_found', _w('List not found'), 404);
+                $this->http_status_code = 400;
+                $this->response = [
+                    'status_code' => 'error',
+                    'error'       => _w('List not found'),
+                    'data'        => []
+                ];
+                return;
             }
         }
         if (isset($starting_from)) {
             if (!is_numeric($starting_from)) {
-                throw new waAPIException('error_type', sprintf_wp('Invalid type %s', 'starting_from'), 400);
+                $this->http_status_code = 400;
+                $this->response = [
+                    'status_code' => 'error',
+                    'error'       => sprintf_wp('Invalid type %s', 'starting_from'),
+                    'data'        => []
+                ];
+                return;
             } elseif ($starting_from < 1) {
-                throw new waAPIException('negative_value', _w('The parameter has a negative value'), 400);
+                $this->http_status_code = 400;
+                $this->response = [
+                    'status_code' => 'error',
+                    'error'       => _w('The parameter has a negative value'),
+                    'data'        => []
+                ];
+                return;
             }
             $starting_from = date('Y-m-d H:i:s', $starting_from);
         }
         if (isset($limit)) {
             if (!is_numeric($limit)) {
-                throw new waAPIException('error_type', sprintf_wp('Invalid type %s', 'limit'), 400);
+                $this->http_status_code = 400;
+                $this->response = [
+                    'status_code' => 'error',
+                    'error'       => sprintf_wp('Invalid type %s', 'limit'),
+                    'data'        => []
+                ];
+                return;
             } elseif ($limit < 1) {
-                throw new waAPIException('negative_value', _w('The parameter has a negative value'), 400);
+                $this->http_status_code = 400;
+                $this->response = [
+                    'status_code' => 'error',
+                    'error'       => _w('The parameter has a negative value'),
+                    'data'        => []
+                ];
+                return;
             }
             $limit = (int) min($limit, self::MAX_LIMIT);
         } else {
@@ -50,9 +98,21 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
         }
         if (isset($offset)) {
             if (!is_numeric($offset)) {
-                throw new waAPIException('error_type', sprintf_wp('Invalid type %s', 'offset'), 400);
+                $this->http_status_code = 400;
+                $this->response = [
+                    'status_code' => 'error',
+                    'error'       => sprintf_wp('Invalid type %s', 'offset'),
+                    'data'        => []
+                ];
+                return;
             } elseif ($offset < 0) {
-                throw new waAPIException('negative_value', _w('The parameter has a negative value'), 400);
+                $this->http_status_code = 400;
+                $this->response = [
+                    'status_code' => 'error',
+                    'error'       => _w('The parameter has a negative value'),
+                    'data'        => []
+                ];
+                return;
             }
             $offset = intval($offset);
         } else {
@@ -124,65 +184,65 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
             }
         }
 
-        $this->response = [
+        $this->response['meta'] = [
             'offset' => $offset,
             'limit'  => $limit,
-            'count'  => $total_count,
-            'data'   => $this->filterFields(
-                $items,
-                [
-                    'id',
-                    'list_id',
-                    'contact_id',
-                    'parent_id',
-                    'sort',
-                    'rank',
-                    'has_children',
-                    'status',
-                    'priority',
-                    'calc_priority',
-                    'create_datetime',
-                    'update_datetime',
-                    'complete_datetime',
-                    'complete_contact_id',
-                    'name',
-                    'note',
-                    'due_date',
-                    'due_datetime',
-                    'client_touch_datetime',
-                    'location_id',
-                    'amount',
-                    'currency_iso3',
-                    'assigned_contact_id',
-                    'repeat',
-                    'key_list_id',
-                    'uuid',
-                    'attachments',
-                    'extended_data'
-                ], [
-                    'id' => 'int',
-                    'list_id' => 'int',
-                    'contact_id' => 'int',
-                    'parent_id' => 'int',
-                    'sort' => 'int',
-                    'has_children' => 'int',
-                    'status' => 'int',
-                    'priority' => 'int',
-                    'calc_priority' => 'int',
-                    'create_datetime' => 'datetime',
-                    'update_datetime' => 'datetime',
-                    'complete_datetime' => 'datetime',
-                    'complete_contact_id' => 'int',
-                    'due_datetime' => 'datetime',
-                    'client_touch_datetime' => 'datetime',
-                    'location_id' => 'int',
-                    'amount' => 'float',
-                    'assigned_contact_id' => 'int',
-                    'repeat' => 'int',
-                    'key_list_id' => 'int',
-                    'comments_count' => 'int'
-                ]
-            )
+            'count'  => $total_count
         ];
+        $this->response['data'] = $this->responseListWrapper(
+            $items,
+            [
+                'id',
+                'list_id',
+                'contact_id',
+                'parent_id',
+                'sort',
+                'rank',
+                'has_children',
+                'status',
+                'priority',
+                'calc_priority',
+                'create_datetime',
+                'update_datetime',
+                'complete_datetime',
+                'complete_contact_id',
+                'name',
+                'note',
+                'due_date',
+                'due_datetime',
+                'client_touch_datetime',
+                'location_id',
+                'amount',
+                'currency_iso3',
+                'assigned_contact_id',
+                'repeat',
+                'key_list_id',
+                'uuid',
+                'attachments',
+                'extended_data'
+            ], [
+                'id' => 'int',
+                'list_id' => 'int',
+                'contact_id' => 'int',
+                'parent_id' => 'int',
+                'sort' => 'int',
+                'has_children' => 'int',
+                'status' => 'int',
+                'priority' => 'int',
+                'calc_priority' => 'int',
+                'create_datetime' => 'datetime',
+                'update_datetime' => 'datetime',
+                'complete_datetime' => 'datetime',
+                'complete_contact_id' => 'int',
+                'due_datetime' => 'datetime',
+                'client_touch_datetime' => 'datetime',
+                'location_id' => 'int',
+                'amount' => 'float',
+                'assigned_contact_id' => 'int',
+                'repeat' => 'int',
+                'key_list_id' => 'int',
+                'comments_count' => 'int'
+            ]
+        );
     }
 }
