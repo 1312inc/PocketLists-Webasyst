@@ -48,31 +48,30 @@ class pocketlistsCommentsGetMethod extends pocketlistsApiAbstractMethod
         ]
         )->fetchAll();
         $total_count = (int) $plcm->query('SELECT FOUND_ROWS()')->fetchField();
-
-        $this->response = [
+        $this->response['meta'] = [
             'offset' => $offset,
             'limit'  => $limit,
-            'count'  => $total_count,
-            'data'   => $this->filterFields(
-                $comments,
-                [
-                    'id',
-                    'item_id',
-                    'item_name',
-                    'contact_id',
-                    'comment',
-                    'create_datetime',
-                    'client_touch_datetime',
-                    'uuid'
-                ], [
-                    'id' => 'int',
-                    'item_id' => 'int',
-                    'list_id' => 'int',
-                    'contact_id' => 'int',
-                    'create_datetime' => 'datetime',
-                    'client_touch_datetime' => 'datetime'
-                ]
-            )
+            'count'  => $total_count
         ];
+        $this->response['data'] = $this->responseListWrapper(
+            $comments,
+            [
+                'id',
+                'item_id',
+                'item_name',
+                'contact_id',
+                'comment',
+                'create_datetime',
+                'client_touch_datetime',
+                'uuid'
+            ], [
+                'id' => 'int',
+                'item_id' => 'int',
+                'list_id' => 'int',
+                'contact_id' => 'int',
+                'create_datetime' => 'datetime',
+                'client_touch_datetime' => 'datetime'
+            ]
+        );
     }
 }

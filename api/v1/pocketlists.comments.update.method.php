@@ -6,19 +6,35 @@ class pocketlistsCommentsUpdateMethod extends pocketlistsApiAbstractMethod
 
     public function execute()
     {
-
         $comments = $this->readBodyAsJson();
         if (empty($comments)) {
-            throw new waAPIException('required_param', _w('Missing data'), 400);
+            $this->http_status_code = 400;
+            $this->response = [
+                'status_code' => 'error',
+                'error'       => _w('Missing `data`'),
+                'data'        => []
+            ];
+            return;
         } elseif (!is_array($comments)) {
-            throw new waAPIException('type_error', _w('Type error data'), 400);
+            $this->http_status_code = 400;
+            $this->response = [
+                'status_code' => 'error',
+                'error'       =>  _w('Type error `data`'),
+                'data'        => []
+            ];
+            return;
         }
 
         $comment_ids = array_unique(array_column($comments, 'id'));
         if (empty($comment_ids)) {
-            throw new waAPIException('type_error', _w('Type error data'), 400);
+            $this->http_status_code = 400;
+            $this->response = [
+                'status_code' => 'error',
+                'error'       => _w('Missing `data`'),
+                'data'        => []
+            ];
+            return;
         }
-
 
         /** @var pocketlistsCommentModel $item_model */
         $comment_model = pl2()->getModel(pocketlistsComment::class);
@@ -30,6 +46,7 @@ class pocketlistsCommentsUpdateMethod extends pocketlistsApiAbstractMethod
             /** set default */
             $comment_id = ifset($_comment, 'id', null);
             $_comment = [
+                'action'                => (ifset($_comment, 'action', null) === self::ACTIONS[1] ? self::ACTIONS[1] : self::ACTIONS[0]),
                 'id'                    => $comment_id,
                 'item_id'               => null,
                 'item_name'             => null,
@@ -39,8 +56,8 @@ class pocketlistsCommentsUpdateMethod extends pocketlistsApiAbstractMethod
                 'client_touch_datetime' => ifset($_comment, 'client_touch_datetime', null),
                 'uuid'                  => null,
                 'list_id'               => ifset($comment_in_db, $comment_id, 'list_id', null),
+                'success'               => true,
                 'errors'                => [],
-                'status_code'           => 'ok'
             ];
 
             if (empty($_comment['id'])) {
@@ -73,16 +90,21 @@ class pocketlistsCommentsUpdateMethod extends pocketlistsApiAbstractMethod
             }
 
             if (empty($_comment['errors'])) {
-                $_comment = array_replace($comment_in_db[$_comment['id']], array_filter($_comment, function ($c) {return !is_null($c);}));
-                $_comment += $comment_in_db[$_comment['id']];
+                if ($_comment['action'] == self::ACTIONS[0]) {
+                    // patch
+                    $_comment = array_replace($comment_in_db[$_comment['id']], array_filter($_comment, function ($c) {return !is_null($c);}));
+                } else {
+                    // update
+                    $_comment += $comment_in_db[$_comment['id']];
+                }
                 unset($_comment['errors']);
             } else {
-                $_comment['status_code'] = 'error';
+                $_comment['success'] = false;
             }
         }
 
         $comments_ok = array_filter($comments, function ($c) {
-            return $c['status_code'] === 'ok';
+            return is_null($c['success']);
         });
         $comments_err = array_diff_key($comments, $comments_ok);
         if (!empty($comments_ok)) {
@@ -90,7 +112,7 @@ class pocketlistsCommentsUpdateMethod extends pocketlistsApiAbstractMethod
                 foreach ($comments_ok as &$_comment_ok) {
                     $result = $comment_model->updateById($_comment_ok['id'], $_comment_ok);
                     if (!$result) {
-                        $_comment_ok['status_code'] = 'error';
+                        $_comment_ok['success'] = false;
                         $_comment_ok['errors'][] = _w('Failed to update');
                     }
                 }
@@ -98,14 +120,22 @@ class pocketlistsCommentsUpdateMethod extends pocketlistsApiAbstractMethod
                 $this->saveLog(
                     pocketlistsLog::ENTITY_COMMENT,
                     pocketlistsLog::ACTION_UPDATE,
-                    $comments_ok
+                    array_filter($comments_ok, function ($c) {
+                        return $c['success'];
+                    })
                 );
             } catch (Exception $ex) {
-                throw new waAPIException('error', sprintf_wp('Error on transaction import save: %s', $ex->getMessage()), 400);
+                $this->http_status_code = 400;
+                $this->response = [
+                    'status_code' => 'error',
+                    'error'       => sprintf_wp('Error on transaction import save: %s', $ex->getMessage()),
+                    'data'        => []
+                ];
+                return;
             }
         }
 
-        $this->response = $this->filterFields(
+        $this->response['data'] = $this->responseWrapper(
             array_merge($comments_ok, $comments_err),
             [
                 'id',
@@ -115,9 +145,7 @@ class pocketlistsCommentsUpdateMethod extends pocketlistsApiAbstractMethod
                 'comment',
                 'create_datetime',
                 'client_touch_datetime',
-                'uuid',
-                'errors',
-                'status_code'
+                'uuid'
             ], [
                 'id' => 'int',
                 'item_id' => 'int',

@@ -135,27 +135,25 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/comment'
+                $ref: '#/components/schemas/response'
         400:
           description: Invalid request data.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         403:
           description: Access denied to the Pocket Lists app or this API method.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         404:
           description: Pocket not found.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
   /pocketlists.comments.delete:
@@ -173,14 +171,18 @@ paths:
             items:
               type: integer
       responses:
-        204:
+        200:
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
         400:
           description: Invalid request data.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
   /pocketlists.comments.get:
@@ -210,27 +212,13 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  offset:
-                    type: integer
-                    description: Offset
-                  limit:
-                    type: integer
-                    description: Limit
-                  count:
-                    type: integer
-                    description: Count
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/comment'
+                $ref: '#/components/schemas/response'
         404:
           description: Not found.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
   /pocketlists.comments.update:
@@ -249,6 +237,13 @@ paths:
                   - id
                   - comment
                 properties:
+                  action:
+                    type: string
+                    default: patch
+                    description: Обновить или пропатчить сущность
+                    enum:
+                      - patch
+                      - update
                   id:
                     type: integer
                     description: Comment identifier
@@ -266,21 +261,19 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/comment'
+                $ref: '#/components/schemas/response'
         400:
           description: Invalid request data.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         404:
           description: Not found.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
   /pocketlists.items.add:

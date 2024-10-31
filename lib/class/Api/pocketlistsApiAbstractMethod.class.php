@@ -664,4 +664,16 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
 
         return array_values($data);
     }
+
+    protected function responseListWrapper($data = [], $fields = [], array $field_types = [])
+    {
+        if (!is_array($data)) {
+            return  [];
+        }
+        foreach ($data as &$_data) {
+            $_data = $this->singleFilterFields(ifset($_data, []), $fields, $field_types);
+        }
+
+        return array_values($data);
+    }
 }
