@@ -52,7 +52,7 @@ class pocketlistsAttachmentsAddMethod extends pocketlistsApiAbstractMethod
                 'url'       => '',
                 'uuid'      => ifset($_file, 'uuid', null),
                 'file'      => ifset($_file, 'file', null),
-                'success'   => null,
+                'success'   => true,
                 'errors'    => [],
             ];
 
@@ -99,7 +99,7 @@ class pocketlistsAttachmentsAddMethod extends pocketlistsApiAbstractMethod
         }
 
         $result_ok = array_filter($result, function ($c) {
-            return is_null($c['success']);
+            return $c['success'];
         });
         $result_err = array_diff_key($result, $result_ok);
         if (!empty($result_ok)) {
@@ -113,8 +113,8 @@ class pocketlistsAttachmentsAddMethod extends pocketlistsApiAbstractMethod
                             if (empty($pl_attachment['error'])) {
                                 $result_ok[$_hash] = $pl_attachment;
                                 $result_ok[$_hash]['list_id'] = $list_id;
-                                $result_ok[$_hash]['success'] = 'ok';
                             } else {
+                                $result_ok[$_hash]['success'] = false;
                                 $result_ok[$_hash]['errors'] = [$pl_attachment['error']];
                             }
                             next($pl_attachments);

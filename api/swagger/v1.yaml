@@ -66,7 +66,6 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/item_attach'
                 type: object
                 required:
                   - id

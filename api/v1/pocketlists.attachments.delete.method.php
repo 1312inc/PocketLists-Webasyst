@@ -44,7 +44,7 @@ class pocketlistsAttachmentsDeleteMethod extends pocketlistsApiAbstractMethod
             $attachment_ids = [];
 
             /** @var pocketlistsAttachment $a */
-            foreach ($attachments as $a) {
+            foreach ((array) $attachments as $a) {
                 $attachment_ids[] = $a->getId();
             }
         }
@@ -60,7 +60,7 @@ class pocketlistsAttachmentsDeleteMethod extends pocketlistsApiAbstractMethod
                 'url'       => null,
                 'uuid'      => null,
                 'file'      => null,
-                'success'   => null,
+                'success'   => true,
                 'errors'    => [],
             ];
 
@@ -91,7 +91,7 @@ class pocketlistsAttachmentsDeleteMethod extends pocketlistsApiAbstractMethod
         }
 
         $data_ok = array_filter($data, function ($d) {
-            return is_null($d['success']);
+            return $d['success'];
         });
         $data_err = array_diff_key($data, $data_ok);
         if (!empty($data_ok)) {
