@@ -48,7 +48,7 @@ class pocketlistsListModel extends pocketlistsModel
             ['id' => $id, 'contact_id' => wa()->getUser()->getId()]
         )->fetchAll('id');
 
-        return count($id) === 1 ? reset($lists) : $lists;
+        return count($id) === 1 ? (array) array_pop($lists) : $lists;
     }
 
 

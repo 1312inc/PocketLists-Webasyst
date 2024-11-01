@@ -709,33 +709,31 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/list'
+                $ref: '#/components/schemas/response'
         400:
           description: Invalid request data.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         403:
           description: Access denied to the Pocket Lists app or this API method.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         404:
           description: Pocket not found.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         405:
           description: Method not allowed
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
   /pocketlists.lists.delete:
@@ -753,14 +751,18 @@ paths:
             items:
               type: integer
       responses:
-        204:
+        200:
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
         400:
           description: Invalid request data.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
   /pocketlists.lists.get:
@@ -797,45 +799,31 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  offset:
-                    type: integer
-                    description: Offset
-                  limit:
-                    type: integer
-                    description: Limit
-                  count:
-                    type: integer
-                    description: Count
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/list'
+                $ref: '#/components/schemas/response'
         400:
           description: Invalid request data.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         403:
           description: Access denied to the Pocket Lists app or this API method.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         404:
           description: Not found.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         405:
           description: Method not allowed
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
   /pocketlists.lists.update:
@@ -904,27 +892,25 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/list'
+                $ref: '#/components/schemas/response'
         400:
           description: Invalid request data.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         404:
           description: Not found.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         405:
           description: Method not allowed
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
   /pocketlists.locations.add:
@@ -2052,9 +2038,9 @@ components:
                   data:
                     anyOf:
                       - $ref: '#/components/schemas/attachment'
-#                      - $ref: '#/components/schemas/comment'
-#                      - $ref: '#/components/schemas/item'
-#                      - $ref: '#/components/schemas/list'
+                      - $ref: '#/components/schemas/comment'
+                      - $ref: '#/components/schemas/item'
+                      - $ref: '#/components/schemas/list'
 #                      - $ref: '#/components/schemas/location'
 #                      - $ref: '#/components/schemas/log'
 #                      - $ref: '#/components/schemas/pocket'
