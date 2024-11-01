@@ -1498,21 +1498,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  offset:
-                    type: integer
-                    description: Offset
-                  limit:
-                    type: integer
-                    description: Limit
-                  count:
-                    type: integer
-                    description: Count
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/user'
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
   /pocketlists.system.getWebsocketUrl:
@@ -2002,7 +1988,7 @@ components:
                       - $ref: '#/components/schemas/location'
                       - $ref: '#/components/schemas/log'
 #                      - $ref: '#/components/schemas/pocket'
-#                      - $ref: '#/components/schemas/user'
+                      - $ref: '#/components/schemas/user'
         - type: object
           properties:
             meta:
