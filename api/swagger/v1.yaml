@@ -1490,33 +1490,24 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  timestamp:
-                    type: integer
-                    description: Текущий UNIX timestamp (UTC)
-                  datetime:
-                    type: string
-                    format: date-time
-                    description: Текущее время в формате ISO 8601 (UTC)
-                  user_timezone:
-                    type: string
-                    default: 'auto'
-                    description: Часовой пояс из профиля пользователя
-  /pocketlists.users.get:
-    get:
-      security:
-        - BearerAuth: [ ]
-      summary: Список команды
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/response'
-        500:
-          description: Internal server error.
+                allOf:
+                  - $ref: '#/components/schemas/response'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          timestamp:
+                            type: integer
+                            description: Текущий UNIX timestamp (UTC)
+                          datetime:
+                            type: string
+                            format: date-time
+                            description: Текущее время в формате ISO 8601 (UTC)
+                          user_timezone:
+                            type: string
+                            default: 'auto'
+                            description: Часовой пояс из профиля пользователя
   /pocketlists.system.getWebsocketUrl:
     get:
       security:
@@ -1534,22 +1525,41 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  url:
-                    type: string
-                    format: uri
-                    description: URL websocket
-                  channel:
-                    type: string
-                    nullable: true
-                    description: Channel identifier
+                allOf:
+                  - $ref: '#/components/schemas/response'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          url:
+                            type: string
+                            format: uri
+                            description: URL websocket
+                          channel:
+                            type: string
+                            nullable: true
+                            description: Channel identifier
         400:
           description: Invalid request data.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
+        500:
+          description: Internal server error.
+  /pocketlists.users.get:
+    get:
+      security:
+        - BearerAuth: [ ]
+      summary: Список команды
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
 
@@ -1660,7 +1670,6 @@ components:
                   description: Количество айтемов с максимальным приоритетом
     item:
       allOf:
-        - $ref: '#/components/schemas/extended_status'
         - type: object
           properties:
             attachments:
@@ -1802,7 +1811,6 @@ components:
                   description: Количество комментариев
     comment:
       allOf:
-        - $ref: '#/components/schemas/extended_status'
         - type: object
           properties:
             id:
@@ -1835,7 +1843,6 @@ components:
               description: UUID value
     location:
       allOf:
-        - $ref: '#/components/schemas/extended_status'
         - type: object
           properties:
             id:

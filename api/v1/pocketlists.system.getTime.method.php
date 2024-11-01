@@ -8,7 +8,7 @@ class pocketlistsSystemGetTimeMethod extends pocketlistsApiAbstractMethod
         $user_tz = wa()->getUser()->get('timezone');
         $user_tz = (empty($user_tz) ? 'auto' : $user_tz);
 
-        $this->response = [
+        $this->response['data'] = [
             'timestamp'     => $current_time,
             'datetime'      => $this->formatDatetimeToISO8601(date('Y-m-d H:i:s', $current_time)),
             'user_timezone' => $user_tz,
