@@ -1125,27 +1125,13 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  offset:
-                    type: integer
-                    description: Offset
-                  limit:
-                    type: integer
-                    description: Limit
-                  count:
-                    type: integer
-                    description: Count
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/log'
+                $ref: '#/components/schemas/response'
         400:
           description: Invalid request data.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
   /pocketlists.log.getDeleted:
@@ -1170,27 +1156,13 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  offset:
-                    type: integer
-                    description: Offset
-                  limit:
-                    type: integer
-                    description: Limit
-                  count:
-                    type: integer
-                    description: Count
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/log'
+                $ref: '#/components/schemas/response'
         400:
           description: Invalid request data.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
   /pocketlists.log.getDeletedSummary:
@@ -1280,7 +1252,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
   /pocketlists.pocket.add:
@@ -2028,7 +2000,7 @@ components:
                       - $ref: '#/components/schemas/item'
                       - $ref: '#/components/schemas/list'
                       - $ref: '#/components/schemas/location'
-#                      - $ref: '#/components/schemas/log'
+                      - $ref: '#/components/schemas/log'
 #                      - $ref: '#/components/schemas/pocket'
 #                      - $ref: '#/components/schemas/user'
         - type: object
