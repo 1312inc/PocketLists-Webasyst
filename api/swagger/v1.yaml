@@ -1183,29 +1183,37 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  starting_from:
-                    type: integer
-                    description: Временная метка, начиная с которой возвращаются записи
-                  ending_to:
-                    type: integer
-                    description: Текущая временная метка
-                  data:
-                    type: object
+                allOf:
+                  - $ref: '#/components/schemas/response'
+                  - type: object
                     properties:
-                      pockets:
-                        type: integer
-                      lists:
-                        type: integer
-                      items:
-                        type: integer
-                      comments:
-                        type: integer
-                      attachments:
-                        type: integer
-                      location:
-                        type: integer
+                      data:
+                        type: object
+                        properties:
+                          starting_from:
+                            type: integer
+                            description: Временная метка, начиная с которой возвращаются записи
+                          ending_to:
+                            type: integer
+                            description: Текущая временная метка
+                          pockets:
+                            type: integer
+                            description: ''
+                          lists:
+                            type: integer
+                            description: ''
+                          items:
+                            type: integer
+                            description: ''
+                          comments:
+                            type: integer
+                            description: ''
+                          attachments:
+                            type: integer
+                            description: ''
+                          location:
+                            type: integer
+                            description: ''
   /pocketlists.log.getSummary:
     get:
       security:
@@ -1224,29 +1232,37 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  starting_from:
-                    type: integer
-                    description: Временная метка, начиная с которой возвращаются записи
-                  ending_to:
-                    type: integer
-                    description: Текущая временная метка
-                  data:
-                    type: object
+                allOf:
+                  - $ref: '#/components/schemas/response'
+                  - type: object
                     properties:
-                      pockets:
-                        type: integer
-                      lists:
-                        type: integer
-                      items:
-                        type: integer
-                      comments:
-                        type: integer
-                      attachments:
-                        type: integer
-                      location:
-                        type: integer
+                      data:
+                        type: object
+                        properties:
+                          starting_from:
+                            type: integer
+                            description: Временная метка, начиная с которой возвращаются записи
+                          ending_to:
+                            type: integer
+                            description: Текущая временная метка
+                          pockets:
+                            type: integer
+                            description: ''
+                          lists:
+                            type: integer
+                            description: ''
+                          items:
+                            type: integer
+                            description: ''
+                          comments:
+                            type: integer
+                            description: ''
+                          attachments:
+                            type: integer
+                            description: ''
+                          location:
+                            type: integer
+                            description: ''
         400:
           description: Invalid request data.
           content:
@@ -1966,29 +1982,37 @@ components:
             error:
               type: string
               description: Error description
+        - $ref: '#/components/schemas/part_response'
+    part_response:
+      allOf:
+        - type: object
+          properties:
             data:
               type: array
               items:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    description: Status code
-                  errors:
-                    type: array
-                    items:
-                      type: string
-                      description: Error description
-                  data:
-                    anyOf:
-                      - $ref: '#/components/schemas/attachment'
-                      - $ref: '#/components/schemas/comment'
-                      - $ref: '#/components/schemas/item'
-                      - $ref: '#/components/schemas/list'
-                      - $ref: '#/components/schemas/location'
-                      - $ref: '#/components/schemas/log'
-#                      - $ref: '#/components/schemas/pocket'
-                      - $ref: '#/components/schemas/user'
+                allOf:
+                  - type: object
+                    properties:
+                      success:
+                        type: boolean
+                        description: Status code
+                      errors:
+                        type: array
+                        items:
+                          type: string
+                          description: Error description
+                  - type: object
+                    properties:
+                      data:
+                        anyOf:
+                          - $ref: '#/components/schemas/attachment'
+                          - $ref: '#/components/schemas/comment'
+                          - $ref: '#/components/schemas/item'
+                          - $ref: '#/components/schemas/list'
+                          - $ref: '#/components/schemas/location'
+                          - $ref: '#/components/schemas/log'
+    #                      - $ref: '#/components/schemas/pocket'
+                          - $ref: '#/components/schemas/user'
         - type: object
           properties:
             meta:
