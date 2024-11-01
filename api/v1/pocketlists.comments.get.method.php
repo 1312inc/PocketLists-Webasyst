@@ -11,17 +11,41 @@ class pocketlistsCommentsGetMethod extends pocketlistsApiAbstractMethod
         $where = 'WHERE 1 = 1';
         if (isset($item_id)) {
             if (!is_numeric($item_id)) {
-                throw new waAPIException('unknown_value', _w('Unknown value'), 400);
+                $this->http_status_code = 400;
+                $this->response = [
+                    'status_code' => 'error',
+                    'error'       => _w('Unknown value'),
+                    'data'        => []
+                ];
+                return;
             } elseif ($item_id < 1) {
-                throw new waAPIException('not_found', _w('Item not found'), 404);
+                $this->http_status_code = 400;
+                $this->response = [
+                    'status_code' => 'error',
+                    'error'       => _w('Item not found'),
+                    'data'        => []
+                ];
+                return;
             }
             $where .= ' AND c.item_id = i:item_id';
         }
         if (isset($limit)) {
             if (!is_numeric($limit)) {
-                throw new waAPIException('unknown_value', _w('Unknown value'), 400);
+                $this->http_status_code = 400;
+                $this->response = [
+                    'status_code' => 'error',
+                    'error'       => _w('Unknown value'),
+                    'data'        => []
+                ];
+                return;
             } elseif ($limit < 1) {
-                throw new waAPIException('negative_value', _w('The parameter has a negative value'), 400);
+                $this->http_status_code = 400;
+                $this->response = [
+                    'status_code' => 'error',
+                    'error'       => _w('The parameter has a negative value'),
+                    'data'        => []
+                ];
+                return;
             }
             $limit = (int) min($limit, self::MAX_LIMIT);
         } else {
@@ -29,9 +53,21 @@ class pocketlistsCommentsGetMethod extends pocketlistsApiAbstractMethod
         }
         if (isset($offset)) {
             if (!is_numeric($offset)) {
-                throw new waAPIException('unknown_value', _w('Unknown value'), 400);
+                $this->http_status_code = 400;
+                $this->response = [
+                    'status_code' => 'error',
+                    'error'       => _w('Unknown value'),
+                    'data'        => []
+                ];
+                return;
             } elseif ($offset < 0) {
-                throw new waAPIException('negative_value', _w('The parameter has a negative value'), 400);
+                $this->http_status_code = 400;
+                $this->response = [
+                    'status_code' => 'error',
+                    'error'       => _w('The parameter has a negative value'),
+                    'data'        => []
+                ];
+                return;
             }
             $offset = intval($offset);
         } else {

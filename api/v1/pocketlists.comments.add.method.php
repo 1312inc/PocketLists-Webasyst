@@ -11,7 +11,7 @@ class pocketlistsCommentsAddMethod extends pocketlistsApiAbstractMethod
             $this->http_status_code = 400;
             $this->response = [
                 'status_code' => 'error',
-                'error'       => _w('Missing data'),
+                    'error'       => _w('Missing `data`'),
                 'data'        => []
             ];
             return;
