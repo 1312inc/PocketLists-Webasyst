@@ -36,6 +36,7 @@ class pocketlistsPocketsAddMethod extends pocketlistsApiAbstractMethod
             /** set default */
             $_pocket = [
                 'id'               => null,
+                'pl_id'            => 1312,
                 'sort'             => ifset($_pocket, 'sort', null),
                 'rank'             => ifset($_pocket, 'rank', null),
                 'name'             => ifset($_pocket, 'name', null),
@@ -97,7 +98,7 @@ class pocketlistsPocketsAddMethod extends pocketlistsApiAbstractMethod
 
             /** @var pocketlistsPocket $pocket */
             $pocket = $pocket_factory->createNew();
-            $pockets_ok = $this->sortingPocket($pockets_ok);
+            $pockets_ok = $this->sorting('pocket', $pockets_ok);
             foreach ($pockets_ok as &$_pocket) {
                 $pocket_clone = clone $pocket;
                 $pocket_clone->setName($_pocket['name'])

@@ -42,6 +42,7 @@ class pocketlistsPocketsUpdateMethod extends pocketlistsApiAbstractMethod
             $_pocket = [
                 'action'         => (ifset($_pocket, 'action', null) === self::ACTIONS[1] ? self::ACTIONS[1] : self::ACTIONS[0]),
                 'id'             => ifset($_pocket, 'id', null),
+                'pl_id'          => 1312,
                 'sort'           => ifset($_pocket, 'sort', null),
                 'rank'           => ifset($_pocket, 'rank', null),
                 'name'           => ifset($_pocket, 'name', null),
@@ -112,7 +113,7 @@ class pocketlistsPocketsUpdateMethod extends pocketlistsApiAbstractMethod
 
             /** @var pocketlistsPocket $pocket */
             $pocket = $pocket_factory->createNew();
-            $pockets_ok = $this->sortingPocket($pockets_ok);
+            $pockets_ok = $this->sorting('pocket', $pockets_ok);
             foreach ($pockets_ok as &$_pocket) {
                 $pocket_clone = clone $pocket;
                 pl2()->getHydrator()->hydrate($pocket_clone, $_pocket);

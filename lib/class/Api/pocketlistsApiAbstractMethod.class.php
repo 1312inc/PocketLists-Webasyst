@@ -220,7 +220,8 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
 
         switch ($entity_type) {
             case 'pocket':
-                return $entities;
+                $parent_key = 'pl_id';
+                break;
             case 'list':
                 $parent_key = 'pocket_id';
                 break;
@@ -299,6 +300,19 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
 
             $model->exec("SET @prev_id := 0, @grp_id := 0, @prev_uuid := ''");
             switch ($entity_type) {
+                case 'pocket':
+                    $sub_sql = "
+                        SELECT
+                            id, sort, `rank`, uuid,
+                            1312 as pl_id,
+                            @prev_id AS prev_id,
+                            @prev_uuid AS prev_uuid,
+                            @prev_id := pp.id AS _,
+                            @prev_uuid := pp.uuid AS __
+                        FROM pocketlists_pocket pp
+                        ORDER BY pp.sort, pp.`rank`
+                    ";
+                    break;
                 case 'list':
                     $sub_sql = "SELECT 
                         pl.id, pi.name, pl.pocket_id, pl.sort, pl.`rank`, pi.uuid,
@@ -337,12 +351,10 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                 if ($_prev_entity['prev_id'] === '0') {
                     $_prev_entity['prev_id'] = null;
                 }
-                if (in_array($_prev_entity['id'], $prev_entity_ids) || in_array($_prev_entity['uuid'], $prev_entity_uuids)) {
-                    if (!empty($_prev_entity['id'])) {
-                        $prev_by_id[$_prev_entity['id']] = $_prev_entity;
-                    } else {
-                        $prev_by_uuid[$_prev_entity['uuid']] = $_prev_entity;
-                    }
+                if (in_array($_prev_entity['id'], $prev_entity_ids)) {
+                    $prev_by_id[$_prev_entity['id']] = $_prev_entity;
+                } elseif (in_array($_prev_entity['uuid'], $prev_entity_uuids)) {
+                    $prev_by_uuid[$_prev_entity['uuid']] = $_prev_entity;
                 } else {
                     if (
                         ifset($prev_by_id, $_prev_entity['prev_id'], [])
@@ -361,6 +373,11 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
 
         $p_sort_rank = pocketlistsSortRank::getInstance();
         switch ($entity_type) {
+            case 'pocket':
+                $sort_info = $model->query("
+                    SELECT MIN(sort) AS sort_min, MAX(sort) AS sort_max FROM pocketlists_pocket
+                ")->fetchAssoc();
+                break;
             case 'list':
                 $sort_info = $model->query("
                     SELECT pocket_id AS grp_id, MIN(sort) AS sort_min, MAX(sort) AS sort_max FROM pocketlists_list
@@ -381,7 +398,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                 $_entity['rank'] = ifset($_entity, 'rank', '');
                 continue;
             }
-            if (!isset($_entity[$parent_key])) {
+            if (!isset($_entity[$parent_key]) && $entity_type !== 'pocket') {
                 $_entity['sort'] = 0;
                 $_entity['rank'] = '';
                 continue;
@@ -445,81 +462,6 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
         unset($_entity);
 
         return $entities;
-    }
-
-    protected function sortingPocket($pockets = [])
-    {
-        if (isset($pocket['sort'])) {
-            return [$pocket['sort'], ifset($pocket, 'rank', '')];
-        }
-
-        $sort = 0;
-        $rank = '';
-        $model = pl2()->getModel();
-        $p_sort_rank = pocketlistsSortRank::getInstance();
-        if (isset($pocket['prev_pocket_id']) || isset($pocket['prev_pocket_uuid'])) {
-            $where = [];
-            $params = [];
-            if (isset($pocket['prev_pocket_id'])) {
-                $where[] = 't.id = i:id';
-                $where[] = 't.prev_id = i:id';
-                $params['id'] = $pocket['prev_pocket_id'];
-            } elseif (isset($pocket['prev_pocket_uuid'])) {
-                $where[] = 't.uuid = s:uuid';
-                $where[] = 't.prev_uuid = s:uuid';
-                $params['uuid'] = $pocket['prev_pocket_uuid'];
-            }
-            $model->exec("SET @prev_id := 0, @prev_uuid := ''");
-            $prev_entities = $model->query(" 
-                SELECT * FROM (SELECT
-                        id, sort, `rank`, uuid,
-                        @prev_id AS prev_id,
-                        @prev_uuid AS prev_uuid,
-                        @prev_id := pp.id AS _,
-                        @prev_uuid := pp.uuid AS __
-                    FROM pocketlists_pocket pp
-                    ORDER BY pp.sort, pp.`rank`
-                ) AS t
-                WHERE ".implode(' OR ', $where), $params
-            )->fetchAll();
-
-            $extreme_entity = [];
-            if (!empty($prev_entities)) {
-                $extreme_entity = array_shift($prev_entities);
-                if ($prev = array_shift($prev_entities)) {
-                    $extreme_entity['next_sort'] = $prev['sort'];
-                    $extreme_entity['next_rank'] = $prev['rank'];
-                } else {
-                    $extreme_entity += ['next_sort' => null, 'next_rank' => null];
-                }
-            }
-
-            $p_sort_rank->new(
-                (int) ifset($extreme_entity, 'sort', 0),
-                ifempty($extreme_entity, 'rank', '0')
-            );
-            if (!isset($extreme_entity['next_sort'])) {
-                list($sort) = $p_sort_rank->next();
-            } else {
-                list($sort, $rank) = $p_sort_rank->between(
-                    (int) ifset($extreme_entity, 'next_sort', 0),
-                    ifempty($extreme_entity, 'next_rank', '0')
-                );
-            }
-        } else {
-            $sort_info = $model->query("
-                SELECT MIN(sort) AS sort_min, MAX(sort) AS sort_max FROM pocketlists_pocket
-            ")->fetchAssoc();
-            $sort_min = ifset($sort_info, 'sort_min', null);
-            if (!is_null($sort_min)) {
-                /** добавляем в начало списка */
-                $p_sort_rank->new((int) $sort_min, '0');
-                list($sort) = $p_sort_rank->previous();
-            }
-        }
-
-        return [$sort, $rank];
-        return $pockets;
     }
 
     /**
