@@ -1320,26 +1320,13 @@ paths:
           content:
             application/json:
               schema:
-                allOf:
-                  - $ref: '#/components/schemas/pocket'
-                  - type: object
-                    properties:
-                      prev_pocket_id:
-                        type: string
-                        nullable: true
-                        default: null
-                        description: Предыдущий идентификатор списка для сортировки
-                      prev_pocket_uuid:
-                        type: string
-                        nullable: true
-                        default: null
-                        description: Предыдущий UUID списка для сортировки
+                $ref: '#/components/schemas/response'
         400:
           description: Invalid request data.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
   /pocketlists.pocket.delete:
@@ -1377,27 +1364,13 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  offset:
-                    type: integer
-                    description: Offset
-                  limit:
-                    type: integer
-                    description: Limit
-                  count:
-                    type: integer
-                    description: Count
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/pocket'
+                $ref: '#/components/schemas/response'
         400:
           description: Invalid request data.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         404:
           description: Not found.
           content:
@@ -1456,27 +1429,19 @@ paths:
           content:
             application/json:
               schema:
-                allOf:
-                  - $ref: '#/components/schemas/pocket'
-                  - type: object
-                    properties:
-                      prev_pocket_id:
-                        type: string
-                        nullable: true
-                        default: null
-                        description: Предыдущий идентификатор списка для сортировки
+                $ref: '#/components/schemas/response'
         400:
           description: Invalid request data.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         404:
           description: Not found.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
   /pocketlists.system.getTime:
@@ -2018,7 +1983,7 @@ components:
                           - $ref: '#/components/schemas/list'
                           - $ref: '#/components/schemas/location'
                           - $ref: '#/components/schemas/log'
-    #                      - $ref: '#/components/schemas/pocket'
+                          - $ref: '#/components/schemas/pocket'
                           - $ref: '#/components/schemas/user'
         - type: object
           properties:
