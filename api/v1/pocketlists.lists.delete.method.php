@@ -75,7 +75,7 @@ class pocketlistsListsDeleteMethod extends pocketlistsApiAbstractMethod
                     if ($plf->delete($list)) {
                         $success = true;
                         $logs[] = [
-                            'id'        => $list->getId(),
+                            'id'        => $id,
                             'pocket_id' => $list->getPocketId(),
                             'name'      => $list->getName()
                         ];

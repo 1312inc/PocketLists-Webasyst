@@ -211,7 +211,7 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
             $list_factory = pl2()->getEntityFactory(pocketlistsList::class);
 
             /** @var pocketlistsList $list */
-            $list = pl2()->getEntityFactory(pocketlistsList::class)->createNew();
+            $list = $list_factory->createNew();
             $lists_ok = $this->sorting('list', $lists_ok);
             foreach ($lists_ok as &$_list) {
                 $list_clone = clone $list;
@@ -234,7 +234,9 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
             $this->saveLog(
                 pocketlistsLog::ENTITY_LIST,
                 pocketlistsLog::ACTION_UPDATE,
-                $lists_ok
+                array_filter($lists_ok, function ($l) {
+                    return $l['success'];
+                })
             );
         }
 

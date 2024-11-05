@@ -164,7 +164,7 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
             $list_factory = pl2()->getEntityFactory(pocketlistsList::class);
 
             /** @var pocketlistsList $list */
-            $list = pl2()->getEntityFactory(pocketlistsList::class)->createNew();
+            $list = $list_factory->createNew();
             $lists_ok = $this->sorting('list', $lists_ok);
             foreach ($lists_ok as &$_list) {
                 $list_clone = clone $list;
