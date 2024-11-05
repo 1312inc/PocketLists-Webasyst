@@ -36,7 +36,7 @@ class pocketlistsDefaultLayout extends waLayout
         $response = $user_get_list->getResponse(true);
         $users = ifset($response, 'data', []);
 
-        $pocket_get_list = new pocketlistsPocketGetListMethod();
+        $pocket_get_list = new pocketlistsPocketsGetMethod();
         $response = $pocket_get_list->getResponse(true);
         $pockets = ifset($response, 'data', []);
         $user_tz = wa()->getUser()->get('timezone');

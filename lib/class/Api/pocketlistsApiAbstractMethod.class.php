@@ -447,7 +447,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
         return $entities;
     }
 
-    protected function sortingPocket($pocket = [])
+    protected function sortingPocket($pockets = [])
     {
         if (isset($pocket['sort'])) {
             return [$pocket['sort'], ifset($pocket, 'rank', '')];
@@ -519,6 +519,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
         }
 
         return [$sort, $rank];
+        return $pockets;
     }
 
     /**

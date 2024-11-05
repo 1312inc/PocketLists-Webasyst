@@ -1271,7 +1271,7 @@ paths:
                 $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
-  /pocketlists.pocket.add:
+  /pocketlists.pockets.add:
     put:
       security:
         - BearerAuth: [ ]
@@ -1280,40 +1280,42 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - name
-              properties:
-                name:
-                  type: string
-                  description: Название проекта
-                color:
-                  type: string
-                  description: Цвет
-                  enum:
-                    - none
-                    - red
-                    - green
-                    - blue
-                    - yellow
-                    - purple
-                sort:
-                  type: integer
-                  description: Sort
-                rank:
-                  type: string
-                  description: Sort rank
-                uuid:
-                  type: string
-                  description: Unique UUID value
-                prev_pocket_id:
-                  type: integer
-                  nullable: true
-                  description: Предыдущий идентификатор проекта для сортировки
-                prev_pocket_uuid:
-                  type: string
-                  nullable: true
-                  description: Предыдущий UUID проекта для сортировки
+              type: array
+              items:
+                type: object
+                required:
+                  - name
+                properties:
+                  name:
+                    type: string
+                    description: Название проекта
+                  color:
+                    type: string
+                    description: Цвет
+                    enum:
+                      - none
+                      - red
+                      - green
+                      - blue
+                      - yellow
+                      - purple
+                  sort:
+                    type: integer
+                    description: Sort
+                  rank:
+                    type: string
+                    description: Sort rank
+                  uuid:
+                    type: string
+                    description: Unique UUID value
+                  prev_pocket_id:
+                    type: integer
+                    nullable: true
+                    description: Предыдущий идентификатор проекта для сортировки
+                  prev_pocket_uuid:
+                    type: string
+                    nullable: true
+                    description: Предыдущий UUID проекта для сортировки
       responses:
         200:
           description: OK
@@ -1329,23 +1331,36 @@ paths:
                 $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
-  /pocketlists.pocket.delete:
+  /pocketlists.pockets.delete:
     delete:
       security:
         - BearerAuth: [ ]
       summary: Удалить проект
       parameters:
         - in: query
-          name: pocket_id
-          description: Pocket identifier
+          name: id[]
+          description: Pocket identifiers
+          required: true
           schema:
-            type: integer
+            type: array
+            items:
+              type: integer
       responses:
-        204:
+        200:
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
+        400:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
-  /pocketlists.pocket.getList:
+  /pocketlists.pockets.get:
     get:
       security:
         - BearerAuth: [ ]
@@ -1376,8 +1391,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
-  /pocketlists.pocket.update:
+                $ref: '#/components/schemas/response'
+  /pocketlists.pockets.update:
     patch:
       security:
         - BearerAuth: [ ]
@@ -1386,43 +1401,45 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - id
-              properties:
-                action:
-                  type: string
-                  default: patch
-                  description: Обновить или пропатчить сущность
-                  enum:
-                    - patch
-                    - update
-                id:
-                  type: integer
-                  description: Pocket identifier
-                name:
-                  type: string
-                  description: Название проекта
-                color:
-                  type: string
-                  description: Цвет
-                  enum:
-                    - none
-                    - red
-                    - green
-                    - blue
-                    - yellow
-                    - purple
-                sort:
-                  type: integer
-                  description: Sort
-                rank:
-                  type: string
-                  description: Sort rank
-                prev_pocket_id:
-                  type: integer
-                  nullable: true
-                  description: Предыдущий идентификатор проекта для сортировки
+              type: array
+              items:
+                type: object
+                required:
+                  - id
+                properties:
+                  action:
+                    type: string
+                    default: patch
+                    description: Обновить или пропатчить сущность
+                    enum:
+                      - patch
+                      - update
+                  id:
+                    type: integer
+                    description: Pocket identifier
+                  name:
+                    type: string
+                    description: Название проекта
+                  color:
+                    type: string
+                    description: Цвет
+                    enum:
+                      - none
+                      - red
+                      - green
+                      - blue
+                      - yellow
+                      - purple
+                  sort:
+                    type: integer
+                    description: Sort
+                  rank:
+                    type: string
+                    description: Sort rank
+                  prev_pocket_id:
+                    type: integer
+                    nullable: true
+                    description: Предыдущий идентификатор проекта для сортировки
       responses:
         200:
           description: OK
