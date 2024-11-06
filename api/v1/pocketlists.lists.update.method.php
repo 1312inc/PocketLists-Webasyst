@@ -177,7 +177,7 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                     'select'   => ['*' => 'list_id, priority, COUNT(id) AS cnt'],
                     'from'     => ['pi' => 'pocketlists_item'],
                     'join'     => [],
-                    'where'    => ['and' => [$list_ids ? 'list_id IN (i:ids)' : 'list_id IS NOT NULL']],
+                    'where'    => ['and' => ['list_id IN (i:ids)', 'status = 0']],
                     'group by' => ['list_id, priority'],
                     'order by' => ['list_id, priority']
                 ]), ['ids' => $list_ids]
