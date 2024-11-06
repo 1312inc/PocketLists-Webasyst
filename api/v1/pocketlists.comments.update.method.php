@@ -8,32 +8,14 @@ class pocketlistsCommentsUpdateMethod extends pocketlistsApiAbstractMethod
     {
         $comments = $this->readBodyAsJson();
         if (empty($comments)) {
-            $this->http_status_code = 400;
-            $this->response = [
-                'status_code' => 'error',
-                'error'       => _w('Missing `data`'),
-                'data'        => []
-            ];
-            return;
+            throw new pocketlistsApiException(_w('Missing `data`'), 400);
         } elseif (!is_array($comments)) {
-            $this->http_status_code = 400;
-            $this->response = [
-                'status_code' => 'error',
-                'error'       =>  _w('Type error `data`'),
-                'data'        => []
-            ];
-            return;
+            throw new pocketlistsApiException(_w('Type error `data`'), 400);
         }
 
         $comment_ids = array_unique(array_column($comments, 'id'));
         if (empty($comment_ids)) {
-            $this->http_status_code = 400;
-            $this->response = [
-                'status_code' => 'error',
-                'error'       => _w('Missing `data`'),
-                'data'        => []
-            ];
-            return;
+            throw new pocketlistsApiException(_w('Missing `data`'), 400);
         }
 
         /** @var pocketlistsCommentModel $item_model */
@@ -125,13 +107,7 @@ class pocketlistsCommentsUpdateMethod extends pocketlistsApiAbstractMethod
                     })
                 );
             } catch (Exception $ex) {
-                $this->http_status_code = 400;
-                $this->response = [
-                    'status_code' => 'error',
-                    'error'       => sprintf_wp('Error on transaction import save: %s', $ex->getMessage()),
-                    'data'        => []
-                ];
-                return;
+                throw new pocketlistsApiException(sprintf_wp('Error on transaction import save: %s', $ex->getMessage()), 400);
             }
         }
 

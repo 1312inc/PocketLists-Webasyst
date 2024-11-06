@@ -9,26 +9,14 @@ class pocketlistsPocketsGetMethod extends pocketlistsApiAbstractMethod
         $plp = pl2()->getModel(pocketlistsPocket::class);
         if (isset($ids)) {
             if (!is_array($ids)) {
-                $this->http_status_code = 400;
-                $this->response = [
-                    'status_code' => 'error',
-                    'error'       => sprintf_wp('Invalid type %s', 'id'),
-                    'data'        => []
-                ];
-                return;
+                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'id'), 400);
             }
             $ids = array_unique(array_filter($ids, function ($_i) {
                 return is_numeric($_i);
             }));
 
             if (!$ids || !$pockets = $plp->getByField('id', $ids, true)) {
-                $this->http_status_code = 404;
-                $this->response = [
-                    'status_code' => 'error',
-                    'error'       => _w('Pockets not found'),
-                    'data'        => []
-                ];
-                return;
+                throw new pocketlistsApiException(_w('Pockets not found'), 404);
             }
         } else {
             $pockets = $plp->getAllPockets($this->getUser()->getId());;

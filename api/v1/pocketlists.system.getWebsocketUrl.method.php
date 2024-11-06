@@ -8,13 +8,7 @@ class pocketlistsSystemGetWebsocketUrlMethod extends pocketlistsApiAbstractMetho
 
         if (isset($channel)) {
             if (!is_string($channel)) {
-                $this->http_status_code = 400;
-                $this->response = [
-                    'status_code' => 'error',
-                    'error'       => sprintf_wp('Invalid type %s', 'channel'),
-                    'data'        => []
-                ];
-                return;
+                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'channel'), 400);
             }
             $channel = trim($channel);
             if (empty($channel)) {
@@ -25,13 +19,7 @@ class pocketlistsSystemGetWebsocketUrlMethod extends pocketlistsApiAbstractMetho
         try {
             $ws_url = pocketlistsWebSoket::getInstance()->getWebsocketUrl($channel);
         } catch (waException $e) {
-            $this->http_status_code = 400;
-            $this->response = [
-                'status_code' => 'error',
-                'error'       => $e->getMessage(),
-                'data'        => []
-            ];
-            return;
+            throw new pocketlistsApiException($e->getMessage(), 400);
         }
 
         $this->response['data'] = [

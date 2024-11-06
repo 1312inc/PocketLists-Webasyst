@@ -9,21 +9,9 @@ class pocketlistsListsDeleteMethod extends pocketlistsApiAbstractMethod
         $data = $this->get('id');
 
         if (empty($data)) {
-            $this->http_status_code = 400;
-            $this->response = [
-                'status_code' => 'error',
-                'error'       => sprintf_wp('Missing required parameter: “%s”.', 'id'),
-                'data'        => []
-            ];
-            return;
+            throw new pocketlistsApiException(sprintf_wp('Missing required parameter: “%s”.', 'id'), 400);
         } elseif (!is_array($data)) {
-            $this->http_status_code = 400;
-            $this->response = [
-                'status_code' => 'error',
-                'error'       => sprintf_wp('Invalid type %s', 'id'),
-                'data'        => []
-            ];
-            return;
+            throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'id'), 400);
         }
 
         $lists = [];

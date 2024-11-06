@@ -26,6 +26,63 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
     }
 
     /**
+     * @param $internal
+     * @return array
+     * @throws pocketlistsAPIException
+     * @throws waException
+     */
+    public function getResponse($internal = false)
+    {
+        if (!$internal) {
+            // check request method
+            $request_method = strtoupper(waRequest::method());
+            if ((is_array($this->method) && !in_array($request_method, $this->method)) ||
+                (!is_array($this->method) && $request_method != $this->method)
+            ) {
+                throw new pocketlistsApiException(sprintf(_ws('Method %s not allowed'), $request_method), 405);
+            }
+        }
+
+        $this->execute();
+
+        return $this->response;
+    }
+
+    /**
+     * @param $name
+     * @param $required
+     * @return array|int|mixed|null
+     * @throws pocketlistsAPIException
+     * @throws waException
+     */
+    public function get($name, $required = false)
+    {
+        $v = waRequest::get($name);
+        if ($required && !$v) {
+            throw new pocketlistsApiException(sprintf(_ws('Required parameter is missing: “%s”.'), $name), 400);
+        }
+
+        return $v;
+    }
+
+    /**
+     * @param $name
+     * @param $required
+     * @return array|int|mixed|null
+     * @throws pocketlistsAPIException
+     * @throws waException
+     */
+    public function post($name, $required = false)
+    {
+        $v = waRequest::post($name);
+        if ($required && !$v) {
+            throw new pocketlistsApiException(sprintf(_ws('Required parameter is missing: “%s”.'), $name), 400);
+        }
+
+        return $v;
+    }
+
+    /**
      * @return mixed|null
      */
     protected function readBodyAsJson()

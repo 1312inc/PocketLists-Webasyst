@@ -11,41 +11,17 @@ class pocketlistsLocationsGetMethod extends pocketlistsApiAbstractMethod
         $where = '1 = 1';
         if (isset($location_id)) {
             if (!is_numeric($location_id)) {
-                $this->http_status_code = 400;
-                $this->response = [
-                    'status_code' => 'error',
-                    'error'       => _w('Unknown value'),
-                    'data'        => []
-                ];
-                return;
+                throw new pocketlistsApiException(_w('Unknown value'), 400);
             } elseif ($location_id < 1) {
-                $this->http_status_code = 400;
-                $this->response = [
-                    'status_code' => 'error',
-                    'error'       => _w('Location not found'),
-                    'data'        => []
-                ];
-                return;
+                throw new pocketlistsApiException(_w('Location not found'), 404);
             }
             $where .= ' AND id = i:location_id';
         }
         if (isset($limit)) {
             if (!is_numeric($limit)) {
-                $this->http_status_code = 400;
-                $this->response = [
-                    'status_code' => 'error',
-                    'error'       => _w('Unknown value'),
-                    'data'        => []
-                ];
-                return;
+                throw new pocketlistsApiException(_w('Unknown value'), 400);
             } elseif ($limit < 1) {
-                $this->http_status_code = 400;
-                $this->response = [
-                    'status_code' => 'error',
-                    'error'       => _w('The parameter has a negative value'),
-                    'data'        => []
-                ];
-                return;
+                throw new pocketlistsApiException(_w('The parameter has a negative value'), 400);
             }
             $limit = (int) min($limit, self::MAX_LIMIT);
         } else {
@@ -53,21 +29,9 @@ class pocketlistsLocationsGetMethod extends pocketlistsApiAbstractMethod
         }
         if (isset($offset)) {
             if (!is_numeric($offset)) {
-                $this->http_status_code = 400;
-                $this->response = [
-                    'status_code' => 'error',
-                    'error'       => _w('Unknown value'),
-                    'data'        => []
-                ];
-                return;
+                throw new pocketlistsApiException(_w('Unknown value'), 400);
             } elseif ($offset < 0) {
-                $this->http_status_code = 400;
-                $this->response = [
-                    'status_code' => 'error',
-                    'error'       => _w('The parameter has a negative value'),
-                    'data'        => []
-                ];
-                return;
+                throw new pocketlistsApiException(_w('The parameter has a negative value'), 400);
             }
             $offset = intval($offset);
         } else {
@@ -89,13 +53,7 @@ class pocketlistsLocationsGetMethod extends pocketlistsApiAbstractMethod
         $total_count = (int) $pllm->query('SELECT FOUND_ROWS()')->fetchField();
 
         if (empty($locations) && isset($location_id)) {
-            $this->http_status_code = 404;
-            $this->response = [
-                'status_code' => 'error',
-                'error'       => _w('Location not found'),
-                'data'        => []
-            ];
-            return;
+            throw new pocketlistsApiException(_w('Location not found'), 404);
         }
 
         $this->response['meta'] = [

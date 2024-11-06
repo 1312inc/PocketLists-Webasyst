@@ -8,21 +8,9 @@ class pocketlistsAttachmentsAddMethod extends pocketlistsApiAbstractMethod
     {
         $files = $this->readBodyAsJson();
         if (empty($files)) {
-            $this->http_status_code = 400;
-            $this->response = [
-                'status_code' => 'error',
-                'error'       => _w('Missing `data`'),
-                'data'        => []
-            ];
-            return;
+            throw new pocketlistsApiException(_w('Missing `data`'), 400);
         } elseif (!is_array($files)) {
-            $this->http_status_code = 400;
-            $this->response = [
-                'status_code' => 'error',
-                'error'       => _w('Type error `data`'),
-                'data'        => []
-            ];
-            return;
+            throw new pocketlistsApiException(_w('Type error `data`'), 400);
         }
 
         $result = [];

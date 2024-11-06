@@ -8,21 +8,9 @@ class pocketlistsLocationsUpdateMethod extends pocketlistsApiAbstractMethod
     {
         $locations = $this->readBodyAsJson();
         if (empty($locations)) {
-            $this->http_status_code = 400;
-            $this->response = [
-                'status_code' => 'error',
-                'error'       => _w('Missing `data`'),
-                'data'        => []
-            ];
-            return;
+            throw new pocketlistsApiException(_w('Missing `data`'), 400);
         } elseif (!is_array($locations)) {
-            $this->http_status_code = 400;
-            $this->response = [
-                'status_code' => 'error',
-                'error'       => _w('Type error `data`'),
-                'data'        => []
-            ];
-            return;
+            throw new pocketlistsApiException(_w('Type error `data`'), 400);
         }
 
         /** @var pocketlistsLocationModel $location_model */
@@ -119,13 +107,7 @@ class pocketlistsLocationsUpdateMethod extends pocketlistsApiAbstractMethod
                     $locations_ok
                 );
             } catch (Exception $ex) {
-                $this->http_status_code = 400;
-                $this->response = [
-                    'status_code' => 'error',
-                    'error'       => sprintf_wp('Error on transaction import save: %s', $ex->getMessage()),
-                    'data'        => []
-                ];
-                return;
+                throw new pocketlistsApiException(sprintf_wp('Error on transaction import save: %s', $ex->getMessage()), 400);
             }
         }
 

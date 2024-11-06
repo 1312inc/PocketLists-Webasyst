@@ -9,21 +9,9 @@ class pocketlistsLogGetDeletedMethod extends pocketlistsApiAbstractMethod
 
         if (isset($limit)) {
             if (!is_numeric($limit)) {
-                $this->http_status_code = 400;
-                $this->response = [
-                    'status_code' => 'error',
-                    'error'       => sprintf_wp('Type error parameter: “%s”.', 'limit'),
-                    'data'        => []
-                ];
-                return;
+                throw new pocketlistsApiException(sprintf_wp('Type error parameter: “%s”.', 'limit'), 400);
             } elseif ($limit < 1) {
-                $this->http_status_code = 400;
-                $this->response = [
-                    'status_code' => 'error',
-                    'error'       => _w('The parameter has a negative value'),
-                    'data'        => []
-                ];
-                return;
+                throw new pocketlistsApiException(_w('The parameter has a negative value'), 400);
             }
             $limit = (int) min($limit, self::MAX_LIMIT);
         } else {
@@ -31,21 +19,9 @@ class pocketlistsLogGetDeletedMethod extends pocketlistsApiAbstractMethod
         }
         if (isset($offset)) {
             if (!is_numeric($offset)) {
-                $this->http_status_code = 400;
-                $this->response = [
-                    'status_code' => 'error',
-                    'error'       => sprintf_wp('Type error parameter: “%s”.', 'offset'),
-                    'data'        => []
-                ];
-                return;
+                throw new pocketlistsApiException(sprintf_wp('Type error parameter: “%s”.', 'offset'), 400);
             } elseif ($offset < 1) {
-                $this->http_status_code = 400;
-                $this->response = [
-                    'status_code' => 'error',
-                    'error'       => _w('The parameter has a negative value'),
-                    'data'        => []
-                ];
-                return;
+                throw new pocketlistsApiException(_w('The parameter has a negative value'), 400);
             }
         } else {
             $offset = 0;

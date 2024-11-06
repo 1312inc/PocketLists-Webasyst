@@ -14,83 +14,35 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
         $total_count = 0;
         if (isset($ids)) {
             if (!is_array($ids)) {
-                $this->http_status_code = 400;
-                $this->response = [
-                    'status_code' => 'error',
-                    'error'       => sprintf_wp('Invalid type %s', 'id'),
-                    'data'        => []
-                ];
-                return;
+                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'id'), 400);
             }
             $ids = array_unique(array_filter($ids, function ($_i) {
                 return is_numeric($_i) && $_i > 0;
             }));
             if (empty($ids)) {
-                $this->http_status_code = 400;
-                $this->response = [
-                    'status_code' => 'error',
-                    'error'       => _w('Items not found'),
-                    'data'        => []
-                ];
-                return;
+                throw new pocketlistsApiException(_w('Items not found'), 404);
             }
         }
         if (isset($list_id)) {
             if (!is_numeric($list_id)) {
-                $this->http_status_code = 400;
-                $this->response = [
-                    'status_code' => 'error',
-                    'error'       => sprintf_wp('Invalid type %s', 'list_id'),
-                    'data'        => []
-                ];
-                return;
+                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'list_id'), 400);
             } elseif ($list_id < 1) {
-                $this->http_status_code = 400;
-                $this->response = [
-                    'status_code' => 'error',
-                    'error'       => _w('List not found'),
-                    'data'        => []
-                ];
-                return;
+                throw new pocketlistsApiException(_w('List not found'), 404);
             }
         }
         if (isset($starting_from)) {
             if (!is_numeric($starting_from)) {
-                $this->http_status_code = 400;
-                $this->response = [
-                    'status_code' => 'error',
-                    'error'       => sprintf_wp('Invalid type %s', 'starting_from'),
-                    'data'        => []
-                ];
-                return;
+                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'starting_from'), 400);
             } elseif ($starting_from < 1) {
-                $this->http_status_code = 400;
-                $this->response = [
-                    'status_code' => 'error',
-                    'error'       => _w('The parameter has a negative value'),
-                    'data'        => []
-                ];
-                return;
+                throw new pocketlistsApiException(_w('The parameter has a negative value'), 400);
             }
             $starting_from = date('Y-m-d H:i:s', $starting_from);
         }
         if (isset($limit)) {
             if (!is_numeric($limit)) {
-                $this->http_status_code = 400;
-                $this->response = [
-                    'status_code' => 'error',
-                    'error'       => sprintf_wp('Invalid type %s', 'limit'),
-                    'data'        => []
-                ];
-                return;
+                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'limit'), 400);
             } elseif ($limit < 1) {
-                $this->http_status_code = 400;
-                $this->response = [
-                    'status_code' => 'error',
-                    'error'       => _w('The parameter has a negative value'),
-                    'data'        => []
-                ];
-                return;
+                throw new pocketlistsApiException(_w('The parameter has a negative value'), 400);
             }
             $limit = (int) min($limit, self::MAX_LIMIT);
         } else {
@@ -98,21 +50,9 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
         }
         if (isset($offset)) {
             if (!is_numeric($offset)) {
-                $this->http_status_code = 400;
-                $this->response = [
-                    'status_code' => 'error',
-                    'error'       => sprintf_wp('Invalid type %s', 'offset'),
-                    'data'        => []
-                ];
-                return;
+                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'offset'), 400);
             } elseif ($offset < 0) {
-                $this->http_status_code = 400;
-                $this->response = [
-                    'status_code' => 'error',
-                    'error'       => _w('The parameter has a negative value'),
-                    'data'        => []
-                ];
-                return;
+                throw new pocketlistsApiException(_w('The parameter has a negative value'), 400);
             }
             $offset = intval($offset);
         } else {

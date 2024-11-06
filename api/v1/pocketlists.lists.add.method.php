@@ -9,21 +9,9 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
         $lists = $this->readBodyAsJson();
 
         if (empty($lists)) {
-            $this->http_status_code = 400;
-            $this->response = [
-                'status_code' => 'error',
-                'error'       => _w('Missing `data`'),
-                'data'        => []
-            ];
-            return;
+            throw new pocketlistsApiException(_w('Missing `data`'), 400);
         } elseif (!is_array($lists)) {
-            $this->http_status_code = 400;
-            $this->response = [
-                'status_code' => 'error',
-                'error'       => _w('Type error `data`'),
-                'data'        => []
-            ];
-            return;
+            throw new pocketlistsApiException(_w('Type error `data`'), 400);
         }
 
         $pocket_ids = array_unique(array_column($lists, 'pocket_id'));

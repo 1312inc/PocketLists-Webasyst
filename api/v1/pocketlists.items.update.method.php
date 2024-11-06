@@ -8,21 +8,9 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
     {
         $items = $this->readBodyAsJson();
         if (empty($items)) {
-            $this->http_status_code = 400;
-            $this->response = [
-                'status_code' => 'error',
-                'error'       => _w('Missing `data`'),
-                'data'        => []
-            ];
-            return;
+            throw new pocketlistsApiException(_w('Missing `data`'), 400);
         } elseif (!is_array($items)) {
-            $this->http_status_code = 400;
-            $this->response = [
-                'status_code' => 'error',
-                'error'       => _w('Type error data'),
-                'data'        => []
-            ];
-            return;
+            throw new pocketlistsApiException(_w('Type error data'), 400);
         }
 
         $assign_contacts = [];
@@ -34,13 +22,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
         $attachments = array_column($items, 'attachments');
 
         if (empty($item_ids)) {
-            $this->http_status_code = 400;
-            $this->response = [
-                'status_code' => 'error',
-                'error'       => _w('Items not found'),
-                'data'        => []
-            ];
-            return;
+            throw new pocketlistsApiException(_w('Items not found'), 404);
         }
 
         /** @var pocketlistsItemModel $item_model */
@@ -265,13 +247,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                     $items_ok
                 );
             } catch (Exception $ex) {
-                $this->http_status_code = 400;
-                $this->response = [
-                    'status_code' => 'error',
-                    'error'       => sprintf_wp('Error on transaction import save: %s', $ex->getMessage()),
-                    'data'        => []
-                ];
-                return;
+                throw new pocketlistsApiException(sprintf_wp('Error on transaction import save: %s', $ex->getMessage()), 400);
             }
         }
 

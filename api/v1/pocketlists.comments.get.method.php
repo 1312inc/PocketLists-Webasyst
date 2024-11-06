@@ -11,41 +11,17 @@ class pocketlistsCommentsGetMethod extends pocketlistsApiAbstractMethod
         $where = 'WHERE 1 = 1';
         if (isset($item_id)) {
             if (!is_numeric($item_id)) {
-                $this->http_status_code = 400;
-                $this->response = [
-                    'status_code' => 'error',
-                    'error'       => _w('Unknown value'),
-                    'data'        => []
-                ];
-                return;
+                throw new pocketlistsApiException(_w('Unknown value'), 400);
             } elseif ($item_id < 1) {
-                $this->http_status_code = 400;
-                $this->response = [
-                    'status_code' => 'error',
-                    'error'       => _w('Item not found'),
-                    'data'        => []
-                ];
-                return;
+                throw new pocketlistsApiException(_w('Item not found'), 404);
             }
             $where .= ' AND c.item_id = i:item_id';
         }
         if (isset($limit)) {
             if (!is_numeric($limit)) {
-                $this->http_status_code = 400;
-                $this->response = [
-                    'status_code' => 'error',
-                    'error'       => _w('Unknown value'),
-                    'data'        => []
-                ];
-                return;
+                throw new pocketlistsApiException(_w('Unknown value'), 400);
             } elseif ($limit < 1) {
-                $this->http_status_code = 400;
-                $this->response = [
-                    'status_code' => 'error',
-                    'error'       => _w('The parameter has a negative value'),
-                    'data'        => []
-                ];
-                return;
+                throw new pocketlistsApiException(_w('The parameter has a negative value'), 400);
             }
             $limit = (int) min($limit, self::MAX_LIMIT);
         } else {
@@ -53,21 +29,9 @@ class pocketlistsCommentsGetMethod extends pocketlistsApiAbstractMethod
         }
         if (isset($offset)) {
             if (!is_numeric($offset)) {
-                $this->http_status_code = 400;
-                $this->response = [
-                    'status_code' => 'error',
-                    'error'       => _w('Unknown value'),
-                    'data'        => []
-                ];
-                return;
+                throw new pocketlistsApiException(_w('Unknown value'), 400);
             } elseif ($offset < 0) {
-                $this->http_status_code = 400;
-                $this->response = [
-                    'status_code' => 'error',
-                    'error'       => _w('The parameter has a negative value'),
-                    'data'        => []
-                ];
-                return;
+                throw new pocketlistsApiException(_w('The parameter has a negative value'), 400);
             }
             $offset = intval($offset);
         } else {

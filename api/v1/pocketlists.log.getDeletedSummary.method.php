@@ -7,29 +7,11 @@ class pocketlistsLogGetDeletedSummaryMethod extends pocketlistsApiAbstractMethod
         $starting_from = $this->get('starting_from');
 
         if (!isset($starting_from)) {
-            $this->http_status_code = 400;
-            $this->response = [
-                'status_code' => 'error',
-                'error'       => sprintf_wp('Missing required parameter: “%s”.', 'starting_from'),
-                'data'        => []
-            ];
-            return;
+            throw new pocketlistsApiException(sprintf_wp('Missing required parameter: “%s”.', 'starting_from'), 400);
         } elseif (!is_numeric($starting_from)) {
-            $this->http_status_code = 400;
-            $this->response = [
-                'status_code' => 'error',
-                'error'       => sprintf_wp('Type error parameter: “%s”.', 'starting_from'),
-                'data'        => []
-            ];
-            return;
+            throw new pocketlistsApiException(sprintf_wp('Type error parameter: “%s”.', 'starting_from'), 400);
         } elseif ($starting_from < 1) {
-            $this->http_status_code = 400;
-            $this->response = [
-                'status_code' => 'error',
-                'error'       => _w('The parameter has a negative value'),
-                'data'        => []
-            ];
-            return;
+            throw new pocketlistsApiException(_w('The parameter has a negative value'), 400);
         }
 
         /** @var pocketlistsLogModel $log_model */

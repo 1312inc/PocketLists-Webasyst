@@ -8,21 +8,9 @@ class pocketlistsCommentsAddMethod extends pocketlistsApiAbstractMethod
     {
         $comments = $this->readBodyAsJson();
         if (empty($comments)) {
-            $this->http_status_code = 400;
-            $this->response = [
-                'status_code' => 'error',
-                    'error'       => _w('Missing `data`'),
-                'data'        => []
-            ];
-            return;
+            throw new pocketlistsApiException(_w('Missing `data`'), 400);
         } elseif (!is_array($comments)) {
-            $this->http_status_code = 400;
-            $this->response = [
-                'status_code' => 'error',
-                'error'       => _w('Type error `data`'),
-                'data'        => []
-            ];
-            return;
+            throw new pocketlistsApiException(_w('Type error `data`'), 400);
         }
 
         $items = [];
@@ -125,31 +113,13 @@ class pocketlistsCommentsAddMethod extends pocketlistsApiAbstractMethod
                             $comments_ok
                         );
                     } else {
-                        $this->http_status_code = 400;
-                        $this->response = [
-                            'status_code' => 'error',
-                            'error'       =>  _w('Error on transaction'),
-                            'data'        => []
-                        ];
-                        return;
+                        throw new pocketlistsApiException(_w('Error on transaction'), 400);
                     }
                 } else {
-                    $this->http_status_code = 400;
-                    $this->response = [
-                        'status_code' => 'error',
-                        'error'       => _w('Error on transaction'),
-                        'data'        => []
-                    ];
-                    return;
+                    throw new pocketlistsApiException(_w('Error on transaction'), 400);
                 }
             } catch (Exception $ex) {
-                $this->http_status_code = 400;
-                $this->response = [
-                    'status_code' => 'error',
-                    'error'       => sprintf_wp('Error on transaction import save: %s', $ex->getMessage()),
-                    'data'        => []
-                ];
-                return;
+                throw new pocketlistsApiException(sprintf_wp('Error on transaction import save: %s', $ex->getMessage()), 400);
             }
         }
 
