@@ -9,15 +9,14 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
         $lists = $this->readBodyAsJson();
 
         if (empty($lists)) {
-            throw new waAPIException('required_param', _w('Missing data'), 400);
+            throw new pocketlistsApiException(_w('Missing `data`'), 400);
         } elseif (!is_array($lists)) {
-            throw new waAPIException('type_error', _w('Type error data'), 400);
+            throw new pocketlistsApiException(_w('Type error `data`'), 400);
         }
 
         $list_ids = array_unique(array_column($lists, 'id'));
-
         if (empty($list_ids)) {
-            throw new waAPIException('type_error', _w('Type error data'), 400);
+            throw new pocketlistsApiException(_w('Type error `data`'), 400);
         }
 
         /** @var pocketlistsListModel $list_model */
@@ -76,8 +75,8 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                 'repeat'                => 0,
                 'uuid'                  => null,
                 'prev_list_id'          => (array_key_exists('prev_list_id', $_list) ? ifset($_list, 'prev_list_id', 0) : null),
-                'errors'                => [],
-                'status_code'           => 'ok',
+                'success'               => true,
+                'errors'                => []
             ];
 
             if (empty($_list['id'])) {
@@ -160,15 +159,14 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                     $_list['key_item_id'] = $lists_in_db[$_list['id']]['key_item_id'];
                     $_list['create_datetime'] = $lists_in_db[$_list['id']]['create_datetime'];
                 }
-                unset($_list['errors']);
             } else {
-                $_list['status_code'] = 'error';
+                $_list['success'] = false;
             }
         }
         unset($_list);
 
         $lists_ok = array_filter($lists, function ($l) {
-            return $l['status_code'] === 'ok';
+            return $l['success'];
         });
         $lists_err = array_diff_key($lists, $lists_ok);
         if (!empty($lists_ok)) {
@@ -195,13 +193,15 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
             $list_factory = pl2()->getEntityFactory(pocketlistsList::class);
 
             /** @var pocketlistsList $list */
-            $list = pl2()->getEntityFactory(pocketlistsList::class)->createNew();
+            $list = $list_factory->createNew();
             $lists_ok = $this->sorting('list', $lists_ok);
             foreach ($lists_ok as &$_list) {
                 $list_clone = clone $list;
                 pl2()->getHydrator()->hydrate($list_clone, $_list);
                 $list_clone->setUpdateDatetime(date('Y-m-d H:i:s'));
-                $list_factory->save($list_clone);
+                if (!$list_factory->save($list_clone)) {
+                    $_list['success'] = false;
+                }
 
                 $data = ifset($priority_count, $_list['id'], null);
                 $max_priority = ($data ? max(array_keys($data)) : null);
@@ -216,11 +216,13 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
             $this->saveLog(
                 pocketlistsLog::ENTITY_LIST,
                 pocketlistsLog::ACTION_UPDATE,
-                $lists_ok
+                array_filter($lists_ok, function ($l) {
+                    return $l['success'];
+                })
             );
         }
 
-        $this->response = $this->filterFields(
+        $this->response['data'] = $this->responseWrapper(
             array_merge($lists_ok, $lists_err),
             [
                 'id',
@@ -255,9 +257,7 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                 'color',
                 'passcode',
                 'key_item_id',
-                'extended_data',
-                'errors',
-                'status_code',
+                'extended_data'
             ], [
                 'id' => 'int',
                 'contact_id' => 'int',

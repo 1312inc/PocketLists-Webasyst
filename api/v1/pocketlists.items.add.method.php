@@ -8,9 +8,9 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
     {
         $items = $this->readBodyAsJson();
         if (empty($items)) {
-            throw new waAPIException('required_param', _w('Missing data'), 400);
+            throw new pocketlistsApiException(_w('Missing `data`'), 400);
         } elseif (!is_array($items)) {
-            throw new waAPIException('type_error', _w('Type error data'), 400);
+            throw new pocketlistsApiException(_w('Type error `data`'), 400);
         }
 
         $assign_contacts = [];
@@ -82,8 +82,8 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                 'attachments'           => ifset($_item, 'attachments', []),
                 'prev_item_id'          => ifset($_item, 'prev_item_id', null),
                 'prev_item_uuid'        => ifset($_item, 'prev_item_uuid', null),
-                'errors'                => [],
-                'status_code'           => null,
+                'success'               => true,
+                'errors'                => []
             ];
 
             if (isset($_item['list_id'])) {
@@ -206,16 +206,14 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                 }
             }
 
-            if (empty($_item['errors'])) {
-                unset($_item['errors']);
-            } else {
+            if (!empty($_item['errors'])) {
+                $_item['success'] = false;
                 $_item['attachments'] = [];
-                $_item['status_code'] = 'error';
             }
         }
 
         $items_ok = array_filter($items, function ($i) {
-            return is_null($i['status_code']);
+            return $i['success'];
         });
         $items_err = array_diff_key($items, $items_ok);
         if (!empty($items_ok)) {
@@ -229,7 +227,6 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                     if ($rows_count === count($items_ok)) {
                         foreach ($items_ok as &$_item) {
                             $_item['id'] = $last_id++;
-                            $_item['status_code'] = 'ok';
                             if (!empty($_item['attachments'])) {
                                 $_item['attachments'] = $this->updateFiles($_item['id'], $_item['attachments']);
                             }
@@ -241,17 +238,17 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                             $items_ok
                         );
                     } else {
-                        throw new waAPIException('error', _w('Error on transaction'));
+                        throw new pocketlistsApiException(_w('Error on transaction'), 400);
                     }
                 } else {
-                    throw new waAPIException('error', _w('Error on transaction'));
+                    throw new pocketlistsApiException(_w('Error on transaction'), 400);
                 }
             } catch (Exception $ex) {
-                throw new waAPIException('error', sprintf_wp('Error on transaction import save: %s', $ex->getMessage()), 400);
+                throw new pocketlistsApiException(sprintf_wp('Error on transaction import save: %s', $ex->getMessage()), 400);
             }
         }
 
-        $this->response = $this->filterFields(
+        $this->response['data'] = $this->responseWrapper(
             array_merge($items_ok, $items_err),
             [
                 'id',
@@ -281,8 +278,6 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                 'key_list_id',
                 'uuid',
                 'attachments',
-                'errors',
-                'status_code'
             ], [
                 'id' => 'int',
                 'list_id' => 'int',

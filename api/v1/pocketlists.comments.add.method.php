@@ -8,9 +8,9 @@ class pocketlistsCommentsAddMethod extends pocketlistsApiAbstractMethod
     {
         $comments = $this->readBodyAsJson();
         if (empty($comments)) {
-            throw new waAPIException('required_param', _w('Missing data'), 400);
+            throw new pocketlistsApiException(_w('Missing `data`'), 400);
         } elseif (!is_array($comments)) {
-            throw new waAPIException('type_error', _w('Type error data'), 400);
+            throw new pocketlistsApiException(_w('Type error `data`'), 400);
         }
 
         $items = [];
@@ -45,8 +45,8 @@ class pocketlistsCommentsAddMethod extends pocketlistsApiAbstractMethod
                 'client_touch_datetime' => ifset($_comment, 'client_touch_datetime', null),
                 'uuid'                  => ifset($_comment, 'uuid', null),
                 'list_id'               => ifset($items, $item_id, 'list_id', null),
-                'errors'                => [],
-                'status_code'           => null,
+                'success'               => true,
+                'errors'                => []
             ];
 
             if (!isset($_comment['item_id'])) {
@@ -86,15 +86,13 @@ class pocketlistsCommentsAddMethod extends pocketlistsApiAbstractMethod
                 }
             }
 
-            if (empty($_comment['errors'])) {
-                unset($_comment['errors']);
-            } else {
-                $_comment['status_code'] = 'error';
+            if (!empty($_comment['errors'])) {
+                $_comment['success'] = false;
             }
         }
 
         $comments_ok = array_filter($comments, function ($c) {
-            return is_null($c['status_code']);
+            return $c['success'];
         });
         $comments_err = array_diff_key($comments, $comments_ok);
         if (!empty($comments_ok)) {
@@ -107,7 +105,6 @@ class pocketlistsCommentsAddMethod extends pocketlistsApiAbstractMethod
                     if ($rows_count === count($comments_ok)) {
                         foreach ($comments_ok as &$_comment) {
                             $_comment['id'] = $last_id++;
-                            $_comment['status_code'] = 'ok';
                         }
                         unset($_comment);
                         $this->saveLog(
@@ -116,17 +113,17 @@ class pocketlistsCommentsAddMethod extends pocketlistsApiAbstractMethod
                             $comments_ok
                         );
                     } else {
-                        throw new waAPIException('error', _w('Error on transaction'));
+                        throw new pocketlistsApiException(_w('Error on transaction'), 400);
                     }
                 } else {
-                    throw new waAPIException('error', _w('Error on transaction'));
+                    throw new pocketlistsApiException(_w('Error on transaction'), 400);
                 }
             } catch (Exception $ex) {
-                throw new waAPIException('error', sprintf_wp('Error on transaction import save: %s', $ex->getMessage()), 400);
+                throw new pocketlistsApiException(sprintf_wp('Error on transaction import save: %s', $ex->getMessage()), 400);
             }
         }
 
-        return $this->response = $this->filterFields(
+        $this->response['data'] = $this->responseWrapper(
             array_merge($comments_ok, $comments_err),
             [
                 'id',
@@ -136,9 +133,7 @@ class pocketlistsCommentsAddMethod extends pocketlistsApiAbstractMethod
                 'comment',
                 'create_datetime',
                 'client_touch_datetime',
-                'uuid',
-                'errors',
-                'status_code',
+                'uuid'
             ], [
                 'id' => 'int',
                 'item_id' => 'int',

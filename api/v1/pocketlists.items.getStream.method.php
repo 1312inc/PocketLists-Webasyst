@@ -10,9 +10,9 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
 
         if (isset($limit)) {
             if (!is_numeric($limit)) {
-                throw new waAPIException('error_type', sprintf_wp('Invalid type %s', 'limit'), 400);
+                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'limit'), 400);
             } elseif ($limit < 1) {
-                throw new waAPIException('negative_value', _w('The parameter has a negative value'), 400);
+                throw new pocketlistsApiException(_w('The parameter has a negative value'), 400);
             }
             $limit = (int) min($limit, self::MAX_LIMIT);
         } else {
@@ -20,9 +20,9 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
         }
         if (isset($offset)) {
             if (!is_numeric($offset)) {
-                throw new waAPIException('error_type', sprintf_wp('Invalid type %s', 'offset'), 400);
+                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'offset'), 400);
             } elseif ($offset < 0) {
-                throw new waAPIException('negative_value', _w('The parameter has a negative value'), 400);
+                throw new pocketlistsApiException(_w('The parameter has a negative value'), 400);
             }
             $offset = intval($offset);
         } else {
@@ -30,75 +30,78 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
         }
 
         if (!is_string($filter)) {
-            throw new waAPIException('error_type', sprintf_wp('Invalid type %s', 'filter'), 400);
+            throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'filter'), 400);
         }
 
         $filter = trim(trim($filter), '/');
         if ($filter === '') {
-            throw new waAPIException('required_param', sprintf_wp('Missing required parameter: “%s”.', 'filter'), 400);
+            throw new pocketlistsApiException(sprintf_wp('Missing required parameter: “%s”.', 'filter'), 400);
         }
 
-        list($items, $total_count) = $this->getItems($filter, $limit, $offset);
+        try {
+            list($items, $total_count) = $this->getItems($filter, $limit, $offset);
+        } catch (waAPIException $ex) {
+            throw new pocketlistsApiException($ex->getMessage(), 400);
+        }
 
-        $this->response = [
-            'filter' => $filter,
+        $this->response['meta'] = [
             'offset' => $offset,
             'limit'  => $limit,
-            'count'  => $total_count,
-            'data'   => $this->filterFields(
-                $items,
-                [
-                    'id',
-                    'list_id',
-                    'contact_id',
-                    'parent_id',
-                    'sort',
-                    'rank',
-                    'has_children',
-                    'status',
-                    'priority',
-                    'calc_priority',
-                    'create_datetime',
-                    'update_datetime',
-                    'complete_datetime',
-                    'complete_contact_id',
-                    'name',
-                    'note',
-                    'due_date',
-                    'due_datetime',
-                    'client_touch_datetime',
-                    'location_id',
-                    'amount',
-                    'currency_iso3',
-                    'assigned_contact_id',
-                    'repeat',
-                    'key_list_id',
-                    'uuid',
-                    'attachments'
-                ], [
-                    'id' => 'int',
-                    'list_id' => 'int',
-                    'contact_id' => 'int',
-                    'parent_id' => 'int',
-                    'sort' => 'int',
-                    'has_children' => 'int',
-                    'status' => 'int',
-                    'priority' => 'int',
-                    'calc_priority' => 'int',
-                    'create_datetime' => 'datetime',
-                    'update_datetime' => 'datetime',
-                    'complete_datetime' => 'datetime',
-                    'complete_contact_id' => 'int',
-                    'due_datetime' => 'datetime',
-                    'client_touch_datetime' => 'datetime',
-                    'location_id' => 'int',
-                    'amount' => 'float',
-                    'assigned_contact_id' => 'int',
-                    'repeat' => 'int',
-                    'key_list_id' => 'int'
-                ]
-            )
+            'count'  => $total_count
         ];
+        $this->response['data'] = $this->responseListWrapper(
+            $items,
+            [
+                'id',
+                'list_id',
+                'contact_id',
+                'parent_id',
+                'sort',
+                'rank',
+                'has_children',
+                'status',
+                'priority',
+                'calc_priority',
+                'create_datetime',
+                'update_datetime',
+                'complete_datetime',
+                'complete_contact_id',
+                'name',
+                'note',
+                'due_date',
+                'due_datetime',
+                'client_touch_datetime',
+                'location_id',
+                'amount',
+                'currency_iso3',
+                'assigned_contact_id',
+                'repeat',
+                'key_list_id',
+                'uuid',
+                'attachments'
+            ], [
+                'id' => 'int',
+                'list_id' => 'int',
+                'contact_id' => 'int',
+                'parent_id' => 'int',
+                'sort' => 'int',
+                'has_children' => 'int',
+                'status' => 'int',
+                'priority' => 'int',
+                'calc_priority' => 'int',
+                'create_datetime' => 'datetime',
+                'update_datetime' => 'datetime',
+                'complete_datetime' => 'datetime',
+                'complete_contact_id' => 'int',
+                'due_datetime' => 'datetime',
+                'client_touch_datetime' => 'datetime',
+                'location_id' => 'int',
+                'amount' => 'float',
+                'assigned_contact_id' => 'int',
+                'repeat' => 'int',
+                'key_list_id' => 'int'
+            ]
+        );
     }
 
     private function getItems($filter, $limit, $offset)
@@ -116,7 +119,7 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
             !in_array(count($filter_split), [1, 2])
             || !in_array($filter_split[0], $available_filters)
         ) {
-            throw new waAPIException('unknown_value', _w('Unknown filter value'), 400);
+            throw new pocketlistsApiException(_w('Unknown filter value'));
         }
 
         $available_list_ids = pocketlistsRBAC::getAccessListForContact(pl2()->getUser()->getId());
@@ -131,7 +134,7 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
             case 'upnext':
                 /** upnext */
                 if (!empty($filter_split[1])) {
-                    throw new waAPIException('unknown_value', _w('Unknown filter value'), 400);
+                    throw new pocketlistsApiException(_w('Unknown filter value'));
                 }
                 $sql_parts['where']['and'][] = 'i.due_date IS NOT NULL';
                 $sql_parts['order by'][] = 'i.calc_priority DESC, i.due_date, i.due_datetime ASC';
@@ -139,7 +142,7 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
             case 'due':
                 /** due */
                 if (!empty($filter_split[1])) {
-                    throw new waAPIException('unknown_value', _w('Unknown filter value'), 400);
+                    throw new pocketlistsApiException(_w('Unknown filter value'));
                 }
                 $sql_parts['where']['and'][] = 'i.due_date IS NOT NULL';
                 $sql_parts['order by'][] = 'i.due_date, i.due_datetime ASC';
@@ -147,7 +150,7 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
             case 'priority':
                 /** priority */
                 if (!empty($filter_split[1])) {
-                    throw new waAPIException('unknown_value', _w('Unknown filter value'), 400);
+                    throw new pocketlistsApiException(_w('Unknown filter value'));
                 }
                 $sql_parts['order by'][] = 'i.priority DESC';
                 break;
@@ -159,14 +162,14 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
                     || $filter_split[1] < 1
                     || $filter_split[1] != (int) $filter_split[1]
                 ) {
-                    throw new waAPIException('unknown_value', _w('Unknown user'), 400);
+                    throw new pocketlistsApiException(_w('Unknown user'));
                 }
                 $sql_parts['where']['and'][] = 'assigned_contact_id = '.(int) $filter_split[1];
                 break;
             case 'search':
                 /** search/KEYWORD */
                 if (!isset($filter_split[1])) {
-                    throw new waAPIException('empty_value', _w('Empty value'), 400);
+                    throw new pocketlistsApiException(_w('Empty filter value'));
                 }
                 $sql_parts['where']['and'][] = "i.name LIKE '%".$plim->escape($filter_split[1])."%'";
                 break;
@@ -177,11 +180,11 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
                 } else {
                     $locations = explode(',', $filter_split[1]);
                     if (count($locations) !== 2) {
-                        throw new waAPIException('unknown_value', _w('Unknown value'), 400);
+                        throw new pocketlistsApiException(_w('Not two values'));
                     }
                     list($latitude, $longitude) = $locations;
                     if (!is_numeric($latitude) || !is_numeric($longitude)) {
-                        throw new waAPIException('unknown_value', _w('Unknown value'), 400);
+                        throw new pocketlistsApiException(_w('Type error filter value'));
                     }
                     $radius_earth = 6371000;
                     $sql_parts['select']['pl.*'] = 'CEILING(SQRT(POW(PI()*('.$plim->escape($latitude).'-pl.location_latitude)/180, 2)+POW(PI()*('.$plim->escape($longitude)."-pl.location_longitude)/180, 2))*$radius_earth) AS meter";

@@ -46,23 +46,13 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  allOf:
-                    - $ref: '#/components/schemas/attachment'
-                    - type: object
-                      properties:
-                        errors:
-                          type: array
-                          items:
-                            type: string
-                            description: Error description
+                $ref: '#/components/schemas/response'
         400:
           description: Invalid request data.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
   /pocketlists.attachments.delete:
@@ -76,34 +66,36 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/item_attach'
+                type: object
+                required:
+                  - id
+                  - item_id
+                properties:
+                  id:
+                    type: integer
+                    description: Attachment identifier
+                  item_id:
+                    type: integer
+                    description: Item identifier
       responses:
         200:
           description: OK
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  allOf:
-                    - $ref: '#/components/schemas/item_attach'
-                    - type: object
-                      properties:
-                        error:
-                          type: string
-                          description: Description error
+                $ref: '#/components/schemas/response'
         400:
           description: Invalid request data.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         403:
           description: Access denied to the Pocket Lists app or this API method.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
   /pocketlists.comments.add:
@@ -143,27 +135,25 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/comment'
+                $ref: '#/components/schemas/response'
         400:
           description: Invalid request data.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         403:
           description: Access denied to the Pocket Lists app or this API method.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         404:
           description: Pocket not found.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
   /pocketlists.comments.delete:
@@ -181,14 +171,18 @@ paths:
             items:
               type: integer
       responses:
-        204:
+        200:
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
         400:
           description: Invalid request data.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
   /pocketlists.comments.get:
@@ -218,27 +212,13 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  offset:
-                    type: integer
-                    description: Offset
-                  limit:
-                    type: integer
-                    description: Limit
-                  count:
-                    type: integer
-                    description: Count
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/comment'
+                $ref: '#/components/schemas/response'
         404:
           description: Not found.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
   /pocketlists.comments.update:
@@ -257,6 +237,13 @@ paths:
                   - id
                   - comment
                 properties:
+                  action:
+                    type: string
+                    default: patch
+                    description: Обновить или пропатчить сущность
+                    enum:
+                      - patch
+                      - update
                   id:
                     type: integer
                     description: Comment identifier
@@ -274,21 +261,19 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/comment'
+                $ref: '#/components/schemas/response'
         400:
           description: Invalid request data.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         404:
           description: Not found.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
   /pocketlists.items.add:
@@ -386,21 +371,19 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/item'
+                $ref: '#/components/schemas/response'
         400:
           description: Invalid request data.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         404:
           description: Pocket not found.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
   /pocketlists.items.delete:
@@ -418,14 +401,18 @@ paths:
             items:
               type: integer
       responses:
-        204:
+        200:
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
         400:
           description: Invalid request data.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
   /pocketlists.items.get:
@@ -467,32 +454,13 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  offset:
-                    type: integer
-                    description: Offset
-                  limit:
-                    type: integer
-                    description: Limit
-                  count:
-                    type: integer
-                    description: Count
-                  data:
-                    type: array
-                    items:
-                      allOf:
-                        - $ref: '#/components/schemas/item'
-                        - type: object
-                          properties:
-                            comments_count:
-                              type: integer
+                $ref: '#/components/schemas/response'
         400:
           description: Invalid request data.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
   /pocketlists.items.getStream:
@@ -532,30 +500,19 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  filter:
-                    type: string
-                    description: Filter value
-                  offset:
-                    type: integer
-                    description: Offset
-                  limit:
-                    type: integer
-                    description: Limit
-                  count:
-                    type: integer
-                    description: Count
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/item'
+                allOf:
+                  - $ref: '#/components/schemas/response'
+                  - type: object
+                    properties:
+                      filter:
+                        type: string
+                        description: Filter value
         400:
           description: Invalid request data.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
   /pocketlists.items.update:
@@ -656,27 +613,25 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/item'
+                $ref: '#/components/schemas/response'
         400:
           description: Invalid request data.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         403:
           description: Access denied to the Pocket Lists app or this API method.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         404:
           description: Not found.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
   /pocketlists.lists.add:
@@ -754,33 +709,31 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/list'
+                $ref: '#/components/schemas/response'
         400:
           description: Invalid request data.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         403:
           description: Access denied to the Pocket Lists app or this API method.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         404:
           description: Pocket not found.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         405:
           description: Method not allowed
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
   /pocketlists.lists.delete:
@@ -798,14 +751,18 @@ paths:
             items:
               type: integer
       responses:
-        204:
+        200:
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
         400:
           description: Invalid request data.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
   /pocketlists.lists.get:
@@ -842,45 +799,31 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  offset:
-                    type: integer
-                    description: Offset
-                  limit:
-                    type: integer
-                    description: Limit
-                  count:
-                    type: integer
-                    description: Count
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/list'
+                $ref: '#/components/schemas/response'
         400:
           description: Invalid request data.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         403:
           description: Access denied to the Pocket Lists app or this API method.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         404:
           description: Not found.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         405:
           description: Method not allowed
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
   /pocketlists.lists.update:
@@ -949,27 +892,25 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/list'
+                $ref: '#/components/schemas/response'
         400:
           description: Invalid request data.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         404:
           description: Not found.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         405:
           description: Method not allowed
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
   /pocketlists.locations.add:
@@ -1009,21 +950,19 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/location'
+                $ref: '#/components/schemas/response'
         400:
           description: Invalid request data.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         404:
           description: Pocket not found.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
   /pocketlists.locations.delete:
@@ -1041,14 +980,18 @@ paths:
             items:
               type: integer
       responses:
-        204:
+        200:
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
         400:
           description: Invalid request data.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
   /pocketlists.locations.get:
@@ -1078,33 +1021,19 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  offset:
-                    type: integer
-                    description: Offset
-                  limit:
-                    type: integer
-                    description: Limit
-                  count:
-                    type: integer
-                    description: Count
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/location'
+                $ref: '#/components/schemas/response'
         400:
           description: Invalid request data.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         404:
           description: Not found.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
   /pocketlists.locations.update:
@@ -1153,21 +1082,19 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/location'
+                $ref: '#/components/schemas/response'
         400:
           description: Invalid request data.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         404:
           description: Not found.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
   /pocketlists.log.get:
@@ -1198,27 +1125,13 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  offset:
-                    type: integer
-                    description: Offset
-                  limit:
-                    type: integer
-                    description: Limit
-                  count:
-                    type: integer
-                    description: Count
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/log'
+                $ref: '#/components/schemas/response'
         400:
           description: Invalid request data.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
   /pocketlists.log.getDeleted:
@@ -1243,27 +1156,13 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  offset:
-                    type: integer
-                    description: Offset
-                  limit:
-                    type: integer
-                    description: Limit
-                  count:
-                    type: integer
-                    description: Count
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/log'
+                $ref: '#/components/schemas/response'
         400:
           description: Invalid request data.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
   /pocketlists.log.getDeletedSummary:
@@ -1284,29 +1183,37 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  starting_from:
-                    type: integer
-                    description: Временная метка, начиная с которой возвращаются записи
-                  ending_to:
-                    type: integer
-                    description: Текущая временная метка
-                  data:
-                    type: object
+                allOf:
+                  - $ref: '#/components/schemas/response'
+                  - type: object
                     properties:
-                      pockets:
-                        type: integer
-                      lists:
-                        type: integer
-                      items:
-                        type: integer
-                      comments:
-                        type: integer
-                      attachments:
-                        type: integer
-                      location:
-                        type: integer
+                      data:
+                        type: object
+                        properties:
+                          starting_from:
+                            type: integer
+                            description: Временная метка, начиная с которой возвращаются записи
+                          ending_to:
+                            type: integer
+                            description: Текущая временная метка
+                          pockets:
+                            type: integer
+                            description: ''
+                          lists:
+                            type: integer
+                            description: ''
+                          items:
+                            type: integer
+                            description: ''
+                          comments:
+                            type: integer
+                            description: ''
+                          attachments:
+                            type: integer
+                            description: ''
+                          location:
+                            type: integer
+                            description: ''
   /pocketlists.log.getSummary:
     get:
       security:
@@ -1325,38 +1232,46 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  starting_from:
-                    type: integer
-                    description: Временная метка, начиная с которой возвращаются записи
-                  ending_to:
-                    type: integer
-                    description: Текущая временная метка
-                  data:
-                    type: object
+                allOf:
+                  - $ref: '#/components/schemas/response'
+                  - type: object
                     properties:
-                      pockets:
-                        type: integer
-                      lists:
-                        type: integer
-                      items:
-                        type: integer
-                      comments:
-                        type: integer
-                      attachments:
-                        type: integer
-                      location:
-                        type: integer
+                      data:
+                        type: object
+                        properties:
+                          starting_from:
+                            type: integer
+                            description: Временная метка, начиная с которой возвращаются записи
+                          ending_to:
+                            type: integer
+                            description: Текущая временная метка
+                          pockets:
+                            type: integer
+                            description: ''
+                          lists:
+                            type: integer
+                            description: ''
+                          items:
+                            type: integer
+                            description: ''
+                          comments:
+                            type: integer
+                            description: ''
+                          attachments:
+                            type: integer
+                            description: ''
+                          location:
+                            type: integer
+                            description: ''
         400:
           description: Invalid request data.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
-  /pocketlists.pocket.add:
+  /pocketlists.pockets.add:
     put:
       security:
         - BearerAuth: [ ]
@@ -1365,85 +1280,88 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - name
-              properties:
-                name:
-                  type: string
-                  description: Название проекта
-                color:
-                  type: string
-                  description: Цвет
-                  enum:
-                    - none
-                    - red
-                    - green
-                    - blue
-                    - yellow
-                    - purple
-                sort:
-                  type: integer
-                  description: Sort
-                rank:
-                  type: string
-                  description: Sort rank
-                uuid:
-                  type: string
-                  description: Unique UUID value
-                prev_pocket_id:
-                  type: integer
-                  nullable: true
-                  description: Предыдущий идентификатор проекта для сортировки
-                prev_pocket_uuid:
-                  type: string
-                  nullable: true
-                  description: Предыдущий UUID проекта для сортировки
+              type: array
+              items:
+                type: object
+                required:
+                  - name
+                properties:
+                  name:
+                    type: string
+                    description: Название проекта
+                  color:
+                    type: string
+                    nullable: true
+                    description: Цвет
+                    enum:
+                      - none
+                      - red
+                      - green
+                      - blue
+                      - yellow
+                      - purple
+                  sort:
+                    type: integer
+                    description: Sort
+                  rank:
+                    type: string
+                    description: Sort rank
+                  uuid:
+                    type: string
+                    description: Unique UUID value
+                  prev_pocket_id:
+                    type: integer
+                    nullable: true
+                    description: Предыдущий идентификатор проекта для сортировки
+                  prev_pocket_uuid:
+                    type: string
+                    nullable: true
+                    description: Предыдущий UUID проекта для сортировки
       responses:
         200:
           description: OK
           content:
             application/json:
               schema:
-                allOf:
-                  - $ref: '#/components/schemas/pocket'
-                  - type: object
-                    properties:
-                      prev_pocket_id:
-                        type: string
-                        nullable: true
-                        default: null
-                        description: Предыдущий идентификатор списка для сортировки
-                      prev_pocket_uuid:
-                        type: string
-                        nullable: true
-                        default: null
-                        description: Предыдущий UUID списка для сортировки
+                $ref: '#/components/schemas/response'
         400:
           description: Invalid request data.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
-  /pocketlists.pocket.delete:
+  /pocketlists.pockets.delete:
     delete:
       security:
         - BearerAuth: [ ]
       summary: Удалить проект
       parameters:
         - in: query
-          name: pocket_id
-          description: Pocket identifier
+          name: id[]
+          description: Pocket identifiers
+          required: true
           schema:
-            type: integer
+            type: array
+            items:
+              type: integer
       responses:
-        204:
+        200:
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
+        400:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
-  /pocketlists.pocket.getList:
+  /pocketlists.pockets.get:
     get:
       security:
         - BearerAuth: [ ]
@@ -1462,34 +1380,20 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  offset:
-                    type: integer
-                    description: Offset
-                  limit:
-                    type: integer
-                    description: Limit
-                  count:
-                    type: integer
-                    description: Count
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/pocket'
+                $ref: '#/components/schemas/response'
         400:
           description: Invalid request data.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         404:
           description: Not found.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
-  /pocketlists.pocket.update:
+                $ref: '#/components/schemas/response'
+  /pocketlists.pockets.update:
     patch:
       security:
         - BearerAuth: [ ]
@@ -1498,70 +1402,65 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - id
-              properties:
-                action:
-                  type: string
-                  default: patch
-                  description: Обновить или пропатчить сущность
-                  enum:
-                    - patch
-                    - update
-                id:
-                  type: integer
-                  description: Pocket identifier
-                name:
-                  type: string
-                  description: Название проекта
-                color:
-                  type: string
-                  description: Цвет
-                  enum:
-                    - none
-                    - red
-                    - green
-                    - blue
-                    - yellow
-                    - purple
-                sort:
-                  type: integer
-                  description: Sort
-                rank:
-                  type: string
-                  description: Sort rank
-                prev_pocket_id:
-                  type: integer
-                  nullable: true
-                  description: Предыдущий идентификатор проекта для сортировки
+              type: array
+              items:
+                type: object
+                required:
+                  - id
+                properties:
+                  action:
+                    type: string
+                    default: patch
+                    description: Обновить или пропатчить сущность
+                    enum:
+                      - patch
+                      - update
+                  id:
+                    type: integer
+                    description: Pocket identifier
+                  name:
+                    type: string
+                    description: Название проекта
+                  color:
+                    type: string
+                    nullable: true
+                    description: Цвет
+                    enum:
+                      - none
+                      - red
+                      - green
+                      - blue
+                      - yellow
+                      - purple
+                  sort:
+                    type: integer
+                    description: Sort
+                  rank:
+                    type: string
+                    description: Sort rank
+                  prev_pocket_id:
+                    type: integer
+                    nullable: true
+                    description: Предыдущий идентификатор проекта для сортировки
       responses:
         200:
           description: OK
           content:
             application/json:
               schema:
-                allOf:
-                  - $ref: '#/components/schemas/pocket'
-                  - type: object
-                    properties:
-                      prev_pocket_id:
-                        type: string
-                        nullable: true
-                        default: null
-                        description: Предыдущий идентификатор списка для сортировки
+                $ref: '#/components/schemas/response'
         400:
           description: Invalid request data.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         404:
           description: Not found.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
   /pocketlists.system.getTime:
@@ -1575,47 +1474,24 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  timestamp:
-                    type: integer
-                    description: Текущий UNIX timestamp (UTC)
-                  datetime:
-                    type: string
-                    format: date-time
-                    description: Текущее время в формате ISO 8601 (UTC)
-                  user_timezone:
-                    type: string
-                    default: 'auto'
-                    description: Часовой пояс из профиля пользователя
-  /pocketlists.users.get:
-    get:
-      security:
-        - BearerAuth: [ ]
-      summary: Список команды
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  offset:
-                    type: integer
-                    description: Offset
-                  limit:
-                    type: integer
-                    description: Limit
-                  count:
-                    type: integer
-                    description: Count
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/user'
-        500:
-          description: Internal server error.
+                allOf:
+                  - $ref: '#/components/schemas/response'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          timestamp:
+                            type: integer
+                            description: Текущий UNIX timestamp (UTC)
+                          datetime:
+                            type: string
+                            format: date-time
+                            description: Текущее время в формате ISO 8601 (UTC)
+                          user_timezone:
+                            type: string
+                            default: 'auto'
+                            description: Часовой пояс из профиля пользователя
   /pocketlists.system.getWebsocketUrl:
     get:
       security:
@@ -1633,22 +1509,41 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  url:
-                    type: string
-                    format: uri
-                    description: URL websocket
-                  channel:
-                    type: string
-                    nullable: true
-                    description: Channel identifier
+                allOf:
+                  - $ref: '#/components/schemas/response'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          url:
+                            type: string
+                            format: uri
+                            description: URL websocket
+                          channel:
+                            type: string
+                            nullable: true
+                            description: Channel identifier
         400:
           description: Invalid request data.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errorResponse'
+                $ref: '#/components/schemas/response'
+        500:
+          description: Internal server error.
+  /pocketlists.users.get:
+    get:
+      security:
+        - BearerAuth: [ ]
+      summary: Список команды
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error.
 
@@ -1679,8 +1574,6 @@ components:
           type: string
           nullable: true
           description: UUID value
-        error:
-          type: string
     pocket:
       type: object
       properties:
@@ -1761,7 +1654,6 @@ components:
                   description: Количество айтемов с максимальным приоритетом
     item:
       allOf:
-        - $ref: '#/components/schemas/extended_status'
         - type: object
           properties:
             attachments:
@@ -1903,7 +1795,6 @@ components:
                   description: Количество комментариев
     comment:
       allOf:
-        - $ref: '#/components/schemas/extended_status'
         - type: object
           properties:
             id:
@@ -1936,7 +1827,6 @@ components:
               description: UUID value
     location:
       allOf:
-        - $ref: '#/components/schemas/extended_status'
         - type: object
           properties:
             id:
@@ -2070,40 +1960,61 @@ components:
         params:
           type: string
           description: Params, JSON
-    item_attach:
-      type: object
-      required:
-        - item_id
-        - attachment_id
-      properties:
-        item_id:
-          type: integer
-          description: Item identifier
-        attachment_id:
-          type: array
-          items:
-            type: integer
-            description: Attachment identifier
-    errorResponse:
-      type: object
-      properties:
-        error:
-          type: string
-          description: Error code
-        error_description:
-          type: string
-          description: Error description
-    extended_status:
-      type: object
-      properties:
-        status_code:
-          type: string
-          description: Status code
-          enum:
-            - ok
-            - error
-        errors:
-          type: array
-          items:
-            type: string
-            description: Error description
+    response:
+      allOf:
+        - type: object
+          properties:
+            status_code:
+              type: string
+              description: Status code
+              enum:
+                - ok
+                - error
+            error:
+              type: string
+              description: Error description
+        - $ref: '#/components/schemas/part_response'
+    part_response:
+      allOf:
+        - type: object
+          properties:
+            data:
+              type: array
+              items:
+                allOf:
+                  - type: object
+                    properties:
+                      success:
+                        type: boolean
+                        description: Status code
+                      errors:
+                        type: array
+                        items:
+                          type: string
+                          description: Error description
+                  - type: object
+                    properties:
+                      data:
+                        anyOf:
+                          - $ref: '#/components/schemas/attachment'
+                          - $ref: '#/components/schemas/comment'
+                          - $ref: '#/components/schemas/item'
+                          - $ref: '#/components/schemas/list'
+                          - $ref: '#/components/schemas/location'
+                          - $ref: '#/components/schemas/log'
+                          - $ref: '#/components/schemas/pocket'
+                          - $ref: '#/components/schemas/user'
+        - type: object
+          properties:
+            meta:
+              type: object
+              properties:
+                offset:
+                  type: integer
+                  description: Offset
+                limit:
+                  type: integer
+                  description: Limit
+                count:
+                  type: integer
+                  description: Count

@@ -6,35 +6,96 @@ class pocketlistsListsDeleteMethod extends pocketlistsApiAbstractMethod
 
     public function execute()
     {
-        $this->http_status_code = 204;
-        $list_ids = $this->get('id');
+        $data = $this->get('id');
 
-        if (empty($list_ids)) {
-            throw new waAPIException('required_param', sprintf_wp('Missing required parameter: “%s”.', 'id', 400));
-        } elseif (!is_array($list_ids)) {
-            throw new waAPIException('error_type', sprintf_wp('Invalid type %s', 'id'), 400);
+        if (empty($data)) {
+            throw new pocketlistsApiException(sprintf_wp('Missing required parameter: “%s”.', 'id'), 400);
+        } elseif (!is_array($data)) {
+            throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'id'), 400);
         }
+
+        $lists = [];
+        $list_ids = array_unique(array_filter($data));
 
         /** @var pocketlistsListFactory $plf */
         $plf = pl2()->getEntityFactory(pocketlistsList::class);
-        $list_ids = array_unique($list_ids);
+        if (!empty($list_ids)) {
+            $lists = $plf->findById($list_ids);
+            $list_ids = [];
 
-        $logs = [];
-        $lists = $plf->findByFields('id', $list_ids, true);
-        foreach ($lists as $list) {
-            $plf->delete($list);
-            $logs[] = [
-                'id'        => $list->getId(),
-                'pocket_id' => $list->getPocketId(),
-                'name'      => $list->getName()
+            /** @var pocketlistsList $l */
+            foreach ((array) $lists as $l) {
+                $list_ids[] = $l->getId();
+            }
+        }
+
+        // validate
+        foreach ($data as &$_list) {
+            /** set default */
+            $_list = [
+                'id'      => ifempty($_list),
+                'success' => null,
+                'errors'  => [],
             ];
+
+            if (empty($_list['id'])) {
+                $_list['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'id');
+            } elseif (!is_numeric($_list['id'])) {
+                $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'id');
+            } elseif (!in_array($_list['id'], $list_ids)) {
+                $_list['errors'][] = _w('List not found');
+            }
+
+            if (!empty($_list['errors'])) {
+                $_list['success'] = false;
+            }
         }
-        if ($logs) {
-            $this->saveLog(
-                pocketlistsLog::ENTITY_LIST,
-                pocketlistsLog::ACTION_DELETE,
-                $logs
-            );
+
+        $lists_ok = array_filter($data, function ($c) {
+            return is_null($c['success']);
+        });
+        $lists_err = array_diff_key($data, $lists_ok);
+        if (!empty($lists_ok)) {
+            $logs = [];
+            foreach ($lists as $list) {
+                try {
+                    $id = $list->getId();
+                    if ($plf->delete($list)) {
+                        $success = true;
+                        $logs[] = [
+                            'id'        => $id,
+                            'pocket_id' => $list->getPocketId(),
+                            'name'      => $list->getName()
+                        ];
+                    } else {
+                        $success = false;
+                    }
+                    foreach ($lists_ok as &$_list_ok) {
+                        if ($_list_ok['id'] == $id) {
+                            $_list_ok['success'] = $success;
+                            break;
+                        }
+                    }
+                } catch (waException $we) {
+
+                }
+            }
+            if ($logs) {
+                $this->saveLog(
+                    pocketlistsLog::ENTITY_LIST,
+                    pocketlistsLog::ACTION_DELETE,
+                    $logs
+                );
+            }
         }
+
+        $this->response['data'] = $this->responseWrapper(
+            array_merge($lists_ok, $lists_err),
+            [
+                'id'
+            ], [
+                'id' => 'int'
+            ]
+        );
     }
 }

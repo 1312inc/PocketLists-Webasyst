@@ -7,11 +7,11 @@ class pocketlistsLogGetSummaryMethod extends pocketlistsApiAbstractMethod
         $starting_from = $this->get('starting_from');
 
         if (!isset($starting_from)) {
-            throw new waAPIException('required_param', sprintf_wp('Missing required parameter: “%s”.', 'starting_from'), 400);
+            throw new pocketlistsApiException(sprintf_wp('Missing required parameter: “%s”.', 'starting_from'), 400);
         } elseif (!is_numeric($starting_from)) {
-            throw new waAPIException('type_error', sprintf_wp('Type error parameter: “%s”.', 'starting_from'), 400);
+            throw new pocketlistsApiException(sprintf_wp('Type error parameter: “%s”.', 'starting_from'), 400);
         } elseif ($starting_from < 1) {
-            throw new waAPIException('negative_value', _w('The parameter has a negative value'), 400);
+            throw new pocketlistsApiException(_w('The parameter has a negative value'), 400);
         }
 
         /** @var pocketlistsLogModel $log_model */
@@ -24,17 +24,15 @@ class pocketlistsLogGetSummaryMethod extends pocketlistsApiAbstractMethod
             'starting_from' => date('Y-m-d H:i:s', $starting_from)
         ])->fetchAll('entity_type', 1);
 
-        $this->response = [
+        $this->response['data'] = [
             'starting_from' => (int) $starting_from,
             'ending_to'     => time(),
-            'data'          => [
-                'pockets'     => (int) ifempty($log_summary, pocketlistsLogContext::POCKET_ENTITY, 0),
-                'lists'       => (int) ifempty($log_summary, pocketlistsLogContext::LIST_ENTITY, 0),
-                'items'       => (int) ifempty($log_summary, pocketlistsLogContext::ITEM_ENTITY, 0),
-                'comments'    => (int) ifempty($log_summary, pocketlistsLogContext::COMMENT_ENTITY, 0),
-                'attachments' => (int) ifempty($log_summary, pocketlistsLogContext::ATTACHMENT_ENTITY, 0),
-                'location'    => (int) ifempty($log_summary, pocketlistsLogContext::LOCATION_ENTITY, 0)
-            ]
+            'pockets'       => (int) ifempty($log_summary, pocketlistsLogContext::POCKET_ENTITY, 0),
+            'lists'         => (int) ifempty($log_summary, pocketlistsLogContext::LIST_ENTITY, 0),
+            'items'         => (int) ifempty($log_summary, pocketlistsLogContext::ITEM_ENTITY, 0),
+            'comments'      => (int) ifempty($log_summary, pocketlistsLogContext::COMMENT_ENTITY, 0),
+            'attachments'   => (int) ifempty($log_summary, pocketlistsLogContext::ATTACHMENT_ENTITY, 0),
+            'location'      => (int) ifempty($log_summary, pocketlistsLogContext::LOCATION_ENTITY, 0)
         ];
     }
 }

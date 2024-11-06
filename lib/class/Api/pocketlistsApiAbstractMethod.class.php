@@ -18,6 +18,68 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
     {
         parent::__construct();
         wa()->getStorage()->close();
+        $this->response = [
+            'status_code' => 'ok',
+            'error'       => '',
+            'data'        => []
+        ];
+    }
+
+    /**
+     * @param $internal
+     * @return array
+     * @throws pocketlistsAPIException
+     * @throws waException
+     */
+    public function getResponse($internal = false)
+    {
+        if (!$internal) {
+            // check request method
+            $request_method = strtoupper(waRequest::method());
+            if ((is_array($this->method) && !in_array($request_method, $this->method)) ||
+                (!is_array($this->method) && $request_method != $this->method)
+            ) {
+                throw new pocketlistsApiException(sprintf(_ws('Method %s not allowed'), $request_method), 405);
+            }
+        }
+
+        $this->execute();
+
+        return $this->response;
+    }
+
+    /**
+     * @param $name
+     * @param $required
+     * @return array|int|mixed|null
+     * @throws pocketlistsAPIException
+     * @throws waException
+     */
+    public function get($name, $required = false)
+    {
+        $v = waRequest::get($name);
+        if ($required && !$v) {
+            throw new pocketlistsApiException(sprintf(_ws('Required parameter is missing: “%s”.'), $name), 400);
+        }
+
+        return $v;
+    }
+
+    /**
+     * @param $name
+     * @param $required
+     * @return array|int|mixed|null
+     * @throws pocketlistsAPIException
+     * @throws waException
+     */
+    public function post($name, $required = false)
+    {
+        $v = waRequest::post($name);
+        if ($required && !$v) {
+            throw new pocketlistsApiException(sprintf(_ws('Required parameter is missing: “%s”.'), $name), 400);
+        }
+
+        return $v;
     }
 
     /**
@@ -49,6 +111,42 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
     }
 
     /**
+     * @param array $data
+     * @param array $fields
+     * @param array $field_types
+     * @return array
+     */
+    protected function singleFilterFields($data, array $fields, array $field_types = [])
+    {
+        $res = [];
+        foreach (array_keys($data) as $key) {
+            if (in_array($key, $fields)) {
+                if (!isset($field_types[$key]) || $data[$key] === null) {
+                    $res[$key] = $data[$key];
+                    continue;
+                }
+                if ($field_types[$key] === 'int') {
+                    $res[$key] = intval($data[$key]);
+                } elseif ($field_types[$key] === 'bool') {
+                    $res[$key] = boolval($data[$key]);
+                } elseif ($field_types[$key] === 'float') {
+                    $res[$key] = floatval($data[$key]);
+                } elseif ($field_types[$key] === 'double') {
+                    $res[$key] = doubleval($data[$key]);
+                } elseif ($field_types[$key] === 'datetime') {
+                    $res[$key] = $this->formatDatetimeToISO8601($data[$key]);
+                } elseif ($field_types[$key] === 'date') {
+
+                } else {
+                    $res[$key] = $data[$key];
+                }
+            }
+        }
+
+        return $res;
+    }
+
+    /**
      * @param $data
      * @param array $fields
      * @param array $field_types
@@ -58,31 +156,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
     {
         if (!empty($data) && is_array($data)) {
             return array_map(function ($el) use ($fields, $field_types) {
-                $res = [];
-                foreach (array_keys($el) as $key) {
-                    if (in_array($key, $fields)) {
-                        if (!isset($field_types[$key]) || $el[$key] === null) {
-                            $res[$key] = $el[$key];
-                            continue;
-                        }
-                        if ($field_types[$key] === 'int') {
-                            $res[$key] = intval($el[$key]);
-                        } elseif ($field_types[$key] === 'bool') {
-                            $res[$key] = boolval($el[$key]);
-                        } elseif ($field_types[$key] === 'float') {
-                            $res[$key] = floatval($el[$key]);
-                        } elseif ($field_types[$key] === 'double') {
-                            $res[$key] = doubleval($el[$key]);
-                        } elseif ($field_types[$key] === 'datetime') {
-                            $res[$key] = $this->formatDatetimeToISO8601($el[$key]);
-                        } elseif ($field_types[$key] === 'date') {
-
-                        } else {
-                            $res[$key] = $el[$key];
-                        }
-                    }
-                }
-                return $res;
+                return $this->singleFilterFields($el, $fields, $field_types);
             }, array_values($data));
         }
 
@@ -130,7 +204,8 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                 'file'      => '',
                 'file_name' => '',
                 'url'       => '',
-                'uuid'      => null
+                'uuid'      => null,
+                'errors'    => []
             ];
             if (empty($_file['file']) || empty($_file['file_name'])) {
                 continue;
@@ -138,7 +213,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
             $extension = pathinfo($_file['file_name'], PATHINFO_EXTENSION);
             if (in_array($extension, ['php', 'phtml', 'htaccess'])) {
                 $_file['file'] = '';
-                $_file['error'] = sprintf_wp('Files with extension .%s are not allowed to security considerations.', $extension);
+                $_file['errors'][] = sprintf_wp('Files with extension .%s are not allowed to security considerations.', $extension);
                 continue;
             }
             $item_file = base64_decode(ifset($_file, 'file', null));
@@ -148,7 +223,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
             $file_vo->setName(md5(uniqid(__METHOD__)).$_file['file_name']);
             $tmp_name = $temp_path.DIRECTORY_SEPARATOR.$file_vo->getName();
             if (!file_put_contents($file_vo->getFullPath(), $item_file)) {
-                $_file['error'] = _w('File could not be saved.');
+                $_file['errors'][] = _w('File could not be saved.');
                 continue;
             }
 
@@ -202,7 +277,8 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
 
         switch ($entity_type) {
             case 'pocket':
-                return $entities;
+                $parent_key = 'pl_id';
+                break;
             case 'list':
                 $parent_key = 'pocket_id';
                 break;
@@ -281,6 +357,19 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
 
             $model->exec("SET @prev_id := 0, @grp_id := 0, @prev_uuid := ''");
             switch ($entity_type) {
+                case 'pocket':
+                    $sub_sql = "
+                        SELECT
+                            id, sort, `rank`, uuid,
+                            1312 as pl_id,
+                            @prev_id AS prev_id,
+                            @prev_uuid AS prev_uuid,
+                            @prev_id := pp.id AS _,
+                            @prev_uuid := pp.uuid AS __
+                        FROM pocketlists_pocket pp
+                        ORDER BY pp.sort, pp.`rank`
+                    ";
+                    break;
                 case 'list':
                     $sub_sql = "SELECT 
                         pl.id, pi.name, pl.pocket_id, pl.sort, pl.`rank`, pi.uuid,
@@ -319,12 +408,10 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                 if ($_prev_entity['prev_id'] === '0') {
                     $_prev_entity['prev_id'] = null;
                 }
-                if (in_array($_prev_entity['id'], $prev_entity_ids) || in_array($_prev_entity['uuid'], $prev_entity_uuids)) {
-                    if (!empty($_prev_entity['id'])) {
-                        $prev_by_id[$_prev_entity['id']] = $_prev_entity;
-                    } else {
-                        $prev_by_uuid[$_prev_entity['uuid']] = $_prev_entity;
-                    }
+                if (in_array($_prev_entity['id'], $prev_entity_ids)) {
+                    $prev_by_id[$_prev_entity['id']] = $_prev_entity;
+                } elseif (in_array($_prev_entity['uuid'], $prev_entity_uuids)) {
+                    $prev_by_uuid[$_prev_entity['uuid']] = $_prev_entity;
                 } else {
                     if (
                         ifset($prev_by_id, $_prev_entity['prev_id'], [])
@@ -343,6 +430,11 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
 
         $p_sort_rank = pocketlistsSortRank::getInstance();
         switch ($entity_type) {
+            case 'pocket':
+                $sort_info = $model->query("
+                    SELECT MIN(sort) AS sort_min, MAX(sort) AS sort_max FROM pocketlists_pocket
+                ")->fetchAssoc();
+                break;
             case 'list':
                 $sort_info = $model->query("
                     SELECT pocket_id AS grp_id, MIN(sort) AS sort_min, MAX(sort) AS sort_max FROM pocketlists_list
@@ -363,7 +455,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                 $_entity['rank'] = ifset($_entity, 'rank', '');
                 continue;
             }
-            if (!isset($_entity[$parent_key])) {
+            if (!isset($_entity[$parent_key]) && $entity_type !== 'pocket') {
                 $_entity['sort'] = 0;
                 $_entity['rank'] = '';
                 continue;
@@ -427,80 +519,6 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
         unset($_entity);
 
         return $entities;
-    }
-
-    protected function sortingPocket($pocket = [])
-    {
-        if (isset($pocket['sort'])) {
-            return [$pocket['sort'], ifset($pocket, 'rank', '')];
-        }
-
-        $sort = 0;
-        $rank = '';
-        $model = pl2()->getModel();
-        $p_sort_rank = pocketlistsSortRank::getInstance();
-        if (isset($pocket['prev_pocket_id']) || isset($pocket['prev_pocket_uuid'])) {
-            $where = [];
-            $params = [];
-            if (isset($pocket['prev_pocket_id'])) {
-                $where[] = 't.id = i:id';
-                $where[] = 't.prev_id = i:id';
-                $params['id'] = $pocket['prev_pocket_id'];
-            } elseif (isset($pocket['prev_pocket_uuid'])) {
-                $where[] = 't.uuid = s:uuid';
-                $where[] = 't.prev_uuid = s:uuid';
-                $params['uuid'] = $pocket['prev_pocket_uuid'];
-            }
-            $model->exec("SET @prev_id := 0, @prev_uuid := ''");
-            $prev_entities = $model->query(" 
-                SELECT * FROM (SELECT
-                        id, sort, `rank`, uuid,
-                        @prev_id AS prev_id,
-                        @prev_uuid AS prev_uuid,
-                        @prev_id := pp.id AS _,
-                        @prev_uuid := pp.uuid AS __
-                    FROM pocketlists_pocket pp
-                    ORDER BY pp.sort, pp.`rank`
-                ) AS t
-                WHERE ".implode(' OR ', $where), $params
-            )->fetchAll();
-
-            $extreme_entity = [];
-            if (!empty($prev_entities)) {
-                $extreme_entity = array_shift($prev_entities);
-                if ($prev = array_shift($prev_entities)) {
-                    $extreme_entity['next_sort'] = $prev['sort'];
-                    $extreme_entity['next_rank'] = $prev['rank'];
-                } else {
-                    $extreme_entity += ['next_sort' => null, 'next_rank' => null];
-                }
-            }
-
-            $p_sort_rank->new(
-                (int) ifset($extreme_entity, 'sort', 0),
-                ifempty($extreme_entity, 'rank', '0')
-            );
-            if (!isset($extreme_entity['next_sort'])) {
-                list($sort) = $p_sort_rank->next();
-            } else {
-                list($sort, $rank) = $p_sort_rank->between(
-                    (int) ifset($extreme_entity, 'next_sort', 0),
-                    ifempty($extreme_entity, 'next_rank', '0')
-                );
-            }
-        } else {
-            $sort_info = $model->query("
-                SELECT MIN(sort) AS sort_min, MAX(sort) AS sort_max FROM pocketlists_pocket
-            ")->fetchAssoc();
-            $sort_min = ifset($sort_info, 'sort_min', null);
-            if (!is_null($sort_min)) {
-                /** добавляем в начало списка */
-                $p_sort_rank->new((int) $sort_min, '0');
-                list($sort) = $p_sort_rank->previous();
-            }
-        }
-
-        return [$sort, $rank];
     }
 
     /**
@@ -623,5 +641,39 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
             ."WHERE uuid IN (s:uuids)",
             ['uuids' => array_unique($uuids)]
         )->fetchAll('uuid');
+    }
+
+    /**
+     * @param array $data
+     * @param array$fields
+     * @param array $field_types
+     * @return array
+     */
+    protected function responseWrapper($data = [], $fields = [], array $field_types = [])
+    {
+        if (!is_array($data)) {
+            return  [];
+        }
+        foreach ($data as &$_data) {
+            $_data = [
+                'success' => !empty($_data['success']),
+                'errors'  => ifset($_data, 'errors', []),
+                'data'    => $this->singleFilterFields(ifset($_data, []), $fields, $field_types)
+            ];
+        }
+
+        return array_values($data);
+    }
+
+    protected function responseListWrapper($data = [], $fields = [], array $field_types = [])
+    {
+        if (!is_array($data)) {
+            return  [];
+        }
+        foreach ($data as &$_data) {
+            $_data = $this->singleFilterFields(ifset($_data, []), $fields, $field_types);
+        }
+
+        return array_values($data);
     }
 }

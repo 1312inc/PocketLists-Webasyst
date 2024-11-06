@@ -8,9 +8,9 @@ class pocketlistsLocationsAddMethod extends pocketlistsApiAbstractMethod
     {
         $locations = $this->readBodyAsJson();
         if (empty($locations)) {
-            throw new waAPIException('required_param', _w('Missing data'), 400);
+            throw new pocketlistsApiException(_w('Missing `data`'), 400);
         } elseif (!is_array($locations)) {
-            throw new waAPIException('type_error', _w('Type error data'), 400);
+            throw new pocketlistsApiException(_w('Type error `data`'), 400);
         }
 
         $uuids = array_column($locations, 'uuid');
@@ -30,8 +30,8 @@ class pocketlistsLocationsAddMethod extends pocketlistsApiAbstractMethod
                 'location_longitude' => ifset($_location, 'location_longitude', null),
                 'location_radius'    => ifset($_location, 'location_radius', null),
                 'uuid'               => ifset($_location, 'uuid', null),
-                'errors'             => [],
-                'status_code'        => null,
+                'success'            => true,
+                'errors'             => []
             ];
 
             if (isset($_location['name']) && !is_string($_location['name'])) {
@@ -74,15 +74,13 @@ class pocketlistsLocationsAddMethod extends pocketlistsApiAbstractMethod
                 }
             }
 
-            if (empty($_location['errors'])) {
-                unset($_location['errors']);
-            } else {
-                $_location['status_code'] = 'error';
+            if (!empty($_location['errors'])) {
+                $_location['success'] = false;
             }
         }
 
         $locations_ok = array_filter($locations, function ($l) {
-            return is_null($l['status_code']);
+            return $l['success'];
         });
         $locations_err = array_diff_key($locations, $locations_ok);
         if (!empty($locations_ok)) {
@@ -95,7 +93,6 @@ class pocketlistsLocationsAddMethod extends pocketlistsApiAbstractMethod
                     if ($rows_count === count($locations_ok)) {
                         foreach ($locations_ok as &$_locations) {
                             $_locations['id'] = $last_id++;
-                            $_locations['status_code'] = 'ok';
                         }
                         unset($_locations);
                         $this->saveLog(
@@ -104,16 +101,16 @@ class pocketlistsLocationsAddMethod extends pocketlistsApiAbstractMethod
                             $locations_ok
                         );
                     } else {
-                        throw new waAPIException('error', _w('Error on transaction'));
+                        throw new pocketlistsApiException(_w('Error on transaction'), 400);
                     }
                 } else {
-                    throw new waAPIException('error', _w('Error on transaction'));
+                    throw new pocketlistsApiException(_w('Error on transaction'), 400);
                 }
             } catch (Exception $ex) {
-                throw new waAPIException('error', sprintf_wp('Error on transaction import save: %s', $ex->getMessage()), 400);
+                throw new pocketlistsApiException(sprintf_wp('Error on transaction import save: %s', $ex->getMessage()), 400);
             }
         }
-        $this->response = $this->filterFields(
+        $this->response['data'] = $this->responseWrapper(
             array_merge($locations_ok, $locations_err),
             [
                 'id',
@@ -123,8 +120,6 @@ class pocketlistsLocationsAddMethod extends pocketlistsApiAbstractMethod
                 'location_longitude',
                 'location_radius',
                 'uuid',
-                'errors',
-                'status_code'
             ], [
                 'id' => 'int',
                 'location_latitude' => 'float',
