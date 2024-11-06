@@ -1291,6 +1291,7 @@ paths:
                     description: Название проекта
                   color:
                     type: string
+                    nullable: true
                     description: Цвет
                     enum:
                       - none
@@ -1422,6 +1423,7 @@ paths:
                     description: Название проекта
                   color:
                     type: string
+                    nullable: true
                     description: Цвет
                     enum:
                       - none
