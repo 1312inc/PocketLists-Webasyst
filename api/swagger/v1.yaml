@@ -1751,7 +1751,7 @@ components:
               format: date-time
               nullable: true
               default: null
-              description: datetime
+              description: Client datetime (UTC)
             location_id:
               type: integer
               nullable: true
@@ -1820,7 +1820,7 @@ components:
               type: string
               format: date-time
               nullable: true
-              description: Дата и точное время
+              description: Client datetime (UTC)
             uuid:
               type: string
               nullable: true

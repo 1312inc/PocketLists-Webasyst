@@ -62,7 +62,7 @@ class pocketlistsCommentsUpdateMethod extends pocketlistsApiAbstractMethod
                 if (!is_string($_comment['client_touch_datetime'])) {
                     $_comment['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'client_touch_datetime');
                 } else {
-                    $dt = date_create($_comment['client_touch_datetime']);
+                    $dt = date_create($_comment['client_touch_datetime'], new DateTimeZone('UTC'));
                     if ($dt) {
                         $_comment['client_touch_datetime'] = $dt->format('Y-m-d H:i:s');
                     } else {

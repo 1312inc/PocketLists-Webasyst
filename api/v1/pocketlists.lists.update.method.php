@@ -119,7 +119,7 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                 if (!is_string($_list['client_touch_datetime'])) {
                     $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'client_touch_datetime');
                 } else {
-                    $dt = date_create($_list['client_touch_datetime']);
+                    $dt = date_create($_list['client_touch_datetime'], new DateTimeZone('UTC'));
                     if ($dt) {
                         $_list['client_touch_datetime'] = $dt->format('Y-m-d H:i:s');
                     } else {
