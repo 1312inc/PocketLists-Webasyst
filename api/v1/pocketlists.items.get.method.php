@@ -39,17 +39,26 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
                 throw new pocketlistsApiException(_w('Location not found'), 404);
             }
         }
-        if (isset($external_app_id) || isset($external_entity_type) || isset($external_entity_id)) {
-            if (!isset($external_app_id, $external_entity_type, $external_entity_id)) {
-                throw new pocketlistsApiException(sprintf_wp('Missing required parameter: “%s”.', 'external_app_id, external_entity_type, external_entity_id'), 400);
-            } elseif (!is_string($external_app_id)) {
-                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'external_app_id'), 400);
-            } elseif (!is_string($external_entity_type)) {
+        if (isset($external_app_id) && !is_string($external_app_id)) {
+            throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'external_app_id'), 400);
+        }
+        if (isset($external_entity_type)) {
+            if (!is_string($external_entity_type)) {
                 throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'external_entity_type'), 400);
-            } elseif (!is_string($external_entity_id)) {
-                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'external_entity_id'), 400);
+            } elseif (!isset($external_app_id)) {
+                throw new pocketlistsApiException(sprintf_wp('Missing required parameter: “%s”.', 'external_app_id'), 400);
             }
         }
+        if (isset($external_entity_id)) {
+            if (!is_string($external_entity_id)) {
+                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'external_entity_id'), 400);
+            } elseif (!isset($external_app_id)) {
+                throw new pocketlistsApiException(sprintf_wp('Missing required parameter: “%s”.', 'external_app_id'), 400);
+            } elseif (!isset($external_entity_type)) {
+                throw new pocketlistsApiException(sprintf_wp('Missing required parameter: “%s”.', 'external_entity_type'), 400);
+            }
+        }
+
         if (isset($starting_from)) {
             if (!is_numeric($starting_from)) {
                 throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'starting_from'), 400);
@@ -102,7 +111,13 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
             }
             if ($external_app_id) {
                 $sql_parts['join']['pil2'] = 'LEFT JOIN pocketlists_item_link pil2 ON pil2.item_id = i.id';
-                $sql_parts['where']['and'][] = 'pil2.app = s:app_id AND pil2.entity_type = s:entity_type AND pil2.entity_id = i:entity_id';
+                $sql_parts['where']['and'][] = 'pil2.app = s:app_id';
+                if ($external_entity_type) {
+                    $sql_parts['where']['and'][] = 'pil2.entity_type = s:entity_type';
+                }
+                if ($external_entity_id) {
+                    $sql_parts['where']['and'][] = 'pil2.entity_id = i:entity_id';
+                }
             }
         } else {
             $sql_parts['where']['and'][] = 'i.list_id IN (i:list_ids)';
