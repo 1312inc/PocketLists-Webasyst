@@ -434,6 +434,26 @@ paths:
           schema:
             type: integer
         - in: query
+          name: location_id
+          description: Filtering by location identifier
+          schema:
+            type: integer
+        - in: query
+          name: external_app_id
+          description: Filtering by external app identifier
+          schema:
+            type: string
+        - in: query
+          name: external_entity_type
+          description: Filtering by external entity type
+          schema:
+            type: string
+        - in: query
+          name: external_entity_id
+          description: External entity identifier
+          schema:
+            type: integer
+        - in: query
           name: starting_from
           description: Временная метка, начиная с которой возвращаются записи
           schema:
