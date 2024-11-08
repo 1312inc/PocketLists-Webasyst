@@ -18,6 +18,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
         $user_id = $this->getUser()->getId();
         $item_ids = array_unique(array_column($items, 'id'));
         $list_ids = array_unique(array_column($items, 'list_id'));
+        $location_ids = array_unique(array_filter(array_column($items, 'location_id')));
         $assigned_contact_ids = array_unique(array_column($items, 'assigned_contact_id'));
         $attachments = array_column($items, 'attachments');
 
@@ -33,6 +34,13 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
             /** @var pocketlistsListModel $list_model */
             $list_model = pl2()->getModel(pocketlistsList::class);
             $list_ids = $list_model->select('id')->where('id IN (:list_ids)', ['list_ids' => $list_ids])->fetchAll(null, true);
+        }
+        if (!empty($location_ids)) {
+            /** @var pocketlistsLocationModel $location_model */
+            $location_model = pl2()->getModel(pocketlistsLocation::class);
+            $location_ids = $location_model->select('id')
+                ->where('id IN (:list_ids)', ['list_ids' => $location_ids])
+                ->fetchAll(null, true);
         }
         if (!empty($assigned_contact_ids)) {
             /** @var pocketlistsContact $_assign_contact */
@@ -75,7 +83,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 'due_date'              => ifset($_item, 'due_date', null),
                 'due_datetime'          => ifset($_item, 'due_datetime', null),
                 'client_touch_datetime' => ifset($_item, 'client_touch_datetime', null),
-                'location_id'           => null,
+                'location_id'           => ifset($_item, 'location_id', null),
                 'amount'                => 0,
                 'currency_iso3'         => null,
                 'assigned_contact_id'   => ifset($_item, 'assigned_contact_id', null),
@@ -178,6 +186,14 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                     } else {
                         $_item['errors'][] = _w('Unknown value client_touch_datetime');
                     }
+                }
+            }
+
+            if (isset($_item['location_id'])) {
+                if (!is_numeric($_item['location_id'])) {
+                    $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'location_id');
+                } elseif ($_item['location_id'] < 1 || !in_array($_item['location_id'], $location_ids)) {
+                    $_item['errors'][] = _w('Location not found');
                 }
             }
 

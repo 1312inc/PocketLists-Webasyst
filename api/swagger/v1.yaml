@@ -318,6 +318,9 @@ paths:
                   priority:
                     type: integer
                     description: Priority
+                  location_id:
+                    type: integer
+                    description: Location identifier
                   due_date:
                     type: string
                     format: date
@@ -588,6 +591,9 @@ paths:
                   priority:
                     type: integer
                     description: Priority
+                  location_id:
+                    type: integer
+                    description: Location identifier
                   due_datetime:
                     type: string
                     format: date-time
