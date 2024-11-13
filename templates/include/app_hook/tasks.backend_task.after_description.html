@@ -1,5 +1,24 @@
 {$wa->globals('pl2_external', true)}
 
+
+
+    <link type="text/css" rel="stylesheet" href="{$params.wa_app_static_url}js/widget/style.css">
+    <div id="app"></div>
+    <script>
+      import("{$params.wa_app_static_url}js/widget/widget.js")
+        .then((mountWidget) => {
+            mountWidget.init({
+                apiToken: "",
+                apiBaseUrl: "/api.php",
+                externalAppId: '{$params.app->getApp()}',
+                externalEntityType: 'task',
+                externalEntityId: {$params.task->id}
+            })
+        })
+    </script>
+
+
+
 <main class="pl-items pl-list-items pl-todo"
       id="pl-list-content"
       data-pl2-template="itemadd"
