@@ -368,6 +368,28 @@ paths:
                           type: string
                           nullable: true
                           description: Unique UUID value
+                  external_links:
+                    type: array
+                    description: External links
+                    items:
+                      required:
+                        - app_id
+                        - entity_type
+                        - entity_id
+                      type: object
+                      properties:
+                        app_id:
+                          type: string
+                          description: App identifier
+                        entity_type:
+                          type: string
+                          description: Entity type
+                        entity_id:
+                          type: integer
+                          description: Entity identifier
+                        entity_data:
+                          type: string
+                          description: Entity data
       responses:
         200:
           description: OK
@@ -633,6 +655,28 @@ paths:
                           type: string
                           nullable: true
                           description: Unique UUID value
+                  external_links:
+                    type: array
+                    description: External links
+                    items:
+                      required:
+                        - app_id
+                        - entity_type
+                        - entity_id
+                      type: object
+                      properties:
+                        app_id:
+                          type: string
+                          description: App identifier
+                        entity_type:
+                          type: string
+                          description: Entity type
+                        entity_id:
+                          type: integer
+                          description: Entity identifier
+                        entity_data:
+                          type: string
+                          description: Entity data
       responses:
         200:
           description: OK
@@ -1688,6 +1732,12 @@ components:
                 $ref: '#/components/schemas/attachment'
         - type: object
           properties:
+            external_links:
+              type: array
+              items:
+                $ref: '#/components/schemas/link'
+        - type: object
+          properties:
             id:
               type: integer
               nullable: true
@@ -1820,63 +1870,82 @@ components:
                   type: integer
                   description: Количество комментариев
     comment:
-      allOf:
-        - type: object
-          properties:
-            id:
-              type: integer
-              description: Comment identifier
-            item_id:
-              type: integer
-              description: Item identifier
-            item_name:
-              type: string
-              description: Name item
-            contact_id:
-              type: integer
-              description: Contact identifier
-            comment:
-              type: string
-              description: Comment text
-            create_datetime:
-              type: string
-              format: datetime
-              description: Server-generated comment create datetime (UTC)
-            client_touch_datetime:
-              type: string
-              format: date-time
-              nullable: true
-              description: A descriptive datetime (UTC) to be shown somewhere in the client UI, and not validated by server
-            uuid:
-              type: string
-              nullable: true
-              description: UUID value
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Comment identifier
+        item_id:
+          type: integer
+          description: Item identifier
+        item_name:
+          type: string
+          description: Name item
+        contact_id:
+          type: integer
+          description: Contact identifier
+        comment:
+          type: string
+          description: Comment text
+        create_datetime:
+          type: string
+          format: datetime
+          description: Server-generated comment create datetime (UTC)
+        client_touch_datetime:
+          type: string
+          format: date-time
+          nullable: true
+          description: A descriptive datetime (UTC) to be shown somewhere in the client UI, and not validated by server
+        uuid:
+          type: string
+          nullable: true
+          description: UUID value
     location:
-      allOf:
-        - type: object
-          properties:
-            id:
-              type: integer
-              description: Location identifier
-            name:
-              type: string
-              description: Location name
-            color:
-              type: string
-              description: Location color
-            location_latitude:
-              type: number
-              description: Location latitude
-            location_longitude:
-              type: number
-              description: Location longitude
-            location_radius:
-              type: integer
-              description: Location radius
-            uuid:
-              type: string
-              nullable: true
-              description: UUID value
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Location identifier
+        name:
+          type: string
+          description: Location name
+        color:
+          type: string
+          description: Location color
+        location_latitude:
+          type: number
+          description: Location latitude
+        location_longitude:
+          type: number
+          description: Location longitude
+        location_radius:
+          type: integer
+          description: Location radius
+        uuid:
+          type: string
+          nullable: true
+          description: UUID value
+    link:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Link identifier
+        item_id:
+          type: integer
+          description: Item identifier
+        app:
+          type: string
+          description: Application identifier
+        entity_type:
+          type: string
+          description: Entity type
+        entity_id:
+          type: integer
+          description: Entity identifier
+        data:
+          type: string
+          description: Link data
     user:
       type: object
       properties:

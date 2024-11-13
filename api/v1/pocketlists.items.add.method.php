@@ -88,6 +88,7 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                 'key_list_id'           => null,
                 'uuid'                  => ifset($_item, 'uuid', null),
                 'attachments'           => ifset($_item, 'attachments', []),
+                'external_links'        => ifset($_item, 'external_links', []),
                 'prev_item_id'          => ifset($_item, 'prev_item_id', null),
                 'prev_item_uuid'        => ifset($_item, 'prev_item_uuid', null),
                 'success'               => true,
@@ -214,6 +215,29 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                 }
             }
 
+            if (!empty($_item['external_links'])) {
+                if (is_array($_item['external_links'])) {
+                    foreach ($_item['external_links'] as $_external_link) {
+                        if (!isset($_external_link['app_id'], $_external_link['entity_type'], $_external_link['entity_id'])) {
+                            $_item['errors'][] = _w('External link must have all parameters specified: app_id, entity_type and entity_id');
+                        } elseif (!is_string($_external_link['app_id'])) {
+                            $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'app_id');
+                        } elseif (!is_string($_external_link['entity_type'])) {
+                            $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'entity_type');
+                        } elseif (!is_numeric($_external_link['entity_id'])) {
+                            $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'entity_id');
+                        } elseif ($_external_link['entity_id'] < 1) {
+                            $_item['errors'][] = _w('Entity not found');
+                        }
+                        if (isset($_external_link['entity_data']) && !is_string($_external_link['entity_data'])) {
+                            $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'entity_data');
+                        }
+                    }
+                } else {
+                    $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'external_links');
+                }
+            }
+
             if (isset($_item['uuid'])) {
                 if (!is_string($_item['uuid'])) {
                     $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'uuid');
@@ -241,13 +265,31 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                     $last_id = $result->lastInsertId();
                     $rows_count = $result->affectedRows();
                     if ($rows_count === count($items_ok)) {
+                        $links = [];
                         foreach ($items_ok as &$_item) {
                             $_item['id'] = $last_id++;
                             if (!empty($_item['attachments'])) {
                                 $_item['attachments'] = $this->updateFiles($_item['id'], $_item['attachments']);
                             }
+                            if (!empty($_item['external_links'])) {
+                                foreach ($_item['external_links'] as $_link)
+                                $links[] = [
+                                    'item_id'     => $_item['id'],
+                                    'app'         => ifset($_link, 'app_id', null),
+                                    'entity_type' => ifset($_link, 'entity_type', null),
+                                    'entity_id'   => ifset($_link, 'entity_id', null),
+                                    'entity_data' => ifset($_link, 'entity_data', null),
+                                ];
+                            }
                         }
                         unset($_item);
+
+                        if ($links) {
+                            //save external_links
+                            $link_model = pl2()->getModel(pocketlistsItemLink::class);
+                            $link_model->multipleInsert($links);
+                        }
+
                         $this->saveLog(
                             pocketlistsLog::ENTITY_ITEM,
                             pocketlistsLog::ACTION_ADD,
@@ -294,6 +336,7 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                 'key_list_id',
                 'uuid',
                 'attachments',
+                'external_links'
             ], [
                 'id' => 'int',
                 'list_id' => 'int',
