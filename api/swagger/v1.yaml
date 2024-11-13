@@ -124,7 +124,7 @@ paths:
                     type: string
                     format: date-time
                     nullable: true
-                    description: Дата и точное время
+                    description: A descriptive datetime (UTC) to be shown somewhere in the client UI, and not validated by server
                   uuid:
                     type: string
                     nullable: true
@@ -254,7 +254,7 @@ paths:
                     type: string
                     format: date-time
                     nullable: true
-                    description: Дата и точное время
+                    description: A descriptive datetime (UTC) to be shown somewhere in the client UI, and not validated by server
       responses:
         200:
           description: OK
@@ -325,17 +325,17 @@ paths:
                     type: string
                     format: date
                     nullable: true
-                    description: Дата выполнения весь день
+                    description: Item due date
                   due_datetime:
                     type: string
                     format: date-time
                     nullable: true
-                    description: Дата и точное время выполнения (UTC)
+                    description: Item exact due datetime (UTC)
                   client_touch_datetime:
                     type: string
                     format: date-time
                     nullable: true
-                    description: Дата и точное время
+                    description: A descriptive datetime (UTC) to be shown somewhere in the client UI, and not validated by server
                   uuid:
                     type: string
                     nullable: true
@@ -598,17 +598,17 @@ paths:
                     type: string
                     format: date-time
                     nullable: true
-                    description: Дата и точное время выполнения (UTC)
+                    description: Item exact due datetime (UTC)
                   due_date:
                     type: string
                     format: date
                     nullable: true
-                    description: Дата выполнения весь день
+                    description: Item due date
                   client_touch_datetime:
                     type: string
                     format: date-time
                     nullable: true
-                    description: Дата и точное время
+                    description: A descriptive datetime (UTC) to be shown somewhere in the client UI, and not validated by server
                   prev_item_id:
                     type: integer
                     nullable: true
@@ -700,7 +700,7 @@ paths:
                     type: string
                     format: date-time
                     nullable: true
-                    description: Дата и точное время
+                    description: A descriptive datetime (UTC) to be shown somewhere in the client UI, and not validated by server
                   sort:
                     type: integer
                     description: Sort
@@ -901,7 +901,7 @@ paths:
                     type: string
                     format: date-time
                     nullable: true
-                    description: Дата и точное время
+                    description: A descriptive datetime (UTC) to be shown somewhere in the client UI, and not validated by server
                   sort:
                     type: integer
                     description: Sort
@@ -1493,7 +1493,7 @@ paths:
     get:
       security:
         - BearerAuth: [ ]
-      summary: Возвращает текущее время в часовом поясе UTC.
+      summary: Returns current server time in UTC.
       responses:
         200:
           description: OK
@@ -1509,15 +1509,15 @@ paths:
                         properties:
                           timestamp:
                             type: integer
-                            description: Текущий UNIX timestamp (UTC)
+                            description: UNIX timestamp
                           datetime:
                             type: string
                             format: date-time
-                            description: Текущее время в формате ISO 8601 (UTC)
+                            description: UTC datetime in ISO 8601
                           user_timezone:
                             type: string
                             default: 'auto'
-                            description: Часовой пояс из профиля пользователя
+                            description: Timezone specified in the user custom profile settings
   /pocketlists.system.getWebsocketUrl:
     get:
       security:
@@ -1734,19 +1734,19 @@ components:
             create_datetime:
               type: string
               format: date-time
-              description: Create datetime (UTC)
+              description: Server-generated item create datetime (UTC)
             update_datetime:
               type: string
               format: date-time
               nullable: true
               default: null
-              description: Update datetime (UTC)
+              description: Server-generated item update datetime (UTC)
             complete_datetime:
               type: string
               format: date-time
               nullable: true
               default: null
-              description: Complete datetime (UTC)
+              description: Server-generated item 'mark as completed' datetime (UTC)
             complete_contact_id:
               type: integer
               nullable: true
@@ -1765,19 +1765,19 @@ components:
               format: date
               nullable: true
               default: null
-              description: Due date
+              description: Item due date
             due_datetime:
               type: string
               format: date-time
               nullable: true
               default: null
-              description: Due datetime (UTC)
+              description: Item due datetime (UTC)
             client_touch_datetime:
               type: string
               format: date-time
               nullable: true
               default: null
-              description: Client datetime (UTC)
+              description: A descriptive datetime (UTC) to be shown somewhere in the client UI, and not validated by server
             location_id:
               type: integer
               nullable: true
@@ -1841,12 +1841,12 @@ components:
             create_datetime:
               type: string
               format: datetime
-              description: Create datetime (UTC)
+              description: Server-generated comment create datetime (UTC)
             client_touch_datetime:
               type: string
               format: date-time
               nullable: true
-              description: Client datetime (UTC)
+              description: A descriptive datetime (UTC) to be shown somewhere in the client UI, and not validated by server
             uuid:
               type: string
               nullable: true
@@ -1982,7 +1982,7 @@ components:
         create_datetime:
           type: string
           format: datetime
-          description: Create datetime (UTC)
+          description: Server-generated log entry datetime (UTC)
         params:
           type: string
           description: Params, JSON
