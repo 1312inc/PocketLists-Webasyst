@@ -8,7 +8,7 @@
       import("{$params.wa_app_static_url}js/widget/widget.js")
         .then((mountWidget) => {
             mountWidget.init({
-                apiToken: "",
+                apiToken: "{$api_token}",
                 apiBaseUrl: "/api.php",
                 externalAppId: '{$params.app->getApp()}',
                 externalEntityType: 'task',
