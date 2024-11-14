@@ -142,10 +142,24 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
         ])->fetchAll('id');
         $total_count = (int) $item_model->query('SELECT FOUND_ROWS()')->fetchField();
 
+        $ids = array_keys($items);
+        if ($ids) {
+            $tags = [];
+            $result = pl2()->getModel(pocketlistsItemTags::class)->getTags($ids);
+            foreach ($result as $_res) {
+                if (!isset($tags[$_res['item_id']])) {
+                    $tags[$_res['item_id']] = [];
+                }
+                $tags[$_res['item_id']][] = $_res['text'];
+            }
+        }
         foreach ($items as &$_item) {
             $_item['extended_data'] = [
                 'comments_count' => (int) $_item['comments_count']
             ];
+            if (isset($tags[$_item['id']])) {
+                $_item['tags'] = $tags[$_item['id']];
+            }
         }
         unset($_item);
 
@@ -206,6 +220,7 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
                 'repeat',
                 'key_list_id',
                 'uuid',
+                'tags',
                 'attachments',
                 'extended_data'
             ], [
