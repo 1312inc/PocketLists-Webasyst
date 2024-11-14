@@ -1,17 +1,19 @@
 {$wa->globals('pl2_external', true)}
 
-<link type="text/css" rel="stylesheet" href="{$params.wa_app_static_url}js/widget/style.css">
-<div id="app"></div>
-<script>
-    import("{$params.wa_app_static_url}js/widget/widget.js")
+    <link type="text/css" rel="stylesheet" href="{$params.wa_app_static_url}js/widget/style.css">
+    <div id="app"></div>
+    <script>
+        import("{$params.wa_app_static_url}js/widget/widget.js")
         .then((mountWidget) => {
             mountWidget.init({
                 apiToken: "{$api_token}",
-                apiBaseUrl: "/api.php",
-                externalAppId: '{$params.app->getApp()}'
+                apiBaseUrl: "{$wa_url}api.php",
+                externalAppId: '{$params.app->getApp()}',
+                externalEntityType: 'order',
+                externalEntityId: {$params.order.id}
             })
         })
-</script>
+    </script>
 
 <!-- ui2 -->
 <main class="pl-items pl-list-items pl-todo pl-shop-order"
