@@ -9,7 +9,7 @@
         .then((mountWidget) => {
             mountWidget.init({
                 apiToken: "{$api_token}",
-                apiBaseUrl: "/api.php",
+                apiBaseUrl: "{$wa_url}api.php",
                 externalAppId: '{$params.app->getApp()}',
                 externalEntityType: 'task',
                 externalEntityId: {$params.task->id}
