@@ -1738,6 +1738,13 @@ components:
                 $ref: '#/components/schemas/link'
         - type: object
           properties:
+            tags:
+              type: array
+              items:
+                type: string
+                description: Tag name
+        - type: object
+          properties:
             id:
               type: integer
               nullable: true
