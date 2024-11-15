@@ -7,6 +7,7 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
         $ids = $this->get('id');
         $list_id = $this->get('list_id');
         $location_id = $this->get('location_id');
+        $tag = $this->get('tag');
         $external_app_id = $this->get('external_app_id');
         $external_entity_type = $this->get('external_entity_type');
         $external_entity_id = $this->get('external_entity_id');
@@ -38,6 +39,9 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
             } elseif ($location_id < 1) {
                 throw new pocketlistsApiException(_w('Location not found'), 404);
             }
+        }
+        if (isset($tag) && !is_string($tag)) {
+            throw new pocketlistsApiException(_w('Invalid tag'), 400);
         }
         if (isset($external_app_id) && !is_string($external_app_id)) {
             throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'external_app_id'), 400);
@@ -122,6 +126,11 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
         } else {
             $sql_parts['where']['and'][] = 'i.list_id IN (i:list_ids)';
         }
+        if ($tag) {
+            $sql_parts['join']['pit'] = 'LEFT JOIN pocketlists_item_tags pit ON pit.item_id = i.id';
+            $sql_parts['join']['pt'] = 'LEFT JOIN pocketlists_tag pt ON pt.id = pit.tag_id';
+            $sql_parts['where']['and'][] = 'pt.`text` = s:text';
+        }
         if ($starting_from) {
             $sql_parts['where']['and'][] = 'i.update_datetime >= s:starting_from';
         }
@@ -132,6 +141,7 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
             'item_ids'      => $ids,
             'list_ids'      => $list_ids,
             'location_id'   => $location_id,
+            'text'          => $tag,
             'app_id'        => $external_app_id,
             'entity_type'   => $external_entity_type,
             'entity_id'     => $external_entity_id,

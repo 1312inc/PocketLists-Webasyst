@@ -469,6 +469,11 @@ paths:
           schema:
             type: integer
         - in: query
+          name: tag
+          description: Filtering by tag
+          schema:
+            type: string
+        - in: query
           name: external_app_id
           description: Filtering by external app identifier
           schema:

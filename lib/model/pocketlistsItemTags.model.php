@@ -27,7 +27,7 @@ class pocketlistsItemTagsModel extends pocketlistsModel
 
         return $this->query($sql, [
             'item_ids' => $item_ids
-        ])->fetchAll('id');
+        ])->fetchAll();
     }
 
     public function add($data = [])
