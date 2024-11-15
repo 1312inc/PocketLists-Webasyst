@@ -91,6 +91,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 'key_list_id'           => null,
                 'uuid'                  => ifset($_item, 'uuid', null),
                 'prev_item_id'          => (array_key_exists('prev_item_id', $_item) ? ifset($_item, 'prev_item_id', 0) : null),
+                'tags'                  => ifset($_item, 'tags', []),
                 'attachments'           => ifset($_item, 'attachments', []),
                 'external_links'        => ifset($_item, 'external_links', []),
                 'success'               => true,
@@ -198,6 +199,12 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 }
             }
 
+            if (!empty($_item['tags'])) {
+                if (!is_array($_item['tags'])) {
+                    $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'tags');
+                }
+            }
+
             if (!empty($_item['attachments'])) {
                 if (is_array($_item['attachments'])) {
                     foreach ($_item['attachments'] as $_file) {
@@ -266,6 +273,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
         });
         $items_err = array_diff_key($items, $items_ok);
         if (!empty($items_ok)) {
+            $tags = [];
             $links = [];
             $item_model = pl2()->getModel(pocketlistsItem::class);
             $items_ok = $this->sorting('item', $items_ok);
@@ -273,6 +281,9 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 foreach ($items_ok as &$_item_ok) {
                     $result = $item_model->updateById($_item_ok['id'], $_item_ok);
                     if ($result) {
+                        if (!empty($_item['tags'])) {
+                            $tags[$_item['id']] = $_item['tags'];
+                        }
                         if (!empty($_item_ok['attachments'])) {
                             $_item_ok['attachments'] = $this->updateFiles($_item_ok['id'], $_item_ok['attachments']);
                         }
@@ -293,6 +304,10 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 }
                 unset($_item_ok);
 
+                if ($tags) {
+                    $tag_model = pl2()->getModel(pocketlistsItemTags::class);
+                    $tag_model->add($tags);
+                }
                 if ($links) {
                     //save external_links
                     $link_model = pl2()->getModel(pocketlistsItemLink::class);
@@ -337,6 +352,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 'repeat',
                 'key_list_id',
                 'uuid',
+                'tags',
                 'attachments',
                 'external_links'
             ], [

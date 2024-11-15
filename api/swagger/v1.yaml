@@ -348,6 +348,11 @@ paths:
                     type: string
                     nullable: true
                     description: Предыдущий UUID айтема для сортировки
+                  tags:
+                    type: array
+                    items:
+                      type: string
+                      description: Tag name
                   attachments:
                     type: array
                     description: Files
@@ -635,6 +640,11 @@ paths:
                     type: integer
                     nullable: true
                     description: Предыдущий идентификатор айтема для сортировки
+                  tags:
+                    type: array
+                    items:
+                      type: string
+                      description: Tag name
                   attachments:
                     type: array
                     description: Files
