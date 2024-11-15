@@ -1,11 +1,11 @@
 {$wa->globals('pl2_external', true)}
 
     <link type="text/css" rel="stylesheet" href="{$params.wa_app_static_url}js/widget/style.css">
-    <div id="app"></div>
+    <div class="pl-todo-widget"></div>
     <script>
         import("{$params.wa_app_static_url}js/widget/widget.js")
         .then((mountWidget) => {
-            mountWidget.init({
+            mountWidget.init(document.querySelector(".pl-todo-widget"), {
                 apiToken: "{$api_token}",
                 apiBaseUrl: "{$wa_url}api.php",
                 externalAppId: '{$params.app->getApp()}',
