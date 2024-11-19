@@ -469,6 +469,12 @@ paths:
           schema:
             type: integer
         - in: query
+          name: status
+          description: Item status
+          schema:
+            type: integer
+            default: 0
+        - in: query
           name: tag
           description: Filtering by tag
           schema:
@@ -539,6 +545,12 @@ paths:
           example: upnext, user/ID, search/KEYWORD
           schema:
             type: string
+        - in: query
+          name: status
+          description: Item status
+          schema:
+            type: integer
+            default: 0
         - in: query
           name: offset
           description: Смещение списка (по умолчанию 0)

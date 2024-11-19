@@ -5,9 +5,18 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
     public function execute()
     {
         $filter = $this->get('filter', true);
+        $status = $this->get('status');
         $limit  = $this->get('limit');
         $offset = $this->get('offset');
 
+        if (isset($status)) {
+            if (!is_numeric($status)) {
+                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'status'), 400);
+            }
+            $status = (int) $status;
+        } else {
+            $status = 0;
+        }
         if (isset($limit)) {
             if (!is_numeric($limit)) {
                 throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'limit'), 400);
@@ -39,7 +48,7 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
         }
 
         try {
-            list($items, $total_count) = $this->getItems($filter, $limit, $offset);
+            list($items, $total_count) = $this->getItems($filter, $status, $limit, $offset);
         } catch (waAPIException $ex) {
             throw new pocketlistsApiException($ex->getMessage(), 400);
         }
@@ -104,7 +113,7 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
         );
     }
 
-    private function getItems($filter, $limit, $offset)
+    private function getItems($filter, $status, $limit, $offset)
     {
         $available_filters = [
             'upnext',
@@ -129,6 +138,7 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
 
         $plim  = pl2()->getModel(pocketlistsItem::class);
         $sql_parts = $plim->getQueryComponents(true);
+        $sql_parts['where']['and'][] = 'i.status = i:status';
         $sql_parts['where']['and'][] = 'i.list_id IN (:list_ids)';
         switch ($filter_split[0]) {
             case 'upnext':
@@ -197,6 +207,7 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
         $sql = $plim->buildSqlComponents($sql_parts);
         $items = $plim->query(
             "$sql LIMIT i:offset, i:limit", [
+            'status'     => $status,
             'list_ids'   => $available_list_ids,
             'contact_id' => $this->getUser()->getId(),
             'limit'      => $limit,
