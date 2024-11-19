@@ -10,6 +10,7 @@
                     <option value="LIST">[`LIST`]</option>
                     <option value="ITEM" selected>[`ITEM`]</option>
                     <option value="COMMENT">[`COMMENT`]</option>
+                    <option value="LOCATION">[`LOCATION`]</option>
                 </select>
             </div>
         </div>
@@ -184,6 +185,12 @@
                         comment_entity_id.show();
                     }
                 });
+                break;
+            case 'LOCATION':
+                div_by_user.hide();
+                div_assign.hide();
+                div_list.hide();
+                div_comment_in.hide();
                 break;
         }
     }).trigger('change');

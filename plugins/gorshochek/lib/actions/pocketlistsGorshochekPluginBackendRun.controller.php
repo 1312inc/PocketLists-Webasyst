@@ -49,6 +49,9 @@ class pocketlistsGorshochekPluginBackendRunController extends waLongActionContro
             case 'comment':
                 $count = $this->addComment();
                 break;
+            case 'location':
+                $count = $this->addLocation();
+                break;
             case 'item':
             default:
                 $count = $this->addItem();
@@ -223,6 +226,36 @@ class pocketlistsGorshochekPluginBackendRunController extends waLongActionContro
         return $result;
     }
 
+    private function addLocation()
+    {
+        static $model;
+        $id = null;
+        $result = 0;
+        /** @var pocketlistsPocketFactory $pocket_factory */
+        $location_factory = pl2()->getEntityFactory(pocketlistsLocation::class);
+
+        /** @var pocketlistsLocation $location */
+        $location = $location_factory->createNew();
+
+        while (empty($result)) {
+            $gen_data = $this->generatorData('location');
+            $location = pl2()->getHydrator()->hydrate($location, $gen_data);
+            if ($location_factory->save($location)) {
+                $id = $location->getId();
+                $this->data['send_log'][] = $gen_data + ['location_id' => $location->getId()];
+                $result++;
+            }
+        }
+        if ($id) {
+            if (!$model) {
+                $model = pl2()->getModel(pocketlistsItem::class);
+            }
+            $model->updateById($this->genItemId(), ['location_id' => $id]);
+        }
+
+        return $result;
+    }
+
     /**
      * @param $entity_type
      * @return array
@@ -278,6 +311,17 @@ class pocketlistsGorshochekPluginBackendRunController extends waLongActionContro
                     'comment'         => $this->genName($entity_type),
                     'create_datetime' => date('Y-m-d H:i:s', $this->genTimestamp()),
                     'uuid'            => $this->getUuid(10)
+                ];
+                break;
+            case 'location':
+                list($name, $location_latitude, $location_longitude) = $this->genName($entity_type);
+                $gen_data = [
+                    'name'               => $name,
+                    'color'              => (mt_rand(1, 3) % 3 === 0 ? $this->genColor() : ''),
+                    'location_latitude'  => $location_latitude,
+                    'location_longitude' => $location_longitude,
+                    'location_radius'    => mt_rand(1, 300),
+                    'uuid'               => $this->getUuid(10)
                 ];
                 break;
             default:
@@ -472,6 +516,10 @@ class pocketlistsGorshochekPluginBackendRunController extends waLongActionContro
                 ];
             case 'comment':
                 return trim(ifset($names, $rand, md5(microtime())));
+            case 'location':
+                $name = trim(ifset($names, $rand, md5(microtime())));
+                list($name, $latitude, $longitude) = explode(',', $name);
+                return [$name, $latitude, $longitude];
         }
 
         return reset($names);
