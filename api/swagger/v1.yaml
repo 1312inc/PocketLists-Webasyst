@@ -1226,6 +1226,12 @@ paths:
       summary: Получить историю удаленных сущностей
       parameters:
         - in: query
+          name: starting_from
+          description: Временная метка, начиная с которой возвращаются записи
+          required: true
+          schema:
+            type: integer
+        - in: query
           name: offset
           description: Смещение списка (по умолчанию 0)
           schema:

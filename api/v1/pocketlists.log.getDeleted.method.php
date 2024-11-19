@@ -4,8 +4,17 @@ class pocketlistsLogGetDeletedMethod extends pocketlistsApiAbstractMethod
 {
     public function execute()
     {
+        $starting_from = $this->get('starting_from');
         $offset = $this->get('offset');
         $limit = $this->get('limit');
+
+        if (!isset($starting_from)) {
+            throw new pocketlistsApiException(sprintf_wp('Missing required parameter: “%s”.', 'starting_from'), 400);
+        } elseif (!is_numeric($starting_from)) {
+            throw new pocketlistsApiException(sprintf_wp('Type error parameter: “%s”.', 'starting_from'), 400);
+        } elseif ($starting_from < 1) {
+            throw new pocketlistsApiException(_w('The parameter has a negative value'), 400);
+        }
 
         if (isset($limit)) {
             if (!is_numeric($limit)) {
@@ -31,8 +40,12 @@ class pocketlistsLogGetDeletedMethod extends pocketlistsApiAbstractMethod
         $log_model = pl2()->getModel(pocketlistsLog::class);
         $query_components = $log_model->getQueryComponents();
         $query_components['where']['and'][] = 'l.action = "delete"';
+        $query_components['where']['and'][] = 'l.create_datetime >= s:starting_from';
         $logs = $log_model->query(
             $log_model->buildSqlComponents($query_components, $limit, $offset, true),
+            [
+                'starting_from' => date('Y-m-d H:i:s', $starting_from),
+            ]
         )->fetchAll();
         $total_count = (int) $log_model->query('SELECT FOUND_ROWS()')->fetchField();
 
