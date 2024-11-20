@@ -133,7 +133,7 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
                     $sql_parts['where']['and'][] = 'pil2.entity_type = s:entity_type';
                 }
                 if ($external_entity_id) {
-                    $sql_parts['where']['and'][] = 'pil2.entity_id = i:entity_id';
+                    $sql_parts['where']['and'][] = 'pil2.entity_id = s:entity_id';
                 }
             }
         } else {

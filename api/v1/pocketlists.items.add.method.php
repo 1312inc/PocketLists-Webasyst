@@ -231,10 +231,8 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                             $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'app_id');
                         } elseif (!is_string($_external_link['entity_type'])) {
                             $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'entity_type');
-                        } elseif (!is_numeric($_external_link['entity_id'])) {
+                        } elseif (!is_string($_external_link['entity_id'])) {
                             $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'entity_id');
-                        } elseif ($_external_link['entity_id'] < 1) {
-                            $_item['errors'][] = _w('Entity not found');
                         }
                         if (isset($_external_link['entity_data']) && !is_string($_external_link['entity_data'])) {
                             $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'entity_data');

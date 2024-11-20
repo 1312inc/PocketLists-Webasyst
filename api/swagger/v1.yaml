@@ -390,7 +390,7 @@ paths:
                           type: string
                           description: Entity type
                         entity_id:
-                          type: integer
+                          type: string
                           description: Entity identifier
                         entity_data:
                           type: string
@@ -493,7 +493,7 @@ paths:
           name: external_entity_id
           description: External entity identifier
           schema:
-            type: integer
+            type: string
         - in: query
           name: starting_from
           description: Дата и время, начиная с которой возвращаются записи
@@ -700,7 +700,7 @@ paths:
                           type: string
                           description: Entity type
                         entity_id:
-                          type: integer
+                          type: string
                           description: Entity identifier
                         entity_data:
                           type: string
@@ -1992,7 +1992,7 @@ components:
           type: string
           description: Entity type
         entity_id:
-          type: integer
+          type: string
           description: Entity identifier
         data:
           type: string

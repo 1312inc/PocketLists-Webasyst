@@ -101,7 +101,7 @@ SQL;
             where
                   pil.app = s:app
                  and pil.entity_type = s:entity_type
-                 and pil.entity_id in (i:entity_ids)
+                 and pil.entity_id in (s:entity_ids)
             group by pil.entity_id',
             [
                 'status'      => pocketlistsItem::STATUS_UNDONE,
