@@ -496,9 +496,10 @@ paths:
             type: integer
         - in: query
           name: starting_from
-          description: Временная метка, начиная с которой возвращаются записи
+          description: Дата и время, начиная с которой возвращаются записи
           schema:
-            type: integer
+            type: string
+            format: date-time
         - in: query
           name: offset
           description: Смещение списка (по умолчанию 0)
@@ -877,9 +878,10 @@ paths:
               type: integer
         - in: query
           name: starting_from
-          description: Временная метка, начиная с которой возвращаются записи
+          description: Дата и время, начиная с которой возвращаются записи
           schema:
-            type: integer
+            type: string
+            format: date-time
         - in: query
           name: offset
           description: Смещение списка (по умолчанию 0)
@@ -1202,10 +1204,11 @@ paths:
       parameters:
         - in: query
           name: starting_from
-          description: Временная метка, начиная с которой возвращаются записи
           required: true
+          description: Дата и время, начиная с которой возвращаются записи
           schema:
-            type: integer
+            type: string
+            format: date-time
         - in: query
           name: offset
           description: Смещение списка (по умолчанию 0)
@@ -1239,10 +1242,11 @@ paths:
       parameters:
         - in: query
           name: starting_from
-          description: Временная метка, начиная с которой возвращаются записи
           required: true
+          description: Дата и время, начиная с которой возвращаются записи
           schema:
-            type: integer
+            type: string
+            format: date-time
         - in: query
           name: offset
           description: Смещение списка (по умолчанию 0)
@@ -1276,10 +1280,11 @@ paths:
       parameters:
         - in: query
           name: starting_from
-          description: Временная метка, начиная с которой возвращаются записи
           required: true
+          description: Дата и время, начиная с которой возвращаются записи
           schema:
-            type: integer
+            type: string
+            format: date-time
       responses:
         200:
           description: OK
@@ -1294,11 +1299,13 @@ paths:
                         type: object
                         properties:
                           starting_from:
-                            type: integer
-                            description: Временная метка, начиная с которой возвращаются записи
+                            type: string
+                            format: date-time
+                            description: Дата и время (UTC), начиная с которой возвращаются записи
                           ending_to:
-                            type: integer
-                            description: Текущая временная метка
+                            type: string
+                            format: date-time
+                            description: Текущая дата и время (UTC)
                           pockets:
                             type: integer
                             description: ''
@@ -1325,10 +1332,12 @@ paths:
       parameters:
         - in: query
           name: starting_from
-          description: Временная метка, начиная с которой возвращаются записи
           required: true
+          description: Дата и время, начиная с которой возвращаются записи
           schema:
-            type: integer
+            type: string
+            format: date-time
+
       responses:
         200:
           description: OK
@@ -1343,11 +1352,13 @@ paths:
                         type: object
                         properties:
                           starting_from:
-                            type: integer
-                            description: Временная метка, начиная с которой возвращаются записи
+                            type: string
+                            format: date-time
+                            description: Дата и время (UTC), начиная с которой возвращаются записи
                           ending_to:
-                            type: integer
-                            description: Текущая временная метка
+                            type: string
+                            format: date-time
+                            description: Текущая дата и время (UTC)
                           pockets:
                             type: integer
                             description: ''

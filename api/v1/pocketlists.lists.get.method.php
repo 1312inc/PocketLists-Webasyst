@@ -18,12 +18,16 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
             }));
         }
         if (isset($starting_from)) {
-            if (!is_numeric($starting_from)) {
+            if (!is_string($starting_from)) {
                 throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'starting_from'), 400);
-            } elseif ($starting_from < 1) {
-                throw new pocketlistsApiException(_w('The parameter has a negative value'), 400);
+            } else {
+                $dt = date_create($starting_from);
+                if ($dt) {
+                    $starting_from = $dt->format('Y-m-d H:i:s');
+                } else {
+                    throw new pocketlistsApiException(_w('Unknown value starting_from'), 400);
+                }
             }
-            $starting_from = date('Y-m-d H:i:s', $starting_from);
         }
         if (isset($limit)) {
             if (!is_numeric($limit)) {
@@ -62,7 +66,7 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
                 $sql_parts['where']['and'][] = 'l.id IN (i:ids)';
             }
             if ($starting_from) {
-                $sql_parts['where']['and'][] = 'update_datetime >= s:starting_from';
+                $sql_parts['where']['and'][] = 'i.update_datetime >= s:starting_from';
             }
             $sql_parts['order by'] = ['l.sort, l.rank, i.update_datetime, i.create_datetime DESC'];
             $sql = $list_model->buildSqlComponents($sql_parts);

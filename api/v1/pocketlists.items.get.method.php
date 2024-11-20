@@ -71,14 +71,17 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
                 throw new pocketlistsApiException(sprintf_wp('Missing required parameter: “%s”.', 'external_entity_type'), 400);
             }
         }
-
         if (isset($starting_from)) {
-            if (!is_numeric($starting_from)) {
+            if (!is_string($starting_from)) {
                 throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'starting_from'), 400);
-            } elseif ($starting_from < 1) {
-                throw new pocketlistsApiException(_w('The parameter has a negative value'), 400);
+            } else {
+                $dt = date_create($starting_from);
+                if ($dt) {
+                    $starting_from = $dt->format('Y-m-d H:i:s');
+                } else {
+                    throw new pocketlistsApiException(_w('Unknown value starting_from'), 400);
+                }
             }
-            $starting_from = date('Y-m-d H:i:s', $starting_from);
         }
         if (isset($limit)) {
             if (!is_numeric($limit)) {
