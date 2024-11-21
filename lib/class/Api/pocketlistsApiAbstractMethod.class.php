@@ -17,7 +17,6 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
     public function __construct()
     {
         parent::__construct();
-        wa()->getStorage()->close();
         $this->response = [
             'status_code' => 'ok',
             'error'       => '',
