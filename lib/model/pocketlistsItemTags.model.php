@@ -78,7 +78,7 @@ class pocketlistsItemTagsModel extends pocketlistsModel
         }
 
         if ($tags_insert) {
-            $this->multipleInsert($tags_insert);
+            $this->multipleInsert($tags_insert, 2);
             return true;
         }
 
