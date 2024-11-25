@@ -473,7 +473,6 @@ paths:
           description: Item status
           schema:
             type: integer
-            default: 0
         - in: query
           name: tag
           description: Filtering by tag
@@ -551,7 +550,6 @@ paths:
           description: Item status
           schema:
             type: integer
-            default: 0
         - in: query
           name: offset
           description: Смещение списка (по умолчанию 0)

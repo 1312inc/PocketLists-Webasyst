@@ -44,10 +44,10 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
         if (isset($status)) {
             if (!is_numeric($status)) {
                 throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'status'), 400);
+            } elseif (!in_array($status, [pocketlistsItem::STATUS_UNDONE, pocketlistsItem::STATUS_DONE])) {
+                throw new pocketlistsApiException(_w('Unknown value status'), 400);
             }
             $status = (int) $status;
-        } else {
-            $status = 0;
         }
         if (isset($tag) && !is_string($tag)) {
             throw new pocketlistsApiException(_w('Invalid tag'), 400);
@@ -114,7 +114,6 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
         }
         $item_model = pl2()->getModel(pocketlistsItem::class);
         $sql_parts = $item_model->getQueryComponents(true);
-        $sql_parts['where']['and'][] = 'i.status = i:status';
         $sql_parts['order by'] = ['i.parent_id, i.sort, i.rank ASC', 'i.id DESC'];
 
         if ($ids) {
@@ -138,6 +137,9 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
             }
         } else {
             $sql_parts['where']['and'][] = 'i.list_id IN (i:list_ids)';
+        }
+        if (isset($status)) {
+            $sql_parts['where']['and'][] = 'i.status = i:status';
         }
         if ($tag) {
             $sql_parts['join']['pit'] = 'LEFT JOIN pocketlists_item_tags pit ON pit.item_id = i.id';

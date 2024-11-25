@@ -12,10 +12,10 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
         if (isset($status)) {
             if (!is_numeric($status)) {
                 throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'status'), 400);
+            } elseif (!in_array($status, [pocketlistsItem::STATUS_UNDONE, pocketlistsItem::STATUS_DONE])) {
+                throw new pocketlistsApiException(_w('Unknown value status'), 400);
             }
             $status = (int) $status;
-        } else {
-            $status = 0;
         }
         if (isset($limit)) {
             if (!is_numeric($limit)) {
@@ -138,7 +138,6 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
 
         $plim  = pl2()->getModel(pocketlistsItem::class);
         $sql_parts = $plim->getQueryComponents(true);
-        $sql_parts['where']['and'][] = 'i.status = i:status';
         $sql_parts['where']['and'][] = 'i.list_id IN (:list_ids)';
         switch ($filter_split[0]) {
             case 'upnext':
@@ -203,6 +202,9 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
                     $sql_parts['order by'][] = 'meter';
                 }
                 break;
+        }
+        if (isset($status)) {
+            $sql_parts['where']['and'][] = 'i.status = i:status';
         }
         $sql = $plim->buildSqlComponents($sql_parts);
         $items = $plim->query(
