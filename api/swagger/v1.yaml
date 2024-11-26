@@ -1202,7 +1202,6 @@ paths:
       parameters:
         - in: query
           name: starting_from
-          required: true
           description: Дата и время, начиная с которой возвращаются записи
           schema:
             type: string
@@ -1240,7 +1239,6 @@ paths:
       parameters:
         - in: query
           name: starting_from
-          required: true
           description: Дата и время, начиная с которой возвращаются записи
           schema:
             type: string

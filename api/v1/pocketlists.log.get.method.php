@@ -19,8 +19,6 @@ class pocketlistsLogGetMethod extends pocketlistsApiAbstractMethod
                     throw new pocketlistsApiException(_w('Unknown value starting_from'), 400);
                 }
             }
-        } else {
-            throw new pocketlistsApiException(sprintf_wp('Missing required parameter: “%s”.', 'starting_from'), 400);
         }
 
         if (isset($limit)) {
@@ -46,7 +44,9 @@ class pocketlistsLogGetMethod extends pocketlistsApiAbstractMethod
         /** @var pocketlistsLogModel $log_model */
         $log_model = pl2()->getModel(pocketlistsLog::class);
         $query_components = $log_model->getQueryComponents();
-        $query_components['where']['and'][] = 'l.create_datetime >= s:starting_from';
+        if (isset($starting_from)) {
+            $query_components['where']['and'][] = 'l.create_datetime >= s:starting_from';
+            }
         $logs = $log_model->query(
             $log_model->buildSqlComponents($query_components, $limit, $offset, true),
             [
