@@ -1235,7 +1235,7 @@ paths:
     get:
       security:
         - BearerAuth: [ ]
-      summary: Получить историю удаленных сущностей
+      summary: Returns the full log of permanent deleted records ('delete' action) since the specified datetime.
       parameters:
         - in: query
           name: starting_from
@@ -1272,7 +1272,7 @@ paths:
     get:
       security:
         - BearerAuth: [ ]
-      summary: Получить статистику удалений сущностей
+      summary: Returns summary on the number of records by entity type that were permanently deleted ('delete' action) since the specified datetime. Useful for quickly getting to know if anything was deleted at all.
       parameters:
         - in: query
           name: starting_from
@@ -1324,7 +1324,7 @@ paths:
     get:
       security:
         - BearerAuth: [ ]
-      summary: Получить статистику изменений
+      summary: Returns summary on the number of records by entity type that were touched/updated since the specified datetime. Useful for quickly getting to know if anything was updated at all.
       parameters:
         - in: query
           name: starting_from
