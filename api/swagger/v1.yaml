@@ -495,7 +495,7 @@ paths:
             type: string
         - in: query
           name: starting_from
-          description: Дата и время, начиная с которой возвращаются записи
+          description: Returns records updated/created only after the specified datetime (UTC, ISO 8601). Older records are removed from the response.
           schema:
             type: string
             format: date-time
@@ -876,7 +876,7 @@ paths:
               type: integer
         - in: query
           name: starting_from
-          description: Дата и время, начиная с которой возвращаются записи
+          description: Returns records updated/created only after the specified datetime (UTC, ISO 8601). Older records are removed from the response.
           schema:
             type: string
             format: date-time
@@ -1202,7 +1202,7 @@ paths:
       parameters:
         - in: query
           name: starting_from
-          description: Дата и время, начиная с которой возвращаются записи
+          description: Returns records updated/created only after the specified datetime (UTC, ISO 8601). Older records are removed from the response.
           schema:
             type: string
             format: date-time
@@ -1239,7 +1239,7 @@ paths:
       parameters:
         - in: query
           name: starting_from
-          description: Дата и время, начиная с которой возвращаются записи
+          description: Returns records updated/created only after the specified datetime (UTC, ISO 8601). Older records are removed from the response.
           schema:
             type: string
             format: date-time
@@ -1277,7 +1277,7 @@ paths:
         - in: query
           name: starting_from
           required: true
-          description: Дата и время, начиная с которой возвращаются записи
+          description: Returns records updated/created only after the specified datetime (UTC, ISO 8601). Older records are removed from the response.
           schema:
             type: string
             format: date-time
@@ -1297,7 +1297,7 @@ paths:
                           starting_from:
                             type: string
                             format: date-time
-                            description: Дата и время (UTC), начиная с которой возвращаются записи
+                            description: Returns records updated/created only after the specified datetime (UTC, ISO 8601). Older records are removed from the response.
                           ending_to:
                             type: string
                             format: date-time
@@ -1329,7 +1329,7 @@ paths:
         - in: query
           name: starting_from
           required: true
-          description: Дата и время, начиная с которой возвращаются записи
+          description: Returns records updated/created only after the specified datetime (UTC, ISO 8601). Older records are removed from the response.
           schema:
             type: string
             format: date-time
@@ -1350,7 +1350,7 @@ paths:
                           starting_from:
                             type: string
                             format: date-time
-                            description: Дата и время (UTC), начиная с которой возвращаются записи
+                            description: Returns records updated/created only after the specified datetime (UTC, ISO 8601). Older records are removed from the response.
                           ending_to:
                             type: string
                             format: date-time
