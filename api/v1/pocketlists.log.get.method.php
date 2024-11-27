@@ -37,6 +37,7 @@ class pocketlistsLogGetMethod extends pocketlistsApiAbstractMethod
             } elseif ($offset < 1) {
                 throw new pocketlistsApiException(_w('The parameter has a negative value'), 400);
             }
+            $offset = (int) $offset;
         } else {
             $offset = 0;
         }
