@@ -68,6 +68,7 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
             }
             if ($starting_from) {
                 $sql_parts['where']['and'][] = 'i.update_datetime >= s:starting_from';
+                $sql_parts['where']['and'][] = 'i.create_datetime >= s:starting_from';
             }
             $sql_parts['order by'] = ['l.sort, l.rank, i.update_datetime, i.create_datetime DESC'];
             $sql = $list_model->buildSqlComponents($sql_parts);

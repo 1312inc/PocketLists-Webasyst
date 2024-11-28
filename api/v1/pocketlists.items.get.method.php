@@ -149,6 +149,7 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
         }
         if ($starting_from) {
             $sql_parts['where']['and'][] = 'i.update_datetime >= s:starting_from';
+            $sql_parts['where']['and'][] = 'i.create_datetime >= s:starting_from';
         }
 
         $sql = $item_model->buildSqlComponents($sql_parts);
