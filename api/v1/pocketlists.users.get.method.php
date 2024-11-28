@@ -4,14 +4,40 @@ class pocketlistsUsersGetMethod extends pocketlistsApiAbstractMethod
 {
     public function execute()
     {
+        $limit = $this->get('limit');
+        $offset = $this->get('offset');
+
+        if (isset($limit)) {
+            if (!is_numeric($limit)) {
+                throw new pocketlistsApiException(_w('Unknown value'), 400);
+            } elseif ($limit < 1) {
+                throw new pocketlistsApiException(_w('The parameter has a negative value'), 400);
+            }
+            $limit = (int) min($limit, self::MAX_LIMIT);
+        } else {
+            $limit = self::DEFAULT_LIMIT;
+        }
+        if (isset($offset)) {
+            if (!is_numeric($offset)) {
+                throw new pocketlistsApiException(_w('Unknown value'), 400);
+            } elseif ($offset < 0) {
+                throw new pocketlistsApiException(_w('The parameter has a negative value'), 400);
+            }
+            $offset = intval($offset);
+        } else {
+            $offset = 0;
+        }
+
         $result = [];
         /** @var pocketlistsContactFactory $contact_factory */
         $contact_factory = pl2()->getEntityFactory(pocketlistsContact::class);
         $teammates = $contact_factory->getTeammates(pocketlistsRBAC::getAccessContacts(), true, false, true);
         $root_url = rtrim(wa()->getConfig()->getHostUrl(), '/');
 
+        $count = count($teammates);
+        $teammates = array_slice($teammates, $offset, $limit);
         /** @var pocketlistsContact $_teammate */
-        foreach ((array) $teammates as $_teammate) {
+        foreach ($teammates as $_teammate) {
             /** @var pocketlistsItemsCount $items_info */
             $items_info = $_teammate->getItemsInfo();
             $result[] = [
@@ -39,9 +65,9 @@ class pocketlistsUsersGetMethod extends pocketlistsApiAbstractMethod
         }
 
         $this->response['meta'] = [
-            'offset' => 0,
-            'limit'  => self::DEFAULT_LIMIT,
-            'count'  => count($result)
+            'offset' => $offset,
+            'limit'  => $limit,
+            'count'  => $count
         ];
         $this->response['data'] = $this->responseListWrapper(
             $result,
