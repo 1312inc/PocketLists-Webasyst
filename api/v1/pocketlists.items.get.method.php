@@ -115,8 +115,6 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
         }
         $item_model = pl2()->getModel(pocketlistsItem::class);
         $sql_parts = $item_model->getQueryComponents(true);
-        $sql_parts['order by'] = ['i.parent_id, i.sort, i.rank ASC', 'i.id DESC'];
-
         if ($ids) {
             $sql_parts['where']['and'][] = 'i.id IN (i:item_ids)';
         }
@@ -148,8 +146,10 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
             $sql_parts['where']['and'][] = 'pt.`text` = s:text';
         }
         if ($starting_from) {
-            $sql_parts['where']['and'][] = 'i.update_datetime >= s:starting_from';
-            $sql_parts['where']['and'][] = 'i.create_datetime >= s:starting_from';
+            $sql_parts['where']['and'][] = 'i.update_datetime >= s:starting_from OR i.create_datetime >= s:starting_from';
+            $sql_parts['order by'] = ['i.update_datetime DESC'];
+        } else {
+            $sql_parts['order by'] = ['i.sort, i.rank, i.id DESC'];
         }
 
         $sql = $item_model->buildSqlComponents($sql_parts);
