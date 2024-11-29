@@ -495,7 +495,7 @@ paths:
             type: string
         - in: query
           name: starting_from
-          description: Returns records updated/created only after the specified datetime (UTC, ISO 8601). Older records are removed from the response.
+          description: Returns records updated/created only after the specified datetime (UTC, ISO 8601). Older records are removed from the response. When 'starting_from' is passed, all records will be 'ORDERED BY update_datetime DESC'.
           schema:
             type: string
             format: date-time
@@ -876,7 +876,7 @@ paths:
               type: integer
         - in: query
           name: starting_from
-          description: Returns records updated/created only after the specified datetime (UTC, ISO 8601). Older records are removed from the response.
+          description: Returns records updated/created only after the specified datetime (UTC, ISO 8601). Older records are removed from the response. When 'starting_from' is passed, all records will be 'ORDERED BY update_datetime DESC'.
           schema:
             type: string
             format: date-time
