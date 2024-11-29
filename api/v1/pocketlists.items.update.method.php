@@ -102,8 +102,6 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 $_item['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'id');
             } elseif (!is_numeric($_item['id'])) {
                 $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'id');
-            } elseif (!array_key_exists($_item['id'], $items_in_db)) {
-                $_item['errors'][] = _w('Item not found');
             }
 
             if ($_item['list_id']) {
@@ -176,6 +174,12 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                         $_item['errors'][] = _w('Unknown value due_date');
                     }
                 }
+            }
+
+            if (!array_key_exists($_item['id'], $items_in_db)) {
+                $_item['errors'][] = _w('Item not found');
+            } elseif ($_item['status'] === pocketlistsItem::STATUS_DONE && $items_in_db[$_item['id']]['status'] == pocketlistsItem::STATUS_UNDONE) {
+                $_item['complete_datetime'] = date('Y-m-d H:i:s');
             }
 
             if (isset($_item['client_touch_datetime'])) {
