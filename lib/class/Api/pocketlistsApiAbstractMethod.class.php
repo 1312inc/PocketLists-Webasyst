@@ -337,7 +337,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
             if (isset($ext_entity)) {
                 array_unshift($entities, $ext_entity);
             }
-        } while ($iter > 1);
+        } while ($iter > 0);
 
         $model = pl2()->getModel();
         if ($prev_entity_ids || $prev_entity_uuids) {
@@ -511,6 +511,13 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                     list($srt) = $p_sort_rank->previous();
                     $sort_info[$_entity[$parent_key]]['sort_min'] = $srt;
                 }
+                if (empty($_entity['id']) && empty($prev_by_uuid[$_entity['uuid']])) {
+                    $prev_by_uuid[$_entity['uuid']]['sort'] = $srt;
+                    $prev_by_uuid[$_entity['uuid']]['rank'] = $rnk;
+                    $prev_by_uuid[$_entity['uuid']]['list_id'] = $_entity['list_id'];
+                    $prev_by_uuid[$_entity['uuid']]['next_sort'] = $srt + 1;
+                    $prev_by_uuid[$_entity['uuid']]['next_rank'] = '';
+                }
             }
             $_entity['sort'] = $srt;
             $_entity['rank'] = $rnk;
@@ -523,7 +530,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
     /**
      * @param $entity
      * @param $action
-     * @param $logs
+     * @param array $logs
      * @return void
      * @throws waException
      */
