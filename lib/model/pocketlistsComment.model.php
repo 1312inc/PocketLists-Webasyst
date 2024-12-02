@@ -121,6 +121,7 @@ class pocketlistsCommentModel extends pocketlistsModel
                 c.contact_id contact_id,
                 c.comment comment,
                 c.create_datetime create_datetime,
+                c.update_datetime update_datetime,
                 c.client_touch_datetime client_touch_datetime,
                 p.id pocket_id,
                 p.name pocket_name,

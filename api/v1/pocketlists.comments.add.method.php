@@ -42,6 +42,7 @@ class pocketlistsCommentsAddMethod extends pocketlistsApiAbstractMethod
                 'contact_id'            => $user_id,
                 'comment'               => ifset($_comment, 'comment', null),
                 'create_datetime'       => date('Y-m-d H:i:s'),
+                'update_datetime'       => null,
                 'client_touch_datetime' => ifset($_comment, 'client_touch_datetime', null),
                 'uuid'                  => ifset($_comment, 'uuid', null),
                 'list_id'               => ifset($items, $item_id, 'list_id', null),
@@ -132,6 +133,7 @@ class pocketlistsCommentsAddMethod extends pocketlistsApiAbstractMethod
                 'contact_id',
                 'comment',
                 'create_datetime',
+                'update_datetime',
                 'client_touch_datetime',
                 'uuid'
             ], [
@@ -139,6 +141,7 @@ class pocketlistsCommentsAddMethod extends pocketlistsApiAbstractMethod
                 'item_id' => 'int',
                 'contact_id' => 'int',
                 'create_datetime' => 'datetime',
+                'update_datetime' => 'datetime',
                 'client_touch_datetime' => 'datetime',
             ]
         );

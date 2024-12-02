@@ -17,6 +17,7 @@ return array(
         'contact_id' => array('int', 11),
         'comment' => array('text'),
         'create_datetime' => array('datetime'),
+        'update_datetime' => array('datetime'),
         'client_touch_datetime' => array('datetime'),
         'uuid' => array('varchar', 36),
         ':keys' => array(

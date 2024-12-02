@@ -1949,6 +1949,12 @@ components:
           type: string
           format: datetime
           description: Server-generated comment create datetime (UTC)
+        update_datetime:
+          type: string
+          format: date-time
+          nullable: true
+          default: null
+          description: Server-generated item update datetime (UTC)
         client_touch_datetime:
           type: string
           format: date-time

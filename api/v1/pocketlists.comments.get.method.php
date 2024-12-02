@@ -41,7 +41,7 @@ class pocketlistsCommentsGetMethod extends pocketlistsApiAbstractMethod
         $plcm = pl2()->getModel(pocketlistsComment::class);
         $sql = $plcm->getSql(true);
         $comments = $plcm->query(
-            "$sql $where ORDER BY c.create_datetime LIMIT i:offset, i:limit", [
+            "$sql $where ORDER BY c.update_datetime DESC, id DESC LIMIT i:offset, i:limit", [
             'item_id' => (int) $item_id,
             'limit'   => $limit,
             'offset'  => $offset
@@ -62,6 +62,7 @@ class pocketlistsCommentsGetMethod extends pocketlistsApiAbstractMethod
                 'contact_id',
                 'comment',
                 'create_datetime',
+                'update_datetime',
                 'client_touch_datetime',
                 'uuid'
             ], [
@@ -70,6 +71,7 @@ class pocketlistsCommentsGetMethod extends pocketlistsApiAbstractMethod
                 'list_id' => 'int',
                 'contact_id' => 'int',
                 'create_datetime' => 'datetime',
+                'update_datetime' => 'datetime',
                 'client_touch_datetime' => 'datetime'
             ]
         );
