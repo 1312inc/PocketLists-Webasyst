@@ -1767,10 +1767,10 @@ components:
             extended_data:
               type: object
               properties:
-                count:
+                items_count:
                   type: integer
                   description: Общее количество айтемов в списке
-                priority_count:
+                items_priority_count:
                   type: integer
                   description: Количество айтемов с максимальным приоритетом
     item:
