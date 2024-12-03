@@ -2000,12 +2000,15 @@ components:
           description: Location color
         location_latitude:
           type: number
+          nullable: true
           description: Location latitude
         location_longitude:
           type: number
+          nullable: true
           description: Location longitude
         location_radius:
           type: integer
+          nullable: true
           description: Location radius
         uuid:
           type: string
