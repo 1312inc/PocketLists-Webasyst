@@ -1490,6 +1490,12 @@ paths:
             type: array
             items:
               type: integer
+        - in: query
+          name: starting_from
+          description: Returns records updated/created only after the specified datetime (UTC, ISO 8601). Older records are removed from the response. When 'starting_from' is passed, all records will be 'ORDERED BY update_datetime DESC'.
+          schema:
+            type: string
+            format: date-time
       responses:
         200:
           description: OK
@@ -1721,6 +1727,16 @@ components:
         color:
           type: string
           description: Color
+        create_datetime:
+          type: string
+          format: datetime
+          description: Server-generated comment create datetime (UTC)
+        update_datetime:
+          type: string
+          format: date-time
+          nullable: true
+          default: null
+          description: Server-generated item update datetime (UTC)
         passcode:
           type: string
           nullable: true

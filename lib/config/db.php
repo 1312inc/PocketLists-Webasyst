@@ -162,6 +162,8 @@ return array(
         'rank' => array('varchar', 16, 'null' => 0, 'default' => ''),
         'name' => array('varchar', 200),
         'color' => array('enum', "'none','red','green','blue','yellow','purple'", 'null' => 0, 'default' => 'blue'),
+        'create_datetime' => array('datetime'),
+        'update_datetime' => array('datetime'),
         'passcode' => array('varchar', 32),
         'uuid' => array('varchar', 36),
         ':keys' => array(

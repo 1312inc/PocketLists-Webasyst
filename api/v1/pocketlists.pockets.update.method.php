@@ -28,18 +28,20 @@ class pocketlistsPocketsUpdateMethod extends pocketlistsApiAbstractMethod
         foreach ($pockets as &$_pocket) {
             /** set default */
             $_pocket = [
-                'action'         => (ifset($_pocket, 'action', null) === self::ACTIONS[1] ? self::ACTIONS[1] : self::ACTIONS[0]),
-                'id'             => ifset($_pocket, 'id', null),
-                'pl_id'          => 1312,
-                'sort'           => ifset($_pocket, 'sort', null),
-                'rank'           => ifset($_pocket, 'rank', null),
-                'name'           => ifset($_pocket, 'name', null),
-                'color'          => ifset($_pocket, 'color', pocketlistsStoreColor::NONE),
-                'passcode'       => null,
-                'uuid'           => null,
-                'prev_pocket_id' => ifset($_pocket, 'prev_pocket_id', null),
-                'success'        => true,
-                'errors'         => []
+                'action'          => (ifset($_pocket, 'action', null) === self::ACTIONS[1] ? self::ACTIONS[1] : self::ACTIONS[0]),
+                'id'              => ifset($_pocket, 'id', null),
+                'pl_id'           => 1312,
+                'sort'            => ifset($_pocket, 'sort', null),
+                'rank'            => ifset($_pocket, 'rank', null),
+                'name'            => ifset($_pocket, 'name', null),
+                'color'           => ifset($_pocket, 'color', pocketlistsStoreColor::NONE),
+                'create_datetime' => null,
+                'update_datetime' => date('Y-m-d H:i:s'),
+                'passcode'        => null,
+                'uuid'            => null,
+                'prev_pocket_id'  => ifset($_pocket, 'prev_pocket_id', null),
+                'success'         => true,
+                'errors'          => []
             ];
 
             if (!isset($_pocket['id'])) {
@@ -127,11 +129,15 @@ class pocketlistsPocketsUpdateMethod extends pocketlistsApiAbstractMethod
                 'rank',
                 'name',
                 'color',
+                'create_datetime',
+                'update_datetime',
                 'passcode',
                 'uuid'
             ], [
                 'id' => 'int',
                 'sort' => 'int',
+                'create_datetime' => 'datetime',
+                'update_datetime' => 'datetime'
             ]
         );
     }

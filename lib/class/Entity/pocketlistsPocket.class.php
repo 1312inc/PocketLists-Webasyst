@@ -33,6 +33,16 @@ class pocketlistsPocket extends pocketlistsEntity
     /**
      * @var string
      */
+    private $create_datetime;
+
+    /**
+     * @var string
+     */
+    private $update_datetime;
+
+    /**
+     * @var string
+     */
     private $passcode;
 
     /**
@@ -175,6 +185,46 @@ class pocketlistsPocket extends pocketlistsEntity
     public function setColor($color)
     {
         $this->color = $color;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCreateDatetime()
+    {
+        return $this->create_datetime;
+    }
+
+    /**
+     * @param $create_datetime
+     *
+     * @return pocketlistsPocket
+     */
+    public function setCreateDatetime($create_datetime)
+    {
+        $this->create_datetime = $create_datetime;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUpdateDatetime()
+    {
+        return $this->update_datetime;
+    }
+
+    /**
+     * @param $update_datetime
+     *
+     * @return pocketlistsPocket
+     */
+    public function setUpdateDatetime($update_datetime)
+    {
+        $this->update_datetime = $update_datetime;
 
         return $this;
     }

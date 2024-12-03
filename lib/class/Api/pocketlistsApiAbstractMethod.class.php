@@ -511,7 +511,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                     list($srt) = $p_sort_rank->previous();
                     $sort_info[$_entity[$parent_key]]['sort_min'] = $srt;
                 }
-                if (empty($_entity['id']) && empty($prev_by_uuid[$_entity['uuid']])) {
+                if (empty($_entity['id']) && empty($prev_by_uuid[$_entity['uuid']]) && !empty($_entity['list_id'])) {
                     $prev_by_uuid[$_entity['uuid']]['sort'] = $srt;
                     $prev_by_uuid[$_entity['uuid']]['rank'] = $rnk;
                     $prev_by_uuid[$_entity['uuid']]['list_id'] = $_entity['list_id'];

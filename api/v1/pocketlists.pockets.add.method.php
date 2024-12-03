@@ -29,6 +29,8 @@ class pocketlistsPocketsAddMethod extends pocketlistsApiAbstractMethod
                 'rank'             => ifset($_pocket, 'rank', null),
                 'name'             => ifset($_pocket, 'name', null),
                 'color'            => ifset($_pocket, 'color', pocketlistsStoreColor::NONE),
+                'create_datetime'  => date('Y-m-d H:i:s'),
+                'update_datetime'  => null,
                 'passcode'         => null,
                 'uuid'             => ifset($_pocket, 'uuid', null),
                 'prev_pocket_id'   => ifset($_pocket, 'prev_pocket_id', null),
@@ -93,6 +95,7 @@ class pocketlistsPocketsAddMethod extends pocketlistsApiAbstractMethod
                     ->setSort($_pocket['sort'])
                     ->setRank($_pocket['rank'])
                     ->setColor($_pocket['color'])
+                    ->setCreateDatetime($_pocket['create_datetime'])
                     ->setUuid($_pocket['uuid']);
 
                 if ($pocket_factory->save($pocket_clone)) {
@@ -124,11 +127,15 @@ class pocketlistsPocketsAddMethod extends pocketlistsApiAbstractMethod
                 'rank',
                 'name',
                 'color',
+                'create_datetime',
+                'update_datetime',
                 'passcode',
                 'uuid'
             ], [
                 'id' => 'int',
                 'sort' => 'int',
+                'create_datetime' => 'datetime',
+                'update_datetime' => 'datetime'
             ]
         );
     }
