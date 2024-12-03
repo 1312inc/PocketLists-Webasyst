@@ -29,6 +29,8 @@ class pocketlistsLocationsAddMethod extends pocketlistsApiAbstractMethod
                 'location_latitude'  => ifset($_location, 'location_latitude', null),
                 'location_longitude' => ifset($_location, 'location_longitude', null),
                 'location_radius'    => ifset($_location, 'location_radius', null),
+                'create_datetime'    => date('Y-m-d H:i:s'),
+                'update_datetime'    => null,
                 'uuid'               => ifset($_location, 'uuid', null),
                 'success'            => true,
                 'errors'             => []
@@ -119,12 +121,15 @@ class pocketlistsLocationsAddMethod extends pocketlistsApiAbstractMethod
                 'location_latitude',
                 'location_longitude',
                 'location_radius',
-                'uuid',
+                'create_datetime',
+                'update_datetime',
+                'uuid'
             ], [
                 'id' => 'int',
                 'location_latitude' => 'float',
                 'location_longitude' => 'float',
                 'location_radius' => 'int',
+                'create_datetime' => 'datetime'
             ]
         );
     }

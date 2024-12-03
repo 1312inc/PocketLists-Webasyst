@@ -1109,6 +1109,12 @@ paths:
           schema:
             type: integer
         - in: query
+          name: starting_from
+          description: Returns records updated/created only after the specified datetime (UTC, ISO 8601). Older records are removed from the response. When 'starting_from' is passed, all records will be 'ORDERED BY update_datetime DESC'.
+          schema:
+            type: string
+            format: date-time
+        - in: query
           name: offset
           description: Смещение списка (по умолчанию 0)
           schema:
@@ -2010,6 +2016,16 @@ components:
           type: integer
           nullable: true
           description: Location radius
+        create_datetime:
+          type: string
+          format: datetime
+          description: Server-generated comment create datetime (UTC)
+        update_datetime:
+          type: string
+          format: date-time
+          nullable: true
+          default: null
+          description: Server-generated item update datetime (UTC)
         uuid:
           type: string
           nullable: true

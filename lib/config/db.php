@@ -109,6 +109,8 @@ return array(
         'location_latitude' => array('decimal', '12,8'),
         'location_longitude' => array('decimal', '12,8'),
         'location_radius' => array('int', 11),
+        'create_datetime' => array('datetime'),
+        'update_datetime' => array('datetime'),
         'uuid' => array('varchar', 36),
         ':keys' => array(
             'PRIMARY' => 'id',

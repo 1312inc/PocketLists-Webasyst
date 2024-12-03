@@ -5,6 +5,7 @@ class pocketlistsLocationsGetMethod extends pocketlistsApiAbstractMethod
     public function execute()
     {
         $location_id = $this->get('location_id');
+        $starting_from = $this->get('starting_from');
         $limit = $this->get('limit');
         $offset = $this->get('offset');
 
@@ -16,6 +17,22 @@ class pocketlistsLocationsGetMethod extends pocketlistsApiAbstractMethod
                 throw new pocketlistsApiException(_w('Location not found'), 404);
             }
             $where .= ' AND id = i:location_id';
+        }
+        if (isset($starting_from)) {
+            if (!is_string($starting_from)) {
+                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'starting_from'), 400);
+            }
+            $dt = date_create($starting_from, new DateTimeZone('UTC'));
+            if ($dt) {
+                $dt->setTimezone(new DateTimeZone(date_default_timezone_get()));
+                $starting_from = $dt->format('Y-m-d H:i:s');
+            } else {
+                throw new pocketlistsApiException(_w('Unknown value starting_from'), 400);
+            }
+            $where .= ' AND (update_datetime >= s:starting_from OR create_datetime >= s:starting_from)';
+            $order = 'update_datetime DESC, id';
+        } else {
+            $order = 'id';
         }
         if (isset($limit)) {
             if (!is_numeric($limit)) {
@@ -42,10 +59,11 @@ class pocketlistsLocationsGetMethod extends pocketlistsApiAbstractMethod
         $locations = $pllm->query("
             SELECT SQL_CALC_FOUND_ROWS * FROM pocketlists_location
             WHERE $where
-            ORDER BY id DESC
+            ORDER BY $order
             LIMIT i:offset, i:limit
             ", [
                 'location_id' => $location_id,
+                'starting_from' => $starting_from,
                 'limit'  => $limit,
                 'offset' => $offset
             ]
@@ -70,12 +88,16 @@ class pocketlistsLocationsGetMethod extends pocketlistsApiAbstractMethod
                 'location_latitude',
                 'location_longitude',
                 'location_radius',
+                'create_datetime',
+                'update_datetime',
                 'uuid'
             ], [
                 'id' => 'int',
                 'location_latitude' => 'float',
                 'location_longitude' => 'float',
                 'location_radius' => 'int',
+                'create_datetime' => 'datetime',
+                'update_datetime' => 'datetime'
             ]
         );
     }
