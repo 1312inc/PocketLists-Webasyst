@@ -6,9 +6,11 @@ class pocketlistsLocationsGetMethod extends pocketlistsApiAbstractMethod
     {
         $location_id = $this->get('location_id');
         $starting_from = $this->get('starting_from');
+        $nearby = $this->get('nearby');
         $limit = $this->get('limit');
         $offset = $this->get('offset');
 
+        $select = 'SQL_CALC_FOUND_ROWS *';
         $where = '1 = 1';
         if (isset($location_id)) {
             if (!is_numeric($location_id)) {
@@ -34,6 +36,26 @@ class pocketlistsLocationsGetMethod extends pocketlistsApiAbstractMethod
         } else {
             $order = 'id';
         }
+        if (isset($nearby)) {
+            $location = explode(',', $nearby);
+            if (count($location) !== 2) {
+                throw new pocketlistsApiException(_w('Not two values nearby'), 400);
+            }
+            list($latitude, $longitude) = $location;
+            if (!is_numeric($latitude) || !is_numeric($longitude)) {
+                throw new pocketlistsApiException(_w('Type error nearby value'), 400);
+            } elseif ($latitude < -90 || $latitude > 90) {
+                throw new pocketlistsApiException(sprintf_wp('Invalid value “%s”', 'nearby latitude'), 400);
+            } elseif ($longitude < -180 || $longitude > 180) {
+                throw new pocketlistsApiException(sprintf_wp('Invalid value “%s”', 'nearby longitude'), 400);
+            }
+            // вычисляется только примерное расстояние между точками
+            $radius_earth = 6371000;
+            $select .= ", CEILING(SQRT(POW(PI()*(s:latitude-pl.location_latitude)/180, 2)+POW(PI()*(s:longitude-pl.location_longitude)/180, 2))*$radius_earth) AS meter";
+            $order = 'case when meter is null then 1 else 0 end, meter';
+        }
+
+
         if (isset($limit)) {
             if (!is_numeric($limit)) {
                 throw new pocketlistsApiException(_w('Unknown value'), 400);
@@ -57,13 +79,15 @@ class pocketlistsLocationsGetMethod extends pocketlistsApiAbstractMethod
 
         $pllm = pl2()->getModel(pocketlistsLocation::class);
         $locations = $pllm->query("
-            SELECT SQL_CALC_FOUND_ROWS * FROM pocketlists_location
+            SELECT $select FROM pocketlists_location pl
             WHERE $where
             ORDER BY $order
             LIMIT i:offset, i:limit
             ", [
                 'location_id' => $location_id,
                 'starting_from' => $starting_from,
+                'latitude' => ifset($latitude),
+                'longitude' => ifset($longitude),
                 'limit'  => $limit,
                 'offset' => $offset
             ]

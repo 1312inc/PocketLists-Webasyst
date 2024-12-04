@@ -1115,6 +1115,12 @@ paths:
             type: string
             format: date-time
         - in: query
+          name: nearby
+          description: Координаты точки (широта,долгота)
+          example: 28.635896,-106.075763
+          schema:
+            type: string
+        - in: query
           name: offset
           description: Смещение списка (по умолчанию 0)
           schema:
