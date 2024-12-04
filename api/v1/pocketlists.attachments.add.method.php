@@ -33,15 +33,16 @@ class pocketlistsAttachmentsAddMethod extends pocketlistsApiAbstractMethod
         foreach ($files as &$_file) {
             /** set default */
             $_file = [
-                'id'        => null,
-                'item_id'   => ifset($_file, 'item_id', null),
-                'file_name' => ifset($_file, 'file_name', null),
-                'file_type' => pocketlistsAttachment::TYPE_IMAGE,
-                'url'       => '',
-                'uuid'      => ifset($_file, 'uuid', null),
-                'file'      => ifset($_file, 'file', null),
-                'success'   => true,
-                'errors'    => [],
+                'id'              => null,
+                'item_id'         => ifset($_file, 'item_id', null),
+                'file_name'       => ifset($_file, 'file_name', null),
+                'file_type'       => pocketlistsAttachment::TYPE_IMAGE,
+                'upload_datetime' => date('Y-m-d H:i:s'),
+                'url'             => '',
+                'uuid'            => ifset($_file, 'uuid', null),
+                'file'            => ifset($_file, 'file', null),
+                'success'         => true,
+                'errors'          => [],
             ];
 
             if (empty($_file['item_id'])) {
@@ -127,11 +128,13 @@ class pocketlistsAttachmentsAddMethod extends pocketlistsApiAbstractMethod
                 'item_id',
                 'file_name',
                 'file_type',
+                'upload_datetime',
                 'url',
                 'uuid'
             ], [
                 'id' => 'int',
-                'item_id' => 'int'
+                'item_id' => 'int',
+                'upload_datetime' => 'datetime'
             ]
         );
     }

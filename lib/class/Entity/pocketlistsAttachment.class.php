@@ -28,6 +28,11 @@ class pocketlistsAttachment extends pocketlistsEntity
     private $filetype = null;
 
     /**
+     * @var string
+     */
+    private $upload_datetime;
+
+    /**
      * @var string|null
      */
     private $uuid;
@@ -113,6 +118,26 @@ class pocketlistsAttachment extends pocketlistsEntity
     public function setFiletype($filetype)
     {
         $this->filetype = $filetype;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUploadDatetime()
+    {
+        return $this->upload_datetime;
+    }
+
+    /**
+     * @param $upload_datetime
+     *
+     * @return pocketlistsAttachment
+     */
+    public function setUploadDatetime($upload_datetime)
+    {
+        $this->upload_datetime = $upload_datetime;
 
         return $this;
     }

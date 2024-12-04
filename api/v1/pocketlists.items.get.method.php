@@ -205,12 +205,13 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
                 $items[$item_id]['attachments'] = [];
             }
             $items[$item_id]['attachments'][] = [
-                'id'        => $_attachment->getId(),
-                'item_id'   => $item_id,
-                'file_name' => $name,
-                'file_type' => $_attachment->getFiletype(),
-                'url'       => wa()->getDataUrl("attachments/$item_id/", true, pocketlistsHelper::APP_ID, true).$name,
-                'uuid'      => $_attachment->getUuid()
+                'id'              => $_attachment->getId(),
+                'item_id'         => $item_id,
+                'file_name'       => $name,
+                'file_type'       => $_attachment->getFiletype(),
+                'upload_datetime' => $this->formatDatetimeToISO8601($_attachment->getUploadDatetime()),
+                'url'             => wa()->getDataUrl("attachments/$item_id/", true, pocketlistsHelper::APP_ID, true).$name,
+                'uuid'            => $_attachment->getUuid()
             ];
         }
 

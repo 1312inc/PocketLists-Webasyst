@@ -1705,6 +1705,10 @@ components:
           type: string
           enum:
             - image
+        upload_datetime:
+          type: string
+          format: datetime
+          description: Server-generated attachment upload datetime (UTC)
         url:
           type: string
           format: uri
@@ -1736,13 +1740,13 @@ components:
         create_datetime:
           type: string
           format: datetime
-          description: Server-generated comment create datetime (UTC)
+          description: Server-generated pocket create datetime (UTC)
         update_datetime:
           type: string
           format: date-time
           nullable: true
           default: null
-          description: Server-generated item update datetime (UTC)
+          description: Server-generated pocket update datetime (UTC)
         passcode:
           type: string
           nullable: true
@@ -1982,7 +1986,7 @@ components:
           format: date-time
           nullable: true
           default: null
-          description: Server-generated item update datetime (UTC)
+          description: Server-generated comment update datetime (UTC)
         client_touch_datetime:
           type: string
           format: date-time
@@ -2019,13 +2023,13 @@ components:
         create_datetime:
           type: string
           format: datetime
-          description: Server-generated comment create datetime (UTC)
+          description: Server-generated location create datetime (UTC)
         update_datetime:
           type: string
           format: date-time
           nullable: true
           default: null
-          description: Server-generated item update datetime (UTC)
+          description: Server-generated location update datetime (UTC)
         uuid:
           type: string
           nullable: true

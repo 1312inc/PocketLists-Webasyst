@@ -191,6 +191,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
      */
     protected function updateFiles($item_id, $files = [])
     {
+        $now = date('Y-m-d H:i:s');
         $file_vo = new pocketlistsUploadedFileVO();
         $temp_path = $file_vo->getPath();
         waFiles::create($temp_path, true);
@@ -200,11 +201,12 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
         $path = wa()->getDataUrl("attachments/$item_id/", true, pocketlistsHelper::APP_ID, true);
         foreach ($files as &$_file) {
             $_file += [
-                'file'      => '',
-                'file_name' => '',
-                'url'       => '',
-                'uuid'      => null,
-                'errors'    => []
+                'file'            => '',
+                'file_name'       => '',
+                'upload_datetime' => $now,
+                'url'             => '',
+                'uuid'            => null,
+                'errors'          => []
             ];
             if (empty($_file['file']) || empty($_file['file_name'])) {
                 continue;
@@ -253,6 +255,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
             $attachment->setFilename($_file['file_name'])
                 ->setItemId($item_id)
                 ->setFiletype($uploaded_file->getType())
+                ->setUploadDatetime($_file['upload_datetime'])
                 ->setUuid($_file['uuid']);
             $attachment_factory->insert($attachment);
             $_file = [
