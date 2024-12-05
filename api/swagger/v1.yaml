@@ -1724,43 +1724,52 @@ components:
           nullable: true
           description: UUID value
     pocket:
-      type: object
-      properties:
-        id:
-          type: integer
-          description: Pocket identifier
-        sort:
-          type: integer
-          default: 0
-          description: Sort
-        rank:
-          type: string
-          default: ''
-          description: Sort rank
-        name:
-          type: string
-          description: Pocket name
-        color:
-          type: string
-          description: Color
-        create_datetime:
-          type: string
-          format: datetime
-          description: Server-generated pocket create datetime (UTC)
-        update_datetime:
-          type: string
-          format: date-time
-          nullable: true
-          default: null
-          description: Server-generated pocket update datetime (UTC)
-        passcode:
-          type: string
-          nullable: true
-          description: Passcode
-        uuid:
-          type: string
-          nullable: true
-          description: UUID value
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: integer
+              description: Pocket identifier
+            sort:
+              type: integer
+              default: 0
+              description: Sort
+            rank:
+              type: string
+              default: ''
+              description: Sort rank
+            name:
+              type: string
+              description: Pocket name
+            color:
+              type: string
+              description: Color
+            create_datetime:
+              type: string
+              format: datetime
+              description: Server-generated pocket create datetime (UTC)
+            update_datetime:
+              type: string
+              format: date-time
+              nullable: true
+              default: null
+              description: Server-generated pocket update datetime (UTC)
+            passcode:
+              type: string
+              nullable: true
+              description: Passcode
+            uuid:
+              type: string
+              nullable: true
+              description: UUID value
+        - type: object
+          properties:
+            extended_data:
+              type: object
+              properties:
+                lists_count:
+                  type: integer
+                  description: Общее количество списков в покете
     list:
       allOf:
         - $ref: '#/components/schemas/item'
