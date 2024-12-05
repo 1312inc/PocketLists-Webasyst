@@ -5,10 +5,23 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
     public function execute()
     {
         $filter = $this->get('filter', true);
+        $starting_from = $this->get('starting_from');
         $status = $this->get('status');
         $limit  = $this->get('limit');
         $offset = $this->get('offset');
 
+        if (isset($starting_from)) {
+            if (!is_string($starting_from)) {
+                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'starting_from'), 400);
+            }
+            $dt = date_create($starting_from, new DateTimeZone('UTC'));
+            if ($dt) {
+                $dt->setTimezone(new DateTimeZone(date_default_timezone_get()));
+                $starting_from = $dt->format('Y-m-d H:i:s');
+            } else {
+                throw new pocketlistsApiException(_w('Unknown value starting_from'), 400);
+            }
+        }
         if (isset($status)) {
             if (!is_numeric($status)) {
                 throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'status'), 400);
@@ -48,7 +61,7 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
         }
 
         try {
-            list($items, $total_count) = $this->getItems($filter, $status, $limit, $offset);
+            list($items, $total_count) = $this->getItems($filter, $starting_from, $status, $limit, $offset);
         } catch (waAPIException $ex) {
             throw new pocketlistsApiException($ex->getMessage(), 400);
         }
@@ -113,7 +126,7 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
         );
     }
 
-    private function getItems($filter, $status, $limit, $offset)
+    private function getItems($filter, $starting_from, $status, $limit, $offset)
     {
         $available_filters = [
             'upnext',
@@ -203,17 +216,21 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
                 }
                 break;
         }
+        if (isset($starting_from)) {
+            $sql_parts['where']['and'][] = 'i.update_datetime >= s:starting_from OR i.create_datetime >= s:starting_from';
+        }
         if (isset($status)) {
             $sql_parts['where']['and'][] = 'i.status = i:status';
         }
         $sql = $plim->buildSqlComponents($sql_parts);
         $items = $plim->query(
             "$sql LIMIT i:offset, i:limit", [
-            'status'     => $status,
-            'list_ids'   => $available_list_ids,
-            'contact_id' => $this->getUser()->getId(),
-            'limit'      => $limit,
-            'offset'     => $offset
+            'starting_from' => $starting_from,
+            'status'        => $status,
+            'list_ids'      => $available_list_ids,
+            'contact_id'    => $this->getUser()->getId(),
+            'limit'         => $limit,
+            'offset'        => $offset
         ])->fetchAll('id');
 
         $total_count = (int) $plim->query('SELECT FOUND_ROWS()')->fetchField();
