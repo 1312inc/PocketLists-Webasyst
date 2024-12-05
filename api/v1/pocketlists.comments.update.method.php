@@ -78,7 +78,12 @@ class pocketlistsCommentsUpdateMethod extends pocketlistsApiAbstractMethod
                     $_comment = array_replace($comment_in_db[$_comment['id']], array_filter($_comment, function ($c) {return !is_null($c);}));
                 } else {
                     // update
-                    $_comment += $comment_in_db[$_comment['id']];
+                    $_comment = [
+                        'item_id'         => ifset($comment_in_db, $comment_id, 'item_id', null),
+                        'contact_id'      => ifset($comment_in_db, $comment_id, 'contact_id', null),
+                        'create_datetime' => ifset($comment_in_db, $comment_id, 'create_datetime', null),
+                        'uuid'            => ifset($comment_in_db, $comment_id, 'uuid', null)
+                    ] + $_comment + $comment_in_db[$_comment['id']];
                 }
                 unset($_comment['errors']);
             } else {
