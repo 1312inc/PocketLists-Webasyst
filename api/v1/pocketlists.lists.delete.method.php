@@ -20,6 +20,7 @@ class pocketlistsListsDeleteMethod extends pocketlistsApiAbstractMethod
         /** @var pocketlistsListFactory $plf */
         $plf = pl2()->getEntityFactory(pocketlistsList::class);
         if (!empty($list_ids)) {
+            $list_ids[-1] = 0;
             $lists = $plf->findById($list_ids);
             $list_ids = [];
 
