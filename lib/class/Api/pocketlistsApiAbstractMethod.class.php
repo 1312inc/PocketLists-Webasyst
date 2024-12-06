@@ -685,4 +685,29 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
 
         return array_values($data);
     }
+
+    protected function setAnnouncements($items_ok = [])
+    {
+        $items_due = [];
+        $url = rtrim(wa()->getConfig()->getHostUrl(), '/').wa()->getConfig()->getBackendUrl(true);
+        $html_text = "%s, <a href=\"/${url}pocketlists/todos/upnext\">"._w('Open')." &rarr;</a>";
+        foreach ($items_ok as $_item) {
+            if (($_item['due_date'] != null || $_item['due_datetime'] != null) && $_item['status'] === 0) {
+                if (isset($_item['assigned_contact_id'])) {
+                    $_item['contact_id'] = $_item['assigned_contact_id'];
+                }
+                if (mb_strlen($_item['name']) > 128) {
+                    $_item['name'] = mb_substr($_item['name'], 0, 125).'...';
+                }
+                $items_due[] = $_item + [
+                    'text'     => sprintf($html_text, $_item['name']),
+                    'datetime' => $_item['due_datetime'] ?? $_item['due_date']
+                ];
+            }
+        }
+
+        if ($items_due) {
+            pocketlistsAnnouncement::addAnnouncements($items_due);
+        }
+    }
 }
