@@ -1,0 +1,1 @@
+import{_ as e}from"./TaskList.vue_vue_type_script_setup_true_lang-caxVL8tX.js";import{d as o,x as r,o as a}from"./index-KSa-CaJm.js";import"./rangy-5rxgwlWZ.js";import"./SortableList.vue_vue_type_style_index_0_lang-UFxWxKCp.js";const m=o({__name:"FiltersViewNearby",setup(t){return(i,n)=>(a(),r(e,{filter:"nearby","addable-props":{location_id:188}}))}});export{m as default};
