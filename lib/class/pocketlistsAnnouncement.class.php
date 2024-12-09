@@ -2,6 +2,8 @@
 
 class pocketlistsAnnouncement
 {
+    const APP = 'webasyst';
+    const ENTITY = 'announcement';
 
     public static function addAnnouncements($announcements)
     {
@@ -23,8 +25,8 @@ class pocketlistsAnnouncement
                 /* for pocketlists_item_link */
                 'item_id'     => ifset($_announcement, 'id', null),
                 'entity_id'   => null,
-                'app'         => 'webasyst',
-                'entity_type' => 'announcement'
+                'app'         => self::APP,
+                'entity_type' => self::ENTITY
             ];
             if ($access === 'limited') {
                 /* for wa_announcement_rights */
@@ -60,6 +62,25 @@ class pocketlistsAnnouncement
                     $war_model->multipleInsert($rights);
                 }
             }
+        }
+    }
+
+    public static function removeAnnouncements($item_remove_ids)
+    {
+        $pil_model = pl2()->getModel(pocketlistsItemLink::class);
+        $links = $pil_model->getByField([
+            'app'         => self::APP,
+            'entity_type' => self::ENTITY,
+            'item_id'     => $item_remove_ids
+        ], true);
+
+        $announcement_ids = array_column($links, 'entity_id');
+        if ($announcement_ids) {
+            $war_model = new waAnnouncementRightsModel();
+            $war_model->deleteByField('announcement_id', $announcement_ids);
+
+            $wa_model = new waAnnouncementModel();
+            $wa_model->deleteById($announcement_ids);
         }
     }
 }

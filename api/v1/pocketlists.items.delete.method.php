@@ -58,6 +58,7 @@ class pocketlistsItemsDeleteMethod extends pocketlistsApiAbstractMethod
         $items_err = array_diff_key($data, $items_ok);
         if (!empty($items_ok)) {
             $logs = [];
+            $this->deleteAnnouncements($items_ok);
             foreach ($items as $item) {
                 try {
                     $id = $item->getId();

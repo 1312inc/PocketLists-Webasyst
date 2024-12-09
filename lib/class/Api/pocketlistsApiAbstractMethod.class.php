@@ -710,4 +710,10 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
             pocketlistsAnnouncement::addAnnouncements($items_due);
         }
     }
+
+    protected function deleteAnnouncements($items_ok)
+    {
+        $ids = array_column($items_ok, 'id');
+        pocketlistsAnnouncement::removeAnnouncements($ids);
+    }
 }
