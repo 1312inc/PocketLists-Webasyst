@@ -349,11 +349,11 @@ paths:
                   prev_item_id:
                     type: integer
                     nullable: true
-                    description: Предыдущий идентификатор айтема для сортировки
+                    description: Use only when NOT providing 'sort' & 'rank' values precisely! Server will automatically generate new sort & rank values putting the element in the list right after the specified previous element.
                   prev_item_uuid:
                     type: string
                     nullable: true
-                    description: Предыдущий UUID айтема для сортировки
+                    description: Use only when NOT providing 'sort', 'rank', and 'prev_item_id' values precisely! Server will automatically generate new sort & rank values putting the element in the list right after the specified previous element.
                   tags:
                     type: array
                     items:
@@ -667,7 +667,7 @@ paths:
                   prev_item_id:
                     type: integer
                     nullable: true
-                    description: Предыдущий идентификатор айтема для сортировки
+                    description: Use only when NOT providing 'sort' & 'rank' values precisely! Server will automatically generate new sort & rank values putting the element in the list right after the specified previous element.
                   tags:
                     type: array
                     items:
@@ -806,11 +806,11 @@ paths:
                   prev_list_id:
                     type: integer
                     nullable: true
-                    description: Предыдущий идентификатор списка для сортировки
+                    description: Use only when NOT providing 'sort' & 'rank' values precisely! Server will automatically generate new sort & rank values putting the element in the list right after the specified previous element.
                   prev_list_uuid:
                     type: string
                     nullable: true
-                    description: Предыдущий UUID списка для сортировки
+                    description: Use only when NOT providing 'sort', 'rank', and 'prev_list_id' values precisely! Server will automatically generate new sort & rank values putting the element in the list right after the specified previous element.
       responses:
         200:
           description: OK
@@ -994,7 +994,7 @@ paths:
                   prev_list_id:
                     type: integer
                     nullable: true
-                    description: Предыдущий идентификатор списка для сортировки
+                    description: Use only when NOT providing 'sort' & 'rank' values precisely! Server will automatically generate new sort & rank values putting the element in the list right after the specified previous element.
       responses:
         200:
           description: OK
@@ -1446,11 +1446,11 @@ paths:
                   prev_pocket_id:
                     type: integer
                     nullable: true
-                    description: Only when 'sort' & 'rank' values are not provided.
+                    description: Use only when NOT providing 'sort' & 'rank' values precisely! Server will automatically generate new sort & rank values putting the element in the list right after the specified previous element.
                   prev_pocket_uuid:
                     type: string
                     nullable: true
-                    description: Предыдущий UUID проекта для сортировки
+                    description: Use only when NOT providing 'sort', 'rank', and 'prev_pocket_id' values precisely! Server will automatically generate new sort & rank values putting the element in the list right after the specified previous element.
       responses:
         200:
           description: OK
