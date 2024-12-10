@@ -692,7 +692,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
         $url = rtrim(wa()->getConfig()->getHostUrl(), '/').wa()->getConfig()->getBackendUrl(true);
         $html_text = "%s, <a href=\"/${url}pocketlists/todos/upnext\">"._w('Open')." &rarr;</a>";
         foreach ($items_ok as $_item) {
-            if (($_item['due_date'] != null || $_item['due_datetime'] != null) && $_item['status'] === 0) {
+            if (($_item['due_date'] != null || $_item['due_datetime'] != null) && $_item['status'] === pocketlistsItem::STATUS_UNDONE) {
                 if (isset($_item['assigned_contact_id'])) {
                     $_item['contact_id'] = $_item['assigned_contact_id'];
                 }
@@ -700,8 +700,9 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                     $_item['name'] = mb_substr($_item['name'], 0, 125).'...';
                 }
                 $items_due[] = $_item + [
-                    'text'     => sprintf($html_text, $_item['name']),
-                    'datetime' => $_item['due_datetime'] ?? $_item['due_date']
+                    'text'      => sprintf($html_text, $_item['name']),
+                    'datetime'  => $_item['due_datetime'] ?? $_item['due_date'],
+                    'is_pinned' => $_item['priority'] > 0 ? 1 : 0
                 ];
             }
         }
@@ -711,7 +712,40 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
         }
     }
 
-    protected function deleteAnnouncements($items_ok)
+    protected function updateAnnouncements($items_ok = [])
+    {
+        $items_del = [];
+        $items_upd = [];
+        foreach ($items_ok as $_item) {
+            if (
+                $_item['status'] === pocketlistsItem::STATUS_DONE
+                || !isset($_item['due_date'], $_item['due_datetime'])
+            ) {
+                $items_del[] = $_item;
+            }
+            if ($_item['status'] === pocketlistsItem::STATUS_DONE) {
+                continue;
+            }
+            if (
+                !empty($_item['due_date'])
+                || !empty($_item['due_datetime'])
+            ) {
+                $items_del[] = $_item;
+                $items_upd[] = $_item;
+            }
+        }
+
+        if ($items_del) {
+            $this->deleteAnnouncements($items_del);
+            pl2()->getModel('pocketlistsItemLink')->deleteByField('item_id', array_column($items_del, 'id'));
+
+        }
+        if ($items_upd) {
+            $this->setAnnouncements($items_upd);
+        }
+    }
+
+    protected function deleteAnnouncements($items_ok = [])
     {
         $ids = array_column($items_ok, 'id');
         pocketlistsAnnouncement::removeAnnouncements($ids);

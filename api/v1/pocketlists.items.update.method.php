@@ -315,6 +315,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                     $link_model = pl2()->getModel(pocketlistsItemLink::class);
                     $link_model->multipleInsert($links);
                 }
+                $this->updateAnnouncements($items_ok);
                 $this->saveLog(
                     pocketlistsLog::ENTITY_ITEM,
                     pocketlistsLog::ACTION_UPDATE,
