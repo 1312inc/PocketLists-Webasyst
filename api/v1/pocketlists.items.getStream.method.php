@@ -133,6 +133,7 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
             'due',
             'priority',
             'user',
+            'tag',
             'search',
             'nearby'
         ];
@@ -187,6 +188,16 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
                     throw new pocketlistsApiException(_w('Unknown user'));
                 }
                 $sql_parts['where']['and'][] = 'assigned_contact_id = '.(int) $filter_split[1];
+                break;
+            case 'tag':
+                /** tag/TAG */
+                if (!isset($filter_split[1])) {
+                    throw new pocketlistsApiException(_w('Empty filter value'));
+                }
+                $sql_parts['join']['pit'] = 'LEFT JOIN pocketlists_item_tags pit ON pit.item_id = i.id';
+                $sql_parts['join']['pt'] = 'LEFT JOIN pocketlists_tag pt ON pt.id = pit.tag_id';
+                $sql_parts['where']['and'][] = "pt.`text` = '".$plim->escape($filter_split[1])."'";
+                $sql_parts['order by'][] = 'i.calc_priority DESC, i.due_date, i.due_datetime ASC';
                 break;
             case 'search':
                 /** search/KEYWORD */
