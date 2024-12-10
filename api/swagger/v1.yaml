@@ -306,11 +306,11 @@ paths:
                     description: Note
                   sort:
                     type: integer
-                    description: Sort
+                    description: Precise master sort position (ORDER BY sort, rank)
                   rank:
                     type: string
                     maxLength: 8
-                    description: Sort rank, [0-9A-z]
+                    description: Precise sort subrank position among elements with the same master sort value (ORDER BY sort, rank)
                   status:
                     type: integer
                     description: Item status done/undone
@@ -629,11 +629,11 @@ paths:
                     description: Note
                   sort:
                     type: integer
-                    description: Sort
+                    description: Precise master sort position (ORDER BY sort, rank)
                   rank:
                     type: string
                     maxLength: 8
-                    description: Sort rank, [0-9A-z]
+                    description: Precise sort subrank position among elements with the same master sort value (ORDER BY sort, rank)
                   status:
                     type: integer
                     description: Item status undone/done
@@ -785,10 +785,10 @@ paths:
                     description: A descriptive datetime (UTC) to be shown somewhere in the client UI, and not validated by server
                   sort:
                     type: integer
-                    description: Sort
+                    description: Precise master sort position (ORDER BY sort, rank)
                   rank:
                     type: string
-                    description: Sort rank
+                    description: Precise sort subrank position among elements with the same master sort value (ORDER BY sort, rank)
                   type:
                     type: string
                     default: checklist
@@ -987,10 +987,10 @@ paths:
                     description: A descriptive datetime (UTC) to be shown somewhere in the client UI, and not validated by server
                   sort:
                     type: integer
-                    description: Sort
+                    description: Precise master sort position (ORDER BY sort, rank)
                   rank:
                     type: string
-                    description: Sort rank
+                    description: Precise sort subrank position among elements with the same master sort value (ORDER BY sort, rank)
                   prev_list_id:
                     type: integer
                     nullable: true
@@ -1409,7 +1409,7 @@ paths:
     put:
       security:
         - BearerAuth: [ ]
-      summary: Добавить новый проект
+      summary: Adds new pocket - a container for lists with custom access rights setup (a sort of a folder or a project).
       requestBody:
         content:
           application/json:
@@ -1422,11 +1422,11 @@ paths:
                 properties:
                   name:
                     type: string
-                    description: Название проекта
+                    description: Pocket name
                   color:
                     type: string
                     nullable: true
-                    description: Цвет
+                    description: Pocket sash color for custom looks in the UI
                     enum:
                       - none
                       - red
@@ -1436,17 +1436,17 @@ paths:
                       - purple
                   sort:
                     type: integer
-                    description: Sort
+                    description: Precise master sort position (ORDER BY sort, rank)
                   rank:
                     type: string
-                    description: Sort rank
+                    description: Precise sort subrank position among elements with the same master sort value (ORDER BY sort, rank)
                   uuid:
                     type: string
                     description: Unique UUID value
                   prev_pocket_id:
                     type: integer
                     nullable: true
-                    description: Предыдущий идентификатор проекта для сортировки
+                    description: Only when 'sort' & 'rank' values are not provided.
                   prev_pocket_uuid:
                     type: string
                     nullable: true
@@ -1574,10 +1574,10 @@ paths:
                       - purple
                   sort:
                     type: integer
-                    description: Sort
+                    description: Precise master sort position (ORDER BY sort, rank)
                   rank:
                     type: string
-                    description: Sort rank
+                    description: Precise sort subrank position among elements with the same master sort value (ORDER BY sort, rank)
                   prev_pocket_id:
                     type: integer
                     nullable: true
@@ -1739,11 +1739,11 @@ components:
             sort:
               type: integer
               default: 0
-              description: Sort
+              description: Precise master sort position (ORDER BY sort, rank)
             rank:
               type: string
               default: ''
-              description: Sort rank
+              description: Precise sort subrank position among elements with the same master sort value (ORDER BY sort, rank)
             name:
               type: string
               description: Pocket name
@@ -1871,11 +1871,11 @@ components:
             sort:
               type: integer
               default: 0
-              description: Sort
+              description: Precise master sort position (ORDER BY sort, rank)
             rank:
               type: string
               default: ''
-              description: Sort rank
+              description: Precise sort subrank position among elements with the same master sort value (ORDER BY sort, rank)
             has_children:
               type: integer
               default: 0
