@@ -40,6 +40,7 @@ return array(
         'calc_priority' => array('tinyint', 1, 'null' => 0, 'default' => '0'),
         'create_datetime' => array('datetime'),
         'update_datetime' => array('datetime'),
+        'activity_datetime' => array('datetime'),
         'complete_datetime' => array('datetime'),
         'complete_contact_id' => array('int', 11),
         'name' => array('mediumtext'),
@@ -112,6 +113,7 @@ return array(
         'location_radius' => array('int', 11),
         'create_datetime' => array('datetime'),
         'update_datetime' => array('datetime'),
+        'activity_datetime' => array('datetime'),
         'uuid' => array('varchar', 36),
         ':keys' => array(
             'PRIMARY' => 'id',
@@ -167,6 +169,7 @@ return array(
         'color' => array('enum', "'none','red','green','blue','yellow','purple'", 'null' => 0, 'default' => 'blue'),
         'create_datetime' => array('datetime'),
         'update_datetime' => array('datetime'),
+        'activity_datetime' => array('datetime'),
         'passcode' => array('varchar', 32),
         'uuid' => array('varchar', 36),
         ':keys' => array(

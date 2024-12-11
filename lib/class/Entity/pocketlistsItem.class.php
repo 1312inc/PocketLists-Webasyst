@@ -50,6 +50,11 @@ class pocketlistsItem extends pocketlistsEntity
     /**
      * @var DateTime|null
      */
+    protected $activity_datetime;
+
+    /**
+     * @var DateTime|null
+     */
     protected $complete_datetime;
 
     /**
@@ -818,6 +823,25 @@ class pocketlistsItem extends pocketlistsEntity
     public function setUpdateDatetime($update_datetime)
     {
         $this->update_datetime = $update_datetime;
+
+        return $this;
+    }
+
+    /**
+     * @return DateTime|null
+     */
+    public function getActivityDatetime()
+    {
+        return $this->activity_datetime;
+    }
+
+    /**
+     * @param $activity_datetime
+     * @return $this
+     */
+    public function setActivityDatetime($activity_datetime)
+    {
+        $this->activity_datetime = $activity_datetime;
 
         return $this;
     }

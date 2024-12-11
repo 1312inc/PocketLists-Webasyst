@@ -46,6 +46,11 @@ class pocketlistsLocation extends pocketlistsEntity
     private $update_datetime;
 
     /**
+     * @var string
+     */
+    private $activity_datetime;
+
+    /**
      * @var string|null
      */
     private $uuid;
@@ -190,6 +195,26 @@ class pocketlistsLocation extends pocketlistsEntity
     public function setUpdateDatetime($update_datetime)
     {
         $this->update_datetime = $update_datetime;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getActivityDatetime()
+    {
+        return $this->activity_datetime;
+    }
+
+    /**
+     * @param $activity_datetime
+     *
+     * @return pocketlistsLocation
+     */
+    public function setActivityDatetime($activity_datetime)
+    {
+        $this->activity_datetime = $activity_datetime;
 
         return $this;
     }

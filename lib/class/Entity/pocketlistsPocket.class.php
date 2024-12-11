@@ -43,6 +43,11 @@ class pocketlistsPocket extends pocketlistsEntity
     /**
      * @var string
      */
+    private $activity_datetime;
+
+    /**
+     * @var string
+     */
     private $passcode;
 
     /**
@@ -225,6 +230,26 @@ class pocketlistsPocket extends pocketlistsEntity
     public function setUpdateDatetime($update_datetime)
     {
         $this->update_datetime = $update_datetime;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getActivityDatetime()
+    {
+        return $this->activity_datetime;
+    }
+
+    /**
+     * @param $activity_datetime
+     *
+     * @return pocketlistsPocket
+     */
+    public function setActivityDatetime($activity_datetime)
+    {
+        $this->activity_datetime = $activity_datetime;
 
         return $this;
     }
