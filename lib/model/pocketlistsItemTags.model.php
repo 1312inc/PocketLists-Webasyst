@@ -30,7 +30,14 @@ class pocketlistsItemTagsModel extends pocketlistsModel
         ])->fetchAll();
     }
 
-    public function add($data = [])
+    /**
+     * @param $data = [
+     *      ENTITY_ID => [TAG1, TAG2, ...]
+     * ]
+     * @return bool
+     * @throws waException
+     */
+    public function setTags($data = [])
     {
         if (empty($data) || !is_array($data)) {
             return false;
@@ -65,9 +72,11 @@ class pocketlistsItemTagsModel extends pocketlistsModel
         }
 
         $tags_insert = [];
+        $tags_delete = [];
         foreach ($data as $id => $_data) {
+            $tags_delete[] = $id;
             foreach ($_data as $_tag) {
-                if ($tag_id = ifset($tags_in_db, $_tag, 'id', null)) {
+                if ($_tag && $tag_id = ifset($tags_in_db, $_tag, 'id', null)) {
                     $tags_insert[] = [
                         'item_id' => $id,
                         'tag_id'  => $tag_id,
@@ -77,6 +86,7 @@ class pocketlistsItemTagsModel extends pocketlistsModel
             }
         }
 
+        $this->deleteByField('item_id', $tags_delete);
         if ($tags_insert) {
             $this->multipleInsert($tags_insert, 2);
             return true;

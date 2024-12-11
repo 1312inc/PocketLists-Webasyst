@@ -295,7 +295,7 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
 
                         if ($tags) {
                             $tag_model = pl2()->getModel(pocketlistsItemTags::class);
-                            $tag_model->add($tags);
+                            $tag_model->setTags($tags);
                         }
                         if ($links) {
                             //save external_links
