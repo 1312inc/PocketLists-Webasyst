@@ -204,12 +204,12 @@ paths:
             format: date-time
         - in: query
           name: offset
-          description: Смещение списка (по умолчанию 0)
+          description: Skips first 'offset' records before starting the response. 0 by default.
           schema:
             type: integer
         - in: query
           name: limit
-          description: Размер порции списка (по умолчанию 30, максимум 500)
+          description: Limits the max number of records returned in the response. 30 by default. 500 max allowed.
           schema:
             type: integer
       responses:
@@ -508,12 +508,12 @@ paths:
             format: date-time
         - in: query
           name: offset
-          description: Смещение списка (по умолчанию 0)
+          description: Skips first 'offset' records before starting the response. 0 by default.
           schema:
             type: integer
         - in: query
           name: limit
-          description: Размер порции списка (по умолчанию 30, максимум 500)
+          description: Limits the max number of records returned in the response. 30 by default. 500 max allowed.
           schema:
             type: integer
       responses:
@@ -566,12 +566,12 @@ paths:
             type: integer
         - in: query
           name: offset
-          description: Смещение списка (по умолчанию 0)
+          description: Skips first 'offset' records before starting the response. 0 by default.
           schema:
             type: integer
         - in: query
           name: limit
-          description: Размер порции списка (по умолчанию 30, максимум 500)
+          description: Limits the max number of records returned in the response. 30 by default. 500 max allowed.
           schema:
             type: integer
       responses:
@@ -897,12 +897,12 @@ paths:
             format: date-time
         - in: query
           name: offset
-          description: Смещение списка (по умолчанию 0)
+          description: Skips first 'offset' records before starting the response. 0 by default.
           schema:
             type: integer
         - in: query
           name: limit
-          description: Размер порции списка (по умолчанию 30, максимум 500)
+          description: Limits the max number of records returned in the response. 30 by default. 500 max allowed.
           schema:
             type: integer
       responses:
@@ -1131,12 +1131,12 @@ paths:
             type: string
         - in: query
           name: offset
-          description: Смещение списка (по умолчанию 0)
+          description: Skips first 'offset' records before starting the response. 0 by default.
           schema:
             type: integer
         - in: query
           name: limit
-          description: Размер порции списка (по умолчанию 30, максимум 500)
+          description: Limits the max number of records returned in the response. 30 by default. 500 max allowed.
           schema:
             type: integer
       responses:
@@ -1235,12 +1235,12 @@ paths:
             format: date-time
         - in: query
           name: offset
-          description: Смещение списка (по умолчанию 0)
+          description: Skips first 'offset' records before starting the response. 0 by default.
           schema:
             type: integer
         - in: query
           name: limit
-          description: Размер порции списка (по умолчанию 30, максимум 500)
+          description: Limits the max number of records returned in the response. 30 by default. 500 max allowed.
           schema:
             type: integer
       responses:
@@ -1272,12 +1272,12 @@ paths:
             format: date-time
         - in: query
           name: offset
-          description: Смещение списка (по умолчанию 0)
+          description: Skips first 'offset' records before starting the response. 0 by default.
           schema:
             type: integer
         - in: query
           name: limit
-          description: Размер порции списка (по умолчанию 30, максимум 500)
+          description: Limits the max number of records returned in the response. 30 by default. 500 max allowed.
           schema:
             type: integer
       responses:
@@ -1683,12 +1683,12 @@ paths:
       parameters:
         - in: query
           name: offset
-          description: Смещение списка (по умолчанию 0)
+          description: Skips first 'offset' records before starting the response. 0 by default.
           schema:
             type: integer
         - in: query
           name: limit
-          description: Размер порции списка (по умолчанию 30, максимум 500)
+          description: Limits the max number of records returned in the response. 30 by default. 500 max allowed.
           schema:
             type: integer
       responses:
