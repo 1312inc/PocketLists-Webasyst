@@ -131,13 +131,15 @@ class pocketlistsPocketsUpdateMethod extends pocketlistsApiAbstractMethod
                 'color',
                 'create_datetime',
                 'update_datetime',
+                'activity_datetime',
                 'passcode',
                 'uuid'
             ], [
                 'id' => 'int',
                 'sort' => 'int',
                 'create_datetime' => 'datetime',
-                'update_datetime' => 'datetime'
+                'update_datetime' => 'datetime',
+                'activity_datetime' => 'datetime'
             ]
         );
     }

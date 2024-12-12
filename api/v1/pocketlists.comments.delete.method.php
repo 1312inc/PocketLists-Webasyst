@@ -83,11 +83,19 @@ class pocketlistsCommentsDeleteMethod extends pocketlistsApiAbstractMethod
 
                 }
             }
-            $this->saveLog(
-                pocketlistsLog::ENTITY_COMMENT,
-                pocketlistsLog::ACTION_DELETE,
-                $logs
-            );
+
+            if ($logs) {
+                pl2()->getModel(pocketlistsItem::class)->updateById(
+                    array_filter(array_unique(array_column($logs, 'item_id'))),
+                    ['activity_datetime' => date('Y-m-d H:i:s')]
+                );
+
+                $this->saveLog(
+                    pocketlistsLog::ENTITY_COMMENT,
+                    pocketlistsLog::ACTION_DELETE,
+                    $logs
+                );
+            }
         }
 
         $this->response['data'] = $this->responseWrapper(

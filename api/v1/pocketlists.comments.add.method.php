@@ -17,13 +17,13 @@ class pocketlistsCommentsAddMethod extends pocketlistsApiAbstractMethod
         $item_ids = array_unique(array_filter(array_column($comments, 'item_id')));
         $uuids = array_column($comments, 'uuid');
 
-        /** @var pocketlistsCommentModel $model */
-        $model = pl2()->getModel(pocketlistsComment::class);
+        /** @var pocketlistsItemModel $model */
+        $model = pl2()->getModel(pocketlistsItem::class);
         if (!empty($item_ids)) {
-            $items = $model->query("
-                SELECT id, list_id, name FROM pocketlists_item
-                WHERE id IN (i:item_ids) AND key_list_id IS NULL
-            ", ['item_ids' => $item_ids])->fetchAll('id');
+            $items = $model->select('id, list_id, name')
+                ->where('id IN (i:item_ids)', ['item_ids' => $item_ids])
+                ->where('key_list_id IS NULL')
+                ->fetchAll('id');
         }
         if (!empty($uuids)) {
             $uuids = $this->getEntitiesByUuid('comment', $uuids);
@@ -99,7 +99,7 @@ class pocketlistsCommentsAddMethod extends pocketlistsApiAbstractMethod
         if (!empty($comments_ok)) {
             try {
                 $comments_ok = array_values($comments_ok);
-                $result = $model->multipleInsert($comments_ok);
+                $result = pl2()->getModel(pocketlistsComment::class)->multipleInsert($comments_ok);
                 if ($result->getResult()) {
                     $last_id = $result->lastInsertId();
                     $rows_count = $result->affectedRows();
@@ -108,6 +108,12 @@ class pocketlistsCommentsAddMethod extends pocketlistsApiAbstractMethod
                             $_comment['id'] = $last_id++;
                         }
                         unset($_comment);
+
+                        $model->updateById(
+                            array_filter(array_unique(array_column($comments_ok, 'item_id'))),
+                            ['activity_datetime' => date('Y-m-d H:i:s')]
+                        );
+
                         $this->saveLog(
                             pocketlistsLog::ENTITY_COMMENT,
                             pocketlistsLog::ACTION_ADD,

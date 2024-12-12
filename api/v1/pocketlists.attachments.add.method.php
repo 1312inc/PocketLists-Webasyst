@@ -112,12 +112,22 @@ class pocketlistsAttachmentsAddMethod extends pocketlistsApiAbstractMethod
                 } catch (waException $e) {
                 }
             }
+
+            $logs = array_values(array_filter($result, function ($a) {
+                return empty($a['errors']);
+            }));
+
+            if ($logs) {
+                pl2()->getModel(pocketlistsItem::class)->updateById(
+                    array_filter(array_unique(array_column($logs, 'item_id'))),
+                    ['activity_datetime' => date('Y-m-d H:i:s')]
+                );
+            }
+
             $this->saveLog(
                 pocketlistsLog::ENTITY_ATTACHMENT,
                 pocketlistsLog::ACTION_ADD,
-                array_values(array_filter($result, function ($a) {
-                    return empty($a['errors']);
-                }))
+                $logs
             );
         }
 

@@ -15,18 +15,17 @@ class pocketlistsItemsDeleteMethod extends pocketlistsApiAbstractMethod
         }
 
         $items = [];
-        $item_ids = array_unique(array_filter($data));
+        $items_in_db = [];
 
         /** @var pocketlistsItemFactory $plf */
         $plf = pl2()->getEntityFactory(pocketlistsItem::class);
 
-        if (!empty($item_ids)) {
-            $items = $plf->findById($item_ids);
-            $item_ids = [];
+        if ($ids = array_unique(array_filter($data))) {
+            $items_in_db = $plf->findById($ids);
 
             /** @var pocketlistsItem $i */
-            foreach ((array) $items as $i) {
-                $item_ids[] = $i->getId();
+            foreach ((array) $items_in_db as $i) {
+                $items[$i->getId()] = ['location_id' => $i->getLocationId()];
             }
         }
 
@@ -43,11 +42,13 @@ class pocketlistsItemsDeleteMethod extends pocketlistsApiAbstractMethod
                 $_item['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'id');
             } elseif (!is_numeric($_item['id'])) {
                 $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'id');
-            } elseif (!in_array($_item['id'], $item_ids)) {
+            } elseif (!array_key_exists($_item['id'], $items)) {
                 $_item['errors'][] = _w('Item not found');
             }
 
-            if (!empty($_item['errors'])) {
+            if (empty($_item['errors'])) {
+                $_item['location_id'] = ifset($items, $_item['id'], 'location_id', null);
+            } else {
                 $_item['success'] = false;
             }
         }
@@ -59,7 +60,7 @@ class pocketlistsItemsDeleteMethod extends pocketlistsApiAbstractMethod
         if (!empty($items_ok)) {
             $logs = [];
             $this->deleteAnnouncements($items_ok);
-            foreach ($items as $item) {
+            foreach ($items_in_db as $item) {
                 try {
                     $id = $item->getId();
                     if ($plf->delete($item)) {
@@ -82,6 +83,21 @@ class pocketlistsItemsDeleteMethod extends pocketlistsApiAbstractMethod
 
                 }
             }
+
+            if ($list_ids = array_filter(array_unique(array_column($logs, 'list_id')))) {
+                pl2()->getModel(pocketlistsItem::class)->updateByField(
+                    ['key_list_id' => $list_ids],
+                    ['activity_datetime' => date('Y-m-d H:i:s')]
+                );
+            }
+
+            if ($location_ids = array_filter(array_unique(array_column($items_ok, 'location_id')))) {
+                pl2()->getModel(pocketlistsLocation::class)->updateById(
+                    $location_ids,
+                    ['activity_datetime' => date('Y-m-d H:i:s')]
+                );
+            }
+
             $this->saveLog(
                 pocketlistsLog::ENTITY_ITEM,
                 pocketlistsLog::ACTION_DELETE,

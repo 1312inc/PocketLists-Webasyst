@@ -105,13 +105,22 @@ class pocketlistsCommentsUpdateMethod extends pocketlistsApiAbstractMethod
                     }
                 }
                 unset($_comment_ok);
-                $this->saveLog(
-                    pocketlistsLog::ENTITY_COMMENT,
-                    pocketlistsLog::ACTION_UPDATE,
-                    array_filter($comments_ok, function ($c) {
-                        return $c['success'];
-                    })
-                );
+                $logs = array_filter($comments_ok, function ($c) {
+                    return $c['success'];
+                });
+
+                if ($logs) {
+                    pl2()->getModel(pocketlistsItem::class)->updateById(
+                        array_filter(array_unique(array_column($logs, 'item_id'))),
+                        ['activity_datetime' => date('Y-m-d H:i:s')]
+                    );
+
+                    $this->saveLog(
+                        pocketlistsLog::ENTITY_COMMENT,
+                        pocketlistsLog::ACTION_UPDATE,
+                        $logs
+                    );
+                }
             } catch (Exception $ex) {
                 throw new pocketlistsApiException(sprintf_wp('Error on transaction import save: %s', $ex->getMessage()), 400);
             }

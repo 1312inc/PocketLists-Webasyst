@@ -23,20 +23,21 @@ class pocketlistsPocketsAddMethod extends pocketlistsApiAbstractMethod
         foreach ($data as &$_pocket) {
             /** set default */
             $_pocket = [
-                'id'               => null,
-                'pl_id'            => 1312,
-                'sort'             => ifset($_pocket, 'sort', null),
-                'rank'             => ifset($_pocket, 'rank', null),
-                'name'             => ifset($_pocket, 'name', null),
-                'color'            => ifset($_pocket, 'color', pocketlistsStoreColor::NONE),
-                'create_datetime'  => date('Y-m-d H:i:s'),
-                'update_datetime'  => null,
-                'passcode'         => null,
-                'uuid'             => ifset($_pocket, 'uuid', null),
-                'prev_pocket_id'   => ifset($_pocket, 'prev_pocket_id', null),
-                'prev_pocket_uuid' => ifset($_pocket, 'prev_pocket_uuid', null),
-                'success'          => true,
-                'errors'           => []
+                'id'                => null,
+                'pl_id'             => 1312,
+                'sort'              => ifset($_pocket, 'sort', null),
+                'rank'              => ifset($_pocket, 'rank', null),
+                'name'              => ifset($_pocket, 'name', null),
+                'color'             => ifset($_pocket, 'color', pocketlistsStoreColor::NONE),
+                'create_datetime'   => date('Y-m-d H:i:s'),
+                'update_datetime'   => null,
+                'activity_datetime' => null,
+                'passcode'          => null,
+                'uuid'              => ifset($_pocket, 'uuid', null),
+                'prev_pocket_id'    => ifset($_pocket, 'prev_pocket_id', null),
+                'prev_pocket_uuid'  => ifset($_pocket, 'prev_pocket_uuid', null),
+                'success'           => true,
+                'errors'            => []
             ];
 
             if (!isset($_pocket['name'])) {
@@ -129,13 +130,15 @@ class pocketlistsPocketsAddMethod extends pocketlistsApiAbstractMethod
                 'color',
                 'create_datetime',
                 'update_datetime',
+                'activity_datetime',
                 'passcode',
                 'uuid'
             ], [
                 'id' => 'int',
                 'sort' => 'int',
                 'create_datetime' => 'datetime',
-                'update_datetime' => 'datetime'
+                'update_datetime' => 'datetime',
+                'activity_datetime' => 'datetime'
             ]
         );
     }

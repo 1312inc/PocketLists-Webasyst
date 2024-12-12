@@ -1763,6 +1763,12 @@ components:
               nullable: true
               default: null
               description: Server-generated pocket update datetime (UTC)
+            activity_datetime:
+              type: string
+              format: date-time
+              nullable: true
+              default: null
+              description: Server-generated item last activity datetime (UTC)
             passcode:
               type: string
               nullable: true
@@ -1905,6 +1911,12 @@ components:
               nullable: true
               default: null
               description: Server-generated item update datetime (UTC)
+            activity_datetime:
+              type: string
+              format: date-time
+              nullable: true
+              default: null
+              description: Server-generated item last activity datetime (UTC)
             complete_datetime:
               type: string
               format: date-time
@@ -2054,6 +2066,12 @@ components:
           nullable: true
           default: null
           description: Server-generated location update datetime (UTC)
+        activity_datetime:
+          type: string
+          format: date-time
+          nullable: true
+          default: null
+          description: Server-generated item last activity datetime (UTC)
         uuid:
           type: string
           nullable: true

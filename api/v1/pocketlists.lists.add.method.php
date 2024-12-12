@@ -52,6 +52,7 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                 'calc_priority'         => null,
                 'create_datetime'       => date('Y-m-d H:i:s'),
                 'update_datetime'       => null,
+                'activity_datetime'     => null,
                 'complete_datetime'     => null,
                 'complete_contact_id'   => null,
                 'name'                  => ifset($_list, 'name', null),
@@ -179,6 +180,14 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                 ];
             }
             unset($_list);
+
+            if ($pocket_ids = array_filter(array_unique(array_column($lists_ok, 'pocket_id')))) {
+                pl2()->getModel(pocketlistsPocket::class)->updateById(
+                    $pocket_ids,
+                    ['activity_datetime' => date('Y-m-d H:i:s')]
+                );
+            }
+
             $this->saveLog(
                 pocketlistsLog::ENTITY_LIST,
                 pocketlistsLog::ACTION_ADD,
@@ -202,6 +211,7 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                 'calc_priority',
                 'create_datetime',
                 'update_datetime',
+                'activity_datetime',
                 'complete_datetime',
                 'complete_contact_id',
                 'name',
@@ -234,6 +244,7 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                 'calc_priority' => 'int',
                 'create_datetime' => 'datetime',
                 'update_datetime' => 'datetime',
+                'activity_datetime' => 'datetime',
                 'complete_datetime' => 'datetime',
                 'complete_contact_id' => 'int',
                 'due_datetime' => 'datetime',

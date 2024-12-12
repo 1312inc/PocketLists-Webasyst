@@ -73,6 +73,7 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                 'calc_priority'         => 0,
                 'create_datetime'       => date('Y-m-d H:i:s'),
                 'update_datetime'       => null,
+                'activity_datetime'     => null,
                 'complete_datetime'     => null,
                 'complete_contact_id'   => null,
                 'name'                  => ifset($_item, 'name', ''),
@@ -302,6 +303,21 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                             $link_model = pl2()->getModel(pocketlistsItemLink::class);
                             $link_model->multipleInsert($links);
                         }
+
+                        if ($list_ids = array_filter(array_unique(array_column($items_ok, 'list_id')))) {
+                            pl2()->getModel(pocketlistsItem::class)->updateByField(
+                                ['key_list_id' => $list_ids],
+                                ['activity_datetime' => date('Y-m-d H:i:s')]
+                            );
+                        }
+
+                        if ($location_ids = array_filter(array_unique(array_column($items_ok, 'location_id')))) {
+                            pl2()->getModel(pocketlistsLocation::class)->updateById(
+                                $location_ids,
+                                ['activity_datetime' => date('Y-m-d H:i:s')]
+                            );
+                        }
+
                         $this->setAnnouncements($items_ok);
                         $this->saveLog(
                             pocketlistsLog::ENTITY_ITEM,
@@ -334,6 +350,7 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                 'calc_priority',
                 'create_datetime',
                 'update_datetime',
+                'activity_datetime',
                 'complete_datetime',
                 'complete_contact_id',
                 'name',
@@ -363,6 +380,7 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                 'calc_priority' => 'int',
                 'create_datetime' => 'datetime',
                 'update_datetime' => 'datetime',
+                'activity_datetime' => 'datetime',
                 'complete_datetime' => 'datetime',
                 'complete_contact_id' => 'int',
                 'due_datetime' => 'datetime',

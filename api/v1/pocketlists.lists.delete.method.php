@@ -82,6 +82,13 @@ class pocketlistsListsDeleteMethod extends pocketlistsApiAbstractMethod
                 }
             }
             if ($logs) {
+                if ($pocket_ids = array_filter(array_unique(array_column($logs, 'pocket_id')))) {
+                    pl2()->getModel(pocketlistsPocket::class)->updateById(
+                        $pocket_ids,
+                        ['activity_datetime' => date('Y-m-d H:i:s')]
+                    );
+                }
+
                 $this->saveLog(
                     pocketlistsLog::ENTITY_LIST,
                     pocketlistsLog::ACTION_DELETE,

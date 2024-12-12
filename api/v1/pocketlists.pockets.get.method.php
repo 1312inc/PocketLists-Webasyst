@@ -78,6 +78,7 @@ class pocketlistsPocketsGetMethod extends pocketlistsApiAbstractMethod
                 'color',
                 'create_datetime',
                 'update_datetime',
+                'activity_datetime',
                 'passcode',
                 'uuid',
                 'extended_data'
@@ -85,7 +86,8 @@ class pocketlistsPocketsGetMethod extends pocketlistsApiAbstractMethod
                 'id' => 'int',
                 'sort' => 'int',
                 'create_datetime' => 'datetime',
-                'update_datetime' => 'datetime'
+                'update_datetime' => 'datetime',
+                'activity_datetime' => 'datetime'
             ]
         );
     }
