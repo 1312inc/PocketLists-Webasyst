@@ -13,7 +13,7 @@ paths:
     put:
       security:
         - BearerAuth: [ ]
-      summary: Добавить новые аттачменты
+      summary: Uploads file attachments to an item.
       requestBody:
         content:
           application/json:
@@ -28,14 +28,14 @@ paths:
                 properties:
                   item_id:
                     type: integer
-                    description: Item identifier
+                    description: Item ID (server generated)
                   file:
                     type: string
                     format: byte
                     description: File binary content
                   file_name:
                     type: string
-                    description: File name
+                    description: File name (visible to user)
                   uuid:
                     type: string
                     nullable: true
@@ -48,18 +48,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/response'
         400:
-          description: Invalid request data.
+          description: Invalid request data
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/response'
         500:
-          description: Internal server error.
+          description: Internal server error
   /pocketlists.attachments.delete:
     delete:
       security:
         - BearerAuth: [ ]
-      summary: Удалить аттачмент
+      summary: Deletes file attachments.
       requestBody:
         content:
           application/json:
@@ -73,10 +73,10 @@ paths:
                 properties:
                   id:
                     type: integer
-                    description: Attachment identifier
+                    description: Attachment ID (server generated)
                   item_id:
                     type: integer
-                    description: Item identifier
+                    description: Item ID (server generated)
       responses:
         200:
           description: OK
@@ -85,7 +85,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/response'
         400:
-          description: Invalid request data.
+          description: Invalid request data
           content:
             application/json:
               schema:
@@ -97,12 +97,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/response'
         500:
-          description: Internal server error.
+          description: Internal server error
   /pocketlists.comments.add:
     put:
       security:
         - BearerAuth: [ ]
-      summary: Добавить новый комментарий
+      summary: Adds new comments to an item.
       requestBody:
         content:
           application/json:
@@ -116,7 +116,7 @@ paths:
                 properties:
                   item_id:
                     type: integer
-                    description: Item identifier
+                    description: Item ID (server generated)
                   comment:
                     type: string
                     description: Comment text
@@ -137,7 +137,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/response'
         400:
-          description: Invalid request data.
+          description: Invalid request data
           content:
             application/json:
               schema:
@@ -149,22 +149,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/response'
         404:
-          description: Pocket not found.
+          description: Pocket not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/response'
         500:
-          description: Internal server error.
+          description: Internal server error
   /pocketlists.comments.delete:
     delete:
       security:
         - BearerAuth: [ ]
-      summary: Удалить комментарий
+      summary: Deletes comments.
       parameters:
         - in: query
           name: id[]
-          description: Comment identifiers
+          description: Comment IDs (server generated)
           required: true
           schema:
             type: array
@@ -178,27 +178,27 @@ paths:
               schema:
                 $ref: '#/components/schemas/response'
         400:
-          description: Invalid request data.
+          description: Invalid request data
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/response'
         500:
-          description: Internal server error.
+          description: Internal server error
   /pocketlists.comments.get:
     get:
       security:
         - BearerAuth: [ ]
-      summary: Get comments
+      summary: Returns comments.
       parameters:
         - in: query
           name: item_id
-          description: ID айтема
+          description: Item ID (server generated)
           schema:
             type: integer
         - in: query
           name: starting_from
-          description: Returns records updated/created only after the specified datetime (UTC, ISO 8601). Older records are removed from the response. When 'starting_from' is passed, all records will be 'ORDERED BY update_datetime DESC'.
+          description: Returns records updated/created only after the specified datetime (UTC, ISO 8601). Older records are removed from the response. When 'starting_from' is passed, all records will be 'ORDER BY update_datetime DESC'.
           schema:
             type: string
             format: date-time
@@ -220,18 +220,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/response'
         404:
-          description: Not found.
+          description: Not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/response'
         500:
-          description: Internal server error.
+          description: Internal server error
   /pocketlists.comments.update:
     patch:
       security:
         - BearerAuth: [ ]
-      summary: Update comment
+      summary: Updates comments.
       requestBody:
         content:
           application/json:
@@ -269,24 +269,24 @@ paths:
               schema:
                 $ref: '#/components/schemas/response'
         400:
-          description: Invalid request data.
+          description: Invalid request data
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/response'
         404:
-          description: Not found.
+          description: Not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/response'
         500:
-          description: Internal server error.
+          description: Internal server error
   /pocketlists.items.add:
     put:
       security:
         - BearerAuth: [ ]
-      summary: Adds new item
+      summary: Adds new items.
       requestBody:
         content:
           application/json:
@@ -297,13 +297,13 @@ paths:
                 properties:
                   list_id:
                     type: integer
-                    description: List identifier
+                    description: List ID (server generated)
                   name:
                     type: string
-                    description: Name
+                    description: Item name
                   note:
                     type: string
-                    description: Note
+                    description: Item text note
                   sort:
                     type: integer
                     description: Precise master sort position (ORDER BY sort, rank)
@@ -313,30 +313,30 @@ paths:
                     description: Precise sort subrank position among elements with the same master sort value (ORDER BY sort, rank)
                   status:
                     type: integer
-                    description: Item status done/undone
+                    description: Item status (0 for active/undone, 1 for completed/done)
                     enum:
                       - 0
                       - 1
                   assigned_contact_id:
                     type: integer
                     nullable: true
-                    description: Assigned contact identifier
+                    description: Assigned/responsible user contact ID
                   priority:
                     type: integer
                     description: Priority
                   location_id:
                     type: integer
-                    description: Location identifier
+                    description: Location ID (server generated)
                   due_date:
                     type: string
                     format: date
                     nullable: true
-                    description: Item due date
+                    description: Item due date (for all-day items)
                   due_datetime:
                     type: string
                     format: date-time
                     nullable: true
-                    description: Item exact due datetime (UTC)
+                    description: Item exact due datetime (UTC). When specified, server automatically fills due_date field making the 'due_date' optional for the request.
                   client_touch_datetime:
                     type: string
                     format: date-time
@@ -375,7 +375,7 @@ paths:
                           description: File binary content
                         file_name:
                           type: string
-                          description: File name
+                          description: File name (visible to user)
                         uuid:
                           type: string
                           nullable: true
@@ -410,19 +410,19 @@ paths:
               schema:
                 $ref: '#/components/schemas/response'
         400:
-          description: Invalid request data.
+          description: Invalid request data
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/response'
         404:
-          description: Pocket not found.
+          description: Pocket not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/response'
         500:
-          description: Internal server error.
+          description: Internal server error
   /pocketlists.items.delete:
     delete:
       security:
@@ -431,7 +431,7 @@ paths:
       parameters:
         - in: query
           name: id[]
-          description: Item identifiers
+          description: Item ID (server generated)
           required: true
           schema:
             type: array
@@ -445,64 +445,64 @@ paths:
               schema:
                 $ref: '#/components/schemas/response'
         400:
-          description: Invalid request data.
+          description: Invalid request data
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/response'
         500:
-          description: Internal server error.
+          description: Internal server error
   /pocketlists.items.get:
     get:
       security:
         - BearerAuth: [ ]
-      summary: Get items
+      summary: Returns items by primary fields.
       parameters:
         - in: query
           name: id[]
-          description: Item identifiers
+          description: Filters by item ID (server generated).
           schema:
             type: array
             items:
               type: integer
         - in: query
           name: list_id
-          description: ID списка
+          description: Filters by list ID (server generated).
           schema:
             type: integer
         - in: query
           name: location_id
-          description: Filtering by location identifier
+          description: Filters by location ID (server generated).
           schema:
             type: integer
         - in: query
           name: status
-          description: Item status
+          description: Filters by item status (0 for active/undone, 1 for completed/done). When 'status=1' is passed, defult sort will be 'ORDER BY complete_datetime DESC'.
           schema:
             type: integer
         - in: query
           name: tag
-          description: Filtering by tag
+          description: Filters by tag.
           schema:
             type: string
         - in: query
           name: external_app_id
-          description: Filtering by external app identifier
+          description: Filters by external app link.
           schema:
             type: string
         - in: query
           name: external_entity_type
-          description: Filtering by external entity type
+          description: Filters by external app link & entity type. 'external_app_id' must be provided.
           schema:
             type: string
         - in: query
           name: external_entity_id
-          description: External entity identifier
+          description: Filters by external app link, entity type & identifier. 'external_app_id' & 'external_entity_type' must be provided.
           schema:
             type: string
         - in: query
           name: starting_from
-          description: Returns records updated/created only after the specified datetime (UTC, ISO 8601). Older records are removed from the response. When 'starting_from' is passed, all records will be 'ORDERED BY update_datetime DESC'.
+          description: Returns records updated/created only after the specified datetime (UTC, ISO 8601). Older records are removed from the response. When 'starting_from' is passed, all records will be 'ORDER BY update_datetime DESC'.
           schema:
             type: string
             format: date-time
@@ -524,44 +524,44 @@ paths:
               schema:
                 $ref: '#/components/schemas/response'
         400:
-          description: Invalid request data.
+          description: Invalid request data
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/response'
         500:
-          description: Internal server error.
+          description: Internal server error
   /pocketlists.items.getStream:
     get:
       security:
         - BearerAuth: [ ]
-      summary: Get items
+      summary: Get items by a sophisticated custom filter.
       parameters:
         - in: query
           name: filter
           required: true
           description: |
-            Filter value.
-            Примеры фильтров:
-            + **upnext**: айтемы сортированные по приоритету и дате выполнения
-            + **due**: айтемы сортированные по возрастанию даты выполнения
-            + **priority**: айтемы сортированные по приоритету
-            + **user/55**: айтемы назначенные на указанного пользователя
-            + **tag/TAG**: айтемы отмеченные указанным тегом
-            + **search/KEYWORD**: айтемы содержащие ключевое слово
-            + **nearby**, **nearby/28.635896,-106.075763**: айтемы поблизости
+            Filter defines the search criteria and sort accordingly:
+            + **upnext**: items with due date/time or manually defined priority ordered by dynamic priority,
+            + **due**: items with due date/time set,
+            + **priority**: items with manually defined priority,
+            + **user/55**: items assigned to a specified responsible user,
+            + **tag/TAG**: items assigned to a specific tag,
+            + **search/KEYWORD**: full-text search within item text data,
+            + **nearby**: items assigned to locations,
+            + **nearby/28.635896,-106.075763**: items assigned to locations orderd by proximity from the specified lattitude and longitude
           example: upnext, user/ID, search/KEYWORD
           schema:
             type: string
         - in: query
           name: starting_from
-          description: Returns records updated/created only after the specified datetime (UTC, ISO 8601). Older records are removed from the response. When 'starting_from' is passed, all records will be 'ORDERED BY update_datetime DESC'.
+          description: Returns records updated/created only after the specified datetime (UTC, ISO 8601). Older records are removed from the response. When 'starting_from' is passed, all records will be 'ORDER BY update_datetime DESC'.
           schema:
             type: string
             format: date-time
         - in: query
           name: status
-          description: Item status
+          description: Filters by item status (0 for active/undone, 1 for completed/done). When 'status=1' is passed, defult sort will be 'ORDER BY complete_datetime DESC'.
           schema:
             type: integer
         - in: query
@@ -588,18 +588,18 @@ paths:
                         type: string
                         description: Filter value
         400:
-          description: Invalid request data.
+          description: Invalid request data
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/response'
         500:
-          description: Internal server error.
+          description: Internal server error
   /pocketlists.items.update:
     patch:
       security:
         - BearerAuth: [ ]
-      summary: Updates item
+      summary: Updates items.
       requestBody:
         content:
           application/json:
@@ -619,16 +619,16 @@ paths:
                       - update
                   id:
                     type: integer
-                    description: Item identifier
+                    description: Item ID (server generated)
                   list_id:
                     type: integer
-                    description: List identifier
+                    description: List ID (server generated)
                   name:
                     type: string
                     description: Item name
                   note:
                     type: string
-                    description: Note
+                    description: Item text note
                   sort:
                     type: integer
                     description: Precise master sort position (ORDER BY sort, rank)
@@ -638,29 +638,29 @@ paths:
                     description: Precise sort subrank position among elements with the same master sort value (ORDER BY sort, rank)
                   status:
                     type: integer
-                    description: Item status undone/done
+                    description: Item status (0 for active/undone, 1 for completed/done)
                     enum:
                       - 0
                       - 1
                   assigned_contact_id:
                     type: integer
-                    description: Assigned contact identifier
+                    description: Assigned/responsible user contact ID
                   priority:
                     type: integer
                     description: Priority
                   location_id:
                     type: integer
-                    description: Location identifier
+                    description: Location ID (server generated)
                   due_datetime:
                     type: string
                     format: date-time
                     nullable: true
-                    description: Item exact due datetime (UTC)
+                    description: Item exact due datetime (UTC). When specified, server automatically fills due_date field making the 'due_date' optional for the request.
                   due_date:
                     type: string
                     format: date
                     nullable: true
-                    description: Item due date
+                    description: Item due date (for all-day items)
                   client_touch_datetime:
                     type: string
                     format: date-time
@@ -691,7 +691,7 @@ paths:
                           description: File binary content
                         file_name:
                           type: string
-                          description: File name
+                          description: File name (visible to user)
                         uuid:
                           type: string
                           nullable: true
@@ -726,7 +726,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/response'
         400:
-          description: Invalid request data.
+          description: Invalid request data
           content:
             application/json:
               schema:
@@ -738,18 +738,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/response'
         404:
-          description: Not found.
+          description: Not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/response'
         500:
-          description: Internal server error.
+          description: Internal server error
   /pocketlists.lists.add:
     put:
       security:
         - BearerAuth: [ ]
-      summary: Добавить новый список
+      summary: Adds new lists.
       requestBody:
         content:
           application/json:
@@ -763,16 +763,16 @@ paths:
                 properties:
                   pocket_id:
                     type: integer
-                    description: ID проекта
+                    description: Pocket ID (server generated)
                   name:
                     type: string
-                    description: Название списка
+                    description: List name
                   icon:
                     type: string
-                    description: Icon
+                    description: List icon
                   color:
                     type: string
-                    description: Color
+                    description: List color
                     default: none
                     enum:
                       - none
@@ -822,7 +822,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/response'
         400:
-          description: Invalid request data.
+          description: Invalid request data
           content:
             application/json:
               schema:
@@ -834,7 +834,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/response'
         404:
-          description: Pocket not found.
+          description: Pocket not found
           content:
             application/json:
               schema:
@@ -846,7 +846,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/response'
         500:
-          description: Internal server error.
+          description: Internal server error
   /pocketlists.lists.delete:
     delete:
       security:
@@ -855,7 +855,7 @@ paths:
       parameters:
         - in: query
           name: id[]
-          description: List identifiers
+          description: List ID (server generated)
           required: true
           schema:
             type: array
@@ -869,29 +869,29 @@ paths:
               schema:
                 $ref: '#/components/schemas/response'
         400:
-          description: Invalid request data.
+          description: Invalid request data
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/response'
         500:
-          description: Internal server error.
+          description: Internal server error
   /pocketlists.lists.get:
     get:
       security:
         - BearerAuth: [ ]
-      summary: Получить список
+      summary: Returns lists.
       parameters:
         - in: query
           name: id[]
-          description: List identifiers
+          description: List ID (server generated)
           schema:
             type: array
             items:
               type: integer
         - in: query
           name: starting_from
-          description: Returns records updated/created only after the specified datetime (UTC, ISO 8601). Older records are removed from the response. When 'starting_from' is passed, all records will be 'ORDERED BY update_datetime DESC'.
+          description: Returns records updated/created only after the specified datetime (UTC, ISO 8601). Older records are removed from the response. When 'starting_from' is passed, all records will be 'ORDER BY update_datetime DESC'.
           schema:
             type: string
             format: date-time
@@ -913,7 +913,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/response'
         400:
-          description: Invalid request data.
+          description: Invalid request data
           content:
             application/json:
               schema:
@@ -925,7 +925,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/response'
         404:
-          description: Not found.
+          description: Not found
           content:
             application/json:
               schema:
@@ -937,12 +937,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/response'
         500:
-          description: Internal server error.
+          description: Internal server error
   /pocketlists.lists.update:
     patch:
       security:
         - BearerAuth: [ ]
-      summary: Редактировать список
+      summary: Updates lists.
       requestBody:
         content:
           application/json:
@@ -962,19 +962,19 @@ paths:
                       - update
                   id:
                     type: integer
-                    description: List identifier
+                    description: List ID (server generated)
                   pocket_id:
                     type: integer
-                    description: ID проекта
+                    description: Pocket ID (server generated)
                   name:
                     type: string
-                    description: Name list
+                    description: List name
                   icon:
                     type: string
-                    description: Icon
+                    description: List icon
                   color:
                     type: string
-                    description: Color
+                    description: List color
                     default: none
                     enum:
                       - none
@@ -1006,13 +1006,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/response'
         400:
-          description: Invalid request data.
+          description: Invalid request data
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/response'
         404:
-          description: Not found.
+          description: Not found
           content:
             application/json:
               schema:
@@ -1024,12 +1024,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/response'
         500:
-          description: Internal server error.
+          description: Internal server error
   /pocketlists.locations.add:
     put:
       security:
         - BearerAuth: [ ]
-      summary: Добавить новую локацию
+      summary: Adds new locations.
       requestBody:
         content:
           application/json:
@@ -1040,19 +1040,19 @@ paths:
                 properties:
                   name:
                     type: string
-                    description: Название локации
+                    description: Location name
                   color:
                     type: string
-                    description: Цвет локации
+                    description: Location color
                   location_latitude:
                     type: number
-                    description: Широта локации в градусах
+                    description: Location lattitude
                   location_longitude:
                     type: number
-                    description: Долгота локации в градусах
+                    description: Location longitude
                   location_radius:
                     type: integer
-                    description: Радиус локации в метрах
+                    description: Location area radius (in meters)
                   uuid:
                     type: string
                     description: Unique UUID value generated by client for precise entity identification. 128-bit label format (8-4-4-4-12 string is recommended). Max 36 characters. Optional but highly recommended.
@@ -1064,28 +1064,28 @@ paths:
               schema:
                 $ref: '#/components/schemas/response'
         400:
-          description: Invalid request data.
+          description: Invalid request data
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/response'
         404:
-          description: Pocket not found.
+          description: Pocket not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/response'
         500:
-          description: Internal server error.
+          description: Internal server error
   /pocketlists.locations.delete:
     delete:
       security:
         - BearerAuth: [ ]
-      summary: Удалить локацию
+      summary: Deletes locations.
       parameters:
         - in: query
           name: id[]
-          description: Location identifiers
+          description: Location ID (server generated)
           required: true
           schema:
             type: array
@@ -1099,33 +1099,33 @@ paths:
               schema:
                 $ref: '#/components/schemas/response'
         400:
-          description: Invalid request data.
+          description: Invalid request data
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/response'
         500:
-          description: Internal server error.
+          description: Internal server error
   /pocketlists.locations.get:
     get:
       security:
         - BearerAuth: [ ]
-      summary: Получить локацию
+      summary: Returns locations.
       parameters:
         - in: query
           name: location_id
-          description: Location identifier
+          description: Location ID (server generated)
           schema:
             type: integer
         - in: query
           name: starting_from
-          description: Returns records updated/created only after the specified datetime (UTC, ISO 8601). Older records are removed from the response. When 'starting_from' is passed, all records will be 'ORDERED BY update_datetime DESC'.
+          description: Returns records updated/created only after the specified datetime (UTC, ISO 8601). Older records are removed from the response. When 'starting_from' is passed, all records will be 'ORDER BY update_datetime DESC'.
           schema:
             type: string
             format: date-time
         - in: query
           name: nearby
-          description: Координаты точки (широта,долгота)
+          description: Orders locations by proximity from the specified lattitude and longitude.
           example: 28.635896,-106.075763
           schema:
             type: string
@@ -1147,24 +1147,24 @@ paths:
               schema:
                 $ref: '#/components/schemas/response'
         400:
-          description: Invalid request data.
+          description: Invalid request data
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/response'
         404:
-          description: Not found.
+          description: Not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/response'
         500:
-          description: Internal server error.
+          description: Internal server error
   /pocketlists.locations.update:
     patch:
       security:
         - BearerAuth: [ ]
-      summary: Редактировать локацию
+      summary: Updates locations.
       requestBody:
         content:
           application/json:
@@ -1184,22 +1184,22 @@ paths:
                       - update
                   id:
                     type: integer
-                    description: Location identifier
+                    description: Location ID (server generated)
                   name:
                     type: string
-                    description: Название локации
+                    description: Location name
                   color:
                     type: string
-                    description: Цвет локации
+                    description: Location color
                   location_latitude:
                     type: number
-                    description: Широта локации в градусах
+                    description: Location lattitude
                   location_longitude:
                     type: number
-                    description: Долгота локации в градусах
+                    description: Location longitude
                   location_radius:
                     type: integer
-                    description: Радиус локации в метрах
+                    description: Location area radius (in meters)
       responses:
         200:
           description: OK
@@ -1208,24 +1208,24 @@ paths:
               schema:
                 $ref: '#/components/schemas/response'
         400:
-          description: Invalid request data.
+          description: Invalid request data
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/response'
         404:
-          description: Not found.
+          description: Not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/response'
         500:
-          description: Internal server error.
+          description: Internal server error
   /pocketlists.log.get:
     get:
       security:
         - BearerAuth: [ ]
-      summary: Получить историю
+      summary: Returns the full log of all actions performed with the data the user has access to.
       parameters:
         - in: query
           name: starting_from
@@ -1251,18 +1251,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/response'
         400:
-          description: Invalid request data.
+          description: Invalid request data
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/response'
         500:
-          description: Internal server error.
+          description: Internal server error
   /pocketlists.log.getDeleted:
     get:
       security:
         - BearerAuth: [ ]
-      summary: Returns the full log of permanent deleted records ('delete' action) since the specified datetime.
+      summary: Returns the full log of permanent delete actions (deleted records) since the specified datetime.
       parameters:
         - in: query
           name: starting_from
@@ -1288,13 +1288,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/response'
         400:
-          description: Invalid request data.
+          description: Invalid request data
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/response'
         500:
-          description: Internal server error.
+          description: Internal server error
   /pocketlists.log.getDeletedSummary:
     get:
       security:
@@ -1401,13 +1401,13 @@ paths:
                             type: integer
                             description: ''
         400:
-          description: Invalid request data.
+          description: Invalid request data
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/response'
         500:
-          description: Internal server error.
+          description: Internal server error
   /pocketlists.pockets.add:
     put:
       security:
@@ -1462,18 +1462,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/response'
         400:
-          description: Invalid request data.
+          description: Invalid request data
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/response'
         500:
-          description: Internal server error.
+          description: Internal server error
   /pocketlists.pockets.delete:
     delete:
       security:
         - BearerAuth: [ ]
-      summary: Удалить проект
+      summary: Deletes pockets.
       parameters:
         - in: query
           name: id[]
@@ -1497,12 +1497,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/response'
         500:
-          description: Internal server error.
+          description: Internal server error
   /pocketlists.pockets.get:
     get:
       security:
         - BearerAuth: [ ]
-      summary: Получить проект
+      summary: Returns pockets.
       parameters:
         - in: query
           name: id[]
@@ -1513,7 +1513,7 @@ paths:
               type: integer
         - in: query
           name: starting_from
-          description: Returns records updated/created only after the specified datetime (UTC, ISO 8601). Older records are removed from the response. When 'starting_from' is passed, all records will be 'ORDERED BY update_datetime DESC'.
+          description: Returns records updated/created only after the specified datetime (UTC, ISO 8601). Older records are removed from the response. When 'starting_from' is passed, all records will be 'ORDER BY update_datetime DESC'.
           schema:
             type: string
             format: date-time
@@ -1525,13 +1525,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/response'
         400:
-          description: Invalid request data.
+          description: Invalid request data
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/response'
         404:
-          description: Not found.
+          description: Not found
           content:
             application/json:
               schema:
@@ -1540,7 +1540,7 @@ paths:
     patch:
       security:
         - BearerAuth: [ ]
-      summary: Редактировать проект
+      summary: Updates pockets.
       requestBody:
         content:
           application/json:
@@ -1593,19 +1593,19 @@ paths:
               schema:
                 $ref: '#/components/schemas/response'
         400:
-          description: Invalid request data.
+          description: Invalid request data
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/response'
         404:
-          description: Not found.
+          description: Not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/response'
         500:
-          description: Internal server error.
+          description: Internal server error
   /pocketlists.system.getTime:
     get:
       security:
@@ -1639,11 +1639,11 @@ paths:
     get:
       security:
         - BearerAuth: [ ]
-      summary: Получить адрес подключения к websocket.
+      summary: Returns Web Socket connection URL streaming all server Pocket Lists log updates.
       parameters:
         - in: query
           name: channel
-          description: Channel identifier
+          description: Channel ID
           schema:
             type: string
       responses:
@@ -1668,18 +1668,18 @@ paths:
                             nullable: true
                             description: Channel identifier
         400:
-          description: Invalid request data.
+          description: Invalid request data
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/response'
         500:
-          description: Internal server error.
+          description: Internal server error
   /pocketlists.users.get:
     get:
       security:
         - BearerAuth: [ ]
-      summary: Список команды
+      summary: Returns all users (team).
       parameters:
         - in: query
           name: offset
@@ -1699,7 +1699,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/response'
         500:
-          description: Internal server error.
+          description: Internal server error
 
 components:
   securitySchemes:
@@ -1861,7 +1861,7 @@ components:
               type: integer
               nullable: true
               default: null
-              description: List identifier
+              description: List ID (server generated)
             contact_id:
               type: integer
               nullable: false
@@ -1929,13 +1929,13 @@ components:
               format: date
               nullable: true
               default: null
-              description: Item due date
+              description: Item due date (for all-day items)
             due_datetime:
               type: string
               format: date-time
               nullable: true
               default: null
-              description: Item due datetime (UTC)
+              description: Item due date (for all-day items)time (UTC)
             client_touch_datetime:
               type: string
               format: date-time
@@ -1946,7 +1946,7 @@ components:
               type: integer
               nullable: true
               default: null
-              description: Location identifier
+              description: Location ID (server generated)
             amount:
               type: number
               default: 0
@@ -1960,7 +1960,7 @@ components:
               type: integer
               nullable: true
               default: null
-              description: Assigned contact identifier
+              description: Assigned/responsible user contact ID
             repeat:
               type: integer
               default: 0
@@ -1969,7 +1969,7 @@ components:
               type: integer
               nullable: true
               default: null
-              description: Key list identifier
+              description: Key List ID (server generated)
             uuid:
               type: string
               nullable: true
@@ -1991,7 +1991,7 @@ components:
           description: Comment identifier
         item_id:
           type: integer
-          description: Item identifier
+          description: Item ID (server generated)
         item_name:
           type: string
           description: Name item
@@ -2025,7 +2025,7 @@ components:
       properties:
         id:
           type: integer
-          description: Location identifier
+          description: Location ID (server generated)
         name:
           type: string
           description: Location name
@@ -2066,7 +2066,7 @@ components:
           description: Link identifier
         item_id:
           type: integer
-          description: Item identifier
+          description: Item ID (server generated)
         app:
           type: string
           description: Application identifier
@@ -2157,10 +2157,10 @@ components:
           description: Pocket identifier
         list_id:
           type: integer
-          description: List identifier
+          description: List ID (server generated)
         item_id:
           type: integer
-          description: Item identifier
+          description: Item ID (server generated)
         comment_id:
           type: integer
           nullable: true
@@ -2172,7 +2172,7 @@ components:
         location_id:
           type: integer
           nullable: true
-          description: Location identifier
+          description: Location ID (server generated)
         additional_id:
           type: integer
           nullable: true
@@ -2180,7 +2180,7 @@ components:
         assigned_contact_id:
           type: integer
           nullable: true
-          description: Assigned contact identifier
+          description: Assigned/responsible user contact ID
         create_datetime:
           type: string
           format: datetime
