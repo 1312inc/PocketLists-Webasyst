@@ -252,7 +252,7 @@ paths:
                       - update
                   id:
                     type: integer
-                    description: Comment identifier
+                    description: Comment ID (server generated)
                   comment:
                     type: string
                     description: Comment text
@@ -306,7 +306,7 @@ paths:
                     description: Item text note
                   sort:
                     type: integer
-                    description: Precise master sort position (ORDER BY sort, rank)
+                    description: Precise master sort position (ORDER BY sort, rank) within a list
                   rank:
                     type: string
                     maxLength: 8
@@ -323,7 +323,7 @@ paths:
                     description: Assigned/responsible user contact ID
                   priority:
                     type: integer
-                    description: Priority
+                    description: Priority (0, 1, 2, ..., N)
                   location_id:
                     type: integer
                     description: Location ID (server generated)
@@ -631,7 +631,7 @@ paths:
                     description: Item text note
                   sort:
                     type: integer
-                    description: Precise master sort position (ORDER BY sort, rank)
+                    description: Precise master sort position (ORDER BY sort, rank) within a list
                   rank:
                     type: string
                     maxLength: 8
@@ -647,7 +647,7 @@ paths:
                     description: Assigned/responsible user contact ID
                   priority:
                     type: integer
-                    description: Priority
+                    description: Priority (0, 1, 2, ..., N)
                   location_id:
                     type: integer
                     description: Location ID (server generated)
@@ -788,7 +788,7 @@ paths:
                     description: A descriptive datetime (UTC) to be shown somewhere in the client UI, and not validated by server
                   sort:
                     type: integer
-                    description: Precise master sort position (ORDER BY sort, rank)
+                    description: Precise master sort position (ORDER BY sort, rank) within a pocket
                   rank:
                     type: string
                     description: Precise sort subrank position among elements with the same master sort value (ORDER BY sort, rank)
@@ -990,7 +990,7 @@ paths:
                     description: A descriptive datetime (UTC) to be shown somewhere in the client UI, and not validated by server
                   sort:
                     type: integer
-                    description: Precise master sort position (ORDER BY sort, rank)
+                    description: Precise master sort position (ORDER BY sort, rank) within a pocket
                   rank:
                     type: string
                     description: Precise sort subrank position among elements with the same master sort value (ORDER BY sort, rank)
@@ -1477,7 +1477,7 @@ paths:
       parameters:
         - in: query
           name: id[]
-          description: Pocket identifiers
+          description: Pocket ID (server generated)s
           required: true
           schema:
             type: array
@@ -1506,7 +1506,7 @@ paths:
       parameters:
         - in: query
           name: id[]
-          description: Pocket identifiers
+          description: Pocket ID (server generated)s
           schema:
             type: array
             items:
@@ -1560,7 +1560,7 @@ paths:
                       - update
                   id:
                     type: integer
-                    description: Pocket identifier
+                    description: Pocket ID (server generated)
                   name:
                     type: string
                     description: Название проекта
@@ -1643,7 +1643,7 @@ paths:
       parameters:
         - in: query
           name: channel
-          description: Channel ID
+          description: Channel ID (optional)
           schema:
             type: string
       responses:
@@ -1738,7 +1738,7 @@ components:
           properties:
             id:
               type: integer
-              description: Pocket identifier
+              description: Pocket ID (server generated)
             sort:
               type: integer
               default: 0
@@ -1786,7 +1786,7 @@ components:
           properties:
             pocket_id:
               type: integer
-              description: Pocket identifier
+              description: Pocket ID (server generated)
             type:
               type: string
               description: |
@@ -1825,10 +1825,10 @@ components:
               properties:
                 items_count:
                   type: integer
-                  description: Общее количество айтемов в списке
+                  description: Number of items in the list
                 items_priority_count:
                   type: integer
-                  description: Количество айтемов с максимальным приоритетом
+                  description: Number of items in the list with dynamic priority > 0
     item:
       allOf:
         - type: object
@@ -1865,7 +1865,7 @@ components:
             contact_id:
               type: integer
               nullable: false
-              description: Contact identifier
+              description: Contact ID (server generated)
             parent_id:
               type: integer
               nullable: false
@@ -1874,7 +1874,7 @@ components:
             sort:
               type: integer
               default: 0
-              description: Precise master sort position (ORDER BY sort, rank)
+              description: Precise master sort position (ORDER BY sort, rank) within a list
             rank:
               type: string
               default: ''
@@ -1886,15 +1886,15 @@ components:
             status:
               type: integer
               default: 0
-              description: Status
+              description: Item status (0 for active/undone, 1 for completed/done)
             priority:
               type: integer
               default: 0
-              description: Priority
+              description: Priority (0, 1, 2, ..., N)
             calc_priority:
               type: integer
               default: 0
-              description: Calc priority
+              description: Dynamic priority (based on a max of due & manually set priority)
             create_datetime:
               type: string
               format: date-time
@@ -1915,7 +1915,7 @@ components:
               type: integer
               nullable: true
               default: null
-              description: Complete contact identifier
+              description: Complete Contact ID (server generated)
             name:
               type: string
               default: ''
@@ -1955,7 +1955,7 @@ components:
               type: string
               nullable: true
               default: null
-              description: Currency ISO3
+              description: Currency ISO-3 code
             assigned_contact_id:
               type: integer
               nullable: true
@@ -1969,7 +1969,7 @@ components:
               type: integer
               nullable: true
               default: null
-              description: Key List ID (server generated)
+              description: Key list ID (server generated)
             uuid:
               type: string
               nullable: true
@@ -1988,7 +1988,7 @@ components:
       properties:
         id:
           type: integer
-          description: Comment identifier
+          description: Comment ID (server generated)
         item_id:
           type: integer
           description: Item ID (server generated)
@@ -1997,7 +1997,7 @@ components:
           description: Name item
         contact_id:
           type: integer
-          description: Contact identifier
+          description: Contact ID (server generated)
         comment:
           type: string
           description: Comment text
@@ -2063,7 +2063,7 @@ components:
       properties:
         id:
           type: integer
-          description: Link identifier
+          description: Link ID (server generated)
         item_id:
           type: integer
           description: Item ID (server generated)
@@ -2142,7 +2142,7 @@ components:
       properties:
         id:
           type: integer
-          description: Log identifier
+          description: Log record ID (server generated)
         action:
           type: string
           description: Action
@@ -2151,10 +2151,10 @@ components:
           description: Entity type
         contact_id:
           type: integer
-          description: Contact identifier
+          description: Contact ID (server generated)
         pocket_id:
           type: integer
-          description: Pocket identifier
+          description: Pocket ID (server generated)
         list_id:
           type: integer
           description: List ID (server generated)
@@ -2164,11 +2164,11 @@ components:
         comment_id:
           type: integer
           nullable: true
-          description: Comment identifier
+          description: Comment ID (server generated)
         attachment_id:
           type: integer
           nullable: true
-          description: Attachment identifier
+          description: Attachment ID (server generated)
         location_id:
           type: integer
           nullable: true
@@ -2187,7 +2187,7 @@ components:
           description: Server-generated log entry datetime (UTC)
         params:
           type: string
-          description: Params, JSON
+          description: Custom descriptive params (JSON)
     response:
       allOf:
         - type: object
@@ -2239,10 +2239,10 @@ components:
               properties:
                 offset:
                   type: integer
-                  description: Offset
+                  description: Number of first 'offset' records skipped in the response
                 limit:
                   type: integer
-                  description: Limit
+                  description: Limit value specified in the request data
                 count:
                   type: integer
-                  description: Count
+                  description: Total number of records matching the query
