@@ -31,7 +31,7 @@ class pocketlistsLocationsGetMethod extends pocketlistsApiAbstractMethod
             } else {
                 throw new pocketlistsApiException(_w('Unknown value starting_from'), 400);
             }
-            $where .= ' AND (update_datetime >= s:starting_from OR create_datetime >= s:starting_from)';
+            $where .= ' AND (update_datetime >= s:starting_from OR create_datetime >= s:starting_from OR activity_datetime >= s:starting_from)';
             $order = 'update_datetime DESC, id';
         } else {
             $order = 'id';

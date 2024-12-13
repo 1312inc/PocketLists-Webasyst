@@ -67,7 +67,7 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
                 $sql_parts['where']['and'][] = 'l.id IN (i:ids)';
             }
             if ($starting_from) {
-                $sql_parts['where']['and'][] = 'i.update_datetime >= s:starting_from OR i.create_datetime >= s:starting_from';
+                $sql_parts['where']['and'][] = 'i.update_datetime >= s:starting_from OR i.create_datetime >= s:starting_from OR i.activity_datetime >= s:starting_from';
                 $sql_parts['order by'] = ['i.update_datetime DESC'];
             } else {
                 $sql_parts['order by'] = ['l.sort, l.rank, i.id DESC'];

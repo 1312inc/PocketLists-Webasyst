@@ -230,7 +230,7 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
                 break;
         }
         if (isset($starting_from)) {
-            $sql_parts['where']['and'][] = 'i.update_datetime >= s:starting_from OR i.create_datetime >= s:starting_from';
+            $sql_parts['where']['and'][] = 'i.update_datetime >= s:starting_from OR i.create_datetime >= s:starting_from OR i.activity_datetime >= s:starting_from';
         }
         if (isset($status)) {
             $sql_parts['where']['and'][] = 'i.status = i:status';
