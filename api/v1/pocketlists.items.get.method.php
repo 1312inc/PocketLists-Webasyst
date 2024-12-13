@@ -202,12 +202,12 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
         /** @var pocketlistsAttachment $_attachment */
         foreach ($attachments as $_attachment) {
             $name = $_attachment->getFilename();
-            $item_id = $_attachment->getItemId();
+            $item_id = (int) $_attachment->getItemId();
             if (!isset($items[$item_id]['attachments'])) {
                 $items[$item_id]['attachments'] = [];
             }
             $items[$item_id]['attachments'][] = [
-                'id'              => $_attachment->getId(),
+                'id'              => (int) $_attachment->getId(),
                 'item_id'         => $item_id,
                 'file_name'       => $name,
                 'file_type'       => $_attachment->getFiletype(),

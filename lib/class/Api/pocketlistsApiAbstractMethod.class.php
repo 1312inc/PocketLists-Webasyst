@@ -201,6 +201,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
         $path = wa()->getDataUrl("attachments/$item_id/", true, pocketlistsHelper::APP_ID, true);
         foreach ($files as &$_file) {
             $_file += [
+                'item_id'         => $item_id,
                 'file'            => '',
                 'file_name'       => '',
                 'upload_datetime' => $now,
