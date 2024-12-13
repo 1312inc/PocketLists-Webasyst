@@ -88,7 +88,7 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                 'repeat'                => 0,
                 'key_list_id'           => null,
                 'uuid'                  => ifset($_item, 'uuid', null),
-                'tags'                  => ifset($_item, 'tags', []),
+                'tags'                  => $this->tagFilter(ifset($_item, 'tags', [])),
                 'attachments'           => ifset($_item, 'attachments', []),
                 'external_links'        => ifset($_item, 'external_links', []),
                 'prev_item_id'          => ifset($_item, 'prev_item_id', null),

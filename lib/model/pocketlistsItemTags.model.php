@@ -76,7 +76,8 @@ class pocketlistsItemTagsModel extends pocketlistsModel
         foreach ($data as $id => $_data) {
             $tags_delete[] = $id;
             foreach ($_data as $_tag) {
-                if ($_tag && $tag_id = ifset($tags_in_db, $_tag, 'id', null)) {
+                $tag_id = ifset($tags_in_db, $_tag, 'id', null);
+                if (!is_null($tag_id)) {
                     $tags_insert[] = [
                         'item_id' => $id,
                         'tag_id'  => $tag_id,

@@ -92,7 +92,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 'key_list_id'           => null,
                 'uuid'                  => ifset($_item, 'uuid', null),
                 'prev_item_id'          => (array_key_exists('prev_item_id', $_item) ? ifset($_item, 'prev_item_id', 0) : null),
-                'tags'                  => ifset($_item, 'tags', null),
+                'tags'                  => $this->tagFilter(ifset($_item, 'tags', null)),
                 'attachments'           => ifset($_item, 'attachments', []),
                 'external_links'        => ifset($_item, 'external_links', []),
                 'success'               => true,

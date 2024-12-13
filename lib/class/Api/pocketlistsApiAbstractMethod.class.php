@@ -750,4 +750,23 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
         $ids = array_column($items_ok, 'id');
         pocketlistsAnnouncement::removeAnnouncements($ids);
     }
+
+    /**
+     * @param $tags
+     * @return array
+     */
+    protected function tagFilter($tags = [])
+    {
+        if (empty($tags) || !is_array($tags)) {
+            return [];
+        }
+
+        $tags = array_map(function ($_tag) {
+            return trim((string) $_tag);
+        }, $tags);
+
+        return array_filter($tags, function ($_tag) {
+            return $_tag !== '';
+        });
+    }
 }
