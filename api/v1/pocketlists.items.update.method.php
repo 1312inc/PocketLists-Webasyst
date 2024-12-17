@@ -81,8 +81,8 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 'complete_contact_id'   => null,
                 'name'                  => ifset($_item, 'name', null),
                 'note'                  => ifset($_item, 'note', null),
-                'due_date'              => ifset($_item, 'due_date', null),
-                'due_datetime'          => ifset($_item, 'due_datetime', null),
+                'due_date'              => (array_key_exists('due_date', $_item) ? ifset($_item, 'due_date', '') : null),//ifset($_item, 'due_date', null),
+                'due_datetime'          => (array_key_exists('due_datetime', $_item) ? ifset($_item, 'due_datetime', '') : null),//ifset($_item, 'due_datetime', null),
                 'client_touch_datetime' => ifset($_item, 'client_touch_datetime', null),
                 'location_id'           => ifset($_item, 'location_id', null),
                 'amount'                => 0,
@@ -253,6 +253,12 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 if ($_item['action'] == self::ACTIONS[0]) {
                     // patch
                     $_item = array_replace($items_in_db[$_item['id']], array_filter($_item, function ($i) {return !is_null($i);}));
+                    if (trim($_item['due_datetime']) === '') {
+                        $_item['due_datetime'] = null;
+                    }
+                    if (trim($_item['due_date']) === '') {
+                        $_item['due_date'] = null;
+                    }
                     if (isset($_item['prev_item_id'])) {
                         if ($_item['prev_item_id'] === 0) {
                             $_item['prev_item_id'] = null;
