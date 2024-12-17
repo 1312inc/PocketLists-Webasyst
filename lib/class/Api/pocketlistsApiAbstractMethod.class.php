@@ -181,6 +181,24 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
     }
 
     /**
+     * @param $datetime
+     * @return string|null
+     */
+    protected function convertDatetimeToServer($datetime)
+    {
+        if (empty($datetime)) {
+            return null;
+        }
+        try {
+            $dt = date_create($datetime, new DateTimeZone('UTC'));
+            $dt->setTimezone(new DateTimeZone(date_default_timezone_get()));
+            return$dt->format('Y-m-d H:i:s');
+        } catch (Exception $ex) {
+            return $datetime;
+        }
+    }
+
+    /**
      * @param int $item_id
      * @param array $files [
      *      'file' => --base64--,
@@ -702,7 +720,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                 }
                 $items_due[] = $_item + [
                     'text'      => sprintf($html_text, $_item['name']),
-                    'datetime'  => $_item['due_datetime'] ?? $_item['due_date'],
+                    'datetime'  => $this->convertDatetimeToServer($_item['due_datetime']) ?? $this->convertDatetimeToServer($_item['due_date']),
                     'is_pinned' => $_item['priority'] > 0 ? 1 : 0
                 ];
             }
