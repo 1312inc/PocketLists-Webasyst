@@ -269,19 +269,19 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 } else {
                     // update
                     $item_in_db = ifset($items_in_db, $item_id, []);
-                    $_item = [
-                        'contact_id'          => ifset($item_in_db, 'contact_id', null),
-                        'parent_id'           => ifset($item_in_db, 'parent_id', null),
-                        'has_children'        => ifset($item_in_db, 'has_children', null),
-                        'calc_priority'       => ifset($item_in_db, 'calc_priority', null),
-                        'create_datetime'     => ifset($item_in_db, 'create_datetime', null),
-                        'complete_datetime'   => ifset($item_in_db, 'complete_datetime', null),
-                        'complete_contact_id' => ifset($item_in_db, 'complete_contact_id', null),
-                        'amount'              => ifset($item_in_db, 'amount', null),
-                        'currency_iso3'       => ifset($item_in_db, 'currency_iso3', null),
-                        'repeat'              => ifset($item_in_db, 'repeat', null),
-                        'uuid'                => ifset($item_in_db, 'uuid', null),
-                    ] + $_item + $items_in_db[$item_id];
+                    $_item = array_intersect_key($item_in_db, array_fill_keys([
+                        'contact_id',
+                        'parent_id',
+                        'has_children',
+                        'calc_priority',
+                        'create_datetime',
+                        'complete_datetime',
+                        'complete_contact_id',
+                        'amount',
+                        'currency_iso3',
+                        'repeat',
+                        'uuid'
+                    ], null)) + $_item + $item_in_db;
                 }
                 unset($_item['errors']);
             } else {
