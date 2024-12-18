@@ -15,7 +15,6 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
 
         $assign_contacts = [];
         $attachment_uuids = [];
-        $user_id = $this->getUser()->getId();
         $item_ids = array_unique(array_column($items, 'id'));
         $list_ids = array_unique(array_column($items, 'list_id'));
         $location_ids = array_unique(array_filter(array_column($items, 'location_id')));
@@ -28,8 +27,8 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
 
         /** @var pocketlistsItemModel $item_model */
         $item_model = pl2()->getModel(pocketlistsItem::class);
-        $items_in_db = $item_model->select('*')->where('id IN (:item_ids)', ['item_ids' => $item_ids])->fetchAll('id');
-        $list_id_available = pocketlistsRBAC::getAccessListForContact($user_id);
+        $items_in_db = $item_model->select('*')->where('id IN (:item_ids) AND key_list_id IS NULL', ['item_ids' => $item_ids])->fetchAll('id');
+        $list_id_available = pocketlistsRBAC::getAccessListForContact($this->getUser()->getId());
         if (!empty($list_ids)) {
             /** @var pocketlistsListModel $list_model */
             $list_model = pl2()->getModel(pocketlistsList::class);
@@ -62,11 +61,12 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
         /** validate */
         foreach ($items as &$_item) {
             /** set default */
+            $item_id = ifset($_item, 'id', null);
             $_item = [
                 'action'                => (ifset($_item, 'action', null) === self::ACTIONS[1] ? self::ACTIONS[1] : self::ACTIONS[0]),
-                'id'                    => ifset($_item, 'id', null),
+                'id'                    => $item_id,
                 'list_id'               => ifset($_item, 'list_id', null),
-                'contact_id'            => $user_id,
+                'contact_id'            => null,
                 'parent_id'             => 0,
                 'sort'                  => ifset($_item, 'sort', null),
                 'rank'                  => ifset($_item, 'rank', null),
@@ -99,9 +99,9 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 'errors'                => []
             ];
 
-            if (empty($_item['id'])) {
+            if (empty($item_id)) {
                 $_item['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'id');
-            } elseif (!is_numeric($_item['id'])) {
+            } elseif (!is_numeric($item_id)) {
                 $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'id');
             }
 
@@ -177,9 +177,9 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 }
             }
 
-            if (!array_key_exists($_item['id'], $items_in_db)) {
+            if (!array_key_exists($item_id, $items_in_db)) {
                 $_item['errors'][] = _w('Item not found');
-            } elseif ($_item['status'] === pocketlistsItem::STATUS_DONE && $items_in_db[$_item['id']]['status'] == pocketlistsItem::STATUS_UNDONE) {
+            } elseif ($_item['status'] === pocketlistsItem::STATUS_DONE && $items_in_db[$item_id]['status'] == pocketlistsItem::STATUS_UNDONE) {
                 $_item['complete_datetime'] = date('Y-m-d H:i:s');
             }
 
@@ -252,7 +252,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
             if (empty($_item['errors'])) {
                 if ($_item['action'] == self::ACTIONS[0]) {
                     // patch
-                    $_item = array_replace($items_in_db[$_item['id']], array_filter($_item, function ($i) {return !is_null($i);}));
+                    $_item = array_replace($items_in_db[$item_id], array_filter($_item, function ($i) {return !is_null($i);}));
                     if (trim($_item['due_datetime']) === '') {
                         $_item['due_datetime'] = null;
                     }
@@ -268,7 +268,20 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                     }
                 } else {
                     // update
-                    $_item += $items_in_db[$_item['id']];
+                    $item_in_db = ifset($items_in_db, $item_id, []);
+                    $_item = [
+                        'contact_id'          => ifset($item_in_db, 'contact_id', null),
+                        'parent_id'           => ifset($item_in_db, 'parent_id', null),
+                        'has_children'        => ifset($item_in_db, 'has_children', null),
+                        'calc_priority'       => ifset($item_in_db, 'calc_priority', null),
+                        'create_datetime'     => ifset($item_in_db, 'create_datetime', null),
+                        'complete_datetime'   => ifset($item_in_db, 'complete_datetime', null),
+                        'complete_contact_id' => ifset($item_in_db, 'complete_contact_id', null),
+                        'amount'              => ifset($item_in_db, 'amount', null),
+                        'currency_iso3'       => ifset($item_in_db, 'currency_iso3', null),
+                        'repeat'              => ifset($item_in_db, 'repeat', null),
+                        'uuid'                => ifset($item_in_db, 'uuid', null),
+                    ] + $_item + $items_in_db[$item_id];
                 }
                 unset($_item['errors']);
             } else {
@@ -290,21 +303,22 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 foreach ($items_ok as &$_item_ok) {
                     $result = $item_model->updateById($_item_ok['id'], $_item_ok);
                     if ($result) {
-                        if (isset($_item['tags'])) {
-                            $tags[$_item['id']] = $_item['tags'];
+                        if (isset($_item_ok['tags'])) {
+                            $tags[$_item_ok['id']] = $_item_ok['tags'];
                         }
                         if (!empty($_item_ok['attachments'])) {
                             $_item_ok['attachments'] = $this->updateFiles($_item_ok['id'], $_item_ok['attachments']);
                         }
                         if (!empty($_item['external_links'])) {
-                            foreach ($_item['external_links'] as $_link)
+                            foreach ($_item['external_links'] as $_link) {
                                 $links[] = [
-                                    'item_id'     => $_item['id'],
+                                    'item_id'     => $_item_ok['id'],
                                     'app'         => ifset($_link, 'app_id', null),
                                     'entity_type' => ifset($_link, 'entity_type', null),
                                     'entity_id'   => ifset($_link, 'entity_id', null),
                                     'entity_data' => ifset($_link, 'entity_data', null),
                                 ];
+                            }
                         }
                     } else {
                         $_item_ok['success'] = false;
