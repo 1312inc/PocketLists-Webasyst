@@ -37,6 +37,7 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
 
         /** validate */
         foreach ($lists as &$_list) {
+            $list_id = ifset($_list, 'id', null);
             $action = (ifset($_list, 'action', null) === self::ACTIONS[1] ? self::ACTIONS[1] : self::ACTIONS[0]);
             /** set default */
             $_list = [
@@ -53,7 +54,7 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                 'color'                 => ifset($_list, 'color', ($action === self::ACTIONS[0] ? null : pocketlistsStoreColor::NONE)),
                 'passcode'              => null,
                 'key_item_id'           => null,
-                'contact_id'            => 0,
+                'contact_id'            => null,
                 'parent_id'             => 0,
                 'has_children'          => 0,
                 'status'                => 0,
@@ -79,15 +80,15 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                 'errors'                => []
             ];
 
-            if (empty($_list['id'])) {
+            if (empty($list_id)) {
                 $_list['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'id');
-            } elseif (!is_numeric($_list['id'])) {
+            } elseif (!is_numeric($list_id)) {
                 $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'id');
-            } elseif ($_list['id'] < 1 || !array_key_exists($_list['id'], $lists_in_db)) {
+            } elseif ($list_id < 1 || !array_key_exists($list_id, $lists_in_db)) {
                 $_list['errors'][] = _w('List not found');
             }
 
-            if (!in_array($_list['id'], $lists_id_available)) {
+            if (!in_array($list_id, $lists_id_available)) {
                 $_list['errors'][] = _w('List access denied');
             }
 
@@ -143,7 +144,7 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
             if (empty($_list['errors'])) {
                 if ($_list['action'] == self::ACTIONS[0]) {
                     // patch
-                    $_list = array_replace($lists_in_db[$_list['id']], array_filter($_list, function ($l) {return !is_null($l);}));
+                    $_list = array_replace($lists_in_db[$list_id], array_filter($_list, function ($l) {return !is_null($l);}));
                     if (isset($_list['prev_list_id'])) {
                         if ($_list['prev_list_id'] === 0) {
                             $_list['prev_list_id'] = null;
@@ -153,11 +154,25 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                     }
                 } else {
                     // update
-                    $_list += $lists_in_db[$_list['id']];
-                    $_list['type'] = $lists_in_db[$_list['id']]['type'];
-                    $_list['pocket_id'] = $lists_in_db[$_list['id']]['pocket_id'];
-                    $_list['key_item_id'] = $lists_in_db[$_list['id']]['key_item_id'];
-                    $_list['create_datetime'] = $lists_in_db[$_list['id']]['create_datetime'];
+                    $list_in_db = ifset($lists_in_db, $list_id, []);
+                    $_list = array_intersect_key($list_in_db, array_fill_keys([
+                        'type',
+                        'archived',
+                        'hash',
+                        'passcode',
+                        'key_item_id',
+                        'contact_id',
+                        'parent_id',
+                        'has_children',
+                        'calc_priority',
+                        'create_datetime',
+                        'complete_datetime',
+                        'complete_contact_id',
+                        'amount',
+                        'currency_iso3',
+                        'repeat',
+                        'uuid'
+                    ], null)) + $_list + $list_in_db;
                 }
             } else {
                 $_list['success'] = false;
