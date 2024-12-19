@@ -756,8 +756,11 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
 
         if ($items_del) {
             $this->deleteAnnouncements($items_del);
-            pl2()->getModel('pocketlistsItemLink')->deleteByField('item_id', array_column($items_del, 'id'));
-
+            pl2()->getModel('pocketlistsItemLink')->deleteByField([
+                'item_id'     => array_column($items_del, 'id'),
+                'app'         => pocketlistsAnnouncement::APP,
+                'entity_type' => pocketlistsAnnouncement::ENTITY
+            ]);
         }
         if ($items_upd) {
             $this->setAnnouncements($items_upd);

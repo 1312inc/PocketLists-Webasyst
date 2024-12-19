@@ -113,4 +113,26 @@ SQL;
 
         return $data ?: [];
     }
+
+    /**
+     * @param $links
+     * @return bool
+     * @throws waException
+     */
+    public function setLinks($links = [])
+    {
+        if (empty($links) || !is_array($links)) {
+            return false;
+        }
+
+        $this->exec("
+            DELETE FROM {$this->table} WHERE item_id IN (i:item_ids) AND app NOT IN (s:apps)
+        ", [
+            'item_ids' => array_column($links, 'item_id'),
+            'apps'     => [pocketlistsAnnouncement::APP],
+        ]);
+        $this->multipleInsert($links, 2);
+
+        return true;
+    }
 }

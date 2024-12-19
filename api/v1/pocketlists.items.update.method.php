@@ -334,7 +334,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 if ($links) {
                     //save external_links
                     $link_model = pl2()->getModel(pocketlistsItemLink::class);
-                    $link_model->multipleInsert($links);
+                    $link_model->setLinks($links);
                 }
 
                 if ($list_ids = array_filter(array_unique(array_column($items_ok, 'list_id')))) {
