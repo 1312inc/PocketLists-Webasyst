@@ -157,10 +157,9 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                 if (!is_string($_item['due_datetime'])) {
                     $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'due_datetime');
                 } else {
-                    $dt = date_create($_item['due_datetime']);
-                    if ($dt) {
-                        $_item['due_date'] = $dt->format('Y-m-d');
-                        $_item['due_datetime'] = $dt->format('Y-m-d H:i:s');
+                    if ($dt = $this->convertDatetimeToServer($_item['due_datetime'])) {
+                        $_item['due_date'] = date('Y-m-d', strtotime($dt));
+                        $_item['due_datetime'] = $dt;
                     } else {
                         $_item['errors'][] = _w('Unknown value due_datetime');
                     }
