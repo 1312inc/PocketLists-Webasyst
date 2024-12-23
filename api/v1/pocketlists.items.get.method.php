@@ -135,7 +135,10 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
                 }
             }
         } else {
-            $sql_parts['where']['and'][] = 'i.list_id IN (i:list_ids) OR (i.list_id IS NULL AND i.contact_id = i:contact_id)';
+            $sql_parts['where']['and'][] = 'i.list_id IN (i:list_ids)';
+            if (!isset($list_id)) {
+                $sql_parts['where']['or'][] = 'i.list_id IS NULL AND i.contact_id = i:contact_id';
+            }
         }
         if (isset($status)) {
             $sql_parts['where']['and'][] = 'i.status = i:status';
