@@ -15,6 +15,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
 
         $assign_contacts = [];
         $attachment_uuids = [];
+        $attachments_in_db = [];
         $item_ids = array_unique(array_column($items, 'id'));
         $list_ids = array_unique(array_column($items, 'list_id'));
         $location_ids = array_unique(array_filter(array_column($items, 'location_id')));
@@ -56,6 +57,20 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
             unset($attachments);
             $attachment_uuids = $this->getEntitiesByUuid('attachment', $attachment_uuids);
             $attachment_uuids = array_keys($attachment_uuids);
+        }
+
+        /** @var pocketlistsAttachmentModel $attachment_model */
+        $attachment_model = pl2()->getModel(pocketlistsAttachment::class);
+        $attachments = $attachment_model->getByField('item_id', $item_ids, true);
+        if ($attachments) {
+            foreach ($attachments as $_attachment) {
+                $attachments_in_db[$_attachment['item_id']][] = $this->singleFilterFields(
+                    $_attachment,
+                    ['id', 'item_id', 'filename', 'filetype', 'upload_datetime', 'uuid', 'url'],
+                    ['id' => 'int', 'item_id' => 'int', 'upload_datetime' => 'datetime']
+                );
+            }
+            unset($attachments);
         }
 
         /** validate */
@@ -308,6 +323,9 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                         }
                         if (!empty($_item_ok['attachments'])) {
                             $_item_ok['attachments'] = $this->updateFiles($_item_ok['id'], $_item_ok['attachments']);
+                        }
+                        if (isset($attachments_in_db[$_item_ok['id']])) {
+                            $_item_ok['attachments'] = array_merge($_item_ok['attachments'], $attachments_in_db[$_item_ok['id']]);
                         }
                         if (!empty($_item['external_links'])) {
                             foreach ($_item['external_links'] as $_link) {

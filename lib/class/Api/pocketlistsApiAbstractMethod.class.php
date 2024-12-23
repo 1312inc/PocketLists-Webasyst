@@ -216,7 +216,6 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
 
         /** @var pocketlistsFactory $attachment_factory */
         $attachment_factory = pl2()->getEntityFactory(pocketlistsAttachment::class);
-        $path = wa()->getDataUrl("attachments/$item_id/", true, pocketlistsHelper::APP_ID, true);
         foreach ($files as &$_file) {
             $_file += [
                 'item_id'         => $item_id,
@@ -279,7 +278,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
             $attachment_factory->insert($attachment);
             $_file = [
                 'id'       => $attachment->getId(),
-                'url'      => $path.$_file['file_name'],
+                'url'      => pocketlistsAttachmentModel::getUrl($_file['file_name']),
                 'filetype' => $attachment->getFiletype(),
             ] + $_file;
         }

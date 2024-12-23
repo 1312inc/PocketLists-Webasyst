@@ -7,6 +7,35 @@ class pocketlistsAttachmentModel extends pocketlistsModel
 {
     protected $table = 'pocketlists_attachment';
 
+
+    /**
+     * @string  $file_name
+     * @return string
+     * @throws waException
+     */
+    public static function getUrl($file_name = '')
+    {
+        static $path;
+        if (!isset($path)) {
+            $path = wa()->getDataUrl('attachments/%s/', true, pocketlistsHelper::APP_ID, true);
+        }
+
+        return sprintf($path, $file_name);
+    }
+
+    public function getByField($field, $value = null, $all = false, $limit = false)
+    {
+        $result = parent::getByField($field, $value, $all, $limit);
+        if ($all && $field === 'item_id' || is_array($field) && in_array('item_id', $field)) {
+            foreach ($result as &$_item) {
+                $_item['url'] = self::getUrl($_item['filename']);
+            }
+            return $result;
+        }
+
+        return $result;
+    }
+
     /**
      * @param array|int $item_ids
      * @param array     $names
