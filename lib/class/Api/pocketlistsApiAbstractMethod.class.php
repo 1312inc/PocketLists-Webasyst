@@ -278,7 +278,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
             $attachment_factory->insert($attachment);
             $_file = [
                 'id'       => $attachment->getId(),
-                'url'      => pocketlistsAttachmentModel::getUrl($_file['file_name']),
+                'url'      => pocketlistsAttachmentModel::getUrl($item_id, $_file['file_name']),
                 'filetype' => $attachment->getFiletype(),
             ] + $_file;
         }

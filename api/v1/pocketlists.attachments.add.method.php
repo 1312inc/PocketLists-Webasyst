@@ -113,7 +113,7 @@ class pocketlistsAttachmentsAddMethod extends pocketlistsApiAbstractMethod
                 }
             }
 
-            $logs = array_values(array_filter($result, function ($a) {
+            $logs = array_values(array_filter($result_ok, function ($a) {
                 return empty($a['errors']);
             }));
 

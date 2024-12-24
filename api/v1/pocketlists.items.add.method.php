@@ -267,6 +267,7 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
             try {
                 $result = $item_model->multipleInsert($items_ok);
                 if ($result->getResult()) {
+                    $attachments_log = [];
                     $last_id = $result->lastInsertId();
                     $rows_count = $result->affectedRows();
                     if ($rows_count === count($items_ok)) {
@@ -276,6 +277,7 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                             $_item['id'] = $last_id++;
                             if (!empty($_item['attachments'])) {
                                 $_item['attachments'] = $this->updateFiles($_item['id'], $_item['attachments']);
+                                $attachments_log = array_merge($attachments_log, $_item['attachments']);
                             }
                             if (!empty($_item['tags'])) {
                                 $tags[$_item['id']] = $_item['tags'];
@@ -323,6 +325,13 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                             pocketlistsLog::ACTION_ADD,
                             $items_ok
                         );
+                        if ($attachments_log) {
+                            $this->saveLog(
+                                pocketlistsLog::ENTITY_ATTACHMENT,
+                                pocketlistsLog::ACTION_ADD,
+                                $attachments_log
+                            );
+                        }
                     } else {
                         throw new pocketlistsApiException(_w('Error on transaction'), 400);
                     }

@@ -312,6 +312,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
         if (!empty($items_ok)) {
             $tags = [];
             $links = [];
+            $attachments_log = [];
             $item_model = pl2()->getModel(pocketlistsItem::class);
             $items_ok = $this->sorting('item', $items_ok);
             try {
@@ -323,6 +324,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                         }
                         if (!empty($_item_ok['attachments'])) {
                             $_item_ok['attachments'] = $this->updateFiles($_item_ok['id'], $_item_ok['attachments']);
+                            $attachments_log = array_merge($attachments_log, $_item_ok['attachments']);
                         }
                         if (isset($attachments_in_db[$_item_ok['id']])) {
                             $_item_ok['attachments'] = array_merge($_item_ok['attachments'], $attachments_in_db[$_item_ok['id']]);
@@ -375,6 +377,13 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                     pocketlistsLog::ACTION_UPDATE,
                     $items_ok
                 );
+                if ($attachments_log) {
+                    $this->saveLog(
+                        pocketlistsLog::ENTITY_ATTACHMENT,
+                        pocketlistsLog::ACTION_ADD,
+                        $attachments_log
+                    );
+                }
             } catch (Exception $ex) {
                 throw new pocketlistsApiException(sprintf_wp('Error on transaction import save: %s', $ex->getMessage()), 400);
             }
