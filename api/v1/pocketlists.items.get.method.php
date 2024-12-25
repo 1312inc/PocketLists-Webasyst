@@ -112,14 +112,17 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
             } else {
                 throw new pocketlistsApiException(_w('List access denied'), 403);
             }
+        } elseif (empty($list_ids)) {
+            $list_ids = [null];
         }
         $item_model = pl2()->getModel(pocketlistsItem::class);
         $sql_parts = $item_model->getQueryComponents(true);
         if ($ids) {
             $sql_parts['where']['and'][] = 'i.id IN (i:item_ids)';
         }
+
+        $sql_parts['where']['and'][] = 'i.list_id IN (i:list_ids) OR (i.list_id IS NULL AND (i.contact_id = i:contact_id OR i.assigned_contact_id = i:contact_id))';
         if ($location_id || $external_app_id) {
-            $sql_parts['where']['and'][] = 'i.list_id IN (i:list_ids) OR i.list_id IS NULL';
             if ($location_id) {
                 $sql_parts['join']['pl'] = 'LEFT JOIN pocketlists_location pl ON pl.id = i.location_id';
                 $sql_parts['where']['and'][] = 'i.location_id = i:location_id';
@@ -134,8 +137,6 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
                     $sql_parts['where']['and'][] = 'pil2.entity_id = s:entity_id';
                 }
             }
-        } else {
-            $sql_parts['where']['and'][] = 'i.list_id IN (i:list_ids)';
         }
         if (isset($status)) {
             $sql_parts['where']['and'][] = 'i.status = i:status';
