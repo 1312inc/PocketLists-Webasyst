@@ -719,7 +719,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                 }
                 $items_due[] = $_item + [
                     'text'      => sprintf($html_text, $_item['name']),
-                    'datetime'  => $this->convertDatetimeToServer($_item['due_datetime']) ?? $this->convertDatetimeToServer($_item['due_date']),
+                    'datetime'  => $_item['due_datetime'] ?? $_item['due_date'],
                     'is_pinned' => $_item['priority'] > 0 ? 1 : 0
                 ];
             }
