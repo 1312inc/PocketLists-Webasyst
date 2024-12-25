@@ -119,7 +119,7 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
             $sql_parts['where']['and'][] = 'i.id IN (i:item_ids)';
         }
         if ($location_id || $external_app_id) {
-            $sql_parts['where']['and'][] = 'i.list_id IN (i:list_ids) OR (i.list_id IS NULL AND i.contact_id = i:contact_id';
+            $sql_parts['where']['and'][] = 'i.list_id IN (i:list_ids) OR i.list_id IS NULL';
             if ($location_id) {
                 $sql_parts['join']['pl'] = 'LEFT JOIN pocketlists_location pl ON pl.id = i.location_id';
                 $sql_parts['where']['and'][] = 'i.location_id = i:location_id';
@@ -135,7 +135,7 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
                 }
             }
         } else {
-            $sql_parts['where']['and'][] = 'i.list_id IN (i:list_ids) OR (i.list_id IS NULL AND i.contact_id = i:contact_id)';
+            $sql_parts['where']['and'][] = 'i.list_id IN (i:list_ids)';
         }
         if (isset($status)) {
             $sql_parts['where']['and'][] = 'i.status = i:status';
