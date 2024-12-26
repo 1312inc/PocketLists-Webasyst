@@ -175,48 +175,90 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
 
         $ids = array_keys($items);
         if ($ids) {
-            $tags = [];
-            $result = pl2()->getModel(pocketlistsItemTags::class)->getTags($ids);
-            foreach ($result as $_res) {
-                if (!isset($tags[$_res['item_id']])) {
-                    $tags[$_res['item_id']] = [];
+            $attachments = [];
+            $attachments_in_db = pl2()->getModel(pocketlistsAttachment::class)->getByField('item_id', $ids, true);
+            foreach ($attachments_in_db as $_attachment) {
+                if (!isset($attachments[$_attachment['item_id']])) {
+                    $attachments[$_attachment['item_id']] = [];
                 }
-                $tags[$_res['item_id']][] = $_res['text'];
+                $attachments[$_attachment['item_id']][] = $_attachment;
             }
+            unset($attachments_in_db, $_attachment);
+
+            $links = [];
+            $links_in_db = pl2()->getModel(pocketlistsItemLink::class)->getByField('item_id', $ids, true);
+            foreach ($links_in_db as $_link) {
+                if (!isset($links[$_link['item_id']])) {
+                    $links[$_link['item_id']] = [];
+                }
+                $links[$_link['item_id']][] = $_link;
+            }
+            unset($links_in_db, $_link);
+
+            $tags = [];
+            $tags_in_db = pl2()->getModel(pocketlistsItemTags::class)->getTags($ids);
+            foreach ($tags_in_db as $_tag) {
+                if (!isset($tags[$_tag['item_id']])) {
+                    $tags[$_tag['item_id']] = [];
+                }
+                $tags[$_tag['item_id']][] = $_tag['text'];
+            }
+            unset($tags_in_db, $_tag);
         }
+
         foreach ($items as &$_item) {
+            $_item += [
+                'attachments'    => [],
+                'external_links' => [],
+                'tags'           => []
+            ];
             $_item['extended_data'] = [
                 'comments_count' => (int) $_item['comments_count']
             ];
+
+            if (isset($attachments[$_item['id']])) {
+                $_item['attachments'] = $this->filterFields(
+                    $attachments[$_item['id']],
+                    ['id', 'item_id', 'filename', 'filetype', 'upload_datetime', 'uuid', 'url'],
+                    ['id' => 'int', 'item_id' => 'int', 'upload_datetime' => 'datetime']
+                );
+            }
+            if (isset($links[$_item['id']])) {
+                $_item['external_links'] = $this->filterFields(
+                    $links[$_item['id']],
+                    ['id', 'item_id', 'app', 'entity_type', 'entity_id', 'data'],
+                    ['id' => 'int', 'item_id' => 'int']
+                );
+            }
             if (isset($tags[$_item['id']])) {
                 $_item['tags'] = $tags[$_item['id']];
             }
         }
         unset($_item);
 
-        $attachments = pl2()->getEntityFactory(pocketlistsAttachment::class)->findByFields(
-            'item_id',
-            array_keys($items),
-            true
-        );
-
-        /** @var pocketlistsAttachment $_attachment */
-        foreach ($attachments as $_attachment) {
-            $name = $_attachment->getFilename();
-            $item_id = (int) $_attachment->getItemId();
-            if (!isset($items[$item_id]['attachments'])) {
-                $items[$item_id]['attachments'] = [];
-            }
-            $items[$item_id]['attachments'][] = [
-                'id'              => (int) $_attachment->getId(),
-                'item_id'         => $item_id,
-                'file_name'       => $name,
-                'file_type'       => $_attachment->getFiletype(),
-                'upload_datetime' => $this->formatDatetimeToISO8601($_attachment->getUploadDatetime()),
-                'url'             => wa()->getDataUrl("attachments/$item_id/", true, pocketlistsHelper::APP_ID, true).$name,
-                'uuid'            => $_attachment->getUuid()
-            ];
-        }
+//        $attachments = pl2()->getEntityFactory(pocketlistsAttachment::class)->findByFields(
+//            'item_id',
+//            $ids,
+//            true
+//        );
+//
+//        /** @var pocketlistsAttachment $_attachment */
+//        foreach ($attachments as $_attachment) {
+//            $name = $_attachment->getFilename();
+//            $item_id = (int) $_attachment->getItemId();
+//            if (!isset($items[$item_id]['attachments'])) {
+//                $items[$item_id]['attachments'] = [];
+//            }
+//            $items[$item_id]['attachments'][] = [
+//                'id'              => (int) $_attachment->getId(),
+//                'item_id'         => $item_id,
+//                'file_name'       => $name,
+//                'file_type'       => $_attachment->getFiletype(),
+//                'upload_datetime' => $this->formatDatetimeToISO8601($_attachment->getUploadDatetime()),
+//                'url'             => pocketlistsAttachmentModel::getUrl($item_id, $name),
+//                'uuid'            => $_attachment->getUuid()
+//            ];
+//        }
 
         $this->response['meta'] = [
             'offset' => $offset,
@@ -253,8 +295,9 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
                 'repeat',
                 'key_list_id',
                 'uuid',
-                'tags',
                 'attachments',
+                'external_links',
+                'tags',
                 'extended_data'
             ], [
                 'id' => 'int',
