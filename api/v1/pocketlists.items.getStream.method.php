@@ -154,7 +154,7 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
 
         $plim  = pl2()->getModel(pocketlistsItem::class);
         $sql_parts = $plim->getQueryComponents(true);
-        $sql_parts['where']['and'][] = 'i.list_id IN (:list_ids)';
+        $sql_parts['where']['and'][] = 'i.list_id IN (i:list_ids) OR (i.list_id IS NULL AND (i.contact_id = i:contact_id OR i.assigned_contact_id = i:contact_id))';
         switch ($filter_split[0]) {
             case 'upnext':
                 /** upnext */
