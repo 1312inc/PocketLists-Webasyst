@@ -529,6 +529,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/response'
+        403:
+          description: Access denied to the Pocket Lists app or this API method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
+        404:
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
         500:
           description: Internal server error
   /pocketlists.items.getStream:
