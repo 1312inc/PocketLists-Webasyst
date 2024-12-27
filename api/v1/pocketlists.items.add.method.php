@@ -21,6 +21,7 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
         $uuids = array_column($items, 'uuid');
         $attachments = array_column($items, 'attachments');
 
+        $access_list_ids = pocketlistsRBAC::getAccessListForContact(pl2()->getUser()->getId());
         if (!empty($list_ids)) {
             /** @var pocketlistsListModel $list_model */
             $list_model = pl2()->getModel(pocketlistsList::class);
@@ -100,6 +101,8 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
             if (isset($_item['list_id'])) {
                 if (!is_numeric($_item['list_id'])) {
                     $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'list_id');
+                } elseif (!in_array($_item['list_id'], $access_list_ids)) {
+                    $_item['errors'][] = _w('List access denied');
                 } elseif ($_item['list_id'] < 1 || !in_array($_item['list_id'], $list_ids)) {
                     $_item['errors'][] = _w('List not found');
                 }
