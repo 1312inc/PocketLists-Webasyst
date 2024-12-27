@@ -1847,6 +1847,9 @@ components:
                 items_priority_count:
                   type: integer
                   description: Number of items in the list with dynamic priority > 0
+                items_completed_count:
+                  type: integer
+                  description: Количество выполненных айтемов
     item:
       allOf:
         - type: object
