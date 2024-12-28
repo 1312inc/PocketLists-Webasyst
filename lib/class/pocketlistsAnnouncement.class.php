@@ -4,37 +4,36 @@ class pocketlistsAnnouncement
 {
     const APP = 'webasyst';
     const ENTITY = 'announcement';
+    const TTL_DAYS = 30;
 
     public static function addAnnouncements($announcements)
     {
         $result = [];
         foreach ($announcements as $_announcement) {
-            $contact_id = ifset($_announcement, 'contact_id', wa()->getUser()->getId());
             $access = ifset($_announcement, 'access', 'limited');
+            $datetime = ifset($_announcement, 'datetime', date('Y-m-d H:i:s'));
+            $ttl_datetime = ifset($_announcement, 'ttl_datetime', null);
+            if (empty($ttl_datetime)) {
+                $ttl_datetime = date('Y-m-d H:i:s', strtotime("$datetime +".self::TTL_DAYS.' days'));
+            }
             $result[] = [
-                'app_id'       => pocketlistsHelper::APP_ID,
-                'type'         => ifset($_announcement, 'type', null),
-                'contact_id'   => $contact_id,
-                'text'         => ifset($_announcement, 'text', ''),
-                'data'         => ifset($_announcement, 'data', null),
-                'datetime'     => ifset($_announcement, 'datetime', date('Y-m-d H:i:s')),
-                'ttl_datetime' => ifset($_announcement, 'ttl_datetime', null),
-                'is_pinned'    => ifset($_announcement, 'is_pinned', 0),
-                'access'       => $access,
+                'app_id'           => pocketlistsHelper::APP_ID,
+                'type'             => ifset($_announcement, 'type', null),
+                'contact_id'       => null,
+                'text'             => ifset($_announcement, 'text', ''),
+                'data'             => ifset($_announcement, 'data', null),
+                'datetime'         => $datetime,
+                'ttl_datetime'     => $ttl_datetime,
+                'is_pinned'        => ifset($_announcement, 'is_pinned', 0),
+                'access'           => $access,
+                'right_contact_id' => ifset($_announcement, 'contact_id', wa()->getUser()->getId()),
 
                 /* for pocketlists_item_link */
-                'item_id'     => ifset($_announcement, 'id', null),
-                'entity_id'   => null,
-                'app'         => self::APP,
-                'entity_type' => self::ENTITY
+                'item_id'          => ifset($_announcement, 'id', null),
+                'entity_id'        => null,
+                'app'              => self::APP,
+                'entity_type'      => self::ENTITY
             ];
-            if ($access === 'limited') {
-                /* for wa_announcement_rights */
-                $rights[] = [
-                    'group_id'        => -1 * $contact_id,
-                    'announcement_id' => null
-                ];
-            }
         }
 
         if ($result) {
@@ -49,7 +48,7 @@ class pocketlistsAnnouncement
                         $_result['entity_id'] = $last_id++;
                         if ($_result['access'] === 'limited') {
                             $rights[] = [
-                                'group_id'        => -1 * $_result['contact_id'],
+                                'group_id'        => -1 * $_result['right_contact_id'],
                                 'announcement_id' => $_result['entity_id']
                             ];
                         }
