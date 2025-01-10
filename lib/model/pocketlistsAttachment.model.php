@@ -9,29 +9,28 @@ class pocketlistsAttachmentModel extends pocketlistsModel
 
 
     /**
-     * @param $item_id
-     * @param $file_name
+     * @param $attach_id
      * @return string|null
      * @throws waException
      */
-    public static function getUrl($item_id, $file_name = '')
+    public static function getUrl($attach_id)
     {
-        static $path;
-        if (empty($item_id)) {
+        static $url;
+        if (empty($attach_id)) {
             return null;
-        } elseif (!isset($path)) {
-            $path = wa()->getDataUrl('attachments/%s/%s', true, pocketlistsHelper::APP_ID, true);
+        } elseif (!isset($url)) {
+            $url = wa()->getUrl(true).wa()->getConfig()->getBackendUrl().'/'.pocketlistsHelper::APP_ID.'/download/%s';
         }
 
-        return sprintf($path, $item_id, $file_name);
+        return sprintf($url, $attach_id);
     }
 
     public function getByField($field, $value = null, $all = false, $limit = false)
     {
         $result = parent::getByField($field, $value, $all, $limit);
         if ($all && $field === 'item_id' || is_array($field) && in_array('item_id', $field)) {
-            foreach ($result as &$_item) {
-                $_item['url'] = self::getUrl($_item['item_id'], $_item['filename']);
+            foreach ($result as &$_attachment) {
+                $_attachment['url'] = self::getUrl($_attachment['id']);
             }
             return $result;
         }

@@ -68,7 +68,7 @@ class pocketlistsAttachmentsDeleteMethod extends pocketlistsApiAbstractMethod
                 $item = ifset($items, $_data['item_id'], null);
                 if ($item === null) {
                     $_data['errors'][] = _w('Item not found');
-                } elseif (!in_array($item['list_id'], $list_id_available)) {
+                } elseif ($item['list_id'] && !in_array($item['list_id'], $list_id_available)) {
                     $_data['errors'][] = _w('Access denied');
                 }
             }

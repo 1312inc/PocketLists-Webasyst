@@ -168,7 +168,7 @@ class pocketlistsUploadedFileVO
     public function getPath()
     {
         return $this->itemId
-            ? wa()->getDataPath($this->getRelPath(), true, pocketlistsHelper::APP_ID)
+            ? wa()->getDataPath($this->getRelPath(), false, pocketlistsHelper::APP_ID)
             : wa()->getAppCachePath($this->getRelPath(), pocketlistsHelper::APP_ID);
     }
 

@@ -30,6 +30,11 @@ class pocketlistsAttachment extends pocketlistsEntity
     /**
      * @var string
      */
+    private $storage = 'protected';
+
+    /**
+     * @var string
+     */
     private $upload_datetime;
 
     /**
@@ -118,6 +123,26 @@ class pocketlistsAttachment extends pocketlistsEntity
     public function setFiletype($filetype)
     {
         $this->filetype = $filetype;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStorage()
+    {
+        return $this->storage;
+    }
+
+    /**
+     * @param $storage
+     *
+     * @return pocketlistsAttachment
+     */
+    public function setStorage($storage)
+    {
+        $this->storage = $storage;
 
         return $this;
     }

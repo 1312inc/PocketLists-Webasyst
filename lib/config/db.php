@@ -5,6 +5,7 @@ return array(
         'item_id' => array('int', 11, 'null' => 0),
         'filename' => array('text'),
         'filetype' => array('enum', "'image'"),
+        'storage' => array('enum', "'public', 'protected'", 'default' => 'protected'),
         'upload_datetime' => array('datetime'),
         'uuid' => array('varchar', 36),
         ':keys' => array(
