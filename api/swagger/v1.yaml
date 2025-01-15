@@ -1736,10 +1736,14 @@ components:
           type: string
           format: datetime
           description: Server-generated attachment upload datetime (UTC)
-        url:
+        download_url:
           type: string
           format: uri
           description: File URL
+        preview_url:
+          type: string
+          format: uri
+          description: Preview URL
         uuid:
           type: string
           nullable: true

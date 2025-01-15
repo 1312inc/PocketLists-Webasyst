@@ -5,6 +5,7 @@
  */
 class pocketlistsAttachment extends pocketlistsEntity
 {
+    const PREVIEW_SIZE = 600;
     const TYPE_IMAGE = 'image';
 
     /**
@@ -197,5 +198,22 @@ class pocketlistsAttachment extends pocketlistsEntity
         }
 
         return $this->item;
+    }
+
+    /**
+     * @param $attach_id
+     * @return string|null
+     * @throws waException
+     */
+    public static function getUrl($attach_id)
+    {
+        static $url;
+        if (empty($attach_id)) {
+            return null;
+        } elseif (!isset($url)) {
+            $url = wa()->getUrl(true).wa()->getConfig()->getBackendUrl().'/'.pocketlistsHelper::APP_ID.'/download/%s';
+        }
+
+        return sprintf($url, $attach_id);
     }
 }

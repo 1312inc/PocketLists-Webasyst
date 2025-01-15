@@ -7,37 +7,6 @@ class pocketlistsAttachmentModel extends pocketlistsModel
 {
     protected $table = 'pocketlists_attachment';
 
-
-    /**
-     * @param $attach_id
-     * @return string|null
-     * @throws waException
-     */
-    public static function getUrl($attach_id)
-    {
-        static $url;
-        if (empty($attach_id)) {
-            return null;
-        } elseif (!isset($url)) {
-            $url = wa()->getUrl(true).wa()->getConfig()->getBackendUrl().'/'.pocketlistsHelper::APP_ID.'/download/%s';
-        }
-
-        return sprintf($url, $attach_id);
-    }
-
-    public function getByField($field, $value = null, $all = false, $limit = false)
-    {
-        $result = parent::getByField($field, $value, $all, $limit);
-        if ($all && $field === 'item_id' || is_array($field) && in_array('item_id', $field)) {
-            foreach ($result as &$_attachment) {
-                $_attachment['url'] = self::getUrl($_attachment['id']);
-            }
-            return $result;
-        }
-
-        return $result;
-    }
-
     /**
      * @param array|int $item_ids
      * @param array     $names
@@ -47,7 +16,7 @@ class pocketlistsAttachmentModel extends pocketlistsModel
      */
     public function remove($item_ids = [], $names = [])
     {
-        if (empty($names)) { // delete all attchments
+        if (empty($names)) { // delete all attachments
             if (!is_array(($item_ids))) {
                 $item_ids = [$item_ids];
             }

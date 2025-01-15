@@ -64,9 +64,16 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
         $attachments = $attachment_model->getByField('item_id', $item_ids, true);
         if ($attachments) {
             foreach ($attachments as $_attachment) {
+                $_attachment['download_url'] = pocketlistsAttachment::getUrl($_attachment['id']);
+                $_attachment_ext = mb_strtolower(pathinfo($_attachment['filename'], PATHINFO_EXTENSION));
+                if (in_array($_attachment_ext, ['jpg', 'jpeg', 'png', 'gif'])) {
+                    $_attachment['preview_url'] = $_attachment['download_url'].'?thumb='.pocketlistsAttachment::PREVIEW_SIZE;
+                } else {
+                    $_attachment['preview_url'] = '';
+                }
                 $attachments_in_db[$_attachment['item_id']][] = $this->singleFilterFields(
                     $_attachment,
-                    ['id', 'item_id', 'filename', 'filetype', 'upload_datetime', 'uuid', 'url'],
+                    ['id', 'item_id', 'filename', 'filetype', 'upload_datetime', 'uuid', 'download_url', 'preview_url'],
                     ['id' => 'int', 'item_id' => 'int', 'upload_datetime' => 'datetime']
                 );
             }

@@ -185,6 +185,13 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
                 if (!isset($attachments[$_attachment['item_id']])) {
                     $attachments[$_attachment['item_id']] = [];
                 }
+                $_attachment['download_url'] = pocketlistsAttachment::getUrl($_attachment['id']);
+                $_attachment_ext = mb_strtolower(pathinfo($_attachment['filename'], PATHINFO_EXTENSION));
+                if (in_array($_attachment_ext, ['jpg', 'jpeg', 'png', 'gif'])) {
+                    $_attachment['preview_url'] = $_attachment['download_url'].'?thumb='.pocketlistsAttachment::PREVIEW_SIZE;
+                } else {
+                    $_attachment['preview_url'] = '';
+                }
                 $attachments[$_attachment['item_id']][] = $_attachment;
             }
             unset($attachments_in_db, $_attachment);
@@ -223,7 +230,7 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
             if (isset($attachments[$_item['id']])) {
                 $_item['attachments'] = $this->filterFields(
                     $attachments[$_item['id']],
-                    ['id', 'item_id', 'filename', 'filetype', 'upload_datetime', 'uuid', 'url'],
+                    ['id', 'item_id', 'filename', 'filetype', 'upload_datetime', 'uuid', 'download_url', 'preview_url'],
                     ['id' => 'int', 'item_id' => 'int', 'upload_datetime' => 'datetime']
                 );
             }
@@ -239,30 +246,6 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
             }
         }
         unset($_item);
-
-//        $attachments = pl2()->getEntityFactory(pocketlistsAttachment::class)->findByFields(
-//            'item_id',
-//            $ids,
-//            true
-//        );
-//
-//        /** @var pocketlistsAttachment $_attachment */
-//        foreach ($attachments as $_attachment) {
-//            $name = $_attachment->getFilename();
-//            $item_id = (int) $_attachment->getItemId();
-//            if (!isset($items[$item_id]['attachments'])) {
-//                $items[$item_id]['attachments'] = [];
-//            }
-//            $items[$item_id]['attachments'][] = [
-//                'id'              => (int) $_attachment->getId(),
-//                'item_id'         => $item_id,
-//                'file_name'       => $name,
-//                'file_type'       => $_attachment->getFiletype(),
-//                'upload_datetime' => $this->formatDatetimeToISO8601($_attachment->getUploadDatetime()),
-//                'url'             => pocketlistsAttachmentModel::getUrl($item_id, $name),
-//                'uuid'            => $_attachment->getUuid()
-//            ];
-//        }
 
         $this->response['meta'] = [
             'offset' => $offset,

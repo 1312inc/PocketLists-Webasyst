@@ -222,7 +222,8 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                 'file'            => '',
                 'file_name'       => '',
                 'upload_datetime' => $now,
-                'url'             => '',
+                'download_url'    => '',
+                'preview_url'     => '',
                 'uuid'            => null,
                 'errors'          => []
             ];
@@ -278,10 +279,13 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
             $attachment_factory->insert($attachment);
             $attach_id = $attachment->getId();
             $_file = [
-                'id'       => $attach_id,
-                'url'      => pocketlistsAttachmentModel::getUrl($attach_id),
-                'filetype' => $attachment->getFiletype(),
+                'id'           => $attach_id,
+                'download_url' => pocketlistsAttachment::getUrl($attach_id),
+                'filetype'     => $attachment->getFiletype()
             ] + $_file;
+            if ($attachment->getFiletype() === pocketlistsAttachment::TYPE_IMAGE) {
+                $_file['preview_url'] = $_file['download_url'].'?thumb='.pocketlistsAttachment::PREVIEW_SIZE;
+            }
         }
 
         return $files;

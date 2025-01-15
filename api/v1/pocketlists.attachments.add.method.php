@@ -38,7 +38,8 @@ class pocketlistsAttachmentsAddMethod extends pocketlistsApiAbstractMethod
                 'file_name'       => ifset($_file, 'file_name', null),
                 'file_type'       => pocketlistsAttachment::TYPE_IMAGE,
                 'upload_datetime' => date('Y-m-d H:i:s'),
-                'url'             => '',
+                'download_url'    => '',
+                'preview_url'     => '',
                 'uuid'            => ifset($_file, 'uuid', null),
                 'file'            => ifset($_file, 'file', null),
                 'success'         => true,
@@ -139,7 +140,8 @@ class pocketlistsAttachmentsAddMethod extends pocketlistsApiAbstractMethod
                 'file_name',
                 'file_type',
                 'upload_datetime',
-                'url',
+                'download_url',
+                'preview_url',
                 'uuid'
             ], [
                 'id' => 'int',
