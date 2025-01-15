@@ -11,9 +11,21 @@ class pocketlistsFileDownloadController extends waController
             throw new pocketlistsNotFoundException();
         }
 
-        $file = pl2()->getModel(pocketlistsAttachment::class)->getById($id);
+        $file = $this->getAttachment($id);
         if (!$file) {
             throw new pocketlistsNotFoundException();
+        }
+
+        if (!$this->getUser()->isAdmin(pocketlistsHelper::APP_ID)) {
+            $user_id = $this->getUser()->getId();
+            $list_id_available = pocketlistsRBAC::getAccessListForContact();
+            if (empty($file['list_id'])) {
+                if ($user_id != $file['contact_id']) {
+                    throw new pocketlistsForbiddenException();
+                }
+            } elseif (!in_array($file['list_id'], $list_id_available)) {
+                throw new pocketlistsForbiddenException();
+            }
         }
 
         wa()->getResponse()->addHeader('Cache-Control', 'private, no-transform');
@@ -36,6 +48,17 @@ class pocketlistsFileDownloadController extends waController
 
         $path_private = wa()->getDataPath('attachments/%s/%s', false, pocketlistsHelper::APP_ID);
         waFiles::readFile(sprintf($path_private, $file['item_id'], $file['filename']));
+    }
+
+    private function getAttachment($attachement_id)
+    {
+        return pl2()->getModel()->query("
+            SELECT pa.*, pi2.list_id, pi2.contact_id FROM pocketlists_attachment pa
+            LEFT JOIN pocketlists_item pi2 ON pa.item_id = pi2.id
+            WHERE pa.id = i:attachement_id;
+            ",
+            ['attachement_id' => $attachement_id]
+        )->fetchAssoc();
     }
 
     protected function getThumb($file, $size)
