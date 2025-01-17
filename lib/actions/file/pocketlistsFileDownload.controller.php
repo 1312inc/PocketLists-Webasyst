@@ -35,7 +35,7 @@ class pocketlistsFileDownloadController extends waController
         }
 
         $path_private = wa()->getDataPath('attachments/%s/%s', false, pocketlistsHelper::APP_ID);
-        waFiles::readFile(sprintf($path_private, $file['item_id'], $file['filename']));
+        waFiles::readFile(sprintf($path_private, $file['item_id'], $file['filename']), $file['filename']);
     }
 
     private function getAttachment($attachement_id)
