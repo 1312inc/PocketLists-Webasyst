@@ -201,19 +201,38 @@ class pocketlistsAttachment extends pocketlistsEntity
     }
 
     /**
-     * @param $attach_id
-     * @return string|null
+     * @param $attachment_data
+     * @return array
      * @throws waException
      */
-    public static function getUrl($attach_id)
+    public static function setUrl($attachment_data = [])
     {
-        static $url;
-        if (empty($attach_id)) {
-            return null;
-        } elseif (!isset($url)) {
-            $url = wa()->getUrl(true).wa()->getConfig()->getBackendUrl().'/'.pocketlistsHelper::APP_ID.'/download/%s';
+        static $url_pub;
+        static $url_pri;
+
+        $attachment_data['download_url'] = '';
+        $attachment_data['preview_url'] = '';
+        if (empty($attachment_data['item_id']) || empty($attachment_data['filename'])) {
+            return $attachment_data;
+        }
+        if (!isset($url_pub)) {
+            $url_pub = wa()->getDataUrl('attachments/%s/%s', true, pocketlistsHelper::APP_ID, true);
+        }
+        if (!isset($url_pri)) {
+            $url_pri = wa()->getUrl(true).wa()->getConfig()->getBackendUrl().'/'.pocketlistsHelper::APP_ID.'/download/%s';
         }
 
-        return sprintf($url, $attach_id);
+        if (ifset($attachment_data, 'storage', 'protected') === 'protected') {
+            $attachment_data['download_url'] = sprintf($url_pri, $attachment_data['id']);
+        } else {
+            $attachment_data['download_url'] = sprintf($url_pub, $attachment_data['item_id'], $attachment_data['filename']);
+        }
+        $attach_ext = mb_strtolower(pathinfo($attachment_data['filename'], PATHINFO_EXTENSION));
+        if (in_array($attach_ext, ['jpg', 'jpeg', 'png', 'gif'])) {
+            $attach_name = pathinfo($attachment_data['filename'], PATHINFO_FILENAME).'.'.pocketlistsAttachment::PREVIEW_SIZE.'.'.$attach_ext;
+            $attachment_data['preview_url'] = sprintf($url_pub, $attachment_data['item_id'], $attach_name);
+        }
+
+        return $attachment_data;
     }
 }

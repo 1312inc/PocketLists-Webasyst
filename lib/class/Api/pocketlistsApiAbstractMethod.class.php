@@ -277,15 +277,12 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                 ->setUploadDatetime($_file['upload_datetime'])
                 ->setUuid($_file['uuid']);
             $attachment_factory->insert($attachment);
-            $attach_id = $attachment->getId();
             $_file = [
-                'id'           => $attach_id,
-                'download_url' => pocketlistsAttachment::getUrl($attach_id),
-                'filetype'     => $attachment->getFiletype()
+                'id'       => $attachment->getId(),
+                'filetype' => $attachment->getFiletype(),
+                'filename' => $attachment->getFilename()
             ] + $_file;
-            if ($attachment->getFiletype() === pocketlistsAttachment::TYPE_IMAGE) {
-                $_file['preview_url'] = $_file['download_url'].'?thumb='.pocketlistsAttachment::PREVIEW_SIZE;
-            }
+            $_file = pocketlistsAttachment::setUrl($_file);
         }
 
         return $files;
