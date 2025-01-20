@@ -24,6 +24,11 @@ class pocketlistsAttachment extends pocketlistsEntity
     private $filename = '';
 
     /**
+     * @var int|null
+     */
+    private $size = null;
+
+    /**
      * @var string
      */
     private $filetype = null;
@@ -104,6 +109,25 @@ class pocketlistsAttachment extends pocketlistsEntity
     public function setFilename($filename)
     {
         $this->filename = $filename;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getSize()
+    {
+        return $this->size;
+    }
+
+    /**
+     * @param $size
+     * @return pocketlistsAttachment
+     */
+    public function setSize($size)
+    {
+        $this->size = $size;
 
         return $this;
     }

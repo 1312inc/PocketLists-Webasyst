@@ -1728,6 +1728,10 @@ components:
           type: integer
         file_name:
           type: string
+        size:
+          type: integer
+          nullable: true
+          description: Размер вложения в байтах
         file_type:
           type: string
           enum:

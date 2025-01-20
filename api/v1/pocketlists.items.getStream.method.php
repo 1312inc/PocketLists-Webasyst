@@ -247,27 +247,16 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
         ])->fetchAll('id');
 
         $total_count = (int) $plim->query('SELECT FOUND_ROWS()')->fetchField();
-        $attachments = pl2()->getEntityFactory(pocketlistsAttachment::class)->findByFields(
-            'item_id',
-            array_keys($items),
-            true
-        );
-
-        /** @var pocketlistsAttachment $_attachment */
+        $attachments = pl2()->getModel(pocketlistsAttachment::class)->getByField('item_id', array_keys($items), true);
         foreach ($attachments as $_attachment) {
-            $name = $_attachment->getFilename();
-            $item_id = $_attachment->getItemId();
-            if (!isset($items[$item_id]['attachments'])) {
-                $items[$item_id]['attachments'] = [];
+            if (!isset($items[$_attachment['item_id']]['attachments'])) {
+                $items[$_attachment['item_id']]['attachments'] = [];
             }
-            $items[$item_id]['attachments'][] = [
-                'id'        => $_attachment->getId(),
-                'item_id'   => $item_id,
-                'file_name' => $name,
-                'file_type' => $_attachment->getFiletype(),
-                'url'       => wa()->getDataUrl("attachments/$item_id/", true, pocketlistsHelper::APP_ID, true).$name,
-                'uuid'      => $_attachment->getUuid()
-            ];
+            $items[$_attachment['item_id']]['attachments'][] = $this->singleFilterFields(
+                pocketlistsAttachment::setUrl($_attachment),
+                ['id', 'item_id', 'filename', 'size', 'filetype', 'upload_datetime', 'uuid', 'download_url', 'preview_url'],
+                ['id' => 'int', 'size' => 'int', 'item_id' => 'int', 'upload_datetime' => 'datetime']
+            );
         }
 
         return [$items, $total_count];

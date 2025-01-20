@@ -221,6 +221,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                 'item_id'         => $item_id,
                 'file'            => '',
                 'file_name'       => '',
+                'size'            => null,
                 'upload_datetime' => $now,
                 'download_url'    => '',
                 'preview_url'     => '',
@@ -232,12 +233,12 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
             }
             $extension = pathinfo($_file['file_name'], PATHINFO_EXTENSION);
             if (in_array($extension, ['php', 'phtml', 'htaccess'])) {
-                $_file['file'] = '';
+                unset($_file['file']);
                 $_file['errors'][] = sprintf_wp('Files with extension .%s are not allowed to security considerations.', $extension);
                 continue;
             }
             $item_file = base64_decode(ifset($_file, 'file', null));
-            $_file['file'] = '';
+            unset($_file['file']);
 
             /** download to temp directory */
             $file_vo->setName(md5(uniqid(__METHOD__)).$_file['file_name']);
@@ -272,6 +273,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
             /** @var pocketlistsAttachment $attachment */
             $attachment = $attachment_factory->createNew();
             $attachment->setFilename($_file['file_name'])
+                ->setSize(filesize($uploaded_file->getFullPath()))
                 ->setItemId($item_id)
                 ->setFiletype($uploaded_file->getType())
                 ->setUploadDatetime($_file['upload_datetime'])
@@ -280,7 +282,8 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
             $_file = [
                 'id'       => $attachment->getId(),
                 'filetype' => $attachment->getFiletype(),
-                'filename' => $attachment->getFilename()
+                'filename' => $attachment->getFilename(),
+                'size'     => $attachment->getSize()
             ] + $_file;
             $_file = pocketlistsAttachment::setUrl($_file);
         }
