@@ -32,12 +32,13 @@ class pocketlistsAttachmentsAddMethod extends pocketlistsApiAbstractMethod
         /** validate */
         foreach ($files as &$_file) {
             /** set default */
+            $f_name = ifset($_file, 'file_name', null);
             $_file = [
                 'id'              => null,
                 'item_id'         => ifset($_file, 'item_id', null),
-                'file_name'       => ifset($_file, 'file_name', null),
+                'file_name'       => $f_name,
                 'size'            => null,
-                'file_type'       => pocketlistsAttachment::TYPE_IMAGE,
+                'ext'             => pocketlistsAttachment::getExtension($f_name),
                 'upload_datetime' => date('Y-m-d H:i:s'),
                 'download_url'    => '',
                 'preview_url'     => '',
@@ -139,8 +140,8 @@ class pocketlistsAttachmentsAddMethod extends pocketlistsApiAbstractMethod
                 'id',
                 'item_id',
                 'file_name',
+                'ext',
                 'size',
-                'file_type',
                 'upload_datetime',
                 'download_url',
                 'preview_url',

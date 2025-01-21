@@ -1728,14 +1728,13 @@ components:
           type: integer
         file_name:
           type: string
+        ext:
+          type: string
+          description: File extension
         size:
           type: integer
           nullable: true
           description: Размер вложения в байтах
-        file_type:
-          type: string
-          enum:
-            - image
         upload_datetime:
           type: string
           format: datetime

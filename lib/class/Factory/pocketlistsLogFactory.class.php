@@ -113,7 +113,6 @@ class pocketlistsLogFactory extends pocketlistsFactory
                 ],
                 'attachment' => [
                     'filename' => $attachment->getFilename(),
-                    'type'     => $attachment->getFiletype(),
                 ],
             ]
         );

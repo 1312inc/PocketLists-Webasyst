@@ -221,6 +221,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                 'item_id'         => $item_id,
                 'file'            => '',
                 'file_name'       => '',
+                'ext'             => '',
                 'size'            => null,
                 'upload_datetime' => $now,
                 'download_url'    => '',
@@ -231,7 +232,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
             if (empty($_file['file']) || empty($_file['file_name'])) {
                 continue;
             }
-            $extension = pathinfo($_file['file_name'], PATHINFO_EXTENSION);
+            $extension = pocketlistsAttachment::getExtension($_file['file_name']);
             if (in_array($extension, ['php', 'phtml', 'htaccess'])) {
                 unset($_file['file']);
                 $_file['errors'][] = sprintf_wp('Files with extension .%s are not allowed to security considerations.', $extension);
@@ -275,13 +276,12 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
             $attachment->setFilename($_file['file_name'])
                 ->setSize(filesize($uploaded_file->getFullPath()))
                 ->setItemId($item_id)
-                ->setFiletype($uploaded_file->getType())
                 ->setUploadDatetime($_file['upload_datetime'])
                 ->setUuid($_file['uuid']);
             $attachment_factory->insert($attachment);
             $_file = [
                 'id'       => $attachment->getId(),
-                'filetype' => $attachment->getFiletype(),
+                'ext'      => $attachment->getExt(),
                 'filename' => $attachment->getFilename(),
                 'size'     => $attachment->getSize()
             ] + $_file;

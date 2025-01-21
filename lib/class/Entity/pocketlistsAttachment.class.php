@@ -6,7 +6,6 @@
 class pocketlistsAttachment extends pocketlistsEntity
 {
     const PREVIEW_SIZE = 600;
-    const TYPE_IMAGE = 'image';
 
     /**
      * @var int
@@ -22,6 +21,11 @@ class pocketlistsAttachment extends pocketlistsEntity
      * @var string
      */
     private $filename = '';
+
+    /**
+     * @var string
+     */
+    private $ext = '';
 
     /**
      * @var int|null
@@ -109,6 +113,26 @@ class pocketlistsAttachment extends pocketlistsEntity
     public function setFilename($filename)
     {
         $this->filename = $filename;
+        $this->ext = self::getExtension($filename);
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExt()
+    {
+        return $this->ext;
+    }
+
+    /**
+     * @param $ext
+     * @return pocketlistsAttachment
+     */
+    public function setExt($ext)
+    {
+        $this->ext = $ext;
 
         return $this;
     }
@@ -128,26 +152,6 @@ class pocketlistsAttachment extends pocketlistsEntity
     public function setSize($size)
     {
         $this->size = $size;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getFiletype()
-    {
-        return $this->filetype;
-    }
-
-    /**
-     * @param string $filetype
-     *
-     * @return pocketlistsAttachment
-     */
-    public function setFiletype($filetype)
-    {
-        $this->filetype = $filetype;
 
         return $this;
     }
@@ -251,12 +255,21 @@ class pocketlistsAttachment extends pocketlistsEntity
         } else {
             $attachment_data['download_url'] = sprintf($url_pub, $attachment_data['item_id'], $attachment_data['filename']);
         }
-        $attach_ext = mb_strtolower(pathinfo($attachment_data['filename'], PATHINFO_EXTENSION));
+        $attach_ext = self::getExtension($attachment_data['filename']);
         if (in_array($attach_ext, ['jpg', 'jpeg', 'png', 'gif'])) {
             $attach_name = pathinfo($attachment_data['filename'], PATHINFO_FILENAME).'.'.pocketlistsAttachment::PREVIEW_SIZE.'.'.$attach_ext;
             $attachment_data['preview_url'] = sprintf($url_pub, $attachment_data['item_id'], $attach_name);
         }
 
         return $attachment_data;
+    }
+
+    /**
+     * @param $file_name
+     * @return string
+     */
+    public static function getExtension($file_name = '')
+    {
+        return mb_strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
     }
 }

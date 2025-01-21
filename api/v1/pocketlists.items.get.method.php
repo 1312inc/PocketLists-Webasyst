@@ -223,7 +223,7 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
             if (isset($attachments[$_item['id']])) {
                 $_item['attachments'] = $this->filterFields(
                     $attachments[$_item['id']],
-                    ['id', 'item_id', 'filename', 'size', 'filetype', 'upload_datetime', 'uuid', 'download_url', 'preview_url'],
+                    ['id', 'item_id', 'filename', 'ext', 'size', 'upload_datetime', 'uuid', 'download_url', 'preview_url'],
                     ['id' => 'int', 'size' => 'int', 'item_id' => 'int', 'upload_datetime' => 'datetime']
                 );
             }

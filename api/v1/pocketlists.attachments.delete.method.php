@@ -94,7 +94,7 @@ class pocketlistsAttachmentsDeleteMethod extends pocketlistsApiAbstractMethod
                             'list_id'  => ifempty($items, $_attachment->getItemId(), 'list_id', null),
                             'item_id'  => $_attachment->getItemId(),
                             'filename' => $_attachment->getFilename(),
-                            'filetype' => $_attachment->getFiletype()
+                            'ext'      => $_attachment->getExtension(),
                         ];
                     } else {
                         $success = false;
