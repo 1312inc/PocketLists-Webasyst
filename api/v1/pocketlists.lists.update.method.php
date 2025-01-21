@@ -225,8 +225,9 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                 $max_priority = ($max_priority == 0 ? null : $max_priority);
                 $_list['icon_url'] = $static_url.$_list['icon'];
                 $_list['extended_data'] = [
-                    'items_count' => ($data ? array_sum($data) : 0),
-                    'items_priority_count' => (int) ifset($data, $max_priority, 0),
+                    'items_count'           => ($data ? array_sum($data) : 0),
+                    'items_priority_count'  => (int) ifset($data, $max_priority, 0),
+                    'items_priority_value'  => (int) $max_priority,
                     'items_completed_count' => array_sum(ifset($completed_count, $_list['id'], []))
                 ];
             }

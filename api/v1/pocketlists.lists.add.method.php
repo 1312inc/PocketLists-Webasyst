@@ -175,8 +175,9 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                 $_list['key_item_id'] = $list_clone->getKeyItemId();
                 $_list['icon_url'] = $static_url.$_list['icon'];
                 $_list['extended_data'] = [
-                    'items_count' => 0,
-                    'items_priority_count' => 0,
+                    'items_count'           => 0,
+                    'items_priority_count'  => 0,
+                    'items_priority_value'  => 0,
                     'items_completed_count' => 0
                 ];
             }
