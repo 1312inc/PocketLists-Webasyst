@@ -190,7 +190,15 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
             unset($attachments_in_db, $_attachment);
 
             $links = [];
-            $links_in_db = pl2()->getModel(pocketlistsItemLink::class)->getByField('item_id', $ids, true);
+            $links_in_db = pl2()->getModel(pocketlistsItemLink::class)
+                ->select('*')
+                ->where('item_id IN (i:ids) AND app NOT IN (s:apps) AND entity_type NOT IN (s:entity)',
+                    [
+                        'ids'    => $ids,
+                        'apps'   => [pocketlistsAnnouncement::APP],
+                        'entity' => [pocketlistsAnnouncement::ENTITY]
+                    ])
+                ->fetchAll();
             foreach ($links_in_db as $_link) {
                 if (!isset($links[$_link['item_id']])) {
                     $links[$_link['item_id']] = [];
