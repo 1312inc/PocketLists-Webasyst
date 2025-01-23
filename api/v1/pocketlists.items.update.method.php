@@ -86,7 +86,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 'sort'                  => ifset($_item, 'sort', null),
                 'rank'                  => ifset($_item, 'rank', null),
                 'has_children'          => 0,
-                'status'                => (ifset($_item, 'status', 0) ? pocketlistsItem::STATUS_DONE : pocketlistsItem::STATUS_UNDONE),
+                'status'                => ifset($_item, 'status', null),
                 'priority'              => ifset($_item, 'priority', null),
                 'calc_priority'         => 0,
                 'create_datetime'       => null,
@@ -127,6 +127,14 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                     $_item['errors'][] = _w('List not found');
                 } elseif (!in_array($_item['list_id'], $list_id_available)) {
                     $_item['errors'][] = _w('Access denied');
+                }
+            }
+
+            if (isset($_item['status'])) {
+                if (!is_numeric($_item['status'])) {
+                    $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'status');
+                } elseif (!in_array($_item['status'], [pocketlistsItem::STATUS_DONE, pocketlistsItem::STATUS_UNDONE])) {
+                    $_item['errors'][] = _w('Unknown value status');
                 }
             }
 
@@ -193,8 +201,6 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
 
             if (!array_key_exists($item_id, $items_in_db)) {
                 $_item['errors'][] = _w('Item not found');
-            } elseif ($_item['status'] === pocketlistsItem::STATUS_DONE && $items_in_db[$item_id]['status'] == pocketlistsItem::STATUS_UNDONE) {
-                $_item['complete_datetime'] = date('Y-m-d H:i:s');
             }
 
             if (isset($_item['client_touch_datetime'])) {
@@ -264,6 +270,13 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
             }
 
             if (empty($_item['errors'])) {
+                if (
+                    isset($_item['status'])
+                    && $_item['status'] === pocketlistsItem::STATUS_DONE
+                    && $items_in_db[$item_id]['status'] == pocketlistsItem::STATUS_UNDONE
+                ) {
+                    $_item['complete_datetime'] = date('Y-m-d H:i:s');
+                }
                 if ($_item['action'] == self::ACTIONS[0]) {
                     // patch
                     $_item = array_replace($items_in_db[$item_id], array_filter($_item, function ($i) {return !is_null($i);}));
@@ -282,6 +295,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                     }
                 } else {
                     // update
+                    $_item['status'] = ifset($_item, 'status', pocketlistsItem::STATUS_UNDONE);
                     $item_in_db = ifset($items_in_db, $item_id, []);
                     $_item = array_intersect_key($item_in_db, array_fill_keys([
                         'contact_id',
