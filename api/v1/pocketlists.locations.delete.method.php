@@ -43,7 +43,7 @@ class pocketlistsLocationsDeleteMethod extends pocketlistsApiAbstractMethod
             } elseif (!is_numeric($_location['id'])) {
                 $_location['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'id');
             } elseif (!in_array($_location['id'], $location_ids)) {
-                $_location['errors'][] = _w('Location not found');
+                $_location['success'] = true;
             }
 
             if (!empty($_location['errors'])) {

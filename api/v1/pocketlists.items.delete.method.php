@@ -43,7 +43,7 @@ class pocketlistsItemsDeleteMethod extends pocketlistsApiAbstractMethod
             } elseif (!is_numeric($_item['id'])) {
                 $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'id');
             } elseif (!array_key_exists($_item['id'], $items)) {
-                $_item['errors'][] = _w('Item not found');
+                $_item['success'] = true;
             }
 
             if (empty($_item['errors'])) {

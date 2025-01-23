@@ -43,7 +43,7 @@ class pocketlistsPocketsDeleteMethod extends pocketlistsApiAbstractMethod
             } elseif (!is_numeric($_pocket['id'])) {
                 $_pocket['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'id');
             } elseif (!in_array($_pocket['id'], $pocket_ids)) {
-                $_pocket['errors'][] = _w('Pocket not found');
+                $_pocket['success'] = true;
             }
 
             if (!empty($_pocket['errors'])) {

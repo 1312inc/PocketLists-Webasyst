@@ -43,7 +43,7 @@ class pocketlistsCommentsDeleteMethod extends pocketlistsApiAbstractMethod
             } elseif (!is_numeric($_comment['id'])) {
                 $_comment['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'id');
             } elseif (!in_array($_comment['id'], $comment_ids)) {
-                $_comment['errors'][] = _w('Comment not found');
+                $_comment['success'] = true;
             }
 
             if (!empty($_comment['errors'])) {
