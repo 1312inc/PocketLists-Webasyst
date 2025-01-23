@@ -1618,6 +1618,45 @@ paths:
                 $ref: '#/components/schemas/response'
         500:
           description: Internal server error
+  /pocketlists.system.getSettings:
+    get:
+      security:
+        - BearerAuth: [ ]
+      summary: Общие настройки окружения
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/response'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          base_url:
+                            type: string
+                            description: URL
+                          locale:
+                            type: string
+                            description: Locale
+                          timezone:
+                            type: string
+                            description: Timezone
+                          framework_version:
+                            type: string
+                            description: Version framework
+                          app_version:
+                            type: string
+                            description: Version Pocket Lists
+                          is_premium:
+                            type: boolean
+                            description: Version Premium
+                          is_debug_mode:
+                            type: boolean
+                            description: Debug mode
   /pocketlists.system.getTime:
     get:
       security:
