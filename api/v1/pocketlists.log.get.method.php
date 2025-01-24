@@ -5,6 +5,8 @@ class pocketlistsLogGetMethod extends pocketlistsApiAbstractMethod
     public function execute()
     {
         $starting_from = $this->get('starting_from');
+        $entity_type = $this->get('entity_type');
+        $entity_id = $this->get('entity_id');
         $offset = $this->get('offset');
         $limit = $this->get('limit');
 
@@ -19,6 +21,22 @@ class pocketlistsLogGetMethod extends pocketlistsApiAbstractMethod
                 } else {
                     throw new pocketlistsApiException(_w('Unknown value starting_from'), 400);
                 }
+            }
+        }
+
+        if (isset($entity_type)) {
+            if (!is_string($entity_type)) {
+                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'entity_type'), 400);
+            } elseif (!in_array($entity_type, pocketlistsLogService::ENTITIES)) {
+                throw new pocketlistsApiException(_w('Unknown value entity_type'), 400);
+            }
+        }
+
+        if (isset($entity_id)) {
+            if (!is_numeric($entity_id)) {
+                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'entity_id'), 400);
+            } elseif ($entity_id < 1) {
+                throw new pocketlistsApiException(_w('The parameter has a negative value'), 400);
             }
         }
 
@@ -46,12 +64,29 @@ class pocketlistsLogGetMethod extends pocketlistsApiAbstractMethod
         /** @var pocketlistsLogModel $log_model */
         $log_model = pl2()->getModel(pocketlistsLog::class);
         $query_components = $log_model->getQueryComponents();
+        if (isset($entity_type)) {
+            $query_components['where']['and'][] = 'l.entity_type = s:entity_type';
+            if (isset($entity_id)) {
+                $query_components['where']['and'][] = "l.{$entity_type}_id = i:entity_id";
+            }
+        } elseif (isset($entity_id)) {
+            $query_components['where']['and'][] = implode(' OR ', [
+                'l.pocket_id = i:entity_id',
+                'l.list_id = i:entity_id',
+                'l.item_id = i:entity_id',
+                'l.attachment_id = i:entity_id',
+                'l.comment_id = i:entity_id',
+                'l.location_id = i:entity_id'
+            ]);
+        }
         if (isset($starting_from)) {
             $query_components['where']['and'][] = 'l.create_datetime >= s:starting_from';
         }
         $logs = $log_model->query(
             $log_model->buildSqlComponents($query_components, $limit, $offset, true),
             [
+                'entity_type'   => $entity_type,
+                'entity_id'     => $entity_id,
                 'starting_from' => $starting_from
             ]
         )->fetchAll();

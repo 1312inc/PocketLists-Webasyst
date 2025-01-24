@@ -1246,6 +1246,25 @@ paths:
             type: string
             format: date-time
         - in: query
+          name: entity_type
+          description: Фильтрация по типу сущности
+          schema:
+            type: string
+            nullable: true
+            default: null
+            enum:
+              - pocket
+              - list
+              - item
+              - comment
+              - attachment
+              - location
+        - in: query
+          name: entity_id
+          description: Фильтрация по ID сущности
+          schema:
+            type: integer
+        - in: query
           name: offset
           description: Skips first 'offset' records before starting the response. 0 by default.
           schema:
