@@ -124,7 +124,7 @@ paths:
                     type: string
                     format: date-time
                     nullable: true
-                    description: A descriptive datetime (UTC) to be shown somewhere in the client UI, and not validated by server
+                    description: A descriptive datetime to be shown somewhere in the client UI, and not validated by server
                   uuid:
                     type: string
                     nullable: true
@@ -260,7 +260,7 @@ paths:
                     type: string
                     format: date-time
                     nullable: true
-                    description: A descriptive datetime (UTC) to be shown somewhere in the client UI, and not validated by server
+                    description: A descriptive datetime to be shown somewhere in the client UI, and not validated by server
       responses:
         200:
           description: OK
@@ -341,7 +341,7 @@ paths:
                     type: string
                     format: date-time
                     nullable: true
-                    description: A descriptive datetime (UTC) to be shown somewhere in the client UI, and not validated by server
+                    description: A descriptive datetime to be shown somewhere in the client UI, and not validated by server
                   uuid:
                     type: string
                     nullable: true
@@ -677,7 +677,7 @@ paths:
                     type: string
                     format: date-time
                     nullable: true
-                    description: A descriptive datetime (UTC) to be shown somewhere in the client UI, and not validated by server
+                    description: A descriptive datetime to be shown somewhere in the client UI, and not validated by server
                   prev_item_id:
                     type: integer
                     nullable: true
@@ -797,7 +797,7 @@ paths:
                     type: string
                     format: date-time
                     nullable: true
-                    description: A descriptive datetime (UTC) to be shown somewhere in the client UI, and not validated by server
+                    description: A descriptive datetime to be shown somewhere in the client UI, and not validated by server
                   sort:
                     type: integer
                     description: Precise master sort position (ORDER BY sort, rank) within a pocket
@@ -999,7 +999,7 @@ paths:
                     type: string
                     format: date-time
                     nullable: true
-                    description: A descriptive datetime (UTC) to be shown somewhere in the client UI, and not validated by server
+                    description: A descriptive datetime to be shown somewhere in the client UI, and not validated by server
                   sort:
                     type: integer
                     description: Precise master sort position (ORDER BY sort, rank) within a pocket
@@ -2036,7 +2036,7 @@ components:
               format: date-time
               nullable: true
               default: null
-              description: A descriptive datetime (UTC) to be shown somewhere in the client UI, and not validated by server
+              description: A descriptive datetime to be shown somewhere in the client UI, and not validated by server
             location_id:
               type: integer
               nullable: true
@@ -2110,7 +2110,7 @@ components:
           type: string
           format: date-time
           nullable: true
-          description: A descriptive datetime (UTC) to be shown somewhere in the client UI, and not validated by server
+          description: A descriptive datetime to be shown somewhere in the client UI, and not validated by server
         uuid:
           type: string
           nullable: true

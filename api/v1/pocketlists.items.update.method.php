@@ -96,8 +96,8 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 'complete_contact_id'   => null,
                 'name'                  => ifset($_item, 'name', null),
                 'note'                  => ifset($_item, 'note', null),
-                'due_date'              => (array_key_exists('due_date', $_item) ? ifset($_item, 'due_date', '') : null),//ifset($_item, 'due_date', null),
-                'due_datetime'          => (array_key_exists('due_datetime', $_item) ? ifset($_item, 'due_datetime', '') : null),//ifset($_item, 'due_datetime', null),
+                'due_date'              => (array_key_exists('due_date', $_item) ? ifset($_item, 'due_date', '') : null),
+                'due_datetime'          => (array_key_exists('due_datetime', $_item) ? ifset($_item, 'due_datetime', '') : null),
                 'client_touch_datetime' => ifset($_item, 'client_touch_datetime', null),
                 'location_id'           => ifset($_item, 'location_id', null),
                 'amount'                => 0,
@@ -207,7 +207,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 if (!is_string($_item['client_touch_datetime'])) {
                     $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'client_touch_datetime');
                 } else {
-                    $dt = date_create($_item['client_touch_datetime'], new DateTimeZone('UTC'));
+                    $dt = date_create($_item['client_touch_datetime']);
                     if ($dt) {
                         $_item['client_touch_datetime'] = $dt->format('Y-m-d H:i:s');
                     } else {
@@ -451,7 +451,6 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 'complete_datetime' => 'datetime',
                 'complete_contact_id' => 'int',
                 'due_datetime' => 'datetime',
-                'client_touch_datetime' => 'datetime',
                 'location_id' => 'int',
                 'amount' => 'float',
                 'assigned_contact_id' => 'int',

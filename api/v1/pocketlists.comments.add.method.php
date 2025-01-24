@@ -70,7 +70,7 @@ class pocketlistsCommentsAddMethod extends pocketlistsApiAbstractMethod
                 if (!is_string($_comment['client_touch_datetime'])) {
                     $_comment['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'client_touch_datetime');
                 } else {
-                    $dt = date_create($_comment['client_touch_datetime'], new DateTimeZone('UTC'));
+                    $dt = date_create($_comment['client_touch_datetime']);
                     if ($dt) {
                         $_comment['client_touch_datetime'] = $dt->format('Y-m-d H:i:s');
                     } else {
@@ -148,7 +148,6 @@ class pocketlistsCommentsAddMethod extends pocketlistsApiAbstractMethod
                 'contact_id' => 'int',
                 'create_datetime' => 'datetime',
                 'update_datetime' => 'datetime',
-                'client_touch_datetime' => 'datetime',
             ]
         );
     }
