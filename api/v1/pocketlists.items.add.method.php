@@ -254,7 +254,9 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                 }
             }
 
-            if (!empty($_item['errors'])) {
+            if (empty($_item['errors'])) {
+                $_item['calc_priority'] = $this->getCalcPriority($_item);
+            } else {
                 $_item['success'] = false;
                 $_item['attachments'] = [];
             }

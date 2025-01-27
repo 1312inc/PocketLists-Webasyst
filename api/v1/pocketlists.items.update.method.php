@@ -277,6 +277,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 ) {
                     $_item['complete_datetime'] = date('Y-m-d H:i:s');
                 }
+                $_item['calc_priority'] = $this->getCalcPriority($_item);
                 if ($_item['action'] == self::ACTIONS[0]) {
                     // patch
                     $_item = array_replace($items_in_db[$item_id], array_filter($_item, function ($i) {return !is_null($i);}));

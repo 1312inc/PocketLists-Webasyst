@@ -663,16 +663,16 @@ paths:
                   location_id:
                     type: integer
                     description: Location ID
-                  due_datetime:
-                    type: string
-                    format: date-time
-                    nullable: true
-                    description: Item exact due datetime (UTC). When specified, server automatically fills due_date field making the 'due_date' optional for the request.
                   due_date:
                     type: string
                     format: date
                     nullable: true
                     description: Item due date (for all-day items)
+                  due_datetime:
+                    type: string
+                    format: date-time
+                    nullable: true
+                    description: Item exact due datetime (UTC). When specified, server automatically fills due_date field making the 'due_date' optional for the request.
                   client_touch_datetime:
                     type: string
                     format: date-time

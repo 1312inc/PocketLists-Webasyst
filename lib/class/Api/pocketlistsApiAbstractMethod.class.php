@@ -795,4 +795,18 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
             return $_tag !== '';
         });
     }
+
+    /**
+     * @param $item
+     * @return int
+     */
+    protected function getCalcPriority($item = [])
+    {
+        $now_priority = ifset($item, 'priority', 0);
+        $due_date = ifset($item, 'due_date', null);
+        $due_datetime = ifset($item, 'due_datetime', null);
+        $calc_priority = pocketlistsHelper::calcPriorityOnDueDate($due_date, $due_datetime);
+
+        return (int) max($now_priority, $calc_priority);
+    }
 }
