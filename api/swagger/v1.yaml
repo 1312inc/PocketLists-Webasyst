@@ -1641,7 +1641,7 @@ paths:
     get:
       security:
         - BearerAuth: [ ]
-      summary: Общие настройки окружения
+      summary: Returns core Webasyst and Pocket Lists app environment settings.
       responses:
         200:
           description: OK
@@ -1657,25 +1657,25 @@ paths:
                         properties:
                           base_url:
                             type: string
-                            description: URL
+                            description: Backend web UI URL
                           locale:
                             type: string
-                            description: Locale
+                            description: User locale
                           timezone:
                             type: string
-                            description: Timezone
+                            description: User timezone
                           framework_version:
                             type: string
-                            description: Version framework
+                            description: Webasyst framework version
                           app_version:
                             type: string
-                            description: Version Pocket Lists
+                            description: Pocket Lists app version
                           is_premium:
                             type: boolean
-                            description: Version Premium
+                            description: Premium version enabled status
                           is_debug_mode:
                             type: boolean
-                            description: Debug mode
+                            description: Debug mode status
   /pocketlists.system.getTime:
     get:
       security:
