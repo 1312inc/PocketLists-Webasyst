@@ -1657,6 +1657,7 @@ paths:
                         properties:
                           base_url:
                             type: string
+                            format: uri
                             description: Backend web UI URL
                           locale:
                             type: string
