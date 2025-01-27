@@ -427,7 +427,7 @@ paths:
     delete:
       security:
         - BearerAuth: [ ]
-      summary: Удалить айтем
+      summary: Deletes items.
       parameters:
         - in: query
           name: id[]
@@ -863,7 +863,7 @@ paths:
     delete:
       security:
         - BearerAuth: [ ]
-      summary: Удалить список
+      summary: Deletes lists.
       parameters:
         - in: query
           name: id[]
@@ -1594,11 +1594,11 @@ paths:
                     description: Pocket ID
                   name:
                     type: string
-                    description: Название проекта
+                    description: Pocket name
                   color:
                     type: string
                     nullable: true
-                    description: Цвет
+                    description: Pocket color
                     enum:
                       - none
                       - red
@@ -1615,7 +1615,7 @@ paths:
                   prev_pocket_id:
                     type: integer
                     nullable: true
-                    description: Предыдущий идентификатор проекта для сортировки
+                    description: Use only when NOT providing 'sort' & 'rank' values precisely! Server will automatically generate new sort & rank values putting the element in the list right after the specified previous element.
       responses:
         200:
           description: OK
@@ -1792,7 +1792,7 @@ components:
         size:
           type: integer
           nullable: true
-          description: Размер вложения в байтах
+          description: File size (bytes)
         upload_datetime:
           type: string
           format: datetime
@@ -1861,7 +1861,7 @@ components:
               properties:
                 lists_count:
                   type: integer
-                  description: Общее количество списков в покете
+                  description: Number of lists in the pocket
     list:
       allOf:
         - $ref: '#/components/schemas/item'
@@ -1908,16 +1908,16 @@ components:
               properties:
                 items_count:
                   type: integer
-                  description: Number of items in the list
+                  description: Number of active (non-completed) items in the list
                 items_priority_count:
                   type: integer
-                  description: Number of items in the list with dynamic priority > 0
+                  description: Number of items in the list with max priority (only when >= 1)
                 items_priority_value:
                   type: integer
-                  description: Значение максимального приоритета
+                  description: The value of this max priority
                 items_completed_count:
                   type: integer
-                  description: Количество выполненных айтемов
+                  description: Number of completed (archived) items
     item:
       allOf:
         - type: object
@@ -2077,7 +2077,7 @@ components:
               properties:
                 comments_count:
                   type: integer
-                  description: Количество комментариев
+                  description: Number of comments linked to this item
     comment:
       type: object
       properties:
