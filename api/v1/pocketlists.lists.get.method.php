@@ -91,18 +91,18 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
                     $static_url = wa()->getAppStaticUrl(null, true).'img/listicons/';
                     $summary = $list_model->query(
                         $list_model->buildSqlComponents([
-                            'select'   => ['*' => 'i.list_id, i.priority, COUNT(i.id) AS priority_count, COUNT(i2.id) AS completed_count'],
+                            'select'   => ['*' => 'i.list_id, i.calc_priority, COUNT(i.id) AS priority_count, COUNT(i2.id) AS completed_count'],
                             'from'     => ['i' => 'pocketlists_item i'],
                             'join'     => ['LEFT JOIN pocketlists_item i2 ON i2.id = i.id AND i2.status != 0'],
-                            'where'    => ['and' => [$ids ? 'i.list_id IN (i:ids)' : 'i.list_id IS NOT NULL']],
-                            'group by' => ['i.list_id, i.priority'],
-                            'order by' => ['i.list_id, i.priority']
+                            'where'    => ['and' => ['i.list_id IN (i:ids)']],
+                            'group by' => ['i.list_id, i.calc_priority'],
+                            'order by' => ['i.list_id, i.calc_priority']
                         ]), ['ids' => $ids]
                     )->fetchAll();
                     if ($summary) {
                         foreach ($summary as $_summ) {
-                            $priority_count[$_summ['list_id']][$_summ['priority']] = $_summ['priority_count'];
-                            $completed_count[$_summ['list_id']][$_summ['priority']] = $_summ['completed_count'];
+                            $priority_count[$_summ['list_id']][$_summ['calc_priority']] = $_summ['priority_count'];
+                            $completed_count[$_summ['list_id']][$_summ['calc_priority']] = $_summ['completed_count'];
                         }
                         unset($summary, $_summ);
                     }
