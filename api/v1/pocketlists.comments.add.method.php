@@ -148,6 +148,7 @@ class pocketlistsCommentsAddMethod extends pocketlistsApiAbstractMethod
                 'contact_id' => 'int',
                 'create_datetime' => 'datetime',
                 'update_datetime' => 'datetime',
+                'client_touch_datetime' => 'dateiso',
             ]
         );
     }

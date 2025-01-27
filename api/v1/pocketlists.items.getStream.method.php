@@ -118,6 +118,7 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
                 'complete_datetime' => 'datetime',
                 'complete_contact_id' => 'int',
                 'due_datetime' => 'datetime',
+                'client_touch_datetime' => 'dateiso',
                 'location_id' => 'int',
                 'amount' => 'float',
                 'assigned_contact_id' => 'int',

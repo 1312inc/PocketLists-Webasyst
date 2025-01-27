@@ -134,8 +134,8 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                     $res[$key] = doubleval($data[$key]);
                 } elseif ($field_types[$key] === 'datetime') {
                     $res[$key] = $this->formatDatetimeToISO8601($data[$key]);
-                } elseif ($field_types[$key] === 'date') {
-
+                } elseif ($field_types[$key] === 'dateiso') {
+                    $res[$key] = $this->formatDatetimeToISO8601($data[$key], null);
                 } else {
                     $res[$key] = $data[$key];
                 }
@@ -164,16 +164,19 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
 
     /**
      * @param $sql_dt
-     * @return string
+     * @param $tz
+     * @return string|null
      */
-    protected function formatDatetimeToISO8601($sql_dt)
+    protected function formatDatetimeToISO8601($sql_dt, $tz = 'UTC')
     {
         if (empty($sql_dt)) {
             return null;
         }
         try {
             $dt = new DateTime((string) $sql_dt);
-            $dt->setTimezone(new DateTimeZone('UTC'));
+            if ($tz) {
+                $dt->setTimezone(new DateTimeZone($tz));
+            }
             return $dt->format('Y-m-d\TH:i:s.u\Z');
         } catch (Exception $ex) {
             return $sql_dt;
