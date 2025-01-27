@@ -1247,7 +1247,7 @@ paths:
             format: date-time
         - in: query
           name: entity_type
-          description: Фильтрация по типу сущности
+          description: Filters by entity type.
           schema:
             type: string
             nullable: true
@@ -1261,7 +1261,7 @@ paths:
               - location
         - in: query
           name: entity_id
-          description: Фильтрация по ID сущности
+          description: Filters by entity ID.
           schema:
             type: integer
         - in: query
