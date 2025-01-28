@@ -21,7 +21,7 @@ class pocketlistsSystemGetSettingsMethod extends pocketlistsApiAbstractMethod
      */
     private function getBaseUrl()
     {
-        return  wa()->getUrl(true).wa()->getConfig()->getBackendUrl().'/'.pocketlistsHelper::APP_ID;
+        return  wa()->getUrl(true).wa()->getConfig()->getBackendUrl().'/'.pocketlistsHelper::APP_ID.'/';
     }
 
     /**
