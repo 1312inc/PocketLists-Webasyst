@@ -4,10 +4,14 @@ class pocketlistsSystemGetSettingsMethod extends pocketlistsApiAbstractMethod
 {
     public function execute()
     {
+        $current_time = time();
+
         $this->response['data'] = [
             'base_url'          => $this->getBaseUrl(),
-            'locale'            => $this->getLocale(),
-            'timezone'          => $this->getTimezone(),
+            'user_locale'       => $this->getLocale(),
+            'user_timezone'     => $this->getTimezone(),
+            'timestamp'         => $current_time,
+            'datetime'          => $this->getDatetime($current_time),
             'framework_version' => $this->getFrameworkVersion(),
             'app_version'       => $this->getAppVersion(),
             'is_premium'        => $this->isPremium(),
@@ -42,6 +46,15 @@ class pocketlistsSystemGetSettingsMethod extends pocketlistsApiAbstractMethod
         $user_tz = wa()->getUser()->get('timezone');
 
         return (empty($user_tz) ? 'auto' : $user_tz);
+    }
+
+    /**
+     * @param $time
+     * @return string|null
+     */
+    private function getDatetime($time)
+    {
+        return $this->formatDatetimeToISO8601(date('Y-m-d H:i:s', $time));
     }
 
     /**

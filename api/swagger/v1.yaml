@@ -1659,12 +1659,20 @@ paths:
                             type: string
                             format: uri
                             description: Backend web UI URL
-                          locale:
+                          user_locale:
                             type: string
                             description: User locale
-                          timezone:
+                          user_timezone:
                             type: string
-                            description: User timezone
+                            default: 'auto'
+                            description: Timezone specified in the user custom profile settings
+                          timestamp:
+                            type: integer
+                            description: UNIX timestamp
+                          datetime:
+                            type: string
+                            format: date-time
+                            description: UTC datetime in ISO 8601
                           framework_version:
                             type: string
                             description: Webasyst framework version
@@ -1677,35 +1685,6 @@ paths:
                           is_debug_mode:
                             type: boolean
                             description: Debug mode status
-  /pocketlists.system.getTime:
-    get:
-      security:
-        - BearerAuth: [ ]
-      summary: Returns current server time in UTC.
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/response'
-                  - type: object
-                    properties:
-                      data:
-                        type: object
-                        properties:
-                          timestamp:
-                            type: integer
-                            description: UNIX timestamp
-                          datetime:
-                            type: string
-                            format: date-time
-                            description: UTC datetime in ISO 8601
-                          user_timezone:
-                            type: string
-                            default: 'auto'
-                            description: Timezone specified in the user custom profile settings
   /pocketlists.system.getWebsocketUrl:
     get:
       security:
