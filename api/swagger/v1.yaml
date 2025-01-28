@@ -1335,7 +1335,7 @@ paths:
         - in: query
           name: starting_from
           required: true
-          description: Returns records updated/created only after the specified datetime (UTC, ISO 8601). Older records are removed from the response.
+          description: Reads log records only after the specified datetime (UTC, ISO 8601). Older records are removed from the response.
           schema:
             type: string
             format: date-time
@@ -1355,11 +1355,11 @@ paths:
                           starting_from:
                             type: string
                             format: date-time
-                            description: Returns records updated/created only after the specified datetime (UTC, ISO 8601). Older records are removed from the response.
+                            description: Confirms the starting time for the log summary fetch accroding to the request (UTC, ISO 8601).
                           ending_to:
                             type: string
                             format: date-time
-                            description: Текущая дата и время (UTC)
+                            description: Confirms the ending time for the log summary fetch. Current server time eventually (UTC, ISO 8601).
                           pockets:
                             type: integer
                             description: ''
@@ -1387,7 +1387,7 @@ paths:
         - in: query
           name: starting_from
           required: true
-          description: Returns records updated/created only after the specified datetime (UTC, ISO 8601). Older records are removed from the response.
+          description: Reads log records only after the specified datetime (UTC, ISO 8601). Older records are removed from the response.
           schema:
             type: string
             format: date-time
@@ -1408,11 +1408,11 @@ paths:
                           starting_from:
                             type: string
                             format: date-time
-                            description: Returns records updated/created only after the specified datetime (UTC, ISO 8601). Older records are removed from the response.
+                            description: Confirms the starting time for the log summary fetch accroding to the request (UTC, ISO 8601).
                           ending_to:
                             type: string
                             format: date-time
-                            description: Текущая дата и время (UTC)
+                            description: Confirms the ending time for the log summary fetch. Current server time eventually (UTC, ISO 8601).
                           pockets:
                             type: integer
                             description: ''
