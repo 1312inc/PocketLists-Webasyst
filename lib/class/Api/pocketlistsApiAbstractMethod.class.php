@@ -169,18 +169,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
      */
     protected function formatDatetimeToISO8601($sql_dt, $tz = 'UTC')
     {
-        if (empty($sql_dt)) {
-            return null;
-        }
-        try {
-            $dt = new DateTime((string) $sql_dt);
-            if ($tz) {
-                $dt->setTimezone(new DateTimeZone($tz));
-            }
-            return $dt->format('Y-m-d\TH:i:s.u\Z');
-        } catch (Exception $ex) {
-            return $sql_dt;
-        }
+        return pocketlistsHelper::convertDateToISO8601($sql_dt, $tz);
     }
 
     /**

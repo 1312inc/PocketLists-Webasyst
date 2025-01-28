@@ -58,6 +58,28 @@ class pocketlistsHelper
     }
 
     /**
+     * @param $date
+     * @param $tz
+     * @return string|null
+     */
+    public static function convertDateToISO8601($date, $tz = 'UTC')
+    {
+        if (empty($date)) {
+            return null;
+        }
+        try {
+            $dt = new DateTime((string) $date);
+            if ($tz) {
+                $dt->setTimezone(new DateTimeZone($tz));
+            }
+        } catch (Exception $ex) {
+            return $date;
+        }
+
+        return $dt->format('Y-m-d\TH:i:s.u\Z');
+    }
+
+    /**
      * @param $due_date
      * @param $due_datetime
      *

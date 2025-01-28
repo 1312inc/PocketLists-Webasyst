@@ -39,7 +39,13 @@ class pocketlistsDefaultLayout extends waLayout
         $pocket_get_list = new pocketlistsPocketsGetMethod();
         $response = $pocket_get_list->getResponse(true);
         $pockets = ifset($response, 'data', []);
+
+        $location_get_list = new pocketlistsLocationsGetMethod();
+        $response = $location_get_list->getResponse(true);
+        $locations = ifset($response, 'data', []);
+
         $user_tz = wa()->getUser()->get('timezone');
+        $current_time = time();
 
         $this->view->assign([
             pocketlistsEventStorage::WA_BACKEND_HEAD => $eventResult,
@@ -48,8 +54,11 @@ class pocketlistsDefaultLayout extends waLayout
             'is_premium' => (pocketlistsLicensing::isPremium() ? 1 : 0),
             'users' => waUtils::jsonEncode($users),
             'pockets' => waUtils::jsonEncode($pockets),
-            'locale' => wa()->getLocale(),
-            'timezone' => (empty($user_tz) ? 'auto' : $user_tz),
+            'locations' => waUtils::jsonEncode($locations),
+            'user_locale' => wa()->getLocale(),
+            'user_timezone' => (empty($user_tz) ? 'auto' : $user_tz),
+            'timestamp' => $current_time,
+            'datetime' => pocketlistsHelper::convertDateToISO8601(date('Y-m-d H:i:s', $current_time)),
             'framework_version' => wa()->getVersion('webasyst'),
             'pl_debug_mode' => (wa()->getSetting('pl_debug_mode', 0) ? 1 : 0)
         ]);
