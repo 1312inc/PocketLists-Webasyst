@@ -91,9 +91,12 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
                     $static_url = wa()->getAppStaticUrl(null, true).'img/listicons/';
                     $summary = $list_model->query(
                         $list_model->buildSqlComponents([
-                            'select'   => ['*' => 'i.list_id, i.calc_priority, COUNT(i.id) AS priority_count, COUNT(i2.id) AS completed_count'],
+                            'select'   => ['*' => 'i.list_id, i.calc_priority, COUNT(i2.id) AS priority_count, COUNT(i3.id) AS completed_count'],
                             'from'     => ['i' => 'pocketlists_item i'],
-                            'join'     => ['LEFT JOIN pocketlists_item i2 ON i2.id = i.id AND i2.status != 0'],
+                            'join'     => [
+                                'LEFT JOIN pocketlists_item i2 ON i2.id = i.id AND i2.status = 0',
+                                'LEFT JOIN pocketlists_item i3 ON i3.id = i.id AND i3.status != 0'
+                            ],
                             'where'    => ['and' => ['i.list_id IN (i:ids)']],
                             'group by' => ['i.list_id, i.calc_priority'],
                             'order by' => ['i.list_id, i.calc_priority']
@@ -107,15 +110,15 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
                         unset($summary, $_summ);
                     }
                     foreach ($lists as &$_list) {
-                        $data = ifset($priority_count, $_list['id'], null);
-                        $max_priority = ($data ? max(array_keys($data)) : null);
-                        $max_priority = ($max_priority == 0 ? null : $max_priority);
+                        $max_priority = max(array_keys(ifset($priority_count, $_list['id'], [pocketlistsItem::PRIORITY_NORM])));
+                        $items_priority_count = array_sum(ifset($priority_count, $_list['id'], []));
+                        $items_completed_count = array_sum(ifset($completed_count, $_list['id'], []));
                         $_list['icon_url'] = $static_url.$_list['icon'];
                         $_list['extended_data'] = [
-                            'items_count'           => ($data ? array_sum($data) : 0),
-                            'items_priority_count'  => (int) ifset($data, $max_priority, 0),
-                            'items_priority_value'  => (int) $max_priority,
-                            'items_completed_count' => array_sum(ifset($completed_count, $_list['id'], []))
+                            'items_count'           => $items_priority_count,
+                            'items_priority_count'  => (int) ifset($priority_count, $_list['id'], $max_priority, 0),
+                            'items_priority_value'  => $max_priority,
+                            'items_completed_count' => $items_completed_count
                         ];
                     }
                     unset($_list);
