@@ -1668,11 +1668,11 @@ paths:
                             description: Timezone specified in the user custom profile settings
                           timestamp:
                             type: integer
-                            description: UNIX timestamp
+                            description: UNIX timestamp right now
                           datetime:
                             type: string
                             format: date-time
-                            description: UTC datetime in ISO 8601
+                            description: UTC datetime right now (ISO 8601)
                           framework_version:
                             type: string
                             description: Webasyst framework version
@@ -1681,10 +1681,10 @@ paths:
                             description: Pocket Lists app version
                           is_premium:
                             type: boolean
-                            description: Premium version enabled status
+                            description: Pocket Lists premium version status
                           is_debug_mode:
                             type: boolean
-                            description: Debug mode status
+                            description: Webasyst debug mode status
   /pocketlists.system.getWebsocketUrl:
     get:
       security:
