@@ -86,39 +86,42 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
                 $total_count = (int) $list_model->query('SELECT FOUND_ROWS()')->fetchField();
 
                 if ($lists) {
-                    $priority_count = [];
-                    $completed_count = [];
+                    $counters = [];
                     $static_url = wa()->getAppStaticUrl(null, true).'img/listicons/';
                     $summary = $list_model->query(
                         $list_model->buildSqlComponents([
-                            'select'   => ['*' => 'i.list_id, i.calc_priority, COUNT(i2.id) AS priority_count, COUNT(i3.id) AS completed_count'],
+                            'select'   => ['*' => 'i.list_id, IF(i.calc_priority > i.priority, i.calc_priority, i.priority) AS max_priority, COUNT(i2.id) AS started_count, COUNT(i3.id) AS completed_count'],
                             'from'     => ['i' => 'pocketlists_item i'],
                             'join'     => [
                                 'LEFT JOIN pocketlists_item i2 ON i2.id = i.id AND i2.status = 0',
                                 'LEFT JOIN pocketlists_item i3 ON i3.id = i.id AND i3.status != 0'
                             ],
                             'where'    => ['and' => ['i.list_id IN (i:ids)']],
-                            'group by' => ['i.list_id, i.calc_priority'],
-                            'order by' => ['i.list_id, i.calc_priority']
+                            'group by' => ['i.list_id, i.priority, i.calc_priority'],
+                            'order by' => ['i.list_id']
                         ]), ['ids' => $ids]
                     )->fetchAll();
                     if ($summary) {
-                        foreach ($summary as $_summ) {
-                            $priority_count[$_summ['list_id']][$_summ['calc_priority']] = $_summ['priority_count'];
-                            $completed_count[$_summ['list_id']][$_summ['calc_priority']] = $_summ['completed_count'];
+                        foreach ($summary as $_sum) {
+                            if ($_sum['started_count']) {
+                                $counters['started'][$_sum['list_id']][] = $_sum['started_count'];
+                                $counters[$_sum['list_id']][$_sum['max_priority']][] = $_sum['started_count'];
+                            }
+                            if ($_sum['completed_count']) {
+                                $counters['completed'][$_sum['list_id']][] = $_sum['completed_count'];
+                            }
                         }
-                        unset($summary, $_summ);
+                        unset($summary, $_sum);
                     }
                     foreach ($lists as &$_list) {
-                        $max_priority = max(array_keys(ifset($priority_count, $_list['id'], [pocketlistsItem::PRIORITY_NORM])));
-                        $items_priority_count = array_sum(ifset($priority_count, $_list['id'], []));
-                        $items_completed_count = array_sum(ifset($completed_count, $_list['id'], []));
+                        $max_priority = max(array_keys(ifset($counters, $_list['id'], [pocketlistsItem::PRIORITY_NORM])));
+                        $items_priority_count = ($max_priority ? array_sum(ifset($counters, $_list['id'], $max_priority, [])) : pocketlistsItem::PRIORITY_NORM);
                         $_list['icon_url'] = $static_url.$_list['icon'];
                         $_list['extended_data'] = [
-                            'items_count'           => $items_priority_count,
-                            'items_priority_count'  => (int) ifset($priority_count, $_list['id'], $max_priority, 0),
+                            'items_count'           => array_sum(ifset($counters, 'started', $_list['id'], [])),
+                            'items_priority_count'  => $items_priority_count,
                             'items_priority_value'  => $max_priority,
-                            'items_completed_count' => $items_completed_count
+                            'items_completed_count' => array_sum(ifset($counters, 'completed', $_list['id'], []))
                         ];
                     }
                     unset($_list);
