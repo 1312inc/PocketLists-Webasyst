@@ -128,7 +128,10 @@ class pocketlistsLogService
                 foreach ($logs as &$log) {
                     $log['id'] = $last_id++;
                     pocketlistsWebSoket::getInstance()->sendWebsocketData(
-                        $log + ['client' => waRequest::server('HTTP_X_PL_API_CLIENT', '')]
+                        [
+                            'client' => waRequest::server('HTTP_X_PL_API_CLIENT', ''),
+                            'create_datetime' => pocketlistsHelper::convertDateToISO8601($log['create_datetime'])
+                        ] + $log
                     );
                 }
                 pl2()->getEventDispatcher()->dispatch(
