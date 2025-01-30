@@ -115,13 +115,18 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
         } elseif (empty($list_ids)) {
             $list_ids = [null];
         }
+
+        $item_move_ids = [];
         $item_model = pl2()->getModel(pocketlistsItem::class);
         $sql_parts = $item_model->getQueryComponents(true);
         if ($ids) {
             $sql_parts['where']['and'][] = 'i.id IN (i:item_ids)';
         }
         if (isset($list_id)) {
-            $sql_parts['where']['and'][] = 'i.list_id IN (i:list_ids)';
+            if ($starting_from) {
+                $item_move_ids = $this->getMoveItemIds($list_id, $starting_from);
+            }
+            $sql_parts['where']['and'][] = 'i.list_id IN (i:list_ids)'.($item_move_ids ? ' OR i.id IN (i:item_move_ids)' : '');
         } else {
             $sql_parts['where']['and'][] = 'i.list_id IN (i:list_ids) OR (i.list_id IS NULL AND (i.contact_id = i:contact_id OR i.assigned_contact_id = i:contact_id))';
         }
@@ -163,6 +168,7 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
         $items = $item_model->query(
             "$sql LIMIT i:offset, i:limit", [
             'item_ids'      => $ids,
+            'item_move_ids' => $item_move_ids,
             'list_ids'      => $list_ids,
             'location_id'   => $location_id,
             'status'        => $status,
@@ -312,5 +318,27 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
                 'comments_count' => 'int'
             ]
         );
+    }
+
+    /**
+     * @param $list_id
+     * @param $starting_from
+     * @return array
+     * @throws waDbException
+     * @throws waException
+     */
+    private function getMoveItemIds($list_id, $starting_from)
+    {
+        $i_move = pl2()->getModel(pocketlistsItemMove::class)->query("
+            SELECT item_id FROM pocketlists_item_move
+            WHERE prev_list_id IN (i:list_id) AND `datetime` >= s:starting_from
+            GROUP by item_id, prev_list_id
+        ", [
+            'list_id' => $list_id,
+            'starting_from' => $starting_from
+        ])->fetchAll();
+
+
+        return array_column($i_move, 'item_id');
     }
 }

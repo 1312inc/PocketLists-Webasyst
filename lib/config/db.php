@@ -81,6 +81,12 @@ return array(
             'item_id' => 'item_id',
         ),
     ),
+    'pocketlists_item_move' => array(
+        'item_id' => array('int', 11, 'null' => 0),
+        'prev_list_id' => array('int', 11,),
+        'prev_pocket_id' => array('int', 11),
+        'datetime' => array('datetime')
+    ),
     'pocketlists_item_tags' => array(
         'item_id' => array('int', 11, 'null' => 0),
         'tag_id' => array('int', 11, 'null' => 0),

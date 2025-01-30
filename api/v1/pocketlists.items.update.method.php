@@ -312,12 +312,20 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                         'uuid'
                     ], null)) + $_item + $item_in_db;
                 }
+                if ($_item['list_id'] != $items_in_db[$item_id]['list_id']) {
+                    /* fields pocketlistsItemMoveModel */
+                    $_item['move'] = [
+                        'item_id'      => $item_id,
+                        'prev_list_id' => $items_in_db[$item_id]['list_id']
+                    ];
+                }
                 unset($_item['errors']);
             } else {
                 $_item['success'] = false;
                 $_item['attachments'] = [];
             }
         }
+        unset($_item, $items_in_db);
 
         $items_ok = array_filter($items, function ($i) {
             return $i['success'];
@@ -391,6 +399,11 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                     pocketlistsLog::ACTION_UPDATE,
                     $items_ok
                 );
+
+                $items_move = array_column($items_ok, 'move');
+                if ($items_move) {
+                    pl2()->getModel(pocketlistsItemMove::class)->multipleInsert($items_move);
+                }
                 if ($attachments_log) {
                     $this->saveLog(
                         pocketlistsLog::ENTITY_ATTACHMENT,
