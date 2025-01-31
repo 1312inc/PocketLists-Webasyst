@@ -32,17 +32,22 @@ class pocketlistsDefaultLayout extends waLayout
             pocketlistsConfig::API_TOKEN_SCOPE
         );
 
-        $user_get_list = new pocketlistsUsersGetMethod();
-        $response = $user_get_list->getResponse(true);
-        $users = ifset($response, 'data', []);
+        $users = [];
+        $pockets = [];
+        $locations = [];
+        if (wa()->whichUI(pocketlistsHelper::APP_ID) != '1.3') {
+            $user_get_list = new pocketlistsUsersGetMethod();
+            $response = $user_get_list->getResponse(true);
+            $users = ifset($response, 'data', []);
 
-        $pocket_get_list = new pocketlistsPocketsGetMethod();
-        $response = $pocket_get_list->getResponse(true);
-        $pockets = ifset($response, 'data', []);
+            $pocket_get_list = new pocketlistsPocketsGetMethod();
+            $response = $pocket_get_list->getResponse(true);
+            $pockets = ifset($response, 'data', []);
 
-        $location_get_list = new pocketlistsLocationsGetMethod();
-        $response = $location_get_list->getResponse(true);
-        $locations = ifset($response, 'data', []);
+            $location_get_list = new pocketlistsLocationsGetMethod();
+            $response = $location_get_list->getResponse(true);
+            $locations = ifset($response, 'data', []);
+        }
 
         $user_tz = wa()->getUser()->get('timezone');
         $current_time = time();
