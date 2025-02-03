@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'activity/?' => 'activity/',
     'plugins/?' => 'plugins/',
     'settings/?' => 'settings/',
     'upgrade/?' => 'upgrade/',
