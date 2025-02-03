@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'board/<pocket_id>/?' => 'board/',
     'activity/?' => 'activity/',
     'plugins/?' => 'plugins/',
     'settings/?' => 'settings/',

@@ -158,6 +158,11 @@ class pocketlistsItem extends pocketlistsEntity
     private $uuid;
 
     /**
+     * @var int|null
+     */
+    private $pro_label_id;
+
+    /**
      * @var int
      */
     private $comments_count = 0;
@@ -1158,6 +1163,18 @@ class pocketlistsItem extends pocketlistsEntity
     public function setUuid($uuid)
     {
         $this->uuid = (empty($uuid) ? null : trim($uuid));
+
+        return $this;
+    }
+
+    public function getProLabelId()
+    {
+        return $this->pro_label_id;
+    }
+
+    public function setProLabelId($pro_label_id)
+    {
+        $this->pro_label_id = $pro_label_id;
 
         return $this;
     }

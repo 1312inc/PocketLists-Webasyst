@@ -57,6 +57,7 @@ return array(
         'repeat' => array('int', 11),
         'key_list_id' => array('int', 11),
         'uuid' => array('varchar', 36),
+        'pro_label_id' => array('int', 11),
         ':keys' => array(
             'PRIMARY' => 'id',
             'parent' => 'parent_id',
