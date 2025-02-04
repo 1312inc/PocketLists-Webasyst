@@ -30,7 +30,6 @@ class pocketlistsHelper
 
         if (!empty($date['due_date'])) {
             $date['due_date'] = date("Y-m-d", strtotime($date['due_date']));
-//            waDateTime::parse('date', waDateTime::format('date', $date['due_date']));
         } else {
             $date['due_date'] = null;
         }
@@ -212,7 +211,6 @@ class pocketlistsHelper
                         'gray'  => isset($list_colors[$date_date]['gray']) ?
                             $list_colors[$date_date]['gray'] : [],
                     ],
-//                        isset($list_colors[$date_date]) ? array_keys($list_colors[$date_date]) : array()
                 ];
                 $current_date_start = strtotime('+1 days', $current_date_start);
             } while ($date_end > $current_date_start);
@@ -247,11 +245,11 @@ class pocketlistsHelper
             return sprintf(_w('%d min'), round(($fullseconds) / 60));
         }
 
-        $minutes = round(($fullseconds / 60) % 60);
-        $hours = round(($fullseconds / $hour) % 24);
-        $days = round(($fullseconds / $day) % 31);
-        $months = round(($fullseconds / $month) % 12);
-        $years = round(($fullseconds / $year));
+        $minutes = round($fullseconds / 60) % 60;
+        $hours = round($fullseconds / $hour) % 24;
+        $days = round($fullseconds / $day) % 31;
+        $months = round($fullseconds / $month) % 12;
+        $years = round($fullseconds / $year);
 
         if ($fullseconds < $day) {
             return sprintf(_w('%d h'), $hours, $minutes);

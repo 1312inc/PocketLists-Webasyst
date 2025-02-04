@@ -705,7 +705,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
     {
         $items_due = [];
         $url = rtrim(wa()->getConfig()->getHostUrl(), '/').wa()->getConfig()->getBackendUrl(true);
-        $html_text = "%s <a href=\"/${url}pocketlists/todos/upnext\"> &rarr;</a>";
+        $html_text = "%s <a href=\"/{$url}pocketlists/todos/upnext\"> &rarr;</a>";
         foreach ($items_ok as $_item) {
             if (($_item['due_date'] != null || $_item['due_datetime'] != null) && $_item['status'] === pocketlistsItem::STATUS_UNDONE) {
                 if (isset($_item['assigned_contact_id'])) {
