@@ -93,6 +93,7 @@ class pocketlistsCreateItemAction implements pocketlistsAutomationActionInterfac
      * which is a value of any type other than a resource.
      * @since 5.4.0
      */
+    #[ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return [
@@ -329,7 +330,7 @@ class pocketlistsCreateItemAction implements pocketlistsAutomationActionInterfac
         return $view->fetch(
             wa()->getAppPath(
                 sprintf(
-                    '/templates/actions%s/automation/actions/createItemEdit.html',
+                    'templates/actions%s/settings/SettingsCreateItemEdit.html',
                     pl2()->getUI2TemplatePath()
                 ),
                 pocketlistsHelper::APP_ID
