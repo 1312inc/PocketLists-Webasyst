@@ -191,9 +191,7 @@
             // this.pocketAction();
         },
         pocketAction: function (id) {
-            //var self = this;
             var list_id = decodeURIComponent(this.getHash().substr(('#/pocket/' + id + '/list/').length).replace('/', '')) || 0;
-            //var load_list = this.getHash().indexOf('list') > 0;
             if (list_id) {
                 if (list_id === 'new') {
                     list_id = -1;
@@ -207,23 +205,9 @@
                 $list_name.after('<i class="icon16 loading">');
             }
 
-            // if ($content.find('[data-pl2-pocket-wrapper]').data('pl2-pocket-wrapper') == id) {
-            //     this.load('?module=list&pocket_id=' + id + '&id=' + list_id, function (html) {
-            //         var $normalWrapper = $content.find('#pl-list-content');
-            //         if ($normalWrapper.length) {
-            //             $normalWrapper.replaceWith(html);
-            //         } else {
-            //             $content.find('#pl-list-icon-dialog').after(html);
-            //         }
-            //         // -_-
-            //         $content.find('[data-pl2-wrapper="lists"] [data-pl-list-id] a').removeClass('pl-is-selected');
-            //         $content.find('[data-pl2-wrapper="lists"] [data-pl-list-id="'+list_id+'"] a').addClass('pl-is-selected');
-            //     });
-            // } else {
-                this.load('?module=pocket&id=' + id + '&list_id=' + list_id, function (html) {
-                    $content.html(html);
-                });
-            // }
+            this.load('?module=pocket&id=' + id + '&list_id=' + list_id, function (html) {
+                $content.html(html);
+            });
 
             // todo: load list separately
             // this.load('?module=pocket&id=' + id + '&list_id=' + list_id, this.setHtmlContent);
@@ -245,32 +229,43 @@
         logbookAction: function () {
             this.load('?module=logbook', this.setHtmlContent);
         },
+        labelsAction: function () {
+            this.settingsAction('labels');
+        },
+        shortcutsAction: function () {
+            this.settingsAction('shortcuts');
+        },
+        shopscriptAction: function () {
+            this.settingsAction('shopscript');
+        },
         settingsAction: function (a,b,c,d) {
-            var that = this,
-                loadPlugin = function (plugin, settings) {
-                    return that.load('?plugin='+ plugin + '&module=settings&action=' + settings, function (html) {
+            let that = this;
+            let $html = $('');
+            let def = $.Deferred();
+            let $wrapper = $('[data-pl2-settings-content]');
+            let loadSubContent = function (action, plugin) {
+                    return that.load('?module=settings&action='+ action + (plugin ? '&plugin='+ plugin : ''), function (html) {
                         $('[data-pl2-settings-content]').html(html);
                         def.resolve();
                     });
-                },
-                $wrapper = $('[data-pl2-settings-content]'),
-                def = $.Deferred();
+                };
 
             if (!$wrapper.length) {
                 this.load('?module=settings', function (html) {
-                    var $html = $(html);
-
-                    if (a === 'plugin') {
-                        $html.find('#pl-settings-form').html('<i class="icon16 loading">');
-                        loadPlugin(b, c);
-                    }
-
+                    $html = $(html);
                     $('#content').empty().append($html);
                 });
-            } else if (a === 'plugin') {
-                loadPlugin(b, c);
+            }
+
+            $html.find('#pl-settings-form').html('<i class="icon16 loading">');
+            if (a === 'plugin') {
+                loadSubContent(c, b);
+            } else if (a === 'labels' || a === 'shortcuts' || a === 'shopscript') {
+                loadSubContent(a);
             } else {
-                this.load('?module=settings', this.setHtmlContent);
+                this.load('?module=settings', function (html) {
+                    $('.pl-settings').html(html);
+                });
             }
 
             def.done(function () {
