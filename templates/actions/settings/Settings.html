@@ -2,15 +2,41 @@
     <div class="sidebar blank width-21rem" data-pl2-settings-sidebar>
         <ul class="menu with-icons stack">
             <li class="selected">
-                <a href="#/settings/">
+                <a href="#/settings">
                     <i class="userpic userpic-20" style="background-image: url({$wa->user()->getPhoto(20)});"></i>
                     <span>[`My personal settings`]</span>
                 </a>
             </li>
+            <li>
+                <a href="#/labels/" data-pro-settings="labels">
+                    <i class="fas fa-tag"></i>
+                    <span>[`Status labels`]</span>
+                </a>
+            </li>
+            <li>
+                <a href="#/shortcuts/" data-pro-settings="shortcuts">
+                    <i class="fas fa-keyboard"></i>
+                    <span>[`Shortcuts`]</span>
+                </a>
+            </li>
+            {if $wa->shop}
+            <li>
+                <a href="#/shopscript/" data-pro-settings="shopscript">
+                    <i class="icon size-20" style="background-image: url('/wa-apps/shop/img/shop.png'); background-size: 16px 16px;"></i>
+                    <span>[`Shop-Script`]</span>
+                </a>
+            </li>
+            {/if}
+
 
             <!-- plugin hook: 'backend_settings.sidebar_li' -->
             {* @event backend_settings.%plugin_id% *}
-            {if !empty($backend_settings)}{foreach $backend_settings as $_}{ifset($_.sidebar_li)}{/foreach}{/if}
+            {if !empty($backend_settings)}
+                <li class="top-padded"></li>
+                {foreach $backend_settings as $_}
+                    {ifset($_.sidebar_li)}
+                {/foreach}
+            {/if}
         </ul>
     </div>
 
