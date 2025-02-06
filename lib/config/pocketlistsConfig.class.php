@@ -59,6 +59,16 @@ class pocketlistsConfig extends waAppConfig
     protected $eventDispatcher;
 
     /**
+     * @var pocketlistsAutomationService
+     */
+    protected $automation;
+
+    /**
+     * @var pocketlistsCronManager
+     */
+    protected $cronManager;
+
+    /**
      * @param string $type
      *
      * @return waCache
@@ -152,12 +162,10 @@ class pocketlistsConfig extends waAppConfig
         $factoryClass = sprintf('%sFactory', $entity);
 
         if (!class_exists($factoryClass)) {
-            return $this->factories[''];//->setEntity($entity);
+            return $this->factories[''];
         }
 
         $this->factories[$entity] = new $factoryClass();
-
-//        $this->factories[$entity]->setEntity($entity);
 
         return $this->factories[$entity];
     }
@@ -415,7 +423,6 @@ HTML;
             }
 
             return $this->fakeLinker;
-//            throw new waException('No linked class for app ' . $app);
         }
 
         return empty($app) ? $this->linkers : $this->linkers[$app];
@@ -489,5 +496,26 @@ HTML;
                 return wa(pocketlistsHelper::APP_ID)->getConfig();
             }
         }
+    }
+
+    public function getAutomationService()
+    {
+        if ($this->automation === null) {
+            $this->automation = new pocketlistsAutomationService();
+        }
+
+        return $this->automation;
+    }
+
+    /**
+     * @return pocketlistsCronManager
+     */
+    public function getCronManager()
+    {
+        if ($this->cronManager === null) {
+            $this->cronManager = new pocketlistsCronManager();
+        }
+
+        return $this->cronManager;
     }
 }

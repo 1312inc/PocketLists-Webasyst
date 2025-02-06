@@ -7,6 +7,8 @@ class pocketlistsHelper
 {
     const APP_ID        = 'pocketlists';
     const COLOR_DEFAULT = 'blue';
+    const ID_ARR = [self::APP_ID, 'pro'];
+    const ID_STR = pocketlistsHelper::APP_ID.'.pro';
 
     /**
      * @param $date
