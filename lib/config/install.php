@@ -21,7 +21,7 @@ if (!file_exists($linkedAppPath)) {
             $conf['shop'] = ['enable' => 1];
         }
     } catch (waException $ex) {
-        waLog::log(sprintf('pocketlsits install: $s', $ex->getMessage()));
+        waLog::log(sprintf('pocketlsits install: %s', $ex->getMessage()));
     }
 
     waUtils::varExportToFile($conf, $linkedAppPath);
@@ -60,4 +60,45 @@ try {
     }
 } catch (Exception $ex) {
     waLog::log('Error on altering to utf8mb4.', 'pocketlists/update.log');
+}
+
+
+$labels = [
+    [_w('Backlog'), 'aaaaaa'],
+    [_w('Meeting'), '31e074'],
+    [_w('Docs'), 'd180f5'],
+    [_w('Shipment'), '5d96ff'],
+    [_w('Bill'), 'faca2e'],
+    [_w('Call'), 'f27c44'],
+    [_w('Reminder'), '74d5fb'],
+];
+
+foreach ($labels as $label) {
+    $m->exec(sprintf("insert into pocketlists_pro_label (name, color, sort) values ('%s', '%s', null)", $label[0], $label[1]));
+}
+
+$shortcuts = [
+    [
+        _w('Check'),
+        _w('Reach out'),
+        _w('Pay'),
+        _w('Ship'),
+        _w('Order'),
+        _w('Prepare'),
+        _w('Return')
+    ], [
+        _w('today'),
+        _w('tomorrow'),
+        _w('in 2 days'),
+        _w('in 3 days'),
+        _w('in a week'),
+        _w('in 2 weeks'),
+        _w('in a month')
+    ],
+];
+
+foreach ($shortcuts as $i => $names) {
+    foreach ($names as $name) {
+        $m->exec(sprintf("insert into pocketlists_pro_shortcut (name, `group`) values ('%s', %d)", $name, $i + 1));
+    }
 }
