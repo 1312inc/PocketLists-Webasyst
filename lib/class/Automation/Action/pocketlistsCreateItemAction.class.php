@@ -260,7 +260,7 @@ class pocketlistsCreateItemAction implements pocketlistsAutomationActionInterfac
         return $view->fetch(
             wa()->getAppPath(
                 sprintf(
-                    '/templates/actions%s/automation/actions/createItemView.html',
+                    'templates/actions%s/settings/SettingsCreateItemView.html',
                     pl2()->getUI2TemplatePath()
                 ),
                 pocketlistsHelper::APP_ID

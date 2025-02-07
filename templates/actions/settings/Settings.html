@@ -388,7 +388,7 @@
             var $this = $(this);
             e.preventDefault();
             $this.after($loading);
-            $.post('?module=settings&action=save', $('#pl-settings-form').serialize(), function(r){
+            $.post('?module=settings&action=personalSave', $('#pl-settings-form').serialize(), function (r) {
                 $loading.remove();
                 if (r.status==='ok') {
                     $.pocketlists.updateAppCounter();
@@ -396,7 +396,7 @@
                 } else {
                     alert('error while saving');
                 }
-            }, 'json')
+            }, 'json');
         });
 
         $('input[name="daily_recap_on"]').on('click', function() {
