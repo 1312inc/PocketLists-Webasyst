@@ -109,10 +109,23 @@ class pocketlistsLogService
         foreach ($logs as &$_log) {
             $id = ifset($_log, 'id', null);
             unset($_log['id'], $_log['action'], $_log['contact_id']);
-            $params = [$entity => $_log];
+            $params = $_log;
             unset($_log['create_datetime']);
             $_log = array_intersect_key($_log, $default) + $default;
-            $_log['params'] = json_encode($params, JSON_UNESCAPED_UNICODE);
+
+            $_log['params_for_socket'] = json_encode([$entity => $params], JSON_UNESCAPED_UNICODE);
+            switch ($entity) {
+                case pocketlistsLog::ENTITY_ITEM:
+                    $params['name'] = '';
+                    $params['note'] = '';
+                    break;
+                case pocketlistsLog::ENTITY_COMMENT:
+                    $params['comment'] = '';
+                    break;
+            }
+            $_log['params'] = json_encode([$entity => $params], JSON_UNESCAPED_UNICODE);
+
+
             if ($id) {
                 $_log[$entity.'_id'] = $id;
             }
@@ -127,6 +140,8 @@ class pocketlistsLogService
             if ($rows_count === count($logs)) {
                 foreach ($logs as &$log) {
                     $log['id'] = $last_id++;
+                    $_log['params'] = $log['params_for_socket'];
+                    unset($log['params_for_socket']);
                     pocketlistsWebSoket::getInstance()->sendWebsocketData(
                         [
                             'client' => waRequest::server('HTTP_X_PL_API_CLIENT', ''),
