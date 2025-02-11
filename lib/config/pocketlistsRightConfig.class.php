@@ -10,12 +10,23 @@ class pocketlistsRightConfig extends waRightConfig
      */
     private $userId;
 
+
+    /**
+     * @var waContactRightsModel
+     */
+    private $right_model;
+
+    private static $begin_rights = [
+        'list'   => [],
+        'pocket' => [],
+    ];
+
     /**
      * @var array
      */
     private static $rightsCache = [
-        'lists'   => [],
-        'pockets' => [],
+        'list'   => [],
+        'pocket' => [],
     ];
 
     /**
@@ -23,13 +34,41 @@ class pocketlistsRightConfig extends waRightConfig
      */
     public function __construct()
     {
+        $this->right_model = new waContactRightsModel();
         $this->userId = waRequest::post('user_id', 0, waRequest::TYPE_INT);
 
         if (!$this->userId) {
             $this->userId = waRequest::request('id', 0, waRequest::TYPE_INT);
         }
+        $this->setBeginRights();
 
         parent::__construct();
+    }
+
+    public function __destruct()
+    {
+        if (!empty(self::$rightsCache['pocket']) && $ids = $this->getDiff(pocketlistsRBAC::POCKET_ITEM)) {
+            /** pockets */
+            $this->right_model->exec('
+                UPDATE pocketlists_pocket
+                SET activity_datetime = s:act_dt
+                WHERE id IN (i:ids)                
+            ', [
+                'act_dt' => date('Y-m-d H:i:s'),
+                'ids'    => array_keys($ids),
+            ]);
+        }
+        if (!empty(self::$rightsCache['list']) && $ids = $this->getDiff(pocketlistsRBAC::LIST_ITEM)) {
+            /** lists */
+            $this->right_model->exec('
+                UPDATE pocketlists_item
+                SET activity_datetime = s:act_dt
+                WHERE key_list_id IN (i:ids) AND status = 0
+            ', [
+                'act_dt' => date('Y-m-d H:i:s'),
+                'ids'    => array_keys($ids),
+            ]);
+        }
     }
 
     /**
@@ -124,10 +163,7 @@ class pocketlistsRightConfig extends waRightConfig
                         pocketlistsRBAC::LIST_ITEM,
                         $pocket->getName(),
                         'list',
-                        [
-                            'items' => $items,
-                            //                'hint1' => 'all_checkbox',
-                        ]
+                        ['items' => $items]
                     );
                 }
             }
@@ -163,41 +199,32 @@ class pocketlistsRightConfig extends waRightConfig
      * @return bool
      * @throws waException
      */
-    public function setRights($contactId, $right, $value = null)
+    public function setRights($contactId, $right, $value = 0)
     {
-        $right_model = new waContactRightsModel();
-
-        if (strpos($right, pocketlistsRBAC::POCKET_ITEM.'.') === 0) {
-            $pocketId = (int)str_replace(pocketlistsRBAC::POCKET_ITEM.'.', '', $right);
+        if ($pocket_id = (int) str_replace(pocketlistsRBAC::POCKET_ITEM.'.', '', $right)) {
             if ($value == pocketlistsRBAC::RIGHT_NONE) {
                 /** @var pocketlistsPocket $pocket */
-                $pocket = pl2()->getEntityFactory(pocketlistsPocket::class)->findById($pocketId);
+                $pocket = pl2()->getEntityFactory(pocketlistsPocket::class)->findById($pocket_id);
 
                 /** @var pocketlistsList[] $lists */
                 $lists = pl2()->getEntityFactory(pocketlistsList::class)->findListsByPocket($pocket, false);
 
                 /** @var pocketlistsListModel $list */
                 foreach ($lists as $list) {
-                    if ($right_model->save(
-                        $contactId,
-                        pocketlistsHelper::APP_ID,
-                        pocketlistsRBAC::LIST_ITEM.'.'.$list->getId(),
-                        $value
-                    )) {
-                        self::$rightsCache['lists'][$list->getId()] = true;
+                    $res = $this->right_model->save($contactId, pocketlistsHelper::APP_ID, pocketlistsRBAC::LIST_ITEM.'.'.$list->getId(), $value);
+                    if ($res) {
+                        self::$rightsCache['list'][$list->getId()] = false;
                     }
                 }
+                self::$rightsCache['pocket'][$pocket_id] = false;
+            } else {
+                self::$rightsCache['pocket'][$pocket_id] = true;
             }
+        } elseif ($list_id = (int) str_replace(pocketlistsRBAC::LIST_ITEM.'.', '', $right)) {
+            self::$rightsCache['list'][$list_id] = ($value != pocketlistsRBAC::RIGHT_NONE);
         }
 
-        if (strpos($right, pocketlistsRBAC::LIST_ITEM.'.') === 0) {
-            $listId = (int)str_replace(pocketlistsRBAC::LIST_ITEM.'.', '', $right);
-            if (isset(self::$rightsCache['lists'][$listId])) {
-                return true;
-            }
-        }
-
-        $right_model->save(
+        $this->right_model->save(
             $contactId,
             pocketlistsHelper::APP_ID,
             $right,
@@ -205,5 +232,25 @@ class pocketlistsRightConfig extends waRightConfig
         );
 
         return true;
+    }
+
+    private function setBeginRights()
+    {
+        $rights = $this->right_model->get($this->userId, pocketlistsHelper::APP_ID);
+        foreach ($rights as $_right => $_val) {
+            if ($list_id = (int) str_replace(pocketlistsRBAC::LIST_ITEM.'.', '', $_right)) {
+                self::$begin_rights['list'][$list_id] = true;
+            } elseif ($pocket_id = (int) str_replace(pocketlistsRBAC::POCKET_ITEM.'.', '', $_right)) {
+                self::$begin_rights['pocket'][$pocket_id] = true;
+            }
+        }
+    }
+
+    private function getDiff($entity_type)
+    {
+        $pick_up = array_filter(self::$rightsCache[$entity_type]);
+        $give = array_intersect_key(self::$rightsCache[$entity_type], self::$begin_rights[$entity_type]);
+
+        return $pick_up + $give;
     }
 }
