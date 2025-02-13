@@ -14,6 +14,8 @@ class pocketlistsLog extends pocketlistsEntity
     const ACTION_UNARCHIVE  = 'unarchive';
     const ACTION_COMPLETE   = 'complete';
     const ACTION_UNCOMPLETE = 'uncomplete';
+    const ACTION_SHARE      = 'share';
+    const ACTION_UNSHARE    = 'unshare';
 
     const ENTITY_USER       = 'user';
     const ENTITY_POCKET     = 'pocket';

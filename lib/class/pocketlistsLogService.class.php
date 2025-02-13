@@ -24,7 +24,9 @@ class pocketlistsLogService
         pocketlistsLog::ACTION_ARCHIVE,
         pocketlistsLog::ACTION_UNARCHIVE,
         pocketlistsLog::ACTION_COMPLETE,
-        pocketlistsLog::ACTION_UNCOMPLETE
+        pocketlistsLog::ACTION_UNCOMPLETE,
+        pocketlistsLog::ACTION_SHARE,
+        pocketlistsLog::ACTION_UNSHARE
     ];
 
     /**

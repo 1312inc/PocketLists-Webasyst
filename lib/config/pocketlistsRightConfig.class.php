@@ -55,7 +55,7 @@ class pocketlistsRightConfig extends waRightConfig
                 WHERE id IN (i:ids)                
             ', [
                 'act_dt' => date('Y-m-d H:i:s'),
-                'ids'    => array_keys($ids),
+                'ids'    => $ids,
             ]);
         }
         if (!empty(self::$rightsCache['list']) && $ids = $this->getDiff(pocketlistsRBAC::LIST_ITEM)) {
@@ -66,9 +66,10 @@ class pocketlistsRightConfig extends waRightConfig
                 WHERE key_list_id IN (i:ids) AND status = 0
             ', [
                 'act_dt' => date('Y-m-d H:i:s'),
-                'ids'    => array_keys($ids),
+                'ids'    => $ids,
             ]);
         }
+        $this->saveLog();
     }
 
     /**
@@ -201,6 +202,7 @@ class pocketlistsRightConfig extends waRightConfig
      */
     public function setRights($contactId, $right, $value = 0)
     {
+        $value = (int) $value;
         if ($pocket_id = (int) str_replace(pocketlistsRBAC::POCKET_ITEM.'.', '', $right)) {
             if ($value == pocketlistsRBAC::RIGHT_NONE) {
                 /** @var pocketlistsPocket $pocket */
@@ -213,15 +215,15 @@ class pocketlistsRightConfig extends waRightConfig
                 foreach ($lists as $list) {
                     $res = $this->right_model->save($contactId, pocketlistsHelper::APP_ID, pocketlistsRBAC::LIST_ITEM.'.'.$list->getId(), $value);
                     if ($res) {
-                        self::$rightsCache['list'][$list->getId()] = false;
+                        self::$rightsCache['list'][$list->getId()] = $value;
                     }
                 }
-                self::$rightsCache['pocket'][$pocket_id] = false;
+                self::$rightsCache['pocket'][$pocket_id] = $value;
             } else {
-                self::$rightsCache['pocket'][$pocket_id] = true;
+                self::$rightsCache['pocket'][$pocket_id] = $value;
             }
         } elseif ($list_id = (int) str_replace(pocketlistsRBAC::LIST_ITEM.'.', '', $right)) {
-            self::$rightsCache['list'][$list_id] = ($value != pocketlistsRBAC::RIGHT_NONE);
+            self::$rightsCache['list'][$list_id] = $value;
         }
 
         $this->right_model->save(
@@ -239,18 +241,83 @@ class pocketlistsRightConfig extends waRightConfig
         $rights = $this->right_model->get($this->userId, pocketlistsHelper::APP_ID);
         foreach ($rights as $_right => $_val) {
             if ($list_id = (int) str_replace(pocketlistsRBAC::LIST_ITEM.'.', '', $_right)) {
-                self::$begin_rights['list'][$list_id] = true;
+                self::$begin_rights['list'][$list_id] = (int) $_val;
             } elseif ($pocket_id = (int) str_replace(pocketlistsRBAC::POCKET_ITEM.'.', '', $_right)) {
-                self::$begin_rights['pocket'][$pocket_id] = true;
+                self::$begin_rights['pocket'][$pocket_id] = (int) $_val;
             }
         }
     }
 
+    private function getDiffRights($entity_type)
+    {
+        $share = [];
+        $unshare = [];
+        foreach (self::$rightsCache[$entity_type] as $id => $val) {
+            if ($val > pocketlistsRBAC::RIGHT_NONE) {
+                $share[$id] = $val;
+            } else {
+                $unshare[$id] = $val;
+            }
+        }
+
+        return [
+            array_diff_assoc($share, self::$begin_rights[$entity_type]),
+            array_intersect_key($unshare, self::$begin_rights[$entity_type])
+        ];
+    }
+
     private function getDiff($entity_type)
     {
-        $pick_up = array_filter(self::$rightsCache[$entity_type]);
-        $give = array_intersect_key(self::$rightsCache[$entity_type], self::$begin_rights[$entity_type]);
+        list($share, $unshare) = $this->getDiffRights($entity_type);
 
-        return $pick_up + $give;
+        return array_keys($share + $unshare);
+    }
+
+    private function saveLog()
+    {
+        list($p_share, $p_unshare) = $this->getDiffRights(pocketlistsRBAC::POCKET_ITEM);
+        list($l_share, $l_unshare) = $this->getDiffRights(pocketlistsRBAC::LIST_ITEM);
+        if (!empty($p_share) || !empty($p_unshare) || !empty($l_share) || !empty($l_unshare)) {
+            $share_logs = [];
+            $unshare_logs = [];
+            if ($this->userId < 0) {
+                /** for group rights */
+                $user_groups_model = new waUserGroupsModel();
+                $user_ids = $user_groups_model->getContactIds(-$this->userId);
+                if ($user_ids) {
+                    foreach ($user_ids as $user_id) {
+                        if (!empty($p_share) || !empty($l_share)) {
+                            $share_logs[] = [
+                                'params' => ['user_id' => $user_id, 'pocket_ids' => $p_share, 'list_ids' => $l_share]
+                            ];
+                        }
+                        if (!empty($p_unshare) || !empty($l_unshare)) {
+                            $unshare_logs[] = [
+                                'params' => ['user_id' => $user_id, 'pocket_ids' => $p_unshare, 'list_ids' => $l_unshare]
+                            ];
+                        }
+                    }
+                }
+            } else {
+                /** for user rights */
+                if (!empty($p_share) || !empty($l_share)) {
+                    $share_logs[] = [
+                        'params' => ['user_id' => $this->userId, 'pocket_ids' => $p_share, 'list_ids' => $l_share]
+                    ];
+                }
+                if (!empty($p_unshare) || !empty($l_unshare)) {
+                    $unshare_logs[] = [
+                        'params' => ['user_id' => $this->userId, 'pocket_ids' => $p_unshare, 'list_ids' => $l_unshare]
+                    ];
+                }
+            }
+
+            if ($share_logs) {
+                pocketlistsLogService::multipleAdd(pocketlistsLog::ENTITY_USER, pocketlistsLog::ACTION_SHARE, $share_logs);
+            }
+            if ($unshare_logs) {
+                pocketlistsLogService::multipleAdd(pocketlistsLog::ENTITY_USER, pocketlistsLog::ACTION_UNSHARE, $unshare_logs);
+            }
+        }
     }
 }
