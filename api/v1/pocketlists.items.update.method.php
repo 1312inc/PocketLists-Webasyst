@@ -126,7 +126,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 } elseif (!in_array($_item['list_id'], $list_ids)) {
                     $_item['errors'][] = _w('List not found');
                 } elseif (!in_array($_item['list_id'], $list_id_available)) {
-                    $_item['errors'][] = _w('Access denied');
+                    $_item['errors'][] = _w('List access denied');
                 }
             }
 
@@ -201,6 +201,8 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
 
             if (!array_key_exists($item_id, $items_in_db)) {
                 $_item['errors'][] = _w('Item not found');
+            }  elseif (!in_array($items_in_db[$item_id]['list_id'], $list_id_available)) {
+                $_item['errors'][] = _w('List access denied');
             }
 
             if (isset($_item['client_touch_datetime'])) {

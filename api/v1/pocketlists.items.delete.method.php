@@ -19,13 +19,17 @@ class pocketlistsItemsDeleteMethod extends pocketlistsApiAbstractMethod
 
         /** @var pocketlistsItemFactory $plf */
         $plf = pl2()->getEntityFactory(pocketlistsItem::class);
+        $access_list_ids = pocketlistsRBAC::getAccessListForContact(pl2()->getUser()->getId());
 
         if ($ids = array_unique(array_filter($data))) {
             $items_in_db = $plf->findById($ids);
 
             /** @var pocketlistsItem $i */
             foreach ((array) $items_in_db as $i) {
-                $items[$i->getId()] = ['location_id' => $i->getLocationId()];
+                $items[$i->getId()] = [
+                    'list_id' => $i->getListId(),
+                    'location_id' => $i->getLocationId()
+                ];
             }
         }
 
@@ -34,11 +38,14 @@ class pocketlistsItemsDeleteMethod extends pocketlistsApiAbstractMethod
             /** set default */
             $_item = [
                 'id'      => ifempty($_item),
+                'list_id' => ifset($items, $_item, 'list_id', null),
                 'success' => null,
                 'errors'  => [],
             ];
 
-            if (empty($_item['id'])) {
+            if (isset($_item['list_id']) && !in_array($_item['list_id'], $access_list_ids)) {
+                $_item['errors'][] = _w('List access denied');
+            } elseif (empty($_item['id'])) {
                 $_item['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'id');
             } elseif (!is_numeric($_item['id'])) {
                 $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'id');
