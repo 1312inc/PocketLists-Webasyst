@@ -281,10 +281,10 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 if ($_item['action'] == self::ACTIONS[0]) {
                     // patch
                     $_item = array_replace($items_in_db[$item_id], array_filter($_item, function ($i) {return !is_null($i);}));
-                    if (trim($_item['due_datetime']) === '') {
+                    if (trim((string) $_item['due_datetime']) === '') {
                         $_item['due_datetime'] = null;
                     }
-                    if (trim($_item['due_date']) === '') {
+                    if (trim((string) $_item['due_date']) === '') {
                         $_item['due_date'] = null;
                     }
                     if (isset($_item['prev_item_id'])) {
