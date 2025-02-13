@@ -35,12 +35,12 @@
             user_timezone: '{$user_timezone}',
             timestamp: {$timestamp},
             datetime: '{$datetime}',
-            is_premium: {$is_premium},
             framework_version: '{$framework_version}',
-            is_debug_mode: {$pl_debug_mode},
+            app_version: '{$app_version}',
+            is_premium: {if $is_premium}true{else}false{/if},
+            is_debug_mode: {if $pl_debug_mode}true{else}false{/if},
         }
     </script>
-
 </head>
 
 

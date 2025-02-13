@@ -56,7 +56,6 @@ class pocketlistsDefaultLayout extends waLayout
             pocketlistsEventStorage::WA_BACKEND_HEAD => $eventResult,
             'isAdmin' => (int) pocketlistsRBAC::isAdmin(),
             'spa_api_token' => $token,
-            'is_premium' => (pocketlistsLicensing::isPremium() ? 1 : 0),
             'users' => waUtils::jsonEncode($users),
             'pockets' => waUtils::jsonEncode($pockets),
             'locations' => waUtils::jsonEncode($locations),
@@ -65,6 +64,8 @@ class pocketlistsDefaultLayout extends waLayout
             'timestamp' => $current_time,
             'datetime' => pocketlistsHelper::convertDateToISO8601(date('Y-m-d H:i:s', $current_time)),
             'framework_version' => wa()->getVersion('webasyst'),
+            'app_version' => wa()->getVersion(pocketlistsHelper::APP_ID),
+            'is_premium' => (pocketlistsLicensing::isPremium() ? 1 : 0),
             'pl_debug_mode' => (wa()->getSetting('pl_debug_mode', 0) ? 1 : 0)
         ]);
     }
