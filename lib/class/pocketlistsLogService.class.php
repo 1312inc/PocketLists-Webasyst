@@ -110,7 +110,7 @@ class pocketlistsLogService
 
         foreach ($logs as &$_log) {
             $id = ifset($_log, 'id', null);
-            unset($_log['id'], $_log['action'], $_log['contact_id']);
+            unset($_log['id'], $_log['action']);
             $params = $_log;
             unset($_log['create_datetime']);
             $_log = array_intersect_key($_log, $default) + $default;

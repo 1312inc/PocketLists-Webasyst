@@ -288,12 +288,14 @@ class pocketlistsRightConfig extends waRightConfig
                     foreach ($user_ids as $user_id) {
                         if (!empty($p_share) || !empty($l_share)) {
                             $share_logs[] = [
-                                'params' => ['user_id' => $user_id, 'pocket_ids' => $p_share, 'list_ids' => $l_share]
+                                'contact_id' => $user_id,
+                                'params'     => ['pocket_ids' => $p_share, 'list_ids' => $l_share]
                             ];
                         }
                         if (!empty($p_unshare) || !empty($l_unshare)) {
                             $unshare_logs[] = [
-                                'params' => ['user_id' => $user_id, 'pocket_ids' => $p_unshare, 'list_ids' => $l_unshare]
+                                'contact_id' => $user_id,
+                                'params'     => ['pocket_ids' => $p_unshare, 'list_ids' => $l_unshare]
                             ];
                         }
                     }
@@ -302,12 +304,14 @@ class pocketlistsRightConfig extends waRightConfig
                 /** for user rights */
                 if (!empty($p_share) || !empty($l_share)) {
                     $share_logs[] = [
-                        'params' => ['user_id' => $this->userId, 'pocket_ids' => $p_share, 'list_ids' => $l_share]
+                        'contact_id' => $this->userId,
+                        'params'     => ['pocket_ids' => $p_share, 'list_ids' => $l_share]
                     ];
                 }
                 if (!empty($p_unshare) || !empty($l_unshare)) {
                     $unshare_logs[] = [
-                        'params' => ['user_id' => $this->userId, 'pocket_ids' => $p_unshare, 'list_ids' => $l_unshare]
+                        'contact_id' => $this->userId,
+                        'params'     => ['pocket_ids' => $p_unshare, 'list_ids' => $l_unshare]
                     ];
                 }
             }
