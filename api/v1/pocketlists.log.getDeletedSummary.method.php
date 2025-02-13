@@ -26,9 +26,12 @@ class pocketlistsLogGetDeletedSummaryMethod extends pocketlistsApiAbstractMethod
         $log_model = pl2()->getModel(pocketlistsLog::class);
         $log_summary = $log_model->query("
             SELECT entity_type, COUNT(entity_type) AS summ FROM pocketlists_log pl
-            WHERE `action` = 'delete' AND create_datetime >= s:starting_from
+            WHERE (`action` = s:delete OR (`action` = s:unshare AND contact_id = i:user_id)) AND create_datetime >= s:starting_from
             GROUP BY entity_type
         ", [
+            'delete' => pocketlistsLog::ACTION_DELETE,
+            'unshare' => pocketlistsLog::ACTION_UNSHARE,
+            'user_id' => $this->getUser()->getId(),
             'starting_from' => $starting_from
         ])->fetchAll('entity_type', 1);
 
@@ -40,7 +43,8 @@ class pocketlistsLogGetDeletedSummaryMethod extends pocketlistsApiAbstractMethod
             'items'         => (int) ifempty($log_summary, pocketlistsLogContext::ITEM_ENTITY, 0),
             'comments'      => (int) ifempty($log_summary, pocketlistsLogContext::COMMENT_ENTITY, 0),
             'attachments'   => (int) ifempty($log_summary, pocketlistsLogContext::ATTACHMENT_ENTITY, 0),
-            'location'      => (int) ifempty($log_summary, pocketlistsLogContext::LOCATION_ENTITY, 0)
+            'location'      => (int) ifempty($log_summary, pocketlistsLogContext::LOCATION_ENTITY, 0),
+            'user'          => (int) ifempty($log_summary, pocketlistsLogContext::USER_ENTITY, 0),
         ];
     }
 }

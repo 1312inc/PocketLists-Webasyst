@@ -1378,6 +1378,9 @@ paths:
                           location:
                             type: integer
                             description: ''
+                          user:
+                            type: integer
+                            description: ''
   /pocketlists.log.getSummary:
     get:
       security:

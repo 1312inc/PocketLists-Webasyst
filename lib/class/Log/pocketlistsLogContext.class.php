@@ -12,6 +12,7 @@ class pocketlistsLogContext
     const COMMENT_ENTITY    = 'comment';
     const ATTACHMENT_ENTITY = 'attachment';
     const LOCATION_ENTITY   = 'location';
+    const USER_ENTITY       = 'user';
 
     const ITEM_FIELDS_TO_EXTRACT = [
         'status',
