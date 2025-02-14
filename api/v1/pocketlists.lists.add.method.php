@@ -14,6 +14,7 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
             throw new pocketlistsApiException(_w('Type error `data`'), 400);
         }
 
+        $user_id = $this->getUser()->getId();
         $pocket_ids = array_unique(array_column($lists, 'pocket_id'));
         $pocket_access = pocketlistsRBAC::getAccessPocketForContact($this->getUser());
         $uuids = array_column($lists, 'uuid');
@@ -34,8 +35,8 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
             $_list = [
                 'id'                    => null,
                 'pocket_id'             => ifset($_list, 'pocket_id', null),
-                'sort'                  => ifset($_list, 'sort', null),
-                'rank'                  => ifset($_list, 'rank', null),
+                'sort'                  => ifset($_list, 'sort', 0),
+                'rank'                  => ifset($_list, 'rank', ''),
                 'type'                  => ifset($_list, 'type', pocketlistsList::TYPE_CHECKLIST),
                 'icon'                  => ifset($_list, 'icon', pocketlistsList::DEFAULT_ICON),
                 'icon_url'              => null,
@@ -44,19 +45,19 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                 'color'                 => ifset($_list, 'color', pocketlistsStoreColor::NONE),
                 'passcode'              => null,
                 'key_item_id'           => null,
-                'contact_id'            => null,
-                'parent_id'             => null,
-                'has_children'          => null,
-                'status'                => null,
-                'priority'              => null,
-                'calc_priority'         => null,
+                'contact_id'            => $user_id,
+                'parent_id'             => 0,
+                'has_children'          => 0,
+                'status'                => 0,
+                'priority'              => 0,
+                'calc_priority'         => 0,
                 'create_datetime'       => date('Y-m-d H:i:s'),
                 'update_datetime'       => null,
                 'activity_datetime'     => null,
                 'complete_datetime'     => null,
                 'complete_contact_id'   => null,
-                'name'                  => ifset($_list, 'name', null),
-                'note'                  => null,
+                'name'                  => ifset($_list, 'name', ''),
+                'note'                  => '',
                 'due_date'              => null,
                 'due_datetime'          => null,
                 'client_touch_datetime' => ifset($_list, 'client_touch_datetime', null),
@@ -82,10 +83,10 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                 $_list['errors'][] = _w('Pocket access denied');
             }
 
-            if (!isset($_list['name'])) {
-                $_list['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'name');
-            } elseif (!is_string($_list['name'])) {
+            if (!is_string($_list['name'])) {
                 $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'name');
+            } elseif (trim($_list['name']) === '') {
+                $_list['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'name');
             }
 
             if (!is_string($_list['type'])) {
@@ -117,11 +118,11 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                 }
             }
 
-            if (isset($_list['sort']) && !is_numeric($_list['sort'])) {
+            if (!empty($_list['sort']) && !is_numeric($_list['sort'])) {
                 $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'sort');
             }
 
-            if (isset($_list['rank'])) {
+            if ($_list['rank'] !== '') {
                 if (!is_string($_list['rank'])) {
                     $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'rank');
                 } elseif ($_list['rank'] !== '' && !pocketlistsSortRank::rankValidate($_list['rank'])) {
@@ -241,6 +242,7 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                 'contact_id' => 'int',
                 'parent_id' => 'int',
                 'sort' => 'int',
+                'has_children' => 'int',
                 'status' => 'int',
                 'priority' => 'int',
                 'calc_priority' => 'int',
