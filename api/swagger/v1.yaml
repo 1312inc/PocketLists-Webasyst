@@ -1871,6 +1871,7 @@ components:
               description: URL icon
             archived:
               type: integer
+              default: 0
               description: Is archived
             hash:
               type: string
