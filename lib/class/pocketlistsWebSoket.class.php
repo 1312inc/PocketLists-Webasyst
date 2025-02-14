@@ -23,7 +23,7 @@ class pocketlistsWebSoket
                 throw new waException(_w('Not implemented yet.'));
             }
             self::$instance = new self;
-            self::$instance->services_api = new waServicesApi();
+            self::$instance->services_api = new pocketlistsServicesApi();
         }
 
         return self::$instance;
