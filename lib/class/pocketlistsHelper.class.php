@@ -269,7 +269,7 @@ class pocketlistsHelper
             return sprintf(_w('%d mo'), $months, $days);
         }
 
-        $yearDays = round(($fullseconds / $day) % 365);
+        $yearDays = round($fullseconds / $day) % 365;
 
         return sprintf(_w('%d y'), $years, $yearDays);
     }
