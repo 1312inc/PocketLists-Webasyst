@@ -1902,6 +1902,10 @@ components:
                 items_completed_count:
                   type: integer
                   description: Number of completed (archived) items
+                users:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/user'
     item:
       allOf:
         - type: object
@@ -2198,6 +2202,7 @@ components:
           type: string
         items_info:
           type: object
+          nullable: true
           properties:
             count:
               type: integer

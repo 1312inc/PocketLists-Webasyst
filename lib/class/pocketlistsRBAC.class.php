@@ -129,19 +129,26 @@ class pocketlistsRBAC
     /**
      * Return users for given list
      *
-     * @param pocketlistsList|null $list
+     * @param pocketlistsList|array $list
      *
      * @return array
      */
-    public static function getAccessContacts(pocketlistsList $list = null): array
+    public static function getAccessContacts($list = null): array
     {
+        if ($list instanceof pocketlistsList) {
+            $list_id = $list->getId();
+            $pocket_id = $list->getPocketId();
+        } else {
+            $list_id = ifempty($list, 'id', null);
+            $pocket_id = ifempty($pocket_id, 'pocket_id', null);
+        }
         $wcr = new waContactRightsModel();
         $query = sprintf(
             "SELECT DISTINCT group_id FROM wa_contact_rights WHERE %s OR %s OR %s %s",
             self::haveFullAdminSQL(),
             self::haveFullAccessSQL(),
-            $list && $list->getId() ? self::haveAccessToListSQL($list) : self::haveAccessSQL(),
-            $list && $list->getPocketId() ? ' OR ' . self::havePocketFullAccessSQL($list->getPocketId()) : ''
+            $list_id ? self::haveAccessToListSQL($list_id) : self::haveAccessSQL(),
+            $pocket_id ? ' OR '.self::havePocketFullAccessSQL($pocket_id) : ''
         );
 
         $contact_ids = $wcr->query($query)->fetchAll();
@@ -167,10 +174,6 @@ class pocketlistsRBAC
 
     public static function canAccessToList(pocketlistsList $list, $user_id = false)
     {
-//        $user_id = $user_id ? $user_id : wa()->getUser()->getId();
-//        if (!isset(self::$access_rights[$user_id])) {
-//            self::$access_rights[$user_id] = self::getAccessListForContact($user_id);
-//        }
         $user = self::getContact($user_id);
 
         if (isset(self::$lists[$user->getId()][$list->getId()])) {
@@ -255,8 +258,6 @@ class pocketlistsRBAC
         $list_sql = null;
         $lists_user = self::getAccessListForContact($user_id);
         if (!self::isAdmin($user_id)) {
-//            if (self::canAccess()) {
-//            }
             if ($lists_user) {
                 $list_sql[] = "(l.id IN (i:list_ids) /* accessed lists*/)";
             }
@@ -385,17 +386,17 @@ class pocketlistsRBAC
     }
 
     /**
-     * @param pocketlistsList|null $list
+     * @param int|null $list_id
      *
      * @return string
      */
-    private static function haveAccessToListSQL(pocketlistsList $list = null)
+    private static function haveAccessToListSQL($list_id = null)
     {
         return sprintf(
             " (app_id = '%s' AND name = '%s.%s' AND value = %s)",
             pocketlistsHelper::APP_ID,
             self::LIST_ITEM,
-            $list ? $list->getId() : '%',
+            $list_id ?: '%',
             self::RIGHT_ACCESS
         );
     }

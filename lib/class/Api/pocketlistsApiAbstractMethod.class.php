@@ -801,4 +801,55 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
 
         return (int) max($now_priority, $calc_priority);
     }
+
+    /**
+     * @param $teammates_ids
+     * @param $offset
+     * @param $limit
+     * @return array
+     * @throws waException
+     */
+    public function getTeammates($teammates_ids = [], $offset = 0, $limit = self::DEFAULT_LIMIT)
+    {
+        $result = [];
+        $is_all = empty($teammates_ids);
+        $teammates_ids = ($is_all ? pocketlistsRBAC::getAccessContacts() : $teammates_ids);
+        $root_url = rtrim(wa()->getConfig()->getHostUrl(), '/');
+
+        /** @var pocketlistsContactFactory $contact_factory */
+        $contact_factory = pl2()->getEntityFactory(pocketlistsContact::class);
+        $teammates = $contact_factory->getTeammates($teammates_ids, true, false, true);
+        $count = count($teammates);
+        $teammates = array_slice($teammates, $offset, $limit);
+
+        /** @var pocketlistsContact $_teammate */
+        foreach ($teammates as $_teammate) {
+            /** @var pocketlistsItemsCount $items_info */
+            $items_info = $is_all ? $_teammate->getItemsInfo() : null;
+            $result[] = [
+                'id'            => $_teammate->getId(),
+                'name'          => $_teammate->getName(),
+                'username'      => $_teammate->getUsername(),
+                'photo_url'     => $root_url.$_teammate->getPhotoUrl(),
+                'user_pic'      => $root_url.$_teammate->getUserPic(),
+                'status'        => $_teammate->getStatus(),
+                'team_role'     => $_teammate->getTeamrole(),
+                'login'         => $_teammate->getLogin(),
+                'me'            => $_teammate->isMe(),
+                'exists'        => $_teammate->isExists(),
+                'last_activity' => $_teammate->getLastActivity(),
+                'email'         => $_teammate->getEmail(),
+                'locale'        => $_teammate->getLocale(),
+                'items_info'    => $is_all ? [
+                    'count'              => $items_info->getCount(),
+                    'count_priority'     => $items_info->getCountPriority(),
+                    'max_priority'       => $items_info->getMaxPriority(),
+                    'count_max_priority' => $items_info->getCountMaxPriority(),
+                    'count_priorities'   => $items_info->getCountPriorities()
+                ] : null
+            ];
+        }
+
+        return [$result, $count];
+    }
 }

@@ -28,41 +28,7 @@ class pocketlistsUsersGetMethod extends pocketlistsApiAbstractMethod
             $offset = 0;
         }
 
-        $result = [];
-        /** @var pocketlistsContactFactory $contact_factory */
-        $contact_factory = pl2()->getEntityFactory(pocketlistsContact::class);
-        $teammates = $contact_factory->getTeammates(pocketlistsRBAC::getAccessContacts(), true, false, true);
-        $root_url = rtrim(wa()->getConfig()->getHostUrl(), '/');
-
-        $count = count($teammates);
-        $teammates = array_slice($teammates, $offset, $limit);
-        /** @var pocketlistsContact $_teammate */
-        foreach ($teammates as $_teammate) {
-            /** @var pocketlistsItemsCount $items_info */
-            $items_info = $_teammate->getItemsInfo();
-            $result[] = [
-                'id'            => $_teammate->getId(),
-                'name'          => $_teammate->getName(),
-                'username'      => $_teammate->getUsername(),
-                'photo_url'     => $root_url.$_teammate->getPhotoUrl(),
-                'user_pic'      => $root_url.$_teammate->getUserPic(),
-                'status'        => $_teammate->getStatus(),
-                'team_role'     => $_teammate->getTeamrole(),
-                'login'         => $_teammate->getLogin(),
-                'me'            => $_teammate->isMe(),
-                'exists'        => $_teammate->isExists(),
-                'last_activity' => $_teammate->getLastActivity(),
-                'email'         => $_teammate->getEmail(),
-                'locale'        => $_teammate->getLocale(),
-                'items_info'    => [
-                    'count'              => $items_info->getCount(),
-                    'count_priority'     => $items_info->getCountPriority(),
-                    'max_priority'       => $items_info->getMaxPriority(),
-                    'count_max_priority' => $items_info->getCountMaxPriority(),
-                    'count_priorities'   => $items_info->getCountPriorities()
-                ]
-            ];
-        }
+        list($result, $count) = $this->getTeammates([], $offset, $limit);
 
         $this->response['meta'] = [
             'offset' => $offset,

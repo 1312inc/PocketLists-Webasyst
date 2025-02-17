@@ -113,6 +113,12 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
                         }
                         unset($summary, $_sum);
                     }
+
+                    if ($total_count === 1 && count($ids) === 1) {
+                        $contact_ids = pocketlistsRBAC::getAccessContacts(reset($lists));
+                        list($users_access) = $this->getTeammates($contact_ids, 0, self::MAX_LIMIT);
+                        $lists[reset($ids)]['users_access'] = $users_access;
+                    }
                     foreach ($lists as &$_list) {
                         $max_priority = max(array_keys(ifset($counters, $_list['id'], [pocketlistsItem::PRIORITY_NORM])));
                         $items_priority_count = ($max_priority ? array_sum(ifset($counters, $_list['id'], $max_priority, [])) : pocketlistsItem::PRIORITY_NORM);
@@ -121,7 +127,8 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
                             'items_count'           => array_sum(ifset($counters, 'started', $_list['id'], [])),
                             'items_priority_count'  => $items_priority_count,
                             'items_priority_value'  => $max_priority,
-                            'items_completed_count' => array_sum(ifset($counters, 'completed', $_list['id'], []))
+                            'items_completed_count' => array_sum(ifset($counters, 'completed', $_list['id'], [])),
+                            'users'                 => ifset($_list, 'users_access', [])
                         ];
                     }
                     unset($_list);
