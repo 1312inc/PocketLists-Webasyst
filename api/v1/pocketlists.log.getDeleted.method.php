@@ -35,7 +35,7 @@ class pocketlistsLogGetDeletedMethod extends pocketlistsApiAbstractMethod
         if (isset($offset)) {
             if (!is_numeric($offset)) {
                 throw new pocketlistsApiException(sprintf_wp('Type error parameter: “%s”.', 'offset'), 400);
-            } elseif ($offset < 1) {
+            } elseif ($offset < 0) {
                 throw new pocketlistsApiException(_w('The parameter has a negative value'), 400);
             }
             $offset = (int) $offset;
