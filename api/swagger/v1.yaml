@@ -1875,12 +1875,16 @@ components:
               description: Is archived
             hash:
               type: string
+              default: null
+              nullable: true
               description: Hash
             color:
               type: string
               description: Color
             passcode:
               type: string
+              default: null
+              nullable: true
               description: Passcode
             key_item_id:
               type: integer
@@ -1909,18 +1913,24 @@ components:
     item:
       allOf:
         - type: object
+          nullable: true
+          default: [ ]
           properties:
             attachments:
               type: array
               items:
                 $ref: '#/components/schemas/attachment'
         - type: object
+          nullable: true
+          default: [ ]
           properties:
             external_links:
               type: array
               items:
                 $ref: '#/components/schemas/link'
         - type: object
+          nullable: true
+          default: [ ]
           properties:
             tags:
               type: array
@@ -2006,6 +2016,7 @@ components:
             note:
               type: string
               default: ''
+              nullable: true
               description: Note item
             due_date:
               type: string
@@ -2065,6 +2076,7 @@ components:
               properties:
                 comments_count:
                   type: integer
+                  nullable: true
                   description: Number of comments linked to this item
     comment:
       type: object

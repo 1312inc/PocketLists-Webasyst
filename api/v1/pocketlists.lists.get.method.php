@@ -184,6 +184,7 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
                 'contact_id' => 'int',
                 'parent_id' => 'int',
                 'sort' => 'int',
+                'has_children' => 'int',
                 'status' => 'int',
                 'priority' => 'int',
                 'calc_priority' => 'int',
