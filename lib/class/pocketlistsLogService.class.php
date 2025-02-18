@@ -116,17 +116,17 @@ class pocketlistsLogService
             $_log = array_intersect_key($_log, $default) + $default;
 
             $_log['params_for_socket'] = json_encode([$entity => $params], JSON_UNESCAPED_UNICODE);
-            switch ($entity) {
-                case pocketlistsLog::ENTITY_ITEM:
-                    $params['name'] = '';
-                    $params['note'] = '';
-                    break;
-                case pocketlistsLog::ENTITY_COMMENT:
-                    $params['comment'] = '';
-                    break;
+            if (in_array($action, [pocketlistsLog::ACTION_DELETE, pocketlistsLog::ACTION_UNSHARE])) {
+                switch ($entity) {
+                    case pocketlistsLog::ENTITY_ITEM:
+                        unset($params['name'], $params['note']);
+                        break;
+                    case pocketlistsLog::ENTITY_COMMENT:
+                        unset($params['comment']);
+                        break;
+                }
             }
             $_log['params'] = json_encode([$entity => $params], JSON_UNESCAPED_UNICODE);
-
 
             if ($id) {
                 $_log[$entity.'_id'] = $id;
