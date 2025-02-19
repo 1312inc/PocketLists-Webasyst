@@ -70,12 +70,14 @@ class pocketlistsGorshochekPluginBackendRunController extends waLongActionContro
 
         if ($this->data['is_log'] && !empty($this->data['send_log'])) {
             if ($is_done || count($this->data['send_log']) >= self::DEFAULT_COUNT) {
+                $this->data['send_log'] = array_map(function ($item) {
+                    return [
+                        'action' => pocketlistsLog::ACTION_ADD,
+                        'entity_type' => $this->data['entity_type']
+                    ] + $item;
+                }, $this->data['send_log']);
                 try {
-                    pocketlistsLogService::multipleAdd(
-                        $this->data['entity_type'],
-                        pocketlistsLog::ACTION_ADD,
-                        $this->data['send_log']
-                    );
+                    pocketlistsLogService::multipleAdd($this->data['send_log']);
                 } catch (Exception $e) {}
                 $this->data['send_log'] = [];
             }
