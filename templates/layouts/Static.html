@@ -26,6 +26,9 @@
     <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists.js?v2{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
     <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-pocket.js?v2{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
 
+    <script type="module" crossorigin src="{$wa_app_static_url}client/assets/index-wJbtArBJ.js"></script>
+    <link rel="stylesheet" crossorigin href="{$wa_app_static_url}client/assets/index-Qcp1vH9Y.css">
+
     <script>
         window.appState = {
             baseUrl: '{$wa_app_url}',
@@ -54,26 +57,16 @@
         {* @event backend_head.%plugin_id% *}
         {if !empty($backend_head)}{foreach $backend_head as $_}{ifset($_)}{/foreach}{/if}
 
-        {if $wa->isSingleAppMode()}
-            <div class="hidden">
-                {$wa->headerSingleAppUser()}
-            </div>
-        {/if}
-
         <div id="wa-app" class="flexbox">
-            <div class="sidebar flexbox">
-                <div class="sidebar-header">
-                    <!-- sidebar fixed header, e.g. action button -->
-                    <ul class="menu">
-                        <li>
-                            <a href="{$wa_app_url}">[`Back to Lists`]</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="sidebar-body">
-                    <!-- sidebar main scrollable content -->
-                </div>
-                <div class="sidebar-footer shadowed">
+            <aside id="pl-sidebar" class="sidebar hide-scrollbar flexbox width-adaptive mobile-friendly" pl-isSidebarSingleMode style="z-index: 30;">
+
+                {if $wa->isSingleAppMode()}
+                    <div data-vue-fragment="single-app" class="hidden">
+                        {$wa->headerSingleAppUser()}
+                    </div>  
+                {/if}
+
+                <div data-vue-fragment="sidebar-footer" class="hidden">
                     <ul class="menu">
                         <li>
                             <a href="{$wa_app_url}plugins/">
@@ -101,7 +94,7 @@
                         </li>
                     </ul>
                 </div>
-            </div>
+            </aside>
             <div class="content">
                 {$content}
             </div>

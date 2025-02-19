@@ -20,8 +20,8 @@
 
     <script type="text/javascript" src="{$wa_url}wa-content/js/jquery-wa/wa.core.js"></script>
 
-    <script type="module" crossorigin src="{$wa_app_static_url}client/assets/index-bqVAhNCn.js"></script>
-    <link rel="stylesheet" crossorigin href="{$wa_app_static_url}client/assets/index-ii9ovGD7.css">
+    <script type="module" crossorigin src="{$wa_app_static_url}client/assets/index-wJbtArBJ.js"></script>
+    <link rel="stylesheet" crossorigin href="{$wa_app_static_url}client/assets/index-Qcp1vH9Y.css">
 
     <script>
         window.appState = {
@@ -52,56 +52,49 @@
         {* @event backend_head.%plugin_id% *}
         {if !empty($backend_head)}{foreach $backend_head as $_}{ifset($_)}{/foreach}{/if}
 
-        {if $wa->isSingleAppMode()}
-            <div class="hidden">
-                {$wa->headerSingleAppUser()}
-            </div>  
-        {/if}
-                    
-        <div id="wa-app">
-            <div id="app">
-                <div data-vue-fragment="sidebar-footer">
-                    <ul class="menu">
-                        <li>
-                            <a href="{$wa_app_url}board/">
-                                <i class="fas fa-table"></i>
-                                <span>[`Kanban`]</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{$wa_app_url}activity/">
-                                <i class="fas fa-history"></i>
-                                <span>[`Activity`]</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{$wa_app_url}plugins/">
-                                <i class="fas fa-plug"></i>
-                                <span>[`Плагины`]</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{$wa_app_url}settings/">
-                                <i class="fas fa-cog"></i>
-                                <span>[`Настройки`]</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{$wa_app_url}upgrade/">
-                                <i class="fas fa-wrench"></i>
-                                <span>[`Апгрейд`]</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{$wa_app_url}about/">
-                                <i class="fas fa-info-circle"></i>
-                                <span>[`О приложении`]</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+            <div id="wa-app">
+              <section class="flexbox wrap-mobile">
+                <aside id="pl-sidebar" class="sidebar hide-scrollbar flexbox width-adaptive mobile-friendly" style="z-index: 30;">
+
+                    {if $wa->isSingleAppMode()}
+                        <div data-vue-fragment="single-app" class="hidden">
+                            {$wa->headerSingleAppUser()}
+                        </div>  
+                    {/if}
+
+                    <div data-vue-fragment="sidebar-footer" class="hidden">
+                        <ul class="menu">
+                            <li>
+                                <a href="{$wa_app_url}plugins/">
+                                    <i class="fas fa-plug"></i>
+                                    <span>[`Плагины`]</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{$wa_app_url}settings/">
+                                    <i class="fas fa-cog"></i>
+                                    <span>[`Настройки`]</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{$wa_app_url}upgrade/">
+                                    <i class="fas fa-wrench"></i>
+                                    <span>[`Апгрейд`]</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{$wa_app_url}about/">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>[`О приложении`]</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </aside>
+                <main id="pl-app" class="content hide-scrollbar flexbox"></main>
+              </section>
             </div>
-        </div>
+          
     </div>
 </body>
 </html>
