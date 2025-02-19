@@ -75,26 +75,19 @@ class pocketlistsLogService
     }
 
     /**
-     * @param $entity
-     * @param $action
-     * @param $logs
+     * @param $data
      * @return bool
      * @throws waException
      */
-    public static function multipleAdd($entity, $action, $logs = [])
+    public static function multipleAdd($data = [])
     {
-        if (
-            empty($logs)
-            || !is_array($logs)
-            || !in_array($entity, self::ENTITIES)
-            || !in_array($action, self::ACTIONS)
-        ) {
+        if (empty($data) || !is_array($data)) {
             return false;
         }
 
         $default = [
-            'action'              => $action,
-            'entity_type'         => $entity,
+            'action'              => null,
+            'entity_type'         => null,
             'contact_id'          => pl2()->getUser()->getId(),
             'pocket_id'           => null,
             'list_id'             => null,
@@ -108,16 +101,21 @@ class pocketlistsLogService
             'create_datetime'     => date('Y-m-d H:i:s')
         ];
 
-        foreach ($logs as &$_log) {
+        $logs = [];
+        while ($_log = array_shift($data)) {
             $id = ifset($_log, 'id', null);
-            unset($_log['id'], $_log['action']);
-            $params = $_log;
-            unset($_log['create_datetime']);
-            $_log = array_intersect_key($_log, $default) + $default;
+            $action = ifempty($_log, 'action', null);
+            $entity_type = ifempty($_log, 'entity_type', null);
+            if (!in_array($action, self::ACTIONS) || !in_array($entity_type,  self::ENTITIES)) {
+                continue;
+            }
 
-            $_log['params_for_socket'] = json_encode([$entity => $params], JSON_UNESCAPED_UNICODE);
+            $params = $_log;
+            unset($_log['create_datetime'], $params['action'], $params['id']);
+            $_log = array_intersect_key($_log, $default) + $default;
+            $_log['params_for_socket'] = json_encode([$entity_type => $params], JSON_UNESCAPED_UNICODE);
             if (in_array($action, [pocketlistsLog::ACTION_DELETE, pocketlistsLog::ACTION_UNSHARE])) {
-                switch ($entity) {
+                switch ($entity_type) {
                     case pocketlistsLog::ENTITY_ITEM:
                         unset($params['name'], $params['note']);
                         break;
@@ -126,23 +124,23 @@ class pocketlistsLogService
                         break;
                 }
             }
-            $_log['params'] = json_encode([$entity => $params], JSON_UNESCAPED_UNICODE);
+            $_log['params'] = json_encode([$entity_type => $params], JSON_UNESCAPED_UNICODE);
 
             if ($id) {
-                $_log[$entity.'_id'] = $id;
+                $_log[$entity_type.'_id'] = $id;
             }
+            $logs[] = $_log;
         }
-        unset($_log);
 
         $log_model = pl2()->getModel(pocketlistsLog::class);
         $result = $log_model->multipleInsert($logs);
-        if ($result->getResult()) {
+        if ($result instanceof waDbResult && $result->getResult()) {
             $last_id = $result->lastInsertId();
             $rows_count = $result->affectedRows();
             if ($rows_count === count($logs)) {
                 foreach ($logs as &$log) {
                     $log['id'] = $last_id++;
-                    $_log['params'] = $log['params_for_socket'];
+                    $log['params'] = $log['params_for_socket'];
                     unset($log['params_for_socket']);
                     pocketlistsWebSoket::getInstance()->sendWebsocketData(
                         [

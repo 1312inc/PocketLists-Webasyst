@@ -628,13 +628,17 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                     'location_radius' => 'int'
                 ]
             );
-            if ($action !== pocketlistsLog::ACTION_ADD) {
-                $logs = array_map(function ($_log) {
-                    return array_filter($_log, function ($l) {return !(is_null($l) || $l === []);});
-                }, $logs);
-            }
+            $logs = array_map(function ($_log) use ($action, $entity) {
+                if ($action !== pocketlistsLog::ACTION_ADD) {
+                    $_log = array_filter($_log, function ($l) {return !(is_null($l) || $l === []);});
+                }
+                return [
+                    'action' => $action,
+                    'entity_type' => $entity
+                ] + $_log;
+            }, $logs);
 
-            pocketlistsLogService::multipleAdd($entity, $action, $logs);
+            pocketlistsLogService::multipleAdd($logs);
         }
     }
 

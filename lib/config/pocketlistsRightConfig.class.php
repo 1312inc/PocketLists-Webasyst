@@ -275,53 +275,71 @@ class pocketlistsRightConfig extends waRightConfig
 
     private function saveLog()
     {
+        function logFormat($user_id, $p_sr, $p_uns, $l_sr, $l_uns)
+        {
+            $logs = [];
+            if (!empty($p_sr)) {
+                $logs = array_merge($logs, array_map(function ($_p) use ($user_id) {
+                    return [
+                        'action'      => pocketlistsLog::ACTION_SHARE,
+                        'entity_type' => pocketlistsLog::ENTITY_POCKET,
+                        'pocket_id'   => $_p,
+                        'contact_id'  => $user_id
+                    ];
+                }, array_keys($p_sr)));
+            }
+            if (!empty($p_uns) ) {
+                $logs = array_merge($logs, array_map(function ($_p) use ($user_id) {
+                    return  [
+                        'action'      => pocketlistsLog::ACTION_UNSHARE,
+                        'entity_type' => pocketlistsLog::ENTITY_POCKET,
+                        'pocket_id'   => $_p,
+                        'contact_id'  => $user_id
+                    ];
+                }, array_keys($p_uns)));
+            }
+            if (!empty($l_sr)) {
+                $logs = array_merge($logs, array_map(function ($_l) use ($user_id) {
+                    return [
+                        'action'      => pocketlistsLog::ACTION_SHARE,
+                        'entity_type' => pocketlistsLog::ENTITY_LIST,
+                        'list_id'     => $_l,
+                        'contact_id'  => $user_id
+                    ];
+                }, array_keys($l_sr)));
+            }
+            if (!empty($l_uns)) {
+                $logs = array_merge($logs, array_map(function ($_l) use ($user_id) {
+                    return [
+                        'action'      => pocketlistsLog::ACTION_UNSHARE,
+                        'entity_type' => pocketlistsLog::ENTITY_LIST,
+                        'list_id'     => $_l,
+                        'contact_id'  => $user_id
+                    ];
+                }, array_keys($l_uns)));
+            }
+            return $logs;
+        }
+
         list($p_share, $p_unshare) = $this->getDiffRights(pocketlistsRBAC::POCKET_ITEM);
         list($l_share, $l_unshare) = $this->getDiffRights(pocketlistsRBAC::LIST_ITEM);
         if (!empty($p_share) || !empty($p_unshare) || !empty($l_share) || !empty($l_unshare)) {
-            $share_logs = [];
-            $unshare_logs = [];
+            $logs = [];
             if ($this->userId < 0) {
                 /** for group rights */
                 $user_groups_model = new waUserGroupsModel();
                 $user_ids = $user_groups_model->getContactIds(-$this->userId);
                 if ($user_ids) {
                     foreach ($user_ids as $user_id) {
-                        if (!empty($p_share) || !empty($l_share)) {
-                            $share_logs[] = [
-                                'contact_id' => $user_id,
-                                'params'     => ['pocket_ids' => $p_share, 'list_ids' => $l_share]
-                            ];
-                        }
-                        if (!empty($p_unshare) || !empty($l_unshare)) {
-                            $unshare_logs[] = [
-                                'contact_id' => $user_id,
-                                'params'     => ['pocket_ids' => $p_unshare, 'list_ids' => $l_unshare]
-                            ];
-                        }
+                        $logs = array_merge($logs, logFormat($user_id, $p_share, $p_unshare, $l_share, $l_unshare));
                     }
                 }
             } else {
                 /** for user rights */
-                if (!empty($p_share) || !empty($l_share)) {
-                    $share_logs[] = [
-                        'contact_id' => $this->userId,
-                        'params'     => ['pocket_ids' => $p_share, 'list_ids' => $l_share]
-                    ];
-                }
-                if (!empty($p_unshare) || !empty($l_unshare)) {
-                    $unshare_logs[] = [
-                        'contact_id' => $this->userId,
-                        'params'     => ['pocket_ids' => $p_unshare, 'list_ids' => $l_unshare]
-                    ];
-                }
+                $logs = logFormat($this->userId, $p_share, $p_unshare, $l_share, $l_unshare);
             }
 
-            if ($share_logs) {
-                pocketlistsLogService::multipleAdd(pocketlistsLog::ENTITY_USER, pocketlistsLog::ACTION_SHARE, $share_logs);
-            }
-            if ($unshare_logs) {
-                pocketlistsLogService::multipleAdd(pocketlistsLog::ENTITY_USER, pocketlistsLog::ACTION_UNSHARE, $unshare_logs);
-            }
+            pocketlistsLogService::multipleAdd($logs);
         }
     }
 }
