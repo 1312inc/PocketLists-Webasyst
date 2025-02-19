@@ -25,6 +25,25 @@
     <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-routing.js?v2{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
     <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists.js?v2{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
     <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-pocket.js?v2{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
+
+    <script>
+        window.appState = {
+            baseUrl: '{$wa_app_url}',
+            apiToken: '{$spa_api_token}',
+            apiBaseUrl: '{$wa_url}api.php',
+            users: {$users},
+            pockets: {$pockets},
+            locations: {$locations},
+            user_locale: '{$user_locale}',
+            user_timezone: '{$user_timezone}',
+            timestamp: {$timestamp},
+            datetime: '{$datetime}',
+            framework_version: '{$framework_version}',
+            app_version: '{$app_version}',
+            is_premium: {if $is_premium}true{else}false{/if},
+            is_debug_mode: {if $pl_debug_mode}true{else}false{/if},
+        }
+    </script>
 </head>
 
 <body style="background-color: var(--background-color);">
