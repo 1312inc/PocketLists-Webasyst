@@ -52,15 +52,18 @@ class pocketlistsPocketsGetMethod extends pocketlistsApiAbstractMethod
             }
         }
 
-        $plp = pl2()->getModel(pocketlistsPocket::class);
-        $sql = $plp->buildSqlComponents($sql_parts);
-        $pockets = $plp->query($sql, [
-            'access_id' => $accessed_pockets,
-            'starting_from' => $starting_from
-        ])->fetchAll();
+        $pockets = [];
+        if (!empty($accessed_pockets)) {
+            $plp = pl2()->getModel(pocketlistsPocket::class);
+            $sql = $plp->buildSqlComponents($sql_parts);
+            $pockets = $plp->query($sql, [
+                'access_id'     => $accessed_pockets,
+                'starting_from' => $starting_from
+            ])->fetchAll();
 
-        foreach ($pockets as &$_pocket) {
-            $_pocket['extended_data']['lists_count'] = (int) ifset($_pocket, 'lists_count', 0);
+            foreach ($pockets as &$_pocket) {
+                $_pocket['extended_data']['lists_count'] = (int) ifset($_pocket, 'lists_count', 0);
+            }
         }
 
         $this->response['meta'] = [
