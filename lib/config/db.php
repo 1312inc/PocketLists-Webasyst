@@ -179,6 +179,7 @@ return array(
         'create_datetime' => array('datetime'),
         'update_datetime' => array('datetime'),
         'activity_datetime' => array('datetime'),
+        'client_touch_datetime' => array('datetime'),
         'passcode' => array('varchar', 32),
         'uuid' => array('varchar', 36),
         ':keys' => array(

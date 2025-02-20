@@ -15,3 +15,10 @@ try {
 } catch (waDbException $wdb_ex) {
     $model->exec("ALTER TABLE pocketlists_comment ADD `client_touch_datetime` datetime DEFAULT NULL AFTER `create_datetime`");
 }
+
+/** POCKET */
+try {
+    $model->exec("SELECT `client_touch_datetime` FROM pocketlists_pocket");
+} catch (waDbException $wdb_ex) {
+    $model->exec("ALTER TABLE pocketlists_pocket ADD `client_touch_datetime` datetime DEFAULT NULL AFTER `activity_datetime`");
+}

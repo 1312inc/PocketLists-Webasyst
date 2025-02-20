@@ -48,6 +48,11 @@ class pocketlistsPocket extends pocketlistsEntity
     /**
      * @var string
      */
+    private $client_touch_datetime;
+
+    /**
+     * @var string
+     */
     private $passcode;
 
     /**
@@ -250,6 +255,18 @@ class pocketlistsPocket extends pocketlistsEntity
     public function setActivityDatetime($activity_datetime)
     {
         $this->activity_datetime = $activity_datetime;
+
+        return $this;
+    }
+
+    public function getClientTouchDatetime()
+    {
+        return $this->client_touch_datetime;
+    }
+
+    public function setClientTouchDatetime($client_touch_datetime = null)
+    {
+        $this->client_touch_datetime = empty($client_touch_datetime) ? null : $client_touch_datetime;
 
         return $this;
     }
