@@ -13,10 +13,11 @@
             </div>
             {/if}
 
-            <i class="icon16 userpic20" style="background-image: url({$comment->getContact()->getUserpic()})" alt="{$comment->getContact()->getUsername()|escape}"></i> {$comment->getContact()->getUsername()|escape}
+            {$contact = $comment->getContact()}
+            <i class="icon16 userpic20" style="background-image: url({if $contact}{$contact->getUserpic()}{/if})" alt="{if $contact}{$contact->getUsername()|escape}{/if}"></i> {if $contact}{$comment->getContact()->getUsername()|escape}{/if}
             {if isset($comment_page)}
             [`on`]
-            <a href="{if $comment->getListId() && $comment->getPocketId()}#/pocket/{$comment->getPocketId()}/list/{$comment->getListId()}/{else if $comment->getContact()->isMe()}#/todo/{else}#/team/{$comment->getContact()->getLogin()}{/if}">{$comment->getItemName()|truncate:64|escape}</a>
+            <a href="{if $comment->getListId() && $comment->getPocketId()}#/pocket/{$comment->getPocketId()}/list/{$comment->getListId()}/{else if $contact && $contact->isMe()}#/todo/{else}#/team/{if $contact}{$comment->getContact()->getLogin()}{/if}{/if}">{$comment->getItemName()|truncate:64|escape}</a>
             {/if}
             <span class="hint nowrap">{$comment->getCreateDatetime()|wa_datetime:'humandatetime'}</span>
         </div>

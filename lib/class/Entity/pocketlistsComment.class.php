@@ -149,7 +149,7 @@ class pocketlistsComment extends pocketlistsEntity
      */
     public function setRecentlyCreated($lastActivityTime = '')
     {
-        $this->recentlyCreated = strtotime($this->getCreateDatetime()) > strtotime($lastActivityTime);
+        $this->recentlyCreated = strtotime((string) $this->getCreateDatetime()) > strtotime($lastActivityTime);
 
         return $this;
     }
