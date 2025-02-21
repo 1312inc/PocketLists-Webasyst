@@ -1,0 +1,83 @@
+<div class="dialog">
+    <div class="dialog-background"></div>
+    <div class="dialog-body" style="min-width: 60%">
+        <form method="post">
+
+            <div class="dialog-content">
+                <h1>[`‘Order > To-do’ automation rule`]</h1>
+                <p>[`Pocket Lists will create a new to-do upon an action performed with any order in Shop-Script if the specified conditions are met.`]</p>
+                <div class="fields form pl-details-form">
+                    <div class="field">
+                        <div class="name for-checkbox">
+                            [`Enabled`]
+                        </div>
+                        <div class="value no-shift">
+                            <span class="wa-checkbox">
+                                <input type="hidden" name="data[enabled]" value="0"/>
+                                <input type="checkbox" name="data[enabled]" value="1"
+                                       {if $automation->isEnabled()}checked{/if}/>
+                               <span>
+                                   <span class="icon">
+                                       <i class="fas fa-check"></i>
+                                   </span>
+                               </span>
+                           </span>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="clear-both"></div>
+                <h2 class="heading bordered-bottom custom-mx-0 custom-mt-24 custom-mb-12" style="padding-bottom: 10px; margin-bottom: 13px; font-size: 1.25rem;">[`IF`]</h2>
+                <div class="fields form small pl-details-form">
+                    {foreach $automation->getRules() as $rule}
+                        {$_disclaimer = $rule->editHtmlDisclaimer()}
+                        <div class="field">
+                            <div class="name">
+                                {$rule->getLabel()}
+                            </div>
+                            <div class="value">
+                                {$rule->editHtml()}
+                                {if $wa->whichUI != '1.3'}
+                                    {if $_disclaimer}
+                                        <p class="hint">
+                                            {$_disclaimer}
+                                        </p>
+                                    {/if}
+                                {/if}
+                            </div>
+
+                            {if $wa->whichUI == '1.3'}
+                                {if $_disclaimer}
+                                    <div class="value">
+                                <span class="hint">
+                                    {$_disclaimer}
+                                </span>
+                                    </div>
+                                {/if}
+                            {/if}
+                        </div>
+                    {/foreach}
+                </div>
+                <div class="clear-both"></div>
+                <br>
+                <h2 class="heading bordered-bottom custom-mx-0 custom-mt-24 custom-mb-12" style="padding-bottom: 10px; margin-bottom: 13px; font-size: 1.25rem;">[`THEN`]</h2>
+
+                {$automation->getAction()->editHtml()}
+
+            </div>
+
+            <footer class="dialog-footer">
+                {if $automation->getId()}
+                    <input type="hidden" name="id" value="{$automation->getId()}"/>
+                    <div class="block" style="float: right;"><a href="#" data-pl2pro-automation-action="delete" class="button light-gray"><span class="text-red"><i
+                                    class="icon16 delete"></i><i
+                                                    class="fas fa-trash-alt"></i> [`Delete rule`]</soan></a></div>
+                {/if}
+                <input type="submit" value="[`Save`]" class="button green"/>
+                <a href="#" class="cancel button light-gray">[`Cancel`]</a>
+            </footer>
+
+        </form>
+
+    </div>
+</div>

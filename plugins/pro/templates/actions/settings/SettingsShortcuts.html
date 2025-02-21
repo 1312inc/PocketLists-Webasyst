@@ -1,0 +1,169 @@
+<h1>[`To-do shortcuts`]</h1>
+<p>[`Shortcuts help you create to-dos even faster. When creating a new to-do item, shortcuts will be offered as suggestions depending on your current input. Grouping enables the priority of each shortcut.`]</p>
+<p>[`For even faster to-do creation, use <code>Alt + N</code> keyboard combination to quickly select the suggested shortcut shown under the to-do name input.`]
+</p>
+
+<div class="float-left">
+    <div class="fields form" data-pl2pro-shortcuts></div>
+    <div class="clear-left"></div>
+    <div class="fields form">
+        <div class="field">
+            <div class="name for-input"></div>
+            <div class="value no-shift">
+                {if $wa->whichUI() == '1.3'}
+                    <a href="#" class="inline-link" data-pl2pro-shortcuts-action="add"><i class="icon16 add"></i><b><i>[`Add group`]</i></b></a>
+                {else}
+                    <a href="#" class="button rounded light-gray custom-mt-16" data-pl2pro-shortcuts-action="add"><i class="fas fa-plus-circle custom-mr-4"></i><span>[`Add group`]</span></a>
+                {/if}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="clear-both"></div>
+
+{if method_exists($wa->installer, 'reviewWidget')}
+    {$wa->installer->reviewWidget('plugin/pocketlists/pro')}
+{/if}
+
+<style>
+    #wa .tagsinput { height: 120px !important; }
+    #wa .tagsinput span.tag { padding-top: 2px; padding-bottom: 2px; }
+</style>
+
+<script type="text/x-jquery-tmpl" id="pl2pro-shortcuts">
+{literal}
+    <div class="field" data-pl2pro-shortcuts-group="${groupId}">
+        <div class="name">${group}</div>
+        <div class="value">
+            <input type="hidden" data-pl2pro-shortcuts-input id="pl2pro-shortcut-input-${id}" class="pl2pro-shortcut-input">
+            <p style="display: none; margin-top: 10px;" data-pl2pro-shortcuts-buttons>
+                <input type="button" class="button green" value="[`Save`]">
+                <i class="icon16 yes" style="display:none"></i>
+            </p>
+        </div>
+    </div>
+{/literal}
+</script>
+
+<link rel="stylesheet" href="{$wa_url}wa-content/js/jquery-plugins/jquery-tagsinput/jquery.tagsinput.css" type="text/css" />
+<script type="text/javascript" src="{$wa_url}wa-content/js/jquery-plugins/jquery-tagsinput/jquery.tagsinput.min.js?{$wa->version(true)}"></script>
+
+<script>
+    'use strict';
+    (function () {
+        $.pocketlists.setTitle();
+
+        var $shortcuts = $('[data-pl2pro-shortcuts]'),
+            $add = $('[data-pl2pro-shortcuts-action]'),
+            shortcuts = {$shortcuts_json},
+            shortcutTemplate = $('#pl2pro-shortcuts');
+
+        var init = function ($el, shortcuts) {
+            var shortcutNames = shortcuts
+                ? shortcuts.map(function (shortcut) {
+                    return shortcut['name'];
+                })
+                : [],
+                $button = $el.find('[type="button"]'),
+                $shortcuts = $el.find('[data-pl2pro-shortcuts-input]'),
+                shortcutsInputId = $shortcuts.attr('id'),
+                tagsInputSelector = '#' + shortcutsInputId + '_tag',
+                $buttons = $el.find('[data-pl2pro-shortcuts-buttons]'),
+                $yes = $buttons.find('.yes'),
+                groupId = $el.data('pl2pro-shortcuts-group');
+
+
+            var buttonShow = function() {
+                $buttons.show();
+                $button.removeClass('green').addClass('yellow');
+            };
+
+            $shortcuts
+                .val(shortcutNames.join(','))
+                .tagsInput({
+                    autocomplete_url: '',
+                    autocomplete: {
+                        source: function (request, response) {
+                            $.getJSON(
+                                '?plugin=pro&module=shortcut&action=autocomplete&type=settings&term=' + request.term,
+                                function (data) {
+                                    response(data.data);
+                                }
+                            );
+                        }
+                    },
+                    height: '',
+                    width: '',
+                    defaultText: '',
+                    onAddTag: buttonShow,
+                    onRemoveTag: buttonShow
+                });
+
+            $el
+                .on('keyup', tagsInputSelector, function (e) {
+                    if (e.which === 13) {
+                        $button.trigger('click.pl2pro');
+                    } else {
+                        buttonShow();
+                    }
+                })
+                .on('focus paste', tagsInputSelector, function (e) {
+                    buttonShow();
+                });
+
+            $button.on('click.pl2pro', function (e) {
+                e.preventDefault();
+                var newVal = $.trim($el.find(tagsInputSelector).val());
+
+                if (newVal) {
+                    $shortcuts.addTag(newVal)
+                }
+
+                $.post(
+                    '?plugin=pro&module=shortcut&action=renew',
+                    {
+                        group: groupId,
+                        shortcuts: $shortcuts.val()
+                    },
+                    function (r) {
+                        if (r.status === 'ok') {
+                            $button.removeClass('yellow').addClass('green');
+                            $yes
+                                .show(1)
+                                .delay(1312)
+                                .hide(1);
+                        }
+                    },
+                    'json'
+                );
+            })
+        };
+
+        for (var group in shortcuts) {
+            var $shortcutsGroup = shortcutTemplate.tmpl({
+                group: $_('Group') + ' #' + group,
+                groupId: group,
+                id: +(new Date())
+            });
+
+            $shortcuts.append($shortcutsGroup);
+            init($shortcutsGroup, shortcuts[group]);
+        }
+
+        $add.on('click', function (e) {
+            e.preventDefault();
+
+            var groupId = $('[data-pl2pro-shortcuts-group]').length + 1,
+                $shortcutsGroup = shortcutTemplate.tmpl({
+                    group: $_('Group') + ' #' + groupId,
+                    groupId: 0,
+                    id: +(new Date())
+                });
+
+            $shortcuts.append($shortcutsGroup);
+
+            init($shortcutsGroup);
+        })
+    }())
+</script>

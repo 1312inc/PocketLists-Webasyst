@@ -1,0 +1,336 @@
+<h1>[`To-do status labels`]</h1>
+<p>[`Statuses enables you to mark to-dos with color labels for better and a more sophisticated organization.`] [`The list of available custom labels is system-wide and applicable for all to-dos no matter of a pocket or a list.`]</p>
+
+<table class="pl2pro-labels" data-pl2pro-labels>
+    <tbody>
+    <tr data-pl2pro-label-no-status>
+        <td class="min-width">
+            <input type="checkbox" class="pl-done"><span></span>
+        </td>
+        <td class="bordered">
+            <em>[`No status`]</em>
+        </td>
+    </tr>
+    <tr data-pl2pro-label-done>
+        <td class="min-width">
+            <input type="checkbox" class="pl-done" checked="checked"><span></span>
+        </td>
+        <td class="bordere1d">
+            <span class="gray">[`Done`]</span>
+        </td>
+    </tr>
+    <tr>
+        <td class="min-width" style="border-bottom: none;">
+
+        </td>
+        <td style="border-bottom: none;">
+            {if $wa->whichUI() == '1.3'}
+                <a href="#" class="inline-link" data-pl2pro-label-action="create"><i class="icon16 add"></i><b><i>[`Add status`]</i></b></a>
+            {else}
+                <a href="#" data-pl2pro-label-action="create" class="button rounded light-gray"><i class="fas fa-plus-circle custom-mr-4"></i><span>[`Add status`]</span></a>
+            {/if}
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+{if method_exists($wa->installer, 'reviewWidget')}
+    {$wa->installer->reviewWidget('plugin/pocketlists/pro')}
+{/if}
+
+<script type="text/x-jquery-tmpl" id="pl2pro-label">
+{literal}
+    <tr data-pl2pro-label-id="${id}">
+        <td class="min-width">
+            <a title="[`Sort`]"><i class="icon16 sort"></i></a>
+            <a title="[`Sort`]"><i class="fas fa-bars text-light-gray"></i></a>
+        </td>
+        <td class="bordered">
+            <span class="pl-label" style="background: #${color};">${name}</span>
+            <a href="#" class="pl2pro-label-edit" data-pl2pro-label-action="update"><i class="icon10 edit"></i><i class="fas fa-edit" style="font-size: 12px;"></i> <span>[`Edit`]</span></a>
+        </td>
+    </tr>
+{/literal}
+</script>
+
+<script type="text/x-jquery-tmpl" id="pl2pro-label-form">
+{literal}
+    <tr data-pl2pro-label-id="${id}" data-pl2pro-label-form>
+        <td class="min-width">
+            <a title="[`Sort`]"><i class="icon16 sort"></i></a>
+            <a title="[`Sort`]"><i class="fas fa-bars text-light-gray"></i></a>
+        </td>
+        <td class="bordered">
+            <a href="#" class="small button light-gray pl2pro-label-delete" data-pl2pro-label-action="delete"><i class="icon16 delete"></i><i class="fas fa-trash-alt custom-mr-4 text-red"></i><span class="text-red">[`Delete`]</span></a>
+            <input type="text" class="bold short" value="${name}" name="data[name]">
+            <input type="hidden" value="${id}" name="id">
+            #<input type="text" class="short shortest" value="${color}" name="data[color]"><a href="#"><i class="icon16 color" style="background-color: #${color};"></i><i class="icon rounded color" style="background-color: #${color};"></i></a>
+            <span style="margin-left: 10px;" data-pl2pro-label-buttons>
+                <input type="button" class="button small green" value="[`Save`]">
+                <a href="#" class="cancel button small light-gray">[`Close`]</a>
+                <i class="icon16 yes" style="display:none"></i>
+            </span>
+            <div id="colorpicker-wrapper" style="display:none"></div>
+        </td>
+    </tr>
+{/literal}
+</script>
+
+<div class="clear-both"></div>
+
+<link rel="stylesheet" href="{$wa_url}wa-content/js/farbtastic/farbtastic.css" type="text/css" />
+<script type="text/javascript" src="{$wa_url}wa-content/js/farbtastic/farbtastic.js?{$wa->version(true)}"></script>
+
+<script>
+    'use strict';
+    (function () {
+        $.pocketlists.setTitle();
+
+        var $labels = $('[data-pl2pro-labels]'),
+            $noStatus = $labels.find('[data-pl2pro-label-no-status]'),
+            $done = $labels.find('[data-pl2pro-label-done]'),
+            labels = {$labels_json},
+            labelTemplate = $('#pl2pro-label'),
+            labelFormTemplate = $('#pl2pro-label-form');
+
+        for (var i = 0; i < labels.length; i++) {
+            labelTemplate.tmpl(labels[i]).insertAfter($noStatus);
+        }
+
+        function initSortable() {
+            $labels.find('tbody').sortable({
+                draggable: 'tr[data-pl2pro-label-id]',
+                delay: 200,
+                delayOnTouchOnly: true,
+                animation: 150,
+                forceFallback: true,
+                // ghostClass:'pl-item-placeholder',
+                // chosenClass:'album-list-chosen',
+                // dragClass:'album-list-drag',
+                onEnd: function(event) {
+                    let $item = $(event.item);
+                    /* хак для предотвращения срабатывания клика по элементу после его перетаскивания*/
+                    let $link = $item.find('[onclick]'),
+                        href = $link.attr('onclick');
+                    $link.attr('onclick', 'javascript:void(0);');
+                    setTimeout(() => $link.attr('onclick', href),500)
+
+                    let getLabels = function () {
+                        var data = [];
+                        $labels.find('[data-pl2pro-label-id]').each(function (i) {
+                            data.push($(this).data('pl2pro-label-id'));
+                        });
+
+                        return data;
+                    };
+
+                    let updateSort = function () {
+                        $.post(
+                            '?plugin=pro&module=label&action=saveOrder',
+                            {
+                                data: getLabels()
+                            },
+                            function (r) {
+                                if (r.status === 'ok') {
+                                } else {
+                                    console.log(r.errors);
+                                }
+                            },
+                            'json'
+                        );
+                    };
+
+                    updateSort();
+                }
+            });
+        }
+
+        function initColorPicker($form) {
+            var $wrapper = $form.find('#colorpicker-wrapper'),
+                $color_input = $form.find('[name="data[color]"]'),
+                $color_icon = $form.find('i.color'),
+                farbtastic = $.farbtastic($wrapper, function (color) {
+                    $color_input.val(color.substr(1)).change();
+                    $color_icon.css('background', color);
+                });
+
+            $color_input.on('keyup', function () {
+                farbtastic.setColor('#' + this.value);
+                $color_icon.css('background', this.value);
+            });
+
+            $color_icon.closest('a').on('click', function(e) {
+                e.preventDefault();
+
+                $wrapper.slideToggle();
+                farbtastic.setColor('#' + $color_input.val());
+            });
+        }
+
+        function removeForm() {
+            var $openedForm = $labels.find('[data-pl2pro-label-form]');
+
+            if ($openedForm.length) {
+                $.get('?plugin=pro&module=labelCrud&action=get', { id: $openedForm.data('pl2pro-label-id') }, function (r) {
+                    if (r.status === 'ok') {
+                        $openedForm.replaceWith(labelTemplate.tmpl(r.data));
+                    } else {
+                        console.log(r.errors);
+                        $openedForm.remove();
+                    }
+                }, 'json');
+            }
+        }
+
+        function addForm(formData) {
+            var $form = labelFormTemplate.tmpl(formData),
+                action = formData['id'] ? 'update' : 'create',
+                $button = $form.find('input[type="button"]'),
+                $cancel = $form.find('.cancel'),
+                $inputs = $form.find(':input'),
+                data = $inputs.serialize();
+
+            var save = function() {
+                if (data === $inputs.serialize()) {
+                    return;
+                }
+
+                data = $inputs.serialize();
+                $.post(
+                    '?plugin=pro&module=labelCrud&action=' + action,
+                    data,
+                    function (r) {
+                        if (r.status === 'ok') {
+                            if (r.data['id']) {
+                                $form
+                                    .data('pl2pro-label-id', r.data.id)
+                                    .find('[name="id"]')
+                                    .val(r.data.id);
+                                action = 'update';
+                            }
+
+                            $inputs = $form.find(':input');
+                            data = $inputs.serialize();
+                            $button.removeClass('yellow red');
+
+                            removeForm();
+                        } else {
+                            $button.removeClass('yellow green').addClass('red');
+                        }
+                    },
+                    'json'
+                );
+            };
+
+            initColorPicker($form);
+            initSortable();
+
+            $inputs
+                .on('change keyup paste', function (e) {
+                    e.preventDefault();
+
+                    if (data === $inputs.serialize()) {
+                        $button.removeClass('yellow red').addClass('green');
+                    } else {
+                        $button.removeClass('green red').addClass('yellow');
+                    }
+                })
+                .on('keydown', function (e) {
+                    if (e.which === 13) {
+                        e.preventDefault();
+                        save();
+                    }
+                    // if (e.which === 27)
+                });
+
+            $cancel.on('click', function (e) {
+                e.preventDefault();
+
+                removeForm();
+            });
+
+            $button.on('click', function () {
+                save();
+            });
+
+            return $form;
+        }
+
+        initSortable();
+
+        $labels.on('click', '[data-pl2pro-label-action="create"]', function (e) {
+            e.preventDefault();
+
+            removeForm();
+
+            addForm({
+                id: 0,
+                name: '',
+                color: '000000'
+            }).insertBefore($done);
+        });
+
+        $labels.on('click', '[data-pl2pro-label-action="delete"]', function (e) {
+            e.preventDefault();
+
+            var $label = $(this).closest('[data-pl2pro-label-id]'),
+                labelId = $label.data('pl2pro-label-id');
+
+            $.get('?plugin=pro&module=label&action=deleteDialog&id=' + labelId)
+            .done(function (html) {
+
+                $.waDialog({
+                    html: html,
+                    onOpen: function ($dialog, dialog_instance) {
+                        var $form = $dialog.find('form');
+
+                        $form
+                        .on("submit", function (e) {
+                            e.preventDefault();
+
+                            $.post(
+                                '?plugin=pro&module=labelCrud&action=delete',
+                                $form.serialize(),
+                                function (r) {
+                                    if (r.status === 'ok') {
+                                        $label.remove();
+                                        initSortable();
+                                    } else {
+                                        console.log(r.errors);
+                                    }
+                                    dialog_instance.close();
+                                },
+                                'json'
+                            );
+                        })
+                        .on("click", ".cancel", function(e) {
+                            e.preventDefault();
+                            dialog_instance.close();
+                        });
+                    }
+                });
+
+            });
+
+        });
+
+        $labels.on('click', '[data-pl2pro-label-action="update"]', function (e) {
+            e.preventDefault();
+
+            var $label = $(this).closest('[data-pl2pro-label-id]'),
+                labelId = $label.data('pl2pro-label-id');
+
+            removeForm();
+
+            $.get('?plugin=pro&module=labelCrud&action=get', { id: labelId }, function (r) {
+                if (r.status === 'ok') {
+                    var $form = addForm(r.data);
+
+                    $label.replaceWith($form);
+                } else {
+                    console.log(r.errors);
+                }
+            }, 'json');
+        });
+    }())
+</script>

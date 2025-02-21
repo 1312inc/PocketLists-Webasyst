@@ -1,0 +1,22 @@
+{if $isAdmin}
+<li class="top-padded">
+    <a href="#/settings/plugin/pro/labels/" data-pro-settings="labels">
+        <i class="icon16 pl statuses"></i>
+        <span>[`Status labels`]</span>
+    </a>
+</li>
+<li>
+    <a href="#/settings/plugin/pro/shortcuts/" data-pro-settings="shortcuts">
+        <i class="icon16 pl shortcuts"></i>
+        <span>[`Shortcuts`]</span>
+    </a>
+</li>
+{if $wa->shop}
+<li>
+    <a href="#/settings/plugin/pro/shopscript/" data-pro-settings="shopscript">
+        <i class="icon16 pl-wa-app-icon" style="background-image: url('/wa-apps/shop/img/shop.png'); background-size: 16px 16px;"></i>
+        <span>[`Shop-Script`]</span>
+    </a>
+</li>
+{/if}
+{/if}

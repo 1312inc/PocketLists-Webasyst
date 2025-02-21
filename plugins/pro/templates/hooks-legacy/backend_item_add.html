@@ -1,0 +1,345 @@
+{if !empty($pl2pro['external'])}
+    <link href="{$pl2pro['wa_app_static_url']}plugins/pro/css/legacy/pro.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="{$pl2pro['wa_app_static_url']}plugins/pro/js/pro.js?v{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
+    <script>
+        (function () {
+            $.pocketlists_pro.init({
+                debug: {if waSystemConfig::isDebug()}true{else}false{/if}
+            });
+        }())
+    </script>
+{/if}
+
+{$time = time()}
+{if $pl2pro.labels || $pl2pro.shortcutsGrouped}
+<div class="pl2pro-item-add{if !$pl2pro.isNew} pl2pro-edit-existing{/if}" data-pl2pro-wrapper="item-compact-add-{$time}"{if $pl2pro.itemLabel->getId()} data-pl2pro-label-selected="{$pl2pro.itemLabel->getId()}"{/if}>
+    {* @var pocketlistsProPluginLabel $label *}
+    <a
+            href="#"
+            class="pl-label"
+            style="background-color: rgba(0,0,0,0.06); color: #aaa !important;"
+            data-pl2pro-label="0"
+            title="Alt + Shift + 0"
+    >
+        [`No status`]<i class="pl2pro-label-tiny-helper"></i>
+    </a>
+    {foreach $pl2pro.labels as $label}
+        <a
+                href="#"
+                class="pl-label {if $label->getId() == $pl2pro.itemLabel->getId()}selected{/if}"
+                style="background-color: #{$label->getColor()|escape};"
+                data-pl2pro-label="{$label->getId()}"
+                title="Alt + Shift + {$label@iteration}"
+        >
+            {$label->getName()|escape}<i class="pl2pro-label-tiny-helper"></i>
+        </a>
+    {/foreach}
+
+    {if $pl2pro.shortcutsGrouped && $pl2pro.isNew}
+        {foreach $pl2pro.shortcutsGrouped as $group => $shortcuts}
+        <span
+                class="pl2pro-shortcuts-group"
+                data-pl2pro-shortcuts-group="{$group}"
+                {if $shortcuts@iteration != 1}style="display: none"{/if}
+        >
+        {* @var pocketlistsProPluginShortcut shortcut *}
+        {foreach $shortcuts as $shortcut}
+            <a href="#" class="inline-link pl2pro-shortcut" title="Alt + {$shortcut@iteration}"><b><i>{$shortcut->getName()|escape}</i></b></a>
+        {/foreach}
+        </span>
+        {/foreach}
+    {/if}
+
+    <script>
+        (function () {
+            'use strict';
+            var wrapperTime = {$time},
+                $wrapper = null,
+                isNew = {$pl2pro.isNew},
+                labelsExists = {$pl2pro.labelsExists},
+                shortcutsExists = {$pl2pro.shortcutsExists};
+
+            $.pocketlists_pro.log('backend_item_add.html');
+
+            var pl2EventsHandlers = {
+                item_add: function (e, data) {
+                    $wrapper = data.add_wrapper.find('[data-pl2pro-wrapper]');
+                    $wrapper.removeData('pl2pro-item-add');
+
+                    init($wrapper);
+                },
+                open_new_item_wrapper: function (e, data) {
+                    $wrapper = data.add_wrapper.find('[data-pl2pro-wrapper]');
+                    $wrapper.removeData('pl2pro-item-add');
+
+                    init($wrapper);
+                },
+                itemDetailsOpened: function (e, data) {
+                    $wrapper = data.details_wrapper.find('[data-pl2pro-wrapper]');
+                    $wrapper.removeData('pl2pro-item-add');
+
+                    init($wrapper);
+                },
+                itemDetailsClosed: function (e, data) {
+                    $wrapper = data.details_wrapper.find('[data-pl2pro-wrapper]');
+                    $wrapper.removeData('pl2pro-item-add');
+
+                    init($wrapper);
+                }
+            };
+
+            // $wrapper = $('[data-pl2pro-wrapper="item-compact-add-'+wrapperTime+'"]').closest('[data-pl-item-add]');
+
+            // $(document)
+            //     .off('item_add.pl2', $.pocketlists_pro.pl2EventsHandlers.item_add)
+            //     .on('item_add.pl2', $.pocketlists_pro.pl2EventsHandlers.item_add)
+            //
+            //     .off('open_new_item_wrapper.pl2 hide_new_item_wrapper.pl2', $.pocketlists_pro.pl2EventsHandlers.open_new_item_wrapper)
+            //     .on('open_new_item_wrapper.pl2 hide_new_item_wrapper.pl2', $.pocketlists_pro.pl2EventsHandlers.open_new_item_wrapper)
+            //
+            //     .off('itemDetailsOpened.pl2', $.pocketlists_pro.pl2EventsHandlers.itemDetailsOpened)
+            //     .on('itemDetailsOpened.pl2', $.pocketlists_pro.pl2EventsHandlers.itemDetailsOpened)
+            //
+            //     .off('itemDetailsClosed.pl2', $.pocketlists_pro.pl2EventsHandlers.itemDetailsClosed)
+            //     .on('itemDetailsClosed.pl2', $.pocketlists_pro.pl2EventsHandlers.itemDetailsClosed)
+            //
+            //     .off('itemAdd.pl2pro')
+            //     .on('itemAdd.pl2pro', init)
+            // ;
+
+            $(document)
+                .off('item_add.pl2', pl2EventsHandlers.item_add)
+                .on('item_add.pl2', pl2EventsHandlers.item_add)
+
+                .off('open_new_item_wrapper.pl2 hide_new_item_wrapper.pl2', pl2EventsHandlers.open_new_item_wrapper)
+                .on('open_new_item_wrapper.pl2 hide_new_item_wrapper.pl2', pl2EventsHandlers.open_new_item_wrapper)
+            // ;
+            //
+            // if ($wrapper.length) {
+            //     $wrapper
+                    .off('itemDetailsOpened.pl2', '[data-pl2-item-details]')
+                    .on('itemDetailsOpened.pl2', '[data-pl2-item-details]', pl2EventsHandlers.itemDetailsOpened)
+
+                    .off('itemDetailsClosed.pl2', '[data-pl2-item-details]')
+                    .on('itemDetailsClosed.pl2', '[data-pl2-item-details]', pl2EventsHandlers.itemDetailsClosed)
+                ;
+            // }
+
+            function init($wrapper) {
+                // $wrapper = $wrapper.wrapper;
+
+                if (!$wrapper.length) {
+                    return;
+                }
+                if ($wrapper.data('pl2pro-item-add')) {
+                    return;
+                }
+
+                $.pocketlists_pro.log({ 'labels&shortcuts inited': $wrapper });
+
+                $.store && !$.storage && ($.storage = new $.store());
+
+                $wrapper.data('pl2pro-item-add', 1);
+                $wrapper.removeData('pl2pro-label-selected');
+
+                var focus = function($textarea) {
+                    setTimeout(function () {
+                        var val = $textarea.val();
+                        $textarea.trigger('focus.pl2pro').val('').val(val);
+                    }, 10);
+                };
+
+                function labels() {
+                    var $labels = $wrapper.find('[data-pl2pro-label]'),
+                        labelId = $.storage.get('pocketlists/pro/label'),
+                        labelsAreHidden = function () {
+                            return !!$labels.filter(':hidden').length;
+                        };
+
+                    $labels
+                        .off('click.pl2pro')
+                        .on('click.pl2pro', function (e) {
+                            e.preventDefault();
+
+                            var $this = $(this);
+
+                            if (labelsAreHidden()) {
+                                $wrapper.addClass('pl2pro-all-labels-shown');
+                                $labels.addClass('shown');
+
+                                return;
+                            } else {
+                                $wrapper.removeClass('pl2pro-all-labels-shown');
+                            }
+
+                            $labels.removeClass('selected');
+                            $wrapper.removeData('pl2pro-label-selected');
+
+                            if (isNew) {
+                                $.storage && !$.storage.set('pocketlists/pro/label', $this.data('pl2pro-label'));
+                            }
+                            $labels.removeClass('shown');
+                            $this.addClass('selected shown');
+                            $wrapper.data('pl2pro-label-selected', $this.data('pl2pro-label'));
+                        });
+
+                    // todo: удалить несколько обработчиков
+                    $(document)
+                        .off('beforeAddItemSync.pl2 beforeUpdateItemSync.pl2 keydown.pl2pro_labels')
+                        .on('beforeAddItemSync.pl2', function (e, eventData) {
+                            eventData.response.data[0]['pro_label_id'] = parseInt($wrapper.data('pl2pro-label-selected')) || 0;
+                        })
+                        .on('beforeUpdateItemSync.pl2', function (e, $form) {
+                            $('<input>', {
+                                type: 'hidden',
+                                name: 'item[pro_label_id]',
+                                value: (parseInt($wrapper.data('pl2pro-label-selected')) || 0)
+                            }).appendTo($form);
+
+                            e.preventDefault();
+                        })
+                        .on('keydown.pl2pro_labels', function (e) {
+                            var num = parseInt(e.which) - 48;
+
+                            if (e.altKey && e.shiftKey && num >= 0 && num < 10) {
+                                var $label = $labels.filter(':nth(' + (num) + ')');
+
+                                if ($label.length) {
+                                    $labels.removeClass('selected shown');
+                                    $label.addClass('selected shown');
+                                    $wrapper.data('pl2pro-label-selected', $label.data('pl2pro-label'));
+
+                                    e.preventDefault();
+                                }
+                            }
+                        });
+
+                    if (!isNew) {
+                        $labels.addClass('shown');
+                    } else {
+                        // $labels.removeClass('selected');
+                        var $firstLabel = $labels.removeClass('selected shown').filter(':nth(1)');
+
+                        $firstLabel.addClass('shown');
+
+                        if (labelId !== null) {
+                            var $lastUsedLabel = $labels.filter('[data-pl2pro-label="' + labelId + '"]');
+
+                            if ($lastUsedLabel.length) {
+                                $labels.removeClass('selected shown');
+                                $lastUsedLabel.addClass('selected shown');
+                                $wrapper.data('pl2pro-label-selected', labelId);
+                            }
+                        } else {
+                            $firstLabel.trigger('click.pl2pro').trigger('click.pl2pro');
+                        }
+                    }
+                }
+                if (labelsExists) {
+                    labels();
+                }
+
+                function shortcuts() {
+                    $wrapper
+                        .find('[data-pl2pro-shortcuts-group]')
+                            .hide()
+                        .filter(':first')
+                            .show();
+
+                    var setVisible = function (i) {
+                            var $this = $(this),
+                                $shortcutGroups = $wrapper.find('[data-pl2pro-shortcuts-group]'),
+                                $nextGroup = $shortcutGroups.filter('[data-pl2pro-shortcuts-group="' + i + '"]');
+
+                            if ($nextGroup.length) {
+                                $shortcutGroups.hide();
+                                $nextGroup.show();
+                            }
+                        },
+                        canBeShown = function(itemText) {
+                            itemText = itemText || '';
+                            var $shortcutGroups = $wrapper.find('[data-pl2pro-shortcuts-group]'),
+                                groups = { };
+
+                            $shortcutGroups
+                                .hide()
+                                .map(function () {
+                                    groups[$(this).data('pl2pro-shortcuts-group')] = true;
+                                });
+
+                            $shortcutGroups.find('.pl2pro-shortcut')
+                                .each(function () {
+                                    var $this = $(this),
+                                        text = $this.text(),
+                                        search = new RegExp(text, 'i');
+
+                                    if (itemText.search(search) > -1) {
+                                        var groupId = $this.closest('[data-pl2pro-shortcuts-group]').data('pl2pro-shortcuts-group');
+
+                                        groups[groupId] = false;
+                                    }
+                                });
+
+                            for (var index in groups) {
+                                if (groups[index]) {
+                                    $shortcutGroups.filter(':nth(' + (index - 1) + ')').show();
+                                    break;
+                                }
+                            }
+                        };
+
+                    $wrapper.closest('#pl-item-add')
+                        .off('keyup.pl2pro', 'textarea.pl-item-name:visible')
+                        .on('keyup.pl2pro', 'textarea.pl-item-name:visible', function (e) {
+                            canBeShown($(this).val());
+                        });
+
+                    canBeShown($wrapper.closest('#pl-item-add').find('textarea.pl-item-name:visible').val());
+
+                    $wrapper
+                        .off('click.pl2pro change.pl2pro paste.pl2pro', '.pl2pro-shortcut')
+                        .on('click.pl2pro change.pl2pro paste.pl2pro', '.pl2pro-shortcut', function (e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+
+                            var $this = $(this),
+                                $textarea = $this.closest('#pl-item-add').find('textarea.pl-item-name:visible'),
+                                isNotEmpty = !!$textarea.val(),
+                                groupId = $this.closest('[data-pl2pro-shortcuts-group]').data('pl2pro-shortcuts-group');
+
+                            $textarea.val($textarea.val() + (isNotEmpty ? ' ' : '') + $this.text());
+                            canBeShown($textarea.val());
+                            setVisible.call(this, groupId + 1);
+
+                            focus($textarea);
+
+                            return false;
+                        });
+
+                    $(document)
+                        .off('keydown.pl2pro_shortcuts')
+                        .on('keydown.pl2pro_shortcuts', function (e) {
+                            var num = parseInt(e.which) - 48;
+
+                            if (e.altKey && !e.shiftKey && num > 0 && num < 10) {
+                                var $shortcut = $wrapper
+                                    .find('[data-pl2pro-shortcuts-group]')
+                                    .filter('[data-pl2pro-shortcuts-group]:visible')
+                                    .find('.pl2pro-shortcut:nth(' + (num - 1) + ')');
+
+                                if ($shortcut.length) {
+                                    $shortcut.trigger('click.pl2pro');
+
+                                    e.preventDefault();
+                                }
+                            }
+                        });
+                }
+                if (shortcutsExists) {
+                    shortcuts();
+                }
+            }
+        }());
+    </script>
+</div>
+{/if}

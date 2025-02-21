@@ -1,0 +1,91 @@
+{** @var $log pocketlistsLog **}
+<div class="pl-pseudo-article">
+<div class="pl2pro-log pl2pro-log-{$type|strtolower}" data-pl2pro-logs>
+    {if $type|strtolower == 'activity' || $type|strtolower == 'pocket'}
+        <h1>
+            [`Activity log`]
+            {if $type|strtolower == 'pocket'}<span class="hint">POCKET NAME</span>{/if}
+        </h1>
+    {else}
+        <h5 class="heading">[`Activity log`]</h5>
+    {/if}
+    <section data-pl2pro-logs-list>
+    {foreach $logs as $log}
+        <div class="pl2pro-log-record {$log->getStyle()}"
+             title="{$log->getActionExplained()|escape}"
+             data-pl2pro-log="{$log->getId()}"
+        >
+            <i class="pl2pro-log-glyph {$log->getGlyph()}"></i>
+            <i class="pl2pro-log-userpic icon userpic"
+               style="background-image: url({$log->getLog()->getContact()->getUserPic()})"></i>
+
+            <span class="pl2pro-log-entity">
+                {$log->getLogEntry()|escape}
+            </span>
+
+            <span class="small">
+                {$log->getActionExplained()}
+            </span>
+            <span class="hint">
+                {$log->getCreateDatetime()|wa_datetime:'humandatetime'}
+            </span>
+            {$log->getMoreHtml()}
+        </div>
+    {/foreach}
+    </section>
+
+    {if !$logs}
+        <p>[`No activity logged.`]</p>
+    {/if}
+
+    <div class="block double-padded lazyloading" style="display: none;">
+        <i class="icon16 loading"></i> [`Loading...`]
+    </div>
+
+    {if !$lazy && $logs && count($logs) == pocketlistsProPluginActivityActivityAction::LIMIT}
+    <div class="block align-center">
+        <a href="#" class="gray inline-link" data-pl2pro-activity-action="lazy"><b><i>[`Show more`]</i></b></a>
+    </div>
+    {/if}
+</div>
+</div>
+
+<script>
+    'use strict';
+    (function () {
+        var $wrapper = $('[data-pl2pro-logs]'),
+            config = {
+                url: '?plugin=pro&module=activity&action={$type}&entity_id={$entity_id}',
+                html_selector: '[data-pl2pro-logs-list]',
+                $loading: $wrapper.find('.lazyloading')
+            },
+            offset = 1;
+
+        /*{if $lazy}*/
+
+        $.pocketlists.lazyItems(config);
+
+        /*{else}*/
+
+        $wrapper.on('click', '[data-pl2pro-activity-action="lazy"]', function (e) {
+            e.preventDefault();
+            var $this = $(this);
+
+            config.$loading.show();
+
+            $.get(config.url, { offset: offset }, function (html) {
+                config.$loading.hide();
+                html = $(html).find(config.html_selector).html();
+                if ($.trim(html).length) {
+                    offset++;
+                } else {
+                    $this.hide();
+                }
+
+                $wrapper.find(config.html_selector).append(html);
+            })
+        });
+
+        /*{/if}*/
+    }());
+</script>

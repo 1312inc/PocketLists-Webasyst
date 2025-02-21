@@ -1,0 +1,30 @@
+{** @var $action pocketlistsProPluginCreateItemAction **}
+<section data-pl2pro-automation-action="{$action->getIdentifier()}">
+    <h4>{$action->getName()|escape}</h4>
+
+    {if $action->getNote()}
+    <span class="hint">[`Note`]:</span> {$action->getNote()|escape}<br>
+    {/if}
+
+    {if $assign}
+    <span class="hint">[`Assigned to`]:</span> {$assign|escape}<br>
+    {/if}
+
+    {if $action->getPriority()}
+    <span class="hint">[`Priority`]:</span> {pocketlistsViewHelper::getPriorityCssClass($action->getPriority())}<br>
+    {/if}
+
+    {if $when}
+    <span class="hint">[`When`]:</span> {$when}<br>
+    {/if}
+
+    {if $due}
+    <span class="hint">[`Due`]:</span> {$due}<br>
+    {/if}
+
+    <span class="hint">[`List`]:</span> {if $action->getList()->getId()}{$action->getList()->getName()|escape}{else}[`None`]{/if}<br>
+
+    {if $action->getLabel()->getId()}
+        <span class="hint">[`Label`]:</span> <span class="pl-label" style="background-color: #{$action->getLabel()->getColor()|escape};">{$action->getLabel()->getName()|escape}</span><br>
+    {/if}
+</section>

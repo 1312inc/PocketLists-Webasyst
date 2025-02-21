@@ -1,0 +1,267 @@
+<div class="pl2pro-board-scroll-fix">
+
+    <main class="box block double-padded" style="position: relative;" data-pl2pro-wrapper="board">
+
+        <div class="pl2pro-board-container">
+
+            {if $wa->whichUI() == '1.3'}
+                {if !$pocket->getId()}
+                    <div class="pl2pro-board-header">
+                        {if count($pockets) > 0}
+                            <div class="float-right block half-padded">
+                                <ul class="menu-h dropdown">
+                                    <li>
+                                        <a href="javascript:void(0);" class="inline-link"><b><i>[`Filter by pocket`]</i></b> <i class="icon10 darr"></i></a>
+                                        <ul class="menu-v">
+                                            {foreach $pockets as $p}
+                                                <li><a href="#/pro/board/{$p->getId()}/">{$p->getName()|escape}</a></li>
+                                            {/foreach}
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        {/if}
+                        <h1>[`All pockets`]</h1>
+                    </div>
+                {else}
+                    <h1 class="pl2pro-board-header"><a href="#/pro/board/" class="back">&larr; [`All pockets`]</a> <span class="pl-dark-{$pocket->getColor()}-label">{$pocket->getName()|escape}</span></h1>
+                {/if}
+            {else}
+                <div class="flexbox middle">
+                    <div>
+                        {if !$pocket->getId()}
+                            <h1>[`All pockets`]</h1>
+                        {else}
+                            <h1 class="pl2pro-board-header">
+                                <a href="#/pro/board/" class="back button light-gray circle" style="font-size: 20px; position: relative; top: -4px;"><i class="fas fa-arrow-left"></i></a>
+                                <span class="pl-dark-{$pocket->getColor()}-label">{$pocket->getName()|escape}</span>
+                            </h1>
+                        {/if}
+                    </div>
+                    {if !$pocket->getId() && count($pockets) > 0}
+                        <div>
+
+                            <div class="dropdown" id="pl-kanban-board-filter">
+                                <a href="javascript:void(0);" class="dropdown-toggle button light-gray custom-ml-8 custom-mt-12 small rounded">[`Filter by pocket`]</a>
+                                <div class="dropdown-body">
+                                    <ul class="menu">
+                                        {foreach $pockets as $p}
+                                            <li><a href="#/pro/board/{$p->getId()}/"><span>{$p->getName()|escape}</span></a></li>
+                                        {/foreach}
+                                    </ul>
+                                </div>
+                                <script>
+                                    ( function($) {
+                                        $("#pl-kanban-board-filter").waDropdown();
+                                    })(jQuery);
+                                </script>
+                            </div>
+
+                        </div>
+                    {/if}
+                </div>
+            {/if}
+
+            <div class="pl2pro-board">
+                {** @var pocketlistsProPluginLabelItemsDto $labelInfo **}
+                {foreach $allItems as $labelInfo}
+                    <div class="pl2pro-column" data-pl2pro-label="{$labelInfo->label->getId()}">
+                        <div class="pl2pro-column-header {if $labelInfo->isDone}gray{/if}">
+
+                            <h5>
+                                {if !$labelInfo->isDone}
+                                    <span class="pl-label" style="background-color: #{$labelInfo->label->getColor()};">{$labelInfo->label->getName()|escape}</span>
+                                {else}
+                                    <input type="checkbox" class="pl-done" checked="checked">
+                                    <span></span>
+                                    [`Done`]
+                                {/if}
+                                <span class="hint">{$labelInfo->count}</span>
+                            </h5>
+
+                        </div>
+                        <div class="pl2pro-column-content">
+                            <ul class="pl2pro-column-items">
+                            {** $var pocketlistsItem $item **}
+                            {foreach $labelInfo->items as $item}
+                                <li
+                                        data-pl2pro-item="{$item->getId()}"
+                                        data-pl2pro-item-status="{if $item->isDone()}1{else}0{/if}"
+                                        {if $item->isDone()}class="gray"{/if}
+                                >
+                                    <input
+                                            type="checkbox"
+                                            class="pl-done {pocketlistsViewHelper::getPriorityCssClass($item->getCalcPriority())}"
+                                            {if $item->isDone()}checked="checked"{/if}
+                                    ><span data-pl2pro-done></span>
+                                    {if $item->isAssignedtoSomeone() }
+                                        <span class="item-assignee">
+                                            <i class="icon16 userpic20" style="background-image: url({$item->getAssignedContact()->getUserpic()})" alt="{$item->getAssignedContact()->getUsername()|escape}" title="{sprintf('[`Assigned to %s`]', $item->getAssignedContact()->getUsername()|escape)}"></i>
+                                        </span>
+                                    {/if}
+                                    <span class="item-name">{$item->getName()|escape}</span><br>
+                                    <span class="hint">{$item->getNote()|escape}</span>
+                                    <div data-pl2-item-links>
+                                        {foreach $item->getLinkedEntities() as $linkedEntity}
+                                            <div data-pl2-link-preview>
+                                                {$linkedEntity->getAppLink()->renderPreview($linkedEntity)}
+                                            </div>
+                                        {/foreach}
+                                    </div>
+
+                                </li>
+                            {/foreach}
+                            </ul>
+                        </div>
+                    </div>
+                {/foreach}
+            </div>
+            <div class="pl2pro-board-scroll-helper"></div>
+
+        </div>
+
+        <!-- <div class="clear-both"></div> -->
+
+        {* if method_exists($wa->installer, 'reviewWidget')}
+            {$wa->installer->reviewWidget('plugin/pocketlists/pro')}
+        {/if *}
+
+    </main>
+
+    <script>
+        'use strict';
+        (function () {
+            $.pocketlists.setTitle("{$pocket->getName()|escape|addslashes}", true);
+
+            var $wrapper = $('[data-pl2pro-wrapper="board"]'),
+                $columns = $wrapper.find('[data-pl2pro-label]'),
+                dropInAction = false,
+                $sourceLabel = null;
+
+            $('[data-pl2pro-item]', $wrapper).draggable({
+                // handle: '[data-pl-action="item-sort"]',
+                distance: 5,
+                opacity: 0.75,
+                appendTo: 'body',
+                // connectWith: $columns,
+                tolerance: 'pointer',
+                revert: true,
+                revertDuration: 0,
+                classes: {
+                    'ui-sortable-helper': 'shadowed'
+                }
+                // forcePlaceholderSize: true,
+                // forceHelperSize: true,
+            });
+
+            $columns.droppable({
+                accept: '[data-pl2pro-item]',
+                disabled: false,
+                greedy: true,
+                tolerance: 'pointer',
+                classes: {
+                    'ui-droppable': 'pl-droppable'
+                },
+                over: function (event, ui) {
+                    dropInAction = true;
+                    $(this).addClass('highlighted-background');
+
+                    $sourceLabel = $sourceLabel || $(this);
+                },
+                out: function (event, ui) {
+                    dropInAction = false;
+                    $(this).removeClass('highlighted-background');
+                },
+                drop: function (event, ui) {
+                    var $item = ui.draggable,
+                        $label = $(event.target),
+                        labelId = $label.data('pl2pro-label'),
+                        itemId = $item.data('pl2pro-item'),
+                        $curSourceLabel = $sourceLabel;
+
+                    $sourceLabel = null;
+
+                    if (labelId != $curSourceLabel.data('pl2pro-label')) {
+                        $label.find('.pl2pro-column-items').prepend($item);
+                        dropInAction = false;
+
+                        if (labelId) {
+                            $.post('?plugin=pro&module=label&action=addToItem', {
+                                id: labelId,
+                                item_id: itemId
+                            }, function (r) {
+                                if (r.status === 'ok') {
+                                    $(document).trigger('itemLabelChanged.pl2pro', {
+                                        label: labelId, item: itemId, drop: this
+                                    });
+
+                                    labelCount($label, 1);
+                                    labelCount($curSourceLabel, -1);
+
+                                    if (!$curSourceLabel.data('pl2pro-label')) {
+                                        completeItem($item, 0, function () { });
+                                    }
+                                }
+                            }, 'json');
+                        } else {
+                            completeItem($item, 1, function () {
+                                labelCount($label, 1);
+                                labelCount($curSourceLabel, -1);
+                            });
+                        }
+                    }
+
+                    $(this).removeClass('highlighted-background');
+                    $item.addClass('pl-dropped');
+                }
+            });
+
+            $columns.on('click', '[data-pl2pro-done]', function (e) {
+                e.preventDefault();
+                var $item = $(this).closest('[data-pl2pro-item]'),
+                    status = !!$item.data('pl2pro-item-status');
+
+                completeItem($item, status ? 0 : 1, function () {
+                    labelCount($item.closest('[data-pl2pro-label]'), status ? 1 : -1);
+                });
+            });
+
+            function labelCount($column, count) {
+                var $count = $column.find('.count');
+                count = count || 1;
+                $count.text(parseInt($count.text()) + count);
+            }
+
+            function completeItem($item, status, callback) {
+                var id = parseInt($item.data('pl2pro-item')),
+                    $checkbox = $item.find(':checkbox');
+
+                $item.toggleClass('gray');
+                $checkbox.prop('checked', status); // check nesting items
+                $item.data('pl2pro-item-status', status);
+
+                $.post(
+                    '?module=item&action=complete',
+                    {
+                        id: id,
+                        status: status
+                    },
+                    function (r) {
+                        if (r.status === 'ok') {
+                            $.pocketlists.updateAppCounter();
+
+                            $.isFunction(callback) && callback.call();
+                        } else {
+                            console.log(r.errors);
+
+                            $checkbox.prop('checked', status ? 0 : 1);
+                            $item.data('pl2pro-item-status', status ? 0 : 1);
+                        }
+                    },
+                    'json'
+                );
+            }
+        }())
+    </script>
+
+</div>

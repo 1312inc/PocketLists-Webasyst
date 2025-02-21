@@ -1,0 +1,79 @@
+{if $pocketLabelStat}
+<div class="pl-views" data-pl2pro-pocket-sidebar-labels>
+    {* <div class="pl-view-box"><a class="pl-view-widget" href="#/pro/pocketActivity/{$pocket->getId()}/">Activity</a></div> *}
+    {foreach $pocketLabelStat as $labelInfo}
+        <div class="pl-view-box x3" data-pl2pro-label="{$labelInfo->label->getId()}"{if !$labelInfo->count} style="display: none;"{/if}>
+            <a class="pl-view-widget"
+               href="#/pro/pocket/{$labelInfo->pocket->getId()}/status/{$labelInfo->label->getId()}/"{if $labelInfo->label->getId()} style="background-color: #{$labelInfo->label->getColor()};"{/if}>
+                <h3>
+                    {if !$labelInfo->label->getId()}
+                        <input type="checkbox" class="pl-done" checked="checked"><span></span>
+                    {/if}
+                    <span data-pl2pro-label-count{if $labelInfo->label->getId()} style="color: white;"{/if}>{if $labelInfo->count >= 100}99+{else}{$labelInfo->count}{/if}</span>
+                </h3>
+                <span class="hint"{if $labelInfo->label->getId()} style="color: white;"{/if}>{$labelInfo->label->getName()|escape}</span>
+            </a>
+        </div>
+    {/foreach}
+</div>
+<script>
+    'use strict';
+    (function(){
+        var $labelsWrapper = $('[data-pl2pro-pocket-sidebar-labels]'),
+            dropInAction = false;
+
+        $('[data-pl2pro-label] .pl-view-widget', $labelsWrapper).droppable({
+            accept: '[data-parent-id]',
+            disabled: false,
+            greedy: true,
+            tolerance: 'pointer',
+            classes: {
+                'ui-droppable': 'pl-droppable'
+            },
+            over: function (event, ui) {
+                dropInAction = true;
+
+                $(this).addClass('highlighted-background');
+            },
+            out: function (event, ui) {
+                dropInAction = false;
+
+                $(this).removeClass('highlighted-background');
+            },
+            drop: function (event, ui) {
+                var $item = ui.draggable,
+                    $label = $(event.target).closest('[data-pl2pro-label]'),
+                    labelId = $label.data('pl2pro-label'),
+                    itemId = $item.data('id');
+
+                dropInAction = false;
+                $item.addClass('pl-dropped');
+                $(this).removeClass('highlighted-background');
+
+                $.post(
+                    '?plugin=pro&module=label&action=addToItem',
+                    {
+                        id: labelId,
+                        item_id: itemId
+                    },
+                    function (r) {
+                        if (r.status === 'ok') {
+                            $.get(
+                                '?module=item&action=data',
+                                { item: { id: itemId } },
+                                function (html) {
+                                    $item.html(html);
+                                }
+                            );
+
+                            $.pocketlists_pro.updatePocketLabelCounts();
+                        }
+                    },
+                    'json'
+                );
+            }
+        });
+    }())
+</script>
+
+{/if}
