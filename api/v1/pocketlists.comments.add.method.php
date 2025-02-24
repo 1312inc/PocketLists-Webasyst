@@ -60,9 +60,7 @@ class pocketlistsCommentsAddMethod extends pocketlistsApiAbstractMethod
                 $_comment['errors'][] = _w('Access denied');
             }
 
-            if (!isset($_comment['comment'])) {
-                $_comment['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'comment');
-            } elseif (!is_string($_comment['comment'])) {
+            if (isset($_comment['comment']) && !is_string($_comment['comment'])) {
                 $_comment['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'comment');
             }
 

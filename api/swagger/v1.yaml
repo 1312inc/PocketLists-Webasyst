@@ -112,7 +112,6 @@ paths:
                 type: object
                 required:
                   - item_id
-                  - comment
                 properties:
                   item_id:
                     type: integer
@@ -2110,6 +2109,7 @@ components:
           description: Contact ID
         comment:
           type: string
+          nullable: true
           description: Comment text
         create_datetime:
           type: string
