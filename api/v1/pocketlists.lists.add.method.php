@@ -56,7 +56,7 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                 'activity_datetime'     => null,
                 'complete_datetime'     => null,
                 'complete_contact_id'   => null,
-                'name'                  => ifset($_list, 'name', ''),
+                'name'                  => ifset($_list, 'name', null),
                 'note'                  => '',
                 'due_date'              => null,
                 'due_datetime'          => null,
@@ -83,10 +83,8 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                 $_list['errors'][] = _w('Pocket access denied');
             }
 
-            if (!is_string($_list['name'])) {
+            if (isset($_list['name']) && !is_string($_list['name'])) {
                 $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'name');
-            } elseif (trim($_list['name']) === '') {
-                $_list['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'name');
             }
 
             if (!is_string($_list['type'])) {

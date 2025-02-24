@@ -770,7 +770,6 @@ paths:
               items:
                 type: object
                 required:
-                  - name
                   - pocket_id
                 properties:
                   pocket_id:
@@ -2027,7 +2026,7 @@ components:
               description: Complete Contact ID
             name:
               type: string
-              default: ''
+              nullable: true
               description: Name item
             note:
               type: string
