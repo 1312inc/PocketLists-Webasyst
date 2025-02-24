@@ -1454,11 +1454,10 @@ paths:
               type: array
               items:
                 type: object
-                required:
-                  - name
                 properties:
                   name:
                     type: string
+                    nullable: true
                     description: Pocket name
                   color:
                     type: string
@@ -1819,6 +1818,7 @@ components:
               description: Precise sort subrank position among elements with the same master sort value (ORDER BY sort, rank)
             name:
               type: string
+              nullable: true
               description: Pocket name
             color:
               type: string
@@ -2139,9 +2139,11 @@ components:
           description: Location ID
         name:
           type: string
+          nullable: true
           description: Location name
         color:
           type: string
+          nullable: true
           description: Location color
         location_latitude:
           type: number

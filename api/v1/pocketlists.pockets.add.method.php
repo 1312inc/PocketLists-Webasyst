@@ -8,7 +8,7 @@ class pocketlistsPocketsAddMethod extends pocketlistsApiAbstractMethod
     {
         $data = $this->readBodyAsJson();
         if (empty($data)) {
-            throw new pocketlistsApiException(_w('Missing `data`'), 400);
+            $data = [[]];
         } elseif (!is_array($data)) {
             throw new pocketlistsApiException(_w('Type error `data`'), 400);
         }
@@ -41,9 +41,7 @@ class pocketlistsPocketsAddMethod extends pocketlistsApiAbstractMethod
                 'errors'                => []
             ];
 
-            if (!isset($_pocket['name'])) {
-                $_pocket['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'name');
-            } elseif (!is_string($_pocket['name'])) {
+            if (isset($_pocket['name']) && !is_string($_pocket['name'])) {
                 $_pocket['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'name');
             }
 
