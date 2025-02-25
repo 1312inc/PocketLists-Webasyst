@@ -514,6 +514,12 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                             $prev_by_uuid[$_entity['id']]['next_sort'] = $extreme_entity['next_sort'];
                             $prev_by_uuid[$_entity['id']]['next_rank'] = $extreme_entity['next_rank'];
                         }
+                    } elseif (!empty($_entity['uuid'])) {
+                        $prev_by_uuid[$_entity['uuid']]['list_id'] = $_entity['list_id'];
+                        $prev_by_uuid[$_entity['uuid']]['sort'] = $srt;
+                        $prev_by_uuid[$_entity['uuid']]['rank'] = $rnk;
+                        $prev_by_uuid[$_entity['uuid']]['next_sort'] = $extreme_entity['next_sort'];
+                        $prev_by_uuid[$_entity['uuid']]['next_rank'] = $extreme_entity['next_rank'];
                     }
                 } elseif (is_null($group_id)) {
                     /** добавляем в конец списка */
