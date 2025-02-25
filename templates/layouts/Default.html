@@ -28,6 +28,7 @@
             baseUrl: '{$wa_app_url}',
             apiToken: '{$spa_api_token}',
             apiBaseUrl: '{$wa_url}api.php',
+            contact_id: {$wa->user()->get('id')},
             users: {$users},
             pockets: {$pockets},
             locations: {$locations},
