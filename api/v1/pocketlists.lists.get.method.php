@@ -5,6 +5,7 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
     public function execute()
     {
         $ids = $this->get('id');
+        $pocket_id = $this->get('pocket_id');
         $starting_from = $this->get('starting_from');
         $limit = $this->get('limit');
         $offset = $this->get('offset');
@@ -16,6 +17,13 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
             $ids = array_unique(array_filter($ids, function ($_i) {
                 return is_numeric($_i) && $_i > 0;
             }));
+        }
+        if (isset($pocket_id)) {
+            if (!is_numeric($pocket_id)) {
+                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'pocket_id'), 400);
+            } elseif ($pocket_id < 0) {
+                throw new pocketlistsApiException(_w('The parameter has a negative value'), 400);
+            }
         }
         if (isset($starting_from)) {
             if (!is_string($starting_from)) {
@@ -68,6 +76,9 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
             } else {
                 $ids = $accessed_lists;
             }
+            if ($pocket_id) {
+                $sql_parts['where']['and'][] = 'l.pocket_id = i:pocket_id';
+            }
             if ($starting_from) {
                 $sql_parts['where']['and'][] = 'i.update_datetime >= s:starting_from OR i.create_datetime >= s:starting_from OR i.activity_datetime >= s:starting_from';
                 $sql_parts['order by'] = ['i.update_datetime DESC'];
@@ -79,6 +90,7 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
                 $lists = $list_model->query(
                     "$sql LIMIT i:offset, i:limit", [
                     'ids'           => $ids,
+                    'pocket_id'     => $pocket_id,
                     'starting_from' => $starting_from,
                     'limit'         => $limit,
                     'offset'        => $offset

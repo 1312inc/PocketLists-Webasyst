@@ -900,6 +900,11 @@ paths:
             items:
               type: integer
         - in: query
+          name: pocket_id
+          description: Filter by pocket ID
+          schema:
+            type: integer
+        - in: query
           name: starting_from
           description: Returns records updated/created only after the specified datetime (UTC, ISO 8601). Older records are removed from the response. When 'starting_from' is passed, all records will be 'ORDER BY update_datetime DESC'.
           schema:
