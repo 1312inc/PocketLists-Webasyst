@@ -592,6 +592,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                     'pocket_id',
                     'type',
                     'icon',
+                    'icon_url',
                     'archived',
                     'color',
                     'passcode',

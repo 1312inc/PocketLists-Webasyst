@@ -1855,6 +1855,7 @@ components:
           properties:
             extended_data:
               type: object
+              nullable: true
               properties:
                 lists_count:
                   type: integer
@@ -1907,6 +1908,7 @@ components:
           properties:
             extended_data:
               type: object
+              nullable: true
               properties:
                 items_count:
                   type: integer
@@ -1932,6 +1934,7 @@ components:
           properties:
             attachments:
               type: array
+              nullable: true
               items:
                 $ref: '#/components/schemas/attachment'
         - type: object
@@ -1940,6 +1943,7 @@ components:
           properties:
             external_links:
               type: array
+              nullable: true
               items:
                 $ref: '#/components/schemas/link'
         - type: object
@@ -1948,6 +1952,7 @@ components:
           properties:
             tags:
               type: array
+              nullable: true
               items:
                 type: string
                 description: Tag name
@@ -2087,6 +2092,7 @@ components:
           properties:
             extended_data:
               type: object
+              nullable: true
               properties:
                 comments_count:
                   type: integer
