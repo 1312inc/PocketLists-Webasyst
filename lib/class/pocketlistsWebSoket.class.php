@@ -57,7 +57,11 @@ class pocketlistsWebSoket
     {
         if (!empty($data) && $this->services_api->isConnected()) {
             try {
-                $this->services_api->sendWebsocketMessage($data, $channel ?? self::DEFAULT_CHANNEL);
+                $this->services_api->sendWebsocketMessage(
+                    $data,
+                        $channel ?? self::DEFAULT_CHANNEL,
+                    pocketlistsHelper::APP_ID
+                );
             } catch (Throwable $e) {
             }
         }
