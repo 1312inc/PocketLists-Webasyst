@@ -147,7 +147,9 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
         });
         $lists_err = array_diff_key($lists, $lists_ok);
         if (!empty($lists_ok)) {
+            $cr_model = new waContactRightsModel();
             $static_url = wa()->getAppStaticUrl(null, true).'img/listicons/';
+
             /** @var pocketlistsListFactory $list_factory */
             $list_factory = pl2()->getEntityFactory(pocketlistsList::class);
 
@@ -169,6 +171,14 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                     ->setUuid($_list['uuid']);
                 if (!$list_factory->save($list_clone)) {
                     $_list['success'] = false;
+                } elseif (!pocketlistsRBAC::isAdmin()) {
+                    /* add access for user */
+                    $cr_model->save(
+                        $user_id,
+                        pocketlistsHelper::APP_ID,
+                        'list.'.$list_clone->getId(),
+                        pocketlistsRBAC::RIGHT_ACCESS
+                    );
                 }
                 $_list['id'] = $list_clone->getId();
                 $_list['key_item_id'] = $list_clone->getKeyItemId();
