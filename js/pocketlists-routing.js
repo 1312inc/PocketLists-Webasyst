@@ -14,7 +14,6 @@
         },
     });
 
-    $.storage = new $.store();
     $.pocketlists_routing = {
         options: {
             user_id: 0,
@@ -28,18 +27,6 @@
                 $.History.bind(function () {
                     that.dispatch();
                 });
-            }
-
-            var hash = window.location.hash;
-            if (hash === '#/' || !hash) {
-                hash = $.storage.get('/pocketlists/hash/' + that.options.user_id);
-                if (hash && hash !== null && hash !== undefined) {
-                    $.wa.setHash('#/' + hash);
-                } else {
-                    this.dispatch();
-                }
-            } else {
-                $.wa.setHash(hash);
             }
         },
         // dispatch() ignores the call if prevHash == hash
@@ -144,10 +131,6 @@
                         this.preExecute(actionName);
                         this.options.debug && console.info('dispatch', [actionName + 'Action', attr]);
                         this[actionName + 'Action'].apply(this, attr);
-
-                        if (actionName !== 'debug') {
-                            $.storage.set('/pocketlists/hash/' + this.options.user_id, hash.join('/'));
-                        }
                         this.postExecute(actionName);
                     } else {
                         this.options.debug && console.info('Invalid action name:', actionName + 'Action');

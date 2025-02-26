@@ -377,6 +377,7 @@
             self.initCollapse();
             self.highlightSidebar();
             self.sortLists();
+            $.storage.del('/pocketlists/hash/'+ o.userId);
 
             self.$core_sidebar.on('dropActionDone.pl2', '[data-pl-team-id], [data-pl-pocket-id]', function (e, data) {
                 var $this = $(this);
