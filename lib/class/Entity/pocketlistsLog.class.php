@@ -162,7 +162,7 @@ class pocketlistsLog extends pocketlistsEntity
     public function afterHydrate($data = [])
     {
         if (!empty($data) && array_key_exists('params', $data)) {
-            $this->setParamsArray((string) json_decode($data['params'], true));
+            $this->setParamsArray(json_decode((string) $data['params'], true));
         }
     }
 
