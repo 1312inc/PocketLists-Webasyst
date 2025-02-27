@@ -8,6 +8,7 @@ class pocketlistsSystemGetSettingsMethod extends pocketlistsApiAbstractMethod
 
         $this->response['data'] = [
             'base_url'          => $this->getBaseUrl(),
+            'user_rights'       => pocketlistsRBAC::getUserRights(),
             'user_locale'       => $this->getLocale(),
             'user_timezone'     => $this->getTimezone(),
             'timestamp'         => $current_time,

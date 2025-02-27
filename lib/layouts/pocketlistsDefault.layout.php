@@ -59,6 +59,7 @@ class pocketlistsDefaultLayout extends waLayout
             'users' => waUtils::jsonEncode($users),
             'pockets' => waUtils::jsonEncode($pockets),
             'locations' => waUtils::jsonEncode($locations),
+            'user_rights' => waUtils::jsonEncode(pocketlistsRBAC::getUserRights()),
             'user_locale' => wa()->getLocale(),
             'user_timezone' => (empty($user_tz) ? 'auto' : $user_tz),
             'timestamp' => $current_time,

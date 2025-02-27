@@ -1674,6 +1674,52 @@ paths:
                             type: string
                             format: uri
                             description: Backend web UI URL
+                          user_rights:
+                            type: object
+                            properties:
+                              backend:
+                                type: string
+                                description: Backend access
+                                enum:
+                                  - LIMITED
+                                  - FULL
+                              cancreatetodos:
+                                type: integer
+                                nullable: true
+                                description: Can create to-dos to self
+                              canassign:
+                                type: integer
+                                nullable: true
+                                description: Can see other users personal to-dos and assign to-dos to teammates
+                              canuseshopscript:
+                                type: integer
+                                nullable: true
+                                description: Can create and see to-dos linked with Shop-Script orders
+                              pockets:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    pocket_id:
+                                      type: integer
+                                      description: Pocket ID
+                                    right:
+                                      type: string
+                                      enum:
+                                        - LIMITED
+                                        - FULL
+                              lists:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    list_id:
+                                      type: integer
+                                      description: List ID
+                                    right:
+                                      type: string
+                                      enum:
+                                        - FULL
                           user_locale:
                             type: string
                             description: User locale

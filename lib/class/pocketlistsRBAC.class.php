@@ -437,4 +437,54 @@ class pocketlistsRBAC
 
         return $contact;
     }
+
+    /**
+     * @param $user_id
+     * @return array
+     * @throws waException
+     */
+    public static function getUserRights($user_id = null)
+    {
+        if (empty($user_id)) {
+            $user_id = wa()->getUser()->getId();
+        }
+        $cr_model = new waContactRightsModel();
+        $raw_rights = $cr_model->get($user_id, pocketlistsHelper::APP_ID);
+        $r_backend = (int) ifset($raw_rights, 'backend', self::RIGHT_NONE);
+
+        if (empty($r_backend)) {
+            $rights['backend'] = 'NONE';
+        } elseif ($r_backend === 1) {
+            $pockets = [];
+            $lists = [];
+            foreach ((array) $raw_rights as $key => $_right) {
+                $_explode = explode('.', $key);
+                if (count($_explode) === 2) {
+                    if ($_explode[0] === 'list') {
+                        $lists[] = [
+                            'list_id' => (int) $_explode[1],
+                            'right'   => 'FULL'
+                        ];
+                    } elseif ($_explode[0] === 'pocket') {
+                        $pockets[] = [
+                            'pocket_id' => (int) $_explode[1],
+                            'right'     => ($_right == self::RIGHT_ADMIN ? 'FULL' : 'LIMITED')
+                        ];
+                    }
+                }
+            }
+            $rights = [
+                'backend'          => 'LIMITED',
+                'cancreatetodos'   => (int) ifset($raw_rights, 'cancreatetodos', self::RIGHT_NONE),
+                'canassign'        => (int) ifset($raw_rights, 'canassign', self::RIGHT_NONE),
+                'canuseshopscript' => (int) ifset($raw_rights, 'canuseshopscript', self::RIGHT_NONE),
+                'pockets'          => $pockets,
+                'lists'            => $lists
+            ];
+        } else {
+            $rights['backend'] = 'FULL';
+        }
+
+        return $rights;
+    }
 }
