@@ -9,7 +9,7 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
         $lists = $this->readBodyAsJson();
 
         if (empty($lists)) {
-            throw new pocketlistsApiException(_w('Missing `data`'), 400);
+            $lists = [[]];
         } elseif (!is_array($lists)) {
             throw new pocketlistsApiException(_w('Type error `data`'), 400);
         }
@@ -73,14 +73,14 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                 'errors'                => []
             ];
 
-            if (!isset($_list['pocket_id'])) {
-                $_list['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'pocket_id');
-            } elseif (!is_numeric($_list['pocket_id'])) {
-                $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'pocket_id');
-            } elseif ($_list['pocket_id'] < 1 || !in_array($_list['pocket_id'], $pocket_ids)) {
-                $_list['errors'][] = _w('List not found');
-            } elseif (!in_array($_list['pocket_id'], $pocket_access)) {
-                $_list['errors'][] = _w('Pocket access denied');
+            if (isset($_list['pocket_id'])) {
+                if (!is_numeric($_list['pocket_id'])) {
+                    $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'pocket_id');
+                } elseif ($_list['pocket_id'] < 1 || !in_array($_list['pocket_id'], $pocket_ids)) {
+                    $_list['errors'][] = _w('Pocket not found');
+                } elseif (!in_array($_list['pocket_id'], $pocket_access)) {
+                    $_list['errors'][] = _w('Pocket access denied');
+                }
             }
 
             if (isset($_list['name']) && !is_string($_list['name'])) {

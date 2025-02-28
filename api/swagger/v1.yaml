@@ -768,8 +768,6 @@ paths:
               type: array
               items:
                 type: object
-                required:
-                  - pocket_id
                 properties:
                   pocket_id:
                     type: integer
@@ -1918,6 +1916,8 @@ components:
           properties:
             pocket_id:
               type: integer
+              default: null
+              nullable: true
               description: Pocket ID
             type:
               type: string

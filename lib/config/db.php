@@ -97,7 +97,7 @@ return array(
     ),
     'pocketlists_list' => array(
         'id' => array('int', 11, 'null' => 0, 'autoincrement' => 1),
-        'pocket_id' => array('int', 11, 'null' => 0, 'default' => '0'),
+        'pocket_id' => array('int', 11),
         'sort' => array('int', 11, 'null' => 0, 'default' => '0'),
         'rank' => array('varchar', 16, 'null' => 0, 'default' => ''),
         'type' => array('enum', "'checklist','notes'"),

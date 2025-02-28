@@ -292,11 +292,11 @@ class pocketlistsList extends pocketlistsItem
     }
 
     /**
-     * @return int
+     * @return int|null
      */
     public function getPocketId()
     {
-        return (int) $this->pocket_id;
+        return ($this->pocket_id ?: null);
     }
 
     /**
