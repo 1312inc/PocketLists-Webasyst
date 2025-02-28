@@ -52,7 +52,7 @@ class pocketlistsRightConfig extends waRightConfig
             $this->right_model->exec('
                 UPDATE pocketlists_pocket
                 SET activity_datetime = s:act_dt
-                WHERE id IN (i:ids)                
+                WHERE id IN (i:ids)
             ', [
                 'act_dt' => date('Y-m-d H:i:s'),
                 'ids'    => $ids,
@@ -77,7 +77,7 @@ class pocketlistsRightConfig extends waRightConfig
      */
     public function init()
     {
-        $this->addItem(pocketlistsRBAC::CAN_CREATE_TODOS, _w('Can create to-dos to self'), 'always_enabled');
+        $this->addItem(pocketlistsRBAC::CAN_CREATE_TODOS, _w('Can access shared lists & create to-dos to self'), 'always_enabled');
         $this->addItem(
             pocketlistsRBAC::CAN_ASSIGN,
             _w('Can see other users personal to-dos and assign to-dos to teammates'),
