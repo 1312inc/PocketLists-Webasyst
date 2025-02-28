@@ -789,6 +789,9 @@ paths:
                       - blue
                       - yellow
                       - purple
+                  assigned_contact_id:
+                    type: integer
+                    description: Assigned contact ID
                   client_touch_datetime:
                     type: string
                     format: date-time

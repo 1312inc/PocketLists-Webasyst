@@ -14,15 +14,25 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
             throw new pocketlistsApiException(_w('Type error `data`'), 400);
         }
 
+        $assign_contacts = [];
         $user_id = $this->getUser()->getId();
         $pocket_ids = array_unique(array_column($lists, 'pocket_id'));
         $pocket_access = pocketlistsRBAC::getAccessPocketForContact($this->getUser());
+        $assigned_contact_ids = array_unique(array_filter(array_column($lists, 'assigned_contact_id')));
         $uuids = array_column($lists, 'uuid');
 
         if (!empty($pocket_ids)) {
             /** @var pocketlistsPocketModel $pocket_model */
             $pocket_model = pl2()->getModel(pocketlistsPocket::class);
             $pocket_ids = $pocket_model->select('id')->where('id IN (:pocket_ids)', ['pocket_ids' => $pocket_ids])->fetchAll(null, true);
+        }
+        if (!empty($assigned_contact_ids)) {
+            /** @var pocketlistsContact $_assign_contact */
+            foreach (pl2()->getEntityFactory(pocketlistsContact::class)->createNewWithIds($assigned_contact_ids) as $_assign_contact) {
+                if ($_assign_contact->isExists()) {
+                    $assign_contacts[$_assign_contact->getId()] = $_assign_contact;
+                }
+            }
         }
         if (!empty($uuids)) {
             $uuids = $this->getEntitiesByUuid('list', $uuids);
@@ -64,7 +74,7 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                 'location_id'           => null,
                 'amount'                => 0,
                 'currency_iso3'         => null,
-                'assigned_contact_id'   => null,
+                'assigned_contact_id'   => ifset($_list, 'assigned_contact_id', null),
                 'repeat'                => 0,
                 'uuid'                  => ifset($_list, 'uuid', null),
                 'prev_list_id'          => ifset($_list, 'prev_list_id', null),
@@ -101,6 +111,16 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                 $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'color');
             } elseif (!array_key_exists($_list['color'], pocketlistsStoreColor::getColors())) {
                 $_list['errors'][] = _w('Unknown value color');
+            }
+
+            if (isset($_list['assigned_contact_id'])) {
+                if (!is_numeric($_list['assigned_contact_id'])) {
+                    $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'assigned_contact_id');
+                } elseif ($_list['assigned_contact_id'] < 1) {
+                    $_list['errors'][] = _w('Contact not found');
+                } elseif (!array_key_exists($_list['assigned_contact_id'], $assign_contacts)) {
+                    $_list['errors'][] = _w('Assigned contact not found');
+                }
             }
 
             if (isset($_list['client_touch_datetime'])) {
@@ -162,6 +182,7 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                     ->setType($_list['type'])
                     ->setPocketId($_list['pocket_id'])
                     ->setColor($_list['color'])
+                    ->setAssignedContactId($_list['assigned_contact_id'])
                     ->setIcon($_list['icon'])
                     ->setClientTouchDatetime($_list['client_touch_datetime'])
                     ->setSort($_list['sort'])
