@@ -6,6 +6,7 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
     {
         $ids = $this->get('id');
         $pocket_id = $this->get('pocket_id');
+        $assigned_contact_id = $this->get('assigned_contact_id');
         $starting_from = $this->get('starting_from');
         $limit = $this->get('limit');
         $offset = $this->get('offset');
@@ -24,6 +25,9 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
             } elseif ($pocket_id < 0) {
                 throw new pocketlistsApiException(_w('The parameter has a negative value'), 400);
             }
+        }
+        if (isset($assigned_contact_id) && !is_numeric($assigned_contact_id)) {
+            throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'assigned_contact_id'), 400);
         }
         if (isset($starting_from)) {
             if (!is_string($starting_from)) {
@@ -79,6 +83,12 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
             if ($pocket_id) {
                 $sql_parts['where']['and'][] = 'l.pocket_id = i:pocket_id';
             }
+            if ($assigned_contact_id) {
+                $sql_parts['where']['and'][] = 'i.assigned_contact_id = i:assigned_contact_id';
+            } else {
+                $sql_parts['where']['and'][] = 'NOT (i.assigned_contact_id IS NOT NULL AND i.assigned_contact_id != i:assigned_contact_id)';
+                $assigned_contact_id = $this->getUser()->getId();
+            }
             if ($starting_from) {
                 $sql_parts['where']['and'][] = 'i.update_datetime >= s:starting_from OR i.create_datetime >= s:starting_from OR i.activity_datetime >= s:starting_from';
                 $sql_parts['order by'] = ['i.update_datetime DESC'];
@@ -89,11 +99,12 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
                 $sql = $list_model->buildSqlComponents($sql_parts);
                 $lists = $list_model->query(
                     "$sql LIMIT i:offset, i:limit", [
-                    'ids'           => $ids,
-                    'pocket_id'     => $pocket_id,
-                    'starting_from' => $starting_from,
-                    'limit'         => $limit,
-                    'offset'        => $offset
+                    'ids'                 => $ids,
+                    'pocket_id'           => $pocket_id,
+                    'assigned_contact_id' => $assigned_contact_id,
+                    'starting_from'       => $starting_from,
+                    'limit'               => $limit,
+                    'offset'              => $offset
                 ])->fetchAll('id');
                 $total_count = (int) $list_model->query('SELECT FOUND_ROWS()')->fetchField();
 

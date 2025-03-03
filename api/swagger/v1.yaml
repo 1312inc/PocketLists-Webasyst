@@ -906,6 +906,11 @@ paths:
           schema:
             type: integer
         - in: query
+          name: assigned_contact_id
+          description: Filter by assigned contact ID
+          schema:
+            type: integer
+        - in: query
           name: starting_from
           description: Returns records updated/created only after the specified datetime (UTC, ISO 8601). Older records are removed from the response. When 'starting_from' is passed, all records will be 'ORDER BY update_datetime DESC'.
           schema:
