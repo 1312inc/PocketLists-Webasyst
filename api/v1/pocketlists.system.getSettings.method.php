@@ -56,7 +56,7 @@ class pocketlistsSystemGetSettingsMethod extends pocketlistsApiAbstractMethod
     private function getLabels()
     {
         $result = [];
-        if ($this->is_premium) {
+        if ($this->isPremium()) {
             $result = pl2()->getModel(pocketlistsLabel::class)->getAllWithSort();
         }
 
@@ -70,7 +70,7 @@ class pocketlistsSystemGetSettingsMethod extends pocketlistsApiAbstractMethod
     private function getShortcuts()
     {
         $result = [];
-        if ($this->is_premium) {
+        if ($this->isPremium()) {
             $result = pl2()->getModel(pocketlistsShortcut::class)->select('*')->order('`group` ASC, id ASC')->fetchAll();
         }
 
