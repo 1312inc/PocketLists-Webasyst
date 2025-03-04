@@ -1736,6 +1736,32 @@ paths:
                             type: string
                             default: 'auto'
                             description: Timezone specified in the user custom profile settings
+                          labels:
+                            type: array
+                            description: Labels, only premium license
+                            items:
+                              type: object
+                              properties:
+                                id:
+                                  type: integer
+                                name:
+                                  type: string
+                                color:
+                                  type: string
+                                sort:
+                                  type: integer
+                          shortcuts:
+                            type: array
+                            description: Shortcuts, only premium license
+                            items:
+                              type: object
+                              properties:
+                                id:
+                                  type: integer
+                                name:
+                                  type: string
+                                group:
+                                  type: integer
                           timestamp:
                             type: integer
                             description: UNIX timestamp right now

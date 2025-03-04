@@ -35,6 +35,9 @@ class pocketlistsDefaultLayout extends waLayout
         $users = [];
         $pockets = [];
         $locations = [];
+        $labels = [];
+        $shortcuts = [];
+        $is_premium = pocketlistsLicensing::isPremium();
         if (wa()->whichUI(pocketlistsHelper::APP_ID) != '1.3') {
             $user_get_list = new pocketlistsUsersGetMethod();
             $response = $user_get_list->getResponse(true);
@@ -47,6 +50,11 @@ class pocketlistsDefaultLayout extends waLayout
             $location_get_list = new pocketlistsLocationsGetMethod();
             $response = $location_get_list->getResponse(true);
             $locations = ifset($response, 'data', []);
+
+            if ($is_premium) {
+                $labels = pl2()->getModel(pocketlistsLabel::class)->getAllWithSort();
+                $shortcuts = pl2()->getModel(pocketlistsShortcut::class)->select('*')->order('`group` ASC, id ASC')->fetchAll();
+            }
         }
 
         $user_tz = wa()->getUser()->get('timezone');
@@ -62,11 +70,13 @@ class pocketlistsDefaultLayout extends waLayout
             'user_rights' => waUtils::jsonEncode(pocketlistsRBAC::getUserRights()),
             'user_locale' => wa()->getLocale(),
             'user_timezone' => (empty($user_tz) ? 'auto' : $user_tz),
+            'labels' => waUtils::jsonEncode($labels),
+            'shortcuts' => waUtils::jsonEncode($shortcuts),
             'timestamp' => $current_time,
             'datetime' => pocketlistsHelper::convertDateToISO8601(date('Y-m-d H:i:s', $current_time)),
             'framework_version' => wa()->getVersion('webasyst'),
             'app_version' => wa()->getVersion(pocketlistsHelper::APP_ID),
-            'is_premium' => (pocketlistsLicensing::isPremium() ? 1 : 0),
+            'is_premium' => ($is_premium ? 1 : 0),
             'pl_debug_mode' => (wa()->getSetting('pl_debug_mode', 0) ? 1 : 0)
         ]);
     }
