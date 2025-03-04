@@ -6,6 +6,8 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
     {
         $ids = $this->get('id');
         $list_id = $this->get('list_id');
+        $contact_id = $this->get('contact_id');
+        $assigned_contact_id = $this->get('assigned_contact_id');
         $location_id = $this->get('location_id');
         $status = $this->get('status');
         $tag = $this->get('tag');
@@ -32,6 +34,20 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
                 throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'list_id'), 400);
             } elseif ($list_id < 1) {
                 throw new pocketlistsApiException(_w('List not found'), 404);
+            }
+        }
+        if (isset($contact_id)) {
+            if (!is_numeric($contact_id)) {
+                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'contact_id'), 400);
+            } elseif ($contact_id < 1) {
+                throw new pocketlistsApiException(_w('Contact not found'), 404);
+            }
+        }
+        if (isset($assigned_contact_id)) {
+            if (!is_numeric($assigned_contact_id)) {
+                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'assigned_contact_id'), 400);
+            } elseif ($assigned_contact_id < 1) {
+                throw new pocketlistsApiException(_w('Assigned contact not found'), 404);
             }
         }
         if (isset($location_id)) {
@@ -119,6 +135,7 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
         $item_move_ids = [];
         $item_model = pl2()->getModel(pocketlistsItem::class);
         $sql_parts = $item_model->getQueryComponents(true);
+        $sql_parts['where']['and'][] = 'i.key_list_id IS NULL';
         if ($ids) {
             $sql_parts['where']['and'][] = 'i.id IN (i:item_ids)';
         }
@@ -128,9 +145,14 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
             }
             $sql_parts['where']['and'][] = 'i.list_id IN (i:list_ids)'.($item_move_ids ? ' OR i.id IN (i:item_move_ids)' : '');
         } else {
-            $sql_parts['where']['and'][] = 'i.list_id IN (i:list_ids) OR (i.list_id IS NULL AND (i.contact_id = i:contact_id OR i.assigned_contact_id = i:contact_id))';
+            $sql_parts['where']['and'][] = 'i.list_id IN (i:list_ids) OR (i.list_id IS NULL AND (i.contact_id = i:current_user_id OR i.assigned_contact_id = i:current_user_id))';
         }
-
+        if (isset($contact_id)) {
+            $sql_parts['where']['and'][] = 'i.contact_id = i:contact_id';
+        }
+        if (isset($assigned_contact_id)) {
+            $sql_parts['where']['and'][] = 'i.assigned_contact_id = i:assigned_contact_id';
+        }
         if ($location_id || $external_app_id) {
             if ($location_id) {
                 $sql_parts['join']['pl'] = 'LEFT JOIN pocketlists_location pl ON pl.id = i.location_id';
@@ -167,19 +189,21 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
         $sql = $item_model->buildSqlComponents($sql_parts);
         $items = $item_model->query(
             "$sql LIMIT i:offset, i:limit", [
-            'item_ids'      => $ids,
-            'item_move_ids' => $item_move_ids,
-            'list_ids'      => $list_ids,
-            'location_id'   => $location_id,
-            'status'        => $status,
-            'text'          => $tag,
-            'app_id'        => $external_app_id,
-            'entity_type'   => $external_entity_type,
-            'entity_id'     => $external_entity_id,
-            'contact_id'    => $this->getUser()->getId(),
-            'starting_from' => $starting_from,
-            'limit'         => $limit,
-            'offset'        => $offset
+            'item_ids'            => $ids,
+            'item_move_ids'       => $item_move_ids,
+            'list_ids'            => $list_ids,
+            'location_id'         => $location_id,
+            'status'              => $status,
+            'text'                => $tag,
+            'app_id'              => $external_app_id,
+            'entity_type'         => $external_entity_type,
+            'entity_id'           => $external_entity_id,
+            'current_user_id'     => $this->getUser()->getId(),
+            'contact_id'          => $contact_id,
+            'assigned_contact_id' => $assigned_contact_id,
+            'starting_from'       => $starting_from,
+            'limit'               => $limit,
+            'offset'              => $offset
         ])->fetchAll('id');
         $total_count = (int) $item_model->query('SELECT FOUND_ROWS()')->fetchField();
 

@@ -470,6 +470,16 @@ paths:
           schema:
             type: integer
         - in: query
+          name: contact_id
+          description: Filters by contact ID
+          schema:
+            type: integer
+        - in: query
+          name: assigned_contact_id
+          description: Filters by assigned contact ID
+          schema:
+            type: integer
+        - in: query
           name: location_id
           description: Filters by location ID.
           schema:
