@@ -40,6 +40,11 @@ class pocketlistsActivityAction extends pocketlistsViewAction
      */
     public function runAction($params = null)
     {
+        if (wa()->whichUI() === '1.3') {
+            if (!waRequest::isXMLHttpRequest()) {
+                $this->redirect(wa()->getAppUrl(null, true));
+            }
+        }
         $this->offset = $this->getParam('offset', 0, waRequest::TYPE_INT);
         $this->entity_id = $this->getParam('entity_id', 0, waRequest::TYPE_INT);
         if ($this->type) {

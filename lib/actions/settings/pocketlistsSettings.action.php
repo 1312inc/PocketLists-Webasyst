@@ -13,7 +13,11 @@ class pocketlistsSettingsAction extends pocketlistsViewAction
      */
     public function runAction($params = null)
     {
-        if (!waRequest::isXMLHttpRequest()) {
+        if (wa()->whichUI() === '1.3') {
+            if (!waRequest::isXMLHttpRequest()) {
+                $this->redirect(wa()->getAppUrl());
+            }
+        } else {
             $this->setLayout(new pocketlistsStaticLayout());
         }
         $settings = $this->user->getSettings()->getAllSettings();
