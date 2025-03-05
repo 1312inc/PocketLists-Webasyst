@@ -41,7 +41,7 @@ const f = {
   getRuntimeName: (a) => a || b(f.runtime),
   getSuffix: () => f.suffix
 };
-function P(a, e) {
+function v(a, e) {
   const t = e();
   return a.waitUntil(t), t;
 }
@@ -76,7 +76,7 @@ function M(a) {
     url: n.href
   };
 }
-class D {
+class W {
   constructor() {
     this.updatedURLs = [], this.notUpdatedURLs = [], this.handlerWillStart = async ({ request: e, state: t }) => {
       t && (t.originalRequest = e);
@@ -89,7 +89,7 @@ class D {
     };
   }
 }
-class W {
+class A {
   constructor({ precacheController: e }) {
     this.cacheKeyWillBeUsed = async ({ request: t, params: s }) => {
       const n = (s == null ? void 0 : s.cacheKey) || this._precacheController.getCacheKeyForURL(t.url);
@@ -98,7 +98,7 @@ class W {
   }
 }
 let y;
-function A() {
+function D() {
   if (y === void 0) {
     const a = new Response("");
     if ("body" in a)
@@ -119,7 +119,7 @@ async function S(a, e) {
     headers: new Headers(s.headers),
     status: s.status,
     statusText: s.statusText
-  }, r = e ? e(n) : n, c = A() ? s.body : await s.blob();
+  }, r = e ? e(n) : n, c = D() ? s.body : await s.blob();
   return new Response(c, r);
 }
 const q = (a) => new URL(String(a), location.href).href.replace(new RegExp(`^${location.origin}`), "");
@@ -129,7 +129,7 @@ function K(a, e) {
     t.searchParams.delete(s);
   return t.href;
 }
-async function j(a, e, t, s) {
+async function H(a, e, t, s) {
   const n = K(e.url, t);
   if (e.url === n)
     return a.match(e, s);
@@ -140,7 +140,7 @@ async function j(a, e, t, s) {
       return a.match(i, s);
   }
 }
-class H {
+class j {
   /**
    * Creates a promise and exposes its resolve and reject functions as methods.
    */
@@ -183,7 +183,7 @@ class G {
    *     {@link workbox-routing~matchCallback} (if applicable).
    */
   constructor(e, t) {
-    this._cacheKeys = {}, Object.assign(this, t), this.event = t.event, this._strategy = e, this._handlerDeferred = new H(), this._extendLifetimePromises = [], this._plugins = [...e.plugins], this._pluginStateMap = /* @__PURE__ */ new Map();
+    this._cacheKeys = {}, Object.assign(this, t), this.event = t.event, this._strategy = e, this._handlerDeferred = new j(), this._extendLifetimePromises = [], this._plugins = [...e.plugins], this._pluginStateMap = /* @__PURE__ */ new Map();
     for (const s of this._plugins)
       this._pluginStateMap.set(s, {});
     this.event.waitUntil(this._handlerDeferred.promise);
@@ -306,7 +306,7 @@ class G {
     const r = await this._ensureResponseSafeToCache(t);
     if (!r)
       return !1;
-    const { cacheName: c, matchOptions: i } = this._strategy, o = await self.caches.open(c), h = this.hasCallback("cacheDidUpdate"), p = h ? await j(
+    const { cacheName: c, matchOptions: i } = this._strategy, o = await self.caches.open(c), h = this.hasCallback("cacheDidUpdate"), g = h ? await H(
       // TODO(philipwalton): the `__WB_REVISION__` param is a precaching
       // feature. Consider into ways to only add this behavior if using
       // precaching.
@@ -324,7 +324,7 @@ class G {
     for (const u of this.iterateCallbacks("cacheDidUpdate"))
       await u({
         cacheName: c,
-        oldResponse: p,
+        oldResponse: g,
         newResponse: r.clone(),
         request: n,
         event: this.event
@@ -471,7 +471,7 @@ class G {
     return s || t && t.status !== 200 && (t = void 0), t;
   }
 }
-class V {
+class T {
   /**
    * Creates a new instance of the strategy and sets all documented option
    * properties as public instance properties.
@@ -593,7 +593,7 @@ class V {
       throw c;
   }
 }
-class d extends V {
+class d extends T {
   /**
    *
    * @param {Object} [options]
@@ -694,7 +694,7 @@ d.copyRedirectedCacheableResponsesPlugin = {
     return a.redirected ? await S(a) : a;
   }
 };
-class Q {
+class V {
   /**
    * Create a new PrecacheController.
    *
@@ -710,7 +710,7 @@ class Q {
       cacheName: C.getPrecacheName(e),
       plugins: [
         ...t,
-        new W({ precacheController: this })
+        new A({ precacheController: this })
       ],
       fallbackToNetwork: s
     }), this.install = this.install.bind(this), this.activate = this.activate.bind(this);
@@ -777,8 +777,8 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
    * @return {Promise<workbox-precaching.InstallResult>}
    */
   install(e) {
-    return P(e, async () => {
-      const t = new D();
+    return v(e, async () => {
+      const t = new W();
       this.strategy.plugins.push(t);
       for (const [r, c] of this._urlsToCacheKeys) {
         const i = this._cacheKeysToIntegrities.get(c), o = this._urlsToCacheModes.get(r), h = new Request(r, {
@@ -807,7 +807,7 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
    * @return {Promise<workbox-precaching.CleanupResult>}
    */
   activate(e) {
-    return P(e, async () => {
+    return v(e, async () => {
       const t = await self.caches.open(this.strategy.cacheName), s = await t.keys(), n = new Set(this._urlsToCacheKeys.values()), r = [];
       for (const c of s)
         n.has(c.url) || (await t.delete(c), r.push(c.url));
@@ -892,13 +892,13 @@ This is generally NOT safe. Learn more at https://bit.ly/wb-precache`;
   }
 }
 let U;
-const L = () => (U || (U = new Q()), U);
+const L = () => (U || (U = new V()), U);
 try {
   self["workbox:routing:7.0.0"] && _();
 } catch {
 }
-const v = "GET", R = (a) => a && typeof a == "object" ? a : { handle: a };
-class g {
+const N = "GET", R = (a) => a && typeof a == "object" ? a : { handle: a };
+class p {
   /**
    * Constructor for Route class.
    *
@@ -910,7 +910,7 @@ class g {
    * @param {string} [method='GET'] The HTTP method to match the Route
    * against.
    */
-  constructor(e, t, s = v) {
+  constructor(e, t, s = N) {
     this.handler = R(t), this.match = e, this.method = s;
   }
   /**
@@ -922,7 +922,7 @@ class g {
     this.catchHandler = R(e);
   }
 }
-class z extends g {
+class Q extends p {
   /**
    * If the regular expression contains
    * [capture groups]{@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp#grouping-back-references},
@@ -945,7 +945,7 @@ class z extends g {
     super(n, t, s);
   }
 }
-class J {
+class z {
   /**
    * Initializes a new Router.
    */
@@ -1036,13 +1036,13 @@ class J {
     } catch (u) {
       h = Promise.reject(u);
     }
-    const p = c && c.catchHandler;
-    return h instanceof Promise && (this._catchHandler || p) && (h = h.catch(async (u) => {
-      if (p)
+    const g = c && c.catchHandler;
+    return h instanceof Promise && (this._catchHandler || g) && (h = h.catch(async (u) => {
+      if (g)
         try {
-          return await p.handle({ url: s, request: e, event: t, params: r });
-        } catch (k) {
-          k instanceof Error && (u = k);
+          return await g.handle({ url: s, request: e, event: t, params: r });
+        } catch (P) {
+          P instanceof Error && (u = P);
         }
       if (this._catchHandler)
         return this._catchHandler.handle({ url: s, request: e, event: t });
@@ -1089,7 +1089,7 @@ class J {
    * @param {string} [method='GET'] The HTTP method to associate with this
    * default handler. Each method has its own default.
    */
-  setDefaultHandler(e, t = v) {
+  setDefaultHandler(e, t = N) {
     this._defaultHandlerMap.set(t, R(e));
   }
   /**
@@ -1128,17 +1128,17 @@ class J {
   }
 }
 let w;
-const X = () => (w || (w = new J(), w.addFetchListener(), w.addCacheListener()), w);
-function T(a, e, t) {
+const J = () => (w || (w = new z(), w.addFetchListener(), w.addCacheListener()), w);
+function k(a, e, t) {
   let s;
   if (typeof a == "string") {
     const r = new URL(a, location.href), c = ({ url: i }) => i.href === r.href;
-    s = new g(c, e, t);
+    s = new p(c, e, t);
   } else if (a instanceof RegExp)
-    s = new z(a, e, t);
+    s = new Q(a, e, t);
   else if (typeof a == "function")
-    s = new g(a, e, t);
-  else if (a instanceof g)
+    s = new p(a, e, t);
+  else if (a instanceof p)
     s = a;
   else
     throw new l("unsupported-route-type", {
@@ -1146,17 +1146,17 @@ function T(a, e, t) {
       funcName: "registerRoute",
       paramName: "capture"
     });
-  return X().registerRoute(s), s;
+  return J().registerRoute(s), s;
 }
-function Y(a, e = []) {
+function X(a, e = []) {
   for (const t of [...a.searchParams.keys()])
     e.some((s) => s.test(t)) && a.searchParams.delete(t);
   return a;
 }
-function* Z(a, { ignoreURLParametersMatching: e = [/^utm_/, /^fbclid$/], directoryIndex: t = "index.html", cleanURLs: s = !0, urlManipulation: n } = {}) {
+function* Y(a, { ignoreURLParametersMatching: e = [/^utm_/, /^fbclid$/], directoryIndex: t = "index.html", cleanURLs: s = !0, urlManipulation: n } = {}) {
   const r = new URL(a, location.href);
   r.hash = "", yield r.href;
-  const c = Y(r, e);
+  const c = X(r, e);
   if (yield c.href, t && c.pathname.endsWith("/")) {
     const i = new URL(c.href);
     i.pathname += t, yield i.href;
@@ -1171,7 +1171,7 @@ function* Z(a, { ignoreURLParametersMatching: e = [/^utm_/, /^fbclid$/], directo
       yield o.href;
   }
 }
-class ee extends g {
+class Z extends p {
   /**
    * @param {PrecacheController} precacheController A `PrecacheController`
    * instance used to both match requests and respond to fetch events.
@@ -1191,7 +1191,7 @@ class ee extends g {
   constructor(e, t) {
     const s = ({ request: n }) => {
       const r = e.getURLsToCacheKeys();
-      for (const c of Z(n.url, t)) {
+      for (const c of Y(n.url, t)) {
         const i = r.get(c);
         if (i) {
           const o = e.getIntegrityForCacheKey(i);
@@ -1202,34 +1202,34 @@ class ee extends g {
     super(s, e.strategy);
   }
 }
-function te(a) {
-  const e = L(), t = new ee(e, a);
-  T(t);
+function ee(a) {
+  const e = L(), t = new Z(e, a);
+  k(t);
 }
-const se = "-precache-", ae = async (a, e = se) => {
+const te = "-precache-", se = async (a, e = te) => {
   const s = (await self.caches.keys()).filter((n) => n.includes(e) && n.includes(self.registration.scope) && n !== a);
   return await Promise.all(s.map((n) => self.caches.delete(n))), s;
 };
-function ne() {
+function ae() {
   self.addEventListener("activate", (a) => {
     const e = C.getPrecacheName();
-    a.waitUntil(ae(e).then((t) => {
+    a.waitUntil(se(e).then((t) => {
     }));
   });
 }
-function re(a) {
+function ne(a) {
   return L().createHandlerBoundToURL(a);
 }
-function ce(a) {
+function re(a) {
   L().precache(a);
 }
-function ie(a, e) {
-  ce(a), te(e);
+function ce(a, e) {
+  re(a), ee(e);
 }
-function oe() {
+function ie() {
   self.addEventListener("activate", () => self.clients.claim());
 }
-class le extends g {
+class oe extends p {
   /**
    * If both `denylist` and `allowlist` are provided, the `denylist` will
    * take precedence and the request will not match this route.
@@ -1277,25 +1277,71 @@ class le extends g {
     return !!this._allowlist.some((n) => n.test(s));
   }
 }
-ie([{"revision":null,"url":"assets/CalendarView-1GeYiuaT.css"},{"revision":null,"url":"assets/CalendarView-HxLxHYVe.js"},{"revision":null,"url":"assets/CriteriaView-FEEMnZ-r.js"},{"revision":null,"url":"assets/dayjs.min-knfLqxmB.js"},{"revision":null,"url":"assets/EmbedListView-KMNB4GQA.js"},{"revision":null,"url":"assets/FiltersView-gMJ1TgX5.js"},{"revision":null,"url":"assets/FiltersViewNearby-_jd3N3DG.js"},{"revision":null,"url":"assets/index-GV9Z4EKM.js"},{"revision":null,"url":"assets/index-YaoukGEC.css"},{"revision":null,"url":"assets/InnerSidebar-HzvpRV1A.js"},{"revision":null,"url":"assets/InnerSidebar-oBYtYR5m.css"},{"revision":null,"url":"assets/ListView-dZPaWUWp.js"},{"revision":null,"url":"assets/MainSidebar-npFLnPtn.css"},{"revision":null,"url":"assets/MainSidebar-y7MOertL.js"},{"revision":null,"url":"assets/MapGoogle-tSse9d_j.js"},{"revision":null,"url":"assets/MapView-qWT5GiQB.js"},{"revision":null,"url":"assets/MapYandex-kRMJli8H.js"},{"revision":null,"url":"assets/task-gOmDuTcr.js"},{"revision":null,"url":"assets/TaskList-OcNhnBM5.css"},{"revision":null,"url":"assets/TaskList.vue_vue_type_script_setup_true_lang-FjlSVldl.js"},{"revision":null,"url":"assets/TaskListLayout.vue_vue_type_script_setup_true_lang-YUPuU5lc.js"},{"revision":null,"url":"assets/Test-tOtHDdU0.js"},{"revision":null,"url":"assets/UpnextView-AR3QMi-8.js"},{"revision":null,"url":"assets/user-iLkEjJQ_.css"},{"revision":null,"url":"assets/user-keLgUovj.js"},{"revision":null,"url":"assets/UsersView-98r5vQn1.js"},{"revision":null,"url":"assets/VerticalGap.vue_vue_type_script_setup_true_lang-VmZIOg0t.js"},{"revision":"4429d3e28cdb1f9f12b045df52f587d5","url":"index.html"},{"revision":"5f6d5311322fefb43909d849bee45dc5","url":"favicon.svg"},{"revision":"779b5e6e09b10acc7c31513ad1471ab8","url":"favicon.ico"},{"revision":"f77c87f977e0fcce05a6df46c885a129","url":"robots.txt"},{"revision":"9ab85768879ed73c71b8a69cced0b070","url":"apple-touch-icon.png"},{"revision":"8df25068fa276f67c115d75061156e58","url":"pwa-192x192.png"},{"revision":"fbd02f49094a5d7e3c35e1fd1039f582","url":"pwa-512x512.png"},{"revision":"2ab20da6fbb7103e8bb29d7dd4e52aef","url":"manifest.webmanifest"}]);
-ne();
-let he, N;
-N = [
-  /^\/api\//,
-  /^\/login\//,
-  /^\/oauth\//,
-  /^\/signin\//,
-  /^\/web-share-target\//,
-  // exclude emoji: has its own cache
-  /^\/emojis\//,
-  // exclude sw: if the user navigates to it, fallback to index.html
-  /^\/sw.js$/,
-  // exclude webmanifest: has its own cache
-  /^\/manifest-(.*).webmanifest$/
-];
-T(new le(
-  re("index.html"),
-  { allowlist: he, denylist: N }
+const le = {
+  /**
+   * Returns a valid response (to allow caching) if the status is 200 (OK) or
+   * 0 (opaque).
+   *
+   * @param {Object} options
+   * @param {Response} options.response
+   * @return {Response|null}
+   *
+   * @private
+   */
+  cacheWillUpdate: async ({ response: a }) => a.status === 200 || a.status === 0 ? a : null
+};
+class he extends T {
+  /**
+   * @param {Object} [options]
+   * @param {string} [options.cacheName] Cache name to store and retrieve
+   * requests. Defaults to cache names provided by
+   * {@link workbox-core.cacheNames}.
+   * @param {Array<Object>} [options.plugins] [Plugins]{@link https://developers.google.com/web/tools/workbox/guides/using-plugins}
+   * to use in conjunction with this caching strategy.
+   * @param {Object} [options.fetchOptions] Values passed along to the
+   * [`init`](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/fetch#Parameters)
+   * of [non-navigation](https://github.com/GoogleChrome/workbox/issues/1796)
+   * `fetch()` requests made by this strategy.
+   * @param {Object} [options.matchOptions] [`CacheQueryOptions`](https://w3c.github.io/ServiceWorker/#dictdef-cachequeryoptions)
+   */
+  constructor(e = {}) {
+    super(e), this.plugins.some((t) => "cacheWillUpdate" in t) || this.plugins.unshift(le);
+  }
+  /**
+   * @private
+   * @param {Request|string} request A request to run this strategy for.
+   * @param {workbox-strategies.StrategyHandler} handler The event that
+   *     triggered the request.
+   * @return {Promise<Response>}
+   */
+  async _handle(e, t) {
+    const s = t.fetchAndCachePut(e).catch(() => {
+    });
+    t.waitUntil(s);
+    let n = await t.cacheMatch(e), r;
+    if (!n)
+      try {
+        n = await s;
+      } catch (c) {
+        c instanceof Error && (r = c);
+      }
+    if (!n)
+      throw new l("no-response", { url: e.url, error: r });
+    return n;
+  }
+}
+ce([{"revision":null,"url":"assets/CalendarView-1GeYiuaT.css"},{"revision":null,"url":"assets/CalendarView-Hc6-p4Qr.js"},{"revision":null,"url":"assets/ChooseLocation.vue_vue_type_script_setup_true_lang-AYikjNXo.js"},{"revision":null,"url":"assets/ContenteditableBlock-0kxsQ_eq.js"},{"revision":null,"url":"assets/ContenteditableBlock-Xm27It0y.css"},{"revision":null,"url":"assets/CriteriaView-Cu8XTEQk.js"},{"revision":null,"url":"assets/DueView-267CPe7_.js"},{"revision":null,"url":"assets/FilterBricks.vue_vue_type_script_setup_true_lang--Hm-NfaD.js"},{"revision":null,"url":"assets/FiltersView-yCQ3e5F6.js"},{"revision":null,"url":"assets/FiltersViewNearby-dnpWGJ6X.js"},{"revision":null,"url":"assets/index-A3hswJwA.css"},{"revision":null,"url":"assets/index-pCXglyH4.js"},{"revision":null,"url":"assets/ListView-cf0EQkoI.css"},{"revision":null,"url":"assets/ListView-JJGO50K-.js"},{"revision":null,"url":"assets/MapGoogle-6qJx8H_t.js"},{"revision":null,"url":"assets/MapView-FlA4foZ3.js"},{"revision":null,"url":"assets/MapYandex-59ARUMkb.js"},{"revision":null,"url":"assets/ModalWrapperBody.vue_vue_type_script_setup_true_lang-rFdsP_Gd.js"},{"revision":null,"url":"assets/PriorityView-OhV928dx.js"},{"revision":null,"url":"assets/rangy-5rxgwlWZ.js"},{"revision":null,"url":"assets/SearchForm.vue_vue_type_script_setup_true_lang-8qf8-lhi.js"},{"revision":null,"url":"assets/SearchView-2B4dvNzs.js"},{"revision":null,"url":"assets/SidebarInner-v1zOV3gR.css"},{"revision":null,"url":"assets/SidebarInner-xWkZfgRi.js"},{"revision":null,"url":"assets/SortableList-OHFO9pel.css"},{"revision":null,"url":"assets/SortableList.vue_vue_type_style_index_0_lang-TxYhA7x2.js"},{"revision":null,"url":"assets/TaskInfo-gurkyfiW.js"},{"revision":null,"url":"assets/TaskList.vue_vue_type_script_setup_true_lang-_I_gjeDm.js"},{"revision":null,"url":"assets/TaskListItemPopupMenuWhere-9LF0m1sE.js"},{"revision":null,"url":"assets/UpnextView-9mSiC32r.js"},{"revision":null,"url":"assets/UsersView-FfW5buCw.js"},{"revision":"ef9725bf719400d33c13e7bab3b7112e","url":"index.html"},{"revision":"402b66900e731ca748771b6fc5e7a068","url":"registerSW.js"},{"revision":"5f6d5311322fefb43909d849bee45dc5","url":"favicon.svg"},{"revision":"779b5e6e09b10acc7c31513ad1471ab8","url":"favicon.ico"},{"revision":"f77c87f977e0fcce05a6df46c885a129","url":"robots.txt"},{"revision":"9ab85768879ed73c71b8a69cced0b070","url":"apple-touch-icon.png"},{"revision":"8df25068fa276f67c115d75061156e58","url":"pwa-192x192.png"},{"revision":"fbd02f49094a5d7e3c35e1fd1039f582","url":"pwa-512x512.png"},{"revision":"ae7b19af7b4f05e0a620cb466a727b2d","url":"manifest.webmanifest"}]);
+ae();
+let ue;
+k(new oe(
+  ne("index.html"),
+  { allowlist: ue }
 ));
+k(
+  ({ request: a }) => ["style", "script", "image"].includes(a.destination),
+  new he({
+    cacheName: "static-cache"
+  })
+);
 self.skipWaiting();
-oe();
+ie();
