@@ -1288,6 +1288,11 @@ paths:
           schema:
             type: integer
         - in: query
+          name: contact_id
+          description: Filters by contact ID.
+          schema:
+            type: integer
+        - in: query
           name: offset
           description: Skips first 'offset' records before starting the response. 0 by default.
           schema:

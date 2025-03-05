@@ -7,6 +7,7 @@ class pocketlistsLogGetMethod extends pocketlistsApiAbstractMethod
         $starting_from = $this->get('starting_from');
         $entity_type = $this->get('entity_type');
         $entity_id = $this->get('entity_id');
+        $contact_id = $this->get('contact_id');
         $offset = $this->get('offset');
         $limit = $this->get('limit');
 
@@ -37,6 +38,14 @@ class pocketlistsLogGetMethod extends pocketlistsApiAbstractMethod
                 throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'entity_id'), 400);
             } elseif ($entity_id < 1) {
                 throw new pocketlistsApiException(_w('The parameter has a negative value'), 400);
+            }
+        }
+
+        if (isset($contact_id)) {
+            if (!is_numeric($contact_id)) {
+                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'contact_id'), 400);
+            } elseif ($contact_id < 1) {
+                throw new pocketlistsApiException(_w('Contact not found'), 404);
             }
         }
 
@@ -79,6 +88,9 @@ class pocketlistsLogGetMethod extends pocketlistsApiAbstractMethod
                 'l.location_id = i:entity_id'
             ]);
         }
+        if (isset($contact_id)) {
+            $query_components['where']['and'][] = 'l.contact_id = i:contact_id';
+        }
         if (isset($starting_from)) {
             $query_components['where']['and'][] = 'l.create_datetime >= s:starting_from';
         }
@@ -87,6 +99,7 @@ class pocketlistsLogGetMethod extends pocketlistsApiAbstractMethod
             [
                 'entity_type'   => $entity_type,
                 'entity_id'     => $entity_id,
+                'contact_id'    => $contact_id,
                 'starting_from' => $starting_from
             ]
         )->fetchAll();
