@@ -134,6 +134,7 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
             'upnext',
             'due',
             'priority',
+            'favorites',
             'user',
             'tag',
             'search',
@@ -154,7 +155,7 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
 
         $plim  = pl2()->getModel(pocketlistsItem::class);
         $sql_parts = $plim->getQueryComponents(true);
-        $sql_parts['where']['and'][] = 'i.list_id IN (i:list_ids) OR (i.list_id IS NULL AND (i.contact_id = i:contact_id OR i.assigned_contact_id = i:contact_id))';
+        $sql_parts['where']['and']['def'] = 'i.list_id IN (i:list_ids) OR (i.list_id IS NULL AND (i.contact_id = i:contact_id OR i.assigned_contact_id = i:contact_id))';
         switch ($filter_split[0]) {
             case 'upnext':
                 /** upnext */
@@ -178,6 +179,10 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
                     throw new pocketlistsApiException(_w('Unknown filter value'));
                 }
                 $sql_parts['order by'][] = 'i.priority DESC';
+                break;
+            case 'favorites':
+                /** favorites */
+                $sql_parts['where']['and']['def'] = 'uf.item_id IS NOT NULL';
                 break;
             case 'user':
                 /** user/ID */

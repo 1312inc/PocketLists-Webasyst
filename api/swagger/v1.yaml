@@ -566,6 +566,7 @@ paths:
             + **upnext**: items with due date/time or manually defined priority ordered by mixed dynamicly calculated priority,
             + **due**: items with non-empty due date/time,
             + **priority**: items with manually defined priority,
+            + **favorites**: items in favorites,
             + **user/55**: items assigned to a specific responsible user,
             + **tag/TAG**: items assigned to a specific tag,
             + **search/KEYWORD**: full-text search within item text data,
