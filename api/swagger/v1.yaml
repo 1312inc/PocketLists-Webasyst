@@ -451,6 +451,51 @@ paths:
                 $ref: '#/components/schemas/response'
         500:
           description: Internal server error
+  /pocketlists.items.favorite:
+    post:
+      security:
+        - BearerAuth: [ ]
+      summary: Добавить, удалить айтем в избранное
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: Item ID
+                  favorite:
+                    type: boolean
+                    default: false
+                    description: true - add to favorite, false - remove
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                 $ref: '#/components/schemas/response'
+        400:
+          description: Invalid request data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
+        403:
+          description: Access denied to the Pocket Lists app or this API method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
+        404:
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
   /pocketlists.items.get:
     get:
       security:
@@ -2202,6 +2247,15 @@ components:
                   type: integer
                   nullable: true
                   description: Number of comments linked to this item
+    item.favorite:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Item ID
+        favorite:
+          type: boolean
+          description: Is favorite
     comment:
       type: object
       properties:
@@ -2456,6 +2510,7 @@ components:
                           - $ref: '#/components/schemas/attachment'
                           - $ref: '#/components/schemas/comment'
                           - $ref: '#/components/schemas/item'
+                          - $ref: '#/components/schemas/item.favorite'
                           - $ref: '#/components/schemas/list'
                           - $ref: '#/components/schemas/location'
                           - $ref: '#/components/schemas/log'
