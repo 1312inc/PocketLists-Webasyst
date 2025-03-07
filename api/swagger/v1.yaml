@@ -455,7 +455,7 @@ paths:
     post:
       security:
         - BearerAuth: [ ]
-      summary: Добавить, удалить айтем в избранное
+      summary: Adds or removes items from the user personal list of favorites items.
       requestBody:
         content:
           application/json:
@@ -470,7 +470,7 @@ paths:
                   favorite:
                     type: boolean
                     default: false
-                    description: true - add to favorite, false - remove
+                    description: True - add to favorite, false - remove from favorites.
       responses:
         200:
           description: OK
