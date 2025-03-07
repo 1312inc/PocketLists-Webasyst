@@ -67,7 +67,7 @@ class pocketlistsItemsFavoriteMethod extends pocketlistsApiAbstractMethod
 
         $uf_model = pl2()->getModel(pocketlistsUserFavorites::class);
         if (!empty($set_favorite)) {
-            $uf_model->multipleInsert($data_ok);
+            $uf_model->multipleInsert($set_favorite, waModel::INSERT_IGNORE);
         }
         if (!empty($unset_favorite)) {
             $uf_model->exec("
