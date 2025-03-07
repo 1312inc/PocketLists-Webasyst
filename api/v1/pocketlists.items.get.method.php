@@ -133,6 +133,7 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
         }
 
         $item_move_ids = [];
+        $current_user_id = $this->getUser()->getId();
         $item_model = pl2()->getModel(pocketlistsItem::class);
         $sql_parts = $item_model->getQueryComponents(true);
         $sql_parts['where']['and'][] = 'i.key_list_id IS NULL';
@@ -149,6 +150,8 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
         }
         if (isset($contact_id)) {
             $sql_parts['where']['and'][] = 'i.contact_id = i:contact_id';
+        } else {
+            $contact_id = $current_user_id;
         }
         if (isset($assigned_contact_id)) {
             $sql_parts['where']['and'][] = 'i.assigned_contact_id = i:assigned_contact_id';
@@ -198,7 +201,7 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
             'app_id'              => $external_app_id,
             'entity_type'         => $external_entity_type,
             'entity_id'           => $external_entity_id,
-            'current_user_id'     => $this->getUser()->getId(),
+            'current_user_id'     => $current_user_id,
             'contact_id'          => $contact_id,
             'assigned_contact_id' => $assigned_contact_id,
             'starting_from'       => $starting_from,
@@ -255,6 +258,7 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
                 'tags'           => []
             ];
             $_item['extended_data'] = [
+                'favorite'       => (bool) $_item['favorite'],
                 'comments_count' => (int) $_item['comments_count']
             ];
 

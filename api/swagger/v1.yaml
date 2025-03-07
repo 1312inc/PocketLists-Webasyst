@@ -2104,6 +2104,9 @@ components:
               type: object
               nullable: true
               properties:
+                favorite:
+                  type: boolean
+                  description: Is favorite
                 items_count:
                   type: integer
                   description: Number of active (non-completed) items in the list
@@ -2288,6 +2291,9 @@ components:
               type: object
               nullable: true
               properties:
+                favorite:
+                  type: boolean
+                  description: Is favorite
                 comments_count:
                   type: integer
                   nullable: true

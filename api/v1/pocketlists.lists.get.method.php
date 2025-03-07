@@ -65,12 +65,13 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
 
         $lists = [];
         $total_count = 0;
-        $accessed_lists = pocketlistsRBAC::getAccessListForContact($this->getUser()->getId());
+        $current_user_id = $this->getUser()->getId();
+        $accessed_lists = pocketlistsRBAC::getAccessListForContact($current_user_id);
         if (!empty($accessed_lists)) {
             /** @var pocketlistsListModel $list_model */
             $list_model = pl2()->getModel(pocketlistsList::class);
             $sql_parts = $list_model->getQueryComponents(true);
-            $sql_parts['select'] = array_slice($sql_parts['select'], 0, 2);
+            $sql_parts['select'] = array_slice($sql_parts['select'], 0, 3);
             $sql_parts['where']['and'] = [
                 'l.id IN (i:ids)',
                 'l.archived = 0'
@@ -87,7 +88,7 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
                 $sql_parts['where']['and'][] = 'i.assigned_contact_id = i:assigned_contact_id';
             } else {
                 $sql_parts['where']['and'][] = 'NOT (i.assigned_contact_id IS NOT NULL AND i.assigned_contact_id != i:assigned_contact_id)';
-                $assigned_contact_id = $this->getUser()->getId();
+                $assigned_contact_id = $current_user_id;
             }
             if ($starting_from) {
                 $sql_parts['where']['and'][] = 'i.update_datetime >= s:starting_from OR i.create_datetime >= s:starting_from OR i.activity_datetime >= s:starting_from';
@@ -101,6 +102,7 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
                     "$sql LIMIT i:offset, i:limit", [
                     'ids'                 => $ids,
                     'pocket_id'           => $pocket_id,
+                    'contact_id'          => $current_user_id,
                     'assigned_contact_id' => $assigned_contact_id,
                     'starting_from'       => $starting_from,
                     'limit'               => $limit,
@@ -147,6 +149,7 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
                         $items_priority_count = ($max_priority ? array_sum(ifset($counters, $_list['id'], $max_priority, [])) : pocketlistsItem::PRIORITY_NORM);
                         $_list['icon_url'] = $static_url.$_list['icon'];
                         $_list['extended_data'] = [
+                            'favorite'              => (bool) $_list['favorite'],
                             'items_count'           => array_sum(ifset($counters, 'started', $_list['id'], [])),
                             'items_priority_count'  => $items_priority_count,
                             'items_priority_value'  => $max_priority,

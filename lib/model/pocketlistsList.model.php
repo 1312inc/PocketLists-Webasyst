@@ -148,6 +148,7 @@ class pocketlistsListModel extends pocketlistsModel
             'select'   => [
                 '*'        => ($calc ? ' SQL_CALC_FOUND_ROWS ' : '').'i.*',
                 'l'        => 'l.*',
+                'favorite' => 'IF(uf.contact_id, 1, 0) favorite',
                 'max_pr'   => "greatest(i.priority, max(i2.priority)) 'max_priority'",
                 'min_due'  => "greatest(i.due_date, max(i2.due_date)) 'min_due_date'",
                 'min_time' => "greatest(i.due_datetime, max(i2.due_datetime)) 'min_due_datetime'",
@@ -156,6 +157,7 @@ class pocketlistsListModel extends pocketlistsModel
             'join'     => [
                 'join pocketlists_item i ON i.key_list_id = l.id',
                 'left join pocketlists_item i2 ON i2.status = 0 and i2.list_id = l.id',
+                'left join pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = l.key_item_id',
             ],
             'where'    => [
                 'and' => [],
