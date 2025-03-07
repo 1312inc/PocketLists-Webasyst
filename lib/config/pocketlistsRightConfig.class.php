@@ -218,11 +218,15 @@ class pocketlistsRightConfig extends waRightConfig
                         self::$rightsCache['list'][$list->getId()] = $value;
                     }
                 }
-                self::$rightsCache['pocket'][$pocket_id] = $value;
-            } else {
-                self::$rightsCache['pocket'][$pocket_id] = $value;
             }
-        } elseif ($list_id = (int) str_replace(pocketlistsRBAC::LIST_ITEM.'.', '', $right)) {
+            self::$rightsCache['pocket'][$pocket_id] = $value;
+        }
+
+        $list_id = (int) str_replace(pocketlistsRBAC::LIST_ITEM.'.', '', $right);
+        if ($list_id) {
+            if (isset(self::$rightsCache['list'][$list_id])) {
+                return true;
+            }
             self::$rightsCache['list'][$list_id] = $value;
         }
 
