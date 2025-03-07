@@ -201,7 +201,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
 
             if (!array_key_exists($item_id, $items_in_db)) {
                 $_item['errors'][] = _w('Item not found');
-            }  elseif (!in_array($items_in_db[$item_id]['list_id'], $list_id_available)) {
+            }  elseif ($_item['list_id'] && !in_array($items_in_db[$item_id]['list_id'], $list_id_available)) {
                 $_item['errors'][] = _w('List access denied');
             }
 
@@ -279,10 +279,11 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 ) {
                     $_item['complete_datetime'] = date('Y-m-d H:i:s');
                 }
-                $_item['calc_priority'] = $this->getCalcPriority($_item);
+
                 if ($_item['action'] == self::ACTIONS[0]) {
                     // patch
                     $_item = array_replace($items_in_db[$item_id], array_filter($_item, function ($i) {return !is_null($i);}));
+                    $_item['calc_priority'] = $this->getCalcPriority($_item);
                     if (trim((string) $_item['due_datetime']) === '') {
                         $_item['due_datetime'] = null;
                     }
@@ -313,6 +314,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                         'repeat',
                         'uuid'
                     ], null)) + $_item + $item_in_db;
+                    $_item['calc_priority'] = $this->getCalcPriority($_item);
                 }
                 if ($_item['list_id'] != $items_in_db[$item_id]['list_id']) {
                     /* fields pocketlistsItemMoveModel */
