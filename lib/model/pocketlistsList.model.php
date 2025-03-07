@@ -219,6 +219,7 @@ class pocketlistsListModel extends pocketlistsModel
             [
                 'list_ids'  => $available_lists,
                 'pocket_id' => $pocket_id,
+                'contact_id' => wa()->getUser()->getId()
             ]
         )->fetchAll('id');
 
