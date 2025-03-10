@@ -4,9 +4,21 @@ class pocketlistsUsersGetMethod extends pocketlistsApiAbstractMethod
 {
     public function execute()
     {
+        $ids = $this->get('id');
         $limit = $this->get('limit');
         $offset = $this->get('offset');
 
+        if (isset($ids)) {
+            if (!is_array($ids)) {
+                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'id'), 400);
+            }
+            $ids = array_unique(array_filter($ids, function ($_i) {
+                return is_numeric($_i) && $_i > 0;
+            }));
+            if (empty($ids)) {
+                throw new pocketlistsApiException(_w('Users not found'), 404);
+            }
+        }
         if (isset($limit)) {
             if (!is_numeric($limit)) {
                 throw new pocketlistsApiException(_w('Unknown value'), 400);
@@ -28,7 +40,7 @@ class pocketlistsUsersGetMethod extends pocketlistsApiAbstractMethod
             $offset = 0;
         }
 
-        list($result, $count) = $this->getTeammates([], $offset, $limit);
+        list($result, $count) = $this->getTeammates($ids, $offset, $limit);
 
         $this->response['meta'] = [
             'offset' => $offset,

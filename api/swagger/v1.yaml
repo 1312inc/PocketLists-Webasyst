@@ -1934,6 +1934,13 @@ paths:
       summary: Returns all users (team).
       parameters:
         - in: query
+          name: id[]
+          description: Filters by user ID.
+          schema:
+            type: array
+            items:
+              type: integer
+        - in: query
           name: offset
           description: Skips first 'offset' records before starting the response. 0 by default.
           schema:
@@ -1946,6 +1953,18 @@ paths:
       responses:
         200:
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
+        400:
+          description: Invalid request data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
+        404:
+          description: Not found
           content:
             application/json:
               schema:
