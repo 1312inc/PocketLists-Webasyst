@@ -1866,6 +1866,7 @@ paths:
                                 description: Can create and see to-dos linked with Shop-Script orders
                               pockets:
                                 type: array
+                                nullable: true
                                 items:
                                   type: object
                                   properties:
@@ -1879,6 +1880,7 @@ paths:
                                         - FULL
                               lists:
                                 type: array
+                                nullable: true
                                 items:
                                   type: object
                                   properties:
