@@ -235,6 +235,17 @@ return array(
             'pocketlists_pro_shortcut_group_name_uindex' => array('group', 'name', 'unique' => 1),
         ),
     ),
+    'pocketlists_push_client' => array(
+        'client_id' => array('varchar', 255, 'null' => 0),
+        'contact_id' => array('int', 11, 'null' => 0),
+        'api_token' => array('varchar', 32),
+        'create_datetime' => array('datetime', 'null' => 0),
+        ':keys' => array(
+            'PRIMARY' => 'client_id',
+            'pocketlists_push_client_client_id_uindex' => array('client_id', 'unique' => 1),
+            'pocketlists_push_client_contact_id_index' => 'contact_id',
+        ),
+    ),
     'pocketlists_tag' => array(
         'id' => array('int', 11, 'null' => 0, 'autoincrement' => 1),
         'text' => array('varchar', 200, 'null' => 0),

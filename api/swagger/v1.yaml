@@ -1767,6 +1767,60 @@ paths:
                 $ref: '#/components/schemas/response'
         500:
           description: Internal server error
+  /pocketlists.push.disable:
+    post:
+      security:
+        - BearerAuth: [ ]
+      summary: Отключает пуши для клиента.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - client_id
+              properties:
+                client_id:
+                  type: string
+                  description: Onesignal client ID
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
+  /pocketlists.push.enable:
+    post:
+      security:
+        - BearerAuth: [ ]
+      summary: Включает пуши для клиента.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - client_id
+              properties:
+                client_id:
+                  type: string
+                  description: Onesignal client ID
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
+        400:
+          description: Invalid request data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
+        500:
+          description: Internal server error
   /pocketlists.system.getSettings:
     get:
       security:
