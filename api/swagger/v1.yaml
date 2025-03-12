@@ -1812,7 +1812,23 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/response'
+                allOf:
+                  - $ref: '#/components/schemas/response'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          client_id:
+                            type: string
+                            description: Client ID
+                          contact_id:
+                            type: integer
+                            description: Contact ID
+                          create_datetime:
+                            type: string
+                            format: datetime
+                            description: Create datetime
         400:
           description: Invalid request data
           content:

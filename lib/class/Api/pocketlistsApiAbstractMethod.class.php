@@ -24,6 +24,12 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
         ];
     }
 
+    protected function setError($error = '')
+    {
+        $this->response['status_code'] = 'error';
+        $this->response['error'] = $error;
+    }
+
     /**
      * @param $internal
      * @return array
@@ -107,6 +113,25 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
     protected function getUser()
     {
         return pl2()->getUser();
+    }
+
+    /**
+     * @param $api_client_id
+     * @param $user_id
+     * @return string
+     * @throws waException
+     */
+    protected function getApiTocken($api_client_id, $user_id = null)
+    {
+        static $at_model;
+        if (empty($at_model)) {
+            $at_model = new waApiTokensModel();
+        }
+        if (empty($user_id)) {
+            $user_id = $this->getUser()->getId();
+        }
+
+        return $at_model->getToken($api_client_id, $user_id, pocketlistsConfig::API_TOKEN_SCOPE);
     }
 
     /**

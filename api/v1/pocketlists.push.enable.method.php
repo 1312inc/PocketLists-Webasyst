@@ -12,18 +12,36 @@ class pocketlistsPushEnableMethod extends pocketlistsApiAbstractMethod
             throw new pocketlistsApiException(_w('Missing `data`'), 400);
         } elseif (!is_array($data)) {
             throw new pocketlistsApiException(_w('Type error data'), 400);
-        } elseif (empty($data['client_id'])) {
+        }
+
+        $client_id = ifempty($data, 'client_id', null);
+        if (empty($client_id)) {
             throw new pocketlistsApiException(sprintf_wp('Missing required parameter: “%s”.', 'client_id'), 400);
-        } elseif (!is_string($data['client_id'])) {
+        } elseif (!is_string($client_id)) {
             throw new pocketlistsApiException(sprintf_wp('Type error parameter: “%s”.', 'client_id'), 400);
         }
 
         $data = [
-            'client_id'       => ifempty($data, 'client_id', null),
+            'client_id'       => $client_id,
             'contact_id'      => $this->getUser()->getId(),
+            'api_token'       => $this->getApiTocken($client_id),
             'create_datetime' => date('Y-m-d H:i:s'),
         ];
 
-        $this->response['data'] = $data;
+        if (!pl2()->getModel(pocketlistsPushClient::class)->insert($data, waModel::INSERT_IGNORE)) {
+            $this->setError(_w('Enable failed'));
+        }
+
+        $this->response['data'] = $this->singleFilterFields(
+            $data,
+            [
+                'client_id',
+                'contact_id',
+                'create_datetime',
+            ], [
+                'contact_id' => 'int',
+                'create_datetime' => 'datetime'
+            ]
+        );
     }
 }
