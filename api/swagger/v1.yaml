@@ -1789,7 +1789,24 @@ paths:
           content:
             application/json:
               schema:
+                allOf:
+                  - $ref: '#/components/schemas/response'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          client_id:
+                            type: string
+                            description: Client ID
+        400:
+          description: Invalid request data
+          content:
+            application/json:
+              schema:
                 $ref: '#/components/schemas/response'
+        500:
+          description: Internal server error
   /pocketlists.push.enable:
     post:
       security:

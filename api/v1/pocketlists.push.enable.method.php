@@ -8,12 +8,6 @@ class pocketlistsPushEnableMethod extends pocketlistsApiAbstractMethod
     {
         $data = $this->readBodyAsJson();
 
-        if (empty($data)) {
-            throw new pocketlistsApiException(_w('Missing `data`'), 400);
-        } elseif (!is_array($data)) {
-            throw new pocketlistsApiException(_w('Type error data'), 400);
-        }
-
         $client_id = ifempty($data, 'client_id', null);
         if (empty($client_id)) {
             throw new pocketlistsApiException(sprintf_wp('Missing required parameter: “%s”.', 'client_id'), 400);
