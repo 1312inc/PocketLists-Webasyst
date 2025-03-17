@@ -284,6 +284,10 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                                 $_item['attachments'] = $this->updateFiles($_item['id'], $_item['attachments']);
                                 $attachments_log = array_merge($attachments_log, $_item['attachments']);
                             }
+                            if ($_item['assigned_contact_id']) {
+                                $sender = new pocketlistsNotificationsSender($_item, 'new');
+                                $sender->send();
+                            }
                             if (!empty($_item['tags'])) {
                                 $tags[$_item['id']] = $_item['tags'];
                             }

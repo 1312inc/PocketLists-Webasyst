@@ -59,7 +59,7 @@ class pocketlistsWebSoket
             try {
                 $this->services_api->sendWebsocketMessage(
                     $data,
-                        $channel ?? self::DEFAULT_CHANNEL,
+                    $channel ?? self::DEFAULT_CHANNEL,
                     pocketlistsHelper::APP_ID
                 );
             } catch (Throwable $e) {
