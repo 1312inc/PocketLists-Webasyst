@@ -1101,6 +1101,13 @@ paths:
                   icon:
                     type: string
                     description: List icon
+                  private:
+                    type: integer
+                    description: List is private
+                    default: 0
+                    enum:
+                      - 0
+                      - 1
                   color:
                     type: string
                     description: List color

@@ -60,6 +60,7 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                 'type'                  => null,
                 'icon'                  => ifset($_list, 'icon', ($action === self::ACTIONS[0] ? null : pocketlistsList::DEFAULT_ICON)),
                 'icon_url'              => null,
+                'private'               => ifset($_list, 'private', ($action === self::ACTIONS[0] ? null : 0)),
                 'archived'              => 0,
                 'hash'                  => null,
                 'color'                 => ifset($_list, 'color', ($action === self::ACTIONS[0] ? null : pocketlistsStoreColor::NONE)),
@@ -117,6 +118,10 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
 
             if (isset($_list['icon']) && !is_string($_list['icon'])) {
                 $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'icon');
+            }
+
+            if (isset($_list['private']) && !is_numeric($_list['private'])) {
+                $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'private');
             }
 
             if (isset($_list['color'])) {
@@ -311,6 +316,7 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                 'type',
                 'icon',
                 'icon_url',
+                'private',
                 'archived',
                 'hash',
                 'color',
@@ -337,6 +343,7 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                 'assigned_contact_id' => 'int',
                 'repeat' => 'int',
                 'pocket_id' => 'int',
+                'private' => 'int',
                 'archived' => 'int',
                 'key_item_id' => 'int'
             ]
