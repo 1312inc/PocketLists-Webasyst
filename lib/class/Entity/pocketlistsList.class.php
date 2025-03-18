@@ -28,7 +28,7 @@ class pocketlistsList extends pocketlistsItem
     /**
      * @var int
      */
-    private $is_private = 0;
+    private $private = 0;
 
     /**
      * @var bool
@@ -357,11 +357,11 @@ class pocketlistsList extends pocketlistsItem
     }
 
     /**
-     * @return bool
+     * @return int
      */
     public function isPrivate()
     {
-        return (bool) $this->is_private;
+        return (int) $this->private;
     }
 
     /**
@@ -370,7 +370,7 @@ class pocketlistsList extends pocketlistsItem
      */
     public function setPrivate($private = 0)
     {
-        $this->is_private = ($private ? 1 : 0);
+        $this->private = ($private ? 1 : 0);
 
         return $this;
     }
