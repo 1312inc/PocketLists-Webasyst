@@ -88,6 +88,7 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
                 $sql_parts['where']['and'][] = 'i.assigned_contact_id = i:assigned_contact_id';
             } else {
                 $sql_parts['where']['and'][] = 'NOT (i.assigned_contact_id IS NOT NULL AND i.assigned_contact_id != i:assigned_contact_id)';
+                $sql_parts['where']['or'][] = 'l.private = 1 AND i.contact_id = i:contact_id';
                 $assigned_contact_id = $current_user_id;
             }
             if ($starting_from) {
@@ -198,6 +199,7 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
                 'type',
                 'icon',
                 'icon_url',
+                'private',
                 'archived',
                 'hash',
                 'color',
@@ -226,6 +228,7 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
                 'assigned_contact_id' => 'int',
                 'repeat' => 'int',
                 'pocket_id' => 'int',
+                'private' => 'int',
                 'archived' => 'int',
                 'key_item_id' => 'int'
             ]
