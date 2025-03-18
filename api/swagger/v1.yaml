@@ -2186,6 +2186,10 @@ components:
               type: string
               format: uri
               description: URL icon
+            is_private:
+              type: integer
+              default: 0
+              description: Is private list
             archived:
               type: integer
               default: 0

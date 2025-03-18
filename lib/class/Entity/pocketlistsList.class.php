@@ -26,6 +26,11 @@ class pocketlistsList extends pocketlistsItem
     private $icon;
 
     /**
+     * @var int
+     */
+    private $is_private = 0;
+
+    /**
      * @var bool
      */
     private $archived = 0;
@@ -347,6 +352,25 @@ class pocketlistsList extends pocketlistsItem
     public function setIcon($icon)
     {
         $this->icon = $icon;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPrivate()
+    {
+        return (bool) $this->is_private;
+    }
+
+    /**
+     * @param $private
+     * @return pocketlistsList
+     */
+    public function setPrivate($private = 0)
+    {
+        $this->is_private = ($private ? 1 : 0);
 
         return $this;
     }
