@@ -834,6 +834,13 @@ paths:
                   icon:
                     type: string
                     description: List icon
+                  private:
+                    type: integer
+                    description: List is private
+                    default: 0
+                    enum:
+                      - 0
+                      - 1
                   color:
                     type: string
                     description: List color
@@ -2188,7 +2195,7 @@ components:
               type: string
               format: uri
               description: URL icon
-            is_private:
+            private:
               type: integer
               default: 0
               description: Is private list

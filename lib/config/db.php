@@ -102,7 +102,7 @@ return array(
         'rank' => array('varchar', 16, 'null' => 0, 'default' => ''),
         'type' => array('enum', "'checklist','notes'"),
         'icon' => array('varchar', 64),
-        'is_private' => array('tinyint', 1, 'null' => 0, 'default' => '0'),
+        'private' => array('tinyint', 1, 'null' => 0, 'default' => '0'),
         'archived' => array('tinyint', 1, 'default' => '0'),
         'hash' => array('varchar', 32),
         'color' => array('enum', "'none','red','green','blue','yellow','purple'", 'default' => 'none'),
