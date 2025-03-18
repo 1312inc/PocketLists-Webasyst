@@ -1771,7 +1771,7 @@ paths:
     post:
       security:
         - BearerAuth: [ ]
-      summary: Отключает пуши для клиента.
+      summary: Disables push notifications for the specific device.
       requestBody:
         content:
           application/json:
@@ -1782,7 +1782,7 @@ paths:
               properties:
                 client_id:
                   type: string
-                  description: Onesignal client ID
+                  description: Device 'client_id' value issued by OneSignal
       responses:
         200:
           description: OK
@@ -1798,7 +1798,7 @@ paths:
                         properties:
                           client_id:
                             type: string
-                            description: Client ID
+                            description: Device 'client_id' value issued by OneSignal
         400:
           description: Invalid request data
           content:
@@ -1811,7 +1811,7 @@ paths:
     post:
       security:
         - BearerAuth: [ ]
-      summary: Включает пуши для клиента.
+      summary: Enables push notifications for the specific device (via OneSignal).
       requestBody:
         content:
           application/json:
@@ -1822,7 +1822,7 @@ paths:
               properties:
                 client_id:
                   type: string
-                  description: Onesignal client ID
+                  description: Device 'client_id' value issued by OneSignal
       responses:
         200:
           description: OK
@@ -1838,14 +1838,14 @@ paths:
                         properties:
                           client_id:
                             type: string
-                            description: Client ID
+                            description: Device 'client_id' value issued by OneSignal
                           contact_id:
                             type: integer
-                            description: Contact ID
+                            description: Contact ID authorized on the device being subscribed
                           create_datetime:
                             type: string
                             format: datetime
-                            description: Create datetime
+                            description: Server-generated push notifications enable datetime (UTC)
         400:
           description: Invalid request data
           content:
