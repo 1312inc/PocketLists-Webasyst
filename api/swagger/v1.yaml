@@ -1931,6 +1931,8 @@ paths:
                             type: string
                             default: 'auto'
                             description: Timezone specified in the user custom profile settings
+                          user:
+                            $ref: '#/components/schemas/user'
                           labels:
                             type: array
                             description: Labels, only premium license

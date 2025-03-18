@@ -13,6 +13,7 @@ class pocketlistsSystemGetSettingsMethod extends pocketlistsApiAbstractMethod
             'user_rights'       => pocketlistsRBAC::getUserRights(),
             'user_locale'       => $this->getLocale(),
             'user_timezone'     => $this->getTimezone(),
+            'user'              => $this->getCurrentUser(),
             'labels'            => $this->getLabels(),
             'shortcuts'         => $this->getShortcuts(),
             'timestamp'         => $current_time,
@@ -51,6 +52,36 @@ class pocketlistsSystemGetSettingsMethod extends pocketlistsApiAbstractMethod
         $user_tz = wa()->getUser()->get('timezone');
 
         return (empty($user_tz) ? 'auto' : $user_tz);
+    }
+
+    protected function getCurrentUser()
+    {
+        list($result, $count) = $this->getTeammates([$this->getUser()->getId()]);
+
+        return $this->singleFilterFields(
+            reset($result),
+            [
+                'id',
+                'name',
+                'username',
+                'photo_url',
+                'user_pic',
+                'status',
+                'team_role',
+                'login',
+                'me',
+                'exists',
+                'last_activity',
+                'email',
+                'locale',
+                'items_info'
+            ], [
+                'id' => 'int',
+                'me' => 'bool',
+                'exists' => 'bool',
+                'last_activity' => 'datetime',
+            ]
+        );
     }
 
     private function getLabels()

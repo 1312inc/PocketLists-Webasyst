@@ -32,6 +32,7 @@ class pocketlistsDefaultLayout extends waLayout
             pocketlistsConfig::API_TOKEN_SCOPE
         );
 
+        $user = [];
         $users = [];
         $pockets = [];
         $locations = [];
@@ -42,6 +43,12 @@ class pocketlistsDefaultLayout extends waLayout
             $user_get_list = new pocketlistsUsersGetMethod();
             $response = $user_get_list->getResponse(true);
             $users = ifset($response, 'data', []);
+            foreach ($users as $u) {
+                if ($u['me']) {
+                    $user = $u;
+                    break;
+                }
+            }
 
             $pocket_get_list = new pocketlistsPocketsGetMethod();
             $response = $pocket_get_list->getResponse(true);
@@ -70,6 +77,7 @@ class pocketlistsDefaultLayout extends waLayout
             'user_rights' => waUtils::jsonEncode(pocketlistsRBAC::getUserRights()),
             'user_locale' => wa()->getLocale(),
             'user_timezone' => (empty($user_tz) ? 'auto' : $user_tz),
+            'user' => waUtils::jsonEncode($user),
             'labels' => waUtils::jsonEncode($labels),
             'shortcuts' => waUtils::jsonEncode($shortcuts),
             'timestamp' => $current_time,
