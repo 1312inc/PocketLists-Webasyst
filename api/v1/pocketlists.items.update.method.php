@@ -75,43 +75,16 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
 
         /** validate */
         foreach ($items as &$_item) {
-            /** set default */
             $item_id = ifset($_item, 'id', null);
-            $_item = [
-                'action'                => (ifset($_item, 'action', null) === self::ACTIONS[1] ? self::ACTIONS[1] : self::ACTIONS[0]),
-                'id'                    => $item_id,
-                'list_id'               => ifset($_item, 'list_id', null),
-                'contact_id'            => null,
-                'parent_id'             => 0,
-                'sort'                  => ifset($_item, 'sort', null),
-                'rank'                  => ifset($_item, 'rank', null),
-                'has_children'          => 0,
-                'status'                => ifset($_item, 'status', null),
-                'priority'              => ifset($_item, 'priority', null),
-                'calc_priority'         => 0,
-                'create_datetime'       => null,
-                'update_datetime'       => date('Y-m-d H:i:s'),
-                'activity_datetime'     => date('Y-m-d H:i:s'),
-                'complete_datetime'     => null,
-                'complete_contact_id'   => null,
-                'name'                  => ifset($_item, 'name', null),
-                'note'                  => ifset($_item, 'note', null),
-                'due_date'              => (array_key_exists('due_date', $_item) ? ifset($_item, 'due_date', '') : null),
-                'due_datetime'          => (array_key_exists('due_datetime', $_item) ? ifset($_item, 'due_datetime', '') : null),
-                'client_touch_datetime' => ifset($_item, 'client_touch_datetime', null),
-                'location_id'           => ifset($_item, 'location_id', null),
-                'amount'                => 0,
-                'currency_iso3'         => null,
-                'assigned_contact_id'   => ifset($_item, 'assigned_contact_id', null),
-                'repeat'                => 0,
-                'key_list_id'           => null,
-                'uuid'                  => ifset($_item, 'uuid', null),
-                'prev_item_id'          => (array_key_exists('prev_item_id', $_item) ? ifset($_item, 'prev_item_id', 0) : null),
-                'tags'                  => $this->tagFilter(ifset($_item, 'tags', null)),
-                'attachments'           => ifset($_item, 'attachments', []),
-                'external_links'        => ifset($_item, 'external_links', []),
-                'success'               => true,
-                'errors'                => []
+            $action = (ifset($_item, 'action', null) === self::ACTIONS[1] ? self::ACTIONS[1] : self::ACTIONS[0]);
+            $_item += [
+                'update_datetime'   => date('Y-m-d H:i:s'),
+                'activity_datetime' => date('Y-m-d H:i:s'),
+                'tags'              => $this->tagFilter(ifset($_item, 'tags', null)),
+                'attachments'       => ifset($_item, 'attachments', []),
+                'external_links'    => ifset($_item, 'external_links', []),
+                'success'           => true,
+                'errors'            => []
             ];
 
             if (empty($item_id)) {
@@ -120,7 +93,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'id');
             }
 
-            if ($_item['list_id']) {
+            if (isset($_item['list_id'])) {
                 if (!is_numeric($_item['list_id'])) {
                     $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'list_id');
                 } elseif (!in_array($_item['list_id'], $list_ids)) {
@@ -138,7 +111,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 }
             }
 
-            if ($_item['assigned_contact_id']) {
+            if (isset($_item['assigned_contact_id'])) {
                 if (!is_numeric($_item['assigned_contact_id'])) {
                     $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'assigned_contact_id');
                 } elseif (!array_key_exists($_item['assigned_contact_id'], $assign_contacts)) {
@@ -146,7 +119,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 }
             }
 
-            if ($_item['priority']) {
+            if (isset($_item['priority'])) {
                 if (!is_numeric($_item['priority'])) {
                     $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'priority');
                 } elseif (!in_array($_item['priority'], [1, 2, 3, 4, 5])) {
@@ -174,7 +147,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 }
             }
 
-            if ($_item['due_datetime']) {
+            if (isset($_item['due_datetime'])) {
                 if (!is_string($_item['due_datetime'])) {
                     $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'due_datetime');
                 } else {
@@ -185,7 +158,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                         $_item['errors'][] = _w('Unknown value due_datetime');
                     }
                 }
-            } elseif ($_item['due_date']) {
+            } elseif (isset($_item['due_date'])) {
                 if (!is_string($_item['due_date'])) {
                     $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'due_date');
                 } else {
@@ -201,7 +174,10 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
 
             if (!array_key_exists($item_id, $items_in_db)) {
                 $_item['errors'][] = _w('Item not found');
-            }  elseif ($_item['list_id'] && !in_array($items_in_db[$item_id]['list_id'], $list_id_available)) {
+            }  elseif (
+                (isset($items_in_db[$item_id]['list_id']) && !in_array($items_in_db[$item_id]['list_id'], $list_id_available))
+                || (isset($_item['list_id']) && !in_array($_item['list_id'], $list_id_available))
+            ) {
                 $_item['errors'][] = _w('List access denied');
             }
 
@@ -280,9 +256,9 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                     $_item['complete_datetime'] = date('Y-m-d H:i:s');
                 }
 
-                if ($_item['action'] == self::ACTIONS[0]) {
+                if ($action == self::ACTIONS[0]) {
                     // patch
-                    $_item = array_replace($items_in_db[$item_id], array_filter($_item, function ($i) {return !is_null($i);}));
+                    $_item += $items_in_db[$item_id];
                     $_item['calc_priority'] = $this->getCalcPriority($_item);
                     if (trim((string) $_item['due_datetime']) === '') {
                         $_item['due_datetime'] = null;
@@ -299,21 +275,21 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                     }
                 } else {
                     // update
+                    $_item += array_fill_keys([
+                        'list_id',
+                        'name',
+                        'note',
+                        'sort',
+                        'rank',
+                        'status',
+                        'assigned_contact_id',
+                        'priority',
+                        'location_id',
+                        'due_date',
+                        'due_datetime',
+                        'client_touch_datetime'
+                    ], null) + ifset($items_in_db, $item_id, []);
                     $_item['status'] = ifset($_item, 'status', pocketlistsItem::STATUS_UNDONE);
-                    $item_in_db = ifset($items_in_db, $item_id, []);
-                    $_item = array_intersect_key($item_in_db, array_fill_keys([
-                        'contact_id',
-                        'parent_id',
-                        'has_children',
-                        'calc_priority',
-                        'create_datetime',
-                        'complete_datetime',
-                        'complete_contact_id',
-                        'amount',
-                        'currency_iso3',
-                        'repeat',
-                        'uuid'
-                    ], null)) + $_item + $item_in_db;
                     $_item['calc_priority'] = $this->getCalcPriority($_item);
                 }
                 if ($_item['list_id'] != $items_in_db[$item_id]['list_id']) {
