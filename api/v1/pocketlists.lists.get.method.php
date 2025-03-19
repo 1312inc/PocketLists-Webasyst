@@ -76,17 +76,12 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
                 'l.id IN (i:ids)',
                 'l.archived = 0'
             ];
-            if ($ids) {
-                $ids = array_intersect($ids, $accessed_lists);
-            } else {
-                $ids = $accessed_lists;
-            }
             if ($pocket_id) {
                 $sql_parts['where']['and'][] = 'l.pocket_id = i:pocket_id';
             }
             if ($assigned_contact_id) {
                 $sql_parts['where']['and'][] = 'i.assigned_contact_id = i:assigned_contact_id';
-            } else {
+            } elseif (empty($ids)) {
                 $sql_parts['where']['and'][] = 'NOT (i.assigned_contact_id IS NOT NULL AND i.assigned_contact_id != i:assigned_contact_id)';
                 $sql_parts['where']['or'][] = 'l.private = 1 AND i.contact_id = i:contact_id';
                 $assigned_contact_id = $current_user_id;
@@ -96,6 +91,11 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
                 $sql_parts['order by'] = ['i.update_datetime DESC'];
             } else {
                 $sql_parts['order by'] = ['l.pocket_id, l.sort, l.rank, i.id DESC'];
+            }
+            if ($ids) {
+                $ids = array_intersect($ids, $accessed_lists);
+            } else {
+                $ids = $accessed_lists;
             }
             if (!empty($ids)) {
                 $sql = $list_model->buildSqlComponents($sql_parts);
