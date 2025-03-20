@@ -140,7 +140,7 @@ class pocketlistsRBAC
             $pocket_id = $list->getPocketId();
         } else {
             $list_id = ifempty($list, 'id', null);
-            $pocket_id = ifempty($pocket_id, 'pocket_id', null);
+            $pocket_id = ifempty($list, 'pocket_id', null);
         }
         $wcr = new waContactRightsModel();
         $query = sprintf(
@@ -155,6 +155,44 @@ class pocketlistsRBAC
         $contact_ids = array_unique(self::getContactIds($contact_ids));
 
         return $contact_ids;
+    }
+
+    public static function getAccessContactsByLists($list_ids = [])
+    {
+        $result = [];
+        $groups = [];
+        $pockets = [];
+        if (empty($list_ids)) {
+            return $result;
+        }
+        $wa_model = new waModel();
+        $r_lists = implode("','", array_map(function ($l) {return self::LIST_ITEM.".$l";}, $list_ids));
+        $query = sprintf(
+            "SELECT group_id, name FROM wa_contact_rights WHERE %s OR %s OR %s OR %s GROUP BY group_id, name",
+            self::haveFullAdminSQL(),
+            self::haveFullAccessSQL(),
+            "(app_id = 'pocketlists' AND name LIKE '".self::POCKET_ITEM.".%' AND value = ".self::RIGHT_ADMIN.")",
+            "(app_id = 'pocketlists' AND name IN ('$r_lists') AND value = ".self::RIGHT_ACCESS.")"
+        );
+        $contact_rights = $wa_model->query($query)->fetchAll();
+        foreach ($contact_rights as $contact_right) {
+            if ($contact_right['group_id'] < 0) {
+                if ($contact_right['name'] == 'backend') {
+                    foreach ($list_ids as $list_id) {
+                        $result[$list_id][-$contact_right['group_id']] = 1;
+                    }
+                } elseif ($list_id = (int) str_replace(pocketlistsRBAC::LIST_ITEM.'.', '', $contact_right['name'])) {
+                    $result[$list_id][-$contact_right['group_id']] = 1;
+                } elseif ($pocket_id = (int) str_replace(pocketlistsRBAC::POCKET_ITEM.'.', '', $contact_right['name'])) {
+//                    $pockets[$pocket_id][-$contact_right['group_id']] = 1;
+                }
+
+            } else {
+//                $groups[] = $contact_right['group_id'];
+            }
+        }
+
+        return array_map(function ($r) {return array_keys($r);}, $result);
     }
 
     /**

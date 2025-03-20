@@ -211,17 +211,12 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                 $_list['private'] = $list_clone->isPrivate();
                 $_list['key_item_id'] = $list_clone->getKeyItemId();
                 $_list['icon_url'] = $static_url.$_list['icon'];
-                if (count($lists) === 1) {
-                    list($teammates) = $this->getTeammates([$user_id]);
-                } else {
-                    $teammates = [];
-                }
                 $_list['extended_data'] = [
                     'items_count'           => 0,
                     'items_priority_count'  => 0,
                     'items_priority_value'  => 0,
                     'items_completed_count' => 0,
-                    'users'                 => $teammates
+                    'users'                 => [$user_id]
                 ];
             }
             unset($_list);

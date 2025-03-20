@@ -239,11 +239,7 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
             $list = $list_factory->createNew();
             $lists_ok = $this->sorting('list', $lists_ok);
 
-            if (count($lists) === 1) {
-                $contact_ids = pocketlistsRBAC::getAccessContacts(reset($lists));
-                list($users_access) = $this->getTeammates($contact_ids, 0, self::MAX_LIMIT);
-                $lists_ok[0]['users_access'] = $users_access;
-            }
+            $users_access_ids = pocketlistsRBAC::getAccessContactsByLists(array_column($lists, 'id'));
             foreach ($lists_ok as &$_list) {
                 $list_clone = clone $list;
                 pl2()->getHydrator()->hydrate($list_clone, $_list);
@@ -261,7 +257,7 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                     'items_priority_count'  => (int) ifset($data, $max_priority, 0),
                     'items_priority_value'  => (int) $max_priority,
                     'items_completed_count' => array_sum(ifset($completed_count, $_list['id'], [])),
-                    'users'                 => ifset($_list, 'users_access', [])
+                    'users'                 => ifset($users_access_ids, $_list['id'], [])
                 ];
             }
             unset($_list);
