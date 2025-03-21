@@ -184,12 +184,59 @@ class pocketlistsRBAC
                 } elseif ($list_id = (int) str_replace(pocketlistsRBAC::LIST_ITEM.'.', '', $contact_right['name'])) {
                     $result[$list_id][-$contact_right['group_id']] = 1;
                 } elseif ($pocket_id = (int) str_replace(pocketlistsRBAC::POCKET_ITEM.'.', '', $contact_right['name'])) {
-//                    $pockets[$pocket_id][-$contact_right['group_id']] = 1;
+                    $pockets[$pocket_id][-$contact_right['group_id']] = 1;
                 }
-
             } else {
-//                $groups[] = $contact_right['group_id'];
+                $groups[$contact_right['group_id']] = [
+                    'group_id' => 0,
+                    'name' => $contact_right['name']
+                ];
             }
+        }
+        unset($contact_rights, $contact_right);
+        if ($groups) {
+            $user_groups = $wa_model->query("
+                SELECT group_id, contact_id FROM wa_user_groups
+                WHERE group_id IN (i:g_ids)
+                GROUP BY group_id, contact_id
+                ORDER BY group_id 
+            ", ['g_ids' => array_keys($groups)])->fetchAll();
+            foreach ($groups as $group_id => $group) {
+                foreach ($user_groups as $user_group) {
+                    if ($group_id == $user_group['group_id']) {
+                        if ($group['name'] == 'backend') {
+                            foreach ($list_ids as $list_id) {
+                                $result[$list_id][$user_group['contact_id']] = 1;
+                            }
+                        } elseif ($list_id = (int) str_replace(pocketlistsRBAC::LIST_ITEM.'.', '', $group['name'])) {
+                            $result[$list_id][$user_group['contact_id']] = 1;
+                        } elseif ($pocket_id = (int) str_replace(pocketlistsRBAC::POCKET_ITEM.'.', '', $group['name'])) {
+                            $pockets[$pocket_id][$user_group['contact_id']] = 1;
+                        }
+                    }
+                }
+            }
+            unset($groups, $group);
+        }
+        if ($pockets) {
+            $by_pockets = [];
+            $right_by_pocket = $wa_model->query("
+                SELECT pocket_id, id FROM pocketlists_list
+                WHERE pocket_id IN (i:p_ids)
+                AND id IN (i:l_ids)
+                GROUP BY pocket_id, id
+                ORDER BY pocket_id
+            ", ['l_ids' => $list_ids, 'p_ids' => array_keys($pockets)])->fetchAll();
+            foreach ($right_by_pocket as $_by_pocket) {
+                $by_pockets[$_by_pocket['pocket_id']][$_by_pocket['id']] = 1;
+            }
+            foreach ($by_pockets as $p_id => $_by_pocket) {
+                $contact_ids = ifset($pockets, $p_id, []);
+                foreach (array_keys($_by_pocket) as $key) {
+                    $result[$key] += $contact_ids;
+                }
+            }
+            unset($pockets, $by_pockets, $right_by_pocket);
         }
 
         return array_map(function ($r) {return array_keys($r);}, $result);
