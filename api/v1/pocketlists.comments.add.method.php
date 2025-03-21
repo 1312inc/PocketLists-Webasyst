@@ -56,7 +56,7 @@ class pocketlistsCommentsAddMethod extends pocketlistsApiAbstractMethod
                 $_comment['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'item_id');
             } elseif ($_comment['item_id'] < 1 || !array_key_exists($_comment['item_id'], $items)) {
                 $_comment['errors'][] = _w('Item not found');
-            } elseif (!in_array($_comment['list_id'], $list_access)) {
+            } elseif ($_comment['list_id'] && !in_array($_comment['list_id'], $list_access)) {
                 $_comment['errors'][] = _w('Access denied');
             }
 
