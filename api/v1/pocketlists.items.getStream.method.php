@@ -101,7 +101,8 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
                 'repeat',
                 'key_list_id',
                 'uuid',
-                'attachments'
+                'attachments',
+                'extended_data'
             ], [
                 'id' => 'int',
                 'list_id' => 'int',
@@ -252,11 +253,19 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
         ])->fetchAll('id');
 
         $total_count = (int) $plim->query('SELECT FOUND_ROWS()')->fetchField();
+        foreach ($items as &$_item) {
+            $_item += [
+                'attachments'    => [],
+                'external_links' => [],
+                'tags'           => []
+            ];
+            $_item['extended_data'] = [
+                'favorite'       => (bool) $_item['favorite'],
+                'comments_count' => (int) $_item['comments_count']
+            ];
+        }
         $attachments = pl2()->getModel(pocketlistsAttachment::class)->getByField('item_id', array_keys($items), true);
         foreach ($attachments as $_attachment) {
-            if (!isset($items[$_attachment['item_id']]['attachments'])) {
-                $items[$_attachment['item_id']]['attachments'] = [];
-            }
             $items[$_attachment['item_id']]['attachments'][] = $this->singleFilterFields(
                 pocketlistsAttachment::setUrl($_attachment),
                 ['id', 'item_id', 'filename', 'size', 'filetype', 'upload_datetime', 'uuid', 'download_url', 'preview_url'],

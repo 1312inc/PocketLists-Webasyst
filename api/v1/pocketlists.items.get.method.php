@@ -342,8 +342,7 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
                 'amount' => 'float',
                 'assigned_contact_id' => 'int',
                 'repeat' => 'int',
-                'key_list_id' => 'int',
-                'comments_count' => 'int'
+                'key_list_id' => 'int'
             ]
         );
     }
