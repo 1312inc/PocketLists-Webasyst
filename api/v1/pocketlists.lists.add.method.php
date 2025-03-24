@@ -196,16 +196,27 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                     ->setContact($this->getUser())
                     ->setCreateDatetime($_list['create_datetime'])
                     ->setUuid($_list['uuid']);
-                if (!$list_factory->save($list_clone)) {
+                if ($list_factory->save($list_clone)) {
+                    if (!pocketlistsRBAC::isAdmin()) {
+                        /* add access for user */
+                        $cr_model->save(
+                            $user_id,
+                            pocketlistsHelper::APP_ID,
+                            'list.'.$list_clone->getId(),
+                            pocketlistsRBAC::RIGHT_ACCESS
+                        );
+                    }
+                    if ($_list['assigned_contact_id']) {
+                        /* add access for assigned user */
+                        $cr_model->save(
+                            $_list['assigned_contact_id'],
+                            pocketlistsHelper::APP_ID,
+                            'list.'.$list_clone->getId(),
+                            pocketlistsRBAC::RIGHT_ACCESS
+                        );
+                    }
+                } else {
                     $_list['success'] = false;
-                } elseif (!pocketlistsRBAC::isAdmin()) {
-                    /* add access for user */
-                    $cr_model->save(
-                        $user_id,
-                        pocketlistsHelper::APP_ID,
-                        'list.'.$list_clone->getId(),
-                        pocketlistsRBAC::RIGHT_ACCESS
-                    );
                 }
                 $_list['id'] = $list_clone->getId();
                 $_list['private'] = $list_clone->isPrivate();
