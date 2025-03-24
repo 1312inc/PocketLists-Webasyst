@@ -280,6 +280,10 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                         $links = [];
                         foreach ($items_ok as &$_item) {
                             $_item['id'] = $last_id++;
+                            $_item['extended_data'] = [
+                                'favorite'       => false,
+                                'comments_count' => 0
+                            ];
                             if (!empty($_item['attachments'])) {
                                 $_item['attachments'] = $this->updateFiles($_item['id'], $_item['attachments']);
                                 $attachments_log = array_merge($attachments_log, $_item['attachments']);
@@ -384,7 +388,8 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                 'uuid',
                 'tags',
                 'attachments',
-                'external_links'
+                'external_links',
+                'extended_data'
             ], [
                 'id' => 'int',
                 'list_id' => 'int',
