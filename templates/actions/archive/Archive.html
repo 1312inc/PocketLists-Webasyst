@@ -14,7 +14,7 @@
             <ul class="menu">
                 {foreach $lists as $l}
                 <li data-pl-list-id="{$l->getId()}" {if $l->getId() == $list->getId()}class="selected"{/if}>
-                    <a href="#/archive/{$l->getId()}/">
+                    <a href="{$wa_app_url}archive/{$l->getId()}/">
                         <i class="icon" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l->getIcon()|default:'li-list@2x.png'}); background-size: 16px 16px;"></i>
                         <span>{$l->getName()|escape}</span>
                     </a>

@@ -16,6 +16,12 @@ class pocketlistsCommentsAction extends pocketlistsViewAction
      */
     public function runAction($params = null)
     {
+        if (wa()->whichUI() === '1.3') {
+            if (!waRequest::isXMLHttpRequest()) {
+                $this->redirect(wa()->getAppUrl(null, true));
+            }
+        }
+
         $last_activity = pocketlistsActivity::getUserActivity();
         $offset = waRequest::get('offset', 0);
 

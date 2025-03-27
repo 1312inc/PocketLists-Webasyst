@@ -13,6 +13,12 @@ class pocketlistsArchiveAction extends pocketlistsViewAction
      */
     public function runAction($params = null)
     {
+        if (wa()->whichUI() === '1.3') {
+            if (!waRequest::isXMLHttpRequest()) {
+                $this->redirect(wa()->getAppUrl(null, true));
+            }
+        }
+
         /** @var pocketlistsListFactory $listFactory */
         $listFactory = pl2()->getEntityFactory(pocketlistsList::class);
 
@@ -20,7 +26,8 @@ class pocketlistsArchiveAction extends pocketlistsViewAction
         $lists = $listFactory->findLists();
         $lists = (new pocketlistsStrategyListFilterAndSort($lists))->filter()->getArchived();
 
-        $list_id = waRequest::get('id', 0, waRequest::TYPE_INT);
+        $list_id = waRequest::param('id', 0, waRequest::TYPE_INT);
+        $list_id = ($list_id ?: waRequest::get('id', 0, waRequest::TYPE_INT));
         $list = null;
 
         if ($lists) {
@@ -78,6 +85,11 @@ class pocketlistsArchiveAction extends pocketlistsViewAction
                 ->setOffset(0)
                 ->setLimit(pocketlistsItemFactory::DEFAULT_LIMIT)
                 ->findDoneByList($list);
+
+            if (wa()->whichUI() !== '1.3') {
+                $this->setLayout(new pocketlistsStaticLayout());
+            }
+            $this->setTemplate(wa()->getAppPath(sprintf('templates/actions%s/archive/Archive.html', pl2()->getUI2TemplatePath())));
 
             $this->view->assign(
                 [
