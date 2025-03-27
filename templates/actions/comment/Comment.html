@@ -1,8 +1,9 @@
+{$contact = $comment->getContact()}
 <div data-pl-comment-id="{$comment->getId()}" {if !empty($comment->getItemId())}data-pl-item-id="{$comment->getItemId()}"{/if}>
     <div class="pl-cue{if $comment->isMy()} pl-my-cue{/if}{if $comment->isRecentlyCreated() && !$comment->isMy()} pl-new-comment{/if}">
         <div class="pl-cue-inner small">
             <div class="pl-bubble">
-                {if $comment->isMy() && $comment->canBeDeleted() && !(isset($archive) && $archive)}<a href="#" class="pl-delete-comment" data-pl-action="comment-delete" title="[`Delete`]"><i class="fas fa-times small"></i></a>{/if}
+                {if $contact && $contact->isMe() && $comment->canBeDeleted() && !(isset($archive) && $archive)}<a href="#" class="pl-delete-comment" data-pl-action="comment-delete" title="[`Delete`]"><i class="fas fa-times small"></i></a>{/if}
                 {$comment->getCommentParsed()|nl2br|default:''}
 
             </div><span class="pl-bubble-arrow"></span>
@@ -13,12 +14,12 @@
             </div>
             {/if}
 
-            <i class="icon userpic shift-4" style="background-image: url({$comment->getContact()->getUserpic()})" alt="{$comment->getContact()->getUsername()|escape}"></i>
-            <span>{$comment->getContact()->getUsername()|escape}</span>
+            <i class="icon userpic shift-4" style="background-image: url({if $contact}{$contact->getUserpic()})" alt="{$contact->getUsername()|escape}{/if}"></i>
+            <span>{if $comment->getContact()}{$comment->getContact()->getUsername()|escape}{/if}</span>
 
             {if isset($comment_page)}
             [`on`]
-            <a href="{if $comment->getListId() && $comment->getPocketId()}#/pocket/{$comment->getPocketId()}/list/{$comment->getListId()}/{else if $comment->getContact()->isMe()}#/todo/{else}#/team/{$comment->getContact()->getLogin()}{/if}">{$comment->getItemName()|truncate:64|escape}</a>
+            <a href="{if $comment->getListId() && $comment->getPocketId()}#/pocket/{$comment->getPocketId()}/list/{$comment->getListId()}/{else if $contact}{if $contact->isMe()}#/todo/{else}#/team/{$contact->getLogin()}{/if}{/if}">{$comment->getItemName()|truncate:64|escape}</a>
             {/if}
             <span class="hint nowrap">{$comment->getCreateDatetime()|wa_datetime:'humandatetime'}</span>
         </div>

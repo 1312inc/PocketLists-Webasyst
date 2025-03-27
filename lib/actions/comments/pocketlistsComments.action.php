@@ -28,6 +28,11 @@ class pocketlistsCommentsAction extends pocketlistsViewAction
             $comment->setRecentlyCreated($last_activity);
         }
 
+        if (wa()->whichUI() !== '1.3') {
+            $this->setLayout(new pocketlistsStaticLayout());
+        }
+        $this->setTemplate(wa()->getAppPath(sprintf('templates/actions%s/comments/Comments.html', pl2()->getUI2TemplatePath())));
+
         $this->view->assign('comments', $comments);
     }
 }
