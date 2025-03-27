@@ -19,7 +19,7 @@
 
             {if isset($comment_page)}
             [`on`]
-            <a href="{if $comment->getListId() && $comment->getPocketId()}#/pocket/{$comment->getPocketId()}/list/{$comment->getListId()}/{else if $contact}{if $contact->isMe()}#/todo/{else}#/team/{$contact->getLogin()}{/if}{/if}">{$comment->getItemName()|truncate:64|escape}</a>
+            <a href="{if $comment->getListId()}{$wa_app_url}lists/{$comment->getListId()}/{else if $contact}{if $contact->isMe()}#/todo/{else}#/team/{$contact->getLogin()}{/if}{/if}">{$comment->getItemName()|truncate:64|escape}</a>
             {/if}
             <span class="hint nowrap">{$comment->getCreateDatetime()|wa_datetime:'humandatetime'}</span>
         </div>
