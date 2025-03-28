@@ -42,9 +42,16 @@ class pocketlistsRBAC
             $listModel = pl2()->getModel(pocketlistsList::class);
 
             if (self::isAdmin($user_id)) {
-                $lists = $listModel->getAll('id');
+                $lists = $listModel->query("
+                    SELECT pl.*, pi2.contact_id FROM pocketlists_list pl 
+                    LEFT JOIN pocketlists_item pi2 ON pi2.key_list_id = pl.id
+                ")->fetchAll('id');
+
                 if ($lists) {
                     foreach ($lists as $list) {
+                        if ($list['private'] && $user_id != $list['contact_id']) {
+                            continue;
+                        }
                         self::addListUserRight($user_id, $list['id'], true);
                     }
                 }
@@ -167,14 +174,13 @@ class pocketlistsRBAC
         }
         $wa_model = new waModel();
         $r_lists = implode("','", array_map(function ($l) {return self::LIST_ITEM.".$l";}, $list_ids));
-        $query = sprintf(
+        $contact_rights = $wa_model->query(sprintf(
             "SELECT group_id, name FROM wa_contact_rights WHERE %s OR %s OR %s OR %s GROUP BY group_id, name",
             self::haveFullAdminSQL(),
             self::haveFullAccessSQL(),
             "(app_id = 'pocketlists' AND name LIKE '".self::POCKET_ITEM.".%' AND value = ".self::RIGHT_ADMIN.")",
             "(app_id = 'pocketlists' AND name IN ('$r_lists') AND value = ".self::RIGHT_ACCESS.")"
-        );
-        $contact_rights = $wa_model->query($query)->fetchAll();
+        ))->fetchAll();
         foreach ($contact_rights as $contact_right) {
             if ($contact_right['group_id'] < 0) {
                 if ($contact_right['name'] == 'backend') {
@@ -237,6 +243,18 @@ class pocketlistsRBAC
                 }
             }
             unset($pockets, $by_pockets, $right_by_pocket);
+        }
+        $private_lists = $wa_model->query("
+            SELECT pl.id, pi2.contact_id FROM pocketlists_list pl 
+            LEFT JOIN pocketlists_item pi2 ON pi2.key_list_id = pl.id
+            WHERE pl.private = 1 AND pl.id IN (i:l_ids)
+        ", ['l_ids' => $list_ids])->fetchAll();
+        if ($private_lists) {
+            foreach ($private_lists as $private_list) {
+                if ($result[$private_list['id']]) {
+                    $result[$private_list['id']] = [$private_list['contact_id'] => 1];
+                }
+            }
         }
 
         return array_map(function ($r) {return array_keys($r);}, $result);
