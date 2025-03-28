@@ -30,16 +30,22 @@ class pocketlistsArchiveAction extends pocketlistsViewAction
         $list_id = ($list_id ?: waRequest::get('id', 0, waRequest::TYPE_INT));
         $list = null;
 
-        if ($lists) {
+        if ($list_id) {
+            /** @var pocketlistsList $list */
+            $list = $listFactory->findById($list_id);
+            if (!$list || ($list && !$list->isArchived())) {
+                $this->redirect(wa()->getAppUrl(null, true).'archive');
+            }
+        } elseif ($lists) {
             $list = reset($lists);
         }
 
-        if ($list_id) {
-            /** @var pocketlistsListModel $list */
-            $list = $listFactory->findById($list_id);
+        if (wa()->whichUI() !== '1.3') {
+            $this->setLayout(new pocketlistsStaticLayout());
         }
+        $this->setTemplate(wa()->getAppPath(sprintf('templates/actions%s/archive/Archive.html', pl2()->getUI2TemplatePath())));
 
-        if ($list && $list->isArchived()) {
+        if ($list) {
             if (!pocketlistsRBAC::canAccessToList($list)) {
                 $this->view->assign(
                     'error',
@@ -86,27 +92,19 @@ class pocketlistsArchiveAction extends pocketlistsViewAction
                 ->setLimit(pocketlistsItemFactory::DEFAULT_LIMIT)
                 ->findDoneByList($list);
 
-            if (wa()->whichUI() !== '1.3') {
-                $this->setLayout(new pocketlistsStaticLayout());
-            }
-            $this->setTemplate(wa()->getAppPath(sprintf('templates/actions%s/archive/Archive.html', pl2()->getUI2TemplatePath())));
-
-            $this->view->assign(
-                [
-                    'items'                => $undone,
-                    'empty'                => count($undone),
-                    'items_done'           => $done,
-                    'count_items_done'     => $count_done,
-                    'count_items_undone'   => $count_undone,
-                    'new'                  => false,
-                    'pl2_attachments_path' =>
-                        wa()->getDataUrl('attachments/', true, pocketlistsHelper::APP_ID),
-                    'list_access_contacts' => $list_access_contacts,
-                    'list'                 => $list,
-                    'lists'                => $lists,
-                    'user'                 => $this->user,
-                ]
-            );
+            $this->view->assign([
+                'items'                => $undone,
+                'empty'                => count($undone),
+                'items_done'           => $done,
+                'count_items_done'     => $count_done,
+                'count_items_undone'   => $count_undone,
+                'new'                  => false,
+                'pl2_attachments_path' => wa()->getDataUrl('attachments/', true, pocketlistsHelper::APP_ID),
+                'list_access_contacts' => $list_access_contacts,
+                'list'                 => $list,
+                'lists'                => $lists,
+                'user'                 => $this->user,
+            ]);
         }
     }
 }
