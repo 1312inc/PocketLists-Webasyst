@@ -156,6 +156,7 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
 
         $plim  = pl2()->getModel(pocketlistsItem::class);
         $sql_parts = $plim->getQueryComponents(true);
+        $sql_parts['where']['and'][] = 'i.key_list_id IS NULL';
         $sql_parts['where']['and']['def'] = 'i.list_id IN (i:list_ids) OR (i.list_id IS NULL AND (i.contact_id = i:contact_id OR i.assigned_contact_id = i:contact_id))';
         switch ($filter_split[0]) {
             case 'upnext':
@@ -237,6 +238,8 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
         }
         if (isset($starting_from)) {
             $sql_parts['where']['and'][] = 'i.update_datetime >= s:starting_from OR i.create_datetime >= s:starting_from OR i.activity_datetime >= s:starting_from';
+        } else {
+            $status = pocketlistsItem::STATUS_UNDONE;
         }
         if (isset($status)) {
             $sql_parts['where']['and'][] = 'i.status = i:status';
