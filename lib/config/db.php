@@ -86,6 +86,7 @@ return array(
         'item_id' => array('int', 11, 'null' => 0),
         'prev_list_id' => array('int', 11,),
         'prev_pocket_id' => array('int', 11),
+        'prev_status' => array('tinyint', 1),
         'datetime' => array('datetime')
     ),
     'pocketlists_item_tags' => array(

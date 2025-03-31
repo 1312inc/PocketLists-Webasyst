@@ -531,7 +531,7 @@ paths:
             type: integer
         - in: query
           name: status
-          description: Filters by item status (0 for active/undone, 1 for completed/done). When 'status=1' is passed, defult sort will be 'ORDER BY complete_datetime DESC'.
+          description: Filters by item status (0 for active/undone, 1 for completed/done). The filter works only when starting_from parameter is not specified. When 'status=1' is passed, default sort will be 'ORDER BY complete_datetime DESC'.
           schema:
             type: integer
         - in: query

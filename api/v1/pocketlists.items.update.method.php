@@ -299,6 +299,14 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                         'prev_list_id' => $items_in_db[$item_id]['list_id']
                     ];
                 }
+                if (
+                    isset($_item['status'])
+                    && $_item['status'] === pocketlistsItem::STATUS_UNDONE
+                    && $_item['status'] != $items_in_db[$item_id]['status']
+                ) {
+                    $_item['move']['item_id'] = $item_id;
+                    $_item['move']['prev_status'] = pocketlistsItem::STATUS_UNDONE;
+                }
                 unset($_item['errors']);
             } else {
                 $_item['success'] = false;
