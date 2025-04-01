@@ -141,10 +141,7 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
             $sql_parts['where']['and'][] = 'i.id IN (i:item_ids)';
         }
         if (isset($list_id)) {
-            if ($starting_from) {
-                $item_move_ids = $this->getMoveItemIds($list_id, $starting_from);
-            }
-            $sql_parts['where']['and'][] = 'i.list_id IN (i:list_ids)'.($item_move_ids ? ' OR i.id IN (i:item_move_ids)' : '');
+            $sql_parts['where']['and'][] = 'i.list_id IN (i:list_ids)';
         } else {
             $sql_parts['where']['and'][] = 'i.list_id IN (i:list_ids) OR (i.list_id IS NULL AND (i.contact_id = i:current_user_id OR i.assigned_contact_id = i:current_user_id))';
         }
@@ -181,6 +178,12 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
             $sql_parts['where']['and'][] = 'pt.`text` = s:text';
         }
         if ($starting_from) {
+            if (isset($list_id) || $status == pocketlistsItem::STATUS_DONE) {
+                $item_move_ids = $this->getMoveItemIds($list_id, $status, $starting_from);
+                if ($item_move_ids) {
+                    $sql_parts['where']['or'][] = 'i.id IN (i:item_move_ids)';
+                }
+            }
             $sql_parts['where']['and'][] = 'i.update_datetime >= s:starting_from OR i.create_datetime >= s:starting_from OR i.activity_datetime >= s:starting_from';
             $sql_parts['order by'] = ['i.update_datetime DESC'];
         } elseif ($status === 1) {
@@ -349,22 +352,32 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
 
     /**
      * @param $list_id
+     * @param $status
      * @param $starting_from
      * @return array
      * @throws waDbException
      * @throws waException
      */
-    private function getMoveItemIds($list_id, $starting_from)
+    private function getMoveItemIds($list_id, $status, $starting_from)
     {
-        $i_move = pl2()->getModel(pocketlistsItemMove::class)->query("
+        $where_part = [];
+        if ($list_id) {
+            $where_part[] = 'prev_list_id IN (i:list_id)';
+        }
+        if ($status == pocketlistsItem::STATUS_DONE) {
+            $where_part[] = 'prev_status = 0';
+        }
+        if (empty($where_part)) {
+            return [];
+        }
+        $i_move = pl2()->getModel(pocketlistsItemMove::class)->query(sprintf("
             SELECT item_id FROM pocketlists_item_move
-            WHERE prev_list_id IN (i:list_id) AND `datetime` >= s:starting_from
+            WHERE (%s) AND `datetime` >= s:starting_from
             GROUP by item_id, prev_list_id
-        ", [
+        ", implode(' OR ', $where_part)), [
             'list_id' => $list_id,
             'starting_from' => $starting_from
         ])->fetchAll();
-
 
         return array_column($i_move, 'item_id');
     }
