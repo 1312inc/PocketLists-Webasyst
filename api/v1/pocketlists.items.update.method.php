@@ -248,14 +248,6 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
             }
 
             if (empty($_item['errors'])) {
-                if (
-                    isset($_item['status'])
-                    && $_item['status'] === pocketlistsItem::STATUS_DONE
-                    && $items_in_db[$item_id]['status'] == pocketlistsItem::STATUS_UNDONE
-                ) {
-                    $_item['complete_datetime'] = date('Y-m-d H:i:s');
-                }
-
                 if ($action == self::ACTIONS[0]) {
                     // patch
                     $_item += $items_in_db[$item_id];
@@ -299,14 +291,27 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                         'prev_list_id' => $items_in_db[$item_id]['list_id']
                     ];
                 }
-                if (
-                    isset($_item['status'])
-                    && $_item['status'] === pocketlistsItem::STATUS_UNDONE
-                    && $_item['status'] != $items_in_db[$item_id]['status']
-                ) {
-                    $_item['move']['item_id'] = $item_id;
-                    $_item['move']['prev_status'] = pocketlistsItem::STATUS_UNDONE;
+
+                if (isset($_item['status'])) {
+                    if (
+                        $_item['status'] === pocketlistsItem::STATUS_DONE
+                        && $items_in_db[$item_id]['status'] == pocketlistsItem::STATUS_UNDONE
+                    ) {
+                        /** status 0 -> 1 */
+                        $_item['complete_datetime'] = date('Y-m-d H:i:s');
+                        $_item['complete_contact_id'] = $this->getUser()->getId();
+                    } elseif (
+                        $_item['status'] === pocketlistsItem::STATUS_UNDONE
+                        && $items_in_db[$item_id]['status'] == pocketlistsItem::STATUS_DONE
+                    ) {
+                        /** status 1 -> 0 */
+                        $_item['complete_datetime'] = null;
+                        $_item['complete_contact_id'] = null;
+                        $_item['move']['item_id'] = $item_id;
+                        $_item['move']['prev_status'] = pocketlistsItem::STATUS_UNDONE;
+                    }
                 }
+
                 unset($_item['errors']);
             } else {
                 $_item['success'] = false;
