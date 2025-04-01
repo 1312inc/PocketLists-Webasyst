@@ -525,6 +525,11 @@ paths:
           schema:
             type: integer
         - in: query
+          name: complete_contact_id
+          description: Filters by complete contact ID.
+          schema:
+            type: integer
+        - in: query
           name: location_id
           description: Filters by location ID.
           schema:
