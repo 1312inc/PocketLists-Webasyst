@@ -511,7 +511,7 @@ paths:
               type: integer
         - in: query
           name: list_id
-          description: Filters by list ID.
+          description: Filters by list ID. When 'list_id' is specified with no other parameters (such as status & starting_from), default sort will be 'ORDER BY sort, rank'.
           schema:
             type: integer
         - in: query
@@ -521,7 +521,7 @@ paths:
             type: integer
         - in: query
           name: assigned_contact_id
-          description: Filters by assigned contact ID
+          description: Filters by assigned contact ID.
           schema:
             type: integer
         - in: query
