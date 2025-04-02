@@ -71,66 +71,50 @@
                 {if $wa->isSingleAppMode()}
                     <div data-vue-fragment="single-app" class="hidden">
                         {$wa->headerSingleAppUser()}
-                    </div>  
+                    </div>
                 {/if}
 
                 <div data-vue-fragment="sidebar-footer" class="hidden">
-                    <ul class="menu">
-                        <li>
-                            <a href="{$wa_app_url}board/">
-                                <i class="fas fa-table"></i>
-                                <span>[`Kanban`]</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{$wa_app_url}activity/">
-                                <i class="fas fa-history"></i>
-                                <span>[`Activity`]</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{$wa_app_url}comments/">
-                                <i class="fas fa-comment"></i>
-                                <span>[`Comments`]</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{$wa_app_url}archive/">
-                                <i class="fas fa-archive"></i>
-                                <span>[`Archive`]</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{$wa_app_url}plugins/">
-                                <i class="fas fa-plug"></i>
-                                <span>[`Plugins`]</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{$wa_app_url}settings/">
-                                <i class="fas fa-cog"></i>
-                                <span>[`Settings`]</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{$wa_app_url}upgrade/">
-                                <i class="fas fa-wrench"></i>
-                                <span>[`Upgrade`]</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{$wa_app_url}about/">
-                                <i class="fas fa-info-circle"></i>
-                                <span>[`About the app`]</span>
-                            </a>
-                        </li>
-                    </ul>
+                    <div class="box custom-py-0">
+                        <ul class="menu">
+                            <li class="rounded">
+                                <a href="{$wa_app_url}archive/">
+                                    <i class="fas fa-archive"></i>
+                                    <span>[`Archive`]</span>
+                                </a>
+                            </li>
+                            <li class="rounded">
+                                <a href="{$wa_app_url}plugins/">
+                                    <i class="fas fa-plug"></i>
+                                    <span>[`Plugins`]</span>
+                                </a>
+                            </li>
+                            <li class="rounded">
+                                <a href="{$wa_app_url}settings/">
+                                    <i class="fas fa-cog"></i>
+                                    <span>[`Settings`]</span>
+                                </a>
+                            </li>
+                            <li class="rounded top-padded">
+                                <a href="{$wa_app_url}upgrade/">
+                                    <i class="fas fa-star"></i>
+                                    <span>[`Premium`]</span>
+                                </a>
+                            </li>
+                            <li class="rounded">
+                                <a href="{$wa_app_url}about/">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>[`Apps`]</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </aside>
             <div class="content">
                 {$content}
             </div>
-            
+
         </div>
     </div>
     <script type="text/javascript">
