@@ -168,11 +168,41 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
                 $sql_parts['order by'][] = 'i.calc_priority DESC, i.due_date, i.due_datetime ASC';
                 break;
             case 'due':
-                /** due */
-                if (!empty($filter_split[1])) {
-                    throw new pocketlistsApiException(_w('Unknown filter value'));
+                /** due, due/YYYY-MM-DD, due/YYYY-MM-DD,YYYY-MM-DD */
+                if (empty($filter_split[1])) {
+                    $sql_parts['where']['and'][] = 'i.due_date IS NOT NULL';
+                } else {
+                    $pattern = '#^\s?\d{4}-\d{2}-\d{2}$#';
+                    $d_data = explode(',', $filter_split[1]);
+                    if (!in_array(count($d_data), [1, 2])) {
+                        throw new pocketlistsApiException(_w('Unknown filter value'));
+                    }
+                    if (preg_match($pattern, $d_data[0])) {
+                        $dt = date_create($d_data[0]);
+                        if ($dt) {
+                            $begin_date = $dt->format('Y-m-d');
+                            $sql_parts['where']['and'][] = "i.due_date >= '$begin_date'";
+                        } else {
+                            throw new pocketlistsApiException(_w('Incorrect date'));
+                        }
+                    } else {
+                        throw new pocketlistsApiException(_w('Incorrect date'));
+                    }
+
+                    if (isset($d_data[1])) {
+                        if (preg_match($pattern, $d_data[1])) {
+                            $dt = date_create($d_data[1]);
+                            if ($dt) {
+                                $end_date = $dt->format('Y-m-d');
+                                $sql_parts['where']['and'][] = "i.due_date <= '$end_date'";
+                            } else {
+                                throw new pocketlistsApiException(_w('Incorrect date'));
+                            }
+                        } else {
+                            throw new pocketlistsApiException(_w('Incorrect date'));
+                        }
+                    }
                 }
-                $sql_parts['where']['and'][] = 'i.due_date IS NOT NULL';
                 $sql_parts['order by'][] = 'i.due_date, i.due_datetime ASC';
                 break;
             case 'priority':
