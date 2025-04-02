@@ -530,6 +530,12 @@ paths:
           schema:
             type: integer
         - in: query
+          name: due_date
+          description: Filters by due date
+          schema:
+            type: string
+            format: date
+        - in: query
           name: location_id
           description: Filters by location ID.
           schema:
