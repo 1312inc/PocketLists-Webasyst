@@ -9,6 +9,7 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
         $contact_id = $this->get('contact_id');
         $assigned_contact_id = $this->get('assigned_contact_id');
         $complete_contact_id = $this->get('complete_contact_id');
+        $due_date = $this->get('due_date');
         $location_id = $this->get('location_id');
         $status = $this->get('status');
         $tag = $this->get('tag');
@@ -56,6 +57,18 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
                 throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'complete_contact_id'), 400);
             } elseif ($complete_contact_id < 1) {
                 throw new pocketlistsApiException(_w('Complete contact not found'), 404);
+            }
+        }
+        if (isset($due_date)) {
+            if (!is_string($due_date)) {
+                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'due_date'), 400);
+            } else {
+                $dt = date_create($due_date);
+                if ($dt) {
+                    $due_date = $dt->format('Y-m-d');
+                } else {
+                    throw new pocketlistsApiException(_w('Unknown value due_date'), 400);
+                }
             }
         }
         if (isset($location_id)) {
@@ -171,6 +184,9 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
         if (isset($complete_contact_id)) {
             $sql_parts['where']['and'][] = 'i.complete_contact_id = i:complete_contact_id';
         }
+        if (isset($due_date)) {
+            $sql_parts['where']['and'][] = 'i.due_date = s:due_date';
+        }
         if ($location_id || $external_app_id) {
             if ($location_id) {
                 $sql_parts['join']['pl'] = 'LEFT JOIN pocketlists_location pl ON pl.id = i.location_id';
@@ -226,6 +242,7 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
             'contact_id'          => $contact_id,
             'assigned_contact_id' => $assigned_contact_id,
             'complete_contact_id' => $complete_contact_id,
+            'due_date'            => $due_date,
             'starting_from'       => $starting_from,
             'limit'               => $limit,
             'offset'              => $offset
