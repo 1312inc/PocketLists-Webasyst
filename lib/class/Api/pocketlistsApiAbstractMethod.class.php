@@ -415,10 +415,10 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                 case 'list':
                     $sub_sql = "SELECT 
                         pl.id, pi.name, pl.pocket_id, pl.sort, pl.`rank`, pi.uuid,
-                        IF(@grp_id = pl.pocket_id, pl.pocket_id, 0) AS grp_id,
-                        IF(@grp_id = pl.pocket_id, @prev_id, 0) AS prev_id,
+                        IF(@grp_id = pl.pocket_id, pl.pocket_id, NULL) AS grp_id,
+                        IF((@grp_id = pl.pocket_id OR @grp_id IS NULL), @prev_id, NULL) AS prev_id,
                         IF(@grp_id = pl.pocket_id, @prev_uuid, '') AS prev_uuid, 
-                        @grp_id:= pl.pocket_id AS _,
+                        @grp_id := pl.pocket_id AS _,
                         @prev_id := pl.id AS __,
                         @prev_uuid := pi.uuid AS ___
                     FROM pocketlists_list pl
@@ -480,7 +480,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
             case 'list':
                 $sort_info = $model->query("
                     SELECT pocket_id AS grp_id, MIN(sort) AS sort_min, MAX(sort) AS sort_max FROM pocketlists_list
-                    WHERE pocket_id IN (:pocket_ids)
+                    WHERE pocket_id IN (:pocket_ids) OR pocket_id IS NULL
                     GROUP BY pocket_id
                 ", ['pocket_ids' => array_unique(array_column($entities, $parent_key))])->fetchAll('grp_id');
                 break;
@@ -495,11 +495,6 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
         foreach ($entities as &$_entity) {
             if (isset($_entity['sort'])) {
                 $_entity['rank'] = ifset($_entity, 'rank', '');
-                continue;
-            }
-            if (!isset($_entity[$parent_key]) && $entity_type !== 'pocket') {
-                $_entity['sort'] = 0;
-                $_entity['rank'] = '';
                 continue;
             }
 

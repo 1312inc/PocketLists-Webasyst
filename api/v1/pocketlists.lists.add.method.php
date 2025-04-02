@@ -45,8 +45,8 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
             $_list = [
                 'id'                    => null,
                 'pocket_id'             => ifset($_list, 'pocket_id', null),
-                'sort'                  => ifset($_list, 'sort', 0),
-                'rank'                  => ifset($_list, 'rank', ''),
+                'sort'                  => ifset($_list, 'sort', null),
+                'rank'                  => ifset($_list, 'rank', null),
                 'type'                  => ifset($_list, 'type', pocketlistsList::TYPE_CHECKLIST),
                 'icon'                  => ifset($_list, 'icon', pocketlistsList::DEFAULT_ICON),
                 'icon_url'              => null,
@@ -141,11 +141,11 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                 }
             }
 
-            if (!empty($_list['sort']) && !is_numeric($_list['sort'])) {
+            if (isset($_list['sort']) && !is_numeric($_list['sort'])) {
                 $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'sort');
             }
 
-            if ($_list['rank'] !== '') {
+            if (isset($_list['rank'])) {
                 if (!is_string($_list['rank'])) {
                     $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'rank');
                 } elseif ($_list['rank'] !== '' && !pocketlistsSortRank::rankValidate($_list['rank'])) {
