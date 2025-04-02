@@ -621,6 +621,8 @@ paths:
             Filter defines the search criteria and sort accordingly:
             + **upnext**: items with due date/time or manually defined priority ordered by mixed dynamicly calculated priority,
             + **due**: items with non-empty due date/time,
+            + **due/YYYY-MM-DD**: items with non-empty due date/time from the specified date and later,
+            + **due/YYYY-MM-DD,YYYY-MM-DD**: items with non-empty due date/time between the specified dates,
             + **priority**: items with manually defined priority,
             + **favorites**: items in favorites,
             + **user/55**: items assigned to a specific responsible user,
