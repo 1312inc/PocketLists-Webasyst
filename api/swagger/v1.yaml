@@ -531,7 +531,7 @@ paths:
             type: integer
         - in: query
           name: due_date
-          description: Filters by due date
+          description: Filters by due date (exact day).
           schema:
             type: string
             format: date
