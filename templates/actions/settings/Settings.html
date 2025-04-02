@@ -1,8 +1,9 @@
 <div class="flexbox width-100 wrap-mobile pl-settings">
+    {if $wa->user()->isAdmin()}
     <div class="sidebar blank width-21rem" data-pl2-settings-sidebar>
         <ul class="menu with-icons stack">
             <li class="selected">
-                <a href="#/settings">
+                <a href="">
                     <i class="userpic userpic-20" style="background-image: url({$wa->user()->getPhoto(20)});"></i>
                     <span>[`My personal settings`]</span>
                 </a>
@@ -28,7 +29,6 @@
             </li>
             {/if}
 
-
             <!-- plugin hook: 'backend_settings.sidebar_li' -->
             {* @event backend_settings.%plugin_id% *}
             {if !empty($backend_settings)}
@@ -36,9 +36,10 @@
                 {foreach $backend_settings as $_}
                     {ifset($_.sidebar_li)}
                 {/foreach}
-            {/if}
+            {/if}    
         </ul>
     </div>
+    {/if}
 
     <div class="content bordered-left blank">
 

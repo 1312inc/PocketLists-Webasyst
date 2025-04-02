@@ -83,12 +83,14 @@
                                     <span>[`Archive`]</span>
                                 </a>
                             </li>
+                            {if $isAdmin}
                             <li class="rounded">
                                 <a href="{$wa_app_url}plugins/">
                                     <i class="fas fa-plug"></i>
                                     <span>[`Plugins`]</span>
                                 </a>
                             </li>
+                            {/if}
                             <li class="rounded">
                                 <a href="{$wa_app_url}settings/">
                                     <i class="fas fa-cog"></i>
