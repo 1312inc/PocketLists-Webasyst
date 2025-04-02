@@ -122,7 +122,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
             if (isset($_item['priority'])) {
                 if (!is_numeric($_item['priority'])) {
                     $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'priority');
-                } elseif (!in_array($_item['priority'], [1, 2, 3, 4, 5])) {
+                } elseif (!in_array($_item['priority'], [0, 1, 2, 3, 4, 5])) {
                     $_item['errors'][] = _w('Unknown value priority');
                 }
             }
