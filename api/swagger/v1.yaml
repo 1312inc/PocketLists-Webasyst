@@ -2565,6 +2565,7 @@ components:
         last_activity:
           type: string
           format: datetime
+          nullable: true
         email:
           type: string
         locale:
