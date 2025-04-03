@@ -150,10 +150,6 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
         }
 
         $available_list_ids = pocketlistsRBAC::getAccessListForContact(pl2()->getUser()->getId());
-        if (empty($available_list_ids)) {
-            return [[], 0];
-        }
-
         $plim  = pl2()->getModel(pocketlistsItem::class);
         $sql_parts = $plim->getQueryComponents(true);
         $sql_parts['where']['and'][] = 'i.key_list_id IS NULL';
@@ -226,7 +222,7 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
                 ) {
                     throw new pocketlistsApiException(_w('Unknown user'));
                 }
-                $sql_parts['where']['and'][] = 'assigned_contact_id = '.(int) $filter_split[1];
+                $sql_parts['where']['and'][] = 'i.assigned_contact_id = '.(int) $filter_split[1];
                 break;
             case 'tag':
                 /** tag/TAG */
@@ -279,7 +275,7 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
             "$sql LIMIT i:offset, i:limit", [
             'starting_from' => $starting_from,
             'status'        => $status,
-            'list_ids'      => $available_list_ids,
+            'list_ids'      => $available_list_ids ?: null,
             'contact_id'    => $this->getUser()->getId(),
             'limit'         => $limit,
             'offset'        => $offset
