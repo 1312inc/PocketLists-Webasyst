@@ -8,6 +8,9 @@ class pocketlistsUsersGetMethod extends pocketlistsApiAbstractMethod
         $limit = $this->get('limit');
         $offset = $this->get('offset');
 
+        if (!pocketlistsRBAC::canAssign()) {
+            throw new pocketlistsApiException(_w('Access denied'), 403);
+        }
         if (isset($ids)) {
             if (!is_array($ids)) {
                 throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'id'), 400);
