@@ -146,7 +146,6 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
                         $items_priority_count = ($max_priority ? array_sum(ifset($counters, $_list['id'], $max_priority, [])) : pocketlistsItem::PRIORITY_NORM);
                         $_list['icon_url'] = $static_url.$_list['icon'];
                         $_list['extended_data'] = [
-                            'favorite'              => (bool) $_list['favorite'],
                             'items_count'           => array_sum(ifset($counters, 'started', $_list['id'], [])),
                             'items_priority_count'  => $items_priority_count,
                             'items_priority_value'  => $max_priority,
@@ -189,6 +188,7 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
                 'amount',
                 'currency_iso3',
                 'assigned_contact_id',
+                'favorite',
                 'repeat',
                 'uuid',
                 'pocket_id',
@@ -222,6 +222,7 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
                 'location_id' => 'int',
                 'amount' => 'float',
                 'assigned_contact_id' => 'int',
+                'favorite' => 'int',
                 'repeat' => 'int',
                 'pocket_id' => 'int',
                 'private' => 'int',

@@ -2245,9 +2245,6 @@ components:
               type: object
               nullable: true
               properties:
-                favorite:
-                  type: boolean
-                  description: Is favorite
                 items_count:
                   type: integer
                   description: Number of active (non-completed) items in the list
@@ -2413,6 +2410,9 @@ components:
               nullable: true
               default: null
               description: Assigned/responsible user contact ID
+            favorite:
+              type: integer
+              description: Is favorite
             repeat:
               type: integer
               default: 0
@@ -2433,9 +2433,6 @@ components:
               type: object
               nullable: true
               properties:
-                favorite:
-                  type: boolean
-                  description: Is favorite
                 comments_count:
                   type: integer
                   nullable: true

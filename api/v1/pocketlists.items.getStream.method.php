@@ -98,6 +98,7 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
                 'amount',
                 'currency_iso3',
                 'assigned_contact_id',
+                'favorite',
                 'repeat',
                 'key_list_id',
                 'uuid',
@@ -123,6 +124,7 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
                 'location_id' => 'int',
                 'amount' => 'float',
                 'assigned_contact_id' => 'int',
+                'favorite' => 'int',
                 'repeat' => 'int',
                 'key_list_id' => 'int'
             ]
@@ -289,7 +291,6 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
                 'tags'           => []
             ];
             $_item['extended_data'] = [
-                'favorite'       => (bool) $_item['favorite'],
                 'comments_count' => (int) $_item['comments_count']
             ];
         }
