@@ -451,51 +451,6 @@ paths:
                 $ref: '#/components/schemas/response'
         500:
           description: Internal server error
-  /pocketlists.items.favorite:
-    post:
-      security:
-        - BearerAuth: [ ]
-      summary: Adds or removes items from the user personal list of favorites items.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                    description: Item ID
-                  favorite:
-                    type: boolean
-                    default: false
-                    description: True - add to favorite, false - remove from favorites.
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                 $ref: '#/components/schemas/response'
-        400:
-          description: Invalid request data
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/response'
-        403:
-          description: Access denied to the Pocket Lists app or this API method.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/response'
-        404:
-          description: Not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/response'
   /pocketlists.items.get:
     get:
       security:
@@ -963,51 +918,6 @@ paths:
                 $ref: '#/components/schemas/response'
         500:
           description: Internal server error
-  /pocketlists.lists.favorite:
-    post:
-      security:
-        - BearerAuth: [ ]
-      summary: Adds or removes lists from the user personal list of favorites items.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                    description: List ID
-                  favorite:
-                    type: boolean
-                    default: false
-                    description: True - add to favorite, false - remove from favorites.
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/response'
-        400:
-          description: Invalid request data
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/response'
-        403:
-          description: Access denied to the Pocket Lists app or this API method.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/response'
-        404:
-          description: Not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/response'
   /pocketlists.lists.get:
     get:
       security:
@@ -2602,15 +2512,6 @@ components:
                   type: integer
                 5:
                   type: integer
-    favorite:
-      type: object
-      properties:
-        id:
-          type: integer
-          description: Entity ID
-        favorite:
-          type: boolean
-          description: Is favorite
     log:
       type: object
       properties:
@@ -2706,7 +2607,6 @@ components:
                           - $ref: '#/components/schemas/log'
                           - $ref: '#/components/schemas/pocket'
                           - $ref: '#/components/schemas/user'
-                          - $ref: '#/components/schemas/favorite'
         - type: object
           properties:
             meta:
