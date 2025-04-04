@@ -168,7 +168,9 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
                 'i.contact_id = i:current_user_id',
                 'i.assigned_contact_id = i:current_user_id'
             ];
-            if (isset($complete_contact_id)) {
+            if (!pocketlistsRBAC::canAssign()) {
+                $opt[] = 'i.complete_contact_id = i:current_user_id';
+            } elseif (isset($complete_contact_id)) {
                 $opt[] = 'i.complete_contact_id = i:complete_contact_id';
             }
             $sql_parts['where']['and'][] = 'i.list_id IN (i:list_ids) OR (i.list_id IS NULL AND ('.implode(' OR ', $opt).'))';
