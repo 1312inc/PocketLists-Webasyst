@@ -584,7 +584,7 @@ paths:
             + **tag/TAG**: items assigned to a specific tag,
             + **search/KEYWORD**: full-text search within item text data,
             + **nearby**: items assigned to locations,
-            + **nearby/43.679149,-40.202120**: items assigned to locations ordered by proximity from the specified lattitude and longitude
+            + **nearby/43.679149,-40.202120**: items assigned to locations ordered by proximity from the specified latitude and longitude
           example: upnext, user/ID, search/KEYWORD
           schema:
             type: string
@@ -594,11 +594,6 @@ paths:
           schema:
             type: string
             format: date-time
-        - in: query
-          name: status
-          description: Filters by item status (0 for active/undone, 1 for completed/done). When 'status=1' is passed, defult sort will be 'ORDER BY complete_datetime DESC'.
-          schema:
-            type: integer
         - in: query
           name: offset
           description: Skips first 'offset' records before starting the response. 0 by default.

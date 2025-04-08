@@ -6,7 +6,6 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
     {
         $filter = $this->get('filter', true);
         $starting_from = $this->get('starting_from');
-        $status = $this->get('status');
         $limit  = $this->get('limit');
         $offset = $this->get('offset');
 
@@ -21,14 +20,6 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
             } else {
                 throw new pocketlistsApiException(_w('Unknown value starting_from'), 400);
             }
-        }
-        if (isset($status)) {
-            if (!is_numeric($status)) {
-                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'status'), 400);
-            } elseif (!in_array($status, [pocketlistsItem::STATUS_UNDONE, pocketlistsItem::STATUS_DONE])) {
-                throw new pocketlistsApiException(_w('Unknown value status'), 400);
-            }
-            $status = (int) $status;
         }
         if (isset($limit)) {
             if (!is_numeric($limit)) {
@@ -61,7 +52,7 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
         }
 
         try {
-            list($items, $total_count) = $this->getItems($filter, $starting_from, $status, $limit, $offset);
+            list($items, $total_count) = $this->getItems($filter, $starting_from, $limit, $offset);
         } catch (waAPIException $ex) {
             throw new pocketlistsApiException($ex->getMessage(), 400);
         }
@@ -131,7 +122,7 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
         );
     }
 
-    private function getItems($filter, $starting_from, $status, $limit, $offset)
+    private function getItems($filter, $starting_from, $limit, $offset)
     {
         $available_filters = [
             'upnext',
@@ -151,6 +142,7 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
             throw new pocketlistsApiException(_w('Unknown filter value'));
         }
 
+        $status = pocketlistsItem::STATUS_UNDONE;
         $current_user_id = $this->getUser()->getId();
         $available_list_ids = pocketlistsRBAC::getAccessListForContact($current_user_id);
         $plim = pl2()->getModel(pocketlistsItem::class);
@@ -168,7 +160,7 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
                 if (!empty($filter_split[1])) {
                     throw new pocketlistsApiException(_w('Unknown filter value'));
                 }
-                $status = pocketlistsItem::STATUS_UNDONE;
+                $sql_parts['where']['and'][] = 'i.status = i:status';
                 $sql_parts['where']['and']['def'] = 'i.list_id IN (i:list_ids) OR (i.list_id IS NULL AND (
                     i.assigned_contact_id = i:curr_user_id
                     OR uf.contact_id 
@@ -178,7 +170,7 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
                 break;
             case 'due':
                 /** due, due/YYYY-MM-DD, due/YYYY-MM-DD,YYYY-MM-DD */
-                $status = pocketlistsItem::STATUS_UNDONE;
+                $sql_parts['where']['and'][] = 'i.status = i:status';
                 if (empty($filter_split[1])) {
                     $sql_parts['where']['and'][] = 'i.due_date IS NOT NULL';
                 } else {
@@ -220,8 +212,8 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
                 if (!empty($filter_split[1])) {
                     throw new pocketlistsApiException(_w('Unknown filter value'));
                 }
-                $status = pocketlistsItem::STATUS_UNDONE;
                 $sql_parts['where']['and'][] = 'i.priority > 0';
+                $sql_parts['where']['and'][] = 'i.status = i:status';
                 $sql_parts['order by'][] = 'i.priority DESC, i.due_date ASC, i.due_datetime ASC, i.id';
                 break;
             case 'favorites':
@@ -240,7 +232,7 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
                     throw new pocketlistsApiException(_w('Unknown user'));
                 }
                 $user_id = (int) $filter_split[1];
-                $status = pocketlistsItem::STATUS_UNDONE;
+                $sql_parts['where']['and'][] = 'i.status = i:status';
                 $sql_parts['where']['and']['def'] = "i.list_id IN (i:list_ids) OR (i.list_id IS NULL AND (i.assigned_contact_id = $user_id OR i.contact_id = $user_id))";
                 $sql_parts['order by'][] = "i.assigned_contact_id = $user_id DESC, i.calc_priority DESC, i.due_date ASC, i.due_datetime ASC, i.id";
                 break;
@@ -264,7 +256,7 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
                 break;
             case 'nearby':
                 /** nearby or nearby/28.635896,-106.075763 */
-                $status = pocketlistsItem::STATUS_UNDONE;
+                $sql_parts['where']['and'][] = 'i.status = i:status';
                 $sql_parts['where']['and'][] = 'i.location_id IS NOT NULL';
                 if (!empty($filter_split[1])) {
                     $locations = explode(',', $filter_split[1]);
@@ -282,9 +274,6 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
                     $sql_parts['order by'][] = 'meter';
                 }
                 break;
-        }
-        if (isset($status)) {
-            $sql_parts['where']['and'][] = 'i.status = i:status';
         }
         $sql = $plim->buildSqlComponents($sql_parts);
         $items = $plim->query(
