@@ -76,6 +76,7 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                 'amount'                => 0,
                 'currency_iso3'         => null,
                 'assigned_contact_id'   => ifset($_list, 'assigned_contact_id', null),
+                'favorite'              => ifset($_list, 'favorite', 0),
                 'repeat'                => 0,
                 'uuid'                  => ifset($_list, 'uuid', null),
                 'prev_list_id'          => ifset($_list, 'prev_list_id', null),
@@ -128,6 +129,14 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                 }
             }
 
+            if ($_list['favorite']) {
+                if (!is_numeric($_list['favorite'])) {
+                    $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'favorite');
+                } elseif (!in_array($_list['favorite'], [0, 1])) {
+                    $_item['errors'][] = _w('Unknown value favorite');
+                }
+            }
+
             if (isset($_list['client_touch_datetime'])) {
                 if (!is_string($_list['client_touch_datetime'])) {
                     $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'client_touch_datetime');
@@ -172,6 +181,7 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
         });
         $lists_err = array_diff_key($lists, $lists_ok);
         if (!empty($lists_ok)) {
+            $favorites = [];
             $cr_model = new waContactRightsModel();
             $static_url = wa()->getAppStaticUrl(null, true).'img/listicons/';
 
@@ -215,6 +225,12 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                             pocketlistsRBAC::RIGHT_ACCESS
                         );
                     }
+                    if ($_list['favorite']) {
+                        $favorites[] = [
+                            'item_id'    => $list_clone->getKeyItemId(),
+                            'contact_id' => $user_id,
+                        ];
+                    }
                 } else {
                     $_list['success'] = false;
                 }
@@ -231,6 +247,11 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                 ];
             }
             unset($_list);
+
+            if ($favorites) {
+                $uf_model = pl2()->getModel(pocketlistsUserFavorites::class);
+                $uf_model->multipleInsert($favorites, waModel::INSERT_IGNORE);
+            }
 
             if ($pocket_ids = array_filter(array_unique(array_column($lists_ok, 'pocket_id')))) {
                 pl2()->getModel(pocketlistsPocket::class)->updateById(
@@ -273,6 +294,7 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                 'amount',
                 'currency_iso3',
                 'assigned_contact_id',
+                'favorite',
                 'repeat',
                 'uuid',
                 'pocket_id',
@@ -305,6 +327,7 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                 'location_id' => 'int',
                 'amount' => 'float',
                 'assigned_contact_id' => 'int',
+                'favorite' => 'int',
                 'repeat' => 'int',
                 'pocket_id' => 'int',
                 'private' => 'int',

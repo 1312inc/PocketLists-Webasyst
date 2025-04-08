@@ -825,6 +825,13 @@ paths:
                   assigned_contact_id:
                     type: integer
                     description: Assigned contact ID
+                  favorite:
+                    type: integer
+                    default: 0
+                    description: Add list to favorite
+                    enum:
+                      - 0
+                      - 1
                   client_touch_datetime:
                     type: string
                     format: date-time
