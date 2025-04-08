@@ -174,7 +174,7 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
                     OR uf.contact_id 
                     OR (i.contact_id = i:curr_user_id AND i.assigned_contact_id IS NULL AND i.due_date IS NOT NULL)
                 ))';
-                $sql_parts['order by'][] = 'i.calc_priority DESC, i.due_date DESC, i.due_datetime ASC, i.id';
+                $sql_parts['order by'][] = 'i.calc_priority DESC, i.due_date ASC, i.due_datetime ASC, i.id';
                 break;
             case 'due':
                 /** due, due/YYYY-MM-DD, due/YYYY-MM-DD,YYYY-MM-DD */
@@ -213,7 +213,7 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
                         }
                     }
                 }
-                $sql_parts['order by'][] = 'i.due_date DESC, i.due_datetime ASC, i.id';
+                $sql_parts['order by'][] = 'i.due_date ASC, i.due_datetime ASC, i.id';
                 break;
             case 'priority':
                 /** priority */
@@ -222,12 +222,12 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
                 }
                 $status = pocketlistsItem::STATUS_UNDONE;
                 $sql_parts['where']['and'][] = 'i.priority > 0';
-                $sql_parts['order by'][] = 'i.priority DESC, i.due_date DESC, i.due_datetime ASC, i.id';
+                $sql_parts['order by'][] = 'i.priority DESC, i.due_date ASC, i.due_datetime ASC, i.id';
                 break;
             case 'favorites':
                 /** favorites */
                 $sql_parts['where']['and']['def'] = 'uf.item_id IS NOT NULL';
-                $sql_parts['order by'][] = 'i.calc_priority, i.due_date DESC, i.due_datetime ASC, i.id';
+                $sql_parts['order by'][] = 'i.calc_priority, i.due_date ASC, i.due_datetime ASC, i.id';
                 break;
             case 'user':
                 /** user/ID */
@@ -242,7 +242,7 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
                 $user_id = (int) $filter_split[1];
                 $status = pocketlistsItem::STATUS_UNDONE;
                 $sql_parts['where']['and']['def'] = "i.list_id IN (i:list_ids) OR (i.list_id IS NULL AND (i.assigned_contact_id = $user_id OR i.contact_id = $user_id))";
-                $sql_parts['order by'][] = "i.assigned_contact_id = $user_id DESC, i.calc_priority DESC, i.due_date DESC, i.due_datetime ASC, i.id";
+                $sql_parts['order by'][] = "i.assigned_contact_id = $user_id DESC, i.calc_priority DESC, i.due_date ASC, i.due_datetime ASC, i.id";
                 break;
             case 'tag':
                 /** tag/TAG */
@@ -252,7 +252,7 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
                 $sql_parts['join']['pit'] = 'LEFT JOIN pocketlists_item_tags pit ON pit.item_id = i.id';
                 $sql_parts['join']['pt'] = 'LEFT JOIN pocketlists_tag pt ON pt.id = pit.tag_id';
                 $sql_parts['where']['and'][] = "pt.`text` = '".$plim->escape($filter_split[1])."'";
-                $sql_parts['order by'][] = 'i.calc_priority, i.due_date DESC, i.due_datetime ASC, i.id';
+                $sql_parts['order by'][] = 'i.calc_priority, i.due_date ASC, i.due_datetime ASC, i.id';
                 break;
             case 'search':
                 /** search/KEYWORD */
@@ -260,7 +260,7 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
                     throw new pocketlistsApiException(_w('Empty filter value'));
                 }
                 $sql_parts['where']['and'][] = "i.name LIKE '%".$plim->escape($filter_split[1])."%'";
-                $sql_parts['order by'][] = 'i.calc_priority, i.due_date DESC, i.due_datetime ASC, i.id';
+                $sql_parts['order by'][] = 'i.calc_priority, i.due_date ASC, i.due_datetime ASC, i.id';
                 break;
             case 'nearby':
                 /** nearby or nearby/28.635896,-106.075763 */
