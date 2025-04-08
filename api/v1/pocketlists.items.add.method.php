@@ -86,6 +86,7 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                 'amount'                => 0,
                 'currency_iso3'         => null,
                 'assigned_contact_id'   => ifset($_item, 'assigned_contact_id', null),
+                'favorite'              => ifset($_item, 'favorite', 0),
                 'repeat'                => 0,
                 'key_list_id'           => null,
                 'uuid'                  => ifset($_item, 'uuid', null),
@@ -129,6 +130,13 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                     $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'assigned_contact_id');
                 } elseif (!array_key_exists($_item['assigned_contact_id'], $assign_contacts)) {
                     $_item['errors'][] = _w('Assigned contact not found');
+                }
+            }
+            if ($_item['favorite']) {
+                if (!is_numeric($_item['favorite'])) {
+                    $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'favorite');
+                } elseif (!in_array($_item['favorite'], [0, 1])) {
+                    $_item['errors'][] = _w('Unknown value favorite');
                 }
             }
 
@@ -278,10 +286,10 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                     if ($rows_count === count($items_ok)) {
                         $tags = [];
                         $links = [];
+                        $favorites = [];
                         foreach ($items_ok as &$_item) {
                             $_item['id'] = $last_id++;
                             $_item['extended_data'] = [
-                                'favorite'       => false,
                                 'comments_count' => 0
                             ];
                             if (!empty($_item['attachments'])) {
@@ -291,6 +299,12 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                             if ($_item['assigned_contact_id']) {
                                 $sender = new pocketlistsNotificationsSender($_item, 'new');
                                 $sender->send();
+                            }
+                            if ($_item['favorite']) {
+                                $favorites[] = [
+                                    'item_id'    => $_item['id'],
+                                    'contact_id' => $user_id,
+                                ];
                             }
                             if (!empty($_item['tags'])) {
                                 $tags[$_item['id']] = $_item['tags'];
@@ -308,6 +322,10 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                         }
                         unset($_item);
 
+                        if ($favorites) {
+                            $uf_model = pl2()->getModel(pocketlistsUserFavorites::class);
+                            $uf_model->multipleInsert($favorites, waModel::INSERT_IGNORE);
+                        }
                         if ($tags) {
                             $tag_model = pl2()->getModel(pocketlistsItemTags::class);
                             $tag_model->setTags($tags);
@@ -383,6 +401,7 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                 'amount',
                 'currency_iso3',
                 'assigned_contact_id',
+                'favorite',
                 'repeat',
                 'key_list_id',
                 'uuid',
@@ -410,6 +429,7 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                 'location_id' => 'int',
                 'amount' => 'float',
                 'assigned_contact_id' => 'int',
+                'favorite' => 'int',
                 'repeat' => 'int',
                 'key_list_id' => 'int'
             ]

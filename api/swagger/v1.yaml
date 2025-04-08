@@ -320,6 +320,13 @@ paths:
                     type: integer
                     nullable: true
                     description: Assigned/responsible user contact ID
+                  favorite:
+                    type: integer
+                    default: 0
+                    description: Add item to favorite
+                    enum:
+                      - 0
+                      - 1
                   priority:
                     type: integer
                     description: Priority (0, 1, 2, ..., N)
