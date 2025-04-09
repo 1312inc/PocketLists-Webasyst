@@ -120,6 +120,14 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 }
             }
 
+            if (isset($_item['favorite'])) {
+                if (!is_numeric($_item['favorite'])) {
+                    $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'favorite');
+                } elseif (!in_array($_item['favorite'], [0, 1])) {
+                    $_item['errors'][] = _w('Unknown value favorite');
+                }
+            }
+
             if (isset($_item['priority'])) {
                 if (!is_numeric($_item['priority'])) {
                     $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'priority');
@@ -335,8 +343,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
             $items_ok = $this->sorting('item', $items_ok);
             try {
                 foreach ($items_ok as &$_item_ok) {
-                    $result = $item_model->updateById($_item_ok['id'], $_item_ok);
-                    if ($result) {
+                    if ($item_model->updateById($_item_ok['id'], $_item_ok)) {
                         if (isset($_item_ok['favorite'])) {
                             if ($_item_ok['favorite']) {
                                 $set_favorite[] = [
@@ -464,6 +471,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 'amount',
                 'currency_iso3',
                 'assigned_contact_id',
+                'favorite',
                 'repeat',
                 'key_list_id',
                 'uuid',
@@ -490,6 +498,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 'location_id' => 'int',
                 'amount' => 'float',
                 'assigned_contact_id' => 'int',
+                'favorite' => 'int',
                 'repeat' => 'int',
                 'key_list_id' => 'int'
         ]);
