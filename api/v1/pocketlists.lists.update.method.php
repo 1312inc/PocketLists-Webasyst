@@ -27,6 +27,7 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
 
         $pockets_in_db = [];
         $assign_contacts = [];
+        $current_user_id = $this->getUser()->getId();
         $pocket_ids = array_filter(array_unique(array_column($lists, 'pocket_id')), function ($i) {
             return $i > 0;
         });
@@ -44,7 +45,6 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                 }
             }
         }
-
 
         /** validate */
         foreach ($lists as &$_list) {
@@ -85,6 +85,7 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                 'amount'                => 0,
                 'currency_iso3'         => null,
                 'assigned_contact_id'   => ifset($_list, 'assigned_contact_id', null),
+                'favorite'              => ifset($_list, 'favorite', null),
                 'repeat'                => 0,
                 'uuid'                  => null,
                 'prev_list_id'          => (array_key_exists('prev_list_id', $_list) ? ifset($_list, 'prev_list_id', 0) : null),
@@ -139,6 +140,14 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                     $_list['errors'][] = _w('Contact not found');
                 } elseif (!array_key_exists($_list['assigned_contact_id'], $assign_contacts)) {
                     $_list['errors'][] = _w('Assigned contact not found');
+                }
+            }
+
+            if (isset($_list['favorite'])) {
+                if (!is_numeric($_list['favorite'])) {
+                    $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'favorite');
+                } elseif (!in_array($_list['favorite'], [0, 1])) {
+                    $_item['errors'][] = _w('Unknown value favorite');
                 }
             }
 
@@ -211,6 +220,8 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
         });
         $lists_err = array_diff_key($lists, $lists_ok);
         if (!empty($lists_ok)) {
+            $set_favorite = [];
+            $unset_favorite = [];
             $priority_count = [];
             $completed_count = [];
             $static_url = wa()->getAppStaticUrl(null, true).'img/listicons/';
@@ -244,7 +255,18 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                 $list_clone = clone $list;
                 pl2()->getHydrator()->hydrate($list_clone, $_list);
                 $list_clone->setUpdateDatetime(date('Y-m-d H:i:s'));
-                if (!$list_factory->save($list_clone)) {
+                if ($list_factory->save($list_clone)) {
+                    if (isset($_list['favorite'])) {
+                        if ($_list['favorite']) {
+                            $set_favorite[] = [
+                                'item_id'    => $list_clone->getKeyItemId(),
+                                'contact_id' => $current_user_id
+                            ];
+                        } else {
+                            $unset_favorite[] = ['item_id' => $list_clone->getKeyItemId()];
+                        }
+                    }
+                } else {
                     $_list['success'] = false;
                 }
 
@@ -266,6 +288,22 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                 return $l['success'];
             });
             if ($logs) {
+                if ($set_favorite || $unset_favorite) {
+                    $uf_model = pl2()->getModel(pocketlistsUserFavorites::class);
+                    if (!empty($set_favorite)) {
+                        $uf_model->multipleInsert($set_favorite, waModel::INSERT_IGNORE);
+                    }
+                    if (!empty($unset_favorite)) {
+                        $uf_model->exec("
+                            DELETE FROM pocketlists_user_favorites
+                            WHERE contact_id = i:contact_id AND item_id IN (i:item_ids)
+                        ", [
+                            'contact_id' => $current_user_id,
+                            'item_ids'   => array_column($unset_favorite, 'item_id')
+                        ]);
+                    }
+                }
+
                 if ($pocket_ids = array_filter(array_unique(array_column($lists_ok, 'pocket_id')))) {
                     pl2()->getModel(pocketlistsPocket::class)->updateById(
                         $pocket_ids,
@@ -306,6 +344,7 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                 'amount',
                 'currency_iso3',
                 'assigned_contact_id',
+                'favorite',
                 'repeat',
                 'uuid',
                 'pocket_id',
@@ -337,6 +376,7 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                 'location_id' => 'int',
                 'amount' => 'float',
                 'assigned_contact_id' => 'int',
+                'favorite' => 'int',
                 'repeat' => 'int',
                 'pocket_id' => 'int',
                 'private' => 'int',
