@@ -26,10 +26,11 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
             throw new pocketlistsApiException(_w('Items not found'), 404);
         }
 
+        $current_user_id = $this->getUser()->getId();
         /** @var pocketlistsItemModel $item_model */
         $item_model = pl2()->getModel(pocketlistsItem::class);
         $items_in_db = $item_model->select('*')->where('id IN (:item_ids) AND key_list_id IS NULL', ['item_ids' => $item_ids])->fetchAll('id');
-        $list_id_available = pocketlistsRBAC::getAccessListForContact($this->getUser()->getId());
+        $list_id_available = pocketlistsRBAC::getAccessListForContact($current_user_id);
         if (!empty($list_ids)) {
             /** @var pocketlistsListModel $list_model */
             $list_model = pl2()->getModel(pocketlistsList::class);
@@ -299,7 +300,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                     ) {
                         /** status 0 -> 1 */
                         $_item['complete_datetime'] = date('Y-m-d H:i:s');
-                        $_item['complete_contact_id'] = $this->getUser()->getId();
+                        $_item['complete_contact_id'] = $current_user_id;
                     } elseif (
                         $_item['status'] === pocketlistsItem::STATUS_UNDONE
                         && $items_in_db[$item_id]['status'] == pocketlistsItem::STATUS_DONE
@@ -327,6 +328,8 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
         if (!empty($items_ok)) {
             $tags = [];
             $links = [];
+            $set_favorite = [];
+            $unset_favorite = [];
             $attachments_log = [];
             $item_model = pl2()->getModel(pocketlistsItem::class);
             $items_ok = $this->sorting('item', $items_ok);
@@ -334,6 +337,16 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 foreach ($items_ok as &$_item_ok) {
                     $result = $item_model->updateById($_item_ok['id'], $_item_ok);
                     if ($result) {
+                        if (isset($_item_ok['favorite'])) {
+                            if ($_item_ok['favorite']) {
+                                $set_favorite[] = [
+                                    'item_id'    => $_item_ok['id'],
+                                    'contact_id' => $current_user_id
+                                ];
+                            } else {
+                                $unset_favorite[] = ['item_id' => $_item_ok['id']];
+                            }
+                        }
                         if (isset($_item_ok['tags'])) {
                             $tags[$_item_ok['id']] = $_item_ok['tags'];
                         }
@@ -362,6 +375,21 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 }
                 unset($_item_ok);
 
+                if ($set_favorite || $unset_favorite) {
+                    $uf_model = pl2()->getModel(pocketlistsUserFavorites::class);
+                    if (!empty($set_favorite)) {
+                        $uf_model->multipleInsert($set_favorite, waModel::INSERT_IGNORE);
+                    }
+                    if (!empty($unset_favorite)) {
+                        $uf_model->exec("
+                            DELETE FROM pocketlists_user_favorites
+                            WHERE contact_id = i:contact_id AND item_id IN (i:item_ids)
+                        ", [
+                            'contact_id' => $current_user_id,
+                            'item_ids'   => array_column($unset_favorite, 'item_id')
+                        ]);
+                    }
+                }
                 if ($tags) {
                     $tag_model = pl2()->getModel(pocketlistsItemTags::class);
                     $tag_model->setTags($tags);

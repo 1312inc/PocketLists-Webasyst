@@ -682,6 +682,12 @@ paths:
                   assigned_contact_id:
                     type: integer
                     description: Assigned/responsible user contact ID
+                  favorite:
+                    type: integer
+                    description: Add item to favorite
+                    enum:
+                      - 0
+                      - 1
                   priority:
                     type: integer
                     description: Priority (0, 1, 2, ..., N)
