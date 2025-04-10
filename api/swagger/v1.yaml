@@ -323,7 +323,7 @@ paths:
                   favorite:
                     type: integer
                     default: 0
-                    description: Add item to favorite
+                    description: Item favorite/starred status
                     enum:
                       - 0
                       - 1
@@ -684,7 +684,7 @@ paths:
                     description: Assigned/responsible user contact ID
                   favorite:
                     type: integer
-                    description: Add item to favorite
+                    description: Item favorite/starred status
                     enum:
                       - 0
                       - 1
