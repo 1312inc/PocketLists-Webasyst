@@ -887,4 +887,63 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
 
         return [$result, $count];
     }
+
+    protected function getLinks($item_ids)
+    {
+        $result = [];
+        $part_sql = '';
+        $order_format = '';
+        $select = "SELECT pil.*, '' AS entity_title, '' AS entity_link";
+        $base_url = wa()->getUrl(true).wa()->getConfig()->getBackendUrl();
+        $apps_exclude = [pocketlistsAnnouncement::APP];
+        try {
+            if (wa()->appExists('shop')) {
+                $order_format = wa('shop')->getConfig()->getOrderFormat();
+                $part_sql = "LEFT JOIN shop_order sor ON pil.app = 'shop' AND sor.id = pil.entity_id";
+            } else {
+                $apps_exclude[] = pocketlistsAppLinkShop::APP;
+            }
+            if (wa()->appExists('tasks')) {
+                $select .= ',tt.name, tt.project_id, tt.`number`';
+                $part_sql .= " LEFT JOIN tasks_task tt ON pil.app = 'tasks' AND tt.id = pil.entity_id";
+            } else {
+                $apps_exclude[] = pocketlistsAppLinkTasks::APP;
+            }
+        } catch (Exception $e) {}
+        if (empty($part_sql)) {
+            return $result;
+        }
+
+        $links_in_db = pl2()->getModel(pocketlistsItemLink::class)->query(
+            "$select FROM pocketlists_item_link pil $part_sql WHERE pil.item_id IN (i:ids) AND pil.app NOT IN (s:apps) AND pil.entity_type NOT IN (s:entity)", [
+                'ids'    => $item_ids,
+                'apps'   => $apps_exclude,
+                'entity' => [pocketlistsAnnouncement::ENTITY]
+            ]
+        )->fetchAll();
+        foreach ($links_in_db as $_link) {
+            if (!isset($result[$_link['item_id']])) {
+                $result[$_link['item_id']] = [];
+            }
+            switch ($_link['app']) {
+                case 'shop':
+                    $_link['entity_title'] = str_replace('{$order.id}', $_link['entity_id'], $order_format);
+                    $_link['entity_link'] = sprintf("$base_url/shop/?action=orders#/order/%d/", $_link['entity_id']);
+                    break;
+                case 'tasks':
+                    $project_id = ifset($_link,'project_id', '');
+                    $number = ifset($_link,'number', '');
+                    $_link['entity_title'] = "$project_id.$number ".ifset($_link, 'name', '');
+                    $_link['entity_link'] = sprintf("$base_url/tasks#/task/%d.%d/", $project_id, $number);
+                    break;
+            }
+            $result[$_link['item_id']][] = $this->singleFilterFields(
+                $_link,
+                ['id', 'item_id', 'app', 'entity_type', 'entity_id', 'entity_title', 'entity_link', 'data'],
+                ['id' => 'int', 'item_id' => 'int']
+            );
+        }
+
+        return $result;
+    }
 }

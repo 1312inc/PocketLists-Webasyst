@@ -2471,6 +2471,13 @@ components:
         entity_id:
           type: string
           description: Entity identifier
+        entity_title:
+          type: string
+          description: Entity title
+        entity_link:
+          type: string
+          format: uri
+          description: Entity link
         data:
           type: string
           description: Link data

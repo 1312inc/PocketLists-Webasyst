@@ -364,8 +364,8 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                         if (isset($attachments_in_db[$_item_ok['id']])) {
                             $_item_ok['attachments'] = array_merge($_item_ok['attachments'], $attachments_in_db[$_item_ok['id']]);
                         }
-                        if (!empty($_item['external_links'])) {
-                            foreach ($_item['external_links'] as $_link) {
+                        if (!empty($_item_ok['external_links'])) {
+                            foreach ($_item_ok['external_links'] as $_link) {
                                 $links[] = [
                                     'item_id'     => $_item_ok['id'],
                                     'app'         => ifset($_link, 'app_id', null),
@@ -374,6 +374,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                                     'entity_data' => ifset($_link, 'entity_data', null),
                                 ];
                             }
+                            $_item_ok['external_links'] = [];
                         }
                     } else {
                         $_item_ok['success'] = false;
@@ -404,7 +405,17 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 if ($links) {
                     //save external_links
                     $link_model = pl2()->getModel(pocketlistsItemLink::class);
-                    $link_model->setLinks($links);
+                    if ($link_model->setLinks($links)) {
+                        $links = $this->getLinks(array_column($items_ok, 'id'));
+                        foreach ($links as $_item_id => $_link) {
+                            foreach ($items_ok as &$_item) {
+                                if ($_item['id'] == $_item_id) {
+                                    $_item['external_links'] = $_link;
+                                    break;
+                                }
+                            }
+                        }
+                    }
                 }
 
                 if ($list_ids = array_filter(array_unique(array_column($items_ok, 'list_id')))) {

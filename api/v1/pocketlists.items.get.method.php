@@ -263,23 +263,7 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
             }
             unset($attachments_in_db, $_attachment);
 
-            $links = [];
-            $links_in_db = pl2()->getModel(pocketlistsItemLink::class)
-                ->select('*')
-                ->where('item_id IN (i:ids) AND app NOT IN (s:apps) AND entity_type NOT IN (s:entity)',
-                    [
-                        'ids'    => $ids,
-                        'apps'   => [pocketlistsAnnouncement::APP],
-                        'entity' => [pocketlistsAnnouncement::ENTITY]
-                    ])
-                ->fetchAll();
-            foreach ($links_in_db as $_link) {
-                if (!isset($links[$_link['item_id']])) {
-                    $links[$_link['item_id']] = [];
-                }
-                $links[$_link['item_id']][] = $_link;
-            }
-            unset($links_in_db, $_link);
+            $links = $this->getLinks($ids);
 
             $tags = [];
             $tags_in_db = pl2()->getModel(pocketlistsItemTags::class)->getTags($ids);
@@ -310,11 +294,7 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
                 );
             }
             if (isset($links[$_item['id']])) {
-                $_item['external_links'] = $this->filterFields(
-                    $links[$_item['id']],
-                    ['id', 'item_id', 'app', 'entity_type', 'entity_id', 'data'],
-                    ['id' => 'int', 'item_id' => 'int']
-                );
+                $_item['external_links'] = $links[$_item['id']];
             }
             if (isset($tags[$_item['id']])) {
                 $_item['tags'] = $tags[$_item['id']];

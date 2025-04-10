@@ -310,14 +310,16 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                                 $tags[$_item['id']] = $_item['tags'];
                             }
                             if (!empty($_item['external_links'])) {
-                                foreach ($_item['external_links'] as $_link)
-                                $links[] = [
-                                    'item_id'     => $_item['id'],
-                                    'app'         => ifset($_link, 'app_id', null),
-                                    'entity_type' => ifset($_link, 'entity_type', null),
-                                    'entity_id'   => ifset($_link, 'entity_id', null),
-                                    'entity_data' => ifset($_link, 'entity_data', null),
-                                ];
+                                foreach ($_item['external_links'] as $_link) {
+                                    $links[] = [
+                                        'item_id'     => $_item['id'],
+                                        'app'         => ifset($_link, 'app_id', null),
+                                        'entity_type' => ifset($_link, 'entity_type', null),
+                                        'entity_id'   => ifset($_link, 'entity_id', null),
+                                        'entity_data' => ifset($_link, 'entity_data', null),
+                                    ];
+                                }
+                                $_item['external_links'] = [];
                             }
                         }
                         unset($_item);
@@ -333,7 +335,17 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                         if ($links) {
                             //save external_links
                             $link_model = pl2()->getModel(pocketlistsItemLink::class);
-                            $link_model->multipleInsert($links);
+                            if ($link_model->multipleInsert($links)) {
+                                $links = $this->getLinks(array_column($items_ok, 'id'));
+                                foreach ($links as $_item_id => $_link) {
+                                    foreach ($items_ok as &$_item) {
+                                        if ($_item['id'] == $_item_id) {
+                                            $_item['external_links'] = $_link;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
                         }
 
                         if ($list_ids = array_filter(array_unique(array_column($items_ok, 'list_id')))) {
