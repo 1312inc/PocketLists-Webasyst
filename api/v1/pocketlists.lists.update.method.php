@@ -86,7 +86,6 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                 'currency_iso3'         => null,
                 'assigned_contact_id'   => ifset($_list, 'assigned_contact_id', null),
                 'favorite'              => ifset($_list, 'favorite', null),
-                'repeat'                => 0,
                 'uuid'                  => null,
                 'prev_list_id'          => (array_key_exists('prev_list_id', $_list) ? ifset($_list, 'prev_list_id', 0) : null),
                 'success'               => true,
@@ -205,7 +204,6 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                         'complete_contact_id',
                         'amount',
                         'currency_iso3',
-                        'repeat',
                         'uuid'
                     ], null)) + $_list + $list_in_db;
                 }
@@ -345,7 +343,6 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                 'currency_iso3',
                 'assigned_contact_id',
                 'favorite',
-                'repeat',
                 'uuid',
                 'pocket_id',
                 'type',
@@ -377,7 +374,6 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                 'amount' => 'float',
                 'assigned_contact_id' => 'int',
                 'favorite' => 'int',
-                'repeat' => 'int',
                 'pocket_id' => 'int',
                 'private' => 'int',
                 'archived' => 'int',

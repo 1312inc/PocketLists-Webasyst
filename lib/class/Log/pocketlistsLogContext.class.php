@@ -24,7 +24,6 @@ class pocketlistsLogContext
         'due_datetime',
         'location_id',
         'assigned_contact_id',
-        'repeat',
     ];
 
     const ITEM_MORE_INFO_APP_LINKS = 1;

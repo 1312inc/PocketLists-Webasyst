@@ -2345,10 +2345,6 @@ components:
             favorite:
               type: integer
               description: Is favorite
-            repeat:
-              type: integer
-              default: 0
-              description: Repeat
             key_list_id:
               type: integer
               nullable: true

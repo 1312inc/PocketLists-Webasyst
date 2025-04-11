@@ -15,8 +15,6 @@ class pocketlistsItem extends pocketlistsEntity
     const STATUS_UNDONE = 0;
     const STATUS_DONE   = 1;
 
-    const REPEAT_DEFAULT = 0;
-
     /**
      * @var int
      */
@@ -141,11 +139,6 @@ class pocketlistsItem extends pocketlistsEntity
      * @var int|null
      */
     protected $assigned_contact_id;
-
-    /**
-     * @var string|null
-     */
-    protected $repeat = self::REPEAT_DEFAULT;
 
     /**
      * @var int|null
@@ -1104,26 +1097,6 @@ class pocketlistsItem extends pocketlistsEntity
         if ($this->completeContact) {
             $this->setCompleteContactId($this->completeContact->getId());
         }
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getRepeat()
-    {
-        return $this->repeat;
-    }
-
-    /**
-     * @param string|null $repeat
-     *
-     * @return $this
-     */
-    public function setRepeat($repeat)
-    {
-        $this->repeat = $repeat;
 
         return $this;
     }

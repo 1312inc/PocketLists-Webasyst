@@ -296,7 +296,6 @@ class pocketlistsGorshochekPluginBackendRunController extends waLongActionContro
                     'assigned_contact_id' => $this->genContactId(true),
                     'files'               => [],
                     'amount'              => 0,
-                    'repeat'              => 0,
                     'uuid'                => $this->getUuid(10)
                 ];
                 if (mt_rand(1, 4) % 4 === 0) {

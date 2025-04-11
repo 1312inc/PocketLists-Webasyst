@@ -483,7 +483,6 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 'currency_iso3',
                 'assigned_contact_id',
                 'favorite',
-                'repeat',
                 'key_list_id',
                 'uuid',
                 'tags',
@@ -510,8 +509,8 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 'amount' => 'float',
                 'assigned_contact_id' => 'int',
                 'favorite' => 'int',
-                'repeat' => 'int',
                 'key_list_id' => 'int'
-        ]);
+            ]
+        );
     }
 }

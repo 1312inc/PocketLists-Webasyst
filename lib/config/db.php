@@ -54,7 +54,6 @@ return array(
         'amount' => array('decimal', "10,0"),
         'currency_iso3' => array('varchar', 3),
         'assigned_contact_id' => array('int', 11),
-        'repeat' => array('int', 11),
         'key_list_id' => array('int', 11),
         'uuid' => array('varchar', 36),
         'pro_label_id' => array('int', 11),

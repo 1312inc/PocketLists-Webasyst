@@ -87,7 +87,6 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                 'currency_iso3'         => null,
                 'assigned_contact_id'   => ifset($_item, 'assigned_contact_id', null),
                 'favorite'              => ifset($_item, 'favorite', 0),
-                'repeat'                => 0,
                 'key_list_id'           => null,
                 'uuid'                  => ifset($_item, 'uuid', null),
                 'tags'                  => $this->tagFilter(ifset($_item, 'tags', [])),
@@ -414,7 +413,6 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                 'currency_iso3',
                 'assigned_contact_id',
                 'favorite',
-                'repeat',
                 'key_list_id',
                 'uuid',
                 'tags',
@@ -442,7 +440,6 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                 'amount' => 'float',
                 'assigned_contact_id' => 'int',
                 'favorite' => 'int',
-                'repeat' => 'int',
                 'key_list_id' => 'int'
             ]
         );
