@@ -348,6 +348,24 @@ paths:
                     format: date-time
                     nullable: true
                     description: A descriptive datetime to be shown somewhere in the client UI, and not validated by server
+                  repeat_frequency:
+                    type: integer
+                    default: 0
+                    description: Repeat frequency
+                  repeat_interval:
+                    type: string
+                    default: null
+                    description: Repeat interval
+                    enum:
+                      - day
+                      - workday
+                      - week
+                      - month
+                      - year
+                  repeat_occurrence:
+                    type: integer
+                    default: null
+                    description: Repeat occurrence
                   uuid:
                     type: string
                     nullable: true
@@ -709,6 +727,24 @@ paths:
                     format: date-time
                     nullable: true
                     description: A descriptive datetime to be shown somewhere in the client UI, and not validated by server
+                  repeat_frequency:
+                    type: integer
+                    default: 0
+                    description: Repeat frequency
+                  repeat_interval:
+                    type: string
+                    default: null
+                    description: Repeat interval
+                    enum:
+                      - day
+                      - workday
+                      - week
+                      - month
+                      - year
+                  repeat_occurrence:
+                    type: integer
+                    default: null
+                    description: Repeat occurrence
                   prev_item_id:
                     type: integer
                     nullable: true
@@ -2342,6 +2378,20 @@ components:
               nullable: true
               default: null
               description: Assigned/responsible user contact ID
+            repeat_frequency:
+              type: integer
+              default: 0
+              description: Repeat frequency
+            repeat_interval:
+              type: integer
+              nullable: true
+              default: null
+              description: Repeat interval
+            repeat_occurrence:
+              type: integer
+              nullable: true
+              default: null
+              description: Repeat occurrence
             favorite:
               type: integer
               description: Is favorite

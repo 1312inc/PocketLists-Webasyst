@@ -15,6 +15,20 @@ class pocketlistsItem extends pocketlistsEntity
     const STATUS_UNDONE = 0;
     const STATUS_DONE   = 1;
 
+    const INTERVAL_DAY = 'day';
+    const INTERVAL_WORKDAY = 'workday';
+    const INTERVAL_WEEK = 'week';
+    const INTERVAL_MONTH = 'month';
+    const INTERVAL_YEAR = 'year';
+
+    const REPEAT_INTERVAL = [
+        self::INTERVAL_DAY,
+        self::INTERVAL_WORKDAY,
+        self::INTERVAL_WEEK,
+        self::INTERVAL_MONTH,
+        self::INTERVAL_YEAR,
+    ];
+
     /**
      * @var int
      */
@@ -139,6 +153,21 @@ class pocketlistsItem extends pocketlistsEntity
      * @var int|null
      */
     protected $assigned_contact_id;
+
+    /**
+     * @var int
+     */
+    protected $repeat_frequency;
+
+    /**
+     * @var string|null
+     */
+    protected $repeat_interval = null;
+
+    /**
+     * @var int|null
+     */
+    protected $repeat_occurrence;
 
     /**
      * @var int|null
@@ -1054,6 +1083,68 @@ class pocketlistsItem extends pocketlistsEntity
     public function setAssignedContactId($assigned_contact_id = null)
     {
         $this->assigned_contact_id = empty($assigned_contact_id) ? null : (int) $assigned_contact_id;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRepeatFrequency()
+    {
+        return $this->repeat_frequency;
+    }
+
+    /**
+     * @param $repeat_frequency
+     *
+     * @return $this
+     */
+    public function setRepeatFrequency($repeat_frequency)
+    {
+        $this->repeat_frequency = $repeat_frequency;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getRepeatInterval()
+    {
+        return $this->repeat_interval;
+    }
+
+    /**
+     * @param $repeat_interval
+     *
+     * @return $this
+     */
+    public function setRepeatInterval($repeat_interval)
+    {
+        if (in_array($repeat_interval, self::REPEAT_INTERVAL)) {
+            $this->repeat_interval = $repeat_interval;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getRepeatOccurrence()
+    {
+        return $this->repeat_occurrence;
+    }
+
+    /**
+     * @param $repeat_occurrence
+     *
+     * @return $this
+     */
+    public function setRepeatOccurrence($repeat_occurrence)
+    {
+        $this->repeat_occurrence = $repeat_occurrence;
 
         return $this;
     }

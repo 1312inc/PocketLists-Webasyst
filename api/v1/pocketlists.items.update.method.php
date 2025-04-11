@@ -120,6 +120,22 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 }
             }
 
+            if (isset($_item['repeat_frequency']) &&!is_numeric($_item['repeat_frequency'])) {
+                $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'repeat_frequency');
+            }
+
+            if (isset($_item['repeat_interval'])) {
+                if (!is_string($_item['repeat_interval'])) {
+                    $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'repeat_interval');
+                } elseif (!in_array($_item['repeat_interval'], pocketlistsItem::REPEAT_INTERVAL)) {
+                    $_item['errors'][] = _w('Unknown value repeat_interval');
+                }
+            }
+
+            if (isset($_item['repeat_occurrence']) && !is_numeric($_item['repeat_occurrence'])) {
+                $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'repeat_occurrence');
+            }
+
             if (isset($_item['favorite'])) {
                 if (!is_numeric($_item['favorite'])) {
                     $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'favorite');
@@ -284,6 +300,9 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                         'rank',
                         'status',
                         'assigned_contact_id',
+                        'repeat_frequency',
+                        'repeat_interval',
+                        'repeat_occurrence',
                         'priority',
                         'location_id',
                         'due_date',
@@ -482,6 +501,9 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 'amount',
                 'currency_iso3',
                 'assigned_contact_id',
+                'repeat_frequency',
+                'repeat_interval',
+                'repeat_occurrence',
                 'favorite',
                 'key_list_id',
                 'uuid',
@@ -508,6 +530,8 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 'location_id' => 'int',
                 'amount' => 'float',
                 'assigned_contact_id' => 'int',
+                'repeat_frequency' => 'int',
+                'repeat_occurrence' => 'int',
                 'favorite' => 'int',
                 'key_list_id' => 'int'
             ]

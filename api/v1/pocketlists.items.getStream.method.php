@@ -89,6 +89,9 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
                 'amount',
                 'currency_iso3',
                 'assigned_contact_id',
+                'repeat_frequency',
+                'repeat_interval',
+                'repeat_occurrence',
                 'favorite',
                 'key_list_id',
                 'uuid',
@@ -114,6 +117,8 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
                 'location_id' => 'int',
                 'amount' => 'float',
                 'assigned_contact_id' => 'int',
+                'repeat_frequency' => 'int',
+                'repeat_occurrence' => 'int',
                 'favorite' => 'int',
                 'key_list_id' => 'int'
             ]
