@@ -934,7 +934,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                     $project_id = ifset($_link,'project_id', '');
                     $number = ifset($_link,'number', '');
                     $_link['entity_title'] = "$project_id.$number ".ifset($_link, 'name', '');
-                    $_link['entity_link'] = sprintf("$base_url/tasks#/task/%d.%d/", $project_id, $number);
+                    $_link['entity_link'] = sprintf("$base_url/tasks/#/task/%d.%d/", $project_id, $number);
                     break;
             }
             $result[$_link['item_id']][] = $this->singleFilterFields(
