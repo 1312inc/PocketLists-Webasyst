@@ -48,14 +48,8 @@ class pocketlistsListUpdateController extends pocketlistsJsonController
         pl2()->getHydrator()->hydrate($list, $data);
         pl2()->getHydrator()->hydrate($list->getKeyItem(), $data);
 
-        $list_icons = (new pocketlistsListIcon())->getAll();
-        $matched_icon = pocketlistsNaturalInput::matchCategory($list->getName());
-        if ($matched_icon) {
-            foreach ($list_icons as $listIconGroup => $icon) {
-                if (isset($list_icons[$listIconGroup][$matched_icon])) {
-                    $list->setIcon($list_icons[$listIconGroup][$matched_icon]);
-                }
-            }
+        if ($matched_icon = pocketlistsNaturalInput::iconMatchCategory($list->getName())) {
+            $list->setIcon($matched_icon);
         }
 
         if ($listFactory->save($list) && $newList) {

@@ -363,7 +363,7 @@ class pocketlistsGorshochekPluginBackendRunController extends waLongActionContro
     {
         if (empty($this->data['icons'])) {
             $this->data['icons'] = [];
-            $list_icons = (new pocketlistsListIcon())->getAll();
+            $list_icons = pocketlistsListIcon::getAll();
             foreach ($list_icons as $_list_icon) {
                 $this->data['icons'] = array_merge($this->data['icons'], array_values($_list_icon));
             }

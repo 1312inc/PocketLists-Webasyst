@@ -61,25 +61,39 @@ class pocketlistsNaturalInput
     /**
      * @param $category_name
      *
-     * @return bool|int|string
+     * @return mixed|string
      */
-    public static function matchCategory($category_name)
+    public static function iconMatchCategory($category_name)
     {
-        $instance = self::getInstance();
+        self::getInstance();
+
+        $icon = null;
+        $matched_icon = null;
+        $list_icons = pocketlistsListIcon::getAll();
         $category_name = mb_strtolower(trim($category_name));
         foreach (self::$json_rules as $json_rule) {
             if (isset($json_rule['task_categs'])) {
                 foreach ($json_rule['task_categs'] as $flag_id => $flag_strings) {
                     foreach ($flag_strings as $flag_string) {
                         if (strpos($category_name, $flag_string) !== false) {
-                            return $flag_id;
+                            $icon = $flag_id;
+                            break 3;
                         }
                     }
                 }
             }
         }
 
-        return false;
+        if ($icon) {
+            foreach ($list_icons as $_icon) {
+                if (isset($_icon[$icon])) {
+                    $matched_icon = $_icon[$icon];
+                    break;
+                }
+            }
+        }
+
+        return ($matched_icon ?: pocketlistsList::DEFAULT_ICON);
     }
 
     /**

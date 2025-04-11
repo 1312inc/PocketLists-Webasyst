@@ -48,7 +48,7 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                 'sort'                  => ifset($_list, 'sort', null),
                 'rank'                  => ifset($_list, 'rank', null),
                 'type'                  => ifset($_list, 'type', pocketlistsList::TYPE_CHECKLIST),
-                'icon'                  => ifset($_list, 'icon', pocketlistsList::DEFAULT_ICON),
+                'icon'                  => ifset($_list, 'icon', null),
                 'icon_url'              => null,
                 'private'               => ifset($_list, 'private', 0),
                 'archived'              => 0,
@@ -194,6 +194,9 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
             $list = $list_factory->createNew();
             $lists_ok = $this->sorting('list', $lists_ok);
             foreach ($lists_ok as &$_list) {
+                if (!isset($_list['icon'])) {
+                    $_list['icon'] = pocketlistsNaturalInput::iconMatchCategory($_list['name']);
+                }
                 $list_clone = clone $list;
                 $list_clone->setName($_list['name'])
                     ->setType($_list['type'])

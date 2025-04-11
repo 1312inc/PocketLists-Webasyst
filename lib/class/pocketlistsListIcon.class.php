@@ -8,10 +8,8 @@ class pocketlistsListIcon
     /**
      * @return array
      */
-    public function getAll()
+    public static function getAll()
     {
-//        $path = wa()->getAppPath('img/listicons/', wa()->getApp());
-
         $icon_ids = [
             '' => [
                 "list",
