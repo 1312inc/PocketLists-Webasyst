@@ -879,6 +879,24 @@ paths:
                     format: date-time
                     nullable: true
                     description: A descriptive datetime to be shown somewhere in the client UI, and not validated by server
+                  repeat_frequency:
+                    type: integer
+                    default: 0
+                    description: Repeat frequency
+                  repeat_interval:
+                    type: string
+                    default: null
+                    description: Repeat interval
+                    enum:
+                      - day
+                      - workday
+                      - week
+                      - month
+                      - year
+                  repeat_occurrence:
+                    type: integer
+                    default: null
+                    description: Repeat occurrence (auto incrementing number of repeating iteration)
                   sort:
                     type: integer
                     description: Precise master sort position (ORDER BY sort, rank) within a pocket
@@ -1108,6 +1126,24 @@ paths:
                     format: date-time
                     nullable: true
                     description: A descriptive datetime to be shown somewhere in the client UI, and not validated by server
+                  repeat_frequency:
+                    type: integer
+                    default: 0
+                    description: Repeat frequency
+                  repeat_interval:
+                    type: string
+                    default: null
+                    description: Repeat interval
+                    enum:
+                      - day
+                      - workday
+                      - week
+                      - month
+                      - year
+                  repeat_occurrence:
+                    type: integer
+                    default: null
+                    description: Repeat occurrence (auto incrementing number of repeating iteration)
                   sort:
                     type: integer
                     description: Precise master sort position (ORDER BY sort, rank) within a pocket

@@ -85,6 +85,9 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                 'amount'                => 0,
                 'currency_iso3'         => null,
                 'assigned_contact_id'   => ifset($_list, 'assigned_contact_id', null),
+                'repeat_frequency'      => ifset($_list, 'repeat_frequency', 0),
+                'repeat_interval'       => ifset($_list, 'repeat_interval', null),
+                'repeat_occurrence'     => ifset($_list, 'repeat_occurrence', null),
                 'favorite'              => ifset($_list, 'favorite', null),
                 'uuid'                  => null,
                 'prev_list_id'          => (array_key_exists('prev_list_id', $_list) ? ifset($_list, 'prev_list_id', 0) : null),
@@ -142,11 +145,27 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                 }
             }
 
+            if (isset($_list['repeat_frequency']) &&!is_numeric($_list['repeat_frequency'])) {
+                $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'repeat_frequency');
+            }
+
+            if (isset($_list['repeat_interval'])) {
+                if (!is_string($_list['repeat_interval'])) {
+                    $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'repeat_interval');
+                } elseif (!in_array($_list['repeat_interval'], pocketlistsItem::REPEAT_INTERVAL)) {
+                    $_list['errors'][] = _w('Unknown value repeat_interval');
+                }
+            }
+
+            if (isset($_list['repeat_occurrence']) && !is_numeric($_list['repeat_occurrence'])) {
+                $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'repeat_occurrence');
+            }
+
             if (isset($_list['favorite'])) {
                 if (!is_numeric($_list['favorite'])) {
-                    $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'favorite');
+                    $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'favorite');
                 } elseif (!in_array($_list['favorite'], [0, 1])) {
-                    $_item['errors'][] = _w('Unknown value favorite');
+                    $_list['errors'][] = _w('Unknown value favorite');
                 }
             }
 
@@ -162,6 +181,7 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                     }
                 }
             }
+            
 
             if (isset($_list['sort']) && !is_numeric($_list['sort'])) {
                 $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'sort');
@@ -198,6 +218,9 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                         'contact_id',
                         'parent_id',
                         'has_children',
+                        'repeat_frequency',
+                        'repeat_interval',
+                        'repeat_occurrence',
                         'calc_priority',
                         'create_datetime',
                         'complete_datetime',

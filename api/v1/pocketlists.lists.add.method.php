@@ -76,9 +76,9 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                 'amount'                => 0,
                 'currency_iso3'         => null,
                 'assigned_contact_id'   => ifset($_list, 'assigned_contact_id', null),
-                'repeat_frequency'      => 0,
-                'repeat_interval'       => null,
-                'repeat_occurrence'     => null,
+                'repeat_frequency'      => ifset($_list, 'repeat_frequency', 0),
+                'repeat_interval'       => ifset($_list, 'repeat_interval', null),
+                'repeat_occurrence'     => ifset($_list, 'repeat_occurrence', null),
                 'favorite'              => ifset($_list, 'favorite', 0),
                 'uuid'                  => ifset($_list, 'uuid', null),
                 'prev_list_id'          => ifset($_list, 'prev_list_id', null),
@@ -131,11 +131,27 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                 }
             }
 
+            if ($_list['repeat_frequency'] &&!is_numeric($_list['repeat_frequency'])) {
+                $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'repeat_frequency');
+            }
+
+            if (isset($_list['repeat_interval'])) {
+                if (!is_string($_list['repeat_interval'])) {
+                    $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'repeat_interval');
+                } elseif (!in_array($_list['repeat_interval'], pocketlistsItem::REPEAT_INTERVAL)) {
+                    $_list['errors'][] = _w('Unknown value repeat_interval');
+                }
+            }
+
+            if (isset($_list['repeat_occurrence']) && !is_numeric($_list['repeat_occurrence'])) {
+                $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'repeat_occurrence');
+            }
+
             if ($_list['favorite']) {
                 if (!is_numeric($_list['favorite'])) {
-                    $_item['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'favorite');
+                    $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'favorite');
                 } elseif (!in_array($_list['favorite'], [0, 1])) {
-                    $_item['errors'][] = _w('Unknown value favorite');
+                    $_list['errors'][] = _w('Unknown value favorite');
                 }
             }
 
@@ -204,6 +220,9 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                     ->setPrivate($_list['private'])
                     ->setColor($_list['color'])
                     ->setAssignedContactId($_list['assigned_contact_id'])
+                    ->setRepeatFrequency($_list['repeat_frequency'])
+                    ->setRepeatInterval($_list['repeat_interval'])
+                    ->setRepeatOccurrence($_list['repeat_occurrence'])
                     ->setIcon($_list['icon'])
                     ->setClientTouchDatetime($_list['client_touch_datetime'])
                     ->setSort($_list['sort'])
