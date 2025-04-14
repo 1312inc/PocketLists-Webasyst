@@ -351,11 +351,11 @@ paths:
                   repeat_frequency:
                     type: integer
                     default: 0
-                    description: Repeat frequency
+                    description: Repeat frequency (multiplier for interval 'every frequency x interval')
                   repeat_interval:
                     type: string
                     default: null
-                    description: Repeat interval
+                    description: Repeat interval (time interval length between repeat iterations)
                     enum:
                       - day
                       - workday
@@ -365,7 +365,7 @@ paths:
                   repeat_occurrence:
                     type: integer
                     default: null
-                    description: Repeat occurrence (auto incrementing number of repeating iteration)
+                    description: Repeat occurrence (auto increments on every iteration)
                   uuid:
                     type: string
                     nullable: true
@@ -730,11 +730,11 @@ paths:
                   repeat_frequency:
                     type: integer
                     default: 0
-                    description: Repeat frequency
+                    description: Repeat frequency (multiplier for interval 'every frequency x interval')
                   repeat_interval:
                     type: string
                     default: null
-                    description: Repeat interval
+                    description: Repeat interval (time interval length between repeat iterations)
                     enum:
                       - day
                       - workday
@@ -744,7 +744,7 @@ paths:
                   repeat_occurrence:
                     type: integer
                     default: null
-                    description: Repeat occurrence (auto incrementing number of repeating iteration)
+                    description: Repeat occurrence (auto increments on every iteration)
                   prev_item_id:
                     type: integer
                     nullable: true
@@ -882,11 +882,11 @@ paths:
                   repeat_frequency:
                     type: integer
                     default: 0
-                    description: Repeat frequency
+                    description: Repeat frequency (multiplier for interval 'every frequency x interval')
                   repeat_interval:
                     type: string
                     default: null
-                    description: Repeat interval
+                    description: Repeat interval (time interval length between repeat iterations)
                     enum:
                       - day
                       - workday
@@ -896,7 +896,7 @@ paths:
                   repeat_occurrence:
                     type: integer
                     default: null
-                    description: Repeat occurrence (auto incrementing number of repeating iteration)
+                    description: Repeat occurrence (auto increments on every iteration)
                   sort:
                     type: integer
                     description: Precise master sort position (ORDER BY sort, rank) within a pocket
@@ -1129,11 +1129,11 @@ paths:
                   repeat_frequency:
                     type: integer
                     default: 0
-                    description: Repeat frequency
+                    description: Repeat frequency (multiplier for interval 'every frequency x interval')
                   repeat_interval:
                     type: string
                     default: null
-                    description: Repeat interval
+                    description: Repeat interval (time interval length between repeat iterations)
                     enum:
                       - day
                       - workday
@@ -1143,7 +1143,7 @@ paths:
                   repeat_occurrence:
                     type: integer
                     default: null
-                    description: Repeat occurrence (auto incrementing number of repeating iteration)
+                    description: Repeat occurrence (auto increments on every iteration)
                   sort:
                     type: integer
                     description: Precise master sort position (ORDER BY sort, rank) within a pocket
@@ -2417,17 +2417,17 @@ components:
             repeat_frequency:
               type: integer
               default: 0
-              description: Repeat frequency
+              description: Repeat frequency (multiplier for interval 'every frequency x interval')
             repeat_interval:
               type: integer
               nullable: true
               default: null
-              description: Repeat interval
+              description: Repeat interval (time interval length between repeat iterations)
             repeat_occurrence:
               type: integer
               nullable: true
               default: null
-              description: Repeat occurrence (auto incrementing number of repeating iteration)
+              description: Repeat occurrence (auto increments on every iteration)
             favorite:
               type: integer
               description: Is favorite (starred)
