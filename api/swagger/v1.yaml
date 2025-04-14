@@ -365,7 +365,7 @@ paths:
                   repeat_occurrence:
                     type: integer
                     default: null
-                    description: Repeat occurrence
+                    description: Repeat occurrence (auto incrementing number of repeating iteration)
                   uuid:
                     type: string
                     nullable: true
@@ -744,7 +744,7 @@ paths:
                   repeat_occurrence:
                     type: integer
                     default: null
-                    description: Repeat occurrence
+                    description: Repeat occurrence (auto incrementing number of repeating iteration)
                   prev_item_id:
                     type: integer
                     nullable: true
@@ -2372,7 +2372,7 @@ components:
               type: string
               nullable: true
               default: null
-              description: Currency ISO-3 code
+              description: Currency ISO 3 code
             assigned_contact_id:
               type: integer
               nullable: true
@@ -2391,10 +2391,10 @@ components:
               type: integer
               nullable: true
               default: null
-              description: Repeat occurrence
+              description: Repeat occurrence (auto incrementing number of repeating iteration)
             favorite:
               type: integer
-              description: Is favorite
+              description: Is favorite (starred)
             key_list_id:
               type: integer
               nullable: true
