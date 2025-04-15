@@ -208,11 +208,13 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
         }
         try {
             $dt = date_create($datetime, new DateTimeZone('UTC'));
-            $dt->setTimezone(new DateTimeZone(date_default_timezone_get()));
-            return$dt->format('Y-m-d H:i:s');
+            if ($dt instanceof DateTime) {
+                $dt->setTimezone(new DateTimeZone(date_default_timezone_get()));
+                return $dt->format('Y-m-d H:i:s');
+            }
         } catch (Exception $ex) {
-            return $datetime;
         }
+        return null;
     }
 
     /**
