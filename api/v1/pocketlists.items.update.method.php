@@ -29,7 +29,16 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
         $current_user_id = $this->getUser()->getId();
         /** @var pocketlistsItemModel $item_model */
         $item_model = pl2()->getModel(pocketlistsItem::class);
-        $items_in_db = $item_model->select('*')->where('id IN (:item_ids) AND key_list_id IS NULL', ['item_ids' => $item_ids])->fetchAll('id');
+
+        $sql_parts = $item_model->getQueryComponents();
+        $sql_parts['where']['and'] = [
+            'i.id IN (i:item_ids)',
+            'i.key_list_id IS NULL'
+        ];
+        $items_in_db = $item_model->query($item_model->buildSqlComponents($sql_parts), [
+            'item_ids'   => $item_ids,
+            'contact_id' => $current_user_id
+        ])->fetchAll('id');
         $list_id_available = pocketlistsRBAC::getAccessListForContact($current_user_id);
         if (!empty($list_ids)) {
             /** @var pocketlistsListModel $list_model */
