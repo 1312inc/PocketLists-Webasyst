@@ -467,10 +467,14 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                     $items_ok
                 );
 
-                $items_move = array_column($items_ok, 'move');
-                if ($items_move) {
+                if ($items_move = array_column($items_ok, 'move')) {
                     pl2()->getModel(pocketlistsItemMove::class)->multipleInsert($items_move);
                 }
+
+                if (array_column($items_ok, 'complete_datetime')) {
+                    (new pocketlistsNotificationAboutCompleteItems())->multiplicityNotifyAboutCompleteItems($items_ok);
+                }
+
                 if ($attachments_log) {
                     $this->saveLog(
                         pocketlistsLog::ENTITY_ATTACHMENT,

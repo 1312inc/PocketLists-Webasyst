@@ -255,6 +255,7 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                             'contact_id' => $user_id,
                         ];
                     }
+                    (new pocketlistsNotificationAboutNewList())->notifyAboutNewList($list_clone);
                 } else {
                     $_list['success'] = false;
                 }

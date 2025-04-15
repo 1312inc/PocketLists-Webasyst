@@ -112,6 +112,8 @@ class pocketlistsCommentsAddMethod extends pocketlistsApiAbstractMethod
                             ['activity_datetime' => date('Y-m-d H:i:s')]
                         );
 
+                        (new pocketlistsNotificationAboutNewComment())->multiplicityNotify($comments_ok);
+
                         $this->saveLog(
                             pocketlistsLog::ENTITY_COMMENT,
                             pocketlistsLog::ACTION_ADD,

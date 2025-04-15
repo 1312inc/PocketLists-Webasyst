@@ -208,4 +208,23 @@ class pocketlistsNotificationAboutCompleteItems extends pocketlistsBaseNotificat
 
         return true;
     }
+
+    public function multiplicityNotifyAboutCompleteItems($items = [])
+    {
+        $result = [];
+        /** @var pocketlistsItemFactory $item_factory */
+        $item_factory = pl2()->getEntityFactory(pocketlistsItem::class);
+
+        /** @var pocketlistsItem $item */
+        $item = $item_factory->createNew();
+        foreach ((array) $items as $_item) {
+            if (ifset($_item, 'complete_datetime', null)) {
+                $item_clone = clone $item;
+                pl2()->getHydrator()->hydrate($item_clone, $_item);
+                $result[] = $item_clone;
+            }
+        }
+
+        $this->notifyAboutCompleteItems($result);
+    }
 }
