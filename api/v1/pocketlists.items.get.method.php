@@ -256,6 +256,7 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
             $attachments = [];
             $attachments_in_db = pl2()->getModel(pocketlistsAttachment::class)->getByField('item_id', $ids, true);
             foreach ($attachments_in_db as $_attachment) {
+                $_attachment['file_name'] = $_attachment['filename'];
                 if (!isset($attachments[$_attachment['item_id']])) {
                     $attachments[$_attachment['item_id']] = [];
                 }
@@ -289,7 +290,7 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
             if (isset($attachments[$_item['id']])) {
                 $_item['attachments'] = $this->filterFields(
                     $attachments[$_item['id']],
-                    ['id', 'item_id', 'filename', 'ext', 'size', 'upload_datetime', 'uuid', 'download_url', 'preview_url'],
+                    ['id', 'item_id', 'file_name', 'ext', 'size', 'upload_datetime', 'uuid', 'download_url', 'preview_url'],
                     ['id' => 'int', 'size' => 'int', 'item_id' => 'int', 'upload_datetime' => 'datetime']
                 );
             }

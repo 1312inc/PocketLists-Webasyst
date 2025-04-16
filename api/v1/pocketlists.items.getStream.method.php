@@ -300,9 +300,10 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
         }
         $attachments = pl2()->getModel(pocketlistsAttachment::class)->getByField('item_id', array_keys($items), true);
         foreach ($attachments as $_attachment) {
+            $_attachment['file_name'] = $_attachment['filename'];
             $items[$_attachment['item_id']]['attachments'][] = $this->singleFilterFields(
                 pocketlistsAttachment::setUrl($_attachment),
-                ['id', 'item_id', 'filename', 'size', 'filetype', 'upload_datetime', 'uuid', 'download_url', 'preview_url'],
+                ['id', 'item_id', 'file_name', 'size', 'filetype', 'upload_datetime', 'uuid', 'download_url', 'preview_url'],
                 ['id' => 'int', 'size' => 'int', 'item_id' => 'int', 'upload_datetime' => 'datetime']
             );
         }

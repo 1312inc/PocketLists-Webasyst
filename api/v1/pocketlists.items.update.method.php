@@ -74,9 +74,10 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
         $attachments = $attachment_model->getByField('item_id', $item_ids, true);
         if ($attachments) {
             foreach ($attachments as $_attachment) {
+                $_attachment['file_name'] = $_attachment['filename'];
                 $attachments_in_db[$_attachment['item_id']][] = $this->singleFilterFields(
                     pocketlistsAttachment::setUrl($_attachment),
-                    ['id', 'item_id', 'filename', 'filetype', 'upload_datetime', 'uuid', 'download_url', 'preview_url'],
+                    ['id', 'item_id', 'file_name', 'filetype', 'upload_datetime', 'uuid', 'download_url', 'preview_url'],
                     ['id' => 'int', 'item_id' => 'int', 'upload_datetime' => 'datetime']
                 );
             }
@@ -391,6 +392,13 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                         }
                         if (isset($attachments_in_db[$_item_ok['id']])) {
                             $_item_ok['attachments'] = array_merge($_item_ok['attachments'], $attachments_in_db[$_item_ok['id']]);
+                        }
+                        if (isset($_item_ok['attachments'])) {
+                            $_item_ok['attachments'] = $this->filterFields(
+                                $_item_ok['attachments'],
+                                ['id', 'item_id', 'file_name', 'ext', 'size', 'upload_datetime', 'uuid', 'download_url', 'preview_url'],
+                                ['id' => 'int', 'size' => 'int', 'item_id' => 'int', 'upload_datetime' => 'datetime']
+                            );
                         }
                         if (!empty($_item_ok['external_links'])) {
                             foreach ($_item_ok['external_links'] as $_link) {
