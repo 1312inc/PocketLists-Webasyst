@@ -10,7 +10,7 @@ class pocketlistsNotificationAboutNewItems extends pocketlistsBaseNotification
     /**
      * Notify all related users about new items (according to their settings)
      *
-     * @param pocketlistsItem[]    $items
+     * @param pocketlistsItem[]|pocketlistsItem $items
      * @param pocketlistsList|null $list
      *
      * @throws waDbException
@@ -162,5 +162,19 @@ class pocketlistsNotificationAboutNewItems extends pocketlistsBaseNotification
         }
 
         return true;
+    }
+
+    public function multiplicityNotify($items = [])
+    {
+        /** @var pocketlistsItemFactory $item_factory */
+        $item_factory = pl2()->getEntityFactory(pocketlistsItem::class);
+
+        /** @var pocketlistsItem $item */
+        $item = $item_factory->createNew();
+        foreach ((array) $items as $_item) {
+            $item_clone = clone $item;
+            pl2()->getHydrator()->hydrate($item_clone, $_item);
+            $this->notify($item_clone);
+        }
     }
 }
