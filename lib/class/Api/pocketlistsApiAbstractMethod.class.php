@@ -844,7 +844,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
      * @return array
      * @throws waException
      */
-    public function getTeammates($teammates_ids = [], $offset = 0, $limit = self::DEFAULT_LIMIT)
+    public static function getTeammates($teammates_ids = [], $offset = 0, $limit = self::DEFAULT_LIMIT)
     {
         $result = [];
         $is_all = empty($teammates_ids);

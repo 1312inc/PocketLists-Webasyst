@@ -52,6 +52,8 @@ class pocketlistsDefaultLayout extends waLayout
                 }
             } catch (pocketlistsApiException $pex) {
                 $users = null;
+                list($user, $count) = pocketlistsApiAbstractMethod::getTeammates([pl2()->getUser()->getId()]);
+                $user = reset($user);
             }
 
             $pocket_get_list = new pocketlistsPocketsGetMethod();

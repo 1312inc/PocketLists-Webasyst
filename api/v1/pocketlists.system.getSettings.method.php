@@ -56,7 +56,7 @@ class pocketlistsSystemGetSettingsMethod extends pocketlistsApiAbstractMethod
 
     protected function getCurrentUser()
     {
-        list($result, $count) = $this->getTeammates([$this->getUser()->getId()]);
+        list($result, $count) = self::getTeammates([$this->getUser()->getId()]);
 
         return $this->singleFilterFields(
             reset($result),
