@@ -89,8 +89,23 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
         if (isset($tag) && !is_string($tag)) {
             throw new pocketlistsApiException(_w('Invalid tag'), 400);
         }
-        if (isset($external_app_id) && !is_string($external_app_id)) {
-            throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'external_app_id'), 400);
+        if (isset($external_app_id)) {
+            if (!is_string($external_app_id)) {
+                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'external_app_id'), 400);
+            } elseif (!wa()->appExists($external_app_id)) {
+                throw new pocketlistsApiException(sprintf_wp('Application `%s` is not installed or is not active', $external_app_id), 400);
+            }
+            if ($external_app_id === pocketlistsAppLinkShop::APP) {
+                $user_rights = wa()->getUser()->getRights('pocketlists');
+                if (!(isset($user_rights['backend']) && $user_rights['backend'] > 1) && empty($user_rights[pocketlistsRBAC::CAN_USE_SHOP_SCRIPT])) {
+                    throw new pocketlistsApiException(sprintf_wp('Application `%s` not enough rights', $external_app_id), 403);
+                }
+            } else {
+                $user_rights = wa()->getUser()->getRights($external_app_id);
+                if (!(isset($user_rights['backend']) && $user_rights['backend'] > 1)) {
+                    throw new pocketlistsApiException(sprintf_wp('Application `%s` not enough rights', $external_app_id), 403);
+                }
+            }
         }
         if (isset($external_entity_type)) {
             if (!is_string($external_entity_type)) {
@@ -173,7 +188,7 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
             } elseif (isset($complete_contact_id)) {
                 $opt[] = 'i.complete_contact_id = i:complete_contact_id';
             }
-            $sql_parts['where']['and'][] = 'i.list_id IN (i:list_ids) OR (i.list_id IS NULL AND ('.implode(' OR ', $opt).'))';
+            $sql_parts['where']['and']['def'] = 'i.list_id IN (i:list_ids) OR (i.list_id IS NULL AND ('.implode(' OR ', $opt).'))';
         }
         if (isset($contact_id)) {
             $sql_parts['where']['and'][] = 'i.contact_id = i:contact_id';
@@ -196,7 +211,9 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
             }
             if ($external_app_id) {
                 $sql_parts['join']['pil2'] = 'LEFT JOIN pocketlists_item_link pil2 ON pil2.item_id = i.id';
+                $sql_parts['where']['and']['def'] = 'i.list_id IS NULL';
                 $sql_parts['where']['and'][] = 'pil2.app = s:app_id';
+                $sql_parts['group by'][] = 'i.id';
                 if ($external_entity_type) {
                     $sql_parts['where']['and'][] = 'pil2.entity_type = s:entity_type';
                 }
