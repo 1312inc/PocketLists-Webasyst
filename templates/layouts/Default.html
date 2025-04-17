@@ -20,12 +20,12 @@
 
     <script type="text/javascript" src="{$wa_url}wa-content/js/jquery-wa/wa.core.js"></script>
 
-    <script type="module" crossorigin src="{$wa_app_static_url}client/assets/index-GLP9xwHN.js"></script>
-    <link rel="stylesheet" crossorigin href="{$wa_app_static_url}client/assets/index-ofYmKzdd.css"> 
+    <script type="module" crossorigin src="{$wa_app_static_url}client/assets/index-3tA-6uHa.js"></script>
+    <link rel="stylesheet" crossorigin href="{$wa_app_static_url}client/assets/index-09WGqKGw.css"> 
 
     <script>
         window.appState = {
-            baseUrl: '{$wa_app_url}',
+            base_url: '{$wa_app_url}',
             apiToken: '{$spa_api_token}',
             apiBaseUrl: '{$wa_url}api.php',
             contact_id: {$wa->user()->get('id')},
@@ -59,7 +59,7 @@
 
             <div id="wa-app">
               <section class="flexbox wrap-mobile">
-                <aside id="pl-sidebar" class="sidebar hide-scrollbar flexbox width-adaptive mobile-friendly" style="z-index: 30;">
+                <aside id="pl-sidebar" class="sidebar hide-scrollbar flexbox width-adaptive mobile-friendly desktop-only" style="z-index: 30;">
 
                     {if $wa->isSingleAppMode()}
                         <div data-vue-fragment="single-app" class="hidden">

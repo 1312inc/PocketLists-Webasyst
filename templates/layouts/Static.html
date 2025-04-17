@@ -29,12 +29,12 @@
     <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-list.js?v2{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
     <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-comment.js?v2{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
 
-    <script type="module" crossorigin src="{$wa_app_static_url}client/assets/index-GLP9xwHN.js"></script>
-    <link rel="stylesheet" crossorigin href="{$wa_app_static_url}client/assets/index-ofYmKzdd.css">
+    <script type="module" crossorigin src="{$wa_app_static_url}client/assets/index-3tA-6uHa.js"></script>
+    <link rel="stylesheet" crossorigin href="{$wa_app_static_url}client/assets/index-09WGqKGw.css">
 
     <script>
         window.appState = {
-            baseUrl: '{$wa_app_url}',
+            base_url: '{$wa_app_url}',
             apiToken: '{$spa_api_token}',
             apiBaseUrl: '{$wa_url}api.php',
             contact_id: {$wa->user()->get('id')},
@@ -66,7 +66,7 @@
         {if !empty($backend_head)}{foreach $backend_head as $_}{ifset($_)}{/foreach}{/if}
 
         <div id="wa-app" class="flexbox">
-            <aside id="pl-sidebar" class="sidebar hide-scrollbar flexbox width-adaptive mobile-friendly" pl-isSidebarSingleMode style="z-index: 30;">
+            <aside id="pl-sidebar" class="sidebar hide-scrollbar flexbox width-adaptive mobile-friendly desktop-only" pl-isSidebarSingleMode style="z-index: 30;">
 
                 {if $wa->isSingleAppMode()}
                     <div data-vue-fragment="single-app" class="hidden">
