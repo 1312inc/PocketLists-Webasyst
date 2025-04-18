@@ -82,28 +82,28 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
             if (!is_numeric($status)) {
                 throw new pocketlistsApiException(sprintf_wp('Invalid data type: “%s”', 'status'), 400);
             } elseif (!in_array($status, [pocketlistsItem::STATUS_UNDONE, pocketlistsItem::STATUS_DONE])) {
-                throw new pocketlistsApiException(_w('Invalid value status'), 400);
+                throw new pocketlistsApiException(_w('Invalid value: “status”'), 400);
             }
             $status = (int) $status;
         }
         if (isset($tag) && !is_string($tag)) {
-            throw new pocketlistsApiException(_w('Invalid “tag” value (must be string)'), 400);
+            throw new pocketlistsApiException(_w('Invalid value: “tag” (must be string)'), 400);
         }
         if (isset($external_app_id)) {
             if (!is_string($external_app_id)) {
                 throw new pocketlistsApiException(sprintf_wp('Invalid data type: “%s”', 'external_app_id'), 400);
             } elseif (!wa()->appExists($external_app_id)) {
-                throw new pocketlistsApiException(sprintf_wp('`%s` app is not installed or unavailable', $external_app_id), 400);
+                throw new pocketlistsApiException(sprintf_wp('App not installed or unavailable: “%s” app', $external_app_id), 400);
             }
             if ($external_app_id === pocketlistsAppLinkShop::APP) {
                 $user_rights = wa()->getUser()->getRights('pocketlists');
                 if (!(isset($user_rights['backend']) && $user_rights['backend'] > 1) && empty($user_rights[pocketlistsRBAC::CAN_USE_SHOP_SCRIPT])) {
-                    throw new pocketlistsApiException(sprintf_wp('Insufficient access rights: items linked to Shop-Script orders', $external_app_id), 403);
+                    throw new pocketlistsApiException(sprintf_wp('Access denied: items linked to Shop-Script orders', $external_app_id), 403);
                 }
             } else {
                 $user_rights = wa()->getUser()->getRights($external_app_id);
                 if (!(isset($user_rights['backend']) && $user_rights['backend'] > 1)) {
-                    throw new pocketlistsApiException(sprintf_wp('Insufficient access rights: “%s” app', $external_app_id), 403);
+                    throw new pocketlistsApiException(sprintf_wp('Accesd denied: must have full admin rights for the “%s” app', $external_app_id), 403);
                 }
             }
         }
