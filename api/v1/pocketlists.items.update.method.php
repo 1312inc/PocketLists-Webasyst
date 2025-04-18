@@ -368,9 +368,9 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
             $set_favorite = [];
             $unset_favorite = [];
             $attachments_log = [];
-            $item_model = pl2()->getModel(pocketlistsItem::class);
-            $items_ok = $this->sorting('item', $items_ok);
             try {
+                $item_model = pl2()->getModel(pocketlistsItem::class);
+                $items_ok = $this->sorting('item', $items_ok);
                 foreach ($items_ok as &$_item_ok) {
                     if ($item_model->updateById($_item_ok['id'], $_item_ok)) {
                         if (isset($_item_ok['favorite'])) {
@@ -439,17 +439,15 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                     $tag_model->setTags($tags);
                 }
                 if ($links) {
-                    //save external_links
-                    $link_model = pl2()->getModel(pocketlistsItemLink::class);
-                    if ($link_model->setLinks($links)) {
-                        $links = $this->getLinks(array_column($items_ok, 'id'));
-                        foreach ($links as $_item_id => $_link) {
-                            foreach ($items_ok as &$_item) {
-                                if ($_item['id'] == $_item_id) {
-                                    $_item['external_links'] = $_link;
-                                    break;
-                                }
-                            }
+                    pl2()->getModel(pocketlistsItemLink::class)->setLinks($links);
+                }
+
+                $links = $this->getLinks(array_column($items_ok, 'id'));
+                foreach ($links as $_item_id => $_link) {
+                    foreach ($items_ok as &$_item) {
+                        if ($_item['id'] == $_item_id) {
+                            $_item['external_links'] = $_link;
+                            break;
                         }
                     }
                 }
