@@ -98,7 +98,7 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
             if (empty($list_id)) {
                 $_list['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'id');
             } elseif (!is_numeric($list_id)) {
-                $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'id');
+                $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'id');
             } elseif ($list_id < 1 || !array_key_exists($list_id, $lists_in_db)) {
                 $_list['errors'][] = _w('List not found');
             }
@@ -109,35 +109,35 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
 
             if (isset($_list['pocket_id'])) {
                 if (!is_numeric($_list['pocket_id'])) {
-                    $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'pocket_id');
+                    $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'pocket_id');
                 } elseif ($_list['pocket_id'] < 1 || !array_key_exists($_list['pocket_id'], $pockets_in_db)) {
                     $_list['errors'][] = _w('Pocket not found');
                 }
             }
 
             if (isset($_list['name']) && !is_string($_list['name'])) {
-                $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'name');
+                $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'name');
             }
 
             if (isset($_list['icon']) && !is_string($_list['icon'])) {
-                $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'icon');
+                $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'icon');
             }
 
             if (isset($_list['private']) && !is_numeric($_list['private'])) {
-                $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'private');
+                $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'private');
             }
 
             if (isset($_list['color'])) {
                 if (!is_string($_list['color'])) {
-                    $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'color');
+                    $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'color');
                 } elseif (!array_key_exists($_list['color'], pocketlistsStoreColor::getColors())) {
-                    $_list['errors'][] = _w('Unknown value color');
+                    $_list['errors'][] = _w('Invalid value color');
                 }
             }
 
             if (isset($_list['assigned_contact_id'])) {
                 if (!is_numeric($_list['assigned_contact_id'])) {
-                    $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'assigned_contact_id');
+                    $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'assigned_contact_id');
                 } elseif ($_list['assigned_contact_id'] < 1) {
                     $_list['errors'][] = _w('Contact not found');
                 } elseif (!array_key_exists($_list['assigned_contact_id'], $assign_contacts)) {
@@ -146,50 +146,50 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
             }
 
             if (isset($_list['repeat_frequency']) &&!is_numeric($_list['repeat_frequency'])) {
-                $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'repeat_frequency');
+                $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'repeat_frequency');
             }
 
             if (isset($_list['repeat_interval'])) {
                 if (!is_string($_list['repeat_interval'])) {
-                    $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'repeat_interval');
+                    $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'repeat_interval');
                 } elseif (!in_array($_list['repeat_interval'], pocketlistsItem::REPEAT_INTERVAL)) {
-                    $_list['errors'][] = _w('Unknown value repeat_interval');
+                    $_list['errors'][] = _w('Invalid value repeat_interval');
                 }
             }
 
             if (isset($_list['repeat_occurrence']) && !is_numeric($_list['repeat_occurrence'])) {
-                $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'repeat_occurrence');
+                $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'repeat_occurrence');
             }
 
             if (isset($_list['favorite'])) {
                 if (!is_numeric($_list['favorite'])) {
-                    $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'favorite');
+                    $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'favorite');
                 } elseif (!in_array($_list['favorite'], [0, 1])) {
-                    $_list['errors'][] = _w('Unknown value favorite');
+                    $_list['errors'][] = _w('Invalid value favorite');
                 }
             }
 
             if (isset($_list['client_touch_datetime'])) {
                 if (!is_string($_list['client_touch_datetime'])) {
-                    $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'client_touch_datetime');
+                    $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'client_touch_datetime');
                 } else {
                     $dt = date_create($_list['client_touch_datetime']);
                     if ($dt) {
                         $_list['client_touch_datetime'] = $dt->format('Y-m-d H:i:s');
                     } else {
-                        $_list['errors'][] = _w('Unknown value client_touch_datetime');
+                        $_list['errors'][] = _w('Invalid value client_touch_datetime');
                     }
                 }
             }
             
 
             if (isset($_list['sort']) && !is_numeric($_list['sort'])) {
-                $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'sort');
+                $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'sort');
             }
 
             if (isset($_list['rank'])) {
                 if (!is_string($_list['rank'])) {
-                    $_list['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'rank');
+                    $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'rank');
                 } elseif ($_list['rank'] !== '' && !pocketlistsSortRank::rankValidate($_list['rank'])) {
                     $_list['errors'][] = _w('Invalid rank value');
                 }

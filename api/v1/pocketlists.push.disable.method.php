@@ -12,7 +12,7 @@ class pocketlistsPushDisableMethod extends pocketlistsApiAbstractMethod
         if (empty($client_id)) {
             throw new pocketlistsApiException(sprintf_wp('Missing required parameter: “%s”.', 'client_id'), 400);
         } elseif (!is_string($client_id)) {
-            throw new pocketlistsApiException(sprintf_wp('Type error parameter: “%s”.', 'client_id'), 400);
+            throw new pocketlistsApiException(sprintf_wp('Invalid data type: “%s”', 'client_id'), 400);
         }
 
         $data = [

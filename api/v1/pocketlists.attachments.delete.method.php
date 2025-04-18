@@ -55,7 +55,7 @@ class pocketlistsAttachmentsDeleteMethod extends pocketlistsApiAbstractMethod
             if (empty($_data['id'])) {
                 $_data['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'id');
             } elseif (!is_numeric($_data['id'])) {
-                $_data['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'id');
+                $_data['errors'][] = sprintf_wp('Invalid data type: “%s”', 'id');
             } elseif (!in_array($_data['id'], $attachment_ids)) {
                 $_data['errors'][] = _w('Attachment not found');
             }
@@ -63,7 +63,7 @@ class pocketlistsAttachmentsDeleteMethod extends pocketlistsApiAbstractMethod
             if (empty($_data['item_id'])) {
                 $_data['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'item_id');
             } elseif (!is_numeric($_data['item_id'])) {
-                $_data['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'item_id');
+                $_data['errors'][] = sprintf_wp('Invalid data type: “%s”', 'item_id');
             } else {
                 $item = ifset($items, $_data['item_id'], null);
                 if ($item === null) {

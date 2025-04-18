@@ -11,7 +11,7 @@ class pocketlistsPocketsDeleteMethod extends pocketlistsApiAbstractMethod
         if (empty($data)) {
             throw new pocketlistsApiException(sprintf_wp('Missing required parameter: “%s”.', 'id'), 400);
         } elseif (!is_array($data)) {
-            throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'id'), 400);
+            throw new pocketlistsApiException(sprintf_wp('Invalid data type: “%s”', 'id'), 400);
         }
 
         $pockets = [];
@@ -41,7 +41,7 @@ class pocketlistsPocketsDeleteMethod extends pocketlistsApiAbstractMethod
             if (empty($_pocket['id'])) {
                 $_pocket['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'id');
             } elseif (!is_numeric($_pocket['id'])) {
-                $_pocket['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'id');
+                $_pocket['errors'][] = sprintf_wp('Invalid data type: “%s”', 'id');
             } elseif (!in_array($_pocket['id'], $pocket_ids)) {
                 $_pocket['success'] = true;
             }

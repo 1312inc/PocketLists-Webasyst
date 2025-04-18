@@ -51,7 +51,7 @@ class pocketlistsAttachmentsAddMethod extends pocketlistsApiAbstractMethod
             if (empty($_file['item_id'])) {
                 $_file['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'item_id');
             } elseif (!is_numeric($_file['item_id'])) {
-                $_file['errors'][] = sprintf_wp('Invalid type %s', 'item_id');
+                $_file['errors'][] = sprintf_wp('Invalid data type: “%s”', 'item_id');
             } elseif ($_file['item_id'] < 1 || !in_array($_file['item_id'], $item_ids)) {
                 $_file['errors'][] = _w('Item not found');
             }
@@ -59,18 +59,18 @@ class pocketlistsAttachmentsAddMethod extends pocketlistsApiAbstractMethod
             if (empty($_file['file_name'])) {
                 $_file['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'file_name');
             } elseif (!is_string($_file['file_name'])) {
-                $_file['errors'][] = sprintf_wp('Invalid type %s', 'file_name');
+                $_file['errors'][] = sprintf_wp('Invalid data type: “%s”', 'file_name');
             }
 
             if (empty($_file['file'])) {
                 $_file['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'file');
             } elseif (!is_string($_file['file'])) {
-                $_file['errors'][] = sprintf_wp('Invalid type %s', 'file');
+                $_file['errors'][] = sprintf_wp('Invalid data type: “%s”', 'file');
             }
 
             if (!empty($_file['uuid'])) {
                 if (!is_string($_file['uuid'])) {
-                    $_file['errors'][] = sprintf_wp('Invalid type %s', 'uuid');
+                    $_file['errors'][] = sprintf_wp('Invalid data type: “%s”', 'uuid');
                 } elseif (in_array($_file['uuid'], $uuids)) {
                     $_file['errors'][] = _w('Attachment with UUID exists');
                 }

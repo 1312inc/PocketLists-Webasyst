@@ -39,22 +39,22 @@ class pocketlistsLocationsUpdateMethod extends pocketlistsApiAbstractMethod
             if (empty($_location['id'])) {
                 $_location['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'id');
             } elseif (!is_numeric($_location['id'])) {
-                $_location['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'id');
+                $_location['errors'][] = sprintf_wp('Invalid data type: “%s”', 'id');
             } elseif (!array_key_exists($_location['id'], $locations_in_db)) {
                 $_location['errors'][] = _w('Location not found');
             }
 
             if (isset($_location['name']) && !is_string($_location['name'])) {
-                $_location['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'name');
+                $_location['errors'][] = sprintf_wp('Invalid data type: “%s”', 'name');
             }
 
             if (isset($_location['color']) && !is_string($_location['color'])) {
-                $_location['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'color');
+                $_location['errors'][] = sprintf_wp('Invalid data type: “%s”', 'color');
             }
 
             if (isset($_location['location_latitude'])) {
                 if (!is_numeric($_location['location_latitude'])) {
-                    $_location['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'location_latitude');
+                    $_location['errors'][] = sprintf_wp('Invalid data type: “%s”', 'location_latitude');
                 } elseif ($_location['location_latitude'] < -90 || $_location['location_latitude'] > 90) {
                     $_location['errors'][] = sprintf_wp('Invalid value “%s”', 'location_latitude');
                 }
@@ -62,7 +62,7 @@ class pocketlistsLocationsUpdateMethod extends pocketlistsApiAbstractMethod
 
             if (isset($_location['location_longitude'])) {
                 if (!is_numeric($_location['location_longitude'])) {
-                    $_location['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'location_longitude');
+                    $_location['errors'][] = sprintf_wp('Invalid data type: “%s”', 'location_longitude');
                 } elseif ($_location['location_longitude'] < -180 || $_location['location_longitude'] > 180) {
                     $_location['errors'][] = sprintf_wp('Invalid value “%s”', 'location_longitude');
                 }
@@ -70,7 +70,7 @@ class pocketlistsLocationsUpdateMethod extends pocketlistsApiAbstractMethod
 
             if (isset($_location['location_radius'])) {
                 if (!is_numeric($_location['location_radius'])) {
-                    $_location['errors'][] = sprintf_wp('Type error parameter: “%s”.', 'location_radius');
+                    $_location['errors'][] = sprintf_wp('Invalid data type: “%s”', 'location_radius');
                 } elseif ($_location['location_radius'] < 0) {
                     $_location['errors'][] = sprintf_wp('Invalid value “%s”', 'location_radius');
                 }

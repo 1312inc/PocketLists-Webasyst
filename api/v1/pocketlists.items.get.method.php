@@ -22,7 +22,7 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
 
         if (isset($ids)) {
             if (!is_array($ids)) {
-                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'id'), 400);
+                throw new pocketlistsApiException(sprintf_wp('Invalid data type: “%s”', 'id'), 400);
             }
             $ids = array_unique(array_filter($ids, function ($_i) {
                 return is_numeric($_i) && $_i > 0;
@@ -33,114 +33,114 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
         }
         if (isset($list_id)) {
             if (!is_numeric($list_id)) {
-                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'list_id'), 400);
+                throw new pocketlistsApiException(sprintf_wp('Invalid data type: “%s”', 'list_id'), 400);
             } elseif ($list_id < 1) {
                 throw new pocketlistsApiException(_w('List not found'), 404);
             }
         }
         if (isset($contact_id)) {
             if (!is_numeric($contact_id)) {
-                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'contact_id'), 400);
+                throw new pocketlistsApiException(sprintf_wp('Invalid data type: “%s”', 'contact_id'), 400);
             } elseif ($contact_id < 1) {
                 throw new pocketlistsApiException(_w('Contact not found'), 404);
             }
         }
         if (isset($assigned_contact_id)) {
             if (!is_numeric($assigned_contact_id)) {
-                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'assigned_contact_id'), 400);
+                throw new pocketlistsApiException(sprintf_wp('Invalid data type: “%s”', 'assigned_contact_id'), 400);
             } elseif ($assigned_contact_id < 1) {
                 throw new pocketlistsApiException(_w('Assigned contact not found'), 404);
             }
         }
         if (isset($complete_contact_id)) {
             if (!is_numeric($complete_contact_id)) {
-                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'complete_contact_id'), 400);
+                throw new pocketlistsApiException(sprintf_wp('Invalid data type: “%s”', 'complete_contact_id'), 400);
             } elseif ($complete_contact_id < 1) {
                 throw new pocketlistsApiException(_w('Complete contact not found'), 404);
             }
         }
         if (isset($due_date)) {
             if (!is_string($due_date)) {
-                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'due_date'), 400);
+                throw new pocketlistsApiException(sprintf_wp('Invalid data type: “%s”', 'due_date'), 400);
             } else {
                 $dt = date_create($due_date);
                 if ($dt) {
                     $due_date = $dt->format('Y-m-d');
                 } else {
-                    throw new pocketlistsApiException(_w('Unknown value due_date'), 400);
+                    throw new pocketlistsApiException(_w('Invalid “due_date“ value (must be YYYY-MM-DD)'), 400);
                 }
             }
         }
         if (isset($location_id)) {
             if (!is_numeric($location_id)) {
-                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'location_id'), 400);
+                throw new pocketlistsApiException(sprintf_wp('Invalid data type: “%s”', 'location_id'), 400);
             } elseif ($location_id < 1) {
                 throw new pocketlistsApiException(_w('Location not found'), 404);
             }
         }
         if (isset($status)) {
             if (!is_numeric($status)) {
-                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'status'), 400);
+                throw new pocketlistsApiException(sprintf_wp('Invalid data type: “%s”', 'status'), 400);
             } elseif (!in_array($status, [pocketlistsItem::STATUS_UNDONE, pocketlistsItem::STATUS_DONE])) {
-                throw new pocketlistsApiException(_w('Unknown value status'), 400);
+                throw new pocketlistsApiException(_w('Invalid value status'), 400);
             }
             $status = (int) $status;
         }
         if (isset($tag) && !is_string($tag)) {
-            throw new pocketlistsApiException(_w('Invalid tag'), 400);
+            throw new pocketlistsApiException(_w('Invalid “tag” value (must be string)'), 400);
         }
         if (isset($external_app_id)) {
             if (!is_string($external_app_id)) {
-                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'external_app_id'), 400);
+                throw new pocketlistsApiException(sprintf_wp('Invalid data type: “%s”', 'external_app_id'), 400);
             } elseif (!wa()->appExists($external_app_id)) {
-                throw new pocketlistsApiException(sprintf_wp('Application `%s` is not installed or is not active', $external_app_id), 400);
+                throw new pocketlistsApiException(sprintf_wp('`%s` app is not installed or unavailable', $external_app_id), 400);
             }
             if ($external_app_id === pocketlistsAppLinkShop::APP) {
                 $user_rights = wa()->getUser()->getRights('pocketlists');
                 if (!(isset($user_rights['backend']) && $user_rights['backend'] > 1) && empty($user_rights[pocketlistsRBAC::CAN_USE_SHOP_SCRIPT])) {
-                    throw new pocketlistsApiException(sprintf_wp('Application `%s` not enough rights', $external_app_id), 403);
+                    throw new pocketlistsApiException(sprintf_wp('Insufficient access rights: items linked to Shop-Script orders', $external_app_id), 403);
                 }
             } else {
                 $user_rights = wa()->getUser()->getRights($external_app_id);
                 if (!(isset($user_rights['backend']) && $user_rights['backend'] > 1)) {
-                    throw new pocketlistsApiException(sprintf_wp('Application `%s` not enough rights', $external_app_id), 403);
+                    throw new pocketlistsApiException(sprintf_wp('Insufficient access rights: “%s” app', $external_app_id), 403);
                 }
             }
         }
         if (isset($external_entity_type)) {
             if (!is_string($external_entity_type)) {
-                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'external_entity_type'), 400);
+                throw new pocketlistsApiException(sprintf_wp('Invalid data type: “%s”', 'external_entity_type'), 400);
             } elseif (!isset($external_app_id)) {
-                throw new pocketlistsApiException(sprintf_wp('Missing required parameter: “%s”.', 'external_app_id'), 400);
+                throw new pocketlistsApiException(sprintf_wp('Missing required parameter: “%s”', 'external_app_id'), 400);
             }
         }
         if (isset($external_entity_id)) {
             if (!is_string($external_entity_id)) {
-                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'external_entity_id'), 400);
+                throw new pocketlistsApiException(sprintf_wp('Invalid data type: “%s”', 'external_entity_id'), 400);
             } elseif (!isset($external_app_id)) {
-                throw new pocketlistsApiException(sprintf_wp('Missing required parameter: “%s”.', 'external_app_id'), 400);
+                throw new pocketlistsApiException(sprintf_wp('Missing required parameter: “%s”', 'external_app_id'), 400);
             } elseif (!isset($external_entity_type)) {
-                throw new pocketlistsApiException(sprintf_wp('Missing required parameter: “%s”.', 'external_entity_type'), 400);
+                throw new pocketlistsApiException(sprintf_wp('Missing required parameter: “%s”', 'external_entity_type'), 400);
             }
         }
         if (isset($starting_from)) {
             if (!is_string($starting_from)) {
-                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'starting_from'), 400);
+                throw new pocketlistsApiException(sprintf_wp('Invalid data type: “%s”', 'starting_from'), 400);
             } else {
                 $dt = date_create($starting_from, new DateTimeZone('UTC'));
                 if ($dt) {
                     $dt->setTimezone(new DateTimeZone(date_default_timezone_get()));
                     $starting_from = $dt->format('Y-m-d H:i:s');
                 } else {
-                    throw new pocketlistsApiException(_w('Unknown value starting_from'), 400);
+                    throw new pocketlistsApiException(_w('Invalid value: “starting_from” (must be ISO 8601 datetime)'), 400);
                 }
             }
         }
         if (isset($limit)) {
             if (!is_numeric($limit)) {
-                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'limit'), 400);
+                throw new pocketlistsApiException(sprintf_wp('Invalid data type: “%s”', 'limit'), 400);
             } elseif ($limit < 1) {
-                throw new pocketlistsApiException(_w('The parameter has a negative value'), 400);
+                throw new pocketlistsApiException(_w('Limit must be a positive integer > 0'), 400);
             }
             $limit = (int) min($limit, self::MAX_LIMIT);
         } else {
@@ -148,9 +148,9 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
         }
         if (isset($offset)) {
             if (!is_numeric($offset)) {
-                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'offset'), 400);
+                throw new pocketlistsApiException(sprintf_wp('Invalid data type: “%s”', 'offset'), 400);
             } elseif ($offset < 0) {
-                throw new pocketlistsApiException(_w('The parameter has a negative value'), 400);
+                throw new pocketlistsApiException(_w('Offset must be a positive integer > 0'), 400);
             }
             $offset = intval($offset);
         } else {

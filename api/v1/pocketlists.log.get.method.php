@@ -13,37 +13,37 @@ class pocketlistsLogGetMethod extends pocketlistsApiAbstractMethod
 
         if (isset($starting_from)) {
             if (!is_string($starting_from)) {
-                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'starting_from'), 400);
+                throw new pocketlistsApiException(sprintf_wp('Invalid data type: “%s”', 'starting_from'), 400);
             } else {
                 $dt = date_create($starting_from, new DateTimeZone('UTC'));
                 if ($dt) {
                     $dt->setTimezone(new DateTimeZone(date_default_timezone_get()));
                     $starting_from = $dt->format('Y-m-d H:i:s');
                 } else {
-                    throw new pocketlistsApiException(_w('Unknown value starting_from'), 400);
+                    throw new pocketlistsApiException(_w('Invalid value: “starting_from” (must be ISO 8601 datetime)'), 400);
                 }
             }
         }
 
         if (isset($entity_type)) {
             if (!is_string($entity_type)) {
-                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'entity_type'), 400);
+                throw new pocketlistsApiException(sprintf_wp('Invalid data type: “%s”', 'entity_type'), 400);
             } elseif (!in_array($entity_type, pocketlistsLogService::ENTITIES)) {
-                throw new pocketlistsApiException(_w('Unknown value entity_type'), 400);
+                throw new pocketlistsApiException(_w('Invalid value: “entity_type”'), 400);
             }
         }
 
         if (isset($entity_id)) {
             if (!is_numeric($entity_id)) {
-                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'entity_id'), 400);
+                throw new pocketlistsApiException(sprintf_wp('Invalid data type: “%s”', 'entity_id'), 400);
             } elseif ($entity_id < 1) {
-                throw new pocketlistsApiException(_w('The parameter has a negative value'), 400);
+                throw new pocketlistsApiException(_w('Entity ID must be a positive integer > 0'), 400);
             }
         }
 
         if (isset($contact_id)) {
             if (!is_numeric($contact_id)) {
-                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'contact_id'), 400);
+                throw new pocketlistsApiException(sprintf_wp('Invalid data type: “%s”', 'contact_id'), 400);
             } elseif ($contact_id < 1) {
                 throw new pocketlistsApiException(_w('Contact not found'), 404);
             }
@@ -51,9 +51,9 @@ class pocketlistsLogGetMethod extends pocketlistsApiAbstractMethod
 
         if (isset($limit)) {
             if (!is_numeric($limit)) {
-                throw new pocketlistsApiException(sprintf_wp('Type error parameter: “%s”.', 'limit'), 400);
+                throw new pocketlistsApiException(sprintf_wp('Invalid data type: “%s”', 'limit'), 400);
             } elseif ($limit < 1) {
-                throw new pocketlistsApiException(_w('The parameter has a negative value'), 400);
+                throw new pocketlistsApiException(_w('Limit must be a positive integer > 0'), 400);
             }
             $limit = (int) min($limit, self::MAX_LIMIT);
         } else {
@@ -61,9 +61,9 @@ class pocketlistsLogGetMethod extends pocketlistsApiAbstractMethod
         }
         if (isset($offset)) {
             if (!is_numeric($offset)) {
-                throw new pocketlistsApiException(sprintf_wp('Type error parameter: “%s”.', 'offset'), 400);
+                throw new pocketlistsApiException(sprintf_wp('Invalid data type: “%s”', 'offset'), 400);
             } elseif ($offset < 0) {
-                throw new pocketlistsApiException(_w('The parameter has a negative value'), 400);
+                throw new pocketlistsApiException(_w('Offset must be a positive integer > 0'), 400);
             }
             $offset = (int) $offset;
         } else {

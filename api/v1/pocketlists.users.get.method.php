@@ -9,24 +9,24 @@ class pocketlistsUsersGetMethod extends pocketlistsApiAbstractMethod
         $offset = $this->get('offset');
 
         if (!pocketlistsRBAC::canAssign()) {
-            throw new pocketlistsApiException(_w('Access denied'), 403);
+            throw new pocketlistsApiException(_w('Team access denied'), 403);
         }
         if (isset($ids)) {
             if (!is_array($ids)) {
-                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'id'), 400);
+                throw new pocketlistsApiException(sprintf_wp('Invalid data type: “%s”', 'id'), 400);
             }
             $ids = array_unique(array_filter($ids, function ($_i) {
                 return is_numeric($_i) && $_i > 0;
             }));
             if (empty($ids)) {
-                throw new pocketlistsApiException(_w('Users not found'), 404);
+                throw new pocketlistsApiException(_w('No users found'), 404);
             }
         }
         if (isset($limit)) {
             if (!is_numeric($limit)) {
-                throw new pocketlistsApiException(_w('Unknown value'), 400);
+                throw new pocketlistsApiException(_w('Invalid value: “limit”'), 400);
             } elseif ($limit < 1) {
-                throw new pocketlistsApiException(_w('The parameter has a negative value'), 400);
+                throw new pocketlistsApiException(_w('Limit must be a positive integer > 0'), 400);
             }
             $limit = (int) min($limit, self::MAX_LIMIT);
         } else {
@@ -34,9 +34,9 @@ class pocketlistsUsersGetMethod extends pocketlistsApiAbstractMethod
         }
         if (isset($offset)) {
             if (!is_numeric($offset)) {
-                throw new pocketlistsApiException(_w('Unknown value'), 400);
+                throw new pocketlistsApiException(_w('Invalid value: “offset”'), 400);
             } elseif ($offset < 0) {
-                throw new pocketlistsApiException(_w('The parameter has a negative value'), 400);
+                throw new pocketlistsApiException(_w('Offset must be a positive integer > 0'), 400);
             }
             $offset = intval($offset);
         } else {

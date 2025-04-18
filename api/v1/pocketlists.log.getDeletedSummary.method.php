@@ -8,14 +8,14 @@ class pocketlistsLogGetDeletedSummaryMethod extends pocketlistsApiAbstractMethod
 
         if (isset($starting_from)) {
             if (!is_string($starting_from)) {
-                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'starting_from'), 400);
+                throw new pocketlistsApiException(sprintf_wp('Invalid data type: “%s”', 'starting_from'), 400);
             } else {
                 $dt = date_create($starting_from, new DateTimeZone('UTC'));
                 if ($dt) {
                     $dt->setTimezone(new DateTimeZone(date_default_timezone_get()));
                     $starting_from = $dt->format('Y-m-d H:i:s');
                 } else {
-                    throw new pocketlistsApiException(_w('Unknown value starting_from'), 400);
+                    throw new pocketlistsApiException(_w('Invalid value: “starting_from” (must be ISO 8601 datetime)'), 400);
                 }
             }
         } else {

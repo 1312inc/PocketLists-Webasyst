@@ -14,7 +14,7 @@ class pocketlistsLocationsGetMethod extends pocketlistsApiAbstractMethod
         $where = '1 = 1';
         if (isset($location_id)) {
             if (!is_numeric($location_id)) {
-                throw new pocketlistsApiException(_w('Unknown value'), 400);
+                throw new pocketlistsApiException(_w('Invalid value: “location_id”'), 400);
             } elseif ($location_id < 1) {
                 throw new pocketlistsApiException(_w('Location not found'), 404);
             }
@@ -22,14 +22,14 @@ class pocketlistsLocationsGetMethod extends pocketlistsApiAbstractMethod
         }
         if (isset($starting_from)) {
             if (!is_string($starting_from)) {
-                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'starting_from'), 400);
+                throw new pocketlistsApiException(sprintf_wp('Invalid data type: “%s”', 'starting_from'), 400);
             }
             $dt = date_create($starting_from, new DateTimeZone('UTC'));
             if ($dt) {
                 $dt->setTimezone(new DateTimeZone(date_default_timezone_get()));
                 $starting_from = $dt->format('Y-m-d H:i:s');
             } else {
-                throw new pocketlistsApiException(_w('Unknown value starting_from'), 400);
+                throw new pocketlistsApiException(_w('Invalid value: “starting_from” (must be ISO 8601 datetime)'), 400);
             }
             $where .= ' AND (update_datetime >= s:starting_from OR create_datetime >= s:starting_from OR activity_datetime >= s:starting_from)';
             $order = 'update_datetime DESC, id';
@@ -39,15 +39,15 @@ class pocketlistsLocationsGetMethod extends pocketlistsApiAbstractMethod
         if (isset($nearby)) {
             $location = explode(',', $nearby);
             if (count($location) !== 2) {
-                throw new pocketlistsApiException(_w('Not two values nearby'), 400);
+                throw new pocketlistsApiException(_w('Nearby location must have 2 values provided: longitude, latitude'), 400);
             }
             list($latitude, $longitude) = $location;
             if (!is_numeric($latitude) || !is_numeric($longitude)) {
-                throw new pocketlistsApiException(_w('Type error nearby value'), 400);
+                throw new pocketlistsApiException(_w('Longitude and latitude must be numeric'), 400);
             } elseif ($latitude < -90 || $latitude > 90) {
-                throw new pocketlistsApiException(sprintf_wp('Invalid value “%s”', 'nearby latitude'), 400);
+                throw new pocketlistsApiException(sprintf_wp('Invalid value: “%s”', 'nearby latitude'), 400);
             } elseif ($longitude < -180 || $longitude > 180) {
-                throw new pocketlistsApiException(sprintf_wp('Invalid value “%s”', 'nearby longitude'), 400);
+                throw new pocketlistsApiException(sprintf_wp('Invalid value: “%s”', 'nearby longitude'), 400);
             }
             // вычисляется только примерное расстояние между точками
             $radius_earth = 6371000;
@@ -58,9 +58,9 @@ class pocketlistsLocationsGetMethod extends pocketlistsApiAbstractMethod
 
         if (isset($limit)) {
             if (!is_numeric($limit)) {
-                throw new pocketlistsApiException(_w('Unknown value'), 400);
+                throw new pocketlistsApiException(_w('Invalid value: “limit”'), 400);
             } elseif ($limit < 1) {
-                throw new pocketlistsApiException(_w('The parameter has a negative value'), 400);
+                throw new pocketlistsApiException(_w('Limit must be a positive integer > 0'), 400);
             }
             $limit = (int) min($limit, self::MAX_LIMIT);
         } else {
@@ -68,9 +68,9 @@ class pocketlistsLocationsGetMethod extends pocketlistsApiAbstractMethod
         }
         if (isset($offset)) {
             if (!is_numeric($offset)) {
-                throw new pocketlistsApiException(_w('Unknown value'), 400);
+                throw new pocketlistsApiException(_w('Invalid value: “offset”'), 400);
             } elseif ($offset < 0) {
-                throw new pocketlistsApiException(_w('The parameter has a negative value'), 400);
+                throw new pocketlistsApiException(_w('Offset must be a positive integer > 0'), 400);
             }
             $offset = intval($offset);
         } else {

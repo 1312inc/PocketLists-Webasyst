@@ -12,7 +12,7 @@ class pocketlistsCommentsGetMethod extends pocketlistsApiAbstractMethod
         $where = 'WHERE 1 = 1';
         if (isset($item_id)) {
             if (!is_numeric($item_id)) {
-                throw new pocketlistsApiException(_w('Unknown value'), 400);
+                throw new pocketlistsApiException(_w('Invalid value: “item_id”'), 400);
             } elseif ($item_id < 1) {
                 throw new pocketlistsApiException(_w('Item not found'), 404);
             }
@@ -20,22 +20,22 @@ class pocketlistsCommentsGetMethod extends pocketlistsApiAbstractMethod
         }
         if (isset($starting_from)) {
             if (!is_string($starting_from)) {
-                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'starting_from'), 400);
+                throw new pocketlistsApiException(sprintf_wp('Invalid data type: “%s”', 'starting_from'), 400);
             }
             $dt = date_create($starting_from, new DateTimeZone('UTC'));
             if ($dt) {
                 $dt->setTimezone(new DateTimeZone(date_default_timezone_get()));
                 $starting_from = $dt->format('Y-m-d H:i:s');
             } else {
-                throw new pocketlistsApiException(_w('Unknown value starting_from'), 400);
+                throw new pocketlistsApiException(_w('Invalid value: “starting_from” (must be ISO 8601 datetime)'), 400);
             }
             $where .= ' AND c.update_datetime >= s:starting_from OR c.create_datetime >= s:starting_from';
         }
         if (isset($limit)) {
             if (!is_numeric($limit)) {
-                throw new pocketlistsApiException(_w('Unknown value'), 400);
+                throw new pocketlistsApiException(_w('Invalid value: “limit”'), 400);
             } elseif ($limit < 1) {
-                throw new pocketlistsApiException(_w('The parameter has a negative value'), 400);
+                throw new pocketlistsApiException(_w('Limit must be a positive integer > 0'), 400);
             }
             $limit = (int) min($limit, self::MAX_LIMIT);
         } else {
@@ -43,9 +43,9 @@ class pocketlistsCommentsGetMethod extends pocketlistsApiAbstractMethod
         }
         if (isset($offset)) {
             if (!is_numeric($offset)) {
-                throw new pocketlistsApiException(_w('Unknown value'), 400);
+                throw new pocketlistsApiException(_w('Invalid value: “offset”'), 400);
             } elseif ($offset < 0) {
-                throw new pocketlistsApiException(_w('The parameter has a negative value'), 400);
+                throw new pocketlistsApiException(_w('Offset must be a positive integer > 0'), 400);
             }
             $offset = intval($offset);
         } else {

@@ -8,7 +8,7 @@ class pocketlistsSystemGetWebsocketUrlMethod extends pocketlistsApiAbstractMetho
 
         if (isset($channel)) {
             if (!is_string($channel)) {
-                throw new pocketlistsApiException(sprintf_wp('Invalid type %s', 'channel'), 400);
+                throw new pocketlistsApiException(sprintf_wp('Invalid data type: “%s”', 'channel'), 400);
             }
             $channel = trim($channel);
             if (empty($channel)) {
