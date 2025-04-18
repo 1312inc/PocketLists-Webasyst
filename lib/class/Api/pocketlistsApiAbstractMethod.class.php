@@ -880,12 +880,12 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                 'last_activity' => $_teammate->getLastActivity(),
                 'email'         => $_teammate->getEmail(),
                 'locale'        => $_teammate->getLocale(),
-                'items_info'    => $is_all ? [
-                    'count'              => $items_info->getCount(),
-                    'count_priority'     => $items_info->getCountPriority(),
-                    'max_priority'       => $items_info->getMaxPriority(),
-                    'count_max_priority' => $items_info->getCountMaxPriority(),
-                    'count_priorities'   => $items_info->getCountPriorities()
+                'extended_data' => $is_all ? [
+                    'items_count'              => $items_info->getCount(),
+                    'items_priority_count'     => $items_info->getCountPriority(),
+                    'max_priority'             => $items_info->getMaxPriority(),
+                    'items_max_priority_count' => $items_info->getCountMaxPriority(),
+                    'items_priorities_count'   => $items_info->getCountPriorities()
                 ] : null
             ];
         }

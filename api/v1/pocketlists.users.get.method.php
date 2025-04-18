@@ -66,7 +66,7 @@ class pocketlistsUsersGetMethod extends pocketlistsApiAbstractMethod
                 'last_activity',
                 'email',
                 'locale',
-                'items_info'
+                'extended_data'
             ], [
                 'id' => 'int',
                 'me' => 'bool',

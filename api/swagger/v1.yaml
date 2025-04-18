@@ -2596,19 +2596,19 @@ components:
           type: string
         locale:
           type: string
-        items_info:
+        extended_data:
           type: object
           nullable: true
           properties:
-            count:
+            items_count:
               type: integer
-            count_priority:
+            items_priority_count:
               type: integer
             max_priority:
               type: integer
-            count_max_priority:
+            items_max_priority_count:
               type: integer
-            count_priorities:
+            items_priorities_count:
               type: object
               properties:
                 0:
