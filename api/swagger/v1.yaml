@@ -1910,6 +1910,10 @@ paths:
                           user_rights:
                             type: object
                             properties:
+                              apps:
+                                type: array
+                                items:
+                                  type: string
                               backend:
                                 type: string
                                 description: Backend access

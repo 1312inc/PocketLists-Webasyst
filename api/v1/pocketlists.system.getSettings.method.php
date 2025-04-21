@@ -10,7 +10,7 @@ class pocketlistsSystemGetSettingsMethod extends pocketlistsApiAbstractMethod
 
         $this->response['data'] = [
             'base_url'          => $this->getBaseUrl(),
-            'user_rights'       => pocketlistsRBAC::getUserRights(),
+            'user_rights'       => self::getUserRights(),
             'user_locale'       => $this->getLocale(),
             'user_timezone'     => $this->getTimezone(),
             'user'              => $this->getCurrentUser(),
@@ -32,6 +32,30 @@ class pocketlistsSystemGetSettingsMethod extends pocketlistsApiAbstractMethod
     private function getBaseUrl()
     {
         return  wa()->getUrl(true).wa()->getConfig()->getBackendUrl().'/'.pocketlistsHelper::APP_ID.'/';
+    }
+
+    public static function getUserRights()
+    {
+        $rights = pocketlistsRBAC::getUserRights();
+        $rights['apps'] = [];
+
+        if (wa()->appExists(pocketlistsAppLinkShop::APP)) {
+            $user_rights = wa()->getUser()->getRights('pocketlists');
+            if (
+                (isset($user_rights['backend']) && $user_rights['backend'] > 1)
+                || !empty($user_rights[pocketlistsRBAC::CAN_USE_SHOP_SCRIPT])
+            ) {
+                $rights['apps'][] = pocketlistsAppLinkShop::APP;
+            }
+        }
+        if (wa()->appExists(pocketlistsAppLinkTasks::APP)) {
+            $user_rights = wa()->getUser()->getRights(pocketlistsAppLinkTasks::APP);
+            if (isset($user_rights['backend']) && $user_rights['backend'] > 1) {
+                $rights['apps'][] = pocketlistsAppLinkTasks::APP;
+            }
+        }
+
+        return $rights;
     }
 
     /**
