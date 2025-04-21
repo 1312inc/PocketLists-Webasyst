@@ -251,6 +251,8 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
             if (empty($_file['file']) || empty($_file['file_name'])) {
                 continue;
             }
+            $_file['file_name'] = waLocale::transliterate($_file['file_name']);
+            $_file['file_name'] = preg_replace('/\s+/m', '_', $_file['file_name']);
             $extension = pocketlistsAttachment::getExtension($_file['file_name']);
             if (in_array($extension, ['php', 'phtml', 'htaccess'])) {
                 unset($_file['file']);
