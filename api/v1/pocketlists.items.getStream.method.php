@@ -234,7 +234,8 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
                 }
                 $user_id = (int) $filter_split[1];
                 $sql_parts['where']['and'][] = 'i.status = i:status';
-                $sql_parts['where']['and']['def'] = "i.list_id IN (i:list_ids) OR (i.list_id IS NULL AND (i.assigned_contact_id = $user_id OR i.contact_id = $user_id))";
+                $sql_parts['where']['and']['def'] = 'i.list_id IN (i:list_ids) OR i.list_id IS NULL';
+                $sql_parts['where']['and'][] = "i.assigned_contact_id = $user_id OR i.contact_id = $user_id";
                 $sql_parts['order by'][] = "i.assigned_contact_id = $user_id DESC, i.calc_priority DESC, i.due_date ASC, i.due_datetime ASC, i.id";
                 break;
             case 'tag':
