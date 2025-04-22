@@ -47,9 +47,6 @@ class pocketlistsActivityAction extends pocketlistsViewAction
         }
         $this->offset = $this->getParam('offset', 0, waRequest::TYPE_INT);
         $this->entity_id = $this->getParam('entity_id', 0, waRequest::TYPE_INT);
-        if ($this->type) {
-            pocketlistsAssert::gt($this->entity_id, 0);
-        }
 
         $activityLogs = [];
         foreach ($this->getLogs() as $log) {
@@ -94,6 +91,6 @@ class pocketlistsActivityAction extends pocketlistsViewAction
         return $factory
             ->setOffset($this->offset * self::LIMIT)
             ->setLimit(self::LIMIT)
-            ->findLastAll();
+            ->findLastAll(true, true);
     }
 }
