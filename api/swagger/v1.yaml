@@ -1446,6 +1446,7 @@ paths:
       parameters:
         - in: query
           name: starting_from
+          required: true
           description: Returns records updated/created only after the specified datetime (UTC, ISO 8601). Older records are removed from the response.
           schema:
             type: string
