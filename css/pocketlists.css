@@ -156,10 +156,8 @@ table.pl-calendar td .pl-dots i.icon { margin-top: 0.2em; margin-right: 0.2em; }
 
 .pl-about p { max-width: 85%; }
 
-.pl-upgrade-ad { margin: 0; border: 0.25rem dashed var(--border-color-input); border-radius: 0.5rem; }
+.pl-upgrade-ad { margin: 0; border: 0.25rem dashed var(--border-color-input); border-radius: 0.5rem; text-align: center; }
 .pl-upgrade-ad p { margin-bottom: 15px; font-size: 0.9375rem; }
-.pl-upgrade-ad .pl-wa-plugin-icon { flex: 0 0 200px; }
-.pl-upgrade-ad .pl-wa-plugin-icon img { box-shadow: 0 15px 25px rgba(40,40,80,0.1), 0 3px 8px rgba(0,0,0,0.07); border-radius: 5px; width: 200px; height: 110px; }
 
 .pl-badge-appstore { width: 144px; display: block; }
 
@@ -807,6 +805,159 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 .pl2pro-log.pl2pro-log-pocket { padding: 23px 17px 15px 17px; margin: 0; }
 
 div.tagsinput { height: 200px !important; width: 80% !important; }
+
+/* Premium
+---------- */
+
+.pl-premium-star { position: relative; z-index: 10; height: 9rem; background: url('../img/star-yellow.svg') no-repeat center; }
+.pl-premium-appicon { position: relative; z-index: 10; height: 9rem; background: url('../img/pocketlists-premium.png') no-repeat center / 8rem; }
+.pl-premium-button { background: linear-gradient(95.2deg, rgba(255, 255, 255, 0.25) 0%, rgba(0, 0, 0, 0.1) 100%) var(--yellow); border-width: 0; padding: .6125em 1em; }
+.pl-premium-feature { border-radius: 0.75rem; background: var(--background-color-blank); margin-bottom: 1.5rem; padding: 1.5rem 2rem; }
+/* [data-theme=dark] .pl-premium-block { box-shadow: inset 2px 2px 90px 80px rgba(25,23,44,.82); } */
+
+.stars-animation-container {
+  position: relative;
+
+}
+
+.stars-animation {
+  position: absolute;
+  display: flex;
+  top: 50%;
+  left: 50%;
+  transform: translate(-58%, -100%);
+  min-width: 300px;
+}
+.stars-animation--higher {
+  transform: translate(-58%, -155%);
+}
+
+.stars-animation--left,
+.stars-animation--right {
+  flex: auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  max-height: 130px;
+}
+
+.stars-animation span {
+  position: relative;
+  height: 24px;
+  width: 24px;
+  background: url('../img/star-bg.svg') no-repeat center;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-duration: calc(40s / var(--star-i));
+  animation-fill-mode: forwards;
+}
+
+.stars-animation--left span:nth-child(n + 5) {
+  /*n + 5 or odd */
+  animation-direction: normal;
+  animation-name: animationStarsLeft
+}
+
+.stars-animation--left span:nth-child(-n + 5) {
+  /*-n + 5 or even*/
+  animation-direction: normal;
+  animation-name: animationStarsLeft2N;
+}
+
+.stars-animation--right span:nth-child(n + 5) {
+  /*n + 5 or odd */
+  animation-direction: normal;
+  animation-name: animationStarsRight
+}
+
+.stars-animation--right span:nth-child(-n + 5) {
+  /*-n + 5 or even*/
+  animation-direction: normal;
+  animation-name: animationStarsRight2N;
+}
+
+@keyframes animationStarsLeft {
+  0% {
+    transform: translate(3rem, 1rem) scale(0.4);
+  }
+
+  90% {
+    transform: translate(-2rem, 0) scale(1) rotate(90deg);
+    opacity: .5;
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(0);
+  }
+}
+
+@keyframes animationStarsLeft2N {
+  0% {
+    transform: translate(3rem, 2rem) scale(0);
+  }
+
+  90% {
+    transform: translate(-2rem, 0) scale(1) rotate(90deg);
+    opacity: .5;
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(0);
+  }
+}
+
+@keyframes animationStarsRight {
+  0% {
+    transform: translate(-3rem, 2rem) scale(0.4);
+  }
+
+  90% {
+    transform: translate(2rem, 0) scale(1) rotate(90deg);
+    opacity: .5;
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(0);
+  }
+}
+
+@keyframes animationStarsRight2N {
+  0% {
+    transform: translate(-2rem, 1rem) scale(0);
+  }
+
+  90% {
+    transform: translate(-2rem, 0) scale(1) rotate(90deg);
+    opacity: .5;
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(0);
+  }
+}
+
+.s-premium-star, .s-premium-shop {
+  animation: animationStar 5s infinite;
+}
+
+@keyframes animationStar {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.3);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
 
 /* Narrow screens
 ----------------- */

@@ -167,7 +167,7 @@
                           <div style="flex: 0 0 auto; width: 280px; padding-right: 20px;">
                               {$wa->installer->reviewWidget('app/pocketlists', ['is_inline' => true])}
                           </div>
-                          {if pocketlistsHelper::hasPlugin('pro')}
+                          {if pocketlistsLicensing::isPremium()}
                           <div style="flex: 0 0 auto; width: 280px;">
                               {$wa->installer->reviewWidget('plugin/pocketlists/pro', ['is_inline' => true])}
                           </div>
