@@ -70,7 +70,7 @@ $file_ext = array_pop($file_parts);
 $preview_size = (int) array_pop($file_parts);
 $file_name = implode('.', $file_parts);
 if (
-    !in_array(strtolower($file_ext), ['jpg', 'jpeg', 'png', 'gif'])
+    !in_array(strtolower($file_ext), ['jpg', 'jpeg', 'png', 'gif', 'webp'])
     || $preview_size !== pocketlistsAttachment::PREVIEW_SIZE
 ) {
     image_not_found();

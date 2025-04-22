@@ -240,6 +240,7 @@ class pocketlistsAttachment extends pocketlistsEntity
 
         $attachment_data['download_url'] = '';
         $attachment_data['preview_url'] = '';
+        $available_extension = ['jpg', 'jpeg', 'png', 'gif'];
         if (empty($attachment_data['item_id']) || empty($attachment_data['filename'])) {
             return $attachment_data;
         }
@@ -256,7 +257,10 @@ class pocketlistsAttachment extends pocketlistsEntity
             $attachment_data['download_url'] = sprintf($url_pub, $attachment_data['item_id'], $attachment_data['filename']);
         }
         $attach_ext = self::getExtension($attachment_data['filename']);
-        if (in_array($attach_ext, ['jpg', 'jpeg', 'png', 'gif'])) {
+        if (waImage::isWebpSupported()) {
+            $available_extension[] = 'webp';
+        }
+        if (in_array($attach_ext, $available_extension)) {
             $attach_name = pathinfo($attachment_data['filename'], PATHINFO_FILENAME).'.'.pocketlistsAttachment::PREVIEW_SIZE.'.'.$attach_ext;
             $attachment_data['preview_url'] = sprintf($url_pub, $attachment_data['item_id'], $attach_name);
         }
