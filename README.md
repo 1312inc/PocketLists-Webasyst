@@ -1,22 +1,22 @@
 # Pocket Lists for Webasyst #
 
-Pocket Lists for Webasyst is a server-side web app that is aimed to provide your private cloud syncing hub for Pocket Lists client apps. The app is developed on the LAMP stack and offers the web UI to manage your lists and to-dos.
+Pocket Lists is the ultimate to-do & checklist app for teams and small businesses. Designed for Webasyst.
 
 https://pocketlists.com
 https://www.webasyst.com/store/app/pocketlists/
-https://www.webasyst.com/store/plugin/pocketlists/pro/
 
 ## System Requirements ##
 
 	* Web Server
 		* e.g. Apache or IIS
 
-	* PHP 5.6+
+	* PHP 8.2+
 		* spl extension
 		* mbstring
 		* iconv
 		* json
 		* gd or ImageMagick extension
+		* webp extension is recommended for .webp image processing
 
 	* MySQL 5.5+
 
