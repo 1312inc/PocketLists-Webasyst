@@ -17,7 +17,8 @@ class pocketlistsSystemGetWebsocketUrlMethod extends pocketlistsApiAbstractMetho
         }
 
         try {
-            $ws_url = pocketlistsWebSoket::getInstance()->getWebsocketUrl($channel);
+            $ws = pocketlistsWebSoket::getInstance();
+            $ws_url = $ws->getWebsocketUrl($channel);
         } catch (waException $e) {
             throw new pocketlistsApiException($e->getMessage(), 400);
         }

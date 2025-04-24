@@ -142,13 +142,8 @@ class pocketlistsLogService
                     $log['id'] = $last_id++;
                     $log['params'] = $log['params_for_socket'];
                     unset($log['params_for_socket']);
-                    pocketlistsWebSoket::getInstance()->sendWebsocketData(
-                        [
-                            'client' => waRequest::server('HTTP_X_PL_API_CLIENT', ''),
-                            'create_datetime' => pocketlistsHelper::convertDateToISO8601($log['create_datetime'])
-                        ] + $log
-                    );
                 }
+                self::websocketMegaphone($logs);
                 pl2()->getEventDispatcher()->dispatch(
                     new pocketlistsEvent(
                         pocketlistsEventStorage::LOGS_INSERT,
@@ -160,6 +155,35 @@ class pocketlistsLogService
         }
 
         return false;
+    }
+
+    private static function websocketMegaphone($logs = [])
+    {
+        $ws = pocketlistsWebSoket::getInstance();
+        $list_ids = array_filter(array_unique(array_column($logs, 'list_id')));
+        $users_access_ids = pocketlistsRBAC::getAccessContactsByLists($list_ids);
+
+        foreach ($logs as $log) {
+            $users = null;
+            if ($log['list_id'] && $users_access_ids[$log['list_id']]) {
+                $users = $users_access_ids[$log['list_id']];
+            } elseif (is_null($log['list_id']) && $log['assigned_contact_id']) {
+                $users = [$log['assigned_contact_id']];
+            }
+
+            if ($users) {
+                foreach ($users as $_user_id) {
+                    $channel = $ws->getChannel($_user_id);
+                    $ws->sendWebsocketData(
+                        [
+                            'client' => waRequest::server('HTTP_X_PL_API_CLIENT', ''),
+                            'create_datetime' => pocketlistsHelper::convertDateToISO8601($log['create_datetime'])
+                        ] + $log,
+                        $channel
+                    );
+                }
+            }
+        }
     }
 
     /**

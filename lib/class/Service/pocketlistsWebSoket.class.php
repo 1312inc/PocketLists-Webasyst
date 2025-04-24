@@ -3,6 +3,7 @@
 class pocketlistsWebSoket
 {
     const DEFAULT_CHANNEL = 'live';
+    const PREFIX_CHANNEL = 'pocketlists';
 
     private static $instance;
 
@@ -30,6 +31,16 @@ class pocketlistsWebSoket
     }
 
     /**
+     * @param $user_id
+     * @param $channel
+     * @return string
+     */
+    public function getChannel($user_id, $channel = self::DEFAULT_CHANNEL)
+    {
+        return md5(pocketlistsWebSoket::PREFIX_CHANNEL.$user_id).$channel;
+    }
+
+    /**
      * @param $channel
      * @return mixed
      * @throws waException
@@ -37,7 +48,8 @@ class pocketlistsWebSoket
     public function getWebsocketUrl($channel = null)
     {
         if ($this->services_api->isConnected()) {
-            $ws_url = $this->services_api->getWebsocketUrl($channel ?? self::DEFAULT_CHANNEL);
+            $channel = $this->getChannel(wa()->getUser()->getId(), $channel);
+            $ws_url = $this->services_api->getWebsocketUrl($channel);
             if (empty($ws_url)) {
                 throw new waException(_w('Webasyst websocket API error.'));
             }
@@ -55,11 +67,11 @@ class pocketlistsWebSoket
      */
     public function sendWebsocketData($data, $channel = null)
     {
-        if (!empty($data) && $this->services_api->isConnected()) {
+        if (!empty($data) && !empty($channel) && $this->services_api->isConnected()) {
             try {
                 $this->services_api->sendWebsocketMessage(
                     $data,
-                    $channel ?? self::DEFAULT_CHANNEL,
+                    $channel,
                     pocketlistsHelper::APP_ID
                 );
             } catch (Throwable $e) {
