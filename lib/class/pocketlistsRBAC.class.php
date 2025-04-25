@@ -164,6 +164,67 @@ class pocketlistsRBAC
         return $contact_ids;
     }
 
+    public static function getAccessContactsByPockets($pocket_ids = [])
+    {
+        $result = [];
+        $groups = [];
+        if (empty($pocket_ids)) {
+            return $result;
+        }
+
+        $wa_model = new waModel();
+        $r_pockets = implode("','", array_map(function ($p) {return self::POCKET_ITEM.".$p";}, $pocket_ids));
+        $contact_rights = $wa_model->query(sprintf(
+            "SELECT group_id, name FROM wa_contact_rights WHERE %s OR %s OR %s GROUP BY group_id, name",
+            self::haveFullAdminSQL(),
+            self::haveFullAccessSQL(),
+            "(app_id = 'pocketlists' AND name IN ('$r_pockets') AND value IN (".implode(',', [self::RIGHT_ADMIN, self::RIGHT_LIMITED])."))"
+        ))->fetchAll();
+
+        foreach ($contact_rights as $contact_right) {
+            if ($contact_right['group_id'] < 0) {
+                if ($contact_right['name'] == 'backend') {
+                    foreach ($pocket_ids as $pocket_id) {
+                        $result[$pocket_id][-$contact_right['group_id']] = 1;
+                    }
+                } elseif ($pocket_id = (int) str_replace(pocketlistsRBAC::POCKET_ITEM.'.', '', $contact_right['name'])) {
+                    $result[$pocket_id][-$contact_right['group_id']] = 1;
+                }
+            } else {
+                $groups[$contact_right['group_id']] = [
+                    'group_id' => 0,
+                    'name' => $contact_right['name']
+                ];
+            }
+        }
+        unset($contact_rights, $contact_right);
+
+        if ($groups) {
+            $user_groups = $wa_model->query("
+                SELECT group_id, contact_id FROM wa_user_groups
+                WHERE group_id IN (i:g_ids)
+                GROUP BY group_id, contact_id
+                ORDER BY group_id 
+            ", ['g_ids' => array_keys($groups)])->fetchAll();
+            foreach ($groups as $group_id => $group) {
+                foreach ($user_groups as $user_group) {
+                    if ($group_id == $user_group['group_id']) {
+                        if ($group['name'] == 'backend') {
+                            foreach ($pocket_ids as $pocket_id) {
+                                $result[$pocket_id][$user_group['contact_id']] = 1;
+                            }
+                        } elseif ($pocket_id = (int) str_replace(pocketlistsRBAC::POCKET_ITEM.'.', '', $group['name'])) {
+                            $result[$pocket_id][$user_group['contact_id']] = 1;
+                        }
+                    }
+                }
+            }
+            unset($groups, $group);
+        }
+
+        return array_map(function ($r) {return array_keys($r);}, $result);
+    }
+
     public static function getAccessContactsByLists($list_ids = [])
     {
         $result = [];

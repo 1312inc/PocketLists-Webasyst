@@ -3,7 +3,6 @@
 class pocketlistsWebSoket
 {
     const DEFAULT_CHANNEL = 'live';
-    const PREFIX_CHANNEL = 'pocketlists';
 
     private static $instance;
 
@@ -37,7 +36,7 @@ class pocketlistsWebSoket
      */
     public function getChannel($user_id, $channel = self::DEFAULT_CHANNEL)
     {
-        return md5(pocketlistsWebSoket::PREFIX_CHANNEL.$user_id).$channel;
+        return md5(pocketlistsHelper::APP_ID.$user_id).$channel;
     }
 
     /**
