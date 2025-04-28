@@ -164,12 +164,12 @@ class pocketlistsLogService
      */
     private static function websocketMegaphone($logs = [])
     {
-        if (empty($logs)) {
+        $ws = pocketlistsWebSoket::getInstance();
+        if (empty($logs) || !$ws->isConnected()) {
             return null;
         }
         $entity_type = reset($logs);
         $entity_type = ifempty($entity_type, 'entity_type', null);
-
         switch ($entity_type) {
             case pocketlistsLog::ENTITY_POCKET:
                 $pocket_ids = array_filter(array_unique(array_column($logs, 'pocket_id')));
@@ -177,17 +177,14 @@ class pocketlistsLogService
                 break;
             case pocketlistsLog::ENTITY_LIST:
             case pocketlistsLog::ENTITY_ITEM:
+            case pocketlistsLog::ENTITY_COMMENT:
                 $list_ids = array_filter(array_unique(array_column($logs, 'list_id')));
                 $users_access_ids = pocketlistsRBAC::getAccessContactsByLists($list_ids);
                 break;
             default:
                 return null;
-//            case pocketlistsLog::ENTITY_COMMENT:
-//            case pocketlistsLog::ENTITY_LOCATION:
-//            case pocketlistsLog::ENTITY_ATTACHMENT:
         }
 
-        $ws = pocketlistsWebSoket::getInstance();
         foreach ($logs as $log) {
             $users = null;
             switch ($entity_type) {
@@ -196,7 +193,9 @@ class pocketlistsLogService
                         $users = $users_access_ids[$log['pocket_id']];
                     }
                     break;
+                case pocketlistsLog::ENTITY_LIST:
                 case pocketlistsLog::ENTITY_ITEM:
+                case pocketlistsLog::ENTITY_COMMENT:
                     if ($log['list_id'] && $users_access_ids[$log['list_id']]) {
                         $users = $users_access_ids[$log['list_id']];
                     } elseif (is_null($log['list_id']) && $log['assigned_contact_id']) {

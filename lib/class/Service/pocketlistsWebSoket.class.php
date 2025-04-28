@@ -29,6 +29,11 @@ class pocketlistsWebSoket
         return self::$instance;
     }
 
+    public function isConnected()
+    {
+        return $this->services_api->isConnected();
+    }
+
     /**
      * @param $user_id
      * @param $channel

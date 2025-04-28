@@ -20,7 +20,7 @@ class pocketlistsCommentsAddMethod extends pocketlistsApiAbstractMethod
         /** @var pocketlistsItemModel $model */
         $model = pl2()->getModel(pocketlistsItem::class);
         if (!empty($item_ids)) {
-            $items = $model->select('id, list_id, name')
+            $items = $model->select('id, list_id, name, contact_id')
                 ->where('id IN (i:item_ids)', ['item_ids' => $item_ids])
                 ->where('key_list_id IS NULL')
                 ->fetchAll('id');
