@@ -853,6 +853,13 @@ paths:
                     enum:
                       - 0
                       - 1
+                  archived:
+                    type: integer
+                    description: List is archived
+                    default: 0
+                    enum:
+                      - 0
+                      - 1
                   color:
                     type: string
                     description: List color
@@ -1096,6 +1103,13 @@ paths:
                   private:
                     type: integer
                     description: List is private
+                    default: 0
+                    enum:
+                      - 0
+                      - 1
+                  archived:
+                    type: integer
+                    description: List is archived
                     default: 0
                     enum:
                       - 0

@@ -51,7 +51,7 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                 'icon'                  => ifset($_list, 'icon', null),
                 'icon_url'              => null,
                 'private'               => ifset($_list, 'private', 0),
-                'archived'              => 0,
+                'archived'              => ifset($_list, 'archived', 0),
                 'hash'                  => null,
                 'color'                 => ifset($_list, 'color', pocketlistsStoreColor::NONE),
                 'passcode'              => null,
@@ -109,6 +109,10 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
 
             if (!is_numeric($_list['private'])) {
                 $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'private');
+            }
+
+            if (!is_numeric($_list['archived'])) {
+                $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'archived');
             }
 
             if (isset($_list['icon']) && !is_string($_list['icon'])) {
@@ -218,6 +222,7 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                     ->setType($_list['type'])
                     ->setPocketId($_list['pocket_id'])
                     ->setPrivate($_list['private'])
+                    ->setArchived($_list['archived'])
                     ->setColor($_list['color'])
                     ->setAssignedContactId($_list['assigned_contact_id'])
                     ->setRepeatFrequency($_list['repeat_frequency'])

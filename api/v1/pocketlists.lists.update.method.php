@@ -61,7 +61,7 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                 'icon'                  => ifset($_list, 'icon', ($action === self::ACTIONS[0] ? null : pocketlistsList::DEFAULT_ICON)),
                 'icon_url'              => null,
                 'private'               => ifset($_list, 'private', ($action === self::ACTIONS[0] ? null : 0)),
-                'archived'              => 0,
+                'archived'              => ifset($_list, 'archived', ($action === self::ACTIONS[0] ? null : 0)),
                 'hash'                  => null,
                 'color'                 => ifset($_list, 'color', ($action === self::ACTIONS[0] ? null : pocketlistsStoreColor::NONE)),
                 'passcode'              => null,
@@ -125,6 +125,10 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
 
             if (isset($_list['private']) && !is_numeric($_list['private'])) {
                 $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'private');
+            }
+
+            if (isset($_list['archived']) && !is_numeric($_list['archived'])) {
+                $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'archived');
             }
 
             if (isset($_list['color'])) {
