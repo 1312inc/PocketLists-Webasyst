@@ -347,6 +347,8 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                         $_item['complete_contact_id'] = null;
                         $_item['move']['item_id'] = $item_id;
                         $_item['move']['prev_status'] = pocketlistsItem::STATUS_UNDONE;
+                    } else {
+                        unset($_item['complete_datetime']);
                     }
                 }
 
