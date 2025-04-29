@@ -68,6 +68,7 @@ class pocketlistsListsDeleteMethod extends pocketlistsApiAbstractMethod
                             'pocket_id' => $list->getPocketId(),
                             'name'      => $list->getName()
                         ];
+                        $this->systemLogAction(pocketlistsLogAction::LIST_DELETED, ['list_name' => $list->getName()]);
                     } else {
                         $success = false;
                     }

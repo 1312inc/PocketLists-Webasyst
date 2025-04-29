@@ -340,6 +340,14 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                                 }
                                 $_item['external_links'] = [];
                             }
+
+                            $this->systemLogAction(
+                                pocketlistsLogAction::NEW_ITEM,
+                                [
+                                    'item_id' => $_item['id'],
+                                    'list_id' => $_item['list_id'],
+                                ]
+                            );
                         }
                         unset($_item);
 

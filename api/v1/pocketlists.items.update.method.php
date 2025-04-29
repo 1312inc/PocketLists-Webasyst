@@ -412,6 +412,9 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                             }
                             $_item_ok['external_links'] = [];
                         }
+                        if (!empty($_item_ok['complete_datetime'])) {
+                            $this->systemLogAction(pocketlistsLogAction::ITEM_COMPLETED, ['item_id' => $_item_ok['id']]);
+                        }
                     } else {
                         $_item_ok['success'] = false;
                         $_item_ok['errors'][] = _w('Failed to update');

@@ -121,7 +121,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
      * @return string
      * @throws waException
      */
-    protected function getApiTocken($api_client_id, $user_id = null)
+    protected function getApiToken($api_client_id, $user_id = null)
     {
         static $at_model;
         if (empty($at_model)) {
@@ -133,6 +133,30 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
 
         return $at_model->getToken($api_client_id, $user_id, pocketlistsConfig::API_TOKEN_SCOPE);
     }
+
+    /**
+     * Add record to table wa_log
+     *
+     * @param string $action
+     * @param mixed $params
+     * @param int $subject_contact_id
+     * @param int $contact_id - actor contact id
+     * @throws waException
+     * @return bool|int
+     */
+    public function systemLogAction($action, $params = null, $subject_contact_id = null, $contact_id = null)
+    {
+        static $log_model;
+        if (empty($log_model)) {
+            if (!class_exists('waLogModel')) {
+                wa('webasyst');
+            }
+            $log_model = new waLogModel();
+        }
+
+        return $log_model->add($action, $params, $subject_contact_id, $contact_id);
+    }
+
 
     /**
      * @param array $data

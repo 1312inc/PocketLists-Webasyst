@@ -18,7 +18,7 @@ class pocketlistsPushEnableMethod extends pocketlistsApiAbstractMethod
         $data = [
             'client_id'       => $client_id,
             'contact_id'      => $this->getUser()->getId(),
-            'api_token'       => $this->getApiTocken($client_id),
+            'api_token'       => $this->getApiToken($client_id),
             'create_datetime' => date('Y-m-d H:i:s'),
         ];
 

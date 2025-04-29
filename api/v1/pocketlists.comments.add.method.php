@@ -104,6 +104,14 @@ class pocketlistsCommentsAddMethod extends pocketlistsApiAbstractMethod
                     if ($rows_count === count($comments_ok)) {
                         foreach ($comments_ok as &$_comment) {
                             $_comment['id'] = $last_id++;
+                            $this->systemLogAction(
+                                pocketlistsLogAction::ITEM_COMMENT,
+                                [
+                                    'list_id'    => $_comment['list_id'],
+                                    'comment_id' => $_comment['id'],
+                                    'item_id'    => $_comment['item_id'],
+                                ]
+                            );
                         }
                         unset($_comment);
 

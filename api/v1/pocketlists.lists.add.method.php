@@ -256,6 +256,7 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                         ];
                     }
                     (new pocketlistsNotificationAboutNewList())->notifyAboutNewList($list_clone);
+                    $this->systemLogAction(pocketlistsLogAction::LIST_CREATED, ['list_id' => $list_clone->getId()]);
                 } else {
                     $_list['success'] = false;
                 }
