@@ -307,7 +307,7 @@ textarea.pl-item-name {
 .pl-list-items ul.menu-v { margin: 0; padding: 0; list-style: none; }
 .pl-list-items ul.menu-v li { padding: 0; margin: 0; }
 .pl-list-items ul.menu-v li a .pl-wa-app-icon { position: relative; top: 3px; left: 3px;}
-.pl-item { position: relative; border-bottom: 1px solid var(--border-color-soft); padding: 0.875rem 1.25rem 0.75rem; }
+.pl-item { position: relative; border-bottom: 1px solid var(--border-color-soft); padding: 0.75rem 1.25rem 0.6125rem; }
 .pl-list-items ul.menu-v li .pl-item { transition: 0.1s; }
 .pl-list-items ul.menu-v li .pl-item:hover { background: var(--background-color-table-row-hover); }
 .pl-list-items ul.menu-v li .pl-item.pl-item-selected { box-shadow: 0 -0.5rem 1rem -1.5rem rgba(0,0,0,.5), 0 1rem 1rem -1.5rem rgba(0,0,0,.5); background: var(--background-color-blank); padding-top: 1.5rem; padding-bottom: 1.5rem; }
