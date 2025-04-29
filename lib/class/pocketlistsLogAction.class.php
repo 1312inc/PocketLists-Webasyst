@@ -362,31 +362,36 @@ class pocketlistsLogAction
 
     /**
      * @param $id
-     *
+     * @param $anchor
      * @return string
+     * @throws waException
      */
     private function getListUrlHtml($id, $anchor = '')
     {
-        if (!$this->ext_logs[$id][self::$ext]['list']) {
+        /** @var pocketlistsList $list */
+        $list = $this->ext_logs[$id][self::$ext]['list'];
+        if (!$list) {
             return '';
         }
 
-        if ($this->ext_logs[$id][self::$ext]['list']->getId()) {
-            $list_url = sprintf(
-                '%s#/pocket/%s/list/%s/',
-                $this->app_url,
-                $this->ext_logs[$id][self::$ext]['list']->getPocketId(),
-                $this->ext_logs[$id][self::$ext]['list']->getId()
-            );
+        if ($list->getId()) {
+            if (wa()->whichUI(pocketlistsHelper::APP_ID) == '1.3') {
+                $list_url = sprintf(
+                    '%s#/pocket/%s/list/%s/',
+                    $this->app_url,
+                    $list->getPocketId(),
+                    $list->getId()
+                );
+            } else {
+                $list_url = $this->app_url.'lists/'.$list->getId().'/';
+            }
         } else {
             $list_url = $this->app_url;
         }
 
-        $list_name = $anchor
-            ? htmlspecialchars($anchor)
-            : htmlspecialchars($this->ext_logs[$id][self::$ext]['list']->getName(), ENT_QUOTES);
+        $list_name = ($anchor ? htmlspecialchars($anchor) : htmlspecialchars($list->getName(), ENT_QUOTES));
 
-        return "<a href=\"{$list_url}\">{$list_name}</a>";
+        return "<a href=\"$list_url\">$list_name</a>";
     }
 
     /**

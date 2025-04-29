@@ -234,6 +234,16 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                         'uuid'
                     ], null)) + $_list + $list_in_db;
                 }
+
+                if (isset($_list['archived'])) {
+                    if ($_list['archived'] === 1 && $lists_in_db[$list_id]['archived'] == 0) {
+                        /** archived 0 -> 1 */
+                        $this->systemLogAction(pocketlistsLogAction::LIST_ARCHIVED, ['list_id' => $list_id]);
+                    } elseif ($_list['archived'] === 0 && $lists_in_db[$list_id]['archived'] == 1) {
+                        /** archived 1 -> 0 */
+                        $this->systemLogAction(pocketlistsLogAction::LIST_UNARCHIVED, ['list_id' => $list_id]);
+                    }
+                }
             } else {
                 $_list['success'] = false;
             }
