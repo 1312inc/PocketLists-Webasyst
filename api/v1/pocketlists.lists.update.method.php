@@ -91,6 +91,7 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                 'favorite'              => ifset($_list, 'favorite', null),
                 'uuid'                  => null,
                 'prev_list_id'          => (array_key_exists('prev_list_id', $_list) ? ifset($_list, 'prev_list_id', 0) : null),
+                'pro_label_id'          => null,
                 'success'               => true,
                 'errors'                => []
             ];
@@ -394,6 +395,7 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                 'color',
                 'passcode',
                 'key_item_id',
+                'pro_label_id',
                 'extended_data'
             ], [
                 'id' => 'int',
@@ -419,7 +421,8 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                 'pocket_id' => 'int',
                 'private' => 'int',
                 'archived' => 'int',
-                'key_item_id' => 'int'
+                'key_item_id' => 'int',
+                'pro_label_id' => 'int'
             ]
         );
     }

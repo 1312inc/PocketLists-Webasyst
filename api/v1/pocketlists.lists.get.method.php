@@ -203,6 +203,7 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
                 'color',
                 'passcode',
                 'key_item_id',
+                'pro_label_id',
                 'items',
                 'extended_data'
             ], [
@@ -230,7 +231,8 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
                 'pocket_id' => 'int',
                 'private' => 'int',
                 'archived' => 'int',
-                'key_item_id' => 'int'
+                'key_item_id' => 'int',
+                'pro_label_id' => 'int'
             ]
         );
     }

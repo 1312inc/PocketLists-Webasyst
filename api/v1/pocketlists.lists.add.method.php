@@ -81,6 +81,7 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                 'repeat_occurrence'     => ifset($_list, 'repeat_occurrence', null),
                 'favorite'              => ifset($_list, 'favorite', 0),
                 'uuid'                  => ifset($_list, 'uuid', null),
+                'pro_label_id'          => null,
                 'prev_list_id'          => ifset($_list, 'prev_list_id', null),
                 'prev_list_uuid'        => ifset($_list, 'prev_list_uuid', null),
                 'success'               => true,
@@ -340,6 +341,7 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                 'color',
                 'passcode',
                 'key_item_id',
+                'pro_label_id',
                 'extended_data'
             ], [
                 'id' => 'int',
@@ -366,7 +368,8 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                 'pocket_id' => 'int',
                 'private' => 'int',
                 'archived' => 'int',
-                'key_item_id' => 'int'
+                'key_item_id' => 'int',
+                'pro_label_id' => 'int'
             ]
         );
     }

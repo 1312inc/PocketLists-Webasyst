@@ -2460,6 +2460,11 @@ components:
               nullable: true
               default: null
               description: UUID value
+            pro_label_id:
+              type: integer
+              nullable: true
+              default: null
+              description: Label ID
         - type: object
           properties:
             extended_data:
