@@ -341,13 +341,23 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                                 $_item['external_links'] = [];
                             }
 
-                            $this->systemLogAction(
-                                pocketlistsLogAction::NEW_ITEM,
-                                [
-                                    'item_id' => $_item['id'],
-                                    'list_id' => $_item['list_id'],
-                                ]
-                            );
+                            if (isset($_item['assigned_contact_id']) && $_item['assigned_contact_id'] == $user_id) {
+                                $this->systemLogAction(
+                                    pocketlistsLogAction::NEW_SELF_ITEM,
+                                    [
+                                        'item_id' => $_item['id'],
+                                        'list_id' => $_item['list_id'],
+                                    ]
+                                );
+                            } else {
+                                $this->systemLogAction(
+                                    pocketlistsLogAction::NEW_ITEM,
+                                    [
+                                        'item_id' => $_item['id'],
+                                        'list_id' => $_item['list_id'],
+                                    ]
+                                );
+                            }
                         }
                         unset($_item);
 

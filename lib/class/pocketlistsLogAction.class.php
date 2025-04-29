@@ -285,23 +285,31 @@ class pocketlistsLogAction
      */
     private function item_assign($id)
     {
+        $team_name = 'no contact';
         $contact = new waContact($this->ext_logs[$id]['params']['assigned_to']);
         $list_html = $this->getListUrlHtml($id);
-        $team_url = '#/team/';
-        $teamName = 'no contact';
-        if ($contact->exists()) {
-            $team_url = $this->app_url.'#/team/'.$contact->get('login').'/';
-            $teamName = htmlspecialchars($contact->getName());
+
+        if (wa()->whichUI(pocketlistsHelper::APP_ID) == '1.3') {
+            $team_url = '#/team/';
+            if ($contact->exists()) {
+                $team_url = $this->app_url.$team_url.$contact->get('login').'/';
+                $team_name = htmlspecialchars($contact->getName());
+            }
+        } else {
+            $team_url = 'user/';
+            if ($contact->exists()) {
+                $team_url = $this->app_url.$team_url.$contact->getId().'/';
+                $team_name = htmlspecialchars($contact->getName());
+            }
         }
+
 
         $item = null;
         if (!empty($this->ext_logs[$id]['params']['item_id'])) {
             $item = $this->getItemData($this->ext_logs[$id]['params']['item_id']);
         }
 
-        $_str = '<a href="'.$team_url.'">'.$teamName.'</a>'.($item && $item->getId() ? ' '.htmlspecialchars(
-                    $item->getName()
-                ) : '');
+        $_str = '<a href="'.$team_url.'">'.$team_name.'</a>'.($item && $item->getId() ? ' '.htmlspecialchars($item->getName()) : '');
         if ($list_html) {
             return $_str.' @ '.$list_html;
         } else {

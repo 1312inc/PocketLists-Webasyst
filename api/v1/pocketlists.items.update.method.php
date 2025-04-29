@@ -414,6 +414,8 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                         }
                         if (!empty($_item_ok['complete_datetime'])) {
                             $this->systemLogAction(pocketlistsLogAction::ITEM_COMPLETED, ['item_id' => $_item_ok['id']]);
+                        } elseif (isset($_item_ok['assigned_contact_id'])) {
+                            $this->systemLogAction(pocketlistsLogAction::ITEM_ASSIGN, ['item_id' => $_item_ok['id'], 'assigned_to' => $_item_ok['assigned_contact_id']]);
                         }
                     } else {
                         $_item_ok['success'] = false;
