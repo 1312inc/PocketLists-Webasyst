@@ -1195,6 +1195,9 @@ msgstr "Ок, понял."
 msgid "The to-do item will be saved in the <span class=\"nowrap\"><a href=\"%s\" class=\"gray\" target=\"_blank\">Pocket Lists</a> app</span> and will be visible only to authorized Webasyst users. The customer will not see this to-do."
 msgstr "Задача будет сохранена в приложении <a href=\"%s\" class=\"gray\" target=\"_blank\">Pocket Lists</a> и видна только пользователям бекенда. Покупатель никогда не увидит эту задачу."
 
+msgid "Only your teammates can see this checklist and add to-dos. The customer will not see this."
+msgstr "Чек-лист видят только ваши коллеги. Покупатель никогда не увидит эти задачи."
+
 msgid "The user will see this to-do in his Pocket Lists to-do stream and will be notified about this assignment by email."
 msgstr "Ответственный пользователь увидит эту задачу в своем потоке задач в приложении Pocket Lists и получит уведомление о назначении по email."
 
@@ -2181,4 +2184,3 @@ msgstr "Отладка"
 
 msgid "Record runs to the Shop-Script order history"
 msgstr "Фиксировать факты автоматического создания задач в истории обработки заказов в Shop-Script"
-

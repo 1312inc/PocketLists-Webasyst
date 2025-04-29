@@ -4,10 +4,17 @@
       id="pl-list-content"
       data-pl2-template="itemadd"
 >
-    <h3 class="custom-mt-32">
-        <i style="background-image: url('{$params.wa_app_static_url}img/pl2webasyst48.png') !important; background-size: 24px 24px !important; display: inline-block; width: 24px; height: 24px; position: relative; top: 3px; margin-right: 4px;"></i>
-        [`Checklist`]
-    </h3>
+    <div class="flexbox">
+        <div class="wide">
+            <h3 class="custom-mt-0">
+                <i style="background-image: url('{$params.wa_app_static_url}img/pl2webasyst48.png') !important; background-size: 24px 24px !important; display: inline-block; width: 24px; height: 24px; position: relative; top: 3px; margin-right: 4px;"></i>
+                [`Checklist`]
+            </h3>
+        </div>
+        <div>
+            <a href="{$wa_backend_url}pocketlists/upgrade/" target="_blank" class="button rounded light-gray nowrap smaller custom-mt-0 bold"><i class="fas fa-star text-yellow"></i> [`What’s new in Pocket Lists`]</a>
+        </div>
+    </div>
 
     <div class="pl-list-items" id="pl-list-items">
         <section id="pl-undone-items" data-pl-items="undone">

@@ -577,7 +577,7 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 .t-tasks-wrapper #pl-item-add.ui-autocomplete-loading { background-color: inherit; }
 .t-tasks-wrapper #pl-complete-log { display: block; }
 .t-tasks-wrapper .pl-details-form .pl-app-hint-internal { display: none; }
-.t-tasks-wrapper .pl-details-form .pl-app-hint-external { display: none; }
+.t-tasks-wrapper .pl-app-hint-external { display: none !important; }
 
 /* @2x
 ------ */
