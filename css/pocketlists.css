@@ -202,7 +202,7 @@ label.pl-done-label,
 #pl-item-add label.pl-done-label { padding-top: 3px; }
 
 .pl-done {display: none;}
-.pl-done + span { display: block; width:16px; height:16px; background: transparent; border: 2px solid var(--border-color-hard); border-radius: 50%; cursor: pointer; transition: background-color 0.2s; }
+.pl-done + span { display: block; width:15px; height:15px; background: transparent; border: 1.5px solid var(--light-gray); border-radius: 7px; cursor: pointer; transition: background-color 0.2s; }
 .pl-done + span.transparent { border-color: transparent;background: none; }
 .pl-done + span:hover { background: rgba(142,142,142,0.25); }
 .pl-done.pl-priority-green + span, .pl-done.pl-priority-yellow + span, .pl-done.pl-priority-red + span, .pl-done.pl-priority-black + span {background: url('../img/item-bullets-priorities.png') no-repeat;background-size: 80px 20px;border: none;width: 20px;height: 20px;}
