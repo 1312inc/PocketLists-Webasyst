@@ -64,6 +64,6 @@
     }
   
     // Expose only what's needed (optional)
-    // window.WebSocketMonitor = WebSocketMonitor;
+    window.WebSocketMonitor = WebSocketMonitor;
   
   })(window, document);
