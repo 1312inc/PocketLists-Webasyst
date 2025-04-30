@@ -17,6 +17,7 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
         $attachment_uuids = [];
         $list_ids = array_unique(array_filter(array_column($items, 'list_id')));
         $location_ids = array_unique(array_filter(array_column($items, 'location_id')));
+        $label_ids = array_unique(array_filter(array_column($items, 'pro_label_id')));
         $assigned_contact_ids = array_unique(array_filter(array_column($items, 'assigned_contact_id')));
         $uuids = array_column($items, 'uuid');
         $attachments = array_column($items, 'attachments');
@@ -34,6 +35,13 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
             $location_model = pl2()->getModel(pocketlistsLocation::class);
             $location_ids = $location_model->select('id')
                 ->where('id IN (:list_ids)', ['list_ids' => $location_ids])
+                ->fetchAll(null, true);
+        }
+        if (!empty($label_ids)) {
+            /** @var pocketlistsLabelModel $label_model */
+            $label_model = pl2()->getModel(pocketlistsLabel::class);
+            $label_ids = $label_model->select('id')
+                ->where('id IN (:list_ids)', ['list_ids' => $label_ids])
                 ->fetchAll(null, true);
         }
         if (!empty($assigned_contact_ids)) {
@@ -92,6 +100,7 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                 'favorite'              => ifset($_item, 'favorite', 0),
                 'key_list_id'           => null,
                 'uuid'                  => ifset($_item, 'uuid', null),
+                'pro_label_id'          => ifset($_item, 'pro_label_id', null),
                 'tags'                  => $this->tagFilter(ifset($_item, 'tags', [])),
                 'attachments'           => ifset($_item, 'attachments', []),
                 'external_links'        => ifset($_item, 'external_links', []),
@@ -228,6 +237,22 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                 }
             }
 
+            if (isset($_item['uuid'])) {
+                if (!is_string($_item['uuid'])) {
+                    $_item['errors'][] = sprintf_wp('Invalid data type: “%s”', 'uuid');
+                } elseif (in_array($_item['uuid'], $uuids)) {
+                    $_item['errors'][] = _w('Item with UUID exists');
+                }
+            }
+
+            if (isset($_item['pro_label_id'])) {
+                if (!is_numeric($_item['pro_label_id'])) {
+                    $_item['errors'][] = sprintf_wp('Invalid data type: “%s”', 'pro_label_id');
+                } elseif ($_item['pro_label_id'] < 1 || !in_array($_item['pro_label_id'], $label_ids)) {
+                    $_item['errors'][] = _w('Label not found');
+                }
+            }
+
             if (!empty($_item['tags'])) {
                 if (!is_array($_item['tags'])) {
                     $_item['errors'][] = sprintf_wp('Invalid data type: “%s”', 'tags');
@@ -270,14 +295,6 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                     }
                 } else {
                     $_item['errors'][] = sprintf_wp('Invalid data type: “%s”', 'external_links');
-                }
-            }
-
-            if (isset($_item['uuid'])) {
-                if (!is_string($_item['uuid'])) {
-                    $_item['errors'][] = sprintf_wp('Invalid data type: “%s”', 'uuid');
-                } elseif (in_array($_item['uuid'], $uuids)) {
-                    $_item['errors'][] = _w('Item with UUID exists');
                 }
             }
 
@@ -458,6 +475,7 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                 'favorite',
                 'key_list_id',
                 'uuid',
+                'pro_label_id',
                 'tags',
                 'attachments',
                 'external_links',
@@ -485,7 +503,8 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                 'repeat_frequency' => 'int',
                 'repeat_occurrence' => 'int',
                 'favorite' => 'int',
-                'key_list_id' => 'int'
+                'key_list_id' => 'int',
+                'pro_label_id' => 'int'
             ]
         );
     }

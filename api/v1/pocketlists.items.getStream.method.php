@@ -95,6 +95,7 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
                 'favorite',
                 'key_list_id',
                 'uuid',
+                'pro_label_id',
                 'attachments',
                 'external_links',
                 'extended_data'
@@ -121,7 +122,8 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
                 'repeat_frequency' => 'int',
                 'repeat_occurrence' => 'int',
                 'favorite' => 'int',
-                'key_list_id' => 'int'
+                'key_list_id' => 'int',
+                'pro_label_id' => 'int'
             ]
         );
     }

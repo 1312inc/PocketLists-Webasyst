@@ -19,6 +19,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
         $item_ids = array_unique(array_column($items, 'id'));
         $list_ids = array_unique(array_column($items, 'list_id'));
         $location_ids = array_unique(array_filter(array_column($items, 'location_id')));
+        $label_ids = array_unique(array_filter(array_column($items, 'pro_label_id')));
         $assigned_contact_ids = array_unique(array_column($items, 'assigned_contact_id'));
         $attachments = array_column($items, 'attachments');
 
@@ -50,6 +51,13 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
             $location_model = pl2()->getModel(pocketlistsLocation::class);
             $location_ids = $location_model->select('id')
                 ->where('id IN (:list_ids)', ['list_ids' => $location_ids])
+                ->fetchAll(null, true);
+        }
+        if (!empty($label_ids)) {
+            /** @var pocketlistsLabelModel $label_model */
+            $label_model = pl2()->getModel(pocketlistsLabel::class);
+            $label_ids = $label_model->select('id')
+                ->where('id IN (:list_ids)', ['list_ids' => $label_ids])
                 ->fetchAll(null, true);
         }
         if (!empty($assigned_contact_ids)) {
@@ -237,6 +245,14 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 }
             }
 
+            if (isset($_item['pro_label_id'])) {
+                if (!is_numeric($_item['pro_label_id'])) {
+                    $_item['errors'][] = sprintf_wp('Invalid data type: “%s”', 'pro_label_id');
+                } elseif ($_item['pro_label_id'] < 1 || !in_array($_item['pro_label_id'], $label_ids)) {
+                    $_item['errors'][] = _w('Label not found');
+                }
+            }
+
             if (isset($_item['tags'])) {
                 if (!is_array($_item['tags'])) {
                     $_item['errors'][] = sprintf_wp('Invalid data type: “%s”', 'tags');
@@ -317,7 +333,8 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                         'location_id',
                         'due_date',
                         'due_datetime',
-                        'client_touch_datetime'
+                        'client_touch_datetime',
+                        'pro_label_id'
                     ], null) + ifset($items_in_db, $item_id, []);
                     $_item['status'] = ifset($_item, 'status', pocketlistsItem::STATUS_UNDONE);
                     $_item['calc_priority'] = $this->getCalcPriority($_item);
@@ -533,6 +550,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 'favorite',
                 'key_list_id',
                 'uuid',
+                'pro_label_id',
                 'tags',
                 'attachments',
                 'external_links'
@@ -559,7 +577,8 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 'repeat_frequency' => 'int',
                 'repeat_occurrence' => 'int',
                 'favorite' => 'int',
-                'key_list_id' => 'int'
+                'key_list_id' => 'int',
+                'pro_label_id' => 'int'
             ]
         );
     }
