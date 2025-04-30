@@ -1,148 +1,69 @@
-/**
- * WebSocket Connection Monitor
- * Tracks WebSocket connections with specific URL parameter and updates UI status
- * @version 1.0.0
- */
+(function(window, document) {
+    'use strict';
 
-class WebSocketMonitor {
-    constructor(config = {}) {
-      // Configuration with defaults
-      this.config = {
-        monitorParam: 'pocketlists',
-        onlineColor: 'var(--green)',
-        offlineColor: 'var(--orange)',
-        statusSelector: '.js-pl-ws-status',
-        debug: false,
-        ...config
-      };
-  
-      this.originalWebSocket = window.WebSocket;
-      this.activeConnections = new Set();
-      this.isMonitoring = false;
-  
-      this.init();
-    }
-  
-    init() {
-      if (this.isMonitoring) return;
-  
-      // Store original WebSocket implementation
-      window.WebSocket = this.createWrappedWebSocket();
-      this.isMonitoring = true;
-  
-      if (this.config.debug) {
-        console.debug('[WebSocketMonitor] Initialized');
+    /**
+     * WebSocket Connection Monitor
+     * Tracks WebSocket connections with specific URL parameter and updates UI status
+     * @version 1.0.0
+     */
+    class WebSocketMonitor {
+      constructor(options = {}) {
+        this.WS_MONITOR_PARAM = options.monitorParam || 'pocketlists';
+        this.STATUS_ONLINE_COLOR = options.onlineColor || 'var(--green)';
+        this.STATUS_OFFLINE_COLOR = options.offlineColor || 'var(--orange)';
+        this.STATUS_SELECTOR = options.statusSelector || '.js-pl-ws-status';
+        
+        this.originalWebSocket = window.WebSocket;
+        this.init();
       }
-    }
   
-    teardown() {
-      window.WebSocket = this.originalWebSocket;
-      this.activeConnections.clear();
-      this.isMonitoring = false;
-  
-      if (this.config.debug) {
-        console.debug('[WebSocketMonitor] Teardown complete');
+      init() {
+        this.monitorWebSockets();
+        this.createStatusElementIfMissing();
       }
-    }
   
-    createWrappedWebSocket() {
-      const monitor = this;
+      monitorWebSockets() {
+        const self = this;
+        
+        window.WebSocket = function(url, protocols) {
+          const socket = new self.originalWebSocket(url, protocols);
   
-      return class WrappedWebSocket {
-        constructor(url, protocols) {
-          this.socket = new monitor.originalWebSocket(url, protocols);
-          this.url = url;
-          this.shouldMonitor = monitor.shouldMonitorConnection(url);
-  
-          if (this.shouldMonitor) {
-            monitor.setupConnectionMonitoring(this);
-            monitor.activeConnections.add(this);
+          if (new URL(url).searchParams.has(self.WS_MONITOR_PARAM)) {
+            socket.addEventListener('open', () => self.updateStatus(true));
+            socket.addEventListener('close', () => self.updateStatus(false));
+            socket.addEventListener('error', () => self.updateStatus(false));
           }
-        }
   
-        // Proxy WebSocket properties
-        get readyState() { return this.socket.readyState; }
-        get bufferedAmount() { return this.socket.bufferedAmount; }
-        get extensions() { return this.socket.extensions; }
-        get protocol() { return this.socket.protocol; }
-        get binaryType() { return this.socket.binaryType; }
-        set binaryType(type) { this.socket.binaryType = type; }
+          return socket;
+        };
+      }
   
-        // Proxy WebSocket methods
-        send(data) { return this.socket.send(data); }
-        close(code, reason) { return this.socket.close(code, reason); }
-        addEventListener(type, listener, options) {
-          return this.socket.addEventListener(type, listener, options);
-        }
-        removeEventListener(type, listener, options) {
-          return this.socket.removeEventListener(type, listener, options);
-        }
-        dispatchEvent(event) {
-          return this.socket.dispatchEvent(event);
-        }
-      };
-    }
+      updateStatus(isOnline) {
+        const statusElement = document.querySelector(this.STATUS_SELECTOR);
+        if (!statusElement) return;
+        
+        statusElement.style.background = isOnline 
+          ? this.STATUS_ONLINE_COLOR 
+          : this.STATUS_OFFLINE_COLOR;
+        
+        statusElement.classList.toggle('ws-online', isOnline);
+        statusElement.classList.toggle('ws-offline', !isOnline);
+      }
   
-    shouldMonitorConnection(url) {
-      try {
-        return new URL(url).searchParams.has(this.config.monitorParam);
-      } catch (e) {
-        if (this.config.debug) {
-          console.warn('[WebSocketMonitor] URL parsing error:', e);
+      createStatusElementIfMissing() {
+        if (!document.querySelector(this.STATUS_SELECTOR)) {
+          const statusElement = document.createElement('div');
+          statusElement.className = 'ws-status js-pl-ws-status';
+          document.body.appendChild(statusElement);
         }
-        return false;
+      }
+  
+      destroy() {
+        window.WebSocket = this.originalWebSocket;
       }
     }
   
-    setupConnectionMonitoring(wrappedSocket) {
-      const monitor = this;
+    // Expose only what's needed (optional)
+    // window.WebSocketMonitor = WebSocketMonitor;
   
-      wrappedSocket.socket.addEventListener('open', () => {
-        monitor.updateStatus(true);
-        });
-  
-      wrappedSocket.socket.addEventListener('close', () => {
-        monitor.activeConnections.delete(wrappedSocket);
-        monitor.updateStatus(false);
-      });
-  
-      wrappedSocket.socket.addEventListener('error', (event) => {
-        if (monitor.config.debug) {
-          console.error('[WebSocketMonitor] WebSocket error:', event);
-        }
-        monitor.updateStatus(false);
-      });
-    }
-  
-    updateStatus(isOnline) {
-      const statusElement = document.querySelector(this.config.statusSelector);
-      if (!statusElement) return;
-  
-      statusElement.style.background = isOnline
-        ? this.config.onlineColor
-        : this.config.offlineColor;
-  
-      // Dispatch custom event for other components
-      const event = new CustomEvent('websocket-status-change', {
-        detail: { isOnline }
-      });
-      document.dispatchEvent(event);
-  
-      if (this.config.debug) {
-        console.debug(`[WebSocketMonitor] Status updated: ${isOnline ? 'online' : 'offline'}`);
-      }
-    }
-  
-    getActiveConnections() {
-      return Array.from(this.activeConnections);
-    }
-  }
-  
-  // Export for module systems
-  if (typeof module !== 'undefined' && module.exports) {
-    module.exports = WebSocketMonitor;
-  } else if (typeof define === 'function' && define.amd) {
-    define([], () => WebSocketMonitor);
-  } else {
-    window.WebSocketMonitor = WebSocketMonitor;
-  }
+  })(window, document);
