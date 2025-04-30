@@ -1,14 +1,5 @@
 <?php
 
-/** @var pocketlistsPocketFactory $pocketFactory */
-$pocketFactory = pl2()->getEntityFactory(pocketlistsPocket::class);
-
-/** @var pocketlistsPocket $pocket */
-$pocket = $pocketFactory->createNew();
-$pocket->setName(wa()->accountName() ? wa()->accountName() : _w('Pocket Lists'));
-
-$pocketFactory->insert($pocket);
-
 $pr = new pocketlistsRightConfig();
 $pr->setRights(wa()->getUser()->getId(), 'backend', 2);
 
