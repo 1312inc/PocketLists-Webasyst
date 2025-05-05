@@ -142,8 +142,15 @@ table.pl-calendar td .pl-dots i.icon { margin-top: 0.2em; margin-right: 0.2em; }
 
 .pl-calendar-nav { padding: 0 0.5rem; color: var(--gray); }
 
+/* Archive
+---------- */
+
+.pl-archive { min-height: calc(100vh - 4rem); }
+
 /* Settings
 ----------- */
+
+.pl-settings { min-height: calc(100vh - 4rem); }
 
 #pl-settings-form { overflow: visible; }
 #pl-save-settings { margin-right: 10px; }

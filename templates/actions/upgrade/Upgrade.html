@@ -52,28 +52,39 @@
 
             {/if}
 
-            <p class="bold small align-center">[`5 features available now, +13 more to come shortly.`]</p>
-
             {$_premium_stuff = []}
+
+
+            {$_premium_stuff[] = [
+              'title' => 'Android app',
+              'eta' => 'Summer 2025',
+              'body' => ''
+            ]}
+
+            {$_premium_stuff[] = [
+              'title' => 'New iOS app',
+              'eta' => 'Coming later in 2025',
+              'body' => ''
+            ]}
+
+            {$_premium_stuff[] = [
+              'title' => 'Map',
+              'body' => 'Schedule activity to a map: add locations, assign to-dos.'
+            ]}
+
+            {$_premium_stuff[] = [
+              'title' => 'Repeating to-dos',
+              'eta' => 'May 2025',
+              'body' => 'Re-occuring to-dos: daily, weekly, monthly, yearly.'
+            ]}
+
+            {$_premium_stuff[] = [
+              'title' => 'Repeating checklists',
+              'eta' => 'June 2025',
+              'body' => 'Set the whole checklist to re-create itself according to the setup: daily, weekly, monthly.'
+            ]}
+
             {if $wa->locale() == 'ru_RU'}
-
-                {$_premium_stuff[] = [
-                  'title' => 'Android app',
-                  'eta' => 'Coming summer 2025',
-                  'body' => ''
-                ]}
-
-                {$_premium_stuff[] = [
-                  'title' => 'New iOS app',
-                  'eta' => 'Coming later in 2025',
-                  'body' => ''
-                ]}
-
-                {$_premium_stuff[] = [
-                  'title' => 'Repeating checklists',
-                  'eta' => 'May 2025',
-                  'body' => 'Re-occuring automated checklists'
-                ]}
 
                 {$_premium_stuff[] = [
                   'title' => 'Автоматическое создание задач на основе действий с заказами в Shop-Script',
@@ -151,7 +162,18 @@
 
             {/if}
 
+            {$_features_delivered = 0}
+            {$_features_pending = 0}
+            {foreach $_premium_stuff as $_p}
+                {if empty($_p.eta)}
+                    {$_features_delivered = $_features_delivered + 1}
+                {else}
+                    {$_features_pending = $_features_pending + 1}
+                {/if}
+            {/foreach}
 
+
+            <p class="bold small align-center">{sprintf('[`%d features available now, +%d more to come shortly.`]', $_features_delivered, $_features_pending)}</p>
 
             {$smarty.capture.getpremiumbutton}
 

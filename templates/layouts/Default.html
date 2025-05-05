@@ -103,6 +103,7 @@
                                     </a>
                                 </li>
                                 *}
+                                {if $isAdmin}
                                 <li class="rounded top-padded">
                                     <a href="{$wa_app_url}upgrade/">
                                         <i class="fas fa-star{if !$is_premium} text-yellow{/if}"></i>
@@ -110,6 +111,7 @@
                                         {if !$is_premium}<span class="count"><span class="badge small light-gray text-dark-gray">-50%</span></span>{/if}
                                     </a>
                                 </li>
+                                {/if}
                                 <li class="rounded">
                                     <a href="{$wa_app_url}beta/">
                                         <i class="fas fa-flask"></i>
