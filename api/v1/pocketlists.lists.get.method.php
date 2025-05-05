@@ -6,6 +6,7 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
     {
         $ids = $this->get('id');
         $pocket_id = $this->get('pocket_id');
+        $contact_id = $this->get('contact_id');
         $assigned_contact_id = $this->get('assigned_contact_id');
         $starting_from = $this->get('starting_from');
         $limit = $this->get('limit');
@@ -25,6 +26,9 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
             } elseif ($pocket_id < 0) {
                 throw new pocketlistsApiException(_w('Pocket ID must be a positive integer > 0'), 400);
             }
+        }
+        if (isset($contact_id) && !is_numeric($contact_id)) {
+            throw new pocketlistsApiException(sprintf_wp('Invalid data type: “%s”', 'contact_id'), 400);
         }
         if (isset($assigned_contact_id) && !is_numeric($assigned_contact_id)) {
             throw new pocketlistsApiException(sprintf_wp('Invalid data type: “%s”', 'assigned_contact_id'), 400);
@@ -79,11 +83,15 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
             if ($pocket_id) {
                 $sql_parts['where']['and'][] = 'l.pocket_id = i:pocket_id';
             }
+            if ($contact_id) {
+                $sql_parts['where']['and'][] = 'i.contact_id = i:contact_id';
+            }
             if ($assigned_contact_id) {
                 $sql_parts['where']['and'][] = 'i.assigned_contact_id = i:assigned_contact_id';
-            } elseif (empty($ids)) {
+            } elseif (empty($ids) && empty($contact_id)) {
                 $sql_parts['where']['and'][] = 'NOT (i.assigned_contact_id IS NOT NULL AND i.assigned_contact_id != i:assigned_contact_id)';
                 $sql_parts['where']['or'][] = 'l.private = 1 AND i.contact_id = i:contact_id';
+                $contact_id = $current_user_id;
                 $assigned_contact_id = $current_user_id;
             }
             if ($starting_from) {
@@ -103,7 +111,7 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
                     "$sql LIMIT i:offset, i:limit", [
                     'ids'                 => $ids,
                     'pocket_id'           => $pocket_id,
-                    'contact_id'          => $current_user_id,
+                    'contact_id'          => $contact_id,
                     'assigned_contact_id' => $assigned_contact_id,
                     'starting_from'       => $starting_from,
                     'limit'               => $limit,

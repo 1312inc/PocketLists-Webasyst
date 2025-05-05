@@ -1023,6 +1023,11 @@ paths:
           schema:
             type: integer
         - in: query
+          name: contact_id
+          description: Filter by contact ID
+          schema:
+            type: integer
+        - in: query
           name: assigned_contact_id
           description: Filter by assigned contact ID
           schema:
