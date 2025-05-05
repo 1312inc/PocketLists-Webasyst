@@ -1,29 +1,29 @@
 <div class="flexbox width-100 wrap-mobile pl-settings">
     {if $wa->user()->isAdmin()}
     <div class="sidebar blank width-21rem" data-pl2-settings-sidebar>
-        <ul class="menu with-icons stack">
+        <ul class="menu large with-icons stack">
             <li class="selected">
                 <a href="">
-                    <i class="userpic userpic-20" style="background-image: url({$wa->user()->getPhoto(20)});"></i>
+                    <span class="icon"><i class="userpic" style="background-image: url({$wa->user()->getPhoto(20)});"></i></span>
                     <span>[`My personal settings`]</span>
                 </a>
             </li>
             <li>
                 <a href="#/labels/" data-pro-settings="labels">
-                    <i class="fas fa-tag"></i>
+                    <span class="icon"><i class="fas fa-tag"></i></span>
                     <span>[`Status labels`]</span>
                 </a>
             </li>
             <li>
                 <a href="#/shortcuts/" data-pro-settings="shortcuts">
-                    <i class="fas fa-keyboard"></i>
+                    <span class="icon"><i class="fas fa-keyboard"></i></span>
                     <span>[`Shortcuts`]</span>
                 </a>
             </li>
             {if $wa->shop}
             <li>
                 <a href="#/shopscript/" data-pro-settings="shopscript">
-                    <i class="icon size-20" style="background-image: url('{$wa_url}wa-apps/shop/img/shop.png'); background-size: 16px 16px;"></i>
+                    <span class="icon"><i class="icon size-20" style="background-image: url('{$wa_url}wa-apps/shop/img/shop.png');"></i></span>
                     <span>[`Shop-Script`]</span>
                 </a>
             </li>
@@ -32,7 +32,6 @@
             <!-- plugin hook: 'backend_settings.sidebar_li' -->
             {* @event backend_settings.%plugin_id% *}
             {if !empty($backend_settings)}
-                <li class="top-padded"></li>
                 {foreach $backend_settings as $_}
                     {ifset($_.sidebar_li)}
                 {/foreach}
@@ -60,7 +59,7 @@
                       <span class="badge red">1</span>
                     </div>
                     <div class="value no-shift">
-                        <div class="wa-select">
+                        <div class="wa-select small">
                             <select name="app_icon">
                                 <option value="{pocketlistsUserSettings::ICON_ALL}" {if isset($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_ALL}selected="selected"{/if}>[`All my to-dos`]</option>
                                 <option value="{pocketlistsUserSettings::ICON_OVERDUE}" {if isset($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_OVERDUE}selected="selected"{/if}>[`Only On Fire + Black + Red`]</option>
@@ -77,7 +76,7 @@
                     <div class="name">
                       [`Email me`]
                     </div>
-                    <div class="value no-shift">
+                    <div class="value no-shift small">
                         <label>
                             <span class="wa-checkbox">
                             <input type="hidden" name="daily_recap_on" value="0"/>
@@ -265,7 +264,7 @@
                     <div class="value no-shift submit">
                         <br>
                         <input type="submit" value="[`Save`]" id="pl-save-settings" class="button green" />
-                        <i class="fas fa-check" style="display: none;"></i>
+                        <i class="fas fa-check text-green" style="display: none;"></i>
                     </div>
                   </div>
                 </form>
@@ -282,7 +281,7 @@
     (function(){
         $.pocketlists.setTitle($_('My personal settings'));
 
-        var $loading = $('<i class="fas fa-spinner"></i>');
+        var $loading = $('<i class="spinner"></i>');
         $('#pl-save-settings').on('click', function(e) {
             var $this = $(this);
             e.preventDefault();
@@ -293,7 +292,7 @@
                     $.pocketlists.updateAppCounter();
                     $this.next('.fa-check').show(200).delay(3000).hide(200);
                 } else {
-                    alert('error while saving');
+                    alert('Something went wrong');
                 }
             }, 'json');
         });

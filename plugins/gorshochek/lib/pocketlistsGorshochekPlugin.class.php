@@ -8,7 +8,7 @@ class pocketlistsGorshochekPlugin extends waPlugin
         $li = <<<STR
 <li>
     <a href="#/settings/plugin/gorshochek/cook">
-        <i class="icon size-20" style="background-image: url('{$wa_url}wa-apps/pocketlists/plugins/gorshochek/img/gorshochek.png'); background-size: 16px 16px;"></i>
+        <span class="icon"><i class="icon size-20" style="background-image: url('{$wa_url}wa-apps/pocketlists/plugins/gorshochek/img/gorshochek.png');"></i></span>
         <span>Горшочек</span>
     </a>
 </li>

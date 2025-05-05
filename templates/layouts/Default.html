@@ -105,7 +105,7 @@
                                 *}
                                 <li class="rounded top-padded">
                                     <a href="{$wa_app_url}upgrade/">
-                                        <i class="fas fa-star text-yellow"></i>
+                                        <i class="fas fa-star{if !$is_premium} text-yellow{/if}"></i>
                                         <span>[`Premium`]</span>
                                         <span class="count"><span class="badge small light-gray text-dark-gray">-50%</span></span>
                                     </a>
@@ -114,7 +114,7 @@
                                     <a href="{$wa_app_url}beta/">
                                         <i class="fas fa-flask"></i>
                                         <span>[`Beta`]</span>
-                                        <span class="count icon">
+                                        <span class="count icon" title="[`Socket connection status`]">
                                             <i class="js-pl-ws-status rounded smaller custom-mt-4" style="background: var(--light-gray);"></i>
                                         </span>
                                     </a>
