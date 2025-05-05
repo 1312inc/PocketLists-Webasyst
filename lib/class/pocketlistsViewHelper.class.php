@@ -58,4 +58,12 @@ class pocketlistsViewHelper
 
         return isset($classes[$type][$priority]) ? $classes[$type][$priority] : '';
     }
+
+    /**
+     * @return bool
+     */
+    public static function isPremium()
+    {
+        return pocketlistsLicensing::isPremium();
+    }
 }
