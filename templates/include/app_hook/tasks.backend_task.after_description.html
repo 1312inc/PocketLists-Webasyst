@@ -11,9 +11,11 @@
                 [`Checklist`]
             </h3>
         </div>
+        {if !$wa->isSingleAppMode() && !$wa->pocketlists->isPremium()}
         <div>
             <a href="{$wa_backend_url}pocketlists/upgrade/" target="_blank" class="button rounded light-gray nowrap smallest custom-mt-0 bold"><i class="fas fa-star text-yellow"></i> [`All-new Pocket Lists is here`] <i class="fas fa-external-link-alt opacity-30 smaller custom-ml-4"></i></a>
         </div>
+        {/if}
     </div>
 
     <div class="pl-list-items" id="pl-list-items">
