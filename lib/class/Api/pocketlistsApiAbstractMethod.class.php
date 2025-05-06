@@ -926,7 +926,14 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                     'items_priority_count'     => $items_info->getCountPriority(),
                     'max_priority'             => $items_info->getMaxPriority(),
                     'items_max_priority_count' => $items_info->getCountMaxPriority(),
-                    'items_priorities_count'   => $items_info->getCountPriorities()
+                    'items_priorities_count'   => $items_info->getCountPriorities() + [
+                        pocketlistsItem::PRIORITY_BURNINHELL => 0,
+                        pocketlistsItem::PRIORITY_BLACK      => 0,
+                        pocketlistsItem::PRIORITY_RED        => 0,
+                        pocketlistsItem::PRIORITY_YELLOW     => 0,
+                        pocketlistsItem::PRIORITY_GREEN      => 0,
+                        pocketlistsItem::PRIORITY_NORM       => 0
+                    ]
                 ] : null
             ];
         }
