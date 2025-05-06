@@ -266,6 +266,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                 'file_name'       => '',
                 'ext'             => '',
                 'size'            => null,
+                'storage'         => 'protected',
                 'upload_datetime' => $now,
                 'download_url'    => '',
                 'preview_url'     => '',
