@@ -40,6 +40,14 @@ function getThumbUrl($file_in, $file_out, $size)
     return $result;
 }
 
+function readImage($file_in, $file_out, $preview_size)
+{
+    if ($preview_url = getThumbUrl($file_in, $file_out, $preview_size)) {
+        waFiles::readFile($preview_url);
+        exit();
+    }
+}
+
 $path = realpath(dirname(__FILE__).'/../../../../../');
 $config_path = $path.'/wa-config/SystemConfig.class.php';
 if (!file_exists($config_path)) {
@@ -50,7 +58,7 @@ $config = new SystemConfig();
 waSystem::getInstance(null, $config);
 
 wa('pocketlists')->getStorage()->close();
-$request_file = wa()->getConfig()->getRequestUrl(true, true);
+$request_file = urldecode((string) wa()->getConfig()->getRequestUrl(true, true));
 $public_path = $path.'/wa-data/public/pocketlists/attachments';
 $protected_path = $path.'/wa-data/protected/pocketlists/attachments';
 
@@ -76,23 +84,27 @@ if (
     image_not_found();
 }
 
-$file_in = "$protected_path/$item_id/$file_name.$file_ext";
 $file_out = "$public_path/$item_id/$file_orig_name";
+$file_in = "$protected_path/$item_id/$file_name.$file_ext";
 if (file_exists($file_in)) {
     // ищем оригинал в защищенной директории
-    if ($preview_url = getThumbUrl($file_in, $file_out, $preview_size)) {
-        waFiles::readFile($preview_url);
-        exit();
-    }
+    readImage($file_in, $file_out, $preview_size);
+}
+$file_in = "$protected_path/$item_id/$file_name.".strtoupper($file_ext);
+if (file_exists($file_in)) {
+    // ищем оригинал в защищенной директории
+    readImage($file_in, $file_out, $preview_size);
 }
 
 $file_in = "$public_path/$item_id/$file_name.$file_ext";
 if (file_exists($file_in)) {
     // ищем оригинал в публичной директории
-    if ($preview_url = getThumbUrl($file_in, $file_out, $preview_size)) {
-        waFiles::readFile($preview_url);
-        exit();
-    }
+    readImage($file_in, $file_out, $preview_size);
+}
+$file_in = "$public_path/$item_id/$file_name.".strtoupper($file_ext);
+if (file_exists($file_in)) {
+    // ищем оригинал в публичной директории
+    readImage($file_in, $file_out, $preview_size);
 }
 
 image_not_found();
