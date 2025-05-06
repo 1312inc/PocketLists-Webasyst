@@ -888,6 +888,19 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
         $count = count($teammates);
         $teammates = array_slice($teammates, $offset, $limit);
 
+        if ($is_all) {
+            $user_ids = [];
+            foreach ($teammates as $_teammate) {
+                $user_ids[] = $_teammate->getId();
+            }
+            $assigned_list_counts = pl2()->getModel('pocketlistsList')->query('
+                SELECT pi2.assigned_contact_id, count(pl.id) list_count FROM pocketlists_list pl 
+                JOIN pocketlists_item pi2 ON pi2.key_list_id = pl.id
+                WHERE pi2.assigned_contact_id IN (i:user_ids)
+                GROUP BY pi2.assigned_contact_id;
+            ', ['user_ids' => $user_ids])->fetchAll('assigned_contact_id');
+        }
+
         /** @var pocketlistsContact $_teammate */
         foreach ($teammates as $_teammate) {
             /** @var pocketlistsItemsCount $items_info */
@@ -907,6 +920,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                 'email'         => $_teammate->getEmail(),
                 'locale'        => $_teammate->getLocale(),
                 'extended_data' => $is_all ? [
+                    'lists_count'              => (int) ifset($assigned_list_counts, $_teammate->getId(), 'list_count', 0),
                     'items_count'              => $items_info->getCount(),
                     'items_priority_count'     => $items_info->getCountPriority(),
                     'max_priority'             => $items_info->getMaxPriority(),
