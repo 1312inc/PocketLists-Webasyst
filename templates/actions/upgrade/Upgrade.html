@@ -9,10 +9,17 @@
 {capture "getpremiumbutton"}
 {if !$_is_premium}
 <figure class="box pl-upgrade-ad">
-    <a href="{$_pl2pro_url}" class="button largest rounded pl-premium-button" target="_blank">[`Upgrade`]</a>
+    <a href="{$_pl2pro_url}" class="button rounded pl-premium-button" target="_blank">[`Get premium`]</a>
     <p>
-      <b>{date('Y.m')} limited launch offer!</b><br>
-      -50% first buyers limited offer
+        {if $wa->locale() == 'ru_RU'}
+            <strike>11 999</strike> <b>5 999 <span class="ruble">₽</span>
+        {else}
+            <strike>199</strike> <b>$99
+        {/if}
+        / [`lifetime`]</b> <br>
+        <b>{date('Y.m')}</b> [`early launch offer!`]<br>
+        {sprintf('[`%s first buyers limited offer`]', '&minus;50%')}<br>
+
     </p>
 </figure>
 {/if}
@@ -47,41 +54,46 @@
 
             {else}
 
-                <h1 class="top-padded align-center">[`Upgrade today!`]</h1>
-                <p class="small align-center">[`Get the most of Pocket Lists with the premium option.`]</p>
+                <h1 class="top-padded align-center">[`All-new Pocket Lists is here.<br> Try and upgrade today!`]</h1>
+                <p class="small align-center">[`The new version is here and installed already. Use the navigation on the right to get started with checklists. And get the most of Pocket Lists with the premium option. Early launch offer gets you the best upgrade conditions possible.`]</p>
 
             {/if}
 
             {$_premium_stuff = []}
 
-
             {$_premium_stuff[] = [
-              'title' => 'Android app',
-              'eta' => 'Summer 2025',
-              'body' => ''
+              'title' => '[`Android app`]',
+              'eta' => '[`Summer 2025`]',
+              'body' => '[`All-new native Android app that syncs directly to your Webasyst account and Pocket Lists. Join beta here.`]'
             ]}
 
             {$_premium_stuff[] = [
-              'title' => 'New iOS app',
-              'eta' => 'Coming later in 2025',
-              'body' => ''
+              'title' => '[`New iOS app`]',
+              'eta' => '[`Coming later in 2025`]',
+              'body' => '[`Re-written from scratch. The old version version will get a free upgrade to the new one.`]'
             ]}
 
             {$_premium_stuff[] = [
-              'title' => 'Map',
-              'body' => 'Schedule activity to a map: add locations, assign to-dos.'
+              'title' => '[`Map`]',
+              'body' => '[`Schedule activity to a map: add locations, assign to-dos.`]'
             ]}
 
             {$_premium_stuff[] = [
-              'title' => 'Repeating to-dos',
-              'eta' => 'May 2025',
-              'body' => 'Re-occuring to-dos: daily, weekly, monthly, yearly.'
+              'title' => '[`Repeating to-dos`]',
+              'eta' => '[`May 2025`]',
+              'body' => '[`Re-occuring to-dos: daily, weekly, monthly, yearly.`]'
             ]}
 
             {$_premium_stuff[] = [
-              'title' => 'Repeating checklists',
-              'eta' => 'June 2025',
-              'body' => 'Set the whole checklist to re-create itself according to the setup: daily, weekly, monthly.'
+              'title' => '[`Repeating checklists`]',
+              'eta' => '[`June 2025`]',
+              'body' => '[`Set the whole checklist to re-create itself according to the setup: daily, weekly, monthly.`]'
+            ]}
+
+            {$_premium_stuff[] = [
+              'title' => '[`AI checklist generation`]',
+              'eta' => '[`Summer 2025`]',
+              'body' => '[`Create checklists via Webasyst AI service.`]'
             ]}
 
             {if $wa->locale() == 'ru_RU'}
@@ -162,6 +174,34 @@
 
             {/if}
 
+            {$_premium_stuff[] = [
+              'title' => '[`Team performance reports`]',
+              'eta' => '[`Later in 2025`]',
+              'body' => '[`Visualize how you and your team perform on checklists. Dynamics, KPIs.`]'
+            ]}
+            {$_premium_stuff[] = [
+              'title' => '[`Subtasks`]',
+              'eta' => '[`Later in 2025`]',
+              'body' => '[`A note-like quick lists of subtasks attached to any to-do item.`]'
+            ]}
+            {$_premium_stuff[] = [
+              'title' => '[`Lock lists with a passcode`]',
+              'eta' => '[`Later in 2025`]',
+              'body' => '[`Protect personal secure individual lists with a 4-digit passcode.`]'
+            ]}
+            {$_premium_stuff[] = [
+              'title' => '[`Custom list branding`]',
+              'eta' => '[`Later in 2025`]',
+              'body' => '[`Personalize lists with a custom background image and style.`]'
+            ]}
+            {$_premium_stuff[] = [
+              'title' => '[`Unlimited history`]',
+              'eta' => '[`Later in 2025`]',
+              'body' => '[`Completed item history is limited by 500 to-do items per list. With premium, all limits are off.`]'
+            ]}
+
+
+
             {$_features_delivered = 0}
             {$_features_pending = 0}
             {foreach $_premium_stuff as $_p}
@@ -171,7 +211,6 @@
                     {$_features_pending = $_features_pending + 1}
                 {/if}
             {/foreach}
-
 
             <p class="bold small align-center">{sprintf('[`%d features available now, +%d more to come shortly.`]', $_features_delivered, $_features_pending)}</p>
 

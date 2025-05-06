@@ -29,7 +29,7 @@
                 </a>
 
                 {if !$wa->isSingleAppMode()}
-                <p class="hint pl-app-hint-external float-right" style="margin-top: 4px; float: right;"><a href="{$wa_backend_url}pocketlists/upgrade/" target="_blank" class="button rounded light-gray nowrap smallest custom-mb-4" style="text-decoration: none !important;"><i class="fas fa-star text-yellow"></i> [`What’s new`]</a></p>
+                <p class="hint pl-app-hint-external float-right" style="margin-top: {if !empty($backend_item_add)}12{else}4{/if}px; float: right;"><a href="{$wa_backend_url}pocketlists/upgrade/" target="_blank" class="button rounded light-gray nowrap smallest custom-mb-4" style="text-decoration: none !important;"><i class="fas fa-star text-yellow"></i> [`New Pocket Lists 2025`] <i class="fas fa-external-link-alt opacity-30 smaller custom-ml-4"></i></a></p>
                 {/if}
 
                 <!-- plugin hook: 'backend_item_add.compact' -->
