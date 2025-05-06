@@ -2,6 +2,9 @@
 
 function image_not_found()
 {
+    if (class_exists('waLog')) {
+        waLog::log(debug_backtrace(), 'pocketlists/thumb.log');
+    }
     header('Location: /wa-apps/pocketlists/img/image-not-found.png');
     exit;
 }
@@ -33,7 +36,7 @@ function getThumbUrl($file_in, $file_out, $size)
     } catch (Exception $ex) {
         waFiles::delete($file_out,true);
         if (class_exists('waLog')) {
-            waLog::log($ex->getMessage(), 'wa-apps/pocketlists/thumb.log');
+            waLog::log($ex->getMessage(), 'pocketlists/thumb.log');
         }
     }
 
