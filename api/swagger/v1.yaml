@@ -2639,6 +2639,8 @@ components:
           type: object
           nullable: true
           properties:
+            lists_count:
+              type: integer
             items_count:
               type: integer
             items_priority_count:
