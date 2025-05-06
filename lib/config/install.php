@@ -21,7 +21,7 @@ if (!file_exists($linkedAppPath)) {
 // Setup auto thumbnail generation for pocketlists image attachments
 $path = wa()->getDataPath('attachments', true, pocketlistsHelper::APP_ID);
 waFiles::write($path.'/thumb.php', '<?php
-$file = realpath(dirname(__FILE__)."/../../../../")."/wa-apps/'.pocketlistsHelper::APP_ID.'/lib/config/data/thumb.php";
+$file = dirname(__FILE__)."/../../../../"."/wa-apps/'.pocketlistsHelper::APP_ID.'/lib/config/data/thumb.php";
 
 if (file_exists($file)) {
     include($file);
