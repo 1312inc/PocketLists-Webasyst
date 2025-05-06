@@ -1,6 +1,22 @@
-<div class="pl2pro-board-scroll-fix">
+{$_going_big = true}
+{if !($wa->pocketlists->isPremium() || pocketlistsHelper::hasPlugin('pro'))}
+    {$_going_big = false}
+{/if}
 
-    <main class="box block double-padded" style="position: relative;height: 100%;" data-pl2pro-wrapper="board">
+{if !$_going_big}
+    <div class="box contentbox">
+        <h3>[`Premium only`]</h3>
+        <p class="small">
+          <i class="fas fa-star text-yellow"></i> [`Upgrade now to have the feature enabled and this message to disappear permanently.`]
+        </p>
+        <a href="{$wa_app_url}upgrade/" class="button yellow rounded">[`See what’s included`]</a>
+        <hr class="custom-mt-24" />
+    </div>
+{/if}
+
+<div class="pl2pro-board-scroll-fix{if !$_going_big} opacity-40{/if}">
+
+    <main class="box contentbox" style="position: relative;height: 100%;" data-pl2pro-wrapper="board">
 
         <div class="pl2pro-board-container">
 

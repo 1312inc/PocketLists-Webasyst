@@ -1,3 +1,7 @@
+{$_fire_in_the_hole = true}
+{if !($wa->pocketlists->isPremium() || pocketlistsHelper::hasPlugin('pro'))}
+    {$_fire_in_the_hole = false}
+{/if}
 <div class="flexbox width-100 wrap-mobile pl-settings">
     {if $wa->user()->isAdmin()}
     <div class="sidebar blank width-21rem" data-pl2-settings-sidebar>
@@ -9,20 +13,20 @@
                 </a>
             </li>
             <li>
-                <a href="#/labels/" data-pro-settings="labels">
+                <a href="#/labels/" data-pro-settings="labels"{if !$_fire_in_the_hole} class="opacity-50"{/if}>
                     <span class="icon"><i class="fas fa-tag"></i></span>
                     <span>[`Status labels`]</span>
                 </a>
             </li>
             <li>
-                <a href="#/shortcuts/" data-pro-settings="shortcuts">
+                <a href="#/shortcuts/" data-pro-settings="shortcuts"{if !$_fire_in_the_hole} class="opacity-50"{/if}>
                     <span class="icon"><i class="fas fa-keyboard"></i></span>
                     <span>[`Shortcuts`]</span>
                 </a>
             </li>
             {if $wa->shop}
             <li>
-                <a href="#/shopscript/" data-pro-settings="shopscript">
+                <a href="#/shopscript/" data-pro-settings="shopscript"{if !$_fire_in_the_hole} class="opacity-50"{/if}>
                     <span class="icon"><i class="icon size-20" style="background-image: url('{$wa_url}wa-apps/shop/img/shop.png');"></i></span>
                     <span>[`Shop-Script`]</span>
                 </a>

@@ -1,7 +1,21 @@
-<h1>[`To-do status labels`]</h1>
-<p class="small">[`Statuses enables you to mark to-dos with color labels for better and a more sophisticated organization.`] [`The list of available custom labels is system-wide and applicable for all to-dos no matter of a pocket or a list.`]</p>
+{$_we_are_all_in = true}
+{if !($wa->pocketlists->isPremium() || pocketlistsHelper::hasPlugin('pro'))}
+    {$_we_are_all_in = false}
+{/if}
 
-<table class="pl2pro-labels" data-pl2pro-labels>
+{if !$_we_are_all_in}
+    <h3>[`Premium only`]</h3>
+    <p class="small">
+      <i class="fas fa-star text-yellow"></i> [`Upgrade now to have the feature enabled and this message to disappear permanently.`]
+    </p>
+    <a href="{$wa_app_url}upgrade/" class="button yellow rounded">[`See what’s included`]</a>
+    <hr class="custom-mt-24" />
+{/if}
+
+<h1{if !$_we_are_all_in} class="opacity-30"{/if}>[`To-do status labels`]</h1>
+<p class="small{if !$_we_are_all_in} opacity-30{/if}">[`Statuses enables you to mark to-dos with color labels for better and a more sophisticated organization.`] [`The list of available custom labels is system-wide and applicable for all to-dos no matter of a pocket or a list.`]</p>
+
+<table class="pl2pro-labels{if !$_we_are_all_in} opacity-50{/if}" data-pl2pro-labels>
     <tbody>
     <tr data-pl2pro-label-no-status>
         <td class="min-width">
@@ -71,8 +85,6 @@
         </tr>
     {/literal}
 </script>
-
-<div class="clear-both"></div>
 
 <link rel="stylesheet" href="{$wa_url}wa-content/js/farbtastic/farbtastic.css" type="text/css" />
 <script type="text/javascript" src="{$wa_url}wa-content/js/farbtastic/farbtastic.js?{$wa->version(true)}"></script>

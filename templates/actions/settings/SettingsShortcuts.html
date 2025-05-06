@@ -1,9 +1,23 @@
-<h1>[`To-do shortcuts`]</h1>
-<p class="small">[`Shortcuts help you create to-dos even faster. When creating a new to-do item, shortcuts will be offered as suggestions depending on your current input. Grouping enables the priority of each shortcut.`]</p>
-<p class="small">[`For even faster to-do creation, use <code>Alt + N</code> keyboard combination to quickly select the suggested shortcut shown under the to-do name input.`]
+{$_poexali = true}
+{if !($wa->pocketlists->isPremium() || pocketlistsHelper::hasPlugin('pro'))}
+    {$_poexali = false}
+{/if}
+
+{if !$_poexali}
+    <h3>[`Premium only`]</h3>
+    <p class="small">
+      <i class="fas fa-star text-yellow"></i> [`Upgrade now to have the feature enabled and this message to disappear permanently.`]
+    </p>
+    <a href="{$wa_app_url}upgrade/" class="button yellow rounded">[`See what’s included`]</a>
+    <hr class="custom-mt-24" />
+{/if}
+
+<h1{if !$_poexali} class="opacity-30"{/if}>[`To-do shortcuts`]</h1>
+<p class="small{if !$_poexali} opacity-30{/if}">[`Shortcuts help you create to-dos even faster. When creating a new to-do item, shortcuts will be offered as suggestions depending on your current input. Grouping enables the priority of each shortcut.`]</p>
+<p class="small{if !$_poexali} opacity-30{/if}">[`For even faster to-do creation, use <code>Alt + N</code> keyboard combination to quickly select the suggested shortcut shown under the to-do name input.`]
 </p>
 
-<div class="custom-mt-24">
+<div class="custom-mt-24{if !$_poexali} opacity-50{/if}">
     <div class="fields form" data-pl2pro-shortcuts></div>
     <div class="clear-left"></div>
     <div class="fields form">
@@ -15,8 +29,6 @@
         </div>
     </div>
 </div>
-
-<div class="clear-both"></div>
 
 <style>
     #wa .tagsinput { height: 120px !important; }

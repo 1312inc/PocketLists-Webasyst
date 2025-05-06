@@ -8,17 +8,19 @@
 {capture "getpremiumbutton"}
 {if !$_is_premium}
 <figure class="box pl-upgrade-ad">
-    <a href="{$_pl_upgrade_url}" class="button rounded pl-premium-button" target="_blank">[`Get premium`]</a>
-    <p>
+    <a href="{$_pl_upgrade_url}" class="button rounded pl-premium-button" target="_blank">[`Get premium now`]</a>
+    <h4>
+        {* vofka says sorry for such a hard code *}
         {if $wa->locale() == 'ru_RU'}
-            <strike>11 999</strike> <b>5 999 <span class="ruble">₽</span>
+            <strike class="gray">11 999</strike> 5 999 <span class="ruble">₽</span>
         {else}
-            <strike>199</strike> <b>$99
+            <strike class="gray">199</strike> $99
         {/if}
-        / [`lifetime`]</b> <br>
-        <b>{date('Y.m')}</b> [`early launch offer!`]<br>
-        {sprintf('[`%s first buyers limited offer`]', '&minus;50%')}<br>
-
+        / [`lifetime`]
+    </h4>
+    <p>
+        {sprintf('[`%s first buyers limited offer`]', '<span class="badge rounded green">&minus;50%</span>')}<br>
+        <b>{date('Y.m')}</b> [`early launch only!`]
     </p>
 </figure>
 {/if}
@@ -31,7 +33,7 @@
         <article class="pl-upgrade-content">
 
             <div class="stars-animation-container">
-                <div class="pl-premium-{if $_is_premium}appicon{else}star{/if}"></div>
+                <div class="pl-premium-appicon"></div>
                 <div class="stars-animation">
                     <div class="stars-animation--left">
                         {for $i=0 to 25}
@@ -49,7 +51,7 @@
             {if $_is_premium}
 
                 <h1 class="top-padded align-center">[`You are all set!`]</h1>
-                <p class="small align-center">[`Thank you for being a premium user and for supporting the project.`]<br> [`With premium enabled, you have access to all features below.`]</p>
+                <p class="small align-center">[`Thank you for being a premium user and for supporting the project.`]<br> [`With premium, you are among the first to have access to all features.`]</p>
 
             {else}
 

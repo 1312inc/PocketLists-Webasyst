@@ -1,7 +1,21 @@
-<h1>[`Shop-Script`]</h1>
-<p class="small">[`Set up the automation rules to make Pocket Lists automatically create and assign to-dos based on actions performed with Shop-Script orders.`]</p>
+{$_nobrainer_shopping = true}
+{if !($wa->pocketlists->isPremium() || pocketlistsHelper::hasPlugin('pro'))}
+    {$_nobrainer_shopping = false}
+{/if}
 
-<div class="fields custom-mt-24 form pl2pro-ss-automation-form" style="position: relative;">
+{if !$_nobrainer_shopping}
+    <h3>[`Premium only`]</h3>
+    <p class="small">
+      <i class="fas fa-star text-yellow"></i> [`Upgrade now to have the feature enabled and this message to disappear permanently.`]
+    </p>
+    <a href="{$wa_app_url}upgrade/" class="button yellow rounded">[`See what’s included`]</a>
+    <hr class="custom-mt-24" />
+{/if}
+
+<h1{if !$_nobrainer_shopping} class="opacity-30"{/if}>[`Shop-Script`]</h1>
+<p class="small{if !$_nobrainer_shopping} opacity-30{/if}">[`Set up the automation rules to make Pocket Lists automatically create and assign to-dos based on actions performed with Shop-Script orders.`]</p>
+
+<div class="fields custom-mt-24 form pl2pro-ss-automation-form{if !$_nobrainer_shopping} opacity-50{/if}" style="position: relative;">
 
     {** @var $action pocketlistsAutomationSettingsDto **}
     {foreach $shopActions as $action}
