@@ -25,6 +25,10 @@
                 <i class="icon16 pl caret-down" title="[`Show details and use the detailed add mode by default`]"></i>
             </a>
 
+            {if !empty($backend_item_add)}
+            <span class="pl-app-hint-external float-right" style="font-size: 12px; margin-top: {if !empty($backend_item_add)}13{else}4{/if}px; float: right;"><a href="{$wa_backend_url}pocketlists/#/upgrade/" target="_blank" class="nowrap" style="text-decoration: none !important;"><i class="icon10 star" style="position: relative; top: -2px;"></i> [`All-new Pocket Lists`] <i class="icon10 new-window" style="position: relative; top: -2px;"></i></a></span>
+            {/if}
+
             <!-- plugin hook: 'backend_item_add.compact' -->
             {* @event backend_item_add.%plugin_id% *}
             {if !empty($backend_item_add)}{foreach $backend_item_add as $_}{ifset($_)}{/foreach}{/if}
