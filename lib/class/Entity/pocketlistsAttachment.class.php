@@ -261,8 +261,12 @@ class pocketlistsAttachment extends pocketlistsEntity
             $available_extension[] = 'webp';
         }
         if (in_array($attach_ext, $available_extension)) {
-            $attach_name = pathinfo($attachment_data['filename'], PATHINFO_FILENAME).'.'.pocketlistsAttachment::PREVIEW_SIZE.'.'.$attach_ext;
-            $attachment_data['preview_url'] = sprintf($url_pub, $attachment_data['item_id'], $attach_name);
+            if ($attachment_data['storage'] === 'public') {
+                $attachment_data['preview_url'] = $attachment_data['download_url'];
+            } else {
+                $attach_name = pathinfo($attachment_data['filename'], PATHINFO_FILENAME).'.'.pocketlistsAttachment::PREVIEW_SIZE.'.'.$attach_ext;
+                $attachment_data['preview_url'] = sprintf($url_pub, $attachment_data['item_id'], $attach_name);
+            }
         }
 
         return $attachment_data;
