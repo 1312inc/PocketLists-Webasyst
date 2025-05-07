@@ -2,9 +2,6 @@
 
 function image_not_found()
 {
-    if (class_exists('waLog')) {
-        waLog::log(debug_backtrace(), 'pocketlists/thumb.log');
-    }
     header('Location: /wa-apps/pocketlists/img/image-not-found.png');
     exit;
 }

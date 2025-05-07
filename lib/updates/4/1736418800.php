@@ -16,7 +16,7 @@ try {
 // Setup auto thumbnail generation for pocketlists image attachments
 $path = wa()->getDataPath('attachments', true, pocketlistsHelper::APP_ID);
 waFiles::write($path.'/thumb.php', '<?php
-$file = realpath(dirname(__FILE__)."/../../../../")."/wa-apps/'.pocketlistsHelper::APP_ID.'/lib/config/data/thumb.php";
+$file = dirname(__FILE__)."/../../../../"."/wa-apps/pocketlists/lib/config/data/thumb.php";
 
 if (file_exists($file)) {
     include($file);
@@ -24,4 +24,4 @@ if (file_exists($file)) {
     header("HTTP/1.0 404 Not Found");
 }
 ');
-waFiles::copy(wa()->getAppPath('lib/config/data/.htaccess', pocketlistsHelper::APP_ID), $path.'/.htaccess');
+waFiles::copy(wa()->getAppPath('lib/config/data/.htaccess', 'pocketlists'), $path.'/.htaccess');
