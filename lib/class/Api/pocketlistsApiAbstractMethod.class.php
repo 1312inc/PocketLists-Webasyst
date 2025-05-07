@@ -897,8 +897,8 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
             $assigned_list_counts = pl2()->getModel('pocketlistsList')->query('
                 SELECT pi2.assigned_contact_id, count(pl.id) list_count FROM pocketlists_list pl 
                 JOIN pocketlists_item pi2 ON pi2.key_list_id = pl.id
-                WHERE pi2.assigned_contact_id IN (i:user_ids)
-                GROUP BY pi2.assigned_contact_id;
+                WHERE pl.archived = 0 AND pi2.assigned_contact_id IN (i:user_ids)
+                GROUP BY pi2.assigned_contact_id
             ', ['user_ids' => $user_ids])->fetchAll('assigned_contact_id');
         }
 

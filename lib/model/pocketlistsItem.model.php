@@ -686,8 +686,9 @@ SQL;
 
         $sqlParts['join'][] = 'LEFT JOIN (select i2.name, l2.*
                           from pocketlists_list l2
-                                 JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) l ON l.id = i.list_id AND l.archived = 0';
+                                 JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) l ON l.id = i.list_id';
 
+        $sqlParts['where']['and'][] = 'l.archived = 0 OR l.archived IS NULL';
         $sqlParts['where']['and'][] = '(
                     i.assigned_contact_id = i:contact_id AND i.status >= 0 /* assigned to contact no matter who it completed */
                     OR i.contact_id = i:contact_id AND i.status >= 0 /* created by contact (completed and not) */
