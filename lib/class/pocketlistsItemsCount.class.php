@@ -85,7 +85,7 @@ class pocketlistsItemsCount
      */
     public function getCountMaxPriority()
     {
-        return $this->countMaxPriority;
+        return (empty($this->maxPriority) ? 0 : $this->countMaxPriority);
     }
 
     /**
