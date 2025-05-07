@@ -103,7 +103,7 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
             } else {
                 $user_rights = wa()->getUser()->getRights($external_app_id);
                 if (!(isset($user_rights['backend']) && $user_rights['backend'] > 1)) {
-                    throw new pocketlistsApiException(sprintf_wp('Accesd denied: must have full admin rights for the “%s” app', $external_app_id), 403);
+                    throw new pocketlistsApiException(sprintf_wp('Access denied: must have full admin rights for the “%s” app', $external_app_id), 403);
                 }
             }
         }
