@@ -1874,7 +1874,7 @@ msgid "Record runs to the Shop-Script order history"
 msgstr "Фиксировать факты автоматического создания задач в истории обработки заказов в Shop-Script"
 
 msgid "Deprecated! Switch to the new 2.0 UI for the latest features."
-msgstr "Тут все закончилось! Переключайтесь на новый интерфейс и начинайте работать лучше."
+msgstr "На этом всё! Скорее переключайтесь на новый интерфейс и устанавливайте мобильные приложения Pocket Lists на свой телефон."
 
 msgid "All-new Pocket Lists"
 msgstr "Новый Pocket Lists"
