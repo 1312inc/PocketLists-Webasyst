@@ -153,8 +153,9 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
         $available_list_ids = pocketlistsRBAC::getAccessListForContact($current_user_id);
         $plim = pl2()->getModel(pocketlistsItem::class);
         $sql_parts = $plim->getQueryComponents(true);
+        $sql_parts['join']['pl'] = 'LEFT JOIN pocketlists_list pl ON pl.id = i.list_id';
         $sql_parts['where']['and'][] = 'i.key_list_id IS NULL';
-        $sql_parts['where']['and']['def'] = 'i.list_id IN (i:list_ids) OR (i.list_id IS NULL AND (i.contact_id = i:curr_user_id OR i.assigned_contact_id = i:curr_user_id))';
+        $sql_parts['where']['and']['def'] = '(i.list_id IN (i:list_ids) AND pl.archived = 0) OR (i.list_id IS NULL AND (i.contact_id = i:curr_user_id OR i.assigned_contact_id = i:curr_user_id))';
 
         if (isset($starting_from)) {
             $sql_parts['where']['and'][] = 'i.update_datetime >= s:starting_from OR i.create_datetime >= s:starting_from OR i.activity_datetime >= s:starting_from';
@@ -167,7 +168,7 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
                     throw new pocketlistsApiException(_w('Unknown filter value'));
                 }
                 $sql_parts['where']['and'][] = 'i.status = i:status';
-                $sql_parts['where']['and']['def'] = 'i.list_id IN (i:list_ids) OR i.list_id IS NULL';
+                $sql_parts['where']['and']['def'] = '(i.list_id IN (i:list_ids) AND pl.archived = 0) OR i.list_id IS NULL';
                 $sql_parts['where']['and'][] = 'i.assigned_contact_id = i:curr_user_id OR uf.contact_id OR (i.contact_id = i:curr_user_id AND i.assigned_contact_id IS NULL AND i.due_date IS NOT NULL)';
                 $sql_parts['order by'][] = 'favorite DESC, i.calc_priority DESC, i.due_date ASC, i.due_datetime ASC, i.id';
                 break;
@@ -236,7 +237,7 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
                 }
                 $user_id = (int) $filter_split[1];
                 $sql_parts['where']['and'][] = 'i.status = i:status';
-                $sql_parts['where']['and']['def'] = 'i.list_id IN (i:list_ids) OR i.list_id IS NULL';
+                $sql_parts['where']['and']['def'] = '(i.list_id IN (i:list_ids) AND pl.archived = 0) OR i.list_id IS NULL';
                 $sql_parts['where']['and'][] = "i.assigned_contact_id = $user_id OR i.contact_id = $user_id";
                 $sql_parts['order by'][] = "i.assigned_contact_id = $user_id DESC, i.calc_priority DESC, i.due_date ASC, i.due_datetime ASC, i.id";
                 break;
