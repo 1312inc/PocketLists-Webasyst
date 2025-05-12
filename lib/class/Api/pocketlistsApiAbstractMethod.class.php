@@ -879,9 +879,8 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
     public static function getTeammates($teammates_ids = [], $offset = 0, $limit = self::DEFAULT_LIMIT)
     {
         $result = [];
-        $is_all = empty($teammates_ids);
-        $teammates_ids = ($is_all ? pocketlistsRBAC::getAccessContacts() : $teammates_ids);
         $root_url = rtrim(wa()->getConfig()->getHostUrl(), '/');
+        $teammates_ids = (empty($teammates_ids) ? pocketlistsRBAC::getAccessContacts() : array_intersect($teammates_ids, pocketlistsRBAC::getAccessContacts()));
 
         /** @var pocketlistsContactFactory $contact_factory */
         $contact_factory = pl2()->getEntityFactory(pocketlistsContact::class);
@@ -889,23 +888,17 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
         $count = count($teammates);
         $teammates = array_slice($teammates, $offset, $limit);
 
-        if ($is_all) {
-            $user_ids = [];
-            foreach ($teammates as $_teammate) {
-                $user_ids[] = $_teammate->getId();
-            }
-            $assigned_list_counts = pl2()->getModel('pocketlistsList')->query('
-                SELECT pi2.assigned_contact_id, count(pl.id) list_count FROM pocketlists_list pl 
-                JOIN pocketlists_item pi2 ON pi2.key_list_id = pl.id
-                WHERE pl.archived = 0 AND pi2.assigned_contact_id IN (i:user_ids)
-                GROUP BY pi2.assigned_contact_id
-            ', ['user_ids' => $user_ids])->fetchAll('assigned_contact_id');
-        }
+        $assigned_list_counts = pl2()->getModel('pocketlistsList')->query('
+            SELECT pi2.assigned_contact_id, count(pl.id) list_count FROM pocketlists_list pl 
+            JOIN pocketlists_item pi2 ON pi2.key_list_id = pl.id
+            WHERE pl.archived = 0 AND pi2.assigned_contact_id IN (i:user_ids)
+            GROUP BY pi2.assigned_contact_id
+        ', ['user_ids' => $teammates_ids])->fetchAll('assigned_contact_id');
 
         /** @var pocketlistsContact $_teammate */
         foreach ($teammates as $_teammate) {
             /** @var pocketlistsItemsCount $items_info */
-            $items_info = $is_all ? $_teammate->getItemsInfo() : null;
+            $items_info = $_teammate->getItemsInfo();
             $result[] = [
                 'id'            => $_teammate->getId(),
                 'name'          => $_teammate->getName(),
@@ -920,7 +913,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                 'last_activity' => $_teammate->getLastActivity(),
                 'email'         => $_teammate->getEmail(),
                 'locale'        => $_teammate->getLocale(),
-                'extended_data' => $is_all ? [
+                'extended_data' => [
                     'lists_count'              => (int) ifset($assigned_list_counts, $_teammate->getId(), 'list_count', 0),
                     'items_count'              => $items_info->getCount(),
                     'items_priority_count'     => $items_info->getCountPriority(),
@@ -934,7 +927,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                         pocketlistsItem::PRIORITY_GREEN      => 0,
                         pocketlistsItem::PRIORITY_NORM       => 0
                     ]
-                ] : null
+                ]
             ];
         }
 
