@@ -169,7 +169,7 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
                 }
                 $sql_parts['where']['and'][] = 'i.status = i:status';
                 $sql_parts['where']['and']['def'] = '(i.list_id IN (i:list_ids) AND pl.archived = 0) OR i.list_id IS NULL';
-                $sql_parts['where']['and'][] = 'i.assigned_contact_id = i:curr_user_id OR uf.contact_id OR (i.contact_id = i:curr_user_id AND i.assigned_contact_id IS NULL AND i.due_date IS NOT NULL)';
+                $sql_parts['where']['and'][] = 'i.assigned_contact_id = i:curr_user_id OR uf.contact_id OR (i.contact_id = i:curr_user_id AND i.assigned_contact_id IS NULL AND (i.list_id IS NULL OR i.due_date IS NOT NULL))';
                 $sql_parts['order by'][] = 'favorite DESC, i.calc_priority DESC, i.due_date ASC, i.due_datetime ASC, i.id';
                 break;
             case 'due':
