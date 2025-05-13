@@ -26,6 +26,27 @@
 {/if}
 {/capture}
 
+{function name="_render_feature" _p=[] _is_premium_license=false _halfwidth=false _is_free_feature=false}
+<div class="card pl-premium-feature{if $_halfwidth} halfwidth{/if}">
+    <div class="flexbox space-12">
+        <div class="wide">
+            <h3>
+                {if !$_is_free_feature}<i class="fas fa-star text-yellow custom-mr-4"></i>{/if}
+                {$_p.title}
+            </h3>
+        </div>
+        <div>
+            {if empty($_p.eta)}
+                <span class="nowrap badge green"><i class="fas fa-check"></i> {if !$_is_free_feature}{if $_is_premium_license}[`Enabled`]{else}[`Available now`]{/if}{/if}</span>
+            {else}
+                <span class="nowrap badge light-gray"><i class="fas fa-clock"></i> {$_p.eta}</span>
+            {/if}
+        </div>
+    </div>
+    <div class="small custom-mt-16{if $_is_premium} hidden{/if}">{$_p.body}</div>
+</div>
+{/function}
+
 <div class="article">
 
     <main class="article-body">
@@ -58,13 +79,65 @@
 
             {else}
 
-                <h1 class="top-padded align-center width-70 custom-mx-auto width-100-mobile">[`All-new Pocket Lists is here.<br> Try and upgrade today!`]</h1>
+                <h1 class="top-padded align-center width-70 custom-mx-auto custom-mb-24 width-100-mobile">[`All-new Pocket Lists is here.<br> Try and upgrade today!`]</h1>
+
+                {$smarty.capture.getpremiumbutton}
+
+                {$_free_stuff = []}
+
+                {$_free_stuff[] = [
+                  'title' => '[`New UI`]',
+                  'body' => '[`Desktop-class super fast sleek UI for checklist making.`]'
+                ]}
+                {$_free_stuff[] = [
+                  'title' => '[`REST APIs`]',
+                  'body' => '[`Lots of handy tools for developers with sophisticated OpenAPI specs.`]'
+                ]}
+                {$_free_stuff[] = [
+                  'title' => '[`Calendar`]',
+                  'body' => '[`All screen monthly view for you scheduled and completed to-dos.`]'
+                ]}
+                {$_free_stuff[] = [
+                  'title' => '[`Assign checklists`]',
+                  'body' => '[`Quickly send whole checklists to your teammates.`]'
+                ]}
+                {$_free_stuff[] = [
+                  'title' => '[`Private checklists`]',
+                  'body' => '[`Hide certain checklists so no one but you can see them.`]'
+                ]}
+                {$_free_stuff[] = [
+                  'title' => '[`To-do streams`]',
+                  'body' => '[`Your personal and your teammates’ to-do streams with what’s important here and now.`]'
+                ]}
+                {$_free_stuff[] = [
+                  'title' => '[`Dashboard alerts`]',
+                  'body' => '[`Get notifications on to-dos right on your Webasyst dashboard.`]'
+                ]}
+                {$_free_stuff[] = [
+                  'title' => '[`Tags & mentions`]',
+                  'eta' => '[`Later in 2025`]',
+                  'body' => '[`Handy teamwork and organizational features.`]'
+                ]}
+
+                <h2 class="align-center">
+                    [`Installed and available now free`]
+                </h2>
+
                 <p class="small align-center width-80 custom-mx-auto width-100-mobile">
                     [`This is a <b>free update</b>, and it is installed already. Use the navigation on the left to get started with checklists.`]
                     [`Early launch offer gets you the best premium upgrade conditions possible.`]
                 </p>
 
+                <div class="flexbox wrap space-24">
+                    {foreach $_free_stuff as $_p}
+                        {_render_feature _p=$_p _is_premium_license=$_is_premium _halfwidth=true _is_free_feature=true}
+                    {/foreach}
+                </div>
+
+                <br><br><br>
+
             {/if}
+
 
             {$_premium_stuff = []}
 
@@ -87,7 +160,7 @@
 
             {$_premium_stuff[] = [
               'title' => '[`Repeating to-dos`]',
-              'eta' => '[`May 2025`]',
+              'eta' => '[`June 2025`]',
               'body' => '[`Re-occuring to-dos: daily, weekly, monthly, yearly.`]'
             ]}
 
@@ -120,6 +193,7 @@
 
                 {$_premium_stuff[] = [
                   'title' => 'Шаблоны быстрого ввода',
+                  'eta' => '[`June 2025`]',
                   'body' => '<code>Оплатить ...</code>, <code>Связаться ...</code>, <code>Напомнить ...</code>, <code>Отгрузить ...</code>, <code>Уточнить ...</code> — подобные задачи ставятся изо дня в день. Ускорьте их постановку с помощью быстрых шаблонов, которые заменят ручной ввод. Создавайте задачи в несколько кликов:<br><br>
                     <img src="https://1312.io/wa-data/public/site/img/webasyst/pl2pro100/ru-pl2pro-shortcuts-ss.gif" /><br><br>
                     Клик по шаблону или нажатие <code>Alt + #</code> (# — порядковый номером шаблона) — и готово! Список шаблонов настраивается произвольным образом с возможностью группировки в блоки, которые будут последовательно предлагаться по мере ввода текста задачи.'
@@ -127,6 +201,7 @@
 
                 {$_premium_stuff[] = [
                   'title' => 'Маркеры задач',
+                  'eta' => '[`June 2025`]',
                   'body' => 'Позволят типизировать задачи:<br><br>
                     <img src="https://1312.io/wa-data/public/site/img/webasyst/pl2pro100/ru-pl2pro-labels.png" />
                     <br><br>
@@ -207,8 +282,6 @@
               'body' => '[`In basic version, lists are limited by 500 to-do items. With premium, all limits are off.`]'
             ]}
 
-
-
             {$_features_delivered = 0}
             {$_features_pending = 0}
             {foreach $_premium_stuff as $_p}
@@ -219,26 +292,16 @@
                 {/if}
             {/foreach}
 
-            <p class="bold small align-center">{sprintf('[`%d features available now, +%d more to come shortly.`]', $_features_delivered, $_features_pending)}</p>
+            <h1 class="align-center">
+                [`Premium`]
+                <span class="badge smaller green">[`New!`]</span>
+            </h1>
+            <p class="align-center">{sprintf('[`%d features available now, +%d more to come shortly.`]', $_features_delivered, $_features_pending)}</p>
 
             {$smarty.capture.getpremiumbutton}
 
             {foreach $_premium_stuff as $_p}
-                <div class="card pl-premium-feature">
-                    <div class="flexbox space-12">
-                        <div class="wide">
-                            <h3>{$_p.title}</h3>
-                        </div>
-                        <div>
-                            {if empty($_p.eta)}
-                                <span class="nowrap badge green"><i class="fas fa-check"></i> {if $_is_premium}[`Enabled`]{else}[`Available now`]{/if}</span>
-                            {else}
-                                <span class="nowrap badge light-gray"><i class="fas fa-clock"></i> {$_p.eta}</span>
-                            {/if}
-                        </div>
-                    </div>
-                    <div class="small custom-mt-16{if $_is_premium} hidden{/if}">{$_p.body}</div>
-                </div>
+                {_render_feature _p=$_p _is_premium_license=$_is_premium}
             {/foreach}
             <p class="align-center gray small">[`All scheduled features will be delivered as free updates via Installer.`]</p>
 

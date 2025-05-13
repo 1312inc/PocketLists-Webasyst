@@ -2025,3 +2025,54 @@ msgstr "Создание общих списков, назначение спи�
 
 msgid "See to-do lists on Shop-Script orders"
 msgstr "Работа со списками задач в связке с заказами Shop-Script"
+
+msgid "Socket connection status"
+msgstr "Подключение к онлайн-сокету"
+
+msgid "Desktop-class super fast sleek UI for checklist making."
+msgstr "Удобный быстрый интерфейс для работы с чек-листами."
+
+msgid "REST APIs"
+msgstr "REST API"
+
+msgid "Lots of handy tools for developers with sophisticated OpenAPI specs."
+msgstr "Множество полезных методов для разработчиков для работы с данными."
+
+msgid "All screen monthly view for you scheduled and completed to-dos."
+msgstr "Удобный календарь со всем запланированными и выполненными задачами."
+
+msgid "Assign checklists"
+msgstr "Назначение списков"
+
+msgid "Quickly send whole checklists to your teammates."
+msgstr "Быстро назначайте ответственных сразу на весь список."
+
+msgid "Private checklists"
+msgstr "Приватные списки"
+
+msgid "Hide certain checklists so no one but you can see them."
+msgstr "Скрывайте отдельные списки от коллег и даже админов."
+
+msgid "To-do streams"
+msgstr "Потоки задач"
+
+msgid "Your personal and your teammates’ to-do streams with what’s important here and now."
+msgstr "Динамический фильтр важных и срочных задач — ваш личный и у каждого сотрудника."
+
+msgid "Dashboard alerts"
+msgstr "Уведомления на дашборде"
+
+msgid "Get notifications on to-dos right on your Webasyst dashboard."
+msgstr "Получайте напоминания о задачам на дашборде Webasyst."
+
+msgid "Tags & mentions"
+msgstr "Теги и упоминания"
+
+msgid "Handy teamwork and organizational features."
+msgstr "Множество полезных инструментов для командной работы."
+
+msgid "Installed and available now free"
+msgstr "Установлено и уже работает"
+
+msgid "New!"
+msgstr "Новое!"

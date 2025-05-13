@@ -16,7 +16,14 @@
              data-pl2pro-log="{$log->getId()}"
         >
             <i class="pl2pro-log-glyph {$log->getGlyph()}"></i>
-            <i class="pl2pro-log-userpic icon userpic" style="background-image: url({$log->getLog()->getContact()->getUserPic()})"></i>
+            <span class="pl2pro-log-userpic">
+                <span class="flexbox space-8 middle">
+                    <span class="hint">
+                        {$log->getCreateDatetime()|wa_datetime:'humandatetime'}
+                    </span>
+                    <i class="icon userpic" style="background-image: url({$log->getLog()->getContact()->getUserPic()})"></i>
+                </span>
+            </span>
 
             <span class="pl2pro-log-entity">
                 {$log->getLogEntry()|escape}
@@ -25,9 +32,7 @@
             <span class="small">
                 {$log->getActionExplained()}
             </span>
-            <span class="hint">
-                {$log->getCreateDatetime()|wa_datetime:'humandatetime'}
-            </span>
+
             {$log->getMoreHtml()}
         </div>
     {/foreach}

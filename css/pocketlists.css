@@ -794,7 +794,7 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 .pl2pro-column-items li .pl-link-preview .pl-link-preview-details a { text-decoration: none; }
 .pl2pro-column-items li .pl-link-preview .pl-link-preview-details .float-right { display: none; }
 
-.pl2pro-log { margin-top: 10px; }
+.pl2pro-log { margin: 20px 10px; }
 .pl2pro-log h1 { margin-bottom: 25px; }
 .pl2pro-log h5 { margin: 15px 0 20px; }
 .pl2pro-log-record { margin-bottom: 20px; padding-left: 30px; position: relative; }
@@ -821,6 +821,8 @@ div.tagsinput { height: 200px !important; width: 80% !important; }
 .pl-premium-appicon { position: relative; z-index: 10; height: 9rem; background: url('../img/pocketlists-premium.png') no-repeat center / 8rem; }
 .pl-premium-button { font-weight: 600 !important; font-size: 2rem; color: black !important; background: linear-gradient(95.2deg, rgba(255, 225, 155, 0.55) 0%, rgba(80, 0, 40, 0.12) 100%) var(--yellow); border-width: 0; padding: .6125em 1em; }
 .pl-premium-feature { border-radius: 0.75rem; background: var(--background-color-blank); margin-bottom: 1.5rem; padding: 1.5rem 2rem; }
+.pl-premium-feature.halfwidth { width: 40%; margin-bottom: 0; }
+.pl-premium-feature.halfwidth h3 { font-size: 1.25rem; }
 /* [data-theme=dark] .pl-premium-block { box-shadow: inset 2px 2px 90px 80px rgba(25,23,44,.82); } */
 
 .stars-animation-container {
@@ -976,4 +978,5 @@ div.tagsinput { height: 200px !important; width: 80% !important; }
 
 @media screen and (max-width: 760px) {
     .pl2pro-board-scroll-fix { max-width: 100vw; }
+    .pl-premium-feature.halfwidth { width: 100%; }
 }
