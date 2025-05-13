@@ -675,12 +675,12 @@ SQL;
     }
 
     /**
-     * @param      $listSql
-     * @param null $status
-     *
+     * @param $listSql
+     * @param $contact_id
+     * @param $status
      * @return array
      */
-    private function getAssignedOrCompletesByContactQueryComponents($listSql, $status = null)
+    private function getAssignedOrCompletesByContactQueryComponents($listSql, $contact_id, $status = pocketlistsItem::STATUS_UNDONE)
     {
         $sqlParts = $this->getQueryComponents();
 
@@ -688,24 +688,31 @@ SQL;
                           from pocketlists_list l2
                                  JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) l ON l.id = i.list_id';
 
-        $sqlParts['where']['and'][] = 'l.archived = 0 OR l.archived IS NULL';
-        $sqlParts['where']['and'][] = '(
-                    i.assigned_contact_id = i:contact_id AND i.status >= 0 /* assigned to contact no matter who it completed */
-                    OR i.contact_id = i:contact_id AND i.status >= 0 /* created by contact (completed and not) */
-                    OR i.complete_contact_id = i:contact_id AND i.status > 0 /* completed by contact */
-                  )';
-
         $sqlParts['where']['and'][] = $listSql;
+        $sqlParts['where']['and'][] = 'l.archived = 0 OR l.archived IS NULL';
+        $sqlParts['where']['and'][] = 'i.status = '. (int) $status;
 
-        if ($status !== null) {
-            $sqlParts['where']['and'][] = sprintf('i.status = %d', $status);
+        if (wa()->getUser()->getId() == $contact_id) {
+            $sqlParts['where']['and'][] = '(
+                i.assigned_contact_id = i:contact_id
+                OR uf.contact_id
+                OR (
+                    i.contact_id = i:contact_id
+                    AND i.assigned_contact_id IS NULL
+                    AND (i.list_id IS null OR i.due_date IS NOT NULL)
+                )
+            )';
+        } else {
+            $sqlParts['where']['and'][] = '(
+                i.assigned_contact_id = i:contact_id
+                OR i.contact_id = i:contact_id
+                OR i.complete_contact_id = i:contact_id
+            )';
         }
 
         if ($status == pocketlistsItem::STATUS_UNDONE) {
             array_splice($sqlParts['order by'], 1, 0, ['i.calc_priority DESC']);
-        }
-
-        if ($status == pocketlistsItem::STATUS_DONE) {
+        } elseif ($status == pocketlistsItem::STATUS_DONE) {
             array_splice($sqlParts['order by'], 1, 0, ['(i.complete_datetime IS NULL)', 'i.complete_datetime DESC']);
         }
 
@@ -728,7 +735,7 @@ SQL;
         pocketlistsRBAC::filterListAccess($lists, $contact_id);
         $list_sql = pocketlistsRBAC::filterListAccess($lists);
 
-        $sqlParts = $this->getAssignedOrCompletesByContactQueryComponents($list_sql, $status);
+        $sqlParts = $this->getAssignedOrCompletesByContactQueryComponents($list_sql, $contact_id, $status);
 
         $q = $this->buildSqlComponents($sqlParts, $limit, $offset);
 
@@ -757,12 +764,11 @@ SQL;
         pocketlistsRBAC::filterListAccess($lists, $contact_id);
         $list_sql = pocketlistsRBAC::filterListAccess($lists);
 
-        $sqlParts = $this->getAssignedOrCompletesByContactQueryComponents($list_sql, pocketlistsItem::STATUS_UNDONE);
+        $sqlParts = $this->getAssignedOrCompletesByContactQueryComponents($list_sql, $contact_id);
         $sqlParts['select'] = ['i.calc_priority calc_priority', 'count(i.id) count'];
         $sqlParts['group by'] = ['i.calc_priority'];
 
         $q = $this->buildSqlComponents($sqlParts);
-
         $itemsCount = $this->query(
             $q,
             [
@@ -792,7 +798,7 @@ SQL;
         pocketlistsRBAC::filterListAccess($lists, $contact_id);
         $list_sql = pocketlistsRBAC::filterListAccess($lists);
 
-        $sqlParts = $this->getAssignedOrCompletesByContactQueryComponents($list_sql, pocketlistsItem::STATUS_DONE);
+        $sqlParts = $this->getAssignedOrCompletesByContactQueryComponents($list_sql, $contact_id, pocketlistsItem::STATUS_DONE);
         $sqlParts['select'] = ['count(i.id) count_items'];
 
         $q = $this->buildSqlComponents($sqlParts);
