@@ -167,16 +167,23 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
                 if (!empty($filter_split[1])) {
                     throw new pocketlistsApiException(_w('Unknown filter value'));
                 }
-                $sql_parts['where']['and'][] = 'i.status = i:status';
+
                 $sql_parts['where']['and']['def'] = '(i.list_id IN (i:list_ids) AND pl.archived = 0) OR i.list_id IS NULL';
-                $sql_parts['where']['and'][] = 'i.assigned_contact_id = i:curr_user_id OR uf.contact_id OR (i.contact_id = i:curr_user_id AND i.assigned_contact_id IS NULL AND (i.list_id IS NULL OR i.due_date IS NOT NULL))';
+                if (!isset($starting_from)) {
+                    $sql_parts['where']['and'][] = 'i.status = i:status';
+                    $sql_parts['where']['and'][] = 'i.assigned_contact_id = i:curr_user_id OR uf.contact_id OR (i.contact_id = i:curr_user_id AND i.assigned_contact_id IS NULL AND (i.list_id IS NULL OR i.due_date IS NOT NULL))';
+                }
                 $sql_parts['order by'][] = 'favorite DESC, i.calc_priority DESC, i.due_date ASC, i.due_datetime ASC, i.id';
                 break;
             case 'due':
                 /** due, due/YYYY-MM-DD, due/YYYY-MM-DD,YYYY-MM-DD */
-                $sql_parts['where']['and'][] = 'i.status = i:status';
+                if (!isset($starting_from)) {
+                    $sql_parts['where']['and'][] = 'i.status = i:status';
+                }
                 if (empty($filter_split[1])) {
-                    $sql_parts['where']['and'][] = 'i.due_date IS NOT NULL';
+                    if (!isset($starting_from)) {
+                        $sql_parts['where']['and'][] = 'i.due_date IS NOT NULL';
+                    }
                 } else {
                     $pattern = '#^\s?\d{4}-\d{2}-\d{2}$#';
                     $d_data = explode(',', $filter_split[1]);
@@ -216,8 +223,10 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
                 if (!empty($filter_split[1])) {
                     throw new pocketlistsApiException(_w('Unknown filter value'));
                 }
-                $sql_parts['where']['and'][] = 'i.priority > 0';
-                $sql_parts['where']['and'][] = 'i.status = i:status';
+                if (!isset($starting_from)) {
+                    $sql_parts['where']['and'][] = 'i.status = i:status';
+                    $sql_parts['where']['and'][] = 'i.priority > 0';
+                }
                 $sql_parts['order by'][] = 'i.priority DESC, i.due_date ASC, i.due_datetime ASC, i.id';
                 break;
             case 'favorites':
@@ -236,9 +245,11 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
                     throw new pocketlistsApiException(_w('Unknown user'));
                 }
                 $user_id = (int) $filter_split[1];
-                $sql_parts['where']['and'][] = 'i.status = i:status';
                 $sql_parts['where']['and']['def'] = '(i.list_id IN (i:list_ids) AND pl.archived = 0) OR i.list_id IS NULL';
-                $sql_parts['where']['and'][] = "i.assigned_contact_id = $user_id OR i.contact_id = $user_id";
+                if (!isset($starting_from)) {
+                    $sql_parts['where']['and'][] = 'i.status = i:status';
+                    $sql_parts['where']['and'][] = "i.assigned_contact_id = $user_id OR i.contact_id = $user_id";
+                }
                 $sql_parts['order by'][] = "i.assigned_contact_id = $user_id DESC, i.calc_priority DESC, i.due_date ASC, i.due_datetime ASC, i.id";
                 break;
             case 'tag':
@@ -261,8 +272,10 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
                 break;
             case 'nearby':
                 /** nearby or nearby/28.635896,-106.075763 */
-                $sql_parts['where']['and'][] = 'i.status = i:status';
-                $sql_parts['where']['and'][] = 'i.location_id IS NOT NULL';
+                if (!isset($starting_from)) {
+                    $sql_parts['where']['and'][] = 'i.status = i:status';
+                    $sql_parts['where']['and'][] = 'i.location_id IS NOT NULL';
+                }
                 if (!empty($filter_split[1])) {
                     $locations = explode(',', $filter_split[1]);
                     if (count($locations) !== 2) {
