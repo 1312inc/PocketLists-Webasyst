@@ -85,23 +85,6 @@
                   </div>
 
                   <div class="field">
-                    <div class="name nowrap">
-                      [`App icon counter`]
-                      <span class="indicator red">1</span>
-                    </div>
-                    <div class="value no-shift">
-                        <select name="app_icon">
-                            <option value="{pocketlistsUserSettings::ICON_ALL}" {if isset($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_ALL}selected="selected"{/if}>[`All my to-dos`]</option>
-                            <option value="{pocketlistsUserSettings::ICON_OVERDUE}" {if isset($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_OVERDUE}selected="selected"{/if}>[`Only On Fire + Black + Red`]</option>
-                            <option value="{pocketlistsUserSettings::ICON_OVERDUE_TODAY}" {if isset($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_OVERDUE_TODAY}selected="selected"{/if}>[`Only On Fire + Black + Red + Yellow`]</option>
-                            <option value="{pocketlistsUserSettings::ICON_OVERDUE_TODAY_AND_TOMORROW}" {if isset($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_OVERDUE_TODAY_AND_TOMORROW}selected="selected"{/if}>[`Only On Fire + Black + Red + Yellow + Green`]</option>
-                            <option value="{pocketlistsUserSettings::ICON_NONE}" {if isset($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_NONE}selected="selected"{/if}>[`None`]</option>
-                        </select>
-                        <p class="hint">[`The counter will count to-dos of the specified colors on your My to-dos list.`]</p>
-                    </div>
-                  </div>
-
-                  <div class="field">
                     <div class="name">
                       [`Email me`]
                     </div>

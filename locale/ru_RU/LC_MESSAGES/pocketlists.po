@@ -226,9 +226,6 @@ msgstr "Начните вводить имя…"
 msgid "My personal settings"
 msgstr "Мои личные настройки"
 
-msgid "App icon counter"
-msgstr "Счетчик на иконке"
-
 msgid "Reds"
 msgstr "Красные"
 

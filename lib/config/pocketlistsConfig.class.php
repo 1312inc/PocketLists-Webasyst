@@ -263,73 +263,14 @@ class pocketlistsConfig extends waAppConfig
     public function onCount($onlycount = false)
     {
         try {
-            /** @var pocketlistsItemModel $itemModel */
-            $itemModel = wa(pocketlistsHelper::APP_ID)->getConfig()->getModel(pocketlistsItem::class);
-
-            $lastUpdateTime = wa()->getUser()->getSettings(pocketlistsHelper::APP_ID, 'last_updateCalcPriority', 0);
-            if (time() - $lastUpdateTime > 300) {
-                $itemModel->updateCalcPriority();
+            /** @var pocketlistsItemModel $item_model */
+            $item_model = wa(pocketlistsHelper::APP_ID)->getConfig()->getModel(pocketlistsItem::class);
+            $last_update_time = wa()->getUser()->getSettings(pocketlistsHelper::APP_ID, 'last_updateCalcPriority', 0);
+            if (time() - $last_update_time > 300) {
+                $item_model->updateCalcPriority();
             }
 
-            $count = $this->getUser()->getAppCount();
-
-            $css = '';
-            if (!$count) {
-                $css = <<<HTML
-<style>
-    [data-app="pocketlists"] .indicator,
-    [data-app="pocketlists"] .badge { display: none !important; }
-</style>
-HTML;
-            }
-
-            $pocketlistsPath = sprintf('%spocketlists?module=backendJson&action=', pl2()->getBackendUrl(true));
-
-            $script = <<<HTML
-<script>
-(function() {
-    'use strict';
-
-    try {
-        $.post('{$pocketlistsPath}sendNotifications', function(r) {
-            if (r.status === 'ok') {
-                var sent = parseInt(r.data);
-                sent && console.log('pocketlists: notification send ' + sent);
-            } else {
-                console.log('pocketlists: notification send error ' + r.error);
-            }
-        }, 'json')
-        .fail(function() {
-            console.log('pocketlists: notification send internal error');
-        });
-
-        $.post('{$pocketlistsPath}sendDirectNotifications', function(r) {
-            if (r.status === 'ok') {
-                if (window['pocketlistsAlertBox'] && r.data) {
-                    $.each(r.data, function() {
-                        var alertbox = new pocketlistsAlertBox('#pl2-notification-area', {
-                            closeTime: 120000,
-                            persistent: true,
-                            hideCloseButton: false
-                        });
-                        alertbox.show(this);
-                    });
-                }
-            } else {
-                console.log('pocketlists: notification send error ' + r.error);
-            }
-        }, 'json')
-        .fail(function() {
-            console.log('pocketlists: notification send internal error');
-        });
-    } catch (e) {
-        console.log('pocketlists: notification send exception ', e);
-    }
-})()
-</script>
-HTML;
-
-            return $onlycount ? $count : $count.$css.$script;
+            return $this->getUser()->getAppCount();
         } catch (Exception $ex) {
             pocketlistsHelper::logError('onCount error', $ex);
         }

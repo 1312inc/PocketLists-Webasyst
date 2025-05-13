@@ -65,6 +65,6 @@ class pocketlistsUser extends pocketlistsContact
     {
         $count = pl2()->getEntityCounter()->countTodoUndoneWithUserPrioritiesItems();
 
-        return $count ? $count->getCount() : null;
+        return $count ? $count->getCountMaxPriority() : null;
     }
 }

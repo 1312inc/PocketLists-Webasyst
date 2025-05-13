@@ -225,9 +225,6 @@ msgstr ""
 msgid "My personal settings"
 msgstr ""
 
-msgid "App icon counter"
-msgstr ""
-
 msgid "Reds"
 msgstr ""
 

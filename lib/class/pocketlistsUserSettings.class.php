@@ -18,12 +18,6 @@ class pocketlistsUserSettings
      */
     private $app_id = 'pocketlists';
 
-    const ICON_OVERDUE                    = 1;
-    const ICON_OVERDUE_TODAY              = 2;
-    const ICON_OVERDUE_TODAY_AND_TOMORROW = 3;
-    const ICON_ALL                        = 99;
-    const ICON_NONE                       = 0;
-
     const DAILY_RECAP_FOR_TODAY              = 0;
     const DAILY_RECAP_FOR_TODAY_AND_TOMORROW = 1;
     const DAILY_RECAP_FOR_NEXT_7_DAYS        = 2;
@@ -79,7 +73,6 @@ class pocketlistsUserSettings
     public function getDefaults()
     {
         return [
-            'app_icon'                       => self::ICON_ALL,
             'daily_recap_on'                 => 1,
             'daily_recap'                    => self::DAILY_RECAP_FOR_TODAY,
             'email_assign_me'                => 1,
@@ -145,47 +138,18 @@ class pocketlistsUserSettings
     }
 
     /**
-     * @param $icon
-     *
      * @return array
      */
-    public function getIconPrioririesMapping($icon)
+    public function getIconPrioririesMapping()
     {
-        $mapping = [
-            self::ICON_OVERDUE => [
-                pocketlistsItem::PRIORITY_RED,
-                pocketlistsItem::PRIORITY_BLACK,
-                pocketlistsItem::PRIORITY_BURNINHELL,
-            ],
-
-            self::ICON_OVERDUE_TODAY => [
-                pocketlistsItem::PRIORITY_YELLOW,
-                pocketlistsItem::PRIORITY_RED,
-                pocketlistsItem::PRIORITY_BLACK,
-                pocketlistsItem::PRIORITY_BURNINHELL,
-            ],
-
-            self::ICON_OVERDUE_TODAY_AND_TOMORROW => [
-                pocketlistsItem::PRIORITY_GREEN,
-                pocketlistsItem::PRIORITY_YELLOW,
-                pocketlistsItem::PRIORITY_RED,
-                pocketlistsItem::PRIORITY_BLACK,
-                pocketlistsItem::PRIORITY_BURNINHELL,
-            ],
-
-            self::ICON_ALL => [
-                pocketlistsItem::PRIORITY_NORM,
-                pocketlistsItem::PRIORITY_GREEN,
-                pocketlistsItem::PRIORITY_YELLOW,
-                pocketlistsItem::PRIORITY_RED,
-                pocketlistsItem::PRIORITY_BLACK,
-                pocketlistsItem::PRIORITY_BURNINHELL,
-            ],
-
-            self::ICON_NONE => [-1312],
+        return [
+            pocketlistsItem::PRIORITY_NORM,
+            pocketlistsItem::PRIORITY_GREEN,
+            pocketlistsItem::PRIORITY_YELLOW,
+            pocketlistsItem::PRIORITY_RED,
+            pocketlistsItem::PRIORITY_BLACK,
+            pocketlistsItem::PRIORITY_BURNINHELL,
         ];
-
-        return isset($mapping[$icon]) ? $mapping[$icon] : $mapping[self::ICON_NONE];
     }
 
     /**
