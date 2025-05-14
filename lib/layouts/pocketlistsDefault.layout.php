@@ -90,6 +90,7 @@ class pocketlistsDefaultLayout extends waLayout
             'shortcuts' => waUtils::jsonEncode($shortcuts),
             'timestamp' => $current_time,
             'datetime' => pocketlistsHelper::convertDateToISO8601(date('Y-m-d H:i:s', $current_time)),
+            'account_name' => wa()->accountName(),
             'framework_version' => wa()->getVersion('webasyst'),
             'app_version' => wa()->getVersion(pocketlistsHelper::APP_ID),
             'is_premium' => ($is_premium ? 1 : 0),

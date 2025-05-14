@@ -18,6 +18,7 @@ class pocketlistsSystemGetSettingsMethod extends pocketlistsApiAbstractMethod
             'shortcuts'         => $this->getShortcuts(),
             'timestamp'         => $current_time,
             'datetime'          => $this->getDatetime($current_time),
+            'account_name'      => $this->getAccountName(),
             'framework_version' => $this->getFrameworkVersion(),
             'app_version'       => $this->getAppVersion(),
             'is_premium'        => $this->isPremium(),
@@ -143,6 +144,11 @@ class pocketlistsSystemGetSettingsMethod extends pocketlistsApiAbstractMethod
     private function getDatetime($time)
     {
         return $this->formatDatetimeToISO8601(date('Y-m-d H:i:s', $time));
+    }
+
+    private function getAccountName()
+    {
+        return wa()->accountName();
     }
 
     /**
