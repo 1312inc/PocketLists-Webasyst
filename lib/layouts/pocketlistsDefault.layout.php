@@ -36,6 +36,7 @@ class pocketlistsDefaultLayout extends waLayout
         $users = [];
         $pockets = [];
         $locations = [];
+        $user_rights = [];
         $labels = [];
         $shortcuts = [];
         $is_premium = pocketlistsLicensing::isPremium();
@@ -64,6 +65,7 @@ class pocketlistsDefaultLayout extends waLayout
             $response = $location_get_list->getResponse(true);
             $locations = ifset($response, 'data', []);
 
+            $user_rights = pocketlistsSystemGetSettingsMethod::getUserRights();
             if ($is_premium) {
                 $labels = pl2()->getModel(pocketlistsLabel::class)->getAllWithSort();
                 $shortcuts = pl2()->getModel(pocketlistsShortcut::class)->select('*')->order('`group` ASC, id ASC')->fetchAll();
@@ -80,7 +82,7 @@ class pocketlistsDefaultLayout extends waLayout
             'users' => waUtils::jsonEncode($users),
             'pockets' => waUtils::jsonEncode($pockets),
             'locations' => waUtils::jsonEncode($locations),
-            'user_rights' => waUtils::jsonEncode(pocketlistsSystemGetSettingsMethod::getUserRights()),
+            'user_rights' => waUtils::jsonEncode($user_rights),
             'user_locale' => wa()->getLocale(),
             'user_timezone' => (empty($user_tz) ? 'auto' : $user_tz),
             'user' => waUtils::jsonEncode($user),
