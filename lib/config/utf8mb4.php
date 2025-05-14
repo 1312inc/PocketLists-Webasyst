@@ -27,4 +27,7 @@ return [
     'pocketlists_log' => [
         'params' => 'text',
     ],
+    'pocketlists_pro_label' => [
+        'name' => 'mediumtext',
+    ],
 ];

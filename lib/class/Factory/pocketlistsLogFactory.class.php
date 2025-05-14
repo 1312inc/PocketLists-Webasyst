@@ -113,7 +113,6 @@ class pocketlistsLogFactory extends pocketlistsFactory
                 ],
                 'attachment' => [
                     'filename' => $attachment->getFilename(),
-                    'type'     => $attachment->getFiletype(),
                 ],
             ]
         );
@@ -350,5 +349,62 @@ class pocketlistsLogFactory extends pocketlistsFactory
         }
 
         $context->addParam([pocketlistsLog::ENTITY_ITEM => $itemData]);
+    }
+
+    /**
+     * @param pocketlistsLog $log
+     *
+     * @return pocketlistsLogComment|pocketlistsLogItem|pocketlistsLogList|pocketlistsLogPocket|pocketlistsLogAttachment
+     * @throws pocketlistsLogicException
+     */
+    public static function createFromLog(pocketlistsLog $log)
+    {
+        switch ($log->getEntityType()) {
+            case pocketlistsLog::ENTITY_ITEM:
+                return new pocketlistsLogItem($log);
+
+            case pocketlistsLog::ENTITY_LIST:
+                return new pocketlistsLogList($log);
+
+            case pocketlistsLog::ENTITY_COMMENT:
+                return new pocketlistsLogComment($log);
+
+            case pocketlistsLog::ENTITY_POCKET:
+                return new pocketlistsLogPocket($log);
+
+            case pocketlistsLog::ENTITY_ATTACHMENT:
+                return new pocketlistsLogAttachment($log);
+        }
+
+        throw new pocketlistsLogicException('unknown log entity');
+    }
+
+    /**
+     * @param pocketlistsLogContext     $context
+     * @param pocketlistsLabel $label
+     *
+     * @return pocketlistsLog
+     * @throws pocketlistsLogicException
+     * @throws waException
+     */
+    public function createNewAfterAddLabel(pocketlistsLogContext $context, pocketlistsLabel $label)
+    {
+        $log = $this->createNewAfterItemUpdate($context);
+
+        $log->setParamsArray(
+            array_merge(
+                [
+                    'item_action' => 'add_label',
+                    'label'       =>
+                        [
+                            'name'  => $label->getName(),
+                            'color' => $label->getColor(),
+                        ],
+                ],
+                $log->getParamsArray()
+            )
+        );
+
+        return $log;
     }
 }

@@ -1,0 +1,197 @@
+<h3>Волшебный горшочек</h3>
+
+<div class="fields">
+    <div class="field">
+        <div class="name">[`Сущность`]</div>
+        <div class="value">
+            <div class="wa-select">
+                <select name="entity">
+                    <option value="POCKET">[`POCKET`]</option>
+                    <option value="LIST">[`LIST`]</option>
+                    <option value="ITEM" selected>[`ITEM`]</option>
+                    <option value="COMMENT">[`COMMENT`]</option>
+                    <option value="LOCATION">[`LOCATION`]</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="field">
+        <div class="name">[`Количество`]</div>
+        <div class="value">
+            <input type="text" name="entity_count" value="{pocketlistsGorshochekPluginBackendRunController::DEFAULT_COUNT}">
+        </div>
+    </div>
+
+    <div class="field">
+        <div class="name">[`By user`]</div>
+        <div class="value">
+            <div class="wa-select">
+                <select name="by_user">
+                    <option value="0">[`All users random`]</option>
+                    <option value="{$curr_user->getId()}">[`Only me`]</option>
+                    {foreach $all_users as $_user}
+                    <option value="{$_user->getId()}">{$_user->getName()}</option>
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="field">
+        <div class="name">[`Assign to user`]</div>
+        <div class="value">
+            <div class="wa-select">
+                <select name="assign">
+                    <option value="0">[`No assignee`]</option>
+                    {foreach $all_users as $_user}
+                    <option value="{$_user->getId()}">{$_user->getName()}</option>
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="field">
+        <div class="name">[`List`]</div>
+        <div class="value">
+            <div class="wa-select">
+                <select name="list">
+                    <option value="random">[`Fill lists randomly`]</option>
+                    <option value="no">[`No list`]</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="field">
+        <div class="name">[`В куда`]</div>
+        <div class="value">
+            <div class="wa-select">
+                <select name="comment_in">
+                    <option value="all">[`All items randomly`]</option>
+                    <option value="item">[`Specific item only`]</option>
+                    <option value="list">[`Specific list only`]</option>
+                </select>
+            </div>
+            <input type="text" name="comment_entity_id" value="" title="Entity ID" placeholder="1312">
+        </div>
+    </div>
+
+    <div class="field">
+        <div class="name">[`Логирование`]</div>
+        <div class="value">
+            <label>
+                <span class="wa-checkbox">
+                    <input type="checkbox" name="log">
+                    <span>
+                        <span class="icon">
+                            <i class="fas fa-check"></i>
+                        </span>
+                    </span>
+                </span>
+                [`Логировать сваренные данные`]
+            </label>
+        </div>
+    </div>
+</div>
+
+
+<div class="custom-my-8 hint">
+    <span class="js-cook-info"></span>
+</div>
+<button class="js-pot-cook" type="button">Горшочек, вари!</button>
+
+<script>
+    let cleanup = false;
+    let timer = undefined;
+    let process_id = undefined;
+    let url = '?plugin=gorshochek&action=run';
+    let $cook_info = $('.js-cook-info');
+
+    let step = function () {
+        let entity = $('select[name="entity"]').val();
+        let entity_count = $('input[name="entity_count"]').val();
+        let by_user = $('select[name="by_user"]').val();
+        let assign = $('select[name="assign"]').val();
+        let list = $('select[name="list"]').val();
+        let comment_in = $('select[name="comment_in"]').val();
+        let comment_entity_id = $('input[name="comment_entity_id"]').val();
+        let log = $('input[name="log"]').is(':checked');
+        timer = setInterval(function () {
+            $.post(url, {
+                processid: process_id,
+                entity: entity,
+                entity_count: entity_count,
+                by_user: by_user,
+                assign: assign,
+                list: list,
+                comment_in: comment_in,
+                comment_entity_id: comment_entity_id,
+                is_log: (log === true ? 1 : 0),
+                cleanup: cleanup
+            }, function (response) {
+                if (response) {
+                    if (response.processid) {
+                        process_id = response.processid;
+                    }
+                    if (response.text) {
+                        $cook_info.text(response.text);
+                    }
+                    if (response.ready) {
+                        clearInterval(timer);
+                        cleanup = true;
+                    }
+                }
+            }, 'json');
+        }, 2000);
+    }
+
+    $('.js-pot-cook').on('click', function () {
+        $(this).attr('disabled', true);
+        step();
+    });
+
+    $('select[name="entity"]').on('change', function (event) {
+        let div_by_user = $('select[name="by_user"]').closest('div.field');
+        let div_assign = $('select[name="assign"]').closest('div.field');
+        let div_list = $('select[name="list"]').closest('div.field');
+        let div_comment_in = $('select[name="comment_in"]').closest('div.field');
+        let comment_entity_id = div_comment_in.find('input[name="comment_entity_id"]');
+        comment_entity_id.hide();
+        switch ($(event.target).val()) {
+            case 'POCKET':
+            case 'LIST':
+                div_by_user.hide();
+                div_assign.hide();
+                div_list.hide();
+                div_comment_in.hide();
+                break;
+            case 'ITEM':
+                div_by_user.show();
+                div_assign.show();
+                div_list.show();
+                div_comment_in.hide();
+                break;
+            case 'COMMENT':
+                div_by_user.show();
+                div_assign.hide();
+                div_list.hide();
+                div_comment_in.show();
+                div_comment_in.on('change', function (e) {
+                    if ($(e.target).val() === 'all') {
+                        comment_entity_id.hide();
+                    } else {
+                        comment_entity_id.show();
+                    }
+                });
+                break;
+            case 'LOCATION':
+                div_by_user.hide();
+                div_assign.hide();
+                div_list.hide();
+                div_comment_in.hide();
+                break;
+        }
+    }).trigger('change');
+</script>

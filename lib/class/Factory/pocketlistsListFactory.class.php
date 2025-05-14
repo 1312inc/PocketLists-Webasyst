@@ -107,8 +107,6 @@ class pocketlistsListFactory extends pocketlistsFactory
         $attachmentFactory = pl2()->getEntityFactory(pocketlistsAttachment::class);
         $attachmentFactory->deleteAllByItem($list->getKeyItem());
 
-        pl2()->getModel('pocketlistsListSort')->deleteByField('list_id', $list->getId());
-
         return parent::delete($list);
     }
 

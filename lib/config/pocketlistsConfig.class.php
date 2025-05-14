@@ -5,6 +5,9 @@
  */
 class pocketlistsConfig extends waAppConfig
 {
+    const API_CLIENT_ID = 'POCKETLISTS-WEB-SPA';
+    const API_TOKEN_SCOPE = 'pocketlists';
+
     /**
      * @var array
      */
@@ -54,6 +57,16 @@ class pocketlistsConfig extends waAppConfig
      * @var pocketlistsEventDispatcherInterface
      */
     protected $eventDispatcher;
+
+    /**
+     * @var pocketlistsAutomationService
+     */
+    protected $automation;
+
+    /**
+     * @var pocketlistsCronManager
+     */
+    protected $cronManager;
 
     /**
      * @param string $type
@@ -149,12 +162,10 @@ class pocketlistsConfig extends waAppConfig
         $factoryClass = sprintf('%sFactory', $entity);
 
         if (!class_exists($factoryClass)) {
-            return $this->factories[''];//->setEntity($entity);
+            return $this->factories[''];
         }
 
         $this->factories[$entity] = new $factoryClass();
-
-//        $this->factories[$entity]->setEntity($entity);
 
         return $this->factories[$entity];
     }
@@ -220,10 +231,10 @@ class pocketlistsConfig extends waAppConfig
                 'kmStatistics',
             ],
         ];
-
+        $path_root = waConfig::get('wa_path_root');
         foreach ($customClasses as $path => $classes) {
             foreach ($classes as $class) {
-                $file = wa()->getAppPath('lib/vendor/km/'.$class.'.class.php', 'pocketlists');
+                $file = $path_root.DIRECTORY_SEPARATOR.$path.$class.'.class.php';
                 if (!class_exists($class, false) && file_exists($file)) {
                     waAutoload::getInstance()->add($class, $path.$class.'.class.php');
                 }
@@ -252,73 +263,14 @@ class pocketlistsConfig extends waAppConfig
     public function onCount($onlycount = false)
     {
         try {
-            /** @var pocketlistsItemModel $itemModel */
-            $itemModel = wa(pocketlistsHelper::APP_ID)->getConfig()->getModel(pocketlistsItem::class);
-
-            $lastUpdateTime = wa()->getUser()->getSettings(pocketlistsHelper::APP_ID, 'last_updateCalcPriority', 0);
-            if (time() - $lastUpdateTime > 300) {
-                $itemModel->updateCalcPriority();
+            /** @var pocketlistsItemModel $item_model */
+            $item_model = wa(pocketlistsHelper::APP_ID)->getConfig()->getModel(pocketlistsItem::class);
+            $last_update_time = wa()->getUser()->getSettings(pocketlistsHelper::APP_ID, 'last_updateCalcPriority', 0);
+            if (time() - $last_update_time > 300) {
+                $item_model->updateCalcPriority();
             }
 
-            $count = $this->getUser()->getAppCount();
-
-            $css = '';
-            if (!$count) {
-                $css = <<<HTML
-<style>
-    [data-app="pocketlists"] .indicator,
-    [data-app="pocketlists"] .badge { display: none !important; }
-</style>
-HTML;
-            }
-
-            $pocketlistsPath = sprintf('%spocketlists?module=backendJson&action=', pl2()->getBackendUrl(true));
-
-            $script = <<<HTML
-<script>
-(function() {
-    'use strict';
-
-    try {
-        $.post('{$pocketlistsPath}sendNotifications', function(r) {
-            if (r.status === 'ok') {
-                var sent = parseInt(r.data);
-                sent && console.log('pocketlists: notification send ' + sent);
-            } else {
-                console.log('pocketlists: notification send error ' + r.error);
-            }
-        }, 'json')
-        .fail(function() {
-            console.log('pocketlists: notification send internal error');
-        });
-
-        $.post('{$pocketlistsPath}sendDirectNotifications', function(r) {
-            if (r.status === 'ok') {
-                if (window['pocketlistsAlertBox'] && r.data) {
-                    $.each(r.data, function() {
-                        var alertbox = new pocketlistsAlertBox('#pl2-notification-area', {
-                            closeTime: 120000,
-                            persistent: true,
-                            hideCloseButton: false
-                        });
-                        alertbox.show(this);
-                    });
-                }
-            } else {
-                console.log('pocketlists: notification send error ' + r.error);
-            }
-        }, 'json')
-        .fail(function() {
-            console.log('pocketlists: notification send internal error');
-        });
-    } catch (e) {
-        console.log('pocketlists: notification send exception ', e);
-    }
-})()
-</script>
-HTML;
-
-            return $onlycount ? $count : $count.$css.$script;
+            return $this->getUser()->getAppCount();
         } catch (Exception $ex) {
             pocketlistsHelper::logError('onCount error', $ex);
         }
@@ -412,7 +364,6 @@ HTML;
             }
 
             return $this->fakeLinker;
-//            throw new waException('No linked class for app ' . $app);
         }
 
         return empty($app) ? $this->linkers : $this->linkers[$app];
@@ -486,5 +437,26 @@ HTML;
                 return wa(pocketlistsHelper::APP_ID)->getConfig();
             }
         }
+    }
+
+    public function getAutomationService()
+    {
+        if ($this->automation === null) {
+            $this->automation = new pocketlistsAutomationService();
+        }
+
+        return $this->automation;
+    }
+
+    /**
+     * @return pocketlistsCronManager
+     */
+    public function getCronManager()
+    {
+        if ($this->cronManager === null) {
+            $this->cronManager = new pocketlistsCronManager();
+        }
+
+        return $this->cronManager;
     }
 }

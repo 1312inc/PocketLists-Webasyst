@@ -17,7 +17,11 @@
 
         <main class="block double-padded" data-pl2-settings-content>
 
-            <div class="fields form">
+            <h3>[`Deprecated! Switch to the new 2.0 UI for the latest features.`]<br><br></h3>
+            <a href="javascript:void(0);" class="button green" onclick="_setCookie('force_set_wa_backend_ui_version', '2.0', 365); window.location.reload();">[`Launch new Pocket Lists`]</a>
+            <br><br><br>
+
+            <div class="fields form" style="opacity: 0.4;">
                 <form method="post" id="pl-settings-form">
                 <h6 class="heading"><i class="icon16 userpic20" style="background-image: url({$wa->user()->getPhoto(20)});"></i> [`My personal settings`]</h6>
                 <br>
@@ -77,23 +81,6 @@
                         <p class="hint">[`My to-dos is your personal dynamic to-do list that automatically collects all to-dos which you are about to do up next. To-dos to self and to-dos assigned to you by your teammates are included in this list automatically. Most important and urgent to-dos are on top.`]</p>
                         <p class="hint">[`Additionally, you can include other users’s to-dos to be shown on your My to-dos list , which is handy if you want to be sure not to miss any important to-do item, either it is an urgent to-do or a to-do list you follow.`]</p>
                         <p class="hint">[`To-dos assigned to other users will be automatically hidden from your My to-dos list.`]</p>
-                    </div>
-                  </div>
-
-                  <div class="field">
-                    <div class="name nowrap">
-                      [`App icon counter`]
-                      <span class="indicator red">1</span>
-                    </div>
-                    <div class="value no-shift">
-                        <select name="app_icon">
-                            <option value="{pocketlistsUserSettings::ICON_ALL}" {if isset($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_ALL}selected="selected"{/if}>[`All my to-dos`]</option>
-                            <option value="{pocketlistsUserSettings::ICON_OVERDUE}" {if isset($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_OVERDUE}selected="selected"{/if}>[`Only On Fire + Black + Red`]</option>
-                            <option value="{pocketlistsUserSettings::ICON_OVERDUE_TODAY}" {if isset($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_OVERDUE_TODAY}selected="selected"{/if}>[`Only On Fire + Black + Red + Yellow`]</option>
-                            <option value="{pocketlistsUserSettings::ICON_OVERDUE_TODAY_AND_TOMORROW}" {if isset($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_OVERDUE_TODAY_AND_TOMORROW}selected="selected"{/if}>[`Only On Fire + Black + Red + Yellow + Green`]</option>
-                            <option value="{pocketlistsUserSettings::ICON_NONE}" {if isset($settings.app_icon) && $settings.app_icon == pocketlistsUserSettings::ICON_NONE}selected="selected"{/if}>[`None`]</option>
-                        </select>
-                        <p class="hint">[`The counter will count to-dos of the specified colors on your My to-dos list.`]</p>
                     </div>
                   </div>
 

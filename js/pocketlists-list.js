@@ -345,16 +345,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
                                 if ($lists.length) {
                                     $lists.find('[data-pl-list-id="' + list_id + '"]').remove();
                                 }
-    
-                                if (/#\/archive/.test(window.location.hash)) {
-                                    $.wa.setHash('#/archive/');
-                                } else if (/#\/pocket/.test(window.location.hash)) {
-                                    $.wa.setHash(window.location.hash.replace('/list/'+list_id, ''));
-                                } else {
-                                    $.wa.setHash('#/todo/');
-                                }
-                                // $.pocketlists_routing.redispatch();
-                            } else {
+                                window.location.reload();
                             }
                             dialog_instance.close();
                             request_in_action = false;
@@ -420,8 +411,8 @@ $.pocketlists.List = function ($list_wrapper, options) {
         $.post('?module=list&action=archive', {list_id: list_id, archive: 0}, function (r) {
             if (r.status === 'ok') {
                 $.pocketlists.updateAppCounter();
-                $.wa.setHash('#/list/' + list_id + '/');
                 $.pocketlists.reloadSidebar();
+                window.location.reload();
             } else {
             }
             request_in_action = false;

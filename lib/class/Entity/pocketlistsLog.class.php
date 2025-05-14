@@ -14,12 +14,15 @@ class pocketlistsLog extends pocketlistsEntity
     const ACTION_UNARCHIVE  = 'unarchive';
     const ACTION_COMPLETE   = 'complete';
     const ACTION_UNCOMPLETE = 'uncomplete';
+    const ACTION_SHARE      = 'share';
+    const ACTION_UNSHARE    = 'unshare';
 
     const ENTITY_USER       = 'user';
     const ENTITY_POCKET     = 'pocket';
     const ENTITY_LIST       = 'list';
     const ENTITY_ITEM       = 'item';
     const ENTITY_COMMENT    = 'comment';
+    const ENTITY_LOCATION   = 'location';
     const ENTITY_ATTACHMENT = 'attachment';
 
     const ITEM_ACTION_NEW_ASSIGN = 'new_assign';
@@ -122,7 +125,7 @@ class pocketlistsLog extends pocketlistsEntity
     public function beforeExtract(array &$fields)
     {
         if (empty($fields) || (!empty($fields) && array_key_exists('params', $fields))) {
-            $this->params = json_encode($this->paramsArray, JSON_UNESCAPED_UNICODE);
+            $this->params = json_encode((array) $this->paramsArray, JSON_UNESCAPED_UNICODE);
         }
     }
 
@@ -132,7 +135,7 @@ class pocketlistsLog extends pocketlistsEntity
     public function getParamsArray()
     {
         if ($this->paramsArray === null) {
-            $this->paramsArray = json_decode($this->params, true);
+            $this->paramsArray = json_decode((string) $this->params, true);
         }
 
         return $this->paramsArray;
@@ -159,7 +162,7 @@ class pocketlistsLog extends pocketlistsEntity
     public function afterHydrate($data = [])
     {
         if (!empty($data) && array_key_exists('params', $data)) {
-            $this->setParamsArray(json_decode($data['params'], true));
+            $this->setParamsArray(json_decode((string) $data['params'], true));
         }
     }
 

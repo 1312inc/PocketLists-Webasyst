@@ -1,4 +1,5 @@
 <?php
-return array (
-  '*' => 'frontend',
+
+return array(
+    '' => 'frontend/',
 );

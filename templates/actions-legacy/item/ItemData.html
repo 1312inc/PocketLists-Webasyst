@@ -95,7 +95,7 @@
         {if $item->getAttachmentsCount()}
           <ul class="pl-attachments">
             {foreach $item->getAttachments() as $attachment}
-              {if $attachment->getFiletype() == 'image'}<li><a href="{$pl2_attachments_path}/{$item->getId()}/{$attachment->getFilename()}" target="_blank"><img src="{$pl2_attachments_path}/{$item->getId()}/{$attachment->getFilename()}"></a></li>
+              {if $attachment && in_array($attachment->getExt(), ['jpg', 'jpeg', 'png'])}<li><a href="{$pl2_attachments_path}/{$item->getId()}/{$attachment->getFilename()}" target="_blank"><img src="{$pl2_attachments_path}/{$item->getId()}/{$attachment->getFilename()}"></a></li>
               {else}<li class="pl-no-preview"><a href="{$pl2_attachments_path}/{$item->getId()}/{$attachment->getFilename()}" target="_blank"><i class="icon16 download"></i>{$attachment->getFilename()|truncate:128}</a></li>
               {/if}
             {/foreach}

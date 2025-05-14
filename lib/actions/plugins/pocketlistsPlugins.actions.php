@@ -13,10 +13,18 @@ class pocketlistsPluginsActions extends waPluginsActions
     /**
      * @throws waRightsException
      */
-    public function preExecute()
+    public function defaultAction()
     {
         if (!$this->getUser()->isAdmin('pocketlists')) {
             throw new waRightsException(_ws('Access denied'));
         }
+        if (wa()->whichUI() === '1.3') {
+            if (!waRequest::isXMLHttpRequest()) {
+                $this->redirect(wa()->getAppUrl(null, true));
+            }
+        } else {
+            $this->setLayout(new pocketlistsStaticLayout());
+        }
+        parent::defaultAction();
     }
 }

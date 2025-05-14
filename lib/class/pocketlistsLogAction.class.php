@@ -285,23 +285,31 @@ class pocketlistsLogAction
      */
     private function item_assign($id)
     {
+        $team_name = 'no contact';
         $contact = new waContact($this->ext_logs[$id]['params']['assigned_to']);
         $list_html = $this->getListUrlHtml($id);
-        $team_url = '#/team/';
-        $teamName = 'no contact';
-        if ($contact->exists()) {
-            $team_url = $this->app_url.'#/team/'.$contact->get('login').'/';
-            $teamName = htmlspecialchars($contact->getName());
+
+        if (wa()->whichUI(pocketlistsHelper::APP_ID) == '1.3') {
+            $team_url = '#/team/';
+            if ($contact->exists()) {
+                $team_url = $this->app_url.$team_url.$contact->get('login').'/';
+                $team_name = htmlspecialchars($contact->getName());
+            }
+        } else {
+            $team_url = 'user/';
+            if ($contact->exists()) {
+                $team_url = $this->app_url.$team_url.$contact->getId().'/';
+                $team_name = htmlspecialchars($contact->getName());
+            }
         }
+
 
         $item = null;
         if (!empty($this->ext_logs[$id]['params']['item_id'])) {
             $item = $this->getItemData($this->ext_logs[$id]['params']['item_id']);
         }
 
-        $_str = '<a href="'.$team_url.'">'.$teamName.'</a>'.($item && $item->getId() ? ' '.htmlspecialchars(
-                    $item->getName()
-                ) : '');
+        $_str = '<a href="'.$team_url.'">'.$team_name.'</a>'.($item && $item->getId() ? ' '.htmlspecialchars($item->getName()) : '');
         if ($list_html) {
             return $_str.' @ '.$list_html;
         } else {
@@ -339,15 +347,24 @@ class pocketlistsLogAction
      */
     private function item_assign_team($id)
     {
+        $item = null;
+        $team_name = 'no contact';
         $contact = new waContact($this->ext_logs[$id]['params']['assigned_to']);
-        $team_url = '#/team/';
-        $teamName = 'no contact';
-        if ($contact->exists()) {
-            $team_url = $this->app_url.'#/team/'.$contact->get('login').'/';
-            $teamName = htmlspecialchars($contact->getName());
+
+        if (wa()->whichUI(pocketlistsHelper::APP_ID) == '1.3') {
+            $team_url = '#/team/';
+            if ($contact->exists()) {
+                $team_url = $this->app_url.$team_url.$contact->get('login').'/';
+                $team_name = htmlspecialchars($contact->getName());
+            }
+        } else {
+            $team_url = 'user/';
+            if ($contact->exists()) {
+                $team_url = $this->app_url.$team_url.$contact->getId().'/';
+                $team_name = htmlspecialchars($contact->getName());
+            }
         }
 
-        $item = null;
         if (!empty($this->ext_logs[$id]['params']['item_id'])) {
             $item = $this->getItemData($this->ext_logs[$id]['params']['item_id']);
         }
@@ -355,38 +372,43 @@ class pocketlistsLogAction
         return sprintf(
             ' <a href="%s">%s</a>%s',
             $team_url,
-            $teamName,
+            $team_name,
             ($item && $item->getId() ? ' '.htmlspecialchars($item->getName()) : '')
         );
     }
 
     /**
      * @param $id
-     *
+     * @param $anchor
      * @return string
+     * @throws waException
      */
     private function getListUrlHtml($id, $anchor = '')
     {
-        if (!$this->ext_logs[$id][self::$ext]['list']) {
+        /** @var pocketlistsList $list */
+        $list = $this->ext_logs[$id][self::$ext]['list'];
+        if (!$list) {
             return '';
         }
 
-        if ($this->ext_logs[$id][self::$ext]['list']->getId()) {
-            $list_url = sprintf(
-                '%s#/pocket/%s/list/%s/',
-                $this->app_url,
-                $this->ext_logs[$id][self::$ext]['list']->getPocketId(),
-                $this->ext_logs[$id][self::$ext]['list']->getId()
-            );
+        if ($list->getId()) {
+            if (wa()->whichUI(pocketlistsHelper::APP_ID) == '1.3') {
+                $list_url = sprintf(
+                    '%s#/pocket/%s/list/%s/',
+                    $this->app_url,
+                    $list->getPocketId(),
+                    $list->getId()
+                );
+            } else {
+                $list_url = $this->app_url.'lists/'.$list->getId().'/';
+            }
         } else {
             $list_url = $this->app_url;
         }
 
-        $list_name = $anchor
-            ? htmlspecialchars($anchor)
-            : htmlspecialchars($this->ext_logs[$id][self::$ext]['list']->getName(), ENT_QUOTES);
+        $list_name = ($anchor ? htmlspecialchars($anchor) : htmlspecialchars($list->getName(), ENT_QUOTES));
 
-        return "<a href=\"{$list_url}\">{$list_name}</a>";
+        return "<a href=\"$list_url\">$list_name</a>";
     }
 
     /**

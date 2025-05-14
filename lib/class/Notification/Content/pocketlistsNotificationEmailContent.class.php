@@ -108,6 +108,7 @@ class pocketlistsNotificationEmailContent extends pocketlistsNotificationAbstrac
     /**
      * @return array
      */
+    #[ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return pl2()->getHydrator()->extract(

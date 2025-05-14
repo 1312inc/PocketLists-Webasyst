@@ -29,10 +29,9 @@ class pocketlistsEntityCounter
             return $count;
         }
 
-        /** @var pocketlistsItemModel $itemModel */
-        $itemModel = pl2()->getModel(pocketlistsItem::class);
-
-        $count = $itemModel->countTodo($user->getId(), $date, $priorities, $status);
+        /** @var pocketlistsItemModel $item_model */
+        $item_model = pl2()->getModel(pocketlistsItem::class);
+        $count = $item_model->countAssignedOrCompletesByContactItems($user->getId());
 
         return $this->cache($key, new pocketlistsItemsCount($count));
     }
@@ -77,10 +76,7 @@ class pocketlistsEntityCounter
     public function countTodoUndoneWithUserPrioritiesItems(pocketlistsUser $user = null)
     {
         $user = $user ?: pl2()->getUser();
-
-        $icon = $user->getSettings()->appIcon();
-
-        $priorities = $user->getSettings()->getIconPrioririesMapping($icon);
+        $priorities = $user->getSettings()->getIconPrioririesMapping();
 
         return $this->countTodoUndoneItems($priorities, $user);
     }
@@ -140,7 +136,7 @@ class pocketlistsEntityCounter
      */
     public function countTeammateItems(pocketlistsContact $user)
     {
-        $key = sprintf('items|team|%s', $user->getId());
+        $key = sprintf('items|team|%s|%s', wa()->getUser()->getId(), $user->getId());
 
         $count = $this->getFromCache($key);
         if ($count instanceof pocketlistsItemsCount) {
@@ -149,7 +145,6 @@ class pocketlistsEntityCounter
 
         /** @var pocketlistsItemModel $itemModel */
         $itemModel = pl2()->getModel(pocketlistsItem::class);
-
         $count = $itemModel->countAssignedOrCompletesByContactItems($user->getId());
 
         return $this->cache($key, new pocketlistsItemsCount($count));

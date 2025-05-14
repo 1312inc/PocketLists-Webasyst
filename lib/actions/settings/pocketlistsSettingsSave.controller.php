@@ -7,16 +7,8 @@ class pocketlistsSettingsSaveController extends pocketlistsJsonController
 {
     public function execute()
     {
-        $us = $this->user->getSettings();
-
-        // zero settings which are not in POST
-        $data = array_merge($us->getZeroSettings(), waRequest::post());
-
-        // update new
-        foreach ($data as $name => $value) {
-            $us->set($name, $value);
-        }
-
-        $this->response = 'ok';
+        $this->response = (new pocketlistsSettings())->updateSettings(
+            waRequest::post('settings', [], waRequest::TYPE_ARRAY)
+        );
     }
 }

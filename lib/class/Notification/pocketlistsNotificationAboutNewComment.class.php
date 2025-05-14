@@ -142,4 +142,17 @@ class pocketlistsNotificationAboutNewComment extends pocketlistsBaseNotification
         }
     }
 
+    public function multiplicityNotify($comments = [])
+    {
+        /** @var pocketlistsCommentFactory $comment_factory */
+        $comment_factory = pl2()->getEntityFactory(pocketlistsComment::class);
+
+        /** @var pocketlistsComment $comment */
+        $comment = $comment_factory->createNew();
+        foreach ((array) $comments as $_comment) {
+            $comment_clone = clone $comment;
+            pl2()->getHydrator()->hydrate($comment_clone, $_comment);
+            $this->notify($comment_clone);
+        }
+    }
 }

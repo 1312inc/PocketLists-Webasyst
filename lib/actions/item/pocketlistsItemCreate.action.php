@@ -144,9 +144,7 @@ class pocketlistsItemCreateAction extends pocketlistsViewAction
 
                         /** @var pocketlistsAttachment $attachment */
                         $attachment = $attachmentFactory->createNew();
-                        $attachment
-                            ->setFilename($uploadedFile->getName())
-                            ->setFiletype($uploadedFile->getType())
+                        $attachment->setFilename($uploadedFile->getName())
                             ->setItemId($item->getId());
                         $attachmentFactory->insert($attachment);
                         $attachments[] = $attachment;

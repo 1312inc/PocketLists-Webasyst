@@ -28,9 +28,17 @@
                     <i class="fas fa-chevron-down text-light-gray" title="[`Show details and use the detailed add mode by default`]"></i>
                 </a>
 
+                {if !$wa->isSingleAppMode() && !$wa->pocketlists->isPremium()}
+                <p class="hint pl-app-hint-external float-right" style="margin-top: {if !empty($backend_item_add)}12{else}4{/if}px; float: right;"><a href="{$wa_backend_url}pocketlists/upgrade/" target="_blank" class="button rounded light-gray nowrap smallest custom-mb-4" style="text-decoration: none !important;"><i class="fas fa-star text-yellow"></i> [`All-new Pocket Lists`] <i class="fas fa-external-link-alt opacity-30 smaller custom-ml-4"></i></a></p>
+                {/if}
+
                 <!-- plugin hook: 'backend_item_add.compact' -->
                 {* @event backend_item_add.%plugin_id% *}
-                {if !empty($backend_item_add)}{foreach $backend_item_add as $_}{ifset($_)}{/foreach}{/if}
+                {if !empty($backend_item_add)}
+                    {foreach $backend_item_add as $_}{ifset($_)}{/foreach}
+                {else}
+                    <p class="hint pl-app-hint-external"><i class="fas fa-lock"></i> [`Only your teammates can see this checklist and add to-dos. The customer will not see this.`]</p>
+                {/if}
 
             </label>
         </div>

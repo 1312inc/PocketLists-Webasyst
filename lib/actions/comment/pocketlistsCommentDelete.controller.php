@@ -20,7 +20,7 @@ class pocketlistsCommentDeleteController extends pocketlistsJsonController
             if ($comment instanceof pocketlistsComment) {
                 $item = $comment->getItem();
 
-                if ($item->getListId()) {
+                if ($item && $item->getListId()) {
                     $list = $item->getList();
                     if (!$list) {
                         throw new waException(_w('Not found'), 404);
@@ -32,7 +32,7 @@ class pocketlistsCommentDeleteController extends pocketlistsJsonController
                     }
                 }
 
-                if ((time() - strtotime($comment->getCreateDatetime()) < 60 * 60 * 24)
+                if ((time() - strtotime((string) $comment->getCreateDatetime()) < 60 * 60 * 24)
                     && $comment->getContact()->isMe()
                     && $commentFactory->delete($comment)
                 ) {

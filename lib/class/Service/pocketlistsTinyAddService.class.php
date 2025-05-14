@@ -31,21 +31,6 @@ final class pocketlistsTinyAddService
                 : 'https://www.webasyst.com/';
             $_whichUI = (wa()->whichUI() == '1.3') ? '1' : '2'; //utm
 
-            if (empty(pl2()->getPluginInfo('pro')) && wa()->getLocale() === 'ru_RU') {
-                $_tinyAds[] = [
-                    'adtype' => 'plugin',
-                    'heading' => _w('Promocode'),
-                    'appurl' => $_webasyst_base_url . 'store/plugin/pocketlists/pro/?utm_source=pl2webasyst&utm_medium=inapp_tiny_ad&utm_campaign=1312_inapp_pl2pro_upgrade_wa' . $_whichUI,
-                    'buyurl' => $_webasyst_base_url . 'buy/store/5045/?utm_source=pl2webasyst&utm_medium=inapp_tiny_ad&utm_campaign=1312_inapp_pl2pro_upgrade_wa' . $_whichUI,
-                    'image' => wa()->getAppStaticUrl() . 'img/pl2ad-pro-plugin.png',
-                    'title' => 'Pocket Lists PRO',
-                    'subtitle' => 'Поможет поднять обработку заказов на 80 уровень.',
-                    'teaser' => 'Промокод на автоматизацию Shop-Script &rarr; Pocket Lists.',
-                    'body' => '<strong>Главная фишка плагина — автоматическое создание задач менеджерам при действиях с заказами.</strong> В обработку, отправлен, возврат — при каждом подобном действии с заказами нужным сотрудникам будут автоматически ставиться задачи согласно вашим настройкам. Не пропустите ни одной продажи!',
-                    'promocode' => wa()->whichUI() == '1.3' ? 'B87K2IZFCZ' : '9UVHYK63V8',
-                    'discount' => '20',
-                ];
-            }
             if (!wa()->appExists('tasks')) {
                 $_tinyAds[] = [
                     'adtype' => 'app',

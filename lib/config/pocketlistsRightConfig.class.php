@@ -10,12 +10,23 @@ class pocketlistsRightConfig extends waRightConfig
      */
     private $userId;
 
+
+    /**
+     * @var waContactRightsModel
+     */
+    private $right_model;
+
+    private static $begin_rights = [
+        'list'   => [],
+        'pocket' => [],
+    ];
+
     /**
      * @var array
      */
     private static $rightsCache = [
-        'lists'   => [],
-        'pockets' => [],
+        'list'   => [],
+        'pocket' => [],
     ];
 
     /**
@@ -23,13 +34,42 @@ class pocketlistsRightConfig extends waRightConfig
      */
     public function __construct()
     {
+        $this->right_model = new waContactRightsModel();
         $this->userId = waRequest::post('user_id', 0, waRequest::TYPE_INT);
 
         if (!$this->userId) {
             $this->userId = waRequest::request('id', 0, waRequest::TYPE_INT);
         }
+        $this->setBeginRights();
 
         parent::__construct();
+    }
+
+    public function __destruct()
+    {
+        if (!empty(self::$rightsCache['pocket']) && $ids = $this->getDiff(pocketlistsRBAC::POCKET_ITEM)) {
+            /** pockets */
+            $this->right_model->exec('
+                UPDATE pocketlists_pocket
+                SET activity_datetime = s:act_dt
+                WHERE id IN (i:ids)
+            ', [
+                'act_dt' => date('Y-m-d H:i:s'),
+                'ids'    => $ids,
+            ]);
+        }
+        if (!empty(self::$rightsCache['list']) && $ids = $this->getDiff(pocketlistsRBAC::LIST_ITEM)) {
+            /** lists */
+            $this->right_model->exec('
+                UPDATE pocketlists_item
+                SET activity_datetime = s:act_dt
+                WHERE key_list_id IN (i:ids) AND status = 0
+            ', [
+                'act_dt' => date('Y-m-d H:i:s'),
+                'ids'    => $ids,
+            ]);
+        }
+        $this->saveLog();
     }
 
     /**
@@ -37,16 +77,16 @@ class pocketlistsRightConfig extends waRightConfig
      */
     public function init()
     {
-        $this->addItem(pocketlistsRBAC::CAN_CREATE_TODOS, _w('Can create to-dos to self'), 'always_enabled');
+        $this->addItem(pocketlistsRBAC::CAN_CREATE_TODOS, _w('Work with assigned lists, add personal lists & to-dos'), 'always_enabled');
         $this->addItem(
             pocketlistsRBAC::CAN_ASSIGN,
-            _w('Can see other users personal to-dos and assign to-dos to teammates'),
+            _w('Create new shared lists, assign lists to teammates'),
             //_w('Can see Shop-Script to-dos, other users personal to-dos, and assign to-dos to teammates'),
             'checkbox'
         );
         $this->addItem(
             pocketlistsRBAC::CAN_USE_SHOP_SCRIPT,
-            _w('Can create and see to-dos linked with Shop-Script orders'),
+            _w('See to-do lists on Shop-Script orders'),
             'checkbox'
         );
 
@@ -124,10 +164,7 @@ class pocketlistsRightConfig extends waRightConfig
                         pocketlistsRBAC::LIST_ITEM,
                         $pocket->getName(),
                         'list',
-                        [
-                            'items' => $items,
-                            //                'hint1' => 'all_checkbox',
-                        ]
+                        ['items' => $items]
                     );
                 }
             }
@@ -163,41 +200,37 @@ class pocketlistsRightConfig extends waRightConfig
      * @return bool
      * @throws waException
      */
-    public function setRights($contactId, $right, $value = null)
+    public function setRights($contactId, $right, $value = 0)
     {
-        $right_model = new waContactRightsModel();
-
-        if (strpos($right, pocketlistsRBAC::POCKET_ITEM.'.') === 0) {
-            $pocketId = (int)str_replace(pocketlistsRBAC::POCKET_ITEM.'.', '', $right);
+        $value = (int) $value;
+        if ($pocket_id = (int) str_replace(pocketlistsRBAC::POCKET_ITEM.'.', '', $right)) {
             if ($value == pocketlistsRBAC::RIGHT_NONE) {
                 /** @var pocketlistsPocket $pocket */
-                $pocket = pl2()->getEntityFactory(pocketlistsPocket::class)->findById($pocketId);
+                $pocket = pl2()->getEntityFactory(pocketlistsPocket::class)->findById($pocket_id);
 
                 /** @var pocketlistsList[] $lists */
                 $lists = pl2()->getEntityFactory(pocketlistsList::class)->findListsByPocket($pocket, false);
 
                 /** @var pocketlistsListModel $list */
                 foreach ($lists as $list) {
-                    if ($right_model->save(
-                        $contactId,
-                        pocketlistsHelper::APP_ID,
-                        pocketlistsRBAC::LIST_ITEM.'.'.$list->getId(),
-                        $value
-                    )) {
-                        self::$rightsCache['lists'][$list->getId()] = true;
+                    $res = $this->right_model->save($contactId, pocketlistsHelper::APP_ID, pocketlistsRBAC::LIST_ITEM.'.'.$list->getId(), $value);
+                    if ($res) {
+                        self::$rightsCache['list'][$list->getId()] = $value;
                     }
                 }
             }
+            self::$rightsCache['pocket'][$pocket_id] = $value;
         }
 
-        if (strpos($right, pocketlistsRBAC::LIST_ITEM.'.') === 0) {
-            $listId = (int)str_replace(pocketlistsRBAC::LIST_ITEM.'.', '', $right);
-            if (isset(self::$rightsCache['lists'][$listId])) {
+        $list_id = (int) str_replace(pocketlistsRBAC::LIST_ITEM.'.', '', $right);
+        if ($list_id) {
+            if (isset(self::$rightsCache['list'][$list_id])) {
                 return true;
             }
+            self::$rightsCache['list'][$list_id] = $value;
         }
 
-        $right_model->save(
+        $this->right_model->save(
             $contactId,
             pocketlistsHelper::APP_ID,
             $right,
@@ -205,5 +238,112 @@ class pocketlistsRightConfig extends waRightConfig
         );
 
         return true;
+    }
+
+    private function setBeginRights()
+    {
+        $rights = $this->right_model->get($this->userId, pocketlistsHelper::APP_ID);
+        foreach ($rights as $_right => $_val) {
+            if ($list_id = (int) str_replace(pocketlistsRBAC::LIST_ITEM.'.', '', $_right)) {
+                self::$begin_rights['list'][$list_id] = (int) $_val;
+            } elseif ($pocket_id = (int) str_replace(pocketlistsRBAC::POCKET_ITEM.'.', '', $_right)) {
+                self::$begin_rights['pocket'][$pocket_id] = (int) $_val;
+            }
+        }
+    }
+
+    private function getDiffRights($entity_type)
+    {
+        $share = [];
+        $unshare = [];
+        foreach (self::$rightsCache[$entity_type] as $id => $val) {
+            if ($val > pocketlistsRBAC::RIGHT_NONE) {
+                $share[$id] = $val;
+            } else {
+                $unshare[$id] = $val;
+            }
+        }
+
+        return [
+            array_diff_assoc($share, self::$begin_rights[$entity_type]),
+            array_intersect_key($unshare, self::$begin_rights[$entity_type])
+        ];
+    }
+
+    private function getDiff($entity_type)
+    {
+        list($share, $unshare) = $this->getDiffRights($entity_type);
+
+        return array_keys($share + $unshare);
+    }
+
+    private function saveLog()
+    {
+        function logFormat($user_id, $p_sr, $p_uns, $l_sr, $l_uns)
+        {
+            $logs = [];
+            if (!empty($p_sr)) {
+                $logs = array_merge($logs, array_map(function ($_p) use ($user_id) {
+                    return [
+                        'action'      => pocketlistsLog::ACTION_SHARE,
+                        'entity_type' => pocketlistsLog::ENTITY_POCKET,
+                        'pocket_id'   => $_p,
+                        'contact_id'  => $user_id
+                    ];
+                }, array_keys($p_sr)));
+            }
+            if (!empty($p_uns) ) {
+                $logs = array_merge($logs, array_map(function ($_p) use ($user_id) {
+                    return  [
+                        'action'      => pocketlistsLog::ACTION_UNSHARE,
+                        'entity_type' => pocketlistsLog::ENTITY_POCKET,
+                        'pocket_id'   => $_p,
+                        'contact_id'  => $user_id
+                    ];
+                }, array_keys($p_uns)));
+            }
+            if (!empty($l_sr)) {
+                $logs = array_merge($logs, array_map(function ($_l) use ($user_id) {
+                    return [
+                        'action'      => pocketlistsLog::ACTION_SHARE,
+                        'entity_type' => pocketlistsLog::ENTITY_LIST,
+                        'list_id'     => $_l,
+                        'contact_id'  => $user_id
+                    ];
+                }, array_keys($l_sr)));
+            }
+            if (!empty($l_uns)) {
+                $logs = array_merge($logs, array_map(function ($_l) use ($user_id) {
+                    return [
+                        'action'      => pocketlistsLog::ACTION_UNSHARE,
+                        'entity_type' => pocketlistsLog::ENTITY_LIST,
+                        'list_id'     => $_l,
+                        'contact_id'  => $user_id
+                    ];
+                }, array_keys($l_uns)));
+            }
+            return $logs;
+        }
+
+        list($p_share, $p_unshare) = $this->getDiffRights(pocketlistsRBAC::POCKET_ITEM);
+        list($l_share, $l_unshare) = $this->getDiffRights(pocketlistsRBAC::LIST_ITEM);
+        if (!empty($p_share) || !empty($p_unshare) || !empty($l_share) || !empty($l_unshare)) {
+            $logs = [];
+            if ($this->userId < 0) {
+                /** for group rights */
+                $user_groups_model = new waUserGroupsModel();
+                $user_ids = $user_groups_model->getContactIds(-$this->userId);
+                if ($user_ids) {
+                    foreach ($user_ids as $user_id) {
+                        $logs = array_merge($logs, logFormat($user_id, $p_share, $p_unshare, $l_share, $l_unshare));
+                    }
+                }
+            } else {
+                /** for user rights */
+                $logs = logFormat($this->userId, $p_share, $p_unshare, $l_share, $l_unshare);
+            }
+
+            pocketlistsLogService::multipleAdd($logs);
+        }
     }
 }

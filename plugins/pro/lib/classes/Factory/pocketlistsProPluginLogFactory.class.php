@@ -41,7 +41,7 @@ class pocketlistsProPluginLogFactory extends pocketlistsLogFactory
      * @throws pocketlistsLogicException
      * @throws waException
      */
-    public function createNewAfterAddLabel(pocketlistsLogContext $context, pocketlistsProPluginLabel $label)
+    public function createNewAfterAddLabel(pocketlistsLogContext $context, pocketlistsLabel $label)
     {
         $log = $this->createNewAfterItemUpdate($context);
 

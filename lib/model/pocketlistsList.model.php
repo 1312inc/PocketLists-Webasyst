@@ -46,9 +46,9 @@ class pocketlistsListModel extends pocketlistsModel
               l.id IN (i:id)
             ORDER BY l.sort, l.id DESC",
             ['id' => $id, 'contact_id' => wa()->getUser()->getId()]
-        )->fetchAll();
+        )->fetchAll('id');
 
-        return count($id) === 1 ? reset($lists) : $lists;
+        return count($id) === 1 ? (array) array_pop($lists) : $lists;
     }
 
 
@@ -139,25 +139,28 @@ class pocketlistsListModel extends pocketlistsModel
 
 
     /**
+     * @param $calc
      * @return array
      */
-    public function getQueryComponents()
+    public function getQueryComponents($calc = false)
     {
         return [
             'select'   => [
-                'i.*',
-                'l.*',
-                "greatest(i.priority, max(i2.priority)) 'max_priority'",
-                "greatest(i.due_date, max(i2.due_date)) 'min_due_date'",
-                "greatest(i.due_datetime, max(i2.due_datetime)) 'min_due_datetime'",
+                '*'        => ($calc ? ' SQL_CALC_FOUND_ROWS ' : '').'i.*',
+                'l'        => 'l.*',
+                'favorite' => 'IF(uf.contact_id, 1, 0) favorite',
+                'max_pr'   => "greatest(i.priority, max(i2.priority)) 'max_priority'",
+                'min_due'  => "greatest(i.due_date, max(i2.due_date)) 'min_due_date'",
+                'min_time' => "greatest(i.due_datetime, max(i2.due_datetime)) 'min_due_datetime'",
             ],
             'from'     => ['l' => "{$this->table} l"],
             'join'     => [
                 'join pocketlists_item i ON i.key_list_id = l.id',
                 'left join pocketlists_item i2 ON i2.status = 0 and i2.list_id = l.id',
+                'left join pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = l.key_item_id',
             ],
             'where'    => [
-                'and' => [1],
+                'and' => [],
                 'or'  => [],
             ],
             'group by' => ['l.id', 'i.id'],
@@ -216,6 +219,7 @@ class pocketlistsListModel extends pocketlistsModel
             [
                 'list_ids'  => $available_lists,
                 'pocket_id' => $pocket_id,
+                'contact_id' => wa()->getUser()->getId()
             ]
         )->fetchAll('id');
 
@@ -355,7 +359,7 @@ class pocketlistsListModel extends pocketlistsModel
         return $this->query(
             $q,
             ['contact_id' => $contact_ids]
-        )->fetchAll('list_id', 1);
+        )->fetchAll('list_id');
     }
 
     /**

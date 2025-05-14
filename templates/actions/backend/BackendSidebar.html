@@ -219,7 +219,7 @@
 
     <ul class="menu">
 
-        {if !pocketlistsHelper::hasPlugin('pro')}
+        {if !$wa->pocketlists->isPremium()}
         <li class="top-padded">
             <a href="#/upgrade/">
                 <i style="background-image: url('/wa-apps/pocketlists/img/pl2pro-plugin-icon16.png') !important; background-size: 20px 20px;" class="size-20"></i>
@@ -227,7 +227,7 @@
             </a>
         </li>
         {/if}
-        <li{if pocketlistsHelper::hasPlugin('pro')} class="top-padded"{/if}>
+        <li{if $wa->pocketlists->isPremium()} class="top-padded"{/if}>
             <a href="#/about/">
                 <span class="icon">
                     <i style="background-image: url('/wa-apps/pocketlists/img/pl2webasyst48.png') !important;" class="size-20"></i>

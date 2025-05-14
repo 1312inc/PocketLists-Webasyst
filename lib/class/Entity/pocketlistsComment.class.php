@@ -63,6 +63,21 @@ class pocketlistsComment extends pocketlistsEntity
     private $create_datetime;
 
     /**
+     * @var string
+     */
+    private $update_datetime;
+
+    /**
+     * @var string
+     */
+    private $client_touch_datetime;
+
+    /**
+     * @var string|null
+     */
+    private $uuid;
+
+    /**
      * @var pocketlistsContact
      */
     private $contact;
@@ -134,7 +149,7 @@ class pocketlistsComment extends pocketlistsEntity
      */
     public function setRecentlyCreated($lastActivityTime = '')
     {
-        $this->recentlyCreated = strtotime($this->getCreateDatetime()) > strtotime($lastActivityTime);
+        $this->recentlyCreated = strtotime((string) $this->getCreateDatetime()) > strtotime($lastActivityTime);
 
         return $this;
     }
@@ -252,6 +267,57 @@ class pocketlistsComment extends pocketlistsEntity
     public function setCreateDatetime($create_datetime)
     {
         $this->create_datetime = $create_datetime;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUpdateDatetime()
+    {
+        return $this->update_datetime;
+    }
+
+    /**
+     * @param string $update_datetime
+     *
+     * @return pocketlistsComment
+     */
+    public function setUpdateDatetime($update_datetime)
+    {
+        $this->update_datetime = $update_datetime;
+
+        return $this;
+    }
+
+    public function getClientTouchDatetime()
+    {
+        return $this->client_touch_datetime;
+    }
+
+    public function setClientTouchDatetime($client_touch_datetime)
+    {
+        $this->client_touch_datetime = $client_touch_datetime;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getUuid()
+    {
+        return $this->uuid;
+    }
+
+    /**
+     * @param $uuid
+     * @return $this
+     */
+    public function setUuid($uuid)
+    {
+        $this->uuid = (empty($uuid) ? null : trim($uuid));
 
         return $this;
     }

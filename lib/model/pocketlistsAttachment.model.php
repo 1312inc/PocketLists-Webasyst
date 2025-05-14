@@ -16,7 +16,7 @@ class pocketlistsAttachmentModel extends pocketlistsModel
      */
     public function remove($item_ids = [], $names = [])
     {
-        if (empty($names)) { // delete all attchments
+        if (empty($names)) { // delete all attachments
             if (!is_array(($item_ids))) {
                 $item_ids = [$item_ids];
             }

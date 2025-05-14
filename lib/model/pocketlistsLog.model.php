@@ -17,6 +17,7 @@ class pocketlistsLogModel extends pocketlistsModel
      * @param int   $limit
      *
      * @return array
+     * @throws waDbException
      */
     public function getLastAll(
         $availableLists = [],

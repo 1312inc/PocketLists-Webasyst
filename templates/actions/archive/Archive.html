@@ -1,7 +1,7 @@
 <div class="flexbox width-100 wrap-mobile">
 
     {if empty($lists)}
-        <main class="content blank pl-items" id="pl-list-content">
+        <main class="content blank pl-items pl-archive" id="pl-list-content">
             <div class="pl-pseudo-article">
             <div class="pl-welcome top-padded bottom-padded">
                 <h2>[`Archive is empty`]</h2>
@@ -11,11 +11,12 @@
         </main>
     {else}
         <nav class="sidebar blank pl-second-sidebar">
-            <ul class="menu">
+            <h5 class="heading custom-mt-20">[`Archived lists`]</h5>
+            <ul class="menu large">
                 {foreach $lists as $l}
                 <li data-pl-list-id="{$l->getId()}" {if $l->getId() == $list->getId()}class="selected"{/if}>
-                    <a href="#/archive/{$l->getId()}/">
-                        <i class="icon" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l->getIcon()|default:'li-list@2x.png'}); background-size: 16px 16px;"></i>
+                    <a href="{$wa_app_url}archive/{$l->getId()}/">
+                        <i class="icon" style="background-image: url({$wa_url}wa-apps/pocketlists/img/listicons/{$l->getIcon()|default:'li-list@2x.png'});"></i>
                         <span>{$l->getName()|escape}</span>
                     </a>
                 </li>
@@ -23,16 +24,15 @@
                 {/foreach}
             </ul>
             <div class="box">
-                <hr />
                 <div class="align-center">
-                    <p class="hint">[`To archive an active list, tap on it’s checkmark.`]</p>
+                    <p class="hint">[`Archiving is a handy way to hide a to-do list instead of deleting it permanently. To archive a list, tap on it’s big checkmark or click <em>Archive list</em> in the list action menu.`]</p>
                 </div>
             </div>
         </nav>
-        <main class="content bordered-left pl-list-content pl-archive" id="pl-list-content">
+        <main class="content pl-list-content pl-archive" id="pl-list-content">
             <div class="pl-pseudo-article">
             <div class="pl-inner-content pl-items pl-{$list->getColor()}">
-                <header class="pl-list-title pl-title">
+                <header class="pl-list-title pl-title custom-mb-24">
                     {if $list->getId()}
                     <div class="flexbox">
                         <div class="wide">
@@ -49,12 +49,12 @@
                                 </span>
                             </h1>
                         </div>
-                        <div class="flexbox space-8">
+                        <div class="flexbox space-8 custom-mt-2">
                             <div>
-                                <a href="#" data-pl-action="list-unarchive" class="button light-gray rounded nowrap"><i class="fas fa-inbox text-blue"></i> [`Unarchive`]</a>
+                                <a href="#" data-pl-action="list-unarchive" class="button small light-gray rounded nowrap"><i class="fas fa-inbox text-blue"></i> [`Unarchive`]</a>
                             </div>
                             <div>
-                                <a href="#" data-pl-action="list-delete" class="button light-gray circle"><i class="fas fa-trash-alt text-red"></i></a>
+                                <a href="#" data-pl-action="list-delete" class="button small light-gray circle"><i class="fas fa-trash-alt text-red"></i></a>
                             </div>
                         </div>
                     </div>

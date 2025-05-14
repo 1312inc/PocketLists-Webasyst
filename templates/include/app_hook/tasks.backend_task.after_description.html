@@ -4,10 +4,19 @@
       id="pl-list-content"
       data-pl2-template="itemadd"
 >
-    <h3 class="custom-mt-32">
-        <i style="background-image: url('{$params.wa_app_static_url}img/pl2webasyst48.png') !important; background-size: 24px 24px !important; display: inline-block; width: 24px; height: 24px; position: relative; top: 3px; margin-right: 4px;"></i>
-        [`Checklist`]
-    </h3>
+    <div class="flexbox">
+        <div class="wide">
+            <h3 class="custom-mt-0">
+                <i style="background-image: url('{$params.wa_app_static_url}img/pl2webasyst48.png') !important; background-size: 24px 24px !important; display: inline-block; width: 24px; height: 24px; position: relative; top: 3px; margin-right: 4px;"></i>
+                [`Checklist`]
+            </h3>
+        </div>
+        {if !$wa->isSingleAppMode() && !$wa->pocketlists->isPremium()}
+        <div>
+            <a href="{$wa_backend_url}pocketlists/upgrade/" target="_blank" class="button rounded light-gray nowrap smallest custom-mt-0 bold"><i class="fas fa-star text-yellow"></i> [`All-new Pocket Lists is here`] <i class="fas fa-external-link-alt opacity-30 smaller custom-ml-4"></i></a>
+        </div>
+        {/if}
+    </div>
 
     <div class="pl-list-items" id="pl-list-items">
         <section id="pl-undone-items" data-pl-items="undone">
@@ -34,10 +43,10 @@
     {include '../../include/itemdetails.html' inline}
 
 </main>
-<script type="text/javascript" src="{$params.wa_app_static_url}js/pocketlists.js?v2{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
-<script type="text/javascript" src="{$params.wa_app_static_url}js/pocketlists-item.js?v2{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
-<script type="text/javascript" src="{$params.wa_app_static_url}js/pocketlists-comment.js?v2{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
-<link type="text/css" rel="stylesheet" href="{$params.wa_app_static_url}css/pocketlists.css?v2{if !waSystemConfig::isDebug()}{$wa->version()}{/if}">
+<script type="text/javascript" src="{$params.wa_app_static_url}js/pocketlists.js?v3{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
+<script type="text/javascript" src="{$params.wa_app_static_url}js/pocketlists-item.js?v3{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
+<script type="text/javascript" src="{$params.wa_app_static_url}js/pocketlists-comment.js?v3{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
+<link type="text/css" rel="stylesheet" href="{$params.wa_app_static_url}css/pocketlists.css?v3{if !waSystemConfig::isDebug()}{$wa->version()}{/if}">
 
 <script>
     (function(){

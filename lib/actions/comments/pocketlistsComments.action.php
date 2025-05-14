@@ -16,6 +16,12 @@ class pocketlistsCommentsAction extends pocketlistsViewAction
      */
     public function runAction($params = null)
     {
+        if (wa()->whichUI() === '1.3') {
+            if (!waRequest::isXMLHttpRequest()) {
+                $this->redirect(wa()->getAppUrl(null, true));
+            }
+        }
+
         $last_activity = pocketlistsActivity::getUserActivity();
         $offset = waRequest::get('offset', 0);
 
@@ -27,6 +33,11 @@ class pocketlistsCommentsAction extends pocketlistsViewAction
         foreach ($comments as $comment) {
             $comment->setRecentlyCreated($last_activity);
         }
+
+        if (wa()->whichUI() !== '1.3') {
+            $this->setLayout(new pocketlistsStaticLayout());
+        }
+        $this->setTemplate(wa()->getAppPath(sprintf('templates/actions%s/comments/Comments.html', pl2()->getUI2TemplatePath())));
 
         $this->view->assign('comments', $comments);
     }

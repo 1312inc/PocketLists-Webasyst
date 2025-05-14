@@ -477,37 +477,29 @@ class pocketlistsItemModel extends pocketlistsModel
     /**
      * @return string
      */
-    public function getQuery()
+    public function getQuery($calc = false)
     {
-        return "SELECT
-                  i.*,
-                  IF(uf.contact_id, 1, 0) favorite,
-                  /*pl.name list_name,
-                  pl.sort list_sort,
-                  pl.type list_type,
-                  pl.icon list_icon,
-                  pl.archived list_archived,
-                  pl.hash list_hash,
-                  pl.color list_color,*/
-                  (select count(*) from pocketlists_attachment pa where pa.item_id = i.id) attachments_count,
-                  (select count(*) from pocketlists_comment pc where pc.item_id = i.id) comments_count,  
-                  (select count(*) from pocketlists_item_link pil where pil.item_id = i.id) linked_entities_count  
-                FROM {$this->table} i
-                LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
-                /*LEFT JOIN (select i2.name, l2.*
-                  from pocketlists_list l2
-                         JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) pl ON pl.id = i.list_id*/
-                 ";
+        return "
+            SELECT".($calc ? ' SQL_CALC_FOUND_ROWS' : '')."
+                i.*,
+                IF(uf.contact_id, 1, 0) favorite,
+                (select count(*) from pocketlists_attachment pa where pa.item_id = i.id) attachments_count,
+                (select count(*) from pocketlists_comment pc where pc.item_id = i.id) comments_count,  
+                (select count(*) from pocketlists_item_link pil where pil.item_id = i.id) linked_entities_count  
+            FROM {$this->table} i
+            LEFT JOIN pocketlists_user_favorites uf ON uf.contact_id = i:contact_id AND uf.item_id = i.id
+        ";
     }
 
     /**
+     * @param $calc
      * @return array
      */
-    public function getQueryComponents()
+    public function getQueryComponents($calc = false)
     {
         return [
             'select'   => [
-                '*'                     => 'i.*',
+                '*'                     => ($calc ? ' SQL_CALC_FOUND_ROWS ' : '').'i.*',
                 'favorite'              => 'IF(uf.contact_id, 1, 0) favorite',
                 'attachments_count'     => '(select count(*) from pocketlists_attachment pa where pa.item_id = i.id) attachments_count',
                 'comments_count'        => '(select count(*) from pocketlists_comment pc where pc.item_id = i.id) comments_count',
@@ -683,36 +675,44 @@ SQL;
     }
 
     /**
-     * @param      $listSql
-     * @param null $status
-     *
+     * @param $listSql
+     * @param $contact_id
+     * @param $status
      * @return array
      */
-    private function getAssignedOrCompletesByContactQueryComponents($listSql, $status = null)
+    private function getAssignedOrCompletesByContactQueryComponents($listSql, $contact_id, $status = pocketlistsItem::STATUS_UNDONE)
     {
         $sqlParts = $this->getQueryComponents();
 
         $sqlParts['join'][] = 'LEFT JOIN (select i2.name, l2.*
                           from pocketlists_list l2
-                                 JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) l ON l.id = i.list_id AND l.archived = 0';
-
-        $sqlParts['where']['and'][] = '(
-                    i.assigned_contact_id = i:contact_id AND i.status >= 0 /* assigned to contact no matter who it completed */
-                    OR i.contact_id = i:contact_id AND i.status >= 0 /* created by contact (completed and not) */
-                    OR i.complete_contact_id = i:contact_id AND i.status > 0 /* completed by contact */
-                  )';
+                                 JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) l ON l.id = i.list_id';
 
         $sqlParts['where']['and'][] = $listSql;
+        $sqlParts['where']['and'][] = 'l.archived = 0 OR l.archived IS NULL';
+        $sqlParts['where']['and'][] = 'i.status = '. (int) $status;
 
-        if ($status !== null) {
-            $sqlParts['where']['and'][] = sprintf('i.status = %d', $status);
+        if (wa()->getUser()->getId() == $contact_id) {
+            $sqlParts['where']['and'][] = '(
+                i.assigned_contact_id = i:contact_id
+                OR uf.contact_id
+                OR (
+                    i.contact_id = i:contact_id
+                    AND i.assigned_contact_id IS NULL
+                    AND (i.list_id IS null OR i.due_date IS NOT NULL)
+                )
+            )';
+        } else {
+            $sqlParts['where']['and'][] = '(
+                i.assigned_contact_id = i:contact_id
+                OR i.contact_id = i:contact_id
+                OR i.complete_contact_id = i:contact_id
+            )';
         }
 
         if ($status == pocketlistsItem::STATUS_UNDONE) {
             array_splice($sqlParts['order by'], 1, 0, ['i.calc_priority DESC']);
-        }
-
-        if ($status == pocketlistsItem::STATUS_DONE) {
+        } elseif ($status == pocketlistsItem::STATUS_DONE) {
             array_splice($sqlParts['order by'], 1, 0, ['(i.complete_datetime IS NULL)', 'i.complete_datetime DESC']);
         }
 
@@ -735,7 +735,7 @@ SQL;
         pocketlistsRBAC::filterListAccess($lists, $contact_id);
         $list_sql = pocketlistsRBAC::filterListAccess($lists);
 
-        $sqlParts = $this->getAssignedOrCompletesByContactQueryComponents($list_sql, $status);
+        $sqlParts = $this->getAssignedOrCompletesByContactQueryComponents($list_sql, $contact_id, $status);
 
         $q = $this->buildSqlComponents($sqlParts, $limit, $offset);
 
@@ -764,12 +764,11 @@ SQL;
         pocketlistsRBAC::filterListAccess($lists, $contact_id);
         $list_sql = pocketlistsRBAC::filterListAccess($lists);
 
-        $sqlParts = $this->getAssignedOrCompletesByContactQueryComponents($list_sql, pocketlistsItem::STATUS_UNDONE);
+        $sqlParts = $this->getAssignedOrCompletesByContactQueryComponents($list_sql, $contact_id);
         $sqlParts['select'] = ['i.calc_priority calc_priority', 'count(i.id) count'];
         $sqlParts['group by'] = ['i.calc_priority'];
 
         $q = $this->buildSqlComponents($sqlParts);
-
         $itemsCount = $this->query(
             $q,
             [
@@ -799,7 +798,7 @@ SQL;
         pocketlistsRBAC::filterListAccess($lists, $contact_id);
         $list_sql = pocketlistsRBAC::filterListAccess($lists);
 
-        $sqlParts = $this->getAssignedOrCompletesByContactQueryComponents($list_sql, pocketlistsItem::STATUS_DONE);
+        $sqlParts = $this->getAssignedOrCompletesByContactQueryComponents($list_sql, $contact_id, pocketlistsItem::STATUS_DONE);
         $sqlParts['select'] = ['count(i.id) count_items'];
 
         $q = $this->buildSqlComponents($sqlParts);

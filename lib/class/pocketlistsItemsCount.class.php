@@ -44,7 +44,7 @@ class pocketlistsItemsCount
         foreach ($data as $priority => $count) {
             $this->count += $count;
             $this->maxPriority = max($this->maxPriority, $priority);
-            $this->countPriorities[$priority] = $count;
+            $this->countPriorities[$priority] = (int) $count;
 
             if ($priority > pocketlistsItem::PRIORITY_NORM) {
                 $this->countPriority += $count;
@@ -85,7 +85,7 @@ class pocketlistsItemsCount
      */
     public function getCountMaxPriority()
     {
-        return $this->countMaxPriority;
+        return (empty($this->maxPriority) ? 0 : $this->countMaxPriority);
     }
 
     /**

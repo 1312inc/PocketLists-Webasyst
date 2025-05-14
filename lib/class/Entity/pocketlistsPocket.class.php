@@ -18,6 +18,11 @@ class pocketlistsPocket extends pocketlistsEntity
     /**
      * @var string
      */
+    private $rank = '';
+
+    /**
+     * @var string
+     */
     private $name = '';
 
     /**
@@ -28,7 +33,32 @@ class pocketlistsPocket extends pocketlistsEntity
     /**
      * @var string
      */
+    private $create_datetime;
+
+    /**
+     * @var string
+     */
+    private $update_datetime;
+
+    /**
+     * @var string
+     */
+    private $activity_datetime;
+
+    /**
+     * @var string
+     */
+    private $client_touch_datetime;
+
+    /**
+     * @var string
+     */
     private $passcode;
+
+    /**
+     * @var string
+     */
+    private $uuid;
 
     /**
      * @var pocketlistsList[]
@@ -90,7 +120,7 @@ class pocketlistsPocket extends pocketlistsEntity
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getSort()
     {
@@ -98,13 +128,33 @@ class pocketlistsPocket extends pocketlistsEntity
     }
 
     /**
-     * @param int $sort
+     * @param string $sort
      *
      * @return pocketlistsPocket
      */
     public function setSort($sort)
     {
         $this->sort = $sort;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRank()
+    {
+        return (string) $this->rank;
+    }
+
+    /**
+     * @param string $rank
+     *
+     * @return $this
+     */
+    public function setRank($rank)
+    {
+        $this->rank = (string) $rank;
 
         return $this;
     }
@@ -152,6 +202,78 @@ class pocketlistsPocket extends pocketlistsEntity
     /**
      * @return string
      */
+    public function getCreateDatetime()
+    {
+        return $this->create_datetime;
+    }
+
+    /**
+     * @param $create_datetime
+     *
+     * @return pocketlistsPocket
+     */
+    public function setCreateDatetime($create_datetime)
+    {
+        $this->create_datetime = $create_datetime;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUpdateDatetime()
+    {
+        return $this->update_datetime;
+    }
+
+    /**
+     * @param $update_datetime
+     *
+     * @return pocketlistsPocket
+     */
+    public function setUpdateDatetime($update_datetime)
+    {
+        $this->update_datetime = $update_datetime;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getActivityDatetime()
+    {
+        return $this->activity_datetime;
+    }
+
+    /**
+     * @param $activity_datetime
+     *
+     * @return pocketlistsPocket
+     */
+    public function setActivityDatetime($activity_datetime)
+    {
+        $this->activity_datetime = $activity_datetime;
+
+        return $this;
+    }
+
+    public function getClientTouchDatetime()
+    {
+        return $this->client_touch_datetime;
+    }
+
+    public function setClientTouchDatetime($client_touch_datetime = null)
+    {
+        $this->client_touch_datetime = empty($client_touch_datetime) ? null : $client_touch_datetime;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
     public function getPasscode()
     {
         return $this->passcode;
@@ -165,6 +287,25 @@ class pocketlistsPocket extends pocketlistsEntity
     public function setPasscode($passcode)
     {
         $this->passcode = $passcode;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUuid()
+    {
+        return $this->uuid;
+    }
+
+    /**
+     * @param $uuid
+     * @return pocketlistsPocket
+     */
+    public function setUuid($uuid)
+    {
+        $this->uuid = (empty($uuid) ? null : trim($uuid));
 
         return $this;
     }

@@ -5,13 +5,11 @@
     <title>{$wa->appName()} &mdash; {$wa->accountName()}</title>
     {$wa->css()}
     <link type="text/css" rel="stylesheet" href="{$wa_app_static_url}css/jquery-ui.min.css">
-    <link type="text/css" rel="stylesheet" href="{$wa_app_static_url}css/pocketlists.css?v2{if !waSystemConfig::isDebug()}{$wa->version()}{/if}">
-    <!--<link href="{$wa_url}wa-content/css/jquery-ui/base/jquery.ui.autocomplete.css" rel="stylesheet" type="text/css" />-->
+    <link type="text/css" rel="stylesheet" href="{$wa_app_static_url}css/pocketlists.css?v3{if !waSystemConfig::isDebug()}{$wa->version()}{/if}">
 
     <script type="text/javascript" src="{$wa_url}wa-content/js/jquery/jquery-1.8.2.min.js"></script>
     <script type="text/javascript" src="{$wa_url}wa-content/js/jquery-plugins/jquery.history.js"></script>
     <script type="text/javascript" src="{$wa_url}wa-content/js/jquery-plugins/jquery.store.js"></script>
-    <!-- <script type="text/javascript" src="{$wa_url}wa-content/js/jquery-wa/wa.dialog.js"></script> -->
     <script src="{$wa_url}wa-content/js/jquery-wa/wa.js?v=2.0.0"></script>
     <script type="text/javascript" src="{$wa_app_static_url}js/jquery-ui.min.js"></script>
     <script type="text/javascript" src="{$wa_app_static_url}js/jquery.ui.widget.js"></script>
@@ -19,20 +17,44 @@
     <script type="text/javascript" src="{$wa_url}wa-content/js/jquery-plugins/fileupload/jquery.iframe-transport.js"></script>
     <script type="text/javascript" src="{$wa_url}wa-content/js/jquery-plugins/fileupload/jquery.fileupload.js"></script>
     <script type="text/javascript" src="{$wa_url}wa-content/js/jquery-plugins/jquery.tmpl.min.js"></script>
-
     <script type="text/javascript" src="{$wa_url}wa-content/js/jquery-wa/wa.core.js"></script>
+    <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-ws-monitor.js"></script>
+    <script>
+        (function() {
+            new WebSocketMonitor();
+        })();
+    </script>
+    <script type="module" crossorigin src="{$wa_app_static_url}client/assets/index-VHW-JnuE.js"></script>
+    <link rel="stylesheet" crossorigin href="{$wa_app_static_url}client/assets/index-dgchL0yK.css">
 
-    <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-routing.js?v2{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
-    <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists.js?v2{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
-    <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-pocket.js?v2{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
-    <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-list.js?v2{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
-    <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-item.js?v2{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
-    <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-comment.js?v2{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
-
-    <script type="text/javascript" src="?action=loc&amp;v=2{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
-
+    <script>
+        window.appState = {
+            base_url: '{$wa_app_url}',
+            apiToken: '{$spa_api_token}',
+            apiBaseUrl: '{$wa_url}api.php',
+            contact_id: {$wa->user()->get('id')},
+            users: {$users},
+            pockets: {$pockets},
+            locations: {$locations},
+            user_rights: {$user_rights},
+            user_locale: '{$user_locale}',
+            user_timezone: '{$user_timezone}',
+            user: {$user},
+            labels: {$labels},
+            shortcuts: {$shortcuts},
+            timestamp: {$timestamp},
+            datetime: '{$datetime}',
+            account_name: '{$account_name}',
+            framework_version: '{$framework_version}',
+            app_version: '{$app_version}',
+            is_premium: {if $is_premium}true{else}false{/if},
+            is_debug_mode: {if $pl_debug_mode}true{else}false{/if},
+        }
+    </script>
 </head>
-<body>
+
+
+<body style="background-color: var(--background-color);">
     <div id="wa">
         {$wa->header()}
 
@@ -40,27 +62,77 @@
         {* @event backend_head.%plugin_id% *}
         {if !empty($backend_head)}{foreach $backend_head as $_}{ifset($_)}{/foreach}{/if}
 
-        <div id="wa-app">
-            <div class="flexbox wrap-mobile">
+            <div id="wa-app">
+              <section class="flexbox wrap-mobile">
+                <aside id="pl-sidebar" class="sidebar hide-scrollbar flexbox width-adaptive mobile-friendly desktop-only" style="z-index: 30;">
 
-                <div data-pl-scroll-to-top id="pl-sidebar-core" class="sidebar flexbox mobile-friendly width-adaptive hide-scrollbar">
-                    {$sidebar}
-                </div>
+                    {if $wa->isSingleAppMode()}
+                        <div data-vue-fragment="single-app" class="hidden">
+                            {$wa->headerSingleAppUser()}
+                        </div>
+                    {/if}
 
-                <div class="content blank">
-                    <div id="content" class="flexbox wrap-mobile">
+                    <div data-vue-fragment="sidebar-footer" class="hidden">
+                        <div class="box custom-py-0">
+                            <ul class="menu">
+                                <li class="rounded">
+                                    <a href="{$wa_app_url}archive/">
+                                        <i class="fas fa-archive"></i>
+                                        <span>[`Archive`]</span>
+                                    </a>
+                                </li>
+                                {if $isAdmin}
+                                <li class="rounded">
+                                    <a href="{$wa_app_url}plugins/">
+                                        <i class="fas fa-plug"></i>
+                                        <span>[`Plugins`]</span>
+                                    </a>
+                                </li>
+                                {/if}
+                                <li class="rounded">
+                                    <a href="{$wa_app_url}settings/">
+                                        <i class="fas fa-cog"></i>
+                                        <span>[`Settings`]</span>
+                                    </a>
+                                </li>
+                                {*
+                                <li class="rounded top-padded">
+                                    <a href="{$wa_app_url}about/">
+                                        <i class="fab fa-apple custom-mr-0"></i>
+                                        <i class="fab fa-android custom-mr-6"></i>
+                                        <span>[`Apps`]</span>
+                                    </a>
+                                </li>
+                                *}
+                                {if $isAdmin}
+                                <li class="rounded top-padded">
+                                    <a href="{$wa_app_url}upgrade/">
+                                        <i class="fas fa-star{if !$is_premium} text-yellow{/if}"></i>
+                                        <span>[`Premium`]</span>
+                                        {if !$is_premium}
+                                            {$p = $wa->pocketlists->getPremiumPricing()}
+                                            {if !empty($p.special)}<span class="count"><span class="badge small {$p.special_color}">{$p.special_short}</span></span>{/if}
+                                        {/if}
+                                    </a>
+                                </li>
+                                {/if}
+                                <li class="rounded">
+                                    <a href="{$wa_app_url}beta/">
+                                        <i class="fas fa-flask"></i>
+                                        <span>[`Beta`]</span>
+                                        <span class="count icon" title="[`Socket connection status`]">
+                                            <i class="js-pl-ws-status rounded smaller custom-mt-4" style="background: var(--light-gray);"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
+                </aside>
+                <main id="pl-app" class="content hide-scrollbar flexbox"></main>
+              </section>
             </div>
-        </div>
+
     </div>
-<script type="text/javascript">
-    $.pocketlists.init({
-        account_name: '{$wa->accountName()|escape}',
-        isAdmin: {$isAdmin},
-        userId: {$wa->user()->get('id')},
-        debug: {if $wa->debug()}1{else}0{/if}
-    });
-</script>
 </body>
 </html>

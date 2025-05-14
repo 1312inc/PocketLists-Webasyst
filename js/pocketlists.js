@@ -12,8 +12,8 @@
         reloadSidebarInAction: false,
         dropInAction: false,
         skipHighlightSidebar: false,
-        scrollToContent: function() {
-            this.scrollToTop(80, $('#content').offset().top);
+        scrollToContent: function () {
+            this.scrollToTop(80, (typeof $('#content').offset() == 'undefined' ? 0 : $('#content').offset().top));
         },
         updateAppCounter: function (count) {
             var self = this;
@@ -100,7 +100,7 @@
                 })[0].nodeValue.trim()
             }
             if (title) {
-                $('title').html(title + " &mdash; " + self.options.account_name);
+                $('title').html(title + " &mdash; Pocket Lists");
             }
         },
         stickyDetailsSidebar: function () {
@@ -377,6 +377,7 @@
             self.initCollapse();
             self.highlightSidebar();
             self.sortLists();
+            (new $.store()).del('/pocketlists/hash/'+ o.userId);
 
             self.$core_sidebar.on('dropActionDone.pl2', '[data-pl-team-id], [data-pl-pocket-id]', function (e, data) {
                 var $this = $(this);

@@ -7,6 +7,8 @@ class pocketlistsHelper
 {
     const APP_ID        = 'pocketlists';
     const COLOR_DEFAULT = 'blue';
+    const ID_ARR = [self::APP_ID, 'pro'];
+    const ID_STR = pocketlistsHelper::APP_ID.'.pro';
 
     /**
      * @param $date
@@ -30,7 +32,6 @@ class pocketlistsHelper
 
         if (!empty($date['due_date'])) {
             $date['due_date'] = date("Y-m-d", strtotime($date['due_date']));
-//            waDateTime::parse('date', waDateTime::format('date', $date['due_date']));
         } else {
             $date['due_date'] = null;
         }
@@ -55,6 +56,28 @@ class pocketlistsHelper
         }
 
         return $timestamp;
+    }
+
+    /**
+     * @param $date
+     * @param $tz
+     * @return string|null
+     */
+    public static function convertDateToISO8601($date, $tz = 'UTC')
+    {
+        if (empty($date)) {
+            return null;
+        }
+        try {
+            $dt = new DateTime((string) $date);
+            if ($tz) {
+                $dt->setTimezone(new DateTimeZone($tz));
+            }
+        } catch (Exception $ex) {
+            return $date;
+        }
+
+        return $dt->format('Y-m-d\TH:i:s.u\Z');
     }
 
     /**
@@ -190,7 +213,6 @@ class pocketlistsHelper
                         'gray'  => isset($list_colors[$date_date]['gray']) ?
                             $list_colors[$date_date]['gray'] : [],
                     ],
-//                        isset($list_colors[$date_date]) ? array_keys($list_colors[$date_date]) : array()
                 ];
                 $current_date_start = strtotime('+1 days', $current_date_start);
             } while ($date_end > $current_date_start);
@@ -225,11 +247,11 @@ class pocketlistsHelper
             return sprintf(_w('%d min'), round(($fullseconds) / 60));
         }
 
-        $minutes = round(($fullseconds / 60) % 60);
-        $hours = round(($fullseconds / $hour) % 24);
-        $days = round(($fullseconds / $day) % 31);
-        $months = round(($fullseconds / $month) % 12);
-        $years = round(($fullseconds / $year));
+        $minutes = round($fullseconds / 60) % 60;
+        $hours = round($fullseconds / $hour) % 24;
+        $days = round($fullseconds / $day) % 31;
+        $months = round($fullseconds / $month) % 12;
+        $years = round($fullseconds / $year);
 
         if ($fullseconds < $day) {
             return sprintf(_w('%d h'), $hours, $minutes);
@@ -247,7 +269,7 @@ class pocketlistsHelper
             return sprintf(_w('%d mo'), $months, $days);
         }
 
-        $yearDays = round(($fullseconds / $day) % 365);
+        $yearDays = round($fullseconds / $day) % 365;
 
         return sprintf(_w('%d y'), $years, $yearDays);
     }

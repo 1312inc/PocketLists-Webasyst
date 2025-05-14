@@ -30,6 +30,19 @@ class pocketlistsCommentModel extends pocketlistsModel
         )->fetchAll('item_id', 2);
     }
 
+    public function getById($ids)
+    {
+        if (!is_array($ids)) {
+            $ids = [$ids];
+        }
+
+        return $this->query("
+            {$this->getSql()}
+            WHERE c.id IN (i:ids)
+            ", ['ids' => $ids]
+        )->fetchAll('id');
+    }
+
     /**
      * @param int $start
      * @param int $limit
@@ -93,11 +106,12 @@ class pocketlistsCommentModel extends pocketlistsModel
     }
 
     /**
+     * @param bool $calc
      * @return string
      */
-    private function getSql()
+    public function getSql($calc = false)
     {
-        return "SELECT 
+        return "SELECT".($calc ? ' SQL_CALC_FOUND_ROWS' : '')."
                 c.id id,
                 c.item_id item_id,
                 i.name item_name,
@@ -107,8 +121,11 @@ class pocketlistsCommentModel extends pocketlistsModel
                 c.contact_id contact_id,
                 c.comment comment,
                 c.create_datetime create_datetime,
+                c.update_datetime update_datetime,
+                c.client_touch_datetime client_touch_datetime,
                 p.id pocket_id,
-                p.name pocket_name
+                p.name pocket_name,
+                c.uuid
             FROM {$this->table} c
             LEFT JOIN pocketlists_item as i ON i.id = c.item_id
             LEFT JOIN pocketlists_list as l ON l.id = i.list_id

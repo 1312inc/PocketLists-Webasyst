@@ -26,6 +26,11 @@ class pocketlistsList extends pocketlistsItem
     private $icon;
 
     /**
+     * @var int
+     */
+    private $private = 0;
+
+    /**
      * @var bool
      */
     private $archived = 0;
@@ -94,6 +99,11 @@ class pocketlistsList extends pocketlistsItem
      * @var pocketlistsItem
      */
     private $keyItem;
+
+    /**
+     * @var string|null
+     */
+    private $uuid;
 
     /**
      * @var string
@@ -211,7 +221,7 @@ class pocketlistsList extends pocketlistsItem
      */
     public function getMaxPriority()
     {
-        return $this->max_priority;
+        return (int) $this->max_priority;
     }
 
     /**
@@ -227,7 +237,7 @@ class pocketlistsList extends pocketlistsItem
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getMinDueDate()
     {
@@ -247,7 +257,7 @@ class pocketlistsList extends pocketlistsItem
     }
 
     /**
-     * @return string
+     * @return string|string
      */
     public function getMinDueDatetime()
     {
@@ -287,11 +297,11 @@ class pocketlistsList extends pocketlistsItem
     }
 
     /**
-     * @return int
+     * @return int|null
      */
     public function getPocketId()
     {
-        return $this->pocket_id;
+        return ($this->pocket_id ?: null);
     }
 
     /**
@@ -347,11 +357,30 @@ class pocketlistsList extends pocketlistsItem
     }
 
     /**
+     * @return int
+     */
+    public function isPrivate()
+    {
+        return (int) $this->private;
+    }
+
+    /**
+     * @param $private
+     * @return pocketlistsList
+     */
+    public function setPrivate($private = 0)
+    {
+        $this->private = ($private ? 1 : 0);
+
+        return $this;
+    }
+
+    /**
      * @return bool
      */
     public function isArchived()
     {
-        return $this->archived;
+        return (bool) $this->archived;
     }
 
     /**
@@ -367,7 +396,7 @@ class pocketlistsList extends pocketlistsItem
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getHash()
     {
@@ -431,7 +460,7 @@ class pocketlistsList extends pocketlistsItem
      */
     public function getKeyItemId()
     {
-        return $this->key_item_id;
+        return (int) $this->key_item_id;
     }
 
     /**

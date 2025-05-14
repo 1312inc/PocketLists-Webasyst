@@ -12,6 +12,7 @@ class pocketlistsLogContext
     const COMMENT_ENTITY    = 'comment';
     const ATTACHMENT_ENTITY = 'attachment';
     const LOCATION_ENTITY   = 'location';
+    const USER_ENTITY       = 'user';
 
     const ITEM_FIELDS_TO_EXTRACT = [
         'status',
@@ -23,7 +24,6 @@ class pocketlistsLogContext
         'due_datetime',
         'location_id',
         'assigned_contact_id',
-        'repeat',
     ];
 
     const ITEM_MORE_INFO_APP_LINKS = 1;

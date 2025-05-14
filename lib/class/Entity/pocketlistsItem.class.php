@@ -15,7 +15,19 @@ class pocketlistsItem extends pocketlistsEntity
     const STATUS_UNDONE = 0;
     const STATUS_DONE   = 1;
 
-    const REPEAT_DEFAULT = 0;
+    const INTERVAL_DAY = 'day';
+    const INTERVAL_WORKDAY = 'workday';
+    const INTERVAL_WEEK = 'week';
+    const INTERVAL_MONTH = 'month';
+    const INTERVAL_YEAR = 'year';
+
+    const REPEAT_INTERVAL = [
+        self::INTERVAL_DAY,
+        self::INTERVAL_WORKDAY,
+        self::INTERVAL_WEEK,
+        self::INTERVAL_MONTH,
+        self::INTERVAL_YEAR,
+    ];
 
     /**
      * @var int
@@ -30,7 +42,12 @@ class pocketlistsItem extends pocketlistsEntity
     /**
      * @var int
      */
-    protected $sort;
+    protected $sort = 0;
+
+    /**
+     * @var string
+     */
+    protected $rank = '';
 
     /**
      * @var DateTime|null
@@ -41,6 +58,11 @@ class pocketlistsItem extends pocketlistsEntity
      * @var DateTime|null
      */
     protected $update_datetime;
+
+    /**
+     * @var DateTime|null
+     */
+    protected $activity_datetime;
 
     /**
      * @var DateTime|null
@@ -108,6 +130,11 @@ class pocketlistsItem extends pocketlistsEntity
     protected $due_datetime;
 
     /**
+     * @var DateTime|null
+     */
+    protected $client_touch_datetime;
+
+    /**
      * @var int|null
      */
     protected $location_id;
@@ -128,14 +155,34 @@ class pocketlistsItem extends pocketlistsEntity
     protected $assigned_contact_id;
 
     /**
+     * @var int
+     */
+    protected $repeat_frequency;
+
+    /**
      * @var string|null
      */
-    protected $repeat = self::REPEAT_DEFAULT;
+    protected $repeat_interval = null;
+
+    /**
+     * @var int|null
+     */
+    protected $repeat_occurrence;
 
     /**
      * @var int|null
      */
     protected $key_list_id;
+
+    /**
+     * @var string|null
+     */
+    private $uuid;
+
+    /**
+     * @var int|null
+     */
+    private $pro_label_id;
 
     /**
      * @var int
@@ -429,7 +476,7 @@ class pocketlistsItem extends pocketlistsEntity
      */
     public function isFavorite()
     {
-        return $this->favorite;
+        return (bool) $this->favorite;
     }
 
     /**
@@ -480,7 +527,7 @@ class pocketlistsItem extends pocketlistsEntity
     }
 
     /**
-     * @return int
+     * @return int|null
      */
     public function getAttachmentsCount()
     {
@@ -553,7 +600,7 @@ class pocketlistsItem extends pocketlistsEntity
     }
 
     /**
-     * @return int
+     * @return int|null
      */
     public function getId()
     {
@@ -587,7 +634,7 @@ class pocketlistsItem extends pocketlistsEntity
      */
     public function setListId($list_id)
     {
-        $this->list_id = $list_id ?: null;
+        $this->list_id = $list_id ? (int) $list_id : null;
 
         return $this;
     }
@@ -597,7 +644,7 @@ class pocketlistsItem extends pocketlistsEntity
      */
     public function getContactId()
     {
-        return $this->contact_id;
+        return (int) $this->contact_id;
     }
 
     /**
@@ -627,7 +674,7 @@ class pocketlistsItem extends pocketlistsEntity
      */
     public function setParentId($parent_id)
     {
-        $this->parent_id = $parent_id;
+        $this->parent_id = $parent_id ? (int) $parent_id : null;
 
         return $this;
     }
@@ -637,7 +684,7 @@ class pocketlistsItem extends pocketlistsEntity
      */
     public function getSort()
     {
-        return $this->sort;
+        return (int) $this->sort;
     }
 
     /**
@@ -647,7 +694,27 @@ class pocketlistsItem extends pocketlistsEntity
      */
     public function setSort($sort)
     {
-        $this->sort = $sort;
+        $this->sort = (int) $sort;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRank()
+    {
+        return (string) $this->rank;
+    }
+
+    /**
+     * @param string $rank
+     *
+     * @return $this
+     */
+    public function setRank($rank)
+    {
+        $this->rank = (string) $rank;
 
         return $this;
     }
@@ -657,7 +724,7 @@ class pocketlistsItem extends pocketlistsEntity
      */
     public function isHasChildren()
     {
-        return $this->has_children;
+        return (bool) $this->has_children;
     }
 
     /**
@@ -677,7 +744,7 @@ class pocketlistsItem extends pocketlistsEntity
      */
     public function getStatus()
     {
-        return $this->status;
+        return (int) $this->status;
     }
 
     /**
@@ -697,7 +764,7 @@ class pocketlistsItem extends pocketlistsEntity
      */
     public function getPriority()
     {
-        return $this->priority;
+        return (int) $this->priority;
     }
 
     /**
@@ -756,7 +823,7 @@ class pocketlistsItem extends pocketlistsEntity
     }
 
     /**
-     * @param DateTime|null $create_datetime
+     * @param string $create_datetime
      *
      * @return $this
      */
@@ -776,13 +843,32 @@ class pocketlistsItem extends pocketlistsEntity
     }
 
     /**
-     * @param DateTime|null $update_datetime
+     * @param DateTime|string|null $update_datetime
      *
      * @return $this
      */
     public function setUpdateDatetime($update_datetime)
     {
         $this->update_datetime = $update_datetime;
+
+        return $this;
+    }
+
+    /**
+     * @return DateTime|null
+     */
+    public function getActivityDatetime()
+    {
+        return $this->activity_datetime;
+    }
+
+    /**
+     * @param $activity_datetime
+     * @return $this
+     */
+    public function setActivityDatetime($activity_datetime)
+    {
+        $this->activity_datetime = $activity_datetime;
 
         return $this;
     }
@@ -822,7 +908,7 @@ class pocketlistsItem extends pocketlistsEntity
      */
     public function setCompleteContactId($complete_contact_id)
     {
-        $this->complete_contact_id = $complete_contact_id;
+        $this->complete_contact_id = $complete_contact_id ? (int) $complete_contact_id : null;
 
         return $this;
     }
@@ -909,6 +995,18 @@ class pocketlistsItem extends pocketlistsEntity
         return $this;
     }
 
+    public function getClientTouchDatetime()
+    {
+        return $this->client_touch_datetime;
+    }
+
+    public function setClientTouchDatetime($client_touch_datetime = null)
+    {
+        $this->client_touch_datetime = empty($client_touch_datetime) ? null : $client_touch_datetime;
+
+        return $this;
+    }
+
     /**
      * @return int|null
      */
@@ -924,7 +1022,7 @@ class pocketlistsItem extends pocketlistsEntity
      */
     public function setLocationId($location_id)
     {
-        $this->location_id = $location_id;
+        $this->location_id = $location_id ? (int) $location_id : null;
 
         return $this;
     }
@@ -938,13 +1036,13 @@ class pocketlistsItem extends pocketlistsEntity
     }
 
     /**
-     * @param float|null $amount
+     * @param float $amount
      *
      * @return $this
      */
     public function setAmount($amount)
     {
-        $this->amount = $amount;
+        $this->amount = (float) $amount;
 
         return $this;
     }
@@ -984,7 +1082,69 @@ class pocketlistsItem extends pocketlistsEntity
      */
     public function setAssignedContactId($assigned_contact_id = null)
     {
-        $this->assigned_contact_id = !empty($assigned_contact_id) ? (int)$assigned_contact_id : null;
+        $this->assigned_contact_id = empty($assigned_contact_id) ? null : (int) $assigned_contact_id;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRepeatFrequency()
+    {
+        return $this->repeat_frequency;
+    }
+
+    /**
+     * @param $repeat_frequency
+     *
+     * @return $this
+     */
+    public function setRepeatFrequency($repeat_frequency)
+    {
+        $this->repeat_frequency = $repeat_frequency;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getRepeatInterval()
+    {
+        return $this->repeat_interval;
+    }
+
+    /**
+     * @param $repeat_interval
+     *
+     * @return $this
+     */
+    public function setRepeatInterval($repeat_interval)
+    {
+        if (in_array($repeat_interval, self::REPEAT_INTERVAL)) {
+            $this->repeat_interval = $repeat_interval;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getRepeatOccurrence()
+    {
+        return $this->repeat_occurrence;
+    }
+
+    /**
+     * @param $repeat_occurrence
+     *
+     * @return $this
+     */
+    public function setRepeatOccurrence($repeat_occurrence)
+    {
+        $this->repeat_occurrence = $repeat_occurrence;
 
         return $this;
     }
@@ -1033,26 +1193,6 @@ class pocketlistsItem extends pocketlistsEntity
     }
 
     /**
-     * @return string|null
-     */
-    public function getRepeat()
-    {
-        return $this->repeat;
-    }
-
-    /**
-     * @param string|null $repeat
-     *
-     * @return $this
-     */
-    public function setRepeat($repeat)
-    {
-        $this->repeat = $repeat;
-
-        return $this;
-    }
-
-    /**
      * @return int|null
      */
     public function getKeyListId()
@@ -1067,7 +1207,38 @@ class pocketlistsItem extends pocketlistsEntity
      */
     public function setKeyListId($key_list_id)
     {
-        $this->key_list_id = $key_list_id;
+        $this->key_list_id = $key_list_id ? (int) $key_list_id : null;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUuid()
+    {
+        return $this->uuid;
+    }
+
+    /**
+     * @param $uuid
+     * @return pocketlistsItem
+     */
+    public function setUuid($uuid)
+    {
+        $this->uuid = (empty($uuid) ? null : trim($uuid));
+
+        return $this;
+    }
+
+    public function getProLabelId()
+    {
+        return $this->pro_label_id;
+    }
+
+    public function setProLabelId($pro_label_id)
+    {
+        $this->pro_label_id = $pro_label_id;
 
         return $this;
     }

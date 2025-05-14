@@ -77,13 +77,17 @@ final class pocketlistsShopBackendOrder
 
             if (file_exists($template)) {
                 try {
-                    $view->assign(
-                        [
-                            'params' => $viewParams,
-                            'pl2' => pl2(),
-                            'pl2_attachments_path' => wa()->getDataUrl('attachments', true, pocketlistsHelper::APP_ID),
-                        ]
+                    $token = (new waApiTokensModel())->getToken(
+                        pocketlistsConfig::API_CLIENT_ID,
+                        wa()->getUser()->getId(),
+                        pocketlistsConfig::API_TOKEN_SCOPE
                     );
+                    $view->assign([
+                        'api_token' => $token,
+                        'params' => $viewParams,
+                        'pl2' => pl2(),
+                        'pl2_attachments_path' => wa()->getDataUrl('attachments', true, pocketlistsHelper::APP_ID),
+                    ]);
                     $return[$hook] = $view->fetch($template);
                 } catch (Exception $ex) {
                     pocketlistsHelper::logError(sprintf('%s error %s', $hook, $ex->getMessage()), $ex);

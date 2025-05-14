@@ -19,6 +19,7 @@ final class pocketlistsEventStorage
     const ITEM_UI_LABEL = 'item_ui_label';
 
     const LOG_INSERT  = 'log_insert';
+    const LOGS_INSERT = 'logs_insert';
 
     const NOTIFICATION_SENT = 'notification.sent';
 

@@ -40,7 +40,11 @@ class pocketlistsAttachmentFactory extends pocketlistsFactory implements pocketl
      */
     public function delete(pocketlistsEntity $attachment)
     {
-        waFiles::delete(wa()->getDataPath('attachments/'.$attachment->getId().'/', true, pocketlistsHelper::APP_ID));
+        waFiles::delete(wa()->getDataPath(
+            'attachments/'.$attachment->getItemId().'/'.$attachment->getFilename(),
+            $attachment->getStorage() === 'public',
+            pocketlistsHelper::APP_ID
+        ));
 
         return parent::delete($attachment);
     }

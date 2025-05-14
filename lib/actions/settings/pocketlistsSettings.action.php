@@ -13,23 +13,15 @@ class pocketlistsSettingsAction extends pocketlistsViewAction
      */
     public function runAction($params = null)
     {
+        if (wa()->whichUI() === '1.3') {
+            if (!waRequest::isXMLHttpRequest()) {
+                $this->redirect(wa()->getAppUrl());
+            }
+        } else {
+            $this->setLayout(new pocketlistsStaticLayout());
+        }
         $settings = $this->user->getSettings()->getAllSettings();
         $this->view->assign('settings', $settings);
-
-//        $inbox_list_id = $this->user->getSettings()->getStreamInboxList();
-//        if ($inbox_list_id) {
-//            /** @var pocketlistsListFactory $listFactory */
-//            $listFactory = pl2()->getEntityFactory(pocketlistsList::class);
-//            /** @var pocketlistsList $inbox_list */
-//            $inbox_list = $listFactory->findById($inbox_list_id);
-//
-//            $this->view->assign(
-//                [
-//                    'inbox_lists' => $listFactory->findAllActive(),
-//                    'inbox_list'  => $inbox_list,
-//                ]
-//            );
-//        }
 
         /**
          * UI hook in backend settings page

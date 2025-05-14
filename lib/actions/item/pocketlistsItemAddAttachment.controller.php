@@ -114,11 +114,6 @@ class pocketlistsItemAddAttachmentController extends pocketlistsJsonController
             $uploadedFile->setName(sprintf('%s-%s.%s', $name, $i, $ext));
         }
 
-        $type = null;
-        if (exif_imagetype($uploadedFile->getFile()->tmp_name)) {
-            $type = 'image';
-        }
-
         if (!waFiles::create($uploadedFile->getPath(), true)) {
             $this->errors[] = sprintf(_w('Failed to upload file %s. Check permissions.'), $file->name);
             pocketlistsLogger::error(sprintf('Failed to upload file %s. Check permissions.', $uploadedFile->getPath()));
@@ -138,9 +133,7 @@ class pocketlistsItemAddAttachmentController extends pocketlistsJsonController
             $attachmentFactory = pl2()->getEntityFactory(pocketlistsAttachment::class);
             /** @var pocketlistsAttachment $attachment */
             $attachment = $attachmentFactory->createNew();
-            $attachment
-                ->setFilename($uploadedFile->getName())
-                ->setFiletype($type)
+            $attachment->setFilename($uploadedFile->getName())
                 ->setItemId($item->getId());
 
             $attachmentFactory->insert($attachment);

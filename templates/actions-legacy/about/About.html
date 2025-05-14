@@ -1,22 +1,5 @@
 <div class="shadowed pl-about">
 
-    {if !pocketlistsHelper::hasPlugin('pro')}
-    <figure class="block double-padded highlighted pl-upgrade-ad">
-          <a href="#/upgrade/"><img src="{$wa_url}wa-apps/pocketlists/img/pl2pro-plugin-icon.png" class="pl-wa-plugin-icon" /></a>
-          <h3>
-              <a href="#/upgrade/" class="large">
-                  [`Upgrade to Pocket Lists PRO`]
-                  &nbsp;<i class="icon16 star"></i><i class="icon16 star"></i><i class="icon16 star"></i><i class="icon16 star"></i><i class="icon16 star"></i>
-              </a>
-          </h3>
-          <p style="margin-bottom: 0;">
-              [`Boost your efficiency with the Pocket Lists PRO plugin that instantly enables a robust set of amazing advanced features: <b>Shop-Script automation (auto create to-dos based on actions with orders), kanban board, status labels, quick entry templates,</b> and more.`]
-              <a href="#/upgrade/" class="no-underline">[`See details`]&nbsp;&raquo;</a>
-          </p>
-          <div class="clear-both"></div>
-    </figure>
-    {/if}
-
     <main class="block double-padded">
 
         <div class="fields">
@@ -168,43 +151,6 @@
                           </li>
                       </ul>
                   </div>
-                </div>
-              </div>
-
-
-
-              <div class="field">
-                <div class="name nowrap">
-                  Webasyst
-                </div>
-                <div class="value">
-
-                    <p>[`<strong>Your feedback is very important!</strong> Please rate Pocket Lists and write a short review about your experience of using the app. Reviews (both positive and negative) really help us to see what is most useful in the app so we can continue delivering new features the right way.`]</p>
-
-                </div>
-                <div class="value">
-
-                    {if method_exists($wa->installer, 'reviewWidget')}
-                        <div style="display: flex;">
-                            <div style="flex: 0 0 auto; padding-right: 20px;">
-                                {$wa->installer->reviewWidget('app/pocketlists', ['is_inline' => true])}
-                            </div>
-                            {if pocketlistsHelper::hasPlugin('pro')}
-                            <div style="flex: 0 0 auto;">
-                                {$wa->installer->reviewWidget('plugin/pocketlists/pro', ['is_inline' => true])}
-                            </div>
-                            {/if}
-                        </div>
-                    {else}
-                        <p>
-                            {if $wa->user()->isAdmin('installer')}
-                                <a href="{$wa_backend_url}installer/store/app/pocketlists/reviews/" target="_blank"><img src="{$wa_url}wa-apps/pocketlists/img/badge-webasyst{if $wa->locale()=='ru_RU'}-ru{/if}.png" class="pl-badge-appstore"></a>
-                            {else}
-                                <a href="[`https://www.webasyst.com/store/app/pocketlists/`]" target="_blank"><img src="{$wa_url}wa-apps/pocketlists/img/badge-webasyst{if $wa->locale()=='ru_RU'}-ru{/if}.png" class="pl-badge-appstore"></a>
-                            {/if}
-                        </p>
-                    {/if}
-
                 </div>
               </div>
             </div>
