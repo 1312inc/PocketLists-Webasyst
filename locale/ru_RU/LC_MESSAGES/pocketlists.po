@@ -1928,7 +1928,7 @@ msgid "All-new Pocket Lists is here.<br> Try and upgrade today!"
 msgstr "Новый Pocket Lists и планы ближайших обновлений"
 
 msgid "This is a <b>free update</b>, and it is installed already. Use the navigation on the left to get started with checklists."
-msgstr "Это <b>бесплатное обновление</b>, и оно уже установлено. Используйте меню слева для начала работы."
+msgstr "<b>Это бесплатное обновление!</b> Оно уже установлено и работает. Используйте меню слева для начала работы."
 
 msgid "Early launch offer gets you the best premium upgrade conditions possible."
 msgstr "Премиум-версия открывает ранний доступ ко всем новым функциям и обновлениям."
@@ -1938,6 +1938,9 @@ msgstr "Приложение для Android"
 
 msgid "Summer 2025"
 msgstr "Лето 2025"
+
+msgid "Soon"
+msgstr "Скоро"
 
 msgid "All-new native Android app that syncs directly to your Webasyst account and Pocket Lists."
 msgstr "Мобильное приложение для Android напрямую синхронизируется с Pocket Lists в вашем Webasyst."
@@ -2006,7 +2009,7 @@ msgid "In basic version, lists are limited by 500 to-do items. With premium, all
 msgstr "В базовой версии в списке может быть до 500 задач. В премиум ограничения снимаются."
 
 msgid "%d features available now, +%d more to come shortly."
-msgstr "%d премиум-функций доступно сейчас, еще %s скоро появятся."
+msgstr "%d премиум-функций доступно сейчас, еще %s на подходе."
 
 msgid "Available now"
 msgstr "Уже здесь"
@@ -2076,3 +2079,6 @@ msgstr "Установлено и уже работает"
 
 msgid "New!"
 msgstr "Новое!"
+
+msgid "See the details:"
+msgstr "Подробно:"

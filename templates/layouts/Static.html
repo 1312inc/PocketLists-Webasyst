@@ -116,7 +116,10 @@
                                 <a href="{$wa_app_url}upgrade/">
                                     <i class="fas fa-star{if !$is_premium} text-yellow{/if}"></i>
                                     <span>[`Premium`]</span>
-                                    {if !$is_premium}<span class="count"><span class="badge small green">-50%</span></span>{/if}
+                                    {if !$is_premium}
+                                        {$p = $wa->pocketlists->getPremiumPricing()}
+                                        {if !empty($p.special)}<span class="count"><span class="badge small {$p.special_color}">{$p.special_short}</span></span>{/if}
+                                    {/if}
                                 </a>
                             </li>
                             {/if}
