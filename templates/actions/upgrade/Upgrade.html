@@ -42,7 +42,7 @@
             {/if}
         </div>
     </div>
-    {if !empty($_p.body)}<div class="small custom-mt-16{if $_is_premium} hidden{/if}">{$_p.body}</div>{/if}
+    <div class="small custom-mt-16{if $_is_premium} hidden{/if}">{if !empty($_p.body)}{$_p.body}{/if}</div>
 </div>
 {/function}
 
