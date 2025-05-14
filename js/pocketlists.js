@@ -100,7 +100,7 @@
                 })[0].nodeValue.trim()
             }
             if (title) {
-                $('title').html(title + " &mdash; " + self.options.account_name);
+                $('title').html(title + " &mdash; Pocket Lists");
             }
         },
         stickyDetailsSidebar: function () {
