@@ -28,14 +28,14 @@
     <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-item.js?v3{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
     <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-list.js?v3{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
     <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-comment.js?v3{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
-    <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-ws-monitor.js"></script>
-    <script>
-        (function() {
-            new WebSocketMonitor();
-        })();
-    </script>
+
     <script type="module" crossorigin src="{$wa_app_static_url}client/assets/index-genqiC86.js"></script>
     <link rel="stylesheet" crossorigin href="{$wa_app_static_url}client/assets/index-dgchL0yK.css">
+
+    <script type="module">
+        import WebSocketMonitor from '{$wa_app_static_url}js/pocketlists-ws-monitor.js';
+        new WebSocketMonitor();
+    </script>
 
     <script>
         window.appState = {
