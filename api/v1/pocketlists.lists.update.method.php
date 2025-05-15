@@ -50,50 +50,10 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
         foreach ($lists as &$_list) {
             $list_id = ifset($_list, 'id', null);
             $action = (ifset($_list, 'action', null) === self::ACTIONS[1] ? self::ACTIONS[1] : self::ACTIONS[0]);
-            /** set default */
-            $_list = [
-                'action'                => $action,
-                'id'                    => ifset($_list, 'id', null),
-                'pocket_id'             => ifset($_list, 'pocket_id', null),
-                'sort'                  => ifset($_list, 'sort', null),
-                'rank'                  => ifset($_list, 'rank', null),
-                'type'                  => null,
-                'icon'                  => ifset($_list, 'icon', ($action === self::ACTIONS[0] ? null : pocketlistsList::DEFAULT_ICON)),
-                'icon_url'              => null,
-                'private'               => ifset($_list, 'private', ($action === self::ACTIONS[0] ? null : 0)),
-                'archived'              => ifset($_list, 'archived', ($action === self::ACTIONS[0] ? null : 0)),
-                'hash'                  => null,
-                'color'                 => ifset($_list, 'color', ($action === self::ACTIONS[0] ? null : pocketlistsStoreColor::NONE)),
-                'passcode'              => null,
-                'key_item_id'           => null,
-                'contact_id'            => null,
-                'parent_id'             => 0,
-                'has_children'          => 0,
-                'status'                => 0,
-                'priority'              => 0,
-                'calc_priority'         => 0,
-                'create_datetime'       => null,
-                'update_datetime'       => date('Y-m-d H:i:s'),
-                'complete_datetime'     => null,
-                'complete_contact_id'   => null,
-                'name'                  => ifset($_list, 'name', ($action === self::ACTIONS[0] ? null : '')),
-                'note'                  => null,
-                'due_date'              => null,
-                'due_datetime'          => null,
-                'client_touch_datetime' => ifset($_list, 'client_touch_datetime', null),
-                'location_id'           => null,
-                'amount'                => 0,
-                'currency_iso3'         => null,
-                'assigned_contact_id'   => ifset($_list, 'assigned_contact_id', null),
-                'repeat_frequency'      => ifset($_list, 'repeat_frequency', 0),
-                'repeat_interval'       => ifset($_list, 'repeat_interval', null),
-                'repeat_occurrence'     => ifset($_list, 'repeat_occurrence', null),
-                'favorite'              => ifset($_list, 'favorite', null),
-                'uuid'                  => null,
-                'prev_list_id'          => (array_key_exists('prev_list_id', $_list) ? ifset($_list, 'prev_list_id', 0) : null),
-                'pro_label_id'          => null,
-                'success'               => true,
-                'errors'                => []
+            $_list += [
+                'update_datetime' => date('Y-m-d H:i:s'),
+                'success'         => true,
+                'errors'          => []
             ];
 
             if (empty($list_id)) {
@@ -150,7 +110,7 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                 }
             }
 
-            if (isset($_list['repeat_frequency']) &&!is_numeric($_list['repeat_frequency'])) {
+            if (isset($_list['repeat_frequency']) && !is_numeric($_list['repeat_frequency'])) {
                 $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'repeat_frequency');
             }
 
@@ -187,7 +147,6 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                 }
             }
             
-
             if (isset($_list['sort']) && !is_numeric($_list['sort'])) {
                 $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'sort');
             }
@@ -201,9 +160,9 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
             }
 
             if (empty($_list['errors'])) {
-                if ($_list['action'] == self::ACTIONS[0]) {
+                if ($action == self::ACTIONS[0]) {
                     // patch
-                    $_list = array_replace($lists_in_db[$list_id], array_filter($_list, function ($l) {return !is_null($l);}));
+                    $_list += $lists_in_db[$list_id];
                     if (isset($_list['prev_list_id'])) {
                         if ($_list['prev_list_id'] === 0) {
                             $_list['prev_list_id'] = null;
@@ -213,27 +172,22 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                     }
                 } else {
                     // update
-                    $list_in_db = ifset($lists_in_db, $list_id, []);
-                    $_list = array_intersect_key($list_in_db, array_fill_keys([
-                        'type',
+                    $_list += array_fill_keys([
+                        'pocket_id',
+                        'name',
+                        'icon',
+                        'private',
                         'archived',
-                        'hash',
-                        'passcode',
-                        'key_item_id',
-                        'contact_id',
-                        'parent_id',
-                        'has_children',
+                        'color',
+                        'assigned_contact_id',
+                        'favorite',
+                        'client_touch_datetime',
                         'repeat_frequency',
                         'repeat_interval',
                         'repeat_occurrence',
-                        'calc_priority',
-                        'create_datetime',
-                        'complete_datetime',
-                        'complete_contact_id',
-                        'amount',
-                        'currency_iso3',
-                        'uuid'
-                    ], null)) + $_list + $list_in_db;
+                        'sort',
+                        'rank'
+                    ], null) + ifset($lists_in_db, $list_id, []);
                 }
 
                 if (isset($_list['archived'])) {
