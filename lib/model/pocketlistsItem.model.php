@@ -764,25 +764,32 @@ SQL;
         pocketlistsRBAC::filterListAccess($lists, $contact_id);
         $list_sql = pocketlistsRBAC::filterListAccess($lists);
 
-        $sqlParts = $this->getAssignedOrCompletesByContactQueryComponents($list_sql, $contact_id);
-        $sqlParts['select'] = ['i.calc_priority calc_priority', 'count(i.id) count'];
-        $sqlParts['group by'] = ['i.calc_priority'];
+        $sql_parts = $this->getAssignedOrCompletesByContactQueryComponents($list_sql, $contact_id);
+        $sql_parts['select'] = ['i.calc_priority calc_priority', 'count(i.id) count'];
+        $sql_parts['group by'] = ['i.calc_priority'];
 
-        $q = $this->buildSqlComponents($sqlParts);
-        $itemsCount = $this->query(
-            $q,
-            [
-                'contact_id' => $contact_id,
-                'list_ids'   => $lists,
-            ]
+        $items_count = $this->query(
+            $this->buildSqlComponents($sql_parts),
+            ['contact_id' => $contact_id, 'list_ids' => $lists]
         )->fetchAll();
 
-        $itemsCount = array_combine(
-            array_column($itemsCount, 'calc_priority'),
-            array_column($itemsCount, 'count')
+        $items_count = array_combine(
+            array_column($items_count, 'calc_priority'),
+            array_column($items_count, 'count')
         );
 
-        return $itemsCount;
+        $sql_parts['where']['and'] = array_merge(['l.private = 1'], $sql_parts['where']['and']);
+        $private_items_count = $this->query(
+            $this->buildSqlComponents($sql_parts),
+            ['contact_id' => $contact_id, 'list_ids' => $lists]
+        )->fetchAll();
+
+        $items_count['private_items_count'] = array_combine(
+            array_column($private_items_count, 'calc_priority'),
+            array_column($private_items_count, 'count')
+        );
+
+        return $items_count;
     }
 
     /**

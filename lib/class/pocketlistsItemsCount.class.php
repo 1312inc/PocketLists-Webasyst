@@ -5,6 +5,15 @@
  */
 class pocketlistsItemsCount
 {
+    const DEFAULT = [
+        pocketlistsItem::PRIORITY_BURNINHELL => 0,
+        pocketlistsItem::PRIORITY_BLACK      => 0,
+        pocketlistsItem::PRIORITY_RED        => 0,
+        pocketlistsItem::PRIORITY_YELLOW     => 0,
+        pocketlistsItem::PRIORITY_GREEN      => 0,
+        pocketlistsItem::PRIORITY_NORM       => 0
+    ];
+
     /**
      * @var int
      */
@@ -21,9 +30,9 @@ class pocketlistsItemsCount
     private $maxPriority = 0;
 
     /**
-     * @var int
+     * @var array
      */
-    private $countMaxPriority = 0;
+    private $countPrivate = [];
 
     /**
      * @var array
@@ -40,6 +49,8 @@ class pocketlistsItemsCount
         if (empty($data)) {
             return;
         }
+        $this->countPrivate = array_map('intval', ifset($data, 'private_items_count', []));
+        unset($data['private_items_count']);
 
         foreach ($data as $priority => $count) {
             $this->count += $count;
@@ -51,24 +62,33 @@ class pocketlistsItemsCount
             }
         }
 
-        if (isset($this->countPriorities[$this->maxPriority])) {
-            $this->countMaxPriority = $this->countPriorities[$this->maxPriority];
-        }
+        $this->countPrivate += self::DEFAULT;
+        $this->countPriorities += self::DEFAULT;
     }
 
     /**
+     * @param $with_private
      * @return int
      */
-    public function getCount()
+    public function getCount($with_private = false)
     {
+        if ($with_private) {
+            return $this->count - array_sum($this->countPrivate);
+        }
+
         return $this->count;
     }
 
     /**
+     * @param $with_private
      * @return int
      */
-    public function getCountPriority()
+    public function getCountPriority($with_private = false)
     {
+        if ($with_private) {
+            return $this->countPriority - array_sum($this->countPrivate) + $this->countPrivate[pocketlistsItem::PRIORITY_NORM];
+        }
+
         return $this->countPriority;
     }
 
@@ -83,16 +103,37 @@ class pocketlistsItemsCount
     /**
      * @return int
      */
-    public function getCountMaxPriority()
+    public function getCountMaxPriority($with_private = false)
     {
-        return (empty($this->maxPriority) ? 0 : $this->countMaxPriority);
+        if ($with_private) {
+            return ifempty($this->countPriorities, $this->maxPriority, 0) - ifempty($this->countPrivate, $this->maxPriority, 0);
+        }
+
+        return (empty($this->maxPriority) ? 0 : ifempty($this->countPriorities, $this->maxPriority, 0));
     }
 
     /**
      * @return array
      */
-    public function getCountPriorities()
+    public function getCountPrivate()
     {
+        return $this->countPrivate;
+    }
+
+    /**
+     * @param $with_private
+     * @return array
+     */
+    public function getCountPriorities($with_private = false)
+    {
+        if ($with_private) {
+            $result = [];
+            foreach ($this->countPriorities as $priority => $count) {
+                $result[$priority] = (int) $count - ifset($this->countPrivate, $priority, 0);
+            }
+            return $result;
+        }
+
         return $this->countPriorities;
     }
 }
