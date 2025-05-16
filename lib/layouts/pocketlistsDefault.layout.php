@@ -41,12 +41,13 @@ class pocketlistsDefaultLayout extends waLayout
         $shortcuts = [];
         $is_premium = pocketlistsLicensing::isPremium();
         if (wa()->whichUI(pocketlistsHelper::APP_ID) != '1.3') {
-            list($user, $count) = pocketlistsApiAbstractMethod::getTeammates([pl2()->getUser()->getId()]);
-            $user = reset($user);
-
-            $user_get_list = new pocketlistsUsersGetMethod();
-            $response = $user_get_list->getResponse(true, true);
-            $users = ifset($response, 'data', []);
+            try {
+                $user_get_list = new pocketlistsUsersGetMethod();
+                $response = $user_get_list->getResponse(true, true);
+                $users = ifset($response, 'data', []);
+            } catch (pocketlistsApiException $pex) {
+                $users = null;
+            }
 
             $pocket_get_list = new pocketlistsPocketsGetMethod();
             $response = $pocket_get_list->getResponse(true);
@@ -55,6 +56,9 @@ class pocketlistsDefaultLayout extends waLayout
             $location_get_list = new pocketlistsLocationsGetMethod();
             $response = $location_get_list->getResponse(true);
             $locations = ifset($response, 'data', []);
+
+            list($user, $count) = pocketlistsApiAbstractMethod::getTeammates([pl2()->getUser()->getId()]);
+            $user = reset($user);
 
             $user_rights = pocketlistsSystemGetSettingsMethod::getUserRights();
             if ($is_premium) {
