@@ -325,15 +325,24 @@ class pocketlistsLogAction
      */
     private function new_item($id)
     {
-        if ($this->ext_logs[$id]['params']['list_id']) {
-            $list_html = $this->getListUrlHtml($id);
-        } else {
-            $list_html = _w("to his personal to-do stream");
-        }
-
         $item = null;
         if (!empty($this->ext_logs[$id]['params']['item_id'])) {
             $item = $this->getItemData($this->ext_logs[$id]['params']['item_id']);
+        }
+
+        if ($this->ext_logs[$id]['params']['list_id']) {
+            $list_html = $this->getListUrlHtml($id);
+        } elseif ($item && $links = $item->getAppLinks()) {
+            /** @var pocketlistsItemLink $link */
+            $link = reset($links);
+
+            $list_html = sprintf(
+                ' <a href="%s">%s</a>',
+                $link->getAppLink()->getLinkUrl($link),
+                $link->getAppLink()->getEntityTitle($link)
+            );
+        } else {
+            $list_html = _w("to his personal to-do stream");
         }
 
         return sprintf('%s @ %s', $item && $item->getId() ? ' '.htmlspecialchars($item->getName()) : '', $list_html);

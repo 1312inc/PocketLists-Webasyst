@@ -118,6 +118,15 @@ class pocketlistsAppLinkShop extends pocketlistsAppLinkAbstract implements pocke
 
     /**
      * @param pocketlistsItemLink $itemLink
+     * @return string
+     */
+    public function getEntityTitle(pocketlistsItemLink $itemLink)
+    {
+        return $this->getEntityNum($itemLink);
+    }
+
+    /**
+     * @param pocketlistsItemLink $itemLink
      *
      * @return bool|shopOrder
      */

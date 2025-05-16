@@ -35,15 +35,12 @@ class pocketlistsEventListenerItemSave
             );
         }
 
-        if ($event->getList() instanceof pocketlistsList && $event->getList()->getId()) {
+        if ($event->getList() instanceof pocketlistsList) {
             if (count($items) === 1) {
                 $item = reset($items);
                 $this->getWaLogModel()->add(
                     pocketlistsLogAction::NEW_ITEM,
-                    [
-                        'item_id' => $item->getId(),
-                        'list_id' => $event->getList()->getId(),
-                    ]
+                    ['item_id' => $item->getId(), 'list_id' => $event->getList()->getId()]
                 );
             } else {
                 $this->getWaLogModel()->add(pocketlistsLogAction::NEW_ITEMS, ['list_id' => $event->getList()->getId()]);
