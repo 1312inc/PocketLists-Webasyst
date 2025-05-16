@@ -2,7 +2,7 @@
 
 class pocketlistsUsersGetMethod extends pocketlistsApiAbstractMethod
 {
-    public function execute($param = null)
+    public function execute()
     {
         $ids = $this->get('id');
         $limit = $this->get('limit');
@@ -43,7 +43,7 @@ class pocketlistsUsersGetMethod extends pocketlistsApiAbstractMethod
             $offset = 0;
         }
 
-        list($result, $count) = self::getTeammates($ids, $offset, $limit, $param);
+        list($result, $count) = self::getTeammates($ids, $offset, $limit, 1);
 
         $this->response['meta'] = [
             'offset' => $offset,

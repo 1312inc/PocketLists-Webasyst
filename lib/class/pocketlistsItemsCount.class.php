@@ -93,10 +93,24 @@ class pocketlistsItemsCount
     }
 
     /**
+     * @param $with_private
      * @return int
      */
-    public function getMaxPriority()
+    public function getMaxPriority($with_private = false)
     {
+        if ($with_private) {
+            /** recalculate */
+            $max_priority = 0;
+            $data = $this->getCountPriorities($with_private);
+            foreach ($data as $priority => $count) {
+                if ($count > 0) {
+                    $max_priority = max($max_priority, $priority);
+                }
+            }
+
+            return $max_priority;
+        }
+
         return $this->maxPriority;
     }
 
@@ -106,7 +120,8 @@ class pocketlistsItemsCount
     public function getCountMaxPriority($with_private = false)
     {
         if ($with_private) {
-            return ifempty($this->countPriorities, $this->maxPriority, 0) - ifempty($this->countPrivate, $this->maxPriority, 0);
+            $max_priority = $this->getMaxPriority($with_private);
+            return ifempty($this->countPriorities, $max_priority, 0) - ifempty($this->countPrivate, $max_priority, 0);
         }
 
         return (empty($this->maxPriority) ? 0 : ifempty($this->countPriorities, $this->maxPriority, 0));

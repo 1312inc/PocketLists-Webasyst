@@ -37,7 +37,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
      * @throws pocketlistsApiException
      * @throws waException
      */
-    public function getResponse($internal = false, $param = null)
+    public function getResponse($internal = false)
     {
         if (!$internal) {
             // check request method
@@ -49,7 +49,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
             }
         }
 
-        $this->execute($param);
+        $this->execute();
 
         return $this->response;
     }
@@ -920,7 +920,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                     'lists_count'              => (int) ifset($assigned_list_counts, $_teammate->getId(), 'list_count', 0),
                     'items_count'              => $items_info->getCount(!!$switch),
                     'items_priority_count'     => $items_info->getCountPriority(!!$switch),
-                    'max_priority'             => $items_info->getMaxPriority(),
+                    'max_priority'             => $items_info->getMaxPriority(!!$switch),
                     'items_max_priority_count' => $items_info->getCountMaxPriority(!!$switch),
                     'items_priorities_count'   => $items_info->getCountPriorities(!!$switch)
                 ]
