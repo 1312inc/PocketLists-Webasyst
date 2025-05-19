@@ -131,7 +131,7 @@ class pocketlistsNotificationEmailContent extends pocketlistsNotificationAbstrac
         try {
             $default_variables = [
                 'default'          => [
-                    'email_settings_url' => '#/settings/',
+                    'email_settings_url' => 'settings/',
                     'account_name' => wa()->accountName(),
                 ],
             ];

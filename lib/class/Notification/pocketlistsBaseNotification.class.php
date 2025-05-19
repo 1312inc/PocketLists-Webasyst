@@ -49,7 +49,7 @@ class pocketlistsBaseNotification
     {
         try {
             $default_variables = [
-                'email_settings_url' => '#/settings/',
+                'email_settings_url' => 'settings/',
             ];
 
             if (empty($data['variables'])) {
