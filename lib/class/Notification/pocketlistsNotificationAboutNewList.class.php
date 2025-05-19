@@ -62,7 +62,7 @@ class pocketlistsNotificationAboutNewList extends pocketlistsBaseNotification
                     [
                         'list'            => [
                             'name' => $list->getName(),
-                            'url'  => sprintf('#/pocket/%s/list/%s/', $list->getPocketId(), $list->getId()),
+                            'url'  => sprintf('lists/%s/', $list->getId()),
                         ],
                         'by'              => $create_contact_name,
                         'create_datetime' => $list->getCreateDatetime(),

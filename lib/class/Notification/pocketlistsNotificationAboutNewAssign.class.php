@@ -29,8 +29,7 @@ class pocketlistsNotificationAboutNewAssign extends pocketlistsBaseNotification
 
         if ($list && pocketlistsRBAC::canAccessToList($list, $item->getAssignedContactId())) {
             $listUrl = sprintf(
-                '#/pocket/%s/list/%s/',
-                $list->getPocketId(),
+                'lists/%s/',
                 $list->getId()
             );
         }
