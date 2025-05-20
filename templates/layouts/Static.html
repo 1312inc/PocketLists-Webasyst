@@ -118,7 +118,7 @@
                                     <span>[`Premium`]</span>
                                     {if !$is_premium}
                                         {$p = $wa->pocketlists->getPremiumPricing()}
-                                        {if !empty($p.special)}<span class="count"><span class="badge small {$p.special_color}">{$p.special_short}</span></span>{/if}
+                                        {if !empty($p.special_short)}<span class="count"><span class="badge small {$p.special_color}">{$p.special_short}</span></span>{/if}
                                     {/if}
                                 </a>
                             </li>

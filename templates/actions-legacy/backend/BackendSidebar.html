@@ -199,7 +199,11 @@
         {if !empty($backend_sidebar)}{foreach $backend_sidebar as $_}{ifset($_.system_li)}{/foreach}{/if}
 
         <li class="top-padded">
-            <a href="#/upgrade/"><i class="icon16" style="background-image: url('/wa-apps/pocketlists/img/pl2webasyst48.png') !important; background-size: 16px 16px;"></i>[`All-new Pocket Lists`] <span class="count"><i class="icon10 star"></i></span></a>
+            <a href="#/upgrade/"><i class="icon16" style="background-image: url('/wa-apps/pocketlists/img/pl2webasyst48.png') !important; background-size: 16px 16px;"></i>[`All-new Pocket Lists`]
+              <span class="count"><i class="icon10 star"></i></span>
+              {$p = $wa->pocketlists->getPremiumPricing()}
+              {if !empty($p.special_short)}<br><span class="bold small {$p.special_color}">{$p.special_short}</span>{/if}
+            </a>
         </li>
         {if $isAdmin}
         <li>
