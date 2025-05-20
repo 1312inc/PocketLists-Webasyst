@@ -9,6 +9,33 @@ servers:
     description: Current host server
 
 paths:
+  /pocketlists.ai.gpt:
+    get:
+      security:
+        - BearerAuth: [ ]
+      summary: Returns text items.
+      parameters:
+        - in: query
+          name: prompt
+          description: Text
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/response'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          text:
+                            type: string
+                            description: Text generate AI
   /pocketlists.attachments.add:
     put:
       security:
