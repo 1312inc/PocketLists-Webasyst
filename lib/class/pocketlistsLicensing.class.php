@@ -7,6 +7,9 @@ class pocketlistsLicensing
 {
     public static function isPremium()
     {
+        
+        return true;
+        
         $is_premium = false;
         if (waLicensing::check(pocketlistsHelper::APP_ID)->isPremium()) {
             $is_premium = wa()->getSetting('license_premium', '', pocketlistsHelper::APP_ID);
