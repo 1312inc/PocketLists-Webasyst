@@ -43,18 +43,10 @@ class pocketlistsDefaultLayout extends waLayout
         if (wa()->whichUI(pocketlistsHelper::APP_ID) != '1.3') {
             try {
                 $user_get_list = new pocketlistsUsersGetMethod();
-                $response = $user_get_list->getResponse(true);
+                $response = $user_get_list->getResponse(true, true);
                 $users = ifset($response, 'data', []);
-                foreach ($users as $u) {
-                    if ($u['me']) {
-                        $user = $u;
-                        break;
-                    }
-                }
             } catch (pocketlistsApiException $pex) {
                 $users = null;
-                list($user, $count) = pocketlistsApiAbstractMethod::getTeammates([pl2()->getUser()->getId()]);
-                $user = reset($user);
             }
 
             $pocket_get_list = new pocketlistsPocketsGetMethod();
@@ -64,6 +56,9 @@ class pocketlistsDefaultLayout extends waLayout
             $location_get_list = new pocketlistsLocationsGetMethod();
             $response = $location_get_list->getResponse(true);
             $locations = ifset($response, 'data', []);
+
+            list($user, $count) = pocketlistsApiAbstractMethod::getTeammates([pl2()->getUser()->getId()]);
+            $user = reset($user);
 
             $user_rights = pocketlistsSystemGetSettingsMethod::getUserRights();
             if ($is_premium) {

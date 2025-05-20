@@ -549,12 +549,7 @@ class pocketlistsNaturalInput
         $replace = [];
 
         $i = 0;
-        while (preg_match(
-            '/'.$pattern.'/miu',
-            $string,
-            $matches
-        )
-        ) {
+        while (preg_match('/'.$pattern.'/miu', (string) $string, $matches)) {
             $i++;
             $now = time();
             $replace_key = "###{$i}1312{$now}WILLBEREPLACEDWITHLINK{$now}1312{$i}###";
@@ -563,7 +558,7 @@ class pocketlistsNaturalInput
         }
 
         if ($encode) {
-            $string = htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
+            $string = htmlspecialchars((string) $string, ENT_QUOTES, 'UTF-8');
         }
 
         $string = str_replace(array_keys($replace), $replace, $string);

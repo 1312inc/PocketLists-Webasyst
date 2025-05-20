@@ -115,8 +115,7 @@ class pocketlistsNotificationAboutNewItems extends pocketlistsBaseNotification
                             'list'  => [
                                 'name' => $list->getId() ? $list->getName() : false,
                                 'url'  => $list ? sprintf(
-                                    '#/pocket/%s/list/%s/',
-                                    $list->getPocketId(),
+                                    'lists/%s/',
                                     $list->getId()
                                 ) : '',
                             ],

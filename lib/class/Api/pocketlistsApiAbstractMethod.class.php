@@ -32,8 +32,9 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
 
     /**
      * @param $internal
+     * @param $param
      * @return array
-     * @throws pocketlistsAPIException
+     * @throws pocketlistsApiException
      * @throws waException
      */
     public function getResponse($internal = false)
@@ -873,10 +874,12 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
      * @param $teammates_ids
      * @param $offset
      * @param $limit
+     * @param $switch
      * @return array
+     * @throws waDbException
      * @throws waException
      */
-    public static function getTeammates($teammates_ids = [], $offset = 0, $limit = self::DEFAULT_LIMIT)
+    public static function getTeammates($teammates_ids = [], $offset = 0, $limit = self::DEFAULT_LIMIT, $switch = 0)
     {
         $result = [];
         $root_url = rtrim(wa()->getConfig()->getHostUrl(), '/');
@@ -915,18 +918,11 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                 'locale'        => $_teammate->getLocale(),
                 'extended_data' => [
                     'lists_count'              => (int) ifset($assigned_list_counts, $_teammate->getId(), 'list_count', 0),
-                    'items_count'              => $items_info->getCount(),
-                    'items_priority_count'     => $items_info->getCountPriority(),
-                    'max_priority'             => $items_info->getMaxPriority(),
-                    'items_max_priority_count' => $items_info->getCountMaxPriority(),
-                    'items_priorities_count'   => $items_info->getCountPriorities() + [
-                        pocketlistsItem::PRIORITY_BURNINHELL => 0,
-                        pocketlistsItem::PRIORITY_BLACK      => 0,
-                        pocketlistsItem::PRIORITY_RED        => 0,
-                        pocketlistsItem::PRIORITY_YELLOW     => 0,
-                        pocketlistsItem::PRIORITY_GREEN      => 0,
-                        pocketlistsItem::PRIORITY_NORM       => 0
-                    ]
+                    'items_count'              => $items_info->getCount(!!$switch),
+                    'items_priority_count'     => $items_info->getCountPriority(!!$switch),
+                    'max_priority'             => $items_info->getMaxPriority(!!$switch),
+                    'items_max_priority_count' => $items_info->getCountMaxPriority(!!$switch),
+                    'items_priorities_count'   => $items_info->getCountPriorities(!!$switch)
                 ]
             ];
         }

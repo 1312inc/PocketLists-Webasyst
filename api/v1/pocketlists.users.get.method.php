@@ -43,7 +43,7 @@ class pocketlistsUsersGetMethod extends pocketlistsApiAbstractMethod
             $offset = 0;
         }
 
-        list($result, $count) = self::getTeammates($ids, $offset, $limit);
+        list($result, $count) = self::getTeammates($ids, $offset, $limit, 1);
 
         $this->response['meta'] = [
             'offset' => $offset,

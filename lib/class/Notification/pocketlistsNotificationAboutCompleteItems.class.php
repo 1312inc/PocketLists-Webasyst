@@ -159,8 +159,7 @@ class pocketlistsNotificationAboutCompleteItems extends pocketlistsBaseNotificat
                                 'id'   => (int)$list->getId(),
                                 'name' => $list->getName(),
                                 'url'  => $list ? sprintf(
-                                    '#/pocket/%s/list/%s/',
-                                    $list->getPocketId(),
+                                    'lists/%s/',
                                     $list->getId()
                                 ) : false,
                             ],

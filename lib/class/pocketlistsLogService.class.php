@@ -198,8 +198,11 @@ class pocketlistsLogService
                 case pocketlistsLog::ENTITY_COMMENT:
                     if ($log['list_id'] && $users_access_ids[$log['list_id']]) {
                         $users = $users_access_ids[$log['list_id']];
-                    } elseif (is_null($log['list_id']) && $log['assigned_contact_id']) {
-                        $users = [$log['assigned_contact_id']];
+                    } elseif (is_null($log['list_id'])) {
+                        $users = [pl2()->getUser()->getId()];
+                        if ($log['assigned_contact_id']) {
+                            $users[] = [$log['assigned_contact_id']];
+                        }
                     }
                     break;
                 default:

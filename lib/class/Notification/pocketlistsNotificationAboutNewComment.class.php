@@ -49,14 +49,13 @@ class pocketlistsNotificationAboutNewComment extends pocketlistsBaseNotification
 
         /** @var pocketlistsItem $item */
         $item = $comment->getItem();
-        $listUrl = '#/pocket/todo/';
+        $listUrl = 'todos/';
         $list = null;
         if ($item->getListId()) {
             $list = $this->getList($item);
 
             $listUrl = sprintf(
-                '#/pocket/%s/list/%s/',
-                $list->getPocketId(),
+                'lists/%s/',
                 $list->getId()
             );
         }

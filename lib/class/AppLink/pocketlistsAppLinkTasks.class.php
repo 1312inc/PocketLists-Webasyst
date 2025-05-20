@@ -46,9 +46,30 @@ final class pocketlistsAppLinkTasks extends pocketlistsAppLinkAbstract implement
         return '';
     }
 
+    /**
+     * @param pocketlistsItemLink $itemLink
+     * @return string
+     */
     public function getEntityNum(pocketlistsItemLink $itemLink)
     {
         return '';
+    }
+
+    /**
+     * @param pocketlistsItemLink $itemLink
+     * @return string
+     * @throws waException
+     */
+    public function getEntityTitle(pocketlistsItemLink $itemLink)
+    {
+        $data = $itemLink->getAppEntity();
+
+        return sprintf(
+            '%d.%d %s',
+            $data['project_id'],
+            $data['number'],
+            $data['name']
+        );
     }
 
     public function getAppEntity(pocketlistsItemLink $itemLink)
