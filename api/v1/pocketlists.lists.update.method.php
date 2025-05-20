@@ -134,6 +134,31 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                 }
             }
 
+            if (isset($_list['due_datetime'])) {
+                if (!is_string($_list['due_datetime'])) {
+                    $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'due_datetime');
+                } else {
+                    if ($dt = $this->convertDatetimeToServer($_list['due_datetime'])) {
+                        $_list['due_date'] = date('Y-m-d', strtotime($dt));
+                        $_list['due_datetime'] = $dt;
+                    } else {
+                        $_list['errors'][] = _w('Invalid value due_datetime');
+                    }
+                }
+            } elseif (isset($_list['due_date'])) {
+                if (!is_string($_list['due_date'])) {
+                    $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'due_date');
+                } else {
+                    $dt = date_create($_list['due_date']);
+                    if ($dt) {
+                        $_list['due_date'] = $dt->format('Y-m-d');
+                        $_list['due_datetime'] = '';
+                    } else {
+                        $_list['errors'][] = _w('Invalid value due_date');
+                    }
+                }
+            }
+
             if (isset($_list['client_touch_datetime'])) {
                 if (!is_string($_list['client_touch_datetime'])) {
                     $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'client_touch_datetime');
@@ -163,6 +188,12 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                 if ($action == self::ACTIONS[0]) {
                     // patch
                     $_list += $lists_in_db[$list_id];
+                    if (trim((string) $_list['due_datetime']) === '') {
+                        $_list['due_datetime'] = null;
+                    }
+                    if (trim((string) $_list['due_date']) === '') {
+                        $_list['due_date'] = null;
+                    }
                     if (isset($_list['prev_list_id'])) {
                         if ($_list['prev_list_id'] === 0) {
                             $_list['prev_list_id'] = null;
@@ -181,6 +212,8 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                         'color',
                         'assigned_contact_id',
                         'favorite',
+                        'due_date',
+                        'due_datetime',
                         'client_touch_datetime',
                         'repeat_frequency',
                         'repeat_interval',
