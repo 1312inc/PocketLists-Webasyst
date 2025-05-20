@@ -13,11 +13,11 @@ paths:
     get:
       security:
         - BearerAuth: [ ]
-      summary: Returns text items.
+      summary: Makes up a checklist with Webasyst AI based on the prompt. Returns it as a solid string (GPT) to be ultimately processed (e.g. split by lines) by the client on its sole discretion.
       parameters:
         - in: query
           name: prompt
-          description: Text
+          description: AI prompt will be wrapped with some magic 'Make up a checklist about %prompt%'.
           schema:
             type: string
       responses:
@@ -35,7 +35,7 @@ paths:
                         properties:
                           text:
                             type: string
-                            description: Text generate AI
+                            description: Webasyst AI result (GPT)
   /pocketlists.attachments.add:
     put:
       security:
