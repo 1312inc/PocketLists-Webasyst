@@ -73,6 +73,16 @@ class pocketlistsAppLinkFake implements pocketlistsAppLinkInterface
     /**
      * @param pocketlistsItemLink $itemLink
      *
+     * @return string
+     */
+    public function getEntityTitle(pocketlistsItemLink $itemLink)
+    {
+        return '';
+    }
+
+    /**
+     * @param pocketlistsItemLink $itemLink
+     *
      * @return array
      * @throws waException
      */
