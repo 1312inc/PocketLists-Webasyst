@@ -33,9 +33,14 @@ class pocketlistsAttachment extends pocketlistsEntity
     private $size = null;
 
     /**
-     * @var string
+     * @var null
      */
-    private $filetype = null;
+    private $download_url = null;
+
+    /**
+     * @var null
+     */
+    private $preview_url = null;
 
     /**
      * @var string
@@ -228,6 +233,36 @@ class pocketlistsAttachment extends pocketlistsEntity
         return $this->item;
     }
 
+    public function getDownloadUrl()
+    {
+        if (is_null($this->download_url)) {
+            list($this->download_url, $this->preview_url) = $this->getUrl();
+        }
+
+        return $this->download_url;
+    }
+
+    public function getPreviewUrl()
+    {
+        if (is_null($this->preview_url)) {
+            list($this->download_url, $this->preview_url) = $this->getUrl();
+        }
+
+        return $this->preview_url;
+    }
+
+    public function getUrl()
+    {
+        $url = self::setUrl([
+            'id'       => $this->id,
+            'item_id'  => $this->item_id,
+            'filename' => $this->filename,
+            'storage'  => $this->storage
+        ]);
+
+        return [ifempty($url, 'download_url', ''), ifempty($url, 'preview_url', '')];
+    }
+
     /**
      * @param $attachment_data
      * @return array
@@ -248,7 +283,7 @@ class pocketlistsAttachment extends pocketlistsEntity
             $url_pub = wa()->getDataUrl('attachments/%s/%s', true, pocketlistsHelper::APP_ID, true);
         }
         if (!isset($url_pri)) {
-            $url_pri = wa()->getUrl(true).wa()->getConfig()->getBackendUrl().'/'.pocketlistsHelper::APP_ID.'/download/%s';
+            $url_pri = wa()->getConfig()->getHostUrl().wa()->getConfig()->getBackendUrl(true).pocketlistsHelper::APP_ID.'/download/%s';
         }
 
         if (ifset($attachment_data, 'storage', 'protected') === 'protected') {
