@@ -103,7 +103,7 @@
               </li>
               {else}
               <li class="pl-no-preview">
-                  <a href="{$pl2_attachments_path}/{$item->getId()}/{$attachment->getFilename()}" target="_blank"><i class="icon16 download"></i>{$attachment->getFilename()|truncate:128}</a>
+                  <a href="{$attachment->getDownloadUrl()}" target="_blank"><i class="icon16 download"></i>{$attachment->getFilename()|truncate:128}</a>
               </li>
               {/if}
             {/foreach}

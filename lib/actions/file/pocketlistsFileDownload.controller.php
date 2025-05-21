@@ -19,7 +19,7 @@ class pocketlistsFileDownloadController extends waController
             $user_id = $this->getUser()->getId();
             $list_id_available = pocketlistsRBAC::getAccessListForContact();
             if (empty($file['list_id'])) {
-                if ($user_id != $file['contact_id']) {
+                if (!in_array($user_id, [$file['contact_id'], $file['assigned_contact_id']])) {
                     throw new pocketlistsForbiddenException();
                 }
             } elseif (!in_array($file['list_id'], $list_id_available)) {
@@ -41,9 +41,9 @@ class pocketlistsFileDownloadController extends waController
     private function getAttachment($attachement_id)
     {
         return pl2()->getModel()->query("
-            SELECT pa.*, pi2.list_id, pi2.contact_id FROM pocketlists_attachment pa
+            SELECT pa.*, pi2.list_id, pi2.contact_id, pi2.assigned_contact_id FROM pocketlists_attachment pa
             LEFT JOIN pocketlists_item pi2 ON pa.item_id = pi2.id
-            WHERE pa.id = i:attachement_id;
+            WHERE pa.id = i:attachement_id
             ",
             ['attachement_id' => $attachement_id]
         )->fetchAssoc();
