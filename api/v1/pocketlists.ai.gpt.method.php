@@ -8,9 +8,7 @@ class pocketlistsAiGptMethod extends pocketlistsApiAbstractMethod
 
         $result = '';
         if ($prompt) {
-            $ai_request = (new pocketlistsApiAiRequest())->loadFieldsFromApi('pocketlists');
-
-            $result = $ai_request->generate();
+            $result = (new pocketlistsApiAiRequest())->generate('todo_list', $prompt);
         }
 
         $this->response['data'] = ['text' =>  waUtils::jsonEncode($result)];
