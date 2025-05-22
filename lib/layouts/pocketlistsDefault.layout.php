@@ -61,7 +61,7 @@ class pocketlistsDefaultLayout extends waLayout
             $user = reset($user);
 
             $user_rights = pocketlistsSystemGetSettingsMethod::getUserRights();
-            if ($is_premium || class_exists('pocketlistsProPlugin')) {
+            if ($is_premium || pocketlistsHelper::hasPlugin('pro')) {
                 $labels = pl2()->getModel(pocketlistsLabel::class)->getAllWithSort();
                 $shortcuts = pl2()->getModel(pocketlistsShortcut::class)->select('*')->order('`group` ASC, id ASC')->fetchAll();
                 foreach ($labels as &$label) {
