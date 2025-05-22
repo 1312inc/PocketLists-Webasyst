@@ -29,8 +29,8 @@
     <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-list.js?v3{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
     <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-comment.js?v3{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
 
-    <script type="module" crossorigin src="{$wa_app_static_url}client/assets/index-npZA7Hpi.js"></script>
-    <link rel="stylesheet" crossorigin href="{$wa_app_static_url}client/assets/index-dgchL0yK.css">
+    <script type="module" crossorigin src="{$wa_app_static_url}client/assets/index-icCiezek.js"></script>
+    <link rel="stylesheet" crossorigin href="{$wa_app_static_url}client/assets/index-luLzHzrd.css">
 
     <script type="module">
         import WebSocketMonitor from '{$wa_app_static_url}js/pocketlists-ws-monitor.js';
@@ -118,7 +118,7 @@
                                     <span>[`Premium`]</span>
                                     {if !$is_premium}
                                         {$p = $wa->pocketlists->getPremiumPricing()}
-                                        {if !empty($p.special)}<span class="count"><span class="badge small {$p.special_color}">{$p.special_short}</span></span>{/if}
+                                        {if !empty($p.special_short)}<span class="count"><span class="badge small {$p.special_color}">{$p.special_short}</span></span>{/if}
                                     {/if}
                                 </a>
                             </li>

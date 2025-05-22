@@ -9,6 +9,33 @@ servers:
     description: Current host server
 
 paths:
+  /pocketlists.ai.gpt:
+    get:
+      security:
+        - BearerAuth: [ ]
+      summary: Makes up a checklist with Webasyst AI based on the prompt. Returns it as a solid string (GPT) to be ultimately processed (e.g. split by lines) by the client on its sole discretion.
+      parameters:
+        - in: query
+          name: prompt
+          description: AI prompt will be wrapped with some magic 'Make up a checklist about %prompt%'.
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/response'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          text:
+                            type: string
+                            description: Webasyst AI result (GPT)
   /pocketlists.attachments.add:
     put:
       security:
@@ -891,6 +918,16 @@ paths:
                     enum:
                       - 0
                       - 1
+                  due_date:
+                    type: string
+                    format: date
+                    nullable: true
+                    description: List due date (for all-day lists)
+                  due_datetime:
+                    type: string
+                    format: date-time
+                    nullable: true
+                    description: List exact due datetime (UTC). When specified, server automatically fills due_date field making the 'due_date' optional for the request.
                   client_touch_datetime:
                     type: string
                     format: date-time
@@ -1150,6 +1187,16 @@ paths:
                     enum:
                       - 0
                       - 1
+                  due_date:
+                    type: string
+                    format: date
+                    nullable: true
+                    description: List due date (for all-day lists)
+                  due_datetime:
+                    type: string
+                    format: date-time
+                    nullable: true
+                    description: List exact due datetime (UTC). When specified, server automatically fills due_date field making the 'due_date' optional for the request.
                   client_touch_datetime:
                     type: string
                     format: date-time

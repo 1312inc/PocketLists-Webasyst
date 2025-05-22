@@ -776,8 +776,10 @@ i.pl-list-color-indicator { display: inline-block; background-image: none; borde
 .pl2pro-column-header h5 .pl-done:checked + span { left: 0; margin-right: 8px; float: left; }
 .pl2pro-column-header .count { padding: 6px; font-weight: bold; }
 .pl2pro-column-content { flex: 1; overflow: scroll; background: var(--background-color); padding: 0; transition: background-color 0.2s; border-radius: 5px; }
-.pl2pro-column.ui-droppable-active { background: transparent !important }
-.pl2pro-column.ui-droppable-active:hover .pl2pro-column-content { background: rgba(0,0,0,0.06); }
+.ui-draggable-dragging { z-index: 99999; }
+.pl2pro-column.ui-droppable-active { background: transparent !important; }
+.pl2pro-column.ui-droppable-active .pl2pro-column-content { overflow: unset; }
+.pl2pro-column.ui-droppable-hover .pl2pro-column-content { background: rgba(0,0,0,0.06); box-shadow: 0 0 0 8px rgba(0,0,0,0.06); }
 .pl2pro-column-items { list-style: none; padding: 0; margin-top: 10px; cursor: move; }
 .pl2pro-column-items li { padding: 10px 13px 11px 12px; line-height: 1.1; font-size: 15px; background: var(--background-color-blank); transition: background-color 0.2s; border-radius: 12px; margin-bottom: 1rem; box-shadow: 0 2px 8px -4px rgba(0,0,0,0.1); overflow: hidden; }
 .pl2pro-column-items li span.item-name { font-weight: 500; line-height: 1.3rem; }

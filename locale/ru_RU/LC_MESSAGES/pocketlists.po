@@ -1979,7 +1979,7 @@ msgid "Create checklists via Webasyst AI service."
 msgstr "Создавайте списки дел еще быстрее с помощью ИИ Webasyst."
 
 msgid "Team performance reports"
-msgstr "Отчеты о работы команды"
+msgstr "Отчеты о работе команды"
 
 msgid "Later in 2025"
 msgstr "Позже в 2025"

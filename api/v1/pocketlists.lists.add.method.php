@@ -69,8 +69,8 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                 'complete_contact_id'   => null,
                 'name'                  => ifset($_list, 'name', null),
                 'note'                  => '',
-                'due_date'              => null,
-                'due_datetime'          => null,
+                'due_date'              => ifset($_list, 'due_date', null),
+                'due_datetime'          => ifset($_list, 'due_datetime', null),
                 'client_touch_datetime' => ifset($_list, 'client_touch_datetime', null),
                 'location_id'           => null,
                 'amount'                => 0,
@@ -160,6 +160,30 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                 }
             }
 
+            if (isset($_list['due_datetime'])) {
+                if (!is_string($_list['due_datetime'])) {
+                    $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'due_datetime');
+                } else {
+                    if ($dt = $this->convertDatetimeToServer($_list['due_datetime'])) {
+                        $_list['due_date'] = date('Y-m-d', strtotime($dt));
+                        $_list['due_datetime'] = $dt;
+                    } else {
+                        $_list['errors'][] = _w('Invalid value due_datetime');
+                    }
+                }
+            } elseif (isset($_list['due_date'])) {
+                if (!is_string($_list['due_date'])) {
+                    $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'due_date');
+                } else {
+                    $dt = date_create($_list['due_date']);
+                    if ($dt) {
+                        $_list['due_date'] = $dt->format('Y-m-d');
+                    } else {
+                        $_list['errors'][] = _w('Invalid value due_date');
+                    }
+                }
+            }
+
             if (isset($_list['client_touch_datetime'])) {
                 if (!is_string($_list['client_touch_datetime'])) {
                     $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'client_touch_datetime');
@@ -230,6 +254,8 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                     ->setRepeatInterval($_list['repeat_interval'])
                     ->setRepeatOccurrence($_list['repeat_occurrence'])
                     ->setIcon($_list['icon'])
+                    ->setDueDate($_list['due_date'])
+                    ->setDueDatetime($_list['due_datetime'])
                     ->setClientTouchDatetime($_list['client_touch_datetime'])
                     ->setSort($_list['sort'])
                     ->setRank($_list['rank'])
