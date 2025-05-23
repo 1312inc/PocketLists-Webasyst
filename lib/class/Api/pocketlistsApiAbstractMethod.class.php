@@ -89,6 +89,15 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
     }
 
     /**
+     * @param $data
+     * @return void
+     */
+    public function setRequestBody($data = [])
+    {
+        $this->request_body = (is_array($data) ? waUtils::jsonEncode($data) : null);
+    }
+
+    /**
      * @return mixed|null
      */
     protected function readBodyAsJson()
@@ -155,7 +164,19 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
             $log_model = new waLogModel();
         }
 
-        return $log_model->add($action, $params, $subject_contact_id, $contact_id);
+        try {
+            return $log_model->add($action, $params, $subject_contact_id, $contact_id);
+        } catch (Exception $ex) {
+            pocketlistsLogger::error(
+                sprintf(
+                    'Error on systemLogAction. Error: %s. Trace: %s',
+                    $ex->getMessage(),
+                    $ex->getTraceAsString()
+                ),
+                'system_log_action.log'
+            );
+            return false;
+        }
     }
 
 
