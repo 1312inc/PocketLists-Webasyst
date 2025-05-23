@@ -2503,10 +2503,16 @@ components:
               default: 0
               description: Repeat frequency (multiplier for interval 'every frequency x interval')
             repeat_interval:
-              type: integer
+              type: string
               nullable: true
               default: null
               description: Repeat interval (time interval length between repeat iterations)
+              enum:
+                - day
+                - workday
+                - week
+                - month
+                - year
             repeat_occurrence:
               type: integer
               nullable: true
