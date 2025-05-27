@@ -5,6 +5,8 @@
  */
 class pocketlistsRepetitions
 {
+    use pocketlistsDataHelperTrait;
+
     const WEEK = [
         1 => 'Sunday',	    // Воскресенье
         2 => 'Monday',	    // Понедельник
@@ -14,6 +16,17 @@ class pocketlistsRepetitions
         6 => 'Friday',	    // Пятница
         7 => 'Saturday'	    // Суббота
     ];
+
+    private static $instance;
+
+    public static function getInstance()
+    {
+        if (is_null(self::$instance)) {
+            self::$instance = new self;
+        }
+
+        return self::$instance;
+    }
 
     /**
      * @return bool
@@ -110,6 +123,8 @@ class pocketlistsRepetitions
             $_list += ifset($key_items, $_list['key_item_id'], []);
             $_list['old_id'] = $_list['id'];
             $_list['activity_datetime'] = date('Y-m-d H:i:s');
+            $_list['key_item_id'] = null;
+            $_list['complete_datetime'] = null;
             $_list['repeat_occurrence'] += 1;
             $_list['uuid'] = waString::uuid();
             switch ($_list['repeat_interval']) {
@@ -127,16 +142,22 @@ class pocketlistsRepetitions
                     $_list['due_date'] = date('Y-m-d', strtotime($_list['due_date'].' next year'));
                     break;
             }
-            unset($_list['id'], $_list['key_item_id'], $_list['complete_datetime']);
+            unset($_list['id']);
 
             $list_entity = $list_factory->generateWithData($_list);
             if ($list_factory->save($list_entity)) {
                 $_list['id'] = $list_entity->getId();
             } else {
                 pocketlistsLogger::error('Error clone list. Data list: '.var_export($_list, true), 'repeating.log');
-                unset($_list[$key]);
+                unset($lists[$key]);
             }
         }
+
+        self::getInstance()->saveLog(
+            pocketlistsLog::ENTITY_LIST,
+            pocketlistsLog::ACTION_ADD,
+            $lists
+        );
 
         return $lists;
     }
@@ -151,40 +172,35 @@ class pocketlistsRepetitions
         $model = pl2()->getModel(pocketlistsItem::class);
         foreach ($clone_lists as $list) {
             try {
-                $old_items = $model->select('id')->where('list_id = ?', $list['old_id'])->fetchAll('id');
-                foreach ($old_items as $old_item_id => $old_item) {
-                    $new_item_id = $model->query("
-                        INSERT INTO pocketlists_item (list_id, contact_id, parent_id, sort, `rank`, has_children, priority, calc_priority, create_datetime, update_datetime, activity_datetime, client_touch_datetime, name, note, location_id, amount, currency_iso3, assigned_contact_id, repeat_frequency, repeat_interval, repeat_occurrence, key_list_id, uuid, pro_label_id)
-                        SELECT i:new_list_id AS list_id, contact_id, parent_id, sort, `rank`, has_children, priority, calc_priority, create_datetime, update_datetime, activity_datetime, client_touch_datetime, name, note, location_id, amount, currency_iso3, assigned_contact_id, repeat_frequency, repeat_interval, repeat_occurrence, key_list_id, s:uuid AS uuid, pro_label_id
-                        FROM pocketlists_item pli
-                        WHERE id = i:old_item_id
-                    ", [
-                        'new_list_id' => $list['id'],
-                        'old_item_id' => $old_item_id,
-                        'uuid'        => waString::uuid()
-                    ])->lastInsertId();
-
-                    try {
-                        if (self::cloneAttachments($old_item_id, $new_item_id)) {
-                            $model->exec("
-                                INSERT INTO pocketlists_attachment (item_id, filename, ext, size, storage, upload_datetime, uuid)
-                                SELECT i:new_item_id AS item_id, filename, ext, size, storage, upload_datetime, '' AS uuid FROM pocketlists_attachment 
-                                WHERE item_id = i:old_item_id
-                            ", [
-                                'old_item_id' => $old_item_id,
-                                'new_item_id' => $new_item_id
-                            ]);
-                        }
-                    } catch (Exception $e) {
-                        pocketlistsLogger::error($e->getMessage(), 'repeating.log');
-                    }
+                $items = $model->select('*')->where('list_id = ?', $list['old_id'])->fetchAll();
+                foreach ($items as &$_item) {
+                    $_item['old_id'] = $_item['id'];
+                    $_item['list_id'] = $list['id'];
+                    $_item['uuid'] = waString::uuid();
+                    $_item['status'] = pocketlistsItem::STATUS_UNDONE;
+                    $_item['activity_datetime'] = null;
+                    $_item['complete_datetime'] = null;
+                    $_item['complete_contact_id'] = null;
+                    unset($_item['id']);
                 }
 
-                $model->exec("
-                    UPDATE pocketlists_item
-                    SET status = 0, activity_datetime = NULL, complete_datetime = NULL, complete_contact_id = NULL
-                    WHERE list_id = i:list_id
-                ", ['list_id' => $list['id']]);
+                $item_model = pl2()->getModel(pocketlistsItem::class);
+                $result = $item_model->multipleInsert($items);
+                if ($result->getResult()) {
+                    $last_id = $result->lastInsertId();
+                    $rows_count = $result->affectedRows();
+                    if ($rows_count === count($items)) {
+                        foreach ($items as &$_item) {
+                            $_item['id'] = $last_id++;
+                            self::cloneAttachments($_item['old_id'], $_item['id']);
+                        }
+                        self::getInstance()->saveLog(
+                            pocketlistsLog::ENTITY_ITEM,
+                            pocketlistsLog::ACTION_ADD,
+                            $items
+                        );
+                    }
+                }
             } catch (Exception $e) {
                 pocketlistsLogger::error('Error clone items. Data list: '.var_export($list, true).' Exception: '.$e->getMessage(), 'repeating.log');
             }
@@ -194,22 +210,45 @@ class pocketlistsRepetitions
     /**
      * @param $old_item_id
      * @param $new_item_id
-     * @return bool
+     * @return void
      * @throws waException
      */
     static private function cloneAttachments($old_item_id, $new_item_id)
     {
         $wa_data_path = wa()->getDataPath(pocketlistsUploadedFileVO::PATH, false, pocketlistsHelper::APP_ID);
         $model = pl2()->getModel(pocketlistsAttachment::class);
-        $attachments = $model->select('id, item_id')->where('item_id = ?', $old_item_id)->fetchAll();
+        $attachments = $model->select('*')->where('item_id = ?', $old_item_id)->fetchAll();
 
+        if (empty($attachments)) {
+            return;
+        }
         try {
             waFiles::copy($wa_data_path.DIRECTORY_SEPARATOR.$old_item_id, $wa_data_path.DIRECTORY_SEPARATOR.$new_item_id);
+
+            krsort($attachments);
+            foreach ($attachments as &$_attachment) {
+                $_attachment['item_id'] = $new_item_id;
+                $_attachment['uuid'] = waString::uuid();
+                unset($_attachment['id']);
+            }
+            $result = $model->multipleInsert($attachments);
+            if ($result->getResult()) {
+                $last_id = $result->lastInsertId();
+                $rows_count = $result->affectedRows();
+                if ($rows_count === count($attachments)) {
+                    foreach ($attachments as &$_attachment) {
+                        $_attachment['id'] = $last_id++;
+                    }
+                }
+            }
+
+            self::getInstance()->saveLog(
+                pocketlistsLog::ENTITY_ATTACHMENT,
+                pocketlistsLog::ACTION_ADD,
+                $attachments
+            );
         } catch (Exception $e) {
             pocketlistsLogger::error('Error clone attachment directory. Data attachments: '.var_export($attachments, true).' Exception: '.$e->getMessage(), 'repeating.log');
-            return false;
         }
-
-        return true;
     }
 }
