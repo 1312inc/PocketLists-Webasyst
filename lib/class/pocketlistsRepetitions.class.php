@@ -101,7 +101,7 @@ class pocketlistsRepetitions
 
             $model->updateByField(
                 ['key_list_id' => array_column($clone_lists, 'old_id')],
-                ['repeat_frequency' => 0, 'repeat_interval'  => '']
+                ['repeat_frequency' => 0, 'repeat_interval'  => '', 'activity_datetime' => date('Y-m-d H:i:s')]
             );
         }
 
@@ -132,7 +132,6 @@ class pocketlistsRepetitions
                     $_list['due_date'] = date('Y-m-d', strtotime($_list['due_date'].' next day'));
                     break;
                 case pocketlistsItem::INTERVAL_WORKDAY:
-                    break;
                 case pocketlistsItem::INTERVAL_WEEK:
                     break;
                 case pocketlistsItem::INTERVAL_MONTH:
@@ -150,6 +149,27 @@ class pocketlistsRepetitions
             } else {
                 pocketlistsLogger::error('Error clone list. Data list: '.var_export($_list, true), 'repeating.log');
                 unset($lists[$key]);
+            }
+        }
+
+        if (!empty($lists)) {
+            $right_names = array_map(function ($l_id) {return "list.$l_id";}, array_column($lists, 'old_id'));
+            $cr_model = new waContactRightsModel();
+            $right_lists = $cr_model->select('*')->where('app_id = ? AND name IN (?)', [pocketlistsHelper::APP_ID, $right_names])->fetchAll();
+
+            foreach ($right_lists as &$r_list) {
+                $old_right_list_id = explode('.', $r_list['name'])[1];
+                foreach ($lists as $l) {
+                    if ($old_right_list_id == $l['old_id']) {
+                        $r_list['name'] = 'list.'.$l['id'];
+                        break;
+                    }
+                }
+            }
+            unset($r_list);
+
+            if (!empty($right_lists)) {
+                $cr_model->multipleInsert($right_lists);
             }
         }
 
@@ -225,7 +245,6 @@ class pocketlistsRepetitions
         try {
             waFiles::copy($wa_data_path.DIRECTORY_SEPARATOR.$old_item_id, $wa_data_path.DIRECTORY_SEPARATOR.$new_item_id);
 
-            krsort($attachments);
             foreach ($attachments as &$_attachment) {
                 $_attachment['item_id'] = $new_item_id;
                 $_attachment['uuid'] = waString::uuid();

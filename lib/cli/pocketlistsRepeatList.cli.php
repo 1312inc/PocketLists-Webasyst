@@ -18,9 +18,8 @@ class pocketlistsRepeatListCli extends waCliController
         }
 
         try {
-            if (pocketlistsRepetitions::repeatLists()) {
-                $as_model->set(pocketlistsHelper::APP_ID, 'last_repeat_list_cron_date', date('Y-m-d'));
-            }
+            $as_model->set(pocketlistsHelper::APP_ID, 'last_repeat_list_cron_date', date('Y-m-d'));
+            pocketlistsRepetitions::repeatLists();
         } catch (Exception $ex) {
             pocketlistsLogger::error(
                 sprintf(

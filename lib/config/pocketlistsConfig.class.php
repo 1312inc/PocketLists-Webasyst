@@ -266,9 +266,8 @@ class pocketlistsConfig extends waAppConfig
         $last_date = $as_model->get(pocketlistsHelper::APP_ID, 'last_repeat_list_cron_date');
         if ($last_date < date('Y-m-d')) {
             try {
-                if (pocketlistsRepetitions::repeatLists()) {
-                    $as_model->set(pocketlistsHelper::APP_ID, 'last_repeat_list_cron_date', date('Y-m-d'));
-                }
+                $as_model->set(pocketlistsHelper::APP_ID, 'last_repeat_list_cron_date', date('Y-m-d'));
+                pocketlistsRepetitions::repeatLists();
             } catch (Exception $ex) {
                 pocketlistsLogger::error(
                     sprintf(
