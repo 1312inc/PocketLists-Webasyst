@@ -82,6 +82,9 @@ class pocketlistsDefaultLayout extends waLayout
         $user_tz = wa()->getUser()->get('timezone');
         $current_time = time();
 
+        $app_settings = new waAppSettingsModel();
+        $install_hash = $app_settings->get(pocketlistsHelper::APP_ID, 'install_hash');
+
         $this->view->assign([
             pocketlistsEventStorage::WA_BACKEND_HEAD => $eventResult,
             'isAdmin' => (int) pocketlistsRBAC::isAdmin(),
@@ -98,6 +101,7 @@ class pocketlistsDefaultLayout extends waLayout
             'timestamp' => $current_time,
             'datetime' => pocketlistsHelper::convertDateToISO8601(date('Y-m-d H:i:s', $current_time)),
             'account_name' => wa()->accountName(),
+            'install_hash' => $install_hash,
             'framework_version' => wa()->getVersion('webasyst'),
             'app_version' => wa()->getVersion(pocketlistsHelper::APP_ID),
             'is_premium' => ($is_premium ? 1 : 0),

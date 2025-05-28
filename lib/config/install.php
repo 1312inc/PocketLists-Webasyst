@@ -1,5 +1,8 @@
 <?php
 
+$app_settings = new waAppSettingsModel();
+$app_settings->set(pocketlistsHelper::APP_ID, 'install_hash', waString::uuid());
+
 $pr = new pocketlistsRightConfig();
 $pr->setRights(wa()->getUser()->getId(), 'backend', 2);
 
