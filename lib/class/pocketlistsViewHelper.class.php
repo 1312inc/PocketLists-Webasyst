@@ -79,13 +79,13 @@ class pocketlistsViewHelper
         {
             $pricing = array( 'compare_price' => '', 'price' => '11 999 <span class="ruble">₽</span>', 'special' => '' );
             if (date('Ymd')<='20250531') $pricing = array( 'compare_price' => '11 999', 'price' => '5 999 <span class="ruble">₽</span>', 'special' => '&minus;50% до 31.05', 'special_short' => '&minus;50% до 31.05', 'special_color' => 'green' );
-            elseif (date('Ymd')<='20250630') $pricing = array( 'compare_price' => '11 999', 'price' => '7 999 <span class="ruble">₽</span>', 'special' => '&minus;33% до 30.06', 'special_short' => '', 'special_color' => 'orange' );
+            elseif (date('Ymd')<='20250831') $pricing = array( 'compare_price' => '15 999', 'price' => '11 999 <span class="ruble">₽</span>', 'special' => '&minus;33%', 'special_short' => '', 'special_color' => 'orange' );
         }
         else
         {
             $pricing = array( 'compare_price' => '', 'price' => '$199', 'special' => '' );
             if (date('Ymd')<='20250531') $pricing = array( 'compare_price' => '$199', 'price' => '$99', 'special' => '&minus;50% / 05.31', 'special_short' => '&minus;50%', 'special_color' => 'green' );
-            elseif (date('Ymd')<='20250630') $pricing = array( 'compare_price' => '$199', 'price' => '$129', 'special' => '&minus;35% / 06.30', 'special_short' => '', 'special_color' => 'orange' );
+            elseif (date('Ymd')<='20250630') $pricing = array( 'compare_price' => '$299', 'price' => '$199', 'special' => '&minus;33%', 'special_short' => '', 'special_color' => 'orange' );
         }
 
         return $pricing;
