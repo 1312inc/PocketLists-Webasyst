@@ -68,7 +68,7 @@ class pocketlistsPocketsUpdateMethod extends pocketlistsApiAbstractMethod
             if (isset($_pocket['rank'])) {
                 if (!is_string($_pocket['rank'])) {
                     $_pocket['errors'][] = sprintf_wp('Invalid data type: “%s”', 'rank');
-                } elseif (!pocketlistsSortRank::rankValidate($_pocket['rank'])) {
+                } elseif ($_pocket['rank'] !== '' && !pocketlistsSortRank::rankValidate($_pocket['rank'])) {
                     $_pocket['errors'][] = _w('Invalid rank value');
                 }
             }
