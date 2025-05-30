@@ -2546,6 +2546,12 @@ components:
                   type: integer
                   nullable: true
                   description: Number of comments linked to this item
+        - type: object
+          properties:
+            archived:
+              type: integer
+              nullable: true
+              description: Is archived item
     comment:
       type: object
       properties:

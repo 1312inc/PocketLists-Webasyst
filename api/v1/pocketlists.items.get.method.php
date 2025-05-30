@@ -270,6 +270,10 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
 
         $ids = array_keys($items);
         if ($ids) {
+            $l_ids = pl2()->getModel(pocketlistsList::class)->select('id, archived')
+                ->where('id IN (?)', array_unique(array_column($items, 'list_id')))
+                ->fetchAll('id');
+
             $attachments = [];
             $attachments_in_db = pl2()->getModel(pocketlistsAttachment::class)->getByField('item_id', $ids, true);
             foreach ($attachments_in_db as $_attachment) {
@@ -296,6 +300,7 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
 
         foreach ($items as &$_item) {
             $_item += [
+                'archived'       => ifset($l_ids, $_item['list_id'], 'archived', 0),
                 'attachments'    => [],
                 'external_links' => [],
                 'tags'           => []
@@ -334,6 +339,7 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
                 'parent_id',
                 'sort',
                 'rank',
+                'archived',
                 'has_children',
                 'status',
                 'priority',
@@ -369,6 +375,7 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
                 'contact_id' => 'int',
                 'parent_id' => 'int',
                 'sort' => 'int',
+                'archived' => 'int',
                 'has_children' => 'int',
                 'status' => 'int',
                 'priority' => 'int',
