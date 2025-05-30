@@ -13,6 +13,7 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
             throw new pocketlistsApiException(_w('Type error `data`'), 400);
         }
 
+        $lists = [];
         $assign_contacts = [];
         $attachment_uuids = [];
         $list_ids = array_unique(array_filter(array_column($items, 'list_id')));
@@ -26,9 +27,9 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
         if (!empty($list_ids)) {
             /** @var pocketlistsListModel $list_model */
             $list_model = pl2()->getModel(pocketlistsList::class);
-            $list_ids = $list_model->select('id')
-                ->where('id IN (:list_ids)', ['list_ids' => $list_ids])
-                ->fetchAll(null, true);
+            $lists = $list_model->select('id, private')
+                ->where('id IN (:list_ids)', ['list_ids' => array_intersect($access_list_ids, $list_ids)])
+                ->fetchAll('id');
         }
         if (!empty($location_ids)) {
             /** @var pocketlistsLocationModel $location_model */
@@ -115,7 +116,7 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                     $_item['errors'][] = sprintf_wp('Invalid data type: “%s”', 'list_id');
                 } elseif (!in_array($_item['list_id'], $access_list_ids)) {
                     $_item['errors'][] = _w('List access denied');
-                } elseif ($_item['list_id'] < 1 || !in_array($_item['list_id'], $list_ids)) {
+                } elseif ($_item['list_id'] < 1 || !array_key_exists($_item['list_id'], $lists)) {
                     $_item['errors'][] = _w('List not found');
                 }
             }
@@ -358,22 +359,24 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                                 $_item['external_links'] = [];
                             }
 
-                            if (isset($_item['assigned_contact_id']) && $_item['assigned_contact_id'] == $user_id) {
-                                $this->systemLogAction(
-                                    pocketlistsLogAction::NEW_SELF_ITEM,
-                                    [
-                                        'item_id' => $_item['id'],
-                                        'list_id' => $_item['list_id'],
-                                    ]
-                                );
-                            } else {
-                                $this->systemLogAction(
-                                    pocketlistsLogAction::NEW_ITEM,
-                                    [
-                                        'item_id' => $_item['id'],
-                                        'list_id' => $_item['list_id'],
-                                    ]
-                                );
+                            if (ifempty($lists, $_item['list_id'], 'private', 0) == 0) {
+                                if (isset($_item['assigned_contact_id']) && $_item['assigned_contact_id'] == $user_id) {
+                                    $this->systemLogAction(
+                                        pocketlistsLogAction::NEW_SELF_ITEM,
+                                        [
+                                            'item_id' => $_item['id'],
+                                            'list_id' => $_item['list_id'],
+                                        ]
+                                    );
+                                } else {
+                                    $this->systemLogAction(
+                                        pocketlistsLogAction::NEW_ITEM,
+                                        [
+                                            'item_id' => $_item['id'],
+                                            'list_id' => $_item['list_id'],
+                                        ]
+                                    );
+                                }
                             }
                         }
                         unset($_item);

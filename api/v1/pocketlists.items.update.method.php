@@ -41,9 +41,10 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
             'contact_id' => $current_user_id
         ])->fetchAll('id');
         $list_id_available = pocketlistsRBAC::getAccessListForContact($current_user_id);
+
+        /** @var pocketlistsListModel $list_model */
+        $list_model = pl2()->getModel(pocketlistsList::class);
         if (!empty($list_ids)) {
-            /** @var pocketlistsListModel $list_model */
-            $list_model = pl2()->getModel(pocketlistsList::class);
             $list_ids = $list_model->select('id')->where('id IN (:list_ids)', ['list_ids' => $list_ids])->fetchAll(null, true);
         }
         if (!empty($location_ids)) {
@@ -388,6 +389,10 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
             $unset_favorite = [];
             $attachments_log = [];
             try {
+                $lists = $list_model->select('id, private')
+                    ->where('id IN (:list_ids)', ['list_ids' => array_column($items_ok, 'list_id')])
+                    ->fetchAll('id');
+
                 $item_model = pl2()->getModel(pocketlistsItem::class);
                 $items_ok = $this->sorting('item', $items_ok);
                 foreach ($items_ok as &$_item_ok) {
@@ -431,10 +436,12 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                             }
                             $_item_ok['external_links'] = [];
                         }
-                        if (!empty($_item_ok['complete_datetime'])) {
-                            $this->systemLogAction(pocketlistsLogAction::ITEM_COMPLETED, ['item_id' => $_item_ok['id']]);
-                        } elseif (isset($_item_ok['assigned_contact_id'])) {
-                            $this->systemLogAction(pocketlistsLogAction::ITEM_ASSIGN, ['item_id' => $_item_ok['id'], 'assigned_to' => $_item_ok['assigned_contact_id']]);
+                        if (ifempty($lists, $_item_ok['list_id'], 'private', 0) == 0) {
+                            if (!empty($_item_ok['complete_datetime'])) {
+                                $this->systemLogAction(pocketlistsLogAction::ITEM_COMPLETED, ['item_id' => $_item_ok['id']]);
+                            } elseif (isset($_item_ok['assigned_contact_id'])) {
+                                $this->systemLogAction(pocketlistsLogAction::ITEM_ASSIGN, ['item_id' => $_item_ok['id'], 'assigned_to' => $_item_ok['assigned_contact_id']]);
+                            }
                         }
                     } else {
                         $_item_ok['success'] = false;
