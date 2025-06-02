@@ -27,7 +27,7 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
         if (!empty($list_ids)) {
             /** @var pocketlistsListModel $list_model */
             $list_model = pl2()->getModel(pocketlistsList::class);
-            $lists = $list_model->select('id, private')
+            $lists = $list_model->select('id, private, archived')
                 ->where('id IN (:list_ids)', ['list_ids' => array_intersect($access_list_ids, $list_ids)])
                 ->fetchAll('id');
         }
@@ -77,6 +77,7 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                 'parent_id'             => 0,
                 'sort'                  => ifset($_item, 'sort', null),
                 'rank'                  => ifset($_item, 'rank', null),
+                'archived'              => null,
                 'has_children'          => 0,
                 'status'                => (ifset($_item, 'status', 0) ? pocketlistsItem::STATUS_DONE : pocketlistsItem::STATUS_UNDONE),
                 'priority'              => ifset($_item, 'priority', 0),
@@ -326,6 +327,7 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                         $favorites = [];
                         foreach ($items_ok as &$_item) {
                             $_item['id'] = $last_id++;
+                            $_item['archived'] = ifset($lists, $_item['list_id'], 'archived', 0);
                             $_item['extended_data'] = [
                                 'comments_count' => 0
                             ];
@@ -454,6 +456,7 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                 'parent_id',
                 'sort',
                 'rank',
+                'archived',
                 'has_children',
                 'status',
                 'priority',
@@ -489,6 +492,7 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                 'contact_id' => 'int',
                 'parent_id' => 'int',
                 'sort' => 'int',
+                'archived' => 'int',
                 'has_children' => 'int',
                 'status' => 'int',
                 'priority' => 'int',

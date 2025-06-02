@@ -389,7 +389,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
             $unset_favorite = [];
             $attachments_log = [];
             try {
-                $lists = $list_model->select('id, private')
+                $lists = $list_model->select('id, private, archived')
                     ->where('id IN (:list_ids)', ['list_ids' => array_column($items_ok, 'list_id')])
                     ->fetchAll('id');
 
@@ -397,6 +397,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 $items_ok = $this->sorting('item', $items_ok);
                 foreach ($items_ok as &$_item_ok) {
                     if ($item_model->updateById($_item_ok['id'], $_item_ok)) {
+                        $_item_ok['archived'] = ifset($lists, $_item_ok['list_id'], 'archived', 0);
                         if (isset($_item_ok['favorite'])) {
                             if ($_item_ok['favorite']) {
                                 $set_favorite[] = [
@@ -533,6 +534,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 'parent_id',
                 'sort',
                 'rank',
+                'archived',
                 'has_children',
                 'status',
                 'priority',
@@ -567,6 +569,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 'contact_id' => 'int',
                 'parent_id' => 'int',
                 'sort' => 'int',
+                'archived' => 'int',
                 'has_children' => 'int',
                 'status' => 'int',
                 'priority' => 'int',
