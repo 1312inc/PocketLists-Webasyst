@@ -393,7 +393,6 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                     ->where('id IN (:list_ids)', ['list_ids' => array_column($items_ok, 'list_id')])
                     ->fetchAll('id');
 
-                $item_model = pl2()->getModel(pocketlistsItem::class);
                 $items_ok = $this->sorting('item', $items_ok);
                 foreach ($items_ok as &$_item_ok) {
                     if ($item_model->updateById($_item_ok['id'], $_item_ok)) {
@@ -485,7 +484,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 }
 
                 if ($list_ids = array_filter(array_unique(array_column($items_ok, 'list_id')))) {
-                    pl2()->getModel(pocketlistsItem::class)->updateByField(
+                    $item_model->updateByField(
                         ['key_list_id' => $list_ids],
                         ['activity_datetime' => date('Y-m-d H:i:s')]
                     );
@@ -520,6 +519,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                         $attachments_log
                     );
                 }
+                pl2()->getCache()->deleteAll();
             } catch (Exception $ex) {
                 throw new pocketlistsApiException(sprintf_wp('Error on transaction import save: %s', $ex->getMessage()), 400);
             }
