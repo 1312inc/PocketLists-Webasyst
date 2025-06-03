@@ -2082,3 +2082,6 @@ msgstr "Новое!"
 
 msgid "See the details:"
 msgstr "Подробно:"
+
+msgid "https://www.webasyst.com/my/buy/upgrade-to-premium/pocketlists/"
+msgstr "https://www.webasyst.ru/my/buy/upgrade-to-premium/pocketlists/"

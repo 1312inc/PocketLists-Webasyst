@@ -1,10 +1,6 @@
 {$_is_premium = $wa->pocketlists->isPremium()}
 {$_premium_pricing = $wa->pocketlists->getPremiumPricing()}
-{if $wa->user()->isAdmin('installer')}
-    {$_pl_upgrade_url = $wa_backend_url|cat:'installer/store/app/pocketlists/'}
-{else}
-    {$_pl_upgrade_url = '[`https://www.webasyst.com/store/app/pocketlists/`]'}
-{/if}
+{$_pl_upgrade_url = '[`https://www.webasyst.com/my/buy/upgrade-to-premium/pocketlists/`]'|cat:'?domain='|cat:str_replace('http://','',str_replace('https://','',$wa->domainUrl()))}
 
 {capture "getpremiumbutton"}
 {if !$_is_premium}
