@@ -198,6 +198,7 @@ class pocketlistsRepetitions
                     $_item['list_id'] = $list['id'];
                     $_item['uuid'] = waString::uuid();
                     $_item['status'] = pocketlistsItem::STATUS_UNDONE;
+                    $_item['create_datetime'] = date('Y-m-d H:i:s');
                     $_item['activity_datetime'] = null;
                     $_item['complete_datetime'] = null;
                     $_item['complete_contact_id'] = null;
