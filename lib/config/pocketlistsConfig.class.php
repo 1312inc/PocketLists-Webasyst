@@ -287,8 +287,53 @@ class pocketlistsConfig extends waAppConfig
             if (time() - $last_update_time > 300) {
                 $item_model->updateCalcPriority();
             }
+            $count =  $this->getUser()->getAppCount();
+            $pocketlists_path = sprintf('%spocketlists?module=backendJson&action=', pl2()->getBackendUrl(true));
+            $script = <<<HTML
+<script>
+(function () {
+    'use strict';
 
-            return $this->getUser()->getAppCount();
+    try {
+        $.post('{$pocketlists_path}sendNotifications', function (r) {
+            if (r.status === 'ok') {
+                var sent = parseInt(r.data);
+                sent && console.log('pocketlists: notification send ' + sent);
+            } else {
+                console.log('pocketlists: notification send error ' + r.error);
+            }
+        }, 'json')
+        .fail(function () {
+            console.log('pocketlists: notification send internal error');
+        });
+        
+        $.post('{$pocketlists_path}sendDirectNotifications', function (r) {
+            if (r.status === 'ok') {
+                if (window['pocketlistsAlertBox'] && r.data) {
+                    $.each(r.data, function () {
+                        var alertbox = new pocketlistsAlertBox('#pl2-notification-area', {
+                            closeTime: 120000,
+                            persistent: true,
+                            hideCloseButton: false
+                        });
+                        alertbox.show(this);
+                    });
+                }
+            } else {
+                console.log('pocketlists: notification send error ' + r.error);
+            }
+        }, 'json')
+        .fail(function () {
+            console.log('pocketlists: notification send internal error');
+        });
+    } catch (e) {
+        console.log('pocketlists: notification send exception ', e);
+    }
+})()
+</script>
+HTML;
+
+            return $onlycount ? $count : $count.$script;
         } catch (Exception $ex) {
             pocketlistsHelper::logError('onCount error', $ex);
         }
