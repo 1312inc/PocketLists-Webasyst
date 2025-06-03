@@ -287,8 +287,18 @@ class pocketlistsConfig extends waAppConfig
             if (time() - $last_update_time > 300) {
                 $item_model->updateCalcPriority();
             }
-            $count =  $this->getUser()->getAppCount();
+            $count = $this->getUser()->getAppCount();
             $pocketlists_path = sprintf('%spocketlists?module=backendJson&action=', pl2()->getBackendUrl(true));
+
+            $css = '';
+            if (!$count) {
+                $css = <<<HTML
+<style>
+    [data-app="pocketlists"] .indicator,
+    [data-app="pocketlists"] .badge { display: none !important; }
+</style>
+HTML;
+            }
             $script = <<<HTML
 <script>
 (function () {
@@ -333,7 +343,7 @@ class pocketlistsConfig extends waAppConfig
 </script>
 HTML;
 
-            return $onlycount ? $count : $count.$script;
+            return $onlycount ? $count : $count.$css.$script;
         } catch (Exception $ex) {
             pocketlistsHelper::logError('onCount error', $ex);
         }
