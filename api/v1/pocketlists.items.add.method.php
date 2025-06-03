@@ -421,7 +421,7 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                             );
                         }
 
-                        (new pocketlistsNotificationAboutNewItems())->multiplicityNotify($items);
+                        (new pocketlistsNotificationAboutNewItems())->multiplicityNotify($items_ok);
 
                         $this->setAnnouncements($items_ok);
                         $this->saveLog(

@@ -81,7 +81,7 @@ class pocketlistsNotificationAboutNewItems extends pocketlistsBaseNotification
                     break;
             }
 
-            if ($filtered_items && $list) {
+            if ($filtered_items) {
                 $itemsToSend = [];
                 $iconFinder = new pocketlistsItemIcon();
                 foreach ($filtered_items as $filteredItem) {
@@ -113,11 +113,8 @@ class pocketlistsNotificationAboutNewItems extends pocketlistsBaseNotification
                     ->setParams(
                         [
                             'list'  => [
-                                'name' => $list->getId() ? $list->getName() : false,
-                                'url'  => $list ? sprintf(
-                                    'lists/%s/',
-                                    $list->getId()
-                                ) : '',
+                                'name' => $list ? $list->getName() : false,
+                                'url'  => $list ? sprintf('lists/%s/', $list->getId()) : '',
                             ],
                             'items' => $itemsToSend,
                             'item'  => reset($itemsToSend),
