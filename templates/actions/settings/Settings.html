@@ -3,7 +3,7 @@
     {$_fire_in_the_hole = false}
 {/if}
 <div class="flexbox width-100 wrap-mobile pl-settings">
-    {if $wa->user()->isAdmin()}
+    {if $wa->user()->isAdmin('pocketlists')}
     <div class="sidebar blank width-21rem" data-pl2-settings-sidebar>
         <ul class="menu large with-icons stack">
             <li class="selected">
