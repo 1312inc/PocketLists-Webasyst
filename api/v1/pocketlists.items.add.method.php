@@ -25,11 +25,15 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
 
         $access_list_ids = pocketlistsRBAC::getAccessListForContact(pl2()->getUser()->getId());
         if (!empty($list_ids)) {
-            /** @var pocketlistsListModel $list_model */
-            $list_model = pl2()->getModel(pocketlistsList::class);
-            $lists = $list_model->select('id, private, archived')
-                ->where('id IN (:list_ids)', ['list_ids' => array_intersect($access_list_ids, $list_ids)])
-                ->fetchAll('id');
+            $l_ids = array_intersect($access_list_ids, $list_ids);
+            if ($l_ids) {
+                /** @var pocketlistsListModel $list_model */
+                $list_model = pl2()->getModel(pocketlistsList::class);
+                $lists = $list_model->select('id, private, archived')
+                    ->where('id IN (:list_ids)', ['list_ids' => $l_ids])
+                    ->fetchAll('id');
+                unset($l_ids);
+            }
         }
         if (!empty($location_ids)) {
             /** @var pocketlistsLocationModel $location_model */
@@ -421,7 +425,12 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                             );
                         }
 
-                        (new pocketlistsNotificationAboutNewItems())->multiplicityNotify($items_ok);
+                        $no_private_items = array_filter($items_ok, function ($i) use ($lists) {
+                            return ifempty($lists, $i['list_id'], 'private', 0) == 0;
+                        });
+                        if ($no_private_items) {
+                            (new pocketlistsNotificationAboutNewItems())->multiplicityNotify($no_private_items);
+                        }
 
                         $this->setAnnouncements($items_ok);
                         $this->saveLog(

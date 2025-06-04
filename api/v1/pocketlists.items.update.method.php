@@ -509,7 +509,12 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 }
 
                 if (array_column($items_ok, 'complete_datetime')) {
-                    (new pocketlistsNotificationAboutCompleteItems())->multiplicityNotifyAboutCompleteItems($items_ok);
+                    $no_private_items = array_filter($items_ok, function ($i) use ($lists) {
+                        return ifempty($lists, $i['list_id'], 'private', 0) == 0;
+                    });
+                    if ($no_private_items) {
+                        (new pocketlistsNotificationAboutCompleteItems())->multiplicityNotifyAboutCompleteItems($no_private_items);
+                    }
                 }
 
                 if ($attachments_log) {
