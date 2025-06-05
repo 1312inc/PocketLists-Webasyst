@@ -66,9 +66,7 @@ class pocketlistsNotificationAboutNewItems extends pocketlistsBaseNotification
 
                         $filtered_items[$item->getId()] = $item;
                     }
-
                     break;
-
                 case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_ITEM_TO_ANY_LIST:
                     foreach ($items as $item) {
                         if (!$this->checkItem($item, $user_id)) {
@@ -77,11 +75,10 @@ class pocketlistsNotificationAboutNewItems extends pocketlistsBaseNotification
 
                         $filtered_items[$item->getId()] = $item;
                     }
-
                     break;
             }
 
-            if ($filtered_items) {
+            if ($filtered_items && $list) {
                 $itemsToSend = [];
                 $iconFinder = new pocketlistsItemIcon();
                 foreach ($filtered_items as $filteredItem) {
@@ -170,7 +167,7 @@ class pocketlistsNotificationAboutNewItems extends pocketlistsBaseNotification
         foreach ((array) $items as $_item) {
             $item_clone = clone $item;
             pl2()->getHydrator()->hydrate($item_clone, $_item);
-            $this->notify($item_clone);
+            $this->notify($item_clone, $item_clone->getList());
         }
     }
 }

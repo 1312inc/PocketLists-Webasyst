@@ -429,6 +429,7 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                             return ifempty($lists, $i['list_id'], 'private', 0) == 0;
                         });
                         if ($no_private_items) {
+                            (new pocketlistsNotificationAboutNewAssign())->multiplicityNotify($no_private_items);
                             (new pocketlistsNotificationAboutNewItems())->multiplicityNotify($no_private_items);
                         }
 
