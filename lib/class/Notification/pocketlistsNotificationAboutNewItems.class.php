@@ -67,15 +67,15 @@ class pocketlistsNotificationAboutNewItems extends pocketlistsBaseNotification
                         $filtered_items[$item->getId()] = $item;
                     }
                     break;
-                case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_ITEM_TO_ANY_LIST:
-                    foreach ($items as $item) {
-                        if (!$this->checkItem($item, $user_id)) {
-                            continue;
-                        }
-
-                        $filtered_items[$item->getId()] = $item;
-                    }
-                    break;
+//                case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_ITEM_TO_ANY_LIST:
+//                    foreach ($items as $item) {
+//                        if (!$this->checkItem($item, $user_id)) {
+//                            continue;
+//                        }
+//
+//                        $filtered_items[$item->getId()] = $item;
+//                    }
+//                    break;
             }
 
             if ($filtered_items && $list) {
