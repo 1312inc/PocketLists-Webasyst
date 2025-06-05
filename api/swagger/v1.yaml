@@ -2202,6 +2202,7 @@ components:
           description: File size (bytes)
         upload_datetime:
           type: string
+          nullable: true
           format: datetime
           description: Server-generated attachment upload datetime (UTC)
         download_url:
@@ -2298,6 +2299,7 @@ components:
                 - notes
             icon:
               type: string
+              nullable: true
               description: Icon
             icon_url:
               type: string
@@ -2487,6 +2489,7 @@ components:
             amount:
               type: number
               default: 0
+              nullable: true
               description: Amount
             currency_iso3:
               type: string
