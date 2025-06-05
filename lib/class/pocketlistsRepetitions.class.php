@@ -123,6 +123,7 @@ class pocketlistsRepetitions
             $_list += ifset($key_items, $_list['key_item_id'], []);
             $_list['old_id'] = $_list['id'];
             $_list['activity_datetime'] = date('Y-m-d H:i:s');
+            $_list['archived'] = 0;
             $_list['key_item_id'] = null;
             $_list['complete_datetime'] = null;
             $_list['repeat_occurrence'] += 1;
