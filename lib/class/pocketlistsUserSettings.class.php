@@ -130,14 +130,6 @@ class pocketlistsUserSettings
     }
 
     /**
-     * @return bool
-     */
-    public function appIcon()
-    {
-        return isset($this->settings['app_icon']) ? $this->settings['app_icon'] : false;
-    }
-
-    /**
      * @return array
      */
     public function getIconPrioririesMapping()
