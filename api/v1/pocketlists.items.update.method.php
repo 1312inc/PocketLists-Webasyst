@@ -508,11 +508,12 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                     pl2()->getModel(pocketlistsItemMove::class)->multipleInsert($items_move);
                 }
 
-                if (array_column($items_ok, 'complete_datetime')) {
-                    $no_private_items = array_filter($items_ok, function ($i) use ($lists) {
-                        return ifempty($lists, $i['list_id'], 'private', 0) == 0;
-                    });
-                    if ($no_private_items) {
+                $no_private_items = array_filter($items_ok, function ($i) use ($lists) {
+                    return ifempty($lists, $i['list_id'], 'private', 0) == 0;
+                });
+                if ($no_private_items) {
+                    (new pocketlistsNotificationAboutNewAssign())->multiplicityNotify($no_private_items);
+                    if (array_column($items_ok, 'complete_datetime')) {
                         (new pocketlistsNotificationAboutCompleteItems())->multiplicityNotifyAboutCompleteItems($no_private_items);
                     }
                 }
