@@ -2666,6 +2666,7 @@ components:
           description: Entity link
         data:
           type: string
+          nullable: true
           description: Link data
     user:
       type: object
