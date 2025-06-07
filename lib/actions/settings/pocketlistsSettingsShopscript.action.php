@@ -64,9 +64,9 @@ class pocketlistsSettingsShopscriptAction extends pocketlistsViewAction
             }
 
             // не показывать когда нет правил
-            if (empty($shopActions['shop.'.$deletedAction->id]->automations)) {
-                unset($shopActions['shop.'.$deletedAction->id]);
-            }
+            // if (empty($shopActions['shop.'.$deletedAction->id]->automations)) {
+            //     unset($shopActions['shop.'.$deletedAction->id]);
+            // }
         }
 
         $this->view->assign([
