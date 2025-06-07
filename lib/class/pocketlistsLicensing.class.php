@@ -5,17 +5,24 @@
  */
 class pocketlistsLicensing
 {
+    /**
+     * @return bool
+     * @throws waDbException
+     * @throws waException
+     */
     public static function isPremium()
     {
-        $is_premium = false;
-        if (waLicensing::check(pocketlistsHelper::APP_ID)->isPremium()) {
-            $is_premium = wa()->getSetting('license_premium', '', pocketlistsHelper::APP_ID);
-
-            if ((time() - strtotime($is_premium) > 3600)) {
-                $is_premium = waLicensing::check(pocketlistsHelper::APP_ID)->hasPremiumLicense();
-            }
+        $is_premium = wa()->getSetting('license_premium', '', pocketlistsHelper::APP_ID);
+        if ($is_premium) {
+            return true;
         }
 
-        return $is_premium;
+        if (waLicensing::check(pocketlistsHelper::APP_ID)->hasPremiumLicense()) {
+            $app_settings = new waAppSettingsModel();
+            $app_settings->set(pocketlistsHelper::APP_ID, 'license_premium', date('Y-m-d H:i:s'));
+            return true;
+        }
+
+        return false;
     }
 }

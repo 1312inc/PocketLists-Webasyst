@@ -262,6 +262,24 @@ class pocketlistsConfig extends waAppConfig
      */
     public function onCount($onlycount = false)
     {
+        $as_model = new waAppSettingsModel();
+        $last_date = $as_model->get(pocketlistsHelper::APP_ID, 'last_repeat_list_cron_date');
+        if ($last_date < date('Y-m-d')) {
+            try {
+                $as_model->set(pocketlistsHelper::APP_ID, 'last_repeat_list_cron_date', date('Y-m-d'));
+                pocketlistsRepetitions::repeatLists();
+            } catch (Exception $ex) {
+                pocketlistsLogger::error(
+                    sprintf(
+                        'Error on repeating checklists, onCount. Error: %s. Trace: %s',
+                        $ex->getMessage(),
+                        $ex->getTraceAsString()
+                    ),
+                    'repeating.log'
+                );
+            }
+        }
+
         try {
             /** @var pocketlistsItemModel $item_model */
             $item_model = wa(pocketlistsHelper::APP_ID)->getConfig()->getModel(pocketlistsItem::class);
@@ -269,8 +287,63 @@ class pocketlistsConfig extends waAppConfig
             if (time() - $last_update_time > 300) {
                 $item_model->updateCalcPriority();
             }
+            $count = $this->getUser()->getAppCount();
+            $pocketlists_path = sprintf('%spocketlists?module=backendJson&action=', pl2()->getBackendUrl(true));
 
-            return $this->getUser()->getAppCount();
+            $css = '';
+            if (!$count) {
+                $css = <<<HTML
+<style>
+    [data-app="pocketlists"] .indicator,
+    [data-app="pocketlists"] .badge { display: none !important; }
+</style>
+HTML;
+            }
+            $script = <<<HTML
+<script>
+(function () {
+    'use strict';
+
+    try {
+        $.post('{$pocketlists_path}sendNotifications', function (r) {
+            if (r.status === 'ok') {
+                var sent = parseInt(r.data);
+                sent && console.log('pocketlists: notification send ' + sent);
+            } else {
+                console.log('pocketlists: notification send error ' + r.error);
+            }
+        }, 'json')
+        .fail(function () {
+            console.log('pocketlists: notification send internal error');
+        });
+        
+        $.post('{$pocketlists_path}sendDirectNotifications', function (r) {
+            if (r.status === 'ok') {
+                if (window['pocketlistsAlertBox'] && r.data) {
+                    $.each(r.data, function () {
+                        var alertbox = new pocketlistsAlertBox('#pl2-notification-area', {
+                            closeTime: 120000,
+                            persistent: true,
+                            hideCloseButton: false
+                        });
+                        alertbox.show(this);
+                    });
+                }
+            } else {
+                console.log('pocketlists: notification send error ' + r.error);
+            }
+        }, 'json')
+        .fail(function () {
+            console.log('pocketlists: notification send internal error');
+        });
+    } catch (e) {
+        console.log('pocketlists: notification send exception ', e);
+    }
+})()
+</script>
+HTML;
+
+            return $onlycount ? $count : $count.$css.$script;
         } catch (Exception $ex) {
             pocketlistsHelper::logError('onCount error', $ex);
         }

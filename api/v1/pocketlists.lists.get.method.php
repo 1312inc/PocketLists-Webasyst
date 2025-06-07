@@ -76,10 +76,7 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
             $list_model = pl2()->getModel(pocketlistsList::class);
             $sql_parts = $list_model->getQueryComponents(true);
             $sql_parts['select'] = array_slice($sql_parts['select'], 0, 3);
-            $sql_parts['where']['and'] = [
-                'l.id IN (i:ids)',
-                'l.archived = 0'
-            ];
+            $sql_parts['where']['and'] = ['l.id IN (i:ids)'];
             if ($pocket_id) {
                 $sql_parts['where']['and'][] = 'l.pocket_id = i:pocket_id';
             }

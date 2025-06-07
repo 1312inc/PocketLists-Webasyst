@@ -866,7 +866,7 @@ msgid "DANGER! Pocket will be deleted with all its content including lists and t
 msgstr "СТОП, СТОП, СТОП! Проект будет удален вместе со всеми содержимым — списками и задачами. Возможности восстановить эти данные не будет. Вы уверены?"
 
 msgid "Order"
-msgstr "Заказать"
+msgstr "Заказ"
 
 msgid "Add note"
 msgstr "Добавить заметку"
@@ -2082,3 +2082,6 @@ msgstr "Новое!"
 
 msgid "See the details:"
 msgstr "Подробно:"
+
+msgid "https://www.webasyst.com/my/buy/upgrade-to-premium/pocketlists/"
+msgstr "https://www.webasyst.ru/my/buy/upgrade-to-premium/pocketlists/"

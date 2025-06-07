@@ -78,11 +78,11 @@ class pocketlistsUserSettings
             'email_assign_me'                => 1,
             'email_complete_item_on'         => 1,
             'email_complete_item'            => self::EMAIL_WHEN_SOMEONE_COMPLETES_ITEM_I_CREATED,
-            'email_add_item_on'              => 1,
+            'email_add_item_on'              => 0,
             'email_add_item'                 => self::EMAIL_WHEN_SOMEONE_ADDS_ITEM_TO_ANY_LIST,
             'email_comment_item_on'          => 1,
             'email_comment_item'             => self::EMAIL_WHEN_SOMEONE_ADDS_COMMENT_TO_MY_ITEM,
-            'email_create_list_on'           => 1,
+            'email_create_list_on'           => 0,
             'natural_input_on'               => 1,
             'created_by_others_in_shared_on' => 0,
             'created_by_others_in_shared'    => self::MY_TO_DOS_CREATED_BY_OTHER_IN_SHARED_LISTS_GREEN_YELLOW_RED_ALL_LISTS,
@@ -127,14 +127,6 @@ class pocketlistsUserSettings
     public function getAllSettings()
     {
         return $this->settings;
-    }
-
-    /**
-     * @return bool
-     */
-    public function appIcon()
-    {
-        return isset($this->settings['app_icon']) ? $this->settings['app_icon'] : false;
     }
 
     /**

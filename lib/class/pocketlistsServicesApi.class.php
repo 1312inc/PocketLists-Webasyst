@@ -13,6 +13,9 @@ class pocketlistsServicesApi extends installerServicesApi
             ]);
 
             /** ping request */
+            if (empty($url)) {
+                return false;
+            }
             $net->query($url);
         } catch (waNetTimeoutException $wa_net) {
             return false;

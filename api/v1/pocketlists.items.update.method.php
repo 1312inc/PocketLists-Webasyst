@@ -41,9 +41,10 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
             'contact_id' => $current_user_id
         ])->fetchAll('id');
         $list_id_available = pocketlistsRBAC::getAccessListForContact($current_user_id);
+
+        /** @var pocketlistsListModel $list_model */
+        $list_model = pl2()->getModel(pocketlistsList::class);
         if (!empty($list_ids)) {
-            /** @var pocketlistsListModel $list_model */
-            $list_model = pl2()->getModel(pocketlistsList::class);
             $list_ids = $list_model->select('id')->where('id IN (:list_ids)', ['list_ids' => $list_ids])->fetchAll(null, true);
         }
         if (!empty($location_ids)) {
@@ -388,10 +389,14 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
             $unset_favorite = [];
             $attachments_log = [];
             try {
-                $item_model = pl2()->getModel(pocketlistsItem::class);
+                $lists = $list_model->select('id, private, archived')
+                    ->where('id IN (:list_ids)', ['list_ids' => array_column($items_ok, 'list_id')])
+                    ->fetchAll('id');
+
                 $items_ok = $this->sorting('item', $items_ok);
                 foreach ($items_ok as &$_item_ok) {
                     if ($item_model->updateById($_item_ok['id'], $_item_ok)) {
+                        $_item_ok['archived'] = ifset($lists, $_item_ok['list_id'], 'archived', 0);
                         if (isset($_item_ok['favorite'])) {
                             if ($_item_ok['favorite']) {
                                 $set_favorite[] = [
@@ -431,10 +436,12 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                             }
                             $_item_ok['external_links'] = [];
                         }
-                        if (!empty($_item_ok['complete_datetime'])) {
-                            $this->systemLogAction(pocketlistsLogAction::ITEM_COMPLETED, ['item_id' => $_item_ok['id']]);
-                        } elseif (isset($_item_ok['assigned_contact_id'])) {
-                            $this->systemLogAction(pocketlistsLogAction::ITEM_ASSIGN, ['item_id' => $_item_ok['id'], 'assigned_to' => $_item_ok['assigned_contact_id']]);
+                        if (ifempty($lists, $_item_ok['list_id'], 'private', 0) == 0) {
+                            if (!empty($_item_ok['complete_datetime'])) {
+                                $this->systemLogAction(pocketlistsLogAction::ITEM_COMPLETED, ['item_id' => $_item_ok['id']]);
+                            } elseif (isset($_item_ok['assigned_contact_id'])) {
+                                $this->systemLogAction(pocketlistsLogAction::ITEM_ASSIGN, ['item_id' => $_item_ok['id'], 'assigned_to' => $_item_ok['assigned_contact_id']]);
+                            }
                         }
                     } else {
                         $_item_ok['success'] = false;
@@ -477,7 +484,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 }
 
                 if ($list_ids = array_filter(array_unique(array_column($items_ok, 'list_id')))) {
-                    pl2()->getModel(pocketlistsItem::class)->updateByField(
+                    $item_model->updateByField(
                         ['key_list_id' => $list_ids],
                         ['activity_datetime' => date('Y-m-d H:i:s')]
                     );
@@ -501,8 +508,17 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                     pl2()->getModel(pocketlistsItemMove::class)->multipleInsert($items_move);
                 }
 
-                if (array_column($items_ok, 'complete_datetime')) {
-                    (new pocketlistsNotificationAboutCompleteItems())->multiplicityNotifyAboutCompleteItems($items_ok);
+                $no_private_items = array_filter($items_ok, function ($i) use ($lists) {
+                    return ifempty($lists, $i['list_id'], 'private', 0) == 0;
+                });
+                if ($no_private_items) {
+                    $undone_items = array_filter($no_private_items, function ($npi) {
+                        return ifempty($npi, 'status', 0) == 0;
+                    });
+                    (new pocketlistsNotificationAboutNewAssign())->multiplicityNotify($undone_items);
+                    if (array_column($items_ok, 'complete_datetime')) {
+                        (new pocketlistsNotificationAboutCompleteItems())->multiplicityNotifyAboutCompleteItems($no_private_items);
+                    }
                 }
 
                 if ($attachments_log) {
@@ -512,6 +528,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                         $attachments_log
                     );
                 }
+                pl2()->getCache()->deleteAll();
             } catch (Exception $ex) {
                 throw new pocketlistsApiException(sprintf_wp('Error on transaction import save: %s', $ex->getMessage()), 400);
             }
@@ -526,6 +543,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 'parent_id',
                 'sort',
                 'rank',
+                'archived',
                 'has_children',
                 'status',
                 'priority',
@@ -560,6 +578,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 'contact_id' => 'int',
                 'parent_id' => 'int',
                 'sort' => 'int',
+                'archived' => 'int',
                 'has_children' => 'int',
                 'status' => 'int',
                 'priority' => 'int',

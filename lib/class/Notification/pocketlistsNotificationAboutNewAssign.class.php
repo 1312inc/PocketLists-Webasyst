@@ -92,4 +92,22 @@ class pocketlistsNotificationAboutNewAssign extends pocketlistsBaseNotification
                 ->setIdentifier(self::IDENTIFIER)
         );
     }
+
+    public function multiplicityNotify($items = [])
+    {
+        $user_id = pl2()->getUser()->getId();
+        /** @var pocketlistsItemFactory $item_factory */
+        $item_factory = pl2()->getEntityFactory(pocketlistsItem::class);
+
+        /** @var pocketlistsItem $item */
+        $item = $item_factory->createNew();
+        foreach ((array) $items as $_item) {
+            if (empty($_item['assigned_contact_id']) || $user_id == $_item['assigned_contact_id']) {
+                continue;
+            }
+            $item_clone = clone $item;
+            pl2()->getHydrator()->hydrate($item_clone, $_item);
+            $this->notify($item_clone);
+        }
+    }
 }

@@ -688,6 +688,7 @@ SQL;
                           from pocketlists_list l2
                                  JOIN pocketlists_item i2 ON i2.id = l2.key_item_id) l ON l.id = i.list_id';
 
+        $sqlParts['where']['and'][] = 'i.key_list_id IS NULL';
         $sqlParts['where']['and'][] = $listSql;
         $sqlParts['where']['and'][] = 'l.archived = 0 OR l.archived IS NULL';
         $sqlParts['where']['and'][] = 'i.status = '. (int) $status;
@@ -1284,7 +1285,7 @@ SQL;
      */
     public function updateCalcPriority()
     {
-        $itemsWithDue = $this->where('status = 0 and due_date is not null or due_datetime is not null')->fetchAll('id');
+        $itemsWithDue = $this->where('key_list_id IS NULL AND status = 0 AND (due_date IS NOT NULL OR due_datetime IS NOT NULL)')->fetchAll('id');
         foreach ($itemsWithDue as $item) {
             $newCalcPriority = max(
                 pocketlistsHelper::calcPriorityOnDueDate($item['due_date'], $item['due_datetime']),

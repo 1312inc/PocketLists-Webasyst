@@ -70,7 +70,7 @@ class pocketlistsNaturalInput
         $icon = null;
         $matched_icon = null;
         $list_icons = pocketlistsListIcon::getAll();
-        $category_name = mb_strtolower(trim($category_name));
+        $category_name = mb_strtolower(trim((string) $category_name));
         foreach (self::$json_rules as $json_rule) {
             if (isset($json_rule['task_categs'])) {
                 foreach ($json_rule['task_categs'] as $flag_id => $flag_strings) {

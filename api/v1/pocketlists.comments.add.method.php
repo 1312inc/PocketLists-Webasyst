@@ -14,8 +14,12 @@ class pocketlistsCommentsAddMethod extends pocketlistsApiAbstractMethod
         }
 
         $items = [];
+        $lists = [];
         $item_ids = array_unique(array_filter(array_column($comments, 'item_id')));
         $uuids = array_column($comments, 'uuid');
+
+        $user_id = $this->getUser()->getId();
+        $list_access = pocketlistsRBAC::getAccessListForContact($user_id);
 
         /** @var pocketlistsItemModel $model */
         $model = pl2()->getModel(pocketlistsItem::class);
@@ -24,14 +28,19 @@ class pocketlistsCommentsAddMethod extends pocketlistsApiAbstractMethod
                 ->where('id IN (i:item_ids)', ['item_ids' => $item_ids])
                 ->where('key_list_id IS NULL')
                 ->fetchAll('id');
+
+            $list_ids = array_unique(array_filter(array_column($items, 'list_id')));
+            /** @var pocketlistsListModel $list_model */
+            $list_model = pl2()->getModel(pocketlistsList::class);
+            $lists = $list_model->select('id, private, archived')
+                ->where('id IN (:list_ids)', ['list_ids' => array_intersect($list_access, $list_ids)])
+                ->fetchAll('id');
         }
         if (!empty($uuids)) {
             $uuids = $this->getEntitiesByUuid('comment', $uuids);
             $uuids = array_keys($uuids);
         }
         /** validate */
-        $user_id = $this->getUser()->getId();
-        $list_access = pocketlistsRBAC::getAccessListForContact($user_id);
         foreach ($comments as &$_comment) {
             /** set default */
             $item_id = ifset($_comment, 'item_id', null);
@@ -104,14 +113,16 @@ class pocketlistsCommentsAddMethod extends pocketlistsApiAbstractMethod
                     if ($rows_count === count($comments_ok)) {
                         foreach ($comments_ok as &$_comment) {
                             $_comment['id'] = $last_id++;
-                            $this->systemLogAction(
-                                pocketlistsLogAction::ITEM_COMMENT,
-                                [
-                                    'list_id'    => $_comment['list_id'],
-                                    'comment_id' => $_comment['id'],
-                                    'item_id'    => $_comment['item_id'],
-                                ]
-                            );
+                            if (ifempty($lists, $_comment['list_id'], 'private', 0) == 0) {
+                                $this->systemLogAction(
+                                    pocketlistsLogAction::ITEM_COMMENT,
+                                    [
+                                        'list_id'    => $_comment['list_id'],
+                                        'comment_id' => $_comment['id'],
+                                        'item_id'    => $_comment['item_id'],
+                                    ]
+                                );
+                            }
                         }
                         unset($_comment);
 
@@ -120,7 +131,12 @@ class pocketlistsCommentsAddMethod extends pocketlistsApiAbstractMethod
                             ['activity_datetime' => date('Y-m-d H:i:s')]
                         );
 
-                        (new pocketlistsNotificationAboutNewComment())->multiplicityNotify($comments_ok);
+                        $no_private_comments = array_filter($comments_ok, function ($c) use ($lists) {
+                            return ifempty($lists, $c['list_id'], 'private', 0) == 0;
+                        });
+                        if ($no_private_comments) {
+                            (new pocketlistsNotificationAboutNewComment())->multiplicityNotify($no_private_comments);
+                        }
 
                         $this->saveLog(
                             pocketlistsLog::ENTITY_COMMENT,

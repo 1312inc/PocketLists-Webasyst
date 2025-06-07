@@ -66,19 +66,16 @@ class pocketlistsNotificationAboutNewItems extends pocketlistsBaseNotification
 
                         $filtered_items[$item->getId()] = $item;
                     }
-
                     break;
-
-                case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_ITEM_TO_ANY_LIST:
-                    foreach ($items as $item) {
-                        if (!$this->checkItem($item, $user_id)) {
-                            continue;
-                        }
-
-                        $filtered_items[$item->getId()] = $item;
-                    }
-
-                    break;
+//                case pocketlistsUserSettings::EMAIL_WHEN_SOMEONE_ADDS_ITEM_TO_ANY_LIST:
+//                    foreach ($items as $item) {
+//                        if (!$this->checkItem($item, $user_id)) {
+//                            continue;
+//                        }
+//
+//                        $filtered_items[$item->getId()] = $item;
+//                    }
+//                    break;
             }
 
             if ($filtered_items && $list) {
@@ -113,11 +110,8 @@ class pocketlistsNotificationAboutNewItems extends pocketlistsBaseNotification
                     ->setParams(
                         [
                             'list'  => [
-                                'name' => $list->getId() ? $list->getName() : false,
-                                'url'  => $list ? sprintf(
-                                    'lists/%s/',
-                                    $list->getId()
-                                ) : '',
+                                'name' => $list ? $list->getName() : false,
+                                'url'  => $list ? sprintf('lists/%s/', $list->getId()) : '',
                             ],
                             'items' => $itemsToSend,
                             'item'  => reset($itemsToSend),
@@ -173,7 +167,7 @@ class pocketlistsNotificationAboutNewItems extends pocketlistsBaseNotification
         foreach ((array) $items as $_item) {
             $item_clone = clone $item;
             pl2()->getHydrator()->hydrate($item_clone, $_item);
-            $this->notify($item_clone);
+            $this->notify($item_clone, $item_clone->getList());
         }
     }
 }

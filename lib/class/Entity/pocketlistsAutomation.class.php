@@ -335,6 +335,7 @@ class pocketlistsAutomation extends pocketlistsEntity
                 $this->rules = json_decode($this->rules, true);
             }
 
+            $is_rule_shop_action = false;
             foreach ($this->rules as $rule) {
                 if (!empty($rule['identifier'])) {
                     try {
@@ -342,6 +343,7 @@ class pocketlistsAutomation extends pocketlistsEntity
                             $rule['identifier'],
                             $rule
                         );
+                        $is_rule_shop_action = $is_rule_shop_action || $rule instanceof pocketlistsAutomationRuleShopAction;
                     } catch (pocketlistsNoShopActionException $exception) {
                     } catch (Exception $exception) {
                         pocketlistsLogger::error($exception->getMessage());
@@ -350,6 +352,9 @@ class pocketlistsAutomation extends pocketlistsEntity
                         return;
                     }
                 }
+            }
+            if (!$is_rule_shop_action) {
+                $this->isValid = false;
             }
             $this->rules = $rules;
             $this->rulesJson = json_encode($this->rules, JSON_UNESCAPED_UNICODE);

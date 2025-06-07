@@ -17,8 +17,7 @@ class pocketlistsSettingsShopscriptAction extends pocketlistsViewAction
         foreach ($automations as $automation) {
             if (!$automation->isValid()) {
                 pocketlistsLogger::debug(sprintf('Automation %s is not valid, skip', $automation->getId()));
-
-                continue;
+                //continue;
             }
 
             try {
@@ -64,9 +63,9 @@ class pocketlistsSettingsShopscriptAction extends pocketlistsViewAction
             }
 
             // не показывать когда нет правил
-            if (empty($shopActions['shop.'.$deletedAction->id]->automations)) {
-                unset($shopActions['shop.'.$deletedAction->id]);
-            }
+            // if (empty($shopActions['shop.'.$deletedAction->id]->automations)) {
+            //     unset($shopActions['shop.'.$deletedAction->id]);
+            // }
         }
 
         $this->view->assign([
