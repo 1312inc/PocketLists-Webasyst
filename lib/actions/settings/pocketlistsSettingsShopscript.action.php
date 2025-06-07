@@ -17,8 +17,7 @@ class pocketlistsSettingsShopscriptAction extends pocketlistsViewAction
         foreach ($automations as $automation) {
             if (!$automation->isValid()) {
                 pocketlistsLogger::debug(sprintf('Automation %s is not valid, skip', $automation->getId()));
-
-                continue;
+                //continue;
             }
 
             try {
