@@ -20,7 +20,7 @@ class pocketlistsWebSoket
     {
         if (is_null(self::$instance)) {
             if (!class_exists('waServicesApi')) {
-                throw new waException(_w('Not implemented yet.'));
+                throw new waException(_w('Not implemented yet.'), 400);
             }
             self::$instance = new self;
             self::$instance->services_api = new pocketlistsServicesApi();
@@ -55,10 +55,10 @@ class pocketlistsWebSoket
             $channel = $this->getChannel(wa()->getUser()->getId(), $channel);
             $ws_url = $this->services_api->getWebsocketUrl($channel);
             if (empty($ws_url)) {
-                throw new waException(_w('Webasyst websocket API error.'));
+                throw new waException(_w('Webasyst websocket API error.'), 400);
             }
         } else {
-            throw new waException(_w('Webasyst ID services are not connected.'));
+            throw new waException(_w('Webasyst ID services are not connected.'), 204);
         }
 
         return $ws_url;
