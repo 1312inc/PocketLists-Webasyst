@@ -224,6 +224,7 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                 }
 
                 if (isset($_list['archived'])) {
+                    $_list['activity_datetime'] = date('Y-m-d H:i:s');
                     if ($_list['archived'] === 1 && $lists_in_db[$list_id]['archived'] == 0) {
                         /** archived 0 -> 1 */
                         $this->systemLogAction(pocketlistsLogAction::LIST_ARCHIVED, ['list_id' => $list_id]);
