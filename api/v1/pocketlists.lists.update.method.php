@@ -27,6 +27,7 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
 
         $pockets_in_db = [];
         $assign_contacts = [];
+        $list_activity_ids = [];
         $current_user_id = $this->getUser()->getId();
         $pocket_ids = array_filter(array_unique(array_column($lists, 'pocket_id')), function ($i) {
             return $i > 0;
@@ -224,6 +225,7 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                 }
 
                 if (isset($_list['archived'])) {
+                    $list_activity_ids[] = $list_id;
                     if ($_list['archived'] === 1 && $lists_in_db[$list_id]['archived'] == 0) {
                         /** archived 0 -> 1 */
                         $this->systemLogAction(pocketlistsLogAction::LIST_ARCHIVED, ['list_id' => $list_id]);
@@ -306,6 +308,13 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                 ];
             }
             unset($_list);
+
+            if ($list_activity_ids) {
+                /** @var pocketlistsItemModel $item_model */
+                $item_model = pl2()->getModel(pocketlistsItem::class);
+                $item_model->updateByField('list_id', $list_activity_ids, ['activity_datetime' => date('Y-m-d H:i:s')]);
+            }
+
 
             $logs = array_filter($lists_ok, function ($l) {
                 return $l['success'];

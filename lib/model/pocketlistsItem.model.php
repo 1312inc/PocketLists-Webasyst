@@ -1087,8 +1087,8 @@ SQL;
 
         $sqlParts = $this->getTodoSqlComponents($contact_id, [], $lists);
 
+        $sqlParts['where']['and'][] = 'i.status = 0';
         $sqlParts['where']['and'][] = $when;
-//        $sqlParts['where']['and'][] = 'l.archived = 0';
         $sqlParts['group by'] = ['i.id'];
         $sqlParts['order by'] = ['i.status', '(i.complete_datetime IS NULL), i.complete_datetime DESC'];
 

@@ -2125,6 +2125,8 @@ paths:
                             type: string
                             nullable: true
                             description: Channel identifier
+        204:
+          description: OK
         400:
           description: Invalid request data
           content:

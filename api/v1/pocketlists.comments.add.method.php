@@ -23,18 +23,19 @@ class pocketlistsCommentsAddMethod extends pocketlistsApiAbstractMethod
 
         /** @var pocketlistsItemModel $model */
         $model = pl2()->getModel(pocketlistsItem::class);
-        if (!empty($item_ids)) {
+        if (!empty($item_ids) && !empty($list_access)) {
             $items = $model->select('id, list_id, name, contact_id')
                 ->where('id IN (i:item_ids)', ['item_ids' => $item_ids])
                 ->where('key_list_id IS NULL')
                 ->fetchAll('id');
 
-            $list_ids = array_unique(array_filter(array_column($items, 'list_id')));
-            /** @var pocketlistsListModel $list_model */
-            $list_model = pl2()->getModel(pocketlistsList::class);
-            $lists = $list_model->select('id, private, archived')
-                ->where('id IN (:list_ids)', ['list_ids' => array_intersect($list_access, $list_ids)])
-                ->fetchAll('id');
+            if ($list_ids = array_unique(array_filter(array_column($items, 'list_id')))) {
+                /** @var pocketlistsListModel $list_model */
+                $list_model = pl2()->getModel(pocketlistsList::class);
+                $lists = $list_model->select('id, private, archived')
+                    ->where('id IN (:list_ids)', ['list_ids' => array_intersect($list_access, $list_ids)])
+                    ->fetchAll('id');
+            }
         }
         if (!empty($uuids)) {
             $uuids = $this->getEntitiesByUuid('comment', $uuids);

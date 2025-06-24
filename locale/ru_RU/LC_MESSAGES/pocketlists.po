@@ -2085,3 +2085,6 @@ msgstr "Подробно:"
 
 msgid "https://www.webasyst.com/my/buy/upgrade-to-premium/pocketlists/"
 msgstr "https://www.webasyst.ru/my/buy/upgrade-to-premium/pocketlists/"
+
+msgid "%s limited offer for upgrading existing app license to the premium version"
+msgstr "%s спецпредложение на апгрейд базовой лицензии до премиум-версии"
