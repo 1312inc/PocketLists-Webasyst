@@ -155,7 +155,7 @@ class pocketlistsItemsGetStreamMethod extends pocketlistsApiAbstractMethod
         $available_list_ids = pocketlistsRBAC::getAccessListForContact($current_user_id);
         $plim = pl2()->getModel(pocketlistsItem::class);
         $sql_parts = $plim->getQueryComponents(true);
-        $sql_parts['select']['pl'] = 'pl.archived';
+        $sql_parts['select']['pl'] = 'IF(pl.archived, pl.archived, 0) AS archived';
         $sql_parts['join']['pl'] = 'LEFT JOIN pocketlists_list pl ON pl.id = i.list_id';
         $sql_parts['where']['and'][] = 'i.key_list_id IS NULL';
         $sql_parts['where']['and']['def'] = '(i.list_id IN (i:list_ids) AND pl.archived = 0) OR (i.list_id IS NULL AND (i.contact_id = i:curr_user_id OR i.assigned_contact_id = i:curr_user_id))';
