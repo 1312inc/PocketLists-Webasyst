@@ -5,16 +5,16 @@
 {capture "getpremiumbutton"}
 {if !$_is_premium}
 <figure class="box pl-upgrade-ad">
-    <a href="{$_pl_upgrade_url}" class="button rounded pl-premium-button" target="_blank">[`Get premium now`]</a>
+    <a href="{$_pl_upgrade_url}" class="button rounded largest {$_premium_pricing.special_color}" target="_blank">[`Get premium now`]</a>
     <h4>
         {if !empty($_premium_pricing.compare_price)}<strike class="gray">{$_premium_pricing.compare_price}</strike>{/if}
         {$_premium_pricing.price}
         / [`lifetime`]
     </h4>
-    <p>
+    <p class="width-50 width-100-mobile custom-mx-auto small">
         {if !empty($_premium_pricing.special)}
-            {sprintf('[`%s first buyers limited offer`]', sprintf('<span class="badge small %s">%s</span>', $_premium_pricing.special_color, $_premium_pricing.special))}<br>
-            <b>{date('Y.m')}</b> [`early launch only!`]
+            {sprintf('[`%s limited offer for upgrading existing app license to the premium version`]', sprintf('<span class="badge %s">%s</span>', $_premium_pricing.special_color, $_premium_pricing.special))}<br>
+            <b>{date('Y.m.d')}</b> [`early launch only!`]
         {/if}
     </p>
 </figure>
@@ -77,56 +77,6 @@
 
                 <h1 class="top-padded align-center width-70 custom-mx-auto custom-mb-24 width-100-mobile">[`All-new Pocket Lists is here.<br> Try and upgrade today!`]</h1>
 
-                {$_free_stuff = []}
-
-                {$_free_stuff[] = [
-                  'title' => '[`New UI`]'
-                ]}
-                {$_free_stuff[] = [
-                  'title' => '[`REST APIs`]'
-                ]}
-                {$_free_stuff[] = [
-                  'title' => '[`Calendar`]'
-                ]}
-                {$_free_stuff[] = [
-                  'title' => '[`Assign checklists`]'
-                ]}
-                {$_free_stuff[] = [
-                  'title' => '[`Private checklists`]'
-                ]}
-                {$_free_stuff[] = [
-                  'title' => '[`To-do streams`]'
-                ]}
-                {$_free_stuff[] = [
-                  'title' => '[`Dashboard alerts`]'
-                ]}
-                {$_free_stuff[] = [
-                  'title' => '[`Tags & mentions`]',
-                  'eta' => '[`Soon`]'
-                ]}
-
-                <p class="small align-center width-60 custom-mx-auto width-100-mobile custom-mb-24">
-                    [`This is a <b>free update</b>, and it is installed already. Use the navigation on the left to get started with checklists.`]
-                </p>
-
-                <div class="flexbox wrap space-24">
-                    {foreach $_free_stuff as $_p}
-                        {_render_feature _p=$_p _is_premium_license=$_is_premium _halfwidth=true _is_free_feature=true}
-                    {/foreach}
-                </div>
-
-                <p class="small align-center width-60 custom-mx-auto width-100-mobile custom-mt-24">
-                    [`See the details:`]
-                    <a class="bold" href="[`https://www.webasyst.com/store/app/pocketlists/`]" target="_blank">[`https://www.webasyst.com/store/app/pocketlists/`]</a>
-                </p>
-
-                <br><br><br>
-
-                <h1 class="align-center">
-                    [`Premium`]
-                    {if !empty($_premium_pricing.special)}<span class="badge smaller {$_premium_pricing.special_color}">{$_premium_pricing.special}</span>{/if}
-                </h1>
-
             {/if}
 
 
@@ -181,10 +131,9 @@
 
                 {$_premium_stuff[] = [
                   'title' => 'Шаблоны быстрого ввода',
-                  'eta' => '[`June 2025`]',
                   'body' => '<code>Оплатить ...</code>, <code>Связаться ...</code>, <code>Напомнить ...</code>, <code>Отгрузить ...</code>, <code>Уточнить ...</code> — подобные задачи ставятся изо дня в день. Ускорьте их постановку с помощью быстрых шаблонов, которые заменят ручной ввод. Создавайте задачи в несколько кликов:<br><br>
                     <img src="https://1312.io/wa-data/public/site/img/webasyst/pl2pro100/ru-pl2pro-shortcuts-ss.gif" /><br><br>
-                    Клик по шаблону или нажатие <code>Alt + #</code> (# — порядковый номером шаблона) — и готово! Список шаблонов настраивается произвольным образом с возможностью группировки в блоки, которые будут последовательно предлагаться по мере ввода текста задачи.'
+                    Клик по шаблону или нажатие <code>Alt + #</code> (# — порядковый номером шаблона) — и готово! Список шаблонов настраивается произвольным образом с возможностью группировки в блоки, которые будут последовательно предлагаться по мере ввода текста задачи.<br><br> <em>Работает в чек-листах, встроенных в интерфейс Shop-Script и приложение «Задачи».</em>'
                 ]}
 
                 {$_premium_stuff[] = [
