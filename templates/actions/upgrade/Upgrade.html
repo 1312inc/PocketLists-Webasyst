@@ -39,6 +39,10 @@
         </div>
     </div>
     <div class="small custom-mt-16{if $_is_premium} hidden{/if}">{if !empty($_p.body)}{$_p.body}{/if}</div>
+    {if !empty($_p.mobile_googleplay)}<a href="{$_p.mobile_googleplay}" target="_blank" class="pl-mobile-badge"><img src="{$wa_url}wa-apps/pocketlists/img/badge-googleplay{if $wa->locale() == 'ru_RU'}-ru{/if}.png" alt="Google Play" /></a>{/if}
+    {if !empty($_p.mobile_rustore) && $wa->locale() == 'ru_RU'}<a href="{$_p.mobile_rustore}" target="_blank" class="pl-mobile-badge"><img src="{$wa_url}wa-apps/pocketlists/img/badge-rustore.svg" alt="RuStore" /></a>{/if}
+    {if !empty($_p.mobile_appstore)}<a href="{$_p.mobile_appstore}" target="_blank" class="pl-mobile-badge"><img src="{$wa_url}wa-apps/pocketlists/img/badge-appstore{if $wa->locale() == 'ru_RU'}-ru{/if}.png" alt="App Store" /></a>{/if}
+
 </div>
 {/function}
 
@@ -84,7 +88,8 @@
 
             {$_premium_stuff[] = [
               'title' => '[`Android app`]',
-              'eta' => '[`Summer 2025`]',
+              'mobile_googleplay' => 'https://play.google.com/store/apps/details?id=com.pocketlists',
+              'mobile_rustore' => 'https://www.rustore.ru/catalog/app/com.pocketlists',
               'body' => '[`All-new native Android app that syncs directly to your Webasyst account and Pocket Lists.`]'
             ]}
 

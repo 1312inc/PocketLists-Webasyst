@@ -176,8 +176,7 @@ table.pl-calendar td .pl-dots i.icon { margin-top: 0.2em; margin-right: 0.2em; }
 .pl-more-apps li p { font-size: 0.9375rem; }
 .pl-more-apps li img { width: 96px; height: 96px; }
 
-/* Upgrade
----------- */
+.pl-mobile-badge img { height: 52px !important; margin: 15px 10px 0 0 !important; }
 
 .pl-upgrade-content img { max-width: 90%; margin: 10px auto 20px; }
 
