@@ -77,6 +77,12 @@
                     <a class="bold" href="[`https://www.webasyst.com/store/app/pocketlists/`]" target="_blank">[`https://www.webasyst.com/store/app/pocketlists/`]</a>
                 </p>
 
+                {if method_exists($wa->installer, 'reviewWidget')}
+                    <div style="max-width: 300px;" class="custom-my-24 custom-mx-auto">
+                        {$wa->installer->reviewWidget('app/pocketlists', ['is_inline' => true])}
+                    </div>
+                {/if}
+
             {else}
 
                 <h1 class="top-padded align-center width-70 custom-mx-auto custom-mb-24 width-100-mobile">[`All-new Pocket Lists is here.<br> Try and upgrade today!`]</h1>
@@ -247,8 +253,6 @@
             <p class="align-center gray">[`All scheduled features will be delivered as free updates via Installer.`]</p>
 
             {$smarty.capture.getpremiumbutton}
-
-
 
         </article>
 
