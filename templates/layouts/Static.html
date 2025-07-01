@@ -29,13 +29,13 @@
     <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-list.js?v3{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
     <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-comment.js?v3{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
 
-    <script type="module" crossorigin src="{$wa_app_static_url}client/assets/index-GyYSGw9W.js"></script>
-    <link rel="stylesheet" crossorigin href="{$wa_app_static_url}client/assets/index-aVqE-DDB.css">
-
     <script type="module">
-        import WebSocketMonitor from '{$wa_app_static_url}js/pocketlists-ws-monitor.js';
+        import WebSocketMonitor from '{$wa_app_static_url}js/pocketlists-ws-monitor.js?v3{if !waSystemConfig::isDebug()}{$wa->version()}{/if}';
         new WebSocketMonitor();
     </script>
+
+    <script type="module" crossorigin src="{$wa_app_static_url}client/assets/index-GyYSGw9W.js"></script>
+    <link rel="stylesheet" crossorigin href="{$wa_app_static_url}client/assets/index-aVqE-DDB.css">
 
     <script>
         window.appState = {
