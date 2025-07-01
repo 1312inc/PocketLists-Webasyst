@@ -97,4 +97,28 @@ final class pocketlistsShopBackendOrder
 
         return $return;
     }
+
+    /**
+     * @param array $params
+     * @return void
+     * @throws waDbException
+     * @throws waException
+     */
+    public function onOrderAction(array $params)
+    {
+        if (pocketlistsLicensing::isPremium() || pocketlistsHelper::hasPlugin('pro')) {
+            try {
+                pocketlistsLogger::debug('in order action handler');
+
+                $order = new shopOrder($params['order_id']);
+                /** @var shopWorkflowAction $action */
+                $action = (new shopWorkflow())->getActionById($params['action_id']);
+
+                $automationEvent = new pocketlistsAutomationShopOrderActionEvent($order, $action);
+                $automationEvent->applyAutomations();
+            } catch (Exception $ex) {
+                pocketlistsLogger::error(sprintf("Automation error. %s\n%s", $ex->getMessage(), $ex->getTraceAsString()));
+            }
+        }
+    }
 }

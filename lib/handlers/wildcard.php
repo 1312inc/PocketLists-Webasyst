@@ -15,6 +15,12 @@ return [
     ],
     [
         'event_app_id' => 'shop',
+        'event' => 'order_action.*',
+        'class' => 'pocketlistsShopBackendOrder',
+        'method' => ['onOrderAction'],
+    ],
+    [
+        'event_app_id' => 'shop',
         'event' => 'backend_orders',
         'class' => 'pocketlistsShopBackendOrders',
         'method' => ['execute'],
