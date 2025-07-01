@@ -39,6 +39,10 @@
         </div>
     </div>
     <div class="small custom-mt-16{if $_is_premium} hidden{/if}">{if !empty($_p.body)}{$_p.body}{/if}</div>
+    {if !empty($_p.mobile_googleplay)}<a href="{$_p.mobile_googleplay}" target="_blank" class="pl-mobile-badge"><img src="{$wa_url}wa-apps/pocketlists/img/badge-googleplay{if $wa->locale() == 'ru_RU'}-ru{/if}.png" alt="Google Play" /></a>{/if}
+    {if !empty($_p.mobile_rustore) && $wa->locale() == 'ru_RU'}<a href="{$_p.mobile_rustore}" target="_blank" class="pl-mobile-badge"><img src="{$wa_url}wa-apps/pocketlists/img/badge-rustore.svg" alt="RuStore" /></a>{/if}
+    {if !empty($_p.mobile_appstore)}<a href="{$_p.mobile_appstore}" target="_blank" class="pl-mobile-badge"><img src="{$wa_url}wa-apps/pocketlists/img/badge-appstore{if $wa->locale() == 'ru_RU'}-ru{/if}.png" alt="App Store" /></a>{/if}
+
 </div>
 {/function}
 
@@ -73,6 +77,12 @@
                     <a class="bold" href="[`https://www.webasyst.com/store/app/pocketlists/`]" target="_blank">[`https://www.webasyst.com/store/app/pocketlists/`]</a>
                 </p>
 
+                {if method_exists($wa->installer, 'reviewWidget')}
+                    <div style="max-width: 300px;" class="custom-my-24 custom-mx-auto">
+                        {$wa->installer->reviewWidget('app/pocketlists', ['is_inline' => true])}
+                    </div>
+                {/if}
+
             {else}
 
                 <h1 class="top-padded align-center width-70 custom-mx-auto custom-mb-24 width-100-mobile">[`All-new Pocket Lists is here.<br> Try and upgrade today!`]</h1>
@@ -84,7 +94,8 @@
 
             {$_premium_stuff[] = [
               'title' => '[`Android app`]',
-              'eta' => '[`Summer 2025`]',
+              'mobile_googleplay' => 'https://play.google.com/store/apps/details?id=com.pocketlists',
+              'mobile_rustore' => 'https://www.rustore.ru/catalog/app/com.pocketlists',
               'body' => '[`All-new native Android app that syncs directly to your Webasyst account and Pocket Lists.`]'
             ]}
 
@@ -242,8 +253,6 @@
             <p class="align-center gray">[`All scheduled features will be delivered as free updates via Installer.`]</p>
 
             {$smarty.capture.getpremiumbutton}
-
-
 
         </article>
 
