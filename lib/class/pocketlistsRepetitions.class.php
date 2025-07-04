@@ -41,6 +41,7 @@ class pocketlistsRepetitions
             FROM pocketlists_list pl
             LEFT JOIN pocketlists_item pli ON pli.id = pl.key_item_id
             WHERE pli.repeat_frequency > 0
+            AND IF (pli.repeat_occurrence, pli.repeat_frequency > pli.repeat_occurrence, 1)
             AND pli.repeat_interval IS NOT NULL
             AND pli.due_date <= s:due_date
             ORDER BY pli.repeat_interval
