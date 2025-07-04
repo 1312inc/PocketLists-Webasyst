@@ -1,6 +1,34 @@
 {$wa->globals('pl2_external', true)}
 {$wa->globals('pl2_task_id', $params.task->id)}
 
+
+{$widgetId = waString::uuid()}
+<iframe
+        id="pl-wigdet-{$widgetId}"
+        src="{$wa_backend_url}pocketlists/appWidget/?external_app_id={$params.app->getApp()}&external_entity_type=task&external_entity_id={$params.task->id}&widget_id={$widgetId}"
+        frameborder="0"
+        scrolling="no"
+        style="width: 100%; border: 0; display: block;"
+        loading="lazy"
+></iframe>
+
+      <script>
+        (function() {
+            if (!window.__iframeResizerHandlerAdded) {
+                window.__iframeResizerHandlerAdded = true;
+                
+                window.addEventListener('message', function(e) {
+                    if (e.data.type === 'pl-wigdet-resize' && e.data.widgetId) {
+                        const iframe = document.getElementById(e.data.widgetId);
+                        if (iframe) {
+                            iframe.style.height = e.data.height + 'px';
+                        }
+                    }
+                });
+            }
+        })();
+      </script>
+
 <main class="pl-items pl-list-items pl-todo"
       id="pl-list-content"
       data-pl2-template="itemadd"
