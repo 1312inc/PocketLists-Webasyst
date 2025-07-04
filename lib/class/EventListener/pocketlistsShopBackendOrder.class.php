@@ -106,7 +106,7 @@ final class pocketlistsShopBackendOrder
      */
     public function onOrderAction(array $params)
     {
-        if (pocketlistsLicensing::isPremium() || pocketlistsHelper::hasPlugin('pro')) {
+        if (pocketlistsLicensing::isPremium() && !pocketlistsHelper::hasPlugin('pro')) {
             try {
                 pocketlistsLogger::debug('in order action handler');
 
