@@ -25,6 +25,16 @@
                         }
                     }
                 });
+
+                document.addEventListener('click', (event) => {
+                    const iframe = document.getElementById('pl-wigdet-{$widgetId}');
+                    iframe.contentWindow.postMessage(
+                        {
+                            type: 'parentClick'
+                        },
+                        '*'
+                    );
+                });
             }
         })();
       </script>
