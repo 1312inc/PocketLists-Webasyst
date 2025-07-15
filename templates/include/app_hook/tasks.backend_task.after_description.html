@@ -2,9 +2,10 @@
 {$wa->globals('pl2_task_id', $params.task->id)}
 
 
-{$widgetId = waString::uuid()}
+{$widgetId = implode(["pl-wigdet-", waString::uuid()])}
 <iframe
-        id="pl-wigdet-{$widgetId}"
+        class="pl-widget"
+        id="{$widgetId}"
         src="{$wa_backend_url}pocketlists/appWidget/?external_app_id={$params.app->getApp()}&external_entity_type=task&external_entity_id={$params.task->id}&widget_id={$widgetId}"
         frameborder="0"
         scrolling="no"
@@ -13,31 +14,14 @@
 ></iframe>
 
       <script>
-        (function() {
-            if (!window.__iframeResizerHandlerAdded) {
-                window.__iframeResizerHandlerAdded = true;
-                
-                window.addEventListener('message', function(e) {
-                    if (e.data.type === 'pl-wigdet-resize' && e.data.widgetId) {
-                        const iframe = document.getElementById(e.data.widgetId);
-                        if (iframe) {
-                            iframe.style.height = e.data.height + 'px';
-                        }
-                    }
-                });
-
-                document.addEventListener('click', (event) => {
-                    const iframe = document.getElementById('pl-wigdet-{$widgetId}');
-                    iframe.contentWindow.postMessage(
-                        {
-                            type: 'parentClick'
-                        },
-                        '*'
-                    );
-                });
-            }
-        })();
-      </script>
+if (!window.__plWidgetHandlerLoaded) {
+  window.__plWidgetHandlerLoaded = true;
+  const script = document.createElement('script');
+  script.src = '{$params.wa_app_static_url}js/pocketlists-widget.js';
+  script.async = true;
+  document.head.appendChild(script);
+}
+</script>
 
 <main class="pl-items pl-list-items pl-todo"
       id="pl-list-content"
