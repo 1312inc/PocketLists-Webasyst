@@ -1,0 +1,42 @@
+
+{$widgetId = implode(["pl-wigdet-", waString::uuid()])}
+
+<iframe
+        class="pl-widget"
+        id="{$widgetId}"
+        src="{$wa_backend_url}pocketlists/widget/dashboard/?widget_id={$widgetId}"
+        frameborder="0"
+        scrolling="no"
+        style="width: 100%; border: 0; display: block;"
+        loading="lazy"
+></iframe>
+
+      <script>
+        
+            if (!window.__iframeResizerHandlerAdded) {
+                    window.__iframeResizerHandlerAdded = true;
+
+                    window.addEventListener('message', function (e) {
+                        if (e.data.type === 'pl-wigdet-resize' && e.data.widgetId) {
+                            const iframe = document.getElementById(e.data.widgetId);
+                            if (iframe) {
+                                iframe.style.height = e.data.height + 'px';
+                            }
+                        }
+                    });
+
+                    document.addEventListener('click', (event) => {
+                        const iframes = document.querySelectorAll('iframe.pl-widget');
+                        iframes.forEach(iframe => {
+                            iframe.contentWindow.postMessage(
+                                {
+                                    type: 'parentClick',
+                                    widgetId: iframe.id
+                                },
+                                '*'
+                            );
+                        });
+                    });
+                }
+        
+      </script>
