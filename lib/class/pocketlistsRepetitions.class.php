@@ -41,7 +41,6 @@ class pocketlistsRepetitions
             FROM pocketlists_list pl
             LEFT JOIN pocketlists_item pli ON pli.id = pl.key_item_id
             WHERE pli.repeat_frequency > 0
-            AND IF (pli.repeat_occurrence, pli.repeat_frequency > pli.repeat_occurrence, 1)
             AND pli.repeat_interval IS NOT NULL
             AND pli.due_date <= s:due_date
             ORDER BY pli.repeat_interval
@@ -54,27 +53,18 @@ class pocketlistsRepetitions
             }
 
             switch ($_list['repeat_interval']) {
-                case pocketlistsItem::INTERVAL_DAY:
-                    $repeat_lists[] = $_list;
-                    break;
                 case pocketlistsItem::INTERVAL_WORKDAY:
                     if (in_array($_list['week_day'], [2, 3, 4, 5, 6])) {
                         $repeat_lists[] = $_list;
                     }
                     break;
+                case pocketlistsItem::INTERVAL_DAY:
                 case pocketlistsItem::INTERVAL_WEEK:
-                    if (in_array($_list['week_day'], [1, 7])) {
-                        $repeat_lists[] = $_list;
-                    }
-                    break;
                 case pocketlistsItem::INTERVAL_MONTH:
-                    if ($_list['due_date'] >= date('Y-m-d', strtotime('-1 month'))) {
-                        $repeat_lists[] = $_list;
-                    }
-                    break;
                 case pocketlistsItem::INTERVAL_YEAR:
-                    if ($_list['due_date'] >= date('Y-m-d', strtotime('-1 year'))) {
-                        $repeat_lists[] = $_list;
+                    $next_due_date = date('Y-m-d', strtotime('-'.(int) $_list['repeat_frequency'].' '.$_list['repeat_interval']));
+                    if ($_list['due_date'] <= $next_due_date) {
+                        $repeat_lists[] = $_list + ['next_due_date' => $next_due_date];
                     }
                     break;
             }
@@ -129,20 +119,7 @@ class pocketlistsRepetitions
             $_list['complete_datetime'] = null;
             $_list['repeat_occurrence'] += 1;
             $_list['uuid'] = waString::uuid();
-            switch ($_list['repeat_interval']) {
-                case pocketlistsItem::INTERVAL_DAY:
-                    $_list['due_date'] = date('Y-m-d', strtotime($_list['due_date'].' next day'));
-                    break;
-                case pocketlistsItem::INTERVAL_WORKDAY:
-                case pocketlistsItem::INTERVAL_WEEK:
-                    break;
-                case pocketlistsItem::INTERVAL_MONTH:
-                    $_list['due_date'] = date('Y-m-d', strtotime($_list['due_date'].' next month'));
-                    break;
-                case pocketlistsItem::INTERVAL_YEAR:
-                    $_list['due_date'] = date('Y-m-d', strtotime($_list['due_date'].' next year'));
-                    break;
-            }
+            $_list['due_date'] = ifset($_list, 'next_due_date', $_list['due_date']);
             unset($_list['id']);
 
             $list_entity = $list_factory->generateWithData($_list);
