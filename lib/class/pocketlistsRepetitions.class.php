@@ -62,9 +62,8 @@ class pocketlistsRepetitions
                 case pocketlistsItem::INTERVAL_WEEK:
                 case pocketlistsItem::INTERVAL_MONTH:
                 case pocketlistsItem::INTERVAL_YEAR:
-                    $next_due_date = date('Y-m-d', strtotime('-'.(int) $_list['repeat_frequency'].' '.$_list['repeat_interval']));
-                    if ($_list['due_date'] <= $next_due_date) {
-                        $repeat_lists[] = $_list + ['next_due_date' => $next_due_date];
+                    if ($_list['due_date'] <= date('Y-m-d', strtotime('-'.(int) $_list['repeat_frequency'].' '.$_list['repeat_interval']))) {
+                        $repeat_lists[] = $_list;
                     }
                     break;
             }
@@ -119,7 +118,7 @@ class pocketlistsRepetitions
             $_list['complete_datetime'] = null;
             $_list['repeat_occurrence'] += 1;
             $_list['uuid'] = waString::uuid();
-            $_list['due_date'] = ifset($_list, 'next_due_date', $_list['due_date']);
+            $_list['due_date'] = date('Y-m-d', strtotime($_list['due_date'].' + '.(int) $_list['repeat_frequency'].' '.$_list['repeat_interval']));
             unset($_list['id']);
 
             $list_entity = $list_factory->generateWithData($_list);
