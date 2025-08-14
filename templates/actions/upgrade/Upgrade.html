@@ -1,4 +1,5 @@
 {$_is_premium = $wa->pocketlists->isPremium()}
+{$_is_cloud = $wa->pocketlists->isCloud()}
 {$_premium_pricing = $wa->pocketlists->getPremiumPricing()}
 {$_pl_upgrade_url = '[`https://www.webasyst.com/my/buy/upgrade-to-premium/pocketlists/`]'|cat:'?domain='|cat:str_replace('http://','',str_replace('https://','',$wa->domainUrl()))}
 
@@ -8,14 +9,18 @@
     <a href="{$_pl_upgrade_url}" class="button rounded largest {$_premium_pricing.special_color}" target="_blank">[`Get premium now`]</a>
     <h4>
         {if !empty($_premium_pricing.compare_price)}<strike class="gray">{$_premium_pricing.compare_price}</strike>{/if}
-        {$_premium_pricing.price}
+        {if $_is_cloud}[`All inclusive in the cloud`]{else}{$_premium_pricing.price}{/if}
     </h4>
     <p class="width-60 width-100-mobile custom-mx-auto small">
-        {if !empty($_premium_pricing.special)}
-            {sprintf('[`%s limited offer for upgrading existing app license to the premium version`]', sprintf('<span class="badge %s">%s</span>', $_premium_pricing.special_color, $_premium_pricing.special))}<br>
-            <b>{date('Y.m.d')}</b> [`early launch only!`]
+        {if $_is_cloud}
+            [`In Webasyst Cloud, simply upgrade to the <b>Premium</b> plan and get all premium features at once with no extra purchase required.`]
         {else}
-            [`Per-server license for the entire company. Unlimited users, all premium features, free updates forever.`]
+            {if !empty($_premium_pricing.special)}
+                {sprintf('[`%s limited offer for upgrading existing app license to the premium version`]', sprintf('<span class="badge %s">%s</span>', $_premium_pricing.special_color, $_premium_pricing.special))}<br>
+                <b>{date('Y.m.d')}</b> [`early launch only!`]
+            {else}
+                [`Per-server license for the entire company. Unlimited users, all premium features, free updates forever.`]
+            {/if}
         {/if}
     </p>
 </figure>

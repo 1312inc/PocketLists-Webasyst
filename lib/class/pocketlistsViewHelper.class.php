@@ -68,6 +68,14 @@ class pocketlistsViewHelper
     }
 
     /**
+     * @return bool
+     */
+    public static function isCloud()
+    {
+        return wa()->appExists('hosting');
+    }
+
+    /**
      * @return array
      */
     public static function getPremiumPricing()
@@ -77,12 +85,12 @@ class pocketlistsViewHelper
 
         if (wa()->getLocale() == 'ru_RU')
         {
-            $pricing = array( 'compare_price' => '', 'price' => '5 999 <span class="ruble">₽</span> / год', 'special' => '', 'special_color' => 'green' );
+            $pricing = array( 'compare_price' => '15 999', 'price' => '5 999 <span class="ruble">₽</span> / год', 'special' => '', 'special_color' => 'green' );
             if (date('Ymd')<='20250831') $pricing = array( 'compare_price' => '15 999', 'price' => '11 999 <span class="ruble">₽</span> / навсегда', 'special' => '&minus;25% до 31.08', 'special_short' => '&minus;25%', 'special_color' => 'green' );
         }
         else
         {
-            $pricing = array( 'compare_price' => '', 'price' => '$99 / year', 'special' => '', 'special_color' => 'green' );
+            $pricing = array( 'compare_price' => '$269', 'price' => '$99 / year', 'special' => '', 'special_color' => 'green' );
             if (date('Ymd')<='20250831') $pricing = array( 'compare_price' => '$269', 'price' => '$199  / lifetime', 'special' => '&minus;25% / 08.31', 'special_short' => '&minus;25%', 'special_color' => 'green' );
         }
 

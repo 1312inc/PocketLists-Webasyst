@@ -2094,3 +2094,9 @@ msgstr "Лицензия на один сервер и всю компанию. 
 
 msgid "Checklists 80 lvl"
 msgstr "Чек-листы 80 уровня"
+
+msgid "All inclusive in the cloud"
+msgstr "В облаке все включено"
+
+msgid "In Webasyst Cloud, simply upgrade to the <b>Premium</b> plan and get all premium features at once with no extra purchase required."
+msgstr "Просто смените тариф на <b>Премиум</b> и пользуйтесь всеми премиум-функциями без покупки лицензий и апгрейдов."
