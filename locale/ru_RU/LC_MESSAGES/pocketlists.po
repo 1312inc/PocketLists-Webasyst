@@ -1904,7 +1904,7 @@ msgid "See what’s included"
 msgstr "Что еще есть в премиум"
 
 msgid "Get premium now"
-msgstr "Купить премиум"
+msgstr "Подключить премиум"
 
 msgid "lifetime"
 msgstr "навсегда"
@@ -2088,3 +2088,9 @@ msgstr "https://www.webasyst.ru/my/buy/upgrade-to-premium/pocketlists/"
 
 msgid "%s limited offer for upgrading existing app license to the premium version"
 msgstr "%s спецпредложение на апгрейд базовой лицензии до премиум-версии"
+
+msgid "Per-server license for the entire company. Unlimited users, all premium features, free updates forever."
+msgstr "Лицензия на один сервер и всю компанию. Сколько угодно пользователей, все функции, бесплатные обновления."
+
+msgid "Checklists 80 lvl"
+msgstr "Чек-листы 80 уровня"

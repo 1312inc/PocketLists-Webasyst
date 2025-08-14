@@ -9,12 +9,13 @@
     <h4>
         {if !empty($_premium_pricing.compare_price)}<strike class="gray">{$_premium_pricing.compare_price}</strike>{/if}
         {$_premium_pricing.price}
-        / [`lifetime`]
     </h4>
-    <p class="width-50 width-100-mobile custom-mx-auto small">
+    <p class="width-60 width-100-mobile custom-mx-auto small">
         {if !empty($_premium_pricing.special)}
             {sprintf('[`%s limited offer for upgrading existing app license to the premium version`]', sprintf('<span class="badge %s">%s</span>', $_premium_pricing.special_color, $_premium_pricing.special))}<br>
             <b>{date('Y.m.d')}</b> [`early launch only!`]
+        {else}
+            [`Per-server license for the entire company. Unlimited users, all premium features, free updates forever.`]
         {/if}
     </p>
 </figure>
@@ -85,7 +86,7 @@
 
             {else}
 
-                <h1 class="top-padded align-center width-70 custom-mx-auto custom-mb-24 width-100-mobile">[`All-new Pocket Lists is here.<br> Try and upgrade today!`]</h1>
+                <h1 class="top-padded align-center width-70 custom-mx-auto custom-mb-24 width-100-mobile">[`Checklists 80 lvl`]</h1>
 
             {/if}
 
@@ -97,12 +98,6 @@
               'mobile_googleplay' => 'https://play.google.com/store/apps/details?id=com.pocketlists',
               'mobile_rustore' => 'https://www.rustore.ru/catalog/app/com.pocketlists',
               'body' => '[`All-new native Android app that syncs directly to your Webasyst account and Pocket Lists.`]'
-            ]}
-
-            {$_premium_stuff[] = [
-              'title' => '[`New iOS app`]',
-              'eta' => '[`Coming later in 2025`]',
-              'body' => sprintf('[`Re-written from scratch. To be merged with the <a href="%s" target="_blank">old version</a> later on free.`]', 'https://pocketlists.com/')
             ]}
 
             {$_premium_stuff[] = [
@@ -204,28 +199,34 @@
             {/if}
 
             {$_premium_stuff[] = [
+              'title' => '[`New iOS app`]',
+              'eta' => '[`Soon`]',
+              'body' => sprintf('[`Re-written from scratch. To be merged with the <a href="%s" target="_blank">old version</a> later on free.`]', 'https://pocketlists.com/')
+            ]}
+
+            {$_premium_stuff[] = [
               'title' => '[`Team performance reports`]',
-              'eta' => '[`Later in 2025`]',
+              'eta' => '[`Soon`]',
               'body' => '[`Visualize how you and your team perform on checklists. Dynamics, KPIs.`]'
             ]}
             {$_premium_stuff[] = [
               'title' => '[`Subtasks`]',
-              'eta' => '[`Later in 2025`]',
+              'eta' => '[`Soon`]',
               'body' => '[`A note-like quick lists of subtasks attached to any to-do item.`]'
             ]}
             {$_premium_stuff[] = [
               'title' => '[`Lock lists with a passcode`]',
-              'eta' => '[`Later in 2025`]',
+              'eta' => '[`Soon`]',
               'body' => '[`Protect personal secure individual lists with a 4-digit passcode.`]'
             ]}
             {$_premium_stuff[] = [
               'title' => '[`Custom list branding`]',
-              'eta' => '[`Later in 2025`]',
+              'eta' => '[`Soon`]',
               'body' => '[`Personalize lists with a custom background image and style.`]'
             ]}
             {$_premium_stuff[] = [
               'title' => '[`Unlimited history`]',
-              'eta' => '[`Later in 2025`]',
+              'eta' => '[`Soon`]',
               'body' => '[`In basic version, lists are limited by 500 to-do items. With premium, all limits are off.`]'
             ]}
 
