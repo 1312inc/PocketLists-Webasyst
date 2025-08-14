@@ -13,16 +13,15 @@
             </h3>
         </div>
         {if !$wa->isSingleAppMode() && !$wa->pocketlists->isPremium()}
-            <div class="flexbox middle space-12">
-                Новый интерфейс
-                <span class="switch" id="switch-2">
+            <div class="flexbox middle space-12 small">
+                <span class="switch smaller" id="switch-2">
                     <input type="checkbox" name="" checked>
                 </span>
-
+                <span>[`New UI`] <span class="hint">[`beta`]</span></span>
                 <script>
                     (function($) {
                         const isNewWidget = localStorage.getItem('tasks/plNewWidget');
-                        
+
                         changeWidgetUI(isNewWidget);
 
                         $("#switch-2").waSwitch({
@@ -49,7 +48,7 @@
         {/if}
     </div>
 
-    <div style="display: none;" id="pl-list-items-new">
+    <div style="display: none; margin: 0.5rem -1.25rem;" id="pl-list-items-new">
         {$widgetId = implode(["pl-wigdet-", waString::uuid()])}
         <iframe
             class="pl-widget"
