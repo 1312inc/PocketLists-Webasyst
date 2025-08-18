@@ -559,9 +559,6 @@ msgstr "отправил в архив"
 msgid "added new items to"
 msgstr "добавил новые задачи в"
 
-msgid "to his personal to-do stream"
-msgstr "в свой поток задач"
-
 msgid "Your favorites list is empty"
 msgstr "Избранных задач нет"
 

@@ -215,9 +215,9 @@ class pocketlistsLogAction
     {
         if ($this->ext_logs[$id]['params']['list_id']) {
             return $this->getListUrlHtml($id);
-        } else {
-            return _w("to his personal to-do stream");
         }
+
+        return '';
     }
 
     /**
@@ -245,7 +245,7 @@ class pocketlistsLogAction
         $f = pl2()->getEntityFactory(pocketlistsItem::class);
         $item = $f->findById($this->ext_logs[$id]['params']['item_id']) ?: $f->createNew();
 
-        return htmlspecialchars($item->getName());
+        return $this->getItemUrlHtml($item);
     }
 
     /**
@@ -256,6 +256,7 @@ class pocketlistsLogAction
      */
     private function item_comment($id)
     {
+        $html = '';
         $item = false;
         if (!empty($this->ext_logs[$id]['params']['item_id'])) {
             $f = pl2()->getEntityFactory(pocketlistsItem::class);
@@ -263,16 +264,13 @@ class pocketlistsLogAction
             $item = $f->findById($this->ext_logs[$id]['params']['item_id']) ?: '';
         }
 
-        $html = '';
-
         if (!empty($this->ext_logs[$id]['pocketlists_ext']['comment']) && $this->ext_logs[$id]['pocketlists_ext']['comment'] instanceof pocketlistsComment) {
-            $html .= htmlspecialchars($this->ext_logs[$id]['pocketlists_ext']['comment']->getComment());
+            $html = htmlspecialchars($this->ext_logs[$id]['pocketlists_ext']['comment']->getComment());
         }
 
-        $_link = $this->getListUrlHtml($id, $item ? $item->getName() : '');
-
-        if ($_link)
-            $html .= ' @ '.$_link;
+        if ($_link = $this->getItemUrlHtml($item)) {
+            $html .= " @ $_link";
+        }
 
         return $html;
     }
@@ -286,8 +284,7 @@ class pocketlistsLogAction
     private function item_assign($id)
     {
         $team_name = 'no contact';
-        $contact = new waContact($this->ext_logs[$id]['params']['assigned_to']);
-        $list_html = $this->getListUrlHtml($id);
+        $contact = new waContact(ifset($this->ext_logs, $id, 'params', 'assigned_to', null));
 
         if (wa()->whichUI(pocketlistsHelper::APP_ID) == '1.3') {
             $team_url = '#/team/';
@@ -309,12 +306,11 @@ class pocketlistsLogAction
             $item = $this->getItemData($this->ext_logs[$id]['params']['item_id']);
         }
 
-        $_str = '<a href="'.$team_url.'">'.$team_name.'</a>'.($item && $item->getId() ? ' '.htmlspecialchars($item->getName()) : '');
-        if ($list_html) {
-            return $_str.' @ '.$list_html;
-        } else {
-            return $_str;
-        }
+        return sprintf(
+            '%s &rarr; %s',
+            $this->getItemUrlHtml($item),
+            '<a href="'.$team_url.'">'.$team_name.'</a>'
+        );
     }
 
     /**
@@ -326,6 +322,7 @@ class pocketlistsLogAction
     private function new_item($id)
     {
         $item = null;
+        $list_html = '';
         if (!empty($this->ext_logs[$id]['params']['item_id'])) {
             $item = $this->getItemData($this->ext_logs[$id]['params']['item_id']);
         }
@@ -341,11 +338,9 @@ class pocketlistsLogAction
                 $link->getAppLink()->getLinkUrl($link),
                 $link->getAppLink()->getEntityTitle($link)
             );
-        } else {
-            $list_html = _w("to his personal to-do stream");
         }
 
-        return sprintf('%s @ %s', $item && $item->getId() ? ' '.htmlspecialchars($item->getName()) : '', $list_html);
+        return $this->getItemUrlHtml($item).($list_html ? " @ $list_html" : '');
     }
 
     /**
@@ -418,6 +413,28 @@ class pocketlistsLogAction
         $list_name = ($anchor ? htmlspecialchars($anchor) : htmlspecialchars($list->getName(), ENT_QUOTES));
 
         return "<a href=\"$list_url\">$list_name</a>";
+    }
+
+    /**
+     * @param pocketlistsItem $item
+     * @return string
+     * @throws waException
+     */
+    private function getItemUrlHtml($item)
+    {
+        if ($item && $item->getId()) {
+            if (wa()->whichUI(pocketlistsHelper::APP_ID) == '1.3') {
+                return htmlspecialchars($item->getName());
+            } else {
+                return sprintf(
+                    ' <a href="%s">%s</a>',
+                    $this->app_url.'todos/task/'.$item->getId(),
+                    htmlspecialchars($item->getName())
+                );
+            }
+        }
+
+        return '';
     }
 
     /**
@@ -655,8 +672,11 @@ class pocketlistsLogAction
 
         if (!isset(self::$cache[$key])) {
             $f = pl2()->getEntityFactory(pocketlistsComment::class);
-            $comment = $f->findById($id) ?: $f->createNew();
-
+            if ($comments = $f->findById([$id])) {
+                $comment = reset($comments);
+            } else {
+                $comment = $f->createNew();
+            }
             self::$cache[$key] = $comment;
         }
 
