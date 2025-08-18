@@ -68,6 +68,14 @@ class pocketlistsViewHelper
     }
 
     /**
+     * @return bool
+     */
+    public static function isCloud()
+    {
+        return wa()->appExists('hosting');
+    }
+
+    /**
      * @return array
      */
     public static function getPremiumPricing()
@@ -77,15 +85,13 @@ class pocketlistsViewHelper
 
         if (wa()->getLocale() == 'ru_RU')
         {
-            $pricing = array( 'compare_price' => '', 'price' => '15 999 <span class="ruble">₽</span>', 'special' => '' );
-            if (date('Ymd')<='20250531') $pricing = array( 'compare_price' => '11 999', 'price' => '5 999 <span class="ruble">₽</span>', 'special' => '&minus;50% до 31.05', 'special_short' => '&minus;50% до 31.05', 'special_color' => 'green' );
-            elseif (date('Ymd')<='20250831') $pricing = array( 'compare_price' => '15 999', 'price' => '11 999 <span class="ruble">₽</span>', 'special' => '&minus;25% до 31.08', 'special_short' => '&minus;25%', 'special_color' => 'green' );
+            $pricing = array( 'compare_price' => '15 999', 'price' => '5 999 <span class="ruble">₽</span> / год', 'special' => '', 'special_color' => 'green' );
+            if (date('Ymd')<='20250831') $pricing = array( 'compare_price' => '15 999', 'price' => '11 999 <span class="ruble">₽</span> / навсегда', 'special' => '&minus;25% до 31.08', 'special_short' => '&minus;25%', 'special_color' => 'green' );
         }
         else
         {
-            $pricing = array( 'compare_price' => '', 'price' => '$269', 'special' => '' );
-            if (date('Ymd')<='20250531') $pricing = array( 'compare_price' => '$199', 'price' => '$99', 'special' => '&minus;50% / 05.31', 'special_short' => '&minus;50%', 'special_color' => 'green' );
-            elseif (date('Ymd')<='20250630') $pricing = array( 'compare_price' => '$269', 'price' => '$199', 'special' => '&minus;25% / 08.31', 'special_short' => '&minus;25%', 'special_color' => 'green' );
+            $pricing = array( 'compare_price' => '$269', 'price' => '$99 / year', 'special' => '', 'special_color' => 'green' );
+            if (date('Ymd')<='20250831') $pricing = array( 'compare_price' => '$269', 'price' => '$199  / lifetime', 'special' => '&minus;25% / 08.31', 'special_short' => '&minus;25%', 'special_color' => 'green' );
         }
 
         return $pricing;

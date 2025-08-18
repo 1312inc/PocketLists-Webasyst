@@ -10,5 +10,7 @@ return [
     'upgrade/?' => 'upgrade/',
     'about/?' => 'about/',
     'download/<id>' => 'file/download',
+    'appWidget/?' => 'empty/',
+    'widget/*' => 'empty/', 
     '*' => 'backend/',
 ];

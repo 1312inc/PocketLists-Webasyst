@@ -366,14 +366,25 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                             }
 
                             if (ifempty($lists, $_item['list_id'], 'private', 0) == 0) {
-                                if (isset($_item['assigned_contact_id']) && $_item['assigned_contact_id'] == $user_id) {
-                                    $this->systemLogAction(
-                                        pocketlistsLogAction::NEW_SELF_ITEM,
-                                        [
-                                            'item_id' => $_item['id'],
-                                            'list_id' => $_item['list_id'],
-                                        ]
-                                    );
+                                if (isset($_item['assigned_contact_id'])) {
+                                    if ($_item['assigned_contact_id'] == $user_id) {
+                                        $this->systemLogAction(
+                                            pocketlistsLogAction::NEW_SELF_ITEM,
+                                            [
+                                                'item_id' => $_item['id'],
+                                                'list_id' => $_item['list_id'],
+                                            ]
+                                        );
+                                    } else {
+                                        $this->systemLogAction(
+                                            pocketlistsLogAction::ITEM_ASSIGN,
+                                            [
+                                                'item_id' => $_item['id'],
+                                                'list_id' => $_item['list_id'],
+                                                'assigned_to' => $_item['assigned_contact_id']
+                                            ]
+                                        );
+                                    }
                                 } else {
                                     $this->systemLogAction(
                                         pocketlistsLogAction::NEW_ITEM,

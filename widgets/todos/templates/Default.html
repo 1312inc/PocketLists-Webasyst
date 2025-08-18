@@ -1,0 +1,49 @@
+
+{$widgetId = implode(["pl-wigdet-", waString::uuid()])}
+
+<style>
+.pl-widget-2x2 {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  overflow: hidden;
+}
+.pl-widget-2x2 > div:nth-child(1) {
+  flex: none;
+}
+.pl-widget-2x2 > div:nth-child(2) {
+  flex: auto;
+  overflow-y: scroll;
+}
+</style>
+
+<div class="pl-widget-2x2">
+    <div class="flexbox middle space-8 custom-pt-20 custom-px-20 custom-pb-4">
+        <img src="{$wa_url}wa-apps/pocketlists/img/pocketlists.png" width="20" height="20" alt="" />
+        <div class="nowrap"><strong class="gray uppercase custom-ml-4">[`My to-dos`]</strong></div>
+    </div>
+    <div class="hide-scrollbar">
+      <iframe
+              class="pl-widget"
+              id="{$widgetId}"
+              src="{$wa_backend_url}pocketlists/widget/dashboard/?widget_id={$widgetId}&widget_mode=true"
+              frameborder="0"
+              scrolling="no"
+              style="width: 100%; border: 0; display: block;"
+              loading="lazy"
+      ></iframe>
+    </div>
+</div>
+<script>
+if (!window.__plWidgetHandlerLoaded) {
+  window.__plWidgetHandlerLoaded = true;
+  const script = document.createElement('script');
+  script.src = '{$wa_app_static_url}js/pocketlists-widget.js';
+  document.head.appendChild(script);
+}
+</script>

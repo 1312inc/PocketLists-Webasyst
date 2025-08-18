@@ -28,14 +28,10 @@
     <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-item.js?v3{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
     <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-list.js?v3{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
     <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-comment.js?v3{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
+    <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-ws-monitor.js?v3{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
 
-    <script type="module">
-        import WebSocketMonitor from '{$wa_app_static_url}js/pocketlists-ws-monitor.js?v3{if !waSystemConfig::isDebug()}{$wa->version()}{/if}';
-        new WebSocketMonitor();
-    </script>
-
-    <script type="module" crossorigin src="{$wa_app_static_url}client/assets/index-W42odyq_.js"></script>
-    <link rel="stylesheet" crossorigin href="{$wa_app_static_url}client/assets/index-aVqE-DDB.css">
+    <script type="module" crossorigin src="{$wa_app_static_url}client/assets/index-C9vxvpcD.js"></script>
+    <link rel="stylesheet" crossorigin href="{$wa_app_static_url}client/assets/index-Bb42cSnu.css">
 
     <script>
         window.appState = {
@@ -54,6 +50,8 @@
             shortcuts: {$shortcuts},
             timestamp: {$timestamp},
             datetime: '{$datetime}',
+            account_name: '{$account_name}',
+            install_hash: '{$install_hash}',
             framework_version: '{$framework_version}',
             app_version: '{$app_version}',
             is_premium: {if $is_premium}true{else}false{/if},

@@ -13,12 +13,62 @@
             </h3>
         </div>
         {if !$wa->isSingleAppMode() && !$wa->pocketlists->isPremium()}
-        <div>
-            <a href="{$wa_backend_url}pocketlists/upgrade/" target="_blank" class="button rounded light-gray nowrap smallest custom-mt-0 bold"><i class="fas fa-star text-yellow"></i> [`All-new Pocket Lists`] <i class="fas fa-external-link-alt opacity-30 smaller custom-ml-4"></i></a>
-            {$p = $wa->pocketlists->getPremiumPricing()}
-            {if !empty($p.special_short)}<span class="badge smaller {$p.special_color}">{$p.special_short}</span>{/if}
-        </div>
+            <div class="flexbox middle space-12 small">
+                <span class="switch smaller" id="switch-2">
+                    <input type="checkbox" name="" checked>
+                </span>
+                <span>[`New UI`] <span class="hint">[`beta`]</span></span>
+                <script>
+                    (function($) {
+                        const isNewWidget = localStorage.getItem('tasks/plNewWidget');
+
+                        changeWidgetUI(isNewWidget);
+
+                        $("#switch-2").waSwitch({
+                            active: !!isNewWidget,
+                            change: (active) => {
+                                changeWidgetUI(active);
+                                if (active) {
+                                    localStorage.setItem('tasks/plNewWidget', '1');
+                                } else {
+                                    localStorage.removeItem('tasks/plNewWidget')
+                                }
+                            }
+                        });
+
+                        function changeWidgetUI (isNewWidget) {
+                            const oldUI = document.querySelector('#pl-list-items');
+                            const newUI = document.querySelector('#pl-list-items-new');
+                            newUI.style.display = isNewWidget ? 'block' : 'none';
+                            oldUI.style.display = isNewWidget ? 'none' : 'block';
+                        }
+                    })(jQuery);
+                </script>
+            </div>
         {/if}
+    </div>
+
+    <div style="display: none; margin: 0.5rem -1.25rem;" id="pl-list-items-new">
+        {$widgetId = implode(["pl-wigdet-", waString::uuid()])}
+        <iframe
+            class="pl-widget"
+            id="{$widgetId}"
+            src="{$wa_backend_url}pocketlists/widget/appWidget/?external_app_id={$params.app->getApp()}&external_entity_type=task&external_entity_id={$params.task->id}&widget_id={$widgetId}"
+            frameborder="0"
+            scrolling="no"
+            style="width: 100%; border: 0; display: block;"
+            loading="lazy"
+        ></iframe>
+
+        <script>
+            if (!window.__plWidgetHandlerLoaded) {
+                window.__plWidgetHandlerLoaded = true;
+                const script = document.createElement('script');
+                script.src = '{$params.wa_app_static_url}js/pocketlists-widget.js';
+                script.async = true;
+                document.head.appendChild(script);
+            }
+        </script>
     </div>
 
     <div class="pl-list-items" id="pl-list-items">

@@ -559,9 +559,6 @@ msgstr "отправил в архив"
 msgid "added new items to"
 msgstr "добавил новые задачи в"
 
-msgid "to his personal to-do stream"
-msgstr "в свой поток задач"
-
 msgid "Your favorites list is empty"
 msgstr "Избранных задач нет"
 
@@ -1904,7 +1901,7 @@ msgid "See what’s included"
 msgstr "Что еще есть в премиум"
 
 msgid "Get premium now"
-msgstr "Купить премиум"
+msgstr "Подключить премиум"
 
 msgid "lifetime"
 msgstr "навсегда"
@@ -2088,3 +2085,15 @@ msgstr "https://www.webasyst.ru/my/buy/upgrade-to-premium/pocketlists/"
 
 msgid "%s limited offer for upgrading existing app license to the premium version"
 msgstr "%s спецпредложение на апгрейд базовой лицензии до премиум-версии"
+
+msgid "Per-server license for the entire company. Unlimited users, all premium features, free updates forever."
+msgstr "Лицензия на один сервер и всю компанию. Сколько угодно пользователей, все функции, бесплатные обновления."
+
+msgid "Checklists 80 lvl"
+msgstr "Чек-листы 80 уровня"
+
+msgid "All inclusive in the cloud"
+msgstr "В облаке все включено"
+
+msgid "In Webasyst Cloud, simply upgrade to the <b>Premium</b> plan and get all premium features at once with no extra purchase required."
+msgstr "Просто смените тариф на <b>Премиум</b> и пользуйтесь всеми премиум-функциями без покупки лицензий и апгрейдов."

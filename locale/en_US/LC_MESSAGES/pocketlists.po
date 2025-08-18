@@ -558,9 +558,6 @@ msgstr ""
 msgid "added new items to"
 msgstr ""
 
-msgid "to his personal to-do stream"
-msgstr ""
-
 msgid "Your favorites list is empty"
 msgstr ""
 

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html style="background: transparent;">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>{$wa->appName()} &mdash; {$wa->accountName()}</title>
+    {$wa->css()}
+
+    <script type="module" crossorigin src="{$wa_app_static_url}client/assets/index-C9vxvpcD.js"></script>
+    <link rel="stylesheet" crossorigin href="{$wa_app_static_url}client/assets/index-Bb42cSnu.css">
+
+    <script>
+        window.appState = {
+            base_url: '{$wa_app_url}',
+            apiToken: '{$spa_api_token}',
+            apiBaseUrl: '{$wa_url}api.php',
+            contact_id: {$wa->user()->get('id')},
+            users: {$users},
+            pockets: {$pockets},
+            locations: {$locations},
+            user_rights: {$user_rights},
+            user_locale: '{$user_locale}',
+            user_timezone: '{$user_timezone}',
+            user: {$user},
+            labels: {$labels},
+            shortcuts: {$shortcuts},
+            timestamp: {$timestamp},
+            datetime: '{$datetime}',
+            account_name: '{$account_name}',
+            install_hash: '{$install_hash}',
+            framework_version: '{$framework_version}',
+            app_version: '{$app_version}',
+            is_premium: {if $is_premium}true{else}false{/if},
+            is_debug_mode: {if $pl_debug_mode}true{else}false{/if},
+        }
+    </script>
+</head>
+
+<body style="background: transparent;">
+    <div id="wa">
+        <!-- <div id="wa-nav"></div> -->
+        <div id="wa-app">
+          <section class="flexbox wrap-mobile">
+            <!-- <aside id="pl-sidebar" class="sidebar hide-scrollbar width-adaptive mobile-friendly desktop-only"> -->
+              <!-- <div data-vue-fragment="single-app">Test Fragment</div> -->
+            <!-- </aside> -->
+            <main id="pl-app" class="content hide-scrollbar flexbox"></main>
+          </section>
+        </div>
+      </div>
+    
+</body>
+</html>
