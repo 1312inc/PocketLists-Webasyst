@@ -12,40 +12,40 @@
                 [`Checklist`]
             </h3>
         </div>
-        {if !$wa->isSingleAppMode() && !$wa->pocketlists->isPremium()}
-            <div class="flexbox middle space-12 small">
-                <span class="switch smaller" id="switch-2">
-                    <input type="checkbox" name="" checked>
-                </span>
-                <span>[`New UI`] <span class="hint">[`beta`]</span></span>
-                <script>
-                    (function($) {
-                        const isNewWidget = localStorage.getItem('tasks/plNewWidget');
 
-                        changeWidgetUI(isNewWidget);
+        <div class="flexbox middle space-12 small">
+            <span class="switch smaller" id="switch-2">
+                <input type="checkbox" name="" checked>
+            </span>
+            <span>[`New UI`] <span class="hint">[`beta`]</span></span>
+            <script>
+                (function($) {
+                    const isNewWidget = localStorage.getItem('tasks/plNewWidget');
 
-                        $("#switch-2").waSwitch({
-                            active: !!isNewWidget,
-                            change: (active) => {
-                                changeWidgetUI(active);
-                                if (active) {
-                                    localStorage.setItem('tasks/plNewWidget', '1');
-                                } else {
-                                    localStorage.removeItem('tasks/plNewWidget')
-                                }
+                    changeWidgetUI(isNewWidget);
+
+                    $("#switch-2").waSwitch({
+                        active: !!isNewWidget,
+                        change: (active) => {
+                            changeWidgetUI(active);
+                            if (active) {
+                                localStorage.setItem('tasks/plNewWidget', '1');
+                            } else {
+                                localStorage.removeItem('tasks/plNewWidget')
                             }
-                        });
-
-                        function changeWidgetUI (isNewWidget) {
-                            const oldUI = document.querySelector('#pl-list-items');
-                            const newUI = document.querySelector('#pl-list-items-new');
-                            newUI.style.display = isNewWidget ? 'block' : 'none';
-                            oldUI.style.display = isNewWidget ? 'none' : 'block';
                         }
-                    })(jQuery);
-                </script>
-            </div>
-        {/if}
+                    });
+
+                    function changeWidgetUI (isNewWidget) {
+                        const oldUI = document.querySelector('#pl-list-items');
+                        const newUI = document.querySelector('#pl-list-items-new');
+                        newUI.style.display = isNewWidget ? 'block' : 'none';
+                        oldUI.style.display = isNewWidget ? 'none' : 'block';
+                    }
+                })(jQuery);
+            </script>
+        </div>
+
     </div>
 
     <div style="display: none; margin: 0.5rem -1.25rem;" id="pl-list-items-new">
