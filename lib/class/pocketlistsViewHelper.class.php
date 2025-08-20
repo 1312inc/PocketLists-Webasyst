@@ -64,7 +64,7 @@ class pocketlistsViewHelper
      */
     public static function isPremium()
     {
-        return pocketlistsLicensing::isPremium();
+        return pocketlistsLicensing::check(pocketlistsHelper::APP_ID)->isPremium();
     }
 
     /**

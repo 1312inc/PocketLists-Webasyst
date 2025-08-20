@@ -63,6 +63,7 @@ class pocketlistsActivityAction extends pocketlistsViewAction
             'lazy'      => $this->lazy,
             'type'      => $this->type,
             'entity_id' => $this->entity_id,
+            'is_premium' => pocketlistsLicensing::check(pocketlistsHelper::APP_ID)->hasPremiumLicense()
         ]);
     }
 

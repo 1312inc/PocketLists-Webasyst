@@ -1,6 +1,23 @@
+{$_prem = true}
+{if !($is_premium || pocketlistsHelper::hasPlugin('pro'))}
+    {$_prem = false}
+{/if}
+
+{if !$_prem}
+<div class="box contentbox">
+    <h3>[`Premium only`]</h3>
+    <p class="small">
+        <i class="fas fa-star text-yellow"></i> [`Upgrade now to have the feature enabled and this message to disappear permanently.`]
+    </p>
+    <a href="{$wa_app_url}upgrade/" class="button yellow rounded">[`See what’s included`]</a>
+    <hr class="custom-mt-24" />
+</div>
+{/if}
+
+
 {** @var $log pocketlistsLog **}
 <div class="pl-pseudo-article">
-<div class="pl2pro-log pl2pro-log-{$type|strtolower}" data-pl2pro-logs>
+<div class="pl2pro-log pl2pro-log-{$type|strtolower}{if !$_prem} opacity-40{/if}" data-pl2pro-logs>
     {if $type|strtolower == 'activity' || $type|strtolower == 'pocket'}
         <h1>
             [`Activity log`]

@@ -175,7 +175,7 @@ class pocketlistsSystemGetSettingsMethod extends pocketlistsApiAbstractMethod
     private function isPremium()
     {
         if (!isset($this->is_premium)) {
-            $this->is_premium = pocketlistsLicensing::isPremium();
+            $this->is_premium = pocketlistsLicensing::check(pocketlistsHelper::APP_ID)->isPremium();
         }
 
         return $this->is_premium;
