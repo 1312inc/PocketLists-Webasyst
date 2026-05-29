@@ -110,7 +110,7 @@ class pocketlistsItemsDeleteMethod extends pocketlistsApiAbstractMethod
                 pocketlistsLog::ACTION_DELETE,
                 $logs
             );
-            pl2()->getCache()->deleteAll();
+            //pl2()->getCache()->deleteAll();
         }
 
         $this->response['data'] = $this->responseWrapper(

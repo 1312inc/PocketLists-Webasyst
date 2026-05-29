@@ -466,7 +466,7 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
             } catch (Exception $ex) {
                 throw new pocketlistsApiException(sprintf_wp('Error on transaction import save: %s', $ex->getMessage()), 400);
             }
-            pl2()->getCache()->deleteAll();
+            //pl2()->getCache()->deleteAll();
         }
 
         $this->response['data'] = $this->responseWrapper(

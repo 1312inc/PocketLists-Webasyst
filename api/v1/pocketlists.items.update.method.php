@@ -528,7 +528,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                         $attachments_log
                     );
                 }
-                pl2()->getCache()->deleteAll();
+                //pl2()->getCache()->deleteAll();
             } catch (Exception $ex) {
                 throw new pocketlistsApiException(sprintf_wp('Error on transaction import save: %s', $ex->getMessage()), 400);
             }
