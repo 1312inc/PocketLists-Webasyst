@@ -5,6 +5,7 @@ class pocketlistsLocationsGetMethod extends pocketlistsApiAbstractMethod
     public function execute()
     {
         $location_id = $this->get('location_id');
+        $location_uuid = $this->get('location_uuid');
         $starting_from = $this->get('starting_from');
         $nearby = $this->get('nearby');
         $limit = $this->get('limit');
@@ -19,6 +20,8 @@ class pocketlistsLocationsGetMethod extends pocketlistsApiAbstractMethod
                 throw new pocketlistsApiException(_w('Location not found'), 404);
             }
             $where .= ' AND id = i:location_id';
+        } elseif (isset($location_uuid)) {
+            $where .= ' AND uuid = s:location_uuid';
         }
         if (isset($starting_from)) {
             if (!is_string($starting_from)) {
@@ -85,6 +88,7 @@ class pocketlistsLocationsGetMethod extends pocketlistsApiAbstractMethod
             LIMIT i:offset, i:limit
             ", [
                 'location_id' => $location_id,
+                'location_uuid' => $location_uuid,
                 'starting_from' => $starting_from,
                 'latitude' => ifset($latitude),
                 'longitude' => ifset($longitude),
@@ -94,7 +98,7 @@ class pocketlistsLocationsGetMethod extends pocketlistsApiAbstractMethod
         )->fetchAll();
         $total_count = (int) $pllm->query('SELECT FOUND_ROWS()')->fetchField();
 
-        if (empty($locations) && isset($location_id)) {
+        if (empty($locations) && (isset($location_id) || isset($location_uuid))) {
             throw new pocketlistsApiException(_w('Location not found'), 404);
         }
 

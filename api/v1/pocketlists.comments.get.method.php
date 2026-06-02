@@ -5,6 +5,7 @@ class pocketlistsCommentsGetMethod extends pocketlistsApiAbstractMethod
     public function execute()
     {
         $item_id = $this->get('item_id');
+        $item_uuid = $this->get('item_uuid');
         $starting_from = $this->get('starting_from');
         $limit = $this->get('limit');
         $offset = $this->get('offset');
@@ -17,6 +18,8 @@ class pocketlistsCommentsGetMethod extends pocketlistsApiAbstractMethod
                 throw new pocketlistsApiException(_w('Item not found'), 404);
             }
             $where .= ' AND c.item_id = i:item_id';
+        } elseif (isset($item_uuid)) {
+            $where .= ' AND i.uuid = s:item_uuid';
         }
         if (isset($starting_from)) {
             if (!is_string($starting_from)) {
@@ -57,6 +60,7 @@ class pocketlistsCommentsGetMethod extends pocketlistsApiAbstractMethod
         $comments = $plcm->query(
             "$sql $where ORDER BY c.update_datetime DESC, c.id DESC LIMIT i:offset, i:limit", [
             'item_id'       => (int) $item_id,
+            'item_uuid'     => (string) $item_uuid,
             'starting_from' => $starting_from,
             'limit'         => $limit,
             'offset'        => $offset
