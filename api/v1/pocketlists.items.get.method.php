@@ -5,6 +5,7 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
     public function execute()
     {
         $ids = $this->get('id');
+        $uuids = $this->get('uuid');
         $list_id = $this->get('list_id');
         $contact_id = $this->get('contact_id');
         $assigned_contact_id = $this->get('assigned_contact_id');
@@ -29,6 +30,11 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
             }));
             if (empty($ids)) {
                 throw new pocketlistsApiException(_w('Items not found'), 404);
+            }
+        }
+        if (isset($uuids)) {
+            if (!is_array($uuids)) {
+                throw new pocketlistsApiException(sprintf_wp('Invalid data type: “%s”', 'uuid'), 400);
             }
         }
         if (isset($list_id)) {
@@ -173,8 +179,12 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
         $item_model = pl2()->getModel(pocketlistsItem::class);
         $sql_parts = $item_model->getQueryComponents(true);
         $sql_parts['where']['and'][] = 'i.key_list_id IS NULL';
-        if ($ids) {
+        if ($ids && $uuids) {
+            $sql_parts['where']['and'][] = '(i.id IN (i:item_ids) OR i.uuid IN (s:item_uuids))';
+        } elseif ($ids) {
             $sql_parts['where']['and'][] = 'i.id IN (i:item_ids)';
+        } elseif ($uuids) {
+            $sql_parts['where']['and'][] = 'i.uuid IN (s:item_uuids)';
         }
         if (isset($list_id)) {
             $sql_parts['where']['and'][] = 'i.list_id IN (i:list_ids)';
@@ -249,6 +259,7 @@ class pocketlistsItemsGetMethod extends pocketlistsApiAbstractMethod
         $items = $item_model->query(
             "$sql LIMIT i:offset, i:limit", [
             'item_ids'            => $ids,
+            'item_uuids'          => $uuids,
             'item_move_ids'       => $item_move_ids,
             'list_ids'            => $list_ids,
             'location_id'         => $location_id,

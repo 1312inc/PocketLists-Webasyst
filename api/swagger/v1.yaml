@@ -522,6 +522,13 @@ paths:
             items:
               type: integer
         - in: query
+          name: uuid[]
+          description: Filters by item UUID.
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
           name: list_id
           description: Filters by list ID. When 'list_id' is specified with no other parameters (such as status & starting_from), default sort will be 'ORDER BY sort, rank'.
           schema:
@@ -1054,6 +1061,13 @@ paths:
             type: array
             items:
               type: integer
+        - in: query
+          name: uuid[]
+          description: List UUID.
+          schema:
+            type: array
+            items:
+              type: string
         - in: query
           name: pocket_id
           description: Filter by pocket ID
@@ -1775,6 +1789,13 @@ paths:
             type: array
             items:
               type: integer
+        - in: query
+          name: uuid[]
+          description: Pocket UUIDs.
+          schema:
+            type: array
+            items:
+              type: string
         - in: query
           name: starting_from
           description: Returns records updated/created only after the specified datetime (UTC, ISO 8601). Older records are removed from the response. When 'starting_from' is passed, all records will be 'ORDER BY update_datetime DESC'.

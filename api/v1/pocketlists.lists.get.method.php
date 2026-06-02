@@ -5,6 +5,7 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
     public function execute()
     {
         $ids = $this->get('id');
+        $uuids = $this->get('uuid');
         $pocket_id = $this->get('pocket_id');
         $contact_id = $this->get('contact_id');
         $assigned_contact_id = $this->get('assigned_contact_id');
@@ -19,6 +20,11 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
             $ids = array_unique(array_filter($ids, function ($_i) {
                 return is_numeric($_i) && $_i > 0;
             }));
+        }
+        if (isset($uuids)) {
+            if (!is_array($uuids)) {
+                throw new pocketlistsApiException(sprintf_wp('Invalid data type: “%s”', 'uuid'), 400);
+            }
         }
         if (isset($pocket_id)) {
             if (!is_numeric($pocket_id)) {
@@ -76,7 +82,7 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
             $list_model = pl2()->getModel(pocketlistsList::class);
             $sql_parts = $list_model->getQueryComponents(true);
             $sql_parts['select'] = array_slice($sql_parts['select'], 0, 3);
-            $sql_parts['where']['and'] = ['l.id IN (i:ids)'];
+            $sql_parts['where']['and']['ids'] = 'l.id IN (i:ids)';
             if ($pocket_id) {
                 $sql_parts['where']['and'][] = 'l.pocket_id = i:pocket_id';
             }
@@ -85,7 +91,7 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
             }
             if ($assigned_contact_id) {
                 $sql_parts['where']['and'][] = 'i.assigned_contact_id = i:assigned_contact_id';
-            } elseif (empty($ids) && empty($contact_id)) {
+            } elseif (empty($ids) && empty($uuids) && empty($contact_id)) {
                 $sql_parts['where']['and'][] = 'NOT (i.assigned_contact_id IS NOT NULL AND i.assigned_contact_id != i:assigned_contact_id)';
                 $sql_parts['where']['or'][] = 'l.private = 1 AND i.contact_id = i:contact_id';
                 $contact_id = $current_user_id;
@@ -97,8 +103,14 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
             } else {
                 $sql_parts['order by'] = ['l.pocket_id, l.sort, l.rank, i.id DESC'];
             }
-            if ($ids) {
+            if ($ids && $uuids) {
                 $ids = array_intersect($ids, $accessed_lists);
+                $sql_parts['where']['and']['ids'] = '(l.id IN (i:ids) OR i.uuid IN (s:uuids))';
+            } elseif ($ids) {
+                $ids = array_intersect($ids, $accessed_lists);
+            } elseif ($uuids) {
+                $ids = $accessed_lists;
+                $sql_parts['where']['and']['ids'] = '(l.id IN (i:ids) AND i.uuid IN (s:uuids))';
             } else {
                 $ids = $accessed_lists;
             }
@@ -107,6 +119,7 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
                 $lists = $list_model->query(
                     "$sql LIMIT i:offset, i:limit", [
                     'ids'                 => $ids,
+                    'uuids'               => $uuids,
                     'pocket_id'           => $pocket_id,
                     'contact_id'          => $contact_id,
                     'assigned_contact_id' => $assigned_contact_id,
