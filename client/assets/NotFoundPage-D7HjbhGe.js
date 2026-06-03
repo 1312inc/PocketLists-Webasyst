@@ -1,0 +1,1 @@
+import{l as e}from"./index-CLNRMLnI.js";var t={};function n(e,t){return` 404 `}var r=e(t,[[`render`,n]]);export{r as default};
