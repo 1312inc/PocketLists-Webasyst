@@ -466,7 +466,9 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
             } catch (Exception $ex) {
                 throw new pocketlistsApiException(sprintf_wp('Error on transaction import save: %s', $ex->getMessage()), 400);
             }
-            //pl2()->getCache()->deleteAll();
+            $priorities = $this->getUser()->getSettings()->getIconPrioririesMapping();
+            pl2()->getCache()->delete(sprintf('items|team|%s|%s', $user_id, $user_id));
+            pl2()->getCache()->delete(sprintf('items|todo|%s|%s|%s', $user_id, json_encode($priorities), pocketlistsItem::STATUS_UNDONE));
         }
 
         $this->response['data'] = $this->responseWrapper(

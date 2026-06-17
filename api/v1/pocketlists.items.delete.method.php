@@ -110,7 +110,9 @@ class pocketlistsItemsDeleteMethod extends pocketlistsApiAbstractMethod
                 pocketlistsLog::ACTION_DELETE,
                 $logs
             );
-            //pl2()->getCache()->deleteAll();
+            $priorities = $this->getUser()->getSettings()->getIconPrioririesMapping();
+            pl2()->getCache()->delete(sprintf('items|team|%s|%s', pl2()->getUser()->getId(), pl2()->getUser()->getId()));
+            pl2()->getCache()->delete(sprintf('items|todo|%s|%s|%s', pl2()->getUser()->getId(), json_encode($priorities), pocketlistsItem::STATUS_UNDONE));
         }
 
         $this->response['data'] = $this->responseWrapper(
