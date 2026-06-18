@@ -1,1 +1,0 @@
-import{Kt as e,Pt as t,Xt as n,l as r}from"./index-CLNRMLnI.js";var i={};function a(r,i){let a=n(`RouterView`);return e(),t(a)}var o=r(i,[[`render`,a]]);export{o as default};
