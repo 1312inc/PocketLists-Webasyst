@@ -102,6 +102,7 @@ class pocketlistsLogService
         ];
 
         $logs = [];
+waLog::dump('1 pocketlists.items.add', 'pocketlists/30items_add.log');
         while ($_log = array_shift($data)) {
             $id = ifset($_log, 'id', null);
             $action = ifempty($_log, 'action', null);
@@ -131,9 +132,11 @@ class pocketlistsLogService
             }
             $logs[] = $_log;
         }
+waLog::dump('2 pocketlists.items.add', 'pocketlists/30items_add.log');
 
         $log_model = pl2()->getModel(pocketlistsLog::class);
         $result = $log_model->multipleInsert($logs);
+waLog::dump('3 pocketlists.items.add', 'pocketlists/30items_add.log');
         if ($result instanceof waDbResult && $result->getResult()) {
             $last_id = $result->lastInsertId();
             $rows_count = $result->affectedRows();
@@ -143,7 +146,9 @@ class pocketlistsLogService
                     $log['params'] = $log['params_for_socket'];
                     unset($log['params_for_socket']);
                 }
+waLog::dump('4 pocketlists.items.add', 'pocketlists/30items_add.log');
                 self::websocketMegaphone($logs);
+waLog::dump('5 pocketlists.items.add', 'pocketlists/30items_add.log');
                 pl2()->getEventDispatcher()->dispatch(
                     new pocketlistsEvent(
                         pocketlistsEventStorage::LOGS_INSERT,
@@ -152,6 +157,7 @@ class pocketlistsLogService
                 );
                 return true;
             }
+waLog::dump('END pocketlists.items.add', 'pocketlists/30items_add.log');
         }
 
         return false;

@@ -445,11 +445,11 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                         }
 
                         $this->setAnnouncements($items_ok);
-//                        $this->saveLog(
-//                            pocketlistsLog::ENTITY_ITEM,
-//                            pocketlistsLog::ACTION_ADD,
-//                            $items_ok
-//                        );
+                        $this->saveLog(
+                            pocketlistsLog::ENTITY_ITEM,
+                            pocketlistsLog::ACTION_ADD,
+                            $items_ok
+                        );
                         if ($attachments_log) {
                             $this->saveLog(
                                 pocketlistsLog::ENTITY_ATTACHMENT,
