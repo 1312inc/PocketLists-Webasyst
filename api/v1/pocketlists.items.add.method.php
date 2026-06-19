@@ -6,6 +6,7 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
 
     public function execute()
     {
+waLog::dump('BEGIN >>>> pocketlists.items.add', 'pocketlists/30items_add.log');
         $items = $this->readBodyAsJson();
         if (empty($items)) {
             throw new pocketlistsApiException(_w('Missing `data`'), 400);
@@ -22,6 +23,7 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
         $assigned_contact_ids = array_unique(array_filter(array_column($items, 'assigned_contact_id')));
         $uuids = array_column($items, 'uuid');
         $attachments = array_column($items, 'attachments');
+waLog::dump('1 >>>> pocketlists.items.add', 'pocketlists/30items_add.log');
 
         $access_list_ids = pocketlistsRBAC::getAccessListForContact(pl2()->getUser()->getId());
         if (!empty($list_ids)) {
@@ -69,6 +71,7 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
             $attachment_uuids = $this->getEntitiesByUuid('attachment', $attachment_uuids);
             $attachment_uuids = array_keys($attachment_uuids);
         }
+waLog::dump('2 >>>> pocketlists.items.add', 'pocketlists/30items_add.log');
 
         /** validate */
         $user_id = $this->getUser()->getId();
@@ -310,6 +313,7 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                 $_item['success'] = false;
                 $_item['attachments'] = [];
             }
+waLog::dump('3 VALIDATE >>>> pocketlists.items.add', 'pocketlists/30items_add.log');
         }
 
         $items_ok = array_filter($items, function ($i) {
@@ -395,6 +399,8 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                                     );
                                 }
                             }
+waLog::dump('4 >>>> pocketlists.items.add', 'pocketlists/30items_add.log');
+
                         }
                         unset($_item);
 
@@ -443,6 +449,7 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                             (new pocketlistsNotificationAboutNewAssign())->multiplicityNotify($no_private_items);
                             (new pocketlistsNotificationAboutNewItems())->multiplicityNotify($no_private_items);
                         }
+waLog::dump('5 >>>> pocketlists.items.add', 'pocketlists/30items_add.log');
 
                         $this->setAnnouncements($items_ok);
                         $this->saveLog(
@@ -470,7 +477,7 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
             pl2()->getCache()->delete(sprintf('items|team|%s|%s', $user_id, $user_id));
             pl2()->getCache()->delete(sprintf('items|todo|%s|%s|%s', $user_id, json_encode($priorities), pocketlistsItem::STATUS_UNDONE));
         }
-
+waLog::dump('END pocketlists.items.add', 'pocketlists/30items_add.log');
         $this->response['data'] = $this->responseWrapper(
             array_merge($items_ok, $items_err),
             [
