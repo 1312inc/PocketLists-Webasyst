@@ -16,7 +16,7 @@ class pocketlistsServicesApi extends installerServicesApi
             if (empty($url)) {
                 return false;
             }
-            $net->query($url);
+            $net->query($url, [], waNet::METHOD_POST);
         } catch (waNetTimeoutException $wa_net) {
             return false;
         } catch (waNetException $wa_net) {
