@@ -49,30 +49,30 @@ class pocketlistsAttachmentsAddMethod extends pocketlistsApiAbstractMethod
             ];
 
             if (empty($_file['item_id'])) {
-                $_file['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'item_id');
+                $_file['errors'][] = $this->getError(3001);
             } elseif (!is_numeric($_file['item_id'])) {
-                $_file['errors'][] = sprintf_wp('Invalid data type: “%s”', 'item_id');
+                $_file['errors'][] = $this->getError(3002);
             } elseif ($_file['item_id'] < 1 || !in_array($_file['item_id'], $item_ids)) {
-                $_file['errors'][] = _w('Item not found');
+                $_file['errors'][] = $this->getError(1047);
             }
 
             if (empty($_file['file_name'])) {
-                $_file['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'file_name');
+                $_file['errors'][] = $this->getError(1033);
             } elseif (!is_string($_file['file_name'])) {
-                $_file['errors'][] = sprintf_wp('Invalid data type: “%s”', 'file_name');
+                $_file['errors'][] = $this->getError(3003);
             }
 
             if (empty($_file['file'])) {
-                $_file['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'file');
+                $_file['errors'][] = $this->getError(1032);
             } elseif (!is_string($_file['file'])) {
-                $_file['errors'][] = sprintf_wp('Invalid data type: “%s”', 'file');
+                $_file['errors'][] = $this->getError(3004);
             }
 
             if (!empty($_file['uuid'])) {
                 if (!is_string($_file['uuid'])) {
-                    $_file['errors'][] = sprintf_wp('Invalid data type: “%s”', 'uuid');
+                    $_file['errors'][] = $this->getError(1027);
                 } elseif (in_array($_file['uuid'], $uuids)) {
-                    $_file['errors'][] = _w('Attachment with UUID exists');
+                    $_file['errors'][] = $this->getError(1034);
                 }
             }
 

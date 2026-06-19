@@ -39,9 +39,9 @@ class pocketlistsCommentsDeleteMethod extends pocketlistsApiAbstractMethod
             ];
 
             if (empty($_comment['id'])) {
-                $_comment['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'id');
+                $_comment['errors'][] = $this->getError(1043);
             } elseif (!is_numeric($_comment['id'])) {
-                $_comment['errors'][] = sprintf_wp('Invalid data type: “%s”', 'id');
+                $_comment['errors'][] = $this->getError(1044);
             } elseif (!in_array($_comment['id'], $comment_ids)) {
                 $_comment['success'] = true;
             }

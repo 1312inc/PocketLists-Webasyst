@@ -46,42 +46,42 @@ class pocketlistsPocketsUpdateMethod extends pocketlistsApiAbstractMethod
             ];
 
             if (!isset($_pocket['id'])) {
-                $_pocket['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'id');
+                $_pocket['errors'][] = $this->getError(1043);
             } elseif (!is_numeric($_pocket['id'])) {
-                $_pocket['errors'][] = sprintf_wp('Invalid data type: “%s”', 'id');
+                $_pocket['errors'][] = $this->getError(1044);
             } elseif ($_pocket['id'] < 1 || !array_key_exists($_pocket['id'], $pockets_in_db)) {
-                $_pocket['errors'][] = _w('Pocket not found');
+                $_pocket['errors'][] = $this->getError(2002);
             }
 
             if (isset($_pocket['name']) && !is_string($_pocket['name'])) {
-                $_pocket['errors'][] = sprintf_wp('Invalid data type: “%s”', 'name');
+                $_pocket['errors'][] = $this->getError(1004);
             }
 
             if (isset($_pocket['color']) && (!is_string($_pocket['color']) || !array_key_exists($_pocket['color'], pocketlistsStoreColor::getColors()))) {
-                $_pocket['errors'][] = _w('Unknown color');
+                $_pocket['errors'][] = $this->getError(2013);
             }
 
             if (isset($_pocket['sort']) && !is_numeric($_pocket['sort'])) {
-                $_pocket['errors'][] = sprintf_wp('Invalid data type: “%s”', 'sort');
+                $_pocket['errors'][] = $this->getError(1005);
             }
 
             if (isset($_pocket['rank'])) {
                 if (!is_string($_pocket['rank'])) {
-                    $_pocket['errors'][] = sprintf_wp('Invalid data type: “%s”', 'rank');
+                    $_pocket['errors'][] = $this->getError(1006);
                 } elseif ($_pocket['rank'] !== '' && !pocketlistsSortRank::rankValidate($_pocket['rank'])) {
-                    $_pocket['errors'][] = _w('Invalid rank value');
+                    $_pocket['errors'][] = $this->getError(1007);
                 }
             }
 
             if (isset($_pocket['client_touch_datetime'])) {
                 if (!is_string($_pocket['client_touch_datetime'])) {
-                    $_pocket['errors'][] = sprintf_wp('Invalid data type: “%s”', 'client_touch_datetime');
+                    $_pocket['errors'][] = $this->getError(1023);
                 } else {
                     $dt = date_create($_pocket['client_touch_datetime']);
                     if ($dt) {
                         $_pocket['client_touch_datetime'] = $dt->format('Y-m-d H:i:s');
                     } else {
-                        $_pocket['errors'][] = _w('Invalid value client_touch_datetime');
+                        $_pocket['errors'][] = $this->getError(1024);
                     }
                 }
             }

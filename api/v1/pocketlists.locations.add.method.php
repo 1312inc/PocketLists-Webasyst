@@ -37,42 +37,42 @@ class pocketlistsLocationsAddMethod extends pocketlistsApiAbstractMethod
             ];
 
             if (isset($_location['name']) && !is_string($_location['name'])) {
-                $_location['errors'][] = sprintf_wp('Invalid data type: “%s”', 'name');
+                $_location['errors'][] = $this->getError(1004);
             }
 
             if (isset($_location['color']) && !is_string($_location['color'])) {
-                $_location['errors'][] = sprintf_wp('Invalid data type: “%s”', 'color');
+                $_location['errors'][] = $this->getError(2009);
             }
 
             if (isset($_location['location_latitude'])) {
                 if (!is_numeric($_location['location_latitude'])) {
-                    $_location['errors'][] = sprintf_wp('Invalid data type: “%s”', 'location_latitude');
+                    $_location['errors'][] = $this->getError(3010);
                 } elseif ($_location['location_latitude'] < -90 || $_location['location_latitude'] > 90) {
-                    $_location['errors'][] = sprintf_wp('Invalid value “%s”', 'location_latitude');
+                    $_location['errors'][] = $this->getError(3011);
                 }
             }
 
             if (isset($_location['location_longitude'])) {
                 if (!is_numeric($_location['location_longitude'])) {
-                    $_location['errors'][] = sprintf_wp('Invalid data type: “%s”', 'location_longitude');
+                    $_location['errors'][] = $this->getError(3012);
                 } elseif ($_location['location_longitude'] < -180 || $_location['location_longitude'] > 180) {
-                    $_location['errors'][] = sprintf_wp('Invalid value “%s”', 'location_longitude');
+                    $_location['errors'][] = $this->getError(3013);
                 }
             }
 
             if (isset($_location['location_radius'])) {
                 if (!is_numeric($_location['location_radius'])) {
-                    $_location['errors'][] = sprintf_wp('Invalid data type: “%s”', 'location_radius');
+                    $_location['errors'][] = $this->getError(3014);
                 } elseif ($_location['location_radius'] < 0) {
-                    $_location['errors'][] = sprintf_wp('Invalid value “%s”', 'location_radius');
+                    $_location['errors'][] = $this->getError(3015);
                 }
             }
 
             if (isset($_location['uuid'])) {
                 if (!is_string($_location['uuid'])) {
-                    $_location['errors'][] = sprintf_wp('Invalid data type: “%s”', 'uuid');
+                    $_location['errors'][] = $this->getError(1027);
                 } elseif (in_array($_location['uuid'], $uuids)) {
-                    $_location['errors'][] = _w('Location with UUID exists');
+                    $_location['errors'][] = $this->getError(3016);
                 }
             }
 

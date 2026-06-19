@@ -2845,8 +2845,14 @@ components:
                       errors:
                         type: array
                         items:
-                          type: string
-                          description: Error description
+                          type: object
+                          properties:
+                            code:
+                              type: integer
+                              description: Error code
+                            text:
+                              type: string
+                              description: Error description
                   - type: object
                     properties:
                       data:

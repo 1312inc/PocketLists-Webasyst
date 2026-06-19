@@ -61,37 +61,37 @@ class pocketlistsCommentsAddMethod extends pocketlistsApiAbstractMethod
             ];
 
             if (!isset($_comment['item_id'])) {
-                $_comment['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'item_id');
+                $_comment['errors'][] = $this->getError(3001);
             } elseif (!is_numeric($_comment['item_id'])) {
-                $_comment['errors'][] = sprintf_wp('Invalid data type: “%s”', 'item_id');
+                $_comment['errors'][] = $this->getError(3002);
             } elseif ($_comment['item_id'] < 1 || !array_key_exists($_comment['item_id'], $items)) {
-                $_comment['errors'][] = _w('Item not found');
+                $_comment['errors'][] = $this->getError(1047);
             } elseif ($_comment['list_id'] && !in_array($_comment['list_id'], $list_access)) {
-                $_comment['errors'][] = _w('Access denied');
+                $_comment['errors'][] = $this->getError(1042);
             }
 
             if (isset($_comment['comment']) && !is_string($_comment['comment'])) {
-                $_comment['errors'][] = sprintf_wp('Invalid data type: “%s”', 'comment');
+                $_comment['errors'][] = $this->getError(3006);
             }
 
             if (isset($_comment['client_touch_datetime'])) {
                 if (!is_string($_comment['client_touch_datetime'])) {
-                    $_comment['errors'][] = sprintf_wp('Invalid data type: “%s”', 'client_touch_datetime');
+                    $_comment['errors'][] = $this->getError(1023);
                 } else {
                     $dt = date_create($_comment['client_touch_datetime']);
                     if ($dt) {
                         $_comment['client_touch_datetime'] = $dt->format('Y-m-d H:i:s');
                     } else {
-                        $_comment['errors'][] = _w('Invalid value client_touch_datetime');
+                        $_comment['errors'][] = $this->getError(1024);
                     }
                 }
             }
 
             if (isset($_comment['uuid'])) {
                 if (!is_string($_comment['uuid'])) {
-                    $_comment['errors'][] = sprintf_wp('Invalid data type: “%s”', 'uuid');
+                    $_comment['errors'][] = $this->getError(1027);
                 } elseif (in_array($_comment['uuid'], $uuids)) {
-                    $_comment['errors'][] =  _w('Comment with UUID exists');
+                    $_comment['errors'][] = $this->getError(3007);
                 }
             }
 
