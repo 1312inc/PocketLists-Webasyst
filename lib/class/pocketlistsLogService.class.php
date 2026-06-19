@@ -164,7 +164,6 @@ class pocketlistsLogService
      */
     private static function websocketMegaphone($logs = [])
     {
-waLog::dump('BEGIN pocketlists.items.add', 'pocketlists/30items_add.log');
         $ws = pocketlistsWebSoket::getInstance();
         if (empty($logs) || !$ws->isConnected()) {
             return null;
@@ -185,7 +184,6 @@ waLog::dump('BEGIN pocketlists.items.add', 'pocketlists/30items_add.log');
             default:
                 return null;
         }
-waLog::dump('1 pocketlists.items.add', 'pocketlists/30items_add.log');
 
         foreach ($logs as $log) {
             $users = null;
@@ -210,12 +208,10 @@ waLog::dump('1 pocketlists.items.add', 'pocketlists/30items_add.log');
                 default:
                     continue 2;
             }
-waLog::dump('2 pocketlists.items.add', 'pocketlists/30items_add.log');
 
             if ($users) {
                 foreach ($users as $_user_id) {
                     $channel = $ws->getChannel($_user_id);
-waLog::dump('--- sendWebsocketData pocketlists.items.add', 'pocketlists/30items_add.log');
                     $ws->sendWebsocketData(
                         [
                             'client' => waRequest::server('HTTP_X_PL_API_CLIENT', ''),
@@ -225,7 +221,6 @@ waLog::dump('--- sendWebsocketData pocketlists.items.add', 'pocketlists/30items_
                     );
                 }
             }
-waLog::dump('END pocketlists.items.add', 'pocketlists/30items_add.log');
         }
     }
 
