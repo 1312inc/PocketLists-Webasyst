@@ -6,6 +6,7 @@ class pocketlistsServicesApi extends installerServicesApi
 
     public function isConnected()
     {
+waLog::dump('isConnected-1 pocketlists.items.add', 'pocketlists/30items_add.log');
         try {
             $url = $this->provider->getServiceUrl(self::WS_CONNECT_SERVICE);
             $net = new waNet([
@@ -18,8 +19,10 @@ class pocketlistsServicesApi extends installerServicesApi
             }
             $net->query($url);
         } catch (waNetTimeoutException $wa_net) {
+waLog::dump('isConnected-2 pocketlists.items.add', 'pocketlists/30items_add.log');
             return false;
         } catch (waNetException $wa_net) {
+waLog::dump('isConnected-3 pocketlists.items.add', 'pocketlists/30items_add.log');
         }
 
         return parent::isConnected();

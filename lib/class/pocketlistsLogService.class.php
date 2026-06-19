@@ -102,7 +102,6 @@ class pocketlistsLogService
         ];
 
         $logs = [];
-waLog::dump('1 pocketlists.items.add', 'pocketlists/30items_add.log');
         while ($_log = array_shift($data)) {
             $id = ifset($_log, 'id', null);
             $action = ifempty($_log, 'action', null);
@@ -132,11 +131,9 @@ waLog::dump('1 pocketlists.items.add', 'pocketlists/30items_add.log');
             }
             $logs[] = $_log;
         }
-waLog::dump('2 pocketlists.items.add', 'pocketlists/30items_add.log');
 
         $log_model = pl2()->getModel(pocketlistsLog::class);
         $result = $log_model->multipleInsert($logs);
-waLog::dump('3 pocketlists.items.add', 'pocketlists/30items_add.log');
         if ($result instanceof waDbResult && $result->getResult()) {
             $last_id = $result->lastInsertId();
             $rows_count = $result->affectedRows();
@@ -146,9 +143,7 @@ waLog::dump('3 pocketlists.items.add', 'pocketlists/30items_add.log');
                     $log['params'] = $log['params_for_socket'];
                     unset($log['params_for_socket']);
                 }
-waLog::dump('4 pocketlists.items.add', 'pocketlists/30items_add.log');
                 self::websocketMegaphone($logs);
-waLog::dump('5 pocketlists.items.add', 'pocketlists/30items_add.log');
                 pl2()->getEventDispatcher()->dispatch(
                     new pocketlistsEvent(
                         pocketlistsEventStorage::LOGS_INSERT,
@@ -157,7 +152,6 @@ waLog::dump('5 pocketlists.items.add', 'pocketlists/30items_add.log');
                 );
                 return true;
             }
-waLog::dump('END pocketlists.items.add', 'pocketlists/30items_add.log');
         }
 
         return false;
@@ -170,6 +164,7 @@ waLog::dump('END pocketlists.items.add', 'pocketlists/30items_add.log');
      */
     private static function websocketMegaphone($logs = [])
     {
+waLog::dump('BEGIN pocketlists.items.add', 'pocketlists/30items_add.log');
         $ws = pocketlistsWebSoket::getInstance();
         if (empty($logs) || !$ws->isConnected()) {
             return null;
@@ -190,6 +185,7 @@ waLog::dump('END pocketlists.items.add', 'pocketlists/30items_add.log');
             default:
                 return null;
         }
+waLog::dump('1 pocketlists.items.add', 'pocketlists/30items_add.log');
 
         foreach ($logs as $log) {
             $users = null;
@@ -214,10 +210,12 @@ waLog::dump('END pocketlists.items.add', 'pocketlists/30items_add.log');
                 default:
                     continue 2;
             }
+waLog::dump('2 pocketlists.items.add', 'pocketlists/30items_add.log');
 
             if ($users) {
                 foreach ($users as $_user_id) {
                     $channel = $ws->getChannel($_user_id);
+waLog::dump('--- sendWebsocketData pocketlists.items.add', 'pocketlists/30items_add.log');
                     $ws->sendWebsocketData(
                         [
                             'client' => waRequest::server('HTTP_X_PL_API_CLIENT', ''),
@@ -227,6 +225,7 @@ waLog::dump('END pocketlists.items.add', 'pocketlists/30items_add.log');
                     );
                 }
             }
+waLog::dump('END pocketlists.items.add', 'pocketlists/30items_add.log');
         }
     }
 
