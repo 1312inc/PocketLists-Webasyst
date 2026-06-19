@@ -6,7 +6,6 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
 
     public function execute()
     {
-waLog::dump('BEGIN >>>> pocketlists.items.add', 'pocketlists/30items_add.log');
         $items = $this->readBodyAsJson();
         if (empty($items)) {
             throw new pocketlistsApiException(_w('Missing `data`'), 400);
@@ -23,7 +22,6 @@ waLog::dump('BEGIN >>>> pocketlists.items.add', 'pocketlists/30items_add.log');
         $assigned_contact_ids = array_unique(array_filter(array_column($items, 'assigned_contact_id')));
         $uuids = array_column($items, 'uuid');
         $attachments = array_column($items, 'attachments');
-waLog::dump('1 >>>> pocketlists.items.add', 'pocketlists/30items_add.log');
 
         $access_list_ids = pocketlistsRBAC::getAccessListForContact(pl2()->getUser()->getId());
         if (!empty($list_ids)) {
@@ -71,7 +69,6 @@ waLog::dump('1 >>>> pocketlists.items.add', 'pocketlists/30items_add.log');
             $attachment_uuids = $this->getEntitiesByUuid('attachment', $attachment_uuids);
             $attachment_uuids = array_keys($attachment_uuids);
         }
-waLog::dump('2 >>>> pocketlists.items.add', 'pocketlists/30items_add.log');
 
         /** validate */
         $user_id = $this->getUser()->getId();
@@ -313,7 +310,6 @@ waLog::dump('2 >>>> pocketlists.items.add', 'pocketlists/30items_add.log');
                 $_item['success'] = false;
                 $_item['attachments'] = [];
             }
-waLog::dump('3 VALIDATE >>>> pocketlists.items.add', 'pocketlists/30items_add.log');
         }
 
         $items_ok = array_filter($items, function ($i) {
@@ -399,8 +395,6 @@ waLog::dump('3 VALIDATE >>>> pocketlists.items.add', 'pocketlists/30items_add.lo
                                     );
                                 }
                             }
-waLog::dump('4 >>>> pocketlists.items.add', 'pocketlists/30items_add.log');
-
                         }
                         unset($_item);
 
@@ -449,9 +443,10 @@ waLog::dump('4 >>>> pocketlists.items.add', 'pocketlists/30items_add.log');
                             (new pocketlistsNotificationAboutNewAssign())->multiplicityNotify($no_private_items);
                             (new pocketlistsNotificationAboutNewItems())->multiplicityNotify($no_private_items);
                         }
-waLog::dump('5 >>>> pocketlists.items.add', 'pocketlists/30items_add.log');
+waLog::dump('1 pocketlists.items.add', 'pocketlists/30items_add.log');
 
                         $this->setAnnouncements($items_ok);
+waLog::dump('2 pocketlists.items.add', 'pocketlists/30items_add.log');
                         $this->saveLog(
                             pocketlistsLog::ENTITY_ITEM,
                             pocketlistsLog::ACTION_ADD,
@@ -467,12 +462,14 @@ waLog::dump('5 >>>> pocketlists.items.add', 'pocketlists/30items_add.log');
                     } else {
                         throw new pocketlistsApiException(_w('Error on transaction'), 400);
                     }
+waLog::dump('3 pocketlists.items.add', 'pocketlists/30items_add.log');
                 } else {
                     throw new pocketlistsApiException(_w('Error on transaction'), 400);
                 }
             } catch (Exception $ex) {
                 throw new pocketlistsApiException(sprintf_wp('Error on transaction import save: %s', $ex->getMessage()), 400);
             }
+waLog::dump('4 pocketlists.items.add', 'pocketlists/30items_add.log');
             $priorities = $this->getUser()->getSettings()->getIconPrioririesMapping();
             pl2()->getCache()->delete(sprintf('items|team|%s|%s', $user_id, $user_id));
             pl2()->getCache()->delete(sprintf('items|todo|%s|%s|%s', $user_id, json_encode($priorities), pocketlistsItem::STATUS_UNDONE));
