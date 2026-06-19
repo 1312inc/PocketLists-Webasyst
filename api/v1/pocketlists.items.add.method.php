@@ -443,15 +443,13 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                             (new pocketlistsNotificationAboutNewAssign())->multiplicityNotify($no_private_items);
                             (new pocketlistsNotificationAboutNewItems())->multiplicityNotify($no_private_items);
                         }
-waLog::dump('1 pocketlists.items.add', 'pocketlists/30items_add.log');
 
                         $this->setAnnouncements($items_ok);
-waLog::dump('2 pocketlists.items.add', 'pocketlists/30items_add.log');
-                        $this->saveLog(
-                            pocketlistsLog::ENTITY_ITEM,
-                            pocketlistsLog::ACTION_ADD,
-                            $items_ok
-                        );
+//                        $this->saveLog(
+//                            pocketlistsLog::ENTITY_ITEM,
+//                            pocketlistsLog::ACTION_ADD,
+//                            $items_ok
+//                        );
                         if ($attachments_log) {
                             $this->saveLog(
                                 pocketlistsLog::ENTITY_ATTACHMENT,
@@ -462,19 +460,17 @@ waLog::dump('2 pocketlists.items.add', 'pocketlists/30items_add.log');
                     } else {
                         throw new pocketlistsApiException(_w('Error on transaction'), 400);
                     }
-waLog::dump('3 pocketlists.items.add', 'pocketlists/30items_add.log');
                 } else {
                     throw new pocketlistsApiException(_w('Error on transaction'), 400);
                 }
             } catch (Exception $ex) {
                 throw new pocketlistsApiException(sprintf_wp('Error on transaction import save: %s', $ex->getMessage()), 400);
             }
-waLog::dump('4 pocketlists.items.add', 'pocketlists/30items_add.log');
             $priorities = $this->getUser()->getSettings()->getIconPrioririesMapping();
             pl2()->getCache()->delete(sprintf('items|team|%s|%s', $user_id, $user_id));
             pl2()->getCache()->delete(sprintf('items|todo|%s|%s|%s', $user_id, json_encode($priorities), pocketlistsItem::STATUS_UNDONE));
         }
-waLog::dump('END pocketlists.items.add', 'pocketlists/30items_add.log');
+
         $this->response['data'] = $this->responseWrapper(
             array_merge($items_ok, $items_err),
             [
