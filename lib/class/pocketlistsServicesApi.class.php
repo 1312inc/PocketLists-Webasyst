@@ -2,28 +2,13 @@
 
 class pocketlistsServicesApi extends installerServicesApi
 {
-    const TIME_OUT = 5;
-
     public function isConnected()
     {
-        try {
-            $url = $this->provider->getServiceUrl(self::WS_CONNECT_SERVICE);
-            $net = new waNet([
-                'timeout' => self::TIME_OUT
-            ]);
-
-            /** ping request */
-            if (empty($url)) {
-                return false;
-            }
-            $net->query($url);
-        } catch (waNetTimeoutException $wa_net) {
-            return false;
-        } catch (waNetException $wa_net) {
-            pocketlistsHelper::logError('Error get API web socket', $wa_net);
-            return false;
+        static $result;
+        if (is_null($result)) {
+            $result = parent::isConnected();
         }
 
-        return parent::isConnected();
+        return $result;
     }
 }
