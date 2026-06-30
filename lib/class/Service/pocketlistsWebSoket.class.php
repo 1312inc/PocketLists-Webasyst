@@ -58,7 +58,7 @@ class pocketlistsWebSoket
                 throw new waException(_w('Webasyst websocket API error.'), 400);
             }
         } else {
-            throw new waException(_w('Webasyst ID services are not connected.'), 204);
+            throw new waException(_w('Webasyst ID services are not connected.'), 400);
         }
 
         return $ws_url;

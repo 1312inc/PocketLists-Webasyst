@@ -53,23 +53,23 @@ class pocketlistsAttachmentsDeleteMethod extends pocketlistsApiAbstractMethod
             ];
 
             if (empty($_data['id'])) {
-                $_data['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'id');
+                $_data['errors'][] = $this->getError(1043);
             } elseif (!is_numeric($_data['id'])) {
-                $_data['errors'][] = sprintf_wp('Invalid data type: “%s”', 'id');
+                $_data['errors'][] = $this->getError(1044);
             } elseif (!in_array($_data['id'], $attachment_ids)) {
-                $_data['errors'][] = _w('Attachment not found');
+                $_data['errors'][] = $this->getError(3005);
             }
 
             if (empty($_data['item_id'])) {
-                $_data['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'item_id');
+                $_data['errors'][] = $this->getError(3001);
             } elseif (!is_numeric($_data['item_id'])) {
-                $_data['errors'][] = sprintf_wp('Invalid data type: “%s”', 'item_id');
+                $_data['errors'][] = $this->getError(3002);
             } else {
                 $item = ifset($items, $_data['item_id'], null);
                 if ($item === null) {
-                    $_data['errors'][] = _w('Item not found');
+                    $_data['errors'][] = $this->getError(1047);
                 } elseif ($item['list_id'] && !in_array($item['list_id'], $list_id_available)) {
-                    $_data['errors'][] = _w('Access denied');
+                    $_data['errors'][] = $this->getError(1042);
                 }
             }
 

@@ -40,9 +40,9 @@ class pocketlistsListsDeleteMethod extends pocketlistsApiAbstractMethod
             ];
 
             if (empty($_list['id'])) {
-                $_list['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'id');
+                $_list['errors'][] = $this->getError(1043);
             } elseif (!is_numeric($_list['id'])) {
-                $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'id');
+                $_list['errors'][] = $this->getError(1044);
             } elseif (!in_array($_list['id'], $list_ids)) {
                 $_list['success'] = true;
             }

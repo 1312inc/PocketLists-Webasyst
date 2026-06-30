@@ -118,67 +118,67 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
 
             if (isset($_item['list_id'])) {
                 if (!is_numeric($_item['list_id'])) {
-                    $_item['errors'][] = sprintf_wp('Invalid data type: “%s”', 'list_id');
+                    $_item['errors'][] = $this->getError(1001);
                 } elseif (!in_array($_item['list_id'], $access_list_ids)) {
-                    $_item['errors'][] = _w('List access denied');
+                    $_item['errors'][] = $this->getError(1002);
                 } elseif ($_item['list_id'] < 1 || !array_key_exists($_item['list_id'], $lists)) {
-                    $_item['errors'][] = _w('List not found');
+                    $_item['errors'][] = $this->getError(1003);
                 }
             }
 
             if (!is_string($_item['name'])) {
-                $_item['errors'][] = sprintf_wp('Invalid data type: “%s”', 'name');
+                $_item['errors'][] = $this->getError(1004);
             }
 
             if (isset($_item['sort']) && !is_numeric($_item['sort'])) {
-                $_item['errors'][] = sprintf_wp('Invalid data type: “%s”', 'sort');
+                $_item['errors'][] = $this->getError(1005);
             }
 
             if (isset($_item['rank'])) {
                 if (!is_string($_item['rank'])) {
-                    $_item['errors'][] = sprintf_wp('Invalid data type: “%s”', 'rank');
+                    $_item['errors'][] = $this->getError(1006);
                 } elseif ($_item['rank'] !== '' && !pocketlistsSortRank::rankValidate($_item['rank'])) {
-                    $_item['errors'][] = _w('Invalid rank value');
+                    $_item['errors'][] = $this->getError(1007);
                 }
             }
 
             if ($_item['assigned_contact_id']) {
                 if (!is_numeric($_item['assigned_contact_id'])) {
-                    $_item['errors'][] = sprintf_wp('Invalid data type: “%s”', 'assigned_contact_id');
+                    $_item['errors'][] = $this->getError(1008);
                 } elseif (!array_key_exists($_item['assigned_contact_id'], $assign_contacts)) {
-                    $_item['errors'][] = _w('Assigned contact not found');
+                    $_item['errors'][] = $this->getError(1009);
                 }
             }
 
             if ($_item['repeat_frequency'] &&!is_numeric($_item['repeat_frequency'])) {
-                $_item['errors'][] = sprintf_wp('Invalid data type: “%s”', 'repeat_frequency');
+                $_item['errors'][] = $this->getError(1010);
             }
 
             if (isset($_item['repeat_interval'])) {
                 if (!is_string($_item['repeat_interval'])) {
-                    $_item['errors'][] = sprintf_wp('Invalid data type: “%s”', 'repeat_interval');
+                    $_item['errors'][] = $this->getError(1011);
                 } elseif (!in_array($_item['repeat_interval'], pocketlistsItem::REPEAT_INTERVAL)) {
-                    $_item['errors'][] = _w('Invalid value repeat_interval');
+                    $_item['errors'][] = $this->getError(1012);
                 }
             }
 
             if (isset($_item['repeat_occurrence']) && !is_numeric($_item['repeat_occurrence'])) {
-                $_item['errors'][] = sprintf_wp('Invalid data type: “%s”', 'repeat_occurrence');
+                $_item['errors'][] = $this->getError(1013);
             }
 
             if ($_item['favorite']) {
                 if (!is_numeric($_item['favorite'])) {
-                    $_item['errors'][] = sprintf_wp('Invalid data type: “%s”', 'favorite');
+                    $_item['errors'][] = $this->getError(1014);
                 } elseif (!in_array($_item['favorite'], [0, 1])) {
-                    $_item['errors'][] = _w('Invalid value favorite');
+                    $_item['errors'][] = $this->getError(1015);
                 }
             }
 
             if ($_item['priority']) {
                 if (!is_numeric($_item['priority'])) {
-                    $_item['errors'][] = sprintf_wp('Invalid data type: “%s”', 'priority');
+                    $_item['errors'][] = $this->getError(1016);
                 } elseif (!in_array($_item['priority'], [1, 2, 3, 4, 5])) {
-                    $_item['errors'][] = _w('Invalid value priority');
+                    $_item['errors'][] = $this->getError(1017);
                 }
             } else {
                 $match_priority = pocketlistsNaturalInput::matchPriority($_item['name']);
@@ -194,74 +194,74 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                     $_item['name'] = $match_note['name'];
                     $_item['note'] = $match_note['note'];
                 } elseif (!is_string($_item['note'])) {
-                    $_item['errors'][] = sprintf_wp('Invalid data type: “%s”', 'note');
+                    $_item['errors'][] = $this->getError(1018);
                 }
             }
 
             if (isset($_item['due_datetime'])) {
                 if (!is_string($_item['due_datetime'])) {
-                    $_item['errors'][] = sprintf_wp('Invalid data type: “%s”', 'due_datetime');
+                    $_item['errors'][] = $this->getError(1019);
                 } else {
                     if ($dt = $this->convertDatetimeToServer($_item['due_datetime'])) {
                         $_item['due_date'] = date('Y-m-d', strtotime($dt));
                         $_item['due_datetime'] = $dt;
                     } else {
-                        $_item['errors'][] = _w('Invalid value due_datetime');
+                        $_item['errors'][] = $this->getError(1020);
                     }
                 }
             } elseif (isset($_item['due_date'])) {
                 if (!is_string($_item['due_date'])) {
-                    $_item['errors'][] = sprintf_wp('Invalid data type: “%s”', 'due_date');
+                    $_item['errors'][] = $this->getError(1021);
                 } else {
                     $dt = date_create($_item['due_date']);
                     if ($dt) {
                         $_item['due_date'] = $dt->format('Y-m-d');
                     } else {
-                        $_item['errors'][] = _w('Invalid value due_date');
+                        $_item['errors'][] = $this->getError(1022);
                     }
                 }
             }
 
             if (isset($_item['client_touch_datetime'])) {
                 if (!is_string($_item['client_touch_datetime'])) {
-                    $_item['errors'][] = sprintf_wp('Invalid data type: “%s”', 'client_touch_datetime');
+                    $_item['errors'][] = $this->getError(1023);
                 } else {
                     $dt = date_create($_item['client_touch_datetime']);
                     if ($dt) {
                         $_item['client_touch_datetime'] = $dt->format('Y-m-d H:i:s');
                     } else {
-                        $_item['errors'][] = _w('Invalid value client_touch_datetime');
+                        $_item['errors'][] = $this->getError(1024);
                     }
                 }
             }
 
             if (isset($_item['location_id'])) {
                 if (!is_numeric($_item['location_id'])) {
-                    $_item['errors'][] = sprintf_wp('Invalid data type: “%s”', 'location_id');
+                    $_item['errors'][] = $this->getError(1025);
                 } elseif ($_item['location_id'] < 1 || !in_array($_item['location_id'], $location_ids)) {
-                    $_item['errors'][] = _w('Location not found');
+                    $_item['errors'][] = $this->getError(1026);
                 }
             }
 
             if (isset($_item['uuid'])) {
                 if (!is_string($_item['uuid'])) {
-                    $_item['errors'][] = sprintf_wp('Invalid data type: “%s”', 'uuid');
+                    $_item['errors'][] = $this->getError(1027);
                 } elseif (in_array($_item['uuid'], $uuids)) {
-                    $_item['errors'][] = _w('Item with UUID exists');
+                    $_item['errors'][] = $this->getError(1028);
                 }
             }
 
             if (isset($_item['pro_label_id'])) {
                 if (!is_numeric($_item['pro_label_id'])) {
-                    $_item['errors'][] = sprintf_wp('Invalid data type: “%s”', 'pro_label_id');
+                    $_item['errors'][] = $this->getError(1029);
                 } elseif ($_item['pro_label_id'] < 1 || !in_array($_item['pro_label_id'], $label_ids)) {
-                    $_item['errors'][] = _w('Label not found');
+                    $_item['errors'][] = $this->getError(1030);
                 }
             }
 
             if (!empty($_item['tags'])) {
                 if (!is_array($_item['tags'])) {
-                    $_item['errors'][] = sprintf_wp('Invalid data type: “%s”', 'tags');
+                    $_item['errors'][] = $this->getError(1031);
                 }
             }
 
@@ -269,17 +269,17 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                 if (is_array($_item['attachments'])) {
                     foreach ($_item['attachments'] as $_file) {
                         if (empty($_file['file'])) {
-                            $_item['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'file');
+                            $_item['errors'][] = $this->getError(1032);
                         }
                         if (empty($_file['file_name'])) {
-                            $_item['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'file_name');
+                            $_item['errors'][] = $this->getError(1033);
                         }
                         if (!empty($_file['uuid']) && in_array($_file['uuid'], $attachment_uuids)) {
-                            $_item['errors'][] = _w('Attachment with UUID exists');
+                            $_item['errors'][] = $this->getError(1034);
                         }
                     }
                 } else {
-                    $_item['errors'][] = sprintf_wp('Invalid data type: “%s”', 'files');
+                    $_item['errors'][] = $this->getError(1035);
                 }
             }
 
@@ -287,20 +287,20 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                 if (is_array($_item['external_links'])) {
                     foreach ($_item['external_links'] as $_external_link) {
                         if (!isset($_external_link['app_id'], $_external_link['entity_type'], $_external_link['entity_id'])) {
-                            $_item['errors'][] = _w('External link must have all parameters specified: app_id, entity_type and entity_id');
+                            $_item['errors'][] = $this->getError(1036);
                         } elseif (!is_string($_external_link['app_id'])) {
-                            $_item['errors'][] = sprintf_wp('Invalid data type: “%s”', 'app_id');
+                            $_item['errors'][] = $this->getError(1037);
                         } elseif (!is_string($_external_link['entity_type'])) {
-                            $_item['errors'][] = sprintf_wp('Invalid data type: “%s”', 'entity_type');
+                            $_item['errors'][] = $this->getError(1038);
                         } elseif (!is_string($_external_link['entity_id'])) {
-                            $_item['errors'][] = sprintf_wp('Invalid data type: “%s”', 'entity_id');
+                            $_item['errors'][] = $this->getError(1039);
                         }
                         if (isset($_external_link['entity_data']) && !is_string($_external_link['entity_data'])) {
-                            $_item['errors'][] = sprintf_wp('Invalid data type: “%s”', 'entity_data');
+                            $_item['errors'][] = $this->getError(1040);
                         }
                     }
                 } else {
-                    $_item['errors'][] = sprintf_wp('Invalid data type: “%s”', 'external_links');
+                    $_item['errors'][] = $this->getError(1041);
                 }
             }
 
@@ -466,7 +466,9 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
             } catch (Exception $ex) {
                 throw new pocketlistsApiException(sprintf_wp('Error on transaction import save: %s', $ex->getMessage()), 400);
             }
-            pl2()->getCache()->deleteAll();
+            $priorities = $this->getUser()->getSettings()->getIconPrioririesMapping();
+            pl2()->getCache()->delete(sprintf('items|team|%s|%s', $user_id, $user_id));
+            pl2()->getCache()->delete(sprintf('items|todo|%s|%s|%s', $user_id, json_encode($priorities), pocketlistsItem::STATUS_UNDONE));
         }
 
         $this->response['data'] = $this->responseWrapper(

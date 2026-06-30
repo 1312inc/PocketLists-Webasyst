@@ -44,11 +44,11 @@ class pocketlistsItemsDeleteMethod extends pocketlistsApiAbstractMethod
             ];
 
             if (isset($_item['list_id']) && !in_array($_item['list_id'], $access_list_ids)) {
-                $_item['errors'][] = _w('List access denied');
+                $_item['errors'][] = $this->getError(1002);
             } elseif (empty($_item['id'])) {
-                $_item['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'id');
+                $_item['errors'][] = $this->getError(1043);
             } elseif (!is_numeric($_item['id'])) {
-                $_item['errors'][] = sprintf_wp('Invalid data type: “%s”', 'id');
+                $_item['errors'][] = $this->getError(1044);
             } elseif (!array_key_exists($_item['id'], $items)) {
                 $_item['success'] = true;
             }
@@ -110,7 +110,9 @@ class pocketlistsItemsDeleteMethod extends pocketlistsApiAbstractMethod
                 pocketlistsLog::ACTION_DELETE,
                 $logs
             );
-            pl2()->getCache()->deleteAll();
+            $priorities = $this->getUser()->getSettings()->getIconPrioririesMapping();
+            pl2()->getCache()->delete(sprintf('items|team|%s|%s', pl2()->getUser()->getId(), pl2()->getUser()->getId()));
+            pl2()->getCache()->delete(sprintf('items|todo|%s|%s|%s', pl2()->getUser()->getId(), json_encode($priorities), pocketlistsItem::STATUS_UNDONE));
         }
 
         $this->response['data'] = $this->responseWrapper(

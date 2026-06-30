@@ -1,0 +1,1 @@
+.pl-map-sidebar{box-sizing:border-box;z-index:10;background-color:var(--dialog-background-color);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);width:20rem;position:absolute;top:0;bottom:0;right:0;overflow:hidden}@media (width<=760.9px){.pl-map-sidebar{width:100vw;height:50vh;top:auto;bottom:0}}

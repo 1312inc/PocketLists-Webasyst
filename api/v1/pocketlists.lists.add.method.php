@@ -90,130 +90,130 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
 
             if (isset($_list['pocket_id'])) {
                 if (!is_numeric($_list['pocket_id'])) {
-                    $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'pocket_id');
+                    $_list['errors'][] = $this->getError(2001);
                 } elseif ($_list['pocket_id'] < 1 || !in_array($_list['pocket_id'], $pocket_ids)) {
-                    $_list['errors'][] = _w('Pocket not found');
+                    $_list['errors'][] = $this->getError(2002);
                 } elseif (!in_array($_list['pocket_id'], $pocket_access)) {
-                    $_list['errors'][] = _w('Pocket access denied');
+                    $_list['errors'][] = $this->getError(2003);
                 }
             }
 
             if (isset($_list['name']) && !is_string($_list['name'])) {
-                $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'name');
+                $_list['errors'][] = $this->getError(1004);
             }
 
             if (!is_string($_list['type'])) {
-                $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'type');
+                $_list['errors'][] = $this->getError(2004);
             } elseif (!in_array($_list['type'], [pocketlistsList::TYPE_CHECKLIST, pocketlistsList::TYPE_NOTES])) {
-                $_list['errors'][] = _w('Invalid value type');
+                $_list['errors'][] = $this->getError(2005);
             }
 
             if (!is_numeric($_list['private'])) {
-                $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'private');
+                $_list['errors'][] = $this->getError(2006);
             }
 
             if (!is_numeric($_list['archived'])) {
-                $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'archived');
+                $_list['errors'][] = $this->getError(2007);
             }
 
             if (isset($_list['icon']) && !is_string($_list['icon'])) {
-                $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'icon');
+                $_list['errors'][] = $this->getError(2008);
             }
 
             if (!is_string($_list['color'])) {
-                $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'color');
+                $_list['errors'][] = $this->getError(2009);
             } elseif (!array_key_exists($_list['color'], pocketlistsStoreColor::getColors())) {
-                $_list['errors'][] = _w('Invalid value color');
+                $_list['errors'][] = $this->getError(2010);
             }
 
             if (isset($_list['assigned_contact_id'])) {
                 if (!is_numeric($_list['assigned_contact_id'])) {
-                    $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'assigned_contact_id');
+                    $_list['errors'][] = $this->getError(1008);
                 } elseif ($_list['assigned_contact_id'] < 1) {
-                    $_list['errors'][] = _w('Contact not found');
+                    $_list['errors'][] = $this->getError(2011);
                 } elseif (!array_key_exists($_list['assigned_contact_id'], $assign_contacts)) {
-                    $_list['errors'][] = _w('Assigned contact not found');
+                    $_list['errors'][] = $this->getError(1009);
                 }
             }
 
             if ($_list['repeat_frequency'] &&!is_numeric($_list['repeat_frequency'])) {
-                $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'repeat_frequency');
+                $_list['errors'][] = $this->getError(1010);
             }
 
             if (isset($_list['repeat_interval'])) {
                 if (!is_string($_list['repeat_interval'])) {
-                    $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'repeat_interval');
+                    $_list['errors'][] = $this->getError(1011);
                 } elseif (!in_array($_list['repeat_interval'], pocketlistsItem::REPEAT_INTERVAL)) {
-                    $_list['errors'][] = _w('Invalid value repeat_interval');
+                    $_list['errors'][] = $this->getError(1012);
                 }
             }
 
             if (isset($_list['repeat_occurrence']) && !is_numeric($_list['repeat_occurrence'])) {
-                $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'repeat_occurrence');
+                $_list['errors'][] = $this->getError(1013);
             }
 
             if ($_list['favorite']) {
                 if (!is_numeric($_list['favorite'])) {
-                    $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'favorite');
+                    $_list['errors'][] = $this->getError(1014);
                 } elseif (!in_array($_list['favorite'], [0, 1])) {
-                    $_list['errors'][] = _w('Invalid value favorite');
+                    $_list['errors'][] = $this->getError(1015);
                 }
             }
 
             if (isset($_list['due_datetime'])) {
                 if (!is_string($_list['due_datetime'])) {
-                    $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'due_datetime');
+                    $_list['errors'][] = $this->getError(1019);
                 } else {
                     if ($dt = $this->convertDatetimeToServer($_list['due_datetime'])) {
                         $_list['due_date'] = date('Y-m-d', strtotime($dt));
                         $_list['due_datetime'] = $dt;
                     } else {
-                        $_list['errors'][] = _w('Invalid value due_datetime');
+                        $_list['errors'][] = $this->getError(1020);
                     }
                 }
             } elseif (isset($_list['due_date'])) {
                 if (!is_string($_list['due_date'])) {
-                    $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'due_date');
+                    $_list['errors'][] = $this->getError(1021);
                 } else {
                     $dt = date_create($_list['due_date']);
                     if ($dt) {
                         $_list['due_date'] = $dt->format('Y-m-d');
                     } else {
-                        $_list['errors'][] = _w('Invalid value due_date');
+                        $_list['errors'][] = $this->getError(1022);
                     }
                 }
             }
 
             if (isset($_list['client_touch_datetime'])) {
                 if (!is_string($_list['client_touch_datetime'])) {
-                    $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'client_touch_datetime');
+                    $_list['errors'][] = $this->getError(1023);
                 } else {
                     $dt = date_create($_list['client_touch_datetime']);
                     if ($dt) {
                         $_list['client_touch_datetime'] = $dt->format('Y-m-d H:i:s');
                     } else {
-                        $_list['errors'][] = _w('Invalid value client_touch_datetime');
+                        $_list['errors'][] = $this->getError(1024);
                     }
                 }
             }
 
             if (isset($_list['sort']) && !is_numeric($_list['sort'])) {
-                $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'sort');
+                $_list['errors'][] = $this->getError(1005);
             }
 
             if (isset($_list['rank'])) {
                 if (!is_string($_list['rank'])) {
-                    $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'rank');
+                    $_list['errors'][] = $this->getError(1006);
                 } elseif ($_list['rank'] !== '' && !pocketlistsSortRank::rankValidate($_list['rank'])) {
-                    $_list['errors'][] = _w('Invalid rank value');
+                    $_list['errors'][] = $this->getError(1007);
                 }
             }
 
             if (isset($_list['uuid'])) {
                 if (!is_string($_list['uuid'])) {
-                    $_list['errors'][] = sprintf_wp('Invalid data type: “%s”', 'uuid');
+                    $_list['errors'][] = $this->getError(1027);
                 } elseif (in_array($_list['uuid'], $uuids)) {
-                    $_list['errors'][] = _w('List with UUID exists');
+                    $_list['errors'][] = $this->getError(2012);
                 }
             }
 

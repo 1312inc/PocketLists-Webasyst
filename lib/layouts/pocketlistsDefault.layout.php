@@ -35,11 +35,11 @@ class pocketlistsDefaultLayout extends waLayout
         $user_rights = [];
         $labels = [];
         $shortcuts = [];
-        $is_premium = pocketlistsLicensing::isPremium();
+        $is_premium = pocketlistsLicensing::check(pocketlistsHelper::APP_ID)->hasPremiumLicense();
         if (wa()->whichUI(pocketlistsHelper::APP_ID) != '1.3') {
             try {
                 $user_get_list = new pocketlistsUsersGetMethod();
-                $response = $user_get_list->getResponse(true, true);
+                $response = $user_get_list->getResponse(true);
                 $users = ifset($response, 'data', []);
             } catch (pocketlistsApiException $pex) {
                 $users = null;
