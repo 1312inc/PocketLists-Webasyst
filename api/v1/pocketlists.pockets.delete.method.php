@@ -39,9 +39,9 @@ class pocketlistsPocketsDeleteMethod extends pocketlistsApiAbstractMethod
             ];
 
             if (empty($_pocket['id'])) {
-                $_pocket['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'id');
+                $_pocket['errors'][] = $this->getError(1043);
             } elseif (!is_numeric($_pocket['id'])) {
-                $_pocket['errors'][] = sprintf_wp('Invalid data type: “%s”', 'id');
+                $_pocket['errors'][] = $this->getError(1044);
             } elseif (!in_array($_pocket['id'], $pocket_ids)) {
                 $_pocket['success'] = true;
             }

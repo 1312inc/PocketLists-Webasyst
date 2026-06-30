@@ -6,7 +6,7 @@
 {capture "getpremiumbutton"}
 {if !$_is_premium}
 <figure class="box pl-upgrade-ad">
-    <a href="{$_pl_upgrade_url}" class="button rounded largest {$_premium_pricing.special_color}" target="_blank">[`Get premium now`]</a>
+    <a href="{$_pl_upgrade_url}" class="button rounded largest pl-upgrade-button {$_premium_pricing.special_color}" target="_blank">[`Get premium now`]</a>
     <h4>
         {if !empty($_premium_pricing.compare_price)}<strike class="gray">{$_premium_pricing.compare_price}</strike>{/if}
         {if $_is_cloud}[`All inclusive in the cloud`]{else}{$_premium_pricing.price}{/if}
@@ -21,6 +21,10 @@
             {else}
                 [`Per-server license for the entire company. Unlimited users, all premium features, free updates forever.`]
             {/if}
+        {/if}
+        {if !$_is_cloud && date('Y-m-d') <= '2026-08-31'}
+            <br><br>
+            [`Promocode`] <code><b>SUMMER26</b></code> <strong class="text-red">-15% / {date('Y.m')}</strong>
         {/if}
     </p>
 </figure>
@@ -38,7 +42,7 @@
         </div>
         <div>
             {if empty($_p.eta)}
-                <span class="nowrap badge green"><i class="fas fa-check"></i> {if !$_is_free_feature}{if $_is_premium_license}[`Enabled`]{else}[`Available now`]{/if}{/if}</span>
+                <span class="nowrap badge purple"><i class="fas fa-check"></i> {if !$_is_free_feature}{if $_is_premium_license}[`Enabled`]{else}[`Premium`]{/if}{/if}</span>
             {else}
                 <span class="nowrap badge light-gray"><i class="fas fa-clock"></i> {$_p.eta}</span>
             {/if}
@@ -131,7 +135,7 @@
                   'title' => 'Автоматическое создание задач на основе действий с заказами в Shop-Script',
                   'body' => 'Когда выполняется какое-либо действие с заказом (например, заказ создается, уходит в отгрузку или отмечается выполненным), автоматически создается задача в Pocket Lists.<br><br> Например:<br><br>
                   <ul class="small">
-                    <li>Заказ <code style="color: var(--green);">В обработку</code> &rarr; автоматически создать задачу <code>Сборка заказа &#123;$order_id&#125;</code> и назначить менеджеру Валере.</li>
+                    <li>Заказ <code style="color: var(--purple);">В обработку</code> &rarr; автоматически создать задачу <code>Сборка заказа &#123;$order_id&#125;</code> и назначить менеджеру Валере.</li>
                     <li>Заказ <code style="color: var(--blue);">Отправлен</code> &rarr; автоматически создать задачу <code>Проверить трек &#123;$tracking_number&#125;</code>. Но создать не сразу, а через 72 часа, если статус заказа не изменился.</li>
                     <li>Заказ <code style="color: var(--purple);">Выполнен</code> &rarr; сразу же задачу маркетологу <code>Попросить написать отзыв о товаре &#123;$customer_name&#125; / &#123;$customer_phone&#125;. Заказывал &#123;$ordered_items&#125;</code>.</li>
                     <li>Заказ <code style="color: var(--red);">Возврат</code> &rarr; задачу директору <code>Проверить, кто накосячил с заказом №&#123;$order_id&#125;</code>.</li>
@@ -204,11 +208,10 @@
             {/if}
 
             {$_premium_stuff[] = [
-              'title' => '[`New iOS app`]',
-              'eta' => '[`Soon`]',
-              'body' => sprintf('[`Re-written from scratch. To be merged with the <a href="%s" target="_blank">old version</a> later on free.`]', 'https://pocketlists.com/')
+              'title' => '[`List templates`]',
+              'eta' => '[`Arriving`]',
+              'body' => '[`Enable templates for creating new checklists even faster.`]'
             ]}
-
             {$_premium_stuff[] = [
               'title' => '[`Team performance reports`]',
               'eta' => '[`Soon`]',
@@ -234,6 +237,12 @@
               'eta' => '[`Soon`]',
               'body' => '[`In basic version, lists are limited by 500 to-do items. With premium, all limits are off.`]'
             ]}
+            {$_premium_stuff[] = [
+              'title' => '[`New iOS app`]',
+              'eta' => '[`Delayed`]',
+              'body' => sprintf('[`Re-written from scratch. To be merged with the <a href="%s" target="_blank">old version</a> later on free.`]', 'https://pocketlists.com/')
+            ]}
+
 
             {$_features_delivered = 0}
             {$_features_pending = 0}

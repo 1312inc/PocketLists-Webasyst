@@ -33,6 +33,106 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
     }
 
     /**
+     * @param int $code
+     * @return array
+     */
+    public function getError(int $code): array
+    {
+        static $code_errors = [];
+        if (!$code_errors) {
+            try {
+                $code_errors = [
+                    1001 => sprintf_wp('Invalid data type: “%s”', 'list_id'),
+                    1002 => _w('List access denied'),
+                    1003 => _w('List not found'),
+                    1004 => sprintf_wp('Invalid data type: “%s”', 'name'),
+                    1005 => sprintf_wp('Invalid data type: “%s”', 'sort'),
+                    1006 => sprintf_wp('Invalid data type: “%s”', 'rank'),
+                    1007 => _w('Invalid rank value'),
+                    1008 => sprintf_wp('Invalid data type: “%s”', 'assigned_contact_id'),
+                    1009 => _w('Assigned contact not found'),
+                    1010 => sprintf_wp('Invalid data type: “%s”', 'repeat_frequency'),
+                    1011 => sprintf_wp('Invalid data type: “%s”', 'repeat_interval'),
+                    1012 => _w('Invalid value repeat_interval'),
+                    1013 => sprintf_wp('Invalid data type: “%s”', 'repeat_occurrence'),
+                    1014 => sprintf_wp('Invalid data type: “%s”', 'favorite'),
+                    1015 => _w('Invalid value favorite'),
+                    1016 => sprintf_wp('Invalid data type: “%s”', 'priority'),
+                    1017 => _w('Invalid value priority'),
+                    1018 => sprintf_wp('Invalid data type: “%s”', 'note'),
+                    1019 => sprintf_wp('Invalid data type: “%s”', 'due_datetime'),
+                    1020 => _w('Invalid value due_datetime'),
+                    1021 => sprintf_wp('Invalid data type: “%s”', 'due_date'),
+                    1022 => _w('Invalid value due_date'),
+                    1023 => sprintf_wp('Invalid data type: “%s”', 'client_touch_datetime'),
+                    1024 => _w('Invalid value client_touch_datetime'),
+                    1025 => sprintf_wp('Invalid data type: “%s”', 'location_id'),
+                    1026 => _w('Location not found'),
+                    1027 => sprintf_wp('Invalid data type: “%s”', 'uuid'),
+                    1028 => _w('Item with UUID exists'),
+                    1029 => sprintf_wp('Invalid data type: “%s”', 'pro_label_id'),
+                    1030 => _w('Label not found'),
+                    1031 => sprintf_wp('Invalid data type: “%s”', 'tags'),
+                    1032 => sprintf_wp('Missing required parameter: “%s”.', 'file'),
+                    1033 => sprintf_wp('Missing required parameter: “%s”.', 'file_name'),
+                    1034 => _w('Attachment with UUID exists'),
+                    1035 => sprintf_wp('Invalid data type: “%s”', 'files'),
+                    1036 => _w('External link must have all parameters specified: app_id, entity_type and entity_id'),
+                    1037 => sprintf_wp('Invalid data type: “%s”', 'app_id'),
+                    1038 => sprintf_wp('Invalid data type: “%s”', 'entity_type'),
+                    1039 => sprintf_wp('Invalid data type: “%s”', 'entity_id'),
+                    1040 => sprintf_wp('Invalid data type: “%s”', 'entity_data'),
+                    1041 => sprintf_wp('Invalid data type: “%s”', 'external_links'),
+                    1042 => _w('Access denied'),
+                    1043 => sprintf_wp('Missing required parameter: “%s”.', 'id'),
+                    1044 => sprintf_wp('Invalid data type: “%s”', 'id'),
+                    1045 => sprintf_wp('Invalid data type: “%s”', 'status'),
+                    1046 => _w('Invalid value status'),
+                    1047 => _w('Item not found'),
+                    1048 => _w('Failed to update'),
+                    /* ---- */
+                    2001 => sprintf_wp('Invalid data type: “%s”', 'pocket_id'),
+                    2002 => _w('Pocket not found'),
+                    2003 => _w('Pocket access denied'),
+                    2004 => sprintf_wp('Invalid data type: “%s”', 'type'),
+                    2005 => _w('Invalid value type'),
+                    2006 => sprintf_wp('Invalid data type: “%s”', 'private'),
+                    2007 => sprintf_wp('Invalid data type: “%s”', 'archived'),
+                    2008 => sprintf_wp('Invalid data type: “%s”', 'icon'),
+                    2009 => sprintf_wp('Invalid data type: “%s”', 'color'),
+                    2010 => _w('Invalid value color'),
+                    2011 => _w('Contact not found'),
+                    2012 => _w('List with UUID exists'),
+                    2013 => _w('Unknown color'),
+                    2014 => _w('Pocket with UUID exists'),
+                    /* ---- */
+                    3001 => sprintf_wp('Missing required parameter: “%s”.', 'item_id'),
+                    3002 => sprintf_wp('Invalid data type: “%s”', 'item_id'),
+                    3003 => sprintf_wp('Invalid data type: “%s”', 'file_name'),
+                    3004 => sprintf_wp('Invalid data type: “%s”', 'file'),
+                    3005 => _w('Attachment not found'),
+                    3006 => sprintf_wp('Invalid data type: “%s”', 'comment'),
+                    3007 => _w('Comment with UUID exists'),
+                    3008 => _w('Comment not found'),
+                    3009 => sprintf_wp('Missing required parameter: “%s”.', 'comment'),
+                    3010 => sprintf_wp('Invalid data type: “%s”', 'location_latitude'),
+                    3011 => sprintf_wp('Invalid value “%s”', 'location_latitude'),
+                    3012 => sprintf_wp('Invalid data type: “%s”', 'location_longitude'),
+                    3013 => sprintf_wp('Invalid value “%s”', 'location_longitude'),
+                    3014 => sprintf_wp('Invalid data type: “%s”', 'location_radius'),
+                    3015 => sprintf_wp('Invalid value “%s”', 'location_radius'),
+                    3016 => _w('Location with UUID exists'),
+                ];
+            } catch (Exception $exception) {
+                $code_errors = [];
+                return ['code' => $code, 'text' => $exception->getMessage()];
+            }
+        }
+
+        return ['code' => $code, 'text' => ifempty($code_errors, $code, _w('Ошибка'))];
+    }
+
+    /**
      * @param $internal
      * @param $param
      * @return array

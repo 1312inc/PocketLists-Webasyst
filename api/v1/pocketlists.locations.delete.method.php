@@ -39,9 +39,9 @@ class pocketlistsLocationsDeleteMethod extends pocketlistsApiAbstractMethod
             ];
 
             if (empty($_location['id'])) {
-                $_location['errors'][] = sprintf_wp('Missing required parameter: “%s”.', 'id');
+                $_location['errors'][] = $this->getError(1043);
             } elseif (!is_numeric($_location['id'])) {
-                $_location['errors'][] = sprintf_wp('Invalid data type: “%s”', 'id');
+                $_location['errors'][] = $this->getError(1044);
             } elseif (!in_array($_location['id'], $location_ids)) {
                 $_location['success'] = true;
             }

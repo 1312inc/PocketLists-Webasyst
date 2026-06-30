@@ -5,6 +5,7 @@ class pocketlistsPocketsGetMethod extends pocketlistsApiAbstractMethod
     public function execute()
     {
         $ids = $this->get('id');
+        $uuids = $this->get('uuid');
         $starting_from = $this->get('starting_from');
 
         $sql_parts = [
@@ -15,7 +16,7 @@ class pocketlistsPocketsGetMethod extends pocketlistsApiAbstractMethod
             'from' => ['pp' => 'pocketlists_pocket pp'],
             'join' => [],
             'where' => [
-                'and' => ['pp.id IN (i:access_id)']
+                'and' => ['ids' => 'pp.id IN (i:access_id)']
             ],
             'order by' => ['sort, `rank`']
         ];
@@ -46,18 +47,35 @@ class pocketlistsPocketsGetMethod extends pocketlistsApiAbstractMethod
             if (!$ids) {
                 throw new pocketlistsApiException(_w('Pockets not found'), 404);
             }
-            $accessed_pockets = array_intersect($accessed_pockets, $ids);
-            if (empty($accessed_pockets)) {
-                throw new pocketlistsApiException(_w('Pocket access denied'), 403);
+        }
+        if (isset($uuids)) {
+            if (!is_array($uuids)) {
+                throw new pocketlistsApiException(sprintf_wp('Invalid data type: “%s”', 'uuid'), 400);
             }
         }
 
         $pockets = [];
         if (!empty($accessed_pockets)) {
+            if ($ids && $uuids) {
+                $pocket_ids = array_intersect($accessed_pockets, $ids);
+                $sql_parts['where']['and']['ids'] = '(pp.id IN (i:access_id) OR pp.uuid IN (s:uuids))';
+            } elseif ($ids) {
+                $pocket_ids = array_intersect($accessed_pockets, $ids);
+                if (empty($pocket_ids)) {
+                    throw new pocketlistsApiException(_w('Pocket access denied'), 403);
+                }
+            } elseif ($uuids) {
+                $pocket_ids = $accessed_pockets;
+                $sql_parts['where']['and']['ids'] = '(pp.id IN (i:access_id) AND pp.uuid IN (s:uuids))';
+            } else {
+                $pocket_ids = $accessed_pockets;
+            }
+
             $plp = pl2()->getModel(pocketlistsPocket::class);
             $sql = $plp->buildSqlComponents($sql_parts);
             $pockets = $plp->query($sql, [
-                'access_id'     => $accessed_pockets,
+                'access_id'     => $pocket_ids,
+                'uuids'         => $uuids,
                 'starting_from' => $starting_from
             ])->fetchAll();
 
