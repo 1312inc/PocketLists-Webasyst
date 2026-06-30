@@ -180,6 +180,15 @@ table.pl-calendar td .pl-dots i.icon { margin-top: 0.2em; margin-right: 0.2em; }
 
 .pl-upgrade-content img { max-width: 90%; margin: 10px auto 20px; }
 
+.pl-upgrade-button { overflow: hidden; position: relative; padding: 1rem 1.75rem; border: 0; }
+.pl-upgrade-button::after { content: ''; position: absolute; top: 0; left: -100px; width: 80px; height: 100%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.2),transparent); transform: skewX(-20deg); animation: sweep 4s infinite; filter: blur(1px); }
+@keyframes sweep {
+    0% { left: -100px; opacity: 0; transform: skewX(-20deg) scaleY(0.5); }
+    20% { opacity: 1; transform: skewX(-20deg) scaleY(1); }
+    80% { opacity: 1; transform: skewX(-20deg) scaleY(1); }
+    100% { left: 520px; opacity: 0; transform: skewX(-20deg) scaleY(0.5); }
+}
+
 /* Some tiny promotions
 ----------------------- */
 
