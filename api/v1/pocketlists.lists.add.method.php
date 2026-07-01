@@ -52,6 +52,7 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                 'icon_url'              => null,
                 'private'               => ifset($_list, 'private', 0),
                 'archived'              => ifset($_list, 'archived', 0),
+                'template'              => ifset($_list, 'template', 0),
                 'hash'                  => null,
                 'color'                 => ifset($_list, 'color', pocketlistsStoreColor::NONE),
                 'passcode'              => null,
@@ -114,6 +115,10 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
 
             if (!is_numeric($_list['archived'])) {
                 $_list['errors'][] = $this->getError(2007);
+            }
+
+            if (!is_numeric($_list['template'])) {
+                $_list['errors'][] = $this->getError(2015);
             }
 
             if (isset($_list['icon']) && !is_string($_list['icon'])) {
@@ -248,6 +253,7 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                     ->setPocketId($_list['pocket_id'])
                     ->setPrivate($_list['private'])
                     ->setArchived($_list['archived'])
+                    ->setTemplate($_list['template'])
                     ->setColor($_list['color'])
                     ->setAssignedContactId($_list['assigned_contact_id'])
                     ->setRepeatFrequency($_list['repeat_frequency'])
@@ -365,6 +371,7 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                 'icon_url',
                 'private',
                 'archived',
+                'template',
                 'hash',
                 'color',
                 'passcode',
@@ -396,6 +403,7 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                 'pocket_id' => 'int',
                 'private' => 'int',
                 'archived' => 'int',
+                'template' => 'int',
                 'key_item_id' => 'int',
                 'pro_label_id' => 'int'
             ]

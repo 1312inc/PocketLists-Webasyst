@@ -110,6 +110,7 @@ abstract class pocketlistsApiAbstractMethod extends waAPIMethod
                     2012 => _w('List with UUID exists'),
                     2013 => _w('Unknown color'),
                     2014 => _w('Pocket with UUID exists'),
+                    2015 => sprintf_wp('Invalid data type: “%s” (%s)', 'template', $value),
                     /* ---- */
                     3001 => sprintf_wp('Missing required parameter: “%s”.', 'item_id'),
                     3002 => sprintf_wp('Invalid data type: “%s” (%s)', 'item_id', $value),

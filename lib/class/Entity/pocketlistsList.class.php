@@ -36,6 +36,11 @@ class pocketlistsList extends pocketlistsItem
     private $archived = 0;
 
     /**
+     * @var bool
+     */
+    private $template = 0;
+
+    /**
      * @var string
      */
     private $hash;
@@ -391,6 +396,26 @@ class pocketlistsList extends pocketlistsItem
     public function setArchived($archived)
     {
         $this->archived = $archived;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTemplate()
+    {
+        return (bool) $this->template;
+    }
+
+    /**
+     * @param bool $template
+     *
+     * @return pocketlistsList
+     */
+    public function setTemplate($template)
+    {
+        $this->template = $template;
 
         return $this;
     }

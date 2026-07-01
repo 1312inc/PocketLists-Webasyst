@@ -107,6 +107,7 @@ return array(
         'icon' => array('varchar', 64),
         'private' => array('tinyint', 1, 'null' => 0, 'default' => '0'),
         'archived' => array('tinyint', 1, 'default' => '0'),
+        'template' => array('tinyint', 1, 'default' => '0'),
         'hash' => array('varchar', 32),
         'color' => array('enum', "'none','red','green','blue','yellow','purple'", 'default' => 'none'),
         'passcode' => array('varchar', 32),

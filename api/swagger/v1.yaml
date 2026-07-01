@@ -909,6 +909,13 @@ paths:
                     enum:
                       - 0
                       - 1
+                  template:
+                    type: integer
+                    description: List is template
+                    default: 0
+                    enum:
+                      - 0
+                      - 1
                   color:
                     type: string
                     description: List color
@@ -1181,6 +1188,13 @@ paths:
                   archived:
                     type: integer
                     description: List is archived
+                    default: 0
+                    enum:
+                      - 0
+                      - 1
+                  template:
+                    type: integer
+                    description:  List is template
                     default: 0
                     enum:
                       - 0
@@ -2347,6 +2361,10 @@ components:
               type: integer
               default: 0
               description: Is archived
+            template:
+              type: integer
+              default: 0
+              description: Is template
             hash:
               type: string
               default: null

@@ -93,6 +93,10 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                 $_list['errors'][] = $this->getError(2007);
             }
 
+            if (!is_numeric($_list['template'])) {
+                $_list['errors'][] = $this->getError(2015);
+            }
+
             if (isset($_list['color'])) {
                 if (!is_string($_list['color'])) {
                     $_list['errors'][] = $this->getError(2009);
@@ -210,6 +214,7 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                         'icon',
                         'private',
                         'archived',
+                        'template',
                         'color',
                         'assigned_contact_id',
                         'favorite',
@@ -387,6 +392,7 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                 'icon_url',
                 'private',
                 'archived',
+                'template',
                 'hash',
                 'color',
                 'passcode',
@@ -417,6 +423,7 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                 'pocket_id' => 'int',
                 'private' => 'int',
                 'archived' => 'int',
+                'template' => 'int',
                 'key_item_id' => 'int',
                 'pro_label_id' => 'int'
             ]
