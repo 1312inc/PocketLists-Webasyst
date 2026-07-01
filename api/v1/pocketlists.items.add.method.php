@@ -138,7 +138,7 @@ class pocketlistsItemsAddMethod extends pocketlistsApiAbstractMethod
                 if (!is_string($_item['rank'])) {
                     $_item['errors'][] = $this->getError(1006);
                 } elseif ($_item['rank'] !== '' && !pocketlistsSortRank::rankValidate($_item['rank'])) {
-                    $_item['errors'][] = $this->getError(1007);
+                    $_item['errors'][] = $this->getError(1007, $_item['rank']);
                 }
             }
 

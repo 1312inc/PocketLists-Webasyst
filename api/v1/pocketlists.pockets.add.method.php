@@ -57,7 +57,7 @@ class pocketlistsPocketsAddMethod extends pocketlistsApiAbstractMethod
                 if (!is_string($_pocket['rank'])) {
                     $_pocket['errors'][] = $this->getError(1006);
                 } elseif ($_pocket['rank'] !== '' && !pocketlistsSortRank::rankValidate($_pocket['rank'])) {
-                    $_pocket['errors'][] = $this->getError(1007);
+                    $_pocket['errors'][] = $this->getError(1007, $_pocket['rank']);
                 }
             }
 
