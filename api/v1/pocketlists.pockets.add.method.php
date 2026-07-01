@@ -42,7 +42,7 @@ class pocketlistsPocketsAddMethod extends pocketlistsApiAbstractMethod
             ];
 
             if (isset($_pocket['name']) && !is_string($_pocket['name'])) {
-                $_pocket['errors'][] = $this->getError(1004);
+                $_pocket['errors'][] = $this->getError(1004, $_pocket['name']);
             }
 
             if (isset($_pocket['color']) && (!is_string($_pocket['color']) || !array_key_exists($_pocket['color'], pocketlistsStoreColor::getColors()))) {
@@ -50,12 +50,12 @@ class pocketlistsPocketsAddMethod extends pocketlistsApiAbstractMethod
             }
 
             if (isset($_pocket['sort']) && !is_numeric($_pocket['sort'])) {
-                $_pocket['errors'][] = $this->getError(1005);
+                $_pocket['errors'][] = $this->getError(1005, $_pocket['sort']);
             }
 
             if (isset($_pocket['rank'])) {
                 if (!is_string($_pocket['rank'])) {
-                    $_pocket['errors'][] = $this->getError(1006);
+                    $_pocket['errors'][] = $this->getError(1006, $_pocket['rank']);
                 } elseif ($_pocket['rank'] !== '' && !pocketlistsSortRank::rankValidate($_pocket['rank'])) {
                     $_pocket['errors'][] = $this->getError(1007, $_pocket['rank']);
                 }
@@ -63,20 +63,20 @@ class pocketlistsPocketsAddMethod extends pocketlistsApiAbstractMethod
 
             if (isset($_pocket['client_touch_datetime'])) {
                 if (!is_string($_pocket['client_touch_datetime'])) {
-                    $_pocket['errors'][] = $this->getError(1023);
+                    $_pocket['errors'][] = $this->getError(1023, $_pocket['client_touch_datetime']);
                 } else {
                     $dt = date_create($_pocket['client_touch_datetime']);
                     if ($dt) {
                         $_pocket['client_touch_datetime'] = $dt->format('Y-m-d H:i:s');
                     } else {
-                        $_pocket['errors'][] = $this->getError(1024);
+                        $_pocket['errors'][] = $this->getError(1024, $_pocket['client_touch_datetime']);
                     }
                 }
             }
 
             if (isset($_pocket['uuid'])) {
                 if (!is_string($_pocket['uuid'])) {
-                    $_pocket['errors'][] = $this->getError(1027);
+                    $_pocket['errors'][] = $this->getError(1027, $_pocket['uuid']);
                 }
                 if (in_array($_pocket['uuid'], $uuids)) {
                     $_pocket['errors'][] = $this->getError(2014);

@@ -51,7 +51,7 @@ class pocketlistsAttachmentsAddMethod extends pocketlistsApiAbstractMethod
             if (empty($_file['item_id'])) {
                 $_file['errors'][] = $this->getError(3001);
             } elseif (!is_numeric($_file['item_id'])) {
-                $_file['errors'][] = $this->getError(3002);
+                $_file['errors'][] = $this->getError(3002, $_file['item_id']);
             } elseif ($_file['item_id'] < 1 || !in_array($_file['item_id'], $item_ids)) {
                 $_file['errors'][] = $this->getError(1047);
             }
@@ -59,18 +59,18 @@ class pocketlistsAttachmentsAddMethod extends pocketlistsApiAbstractMethod
             if (empty($_file['file_name'])) {
                 $_file['errors'][] = $this->getError(1033);
             } elseif (!is_string($_file['file_name'])) {
-                $_file['errors'][] = $this->getError(3003);
+                $_file['errors'][] = $this->getError(3003, $_file['file_name']);
             }
 
             if (empty($_file['file'])) {
                 $_file['errors'][] = $this->getError(1032);
             } elseif (!is_string($_file['file'])) {
-                $_file['errors'][] = $this->getError(3004);
+                $_file['errors'][] = $this->getError(3004, $_file['file']);
             }
 
             if (!empty($_file['uuid'])) {
                 if (!is_string($_file['uuid'])) {
-                    $_file['errors'][] = $this->getError(1027);
+                    $_file['errors'][] = $this->getError(1027, $_file['uuid']);
                 } elseif (in_array($_file['uuid'], $uuids)) {
                     $_file['errors'][] = $this->getError(1034);
                 }

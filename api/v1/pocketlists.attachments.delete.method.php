@@ -55,7 +55,7 @@ class pocketlistsAttachmentsDeleteMethod extends pocketlistsApiAbstractMethod
             if (empty($_data['id'])) {
                 $_data['errors'][] = $this->getError(1043);
             } elseif (!is_numeric($_data['id'])) {
-                $_data['errors'][] = $this->getError(1044);
+                $_data['errors'][] = $this->getError(1044, $_data['id']);
             } elseif (!in_array($_data['id'], $attachment_ids)) {
                 $_data['errors'][] = $this->getError(3005);
             }
@@ -63,7 +63,7 @@ class pocketlistsAttachmentsDeleteMethod extends pocketlistsApiAbstractMethod
             if (empty($_data['item_id'])) {
                 $_data['errors'][] = $this->getError(3001);
             } elseif (!is_numeric($_data['item_id'])) {
-                $_data['errors'][] = $this->getError(3002);
+                $_data['errors'][] = $this->getError(3002, $_data['item_id']);
             } else {
                 $item = ifset($items, $_data['item_id'], null);
                 if ($item === null) {

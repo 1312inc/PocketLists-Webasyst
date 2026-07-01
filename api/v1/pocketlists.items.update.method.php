@@ -110,82 +110,82 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
             if (empty($item_id)) {
                 $_item['errors'][] = $this->getError(1043);
             } elseif (!is_numeric($item_id)) {
-                $_item['errors'][] = $this->getError(1044);
+                $_item['errors'][] = $this->getError(1044, $item_id);
             }
 
             if (isset($_item['list_id'])) {
                 if (!is_numeric($_item['list_id'])) {
-                    $_item['errors'][] = $this->getError(1001);
+                    $_item['errors'][] = $this->getError(1001, $_item['list_id']);
                 } elseif (!in_array($_item['list_id'], $list_ids)) {
                     $_item['errors'][] = $this->getError(1003);
                 } elseif (!in_array($_item['list_id'], $list_id_available)) {
-                    $_item['errors'][] = $this->getError(1002);
+                    $_item['errors'][] = $this->getError(1002, $_item['list_id']);
                 }
             }
 
             if (isset($_item['status'])) {
                 if (!is_numeric($_item['status'])) {
-                    $_item['errors'][] = $this->getError(1045);
+                    $_item['errors'][] = $this->getError(1045, $_item['status']);
                 } elseif (!in_array($_item['status'], [pocketlistsItem::STATUS_DONE, pocketlistsItem::STATUS_UNDONE])) {
-                    $_item['errors'][] = $this->getError(1046);
+                    $_item['errors'][] = $this->getError(1046, $_item['status']);
                 }
             }
 
             if (isset($_item['assigned_contact_id'])) {
                 if (!is_numeric($_item['assigned_contact_id'])) {
-                    $_item['errors'][] = $this->getError(1008);
+                    $_item['errors'][] = $this->getError(1008, $_item['assigned_contact_id']);
                 } elseif (!array_key_exists($_item['assigned_contact_id'], $assign_contacts)) {
                     $_item['errors'][] = $this->getError(1009);
                 }
             }
 
             if (isset($_item['repeat_frequency']) &&!is_numeric($_item['repeat_frequency'])) {
-                $_item['errors'][] = $this->getError(1010);
+                $_item['errors'][] = $this->getError(1010, $_item['repeat_frequency']);
             }
 
             if (isset($_item['repeat_interval'])) {
                 if (!is_string($_item['repeat_interval'])) {
-                    $_item['errors'][] = $this->getError(1011);
+                    $_item['errors'][] = $this->getError(1011, $_item['repeat_interval']);
                 } elseif (!in_array($_item['repeat_interval'], pocketlistsItem::REPEAT_INTERVAL)) {
-                    $_item['errors'][] = $this->getError(1012);
+                    $_item['errors'][] = $this->getError(1012, $_item['repeat_interval']);
                 }
             }
 
             if (isset($_item['repeat_occurrence']) && !is_numeric($_item['repeat_occurrence'])) {
-                $_item['errors'][] = $this->getError(1013);
+                $_item['errors'][] = $this->getError(1013, $_item['repeat_occurrence']);
             }
 
             if (isset($_item['favorite'])) {
                 if (!is_numeric($_item['favorite'])) {
-                    $_item['errors'][] = $this->getError(1014);
+                    $_item['errors'][] = $this->getError(1014, $_item['favorite']);
                 } elseif (!in_array($_item['favorite'], [0, 1])) {
-                    $_item['errors'][] = $this->getError(1015);
+                    $_item['errors'][] = $this->getError(1015, $_item['favorite']);
                 }
             }
 
             if (isset($_item['priority'])) {
                 if (!is_numeric($_item['priority'])) {
-                    $_item['errors'][] = $this->getError(1016);
+                    $_item['errors'][] = $this->getError(1016, $_item['priority']);
                 } elseif (!in_array($_item['priority'], [0, 1, 2, 3, 4, 5])) {
-                    $_item['errors'][] = $this->getError(1017);
+                    $_item['errors'][] = $this->getError(1017, $_item['priority']);
                 }
             }
 
             if (isset($_item['name']) && !is_string($_item['name'])) {
-                $_item['errors'][] = $this->getError(1004);
+                $_item['errors'][] = $this->getError(1004, $_item['name']);
             }
 
             if (isset($_item['note']) && !is_string($_item['note'])) {
-                $_item['errors'][] = $this->getError(1018);
+                $_item['errors'][] = $this->getError(1018, $_item['note']);
             }
 
             if (isset($_item['sort']) && !is_numeric($_item['sort'])) {
-                $_item['errors'][] = $this->getError(1005);
+                $_item['errors'][] = $this->getError(1005, $_item['sort']);
             }
 
             if (isset($_item['rank'])) {
                 if (!is_string($_item['rank'])) {
-                    $_item['errors'][] = $this->getError(1006);
+                    $_item['errors'][] = $this->getError(1006, $_item['rank']);
                 } elseif ($_item['rank'] !== '' && !pocketlistsSortRank::rankValidate($_item['rank'])) {
                     $_item['errors'][] = $this->getError(1007, $_item['rank']);
                 }
@@ -193,25 +193,25 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
 
             if (isset($_item['due_datetime'])) {
                 if (!is_string($_item['due_datetime'])) {
-                    $_item['errors'][] = $this->getError(1019);
+                    $_item['errors'][] = $this->getError(1019, $_item['due_datetime']);
                 } else {
                     if ($dt = $this->convertDatetimeToServer($_item['due_datetime'])) {
                         $_item['due_date'] = date('Y-m-d', strtotime($dt));
                         $_item['due_datetime'] = $dt;
                     } else {
-                        $_item['errors'][] = $this->getError(1020);
+                        $_item['errors'][] = $this->getError(1020, $_item['due_datetime']);
                     }
                 }
             } elseif (isset($_item['due_date'])) {
                 if (!is_string($_item['due_date'])) {
-                    $_item['errors'][] = $this->getError(1021);
+                    $_item['errors'][] = $this->getError(1021, $_item['due_date']);
                 } else {
                     $dt = date_create($_item['due_date']);
                     if ($dt) {
                         $_item['due_date'] = $dt->format('Y-m-d');
                         $_item['due_datetime'] = '';
                     } else {
-                        $_item['errors'][] = $this->getError(1022);
+                        $_item['errors'][] = $this->getError(1022, $_item['due_date']);
                     }
                 }
             }
@@ -222,25 +222,25 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                 (isset($items_in_db[$item_id]['list_id']) && !in_array($items_in_db[$item_id]['list_id'], $list_id_available))
                 || (isset($_item['list_id']) && !in_array($_item['list_id'], $list_id_available))
             ) {
-                $_item['errors'][] = $this->getError(1002);
+                $_item['errors'][] = $this->getError(1002, $_item['list_id']);
             }
 
             if (isset($_item['client_touch_datetime'])) {
                 if (!is_string($_item['client_touch_datetime'])) {
-                    $_item['errors'][] = $this->getError(1023);
+                    $_item['errors'][] = $this->getError(1023, $_item['client_touch_datetime']);
                 } else {
                     $dt = date_create($_item['client_touch_datetime']);
                     if ($dt) {
                         $_item['client_touch_datetime'] = $dt->format('Y-m-d H:i:s');
                     } else {
-                        $_item['errors'][] = $this->getError(1024);
+                        $_item['errors'][] = $this->getError(1024, $_item['client_touch_datetime']);
                     }
                 }
             }
 
             if (isset($_item['location_id'])) {
                 if (!is_numeric($_item['location_id'])) {
-                    $_item['errors'][] = $this->getError(1025);
+                    $_item['errors'][] = $this->getError(1025, $_item['location_id']);
                 } elseif ($_item['location_id'] < 1 || !in_array($_item['location_id'], $location_ids)) {
                     $_item['errors'][] = $this->getError(1026);
                 }
@@ -248,7 +248,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
 
             if (isset($_item['pro_label_id'])) {
                 if (!is_numeric($_item['pro_label_id'])) {
-                    $_item['errors'][] = $this->getError(1029);
+                    $_item['errors'][] = $this->getError(1029, $_item['pro_label_id']);
                 } elseif ($_item['pro_label_id'] < 1 || !in_array($_item['pro_label_id'], $label_ids)) {
                     $_item['errors'][] = $this->getError(1030);
                 }
@@ -256,7 +256,7 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
 
             if (isset($_item['tags'])) {
                 if (!is_array($_item['tags'])) {
-                    $_item['errors'][] = $this->getError(1031);
+                    $_item['errors'][] = $this->getError(1031, $_item['tags']);
                 }
             }
 
@@ -284,18 +284,18 @@ class pocketlistsItemsUpdateMethod extends pocketlistsApiAbstractMethod
                         if (!isset($_external_link['app_id'], $_external_link['entity_type'], $_external_link['entity_id'])) {
                             $_item['errors'][] = $this->getError(1036);
                         } elseif (!is_string($_external_link['app_id'])) {
-                            $_item['errors'][] = $this->getError(1037);
+                            $_item['errors'][] = $this->getError(1037, $_external_link['app_id']);
                         } elseif (!is_string($_external_link['entity_type'])) {
-                            $_item['errors'][] = $this->getError(1038);
+                            $_item['errors'][] = $this->getError(1038, $_external_link['entity_type']);
                         } elseif (!is_string($_external_link['entity_id'])) {
-                            $_item['errors'][] = $this->getError(1039);
+                            $_item['errors'][] = $this->getError(1039, $_external_link['entity_id']);
                         }
                         if (isset($_external_link['entity_data']) && !is_string($_external_link['entity_data'])) {
-                            $_item['errors'][] = $this->getError(1040);
+                            $_item['errors'][] = $this->getError(1040, $_external_link['entity_data']);
                         }
                     }
                 } else {
-                    $_item['errors'][] = $this->getError(1041);
+                    $_item['errors'][] = $this->getError(1041, $_item['external_links']);
                 }
             }
 

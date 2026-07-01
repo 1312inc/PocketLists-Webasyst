@@ -91,7 +91,7 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
 
             if (isset($_list['pocket_id'])) {
                 if (!is_numeric($_list['pocket_id'])) {
-                    $_list['errors'][] = $this->getError(2001);
+                    $_list['errors'][] = $this->getError(2001, $_list['pocket_id']);
                 } elseif ($_list['pocket_id'] < 1 || !in_array($_list['pocket_id'], $pocket_ids)) {
                     $_list['errors'][] = $this->getError(2002);
                 } elseif (!in_array($_list['pocket_id'], $pocket_access)) {
@@ -100,40 +100,40 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
             }
 
             if (isset($_list['name']) && !is_string($_list['name'])) {
-                $_list['errors'][] = $this->getError(1004);
+                $_list['errors'][] = $this->getError(1004, $_list['name']);
             }
 
             if (!is_string($_list['type'])) {
-                $_list['errors'][] = $this->getError(2004);
+                $_list['errors'][] = $this->getError(2004, $_list['type']);
             } elseif (!in_array($_list['type'], [pocketlistsList::TYPE_CHECKLIST, pocketlistsList::TYPE_NOTES])) {
-                $_list['errors'][] = $this->getError(2005);
+                $_list['errors'][] = $this->getError(2005, $_list['type']);
             }
 
             if (!is_numeric($_list['private'])) {
-                $_list['errors'][] = $this->getError(2006);
+                $_list['errors'][] = $this->getError(2006, $_list['private']);
             }
 
             if (!is_numeric($_list['archived'])) {
-                $_list['errors'][] = $this->getError(2007);
+                $_list['errors'][] = $this->getError(2007, $_list['archived']);
             }
 
             if (!is_numeric($_list['template'])) {
-                $_list['errors'][] = $this->getError(2015);
+                $_list['errors'][] = $this->getError(2015, $_list['template']);
             }
 
             if (isset($_list['icon']) && !is_string($_list['icon'])) {
-                $_list['errors'][] = $this->getError(2008);
+                $_list['errors'][] = $this->getError(2008, $_list['icon']);
             }
 
             if (!is_string($_list['color'])) {
-                $_list['errors'][] = $this->getError(2009);
+                $_list['errors'][] = $this->getError(2009, $_list['color']);
             } elseif (!array_key_exists($_list['color'], pocketlistsStoreColor::getColors())) {
-                $_list['errors'][] = $this->getError(2010);
+                $_list['errors'][] = $this->getError(2010, $_list['color']);
             }
 
             if (isset($_list['assigned_contact_id'])) {
                 if (!is_numeric($_list['assigned_contact_id'])) {
-                    $_list['errors'][] = $this->getError(1008);
+                    $_list['errors'][] = $this->getError(1008, $_list['assigned_contact_id']);
                 } elseif ($_list['assigned_contact_id'] < 1) {
                     $_list['errors'][] = $this->getError(2011);
                 } elseif (!array_key_exists($_list['assigned_contact_id'], $assign_contacts)) {
@@ -142,73 +142,73 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
             }
 
             if ($_list['repeat_frequency'] &&!is_numeric($_list['repeat_frequency'])) {
-                $_list['errors'][] = $this->getError(1010);
+                $_list['errors'][] = $this->getError(1010, $_list['repeat_frequency']);
             }
 
             if (isset($_list['repeat_interval'])) {
                 if (!is_string($_list['repeat_interval'])) {
-                    $_list['errors'][] = $this->getError(1011);
+                    $_list['errors'][] = $this->getError(1011, $_list['repeat_interval']);
                 } elseif (!in_array($_list['repeat_interval'], pocketlistsItem::REPEAT_INTERVAL)) {
-                    $_list['errors'][] = $this->getError(1012);
+                    $_list['errors'][] = $this->getError(1012, $_list['repeat_interval']);
                 }
             }
 
             if (isset($_list['repeat_occurrence']) && !is_numeric($_list['repeat_occurrence'])) {
-                $_list['errors'][] = $this->getError(1013);
+                $_list['errors'][] = $this->getError(1013, $_list['repeat_occurrence']);
             }
 
             if ($_list['favorite']) {
                 if (!is_numeric($_list['favorite'])) {
-                    $_list['errors'][] = $this->getError(1014);
+                    $_list['errors'][] = $this->getError(1014, $_list['favorite']);
                 } elseif (!in_array($_list['favorite'], [0, 1])) {
-                    $_list['errors'][] = $this->getError(1015);
+                    $_list['errors'][] = $this->getError(1015, $_list['favorite']);
                 }
             }
 
             if (isset($_list['due_datetime'])) {
                 if (!is_string($_list['due_datetime'])) {
-                    $_list['errors'][] = $this->getError(1019);
+                    $_list['errors'][] = $this->getError(1019, $_list['due_datetime']);
                 } else {
                     if ($dt = $this->convertDatetimeToServer($_list['due_datetime'])) {
                         $_list['due_date'] = date('Y-m-d', strtotime($dt));
                         $_list['due_datetime'] = $dt;
                     } else {
-                        $_list['errors'][] = $this->getError(1020);
+                        $_list['errors'][] = $this->getError(1020, $_list['due_datetime']);
                     }
                 }
             } elseif (isset($_list['due_date'])) {
                 if (!is_string($_list['due_date'])) {
-                    $_list['errors'][] = $this->getError(1021);
+                    $_list['errors'][] = $this->getError(1021, $_list['due_date']);
                 } else {
                     $dt = date_create($_list['due_date']);
                     if ($dt) {
                         $_list['due_date'] = $dt->format('Y-m-d');
                     } else {
-                        $_list['errors'][] = $this->getError(1022);
+                        $_list['errors'][] = $this->getError(1022, $_list['due_date']);
                     }
                 }
             }
 
             if (isset($_list['client_touch_datetime'])) {
                 if (!is_string($_list['client_touch_datetime'])) {
-                    $_list['errors'][] = $this->getError(1023);
+                    $_list['errors'][] = $this->getError(1023, $_list['client_touch_datetime']);
                 } else {
                     $dt = date_create($_list['client_touch_datetime']);
                     if ($dt) {
                         $_list['client_touch_datetime'] = $dt->format('Y-m-d H:i:s');
                     } else {
-                        $_list['errors'][] = $this->getError(1024);
+                        $_list['errors'][] = $this->getError(1024, $_list['client_touch_datetime']);
                     }
                 }
             }
 
             if (isset($_list['sort']) && !is_numeric($_list['sort'])) {
-                $_list['errors'][] = $this->getError(1005);
+                $_list['errors'][] = $this->getError(1005, $_list['sort']);
             }
 
             if (isset($_list['rank'])) {
                 if (!is_string($_list['rank'])) {
-                    $_list['errors'][] = $this->getError(1006);
+                    $_list['errors'][] = $this->getError(1006, $_list['rank']);
                 } elseif ($_list['rank'] !== '' && !pocketlistsSortRank::rankValidate($_list['rank'])) {
                     $_list['errors'][] = $this->getError(1007, $_list['rank']);
                 }
@@ -216,7 +216,7 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
 
             if (isset($_list['uuid'])) {
                 if (!is_string($_list['uuid'])) {
-                    $_list['errors'][] = $this->getError(1027);
+                    $_list['errors'][] = $this->getError(1027, $_list['uuid']);
                 } elseif (in_array($_list['uuid'], $uuids)) {
                     $_list['errors'][] = $this->getError(2012);
                 }
