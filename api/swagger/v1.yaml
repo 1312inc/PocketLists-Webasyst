@@ -11,6 +11,9 @@ servers:
 paths:
   /pocketlists.ai.gpt:
     get:
+      externalDocs:
+        description: pocketlists.ai.gpt
+        url: https://developers.webasyst.ru/api/explorer/pocketlists/pocketlists.ai.gpt/
       security:
         - BearerAuth: [ ]
       summary: Makes up a checklist with Webasyst AI based on the prompt. Returns it as a solid string (GPT) to be ultimately processed (e.g. split by lines) by the client on its sole discretion.
@@ -38,6 +41,9 @@ paths:
                             description: Webasyst AI result (GPT)
   /pocketlists.attachments.add:
     put:
+      externalDocs:
+        description: pocketlists.attachments.add
+        url: https://developers.webasyst.ru/api/explorer/pocketlists/pocketlists.attachments.add/
       security:
         - BearerAuth: [ ]
       summary: Uploads file attachments to an item.
@@ -84,6 +90,9 @@ paths:
           description: Internal server error
   /pocketlists.attachments.delete:
     delete:
+      externalDocs:
+        description: pocketlists.attachments.delete
+        url: https://developers.webasyst.ru/api/explorer/pocketlists/pocketlists.attachments.delete/
       security:
         - BearerAuth: [ ]
       summary: Deletes file attachments.
@@ -127,6 +136,9 @@ paths:
           description: Internal server error
   /pocketlists.comments.add:
     put:
+      externalDocs:
+        description: pocketlists.comments.add
+        url: https://developers.webasyst.ru/api/explorer/pocketlists/pocketlists.comments.add/
       security:
         - BearerAuth: [ ]
       summary: Adds new comments to an item.
@@ -184,6 +196,9 @@ paths:
           description: Internal server error
   /pocketlists.comments.delete:
     delete:
+      externalDocs:
+        description: pocketlists.comments.delete
+        url: https://developers.webasyst.ru/api/explorer/pocketlists/pocketlists.comments.delete/
       security:
         - BearerAuth: [ ]
       summary: Deletes comments.
@@ -213,6 +228,9 @@ paths:
           description: Internal server error
   /pocketlists.comments.get:
     get:
+      externalDocs:
+        description: pocketlists.comments.get
+        url: https://developers.webasyst.ru/api/explorer/pocketlists/pocketlists.comments.get/
       security:
         - BearerAuth: [ ]
       summary: Returns comments.
@@ -260,6 +278,9 @@ paths:
           description: Internal server error
   /pocketlists.comments.update:
     patch:
+      externalDocs:
+        description: pocketlists.comments.update
+        url: https://developers.webasyst.ru/api/explorer/pocketlists/pocketlists.comments.update/
       security:
         - BearerAuth: [ ]
       summary: Updates comments.
@@ -315,6 +336,9 @@ paths:
           description: Internal server error
   /pocketlists.items.add:
     put:
+      externalDocs:
+        description: pocketlists.items.add
+        url: https://developers.webasyst.ru/api/explorer/pocketlists/pocketlists.items.add/
       security:
         - BearerAuth: [ ]
       summary: Adds new items.
@@ -486,6 +510,9 @@ paths:
           description: Internal server error
   /pocketlists.items.delete:
     delete:
+      externalDocs:
+        description: pocketlists.items.delete
+        url: https://developers.webasyst.ru/api/explorer/pocketlists/pocketlists.items.delete/
       security:
         - BearerAuth: [ ]
       summary: Deletes items.
@@ -515,6 +542,9 @@ paths:
           description: Internal server error
   /pocketlists.items.get:
     get:
+      externalDocs:
+        description: pocketlists.items.get
+        url: https://developers.webasyst.ru/api/explorer/pocketlists/pocketlists.items.get/
       security:
         - BearerAuth: [ ]
       summary: Returns items.
@@ -634,6 +664,9 @@ paths:
           description: Internal server error
   /pocketlists.items.getStream:
     get:
+      externalDocs:
+        description: pocketlists.items.getStream
+        url: https://developers.webasyst.ru/api/explorer/pocketlists/pocketlists.items.getStream/
       security:
         - BearerAuth: [ ]
       summary: Returns items according to a sophisticated search criteria, e.g. mixed due/priority search & sort.
@@ -696,6 +729,9 @@ paths:
           description: Internal server error
   /pocketlists.items.update:
     patch:
+      externalDocs:
+        description: pocketlists.items.update
+        url: https://developers.webasyst.ru/api/explorer/pocketlists/pocketlists.items.update/
       security:
         - BearerAuth: [ ]
       summary: Updates items.
@@ -875,6 +911,9 @@ paths:
           description: Internal server error
   /pocketlists.lists.add:
     put:
+      externalDocs:
+        description: pocketlists.lists.add
+        url: https://developers.webasyst.ru/api/explorer/pocketlists/pocketlists.lists.add/
       security:
         - BearerAuth: [ ]
       summary: Adds new lists.
@@ -1033,6 +1072,9 @@ paths:
           description: Internal server error
   /pocketlists.lists.delete:
     delete:
+      externalDocs:
+        description: pocketlists.lists.delete
+        url: https://developers.webasyst.ru/api/explorer/pocketlists/pocketlists.lists.delete/
       security:
         - BearerAuth: [ ]
       summary: Deletes lists.
@@ -1062,6 +1104,9 @@ paths:
           description: Internal server error
   /pocketlists.lists.get:
     get:
+      externalDocs:
+        description: pocketlists.lists.get
+        url: https://developers.webasyst.ru/api/explorer/pocketlists/pocketlists.lists.get/
       security:
         - BearerAuth: [ ]
       summary: Returns lists.
@@ -1146,6 +1191,9 @@ paths:
           description: Internal server error
   /pocketlists.lists.update:
     patch:
+      externalDocs:
+        description: pocketlists.lists.update
+        url: https://developers.webasyst.ru/api/explorer/pocketlists/pocketlists.lists.update/
       security:
         - BearerAuth: [ ]
       summary: Updates lists.
@@ -1292,6 +1340,9 @@ paths:
           description: Internal server error
   /pocketlists.locations.add:
     put:
+      externalDocs:
+        description: pocketlists.locations.add
+        url: https://developers.webasyst.ru/api/explorer/pocketlists/pocketlists.locations.add/
       security:
         - BearerAuth: [ ]
       summary: Adds new locations.
@@ -1344,6 +1395,9 @@ paths:
           description: Internal server error
   /pocketlists.locations.delete:
     delete:
+      externalDocs:
+        description: pocketlists.locations.delete
+        url: https://developers.webasyst.ru/api/explorer/pocketlists/pocketlists.locations.delete/
       security:
         - BearerAuth: [ ]
       summary: Deletes locations.
@@ -1373,6 +1427,9 @@ paths:
           description: Internal server error
   /pocketlists.locations.get:
     get:
+      externalDocs:
+        description: pocketlists.locations.get
+        url: https://developers.webasyst.ru/api/explorer/pocketlists/pocketlists.locations.get/
       security:
         - BearerAuth: [ ]
       summary: Returns locations.
@@ -1432,6 +1489,9 @@ paths:
           description: Internal server error
   /pocketlists.locations.update:
     patch:
+      externalDocs:
+        description: pocketlists.locations.update
+        url: https://developers.webasyst.ru/api/explorer/pocketlists/pocketlists.locations.update/
       security:
         - BearerAuth: [ ]
       summary: Updates locations.
@@ -1493,6 +1553,9 @@ paths:
           description: Internal server error
   /pocketlists.log.get:
     get:
+      externalDocs:
+        description: pocketlists.log.get
+        url: https://developers.webasyst.ru/api/explorer/pocketlists/pocketlists.log.get/
       security:
         - BearerAuth: [ ]
       summary: Returns the full log of all actions performed with the data the user has access to.
@@ -1554,6 +1617,9 @@ paths:
           description: Internal server error
   /pocketlists.log.getDeleted:
     get:
+      externalDocs:
+        description: pocketlists.log.getDeleted
+        url: https://developers.webasyst.ru/api/explorer/pocketlists/pocketlists.log.getDeleted/
       security:
         - BearerAuth: [ ]
       summary: Returns the full log of permanent delete actions (deleted records) since the specified datetime.
@@ -1592,6 +1658,9 @@ paths:
           description: Internal server error
   /pocketlists.log.getDeletedSummary:
     get:
+      externalDocs:
+        description: pocketlists.log.getDeletedSummary
+        url: https://developers.webasyst.ru/api/explorer/pocketlists/pocketlists.log.getDeletedSummary/
       security:
         - BearerAuth: [ ]
       summary: Returns summary on the number of records by entity type that were permanently deleted ('delete' action) since the specified datetime. Useful for quickly getting to know if anything was deleted at all.
@@ -1647,6 +1716,9 @@ paths:
                             description: ''
   /pocketlists.log.getSummary:
     get:
+      externalDocs:
+        description: pocketlists.log.getSummary
+        url: https://developers.webasyst.ru/api/explorer/pocketlists/pocketlists.log.getSummary/
       security:
         - BearerAuth: [ ]
       summary: Returns summary on the number of records by entity type that were touched/updated since the specified datetime. Useful for quickly getting to know if anything was updated at all.
@@ -1708,6 +1780,9 @@ paths:
           description: Internal server error
   /pocketlists.pockets.add:
     put:
+      externalDocs:
+        description: pocketlists.pockets.add
+        url: https://developers.webasyst.ru/api/explorer/pocketlists/pocketlists.pockets.add/
       security:
         - BearerAuth: [ ]
       summary: Adds new pocket - a container for lists with custom access rights setup (a sort of a folder or a project).
@@ -1773,6 +1848,9 @@ paths:
           description: Internal server error
   /pocketlists.pockets.delete:
     delete:
+      externalDocs:
+        description: pocketlists.pockets.delete
+        url: https://developers.webasyst.ru/api/explorer/pocketlists/pocketlists.pockets.delete/
       security:
         - BearerAuth: [ ]
       summary: Deletes pockets.
@@ -1802,6 +1880,9 @@ paths:
           description: Internal server error
   /pocketlists.pockets.get:
     get:
+      externalDocs:
+        description: pocketlists.pockets.get
+        url: https://developers.webasyst.ru/api/explorer/pocketlists/pocketlists.pockets.get/
       security:
         - BearerAuth: [ ]
       summary: Returns pockets.
@@ -1847,6 +1928,9 @@ paths:
                 $ref: '#/components/schemas/response'
   /pocketlists.pockets.update:
     patch:
+      externalDocs:
+        description: pocketlists.pockets.update
+        url: https://developers.webasyst.ru/api/explorer/pocketlists/pocketlists.pockets.update/
       security:
         - BearerAuth: [ ]
       summary: Updates pockets.
@@ -1922,6 +2006,9 @@ paths:
           description: Internal server error
   /pocketlists.push.disable:
     post:
+      externalDocs:
+        description: pocketlists.push.disable
+        url: https://developers.webasyst.ru/api/explorer/pocketlists/pocketlists.push.disable/
       security:
         - BearerAuth: [ ]
       summary: Disables push notifications for the specific device.
@@ -1962,6 +2049,9 @@ paths:
           description: Internal server error
   /pocketlists.push.enable:
     post:
+      externalDocs:
+        description: pocketlists.push.enable
+        url: https://developers.webasyst.ru/api/explorer/pocketlists/pocketlists.push.enable/
       security:
         - BearerAuth: [ ]
       summary: Enables push notifications for the specific device (via OneSignal).
@@ -2009,6 +2099,9 @@ paths:
           description: Internal server error
   /pocketlists.system.getSettings:
     get:
+      externalDocs:
+        description: pocketlists.system.getSettings
+        url: https://developers.webasyst.ru/api/explorer/pocketlists/pocketlists.system.getSettings/
       security:
         - BearerAuth: [ ]
       summary: Returns core Webasyst and Pocket Lists app environment settings.
@@ -2141,6 +2234,9 @@ paths:
                             description: Webasyst debug mode status
   /pocketlists.system.getWebsocketUrl:
     get:
+      externalDocs:
+        description: pocketlists.system.getWebsocketUrl
+        url: https://developers.webasyst.ru/api/explorer/pocketlists/pocketlists.system.getWebsocketUrl/
       security:
         - BearerAuth: [ ]
       summary: Returns Web Socket connection URL streaming all server Pocket Lists log updates.
@@ -2183,6 +2279,9 @@ paths:
           description: Internal server error
   /pocketlists.users.get:
     get:
+      externalDocs:
+        description: pocketlists.users.get
+        url: https://developers.webasyst.ru/api/explorer/pocketlists/pocketlists.users.get/
       security:
         - BearerAuth: [ ]
       summary: Returns all users (team).
