@@ -26,13 +26,17 @@ class pocketlistsLogGetDeletedSummaryMethod extends pocketlistsApiAbstractMethod
         $log_model = pl2()->getModel(pocketlistsLog::class);
         $log_summary = $log_model->query("
             SELECT entity_type, COUNT(entity_type) AS summ FROM pocketlists_log pl
-            WHERE (`action` = s:delete OR (`action` = s:unshare AND contact_id = i:user_id)) AND create_datetime >= s:starting_from
+            WHERE (pl.pocket_id IN (i:pockets_available) OR pl.list_id IN (i:lists_available))
+            AND (`action` = s:delete OR (`action` = s:unshare AND contact_id = i:user_id)) 
+            AND create_datetime >= s:starting_from
             GROUP BY entity_type
         ", [
-            'delete' => pocketlistsLog::ACTION_DELETE,
-            'unshare' => pocketlistsLog::ACTION_UNSHARE,
-            'user_id' => $this->getUser()->getId(),
-            'starting_from' => $starting_from
+            'pockets_available' => pocketlistsRBAC::getAccessPocketForContact($this->getUser()),
+            'lists_available'   => pocketlistsRBAC::getAccessListForContact($this->getUser()),
+            'delete'            => pocketlistsLog::ACTION_DELETE,
+            'unshare'           => pocketlistsLog::ACTION_UNSHARE,
+            'user_id'           => $this->getUser()->getId(),
+            'starting_from'     => $starting_from
         ])->fetchAll('entity_type', 1);
 
         $this->response['data'] = [

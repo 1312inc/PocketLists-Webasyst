@@ -73,6 +73,7 @@ class pocketlistsLogGetMethod extends pocketlistsApiAbstractMethod
         /** @var pocketlistsLogModel $log_model */
         $log_model = pl2()->getModel(pocketlistsLog::class);
         $query_components = $log_model->getQueryComponents();
+        $query_components['where']['and'][] = 'l.pocket_id IN (i:pockets_available) OR l.list_id IN (i:lists_available)';
         if (isset($entity_type)) {
             $query_components['where']['and'][] = 'l.entity_type = s:entity_type';
             if (isset($entity_id)) {
@@ -97,10 +98,12 @@ class pocketlistsLogGetMethod extends pocketlistsApiAbstractMethod
         $logs = $log_model->query(
             $log_model->buildSqlComponents($query_components, $limit, $offset, true),
             [
-                'entity_type'   => $entity_type,
-                'entity_id'     => $entity_id,
-                'contact_id'    => $contact_id,
-                'starting_from' => $starting_from
+                'pockets_available' => pocketlistsRBAC::getAccessPocketForContact($this->getUser()),
+                'lists_available'   => pocketlistsRBAC::getAccessListForContact($this->getUser()),
+                'entity_type'       => $entity_type,
+                'entity_id'         => $entity_id,
+                'contact_id'        => $contact_id,
+                'starting_from'     => $starting_from
             ]
         )->fetchAll();
         $total_count = (int) $log_model->query('SELECT FOUND_ROWS()')->fetchField();

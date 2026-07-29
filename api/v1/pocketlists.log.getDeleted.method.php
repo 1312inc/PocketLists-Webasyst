@@ -44,6 +44,7 @@ class pocketlistsLogGetDeletedMethod extends pocketlistsApiAbstractMethod
         /** @var pocketlistsLogModel $log_model */
         $log_model = pl2()->getModel(pocketlistsLog::class);
         $query_components = $log_model->getQueryComponents();
+        $query_components['where']['and'][] = 'l.pocket_id IN (i:pockets_available) OR l.list_id IN (i:lists_available)';
         $query_components['where']['and'][] = 'l.action = s:delete OR (l.action = s:unshare AND contact_id = i:user_id)';
         if (isset($starting_from)) {
             $query_components['where']['and'][] = 'l.create_datetime >= s:starting_from';
@@ -51,10 +52,12 @@ class pocketlistsLogGetDeletedMethod extends pocketlistsApiAbstractMethod
         $logs = $log_model->query(
             $log_model->buildSqlComponents($query_components, $limit, $offset, true),
             [
-                'delete' => pocketlistsLog::ACTION_DELETE,
-                'unshare' => pocketlistsLog::ACTION_UNSHARE,
-                'user_id' => $this->getUser()->getId(),
-                'starting_from' => $starting_from
+                'pockets_available' => pocketlistsRBAC::getAccessPocketForContact($this->getUser()),
+                'lists_available'   => pocketlistsRBAC::getAccessListForContact($this->getUser()),
+                'delete'            => pocketlistsLog::ACTION_DELETE,
+                'unshare'           => pocketlistsLog::ACTION_UNSHARE,
+                'user_id'           => $this->getUser()->getId(),
+                'starting_from'     => $starting_from
             ]
         )->fetchAll();
         $total_count = (int) $log_model->query('SELECT FOUND_ROWS()')->fetchField();
