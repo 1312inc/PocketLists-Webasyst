@@ -39,6 +39,7 @@ paths:
                           text:
                             type: string
                             description: Webasyst AI result (GPT)
+
   /pocketlists.attachments.add:
     put:
       externalDocs:
@@ -88,6 +89,7 @@ paths:
                 $ref: '#/components/schemas/response'
         500:
           description: Internal server error
+
   /pocketlists.attachments.delete:
     delete:
       externalDocs:
@@ -134,6 +136,7 @@ paths:
                 $ref: '#/components/schemas/response'
         500:
           description: Internal server error
+
   /pocketlists.comments.add:
     put:
       externalDocs:
@@ -194,6 +197,7 @@ paths:
                 $ref: '#/components/schemas/response'
         500:
           description: Internal server error
+
   /pocketlists.comments.delete:
     delete:
       externalDocs:
@@ -226,6 +230,7 @@ paths:
                 $ref: '#/components/schemas/response'
         500:
           description: Internal server error
+
   /pocketlists.comments.get:
     get:
       externalDocs:
@@ -276,6 +281,7 @@ paths:
                 $ref: '#/components/schemas/response'
         500:
           description: Internal server error
+
   /pocketlists.comments.update:
     patch:
       externalDocs:
@@ -334,6 +340,7 @@ paths:
                 $ref: '#/components/schemas/response'
         500:
           description: Internal server error
+
   /pocketlists.items.add:
     put:
       externalDocs:
@@ -508,6 +515,7 @@ paths:
                 $ref: '#/components/schemas/response'
         500:
           description: Internal server error
+
   /pocketlists.items.delete:
     delete:
       externalDocs:
@@ -540,6 +548,7 @@ paths:
                 $ref: '#/components/schemas/response'
         500:
           description: Internal server error
+
   /pocketlists.items.get:
     get:
       externalDocs:
@@ -662,6 +671,7 @@ paths:
                 $ref: '#/components/schemas/response'
         500:
           description: Internal server error
+
   /pocketlists.items.getStream:
     get:
       externalDocs:
@@ -727,6 +737,7 @@ paths:
                 $ref: '#/components/schemas/response'
         500:
           description: Internal server error
+
   /pocketlists.items.update:
     patch:
       externalDocs:
@@ -909,6 +920,7 @@ paths:
                 $ref: '#/components/schemas/response'
         500:
           description: Internal server error
+
   /pocketlists.lists.add:
     put:
       externalDocs:
@@ -1070,6 +1082,56 @@ paths:
                 $ref: '#/components/schemas/response'
         500:
           description: Internal server error
+
+  /pocketlists.lists.clone:
+    get:
+      externalDocs:
+        description: pocketlists.lists.clone
+        url: https://developers.webasyst.ru/api/explorer/pocketlists/pocketlists.lists.clone/
+      security:
+        - BearerAuth: [ ]
+      summary: Clone list.
+      parameters:
+        - in: query
+          name: list_id
+          description: List ID
+          required: true
+          schema: 
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
+        400:
+          description: Invalid request data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
+        402:
+          description: Payment Required.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
+        403:
+          description: Access denied to the Pocket Lists app or this API method.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
+        404:
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
+        500:
+          description: Internal server error
+
   /pocketlists.lists.delete:
     delete:
       externalDocs:
@@ -1102,6 +1164,7 @@ paths:
                 $ref: '#/components/schemas/response'
         500:
           description: Internal server error
+
   /pocketlists.lists.get:
     get:
       externalDocs:
@@ -1189,6 +1252,7 @@ paths:
                 $ref: '#/components/schemas/response'
         500:
           description: Internal server error
+
   /pocketlists.lists.update:
     patch:
       externalDocs:
@@ -1338,6 +1402,7 @@ paths:
                 $ref: '#/components/schemas/response'
         500:
           description: Internal server error
+
   /pocketlists.locations.add:
     put:
       externalDocs:
@@ -1393,6 +1458,7 @@ paths:
                 $ref: '#/components/schemas/response'
         500:
           description: Internal server error
+
   /pocketlists.locations.delete:
     delete:
       externalDocs:
@@ -1425,6 +1491,7 @@ paths:
                 $ref: '#/components/schemas/response'
         500:
           description: Internal server error
+
   /pocketlists.locations.get:
     get:
       externalDocs:
@@ -1487,6 +1554,7 @@ paths:
                 $ref: '#/components/schemas/response'
         500:
           description: Internal server error
+
   /pocketlists.locations.update:
     patch:
       externalDocs:
@@ -1551,6 +1619,7 @@ paths:
                 $ref: '#/components/schemas/response'
         500:
           description: Internal server error
+
   /pocketlists.log.get:
     get:
       externalDocs:
@@ -1615,6 +1684,7 @@ paths:
                 $ref: '#/components/schemas/response'
         500:
           description: Internal server error
+
   /pocketlists.log.getDeleted:
     get:
       externalDocs:
@@ -1656,6 +1726,7 @@ paths:
                 $ref: '#/components/schemas/response'
         500:
           description: Internal server error
+
   /pocketlists.log.getDeletedSummary:
     get:
       externalDocs:
@@ -1714,6 +1785,7 @@ paths:
                           user:
                             type: integer
                             description: ''
+
   /pocketlists.log.getSummary:
     get:
       externalDocs:
@@ -1778,6 +1850,7 @@ paths:
                 $ref: '#/components/schemas/response'
         500:
           description: Internal server error
+
   /pocketlists.pockets.add:
     put:
       externalDocs:
@@ -1846,6 +1919,7 @@ paths:
                 $ref: '#/components/schemas/response'
         500:
           description: Internal server error
+
   /pocketlists.pockets.delete:
     delete:
       externalDocs:
@@ -1878,6 +1952,7 @@ paths:
                 $ref: '#/components/schemas/response'
         500:
           description: Internal server error
+
   /pocketlists.pockets.get:
     get:
       externalDocs:
@@ -1926,6 +2001,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/response'
+
   /pocketlists.pockets.update:
     patch:
       externalDocs:
@@ -2004,6 +2080,7 @@ paths:
                 $ref: '#/components/schemas/response'
         500:
           description: Internal server error
+
   /pocketlists.push.disable:
     post:
       externalDocs:
@@ -2047,6 +2124,7 @@ paths:
                 $ref: '#/components/schemas/response'
         500:
           description: Internal server error
+
   /pocketlists.push.enable:
     post:
       externalDocs:
@@ -2097,6 +2175,7 @@ paths:
                 $ref: '#/components/schemas/response'
         500:
           description: Internal server error
+
   /pocketlists.system.getSettings:
     get:
       externalDocs:
@@ -2232,6 +2311,7 @@ paths:
                           is_debug_mode:
                             type: boolean
                             description: Webasyst debug mode status
+
   /pocketlists.system.getWebsocketUrl:
     get:
       externalDocs:
@@ -2277,6 +2357,7 @@ paths:
                 $ref: '#/components/schemas/response'
         500:
           description: Internal server error
+
   /pocketlists.users.get:
     get:
       externalDocs:

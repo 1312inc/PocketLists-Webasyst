@@ -93,7 +93,7 @@ class pocketlistsListsUpdateMethod extends pocketlistsApiAbstractMethod
                 $_list['errors'][] = $this->getError(2007, $_list['archived']);
             }
 
-            if (!is_numeric($_list['template'])) {
+            if (isset($_list['template']) && !is_numeric($_list['template'])) {
                 $_list['errors'][] = $this->getError(2015, $_list['template']);
             }
 
