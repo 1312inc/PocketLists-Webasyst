@@ -201,7 +201,7 @@ class pocketlistsLogService
                     } elseif (is_null($log['list_id'])) {
                         $users = [pl2()->getUser()->getId()];
                         if ($log['assigned_contact_id']) {
-                            $users[] = [$log['assigned_contact_id']];
+                            $users[] = $log['assigned_contact_id'];
                         }
                     }
                     break;
@@ -210,6 +210,7 @@ class pocketlistsLogService
             }
 
             if ($users) {
+                $users = array_unique($users);
                 foreach ($users as $_user_id) {
                     $channel = $ws->getChannel($_user_id);
                     $ws->sendWebsocketData(
