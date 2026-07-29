@@ -16,6 +16,7 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
 
         $assign_contacts = [];
         $user_id = $this->getUser()->getId();
+        $can_assign = pocketlistsRBAC::canAssign();
         $pocket_ids = array_unique(array_column($lists, 'pocket_id'));
         $pocket_access = pocketlistsRBAC::getAccessPocketForContact($this->getUser());
         $assigned_contact_ids = array_unique(array_filter(array_column($lists, 'assigned_contact_id')));
@@ -50,7 +51,7 @@ class pocketlistsListsAddMethod extends pocketlistsApiAbstractMethod
                 'type'                  => ifset($_list, 'type', pocketlistsList::TYPE_CHECKLIST),
                 'icon'                  => ifset($_list, 'icon', null),
                 'icon_url'              => null,
-                'private'               => ifset($_list, 'private', 0),
+                'private'               => ($can_assign ? ifset($_list, 'private', 0) : 1),
                 'archived'              => ifset($_list, 'archived', 0),
                 'template'              => ifset($_list, 'template', 0),
                 'hash'                  => null,
