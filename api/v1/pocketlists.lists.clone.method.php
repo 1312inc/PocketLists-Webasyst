@@ -7,6 +7,8 @@ class pocketlistsListsCloneMethod extends pocketlistsApiAbstractMethod
     public function execute()
     {
         $list_id = $this->get('list_id', true);
+        $list_name = $this->get('list_name');
+        $pocket_id = $this->get('pocket_id');
         if (!pocketlistsViewHelper::isPremium()) {
             throw new pocketlistsApiException(_w('Payment Required'), 402);
         } elseif (!is_numeric($list_id)) {
@@ -21,6 +23,24 @@ class pocketlistsListsCloneMethod extends pocketlistsApiAbstractMethod
         $lists_id_available = pocketlistsRBAC::getAccessListForContact($this->getUser());
         if (!in_array($list_id, $lists_id_available)) {
             throw new pocketlistsApiException(_w('List access denied'), 403);
+        }
+
+        if ($list_name) {
+            if (!is_string($list_name)) {
+                throw new pocketlistsApiException(_w('Type error `list_name`'), 400);
+            }
+            $list['name'] = $list_name;
+        }
+
+        if ($pocket_id) {
+            if (!is_numeric($pocket_id)) {
+                throw new pocketlistsApiException(_w('Type error `pocket_id`'), 400);
+            }
+            $pocket = (new pocketlistsPocketModel())->getById($pocket_id);
+            if (!$pocket) {
+                throw new pocketlistsApiException(_w('Pocket not found'), 404);
+            }
+            $list['pocket_id'] = $pocket_id;
         }
 
         $errors = [];
@@ -63,9 +83,10 @@ class pocketlistsListsCloneMethod extends pocketlistsApiAbstractMethod
         $list['old_id'] = $list['id'];
         $list['activity_datetime'] = date('Y-m-d H:i:s');
         $list['archived'] = 0;
+        $list['template'] = 0;
         $list['complete_datetime'] = null;
         $list['uuid'] = waString::uuid();
-        unset($list['id'], $list['template'], $list['key_item_id']);
+        unset($list['id'], $list['key_item_id']);
 
 
         $list_entity = $list_factory->generateWithData($list);

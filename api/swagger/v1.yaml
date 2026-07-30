@@ -1098,6 +1098,16 @@ paths:
           required: true
           schema: 
             type: integer
+        - in: query
+          name: list_name
+          description: List name
+          schema:
+            type: string
+        - in: query
+          name: pocket_id
+          description: Pocket ID
+          schema:
+            type: integer
       responses:
         200:
           description: OK
