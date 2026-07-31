@@ -22,17 +22,42 @@ class pocketlistsLogGetSummaryMethod extends pocketlistsApiAbstractMethod
             throw new pocketlistsApiException(sprintf_wp('Missing required parameter: “%s”.', 'starting_from'), 400);
         }
 
+        $filters = [];
+        $pockets_available = [];
+        $lists_available = [];
+
         /** @var pocketlistsLogModel $log_model */
         $log_model = pl2()->getModel(pocketlistsLog::class);
-        $log_summary = $log_model->query("
-            SELECT entity_type, COUNT(entity_type) AS summ FROM pocketlists_log pl
-            WHERE (pl.contact_id = i:user_id OR pl.assigned_contact_id = i:user_id)
-            AND create_datetime >= s:starting_from
-            GROUP BY entity_type
-        ", [
-            'user_id'       => $this->getUser()->getId(),
-            'starting_from' => $starting_from
-        ])->fetchAll('entity_type', 1);
+        $query_components = $log_model->getQueryComponents();
+        $query_components['select'] = ['l.entity_type, COUNT(l.entity_type) AS summ'];
+        if (!pocketlistsRBAC::isAdmin()) {
+            $pockets_available = pocketlistsRBAC::getAccessPocketForContact($this->getUser());
+            if ($pockets_available) {
+                $filters[] = '(l.entity_type = s:pocket AND l.pocket_id IN (i:pockets_available))';
+            }
+
+            $lists_available = pocketlistsRBAC::getAccessListForContact($this->getUser());
+            if ($lists_available) {
+                $filters[] = '(l.entity_type IN (s:entity_types) AND l.list_id IN (i:lists_available))';
+            }
+
+            $filters[] = 'l.assigned_contact_id = i:user_id';
+            $query_components['where']['and'][] = implode(' OR ', $filters);
+        }
+
+        $query_components['where']['and'][] = 'l.create_datetime >= s:starting_from';
+        $query_components['group_by'][] = 'l.entity_type';
+        $log_summary = $log_model->query(
+            $log_model->buildSqlComponents($query_components, self::MAX_LIMIT, 0, true),
+            [
+                'pockets_available' => $pockets_available,
+                'lists_available'   => $lists_available,
+                'pocket'            => pocketlistsLog::ENTITY_POCKET,
+                'entity_types'      => [pocketlistsLog::ENTITY_LIST, pocketlistsLog::ENTITY_ITEM, pocketlistsLog::ENTITY_COMMENT],
+                'user_id'           => $this->getUser()->getId(),
+                'starting_from'     => $starting_from
+            ]
+        )->fetchAll('entity_type', 1);
 
         $this->response['data'] = [
             'starting_from' => $this->formatDatetimeToISO8601($starting_from),

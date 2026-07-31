@@ -73,7 +73,25 @@ class pocketlistsLogGetMethod extends pocketlistsApiAbstractMethod
         /** @var pocketlistsLogModel $log_model */
         $log_model = pl2()->getModel(pocketlistsLog::class);
         $query_components = $log_model->getQueryComponents();
-        $query_components['where']['and'][] = 'l.contact_id = '.$this->getUser()->getId().' OR l.assigned_contact_id = '.$this->getUser()->getId();
+
+        $filters = [];
+        $pockets_available = [];
+        $lists_available = [];
+
+        if (!pocketlistsRBAC::isAdmin()) {
+            $pockets_available = pocketlistsRBAC::getAccessPocketForContact($this->getUser());
+            if ($pockets_available) {
+                $filters[] = "(l.entity_type = 'pocket' AND l.pocket_id IN (i:pockets_available))";
+            }
+
+            $lists_available = pocketlistsRBAC::getAccessListForContact($this->getUser());
+            if ($lists_available) {
+                $filters[] = "(l.entity_type IN ('list', 'item', 'comment') AND l.list_id IN (i:lists_available))";
+            }
+
+            $filters[] = 'l.assigned_contact_id = '.$this->getUser()->getId();
+            $query_components['where']['and'][] = implode(' OR ', $filters);
+        }
 
         if (isset($entity_type)) {
             $query_components['where']['and'][] = 'l.entity_type = s:entity_type';
@@ -99,10 +117,12 @@ class pocketlistsLogGetMethod extends pocketlistsApiAbstractMethod
         $logs = $log_model->query(
             $log_model->buildSqlComponents($query_components, $limit, $offset, true),
             [
-                'entity_type'   => $entity_type,
-                'entity_id'     => $entity_id,
-                'contact_id'    => $contact_id,
-                'starting_from' => $starting_from
+                'pockets_available' => $pockets_available,
+                'lists_available'   => $lists_available,
+                'entity_type'       => $entity_type,
+                'entity_id'         => $entity_id,
+                'contact_id'        => $contact_id,
+                'starting_from'     => $starting_from
             ]
         )->fetchAll();
         $total_count = (int) $log_model->query('SELECT FOUND_ROWS()')->fetchField();
