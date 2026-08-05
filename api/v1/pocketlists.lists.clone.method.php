@@ -57,11 +57,10 @@ class pocketlistsListsCloneMethod extends pocketlistsApiAbstractMethod
             $errors[] = ['code' => $e->getCode(), 'text' => $e->getMessage()];
         }
 
-        $this->response['data'] = [[
-            'success' => !!empty($errors),
-            'errors' => $errors,
-            'data' => $clone_list
-        ]];
+        $lists_get = new pocketlistsListsGetMethod();
+        $lists_get->execute(['id' => [$clone_list['id']]]);
+        unset($lists_get->response['meta']);
+        $this->response = $lists_get->response;
     }
 
 
@@ -92,6 +91,7 @@ class pocketlistsListsCloneMethod extends pocketlistsApiAbstractMethod
         $list_entity = $list_factory->generateWithData($list);
         if ($list_factory->save($list_entity)) {
             $list['id'] = $list_entity->getId();
+            pocketlistsRBAC::clearListUserRight();
         } else {
             pocketlistsLogger::error('Error clone list. Data list: '.var_export($list, true), 'clone.log');
             return [];

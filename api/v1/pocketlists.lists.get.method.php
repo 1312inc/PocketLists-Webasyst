@@ -2,9 +2,9 @@
 
 class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
 {
-    public function execute()
+    public function execute($params = [])
     {
-        $ids = $this->get('id');
+        $ids = ifset($params, 'id', $this->get('id'));
         $uuids = $this->get('uuid');
         $pocket_id = $this->get('pocket_id');
         $contact_id = $this->get('contact_id');
