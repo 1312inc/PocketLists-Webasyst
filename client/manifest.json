@@ -653,6 +653,9 @@
     ],
     "assets": [
       "assets/img/item-bullets-priority-fire.gif"
+    ],
+    "css": [
+      "assets/style-su-8Hn0o.css"
     ]
   },
   "src/assets/apps/shop.svg": {
