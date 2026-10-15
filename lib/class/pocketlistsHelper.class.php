@@ -380,4 +380,33 @@ class pocketlistsHelper
     {
         return !empty(pl2()->getPluginInfo($name));
     }
+
+    /**
+     * Entry script and stylesheet from the Vite build manifest.
+     *
+     * @return array{js: string, css: string}
+     * @throws waException
+     */
+    public static function getSpaEntryAssets()
+    {
+        $path = wa()->getAppPath('client/manifest.json', self::APP_ID);
+        if (!is_readable($path)) {
+            throw new waException('SPA manifest not found: client/manifest.json');
+        }
+
+        $manifest = json_decode(file_get_contents($path), true);
+        $entry = (is_array($manifest) && isset($manifest['index.html'])) ? $manifest['index.html'] : null;
+        $js = is_array($entry) ? (string) ifset($entry, 'file', '') : '';
+        $css_list = is_array($entry) ? ifset($entry, 'css', []) : [];
+        $css = is_array($css_list) ? (string) reset($css_list) : '';
+
+        if ($js === '' || $css === '') {
+            throw new waException('SPA entry is missing in client/manifest.json');
+        }
+
+        return [
+            'js'  => $js,
+            'css' => $css,
+        ];
+    }
 }
