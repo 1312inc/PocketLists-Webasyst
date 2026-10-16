@@ -80,6 +80,18 @@
                 <div data-vue-fragment="sidebar-footer" class="hidden">
                     <div class="box custom-py-0">
                         <ul class="menu">
+
+                            {if $isAdmin && !$is_premium}
+                            <li class="rounded">
+                                <a href="{$wa_app_url}upgrade/">
+                                    <i class="fas fa-star{if !$is_premium} text-yellow{/if}"></i>
+                                    <span>[`Premium`]</span>
+                                    {$p = $wa->pocketlists->getPremiumPricing()}
+                                    {if !empty($p.special)}<span class="count"><span class="badge small {$p.special_color}">{$p.special}</span></span>{/if}
+                                </a>
+                            </li>
+                            {/if}
+
                             <li class="rounded">
                                 <a href="{$wa_app_url}archive/">
                                     <i class="fas fa-archive"></i>
@@ -98,6 +110,9 @@
                                 <a href="{$wa_app_url}settings/">
                                     <i class="fas fa-cog"></i>
                                     <span>[`Settings`]</span>
+                                    <span class="count icon custom-mr-2" title="[`Socket connection status`]">
+                                        <i class="js-pl-ws-status rounded smaller custom-mt-4" style="background: var(--light-gray);"></i>
+                                    </span>
                                 </a>
                             </li>
                             {*
@@ -109,27 +124,7 @@
                                 </a>
                             </li>
                             *}
-                            {if $isAdmin}
-                            <li class="rounded top-padded">
-                                <a href="{$wa_app_url}upgrade/">
-                                    <i class="fas fa-star{if !$is_premium} text-yellow{/if}"></i>
-                                    <span>[`Premium`]</span>
-                                    {if !$is_premium}
-                                        {$p = $wa->pocketlists->getPremiumPricing()}
-                                        {if !empty($p.special_short)}<span class="count"><span class="badge small {$p.special_color}">{$p.special_short}</span></span>{/if}
-                                    {/if}
-                                </a>
-                            </li>
-                            {/if}
-                            <li class="rounded">
-                                <a href="{$wa_app_url}beta/">
-                                    <i class="fas fa-flask"></i>
-                                    <span>[`Beta`]</span>
-                                    <span class="count icon" title="[`Socket connection status`]">
-                                        <i class="js-pl-ws-status rounded smaller custom-mt-4" style="background: var(--light-gray);"></i>
-                                    </span>
-                                </a>
-                            </li>
+
                         </ul>
                     </div>
                 </div>

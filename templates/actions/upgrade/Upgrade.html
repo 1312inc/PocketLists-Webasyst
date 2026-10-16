@@ -22,9 +22,9 @@
                 [`Per-server license for the entire company. Unlimited users, all premium features, free updates forever.`]
             {/if}
         {/if}
-        {if !$_is_cloud && date('Y-m-d') <= '2026-08-31'}
+        {if date('Y-m-d') <= '2028-13-12'}
             <br><br>
-            [`Promocode`] <code><b>SUMMER26</b></code> <strong class="text-red">-15% / {date('Y.m')}</strong>
+            [`Promocode`] <span class="badge purple squared"><b>FRIENDLIEST</b></span> <strong class="text-purple">-15% / {date('Y.m')}</strong>
         {/if}
     </p>
 </figure>
@@ -103,18 +103,6 @@
             {$_premium_stuff = []}
 
             {$_premium_stuff[] = [
-              'title' => '[`Android app`]',
-              'mobile_googleplay' => 'https://play.google.com/store/apps/details?id=com.pocketlists',
-              'mobile_rustore' => 'https://www.rustore.ru/catalog/app/com.pocketlists',
-              'body' => '[`All-new native Android app that syncs directly to your Webasyst account and Pocket Lists.`]'
-            ]}
-
-            {$_premium_stuff[] = [
-              'title' => '[`Map`]',
-              'body' => '[`Schedule activity to a map: add locations, assign to-dos.`]'
-            ]}
-
-            {$_premium_stuff[] = [
               'title' => '[`Repeating to-dos`]',
               'body' => '[`Re-occuring to-dos: daily, weekly, monthly, yearly.`]'
             ]}
@@ -125,8 +113,20 @@
             ]}
 
             {$_premium_stuff[] = [
-              'title' => '[`AI checklist generation`]',
-              'body' => '[`Create checklists via Webasyst AI service.`]'
+              'title' => '[`List templates`]',
+              'body' => '[`Enable templates for creating new checklists even faster.`]'
+            ]}
+
+            {$_premium_stuff[] = [
+              'title' => '[`Android app`]',
+              'mobile_googleplay' => 'https://play.google.com/store/apps/details?id=com.pocketlists',
+              'mobile_rustore' => 'https://www.rustore.ru/catalog/app/com.pocketlists',
+              'body' => '[`All-new native Android app that syncs directly to your Webasyst account and Pocket Lists.`]'
+            ]}
+
+            {$_premium_stuff[] = [
+              'title' => '[`Map`]',
+              'body' => '[`Schedule activity to a map: add locations, assign to-dos.`]'
             ]}
 
             {if $wa->locale() == 'ru_RU'}
@@ -207,10 +207,6 @@
 
             {/if}
 
-            {$_premium_stuff[] = [
-              'title' => '[`List templates`]',
-              'body' => '[`Enable templates for creating new checklists even faster.`]'
-            ]}
             {$_premium_stuff[] = [
               'title' => '[`Team performance reports`]',
               'eta' => '[`Soon`]',
