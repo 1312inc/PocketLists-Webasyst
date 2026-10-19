@@ -463,7 +463,7 @@ $.pocketlists.List = function ($list_wrapper, options) {
             $list_wrapper.find(':checkbox').prop('disabled', true);
         }
 
-        if ($.storage.get('pocketlists/lists/focus')) {
+        if ($.storage?.get('pocketlists/lists/focus')) {
             setTimeout(function () {
                 $('[data-pl2-item-textarea]').trigger('focus');
             }, 10);
