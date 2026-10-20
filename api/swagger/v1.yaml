@@ -1108,6 +1108,16 @@ paths:
           description: Pocket ID
           schema:
             type: integer
+        - in: query
+          name: sort
+          description: Precise master sort position (ORDER BY sort, rank) within a pocket
+          schema:
+            type: integer
+        - in: query
+          name: rank
+          description: Precise sort subrank position among elements with the same master sort value (ORDER BY sort, rank)
+          schema:
+            type: string
       responses:
         200:
           description: OK

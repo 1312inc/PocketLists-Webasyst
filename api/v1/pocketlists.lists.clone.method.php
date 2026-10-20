@@ -9,6 +9,9 @@ class pocketlistsListsCloneMethod extends pocketlistsApiAbstractMethod
         $list_id = $this->get('list_id', true);
         $list_name = $this->get('list_name');
         $pocket_id = $this->get('pocket_id');
+        $sort = $this->get('sort');
+        $rank = $this->get('rank');
+
         if (!pocketlistsViewHelper::isPremium()) {
             throw new pocketlistsApiException(_w('Payment Required'), 402);
         } elseif (!is_numeric($list_id)) {
@@ -41,6 +44,21 @@ class pocketlistsListsCloneMethod extends pocketlistsApiAbstractMethod
                 throw new pocketlistsApiException(_w('Pocket not found'), 404);
             }
             $list['pocket_id'] = $pocket_id;
+        }
+
+        if (isset($sort)) {
+            if (!is_numeric($sort)) {
+                throw new pocketlistsApiException(_w('Type error `sort`'), 400);
+            }
+            $list['sort'] = $sort;
+        }
+        if (isset($rank)) {
+            if (!is_string($rank)) {
+                throw new pocketlistsApiException(_w('Type error `rank`'), 400);
+            } elseif ($rank !== '' && !pocketlistsSortRank::rankValidate($rank)) {
+                throw new pocketlistsApiException(sprintf_wp('Invalid value “%s” (%s)', 'rank', $rank), 400);
+            }
+            $list['rank'] = $rank;
         }
 
         $errors = [];
