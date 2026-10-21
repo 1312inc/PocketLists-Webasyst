@@ -44,6 +44,8 @@ class pocketlistsListsCloneMethod extends pocketlistsApiAbstractMethod
                 throw new pocketlistsApiException(_w('Pocket not found'), 404);
             }
             $list['pocket_id'] = $pocket_id;
+        } else {
+            $list['pocket_id'] = null;
         }
 
         if (isset($sort)) {
@@ -98,6 +100,7 @@ class pocketlistsListsCloneMethod extends pocketlistsApiAbstractMethod
 
         $list += $key_item;
         $list['old_id'] = $list['id'];
+        $list['create_datetime'] = date('Y-m-d H:i:s');
         $list['activity_datetime'] = date('Y-m-d H:i:s');
         $list['archived'] = 0;
         $list['template'] = 0;
