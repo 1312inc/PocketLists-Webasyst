@@ -1901,7 +1901,7 @@ msgid "See what’s included"
 msgstr "Что еще есть в премиум"
 
 msgid "Get premium now"
-msgstr "Хочу все это!"
+msgstr "Хочу премиум!"
 
 msgid "lifetime"
 msgstr "навсегда"
@@ -1933,38 +1933,29 @@ msgstr "Премиум-версия открывает ранний доступ
 msgid "Android app"
 msgstr "Приложение для Android"
 
-msgid "Summer 2025"
-msgstr "Лето 2025"
-
 msgid "Soon"
 msgstr "Скоро"
 
 msgid "All-new native Android app that syncs directly to your Webasyst account and Pocket Lists."
 msgstr "Мобильное приложение для Android напрямую синхронизируется с Pocket Lists в вашем Webasyst."
 
-msgid "New iOS app"
-msgstr "Приложение для iOS (новое!)"
-
-msgid "Coming later in 2025"
-msgstr "Позже в 2025"
+msgid "iOS app"
+msgstr "Приложение для iOS"
 
 msgid "Re-written from scratch. To be merged with the <a href=\"%s\" target=\"_blank\">old version</a> later on free."
 msgstr "Переписываем с нуля. Объединим с <a href=\"%s\" target=\"_blank\">предыдущей версией</a> и синхронизируем с Webasyst."
 
+msgid "iOS was the origin platform for Pocket Lists. But merging the original app with Webasyst while maintaining active development appeared to be the hardest business task we have ever encountered in 1312. At the moment, we have absolutely no ETA for the new Pocket Lists iOS app."
+msgstr "Pocket Lists начался с платформы iOS. Но объединение изначального приложения с Webasyst при продолжении активной разработки для iOS оказалось более сложной бизнес‑задачей, чем было запланировано. На данный момент у нас нет информации о сроках выхода нового Pocket Lists для iOS."
+
 msgid "Schedule activity to a map: add locations, assign to-dos."
 msgstr "Прикрепляйте задачи к местам на карте, ставьте уведомления."
-
-msgid "May 2025"
-msgstr "Май 2025"
 
 msgid "Re-occuring to-dos: daily, weekly, monthly, yearly."
 msgstr "Простая настройка правил повтора задач: каждый день, неделю, месяц, год."
 
 msgid "Repeating checklists"
 msgstr "Повторяющиеся чек-листы"
-
-msgid "June 2025"
-msgstr "Июнь 2025"
 
 msgid "Set the whole checklist to re-create itself according to the setup: daily, weekly, monthly."
 msgstr "Автоматическое возобновление целых списков: каждый день, неделю, месяц, год."
@@ -1977,9 +1968,6 @@ msgstr "Создавайте списки дел еще быстрее с пом
 
 msgid "Team performance reports"
 msgstr "Отчеты о работе команды"
-
-msgid "Later in 2025"
-msgstr "Позже в 2025"
 
 msgid "Visualize how you and your team perform on checklists. Dynamics, KPIs."
 msgstr "Красивые графики об успехах — ваши личные и всей команды. Общая производительность, KPI."
@@ -2086,11 +2074,11 @@ msgstr "https://www.webasyst.ru/my/buy/upgrade-to-premium/pocketlists/"
 msgid "%s limited offer for upgrading existing app license to the premium version"
 msgstr "%s спецпредложение на апгрейд базовой лицензии до премиум-версии"
 
-msgid "Per-server license for the entire company. Unlimited users, all premium features, free updates forever."
-msgstr "Лицензия на один сервер и всю компанию. Сколько угодно пользователей, все функции, бесплатные обновления."
+msgid "Upgrade for the entire company. Unlimited users, all premium features, free updates forever."
+msgstr "Апгрейд на всю компанию. Сколько угодно пользователей, все функции, бесплатные обновления."
 
-msgid "Checklists 80 lvl"
-msgstr "Чек-листы 80 уровня"
+msgid "Productivity 80 lvl"
+msgstr "Производительность 80 уровня"
 
 msgid "All inclusive in the cloud"
 msgstr "В облаке все включено"
@@ -2112,3 +2100,6 @@ msgstr "Создавайте новые чек-листы еще быстрее 
 
 msgid "Delayed"
 msgstr "Задерживается"
+
+msgid "limited extra discount for newcomers"
+msgstr "акция для новых пользователей"
