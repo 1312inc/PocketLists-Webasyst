@@ -16,6 +16,7 @@ class pocketlistsListArchiveController extends pocketlistsJsonController
 
         $list
             ->setArchived(waRequest::post('archive', null, waRequest::TYPE_INT))
+            ->setClientTouchDatetime(date('Y-m-d H:i:s'))
             ->setUpdateDatetime(date('Y-m-d H:i:s'));
 
         $updated = pl2()->getEntityFactory(pocketlistsList::class)->save($list, ['archived', 'update_datetime']);

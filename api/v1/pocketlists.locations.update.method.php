@@ -39,40 +39,40 @@ class pocketlistsLocationsUpdateMethod extends pocketlistsApiAbstractMethod
             if (empty($_location['id'])) {
                 $_location['errors'][] = $this->getError(1043);
             } elseif (!is_numeric($_location['id'])) {
-                $_location['errors'][] = $this->getError(1044);
+                $_location['errors'][] = $this->getError(1044, $_location['id']);
             } elseif (!array_key_exists($_location['id'], $locations_in_db)) {
                 $_location['errors'][] = $this->getError(1026);
             }
 
             if (isset($_location['name']) && !is_string($_location['name'])) {
-                $_location['errors'][] = $this->getError(1004);
+                $_location['errors'][] = $this->getError(1004, $_location['name']);
             }
 
             if (isset($_location['color']) && !is_string($_location['color'])) {
-                $_location['errors'][] = $this->getError(2009);
+                $_location['errors'][] = $this->getError(2009, $_location['color']);
             }
 
             if (isset($_location['location_latitude'])) {
                 if (!is_numeric($_location['location_latitude'])) {
-                    $_location['errors'][] = $this->getError(3010);
+                    $_location['errors'][] = $this->getError(3010, $_location['location_latitude']);
                 } elseif ($_location['location_latitude'] < -90 || $_location['location_latitude'] > 90) {
-                    $_location['errors'][] = $this->getError(3011);
+                    $_location['errors'][] = $this->getError(3011, $_location['location_latitude']);
                 }
             }
 
             if (isset($_location['location_longitude'])) {
                 if (!is_numeric($_location['location_longitude'])) {
-                    $_location['errors'][] = $this->getError(3012);
+                    $_location['errors'][] = $this->getError(3012, $_location['location_longitude']);
                 } elseif ($_location['location_longitude'] < -180 || $_location['location_longitude'] > 180) {
-                    $_location['errors'][] = $this->getError(3013);
+                    $_location['errors'][] = $this->getError(3013, $_location['location_longitude']);
                 }
             }
 
             if (isset($_location['location_radius'])) {
                 if (!is_numeric($_location['location_radius'])) {
-                    $_location['errors'][] = $this->getError(3014);
+                    $_location['errors'][] = $this->getError(3014, $_location['location_radius']);
                 } elseif ($_location['location_radius'] < 0) {
-                    $_location['errors'][] = $this->getError(3015);
+                    $_location['errors'][] = $this->getError(3015, $_location['location_radius']);
                 }
             }
 

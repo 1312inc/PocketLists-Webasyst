@@ -2,9 +2,9 @@
 
 class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
 {
-    public function execute()
+    public function execute($params = [])
     {
-        $ids = $this->get('id');
+        $ids = ifset($params, 'id', $this->get('id'));
         $uuids = $this->get('uuid');
         $pocket_id = $this->get('pocket_id');
         $contact_id = $this->get('contact_id');
@@ -217,6 +217,7 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
                 'icon_url',
                 'private',
                 'archived',
+                'template',
                 'hash',
                 'color',
                 'passcode',
@@ -249,6 +250,7 @@ class pocketlistsListsGetMethod extends pocketlistsApiAbstractMethod
                 'pocket_id' => 'int',
                 'private' => 'int',
                 'archived' => 'int',
+                'template' => 'int',
                 'key_item_id' => 'int',
                 'pro_label_id' => 'int'
             ]

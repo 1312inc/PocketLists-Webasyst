@@ -1,7 +1,6 @@
 {$_is_premium = $wa->pocketlists->isPremium()}
-{$_is_cloud = $wa->pocketlists->isCloud()}
 {$_premium_pricing = $wa->pocketlists->getPremiumPricing()}
-{$_pl_upgrade_url = '[`https://www.webasyst.com/my/buy/upgrade-to-premium/pocketlists/`]'|cat:'?domain='|cat:str_replace('http://','',str_replace('https://','',$wa->domainUrl()))}
+{$_pl_upgrade_url = '[`https://www.webasyst.com/store/app/pocketlists/`]'}
 
 {capture "getpremiumbutton"}
 {if !$_is_premium}
@@ -9,22 +8,13 @@
     <a href="{$_pl_upgrade_url}" class="button rounded largest pl-upgrade-button {$_premium_pricing.special_color}" target="_blank">[`Get premium now`]</a>
     <h4>
         {if !empty($_premium_pricing.compare_price)}<strike class="gray">{$_premium_pricing.compare_price}</strike>{/if}
-        {if $_is_cloud}[`All inclusive in the cloud`]{else}{$_premium_pricing.price}{/if}
+        {$_premium_pricing.price}
     </h4>
     <p class="width-60 width-100-mobile custom-mx-auto small">
-        {if $_is_cloud}
-            [`In Webasyst Cloud, simply upgrade to the <b>Premium</b> plan and get all premium features at once with no extra purchase required.`]
-        {else}
-            {if !empty($_premium_pricing.special)}
-                {sprintf('[`%s limited offer for upgrading existing app license to the premium version`]', sprintf('<span class="badge %s">%s</span>', $_premium_pricing.special_color, $_premium_pricing.special))}<br>
-                <b>{date('Y.m.d')}</b> [`early launch only!`]
-            {else}
-                [`Per-server license for the entire company. Unlimited users, all premium features, free updates forever.`]
-            {/if}
-        {/if}
-        {if !$_is_cloud && date('Y-m-d') <= '2026-08-31'}
-            <br><br>
-            [`Promocode`] <code><b>SUMMER26</b></code> <strong class="text-red">-15% / {date('Y.m')}</strong>
+        {if date('Y-m-d') <= '2026-13-12'}
+            [`Promocode`] <span class="badge purple squared"><b>FRIENDLIEST</b></span> <strong class="text-purple">-15% / {date('Y.m')}</strong>
+            <br>
+            <strong class="text-purple">[`limited extra discount for newcomers`]</strong>
         {/if}
     </p>
 </figure>
@@ -95,24 +85,12 @@
 
             {else}
 
-                <h1 class="top-padded align-center width-70 custom-mx-auto custom-mb-24 width-100-mobile">[`Checklists 80 lvl`]</h1>
+                <h1 class="top-padded align-center width-70 custom-mx-auto custom-mb-24 width-100-mobile">[`Productivity 80 lvl`]</h1>
 
             {/if}
 
 
             {$_premium_stuff = []}
-
-            {$_premium_stuff[] = [
-              'title' => '[`Android app`]',
-              'mobile_googleplay' => 'https://play.google.com/store/apps/details?id=com.pocketlists',
-              'mobile_rustore' => 'https://www.rustore.ru/catalog/app/com.pocketlists',
-              'body' => '[`All-new native Android app that syncs directly to your Webasyst account and Pocket Lists.`]'
-            ]}
-
-            {$_premium_stuff[] = [
-              'title' => '[`Map`]',
-              'body' => '[`Schedule activity to a map: add locations, assign to-dos.`]'
-            ]}
 
             {$_premium_stuff[] = [
               'title' => '[`Repeating to-dos`]',
@@ -125,8 +103,26 @@
             ]}
 
             {$_premium_stuff[] = [
-              'title' => '[`AI checklist generation`]',
-              'body' => '[`Create checklists via Webasyst AI service.`]'
+              'title' => '[`List templates`]',
+              'body' => '[`Enable templates for creating new checklists even faster.`]'
+            ]}
+
+            {$_premium_stuff[] = [
+              'title' => '[`Android app`]',
+              'mobile_googleplay' => 'https://play.google.com/store/apps/details?id=com.pocketlists',
+              'mobile_rustore' => 'https://www.rustore.ru/catalog/app/com.pocketlists',
+              'body' => '[`All-new native Android app that syncs directly to your Webasyst account and Pocket Lists.`]'
+            ]}
+
+            {$_premium_stuff[] = [
+              'title' => '[`iOS app`]',
+              'eta' => '[`Delayed`]',
+              'body' => sprintf('[`Re-written from scratch. To be merged with the <a href="%s" target="_blank">old version</a> later on free.`]', 'https://pocketlists.com/')|cat:' <p class="gray">'|cat:'[`iOS was the origin platform for Pocket Lists. But merging the original app with Webasyst while maintaining active development appeared to be the hardest business task we have ever encountered in 1312. At the moment, we have absolutely no ETA for the new Pocket Lists iOS app.`]'|cat:'</p>'
+            ]}
+
+            {$_premium_stuff[] = [
+              'title' => '[`Map`]',
+              'body' => '[`Schedule activity to a map: add locations, assign to-dos.`]'
             ]}
 
             {if $wa->locale() == 'ru_RU'}
@@ -208,11 +204,6 @@
             {/if}
 
             {$_premium_stuff[] = [
-              'title' => '[`List templates`]',
-              'eta' => '[`Arriving`]',
-              'body' => '[`Enable templates for creating new checklists even faster.`]'
-            ]}
-            {$_premium_stuff[] = [
               'title' => '[`Team performance reports`]',
               'eta' => '[`Soon`]',
               'body' => '[`Visualize how you and your team perform on checklists. Dynamics, KPIs.`]'
@@ -237,11 +228,6 @@
               'eta' => '[`Soon`]',
               'body' => '[`In basic version, lists are limited by 500 to-do items. With premium, all limits are off.`]'
             ]}
-            {$_premium_stuff[] = [
-              'title' => '[`New iOS app`]',
-              'eta' => '[`Delayed`]',
-              'body' => sprintf('[`Re-written from scratch. To be merged with the <a href="%s" target="_blank">old version</a> later on free.`]', 'https://pocketlists.com/')
-            ]}
 
 
             {$_features_delivered = 0}
@@ -254,10 +240,8 @@
                 {/if}
             {/foreach}
 
-            <p class="small align-center custom-mb-24">
-                [`Early launch offer gets you the best premium upgrade conditions possible.`]
-                <br>
-                <b>{sprintf('[`%d features available now, +%d more to come shortly.`]', $_features_delivered, $_features_pending)}</b>
+            <p class="width-60 width-100-mobile custom-mx-auto align-center">
+                [`Upgrade for the entire company. Unlimited users, all premium features, free updates forever.`]
             </p>
 
             {$smarty.capture.getpremiumbutton}

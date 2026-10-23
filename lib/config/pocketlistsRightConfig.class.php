@@ -279,7 +279,7 @@ class pocketlistsRightConfig extends waRightConfig
 
     private function saveLog()
     {
-        function logFormat($user_id, $p_sr, $p_uns, $l_sr, $l_uns)
+        $logFormat = function ($user_id, $p_sr, $p_uns, $l_sr, $l_uns)
         {
             $logs = [];
             if (!empty($p_sr)) {
@@ -323,7 +323,7 @@ class pocketlistsRightConfig extends waRightConfig
                 }, array_keys($l_uns)));
             }
             return $logs;
-        }
+        };
 
         list($p_share, $p_unshare) = $this->getDiffRights(pocketlistsRBAC::POCKET_ITEM);
         list($l_share, $l_unshare) = $this->getDiffRights(pocketlistsRBAC::LIST_ITEM);
@@ -335,12 +335,12 @@ class pocketlistsRightConfig extends waRightConfig
                 $user_ids = $user_groups_model->getContactIds(-$this->userId);
                 if ($user_ids) {
                     foreach ($user_ids as $user_id) {
-                        $logs = array_merge($logs, logFormat($user_id, $p_share, $p_unshare, $l_share, $l_unshare));
+                        $logs = array_merge($logs, $logFormat($user_id, $p_share, $p_unshare, $l_share, $l_unshare));
                     }
                 }
             } else {
                 /** for user rights */
-                $logs = logFormat($this->userId, $p_share, $p_unshare, $l_share, $l_unshare);
+                $logs = $logFormat($this->userId, $p_share, $p_unshare, $l_share, $l_unshare);
             }
 
             pocketlistsLogService::multipleAdd($logs);
