@@ -72,18 +72,6 @@
                     <div data-vue-fragment="sidebar-footer" class="hidden">
                         <div class="box custom-py-0">
                             <ul class="menu">
-
-                                {if $isAdmin && !$is_premium}
-                                <li class="rounded">
-                                    <a href="{$wa_app_url}upgrade/">
-                                        <i class="fas fa-star{if !$is_premium} text-yellow{/if}"></i>
-                                        <span>[`Premium`]</span>
-                                        {$p = $wa->pocketlists->getPremiumPricing()}
-                                        {if !empty($p.special)}<span class="count"><span class="badge small {$p.special_color}">{$p.special}</span></span>{/if}
-                                    </a>
-                                </li>
-                                {/if}
-
                                 <li class="rounded">
                                     <a href="{$wa_app_url}archive/">
                                         <i class="fas fa-archive"></i>
@@ -107,6 +95,16 @@
                                         </span>
                                     </a>
                                 </li>
+                                {if $isAdmin && !$is_premium}
+                                <li class="rounded">
+                                    <a href="{$wa_app_url}upgrade/">
+                                        <i class="fas fa-star{if !$is_premium} text-yellow{/if}"></i>
+                                        <span>[`Premium`]</span>
+                                        {$p = $wa->pocketlists->getPremiumPricing()}
+                                        {if !empty($p.special)}<span class="count"><span class="badge small {$p.special_color}">{$p.special}</span></span>{/if}
+                                    </a>
+                                </li>
+                                {/if}
                                 {*
                                 <li class="rounded top-padded">
                                     <a href="{$wa_app_url}about/">
