@@ -1,0 +1,2571 @@
+{
+  "_ContenteditableBlock-BVebOB67.js": {
+    "file": "assets/ContenteditableBlock-BVebOB67.js",
+    "name": "ContenteditableBlock",
+    "imports": [
+      "_plugin-vue-export-helper-BDNMzG2s.js",
+      "_lodash-CA1kBJjW.js",
+      "_runtime-core.esm-bundler-xAaSbtBc.js",
+      "_sanitizer-BZjfWcgo.js"
+    ]
+  },
+  "_ContenteditableBlockClickable-BW846lBe.js": {
+    "file": "assets/ContenteditableBlockClickable-BW846lBe.js",
+    "name": "ContenteditableBlockClickable",
+    "imports": [
+      "index.html",
+      "_runtime-core.esm-bundler-xAaSbtBc.js",
+      "_ContenteditableBlock-BVebOB67.js"
+    ]
+  },
+  "_FilterBricks--G_AbNjI.js": {
+    "file": "assets/FilterBricks--G_AbNjI.js",
+    "name": "FilterBricks",
+    "imports": [
+      "_lodash-CA1kBJjW.js",
+      "index.html",
+      "_priorities-HdQql_0E.js",
+      "_runtime-core.esm-bundler-xAaSbtBc.js",
+      "_textToHtmlWithLinks-TyUfuO2y.js"
+    ]
+  },
+  "_ListView-C64ELovA.js": {
+    "file": "assets/ListView-C64ELovA.js",
+    "name": "ListView",
+    "imports": [
+      "_lodash-CA1kBJjW.js",
+      "index.html",
+      "_WaDropdown-B3PP01Zj.js",
+      "_priorities-HdQql_0E.js",
+      "_runtime-core.esm-bundler-xAaSbtBc.js",
+      "_TaskList-DsV554Zo.js",
+      "_TaskListLayout-ILKmklSN.js",
+      "_ContenteditableBlock-BVebOB67.js"
+    ]
+  },
+  "_ModalWrapperBody-CoNk4AiX.js": {
+    "file": "assets/ModalWrapperBody-CoNk4AiX.js",
+    "name": "ModalWrapperBody",
+    "imports": [
+      "index.html",
+      "_runtime-core.esm-bundler-xAaSbtBc.js"
+    ]
+  },
+  "_SearchForm-CO7UyeU3.js": {
+    "file": "assets/SearchForm-CO7UyeU3.js",
+    "name": "SearchForm",
+    "imports": [
+      "index.html",
+      "_WaDropdown-B3PP01Zj.js",
+      "_runtime-core.esm-bundler-xAaSbtBc.js"
+    ]
+  },
+  "_SortableList-niZOAgeE.js": {
+    "file": "assets/SortableList-niZOAgeE.js",
+    "name": "SortableList",
+    "imports": [
+      "_WaDropdown-B3PP01Zj.js",
+      "_runtime-core.esm-bundler-xAaSbtBc.js",
+      "_core-Cq5Csd4-.js"
+    ]
+  },
+  "_TaskList-DsV554Zo.js": {
+    "file": "assets/TaskList-DsV554Zo.js",
+    "name": "TaskList",
+    "imports": [
+      "_lodash-CA1kBJjW.js",
+      "index.html",
+      "_WaDropdown-B3PP01Zj.js",
+      "_priorities-HdQql_0E.js",
+      "_runtime-core.esm-bundler-xAaSbtBc.js",
+      "_TaskListItemStoreProvider-BOoarx-6.js",
+      "_core-Cq5Csd4-.js",
+      "_ModalWrapperBody-CoNk4AiX.js",
+      "_SortableList-niZOAgeE.js"
+    ]
+  },
+  "_TaskListItemStoreProvider-BOoarx-6.js": {
+    "file": "assets/TaskListItemStoreProvider-BOoarx-6.js",
+    "name": "TaskListItemStoreProvider",
+    "imports": [
+      "_lodash-CA1kBJjW.js",
+      "index.html",
+      "_WaDropdown-B3PP01Zj.js",
+      "_priorities-HdQql_0E.js",
+      "_runtime-core.esm-bundler-xAaSbtBc.js",
+      "_core-Cq5Csd4-.js",
+      "_textToHtmlWithLinks-TyUfuO2y.js",
+      "_sanitizer-BZjfWcgo.js"
+    ]
+  },
+  "_TaskListLayout-ILKmklSN.js": {
+    "file": "assets/TaskListLayout-ILKmklSN.js",
+    "name": "TaskListLayout",
+    "imports": [
+      "_plugin-vue-export-helper-BDNMzG2s.js",
+      "_lodash-CA1kBJjW.js",
+      "index.html",
+      "_WaDropdown-B3PP01Zj.js",
+      "_priorities-HdQql_0E.js",
+      "_runtime-core.esm-bundler-xAaSbtBc.js",
+      "_textToHtmlWithLinks-TyUfuO2y.js",
+      "_li-yeme-whisky@2x-KYP50YQp.js",
+      "_ModalWrapperBody-CoNk4AiX.js"
+    ]
+  },
+  "_WaDropdown-B3PP01Zj.js": {
+    "file": "assets/WaDropdown-B3PP01Zj.js",
+    "name": "WaDropdown",
+    "imports": [
+      "_plugin-vue-export-helper-BDNMzG2s.js",
+      "_lodash-CA1kBJjW.js",
+      "_priorities-HdQql_0E.js",
+      "_esm-DZaZIQHl.js",
+      "_runtime-core.esm-bundler-xAaSbtBc.js",
+      "_core-Cq5Csd4-.js"
+    ],
+    "dynamicImports": [
+      "src/components/TaskInfo.vue",
+      "_ListView-C64ELovA.js",
+      "src/layouts/SidebarLists.vue",
+      "src/pages/FiltersView.vue",
+      "src/pages/UpnextView.vue",
+      "src/pages/PriorityView.vue",
+      "src/pages/DueView.vue",
+      "src/pages/FiltersViewNearby.vue",
+      "src/pages/FiltersViewСompleted.vue",
+      "src/pages/FiltersViewShop.vue",
+      "src/pages/FiltersViewTasks.vue",
+      "src/pages/CriteriaView.vue",
+      "src/pages/SingleTask.vue",
+      "src/pages/UsersView.vue",
+      "src/pages/ListViewUser.vue",
+      "src/layouts/SidebarUser.vue",
+      "src/pages/CalendarView.vue",
+      "src/pages/map/MapView.vue",
+      "src/pages/SearchView.vue",
+      "src/pages/BetaView.vue",
+      "src/widgets/AppWidgetView.vue",
+      "src/widgets/DashboardWidgetView.vue",
+      "src/pages/NotFoundPage.vue"
+    ],
+    "assets": [
+      "assets/img/pl-dummy-logo.webp"
+    ]
+  },
+  "_core-Cq5Csd4-.js": {
+    "file": "assets/core-Cq5Csd4-.js",
+    "name": "core",
+    "imports": [
+      "_runtime-core.esm-bundler-xAaSbtBc.js"
+    ]
+  },
+  "_createListEmitter-BMaHGITK.js": {
+    "file": "assets/createListEmitter-BMaHGITK.js",
+    "name": "createListEmitter",
+    "imports": [
+      "_lodash-CA1kBJjW.js",
+      "index.html",
+      "_WaDropdown-B3PP01Zj.js",
+      "_priorities-HdQql_0E.js",
+      "_runtime-core.esm-bundler-xAaSbtBc.js",
+      "_core-Cq5Csd4-.js",
+      "_li-yeme-whisky@2x-KYP50YQp.js",
+      "_SearchForm-CO7UyeU3.js",
+      "_SortableList-niZOAgeE.js",
+      "_ContenteditableBlock-BVebOB67.js",
+      "_ContenteditableBlockClickable-BW846lBe.js"
+    ],
+    "assets": [
+      "assets/img/pl-list-icons-mix.webp",
+      "assets/img/pl-dummy-logo.webp"
+    ]
+  },
+  "_esm-DZaZIQHl.js": {
+    "file": "assets/esm-DZaZIQHl.js",
+    "name": "esm"
+  },
+  "_iframeWidget-CXSBD853.js": {
+    "file": "assets/iframeWidget-CXSBD853.js",
+    "name": "iframeWidget",
+    "imports": [
+      "_runtime-core.esm-bundler-xAaSbtBc.js",
+      "_core-Cq5Csd4-.js"
+    ]
+  },
+  "_li-yeme-whisky@2x-KYP50YQp.js": {
+    "file": "assets/li-yeme-whisky@2x-KYP50YQp.js",
+    "name": "li-yeme-whisky@2x",
+    "assets": [
+      "assets/img/li-a-to-b@2x.png",
+      "assets/img/li-abc@2x.png",
+      "assets/img/li-achtung@2x.png",
+      "assets/img/li-alarm@2x.png",
+      "assets/img/li-ambulance@2x.png",
+      "assets/img/li-antlers@2x.png",
+      "assets/img/li-award@2x.png",
+      "assets/img/li-baby-foot@2x.png",
+      "assets/img/li-baby-walker@2x.png",
+      "assets/img/li-babytoy@2x.png",
+      "assets/img/li-bag@2x.png",
+      "assets/img/li-barcode@2x.png",
+      "assets/img/li-bath@2x.png",
+      "assets/img/li-bee@2x.png",
+      "assets/img/li-beer@2x.png",
+      "assets/img/li-bell@2x.png",
+      "assets/img/li-billiard@2x.png",
+      "assets/img/li-bird-nest@2x.png",
+      "assets/img/li-blackberries@2x.png",
+      "assets/img/li-blackboard@2x.png",
+      "assets/img/li-blood@2x.png",
+      "assets/img/li-bomb@2x.png",
+      "assets/img/li-bone@2x.png",
+      "assets/img/li-boy-child@2x.png",
+      "assets/img/li-brush@2x.png",
+      "assets/img/li-bucket@2x.png",
+      "assets/img/li-bug-fixing@2x.png",
+      "assets/img/li-butterfly@2x.png",
+      "assets/img/li-cabin@2x.png",
+      "assets/img/li-cable@2x.png",
+      "assets/img/li-cactus@2x.png",
+      "assets/img/li-calcuator@2x.png",
+      "assets/img/li-camber-jumping@2x.png",
+      "assets/img/li-camera@2x.png",
+      "assets/img/li-campfire@2x.png",
+      "assets/img/li-cart@2x.png",
+      "assets/img/li-casino@2x.png",
+      "assets/img/li-cat@2x.png",
+      "assets/img/li-chair@2x.png",
+      "assets/img/li-champagne@2x.png",
+      "assets/img/li-checkmark@2x.png",
+      "assets/img/li-chinese-lantern@2x.png",
+      "assets/img/li-christmas-sack@2x.png",
+      "assets/img/li-chronometer@2x.png",
+      "assets/img/li-church@2x.png",
+      "assets/img/li-cleaning@2x.png",
+      "assets/img/li-clock@2x.png",
+      "assets/img/li-coins@2x.png",
+      "assets/img/li-collar@2x.png",
+      "assets/img/li-color-palette@2x.png",
+      "assets/img/li-color-wheel@2x.png",
+      "assets/img/li-compass@2x.png",
+      "assets/img/li-construction@2x.png",
+      "assets/img/li-crawler@2x.png",
+      "assets/img/li-cuttlefish@2x.png",
+      "assets/img/li-david-star@2x.png",
+      "assets/img/li-delivery@2x.png",
+      "assets/img/li-desk-printer@2x.png",
+      "assets/img/li-diagram@2x.png",
+      "assets/img/li-diving@2x.png",
+      "assets/img/li-doctor@2x.png",
+      "assets/img/li-dog@2x.png",
+      "assets/img/li-domain-registration@2x.png",
+      "assets/img/li-download@2x.png",
+      "assets/img/li-easter-bunny@2x.png",
+      "assets/img/li-easter-egg@2x.png",
+      "assets/img/li-egg@2x.png",
+      "assets/img/li-experiment-results@2x.png",
+      "assets/img/li-farm-sheep@2x.png",
+      "assets/img/li-first-prize-medal@2x.png",
+      "assets/img/li-fish@2x.png",
+      "assets/img/li-fishing@2x.png",
+      "assets/img/li-flag-abkhazia@2x.png",
+      "assets/img/li-flag-algeria@2x.png",
+      "assets/img/li-flag-argentina@2x.png",
+      "assets/img/li-flag-australia@2x.png",
+      "assets/img/li-flag-belarus@2x.png",
+      "assets/img/li-flag-brazil@2x.png",
+      "assets/img/li-flag-cameroon@2x.png",
+      "assets/img/li-flag-canada@2x.png",
+      "assets/img/li-flag-chile@2x.png",
+      "assets/img/li-flag-china@2x.png",
+      "assets/img/li-flag-costa-rica@2x.png",
+      "assets/img/li-flag-croatia@2x.png",
+      "assets/img/li-flag-cuba@2x.png",
+      "assets/img/li-flag-cyprus@2x.png",
+      "assets/img/li-flag-czech-republic@2x.png",
+      "assets/img/li-flag-denmark@2x.png",
+      "assets/img/li-flag-egypt@2x.png",
+      "assets/img/li-flag-eu@2x.png",
+      "assets/img/li-flag-france@2x.png",
+      "assets/img/li-flag-georgia@2x.png",
+      "assets/img/li-flag-greece@2x.png",
+      "assets/img/li-flag-hongkong@2x.png",
+      "assets/img/li-flag-iceland@2x.png",
+      "assets/img/li-flag-india@2x.png",
+      "assets/img/li-flag-israel@2x.png",
+      "assets/img/li-flag-jamaica@2x.png",
+      "assets/img/li-flag-japan@2x.png",
+      "assets/img/li-flag-kenya@2x.png",
+      "assets/img/li-flag-korea@2x.png",
+      "assets/img/li-flag-luxembourg@2x.png",
+      "assets/img/li-flag-mexico@2x.png",
+      "assets/img/li-flag-moldova@2x.png",
+      "assets/img/li-flag-morocco@2x.png",
+      "assets/img/li-flag-namibia@2x.png",
+      "assets/img/li-flag-nepal@2x.png",
+      "assets/img/li-flag-netherlands@2x.png",
+      "assets/img/li-flag-new-zealand@2x.png",
+      "assets/img/li-flag-niger@2x.png",
+      "assets/img/li-flag-north-korea@2x.png",
+      "assets/img/li-flag-norway@2x.png",
+      "assets/img/li-flag-palestine@2x.png",
+      "assets/img/li-flag-panama@2x.png",
+      "assets/img/li-flag-peru@2x.png",
+      "assets/img/li-flag-philippines@2x.png",
+      "assets/img/li-flag-pirate@2x.png",
+      "assets/img/li-flag-portugal@2x.png",
+      "assets/img/li-flag-scotland@2x.png",
+      "assets/img/li-flag-slovakia@2x.png",
+      "assets/img/li-flag-slovenia@2x.png",
+      "assets/img/li-flag-south-africa@2x.png",
+      "assets/img/li-flag-sudan@2x.png",
+      "assets/img/li-flag-suriname@2x.png",
+      "assets/img/li-flag-sweden@2x.png",
+      "assets/img/li-flag-thailand@2x.png",
+      "assets/img/li-flag-turkey@2x.png",
+      "assets/img/li-flag-uk@2x.png",
+      "assets/img/li-flag-ukraine@2x.png",
+      "assets/img/li-flag-uruguay@2x.png",
+      "assets/img/li-flag-usa@2x.png",
+      "assets/img/li-flag-venezuela@2x.png",
+      "assets/img/li-flag-vietnam@2x.png",
+      "assets/img/li-flag1@2x.png",
+      "assets/img/li-folders@2x.png",
+      "assets/img/li-football@2x.png",
+      "assets/img/li-gift@2x.png",
+      "assets/img/li-glasses@2x.png",
+      "assets/img/li-globe@2x.png",
+      "assets/img/li-glove@2x.png",
+      "assets/img/li-grocery@2x.png",
+      "assets/img/li-gym@2x.png",
+      "assets/img/li-hamburger@2x.png",
+      "assets/img/li-hammok@2x.png",
+      "assets/img/li-hanukkah@2x.png",
+      "assets/img/li-helicopter@2x.png",
+      "assets/img/li-home@2x.png",
+      "assets/img/li-hotdog@2x.png",
+      "assets/img/li-idea@2x.png",
+      "assets/img/li-invoice@2x.png",
+      "assets/img/li-jungle@2x.png",
+      "assets/img/li-ladybug@2x.png",
+      "assets/img/li-leaf@2x.png",
+      "assets/img/li-lion@2x.png",
+      "assets/img/li-lobster@2x.png",
+      "assets/img/li-lock@2x.png",
+      "assets/img/li-longboard@2x.png",
+      "assets/img/li-loudspeaker@2x.png",
+      "assets/img/li-luck@2x.png",
+      "assets/img/li-macaroons@2x.png",
+      "assets/img/li-magnet@2x.png",
+      "assets/img/li-medicine@2x.png",
+      "assets/img/li-mission@2x.png",
+      "assets/img/li-money@2x.png",
+      "assets/img/li-monkey@2x.png",
+      "assets/img/li-motorcycle@2x.png",
+      "assets/img/li-notes1@2x.png",
+      "assets/img/li-nuclear@2x.png",
+      "assets/img/li-octopus@2x.png",
+      "assets/img/li-olympic-rings@2x.png",
+      "assets/img/li-om@2x.png",
+      "assets/img/li-orange@2x.png",
+      "assets/img/li-paid-alarmclock@2x.png",
+      "assets/img/li-paid-animal@2x.png",
+      "assets/img/li-paid-apple@2x.png",
+      "assets/img/li-paid-avocado@2x.png",
+      "assets/img/li-paid-baby@2x.png",
+      "assets/img/li-paid-baloons@2x.png",
+      "assets/img/li-paid-banana@2x.png",
+      "assets/img/li-paid-baseball@2x.png",
+      "assets/img/li-paid-basketball@2x.png",
+      "assets/img/li-paid-bear@2x.png",
+      "assets/img/li-paid-bicycle@2x.png",
+      "assets/img/li-paid-birthday@2x.png",
+      "assets/img/li-paid-bread@2x.png",
+      "assets/img/li-paid-candy@2x.png",
+      "assets/img/li-paid-carrot@2x.png",
+      "assets/img/li-paid-cherry@2x.png",
+      "assets/img/li-paid-chicken@2x.png",
+      "assets/img/li-paid-christmas@2x.png",
+      "assets/img/li-paid-cocktail@2x.png",
+      "assets/img/li-paid-coffee@2x.png",
+      "assets/img/li-paid-corn@2x.png",
+      "assets/img/li-paid-diamond@2x.png",
+      "assets/img/li-paid-discount@2x.png",
+      "assets/img/li-paid-dj@2x.png",
+      "assets/img/li-paid-dogcat@2x.png",
+      "assets/img/li-paid-eggs@2x.png",
+      "assets/img/li-paid-fire-ext@2x.png",
+      "assets/img/li-paid-flower@2x.png",
+      "assets/img/li-paid-gamecontroller@2x.png",
+      "assets/img/li-paid-globe@2x.png",
+      "assets/img/li-paid-icecream@2x.png",
+      "assets/img/li-paid-klmn@2x.png",
+      "assets/img/li-paid-map@2x.png",
+      "assets/img/li-paid-microphone@2x.png",
+      "assets/img/li-paid-newspaper@2x.png",
+      "assets/img/li-paid-notepad@2x.png",
+      "assets/img/li-paid-pear@2x.png",
+      "assets/img/li-paid-pizza@2x.png",
+      "assets/img/li-paid-rain@2x.png",
+      "assets/img/li-paid-safebox@2x.png",
+      "assets/img/li-paid-scissors@2x.png",
+      "assets/img/li-paid-snow@2x.png",
+      "assets/img/li-paid-spaghetti@2x.png",
+      "assets/img/li-paid-starbucks@2x.png",
+      "assets/img/li-paid-steak@2x.png",
+      "assets/img/li-paid-sun@2x.png",
+      "assets/img/li-paid-tie@2x.png",
+      "assets/img/li-paid-trash@2x.png",
+      "assets/img/li-paid-ufo@2x.png",
+      "assets/img/li-paid-umbrella@2x.png",
+      "assets/img/li-paid-wine-glass@2x.png",
+      "assets/img/li-paid2-arrows@2x.png",
+      "assets/img/li-paid2-boxes@2x.png",
+      "assets/img/li-paid2-camera@2x.png",
+      "assets/img/li-paid2-car@2x.png",
+      "assets/img/li-paid2-chat@2x.png",
+      "assets/img/li-paid2-checkmark@2x.png",
+      "assets/img/li-paid2-christmas-ball@2x.png",
+      "assets/img/li-paid2-christmas-stocking@2x.png",
+      "assets/img/li-paid2-clock@2x.png",
+      "assets/img/li-paid2-crab@2x.png",
+      "assets/img/li-paid2-gingerbread@2x.png",
+      "assets/img/li-paid2-guitar@2x.png",
+      "assets/img/li-paid2-hotspot@2x.png",
+      "assets/img/li-paid2-location@2x.png",
+      "assets/img/li-paid2-mistletoe@2x.png",
+      "assets/img/li-paid2-santa@2x.png",
+      "assets/img/li-paid2-snowman@2x.png",
+      "assets/img/li-paid2-tent@2x.png",
+      "assets/img/li-paid3-goal@2x.png",
+      "assets/img/li-paid3-userpic-hipster@2x.png",
+      "assets/img/li-paid3-userpic-lady@2x.png",
+      "assets/img/li-paid3-userpic-man@2x.png",
+      "assets/img/li-paid3-userpic-steve@2x.png",
+      "assets/img/li-paid4-christmas-calendar@2x.png",
+      "assets/img/li-paid4-christmas-candy@2x.png",
+      "assets/img/li-paid4-christmas-cocktail@2x.png",
+      "assets/img/li-paid4-christmas-giftbox2@2x.png",
+      "assets/img/li-paid4-christmas-giftbox@2x.png",
+      "assets/img/li-paid4-christmas-gingerbread@2x.png",
+      "assets/img/li-paid4-christmas-glass@2x.png",
+      "assets/img/li-paid4-christmas-globes@2x.png",
+      "assets/img/li-paid4-christmas-gloves@2x.png",
+      "assets/img/li-paid4-christmas-house@2x.png",
+      "assets/img/li-paid4-christmas-reindeer@2x.png",
+      "assets/img/li-paid4-christmas-sale@2x.png",
+      "assets/img/li-paid4-christmas-santa@2x.png",
+      "assets/img/li-paid4-christmas-sleigh@2x.png",
+      "assets/img/li-paid4-christmas-snowman@2x.png",
+      "assets/img/li-paid4-christmas-tree@2x.png",
+      "assets/img/li-palette@2x.png",
+      "assets/img/li-panda@2x.png",
+      "assets/img/li-parrot@2x.png",
+      "assets/img/li-passport@2x.png",
+      "assets/img/li-pencil@2x.png",
+      "assets/img/li-people@2x.png",
+      "assets/img/li-pet-fish@2x.png",
+      "assets/img/li-petard@2x.png",
+      "assets/img/li-phone@2x.png",
+      "assets/img/li-piggy@2x.png",
+      "assets/img/li-pin-code@2x.png",
+      "assets/img/li-pineapple@2x.png",
+      "assets/img/li-pl201811-atom@2x.png",
+      "assets/img/li-pl201811-bird@2x.png",
+      "assets/img/li-pl201811-books@2x.png",
+      "assets/img/li-pl201811-bot@2x.png",
+      "assets/img/li-pl201811-camera@2x.png",
+      "assets/img/li-pl201811-clothing@2x.png",
+      "assets/img/li-pl201811-cmyk@2x.png",
+      "assets/img/li-pl201811-crypto@2x.png",
+      "assets/img/li-pl201811-dontdisturb@2x.png",
+      "assets/img/li-pl201811-earthlove@2x.png",
+      "assets/img/li-pl201811-ecoplant@2x.png",
+      "assets/img/li-pl201811-fox@2x.png",
+      "assets/img/li-pl201811-free@2x.png",
+      "assets/img/li-pl201811-hanger@2x.png",
+      "assets/img/li-pl201811-herbal@2x.png",
+      "assets/img/li-pl201811-hotel@2x.png",
+      "assets/img/li-pl201811-invitations@2x.png",
+      "assets/img/li-pl201811-locations@2x.png",
+      "assets/img/li-pl201811-mouse@2x.png",
+      "assets/img/li-pl201811-navigator@2x.png",
+      "assets/img/li-pl201811-network@2x.png",
+      "assets/img/li-pl201811-online@2x.png",
+      "assets/img/li-pl201811-parking@2x.png",
+      "assets/img/li-pl201811-penguin@2x.png",
+      "assets/img/li-pl201811-pills@2x.png",
+      "assets/img/li-pl201811-plug@2x.png",
+      "assets/img/li-pl201811-pool@2x.png",
+      "assets/img/li-pl201811-preza@2x.png",
+      "assets/img/li-pl201811-pumpkin@2x.png",
+      "assets/img/li-pl201811-rgb@2x.png",
+      "assets/img/li-pl201811-samples@2x.png",
+      "assets/img/li-pl201811-school@2x.png",
+      "assets/img/li-pl201811-shoe@2x.png",
+      "assets/img/li-pl201811-shovel@2x.png",
+      "assets/img/li-pl201811-sofa@2x.png",
+      "assets/img/li-pl201811-solar@2x.png",
+      "assets/img/li-pl201811-speaker@2x.png",
+      "assets/img/li-pl201811-theatre@2x.png",
+      "assets/img/li-pl201811-toolkit@2x.png",
+      "assets/img/li-pl201811-trafficlight@2x.png",
+      "assets/img/li-pl201811-treadmill@2x.png",
+      "assets/img/li-pl201811-wateringcan@2x.png",
+      "assets/img/li-pl201811-wheelbarrow@2x.png",
+      "assets/img/li-pl201812-candle@2x.png",
+      "assets/img/li-pl201812-cupcake@2x.png",
+      "assets/img/li-pl201812-earbuds@2x.png",
+      "assets/img/li-pl201812-giftcard@2x.png",
+      "assets/img/li-pl201812-glove@2x.png",
+      "assets/img/li-pl201812-hat@2x.png",
+      "assets/img/li-pl201812-jacket@2x.png",
+      "assets/img/li-pl201812-ornament@2x.png",
+      "assets/img/li-pl201812-risingstar@2x.png",
+      "assets/img/li-pl201812-skilift@2x.png",
+      "assets/img/li-pl201812-snowboard@2x.png",
+      "assets/img/li-pl201812-snowcloud@2x.png",
+      "assets/img/li-pl201812-snowglobe@2x.png",
+      "assets/img/li-pl201812-snowledge@2x.png",
+      "assets/img/li-pl201812-snowmountains@2x.png",
+      "assets/img/li-pl201812-snowshovel@2x.png",
+      "assets/img/li-pl201812-snowskates@2x.png",
+      "assets/img/li-pl201812-snowvillage@2x.png",
+      "assets/img/li-pl201812-snowwindow@2x.png",
+      "assets/img/li-pl201813-1312@2x.png",
+      "assets/img/li-pl201813-pocketlists@2x.png",
+      "assets/img/li-pl201813-shopscript@2x.png",
+      "assets/img/li-pl201813-webasyst@2x.png",
+      "assets/img/li-plane@2x.png",
+      "assets/img/li-plant@2x.png",
+      "assets/img/li-pointer@2x.png",
+      "assets/img/li-poop@2x.png",
+      "assets/img/li-post-box@2x.png",
+      "assets/img/li-power1@2x.png",
+      "assets/img/li-presentation@2x.png",
+      "assets/img/li-puzzle@2x.png",
+      "assets/img/li-rafting@2x.png",
+      "assets/img/li-ramadan@2x.png",
+      "assets/img/li-recipe@2x.png",
+      "assets/img/li-route@2x.png",
+      "assets/img/li-ruler-pencil@2x.png",
+      "assets/img/li-sale@2x.png",
+      "assets/img/li-scanner@2x.png",
+      "assets/img/li-school-backpack@2x.png",
+      "assets/img/li-schoolbus@2x.png",
+      "assets/img/li-search-location@2x.png",
+      "assets/img/li-service@2x.png",
+      "assets/img/li-shinto@2x.png",
+      "assets/img/li-ship@2x.png",
+      "assets/img/li-shop@2x.png",
+      "assets/img/li-shopping2@2x.png",
+      "assets/img/li-shower@2x.png",
+      "assets/img/li-shrimp@2x.png",
+      "assets/img/li-shuttlecock@2x.png",
+      "assets/img/li-signs@2x.png",
+      "assets/img/li-ski@2x.png",
+      "assets/img/li-soska@2x.png",
+      "assets/img/li-speedometer@2x.png",
+      "assets/img/li-star@2x.png",
+      "assets/img/li-steak@2x.png",
+      "assets/img/li-steering-wheel@2x.png",
+      "assets/img/li-stethoscope@2x.png",
+      "assets/img/li-strawberry@2x.png",
+      "assets/img/li-strong-heart@2x.png",
+      "assets/img/li-team@2x.png",
+      "assets/img/li-telescope@2x.png",
+      "assets/img/li-tomato@2x.png",
+      "assets/img/li-tooth@2x.png",
+      "assets/img/li-toy-bibiaa@2x.png",
+      "assets/img/li-toy-octopus@2x.png",
+      "assets/img/li-toy-pyramid@2x.png",
+      "assets/img/li-toy-ship@2x.png",
+      "assets/img/li-train-baby@2x.png",
+      "assets/img/li-train@2x.png",
+      "assets/img/li-translate@2x.png",
+      "assets/img/li-travel@2x.png",
+      "assets/img/li-trekking@2x.png",
+      "assets/img/li-turtle@2x.png",
+      "assets/img/li-vacations@2x.png",
+      "assets/img/li-water@2x.png",
+      "assets/img/li-wedding@2x.png",
+      "assets/img/li-work@2x.png"
+    ]
+  },
+  "_lodash-CA1kBJjW.js": {
+    "file": "assets/lodash-CA1kBJjW.js",
+    "name": "lodash",
+    "imports": [
+      "_runtime-core.esm-bundler-xAaSbtBc.js",
+      "_core-Cq5Csd4-.js"
+    ],
+    "dynamicImports": [
+      "src/components/AlertAuthHeader.vue"
+    ]
+  },
+  "_plugin-vue-export-helper-BDNMzG2s.js": {
+    "file": "assets/plugin-vue-export-helper-BDNMzG2s.js",
+    "name": "_plugin-vue_export-helper"
+  },
+  "_priorities-HdQql_0E.js": {
+    "file": "assets/priorities-HdQql_0E.js",
+    "name": "priorities",
+    "imports": [
+      "_lodash-CA1kBJjW.js",
+      "_runtime-core.esm-bundler-xAaSbtBc.js",
+      "_core-Cq5Csd4-.js"
+    ]
+  },
+  "_runtime-core.esm-bundler-xAaSbtBc.js": {
+    "file": "assets/runtime-core.esm-bundler-xAaSbtBc.js",
+    "name": "runtime-core.esm-bundler"
+  },
+  "_sanitizer-BZjfWcgo.js": {
+    "file": "assets/sanitizer-BZjfWcgo.js",
+    "name": "sanitizer"
+  },
+  "_textToHtmlWithLinks-TyUfuO2y.js": {
+    "file": "assets/textToHtmlWithLinks-TyUfuO2y.js",
+    "name": "textToHtmlWithLinks",
+    "imports": [
+      "_lodash-CA1kBJjW.js",
+      "index.html",
+      "_WaDropdown-B3PP01Zj.js",
+      "_priorities-HdQql_0E.js",
+      "_runtime-core.esm-bundler-xAaSbtBc.js",
+      "_core-Cq5Csd4-.js",
+      "_ModalWrapperBody-CoNk4AiX.js"
+    ],
+    "assets": [
+      "assets/img/shop.svg"
+    ]
+  },
+  "index.html": {
+    "file": "assets/index-C5K2Hvbd.js",
+    "name": "index",
+    "src": "index.html",
+    "isEntry": true,
+    "imports": [
+      "_plugin-vue-export-helper-BDNMzG2s.js",
+      "_lodash-CA1kBJjW.js",
+      "_WaDropdown-B3PP01Zj.js",
+      "_priorities-HdQql_0E.js",
+      "_runtime-core.esm-bundler-xAaSbtBc.js",
+      "_core-Cq5Csd4-.js"
+    ],
+    "assets": [
+      "assets/img/item-bullets-priority-fire.gif"
+    ],
+    "css": [
+      "assets/style-CJ3r69tG.css"
+    ]
+  },
+  "src/assets/apps/shop.svg": {
+    "file": "assets/img/shop.svg",
+    "src": "src/assets/apps/shop.svg"
+  },
+  "src/assets/img/item-bullets-priority-fire.gif": {
+    "file": "assets/img/item-bullets-priority-fire.gif",
+    "src": "src/assets/img/item-bullets-priority-fire.gif"
+  },
+  "src/assets/img/pl-dummy-logo.webp": {
+    "file": "assets/img/pl-dummy-logo.webp",
+    "src": "src/assets/img/pl-dummy-logo.webp"
+  },
+  "src/assets/img/pl-list-icons-mix.webp": {
+    "file": "assets/img/pl-list-icons-mix.webp",
+    "src": "src/assets/img/pl-list-icons-mix.webp"
+  },
+  "src/assets/listicons/li-a-to-b@2x.png": {
+    "file": "assets/img/li-a-to-b@2x.png",
+    "src": "src/assets/listicons/li-a-to-b@2x.png"
+  },
+  "src/assets/listicons/li-abc@2x.png": {
+    "file": "assets/img/li-abc@2x.png",
+    "src": "src/assets/listicons/li-abc@2x.png"
+  },
+  "src/assets/listicons/li-achtung@2x.png": {
+    "file": "assets/img/li-achtung@2x.png",
+    "src": "src/assets/listicons/li-achtung@2x.png"
+  },
+  "src/assets/listicons/li-alarm@2x.png": {
+    "file": "assets/img/li-alarm@2x.png",
+    "src": "src/assets/listicons/li-alarm@2x.png"
+  },
+  "src/assets/listicons/li-ambulance@2x.png": {
+    "file": "assets/img/li-ambulance@2x.png",
+    "src": "src/assets/listicons/li-ambulance@2x.png"
+  },
+  "src/assets/listicons/li-antlers@2x.png": {
+    "file": "assets/img/li-antlers@2x.png",
+    "src": "src/assets/listicons/li-antlers@2x.png"
+  },
+  "src/assets/listicons/li-award@2x.png": {
+    "file": "assets/img/li-award@2x.png",
+    "src": "src/assets/listicons/li-award@2x.png"
+  },
+  "src/assets/listicons/li-baby-foot@2x.png": {
+    "file": "assets/img/li-baby-foot@2x.png",
+    "src": "src/assets/listicons/li-baby-foot@2x.png"
+  },
+  "src/assets/listicons/li-baby-walker@2x.png": {
+    "file": "assets/img/li-baby-walker@2x.png",
+    "src": "src/assets/listicons/li-baby-walker@2x.png"
+  },
+  "src/assets/listicons/li-babytoy@2x.png": {
+    "file": "assets/img/li-babytoy@2x.png",
+    "src": "src/assets/listicons/li-babytoy@2x.png"
+  },
+  "src/assets/listicons/li-bag@2x.png": {
+    "file": "assets/img/li-bag@2x.png",
+    "src": "src/assets/listicons/li-bag@2x.png"
+  },
+  "src/assets/listicons/li-barcode@2x.png": {
+    "file": "assets/img/li-barcode@2x.png",
+    "src": "src/assets/listicons/li-barcode@2x.png"
+  },
+  "src/assets/listicons/li-bath@2x.png": {
+    "file": "assets/img/li-bath@2x.png",
+    "src": "src/assets/listicons/li-bath@2x.png"
+  },
+  "src/assets/listicons/li-bee@2x.png": {
+    "file": "assets/img/li-bee@2x.png",
+    "src": "src/assets/listicons/li-bee@2x.png"
+  },
+  "src/assets/listicons/li-beer@2x.png": {
+    "file": "assets/img/li-beer@2x.png",
+    "src": "src/assets/listicons/li-beer@2x.png"
+  },
+  "src/assets/listicons/li-bell@2x.png": {
+    "file": "assets/img/li-bell@2x.png",
+    "src": "src/assets/listicons/li-bell@2x.png"
+  },
+  "src/assets/listicons/li-billiard@2x.png": {
+    "file": "assets/img/li-billiard@2x.png",
+    "src": "src/assets/listicons/li-billiard@2x.png"
+  },
+  "src/assets/listicons/li-bird-nest@2x.png": {
+    "file": "assets/img/li-bird-nest@2x.png",
+    "src": "src/assets/listicons/li-bird-nest@2x.png"
+  },
+  "src/assets/listicons/li-blackberries@2x.png": {
+    "file": "assets/img/li-blackberries@2x.png",
+    "src": "src/assets/listicons/li-blackberries@2x.png"
+  },
+  "src/assets/listicons/li-blackboard@2x.png": {
+    "file": "assets/img/li-blackboard@2x.png",
+    "src": "src/assets/listicons/li-blackboard@2x.png"
+  },
+  "src/assets/listicons/li-blood@2x.png": {
+    "file": "assets/img/li-blood@2x.png",
+    "src": "src/assets/listicons/li-blood@2x.png"
+  },
+  "src/assets/listicons/li-bomb@2x.png": {
+    "file": "assets/img/li-bomb@2x.png",
+    "src": "src/assets/listicons/li-bomb@2x.png"
+  },
+  "src/assets/listicons/li-bone@2x.png": {
+    "file": "assets/img/li-bone@2x.png",
+    "src": "src/assets/listicons/li-bone@2x.png"
+  },
+  "src/assets/listicons/li-boy-child@2x.png": {
+    "file": "assets/img/li-boy-child@2x.png",
+    "src": "src/assets/listicons/li-boy-child@2x.png"
+  },
+  "src/assets/listicons/li-brush@2x.png": {
+    "file": "assets/img/li-brush@2x.png",
+    "src": "src/assets/listicons/li-brush@2x.png"
+  },
+  "src/assets/listicons/li-bucket@2x.png": {
+    "file": "assets/img/li-bucket@2x.png",
+    "src": "src/assets/listicons/li-bucket@2x.png"
+  },
+  "src/assets/listicons/li-bug-fixing@2x.png": {
+    "file": "assets/img/li-bug-fixing@2x.png",
+    "src": "src/assets/listicons/li-bug-fixing@2x.png"
+  },
+  "src/assets/listicons/li-butterfly@2x.png": {
+    "file": "assets/img/li-butterfly@2x.png",
+    "src": "src/assets/listicons/li-butterfly@2x.png"
+  },
+  "src/assets/listicons/li-cabin@2x.png": {
+    "file": "assets/img/li-cabin@2x.png",
+    "src": "src/assets/listicons/li-cabin@2x.png"
+  },
+  "src/assets/listicons/li-cable@2x.png": {
+    "file": "assets/img/li-cable@2x.png",
+    "src": "src/assets/listicons/li-cable@2x.png"
+  },
+  "src/assets/listicons/li-cactus@2x.png": {
+    "file": "assets/img/li-cactus@2x.png",
+    "src": "src/assets/listicons/li-cactus@2x.png"
+  },
+  "src/assets/listicons/li-calcuator@2x.png": {
+    "file": "assets/img/li-calcuator@2x.png",
+    "src": "src/assets/listicons/li-calcuator@2x.png"
+  },
+  "src/assets/listicons/li-camber-jumping@2x.png": {
+    "file": "assets/img/li-camber-jumping@2x.png",
+    "src": "src/assets/listicons/li-camber-jumping@2x.png"
+  },
+  "src/assets/listicons/li-camera@2x.png": {
+    "file": "assets/img/li-camera@2x.png",
+    "src": "src/assets/listicons/li-camera@2x.png"
+  },
+  "src/assets/listicons/li-campfire@2x.png": {
+    "file": "assets/img/li-campfire@2x.png",
+    "src": "src/assets/listicons/li-campfire@2x.png"
+  },
+  "src/assets/listicons/li-cart@2x.png": {
+    "file": "assets/img/li-cart@2x.png",
+    "src": "src/assets/listicons/li-cart@2x.png"
+  },
+  "src/assets/listicons/li-casino@2x.png": {
+    "file": "assets/img/li-casino@2x.png",
+    "src": "src/assets/listicons/li-casino@2x.png"
+  },
+  "src/assets/listicons/li-cat@2x.png": {
+    "file": "assets/img/li-cat@2x.png",
+    "src": "src/assets/listicons/li-cat@2x.png"
+  },
+  "src/assets/listicons/li-chair@2x.png": {
+    "file": "assets/img/li-chair@2x.png",
+    "src": "src/assets/listicons/li-chair@2x.png"
+  },
+  "src/assets/listicons/li-champagne@2x.png": {
+    "file": "assets/img/li-champagne@2x.png",
+    "src": "src/assets/listicons/li-champagne@2x.png"
+  },
+  "src/assets/listicons/li-checkmark@2x.png": {
+    "file": "assets/img/li-checkmark@2x.png",
+    "src": "src/assets/listicons/li-checkmark@2x.png"
+  },
+  "src/assets/listicons/li-chinese-lantern@2x.png": {
+    "file": "assets/img/li-chinese-lantern@2x.png",
+    "src": "src/assets/listicons/li-chinese-lantern@2x.png"
+  },
+  "src/assets/listicons/li-christmas-sack@2x.png": {
+    "file": "assets/img/li-christmas-sack@2x.png",
+    "src": "src/assets/listicons/li-christmas-sack@2x.png"
+  },
+  "src/assets/listicons/li-chronometer@2x.png": {
+    "file": "assets/img/li-chronometer@2x.png",
+    "src": "src/assets/listicons/li-chronometer@2x.png"
+  },
+  "src/assets/listicons/li-church@2x.png": {
+    "file": "assets/img/li-church@2x.png",
+    "src": "src/assets/listicons/li-church@2x.png"
+  },
+  "src/assets/listicons/li-cleaning@2x.png": {
+    "file": "assets/img/li-cleaning@2x.png",
+    "src": "src/assets/listicons/li-cleaning@2x.png"
+  },
+  "src/assets/listicons/li-clock@2x.png": {
+    "file": "assets/img/li-clock@2x.png",
+    "src": "src/assets/listicons/li-clock@2x.png"
+  },
+  "src/assets/listicons/li-coins@2x.png": {
+    "file": "assets/img/li-coins@2x.png",
+    "src": "src/assets/listicons/li-coins@2x.png"
+  },
+  "src/assets/listicons/li-collar@2x.png": {
+    "file": "assets/img/li-collar@2x.png",
+    "src": "src/assets/listicons/li-collar@2x.png"
+  },
+  "src/assets/listicons/li-color-palette@2x.png": {
+    "file": "assets/img/li-color-palette@2x.png",
+    "src": "src/assets/listicons/li-color-palette@2x.png"
+  },
+  "src/assets/listicons/li-color-wheel@2x.png": {
+    "file": "assets/img/li-color-wheel@2x.png",
+    "src": "src/assets/listicons/li-color-wheel@2x.png"
+  },
+  "src/assets/listicons/li-compass@2x.png": {
+    "file": "assets/img/li-compass@2x.png",
+    "src": "src/assets/listicons/li-compass@2x.png"
+  },
+  "src/assets/listicons/li-construction@2x.png": {
+    "file": "assets/img/li-construction@2x.png",
+    "src": "src/assets/listicons/li-construction@2x.png"
+  },
+  "src/assets/listicons/li-crawler@2x.png": {
+    "file": "assets/img/li-crawler@2x.png",
+    "src": "src/assets/listicons/li-crawler@2x.png"
+  },
+  "src/assets/listicons/li-cuttlefish@2x.png": {
+    "file": "assets/img/li-cuttlefish@2x.png",
+    "src": "src/assets/listicons/li-cuttlefish@2x.png"
+  },
+  "src/assets/listicons/li-david-star@2x.png": {
+    "file": "assets/img/li-david-star@2x.png",
+    "src": "src/assets/listicons/li-david-star@2x.png"
+  },
+  "src/assets/listicons/li-delivery@2x.png": {
+    "file": "assets/img/li-delivery@2x.png",
+    "src": "src/assets/listicons/li-delivery@2x.png"
+  },
+  "src/assets/listicons/li-desk-printer@2x.png": {
+    "file": "assets/img/li-desk-printer@2x.png",
+    "src": "src/assets/listicons/li-desk-printer@2x.png"
+  },
+  "src/assets/listicons/li-diagram@2x.png": {
+    "file": "assets/img/li-diagram@2x.png",
+    "src": "src/assets/listicons/li-diagram@2x.png"
+  },
+  "src/assets/listicons/li-diving@2x.png": {
+    "file": "assets/img/li-diving@2x.png",
+    "src": "src/assets/listicons/li-diving@2x.png"
+  },
+  "src/assets/listicons/li-doctor@2x.png": {
+    "file": "assets/img/li-doctor@2x.png",
+    "src": "src/assets/listicons/li-doctor@2x.png"
+  },
+  "src/assets/listicons/li-dog@2x.png": {
+    "file": "assets/img/li-dog@2x.png",
+    "src": "src/assets/listicons/li-dog@2x.png"
+  },
+  "src/assets/listicons/li-domain-registration@2x.png": {
+    "file": "assets/img/li-domain-registration@2x.png",
+    "src": "src/assets/listicons/li-domain-registration@2x.png"
+  },
+  "src/assets/listicons/li-download@2x.png": {
+    "file": "assets/img/li-download@2x.png",
+    "src": "src/assets/listicons/li-download@2x.png"
+  },
+  "src/assets/listicons/li-easter-bunny@2x.png": {
+    "file": "assets/img/li-easter-bunny@2x.png",
+    "src": "src/assets/listicons/li-easter-bunny@2x.png"
+  },
+  "src/assets/listicons/li-easter-egg@2x.png": {
+    "file": "assets/img/li-easter-egg@2x.png",
+    "src": "src/assets/listicons/li-easter-egg@2x.png"
+  },
+  "src/assets/listicons/li-egg@2x.png": {
+    "file": "assets/img/li-egg@2x.png",
+    "src": "src/assets/listicons/li-egg@2x.png"
+  },
+  "src/assets/listicons/li-experiment-results@2x.png": {
+    "file": "assets/img/li-experiment-results@2x.png",
+    "src": "src/assets/listicons/li-experiment-results@2x.png"
+  },
+  "src/assets/listicons/li-farm-sheep@2x.png": {
+    "file": "assets/img/li-farm-sheep@2x.png",
+    "src": "src/assets/listicons/li-farm-sheep@2x.png"
+  },
+  "src/assets/listicons/li-first-prize-medal@2x.png": {
+    "file": "assets/img/li-first-prize-medal@2x.png",
+    "src": "src/assets/listicons/li-first-prize-medal@2x.png"
+  },
+  "src/assets/listicons/li-fish@2x.png": {
+    "file": "assets/img/li-fish@2x.png",
+    "src": "src/assets/listicons/li-fish@2x.png"
+  },
+  "src/assets/listicons/li-fishing@2x.png": {
+    "file": "assets/img/li-fishing@2x.png",
+    "src": "src/assets/listicons/li-fishing@2x.png"
+  },
+  "src/assets/listicons/li-flag-abkhazia@2x.png": {
+    "file": "assets/img/li-flag-abkhazia@2x.png",
+    "src": "src/assets/listicons/li-flag-abkhazia@2x.png"
+  },
+  "src/assets/listicons/li-flag-algeria@2x.png": {
+    "file": "assets/img/li-flag-algeria@2x.png",
+    "src": "src/assets/listicons/li-flag-algeria@2x.png"
+  },
+  "src/assets/listicons/li-flag-argentina@2x.png": {
+    "file": "assets/img/li-flag-argentina@2x.png",
+    "src": "src/assets/listicons/li-flag-argentina@2x.png"
+  },
+  "src/assets/listicons/li-flag-australia@2x.png": {
+    "file": "assets/img/li-flag-australia@2x.png",
+    "src": "src/assets/listicons/li-flag-australia@2x.png"
+  },
+  "src/assets/listicons/li-flag-belarus@2x.png": {
+    "file": "assets/img/li-flag-belarus@2x.png",
+    "src": "src/assets/listicons/li-flag-belarus@2x.png"
+  },
+  "src/assets/listicons/li-flag-brazil@2x.png": {
+    "file": "assets/img/li-flag-brazil@2x.png",
+    "src": "src/assets/listicons/li-flag-brazil@2x.png"
+  },
+  "src/assets/listicons/li-flag-cameroon@2x.png": {
+    "file": "assets/img/li-flag-cameroon@2x.png",
+    "src": "src/assets/listicons/li-flag-cameroon@2x.png"
+  },
+  "src/assets/listicons/li-flag-canada@2x.png": {
+    "file": "assets/img/li-flag-canada@2x.png",
+    "src": "src/assets/listicons/li-flag-canada@2x.png"
+  },
+  "src/assets/listicons/li-flag-chile@2x.png": {
+    "file": "assets/img/li-flag-chile@2x.png",
+    "src": "src/assets/listicons/li-flag-chile@2x.png"
+  },
+  "src/assets/listicons/li-flag-china@2x.png": {
+    "file": "assets/img/li-flag-china@2x.png",
+    "src": "src/assets/listicons/li-flag-china@2x.png"
+  },
+  "src/assets/listicons/li-flag-costa-rica@2x.png": {
+    "file": "assets/img/li-flag-costa-rica@2x.png",
+    "src": "src/assets/listicons/li-flag-costa-rica@2x.png"
+  },
+  "src/assets/listicons/li-flag-croatia@2x.png": {
+    "file": "assets/img/li-flag-croatia@2x.png",
+    "src": "src/assets/listicons/li-flag-croatia@2x.png"
+  },
+  "src/assets/listicons/li-flag-cuba@2x.png": {
+    "file": "assets/img/li-flag-cuba@2x.png",
+    "src": "src/assets/listicons/li-flag-cuba@2x.png"
+  },
+  "src/assets/listicons/li-flag-cyprus@2x.png": {
+    "file": "assets/img/li-flag-cyprus@2x.png",
+    "src": "src/assets/listicons/li-flag-cyprus@2x.png"
+  },
+  "src/assets/listicons/li-flag-czech-republic@2x.png": {
+    "file": "assets/img/li-flag-czech-republic@2x.png",
+    "src": "src/assets/listicons/li-flag-czech-republic@2x.png"
+  },
+  "src/assets/listicons/li-flag-denmark@2x.png": {
+    "file": "assets/img/li-flag-denmark@2x.png",
+    "src": "src/assets/listicons/li-flag-denmark@2x.png"
+  },
+  "src/assets/listicons/li-flag-egypt@2x.png": {
+    "file": "assets/img/li-flag-egypt@2x.png",
+    "src": "src/assets/listicons/li-flag-egypt@2x.png"
+  },
+  "src/assets/listicons/li-flag-eu@2x.png": {
+    "file": "assets/img/li-flag-eu@2x.png",
+    "src": "src/assets/listicons/li-flag-eu@2x.png"
+  },
+  "src/assets/listicons/li-flag-france@2x.png": {
+    "file": "assets/img/li-flag-france@2x.png",
+    "src": "src/assets/listicons/li-flag-france@2x.png"
+  },
+  "src/assets/listicons/li-flag-georgia@2x.png": {
+    "file": "assets/img/li-flag-georgia@2x.png",
+    "src": "src/assets/listicons/li-flag-georgia@2x.png"
+  },
+  "src/assets/listicons/li-flag-greece@2x.png": {
+    "file": "assets/img/li-flag-greece@2x.png",
+    "src": "src/assets/listicons/li-flag-greece@2x.png"
+  },
+  "src/assets/listicons/li-flag-hongkong@2x.png": {
+    "file": "assets/img/li-flag-hongkong@2x.png",
+    "src": "src/assets/listicons/li-flag-hongkong@2x.png"
+  },
+  "src/assets/listicons/li-flag-iceland@2x.png": {
+    "file": "assets/img/li-flag-iceland@2x.png",
+    "src": "src/assets/listicons/li-flag-iceland@2x.png"
+  },
+  "src/assets/listicons/li-flag-india@2x.png": {
+    "file": "assets/img/li-flag-india@2x.png",
+    "src": "src/assets/listicons/li-flag-india@2x.png"
+  },
+  "src/assets/listicons/li-flag-israel@2x.png": {
+    "file": "assets/img/li-flag-israel@2x.png",
+    "src": "src/assets/listicons/li-flag-israel@2x.png"
+  },
+  "src/assets/listicons/li-flag-jamaica@2x.png": {
+    "file": "assets/img/li-flag-jamaica@2x.png",
+    "src": "src/assets/listicons/li-flag-jamaica@2x.png"
+  },
+  "src/assets/listicons/li-flag-japan@2x.png": {
+    "file": "assets/img/li-flag-japan@2x.png",
+    "src": "src/assets/listicons/li-flag-japan@2x.png"
+  },
+  "src/assets/listicons/li-flag-kenya@2x.png": {
+    "file": "assets/img/li-flag-kenya@2x.png",
+    "src": "src/assets/listicons/li-flag-kenya@2x.png"
+  },
+  "src/assets/listicons/li-flag-korea@2x.png": {
+    "file": "assets/img/li-flag-korea@2x.png",
+    "src": "src/assets/listicons/li-flag-korea@2x.png"
+  },
+  "src/assets/listicons/li-flag-luxembourg@2x.png": {
+    "file": "assets/img/li-flag-luxembourg@2x.png",
+    "src": "src/assets/listicons/li-flag-luxembourg@2x.png"
+  },
+  "src/assets/listicons/li-flag-mexico@2x.png": {
+    "file": "assets/img/li-flag-mexico@2x.png",
+    "src": "src/assets/listicons/li-flag-mexico@2x.png"
+  },
+  "src/assets/listicons/li-flag-moldova@2x.png": {
+    "file": "assets/img/li-flag-moldova@2x.png",
+    "src": "src/assets/listicons/li-flag-moldova@2x.png"
+  },
+  "src/assets/listicons/li-flag-morocco@2x.png": {
+    "file": "assets/img/li-flag-morocco@2x.png",
+    "src": "src/assets/listicons/li-flag-morocco@2x.png"
+  },
+  "src/assets/listicons/li-flag-namibia@2x.png": {
+    "file": "assets/img/li-flag-namibia@2x.png",
+    "src": "src/assets/listicons/li-flag-namibia@2x.png"
+  },
+  "src/assets/listicons/li-flag-nepal@2x.png": {
+    "file": "assets/img/li-flag-nepal@2x.png",
+    "src": "src/assets/listicons/li-flag-nepal@2x.png"
+  },
+  "src/assets/listicons/li-flag-netherlands@2x.png": {
+    "file": "assets/img/li-flag-netherlands@2x.png",
+    "src": "src/assets/listicons/li-flag-netherlands@2x.png"
+  },
+  "src/assets/listicons/li-flag-new-zealand@2x.png": {
+    "file": "assets/img/li-flag-new-zealand@2x.png",
+    "src": "src/assets/listicons/li-flag-new-zealand@2x.png"
+  },
+  "src/assets/listicons/li-flag-niger@2x.png": {
+    "file": "assets/img/li-flag-niger@2x.png",
+    "src": "src/assets/listicons/li-flag-niger@2x.png"
+  },
+  "src/assets/listicons/li-flag-north-korea@2x.png": {
+    "file": "assets/img/li-flag-north-korea@2x.png",
+    "src": "src/assets/listicons/li-flag-north-korea@2x.png"
+  },
+  "src/assets/listicons/li-flag-norway@2x.png": {
+    "file": "assets/img/li-flag-norway@2x.png",
+    "src": "src/assets/listicons/li-flag-norway@2x.png"
+  },
+  "src/assets/listicons/li-flag-palestine@2x.png": {
+    "file": "assets/img/li-flag-palestine@2x.png",
+    "src": "src/assets/listicons/li-flag-palestine@2x.png"
+  },
+  "src/assets/listicons/li-flag-panama@2x.png": {
+    "file": "assets/img/li-flag-panama@2x.png",
+    "src": "src/assets/listicons/li-flag-panama@2x.png"
+  },
+  "src/assets/listicons/li-flag-peru@2x.png": {
+    "file": "assets/img/li-flag-peru@2x.png",
+    "src": "src/assets/listicons/li-flag-peru@2x.png"
+  },
+  "src/assets/listicons/li-flag-philippines@2x.png": {
+    "file": "assets/img/li-flag-philippines@2x.png",
+    "src": "src/assets/listicons/li-flag-philippines@2x.png"
+  },
+  "src/assets/listicons/li-flag-pirate@2x.png": {
+    "file": "assets/img/li-flag-pirate@2x.png",
+    "src": "src/assets/listicons/li-flag-pirate@2x.png"
+  },
+  "src/assets/listicons/li-flag-portugal@2x.png": {
+    "file": "assets/img/li-flag-portugal@2x.png",
+    "src": "src/assets/listicons/li-flag-portugal@2x.png"
+  },
+  "src/assets/listicons/li-flag-scotland@2x.png": {
+    "file": "assets/img/li-flag-scotland@2x.png",
+    "src": "src/assets/listicons/li-flag-scotland@2x.png"
+  },
+  "src/assets/listicons/li-flag-slovakia@2x.png": {
+    "file": "assets/img/li-flag-slovakia@2x.png",
+    "src": "src/assets/listicons/li-flag-slovakia@2x.png"
+  },
+  "src/assets/listicons/li-flag-slovenia@2x.png": {
+    "file": "assets/img/li-flag-slovenia@2x.png",
+    "src": "src/assets/listicons/li-flag-slovenia@2x.png"
+  },
+  "src/assets/listicons/li-flag-south-africa@2x.png": {
+    "file": "assets/img/li-flag-south-africa@2x.png",
+    "src": "src/assets/listicons/li-flag-south-africa@2x.png"
+  },
+  "src/assets/listicons/li-flag-sudan@2x.png": {
+    "file": "assets/img/li-flag-sudan@2x.png",
+    "src": "src/assets/listicons/li-flag-sudan@2x.png"
+  },
+  "src/assets/listicons/li-flag-suriname@2x.png": {
+    "file": "assets/img/li-flag-suriname@2x.png",
+    "src": "src/assets/listicons/li-flag-suriname@2x.png"
+  },
+  "src/assets/listicons/li-flag-sweden@2x.png": {
+    "file": "assets/img/li-flag-sweden@2x.png",
+    "src": "src/assets/listicons/li-flag-sweden@2x.png"
+  },
+  "src/assets/listicons/li-flag-thailand@2x.png": {
+    "file": "assets/img/li-flag-thailand@2x.png",
+    "src": "src/assets/listicons/li-flag-thailand@2x.png"
+  },
+  "src/assets/listicons/li-flag-turkey@2x.png": {
+    "file": "assets/img/li-flag-turkey@2x.png",
+    "src": "src/assets/listicons/li-flag-turkey@2x.png"
+  },
+  "src/assets/listicons/li-flag-uk@2x.png": {
+    "file": "assets/img/li-flag-uk@2x.png",
+    "src": "src/assets/listicons/li-flag-uk@2x.png"
+  },
+  "src/assets/listicons/li-flag-ukraine@2x.png": {
+    "file": "assets/img/li-flag-ukraine@2x.png",
+    "src": "src/assets/listicons/li-flag-ukraine@2x.png"
+  },
+  "src/assets/listicons/li-flag-uruguay@2x.png": {
+    "file": "assets/img/li-flag-uruguay@2x.png",
+    "src": "src/assets/listicons/li-flag-uruguay@2x.png"
+  },
+  "src/assets/listicons/li-flag-usa@2x.png": {
+    "file": "assets/img/li-flag-usa@2x.png",
+    "src": "src/assets/listicons/li-flag-usa@2x.png"
+  },
+  "src/assets/listicons/li-flag-venezuela@2x.png": {
+    "file": "assets/img/li-flag-venezuela@2x.png",
+    "src": "src/assets/listicons/li-flag-venezuela@2x.png"
+  },
+  "src/assets/listicons/li-flag-vietnam@2x.png": {
+    "file": "assets/img/li-flag-vietnam@2x.png",
+    "src": "src/assets/listicons/li-flag-vietnam@2x.png"
+  },
+  "src/assets/listicons/li-flag1@2x.png": {
+    "file": "assets/img/li-flag1@2x.png",
+    "src": "src/assets/listicons/li-flag1@2x.png"
+  },
+  "src/assets/listicons/li-folders@2x.png": {
+    "file": "assets/img/li-folders@2x.png",
+    "src": "src/assets/listicons/li-folders@2x.png"
+  },
+  "src/assets/listicons/li-football@2x.png": {
+    "file": "assets/img/li-football@2x.png",
+    "src": "src/assets/listicons/li-football@2x.png"
+  },
+  "src/assets/listicons/li-gift@2x.png": {
+    "file": "assets/img/li-gift@2x.png",
+    "src": "src/assets/listicons/li-gift@2x.png"
+  },
+  "src/assets/listicons/li-glasses@2x.png": {
+    "file": "assets/img/li-glasses@2x.png",
+    "src": "src/assets/listicons/li-glasses@2x.png"
+  },
+  "src/assets/listicons/li-globe@2x.png": {
+    "file": "assets/img/li-globe@2x.png",
+    "src": "src/assets/listicons/li-globe@2x.png"
+  },
+  "src/assets/listicons/li-glove@2x.png": {
+    "file": "assets/img/li-glove@2x.png",
+    "src": "src/assets/listicons/li-glove@2x.png"
+  },
+  "src/assets/listicons/li-grocery@2x.png": {
+    "file": "assets/img/li-grocery@2x.png",
+    "src": "src/assets/listicons/li-grocery@2x.png"
+  },
+  "src/assets/listicons/li-gym@2x.png": {
+    "file": "assets/img/li-gym@2x.png",
+    "src": "src/assets/listicons/li-gym@2x.png"
+  },
+  "src/assets/listicons/li-hamburger@2x.png": {
+    "file": "assets/img/li-hamburger@2x.png",
+    "src": "src/assets/listicons/li-hamburger@2x.png"
+  },
+  "src/assets/listicons/li-hammok@2x.png": {
+    "file": "assets/img/li-hammok@2x.png",
+    "src": "src/assets/listicons/li-hammok@2x.png"
+  },
+  "src/assets/listicons/li-hanukkah@2x.png": {
+    "file": "assets/img/li-hanukkah@2x.png",
+    "src": "src/assets/listicons/li-hanukkah@2x.png"
+  },
+  "src/assets/listicons/li-helicopter@2x.png": {
+    "file": "assets/img/li-helicopter@2x.png",
+    "src": "src/assets/listicons/li-helicopter@2x.png"
+  },
+  "src/assets/listicons/li-home@2x.png": {
+    "file": "assets/img/li-home@2x.png",
+    "src": "src/assets/listicons/li-home@2x.png"
+  },
+  "src/assets/listicons/li-hotdog@2x.png": {
+    "file": "assets/img/li-hotdog@2x.png",
+    "src": "src/assets/listicons/li-hotdog@2x.png"
+  },
+  "src/assets/listicons/li-idea@2x.png": {
+    "file": "assets/img/li-idea@2x.png",
+    "src": "src/assets/listicons/li-idea@2x.png"
+  },
+  "src/assets/listicons/li-invoice@2x.png": {
+    "file": "assets/img/li-invoice@2x.png",
+    "src": "src/assets/listicons/li-invoice@2x.png"
+  },
+  "src/assets/listicons/li-jungle@2x.png": {
+    "file": "assets/img/li-jungle@2x.png",
+    "src": "src/assets/listicons/li-jungle@2x.png"
+  },
+  "src/assets/listicons/li-ladybug@2x.png": {
+    "file": "assets/img/li-ladybug@2x.png",
+    "src": "src/assets/listicons/li-ladybug@2x.png"
+  },
+  "src/assets/listicons/li-leaf@2x.png": {
+    "file": "assets/img/li-leaf@2x.png",
+    "src": "src/assets/listicons/li-leaf@2x.png"
+  },
+  "src/assets/listicons/li-lion@2x.png": {
+    "file": "assets/img/li-lion@2x.png",
+    "src": "src/assets/listicons/li-lion@2x.png"
+  },
+  "src/assets/listicons/li-lobster@2x.png": {
+    "file": "assets/img/li-lobster@2x.png",
+    "src": "src/assets/listicons/li-lobster@2x.png"
+  },
+  "src/assets/listicons/li-lock@2x.png": {
+    "file": "assets/img/li-lock@2x.png",
+    "src": "src/assets/listicons/li-lock@2x.png"
+  },
+  "src/assets/listicons/li-longboard@2x.png": {
+    "file": "assets/img/li-longboard@2x.png",
+    "src": "src/assets/listicons/li-longboard@2x.png"
+  },
+  "src/assets/listicons/li-loudspeaker@2x.png": {
+    "file": "assets/img/li-loudspeaker@2x.png",
+    "src": "src/assets/listicons/li-loudspeaker@2x.png"
+  },
+  "src/assets/listicons/li-luck@2x.png": {
+    "file": "assets/img/li-luck@2x.png",
+    "src": "src/assets/listicons/li-luck@2x.png"
+  },
+  "src/assets/listicons/li-macaroons@2x.png": {
+    "file": "assets/img/li-macaroons@2x.png",
+    "src": "src/assets/listicons/li-macaroons@2x.png"
+  },
+  "src/assets/listicons/li-magnet@2x.png": {
+    "file": "assets/img/li-magnet@2x.png",
+    "src": "src/assets/listicons/li-magnet@2x.png"
+  },
+  "src/assets/listicons/li-medicine@2x.png": {
+    "file": "assets/img/li-medicine@2x.png",
+    "src": "src/assets/listicons/li-medicine@2x.png"
+  },
+  "src/assets/listicons/li-mission@2x.png": {
+    "file": "assets/img/li-mission@2x.png",
+    "src": "src/assets/listicons/li-mission@2x.png"
+  },
+  "src/assets/listicons/li-money@2x.png": {
+    "file": "assets/img/li-money@2x.png",
+    "src": "src/assets/listicons/li-money@2x.png"
+  },
+  "src/assets/listicons/li-monkey@2x.png": {
+    "file": "assets/img/li-monkey@2x.png",
+    "src": "src/assets/listicons/li-monkey@2x.png"
+  },
+  "src/assets/listicons/li-motorcycle@2x.png": {
+    "file": "assets/img/li-motorcycle@2x.png",
+    "src": "src/assets/listicons/li-motorcycle@2x.png"
+  },
+  "src/assets/listicons/li-notes1@2x.png": {
+    "file": "assets/img/li-notes1@2x.png",
+    "src": "src/assets/listicons/li-notes1@2x.png"
+  },
+  "src/assets/listicons/li-nuclear@2x.png": {
+    "file": "assets/img/li-nuclear@2x.png",
+    "src": "src/assets/listicons/li-nuclear@2x.png"
+  },
+  "src/assets/listicons/li-octopus@2x.png": {
+    "file": "assets/img/li-octopus@2x.png",
+    "src": "src/assets/listicons/li-octopus@2x.png"
+  },
+  "src/assets/listicons/li-olympic-rings@2x.png": {
+    "file": "assets/img/li-olympic-rings@2x.png",
+    "src": "src/assets/listicons/li-olympic-rings@2x.png"
+  },
+  "src/assets/listicons/li-om@2x.png": {
+    "file": "assets/img/li-om@2x.png",
+    "src": "src/assets/listicons/li-om@2x.png"
+  },
+  "src/assets/listicons/li-orange@2x.png": {
+    "file": "assets/img/li-orange@2x.png",
+    "src": "src/assets/listicons/li-orange@2x.png"
+  },
+  "src/assets/listicons/li-paid-alarmclock@2x.png": {
+    "file": "assets/img/li-paid-alarmclock@2x.png",
+    "src": "src/assets/listicons/li-paid-alarmclock@2x.png"
+  },
+  "src/assets/listicons/li-paid-animal@2x.png": {
+    "file": "assets/img/li-paid-animal@2x.png",
+    "src": "src/assets/listicons/li-paid-animal@2x.png"
+  },
+  "src/assets/listicons/li-paid-apple@2x.png": {
+    "file": "assets/img/li-paid-apple@2x.png",
+    "src": "src/assets/listicons/li-paid-apple@2x.png"
+  },
+  "src/assets/listicons/li-paid-avocado@2x.png": {
+    "file": "assets/img/li-paid-avocado@2x.png",
+    "src": "src/assets/listicons/li-paid-avocado@2x.png"
+  },
+  "src/assets/listicons/li-paid-baby@2x.png": {
+    "file": "assets/img/li-paid-baby@2x.png",
+    "src": "src/assets/listicons/li-paid-baby@2x.png"
+  },
+  "src/assets/listicons/li-paid-baloons@2x.png": {
+    "file": "assets/img/li-paid-baloons@2x.png",
+    "src": "src/assets/listicons/li-paid-baloons@2x.png"
+  },
+  "src/assets/listicons/li-paid-banana@2x.png": {
+    "file": "assets/img/li-paid-banana@2x.png",
+    "src": "src/assets/listicons/li-paid-banana@2x.png"
+  },
+  "src/assets/listicons/li-paid-baseball@2x.png": {
+    "file": "assets/img/li-paid-baseball@2x.png",
+    "src": "src/assets/listicons/li-paid-baseball@2x.png"
+  },
+  "src/assets/listicons/li-paid-basketball@2x.png": {
+    "file": "assets/img/li-paid-basketball@2x.png",
+    "src": "src/assets/listicons/li-paid-basketball@2x.png"
+  },
+  "src/assets/listicons/li-paid-bear@2x.png": {
+    "file": "assets/img/li-paid-bear@2x.png",
+    "src": "src/assets/listicons/li-paid-bear@2x.png"
+  },
+  "src/assets/listicons/li-paid-bicycle@2x.png": {
+    "file": "assets/img/li-paid-bicycle@2x.png",
+    "src": "src/assets/listicons/li-paid-bicycle@2x.png"
+  },
+  "src/assets/listicons/li-paid-birthday@2x.png": {
+    "file": "assets/img/li-paid-birthday@2x.png",
+    "src": "src/assets/listicons/li-paid-birthday@2x.png"
+  },
+  "src/assets/listicons/li-paid-bread@2x.png": {
+    "file": "assets/img/li-paid-bread@2x.png",
+    "src": "src/assets/listicons/li-paid-bread@2x.png"
+  },
+  "src/assets/listicons/li-paid-candy@2x.png": {
+    "file": "assets/img/li-paid-candy@2x.png",
+    "src": "src/assets/listicons/li-paid-candy@2x.png"
+  },
+  "src/assets/listicons/li-paid-carrot@2x.png": {
+    "file": "assets/img/li-paid-carrot@2x.png",
+    "src": "src/assets/listicons/li-paid-carrot@2x.png"
+  },
+  "src/assets/listicons/li-paid-cherry@2x.png": {
+    "file": "assets/img/li-paid-cherry@2x.png",
+    "src": "src/assets/listicons/li-paid-cherry@2x.png"
+  },
+  "src/assets/listicons/li-paid-chicken@2x.png": {
+    "file": "assets/img/li-paid-chicken@2x.png",
+    "src": "src/assets/listicons/li-paid-chicken@2x.png"
+  },
+  "src/assets/listicons/li-paid-christmas@2x.png": {
+    "file": "assets/img/li-paid-christmas@2x.png",
+    "src": "src/assets/listicons/li-paid-christmas@2x.png"
+  },
+  "src/assets/listicons/li-paid-cocktail@2x.png": {
+    "file": "assets/img/li-paid-cocktail@2x.png",
+    "src": "src/assets/listicons/li-paid-cocktail@2x.png"
+  },
+  "src/assets/listicons/li-paid-coffee@2x.png": {
+    "file": "assets/img/li-paid-coffee@2x.png",
+    "src": "src/assets/listicons/li-paid-coffee@2x.png"
+  },
+  "src/assets/listicons/li-paid-corn@2x.png": {
+    "file": "assets/img/li-paid-corn@2x.png",
+    "src": "src/assets/listicons/li-paid-corn@2x.png"
+  },
+  "src/assets/listicons/li-paid-diamond@2x.png": {
+    "file": "assets/img/li-paid-diamond@2x.png",
+    "src": "src/assets/listicons/li-paid-diamond@2x.png"
+  },
+  "src/assets/listicons/li-paid-discount@2x.png": {
+    "file": "assets/img/li-paid-discount@2x.png",
+    "src": "src/assets/listicons/li-paid-discount@2x.png"
+  },
+  "src/assets/listicons/li-paid-dj@2x.png": {
+    "file": "assets/img/li-paid-dj@2x.png",
+    "src": "src/assets/listicons/li-paid-dj@2x.png"
+  },
+  "src/assets/listicons/li-paid-dogcat@2x.png": {
+    "file": "assets/img/li-paid-dogcat@2x.png",
+    "src": "src/assets/listicons/li-paid-dogcat@2x.png"
+  },
+  "src/assets/listicons/li-paid-eggs@2x.png": {
+    "file": "assets/img/li-paid-eggs@2x.png",
+    "src": "src/assets/listicons/li-paid-eggs@2x.png"
+  },
+  "src/assets/listicons/li-paid-fire-ext@2x.png": {
+    "file": "assets/img/li-paid-fire-ext@2x.png",
+    "src": "src/assets/listicons/li-paid-fire-ext@2x.png"
+  },
+  "src/assets/listicons/li-paid-flower@2x.png": {
+    "file": "assets/img/li-paid-flower@2x.png",
+    "src": "src/assets/listicons/li-paid-flower@2x.png"
+  },
+  "src/assets/listicons/li-paid-gamecontroller@2x.png": {
+    "file": "assets/img/li-paid-gamecontroller@2x.png",
+    "src": "src/assets/listicons/li-paid-gamecontroller@2x.png"
+  },
+  "src/assets/listicons/li-paid-globe@2x.png": {
+    "file": "assets/img/li-paid-globe@2x.png",
+    "src": "src/assets/listicons/li-paid-globe@2x.png"
+  },
+  "src/assets/listicons/li-paid-icecream@2x.png": {
+    "file": "assets/img/li-paid-icecream@2x.png",
+    "src": "src/assets/listicons/li-paid-icecream@2x.png"
+  },
+  "src/assets/listicons/li-paid-klmn@2x.png": {
+    "file": "assets/img/li-paid-klmn@2x.png",
+    "src": "src/assets/listicons/li-paid-klmn@2x.png"
+  },
+  "src/assets/listicons/li-paid-map@2x.png": {
+    "file": "assets/img/li-paid-map@2x.png",
+    "src": "src/assets/listicons/li-paid-map@2x.png"
+  },
+  "src/assets/listicons/li-paid-microphone@2x.png": {
+    "file": "assets/img/li-paid-microphone@2x.png",
+    "src": "src/assets/listicons/li-paid-microphone@2x.png"
+  },
+  "src/assets/listicons/li-paid-newspaper@2x.png": {
+    "file": "assets/img/li-paid-newspaper@2x.png",
+    "src": "src/assets/listicons/li-paid-newspaper@2x.png"
+  },
+  "src/assets/listicons/li-paid-notepad@2x.png": {
+    "file": "assets/img/li-paid-notepad@2x.png",
+    "src": "src/assets/listicons/li-paid-notepad@2x.png"
+  },
+  "src/assets/listicons/li-paid-pear@2x.png": {
+    "file": "assets/img/li-paid-pear@2x.png",
+    "src": "src/assets/listicons/li-paid-pear@2x.png"
+  },
+  "src/assets/listicons/li-paid-pizza@2x.png": {
+    "file": "assets/img/li-paid-pizza@2x.png",
+    "src": "src/assets/listicons/li-paid-pizza@2x.png"
+  },
+  "src/assets/listicons/li-paid-rain@2x.png": {
+    "file": "assets/img/li-paid-rain@2x.png",
+    "src": "src/assets/listicons/li-paid-rain@2x.png"
+  },
+  "src/assets/listicons/li-paid-safebox@2x.png": {
+    "file": "assets/img/li-paid-safebox@2x.png",
+    "src": "src/assets/listicons/li-paid-safebox@2x.png"
+  },
+  "src/assets/listicons/li-paid-scissors@2x.png": {
+    "file": "assets/img/li-paid-scissors@2x.png",
+    "src": "src/assets/listicons/li-paid-scissors@2x.png"
+  },
+  "src/assets/listicons/li-paid-snow@2x.png": {
+    "file": "assets/img/li-paid-snow@2x.png",
+    "src": "src/assets/listicons/li-paid-snow@2x.png"
+  },
+  "src/assets/listicons/li-paid-spaghetti@2x.png": {
+    "file": "assets/img/li-paid-spaghetti@2x.png",
+    "src": "src/assets/listicons/li-paid-spaghetti@2x.png"
+  },
+  "src/assets/listicons/li-paid-starbucks@2x.png": {
+    "file": "assets/img/li-paid-starbucks@2x.png",
+    "src": "src/assets/listicons/li-paid-starbucks@2x.png"
+  },
+  "src/assets/listicons/li-paid-steak@2x.png": {
+    "file": "assets/img/li-paid-steak@2x.png",
+    "src": "src/assets/listicons/li-paid-steak@2x.png"
+  },
+  "src/assets/listicons/li-paid-sun@2x.png": {
+    "file": "assets/img/li-paid-sun@2x.png",
+    "src": "src/assets/listicons/li-paid-sun@2x.png"
+  },
+  "src/assets/listicons/li-paid-tie@2x.png": {
+    "file": "assets/img/li-paid-tie@2x.png",
+    "src": "src/assets/listicons/li-paid-tie@2x.png"
+  },
+  "src/assets/listicons/li-paid-trash@2x.png": {
+    "file": "assets/img/li-paid-trash@2x.png",
+    "src": "src/assets/listicons/li-paid-trash@2x.png"
+  },
+  "src/assets/listicons/li-paid-ufo@2x.png": {
+    "file": "assets/img/li-paid-ufo@2x.png",
+    "src": "src/assets/listicons/li-paid-ufo@2x.png"
+  },
+  "src/assets/listicons/li-paid-umbrella@2x.png": {
+    "file": "assets/img/li-paid-umbrella@2x.png",
+    "src": "src/assets/listicons/li-paid-umbrella@2x.png"
+  },
+  "src/assets/listicons/li-paid-wine-glass@2x.png": {
+    "file": "assets/img/li-paid-wine-glass@2x.png",
+    "src": "src/assets/listicons/li-paid-wine-glass@2x.png"
+  },
+  "src/assets/listicons/li-paid2-arrows@2x.png": {
+    "file": "assets/img/li-paid2-arrows@2x.png",
+    "src": "src/assets/listicons/li-paid2-arrows@2x.png"
+  },
+  "src/assets/listicons/li-paid2-boxes@2x.png": {
+    "file": "assets/img/li-paid2-boxes@2x.png",
+    "src": "src/assets/listicons/li-paid2-boxes@2x.png"
+  },
+  "src/assets/listicons/li-paid2-camera@2x.png": {
+    "file": "assets/img/li-paid2-camera@2x.png",
+    "src": "src/assets/listicons/li-paid2-camera@2x.png"
+  },
+  "src/assets/listicons/li-paid2-car@2x.png": {
+    "file": "assets/img/li-paid2-car@2x.png",
+    "src": "src/assets/listicons/li-paid2-car@2x.png"
+  },
+  "src/assets/listicons/li-paid2-chat@2x.png": {
+    "file": "assets/img/li-paid2-chat@2x.png",
+    "src": "src/assets/listicons/li-paid2-chat@2x.png"
+  },
+  "src/assets/listicons/li-paid2-checkmark@2x.png": {
+    "file": "assets/img/li-paid2-checkmark@2x.png",
+    "src": "src/assets/listicons/li-paid2-checkmark@2x.png"
+  },
+  "src/assets/listicons/li-paid2-christmas-ball@2x.png": {
+    "file": "assets/img/li-paid2-christmas-ball@2x.png",
+    "src": "src/assets/listicons/li-paid2-christmas-ball@2x.png"
+  },
+  "src/assets/listicons/li-paid2-christmas-stocking@2x.png": {
+    "file": "assets/img/li-paid2-christmas-stocking@2x.png",
+    "src": "src/assets/listicons/li-paid2-christmas-stocking@2x.png"
+  },
+  "src/assets/listicons/li-paid2-clock@2x.png": {
+    "file": "assets/img/li-paid2-clock@2x.png",
+    "src": "src/assets/listicons/li-paid2-clock@2x.png"
+  },
+  "src/assets/listicons/li-paid2-crab@2x.png": {
+    "file": "assets/img/li-paid2-crab@2x.png",
+    "src": "src/assets/listicons/li-paid2-crab@2x.png"
+  },
+  "src/assets/listicons/li-paid2-gingerbread@2x.png": {
+    "file": "assets/img/li-paid2-gingerbread@2x.png",
+    "src": "src/assets/listicons/li-paid2-gingerbread@2x.png"
+  },
+  "src/assets/listicons/li-paid2-guitar@2x.png": {
+    "file": "assets/img/li-paid2-guitar@2x.png",
+    "src": "src/assets/listicons/li-paid2-guitar@2x.png"
+  },
+  "src/assets/listicons/li-paid2-hotspot@2x.png": {
+    "file": "assets/img/li-paid2-hotspot@2x.png",
+    "src": "src/assets/listicons/li-paid2-hotspot@2x.png"
+  },
+  "src/assets/listicons/li-paid2-location@2x.png": {
+    "file": "assets/img/li-paid2-location@2x.png",
+    "src": "src/assets/listicons/li-paid2-location@2x.png"
+  },
+  "src/assets/listicons/li-paid2-mistletoe@2x.png": {
+    "file": "assets/img/li-paid2-mistletoe@2x.png",
+    "src": "src/assets/listicons/li-paid2-mistletoe@2x.png"
+  },
+  "src/assets/listicons/li-paid2-santa@2x.png": {
+    "file": "assets/img/li-paid2-santa@2x.png",
+    "src": "src/assets/listicons/li-paid2-santa@2x.png"
+  },
+  "src/assets/listicons/li-paid2-snowman@2x.png": {
+    "file": "assets/img/li-paid2-snowman@2x.png",
+    "src": "src/assets/listicons/li-paid2-snowman@2x.png"
+  },
+  "src/assets/listicons/li-paid2-tent@2x.png": {
+    "file": "assets/img/li-paid2-tent@2x.png",
+    "src": "src/assets/listicons/li-paid2-tent@2x.png"
+  },
+  "src/assets/listicons/li-paid3-goal@2x.png": {
+    "file": "assets/img/li-paid3-goal@2x.png",
+    "src": "src/assets/listicons/li-paid3-goal@2x.png"
+  },
+  "src/assets/listicons/li-paid3-userpic-hipster@2x.png": {
+    "file": "assets/img/li-paid3-userpic-hipster@2x.png",
+    "src": "src/assets/listicons/li-paid3-userpic-hipster@2x.png"
+  },
+  "src/assets/listicons/li-paid3-userpic-lady@2x.png": {
+    "file": "assets/img/li-paid3-userpic-lady@2x.png",
+    "src": "src/assets/listicons/li-paid3-userpic-lady@2x.png"
+  },
+  "src/assets/listicons/li-paid3-userpic-man@2x.png": {
+    "file": "assets/img/li-paid3-userpic-man@2x.png",
+    "src": "src/assets/listicons/li-paid3-userpic-man@2x.png"
+  },
+  "src/assets/listicons/li-paid3-userpic-steve@2x.png": {
+    "file": "assets/img/li-paid3-userpic-steve@2x.png",
+    "src": "src/assets/listicons/li-paid3-userpic-steve@2x.png"
+  },
+  "src/assets/listicons/li-paid4-christmas-calendar@2x.png": {
+    "file": "assets/img/li-paid4-christmas-calendar@2x.png",
+    "src": "src/assets/listicons/li-paid4-christmas-calendar@2x.png"
+  },
+  "src/assets/listicons/li-paid4-christmas-candy@2x.png": {
+    "file": "assets/img/li-paid4-christmas-candy@2x.png",
+    "src": "src/assets/listicons/li-paid4-christmas-candy@2x.png"
+  },
+  "src/assets/listicons/li-paid4-christmas-cocktail@2x.png": {
+    "file": "assets/img/li-paid4-christmas-cocktail@2x.png",
+    "src": "src/assets/listicons/li-paid4-christmas-cocktail@2x.png"
+  },
+  "src/assets/listicons/li-paid4-christmas-giftbox2@2x.png": {
+    "file": "assets/img/li-paid4-christmas-giftbox2@2x.png",
+    "src": "src/assets/listicons/li-paid4-christmas-giftbox2@2x.png"
+  },
+  "src/assets/listicons/li-paid4-christmas-giftbox@2x.png": {
+    "file": "assets/img/li-paid4-christmas-giftbox@2x.png",
+    "src": "src/assets/listicons/li-paid4-christmas-giftbox@2x.png"
+  },
+  "src/assets/listicons/li-paid4-christmas-gingerbread@2x.png": {
+    "file": "assets/img/li-paid4-christmas-gingerbread@2x.png",
+    "src": "src/assets/listicons/li-paid4-christmas-gingerbread@2x.png"
+  },
+  "src/assets/listicons/li-paid4-christmas-glass@2x.png": {
+    "file": "assets/img/li-paid4-christmas-glass@2x.png",
+    "src": "src/assets/listicons/li-paid4-christmas-glass@2x.png"
+  },
+  "src/assets/listicons/li-paid4-christmas-globes@2x.png": {
+    "file": "assets/img/li-paid4-christmas-globes@2x.png",
+    "src": "src/assets/listicons/li-paid4-christmas-globes@2x.png"
+  },
+  "src/assets/listicons/li-paid4-christmas-gloves@2x.png": {
+    "file": "assets/img/li-paid4-christmas-gloves@2x.png",
+    "src": "src/assets/listicons/li-paid4-christmas-gloves@2x.png"
+  },
+  "src/assets/listicons/li-paid4-christmas-house@2x.png": {
+    "file": "assets/img/li-paid4-christmas-house@2x.png",
+    "src": "src/assets/listicons/li-paid4-christmas-house@2x.png"
+  },
+  "src/assets/listicons/li-paid4-christmas-reindeer@2x.png": {
+    "file": "assets/img/li-paid4-christmas-reindeer@2x.png",
+    "src": "src/assets/listicons/li-paid4-christmas-reindeer@2x.png"
+  },
+  "src/assets/listicons/li-paid4-christmas-sale@2x.png": {
+    "file": "assets/img/li-paid4-christmas-sale@2x.png",
+    "src": "src/assets/listicons/li-paid4-christmas-sale@2x.png"
+  },
+  "src/assets/listicons/li-paid4-christmas-santa@2x.png": {
+    "file": "assets/img/li-paid4-christmas-santa@2x.png",
+    "src": "src/assets/listicons/li-paid4-christmas-santa@2x.png"
+  },
+  "src/assets/listicons/li-paid4-christmas-sleigh@2x.png": {
+    "file": "assets/img/li-paid4-christmas-sleigh@2x.png",
+    "src": "src/assets/listicons/li-paid4-christmas-sleigh@2x.png"
+  },
+  "src/assets/listicons/li-paid4-christmas-snowman@2x.png": {
+    "file": "assets/img/li-paid4-christmas-snowman@2x.png",
+    "src": "src/assets/listicons/li-paid4-christmas-snowman@2x.png"
+  },
+  "src/assets/listicons/li-paid4-christmas-tree@2x.png": {
+    "file": "assets/img/li-paid4-christmas-tree@2x.png",
+    "src": "src/assets/listicons/li-paid4-christmas-tree@2x.png"
+  },
+  "src/assets/listicons/li-palette@2x.png": {
+    "file": "assets/img/li-palette@2x.png",
+    "src": "src/assets/listicons/li-palette@2x.png"
+  },
+  "src/assets/listicons/li-panda@2x.png": {
+    "file": "assets/img/li-panda@2x.png",
+    "src": "src/assets/listicons/li-panda@2x.png"
+  },
+  "src/assets/listicons/li-parrot@2x.png": {
+    "file": "assets/img/li-parrot@2x.png",
+    "src": "src/assets/listicons/li-parrot@2x.png"
+  },
+  "src/assets/listicons/li-passport@2x.png": {
+    "file": "assets/img/li-passport@2x.png",
+    "src": "src/assets/listicons/li-passport@2x.png"
+  },
+  "src/assets/listicons/li-pencil@2x.png": {
+    "file": "assets/img/li-pencil@2x.png",
+    "src": "src/assets/listicons/li-pencil@2x.png"
+  },
+  "src/assets/listicons/li-people@2x.png": {
+    "file": "assets/img/li-people@2x.png",
+    "src": "src/assets/listicons/li-people@2x.png"
+  },
+  "src/assets/listicons/li-pet-fish@2x.png": {
+    "file": "assets/img/li-pet-fish@2x.png",
+    "src": "src/assets/listicons/li-pet-fish@2x.png"
+  },
+  "src/assets/listicons/li-petard@2x.png": {
+    "file": "assets/img/li-petard@2x.png",
+    "src": "src/assets/listicons/li-petard@2x.png"
+  },
+  "src/assets/listicons/li-phone@2x.png": {
+    "file": "assets/img/li-phone@2x.png",
+    "src": "src/assets/listicons/li-phone@2x.png"
+  },
+  "src/assets/listicons/li-piggy@2x.png": {
+    "file": "assets/img/li-piggy@2x.png",
+    "src": "src/assets/listicons/li-piggy@2x.png"
+  },
+  "src/assets/listicons/li-pin-code@2x.png": {
+    "file": "assets/img/li-pin-code@2x.png",
+    "src": "src/assets/listicons/li-pin-code@2x.png"
+  },
+  "src/assets/listicons/li-pineapple@2x.png": {
+    "file": "assets/img/li-pineapple@2x.png",
+    "src": "src/assets/listicons/li-pineapple@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-atom@2x.png": {
+    "file": "assets/img/li-pl201811-atom@2x.png",
+    "src": "src/assets/listicons/li-pl201811-atom@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-bird@2x.png": {
+    "file": "assets/img/li-pl201811-bird@2x.png",
+    "src": "src/assets/listicons/li-pl201811-bird@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-books@2x.png": {
+    "file": "assets/img/li-pl201811-books@2x.png",
+    "src": "src/assets/listicons/li-pl201811-books@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-bot@2x.png": {
+    "file": "assets/img/li-pl201811-bot@2x.png",
+    "src": "src/assets/listicons/li-pl201811-bot@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-camera@2x.png": {
+    "file": "assets/img/li-pl201811-camera@2x.png",
+    "src": "src/assets/listicons/li-pl201811-camera@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-clothing@2x.png": {
+    "file": "assets/img/li-pl201811-clothing@2x.png",
+    "src": "src/assets/listicons/li-pl201811-clothing@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-cmyk@2x.png": {
+    "file": "assets/img/li-pl201811-cmyk@2x.png",
+    "src": "src/assets/listicons/li-pl201811-cmyk@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-crypto@2x.png": {
+    "file": "assets/img/li-pl201811-crypto@2x.png",
+    "src": "src/assets/listicons/li-pl201811-crypto@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-dontdisturb@2x.png": {
+    "file": "assets/img/li-pl201811-dontdisturb@2x.png",
+    "src": "src/assets/listicons/li-pl201811-dontdisturb@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-earthlove@2x.png": {
+    "file": "assets/img/li-pl201811-earthlove@2x.png",
+    "src": "src/assets/listicons/li-pl201811-earthlove@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-ecoplant@2x.png": {
+    "file": "assets/img/li-pl201811-ecoplant@2x.png",
+    "src": "src/assets/listicons/li-pl201811-ecoplant@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-fox@2x.png": {
+    "file": "assets/img/li-pl201811-fox@2x.png",
+    "src": "src/assets/listicons/li-pl201811-fox@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-free@2x.png": {
+    "file": "assets/img/li-pl201811-free@2x.png",
+    "src": "src/assets/listicons/li-pl201811-free@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-hanger@2x.png": {
+    "file": "assets/img/li-pl201811-hanger@2x.png",
+    "src": "src/assets/listicons/li-pl201811-hanger@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-herbal@2x.png": {
+    "file": "assets/img/li-pl201811-herbal@2x.png",
+    "src": "src/assets/listicons/li-pl201811-herbal@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-hotel@2x.png": {
+    "file": "assets/img/li-pl201811-hotel@2x.png",
+    "src": "src/assets/listicons/li-pl201811-hotel@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-invitations@2x.png": {
+    "file": "assets/img/li-pl201811-invitations@2x.png",
+    "src": "src/assets/listicons/li-pl201811-invitations@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-locations@2x.png": {
+    "file": "assets/img/li-pl201811-locations@2x.png",
+    "src": "src/assets/listicons/li-pl201811-locations@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-mouse@2x.png": {
+    "file": "assets/img/li-pl201811-mouse@2x.png",
+    "src": "src/assets/listicons/li-pl201811-mouse@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-navigator@2x.png": {
+    "file": "assets/img/li-pl201811-navigator@2x.png",
+    "src": "src/assets/listicons/li-pl201811-navigator@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-network@2x.png": {
+    "file": "assets/img/li-pl201811-network@2x.png",
+    "src": "src/assets/listicons/li-pl201811-network@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-online@2x.png": {
+    "file": "assets/img/li-pl201811-online@2x.png",
+    "src": "src/assets/listicons/li-pl201811-online@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-parking@2x.png": {
+    "file": "assets/img/li-pl201811-parking@2x.png",
+    "src": "src/assets/listicons/li-pl201811-parking@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-penguin@2x.png": {
+    "file": "assets/img/li-pl201811-penguin@2x.png",
+    "src": "src/assets/listicons/li-pl201811-penguin@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-pills@2x.png": {
+    "file": "assets/img/li-pl201811-pills@2x.png",
+    "src": "src/assets/listicons/li-pl201811-pills@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-plug@2x.png": {
+    "file": "assets/img/li-pl201811-plug@2x.png",
+    "src": "src/assets/listicons/li-pl201811-plug@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-pool@2x.png": {
+    "file": "assets/img/li-pl201811-pool@2x.png",
+    "src": "src/assets/listicons/li-pl201811-pool@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-preza@2x.png": {
+    "file": "assets/img/li-pl201811-preza@2x.png",
+    "src": "src/assets/listicons/li-pl201811-preza@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-pumpkin@2x.png": {
+    "file": "assets/img/li-pl201811-pumpkin@2x.png",
+    "src": "src/assets/listicons/li-pl201811-pumpkin@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-rgb@2x.png": {
+    "file": "assets/img/li-pl201811-rgb@2x.png",
+    "src": "src/assets/listicons/li-pl201811-rgb@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-samples@2x.png": {
+    "file": "assets/img/li-pl201811-samples@2x.png",
+    "src": "src/assets/listicons/li-pl201811-samples@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-school@2x.png": {
+    "file": "assets/img/li-pl201811-school@2x.png",
+    "src": "src/assets/listicons/li-pl201811-school@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-shoe@2x.png": {
+    "file": "assets/img/li-pl201811-shoe@2x.png",
+    "src": "src/assets/listicons/li-pl201811-shoe@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-shovel@2x.png": {
+    "file": "assets/img/li-pl201811-shovel@2x.png",
+    "src": "src/assets/listicons/li-pl201811-shovel@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-sofa@2x.png": {
+    "file": "assets/img/li-pl201811-sofa@2x.png",
+    "src": "src/assets/listicons/li-pl201811-sofa@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-solar@2x.png": {
+    "file": "assets/img/li-pl201811-solar@2x.png",
+    "src": "src/assets/listicons/li-pl201811-solar@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-speaker@2x.png": {
+    "file": "assets/img/li-pl201811-speaker@2x.png",
+    "src": "src/assets/listicons/li-pl201811-speaker@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-theatre@2x.png": {
+    "file": "assets/img/li-pl201811-theatre@2x.png",
+    "src": "src/assets/listicons/li-pl201811-theatre@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-toolkit@2x.png": {
+    "file": "assets/img/li-pl201811-toolkit@2x.png",
+    "src": "src/assets/listicons/li-pl201811-toolkit@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-trafficlight@2x.png": {
+    "file": "assets/img/li-pl201811-trafficlight@2x.png",
+    "src": "src/assets/listicons/li-pl201811-trafficlight@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-treadmill@2x.png": {
+    "file": "assets/img/li-pl201811-treadmill@2x.png",
+    "src": "src/assets/listicons/li-pl201811-treadmill@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-wateringcan@2x.png": {
+    "file": "assets/img/li-pl201811-wateringcan@2x.png",
+    "src": "src/assets/listicons/li-pl201811-wateringcan@2x.png"
+  },
+  "src/assets/listicons/li-pl201811-wheelbarrow@2x.png": {
+    "file": "assets/img/li-pl201811-wheelbarrow@2x.png",
+    "src": "src/assets/listicons/li-pl201811-wheelbarrow@2x.png"
+  },
+  "src/assets/listicons/li-pl201812-candle@2x.png": {
+    "file": "assets/img/li-pl201812-candle@2x.png",
+    "src": "src/assets/listicons/li-pl201812-candle@2x.png"
+  },
+  "src/assets/listicons/li-pl201812-cupcake@2x.png": {
+    "file": "assets/img/li-pl201812-cupcake@2x.png",
+    "src": "src/assets/listicons/li-pl201812-cupcake@2x.png"
+  },
+  "src/assets/listicons/li-pl201812-earbuds@2x.png": {
+    "file": "assets/img/li-pl201812-earbuds@2x.png",
+    "src": "src/assets/listicons/li-pl201812-earbuds@2x.png"
+  },
+  "src/assets/listicons/li-pl201812-giftcard@2x.png": {
+    "file": "assets/img/li-pl201812-giftcard@2x.png",
+    "src": "src/assets/listicons/li-pl201812-giftcard@2x.png"
+  },
+  "src/assets/listicons/li-pl201812-glove@2x.png": {
+    "file": "assets/img/li-pl201812-glove@2x.png",
+    "src": "src/assets/listicons/li-pl201812-glove@2x.png"
+  },
+  "src/assets/listicons/li-pl201812-hat@2x.png": {
+    "file": "assets/img/li-pl201812-hat@2x.png",
+    "src": "src/assets/listicons/li-pl201812-hat@2x.png"
+  },
+  "src/assets/listicons/li-pl201812-jacket@2x.png": {
+    "file": "assets/img/li-pl201812-jacket@2x.png",
+    "src": "src/assets/listicons/li-pl201812-jacket@2x.png"
+  },
+  "src/assets/listicons/li-pl201812-ornament@2x.png": {
+    "file": "assets/img/li-pl201812-ornament@2x.png",
+    "src": "src/assets/listicons/li-pl201812-ornament@2x.png"
+  },
+  "src/assets/listicons/li-pl201812-risingstar@2x.png": {
+    "file": "assets/img/li-pl201812-risingstar@2x.png",
+    "src": "src/assets/listicons/li-pl201812-risingstar@2x.png"
+  },
+  "src/assets/listicons/li-pl201812-skilift@2x.png": {
+    "file": "assets/img/li-pl201812-skilift@2x.png",
+    "src": "src/assets/listicons/li-pl201812-skilift@2x.png"
+  },
+  "src/assets/listicons/li-pl201812-snowboard@2x.png": {
+    "file": "assets/img/li-pl201812-snowboard@2x.png",
+    "src": "src/assets/listicons/li-pl201812-snowboard@2x.png"
+  },
+  "src/assets/listicons/li-pl201812-snowcloud@2x.png": {
+    "file": "assets/img/li-pl201812-snowcloud@2x.png",
+    "src": "src/assets/listicons/li-pl201812-snowcloud@2x.png"
+  },
+  "src/assets/listicons/li-pl201812-snowglobe@2x.png": {
+    "file": "assets/img/li-pl201812-snowglobe@2x.png",
+    "src": "src/assets/listicons/li-pl201812-snowglobe@2x.png"
+  },
+  "src/assets/listicons/li-pl201812-snowledge@2x.png": {
+    "file": "assets/img/li-pl201812-snowledge@2x.png",
+    "src": "src/assets/listicons/li-pl201812-snowledge@2x.png"
+  },
+  "src/assets/listicons/li-pl201812-snowmountains@2x.png": {
+    "file": "assets/img/li-pl201812-snowmountains@2x.png",
+    "src": "src/assets/listicons/li-pl201812-snowmountains@2x.png"
+  },
+  "src/assets/listicons/li-pl201812-snowshovel@2x.png": {
+    "file": "assets/img/li-pl201812-snowshovel@2x.png",
+    "src": "src/assets/listicons/li-pl201812-snowshovel@2x.png"
+  },
+  "src/assets/listicons/li-pl201812-snowskates@2x.png": {
+    "file": "assets/img/li-pl201812-snowskates@2x.png",
+    "src": "src/assets/listicons/li-pl201812-snowskates@2x.png"
+  },
+  "src/assets/listicons/li-pl201812-snowvillage@2x.png": {
+    "file": "assets/img/li-pl201812-snowvillage@2x.png",
+    "src": "src/assets/listicons/li-pl201812-snowvillage@2x.png"
+  },
+  "src/assets/listicons/li-pl201812-snowwindow@2x.png": {
+    "file": "assets/img/li-pl201812-snowwindow@2x.png",
+    "src": "src/assets/listicons/li-pl201812-snowwindow@2x.png"
+  },
+  "src/assets/listicons/li-pl201813-1312@2x.png": {
+    "file": "assets/img/li-pl201813-1312@2x.png",
+    "src": "src/assets/listicons/li-pl201813-1312@2x.png"
+  },
+  "src/assets/listicons/li-pl201813-pocketlists@2x.png": {
+    "file": "assets/img/li-pl201813-pocketlists@2x.png",
+    "src": "src/assets/listicons/li-pl201813-pocketlists@2x.png"
+  },
+  "src/assets/listicons/li-pl201813-shopscript@2x.png": {
+    "file": "assets/img/li-pl201813-shopscript@2x.png",
+    "src": "src/assets/listicons/li-pl201813-shopscript@2x.png"
+  },
+  "src/assets/listicons/li-pl201813-webasyst@2x.png": {
+    "file": "assets/img/li-pl201813-webasyst@2x.png",
+    "src": "src/assets/listicons/li-pl201813-webasyst@2x.png"
+  },
+  "src/assets/listicons/li-plane@2x.png": {
+    "file": "assets/img/li-plane@2x.png",
+    "src": "src/assets/listicons/li-plane@2x.png"
+  },
+  "src/assets/listicons/li-plant@2x.png": {
+    "file": "assets/img/li-plant@2x.png",
+    "src": "src/assets/listicons/li-plant@2x.png"
+  },
+  "src/assets/listicons/li-pointer@2x.png": {
+    "file": "assets/img/li-pointer@2x.png",
+    "src": "src/assets/listicons/li-pointer@2x.png"
+  },
+  "src/assets/listicons/li-poop@2x.png": {
+    "file": "assets/img/li-poop@2x.png",
+    "src": "src/assets/listicons/li-poop@2x.png"
+  },
+  "src/assets/listicons/li-post-box@2x.png": {
+    "file": "assets/img/li-post-box@2x.png",
+    "src": "src/assets/listicons/li-post-box@2x.png"
+  },
+  "src/assets/listicons/li-power1@2x.png": {
+    "file": "assets/img/li-power1@2x.png",
+    "src": "src/assets/listicons/li-power1@2x.png"
+  },
+  "src/assets/listicons/li-presentation@2x.png": {
+    "file": "assets/img/li-presentation@2x.png",
+    "src": "src/assets/listicons/li-presentation@2x.png"
+  },
+  "src/assets/listicons/li-puzzle@2x.png": {
+    "file": "assets/img/li-puzzle@2x.png",
+    "src": "src/assets/listicons/li-puzzle@2x.png"
+  },
+  "src/assets/listicons/li-rafting@2x.png": {
+    "file": "assets/img/li-rafting@2x.png",
+    "src": "src/assets/listicons/li-rafting@2x.png"
+  },
+  "src/assets/listicons/li-ramadan@2x.png": {
+    "file": "assets/img/li-ramadan@2x.png",
+    "src": "src/assets/listicons/li-ramadan@2x.png"
+  },
+  "src/assets/listicons/li-recipe@2x.png": {
+    "file": "assets/img/li-recipe@2x.png",
+    "src": "src/assets/listicons/li-recipe@2x.png"
+  },
+  "src/assets/listicons/li-route@2x.png": {
+    "file": "assets/img/li-route@2x.png",
+    "src": "src/assets/listicons/li-route@2x.png"
+  },
+  "src/assets/listicons/li-ruler-pencil@2x.png": {
+    "file": "assets/img/li-ruler-pencil@2x.png",
+    "src": "src/assets/listicons/li-ruler-pencil@2x.png"
+  },
+  "src/assets/listicons/li-sale@2x.png": {
+    "file": "assets/img/li-sale@2x.png",
+    "src": "src/assets/listicons/li-sale@2x.png"
+  },
+  "src/assets/listicons/li-scanner@2x.png": {
+    "file": "assets/img/li-scanner@2x.png",
+    "src": "src/assets/listicons/li-scanner@2x.png"
+  },
+  "src/assets/listicons/li-school-backpack@2x.png": {
+    "file": "assets/img/li-school-backpack@2x.png",
+    "src": "src/assets/listicons/li-school-backpack@2x.png"
+  },
+  "src/assets/listicons/li-schoolbus@2x.png": {
+    "file": "assets/img/li-schoolbus@2x.png",
+    "src": "src/assets/listicons/li-schoolbus@2x.png"
+  },
+  "src/assets/listicons/li-search-location@2x.png": {
+    "file": "assets/img/li-search-location@2x.png",
+    "src": "src/assets/listicons/li-search-location@2x.png"
+  },
+  "src/assets/listicons/li-service@2x.png": {
+    "file": "assets/img/li-service@2x.png",
+    "src": "src/assets/listicons/li-service@2x.png"
+  },
+  "src/assets/listicons/li-shinto@2x.png": {
+    "file": "assets/img/li-shinto@2x.png",
+    "src": "src/assets/listicons/li-shinto@2x.png"
+  },
+  "src/assets/listicons/li-ship@2x.png": {
+    "file": "assets/img/li-ship@2x.png",
+    "src": "src/assets/listicons/li-ship@2x.png"
+  },
+  "src/assets/listicons/li-shop@2x.png": {
+    "file": "assets/img/li-shop@2x.png",
+    "src": "src/assets/listicons/li-shop@2x.png"
+  },
+  "src/assets/listicons/li-shopping2@2x.png": {
+    "file": "assets/img/li-shopping2@2x.png",
+    "src": "src/assets/listicons/li-shopping2@2x.png"
+  },
+  "src/assets/listicons/li-shower@2x.png": {
+    "file": "assets/img/li-shower@2x.png",
+    "src": "src/assets/listicons/li-shower@2x.png"
+  },
+  "src/assets/listicons/li-shrimp@2x.png": {
+    "file": "assets/img/li-shrimp@2x.png",
+    "src": "src/assets/listicons/li-shrimp@2x.png"
+  },
+  "src/assets/listicons/li-shuttlecock@2x.png": {
+    "file": "assets/img/li-shuttlecock@2x.png",
+    "src": "src/assets/listicons/li-shuttlecock@2x.png"
+  },
+  "src/assets/listicons/li-signs@2x.png": {
+    "file": "assets/img/li-signs@2x.png",
+    "src": "src/assets/listicons/li-signs@2x.png"
+  },
+  "src/assets/listicons/li-ski@2x.png": {
+    "file": "assets/img/li-ski@2x.png",
+    "src": "src/assets/listicons/li-ski@2x.png"
+  },
+  "src/assets/listicons/li-soska@2x.png": {
+    "file": "assets/img/li-soska@2x.png",
+    "src": "src/assets/listicons/li-soska@2x.png"
+  },
+  "src/assets/listicons/li-speedometer@2x.png": {
+    "file": "assets/img/li-speedometer@2x.png",
+    "src": "src/assets/listicons/li-speedometer@2x.png"
+  },
+  "src/assets/listicons/li-star@2x.png": {
+    "file": "assets/img/li-star@2x.png",
+    "src": "src/assets/listicons/li-star@2x.png"
+  },
+  "src/assets/listicons/li-steak@2x.png": {
+    "file": "assets/img/li-steak@2x.png",
+    "src": "src/assets/listicons/li-steak@2x.png"
+  },
+  "src/assets/listicons/li-steering-wheel@2x.png": {
+    "file": "assets/img/li-steering-wheel@2x.png",
+    "src": "src/assets/listicons/li-steering-wheel@2x.png"
+  },
+  "src/assets/listicons/li-stethoscope@2x.png": {
+    "file": "assets/img/li-stethoscope@2x.png",
+    "src": "src/assets/listicons/li-stethoscope@2x.png"
+  },
+  "src/assets/listicons/li-strawberry@2x.png": {
+    "file": "assets/img/li-strawberry@2x.png",
+    "src": "src/assets/listicons/li-strawberry@2x.png"
+  },
+  "src/assets/listicons/li-strong-heart@2x.png": {
+    "file": "assets/img/li-strong-heart@2x.png",
+    "src": "src/assets/listicons/li-strong-heart@2x.png"
+  },
+  "src/assets/listicons/li-team@2x.png": {
+    "file": "assets/img/li-team@2x.png",
+    "src": "src/assets/listicons/li-team@2x.png"
+  },
+  "src/assets/listicons/li-telescope@2x.png": {
+    "file": "assets/img/li-telescope@2x.png",
+    "src": "src/assets/listicons/li-telescope@2x.png"
+  },
+  "src/assets/listicons/li-tomato@2x.png": {
+    "file": "assets/img/li-tomato@2x.png",
+    "src": "src/assets/listicons/li-tomato@2x.png"
+  },
+  "src/assets/listicons/li-tooth@2x.png": {
+    "file": "assets/img/li-tooth@2x.png",
+    "src": "src/assets/listicons/li-tooth@2x.png"
+  },
+  "src/assets/listicons/li-toy-bibiaa@2x.png": {
+    "file": "assets/img/li-toy-bibiaa@2x.png",
+    "src": "src/assets/listicons/li-toy-bibiaa@2x.png"
+  },
+  "src/assets/listicons/li-toy-octopus@2x.png": {
+    "file": "assets/img/li-toy-octopus@2x.png",
+    "src": "src/assets/listicons/li-toy-octopus@2x.png"
+  },
+  "src/assets/listicons/li-toy-pyramid@2x.png": {
+    "file": "assets/img/li-toy-pyramid@2x.png",
+    "src": "src/assets/listicons/li-toy-pyramid@2x.png"
+  },
+  "src/assets/listicons/li-toy-ship@2x.png": {
+    "file": "assets/img/li-toy-ship@2x.png",
+    "src": "src/assets/listicons/li-toy-ship@2x.png"
+  },
+  "src/assets/listicons/li-train-baby@2x.png": {
+    "file": "assets/img/li-train-baby@2x.png",
+    "src": "src/assets/listicons/li-train-baby@2x.png"
+  },
+  "src/assets/listicons/li-train@2x.png": {
+    "file": "assets/img/li-train@2x.png",
+    "src": "src/assets/listicons/li-train@2x.png"
+  },
+  "src/assets/listicons/li-translate@2x.png": {
+    "file": "assets/img/li-translate@2x.png",
+    "src": "src/assets/listicons/li-translate@2x.png"
+  },
+  "src/assets/listicons/li-travel@2x.png": {
+    "file": "assets/img/li-travel@2x.png",
+    "src": "src/assets/listicons/li-travel@2x.png"
+  },
+  "src/assets/listicons/li-trekking@2x.png": {
+    "file": "assets/img/li-trekking@2x.png",
+    "src": "src/assets/listicons/li-trekking@2x.png"
+  },
+  "src/assets/listicons/li-turtle@2x.png": {
+    "file": "assets/img/li-turtle@2x.png",
+    "src": "src/assets/listicons/li-turtle@2x.png"
+  },
+  "src/assets/listicons/li-vacations@2x.png": {
+    "file": "assets/img/li-vacations@2x.png",
+    "src": "src/assets/listicons/li-vacations@2x.png"
+  },
+  "src/assets/listicons/li-water@2x.png": {
+    "file": "assets/img/li-water@2x.png",
+    "src": "src/assets/listicons/li-water@2x.png"
+  },
+  "src/assets/listicons/li-wedding@2x.png": {
+    "file": "assets/img/li-wedding@2x.png",
+    "src": "src/assets/listicons/li-wedding@2x.png"
+  },
+  "src/assets/listicons/li-work@2x.png": {
+    "file": "assets/img/li-work@2x.png",
+    "src": "src/assets/listicons/li-work@2x.png"
+  },
+  "src/components/AlertAuthHeader.vue": {
+    "file": "assets/AlertAuthHeader-Cc43jJ9G.js",
+    "name": "AlertAuthHeader",
+    "src": "src/components/AlertAuthHeader.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_runtime-core.esm-bundler-xAaSbtBc.js",
+      "_ModalWrapperBody-CoNk4AiX.js"
+    ]
+  },
+  "src/components/TaskInfo.vue": {
+    "file": "assets/TaskInfo-BN4hWL2o.js",
+    "name": "TaskInfo",
+    "src": "src/components/TaskInfo.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_lodash-CA1kBJjW.js",
+      "index.html",
+      "_WaDropdown-B3PP01Zj.js",
+      "_priorities-HdQql_0E.js",
+      "_runtime-core.esm-bundler-xAaSbtBc.js",
+      "_core-Cq5Csd4-.js",
+      "_textToHtmlWithLinks-TyUfuO2y.js",
+      "_ContenteditableBlock-BVebOB67.js",
+      "_ContenteditableBlockClickable-BW846lBe.js"
+    ]
+  },
+  "src/layouts/SidebarLists.vue": {
+    "file": "assets/SidebarLists-BEche0lp.js",
+    "name": "SidebarLists",
+    "src": "src/layouts/SidebarLists.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_WaDropdown-B3PP01Zj.js",
+      "_runtime-core.esm-bundler-xAaSbtBc.js",
+      "_createListEmitter-BMaHGITK.js"
+    ]
+  },
+  "src/layouts/SidebarUser.vue": {
+    "file": "assets/SidebarUser-MRL_Jk19.js",
+    "name": "SidebarUser",
+    "src": "src/layouts/SidebarUser.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_priorities-HdQql_0E.js",
+      "_runtime-core.esm-bundler-xAaSbtBc.js",
+      "_createListEmitter-BMaHGITK.js"
+    ]
+  },
+  "src/pages/BetaView.vue": {
+    "file": "assets/BetaView-BeldXWIw.js",
+    "name": "BetaView",
+    "src": "src/pages/BetaView.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_lodash-CA1kBJjW.js",
+      "index.html",
+      "_runtime-core.esm-bundler-xAaSbtBc.js"
+    ]
+  },
+  "src/pages/CalendarView.vue": {
+    "file": "assets/CalendarView-CwUFi7E-.js",
+    "name": "CalendarView",
+    "src": "src/pages/CalendarView.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_lodash-CA1kBJjW.js",
+      "index.html",
+      "_WaDropdown-B3PP01Zj.js",
+      "_priorities-HdQql_0E.js",
+      "_runtime-core.esm-bundler-xAaSbtBc.js",
+      "_TaskList-DsV554Zo.js"
+    ]
+  },
+  "src/pages/CriteriaView.vue": {
+    "file": "assets/CriteriaView-oDxkEy-Y.js",
+    "name": "CriteriaView",
+    "src": "src/pages/CriteriaView.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_WaDropdown-B3PP01Zj.js",
+      "_runtime-core.esm-bundler-xAaSbtBc.js",
+      "_TaskList-DsV554Zo.js",
+      "_TaskListLayout-ILKmklSN.js"
+    ]
+  },
+  "src/pages/DueView.vue": {
+    "file": "assets/DueView-C91La_Lb.js",
+    "name": "DueView",
+    "src": "src/pages/DueView.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_WaDropdown-B3PP01Zj.js",
+      "_priorities-HdQql_0E.js",
+      "_runtime-core.esm-bundler-xAaSbtBc.js",
+      "_TaskList-DsV554Zo.js",
+      "_FilterBricks--G_AbNjI.js",
+      "_TaskListLayout-ILKmklSN.js"
+    ]
+  },
+  "src/pages/FiltersView.vue": {
+    "file": "assets/FiltersView-DJL60Npx.js",
+    "name": "FiltersView",
+    "src": "src/pages/FiltersView.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_plugin-vue-export-helper-BDNMzG2s.js",
+      "_runtime-core.esm-bundler-xAaSbtBc.js"
+    ]
+  },
+  "src/pages/FiltersViewNearby.vue": {
+    "file": "assets/FiltersViewNearby-n7S6EI4i.js",
+    "name": "FiltersViewNearby",
+    "src": "src/pages/FiltersViewNearby.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_WaDropdown-B3PP01Zj.js",
+      "_priorities-HdQql_0E.js",
+      "_runtime-core.esm-bundler-xAaSbtBc.js",
+      "_TaskList-DsV554Zo.js",
+      "_FilterBricks--G_AbNjI.js",
+      "_TaskListLayout-ILKmklSN.js"
+    ]
+  },
+  "src/pages/FiltersViewShop.vue": {
+    "file": "assets/FiltersViewShop-DUB8uv3e.js",
+    "name": "FiltersViewShop",
+    "src": "src/pages/FiltersViewShop.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_WaDropdown-B3PP01Zj.js",
+      "_priorities-HdQql_0E.js",
+      "_runtime-core.esm-bundler-xAaSbtBc.js",
+      "_TaskList-DsV554Zo.js",
+      "_FilterBricks--G_AbNjI.js",
+      "_TaskListLayout-ILKmklSN.js"
+    ]
+  },
+  "src/pages/FiltersViewTasks.vue": {
+    "file": "assets/FiltersViewTasks-CbapNOl3.js",
+    "name": "FiltersViewTasks",
+    "src": "src/pages/FiltersViewTasks.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_WaDropdown-B3PP01Zj.js",
+      "_priorities-HdQql_0E.js",
+      "_runtime-core.esm-bundler-xAaSbtBc.js",
+      "_TaskList-DsV554Zo.js",
+      "_FilterBricks--G_AbNjI.js",
+      "_TaskListLayout-ILKmklSN.js"
+    ]
+  },
+  "src/pages/FiltersViewСompleted.vue": {
+    "file": "assets/FiltersViewСompleted-BIXhKJBx.js",
+    "name": "FiltersViewСompleted",
+    "src": "src/pages/FiltersViewСompleted.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_WaDropdown-B3PP01Zj.js",
+      "_priorities-HdQql_0E.js",
+      "_runtime-core.esm-bundler-xAaSbtBc.js",
+      "_TaskList-DsV554Zo.js",
+      "_FilterBricks--G_AbNjI.js",
+      "_TaskListLayout-ILKmklSN.js"
+    ]
+  },
+  "src/pages/ListViewUser.vue": {
+    "file": "assets/ListViewUser-KpG8p8mR.js",
+    "name": "ListViewUser",
+    "src": "src/pages/ListViewUser.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_WaDropdown-B3PP01Zj.js",
+      "_priorities-HdQql_0E.js",
+      "_runtime-core.esm-bundler-xAaSbtBc.js",
+      "_TaskList-DsV554Zo.js",
+      "_TaskListLayout-ILKmklSN.js",
+      "_ListView-C64ELovA.js"
+    ]
+  },
+  "src/pages/NotFoundPage.vue": {
+    "file": "assets/NotFoundPage-BT_CbFrb.js",
+    "name": "NotFoundPage",
+    "src": "src/pages/NotFoundPage.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_plugin-vue-export-helper-BDNMzG2s.js"
+    ]
+  },
+  "src/pages/PriorityView.vue": {
+    "file": "assets/PriorityView-2OLYkr4i.js",
+    "name": "PriorityView",
+    "src": "src/pages/PriorityView.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_WaDropdown-B3PP01Zj.js",
+      "_priorities-HdQql_0E.js",
+      "_runtime-core.esm-bundler-xAaSbtBc.js",
+      "_TaskList-DsV554Zo.js",
+      "_FilterBricks--G_AbNjI.js",
+      "_TaskListLayout-ILKmklSN.js"
+    ]
+  },
+  "src/pages/SearchView.vue": {
+    "file": "assets/SearchView-BB3vL5Lc.js",
+    "name": "SearchView",
+    "src": "src/pages/SearchView.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_runtime-core.esm-bundler-xAaSbtBc.js",
+      "_TaskList-DsV554Zo.js",
+      "_TaskListLayout-ILKmklSN.js",
+      "_SearchForm-CO7UyeU3.js"
+    ]
+  },
+  "src/pages/SingleTask.vue": {
+    "file": "assets/SingleTask-DpkJl5Pv.js",
+    "name": "SingleTask",
+    "src": "src/pages/SingleTask.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_WaDropdown-B3PP01Zj.js",
+      "_runtime-core.esm-bundler-xAaSbtBc.js",
+      "_TaskListItemStoreProvider-BOoarx-6.js",
+      "_TaskListLayout-ILKmklSN.js"
+    ]
+  },
+  "src/pages/UpnextView.vue": {
+    "file": "assets/UpnextView-gV1gya2T.js",
+    "name": "UpnextView",
+    "src": "src/pages/UpnextView.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_WaDropdown-B3PP01Zj.js",
+      "_priorities-HdQql_0E.js",
+      "_runtime-core.esm-bundler-xAaSbtBc.js",
+      "_core-Cq5Csd4-.js",
+      "_TaskList-DsV554Zo.js",
+      "_FilterBricks--G_AbNjI.js",
+      "_TaskListLayout-ILKmklSN.js"
+    ]
+  },
+  "src/pages/UsersView.vue": {
+    "file": "assets/UsersView-NQVD1tcj.js",
+    "name": "UsersView",
+    "src": "src/pages/UsersView.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_priorities-HdQql_0E.js",
+      "_runtime-core.esm-bundler-xAaSbtBc.js"
+    ]
+  },
+  "src/pages/map/MapView.vue": {
+    "file": "assets/MapView-BRf4tgE8.js",
+    "name": "MapView",
+    "src": "src/pages/map/MapView.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_lodash-CA1kBJjW.js",
+      "index.html",
+      "_WaDropdown-B3PP01Zj.js",
+      "_priorities-HdQql_0E.js",
+      "_runtime-core.esm-bundler-xAaSbtBc.js",
+      "_core-Cq5Csd4-.js",
+      "_textToHtmlWithLinks-TyUfuO2y.js",
+      "_TaskList-DsV554Zo.js",
+      "_ContenteditableBlock-BVebOB67.js"
+    ],
+    "dynamicImports": [
+      "src/pages/map/MapYandex.vue"
+    ]
+  },
+  "src/pages/map/MapYandex.vue": {
+    "file": "assets/MapYandex-Aqhdl6dN.js",
+    "name": "MapYandex",
+    "src": "src/pages/map/MapYandex.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_esm-DZaZIQHl.js",
+      "_runtime-core.esm-bundler-xAaSbtBc.js",
+      "_core-Cq5Csd4-.js"
+    ]
+  },
+  "src/widgets/AppWidgetView.vue": {
+    "file": "assets/AppWidgetView-BUQ0e8Wl.js",
+    "name": "AppWidgetView",
+    "src": "src/widgets/AppWidgetView.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_runtime-core.esm-bundler-xAaSbtBc.js",
+      "_TaskList-DsV554Zo.js",
+      "_TaskListLayout-ILKmklSN.js",
+      "_iframeWidget-CXSBD853.js"
+    ]
+  },
+  "src/widgets/DashboardWidgetView.vue": {
+    "file": "assets/DashboardWidgetView-DQ8cVVpp.js",
+    "name": "DashboardWidgetView",
+    "src": "src/widgets/DashboardWidgetView.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_priorities-HdQql_0E.js",
+      "_runtime-core.esm-bundler-xAaSbtBc.js",
+      "_TaskList-DsV554Zo.js",
+      "_TaskListLayout-ILKmklSN.js",
+      "_iframeWidget-CXSBD853.js"
+    ]
+  },
+  "style.css": {
+    "file": "assets/style-CJ3r69tG.css",
+    "src": "style.css"
+  }
+}

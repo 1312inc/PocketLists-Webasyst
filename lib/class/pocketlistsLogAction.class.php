@@ -410,7 +410,7 @@ class pocketlistsLogAction
             $list_url = $this->app_url;
         }
 
-        $list_name = ($anchor ? htmlspecialchars($anchor) : htmlspecialchars($list->getName(), ENT_QUOTES));
+        $list_name = ($anchor ? htmlspecialchars($anchor) : htmlspecialchars((string) $list->getName(), ENT_QUOTES));
 
         return "<a href=\"$list_url\">$list_name</a>";
     }

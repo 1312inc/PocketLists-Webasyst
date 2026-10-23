@@ -85,11 +85,11 @@ class pocketlistsViewHelper
 
         if (wa()->getLocale() == 'ru_RU')
         {
-            $pricing = array( 'compare_price' => '15 999', 'price' => '5 399 <span class="ruble">₽</span>/год', 'special' => '', 'special_color' => 'purple' );
+            $pricing = array( 'compare_price' => '15 999', 'price' => '5 999 <span class="ruble">₽</span>/год', 'special' => '%', 'special_color' => 'purple' );
         }
         else
         {
-            $pricing = array( 'compare_price' => '$269', 'price' => '$89/yr', 'special' => '', 'special_color' => 'purple' );
+            $pricing = array( 'compare_price' => '$269', 'price' => '$99/yr', 'special' => '%', 'special_color' => 'purple' );
         }
 
         return $pricing;

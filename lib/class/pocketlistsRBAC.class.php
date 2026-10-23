@@ -506,6 +506,11 @@ class pocketlistsRBAC
         self::$lists[$userId][$listId] = $rightValue;
     }
 
+    public static function clearListUserRight()
+    {
+        self::$lists = [];
+    }
+
     /**
      * @return string
      */

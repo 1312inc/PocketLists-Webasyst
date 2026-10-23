@@ -41,7 +41,7 @@ class pocketlistsLocationsDeleteMethod extends pocketlistsApiAbstractMethod
             if (empty($_location['id'])) {
                 $_location['errors'][] = $this->getError(1043);
             } elseif (!is_numeric($_location['id'])) {
-                $_location['errors'][] = $this->getError(1044);
+                $_location['errors'][] = $this->getError(1044, $_location['id']);
             } elseif (!in_array($_location['id'], $location_ids)) {
                 $_location['success'] = true;
             }

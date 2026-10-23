@@ -16,12 +16,14 @@
                 <a href="#/labels/" data-pro-settings="labels"{if !$_fire_in_the_hole} class="opacity-50"{/if}>
                     <span class="icon"><i class="fas fa-tag"></i></span>
                     <span>[`Status labels`]</span>
+                    {if !$_fire_in_the_hole}<span class="count small"><i class="fas fa-star text-yellow"></i></span>{/if}
                 </a>
             </li>
             <li>
                 <a href="#/shortcuts/" data-pro-settings="shortcuts"{if !$_fire_in_the_hole} class="opacity-50"{/if}>
                     <span class="icon"><i class="fas fa-keyboard"></i></span>
                     <span>[`Shortcuts`]</span>
+                    {if !$_fire_in_the_hole}<span class="count small"><i class="fas fa-star text-yellow"></i></span>{/if}
                 </a>
             </li>
             {if $wa->shop}
@@ -29,6 +31,7 @@
                 <a href="#/shopscript/" data-pro-settings="shopscript"{if !$_fire_in_the_hole} class="opacity-50"{/if}>
                     <span class="icon"><i class="icon size-20" style="background-image: url('{$wa_url}wa-apps/shop/img/shop.png');"></i></span>
                     <span>[`Shop-Script`]</span>
+                    {if !$_fire_in_the_hole}<span class="count small"><i class="fas fa-star text-yellow"></i></span>{/if}
                 </a>
             </li>
             {/if}
@@ -40,6 +43,21 @@
                     {ifset($_.sidebar_li)}
                 {/foreach}
             {/if}
+
+            {if $_fire_in_the_hole}
+            <li class="top-padded">
+                <a href="{$wa_app_url}upgrade/">
+                    <span class="icon"><i class="fas fa-star"></i></span>
+                    <span>[`Premium`]</span>
+                </a>
+            </li>
+            {/if}
+            <li>
+                <a href="{$wa_app_url}beta/">
+                    <span class="icon"><i class="fas fa-flask"></i></span>
+                    <span>[`Beta`]</span>
+                </a>
+            </li>
         </ul>
     </div>
     {/if}

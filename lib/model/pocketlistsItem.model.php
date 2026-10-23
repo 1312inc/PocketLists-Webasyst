@@ -695,7 +695,8 @@ SQL;
 
         if (wa()->getUser()->getId() == $contact_id) {
             $sqlParts['where']['and'][] = '(
-                i.assigned_contact_id = i:contact_id
+            	(l.private = 1 AND i.contact_id = i:contact_id)
+                OR i.assigned_contact_id = i:contact_id
                 OR uf.contact_id
                 OR (
                     i.contact_id = i:contact_id
@@ -779,7 +780,9 @@ SQL;
             array_column($items_count, 'count')
         );
 
-        $sql_parts['where']['and'] = array_merge(['l.private = 1'], $sql_parts['where']['and']);
+        if (wa()->getUser()->getId() != $contact_id) {
+            $sql_parts['where']['and'] = array_merge(['l.private = 1'], $sql_parts['where']['and']);
+        }
         $private_items_count = $this->query(
             $this->buildSqlComponents($sql_parts),
             ['contact_id' => $contact_id, 'list_ids' => $lists]

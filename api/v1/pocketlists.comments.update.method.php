@@ -46,7 +46,7 @@ class pocketlistsCommentsUpdateMethod extends pocketlistsApiAbstractMethod
             if (empty($_comment['id'])) {
                 $_comment['errors'][] = $this->getError(1043);
             } elseif (!is_numeric($_comment['id'])) {
-                $_comment['errors'][] = $this->getError(1044);
+                $_comment['errors'][] = $this->getError(1044, $_comment['id']);
             } elseif (!array_key_exists($_comment['id'], $comment_in_db)) {
                 $_comment['errors'][] = $this->getError(3008);
             } elseif (empty($comment_in_db[$_comment['id']]['list_id']) || !in_array($comment_in_db[$_comment['id']]['list_id'], $list_id_available)) {
@@ -56,18 +56,18 @@ class pocketlistsCommentsUpdateMethod extends pocketlistsApiAbstractMethod
             if (!isset($_comment['comment'])) {
                 $_comment['errors'][] = $this->getError(3009);
             } elseif (!is_string($_comment['comment'])) {
-                $_comment['errors'][] = $this->getError(3006);
+                $_comment['errors'][] = $this->getError(3006, $_comment['comment']);
             }
 
             if (isset($_comment['client_touch_datetime'])) {
                 if (!is_string($_comment['client_touch_datetime'])) {
-                    $_comment['errors'][] = $this->getError(1023);
+                    $_comment['errors'][] = $this->getError(1023, $_comment['client_touch_datetime']);
                 } else {
                     $dt = date_create($_comment['client_touch_datetime']);
                     if ($dt) {
                         $_comment['client_touch_datetime'] = $dt->format('Y-m-d H:i:s');
                     } else {
-                        $_comment['errors'][] = $this->getError(1024);
+                        $_comment['errors'][] = $this->getError(1024, $_comment['client_touch_datetime']);
                     }
                 }
             }

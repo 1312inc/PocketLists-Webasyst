@@ -81,6 +81,8 @@ class pocketlistsDefaultLayout extends waLayout
         $app_settings = new waAppSettingsModel();
         $install_hash = $app_settings->get(pocketlistsHelper::APP_ID, 'install_hash');
 
+        $spa_assets = pocketlistsHelper::getSpaEntryAssets();
+
         $this->view->assign([
             pocketlistsEventStorage::WA_BACKEND_HEAD => $eventResult,
             'isAdmin' => (int) pocketlistsRBAC::isAdmin(),
@@ -101,7 +103,9 @@ class pocketlistsDefaultLayout extends waLayout
             'framework_version' => wa()->getVersion('webasyst'),
             'app_version' => wa()->getVersion(pocketlistsHelper::APP_ID),
             'is_premium' => ($is_premium ? 1 : 0),
-            'pl_debug_mode' => (wa()->getSetting('pl_debug_mode', 0) ? 1 : 0)
+            'pl_debug_mode' => (wa()->getSetting('pl_debug_mode', 0) ? 1 : 0),
+            'spa_js' => $spa_assets['js'],
+            'spa_css' => $spa_assets['css'],
         ]);
     }
 }

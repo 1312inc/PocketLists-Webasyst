@@ -19,9 +19,9 @@
     <script type="text/javascript" src="{$wa_url}wa-content/js/jquery-plugins/jquery.tmpl.min.js"></script>
     <script type="text/javascript" src="{$wa_url}wa-content/js/jquery-wa/wa.core.js"></script>
     <script type="text/javascript" src="{$wa_app_static_url}js/pocketlists-ws-monitor.js?v3{if !waSystemConfig::isDebug()}{$wa->version()}{/if}"></script>
-    
-    <script type="module" crossorigin src="{$wa_app_static_url}client/assets/index-kXPKW7GD.js"></script>
-    <link rel="stylesheet" crossorigin href="{$wa_app_static_url}client/assets/index-DVyFbDnm.css">
+
+    <script type="module" crossorigin src="{$wa_app_static_url}client/{$spa_js}"></script>
+    <link rel="stylesheet" crossorigin href="{$wa_app_static_url}client/{$spa_css}">
 
     <script>
         window.appState = {
@@ -90,8 +90,21 @@
                                     <a href="{$wa_app_url}settings/">
                                         <i class="fas fa-cog"></i>
                                         <span>[`Settings`]</span>
+                                        <span class="count icon custom-mr-2" title="[`Socket connection status`]">
+                                            <i class="js-pl-ws-status rounded smaller custom-mt-4" style="background: var(--light-gray);"></i>
+                                        </span>
                                     </a>
                                 </li>
+                                {if $isAdmin && !$is_premium}
+                                <li class="rounded">
+                                    <a href="{$wa_app_url}upgrade/">
+                                        <i class="fas fa-star{if !$is_premium} text-yellow{/if}"></i>
+                                        <span>[`Premium`]</span>
+                                        {$p = $wa->pocketlists->getPremiumPricing()}
+                                        {if !empty($p.special)}<span class="count"><span class="badge small {$p.special_color}">{$p.special}</span></span>{/if}
+                                    </a>
+                                </li>
+                                {/if}
                                 {*
                                 <li class="rounded top-padded">
                                     <a href="{$wa_app_url}about/">
@@ -101,27 +114,7 @@
                                     </a>
                                 </li>
                                 *}
-                                {if $isAdmin}
-                                <li class="rounded top-padded">
-                                    <a href="{$wa_app_url}upgrade/">
-                                        <i class="fas fa-star{if !$is_premium} text-yellow{/if}"></i>
-                                        <span>[`Premium`]</span>
-                                        {if !$is_premium}
-                                            {$p = $wa->pocketlists->getPremiumPricing()}
-                                            {if !empty($p.special_short)}<span class="count"><span class="badge small {$p.special_color}">{$p.special_short}</span></span>{/if}
-                                        {/if}
-                                    </a>
-                                </li>
-                                {/if}
-                                <li class="rounded">
-                                    <a href="{$wa_app_url}beta/">
-                                        <i class="fas fa-flask"></i>
-                                        <span>[`Beta`]</span>
-                                        <span class="count icon" title="[`Socket connection status`]">
-                                            <i class="js-pl-ws-status rounded smaller custom-mt-4" style="background: var(--light-gray);"></i>
-                                        </span>
-                                    </a>
-                                </li>
+
                             </ul>
                         </div>
                     </div>

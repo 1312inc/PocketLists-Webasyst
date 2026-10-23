@@ -42,7 +42,7 @@ class pocketlistsListsDeleteMethod extends pocketlistsApiAbstractMethod
             if (empty($_list['id'])) {
                 $_list['errors'][] = $this->getError(1043);
             } elseif (!is_numeric($_list['id'])) {
-                $_list['errors'][] = $this->getError(1044);
+                $_list['errors'][] = $this->getError(1044, $_list['id']);
             } elseif (!in_array($_list['id'], $list_ids)) {
                 $_list['success'] = true;
             }
