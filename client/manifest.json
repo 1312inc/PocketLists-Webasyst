@@ -8,8 +8,8 @@
       "_plugin-vue-export-helper-BDNMzG2s.js"
     ]
   },
-  "_ContenteditableBlockClickable-BzXTk8NX.js": {
-    "file": "assets/ContenteditableBlockClickable-BzXTk8NX.js",
+  "_ContenteditableBlockClickable-CPYso4IR.js": {
+    "file": "assets/ContenteditableBlockClickable-CPYso4IR.js",
     "name": "ContenteditableBlockClickable",
     "imports": [
       "_runtime-core.esm-bundler-H60MIBff.js",
@@ -17,119 +17,119 @@
       "_ContenteditableBlock-BqLih0rr.js"
     ]
   },
-  "_FilterBricks-CG5l_7fz.js": {
-    "file": "assets/FilterBricks-CG5l_7fz.js",
+  "_FilterBricks-DMtHcQxv.js": {
+    "file": "assets/FilterBricks-DMtHcQxv.js",
     "name": "FilterBricks",
     "imports": [
       "_runtime-core.esm-bundler-H60MIBff.js",
-      "_lodash-BuzILMYQ.js",
-      "_priorities-Cq875rpN.js",
+      "_lodash-Cee_l_zi.js",
+      "_priorities-CBcjq3-d.js",
       "index.html",
-      "_textToHtmlWithLinks-BMrE8t2s.js"
+      "_textToHtmlWithLinks-DZ6dIyVw.js"
     ]
   },
-  "_ListView-DbIfAeLM.js": {
-    "file": "assets/ListView-DbIfAeLM.js",
+  "_ListView-BXMA4MaD.js": {
+    "file": "assets/ListView-BXMA4MaD.js",
     "name": "ListView",
     "imports": [
       "_rolldown-runtime-XKyaHtl9.js",
       "_runtime-core.esm-bundler-H60MIBff.js",
-      "_lodash-BuzILMYQ.js",
-      "_priorities-Cq875rpN.js",
-      "_WaDropdown-CR0kMU0g.js",
-      "_TaskList-BPH5-3p9.js",
-      "_completedList-aivvvOnz.js",
+      "_lodash-Cee_l_zi.js",
+      "_priorities-CBcjq3-d.js",
+      "_WaDropdown-B8jMabGE.js",
+      "_TaskList-CLpT_Rvc.js",
+      "_completedList-4uwCsG3I.js",
       "index.html",
       "_ContenteditableBlock-BqLih0rr.js",
-      "_TaskListLayout-CeoLgacd.js"
+      "_TaskListLayout-BIkbh74O.js"
     ]
   },
-  "_ModalWrapperBody-Fm0TMJOM.js": {
-    "file": "assets/ModalWrapperBody-Fm0TMJOM.js",
+  "_ModalWrapperBody-DMnYpqrJ.js": {
+    "file": "assets/ModalWrapperBody-DMnYpqrJ.js",
     "name": "ModalWrapperBody",
     "imports": [
       "_runtime-core.esm-bundler-H60MIBff.js",
       "index.html"
     ]
   },
-  "_SearchForm-DguJ8Qfm.js": {
-    "file": "assets/SearchForm-DguJ8Qfm.js",
+  "_SearchForm-B6-sWVCq.js": {
+    "file": "assets/SearchForm-B6-sWVCq.js",
     "name": "SearchForm",
     "imports": [
       "_runtime-core.esm-bundler-H60MIBff.js",
-      "_WaDropdown-CR0kMU0g.js",
+      "_WaDropdown-B8jMabGE.js",
       "index.html"
     ]
   },
-  "_SortableList-Du18OM08.js": {
-    "file": "assets/SortableList-Du18OM08.js",
+  "_SortableList-CXH_hawz.js": {
+    "file": "assets/SortableList-CXH_hawz.js",
     "name": "SortableList",
     "imports": [
       "_runtime-core.esm-bundler-H60MIBff.js",
-      "_core-C7IWAwVW.js",
-      "_WaDropdown-CR0kMU0g.js"
+      "_core-C6MWnVoJ.js",
+      "_WaDropdown-B8jMabGE.js"
     ]
   },
-  "_TaskList-BPH5-3p9.js": {
-    "file": "assets/TaskList-BPH5-3p9.js",
+  "_TaskList-CLpT_Rvc.js": {
+    "file": "assets/TaskList-CLpT_Rvc.js",
     "name": "TaskList",
     "imports": [
       "_runtime-core.esm-bundler-H60MIBff.js",
-      "_lodash-BuzILMYQ.js",
-      "_core-C7IWAwVW.js",
-      "_priorities-Cq875rpN.js",
-      "_WaDropdown-CR0kMU0g.js",
+      "_lodash-Cee_l_zi.js",
+      "_core-C6MWnVoJ.js",
+      "_priorities-CBcjq3-d.js",
+      "_WaDropdown-B8jMabGE.js",
       "_sanitizer-DY2IDDYI.js",
       "index.html",
-      "_ModalWrapperBody-Fm0TMJOM.js",
-      "_SortableList-Du18OM08.js",
-      "_TaskListItemStoreProvider-Dl2egFRD.js"
+      "_ModalWrapperBody-DMnYpqrJ.js",
+      "_SortableList-CXH_hawz.js",
+      "_TaskListItemStoreProvider-BzN6SbP_.js"
     ]
   },
-  "_TaskListItemStoreProvider-Dl2egFRD.js": {
-    "file": "assets/TaskListItemStoreProvider-Dl2egFRD.js",
+  "_TaskListItemStoreProvider-BzN6SbP_.js": {
+    "file": "assets/TaskListItemStoreProvider-BzN6SbP_.js",
     "name": "TaskListItemStoreProvider",
     "imports": [
       "_runtime-core.esm-bundler-H60MIBff.js",
-      "_lodash-BuzILMYQ.js",
-      "_core-C7IWAwVW.js",
-      "_priorities-Cq875rpN.js",
-      "_WaDropdown-CR0kMU0g.js",
+      "_lodash-Cee_l_zi.js",
+      "_core-C6MWnVoJ.js",
+      "_priorities-CBcjq3-d.js",
+      "_WaDropdown-B8jMabGE.js",
       "_sanitizer-DY2IDDYI.js",
       "index.html",
-      "_textToHtmlWithLinks-BMrE8t2s.js"
+      "_textToHtmlWithLinks-DZ6dIyVw.js"
     ]
   },
-  "_TaskListLayout-CeoLgacd.js": {
-    "file": "assets/TaskListLayout-CeoLgacd.js",
+  "_TaskListLayout-BIkbh74O.js": {
+    "file": "assets/TaskListLayout-BIkbh74O.js",
     "name": "TaskListLayout",
     "imports": [
       "_runtime-core.esm-bundler-H60MIBff.js",
-      "_lodash-BuzILMYQ.js",
-      "_priorities-Cq875rpN.js",
-      "_WaDropdown-CR0kMU0g.js",
+      "_lodash-Cee_l_zi.js",
+      "_priorities-CBcjq3-d.js",
+      "_WaDropdown-B8jMabGE.js",
       "_plugin-vue-export-helper-BDNMzG2s.js",
       "index.html",
-      "_ModalWrapperBody-Fm0TMJOM.js",
-      "_textToHtmlWithLinks-BMrE8t2s.js",
-      "_li-yeme-whisky@2x-DzDObf9t.js"
+      "_ModalWrapperBody-DMnYpqrJ.js",
+      "_textToHtmlWithLinks-DZ6dIyVw.js",
+      "_li-yeme-whisky@2x-CRiDSENo.js"
     ]
   },
-  "_WaDropdown-CR0kMU0g.js": {
-    "file": "assets/WaDropdown-CR0kMU0g.js",
+  "_WaDropdown-B8jMabGE.js": {
+    "file": "assets/WaDropdown-B8jMabGE.js",
     "name": "WaDropdown",
     "imports": [
       "_rolldown-runtime-XKyaHtl9.js",
       "_runtime-core.esm-bundler-H60MIBff.js",
-      "_lodash-BuzILMYQ.js",
-      "_core-C7IWAwVW.js",
-      "_priorities-Cq875rpN.js",
+      "_lodash-Cee_l_zi.js",
+      "_core-C6MWnVoJ.js",
+      "_priorities-CBcjq3-d.js",
       "_esm-D2nccjtC.js",
       "_plugin-vue-export-helper-BDNMzG2s.js"
     ],
     "dynamicImports": [
       "src/components/TaskInfo.vue",
-      "_ListView-DbIfAeLM.js",
+      "_ListView-BXMA4MaD.js",
       "src/layouts/SidebarLists.vue",
       "src/pages/FiltersView.vue",
       "src/pages/UpnextView.vue",
@@ -153,464 +153,571 @@
       "src/pages/NotFoundPage.vue"
     ],
     "assets": [
-      "assets/img/pl-dummy-logo.webp"
+      "assets/img/pl-dummy-logo-BfwCozjH.webp"
     ]
   },
-  "_completedList-aivvvOnz.js": {
-    "file": "assets/completedList-aivvvOnz.js",
+  "_completedList-4uwCsG3I.js": {
+    "file": "assets/completedList-4uwCsG3I.js",
     "name": "completedList",
     "imports": [
       "_runtime-core.esm-bundler-H60MIBff.js",
-      "_priorities-Cq875rpN.js",
-      "_WaDropdown-CR0kMU0g.js"
+      "_priorities-CBcjq3-d.js",
+      "_WaDropdown-B8jMabGE.js"
     ]
   },
-  "_core-C7IWAwVW.js": {
-    "file": "assets/core-C7IWAwVW.js",
+  "_core-C6MWnVoJ.js": {
+    "file": "assets/core-C6MWnVoJ.js",
     "name": "core",
     "imports": [
       "_runtime-core.esm-bundler-H60MIBff.js"
     ]
   },
-  "_createListEmitter-Ctqg7f91.js": {
-    "file": "assets/createListEmitter-Ctqg7f91.js",
+  "_createListEmitter-CBs29TM9.js": {
+    "file": "assets/createListEmitter-CBs29TM9.js",
     "name": "createListEmitter",
     "imports": [
       "_runtime-core.esm-bundler-H60MIBff.js",
-      "_lodash-BuzILMYQ.js",
-      "_core-C7IWAwVW.js",
-      "_priorities-Cq875rpN.js",
-      "_WaDropdown-CR0kMU0g.js",
+      "_lodash-Cee_l_zi.js",
+      "_core-C6MWnVoJ.js",
+      "_priorities-CBcjq3-d.js",
+      "_WaDropdown-B8jMabGE.js",
       "index.html",
       "_ContenteditableBlock-BqLih0rr.js",
-      "_ContenteditableBlockClickable-BzXTk8NX.js",
-      "_SearchForm-DguJ8Qfm.js",
-      "_SortableList-Du18OM08.js",
-      "_li-yeme-whisky@2x-DzDObf9t.js"
+      "_ContenteditableBlockClickable-CPYso4IR.js",
+      "_SearchForm-B6-sWVCq.js",
+      "_SortableList-CXH_hawz.js",
+      "_li-yeme-whisky@2x-CRiDSENo.js"
     ],
     "assets": [
-      "assets/img/pl-list-icons-mix.webp"
+      "assets/img/pl-list-icons-mix-ZQRdQPuM.webp"
     ]
   },
   "_esm-D2nccjtC.js": {
     "file": "assets/esm-D2nccjtC.js",
     "name": "esm"
   },
-  "_iframeWidget--UY_0Z7A.js": {
-    "file": "assets/iframeWidget--UY_0Z7A.js",
+  "_iframeWidget-DxRyb2sq.js": {
+    "file": "assets/iframeWidget-DxRyb2sq.js",
     "name": "iframeWidget",
     "imports": [
       "_runtime-core.esm-bundler-H60MIBff.js",
-      "_core-C7IWAwVW.js"
+      "_core-C6MWnVoJ.js"
     ]
   },
-  "_li-yeme-whisky@2x-DzDObf9t.js": {
-    "file": "assets/li-yeme-whisky@2x-DzDObf9t.js",
+  "_li-yeme-whisky@2x-CRiDSENo.js": {
+    "file": "assets/li-yeme-whisky@2x-CRiDSENo.js",
     "name": "li-yeme-whisky@2x",
     "assets": [
-      "assets/img/li-a-to-b@2x.png",
-      "assets/img/li-abc@2x.png",
-      "assets/img/li-achtung@2x.png",
-      "assets/img/li-alarm@2x.png",
-      "assets/img/li-ambulance@2x.png",
-      "assets/img/li-antlers@2x.png",
-      "assets/img/li-award@2x.png",
-      "assets/img/li-baby-foot@2x.png",
-      "assets/img/li-baby-walker@2x.png",
-      "assets/img/li-babytoy@2x.png",
-      "assets/img/li-bag@2x.png",
-      "assets/img/li-barcode@2x.png",
-      "assets/img/li-bath@2x.png",
-      "assets/img/li-bee@2x.png",
-      "assets/img/li-beer@2x.png",
-      "assets/img/li-bell@2x.png",
-      "assets/img/li-billiard@2x.png",
-      "assets/img/li-bird-nest@2x.png",
-      "assets/img/li-blackberries@2x.png",
-      "assets/img/li-blackboard@2x.png",
-      "assets/img/li-blood@2x.png",
-      "assets/img/li-bomb@2x.png",
-      "assets/img/li-bone@2x.png",
-      "assets/img/li-boy-child@2x.png",
-      "assets/img/li-brush@2x.png",
-      "assets/img/li-bucket@2x.png",
-      "assets/img/li-bug-fixing@2x.png",
-      "assets/img/li-butterfly@2x.png",
-      "assets/img/li-cabin@2x.png",
-      "assets/img/li-cable@2x.png",
-      "assets/img/li-cactus@2x.png",
-      "assets/img/li-calcuator@2x.png",
-      "assets/img/li-camber-jumping@2x.png",
-      "assets/img/li-camera@2x.png",
-      "assets/img/li-campfire@2x.png",
-      "assets/img/li-cart@2x.png",
-      "assets/img/li-casino@2x.png",
-      "assets/img/li-cat@2x.png",
-      "assets/img/li-chair@2x.png",
-      "assets/img/li-champagne@2x.png",
-      "assets/img/li-checkmark@2x.png",
-      "assets/img/li-chinese-lantern@2x.png",
-      "assets/img/li-christmas-sack@2x.png",
-      "assets/img/li-chronometer@2x.png",
-      "assets/img/li-church@2x.png",
-      "assets/img/li-cleaning@2x.png",
-      "assets/img/li-clock@2x.png",
-      "assets/img/li-coins@2x.png",
-      "assets/img/li-collar@2x.png",
-      "assets/img/li-color-palette@2x.png",
-      "assets/img/li-color-wheel@2x.png",
-      "assets/img/li-compass@2x.png",
-      "assets/img/li-construction@2x.png",
-      "assets/img/li-crawler@2x.png",
-      "assets/img/li-cuttlefish@2x.png",
-      "assets/img/li-david-star@2x.png",
-      "assets/img/li-delivery@2x.png",
-      "assets/img/li-desk-printer@2x.png",
-      "assets/img/li-diagram@2x.png",
-      "assets/img/li-diving@2x.png",
-      "assets/img/li-doctor@2x.png",
-      "assets/img/li-dog@2x.png",
-      "assets/img/li-domain-registration@2x.png",
-      "assets/img/li-download@2x.png",
-      "assets/img/li-easter-bunny@2x.png",
-      "assets/img/li-easter-egg@2x.png",
-      "assets/img/li-egg@2x.png",
-      "assets/img/li-experiment-results@2x.png",
-      "assets/img/li-farm-sheep@2x.png",
-      "assets/img/li-first-prize-medal@2x.png",
-      "assets/img/li-fish@2x.png",
-      "assets/img/li-fishing@2x.png",
-      "assets/img/li-flag-abkhazia@2x.png",
-      "assets/img/li-flag-algeria@2x.png",
-      "assets/img/li-flag-argentina@2x.png",
-      "assets/img/li-flag-australia@2x.png",
-      "assets/img/li-flag-belarus@2x.png",
-      "assets/img/li-flag-brazil@2x.png",
-      "assets/img/li-flag-cameroon@2x.png",
-      "assets/img/li-flag-canada@2x.png",
-      "assets/img/li-flag-chile@2x.png",
-      "assets/img/li-flag-china@2x.png",
-      "assets/img/li-flag-costa-rica@2x.png",
-      "assets/img/li-flag-croatia@2x.png",
-      "assets/img/li-flag-cuba@2x.png",
-      "assets/img/li-flag-cyprus@2x.png",
-      "assets/img/li-flag-czech-republic@2x.png",
-      "assets/img/li-flag-denmark@2x.png",
-      "assets/img/li-flag-egypt@2x.png",
-      "assets/img/li-flag-eu@2x.png",
-      "assets/img/li-flag-france@2x.png",
-      "assets/img/li-flag-georgia@2x.png",
-      "assets/img/li-flag-greece@2x.png",
-      "assets/img/li-flag-hongkong@2x.png",
-      "assets/img/li-flag-iceland@2x.png",
-      "assets/img/li-flag-india@2x.png",
-      "assets/img/li-flag-israel@2x.png",
-      "assets/img/li-flag-jamaica@2x.png",
-      "assets/img/li-flag-japan@2x.png",
-      "assets/img/li-flag-kenya@2x.png",
-      "assets/img/li-flag-korea@2x.png",
-      "assets/img/li-flag-luxembourg@2x.png",
-      "assets/img/li-flag-mexico@2x.png",
-      "assets/img/li-flag-moldova@2x.png",
-      "assets/img/li-flag-morocco@2x.png",
-      "assets/img/li-flag-namibia@2x.png",
-      "assets/img/li-flag-nepal@2x.png",
-      "assets/img/li-flag-netherlands@2x.png",
-      "assets/img/li-flag-new-zealand@2x.png",
-      "assets/img/li-flag-niger@2x.png",
-      "assets/img/li-flag-north-korea@2x.png",
-      "assets/img/li-flag-norway@2x.png",
-      "assets/img/li-flag-palestine@2x.png",
-      "assets/img/li-flag-panama@2x.png",
-      "assets/img/li-flag-peru@2x.png",
-      "assets/img/li-flag-philippines@2x.png",
-      "assets/img/li-flag-pirate@2x.png",
-      "assets/img/li-flag-portugal@2x.png",
-      "assets/img/li-flag-scotland@2x.png",
-      "assets/img/li-flag-slovakia@2x.png",
-      "assets/img/li-flag-slovenia@2x.png",
-      "assets/img/li-flag-south-africa@2x.png",
-      "assets/img/li-flag-sudan@2x.png",
-      "assets/img/li-flag-suriname@2x.png",
-      "assets/img/li-flag-sweden@2x.png",
-      "assets/img/li-flag-thailand@2x.png",
-      "assets/img/li-flag-turkey@2x.png",
-      "assets/img/li-flag-uk@2x.png",
-      "assets/img/li-flag-ukraine@2x.png",
-      "assets/img/li-flag-uruguay@2x.png",
-      "assets/img/li-flag-usa@2x.png",
-      "assets/img/li-flag-venezuela@2x.png",
-      "assets/img/li-flag-vietnam@2x.png",
-      "assets/img/li-flag1@2x.png",
-      "assets/img/li-folders@2x.png",
-      "assets/img/li-football@2x.png",
-      "assets/img/li-gift@2x.png",
-      "assets/img/li-glasses@2x.png",
-      "assets/img/li-globe@2x.png",
-      "assets/img/li-glove@2x.png",
-      "assets/img/li-grocery@2x.png",
-      "assets/img/li-gym@2x.png",
-      "assets/img/li-hamburger@2x.png",
-      "assets/img/li-hammok@2x.png",
-      "assets/img/li-hanukkah@2x.png",
-      "assets/img/li-helicopter@2x.png",
-      "assets/img/li-home@2x.png",
-      "assets/img/li-hotdog@2x.png",
-      "assets/img/li-idea@2x.png",
-      "assets/img/li-invoice@2x.png",
-      "assets/img/li-jungle@2x.png",
-      "assets/img/li-ladybug@2x.png",
-      "assets/img/li-leaf@2x.png",
-      "assets/img/li-lion@2x.png",
-      "assets/img/li-lobster@2x.png",
-      "assets/img/li-lock@2x.png",
-      "assets/img/li-longboard@2x.png",
-      "assets/img/li-loudspeaker@2x.png",
-      "assets/img/li-luck@2x.png",
-      "assets/img/li-macaroons@2x.png",
-      "assets/img/li-magnet@2x.png",
-      "assets/img/li-medicine@2x.png",
-      "assets/img/li-mission@2x.png",
-      "assets/img/li-money@2x.png",
-      "assets/img/li-monkey@2x.png",
-      "assets/img/li-motorcycle@2x.png",
-      "assets/img/li-notes1@2x.png",
-      "assets/img/li-nuclear@2x.png",
-      "assets/img/li-octopus@2x.png",
-      "assets/img/li-olympic-rings@2x.png",
-      "assets/img/li-om@2x.png",
-      "assets/img/li-orange@2x.png",
-      "assets/img/li-paid-alarmclock@2x.png",
-      "assets/img/li-paid-animal@2x.png",
-      "assets/img/li-paid-apple@2x.png",
-      "assets/img/li-paid-avocado@2x.png",
-      "assets/img/li-paid-baby@2x.png",
-      "assets/img/li-paid-baloons@2x.png",
-      "assets/img/li-paid-banana@2x.png",
-      "assets/img/li-paid-baseball@2x.png",
-      "assets/img/li-paid-basketball@2x.png",
-      "assets/img/li-paid-bear@2x.png",
-      "assets/img/li-paid-bicycle@2x.png",
-      "assets/img/li-paid-birthday@2x.png",
-      "assets/img/li-paid-bread@2x.png",
-      "assets/img/li-paid-candy@2x.png",
-      "assets/img/li-paid-carrot@2x.png",
-      "assets/img/li-paid-cherry@2x.png",
-      "assets/img/li-paid-chicken@2x.png",
-      "assets/img/li-paid-christmas@2x.png",
-      "assets/img/li-paid-cocktail@2x.png",
-      "assets/img/li-paid-coffee@2x.png",
-      "assets/img/li-paid-corn@2x.png",
-      "assets/img/li-paid-diamond@2x.png",
-      "assets/img/li-paid-discount@2x.png",
-      "assets/img/li-paid-dj@2x.png",
-      "assets/img/li-paid-dogcat@2x.png",
-      "assets/img/li-paid-eggs@2x.png",
-      "assets/img/li-paid-fire-ext@2x.png",
-      "assets/img/li-paid-flower@2x.png",
-      "assets/img/li-paid-gamecontroller@2x.png",
-      "assets/img/li-paid-globe@2x.png",
-      "assets/img/li-paid-icecream@2x.png",
-      "assets/img/li-paid-klmn@2x.png",
-      "assets/img/li-paid-map@2x.png",
-      "assets/img/li-paid-microphone@2x.png",
-      "assets/img/li-paid-newspaper@2x.png",
-      "assets/img/li-paid-notepad@2x.png",
-      "assets/img/li-paid-pear@2x.png",
-      "assets/img/li-paid-pizza@2x.png",
-      "assets/img/li-paid-rain@2x.png",
-      "assets/img/li-paid-safebox@2x.png",
-      "assets/img/li-paid-scissors@2x.png",
-      "assets/img/li-paid-snow@2x.png",
-      "assets/img/li-paid-spaghetti@2x.png",
-      "assets/img/li-paid-starbucks@2x.png",
-      "assets/img/li-paid-steak@2x.png",
-      "assets/img/li-paid-sun@2x.png",
-      "assets/img/li-paid-tie@2x.png",
-      "assets/img/li-paid-trash@2x.png",
-      "assets/img/li-paid-ufo@2x.png",
-      "assets/img/li-paid-umbrella@2x.png",
-      "assets/img/li-paid-wine-glass@2x.png",
-      "assets/img/li-paid2-arrows@2x.png",
-      "assets/img/li-paid2-boxes@2x.png",
-      "assets/img/li-paid2-camera@2x.png",
-      "assets/img/li-paid2-car@2x.png",
-      "assets/img/li-paid2-chat@2x.png",
-      "assets/img/li-paid2-checkmark@2x.png",
-      "assets/img/li-paid2-christmas-ball@2x.png",
-      "assets/img/li-paid2-christmas-stocking@2x.png",
-      "assets/img/li-paid2-clock@2x.png",
-      "assets/img/li-paid2-crab@2x.png",
-      "assets/img/li-paid2-gingerbread@2x.png",
-      "assets/img/li-paid2-guitar@2x.png",
-      "assets/img/li-paid2-hotspot@2x.png",
-      "assets/img/li-paid2-location@2x.png",
-      "assets/img/li-paid2-mistletoe@2x.png",
-      "assets/img/li-paid2-santa@2x.png",
-      "assets/img/li-paid2-snowman@2x.png",
-      "assets/img/li-paid2-tent@2x.png",
-      "assets/img/li-paid3-goal@2x.png",
-      "assets/img/li-paid3-userpic-hipster@2x.png",
-      "assets/img/li-paid3-userpic-lady@2x.png",
-      "assets/img/li-paid3-userpic-man@2x.png",
-      "assets/img/li-paid3-userpic-steve@2x.png",
-      "assets/img/li-paid4-christmas-calendar@2x.png",
-      "assets/img/li-paid4-christmas-candy@2x.png",
-      "assets/img/li-paid4-christmas-cocktail@2x.png",
-      "assets/img/li-paid4-christmas-giftbox2@2x.png",
-      "assets/img/li-paid4-christmas-giftbox@2x.png",
-      "assets/img/li-paid4-christmas-gingerbread@2x.png",
-      "assets/img/li-paid4-christmas-glass@2x.png",
-      "assets/img/li-paid4-christmas-globes@2x.png",
-      "assets/img/li-paid4-christmas-gloves@2x.png",
-      "assets/img/li-paid4-christmas-house@2x.png",
-      "assets/img/li-paid4-christmas-reindeer@2x.png",
-      "assets/img/li-paid4-christmas-sale@2x.png",
-      "assets/img/li-paid4-christmas-santa@2x.png",
-      "assets/img/li-paid4-christmas-sleigh@2x.png",
-      "assets/img/li-paid4-christmas-snowman@2x.png",
-      "assets/img/li-paid4-christmas-tree@2x.png",
-      "assets/img/li-palette@2x.png",
-      "assets/img/li-panda@2x.png",
-      "assets/img/li-parrot@2x.png",
-      "assets/img/li-passport@2x.png",
-      "assets/img/li-pencil@2x.png",
-      "assets/img/li-people@2x.png",
-      "assets/img/li-pet-fish@2x.png",
-      "assets/img/li-petard@2x.png",
-      "assets/img/li-phone@2x.png",
-      "assets/img/li-piggy@2x.png",
-      "assets/img/li-pin-code@2x.png",
-      "assets/img/li-pineapple@2x.png",
-      "assets/img/li-pl201811-atom@2x.png",
-      "assets/img/li-pl201811-bird@2x.png",
-      "assets/img/li-pl201811-books@2x.png",
-      "assets/img/li-pl201811-bot@2x.png",
-      "assets/img/li-pl201811-camera@2x.png",
-      "assets/img/li-pl201811-clothing@2x.png",
-      "assets/img/li-pl201811-cmyk@2x.png",
-      "assets/img/li-pl201811-crypto@2x.png",
-      "assets/img/li-pl201811-dontdisturb@2x.png",
-      "assets/img/li-pl201811-earthlove@2x.png",
-      "assets/img/li-pl201811-ecoplant@2x.png",
-      "assets/img/li-pl201811-fox@2x.png",
-      "assets/img/li-pl201811-free@2x.png",
-      "assets/img/li-pl201811-hanger@2x.png",
-      "assets/img/li-pl201811-herbal@2x.png",
-      "assets/img/li-pl201811-hotel@2x.png",
-      "assets/img/li-pl201811-invitations@2x.png",
-      "assets/img/li-pl201811-locations@2x.png",
-      "assets/img/li-pl201811-mouse@2x.png",
-      "assets/img/li-pl201811-navigator@2x.png",
-      "assets/img/li-pl201811-network@2x.png",
-      "assets/img/li-pl201811-online@2x.png",
-      "assets/img/li-pl201811-parking@2x.png",
-      "assets/img/li-pl201811-penguin@2x.png",
-      "assets/img/li-pl201811-pills@2x.png",
-      "assets/img/li-pl201811-plug@2x.png",
-      "assets/img/li-pl201811-pool@2x.png",
-      "assets/img/li-pl201811-preza@2x.png",
-      "assets/img/li-pl201811-pumpkin@2x.png",
-      "assets/img/li-pl201811-rgb@2x.png",
-      "assets/img/li-pl201811-samples@2x.png",
-      "assets/img/li-pl201811-school@2x.png",
-      "assets/img/li-pl201811-shoe@2x.png",
-      "assets/img/li-pl201811-shovel@2x.png",
-      "assets/img/li-pl201811-sofa@2x.png",
-      "assets/img/li-pl201811-solar@2x.png",
-      "assets/img/li-pl201811-speaker@2x.png",
-      "assets/img/li-pl201811-theatre@2x.png",
-      "assets/img/li-pl201811-toolkit@2x.png",
-      "assets/img/li-pl201811-trafficlight@2x.png",
-      "assets/img/li-pl201811-treadmill@2x.png",
-      "assets/img/li-pl201811-wateringcan@2x.png",
-      "assets/img/li-pl201811-wheelbarrow@2x.png",
-      "assets/img/li-pl201812-candle@2x.png",
-      "assets/img/li-pl201812-cupcake@2x.png",
-      "assets/img/li-pl201812-earbuds@2x.png",
-      "assets/img/li-pl201812-giftcard@2x.png",
-      "assets/img/li-pl201812-glove@2x.png",
-      "assets/img/li-pl201812-hat@2x.png",
-      "assets/img/li-pl201812-jacket@2x.png",
-      "assets/img/li-pl201812-ornament@2x.png",
-      "assets/img/li-pl201812-risingstar@2x.png",
-      "assets/img/li-pl201812-skilift@2x.png",
-      "assets/img/li-pl201812-snowboard@2x.png",
-      "assets/img/li-pl201812-snowcloud@2x.png",
-      "assets/img/li-pl201812-snowglobe@2x.png",
-      "assets/img/li-pl201812-snowledge@2x.png",
-      "assets/img/li-pl201812-snowmountains@2x.png",
-      "assets/img/li-pl201812-snowshovel@2x.png",
-      "assets/img/li-pl201812-snowskates@2x.png",
-      "assets/img/li-pl201812-snowvillage@2x.png",
-      "assets/img/li-pl201812-snowwindow@2x.png",
-      "assets/img/li-pl201813-1312@2x.png",
-      "assets/img/li-pl201813-pocketlists@2x.png",
-      "assets/img/li-pl201813-shopscript@2x.png",
-      "assets/img/li-pl201813-webasyst@2x.png",
-      "assets/img/li-plane@2x.png",
-      "assets/img/li-plant@2x.png",
-      "assets/img/li-pointer@2x.png",
-      "assets/img/li-poop@2x.png",
-      "assets/img/li-post-box@2x.png",
-      "assets/img/li-power1@2x.png",
-      "assets/img/li-presentation@2x.png",
-      "assets/img/li-puzzle@2x.png",
-      "assets/img/li-rafting@2x.png",
-      "assets/img/li-ramadan@2x.png",
-      "assets/img/li-recipe@2x.png",
-      "assets/img/li-route@2x.png",
-      "assets/img/li-ruler-pencil@2x.png",
-      "assets/img/li-sale@2x.png",
-      "assets/img/li-scanner@2x.png",
-      "assets/img/li-school-backpack@2x.png",
-      "assets/img/li-schoolbus@2x.png",
-      "assets/img/li-search-location@2x.png",
-      "assets/img/li-service@2x.png",
-      "assets/img/li-shinto@2x.png",
-      "assets/img/li-ship@2x.png",
-      "assets/img/li-shop@2x.png",
-      "assets/img/li-shopping2@2x.png",
-      "assets/img/li-shower@2x.png",
-      "assets/img/li-shrimp@2x.png",
-      "assets/img/li-shuttlecock@2x.png",
-      "assets/img/li-signs@2x.png",
-      "assets/img/li-ski@2x.png",
-      "assets/img/li-soska@2x.png",
-      "assets/img/li-speedometer@2x.png",
-      "assets/img/li-star@2x.png",
-      "assets/img/li-steak@2x.png",
-      "assets/img/li-steering-wheel@2x.png",
-      "assets/img/li-stethoscope@2x.png",
-      "assets/img/li-strawberry@2x.png",
-      "assets/img/li-strong-heart@2x.png",
-      "assets/img/li-team@2x.png",
-      "assets/img/li-telescope@2x.png",
-      "assets/img/li-tomato@2x.png",
-      "assets/img/li-tooth@2x.png",
-      "assets/img/li-toy-bibiaa@2x.png",
-      "assets/img/li-toy-octopus@2x.png",
-      "assets/img/li-toy-pyramid@2x.png",
-      "assets/img/li-toy-ship@2x.png",
-      "assets/img/li-train-baby@2x.png",
-      "assets/img/li-train@2x.png",
-      "assets/img/li-translate@2x.png",
-      "assets/img/li-travel@2x.png",
-      "assets/img/li-trekking@2x.png",
-      "assets/img/li-turtle@2x.png",
-      "assets/img/li-vacations@2x.png",
-      "assets/img/li-water@2x.png",
-      "assets/img/li-wedding@2x.png",
-      "assets/img/li-work@2x.png"
+      "assets/img/li-a-to-b@2x-BeVDxAsL.png",
+      "assets/img/li-abc@2x-CQgPYwAa.png",
+      "assets/img/li-achtung@2x-DOWwejcL.png",
+      "assets/img/li-alarm@2x-BQO0kURj.png",
+      "assets/img/li-ambulance@2x-DEOdrKgC.png",
+      "assets/img/li-antlers@2x-nk7bkKSJ.png",
+      "assets/img/li-award@2x-BYqQvvFo.png",
+      "assets/img/li-baby-foot@2x-BKQtNK93.png",
+      "assets/img/li-baby-walker@2x-QtwyC9PL.png",
+      "assets/img/li-babytoy@2x-Cje3Fr83.png",
+      "assets/img/li-bag@2x-6RdWCmMH.png",
+      "assets/img/li-barcode@2x-NJD_zfyn.png",
+      "assets/img/li-bath@2x-Ds2y8ufI.png",
+      "assets/img/li-bee@2x-CsZdz98K.png",
+      "assets/img/li-beer@2x-CAabnnd2.png",
+      "assets/img/li-bell@2x-BcouRWO0.png",
+      "assets/img/li-billiard@2x-ofnpP_OL.png",
+      "assets/img/li-bird-nest@2x-B32RJwJx.png",
+      "assets/img/li-blackberries@2x-BGuCoFk1.png",
+      "assets/img/li-blackboard@2x-v3cYheRH.png",
+      "assets/img/li-blood@2x-B-x3QWKg.png",
+      "assets/img/li-bomb@2x-DSwV-PDd.png",
+      "assets/img/li-bone@2x-C-qk7SS2.png",
+      "assets/img/li-books@2x-ChsOGRBY.png",
+      "assets/img/li-boot@2x-CjGsk847.png",
+      "assets/img/li-boy-child@2x-Cck3Kffg.png",
+      "assets/img/li-brush@2x-fpaFrEex.png",
+      "assets/img/li-bucket@2x-DD7Eg9ps.png",
+      "assets/img/li-bug-fixing@2x-Bi_QOxko.png",
+      "assets/img/li-butterfly@2x-htqkpFmx.png",
+      "assets/img/li-cabin@2x-BkW7TFYR.png",
+      "assets/img/li-cable@2x-DZnnQlpB.png",
+      "assets/img/li-cactus@2x-Cz8pQ3iv.png",
+      "assets/img/li-calcuator@2x-C0op_Xz1.png",
+      "assets/img/li-calendar-notavailable@2x-CRZLXmvK.png",
+      "assets/img/li-calendar@2x-BJ8swD71.png",
+      "assets/img/li-camber-jumping@2x-DPCvUGow.png",
+      "assets/img/li-camera@2x-DXQk5RvR.png",
+      "assets/img/li-campfire@2x-DswxxW-s.png",
+      "assets/img/li-cart@2x-UembE1ch.png",
+      "assets/img/li-casino@2x-Ck7VeWMt.png",
+      "assets/img/li-cat@2x-Cz7P3lv7.png",
+      "assets/img/li-chair@2x-DtqepvT4.png",
+      "assets/img/li-champagne@2x-GgE-pDIz.png",
+      "assets/img/li-checkmark@2x-rZQP4lQu.png",
+      "assets/img/li-checkout@2x-yOWQAdp6.png",
+      "assets/img/li-cheese@2x-5My2uaCE.png",
+      "assets/img/li-chess@2x-CGJVOOVC.png",
+      "assets/img/li-chinese-lantern@2x-BFZni9_d.png",
+      "assets/img/li-christmas-sack@2x-Cf13PO2c.png",
+      "assets/img/li-chronometer@2x-CeweATjL.png",
+      "assets/img/li-church@2x-CjuZaVjL.png",
+      "assets/img/li-cleaning@2x-BNll5rG1.png",
+      "assets/img/li-clock@2x-B95lCjas.png",
+      "assets/img/li-coins@2x-iG98tTBl.png",
+      "assets/img/li-collar@2x-tUkqeWal.png",
+      "assets/img/li-color-palette@2x-BnGW3QUY.png",
+      "assets/img/li-color-wheel@2x-CMUqbQFf.png",
+      "assets/img/li-compass@2x-D0J1Wpfq.png",
+      "assets/img/li-construction@2x-CDOs60Gw.png",
+      "assets/img/li-contact@2x-DWUVMxiM.png",
+      "assets/img/li-crawler@2x-DEBjHtKz.png",
+      "assets/img/li-cuttlefish@2x-D8Xnzs-2.png",
+      "assets/img/li-david-star@2x-BSjxg_OY.png",
+      "assets/img/li-delivery@2x-CeelpgXr.png",
+      "assets/img/li-desk-printer@2x-lB36-C4R.png",
+      "assets/img/li-diagram@2x-DlG0BgBH.png",
+      "assets/img/li-diving@2x-lbvxXFwG.png",
+      "assets/img/li-doctor@2x-2w4kpBPW.png",
+      "assets/img/li-dog@2x-Df6T__nl.png",
+      "assets/img/li-domain-registration@2x-BAW0QUgm.png",
+      "assets/img/li-download@2x-Bx8Uqoe2.png",
+      "assets/img/li-easter-bunny@2x-omf9q_OJ.png",
+      "assets/img/li-easter-egg@2x-BYcfuIck.png",
+      "assets/img/li-egg@2x-nIcm5rHd.png",
+      "assets/img/li-experiment-results@2x-CdrlPd-D.png",
+      "assets/img/li-eye-test@2x-Dkgoc1Ci.png",
+      "assets/img/li-facebook@2x-CeXXEQRG.png",
+      "assets/img/li-farm-sheep@2x-DX1Y0ybj.png",
+      "assets/img/li-first-prize-medal@2x-OLDIaLDs.png",
+      "assets/img/li-fish@2x-BQY9fSMA.png",
+      "assets/img/li-fishing@2x-DLfsVBeN.png",
+      "assets/img/li-flag-abkhazia@2x-BGCB6OVf.png",
+      "assets/img/li-flag-algeria@2x-zK6N94Vh.png",
+      "assets/img/li-flag-argentina@2x-BmsYdmnR.png",
+      "assets/img/li-flag-australia@2x-BSjopNQa.png",
+      "assets/img/li-flag-belarus@2x-Bf-mNfWQ.png",
+      "assets/img/li-flag-belgium@2x-BoBvbxGc.png",
+      "assets/img/li-flag-brazil@2x-c0Xs6cb6.png",
+      "assets/img/li-flag-bulgaria@2x-Bocsycia.png",
+      "assets/img/li-flag-cameroon@2x-BVh65vvt.png",
+      "assets/img/li-flag-canada@2x-Cii7qeer.png",
+      "assets/img/li-flag-canary-islands@2x-DGxEy9Ga.png",
+      "assets/img/li-flag-chile@2x-D6m4zB4v.png",
+      "assets/img/li-flag-china@2x-_EiIKpxI.png",
+      "assets/img/li-flag-colombia@2x-CwNKZJZq.png",
+      "assets/img/li-flag-costa-rica@2x-hyOuqGzh.png",
+      "assets/img/li-flag-croatia@2x-BqSF4PY1.png",
+      "assets/img/li-flag-cuba@2x-CVPv9dib.png",
+      "assets/img/li-flag-cyprus@2x-BPRvkhDh.png",
+      "assets/img/li-flag-czech-republic@2x-C20b92-5.png",
+      "assets/img/li-flag-denmark@2x-CL4qecSN.png",
+      "assets/img/li-flag-egypt@2x-CpDZasix.png",
+      "assets/img/li-flag-england@2x-BJpsnoo5.png",
+      "assets/img/li-flag-estonia@2x-DNwAmwVl.png",
+      "assets/img/li-flag-eu@2x-CXQUN6LM.png",
+      "assets/img/li-flag-finland@2x-BRuZvTBq.png",
+      "assets/img/li-flag-france@2x-0QacGdfQ.png",
+      "assets/img/li-flag-georgia@2x-By44w8Gr.png",
+      "assets/img/li-flag-germany@2x-ZlV6_daV.png",
+      "assets/img/li-flag-greece@2x-D2Rcda4D.png",
+      "assets/img/li-flag-hongkong@2x-l1t1kdR_.png",
+      "assets/img/li-flag-hungary@2x-B9KvZFAI.png",
+      "assets/img/li-flag-iceland@2x-D2dqdHdS.png",
+      "assets/img/li-flag-india@2x-js1sjr0H.png",
+      "assets/img/li-flag-indonesia@2x-XMPD1iVf.png",
+      "assets/img/li-flag-israel@2x-CeRKUfnQ.png",
+      "assets/img/li-flag-italy@2x-jfPhWcnX.png",
+      "assets/img/li-flag-jamaica@2x-D-ry_FRv.png",
+      "assets/img/li-flag-japan@2x-Bjun7TV9.png",
+      "assets/img/li-flag-kenya@2x-BWvCclWH.png",
+      "assets/img/li-flag-korea@2x-Cm6a10-J.png",
+      "assets/img/li-flag-lithuania@2x-CS62xFpN.png",
+      "assets/img/li-flag-luxembourg@2x-n0kx3cQ3.png",
+      "assets/img/li-flag-mexico@2x-BzXvs1RS.png",
+      "assets/img/li-flag-moldova@2x-BFyiPc9i.png",
+      "assets/img/li-flag-monaco@2x-D0NpJVHu.png",
+      "assets/img/li-flag-morocco@2x-CfFfiG0o.png",
+      "assets/img/li-flag-namibia@2x-XS5HhK2F.png",
+      "assets/img/li-flag-nepal@2x-zipRxzxT.png",
+      "assets/img/li-flag-netherlands@2x-CYi2bA8p.png",
+      "assets/img/li-flag-new-zealand@2x-DrTC8i07.png",
+      "assets/img/li-flag-niger@2x-Bs5uyOV7.png",
+      "assets/img/li-flag-north-korea@2x-hMMb7FP8.png",
+      "assets/img/li-flag-norway@2x-CW7RcSoj.png",
+      "assets/img/li-flag-palestine@2x-DbwxbYVm.png",
+      "assets/img/li-flag-panama@2x-CQpcKuP1.png",
+      "assets/img/li-flag-peru@2x-CZD4poJv.png",
+      "assets/img/li-flag-philippines@2x-DxgJhF8V.png",
+      "assets/img/li-flag-pirate@2x-jDy3KK4D.png",
+      "assets/img/li-flag-poland@2x-BAxAUmev.png",
+      "assets/img/li-flag-portugal@2x-H08lTw_h.png",
+      "assets/img/li-flag-republic-of-the-congo@2x-BwoqgsBq.png",
+      "assets/img/li-flag-romania@2x-BqJMf4Ua.png",
+      "assets/img/li-flag-russia@2x-B7Rk4YhS.png",
+      "assets/img/li-flag-scotland@2x-DYpCUzNq.png",
+      "assets/img/li-flag-slovakia@2x-CPkb1ex4.png",
+      "assets/img/li-flag-slovenia@2x-L0JG_ThQ.png",
+      "assets/img/li-flag-south-africa@2x-CaBJvIkR.png",
+      "assets/img/li-flag-spain@2x-DxdrrzJT.png",
+      "assets/img/li-flag-sudan@2x-CJQbfHSd.png",
+      "assets/img/li-flag-suriname@2x-D753opx7.png",
+      "assets/img/li-flag-sweden@2x-B0_7Vgxc.png",
+      "assets/img/li-flag-switzerland@2x-C1MGvWg5.png",
+      "assets/img/li-flag-thailand@2x-BtiL0ODh.png",
+      "assets/img/li-flag-turkey@2x-B6ZzqwXl.png",
+      "assets/img/li-flag-uk@2x-DrNhUaYG.png",
+      "assets/img/li-flag-ukraine@2x-Ce6MLgwd.png",
+      "assets/img/li-flag-uruguay@2x-nXDueudK.png",
+      "assets/img/li-flag-usa@2x-BnYLrGGN.png",
+      "assets/img/li-flag-venezuela@2x-dB2Vqnq3.png",
+      "assets/img/li-flag-vietnam@2x-BjAflQCJ.png",
+      "assets/img/li-flag1@2x-DxXMbiqJ.png",
+      "assets/img/li-folders@2x-BU4KxGfV.png",
+      "assets/img/li-football@2x-B-cAc4Y8.png",
+      "assets/img/li-gift@2x-DUewNF_T.png",
+      "assets/img/li-giftcard@2x-WYpZ87jf.png",
+      "assets/img/li-glasses@2x-BmkjVVV3.png",
+      "assets/img/li-globe@2x-Ck2Rkqy_.png",
+      "assets/img/li-glove@2x-BWPJDfHb.png",
+      "assets/img/li-grocery@2x-CjbK_K7q.png",
+      "assets/img/li-gym@2x-CbJNgaEM.png",
+      "assets/img/li-hamburger@2x-DY1hWmGy.png",
+      "assets/img/li-hammok@2x-kSnjERZn.png",
+      "assets/img/li-hanukkah@2x-NWR4DxjJ.png",
+      "assets/img/li-helicopter@2x-Drjpxlia.png",
+      "assets/img/li-home@2x-BTFxMMl_.png",
+      "assets/img/li-hotdog@2x-DNf5e2vT.png",
+      "assets/img/li-idea@2x-B1RO3joU.png",
+      "assets/img/li-invoice@2x-Dfld3667.png",
+      "assets/img/li-jungle@2x-4vpAwpso.png",
+      "assets/img/li-ladybug@2x-CAAv1Olv.png",
+      "assets/img/li-leaf@2x-oQEJOom-.png",
+      "assets/img/li-lion@2x-DKd0Lq0l.png",
+      "assets/img/li-list2@2x-DsljDjxD.png",
+      "assets/img/li-list3@2x-LK_H4fTG.png",
+      "assets/img/li-list4@2x-sgif3J_p.png",
+      "assets/img/li-list@2x-BUGi3qwf.png",
+      "assets/img/li-lobster@2x-DPi6obWS.png",
+      "assets/img/li-lock@2x-BHlVawdH.png",
+      "assets/img/li-longboard@2x-Bywe7jWK.png",
+      "assets/img/li-loudspeaker@2x-_XSL-r82.png",
+      "assets/img/li-luck@2x-DpLPgpRp.png",
+      "assets/img/li-macaroons@2x-BUjA1YGk.png",
+      "assets/img/li-magnet@2x-DEzL2P-P.png",
+      "assets/img/li-medicine@2x-DKUPo5Mj.png",
+      "assets/img/li-milk@2x-CYZn6Myx.png",
+      "assets/img/li-mission@2x-CmATobpv.png",
+      "assets/img/li-money@2x-CRvD1q-H.png",
+      "assets/img/li-monkey@2x-rcX7g_lA.png",
+      "assets/img/li-motorcycle@2x-1k9p5p9u.png",
+      "assets/img/li-notes1@2x-CwDx6dqd.png",
+      "assets/img/li-nuclear@2x-xp_U2xAk.png",
+      "assets/img/li-octopus@2x-D7RJV-Hf.png",
+      "assets/img/li-olympic-rings@2x-CPbZVAag.png",
+      "assets/img/li-om@2x-CqELLEow.png",
+      "assets/img/li-orange@2x-CtHxRMRP.png",
+      "assets/img/li-paid-alarmclock@2x-Doc6iIva.png",
+      "assets/img/li-paid-alien@2x-Ciw37tq2.png",
+      "assets/img/li-paid-animal@2x-dnDMSB1M.png",
+      "assets/img/li-paid-apple@2x-CZ6AYQxM.png",
+      "assets/img/li-paid-armchair@2x-DrX34rw_.png",
+      "assets/img/li-paid-avocado@2x-CQAT38by.png",
+      "assets/img/li-paid-baby@2x-DtmRqkx_.png",
+      "assets/img/li-paid-babybottle@2x-BoWuaMPg.png",
+      "assets/img/li-paid-baloons@2x-BfTppq94.png",
+      "assets/img/li-paid-banana@2x-B0FOYzKi.png",
+      "assets/img/li-paid-baseball@2x-DF3rr3Vl.png",
+      "assets/img/li-paid-basketball@2x-DpdQguly.png",
+      "assets/img/li-paid-bear@2x-CrnGTdOu.png",
+      "assets/img/li-paid-bed@2x-D7C3SKsh.png",
+      "assets/img/li-paid-bicycle@2x-dvII3eco.png",
+      "assets/img/li-paid-birthday@2x-J-hW6u2O.png",
+      "assets/img/li-paid-bread@2x-DLI4lmfv.png",
+      "assets/img/li-paid-candy@2x-D4h6-gUJ.png",
+      "assets/img/li-paid-carrot@2x-D4EaQwe4.png",
+      "assets/img/li-paid-cherry@2x-BoPt4eix.png",
+      "assets/img/li-paid-chestofdraws@2x-BYgJdBhz.png",
+      "assets/img/li-paid-chicken@2x-DOyop_S6.png",
+      "assets/img/li-paid-christmas@2x-HqmqMX1E.png",
+      "assets/img/li-paid-cloud-sun@2x-CMrDGjSM.png",
+      "assets/img/li-paid-cocktail@2x-C5XDiULJ.png",
+      "assets/img/li-paid-coffee@2x-DeOJrMpP.png",
+      "assets/img/li-paid-corn@2x-CVta5ff3.png",
+      "assets/img/li-paid-desk@2x-Bei_M9wB.png",
+      "assets/img/li-paid-diamond@2x-ByTgAmpO.png",
+      "assets/img/li-paid-discount@2x-c8mCf4mN.png",
+      "assets/img/li-paid-diskette@2x-DHkywoEV.png",
+      "assets/img/li-paid-dj@2x-DJM8lL3X.png",
+      "assets/img/li-paid-dogcat@2x-DQoCwYm_.png",
+      "assets/img/li-paid-education@2x-Db8HVPs2.png",
+      "assets/img/li-paid-eggs@2x-CqypnpzP.png",
+      "assets/img/li-paid-fire-ext@2x-DXNrDz1o.png",
+      "assets/img/li-paid-flashlight@2x-CX3IFkML.png",
+      "assets/img/li-paid-flower@2x-BgbQNyjx.png",
+      "assets/img/li-paid-football@2x-Cu6OUNwp.png",
+      "assets/img/li-paid-gameboy@2x-F9BAVg3T.png",
+      "assets/img/li-paid-gamecontroller@2x-08dAbSZF.png",
+      "assets/img/li-paid-globe@2x-EGXDxx0T.png",
+      "assets/img/li-paid-hammer@2x-CqbmWLuc.png",
+      "assets/img/li-paid-hanger@2x-CALCREEc.png",
+      "assets/img/li-paid-icecream@2x-DQsuAej-.png",
+      "assets/img/li-paid-imac@2x-BjjIQ10s.png",
+      "assets/img/li-paid-klmn@2x-Bf-I9rR3.png",
+      "assets/img/li-paid-knives@2x-BXJho6Rc.png",
+      "assets/img/li-paid-lollipops@2x-B_j2kogD.png",
+      "assets/img/li-paid-map@2x-Boc7sHwz.png",
+      "assets/img/li-paid-microphone@2x-DjtLbs0A.png",
+      "assets/img/li-paid-music@2x-CZVj8lEd.png",
+      "assets/img/li-paid-newspaper@2x-cMUHDT-v.png",
+      "assets/img/li-paid-notepad@2x-CSAWdRgu.png",
+      "assets/img/li-paid-paint@2x-DipdS-P7.png",
+      "assets/img/li-paid-paintbrush@2x-D-dUamfK.png",
+      "assets/img/li-paid-pan@2x-DIZYFjJm.png",
+      "assets/img/li-paid-pear@2x-CJHoHYWG.png",
+      "assets/img/li-paid-pin@2x-5howdFTF.png",
+      "assets/img/li-paid-pizza@2x-Dehc58dT.png",
+      "assets/img/li-paid-rain@2x-D_v-PuDt.png",
+      "assets/img/li-paid-run@2x-B-yeUJAB.png",
+      "assets/img/li-paid-safebox@2x-CKYnzP2e.png",
+      "assets/img/li-paid-saturn@2x-JZAKkggp.png",
+      "assets/img/li-paid-scissors@2x-q6HA1x-P.png",
+      "assets/img/li-paid-scoop@2x-dnFgolkh.png",
+      "assets/img/li-paid-snow@2x-DV-yJa2Y.png",
+      "assets/img/li-paid-sock@2x-DYBV2o8g.png",
+      "assets/img/li-paid-spaghetti@2x-C8KmqaEI.png",
+      "assets/img/li-paid-starbucks@2x-CPIfy2CS.png",
+      "assets/img/li-paid-steak@2x-BU4JNTA0.png",
+      "assets/img/li-paid-sun@2x-DUJcqzzM.png",
+      "assets/img/li-paid-thermo@2x-CN-2OhLs.png",
+      "assets/img/li-paid-thunderstorm@2x-BHWzmrng.png",
+      "assets/img/li-paid-tie@2x-CUWdaIT9.png",
+      "assets/img/li-paid-trash@2x-DlvRFZPL.png",
+      "assets/img/li-paid-tv@2x-BK5ILuEG.png",
+      "assets/img/li-paid-ufo@2x-C73MBV9F.png",
+      "assets/img/li-paid-umbrella@2x-qjlrxKRd.png",
+      "assets/img/li-paid-wardrobe@2x-TNka5krt.png",
+      "assets/img/li-paid-watermelon@2x-C165nRcv.png",
+      "assets/img/li-paid-whisky-bottle@2x-OkW5kAT-.png",
+      "assets/img/li-paid-wine-bottle@2x-CvRgcZ3H.png",
+      "assets/img/li-paid-wine-glass@2x-zTBBa9Wy.png",
+      "assets/img/li-paid2-arrows@2x-C-luc68o.png",
+      "assets/img/li-paid2-boxes@2x-BPO_ys0R.png",
+      "assets/img/li-paid2-camera@2x-Dl8elqlX.png",
+      "assets/img/li-paid2-car@2x-DGKJ72-A.png",
+      "assets/img/li-paid2-chat@2x-DH8V_1J0.png",
+      "assets/img/li-paid2-checkmark@2x-CRPwSr9Y.png",
+      "assets/img/li-paid2-christmas-ball@2x-LYzLmA9n.png",
+      "assets/img/li-paid2-christmas-stocking@2x-sIjvKXHC.png",
+      "assets/img/li-paid2-clock@2x-BtVxfHRo.png",
+      "assets/img/li-paid2-crab@2x-BMN_mjAH.png",
+      "assets/img/li-paid2-gingerbread@2x-BRj6u7mU.png",
+      "assets/img/li-paid2-guitar@2x-Ce2iJg49.png",
+      "assets/img/li-paid2-hotspot@2x-CzZlC2ZI.png",
+      "assets/img/li-paid2-iphone@2x-BNVKADRw.png",
+      "assets/img/li-paid2-keys@2x-CXkdcRU2.png",
+      "assets/img/li-paid2-ladies-shoe@2x-Bewec0Ex.png",
+      "assets/img/li-paid2-landscape@2x-12N_KQuf.png",
+      "assets/img/li-paid2-location@2x-D5oF44M7.png",
+      "assets/img/li-paid2-mistletoe@2x-DKSOp64I.png",
+      "assets/img/li-paid2-santa@2x-C8Qu97HE.png",
+      "assets/img/li-paid2-snowman@2x-BzwPLhpG.png",
+      "assets/img/li-paid2-sunglasses@2x-BleLy6wd.png",
+      "assets/img/li-paid2-tent@2x-D0nMB5FX.png",
+      "assets/img/li-paid2-yinyang@2x-DDPDzTRt.png",
+      "assets/img/li-paid3-anchor@2x-BpmyN6FL.png",
+      "assets/img/li-paid3-apple@2x-Ce8-FCQz.png",
+      "assets/img/li-paid3-bookmark@2x-Bu-ujcQQ.png",
+      "assets/img/li-paid3-goal@2x--4sKBQWD.png",
+      "assets/img/li-paid3-ribbon@2x-DnALI_p8.png",
+      "assets/img/li-paid3-smiley-happy@2x-DlPWieF_.png",
+      "assets/img/li-paid3-smiley-unhappy@2x-DY5aNaZ0.png",
+      "assets/img/li-paid3-trafficlight@2x-BV8iReRE.png",
+      "assets/img/li-paid3-userpic-hipster@2x-Dh1QEIRq.png",
+      "assets/img/li-paid3-userpic-lady@2x-BRGeVKKf.png",
+      "assets/img/li-paid3-userpic-man@2x-RMHgYjaW.png",
+      "assets/img/li-paid3-userpic-steve@2x-x2fgRl18.png",
+      "assets/img/li-paid4-christmas-calendar@2x-CWIBVBHu.png",
+      "assets/img/li-paid4-christmas-candy@2x-wt34q9tt.png",
+      "assets/img/li-paid4-christmas-cocktail@2x-Blq5DJSE.png",
+      "assets/img/li-paid4-christmas-giftbox2@2x-CfBec48o.png",
+      "assets/img/li-paid4-christmas-giftbox@2x-BHAB-eJm.png",
+      "assets/img/li-paid4-christmas-gingerbread@2x-RSR5q4ZR.png",
+      "assets/img/li-paid4-christmas-glass@2x-ydesV2tx.png",
+      "assets/img/li-paid4-christmas-globes@2x-CZLBm3yD.png",
+      "assets/img/li-paid4-christmas-gloves@2x-D9Cmjsm5.png",
+      "assets/img/li-paid4-christmas-house@2x-BO1DyadJ.png",
+      "assets/img/li-paid4-christmas-reindeer@2x-CywHq2YL.png",
+      "assets/img/li-paid4-christmas-sale@2x-CJkL1S3R.png",
+      "assets/img/li-paid4-christmas-santa@2x-XQdO2lkb.png",
+      "assets/img/li-paid4-christmas-sleigh@2x-Co-xSRZ2.png",
+      "assets/img/li-paid4-christmas-snowman@2x-RPeVVAhp.png",
+      "assets/img/li-paid4-christmas-tree@2x-C0Dh09LA.png",
+      "assets/img/li-palette@2x-B6KyO6X4.png",
+      "assets/img/li-panda@2x-D8G_KU85.png",
+      "assets/img/li-parrot@2x-DTpOI5n8.png",
+      "assets/img/li-passport@2x-G7I5Yle4.png",
+      "assets/img/li-peace@2x-C-KlHm4E.png",
+      "assets/img/li-pencil@2x-Cqa9AWCy.png",
+      "assets/img/li-people@2x-DHXpUqZh.png",
+      "assets/img/li-pet-fish@2x-DqabMflu.png",
+      "assets/img/li-petard@2x-2SM4OgfB.png",
+      "assets/img/li-phone@2x-D9QgrmCy.png",
+      "assets/img/li-piano@2x-BokrAQnM.png",
+      "assets/img/li-pie@2x-BkVFNia3.png",
+      "assets/img/li-piggy@2x-BUExw8Ox.png",
+      "assets/img/li-pills@2x-sVhvMFt4.png",
+      "assets/img/li-pin-code@2x-KB8nLWqL.png",
+      "assets/img/li-pineapple@2x-m5OOA8wX.png",
+      "assets/img/li-pl201811-atom@2x-DPnSyyCa.png",
+      "assets/img/li-pl201811-bed@2x-BwX__XGM.png",
+      "assets/img/li-pl201811-bird@2x-D3TfyWX7.png",
+      "assets/img/li-pl201811-books@2x-CuOcNE4Z.png",
+      "assets/img/li-pl201811-bot@2x-CM8ek1Uh.png",
+      "assets/img/li-pl201811-camera@2x-CeF0INzJ.png",
+      "assets/img/li-pl201811-cemetery@2x-fSKhfZT6.png",
+      "assets/img/li-pl201811-clothing@2x-IKpsFs7j.png",
+      "assets/img/li-pl201811-cmyk@2x-DHNj-_1S.png",
+      "assets/img/li-pl201811-cream@2x-DxV4-nNP.png",
+      "assets/img/li-pl201811-crypto@2x-CIkYNn9T.png",
+      "assets/img/li-pl201811-docs@2x-oVxf_1cM.png",
+      "assets/img/li-pl201811-dontdisturb@2x-C9j2dVFh.png",
+      "assets/img/li-pl201811-earthlove@2x-BXIJMAEd.png",
+      "assets/img/li-pl201811-ecoplant@2x-DJr1hh6L.png",
+      "assets/img/li-pl201811-fox@2x-DlPwItAc.png",
+      "assets/img/li-pl201811-free@2x-CfPse9O1.png",
+      "assets/img/li-pl201811-hanger@2x-CqNOztTR.png",
+      "assets/img/li-pl201811-herbal@2x-D5Ds_c2t.png",
+      "assets/img/li-pl201811-hotel@2x-BllvgMSd.png",
+      "assets/img/li-pl201811-invitations@2x-C9E1OE6D.png",
+      "assets/img/li-pl201811-locations@2x-DrEubZBb.png",
+      "assets/img/li-pl201811-mouse@2x-C0fDGPIz.png",
+      "assets/img/li-pl201811-navigator@2x-DaFPQuhF.png",
+      "assets/img/li-pl201811-network@2x-WIDHu7Z9.png",
+      "assets/img/li-pl201811-notebook@2x-C4siN_Hu.png",
+      "assets/img/li-pl201811-online@2x-BxUck3ry.png",
+      "assets/img/li-pl201811-parking@2x-D-oe3Ax2.png",
+      "assets/img/li-pl201811-penguin@2x-CvtU6fcJ.png",
+      "assets/img/li-pl201811-pills@2x-CobLjM_H.png",
+      "assets/img/li-pl201811-plug@2x-C6UcDqnP.png",
+      "assets/img/li-pl201811-pool@2x-BmBxP8B1.png",
+      "assets/img/li-pl201811-preza@2x-CcrknjFi.png",
+      "assets/img/li-pl201811-protein@2x-C-jzLGv0.png",
+      "assets/img/li-pl201811-pumpkin@2x-ooK7n77Z.png",
+      "assets/img/li-pl201811-rgb@2x-DbGXN3OO.png",
+      "assets/img/li-pl201811-samples@2x-BNdDJhr8.png",
+      "assets/img/li-pl201811-school@2x-BnDEKFC9.png",
+      "assets/img/li-pl201811-sewingmachine@2x-CTAp0DYq.png",
+      "assets/img/li-pl201811-shoe@2x-BM7kFtGA.png",
+      "assets/img/li-pl201811-shovel@2x-BvFniFm3.png",
+      "assets/img/li-pl201811-sofa@2x-BGBfHb_v.png",
+      "assets/img/li-pl201811-solar@2x-DNBYsTIo.png",
+      "assets/img/li-pl201811-speaker@2x-DWe2Tu1i.png",
+      "assets/img/li-pl201811-spray@2x-S3GR5shG.png",
+      "assets/img/li-pl201811-theatre@2x-BOYUEp2c.png",
+      "assets/img/li-pl201811-toolkit@2x-3J0IIG6s.png",
+      "assets/img/li-pl201811-trafficlight@2x-DfHMKxMe.png",
+      "assets/img/li-pl201811-treadmill@2x-CywVnSKk.png",
+      "assets/img/li-pl201811-wateringcan@2x-C3fvdqPp.png",
+      "assets/img/li-pl201811-wavetshirt@2x-CrgvZ1D8.png",
+      "assets/img/li-pl201811-wheelbarrow@2x-BquEOQXo.png",
+      "assets/img/li-pl201812-candle@2x-pHphwWRc.png",
+      "assets/img/li-pl201812-cupcake@2x-D268Y1td.png",
+      "assets/img/li-pl201812-earbuds@2x-DP8tXveH.png",
+      "assets/img/li-pl201812-giftcard@2x-C3icvtJY.png",
+      "assets/img/li-pl201812-glove@2x-DxMTK0Je.png",
+      "assets/img/li-pl201812-hat@2x-Be3ZiKq-.png",
+      "assets/img/li-pl201812-jacket@2x-DxXKetXX.png",
+      "assets/img/li-pl201812-ornament@2x-DGkBhCCs.png",
+      "assets/img/li-pl201812-risingstar@2x-B7isYcMd.png",
+      "assets/img/li-pl201812-skilift@2x-BfgEYOsl.png",
+      "assets/img/li-pl201812-snowboard@2x-DoqqDGcm.png",
+      "assets/img/li-pl201812-snowcloud@2x-6yHYoM_W.png",
+      "assets/img/li-pl201812-snowglobe@2x-BroGlT3O.png",
+      "assets/img/li-pl201812-snowledge@2x-GbKkfiK_.png",
+      "assets/img/li-pl201812-snowminus@2x-CWZmZ0vf.png",
+      "assets/img/li-pl201812-snowmountains@2x-Drd9qni3.png",
+      "assets/img/li-pl201812-snowshovel@2x-Bkc7QKUg.png",
+      "assets/img/li-pl201812-snowskates@2x-DQDpKWOa.png",
+      "assets/img/li-pl201812-snowvillage@2x-praah4F0.png",
+      "assets/img/li-pl201812-snowwindow@2x-DTNo44o9.png",
+      "assets/img/li-pl201813-1312@2x-DjKEJzwW.png",
+      "assets/img/li-pl201813-pocketlists@2x-BbqC7VNz.png",
+      "assets/img/li-pl201813-shopscript@2x-YXSidTzG.png",
+      "assets/img/li-pl201813-webasyst@2x-CYvyhxV7.png",
+      "assets/img/li-plane@2x-BCRTSvTM.png",
+      "assets/img/li-plant@2x-3APwA5tJ.png",
+      "assets/img/li-pointer@2x-DCIHsgeE.png",
+      "assets/img/li-poop@2x-YZZB59yO.png",
+      "assets/img/li-post-box@2x-DjIzB8pA.png",
+      "assets/img/li-power1@2x-CxUAiFxu.png",
+      "assets/img/li-presentation@2x-DczceLj6.png",
+      "assets/img/li-puzzle@2x-BjiT6eNc.png",
+      "assets/img/li-rafting@2x-EBA_Ebzi.png",
+      "assets/img/li-ramadan@2x-g11vfeS-.png",
+      "assets/img/li-recipe@2x-DSX1eTxi.png",
+      "assets/img/li-route@2x-CxupsqNY.png",
+      "assets/img/li-ruler-pencil@2x-ComYzaI6.png",
+      "assets/img/li-sale@2x-Bnv9wWEQ.png",
+      "assets/img/li-scanner@2x-UB2M4VOY.png",
+      "assets/img/li-school-backpack@2x-DmYt1o3x.png",
+      "assets/img/li-schoolbus@2x-C3VALhNY.png",
+      "assets/img/li-search-location@2x-C8ZaOqK-.png",
+      "assets/img/li-service@2x-C0xQceZd.png",
+      "assets/img/li-shinto@2x-Cpix_ISO.png",
+      "assets/img/li-ship@2x-Baftvn80.png",
+      "assets/img/li-shop@2x-CuRuMZH0.png",
+      "assets/img/li-shopping2@2x-CiqC82-c.png",
+      "assets/img/li-shower@2x-ByzdTdf_.png",
+      "assets/img/li-shrimp@2x-GbEFJhOS.png",
+      "assets/img/li-shuttlecock@2x-DHcRBvT0.png",
+      "assets/img/li-signs@2x-BL2frfqK.png",
+      "assets/img/li-ski@2x-BFrndIRy.png",
+      "assets/img/li-soska@2x-sWDj_809.png",
+      "assets/img/li-speedometer@2x-BSY0dWUK.png",
+      "assets/img/li-star@2x-D1T-bwOu.png",
+      "assets/img/li-steak@2x-BMxY1Lbq.png",
+      "assets/img/li-steering-wheel@2x-DQ9Z7DhT.png",
+      "assets/img/li-stethoscope@2x-0wpUHB2K.png",
+      "assets/img/li-strawberry@2x-SgwQN3UD.png",
+      "assets/img/li-strong-heart@2x-AotfiQiM.png",
+      "assets/img/li-team@2x-QyBTw6Vp.png",
+      "assets/img/li-telescope@2x-iqB3GYvo.png",
+      "assets/img/li-tomato@2x-DdB914dz.png",
+      "assets/img/li-tools@2x-DHgFtQLA.png",
+      "assets/img/li-tooth@2x-chLJi2de.png",
+      "assets/img/li-toy-bibiaa@2x-CTjHPvmr.png",
+      "assets/img/li-toy-octopus@2x-COu8OYlb.png",
+      "assets/img/li-toy-pyramid@2x-Cc6soDkB.png",
+      "assets/img/li-toy-ship@2x-Dev-o4Ka.png",
+      "assets/img/li-train-baby@2x-DLozqMXw.png",
+      "assets/img/li-train@2x-BUV9mCjz.png",
+      "assets/img/li-translate@2x-bpXRWlUk.png",
+      "assets/img/li-travel@2x-Bg3-QI2T.png",
+      "assets/img/li-trekking@2x-BQpT8o93.png",
+      "assets/img/li-tshirt@2x-D2JhYIdO.png",
+      "assets/img/li-turtle@2x-DGiAYQIX.png",
+      "assets/img/li-twitter@2x-BQUBhVez.png",
+      "assets/img/li-vacations@2x-Cbrn5__T.png",
+      "assets/img/li-video@2x-C5C_NMTW.png",
+      "assets/img/li-water@2x-D_xTXGaI.png",
+      "assets/img/li-wedding@2x-ajWKopbi.png",
+      "assets/img/li-work@2x-BCYN-Wei.png",
+      "assets/img/li-yeme-becherovka@2x-CcGhnw3L.png",
+      "assets/img/li-yeme-beer@2x-lZH_8g4K.png",
+      "assets/img/li-yeme-blue-hawaii@2x-R2PVF0sr.png",
+      "assets/img/li-yeme-cognac@2x-qVp61HAZ.png",
+      "assets/img/li-yeme-jagermeister@2x-DSYpZEjm.png",
+      "assets/img/li-yeme-mojito@2x-C1CjzKOx.png",
+      "assets/img/li-yeme-redwine@2x-Dm6BLk0h.png",
+      "assets/img/li-yeme-whisky@2x-CspmRtpr.png"
     ]
   },
-  "_lodash-BuzILMYQ.js": {
-    "file": "assets/lodash-BuzILMYQ.js",
+  "_lodash-Cee_l_zi.js": {
+    "file": "assets/lodash-Cee_l_zi.js",
     "name": "lodash",
     "imports": [
       "_rolldown-runtime-XKyaHtl9.js",
       "_runtime-core.esm-bundler-H60MIBff.js",
-      "_core-C7IWAwVW.js"
+      "_core-C6MWnVoJ.js"
     ],
     "dynamicImports": [
       "src/components/AlertAuthHeader.vue"
@@ -620,14 +727,14 @@
     "file": "assets/plugin-vue-export-helper-BDNMzG2s.js",
     "name": "_plugin-vue_export-helper"
   },
-  "_priorities-Cq875rpN.js": {
-    "file": "assets/priorities-Cq875rpN.js",
+  "_priorities-CBcjq3-d.js": {
+    "file": "assets/priorities-CBcjq3-d.js",
     "name": "priorities",
     "imports": [
       "_rolldown-runtime-XKyaHtl9.js",
       "_runtime-core.esm-bundler-H60MIBff.js",
-      "_lodash-BuzILMYQ.js",
-      "_core-C7IWAwVW.js"
+      "_lodash-Cee_l_zi.js",
+      "_core-C6MWnVoJ.js"
     ]
   },
   "_rolldown-runtime-XKyaHtl9.js": {
@@ -642,1737 +749,2165 @@
     "file": "assets/sanitizer-DY2IDDYI.js",
     "name": "sanitizer"
   },
-  "_textToHtmlWithLinks-BMrE8t2s.js": {
-    "file": "assets/textToHtmlWithLinks-BMrE8t2s.js",
+  "_textToHtmlWithLinks-DZ6dIyVw.js": {
+    "file": "assets/textToHtmlWithLinks-DZ6dIyVw.js",
     "name": "textToHtmlWithLinks",
     "imports": [
       "_rolldown-runtime-XKyaHtl9.js",
       "_runtime-core.esm-bundler-H60MIBff.js",
-      "_lodash-BuzILMYQ.js",
-      "_core-C7IWAwVW.js",
-      "_priorities-Cq875rpN.js",
-      "_WaDropdown-CR0kMU0g.js",
+      "_lodash-Cee_l_zi.js",
+      "_core-C6MWnVoJ.js",
+      "_priorities-CBcjq3-d.js",
+      "_WaDropdown-B8jMabGE.js",
       "index.html",
-      "_ModalWrapperBody-Fm0TMJOM.js"
+      "_ModalWrapperBody-DMnYpqrJ.js"
     ],
     "assets": [
-      "assets/img/shop.svg"
+      "assets/img/shop-BlDpHXtY.svg"
     ]
   },
   "index.html": {
-    "file": "assets/index-DOEdyGe8.js",
+    "file": "assets/index-9tuY-Y87.js",
     "name": "index",
     "src": "index.html",
     "isEntry": true,
     "imports": [
       "_rolldown-runtime-XKyaHtl9.js",
       "_runtime-core.esm-bundler-H60MIBff.js",
-      "_lodash-BuzILMYQ.js",
-      "_core-C7IWAwVW.js",
-      "_priorities-Cq875rpN.js",
-      "_WaDropdown-CR0kMU0g.js",
+      "_lodash-Cee_l_zi.js",
+      "_core-C6MWnVoJ.js",
+      "_priorities-CBcjq3-d.js",
+      "_WaDropdown-B8jMabGE.js",
       "_plugin-vue-export-helper-BDNMzG2s.js",
-      "_completedList-aivvvOnz.js"
+      "_completedList-4uwCsG3I.js"
     ],
     "assets": [
-      "assets/img/item-bullets-priority-fire.gif"
+      "assets/img/item-bullets-priority-fire-jhlgpj4u.gif"
     ],
     "css": [
-      "assets/style-DDmDxNiH.css"
+      "assets/style-BYJzshA4.css"
     ]
   },
   "src/assets/apps/shop.svg": {
-    "file": "assets/img/shop.svg",
+    "file": "assets/img/shop-BlDpHXtY.svg",
     "src": "src/assets/apps/shop.svg"
   },
   "src/assets/img/item-bullets-priority-fire.gif": {
-    "file": "assets/img/item-bullets-priority-fire.gif",
+    "file": "assets/img/item-bullets-priority-fire-jhlgpj4u.gif",
     "src": "src/assets/img/item-bullets-priority-fire.gif"
   },
   "src/assets/img/pl-dummy-logo.webp": {
-    "file": "assets/img/pl-dummy-logo.webp",
+    "file": "assets/img/pl-dummy-logo-BfwCozjH.webp",
     "src": "src/assets/img/pl-dummy-logo.webp"
   },
   "src/assets/img/pl-list-icons-mix.webp": {
-    "file": "assets/img/pl-list-icons-mix.webp",
+    "file": "assets/img/pl-list-icons-mix-ZQRdQPuM.webp",
     "src": "src/assets/img/pl-list-icons-mix.webp"
   },
   "src/assets/listicons/li-a-to-b@2x.png": {
-    "file": "assets/img/li-a-to-b@2x.png",
+    "file": "assets/img/li-a-to-b@2x-BeVDxAsL.png",
     "src": "src/assets/listicons/li-a-to-b@2x.png"
   },
   "src/assets/listicons/li-abc@2x.png": {
-    "file": "assets/img/li-abc@2x.png",
+    "file": "assets/img/li-abc@2x-CQgPYwAa.png",
     "src": "src/assets/listicons/li-abc@2x.png"
   },
   "src/assets/listicons/li-achtung@2x.png": {
-    "file": "assets/img/li-achtung@2x.png",
+    "file": "assets/img/li-achtung@2x-DOWwejcL.png",
     "src": "src/assets/listicons/li-achtung@2x.png"
   },
   "src/assets/listicons/li-alarm@2x.png": {
-    "file": "assets/img/li-alarm@2x.png",
+    "file": "assets/img/li-alarm@2x-BQO0kURj.png",
     "src": "src/assets/listicons/li-alarm@2x.png"
   },
   "src/assets/listicons/li-ambulance@2x.png": {
-    "file": "assets/img/li-ambulance@2x.png",
+    "file": "assets/img/li-ambulance@2x-DEOdrKgC.png",
     "src": "src/assets/listicons/li-ambulance@2x.png"
   },
   "src/assets/listicons/li-antlers@2x.png": {
-    "file": "assets/img/li-antlers@2x.png",
+    "file": "assets/img/li-antlers@2x-nk7bkKSJ.png",
     "src": "src/assets/listicons/li-antlers@2x.png"
   },
   "src/assets/listicons/li-award@2x.png": {
-    "file": "assets/img/li-award@2x.png",
+    "file": "assets/img/li-award@2x-BYqQvvFo.png",
     "src": "src/assets/listicons/li-award@2x.png"
   },
   "src/assets/listicons/li-baby-foot@2x.png": {
-    "file": "assets/img/li-baby-foot@2x.png",
+    "file": "assets/img/li-baby-foot@2x-BKQtNK93.png",
     "src": "src/assets/listicons/li-baby-foot@2x.png"
   },
   "src/assets/listicons/li-baby-walker@2x.png": {
-    "file": "assets/img/li-baby-walker@2x.png",
+    "file": "assets/img/li-baby-walker@2x-QtwyC9PL.png",
     "src": "src/assets/listicons/li-baby-walker@2x.png"
   },
   "src/assets/listicons/li-babytoy@2x.png": {
-    "file": "assets/img/li-babytoy@2x.png",
+    "file": "assets/img/li-babytoy@2x-Cje3Fr83.png",
     "src": "src/assets/listicons/li-babytoy@2x.png"
   },
   "src/assets/listicons/li-bag@2x.png": {
-    "file": "assets/img/li-bag@2x.png",
+    "file": "assets/img/li-bag@2x-6RdWCmMH.png",
     "src": "src/assets/listicons/li-bag@2x.png"
   },
   "src/assets/listicons/li-barcode@2x.png": {
-    "file": "assets/img/li-barcode@2x.png",
+    "file": "assets/img/li-barcode@2x-NJD_zfyn.png",
     "src": "src/assets/listicons/li-barcode@2x.png"
   },
   "src/assets/listicons/li-bath@2x.png": {
-    "file": "assets/img/li-bath@2x.png",
+    "file": "assets/img/li-bath@2x-Ds2y8ufI.png",
     "src": "src/assets/listicons/li-bath@2x.png"
   },
   "src/assets/listicons/li-bee@2x.png": {
-    "file": "assets/img/li-bee@2x.png",
+    "file": "assets/img/li-bee@2x-CsZdz98K.png",
     "src": "src/assets/listicons/li-bee@2x.png"
   },
   "src/assets/listicons/li-beer@2x.png": {
-    "file": "assets/img/li-beer@2x.png",
+    "file": "assets/img/li-beer@2x-CAabnnd2.png",
     "src": "src/assets/listicons/li-beer@2x.png"
   },
   "src/assets/listicons/li-bell@2x.png": {
-    "file": "assets/img/li-bell@2x.png",
+    "file": "assets/img/li-bell@2x-BcouRWO0.png",
     "src": "src/assets/listicons/li-bell@2x.png"
   },
   "src/assets/listicons/li-billiard@2x.png": {
-    "file": "assets/img/li-billiard@2x.png",
+    "file": "assets/img/li-billiard@2x-ofnpP_OL.png",
     "src": "src/assets/listicons/li-billiard@2x.png"
   },
   "src/assets/listicons/li-bird-nest@2x.png": {
-    "file": "assets/img/li-bird-nest@2x.png",
+    "file": "assets/img/li-bird-nest@2x-B32RJwJx.png",
     "src": "src/assets/listicons/li-bird-nest@2x.png"
   },
   "src/assets/listicons/li-blackberries@2x.png": {
-    "file": "assets/img/li-blackberries@2x.png",
+    "file": "assets/img/li-blackberries@2x-BGuCoFk1.png",
     "src": "src/assets/listicons/li-blackberries@2x.png"
   },
   "src/assets/listicons/li-blackboard@2x.png": {
-    "file": "assets/img/li-blackboard@2x.png",
+    "file": "assets/img/li-blackboard@2x-v3cYheRH.png",
     "src": "src/assets/listicons/li-blackboard@2x.png"
   },
   "src/assets/listicons/li-blood@2x.png": {
-    "file": "assets/img/li-blood@2x.png",
+    "file": "assets/img/li-blood@2x-B-x3QWKg.png",
     "src": "src/assets/listicons/li-blood@2x.png"
   },
   "src/assets/listicons/li-bomb@2x.png": {
-    "file": "assets/img/li-bomb@2x.png",
+    "file": "assets/img/li-bomb@2x-DSwV-PDd.png",
     "src": "src/assets/listicons/li-bomb@2x.png"
   },
   "src/assets/listicons/li-bone@2x.png": {
-    "file": "assets/img/li-bone@2x.png",
+    "file": "assets/img/li-bone@2x-C-qk7SS2.png",
     "src": "src/assets/listicons/li-bone@2x.png"
   },
+  "src/assets/listicons/li-books@2x.png": {
+    "file": "assets/img/li-books@2x-ChsOGRBY.png",
+    "src": "src/assets/listicons/li-books@2x.png"
+  },
+  "src/assets/listicons/li-boot@2x.png": {
+    "file": "assets/img/li-boot@2x-CjGsk847.png",
+    "src": "src/assets/listicons/li-boot@2x.png"
+  },
   "src/assets/listicons/li-boy-child@2x.png": {
-    "file": "assets/img/li-boy-child@2x.png",
+    "file": "assets/img/li-boy-child@2x-Cck3Kffg.png",
     "src": "src/assets/listicons/li-boy-child@2x.png"
   },
   "src/assets/listicons/li-brush@2x.png": {
-    "file": "assets/img/li-brush@2x.png",
+    "file": "assets/img/li-brush@2x-fpaFrEex.png",
     "src": "src/assets/listicons/li-brush@2x.png"
   },
   "src/assets/listicons/li-bucket@2x.png": {
-    "file": "assets/img/li-bucket@2x.png",
+    "file": "assets/img/li-bucket@2x-DD7Eg9ps.png",
     "src": "src/assets/listicons/li-bucket@2x.png"
   },
   "src/assets/listicons/li-bug-fixing@2x.png": {
-    "file": "assets/img/li-bug-fixing@2x.png",
+    "file": "assets/img/li-bug-fixing@2x-Bi_QOxko.png",
     "src": "src/assets/listicons/li-bug-fixing@2x.png"
   },
   "src/assets/listicons/li-butterfly@2x.png": {
-    "file": "assets/img/li-butterfly@2x.png",
+    "file": "assets/img/li-butterfly@2x-htqkpFmx.png",
     "src": "src/assets/listicons/li-butterfly@2x.png"
   },
   "src/assets/listicons/li-cabin@2x.png": {
-    "file": "assets/img/li-cabin@2x.png",
+    "file": "assets/img/li-cabin@2x-BkW7TFYR.png",
     "src": "src/assets/listicons/li-cabin@2x.png"
   },
   "src/assets/listicons/li-cable@2x.png": {
-    "file": "assets/img/li-cable@2x.png",
+    "file": "assets/img/li-cable@2x-DZnnQlpB.png",
     "src": "src/assets/listicons/li-cable@2x.png"
   },
   "src/assets/listicons/li-cactus@2x.png": {
-    "file": "assets/img/li-cactus@2x.png",
+    "file": "assets/img/li-cactus@2x-Cz8pQ3iv.png",
     "src": "src/assets/listicons/li-cactus@2x.png"
   },
   "src/assets/listicons/li-calcuator@2x.png": {
-    "file": "assets/img/li-calcuator@2x.png",
+    "file": "assets/img/li-calcuator@2x-C0op_Xz1.png",
     "src": "src/assets/listicons/li-calcuator@2x.png"
   },
+  "src/assets/listicons/li-calendar-notavailable@2x.png": {
+    "file": "assets/img/li-calendar-notavailable@2x-CRZLXmvK.png",
+    "src": "src/assets/listicons/li-calendar-notavailable@2x.png"
+  },
+  "src/assets/listicons/li-calendar@2x.png": {
+    "file": "assets/img/li-calendar@2x-BJ8swD71.png",
+    "src": "src/assets/listicons/li-calendar@2x.png"
+  },
   "src/assets/listicons/li-camber-jumping@2x.png": {
-    "file": "assets/img/li-camber-jumping@2x.png",
+    "file": "assets/img/li-camber-jumping@2x-DPCvUGow.png",
     "src": "src/assets/listicons/li-camber-jumping@2x.png"
   },
   "src/assets/listicons/li-camera@2x.png": {
-    "file": "assets/img/li-camera@2x.png",
+    "file": "assets/img/li-camera@2x-DXQk5RvR.png",
     "src": "src/assets/listicons/li-camera@2x.png"
   },
   "src/assets/listicons/li-campfire@2x.png": {
-    "file": "assets/img/li-campfire@2x.png",
+    "file": "assets/img/li-campfire@2x-DswxxW-s.png",
     "src": "src/assets/listicons/li-campfire@2x.png"
   },
   "src/assets/listicons/li-cart@2x.png": {
-    "file": "assets/img/li-cart@2x.png",
+    "file": "assets/img/li-cart@2x-UembE1ch.png",
     "src": "src/assets/listicons/li-cart@2x.png"
   },
   "src/assets/listicons/li-casino@2x.png": {
-    "file": "assets/img/li-casino@2x.png",
+    "file": "assets/img/li-casino@2x-Ck7VeWMt.png",
     "src": "src/assets/listicons/li-casino@2x.png"
   },
   "src/assets/listicons/li-cat@2x.png": {
-    "file": "assets/img/li-cat@2x.png",
+    "file": "assets/img/li-cat@2x-Cz7P3lv7.png",
     "src": "src/assets/listicons/li-cat@2x.png"
   },
   "src/assets/listicons/li-chair@2x.png": {
-    "file": "assets/img/li-chair@2x.png",
+    "file": "assets/img/li-chair@2x-DtqepvT4.png",
     "src": "src/assets/listicons/li-chair@2x.png"
   },
   "src/assets/listicons/li-champagne@2x.png": {
-    "file": "assets/img/li-champagne@2x.png",
+    "file": "assets/img/li-champagne@2x-GgE-pDIz.png",
     "src": "src/assets/listicons/li-champagne@2x.png"
   },
   "src/assets/listicons/li-checkmark@2x.png": {
-    "file": "assets/img/li-checkmark@2x.png",
+    "file": "assets/img/li-checkmark@2x-rZQP4lQu.png",
     "src": "src/assets/listicons/li-checkmark@2x.png"
   },
+  "src/assets/listicons/li-checkout@2x.png": {
+    "file": "assets/img/li-checkout@2x-yOWQAdp6.png",
+    "src": "src/assets/listicons/li-checkout@2x.png"
+  },
+  "src/assets/listicons/li-cheese@2x.png": {
+    "file": "assets/img/li-cheese@2x-5My2uaCE.png",
+    "src": "src/assets/listicons/li-cheese@2x.png"
+  },
+  "src/assets/listicons/li-chess@2x.png": {
+    "file": "assets/img/li-chess@2x-CGJVOOVC.png",
+    "src": "src/assets/listicons/li-chess@2x.png"
+  },
   "src/assets/listicons/li-chinese-lantern@2x.png": {
-    "file": "assets/img/li-chinese-lantern@2x.png",
+    "file": "assets/img/li-chinese-lantern@2x-BFZni9_d.png",
     "src": "src/assets/listicons/li-chinese-lantern@2x.png"
   },
   "src/assets/listicons/li-christmas-sack@2x.png": {
-    "file": "assets/img/li-christmas-sack@2x.png",
+    "file": "assets/img/li-christmas-sack@2x-Cf13PO2c.png",
     "src": "src/assets/listicons/li-christmas-sack@2x.png"
   },
   "src/assets/listicons/li-chronometer@2x.png": {
-    "file": "assets/img/li-chronometer@2x.png",
+    "file": "assets/img/li-chronometer@2x-CeweATjL.png",
     "src": "src/assets/listicons/li-chronometer@2x.png"
   },
   "src/assets/listicons/li-church@2x.png": {
-    "file": "assets/img/li-church@2x.png",
+    "file": "assets/img/li-church@2x-CjuZaVjL.png",
     "src": "src/assets/listicons/li-church@2x.png"
   },
   "src/assets/listicons/li-cleaning@2x.png": {
-    "file": "assets/img/li-cleaning@2x.png",
+    "file": "assets/img/li-cleaning@2x-BNll5rG1.png",
     "src": "src/assets/listicons/li-cleaning@2x.png"
   },
   "src/assets/listicons/li-clock@2x.png": {
-    "file": "assets/img/li-clock@2x.png",
+    "file": "assets/img/li-clock@2x-B95lCjas.png",
     "src": "src/assets/listicons/li-clock@2x.png"
   },
   "src/assets/listicons/li-coins@2x.png": {
-    "file": "assets/img/li-coins@2x.png",
+    "file": "assets/img/li-coins@2x-iG98tTBl.png",
     "src": "src/assets/listicons/li-coins@2x.png"
   },
   "src/assets/listicons/li-collar@2x.png": {
-    "file": "assets/img/li-collar@2x.png",
+    "file": "assets/img/li-collar@2x-tUkqeWal.png",
     "src": "src/assets/listicons/li-collar@2x.png"
   },
   "src/assets/listicons/li-color-palette@2x.png": {
-    "file": "assets/img/li-color-palette@2x.png",
+    "file": "assets/img/li-color-palette@2x-BnGW3QUY.png",
     "src": "src/assets/listicons/li-color-palette@2x.png"
   },
   "src/assets/listicons/li-color-wheel@2x.png": {
-    "file": "assets/img/li-color-wheel@2x.png",
+    "file": "assets/img/li-color-wheel@2x-CMUqbQFf.png",
     "src": "src/assets/listicons/li-color-wheel@2x.png"
   },
   "src/assets/listicons/li-compass@2x.png": {
-    "file": "assets/img/li-compass@2x.png",
+    "file": "assets/img/li-compass@2x-D0J1Wpfq.png",
     "src": "src/assets/listicons/li-compass@2x.png"
   },
   "src/assets/listicons/li-construction@2x.png": {
-    "file": "assets/img/li-construction@2x.png",
+    "file": "assets/img/li-construction@2x-CDOs60Gw.png",
     "src": "src/assets/listicons/li-construction@2x.png"
   },
+  "src/assets/listicons/li-contact@2x.png": {
+    "file": "assets/img/li-contact@2x-DWUVMxiM.png",
+    "src": "src/assets/listicons/li-contact@2x.png"
+  },
   "src/assets/listicons/li-crawler@2x.png": {
-    "file": "assets/img/li-crawler@2x.png",
+    "file": "assets/img/li-crawler@2x-DEBjHtKz.png",
     "src": "src/assets/listicons/li-crawler@2x.png"
   },
   "src/assets/listicons/li-cuttlefish@2x.png": {
-    "file": "assets/img/li-cuttlefish@2x.png",
+    "file": "assets/img/li-cuttlefish@2x-D8Xnzs-2.png",
     "src": "src/assets/listicons/li-cuttlefish@2x.png"
   },
   "src/assets/listicons/li-david-star@2x.png": {
-    "file": "assets/img/li-david-star@2x.png",
+    "file": "assets/img/li-david-star@2x-BSjxg_OY.png",
     "src": "src/assets/listicons/li-david-star@2x.png"
   },
   "src/assets/listicons/li-delivery@2x.png": {
-    "file": "assets/img/li-delivery@2x.png",
+    "file": "assets/img/li-delivery@2x-CeelpgXr.png",
     "src": "src/assets/listicons/li-delivery@2x.png"
   },
   "src/assets/listicons/li-desk-printer@2x.png": {
-    "file": "assets/img/li-desk-printer@2x.png",
+    "file": "assets/img/li-desk-printer@2x-lB36-C4R.png",
     "src": "src/assets/listicons/li-desk-printer@2x.png"
   },
   "src/assets/listicons/li-diagram@2x.png": {
-    "file": "assets/img/li-diagram@2x.png",
+    "file": "assets/img/li-diagram@2x-DlG0BgBH.png",
     "src": "src/assets/listicons/li-diagram@2x.png"
   },
   "src/assets/listicons/li-diving@2x.png": {
-    "file": "assets/img/li-diving@2x.png",
+    "file": "assets/img/li-diving@2x-lbvxXFwG.png",
     "src": "src/assets/listicons/li-diving@2x.png"
   },
   "src/assets/listicons/li-doctor@2x.png": {
-    "file": "assets/img/li-doctor@2x.png",
+    "file": "assets/img/li-doctor@2x-2w4kpBPW.png",
     "src": "src/assets/listicons/li-doctor@2x.png"
   },
   "src/assets/listicons/li-dog@2x.png": {
-    "file": "assets/img/li-dog@2x.png",
+    "file": "assets/img/li-dog@2x-Df6T__nl.png",
     "src": "src/assets/listicons/li-dog@2x.png"
   },
   "src/assets/listicons/li-domain-registration@2x.png": {
-    "file": "assets/img/li-domain-registration@2x.png",
+    "file": "assets/img/li-domain-registration@2x-BAW0QUgm.png",
     "src": "src/assets/listicons/li-domain-registration@2x.png"
   },
   "src/assets/listicons/li-download@2x.png": {
-    "file": "assets/img/li-download@2x.png",
+    "file": "assets/img/li-download@2x-Bx8Uqoe2.png",
     "src": "src/assets/listicons/li-download@2x.png"
   },
   "src/assets/listicons/li-easter-bunny@2x.png": {
-    "file": "assets/img/li-easter-bunny@2x.png",
+    "file": "assets/img/li-easter-bunny@2x-omf9q_OJ.png",
     "src": "src/assets/listicons/li-easter-bunny@2x.png"
   },
   "src/assets/listicons/li-easter-egg@2x.png": {
-    "file": "assets/img/li-easter-egg@2x.png",
+    "file": "assets/img/li-easter-egg@2x-BYcfuIck.png",
     "src": "src/assets/listicons/li-easter-egg@2x.png"
   },
   "src/assets/listicons/li-egg@2x.png": {
-    "file": "assets/img/li-egg@2x.png",
+    "file": "assets/img/li-egg@2x-nIcm5rHd.png",
     "src": "src/assets/listicons/li-egg@2x.png"
   },
   "src/assets/listicons/li-experiment-results@2x.png": {
-    "file": "assets/img/li-experiment-results@2x.png",
+    "file": "assets/img/li-experiment-results@2x-CdrlPd-D.png",
     "src": "src/assets/listicons/li-experiment-results@2x.png"
   },
+  "src/assets/listicons/li-eye-test@2x.png": {
+    "file": "assets/img/li-eye-test@2x-Dkgoc1Ci.png",
+    "src": "src/assets/listicons/li-eye-test@2x.png"
+  },
+  "src/assets/listicons/li-facebook@2x.png": {
+    "file": "assets/img/li-facebook@2x-CeXXEQRG.png",
+    "src": "src/assets/listicons/li-facebook@2x.png"
+  },
   "src/assets/listicons/li-farm-sheep@2x.png": {
-    "file": "assets/img/li-farm-sheep@2x.png",
+    "file": "assets/img/li-farm-sheep@2x-DX1Y0ybj.png",
     "src": "src/assets/listicons/li-farm-sheep@2x.png"
   },
   "src/assets/listicons/li-first-prize-medal@2x.png": {
-    "file": "assets/img/li-first-prize-medal@2x.png",
+    "file": "assets/img/li-first-prize-medal@2x-OLDIaLDs.png",
     "src": "src/assets/listicons/li-first-prize-medal@2x.png"
   },
   "src/assets/listicons/li-fish@2x.png": {
-    "file": "assets/img/li-fish@2x.png",
+    "file": "assets/img/li-fish@2x-BQY9fSMA.png",
     "src": "src/assets/listicons/li-fish@2x.png"
   },
   "src/assets/listicons/li-fishing@2x.png": {
-    "file": "assets/img/li-fishing@2x.png",
+    "file": "assets/img/li-fishing@2x-DLfsVBeN.png",
     "src": "src/assets/listicons/li-fishing@2x.png"
   },
   "src/assets/listicons/li-flag-abkhazia@2x.png": {
-    "file": "assets/img/li-flag-abkhazia@2x.png",
+    "file": "assets/img/li-flag-abkhazia@2x-BGCB6OVf.png",
     "src": "src/assets/listicons/li-flag-abkhazia@2x.png"
   },
   "src/assets/listicons/li-flag-algeria@2x.png": {
-    "file": "assets/img/li-flag-algeria@2x.png",
+    "file": "assets/img/li-flag-algeria@2x-zK6N94Vh.png",
     "src": "src/assets/listicons/li-flag-algeria@2x.png"
   },
   "src/assets/listicons/li-flag-argentina@2x.png": {
-    "file": "assets/img/li-flag-argentina@2x.png",
+    "file": "assets/img/li-flag-argentina@2x-BmsYdmnR.png",
     "src": "src/assets/listicons/li-flag-argentina@2x.png"
   },
   "src/assets/listicons/li-flag-australia@2x.png": {
-    "file": "assets/img/li-flag-australia@2x.png",
+    "file": "assets/img/li-flag-australia@2x-BSjopNQa.png",
     "src": "src/assets/listicons/li-flag-australia@2x.png"
   },
   "src/assets/listicons/li-flag-belarus@2x.png": {
-    "file": "assets/img/li-flag-belarus@2x.png",
+    "file": "assets/img/li-flag-belarus@2x-Bf-mNfWQ.png",
     "src": "src/assets/listicons/li-flag-belarus@2x.png"
   },
+  "src/assets/listicons/li-flag-belgium@2x.png": {
+    "file": "assets/img/li-flag-belgium@2x-BoBvbxGc.png",
+    "src": "src/assets/listicons/li-flag-belgium@2x.png"
+  },
   "src/assets/listicons/li-flag-brazil@2x.png": {
-    "file": "assets/img/li-flag-brazil@2x.png",
+    "file": "assets/img/li-flag-brazil@2x-c0Xs6cb6.png",
     "src": "src/assets/listicons/li-flag-brazil@2x.png"
   },
+  "src/assets/listicons/li-flag-bulgaria@2x.png": {
+    "file": "assets/img/li-flag-bulgaria@2x-Bocsycia.png",
+    "src": "src/assets/listicons/li-flag-bulgaria@2x.png"
+  },
   "src/assets/listicons/li-flag-cameroon@2x.png": {
-    "file": "assets/img/li-flag-cameroon@2x.png",
+    "file": "assets/img/li-flag-cameroon@2x-BVh65vvt.png",
     "src": "src/assets/listicons/li-flag-cameroon@2x.png"
   },
   "src/assets/listicons/li-flag-canada@2x.png": {
-    "file": "assets/img/li-flag-canada@2x.png",
+    "file": "assets/img/li-flag-canada@2x-Cii7qeer.png",
     "src": "src/assets/listicons/li-flag-canada@2x.png"
   },
+  "src/assets/listicons/li-flag-canary-islands@2x.png": {
+    "file": "assets/img/li-flag-canary-islands@2x-DGxEy9Ga.png",
+    "src": "src/assets/listicons/li-flag-canary-islands@2x.png"
+  },
   "src/assets/listicons/li-flag-chile@2x.png": {
-    "file": "assets/img/li-flag-chile@2x.png",
+    "file": "assets/img/li-flag-chile@2x-D6m4zB4v.png",
     "src": "src/assets/listicons/li-flag-chile@2x.png"
   },
   "src/assets/listicons/li-flag-china@2x.png": {
-    "file": "assets/img/li-flag-china@2x.png",
+    "file": "assets/img/li-flag-china@2x-_EiIKpxI.png",
     "src": "src/assets/listicons/li-flag-china@2x.png"
   },
+  "src/assets/listicons/li-flag-colombia@2x.png": {
+    "file": "assets/img/li-flag-colombia@2x-CwNKZJZq.png",
+    "src": "src/assets/listicons/li-flag-colombia@2x.png"
+  },
   "src/assets/listicons/li-flag-costa-rica@2x.png": {
-    "file": "assets/img/li-flag-costa-rica@2x.png",
+    "file": "assets/img/li-flag-costa-rica@2x-hyOuqGzh.png",
     "src": "src/assets/listicons/li-flag-costa-rica@2x.png"
   },
   "src/assets/listicons/li-flag-croatia@2x.png": {
-    "file": "assets/img/li-flag-croatia@2x.png",
+    "file": "assets/img/li-flag-croatia@2x-BqSF4PY1.png",
     "src": "src/assets/listicons/li-flag-croatia@2x.png"
   },
   "src/assets/listicons/li-flag-cuba@2x.png": {
-    "file": "assets/img/li-flag-cuba@2x.png",
+    "file": "assets/img/li-flag-cuba@2x-CVPv9dib.png",
     "src": "src/assets/listicons/li-flag-cuba@2x.png"
   },
   "src/assets/listicons/li-flag-cyprus@2x.png": {
-    "file": "assets/img/li-flag-cyprus@2x.png",
+    "file": "assets/img/li-flag-cyprus@2x-BPRvkhDh.png",
     "src": "src/assets/listicons/li-flag-cyprus@2x.png"
   },
   "src/assets/listicons/li-flag-czech-republic@2x.png": {
-    "file": "assets/img/li-flag-czech-republic@2x.png",
+    "file": "assets/img/li-flag-czech-republic@2x-C20b92-5.png",
     "src": "src/assets/listicons/li-flag-czech-republic@2x.png"
   },
   "src/assets/listicons/li-flag-denmark@2x.png": {
-    "file": "assets/img/li-flag-denmark@2x.png",
+    "file": "assets/img/li-flag-denmark@2x-CL4qecSN.png",
     "src": "src/assets/listicons/li-flag-denmark@2x.png"
   },
   "src/assets/listicons/li-flag-egypt@2x.png": {
-    "file": "assets/img/li-flag-egypt@2x.png",
+    "file": "assets/img/li-flag-egypt@2x-CpDZasix.png",
     "src": "src/assets/listicons/li-flag-egypt@2x.png"
   },
+  "src/assets/listicons/li-flag-england@2x.png": {
+    "file": "assets/img/li-flag-england@2x-BJpsnoo5.png",
+    "src": "src/assets/listicons/li-flag-england@2x.png"
+  },
+  "src/assets/listicons/li-flag-estonia@2x.png": {
+    "file": "assets/img/li-flag-estonia@2x-DNwAmwVl.png",
+    "src": "src/assets/listicons/li-flag-estonia@2x.png"
+  },
   "src/assets/listicons/li-flag-eu@2x.png": {
-    "file": "assets/img/li-flag-eu@2x.png",
+    "file": "assets/img/li-flag-eu@2x-CXQUN6LM.png",
     "src": "src/assets/listicons/li-flag-eu@2x.png"
   },
+  "src/assets/listicons/li-flag-finland@2x.png": {
+    "file": "assets/img/li-flag-finland@2x-BRuZvTBq.png",
+    "src": "src/assets/listicons/li-flag-finland@2x.png"
+  },
   "src/assets/listicons/li-flag-france@2x.png": {
-    "file": "assets/img/li-flag-france@2x.png",
+    "file": "assets/img/li-flag-france@2x-0QacGdfQ.png",
     "src": "src/assets/listicons/li-flag-france@2x.png"
   },
   "src/assets/listicons/li-flag-georgia@2x.png": {
-    "file": "assets/img/li-flag-georgia@2x.png",
+    "file": "assets/img/li-flag-georgia@2x-By44w8Gr.png",
     "src": "src/assets/listicons/li-flag-georgia@2x.png"
   },
+  "src/assets/listicons/li-flag-germany@2x.png": {
+    "file": "assets/img/li-flag-germany@2x-ZlV6_daV.png",
+    "src": "src/assets/listicons/li-flag-germany@2x.png"
+  },
   "src/assets/listicons/li-flag-greece@2x.png": {
-    "file": "assets/img/li-flag-greece@2x.png",
+    "file": "assets/img/li-flag-greece@2x-D2Rcda4D.png",
     "src": "src/assets/listicons/li-flag-greece@2x.png"
   },
   "src/assets/listicons/li-flag-hongkong@2x.png": {
-    "file": "assets/img/li-flag-hongkong@2x.png",
+    "file": "assets/img/li-flag-hongkong@2x-l1t1kdR_.png",
     "src": "src/assets/listicons/li-flag-hongkong@2x.png"
   },
+  "src/assets/listicons/li-flag-hungary@2x.png": {
+    "file": "assets/img/li-flag-hungary@2x-B9KvZFAI.png",
+    "src": "src/assets/listicons/li-flag-hungary@2x.png"
+  },
   "src/assets/listicons/li-flag-iceland@2x.png": {
-    "file": "assets/img/li-flag-iceland@2x.png",
+    "file": "assets/img/li-flag-iceland@2x-D2dqdHdS.png",
     "src": "src/assets/listicons/li-flag-iceland@2x.png"
   },
   "src/assets/listicons/li-flag-india@2x.png": {
-    "file": "assets/img/li-flag-india@2x.png",
+    "file": "assets/img/li-flag-india@2x-js1sjr0H.png",
     "src": "src/assets/listicons/li-flag-india@2x.png"
   },
+  "src/assets/listicons/li-flag-indonesia@2x.png": {
+    "file": "assets/img/li-flag-indonesia@2x-XMPD1iVf.png",
+    "src": "src/assets/listicons/li-flag-indonesia@2x.png"
+  },
   "src/assets/listicons/li-flag-israel@2x.png": {
-    "file": "assets/img/li-flag-israel@2x.png",
+    "file": "assets/img/li-flag-israel@2x-CeRKUfnQ.png",
     "src": "src/assets/listicons/li-flag-israel@2x.png"
   },
+  "src/assets/listicons/li-flag-italy@2x.png": {
+    "file": "assets/img/li-flag-italy@2x-jfPhWcnX.png",
+    "src": "src/assets/listicons/li-flag-italy@2x.png"
+  },
   "src/assets/listicons/li-flag-jamaica@2x.png": {
-    "file": "assets/img/li-flag-jamaica@2x.png",
+    "file": "assets/img/li-flag-jamaica@2x-D-ry_FRv.png",
     "src": "src/assets/listicons/li-flag-jamaica@2x.png"
   },
   "src/assets/listicons/li-flag-japan@2x.png": {
-    "file": "assets/img/li-flag-japan@2x.png",
+    "file": "assets/img/li-flag-japan@2x-Bjun7TV9.png",
     "src": "src/assets/listicons/li-flag-japan@2x.png"
   },
   "src/assets/listicons/li-flag-kenya@2x.png": {
-    "file": "assets/img/li-flag-kenya@2x.png",
+    "file": "assets/img/li-flag-kenya@2x-BWvCclWH.png",
     "src": "src/assets/listicons/li-flag-kenya@2x.png"
   },
   "src/assets/listicons/li-flag-korea@2x.png": {
-    "file": "assets/img/li-flag-korea@2x.png",
+    "file": "assets/img/li-flag-korea@2x-Cm6a10-J.png",
     "src": "src/assets/listicons/li-flag-korea@2x.png"
   },
+  "src/assets/listicons/li-flag-lithuania@2x.png": {
+    "file": "assets/img/li-flag-lithuania@2x-CS62xFpN.png",
+    "src": "src/assets/listicons/li-flag-lithuania@2x.png"
+  },
   "src/assets/listicons/li-flag-luxembourg@2x.png": {
-    "file": "assets/img/li-flag-luxembourg@2x.png",
+    "file": "assets/img/li-flag-luxembourg@2x-n0kx3cQ3.png",
     "src": "src/assets/listicons/li-flag-luxembourg@2x.png"
   },
   "src/assets/listicons/li-flag-mexico@2x.png": {
-    "file": "assets/img/li-flag-mexico@2x.png",
+    "file": "assets/img/li-flag-mexico@2x-BzXvs1RS.png",
     "src": "src/assets/listicons/li-flag-mexico@2x.png"
   },
   "src/assets/listicons/li-flag-moldova@2x.png": {
-    "file": "assets/img/li-flag-moldova@2x.png",
+    "file": "assets/img/li-flag-moldova@2x-BFyiPc9i.png",
     "src": "src/assets/listicons/li-flag-moldova@2x.png"
   },
+  "src/assets/listicons/li-flag-monaco@2x.png": {
+    "file": "assets/img/li-flag-monaco@2x-D0NpJVHu.png",
+    "src": "src/assets/listicons/li-flag-monaco@2x.png"
+  },
   "src/assets/listicons/li-flag-morocco@2x.png": {
-    "file": "assets/img/li-flag-morocco@2x.png",
+    "file": "assets/img/li-flag-morocco@2x-CfFfiG0o.png",
     "src": "src/assets/listicons/li-flag-morocco@2x.png"
   },
   "src/assets/listicons/li-flag-namibia@2x.png": {
-    "file": "assets/img/li-flag-namibia@2x.png",
+    "file": "assets/img/li-flag-namibia@2x-XS5HhK2F.png",
     "src": "src/assets/listicons/li-flag-namibia@2x.png"
   },
   "src/assets/listicons/li-flag-nepal@2x.png": {
-    "file": "assets/img/li-flag-nepal@2x.png",
+    "file": "assets/img/li-flag-nepal@2x-zipRxzxT.png",
     "src": "src/assets/listicons/li-flag-nepal@2x.png"
   },
   "src/assets/listicons/li-flag-netherlands@2x.png": {
-    "file": "assets/img/li-flag-netherlands@2x.png",
+    "file": "assets/img/li-flag-netherlands@2x-CYi2bA8p.png",
     "src": "src/assets/listicons/li-flag-netherlands@2x.png"
   },
   "src/assets/listicons/li-flag-new-zealand@2x.png": {
-    "file": "assets/img/li-flag-new-zealand@2x.png",
+    "file": "assets/img/li-flag-new-zealand@2x-DrTC8i07.png",
     "src": "src/assets/listicons/li-flag-new-zealand@2x.png"
   },
   "src/assets/listicons/li-flag-niger@2x.png": {
-    "file": "assets/img/li-flag-niger@2x.png",
+    "file": "assets/img/li-flag-niger@2x-Bs5uyOV7.png",
     "src": "src/assets/listicons/li-flag-niger@2x.png"
   },
   "src/assets/listicons/li-flag-north-korea@2x.png": {
-    "file": "assets/img/li-flag-north-korea@2x.png",
+    "file": "assets/img/li-flag-north-korea@2x-hMMb7FP8.png",
     "src": "src/assets/listicons/li-flag-north-korea@2x.png"
   },
   "src/assets/listicons/li-flag-norway@2x.png": {
-    "file": "assets/img/li-flag-norway@2x.png",
+    "file": "assets/img/li-flag-norway@2x-CW7RcSoj.png",
     "src": "src/assets/listicons/li-flag-norway@2x.png"
   },
   "src/assets/listicons/li-flag-palestine@2x.png": {
-    "file": "assets/img/li-flag-palestine@2x.png",
+    "file": "assets/img/li-flag-palestine@2x-DbwxbYVm.png",
     "src": "src/assets/listicons/li-flag-palestine@2x.png"
   },
   "src/assets/listicons/li-flag-panama@2x.png": {
-    "file": "assets/img/li-flag-panama@2x.png",
+    "file": "assets/img/li-flag-panama@2x-CQpcKuP1.png",
     "src": "src/assets/listicons/li-flag-panama@2x.png"
   },
   "src/assets/listicons/li-flag-peru@2x.png": {
-    "file": "assets/img/li-flag-peru@2x.png",
+    "file": "assets/img/li-flag-peru@2x-CZD4poJv.png",
     "src": "src/assets/listicons/li-flag-peru@2x.png"
   },
   "src/assets/listicons/li-flag-philippines@2x.png": {
-    "file": "assets/img/li-flag-philippines@2x.png",
+    "file": "assets/img/li-flag-philippines@2x-DxgJhF8V.png",
     "src": "src/assets/listicons/li-flag-philippines@2x.png"
   },
   "src/assets/listicons/li-flag-pirate@2x.png": {
-    "file": "assets/img/li-flag-pirate@2x.png",
+    "file": "assets/img/li-flag-pirate@2x-jDy3KK4D.png",
     "src": "src/assets/listicons/li-flag-pirate@2x.png"
   },
+  "src/assets/listicons/li-flag-poland@2x.png": {
+    "file": "assets/img/li-flag-poland@2x-BAxAUmev.png",
+    "src": "src/assets/listicons/li-flag-poland@2x.png"
+  },
   "src/assets/listicons/li-flag-portugal@2x.png": {
-    "file": "assets/img/li-flag-portugal@2x.png",
+    "file": "assets/img/li-flag-portugal@2x-H08lTw_h.png",
     "src": "src/assets/listicons/li-flag-portugal@2x.png"
   },
+  "src/assets/listicons/li-flag-republic-of-the-congo@2x.png": {
+    "file": "assets/img/li-flag-republic-of-the-congo@2x-BwoqgsBq.png",
+    "src": "src/assets/listicons/li-flag-republic-of-the-congo@2x.png"
+  },
+  "src/assets/listicons/li-flag-romania@2x.png": {
+    "file": "assets/img/li-flag-romania@2x-BqJMf4Ua.png",
+    "src": "src/assets/listicons/li-flag-romania@2x.png"
+  },
+  "src/assets/listicons/li-flag-russia@2x.png": {
+    "file": "assets/img/li-flag-russia@2x-B7Rk4YhS.png",
+    "src": "src/assets/listicons/li-flag-russia@2x.png"
+  },
   "src/assets/listicons/li-flag-scotland@2x.png": {
-    "file": "assets/img/li-flag-scotland@2x.png",
+    "file": "assets/img/li-flag-scotland@2x-DYpCUzNq.png",
     "src": "src/assets/listicons/li-flag-scotland@2x.png"
   },
   "src/assets/listicons/li-flag-slovakia@2x.png": {
-    "file": "assets/img/li-flag-slovakia@2x.png",
+    "file": "assets/img/li-flag-slovakia@2x-CPkb1ex4.png",
     "src": "src/assets/listicons/li-flag-slovakia@2x.png"
   },
   "src/assets/listicons/li-flag-slovenia@2x.png": {
-    "file": "assets/img/li-flag-slovenia@2x.png",
+    "file": "assets/img/li-flag-slovenia@2x-L0JG_ThQ.png",
     "src": "src/assets/listicons/li-flag-slovenia@2x.png"
   },
   "src/assets/listicons/li-flag-south-africa@2x.png": {
-    "file": "assets/img/li-flag-south-africa@2x.png",
+    "file": "assets/img/li-flag-south-africa@2x-CaBJvIkR.png",
     "src": "src/assets/listicons/li-flag-south-africa@2x.png"
   },
+  "src/assets/listicons/li-flag-spain@2x.png": {
+    "file": "assets/img/li-flag-spain@2x-DxdrrzJT.png",
+    "src": "src/assets/listicons/li-flag-spain@2x.png"
+  },
   "src/assets/listicons/li-flag-sudan@2x.png": {
-    "file": "assets/img/li-flag-sudan@2x.png",
+    "file": "assets/img/li-flag-sudan@2x-CJQbfHSd.png",
     "src": "src/assets/listicons/li-flag-sudan@2x.png"
   },
   "src/assets/listicons/li-flag-suriname@2x.png": {
-    "file": "assets/img/li-flag-suriname@2x.png",
+    "file": "assets/img/li-flag-suriname@2x-D753opx7.png",
     "src": "src/assets/listicons/li-flag-suriname@2x.png"
   },
   "src/assets/listicons/li-flag-sweden@2x.png": {
-    "file": "assets/img/li-flag-sweden@2x.png",
+    "file": "assets/img/li-flag-sweden@2x-B0_7Vgxc.png",
     "src": "src/assets/listicons/li-flag-sweden@2x.png"
   },
+  "src/assets/listicons/li-flag-switzerland@2x.png": {
+    "file": "assets/img/li-flag-switzerland@2x-C1MGvWg5.png",
+    "src": "src/assets/listicons/li-flag-switzerland@2x.png"
+  },
   "src/assets/listicons/li-flag-thailand@2x.png": {
-    "file": "assets/img/li-flag-thailand@2x.png",
+    "file": "assets/img/li-flag-thailand@2x-BtiL0ODh.png",
     "src": "src/assets/listicons/li-flag-thailand@2x.png"
   },
   "src/assets/listicons/li-flag-turkey@2x.png": {
-    "file": "assets/img/li-flag-turkey@2x.png",
+    "file": "assets/img/li-flag-turkey@2x-B6ZzqwXl.png",
     "src": "src/assets/listicons/li-flag-turkey@2x.png"
   },
   "src/assets/listicons/li-flag-uk@2x.png": {
-    "file": "assets/img/li-flag-uk@2x.png",
+    "file": "assets/img/li-flag-uk@2x-DrNhUaYG.png",
     "src": "src/assets/listicons/li-flag-uk@2x.png"
   },
   "src/assets/listicons/li-flag-ukraine@2x.png": {
-    "file": "assets/img/li-flag-ukraine@2x.png",
+    "file": "assets/img/li-flag-ukraine@2x-Ce6MLgwd.png",
     "src": "src/assets/listicons/li-flag-ukraine@2x.png"
   },
   "src/assets/listicons/li-flag-uruguay@2x.png": {
-    "file": "assets/img/li-flag-uruguay@2x.png",
+    "file": "assets/img/li-flag-uruguay@2x-nXDueudK.png",
     "src": "src/assets/listicons/li-flag-uruguay@2x.png"
   },
   "src/assets/listicons/li-flag-usa@2x.png": {
-    "file": "assets/img/li-flag-usa@2x.png",
+    "file": "assets/img/li-flag-usa@2x-BnYLrGGN.png",
     "src": "src/assets/listicons/li-flag-usa@2x.png"
   },
   "src/assets/listicons/li-flag-venezuela@2x.png": {
-    "file": "assets/img/li-flag-venezuela@2x.png",
+    "file": "assets/img/li-flag-venezuela@2x-dB2Vqnq3.png",
     "src": "src/assets/listicons/li-flag-venezuela@2x.png"
   },
   "src/assets/listicons/li-flag-vietnam@2x.png": {
-    "file": "assets/img/li-flag-vietnam@2x.png",
+    "file": "assets/img/li-flag-vietnam@2x-BjAflQCJ.png",
     "src": "src/assets/listicons/li-flag-vietnam@2x.png"
   },
   "src/assets/listicons/li-flag1@2x.png": {
-    "file": "assets/img/li-flag1@2x.png",
+    "file": "assets/img/li-flag1@2x-DxXMbiqJ.png",
     "src": "src/assets/listicons/li-flag1@2x.png"
   },
   "src/assets/listicons/li-folders@2x.png": {
-    "file": "assets/img/li-folders@2x.png",
+    "file": "assets/img/li-folders@2x-BU4KxGfV.png",
     "src": "src/assets/listicons/li-folders@2x.png"
   },
   "src/assets/listicons/li-football@2x.png": {
-    "file": "assets/img/li-football@2x.png",
+    "file": "assets/img/li-football@2x-B-cAc4Y8.png",
     "src": "src/assets/listicons/li-football@2x.png"
   },
   "src/assets/listicons/li-gift@2x.png": {
-    "file": "assets/img/li-gift@2x.png",
+    "file": "assets/img/li-gift@2x-DUewNF_T.png",
     "src": "src/assets/listicons/li-gift@2x.png"
   },
+  "src/assets/listicons/li-giftcard@2x.png": {
+    "file": "assets/img/li-giftcard@2x-WYpZ87jf.png",
+    "src": "src/assets/listicons/li-giftcard@2x.png"
+  },
   "src/assets/listicons/li-glasses@2x.png": {
-    "file": "assets/img/li-glasses@2x.png",
+    "file": "assets/img/li-glasses@2x-BmkjVVV3.png",
     "src": "src/assets/listicons/li-glasses@2x.png"
   },
   "src/assets/listicons/li-globe@2x.png": {
-    "file": "assets/img/li-globe@2x.png",
+    "file": "assets/img/li-globe@2x-Ck2Rkqy_.png",
     "src": "src/assets/listicons/li-globe@2x.png"
   },
   "src/assets/listicons/li-glove@2x.png": {
-    "file": "assets/img/li-glove@2x.png",
+    "file": "assets/img/li-glove@2x-BWPJDfHb.png",
     "src": "src/assets/listicons/li-glove@2x.png"
   },
   "src/assets/listicons/li-grocery@2x.png": {
-    "file": "assets/img/li-grocery@2x.png",
+    "file": "assets/img/li-grocery@2x-CjbK_K7q.png",
     "src": "src/assets/listicons/li-grocery@2x.png"
   },
   "src/assets/listicons/li-gym@2x.png": {
-    "file": "assets/img/li-gym@2x.png",
+    "file": "assets/img/li-gym@2x-CbJNgaEM.png",
     "src": "src/assets/listicons/li-gym@2x.png"
   },
   "src/assets/listicons/li-hamburger@2x.png": {
-    "file": "assets/img/li-hamburger@2x.png",
+    "file": "assets/img/li-hamburger@2x-DY1hWmGy.png",
     "src": "src/assets/listicons/li-hamburger@2x.png"
   },
   "src/assets/listicons/li-hammok@2x.png": {
-    "file": "assets/img/li-hammok@2x.png",
+    "file": "assets/img/li-hammok@2x-kSnjERZn.png",
     "src": "src/assets/listicons/li-hammok@2x.png"
   },
   "src/assets/listicons/li-hanukkah@2x.png": {
-    "file": "assets/img/li-hanukkah@2x.png",
+    "file": "assets/img/li-hanukkah@2x-NWR4DxjJ.png",
     "src": "src/assets/listicons/li-hanukkah@2x.png"
   },
   "src/assets/listicons/li-helicopter@2x.png": {
-    "file": "assets/img/li-helicopter@2x.png",
+    "file": "assets/img/li-helicopter@2x-Drjpxlia.png",
     "src": "src/assets/listicons/li-helicopter@2x.png"
   },
   "src/assets/listicons/li-home@2x.png": {
-    "file": "assets/img/li-home@2x.png",
+    "file": "assets/img/li-home@2x-BTFxMMl_.png",
     "src": "src/assets/listicons/li-home@2x.png"
   },
   "src/assets/listicons/li-hotdog@2x.png": {
-    "file": "assets/img/li-hotdog@2x.png",
+    "file": "assets/img/li-hotdog@2x-DNf5e2vT.png",
     "src": "src/assets/listicons/li-hotdog@2x.png"
   },
   "src/assets/listicons/li-idea@2x.png": {
-    "file": "assets/img/li-idea@2x.png",
+    "file": "assets/img/li-idea@2x-B1RO3joU.png",
     "src": "src/assets/listicons/li-idea@2x.png"
   },
   "src/assets/listicons/li-invoice@2x.png": {
-    "file": "assets/img/li-invoice@2x.png",
+    "file": "assets/img/li-invoice@2x-Dfld3667.png",
     "src": "src/assets/listicons/li-invoice@2x.png"
   },
   "src/assets/listicons/li-jungle@2x.png": {
-    "file": "assets/img/li-jungle@2x.png",
+    "file": "assets/img/li-jungle@2x-4vpAwpso.png",
     "src": "src/assets/listicons/li-jungle@2x.png"
   },
   "src/assets/listicons/li-ladybug@2x.png": {
-    "file": "assets/img/li-ladybug@2x.png",
+    "file": "assets/img/li-ladybug@2x-CAAv1Olv.png",
     "src": "src/assets/listicons/li-ladybug@2x.png"
   },
   "src/assets/listicons/li-leaf@2x.png": {
-    "file": "assets/img/li-leaf@2x.png",
+    "file": "assets/img/li-leaf@2x-oQEJOom-.png",
     "src": "src/assets/listicons/li-leaf@2x.png"
   },
   "src/assets/listicons/li-lion@2x.png": {
-    "file": "assets/img/li-lion@2x.png",
+    "file": "assets/img/li-lion@2x-DKd0Lq0l.png",
     "src": "src/assets/listicons/li-lion@2x.png"
   },
+  "src/assets/listicons/li-list2@2x.png": {
+    "file": "assets/img/li-list2@2x-DsljDjxD.png",
+    "src": "src/assets/listicons/li-list2@2x.png"
+  },
+  "src/assets/listicons/li-list3@2x.png": {
+    "file": "assets/img/li-list3@2x-LK_H4fTG.png",
+    "src": "src/assets/listicons/li-list3@2x.png"
+  },
+  "src/assets/listicons/li-list4@2x.png": {
+    "file": "assets/img/li-list4@2x-sgif3J_p.png",
+    "src": "src/assets/listicons/li-list4@2x.png"
+  },
+  "src/assets/listicons/li-list@2x.png": {
+    "file": "assets/img/li-list@2x-BUGi3qwf.png",
+    "src": "src/assets/listicons/li-list@2x.png"
+  },
   "src/assets/listicons/li-lobster@2x.png": {
-    "file": "assets/img/li-lobster@2x.png",
+    "file": "assets/img/li-lobster@2x-DPi6obWS.png",
     "src": "src/assets/listicons/li-lobster@2x.png"
   },
   "src/assets/listicons/li-lock@2x.png": {
-    "file": "assets/img/li-lock@2x.png",
+    "file": "assets/img/li-lock@2x-BHlVawdH.png",
     "src": "src/assets/listicons/li-lock@2x.png"
   },
   "src/assets/listicons/li-longboard@2x.png": {
-    "file": "assets/img/li-longboard@2x.png",
+    "file": "assets/img/li-longboard@2x-Bywe7jWK.png",
     "src": "src/assets/listicons/li-longboard@2x.png"
   },
   "src/assets/listicons/li-loudspeaker@2x.png": {
-    "file": "assets/img/li-loudspeaker@2x.png",
+    "file": "assets/img/li-loudspeaker@2x-_XSL-r82.png",
     "src": "src/assets/listicons/li-loudspeaker@2x.png"
   },
   "src/assets/listicons/li-luck@2x.png": {
-    "file": "assets/img/li-luck@2x.png",
+    "file": "assets/img/li-luck@2x-DpLPgpRp.png",
     "src": "src/assets/listicons/li-luck@2x.png"
   },
   "src/assets/listicons/li-macaroons@2x.png": {
-    "file": "assets/img/li-macaroons@2x.png",
+    "file": "assets/img/li-macaroons@2x-BUjA1YGk.png",
     "src": "src/assets/listicons/li-macaroons@2x.png"
   },
   "src/assets/listicons/li-magnet@2x.png": {
-    "file": "assets/img/li-magnet@2x.png",
+    "file": "assets/img/li-magnet@2x-DEzL2P-P.png",
     "src": "src/assets/listicons/li-magnet@2x.png"
   },
   "src/assets/listicons/li-medicine@2x.png": {
-    "file": "assets/img/li-medicine@2x.png",
+    "file": "assets/img/li-medicine@2x-DKUPo5Mj.png",
     "src": "src/assets/listicons/li-medicine@2x.png"
   },
+  "src/assets/listicons/li-milk@2x.png": {
+    "file": "assets/img/li-milk@2x-CYZn6Myx.png",
+    "src": "src/assets/listicons/li-milk@2x.png"
+  },
   "src/assets/listicons/li-mission@2x.png": {
-    "file": "assets/img/li-mission@2x.png",
+    "file": "assets/img/li-mission@2x-CmATobpv.png",
     "src": "src/assets/listicons/li-mission@2x.png"
   },
   "src/assets/listicons/li-money@2x.png": {
-    "file": "assets/img/li-money@2x.png",
+    "file": "assets/img/li-money@2x-CRvD1q-H.png",
     "src": "src/assets/listicons/li-money@2x.png"
   },
   "src/assets/listicons/li-monkey@2x.png": {
-    "file": "assets/img/li-monkey@2x.png",
+    "file": "assets/img/li-monkey@2x-rcX7g_lA.png",
     "src": "src/assets/listicons/li-monkey@2x.png"
   },
   "src/assets/listicons/li-motorcycle@2x.png": {
-    "file": "assets/img/li-motorcycle@2x.png",
+    "file": "assets/img/li-motorcycle@2x-1k9p5p9u.png",
     "src": "src/assets/listicons/li-motorcycle@2x.png"
   },
   "src/assets/listicons/li-notes1@2x.png": {
-    "file": "assets/img/li-notes1@2x.png",
+    "file": "assets/img/li-notes1@2x-CwDx6dqd.png",
     "src": "src/assets/listicons/li-notes1@2x.png"
   },
   "src/assets/listicons/li-nuclear@2x.png": {
-    "file": "assets/img/li-nuclear@2x.png",
+    "file": "assets/img/li-nuclear@2x-xp_U2xAk.png",
     "src": "src/assets/listicons/li-nuclear@2x.png"
   },
   "src/assets/listicons/li-octopus@2x.png": {
-    "file": "assets/img/li-octopus@2x.png",
+    "file": "assets/img/li-octopus@2x-D7RJV-Hf.png",
     "src": "src/assets/listicons/li-octopus@2x.png"
   },
   "src/assets/listicons/li-olympic-rings@2x.png": {
-    "file": "assets/img/li-olympic-rings@2x.png",
+    "file": "assets/img/li-olympic-rings@2x-CPbZVAag.png",
     "src": "src/assets/listicons/li-olympic-rings@2x.png"
   },
   "src/assets/listicons/li-om@2x.png": {
-    "file": "assets/img/li-om@2x.png",
+    "file": "assets/img/li-om@2x-CqELLEow.png",
     "src": "src/assets/listicons/li-om@2x.png"
   },
   "src/assets/listicons/li-orange@2x.png": {
-    "file": "assets/img/li-orange@2x.png",
+    "file": "assets/img/li-orange@2x-CtHxRMRP.png",
     "src": "src/assets/listicons/li-orange@2x.png"
   },
   "src/assets/listicons/li-paid-alarmclock@2x.png": {
-    "file": "assets/img/li-paid-alarmclock@2x.png",
+    "file": "assets/img/li-paid-alarmclock@2x-Doc6iIva.png",
     "src": "src/assets/listicons/li-paid-alarmclock@2x.png"
   },
+  "src/assets/listicons/li-paid-alien@2x.png": {
+    "file": "assets/img/li-paid-alien@2x-Ciw37tq2.png",
+    "src": "src/assets/listicons/li-paid-alien@2x.png"
+  },
   "src/assets/listicons/li-paid-animal@2x.png": {
-    "file": "assets/img/li-paid-animal@2x.png",
+    "file": "assets/img/li-paid-animal@2x-dnDMSB1M.png",
     "src": "src/assets/listicons/li-paid-animal@2x.png"
   },
   "src/assets/listicons/li-paid-apple@2x.png": {
-    "file": "assets/img/li-paid-apple@2x.png",
+    "file": "assets/img/li-paid-apple@2x-CZ6AYQxM.png",
     "src": "src/assets/listicons/li-paid-apple@2x.png"
   },
+  "src/assets/listicons/li-paid-armchair@2x.png": {
+    "file": "assets/img/li-paid-armchair@2x-DrX34rw_.png",
+    "src": "src/assets/listicons/li-paid-armchair@2x.png"
+  },
   "src/assets/listicons/li-paid-avocado@2x.png": {
-    "file": "assets/img/li-paid-avocado@2x.png",
+    "file": "assets/img/li-paid-avocado@2x-CQAT38by.png",
     "src": "src/assets/listicons/li-paid-avocado@2x.png"
   },
   "src/assets/listicons/li-paid-baby@2x.png": {
-    "file": "assets/img/li-paid-baby@2x.png",
+    "file": "assets/img/li-paid-baby@2x-DtmRqkx_.png",
     "src": "src/assets/listicons/li-paid-baby@2x.png"
   },
+  "src/assets/listicons/li-paid-babybottle@2x.png": {
+    "file": "assets/img/li-paid-babybottle@2x-BoWuaMPg.png",
+    "src": "src/assets/listicons/li-paid-babybottle@2x.png"
+  },
   "src/assets/listicons/li-paid-baloons@2x.png": {
-    "file": "assets/img/li-paid-baloons@2x.png",
+    "file": "assets/img/li-paid-baloons@2x-BfTppq94.png",
     "src": "src/assets/listicons/li-paid-baloons@2x.png"
   },
   "src/assets/listicons/li-paid-banana@2x.png": {
-    "file": "assets/img/li-paid-banana@2x.png",
+    "file": "assets/img/li-paid-banana@2x-B0FOYzKi.png",
     "src": "src/assets/listicons/li-paid-banana@2x.png"
   },
   "src/assets/listicons/li-paid-baseball@2x.png": {
-    "file": "assets/img/li-paid-baseball@2x.png",
+    "file": "assets/img/li-paid-baseball@2x-DF3rr3Vl.png",
     "src": "src/assets/listicons/li-paid-baseball@2x.png"
   },
   "src/assets/listicons/li-paid-basketball@2x.png": {
-    "file": "assets/img/li-paid-basketball@2x.png",
+    "file": "assets/img/li-paid-basketball@2x-DpdQguly.png",
     "src": "src/assets/listicons/li-paid-basketball@2x.png"
   },
   "src/assets/listicons/li-paid-bear@2x.png": {
-    "file": "assets/img/li-paid-bear@2x.png",
+    "file": "assets/img/li-paid-bear@2x-CrnGTdOu.png",
     "src": "src/assets/listicons/li-paid-bear@2x.png"
   },
+  "src/assets/listicons/li-paid-bed@2x.png": {
+    "file": "assets/img/li-paid-bed@2x-D7C3SKsh.png",
+    "src": "src/assets/listicons/li-paid-bed@2x.png"
+  },
   "src/assets/listicons/li-paid-bicycle@2x.png": {
-    "file": "assets/img/li-paid-bicycle@2x.png",
+    "file": "assets/img/li-paid-bicycle@2x-dvII3eco.png",
     "src": "src/assets/listicons/li-paid-bicycle@2x.png"
   },
   "src/assets/listicons/li-paid-birthday@2x.png": {
-    "file": "assets/img/li-paid-birthday@2x.png",
+    "file": "assets/img/li-paid-birthday@2x-J-hW6u2O.png",
     "src": "src/assets/listicons/li-paid-birthday@2x.png"
   },
   "src/assets/listicons/li-paid-bread@2x.png": {
-    "file": "assets/img/li-paid-bread@2x.png",
+    "file": "assets/img/li-paid-bread@2x-DLI4lmfv.png",
     "src": "src/assets/listicons/li-paid-bread@2x.png"
   },
   "src/assets/listicons/li-paid-candy@2x.png": {
-    "file": "assets/img/li-paid-candy@2x.png",
+    "file": "assets/img/li-paid-candy@2x-D4h6-gUJ.png",
     "src": "src/assets/listicons/li-paid-candy@2x.png"
   },
   "src/assets/listicons/li-paid-carrot@2x.png": {
-    "file": "assets/img/li-paid-carrot@2x.png",
+    "file": "assets/img/li-paid-carrot@2x-D4EaQwe4.png",
     "src": "src/assets/listicons/li-paid-carrot@2x.png"
   },
   "src/assets/listicons/li-paid-cherry@2x.png": {
-    "file": "assets/img/li-paid-cherry@2x.png",
+    "file": "assets/img/li-paid-cherry@2x-BoPt4eix.png",
     "src": "src/assets/listicons/li-paid-cherry@2x.png"
   },
+  "src/assets/listicons/li-paid-chestofdraws@2x.png": {
+    "file": "assets/img/li-paid-chestofdraws@2x-BYgJdBhz.png",
+    "src": "src/assets/listicons/li-paid-chestofdraws@2x.png"
+  },
   "src/assets/listicons/li-paid-chicken@2x.png": {
-    "file": "assets/img/li-paid-chicken@2x.png",
+    "file": "assets/img/li-paid-chicken@2x-DOyop_S6.png",
     "src": "src/assets/listicons/li-paid-chicken@2x.png"
   },
   "src/assets/listicons/li-paid-christmas@2x.png": {
-    "file": "assets/img/li-paid-christmas@2x.png",
+    "file": "assets/img/li-paid-christmas@2x-HqmqMX1E.png",
     "src": "src/assets/listicons/li-paid-christmas@2x.png"
   },
+  "src/assets/listicons/li-paid-cloud-sun@2x.png": {
+    "file": "assets/img/li-paid-cloud-sun@2x-CMrDGjSM.png",
+    "src": "src/assets/listicons/li-paid-cloud-sun@2x.png"
+  },
   "src/assets/listicons/li-paid-cocktail@2x.png": {
-    "file": "assets/img/li-paid-cocktail@2x.png",
+    "file": "assets/img/li-paid-cocktail@2x-C5XDiULJ.png",
     "src": "src/assets/listicons/li-paid-cocktail@2x.png"
   },
   "src/assets/listicons/li-paid-coffee@2x.png": {
-    "file": "assets/img/li-paid-coffee@2x.png",
+    "file": "assets/img/li-paid-coffee@2x-DeOJrMpP.png",
     "src": "src/assets/listicons/li-paid-coffee@2x.png"
   },
   "src/assets/listicons/li-paid-corn@2x.png": {
-    "file": "assets/img/li-paid-corn@2x.png",
+    "file": "assets/img/li-paid-corn@2x-CVta5ff3.png",
     "src": "src/assets/listicons/li-paid-corn@2x.png"
   },
+  "src/assets/listicons/li-paid-desk@2x.png": {
+    "file": "assets/img/li-paid-desk@2x-Bei_M9wB.png",
+    "src": "src/assets/listicons/li-paid-desk@2x.png"
+  },
   "src/assets/listicons/li-paid-diamond@2x.png": {
-    "file": "assets/img/li-paid-diamond@2x.png",
+    "file": "assets/img/li-paid-diamond@2x-ByTgAmpO.png",
     "src": "src/assets/listicons/li-paid-diamond@2x.png"
   },
   "src/assets/listicons/li-paid-discount@2x.png": {
-    "file": "assets/img/li-paid-discount@2x.png",
+    "file": "assets/img/li-paid-discount@2x-c8mCf4mN.png",
     "src": "src/assets/listicons/li-paid-discount@2x.png"
   },
+  "src/assets/listicons/li-paid-diskette@2x.png": {
+    "file": "assets/img/li-paid-diskette@2x-DHkywoEV.png",
+    "src": "src/assets/listicons/li-paid-diskette@2x.png"
+  },
   "src/assets/listicons/li-paid-dj@2x.png": {
-    "file": "assets/img/li-paid-dj@2x.png",
+    "file": "assets/img/li-paid-dj@2x-DJM8lL3X.png",
     "src": "src/assets/listicons/li-paid-dj@2x.png"
   },
   "src/assets/listicons/li-paid-dogcat@2x.png": {
-    "file": "assets/img/li-paid-dogcat@2x.png",
+    "file": "assets/img/li-paid-dogcat@2x-DQoCwYm_.png",
     "src": "src/assets/listicons/li-paid-dogcat@2x.png"
   },
+  "src/assets/listicons/li-paid-education@2x.png": {
+    "file": "assets/img/li-paid-education@2x-Db8HVPs2.png",
+    "src": "src/assets/listicons/li-paid-education@2x.png"
+  },
   "src/assets/listicons/li-paid-eggs@2x.png": {
-    "file": "assets/img/li-paid-eggs@2x.png",
+    "file": "assets/img/li-paid-eggs@2x-CqypnpzP.png",
     "src": "src/assets/listicons/li-paid-eggs@2x.png"
   },
   "src/assets/listicons/li-paid-fire-ext@2x.png": {
-    "file": "assets/img/li-paid-fire-ext@2x.png",
+    "file": "assets/img/li-paid-fire-ext@2x-DXNrDz1o.png",
     "src": "src/assets/listicons/li-paid-fire-ext@2x.png"
   },
+  "src/assets/listicons/li-paid-flashlight@2x.png": {
+    "file": "assets/img/li-paid-flashlight@2x-CX3IFkML.png",
+    "src": "src/assets/listicons/li-paid-flashlight@2x.png"
+  },
   "src/assets/listicons/li-paid-flower@2x.png": {
-    "file": "assets/img/li-paid-flower@2x.png",
+    "file": "assets/img/li-paid-flower@2x-BgbQNyjx.png",
     "src": "src/assets/listicons/li-paid-flower@2x.png"
   },
+  "src/assets/listicons/li-paid-football@2x.png": {
+    "file": "assets/img/li-paid-football@2x-Cu6OUNwp.png",
+    "src": "src/assets/listicons/li-paid-football@2x.png"
+  },
+  "src/assets/listicons/li-paid-gameboy@2x.png": {
+    "file": "assets/img/li-paid-gameboy@2x-F9BAVg3T.png",
+    "src": "src/assets/listicons/li-paid-gameboy@2x.png"
+  },
   "src/assets/listicons/li-paid-gamecontroller@2x.png": {
-    "file": "assets/img/li-paid-gamecontroller@2x.png",
+    "file": "assets/img/li-paid-gamecontroller@2x-08dAbSZF.png",
     "src": "src/assets/listicons/li-paid-gamecontroller@2x.png"
   },
   "src/assets/listicons/li-paid-globe@2x.png": {
-    "file": "assets/img/li-paid-globe@2x.png",
+    "file": "assets/img/li-paid-globe@2x-EGXDxx0T.png",
     "src": "src/assets/listicons/li-paid-globe@2x.png"
   },
+  "src/assets/listicons/li-paid-hammer@2x.png": {
+    "file": "assets/img/li-paid-hammer@2x-CqbmWLuc.png",
+    "src": "src/assets/listicons/li-paid-hammer@2x.png"
+  },
+  "src/assets/listicons/li-paid-hanger@2x.png": {
+    "file": "assets/img/li-paid-hanger@2x-CALCREEc.png",
+    "src": "src/assets/listicons/li-paid-hanger@2x.png"
+  },
   "src/assets/listicons/li-paid-icecream@2x.png": {
-    "file": "assets/img/li-paid-icecream@2x.png",
+    "file": "assets/img/li-paid-icecream@2x-DQsuAej-.png",
     "src": "src/assets/listicons/li-paid-icecream@2x.png"
   },
+  "src/assets/listicons/li-paid-imac@2x.png": {
+    "file": "assets/img/li-paid-imac@2x-BjjIQ10s.png",
+    "src": "src/assets/listicons/li-paid-imac@2x.png"
+  },
   "src/assets/listicons/li-paid-klmn@2x.png": {
-    "file": "assets/img/li-paid-klmn@2x.png",
+    "file": "assets/img/li-paid-klmn@2x-Bf-I9rR3.png",
     "src": "src/assets/listicons/li-paid-klmn@2x.png"
   },
+  "src/assets/listicons/li-paid-knives@2x.png": {
+    "file": "assets/img/li-paid-knives@2x-BXJho6Rc.png",
+    "src": "src/assets/listicons/li-paid-knives@2x.png"
+  },
+  "src/assets/listicons/li-paid-lollipops@2x.png": {
+    "file": "assets/img/li-paid-lollipops@2x-B_j2kogD.png",
+    "src": "src/assets/listicons/li-paid-lollipops@2x.png"
+  },
   "src/assets/listicons/li-paid-map@2x.png": {
-    "file": "assets/img/li-paid-map@2x.png",
+    "file": "assets/img/li-paid-map@2x-Boc7sHwz.png",
     "src": "src/assets/listicons/li-paid-map@2x.png"
   },
   "src/assets/listicons/li-paid-microphone@2x.png": {
-    "file": "assets/img/li-paid-microphone@2x.png",
+    "file": "assets/img/li-paid-microphone@2x-DjtLbs0A.png",
     "src": "src/assets/listicons/li-paid-microphone@2x.png"
   },
+  "src/assets/listicons/li-paid-music@2x.png": {
+    "file": "assets/img/li-paid-music@2x-CZVj8lEd.png",
+    "src": "src/assets/listicons/li-paid-music@2x.png"
+  },
   "src/assets/listicons/li-paid-newspaper@2x.png": {
-    "file": "assets/img/li-paid-newspaper@2x.png",
+    "file": "assets/img/li-paid-newspaper@2x-cMUHDT-v.png",
     "src": "src/assets/listicons/li-paid-newspaper@2x.png"
   },
   "src/assets/listicons/li-paid-notepad@2x.png": {
-    "file": "assets/img/li-paid-notepad@2x.png",
+    "file": "assets/img/li-paid-notepad@2x-CSAWdRgu.png",
     "src": "src/assets/listicons/li-paid-notepad@2x.png"
   },
+  "src/assets/listicons/li-paid-paint@2x.png": {
+    "file": "assets/img/li-paid-paint@2x-DipdS-P7.png",
+    "src": "src/assets/listicons/li-paid-paint@2x.png"
+  },
+  "src/assets/listicons/li-paid-paintbrush@2x.png": {
+    "file": "assets/img/li-paid-paintbrush@2x-D-dUamfK.png",
+    "src": "src/assets/listicons/li-paid-paintbrush@2x.png"
+  },
+  "src/assets/listicons/li-paid-pan@2x.png": {
+    "file": "assets/img/li-paid-pan@2x-DIZYFjJm.png",
+    "src": "src/assets/listicons/li-paid-pan@2x.png"
+  },
   "src/assets/listicons/li-paid-pear@2x.png": {
-    "file": "assets/img/li-paid-pear@2x.png",
+    "file": "assets/img/li-paid-pear@2x-CJHoHYWG.png",
     "src": "src/assets/listicons/li-paid-pear@2x.png"
   },
+  "src/assets/listicons/li-paid-pin@2x.png": {
+    "file": "assets/img/li-paid-pin@2x-5howdFTF.png",
+    "src": "src/assets/listicons/li-paid-pin@2x.png"
+  },
   "src/assets/listicons/li-paid-pizza@2x.png": {
-    "file": "assets/img/li-paid-pizza@2x.png",
+    "file": "assets/img/li-paid-pizza@2x-Dehc58dT.png",
     "src": "src/assets/listicons/li-paid-pizza@2x.png"
   },
   "src/assets/listicons/li-paid-rain@2x.png": {
-    "file": "assets/img/li-paid-rain@2x.png",
+    "file": "assets/img/li-paid-rain@2x-D_v-PuDt.png",
     "src": "src/assets/listicons/li-paid-rain@2x.png"
   },
+  "src/assets/listicons/li-paid-run@2x.png": {
+    "file": "assets/img/li-paid-run@2x-B-yeUJAB.png",
+    "src": "src/assets/listicons/li-paid-run@2x.png"
+  },
   "src/assets/listicons/li-paid-safebox@2x.png": {
-    "file": "assets/img/li-paid-safebox@2x.png",
+    "file": "assets/img/li-paid-safebox@2x-CKYnzP2e.png",
     "src": "src/assets/listicons/li-paid-safebox@2x.png"
   },
+  "src/assets/listicons/li-paid-saturn@2x.png": {
+    "file": "assets/img/li-paid-saturn@2x-JZAKkggp.png",
+    "src": "src/assets/listicons/li-paid-saturn@2x.png"
+  },
   "src/assets/listicons/li-paid-scissors@2x.png": {
-    "file": "assets/img/li-paid-scissors@2x.png",
+    "file": "assets/img/li-paid-scissors@2x-q6HA1x-P.png",
     "src": "src/assets/listicons/li-paid-scissors@2x.png"
   },
+  "src/assets/listicons/li-paid-scoop@2x.png": {
+    "file": "assets/img/li-paid-scoop@2x-dnFgolkh.png",
+    "src": "src/assets/listicons/li-paid-scoop@2x.png"
+  },
   "src/assets/listicons/li-paid-snow@2x.png": {
-    "file": "assets/img/li-paid-snow@2x.png",
+    "file": "assets/img/li-paid-snow@2x-DV-yJa2Y.png",
     "src": "src/assets/listicons/li-paid-snow@2x.png"
   },
+  "src/assets/listicons/li-paid-sock@2x.png": {
+    "file": "assets/img/li-paid-sock@2x-DYBV2o8g.png",
+    "src": "src/assets/listicons/li-paid-sock@2x.png"
+  },
   "src/assets/listicons/li-paid-spaghetti@2x.png": {
-    "file": "assets/img/li-paid-spaghetti@2x.png",
+    "file": "assets/img/li-paid-spaghetti@2x-C8KmqaEI.png",
     "src": "src/assets/listicons/li-paid-spaghetti@2x.png"
   },
   "src/assets/listicons/li-paid-starbucks@2x.png": {
-    "file": "assets/img/li-paid-starbucks@2x.png",
+    "file": "assets/img/li-paid-starbucks@2x-CPIfy2CS.png",
     "src": "src/assets/listicons/li-paid-starbucks@2x.png"
   },
   "src/assets/listicons/li-paid-steak@2x.png": {
-    "file": "assets/img/li-paid-steak@2x.png",
+    "file": "assets/img/li-paid-steak@2x-BU4JNTA0.png",
     "src": "src/assets/listicons/li-paid-steak@2x.png"
   },
   "src/assets/listicons/li-paid-sun@2x.png": {
-    "file": "assets/img/li-paid-sun@2x.png",
+    "file": "assets/img/li-paid-sun@2x-DUJcqzzM.png",
     "src": "src/assets/listicons/li-paid-sun@2x.png"
   },
+  "src/assets/listicons/li-paid-thermo@2x.png": {
+    "file": "assets/img/li-paid-thermo@2x-CN-2OhLs.png",
+    "src": "src/assets/listicons/li-paid-thermo@2x.png"
+  },
+  "src/assets/listicons/li-paid-thunderstorm@2x.png": {
+    "file": "assets/img/li-paid-thunderstorm@2x-BHWzmrng.png",
+    "src": "src/assets/listicons/li-paid-thunderstorm@2x.png"
+  },
   "src/assets/listicons/li-paid-tie@2x.png": {
-    "file": "assets/img/li-paid-tie@2x.png",
+    "file": "assets/img/li-paid-tie@2x-CUWdaIT9.png",
     "src": "src/assets/listicons/li-paid-tie@2x.png"
   },
   "src/assets/listicons/li-paid-trash@2x.png": {
-    "file": "assets/img/li-paid-trash@2x.png",
+    "file": "assets/img/li-paid-trash@2x-DlvRFZPL.png",
     "src": "src/assets/listicons/li-paid-trash@2x.png"
   },
+  "src/assets/listicons/li-paid-tv@2x.png": {
+    "file": "assets/img/li-paid-tv@2x-BK5ILuEG.png",
+    "src": "src/assets/listicons/li-paid-tv@2x.png"
+  },
   "src/assets/listicons/li-paid-ufo@2x.png": {
-    "file": "assets/img/li-paid-ufo@2x.png",
+    "file": "assets/img/li-paid-ufo@2x-C73MBV9F.png",
     "src": "src/assets/listicons/li-paid-ufo@2x.png"
   },
   "src/assets/listicons/li-paid-umbrella@2x.png": {
-    "file": "assets/img/li-paid-umbrella@2x.png",
+    "file": "assets/img/li-paid-umbrella@2x-qjlrxKRd.png",
     "src": "src/assets/listicons/li-paid-umbrella@2x.png"
   },
+  "src/assets/listicons/li-paid-wardrobe@2x.png": {
+    "file": "assets/img/li-paid-wardrobe@2x-TNka5krt.png",
+    "src": "src/assets/listicons/li-paid-wardrobe@2x.png"
+  },
+  "src/assets/listicons/li-paid-watermelon@2x.png": {
+    "file": "assets/img/li-paid-watermelon@2x-C165nRcv.png",
+    "src": "src/assets/listicons/li-paid-watermelon@2x.png"
+  },
+  "src/assets/listicons/li-paid-whisky-bottle@2x.png": {
+    "file": "assets/img/li-paid-whisky-bottle@2x-OkW5kAT-.png",
+    "src": "src/assets/listicons/li-paid-whisky-bottle@2x.png"
+  },
+  "src/assets/listicons/li-paid-wine-bottle@2x.png": {
+    "file": "assets/img/li-paid-wine-bottle@2x-CvRgcZ3H.png",
+    "src": "src/assets/listicons/li-paid-wine-bottle@2x.png"
+  },
   "src/assets/listicons/li-paid-wine-glass@2x.png": {
-    "file": "assets/img/li-paid-wine-glass@2x.png",
+    "file": "assets/img/li-paid-wine-glass@2x-zTBBa9Wy.png",
     "src": "src/assets/listicons/li-paid-wine-glass@2x.png"
   },
   "src/assets/listicons/li-paid2-arrows@2x.png": {
-    "file": "assets/img/li-paid2-arrows@2x.png",
+    "file": "assets/img/li-paid2-arrows@2x-C-luc68o.png",
     "src": "src/assets/listicons/li-paid2-arrows@2x.png"
   },
   "src/assets/listicons/li-paid2-boxes@2x.png": {
-    "file": "assets/img/li-paid2-boxes@2x.png",
+    "file": "assets/img/li-paid2-boxes@2x-BPO_ys0R.png",
     "src": "src/assets/listicons/li-paid2-boxes@2x.png"
   },
   "src/assets/listicons/li-paid2-camera@2x.png": {
-    "file": "assets/img/li-paid2-camera@2x.png",
+    "file": "assets/img/li-paid2-camera@2x-Dl8elqlX.png",
     "src": "src/assets/listicons/li-paid2-camera@2x.png"
   },
   "src/assets/listicons/li-paid2-car@2x.png": {
-    "file": "assets/img/li-paid2-car@2x.png",
+    "file": "assets/img/li-paid2-car@2x-DGKJ72-A.png",
     "src": "src/assets/listicons/li-paid2-car@2x.png"
   },
   "src/assets/listicons/li-paid2-chat@2x.png": {
-    "file": "assets/img/li-paid2-chat@2x.png",
+    "file": "assets/img/li-paid2-chat@2x-DH8V_1J0.png",
     "src": "src/assets/listicons/li-paid2-chat@2x.png"
   },
   "src/assets/listicons/li-paid2-checkmark@2x.png": {
-    "file": "assets/img/li-paid2-checkmark@2x.png",
+    "file": "assets/img/li-paid2-checkmark@2x-CRPwSr9Y.png",
     "src": "src/assets/listicons/li-paid2-checkmark@2x.png"
   },
   "src/assets/listicons/li-paid2-christmas-ball@2x.png": {
-    "file": "assets/img/li-paid2-christmas-ball@2x.png",
+    "file": "assets/img/li-paid2-christmas-ball@2x-LYzLmA9n.png",
     "src": "src/assets/listicons/li-paid2-christmas-ball@2x.png"
   },
   "src/assets/listicons/li-paid2-christmas-stocking@2x.png": {
-    "file": "assets/img/li-paid2-christmas-stocking@2x.png",
+    "file": "assets/img/li-paid2-christmas-stocking@2x-sIjvKXHC.png",
     "src": "src/assets/listicons/li-paid2-christmas-stocking@2x.png"
   },
   "src/assets/listicons/li-paid2-clock@2x.png": {
-    "file": "assets/img/li-paid2-clock@2x.png",
+    "file": "assets/img/li-paid2-clock@2x-BtVxfHRo.png",
     "src": "src/assets/listicons/li-paid2-clock@2x.png"
   },
   "src/assets/listicons/li-paid2-crab@2x.png": {
-    "file": "assets/img/li-paid2-crab@2x.png",
+    "file": "assets/img/li-paid2-crab@2x-BMN_mjAH.png",
     "src": "src/assets/listicons/li-paid2-crab@2x.png"
   },
   "src/assets/listicons/li-paid2-gingerbread@2x.png": {
-    "file": "assets/img/li-paid2-gingerbread@2x.png",
+    "file": "assets/img/li-paid2-gingerbread@2x-BRj6u7mU.png",
     "src": "src/assets/listicons/li-paid2-gingerbread@2x.png"
   },
   "src/assets/listicons/li-paid2-guitar@2x.png": {
-    "file": "assets/img/li-paid2-guitar@2x.png",
+    "file": "assets/img/li-paid2-guitar@2x-Ce2iJg49.png",
     "src": "src/assets/listicons/li-paid2-guitar@2x.png"
   },
   "src/assets/listicons/li-paid2-hotspot@2x.png": {
-    "file": "assets/img/li-paid2-hotspot@2x.png",
+    "file": "assets/img/li-paid2-hotspot@2x-CzZlC2ZI.png",
     "src": "src/assets/listicons/li-paid2-hotspot@2x.png"
   },
+  "src/assets/listicons/li-paid2-iphone@2x.png": {
+    "file": "assets/img/li-paid2-iphone@2x-BNVKADRw.png",
+    "src": "src/assets/listicons/li-paid2-iphone@2x.png"
+  },
+  "src/assets/listicons/li-paid2-keys@2x.png": {
+    "file": "assets/img/li-paid2-keys@2x-CXkdcRU2.png",
+    "src": "src/assets/listicons/li-paid2-keys@2x.png"
+  },
+  "src/assets/listicons/li-paid2-ladies-shoe@2x.png": {
+    "file": "assets/img/li-paid2-ladies-shoe@2x-Bewec0Ex.png",
+    "src": "src/assets/listicons/li-paid2-ladies-shoe@2x.png"
+  },
+  "src/assets/listicons/li-paid2-landscape@2x.png": {
+    "file": "assets/img/li-paid2-landscape@2x-12N_KQuf.png",
+    "src": "src/assets/listicons/li-paid2-landscape@2x.png"
+  },
   "src/assets/listicons/li-paid2-location@2x.png": {
-    "file": "assets/img/li-paid2-location@2x.png",
+    "file": "assets/img/li-paid2-location@2x-D5oF44M7.png",
     "src": "src/assets/listicons/li-paid2-location@2x.png"
   },
   "src/assets/listicons/li-paid2-mistletoe@2x.png": {
-    "file": "assets/img/li-paid2-mistletoe@2x.png",
+    "file": "assets/img/li-paid2-mistletoe@2x-DKSOp64I.png",
     "src": "src/assets/listicons/li-paid2-mistletoe@2x.png"
   },
   "src/assets/listicons/li-paid2-santa@2x.png": {
-    "file": "assets/img/li-paid2-santa@2x.png",
+    "file": "assets/img/li-paid2-santa@2x-C8Qu97HE.png",
     "src": "src/assets/listicons/li-paid2-santa@2x.png"
   },
   "src/assets/listicons/li-paid2-snowman@2x.png": {
-    "file": "assets/img/li-paid2-snowman@2x.png",
+    "file": "assets/img/li-paid2-snowman@2x-BzwPLhpG.png",
     "src": "src/assets/listicons/li-paid2-snowman@2x.png"
   },
+  "src/assets/listicons/li-paid2-sunglasses@2x.png": {
+    "file": "assets/img/li-paid2-sunglasses@2x-BleLy6wd.png",
+    "src": "src/assets/listicons/li-paid2-sunglasses@2x.png"
+  },
   "src/assets/listicons/li-paid2-tent@2x.png": {
-    "file": "assets/img/li-paid2-tent@2x.png",
+    "file": "assets/img/li-paid2-tent@2x-D0nMB5FX.png",
     "src": "src/assets/listicons/li-paid2-tent@2x.png"
   },
+  "src/assets/listicons/li-paid2-yinyang@2x.png": {
+    "file": "assets/img/li-paid2-yinyang@2x-DDPDzTRt.png",
+    "src": "src/assets/listicons/li-paid2-yinyang@2x.png"
+  },
+  "src/assets/listicons/li-paid3-anchor@2x.png": {
+    "file": "assets/img/li-paid3-anchor@2x-BpmyN6FL.png",
+    "src": "src/assets/listicons/li-paid3-anchor@2x.png"
+  },
+  "src/assets/listicons/li-paid3-apple@2x.png": {
+    "file": "assets/img/li-paid3-apple@2x-Ce8-FCQz.png",
+    "src": "src/assets/listicons/li-paid3-apple@2x.png"
+  },
+  "src/assets/listicons/li-paid3-bookmark@2x.png": {
+    "file": "assets/img/li-paid3-bookmark@2x-Bu-ujcQQ.png",
+    "src": "src/assets/listicons/li-paid3-bookmark@2x.png"
+  },
   "src/assets/listicons/li-paid3-goal@2x.png": {
-    "file": "assets/img/li-paid3-goal@2x.png",
+    "file": "assets/img/li-paid3-goal@2x--4sKBQWD.png",
     "src": "src/assets/listicons/li-paid3-goal@2x.png"
   },
+  "src/assets/listicons/li-paid3-ribbon@2x.png": {
+    "file": "assets/img/li-paid3-ribbon@2x-DnALI_p8.png",
+    "src": "src/assets/listicons/li-paid3-ribbon@2x.png"
+  },
+  "src/assets/listicons/li-paid3-smiley-happy@2x.png": {
+    "file": "assets/img/li-paid3-smiley-happy@2x-DlPWieF_.png",
+    "src": "src/assets/listicons/li-paid3-smiley-happy@2x.png"
+  },
+  "src/assets/listicons/li-paid3-smiley-unhappy@2x.png": {
+    "file": "assets/img/li-paid3-smiley-unhappy@2x-DY5aNaZ0.png",
+    "src": "src/assets/listicons/li-paid3-smiley-unhappy@2x.png"
+  },
+  "src/assets/listicons/li-paid3-trafficlight@2x.png": {
+    "file": "assets/img/li-paid3-trafficlight@2x-BV8iReRE.png",
+    "src": "src/assets/listicons/li-paid3-trafficlight@2x.png"
+  },
   "src/assets/listicons/li-paid3-userpic-hipster@2x.png": {
-    "file": "assets/img/li-paid3-userpic-hipster@2x.png",
+    "file": "assets/img/li-paid3-userpic-hipster@2x-Dh1QEIRq.png",
     "src": "src/assets/listicons/li-paid3-userpic-hipster@2x.png"
   },
   "src/assets/listicons/li-paid3-userpic-lady@2x.png": {
-    "file": "assets/img/li-paid3-userpic-lady@2x.png",
+    "file": "assets/img/li-paid3-userpic-lady@2x-BRGeVKKf.png",
     "src": "src/assets/listicons/li-paid3-userpic-lady@2x.png"
   },
   "src/assets/listicons/li-paid3-userpic-man@2x.png": {
-    "file": "assets/img/li-paid3-userpic-man@2x.png",
+    "file": "assets/img/li-paid3-userpic-man@2x-RMHgYjaW.png",
     "src": "src/assets/listicons/li-paid3-userpic-man@2x.png"
   },
   "src/assets/listicons/li-paid3-userpic-steve@2x.png": {
-    "file": "assets/img/li-paid3-userpic-steve@2x.png",
+    "file": "assets/img/li-paid3-userpic-steve@2x-x2fgRl18.png",
     "src": "src/assets/listicons/li-paid3-userpic-steve@2x.png"
   },
   "src/assets/listicons/li-paid4-christmas-calendar@2x.png": {
-    "file": "assets/img/li-paid4-christmas-calendar@2x.png",
+    "file": "assets/img/li-paid4-christmas-calendar@2x-CWIBVBHu.png",
     "src": "src/assets/listicons/li-paid4-christmas-calendar@2x.png"
   },
   "src/assets/listicons/li-paid4-christmas-candy@2x.png": {
-    "file": "assets/img/li-paid4-christmas-candy@2x.png",
+    "file": "assets/img/li-paid4-christmas-candy@2x-wt34q9tt.png",
     "src": "src/assets/listicons/li-paid4-christmas-candy@2x.png"
   },
   "src/assets/listicons/li-paid4-christmas-cocktail@2x.png": {
-    "file": "assets/img/li-paid4-christmas-cocktail@2x.png",
+    "file": "assets/img/li-paid4-christmas-cocktail@2x-Blq5DJSE.png",
     "src": "src/assets/listicons/li-paid4-christmas-cocktail@2x.png"
   },
   "src/assets/listicons/li-paid4-christmas-giftbox2@2x.png": {
-    "file": "assets/img/li-paid4-christmas-giftbox2@2x.png",
+    "file": "assets/img/li-paid4-christmas-giftbox2@2x-CfBec48o.png",
     "src": "src/assets/listicons/li-paid4-christmas-giftbox2@2x.png"
   },
   "src/assets/listicons/li-paid4-christmas-giftbox@2x.png": {
-    "file": "assets/img/li-paid4-christmas-giftbox@2x.png",
+    "file": "assets/img/li-paid4-christmas-giftbox@2x-BHAB-eJm.png",
     "src": "src/assets/listicons/li-paid4-christmas-giftbox@2x.png"
   },
   "src/assets/listicons/li-paid4-christmas-gingerbread@2x.png": {
-    "file": "assets/img/li-paid4-christmas-gingerbread@2x.png",
+    "file": "assets/img/li-paid4-christmas-gingerbread@2x-RSR5q4ZR.png",
     "src": "src/assets/listicons/li-paid4-christmas-gingerbread@2x.png"
   },
   "src/assets/listicons/li-paid4-christmas-glass@2x.png": {
-    "file": "assets/img/li-paid4-christmas-glass@2x.png",
+    "file": "assets/img/li-paid4-christmas-glass@2x-ydesV2tx.png",
     "src": "src/assets/listicons/li-paid4-christmas-glass@2x.png"
   },
   "src/assets/listicons/li-paid4-christmas-globes@2x.png": {
-    "file": "assets/img/li-paid4-christmas-globes@2x.png",
+    "file": "assets/img/li-paid4-christmas-globes@2x-CZLBm3yD.png",
     "src": "src/assets/listicons/li-paid4-christmas-globes@2x.png"
   },
   "src/assets/listicons/li-paid4-christmas-gloves@2x.png": {
-    "file": "assets/img/li-paid4-christmas-gloves@2x.png",
+    "file": "assets/img/li-paid4-christmas-gloves@2x-D9Cmjsm5.png",
     "src": "src/assets/listicons/li-paid4-christmas-gloves@2x.png"
   },
   "src/assets/listicons/li-paid4-christmas-house@2x.png": {
-    "file": "assets/img/li-paid4-christmas-house@2x.png",
+    "file": "assets/img/li-paid4-christmas-house@2x-BO1DyadJ.png",
     "src": "src/assets/listicons/li-paid4-christmas-house@2x.png"
   },
   "src/assets/listicons/li-paid4-christmas-reindeer@2x.png": {
-    "file": "assets/img/li-paid4-christmas-reindeer@2x.png",
+    "file": "assets/img/li-paid4-christmas-reindeer@2x-CywHq2YL.png",
     "src": "src/assets/listicons/li-paid4-christmas-reindeer@2x.png"
   },
   "src/assets/listicons/li-paid4-christmas-sale@2x.png": {
-    "file": "assets/img/li-paid4-christmas-sale@2x.png",
+    "file": "assets/img/li-paid4-christmas-sale@2x-CJkL1S3R.png",
     "src": "src/assets/listicons/li-paid4-christmas-sale@2x.png"
   },
   "src/assets/listicons/li-paid4-christmas-santa@2x.png": {
-    "file": "assets/img/li-paid4-christmas-santa@2x.png",
+    "file": "assets/img/li-paid4-christmas-santa@2x-XQdO2lkb.png",
     "src": "src/assets/listicons/li-paid4-christmas-santa@2x.png"
   },
   "src/assets/listicons/li-paid4-christmas-sleigh@2x.png": {
-    "file": "assets/img/li-paid4-christmas-sleigh@2x.png",
+    "file": "assets/img/li-paid4-christmas-sleigh@2x-Co-xSRZ2.png",
     "src": "src/assets/listicons/li-paid4-christmas-sleigh@2x.png"
   },
   "src/assets/listicons/li-paid4-christmas-snowman@2x.png": {
-    "file": "assets/img/li-paid4-christmas-snowman@2x.png",
+    "file": "assets/img/li-paid4-christmas-snowman@2x-RPeVVAhp.png",
     "src": "src/assets/listicons/li-paid4-christmas-snowman@2x.png"
   },
   "src/assets/listicons/li-paid4-christmas-tree@2x.png": {
-    "file": "assets/img/li-paid4-christmas-tree@2x.png",
+    "file": "assets/img/li-paid4-christmas-tree@2x-C0Dh09LA.png",
     "src": "src/assets/listicons/li-paid4-christmas-tree@2x.png"
   },
   "src/assets/listicons/li-palette@2x.png": {
-    "file": "assets/img/li-palette@2x.png",
+    "file": "assets/img/li-palette@2x-B6KyO6X4.png",
     "src": "src/assets/listicons/li-palette@2x.png"
   },
   "src/assets/listicons/li-panda@2x.png": {
-    "file": "assets/img/li-panda@2x.png",
+    "file": "assets/img/li-panda@2x-D8G_KU85.png",
     "src": "src/assets/listicons/li-panda@2x.png"
   },
   "src/assets/listicons/li-parrot@2x.png": {
-    "file": "assets/img/li-parrot@2x.png",
+    "file": "assets/img/li-parrot@2x-DTpOI5n8.png",
     "src": "src/assets/listicons/li-parrot@2x.png"
   },
   "src/assets/listicons/li-passport@2x.png": {
-    "file": "assets/img/li-passport@2x.png",
+    "file": "assets/img/li-passport@2x-G7I5Yle4.png",
     "src": "src/assets/listicons/li-passport@2x.png"
   },
+  "src/assets/listicons/li-peace@2x.png": {
+    "file": "assets/img/li-peace@2x-C-KlHm4E.png",
+    "src": "src/assets/listicons/li-peace@2x.png"
+  },
   "src/assets/listicons/li-pencil@2x.png": {
-    "file": "assets/img/li-pencil@2x.png",
+    "file": "assets/img/li-pencil@2x-Cqa9AWCy.png",
     "src": "src/assets/listicons/li-pencil@2x.png"
   },
   "src/assets/listicons/li-people@2x.png": {
-    "file": "assets/img/li-people@2x.png",
+    "file": "assets/img/li-people@2x-DHXpUqZh.png",
     "src": "src/assets/listicons/li-people@2x.png"
   },
   "src/assets/listicons/li-pet-fish@2x.png": {
-    "file": "assets/img/li-pet-fish@2x.png",
+    "file": "assets/img/li-pet-fish@2x-DqabMflu.png",
     "src": "src/assets/listicons/li-pet-fish@2x.png"
   },
   "src/assets/listicons/li-petard@2x.png": {
-    "file": "assets/img/li-petard@2x.png",
+    "file": "assets/img/li-petard@2x-2SM4OgfB.png",
     "src": "src/assets/listicons/li-petard@2x.png"
   },
   "src/assets/listicons/li-phone@2x.png": {
-    "file": "assets/img/li-phone@2x.png",
+    "file": "assets/img/li-phone@2x-D9QgrmCy.png",
     "src": "src/assets/listicons/li-phone@2x.png"
   },
+  "src/assets/listicons/li-piano@2x.png": {
+    "file": "assets/img/li-piano@2x-BokrAQnM.png",
+    "src": "src/assets/listicons/li-piano@2x.png"
+  },
+  "src/assets/listicons/li-pie@2x.png": {
+    "file": "assets/img/li-pie@2x-BkVFNia3.png",
+    "src": "src/assets/listicons/li-pie@2x.png"
+  },
   "src/assets/listicons/li-piggy@2x.png": {
-    "file": "assets/img/li-piggy@2x.png",
+    "file": "assets/img/li-piggy@2x-BUExw8Ox.png",
     "src": "src/assets/listicons/li-piggy@2x.png"
   },
+  "src/assets/listicons/li-pills@2x.png": {
+    "file": "assets/img/li-pills@2x-sVhvMFt4.png",
+    "src": "src/assets/listicons/li-pills@2x.png"
+  },
   "src/assets/listicons/li-pin-code@2x.png": {
-    "file": "assets/img/li-pin-code@2x.png",
+    "file": "assets/img/li-pin-code@2x-KB8nLWqL.png",
     "src": "src/assets/listicons/li-pin-code@2x.png"
   },
   "src/assets/listicons/li-pineapple@2x.png": {
-    "file": "assets/img/li-pineapple@2x.png",
+    "file": "assets/img/li-pineapple@2x-m5OOA8wX.png",
     "src": "src/assets/listicons/li-pineapple@2x.png"
   },
   "src/assets/listicons/li-pl201811-atom@2x.png": {
-    "file": "assets/img/li-pl201811-atom@2x.png",
+    "file": "assets/img/li-pl201811-atom@2x-DPnSyyCa.png",
     "src": "src/assets/listicons/li-pl201811-atom@2x.png"
   },
+  "src/assets/listicons/li-pl201811-bed@2x.png": {
+    "file": "assets/img/li-pl201811-bed@2x-BwX__XGM.png",
+    "src": "src/assets/listicons/li-pl201811-bed@2x.png"
+  },
   "src/assets/listicons/li-pl201811-bird@2x.png": {
-    "file": "assets/img/li-pl201811-bird@2x.png",
+    "file": "assets/img/li-pl201811-bird@2x-D3TfyWX7.png",
     "src": "src/assets/listicons/li-pl201811-bird@2x.png"
   },
   "src/assets/listicons/li-pl201811-books@2x.png": {
-    "file": "assets/img/li-pl201811-books@2x.png",
+    "file": "assets/img/li-pl201811-books@2x-CuOcNE4Z.png",
     "src": "src/assets/listicons/li-pl201811-books@2x.png"
   },
   "src/assets/listicons/li-pl201811-bot@2x.png": {
-    "file": "assets/img/li-pl201811-bot@2x.png",
+    "file": "assets/img/li-pl201811-bot@2x-CM8ek1Uh.png",
     "src": "src/assets/listicons/li-pl201811-bot@2x.png"
   },
   "src/assets/listicons/li-pl201811-camera@2x.png": {
-    "file": "assets/img/li-pl201811-camera@2x.png",
+    "file": "assets/img/li-pl201811-camera@2x-CeF0INzJ.png",
     "src": "src/assets/listicons/li-pl201811-camera@2x.png"
   },
+  "src/assets/listicons/li-pl201811-cemetery@2x.png": {
+    "file": "assets/img/li-pl201811-cemetery@2x-fSKhfZT6.png",
+    "src": "src/assets/listicons/li-pl201811-cemetery@2x.png"
+  },
   "src/assets/listicons/li-pl201811-clothing@2x.png": {
-    "file": "assets/img/li-pl201811-clothing@2x.png",
+    "file": "assets/img/li-pl201811-clothing@2x-IKpsFs7j.png",
     "src": "src/assets/listicons/li-pl201811-clothing@2x.png"
   },
   "src/assets/listicons/li-pl201811-cmyk@2x.png": {
-    "file": "assets/img/li-pl201811-cmyk@2x.png",
+    "file": "assets/img/li-pl201811-cmyk@2x-DHNj-_1S.png",
     "src": "src/assets/listicons/li-pl201811-cmyk@2x.png"
   },
+  "src/assets/listicons/li-pl201811-cream@2x.png": {
+    "file": "assets/img/li-pl201811-cream@2x-DxV4-nNP.png",
+    "src": "src/assets/listicons/li-pl201811-cream@2x.png"
+  },
   "src/assets/listicons/li-pl201811-crypto@2x.png": {
-    "file": "assets/img/li-pl201811-crypto@2x.png",
+    "file": "assets/img/li-pl201811-crypto@2x-CIkYNn9T.png",
     "src": "src/assets/listicons/li-pl201811-crypto@2x.png"
   },
+  "src/assets/listicons/li-pl201811-docs@2x.png": {
+    "file": "assets/img/li-pl201811-docs@2x-oVxf_1cM.png",
+    "src": "src/assets/listicons/li-pl201811-docs@2x.png"
+  },
   "src/assets/listicons/li-pl201811-dontdisturb@2x.png": {
-    "file": "assets/img/li-pl201811-dontdisturb@2x.png",
+    "file": "assets/img/li-pl201811-dontdisturb@2x-C9j2dVFh.png",
     "src": "src/assets/listicons/li-pl201811-dontdisturb@2x.png"
   },
   "src/assets/listicons/li-pl201811-earthlove@2x.png": {
-    "file": "assets/img/li-pl201811-earthlove@2x.png",
+    "file": "assets/img/li-pl201811-earthlove@2x-BXIJMAEd.png",
     "src": "src/assets/listicons/li-pl201811-earthlove@2x.png"
   },
   "src/assets/listicons/li-pl201811-ecoplant@2x.png": {
-    "file": "assets/img/li-pl201811-ecoplant@2x.png",
+    "file": "assets/img/li-pl201811-ecoplant@2x-DJr1hh6L.png",
     "src": "src/assets/listicons/li-pl201811-ecoplant@2x.png"
   },
   "src/assets/listicons/li-pl201811-fox@2x.png": {
-    "file": "assets/img/li-pl201811-fox@2x.png",
+    "file": "assets/img/li-pl201811-fox@2x-DlPwItAc.png",
     "src": "src/assets/listicons/li-pl201811-fox@2x.png"
   },
   "src/assets/listicons/li-pl201811-free@2x.png": {
-    "file": "assets/img/li-pl201811-free@2x.png",
+    "file": "assets/img/li-pl201811-free@2x-CfPse9O1.png",
     "src": "src/assets/listicons/li-pl201811-free@2x.png"
   },
   "src/assets/listicons/li-pl201811-hanger@2x.png": {
-    "file": "assets/img/li-pl201811-hanger@2x.png",
+    "file": "assets/img/li-pl201811-hanger@2x-CqNOztTR.png",
     "src": "src/assets/listicons/li-pl201811-hanger@2x.png"
   },
   "src/assets/listicons/li-pl201811-herbal@2x.png": {
-    "file": "assets/img/li-pl201811-herbal@2x.png",
+    "file": "assets/img/li-pl201811-herbal@2x-D5Ds_c2t.png",
     "src": "src/assets/listicons/li-pl201811-herbal@2x.png"
   },
   "src/assets/listicons/li-pl201811-hotel@2x.png": {
-    "file": "assets/img/li-pl201811-hotel@2x.png",
+    "file": "assets/img/li-pl201811-hotel@2x-BllvgMSd.png",
     "src": "src/assets/listicons/li-pl201811-hotel@2x.png"
   },
   "src/assets/listicons/li-pl201811-invitations@2x.png": {
-    "file": "assets/img/li-pl201811-invitations@2x.png",
+    "file": "assets/img/li-pl201811-invitations@2x-C9E1OE6D.png",
     "src": "src/assets/listicons/li-pl201811-invitations@2x.png"
   },
   "src/assets/listicons/li-pl201811-locations@2x.png": {
-    "file": "assets/img/li-pl201811-locations@2x.png",
+    "file": "assets/img/li-pl201811-locations@2x-DrEubZBb.png",
     "src": "src/assets/listicons/li-pl201811-locations@2x.png"
   },
   "src/assets/listicons/li-pl201811-mouse@2x.png": {
-    "file": "assets/img/li-pl201811-mouse@2x.png",
+    "file": "assets/img/li-pl201811-mouse@2x-C0fDGPIz.png",
     "src": "src/assets/listicons/li-pl201811-mouse@2x.png"
   },
   "src/assets/listicons/li-pl201811-navigator@2x.png": {
-    "file": "assets/img/li-pl201811-navigator@2x.png",
+    "file": "assets/img/li-pl201811-navigator@2x-DaFPQuhF.png",
     "src": "src/assets/listicons/li-pl201811-navigator@2x.png"
   },
   "src/assets/listicons/li-pl201811-network@2x.png": {
-    "file": "assets/img/li-pl201811-network@2x.png",
+    "file": "assets/img/li-pl201811-network@2x-WIDHu7Z9.png",
     "src": "src/assets/listicons/li-pl201811-network@2x.png"
   },
+  "src/assets/listicons/li-pl201811-notebook@2x.png": {
+    "file": "assets/img/li-pl201811-notebook@2x-C4siN_Hu.png",
+    "src": "src/assets/listicons/li-pl201811-notebook@2x.png"
+  },
   "src/assets/listicons/li-pl201811-online@2x.png": {
-    "file": "assets/img/li-pl201811-online@2x.png",
+    "file": "assets/img/li-pl201811-online@2x-BxUck3ry.png",
     "src": "src/assets/listicons/li-pl201811-online@2x.png"
   },
   "src/assets/listicons/li-pl201811-parking@2x.png": {
-    "file": "assets/img/li-pl201811-parking@2x.png",
+    "file": "assets/img/li-pl201811-parking@2x-D-oe3Ax2.png",
     "src": "src/assets/listicons/li-pl201811-parking@2x.png"
   },
   "src/assets/listicons/li-pl201811-penguin@2x.png": {
-    "file": "assets/img/li-pl201811-penguin@2x.png",
+    "file": "assets/img/li-pl201811-penguin@2x-CvtU6fcJ.png",
     "src": "src/assets/listicons/li-pl201811-penguin@2x.png"
   },
   "src/assets/listicons/li-pl201811-pills@2x.png": {
-    "file": "assets/img/li-pl201811-pills@2x.png",
+    "file": "assets/img/li-pl201811-pills@2x-CobLjM_H.png",
     "src": "src/assets/listicons/li-pl201811-pills@2x.png"
   },
   "src/assets/listicons/li-pl201811-plug@2x.png": {
-    "file": "assets/img/li-pl201811-plug@2x.png",
+    "file": "assets/img/li-pl201811-plug@2x-C6UcDqnP.png",
     "src": "src/assets/listicons/li-pl201811-plug@2x.png"
   },
   "src/assets/listicons/li-pl201811-pool@2x.png": {
-    "file": "assets/img/li-pl201811-pool@2x.png",
+    "file": "assets/img/li-pl201811-pool@2x-BmBxP8B1.png",
     "src": "src/assets/listicons/li-pl201811-pool@2x.png"
   },
   "src/assets/listicons/li-pl201811-preza@2x.png": {
-    "file": "assets/img/li-pl201811-preza@2x.png",
+    "file": "assets/img/li-pl201811-preza@2x-CcrknjFi.png",
     "src": "src/assets/listicons/li-pl201811-preza@2x.png"
   },
+  "src/assets/listicons/li-pl201811-protein@2x.png": {
+    "file": "assets/img/li-pl201811-protein@2x-C-jzLGv0.png",
+    "src": "src/assets/listicons/li-pl201811-protein@2x.png"
+  },
   "src/assets/listicons/li-pl201811-pumpkin@2x.png": {
-    "file": "assets/img/li-pl201811-pumpkin@2x.png",
+    "file": "assets/img/li-pl201811-pumpkin@2x-ooK7n77Z.png",
     "src": "src/assets/listicons/li-pl201811-pumpkin@2x.png"
   },
   "src/assets/listicons/li-pl201811-rgb@2x.png": {
-    "file": "assets/img/li-pl201811-rgb@2x.png",
+    "file": "assets/img/li-pl201811-rgb@2x-DbGXN3OO.png",
     "src": "src/assets/listicons/li-pl201811-rgb@2x.png"
   },
   "src/assets/listicons/li-pl201811-samples@2x.png": {
-    "file": "assets/img/li-pl201811-samples@2x.png",
+    "file": "assets/img/li-pl201811-samples@2x-BNdDJhr8.png",
     "src": "src/assets/listicons/li-pl201811-samples@2x.png"
   },
   "src/assets/listicons/li-pl201811-school@2x.png": {
-    "file": "assets/img/li-pl201811-school@2x.png",
+    "file": "assets/img/li-pl201811-school@2x-BnDEKFC9.png",
     "src": "src/assets/listicons/li-pl201811-school@2x.png"
   },
+  "src/assets/listicons/li-pl201811-sewingmachine@2x.png": {
+    "file": "assets/img/li-pl201811-sewingmachine@2x-CTAp0DYq.png",
+    "src": "src/assets/listicons/li-pl201811-sewingmachine@2x.png"
+  },
   "src/assets/listicons/li-pl201811-shoe@2x.png": {
-    "file": "assets/img/li-pl201811-shoe@2x.png",
+    "file": "assets/img/li-pl201811-shoe@2x-BM7kFtGA.png",
     "src": "src/assets/listicons/li-pl201811-shoe@2x.png"
   },
   "src/assets/listicons/li-pl201811-shovel@2x.png": {
-    "file": "assets/img/li-pl201811-shovel@2x.png",
+    "file": "assets/img/li-pl201811-shovel@2x-BvFniFm3.png",
     "src": "src/assets/listicons/li-pl201811-shovel@2x.png"
   },
   "src/assets/listicons/li-pl201811-sofa@2x.png": {
-    "file": "assets/img/li-pl201811-sofa@2x.png",
+    "file": "assets/img/li-pl201811-sofa@2x-BGBfHb_v.png",
     "src": "src/assets/listicons/li-pl201811-sofa@2x.png"
   },
   "src/assets/listicons/li-pl201811-solar@2x.png": {
-    "file": "assets/img/li-pl201811-solar@2x.png",
+    "file": "assets/img/li-pl201811-solar@2x-DNBYsTIo.png",
     "src": "src/assets/listicons/li-pl201811-solar@2x.png"
   },
   "src/assets/listicons/li-pl201811-speaker@2x.png": {
-    "file": "assets/img/li-pl201811-speaker@2x.png",
+    "file": "assets/img/li-pl201811-speaker@2x-DWe2Tu1i.png",
     "src": "src/assets/listicons/li-pl201811-speaker@2x.png"
   },
+  "src/assets/listicons/li-pl201811-spray@2x.png": {
+    "file": "assets/img/li-pl201811-spray@2x-S3GR5shG.png",
+    "src": "src/assets/listicons/li-pl201811-spray@2x.png"
+  },
   "src/assets/listicons/li-pl201811-theatre@2x.png": {
-    "file": "assets/img/li-pl201811-theatre@2x.png",
+    "file": "assets/img/li-pl201811-theatre@2x-BOYUEp2c.png",
     "src": "src/assets/listicons/li-pl201811-theatre@2x.png"
   },
   "src/assets/listicons/li-pl201811-toolkit@2x.png": {
-    "file": "assets/img/li-pl201811-toolkit@2x.png",
+    "file": "assets/img/li-pl201811-toolkit@2x-3J0IIG6s.png",
     "src": "src/assets/listicons/li-pl201811-toolkit@2x.png"
   },
   "src/assets/listicons/li-pl201811-trafficlight@2x.png": {
-    "file": "assets/img/li-pl201811-trafficlight@2x.png",
+    "file": "assets/img/li-pl201811-trafficlight@2x-DfHMKxMe.png",
     "src": "src/assets/listicons/li-pl201811-trafficlight@2x.png"
   },
   "src/assets/listicons/li-pl201811-treadmill@2x.png": {
-    "file": "assets/img/li-pl201811-treadmill@2x.png",
+    "file": "assets/img/li-pl201811-treadmill@2x-CywVnSKk.png",
     "src": "src/assets/listicons/li-pl201811-treadmill@2x.png"
   },
   "src/assets/listicons/li-pl201811-wateringcan@2x.png": {
-    "file": "assets/img/li-pl201811-wateringcan@2x.png",
+    "file": "assets/img/li-pl201811-wateringcan@2x-C3fvdqPp.png",
     "src": "src/assets/listicons/li-pl201811-wateringcan@2x.png"
   },
+  "src/assets/listicons/li-pl201811-wavetshirt@2x.png": {
+    "file": "assets/img/li-pl201811-wavetshirt@2x-CrgvZ1D8.png",
+    "src": "src/assets/listicons/li-pl201811-wavetshirt@2x.png"
+  },
   "src/assets/listicons/li-pl201811-wheelbarrow@2x.png": {
-    "file": "assets/img/li-pl201811-wheelbarrow@2x.png",
+    "file": "assets/img/li-pl201811-wheelbarrow@2x-BquEOQXo.png",
     "src": "src/assets/listicons/li-pl201811-wheelbarrow@2x.png"
   },
   "src/assets/listicons/li-pl201812-candle@2x.png": {
-    "file": "assets/img/li-pl201812-candle@2x.png",
+    "file": "assets/img/li-pl201812-candle@2x-pHphwWRc.png",
     "src": "src/assets/listicons/li-pl201812-candle@2x.png"
   },
   "src/assets/listicons/li-pl201812-cupcake@2x.png": {
-    "file": "assets/img/li-pl201812-cupcake@2x.png",
+    "file": "assets/img/li-pl201812-cupcake@2x-D268Y1td.png",
     "src": "src/assets/listicons/li-pl201812-cupcake@2x.png"
   },
   "src/assets/listicons/li-pl201812-earbuds@2x.png": {
-    "file": "assets/img/li-pl201812-earbuds@2x.png",
+    "file": "assets/img/li-pl201812-earbuds@2x-DP8tXveH.png",
     "src": "src/assets/listicons/li-pl201812-earbuds@2x.png"
   },
   "src/assets/listicons/li-pl201812-giftcard@2x.png": {
-    "file": "assets/img/li-pl201812-giftcard@2x.png",
+    "file": "assets/img/li-pl201812-giftcard@2x-C3icvtJY.png",
     "src": "src/assets/listicons/li-pl201812-giftcard@2x.png"
   },
   "src/assets/listicons/li-pl201812-glove@2x.png": {
-    "file": "assets/img/li-pl201812-glove@2x.png",
+    "file": "assets/img/li-pl201812-glove@2x-DxMTK0Je.png",
     "src": "src/assets/listicons/li-pl201812-glove@2x.png"
   },
   "src/assets/listicons/li-pl201812-hat@2x.png": {
-    "file": "assets/img/li-pl201812-hat@2x.png",
+    "file": "assets/img/li-pl201812-hat@2x-Be3ZiKq-.png",
     "src": "src/assets/listicons/li-pl201812-hat@2x.png"
   },
   "src/assets/listicons/li-pl201812-jacket@2x.png": {
-    "file": "assets/img/li-pl201812-jacket@2x.png",
+    "file": "assets/img/li-pl201812-jacket@2x-DxXKetXX.png",
     "src": "src/assets/listicons/li-pl201812-jacket@2x.png"
   },
   "src/assets/listicons/li-pl201812-ornament@2x.png": {
-    "file": "assets/img/li-pl201812-ornament@2x.png",
+    "file": "assets/img/li-pl201812-ornament@2x-DGkBhCCs.png",
     "src": "src/assets/listicons/li-pl201812-ornament@2x.png"
   },
   "src/assets/listicons/li-pl201812-risingstar@2x.png": {
-    "file": "assets/img/li-pl201812-risingstar@2x.png",
+    "file": "assets/img/li-pl201812-risingstar@2x-B7isYcMd.png",
     "src": "src/assets/listicons/li-pl201812-risingstar@2x.png"
   },
   "src/assets/listicons/li-pl201812-skilift@2x.png": {
-    "file": "assets/img/li-pl201812-skilift@2x.png",
+    "file": "assets/img/li-pl201812-skilift@2x-BfgEYOsl.png",
     "src": "src/assets/listicons/li-pl201812-skilift@2x.png"
   },
   "src/assets/listicons/li-pl201812-snowboard@2x.png": {
-    "file": "assets/img/li-pl201812-snowboard@2x.png",
+    "file": "assets/img/li-pl201812-snowboard@2x-DoqqDGcm.png",
     "src": "src/assets/listicons/li-pl201812-snowboard@2x.png"
   },
   "src/assets/listicons/li-pl201812-snowcloud@2x.png": {
-    "file": "assets/img/li-pl201812-snowcloud@2x.png",
+    "file": "assets/img/li-pl201812-snowcloud@2x-6yHYoM_W.png",
     "src": "src/assets/listicons/li-pl201812-snowcloud@2x.png"
   },
   "src/assets/listicons/li-pl201812-snowglobe@2x.png": {
-    "file": "assets/img/li-pl201812-snowglobe@2x.png",
+    "file": "assets/img/li-pl201812-snowglobe@2x-BroGlT3O.png",
     "src": "src/assets/listicons/li-pl201812-snowglobe@2x.png"
   },
   "src/assets/listicons/li-pl201812-snowledge@2x.png": {
-    "file": "assets/img/li-pl201812-snowledge@2x.png",
+    "file": "assets/img/li-pl201812-snowledge@2x-GbKkfiK_.png",
     "src": "src/assets/listicons/li-pl201812-snowledge@2x.png"
   },
+  "src/assets/listicons/li-pl201812-snowminus@2x.png": {
+    "file": "assets/img/li-pl201812-snowminus@2x-CWZmZ0vf.png",
+    "src": "src/assets/listicons/li-pl201812-snowminus@2x.png"
+  },
   "src/assets/listicons/li-pl201812-snowmountains@2x.png": {
-    "file": "assets/img/li-pl201812-snowmountains@2x.png",
+    "file": "assets/img/li-pl201812-snowmountains@2x-Drd9qni3.png",
     "src": "src/assets/listicons/li-pl201812-snowmountains@2x.png"
   },
   "src/assets/listicons/li-pl201812-snowshovel@2x.png": {
-    "file": "assets/img/li-pl201812-snowshovel@2x.png",
+    "file": "assets/img/li-pl201812-snowshovel@2x-Bkc7QKUg.png",
     "src": "src/assets/listicons/li-pl201812-snowshovel@2x.png"
   },
   "src/assets/listicons/li-pl201812-snowskates@2x.png": {
-    "file": "assets/img/li-pl201812-snowskates@2x.png",
+    "file": "assets/img/li-pl201812-snowskates@2x-DQDpKWOa.png",
     "src": "src/assets/listicons/li-pl201812-snowskates@2x.png"
   },
   "src/assets/listicons/li-pl201812-snowvillage@2x.png": {
-    "file": "assets/img/li-pl201812-snowvillage@2x.png",
+    "file": "assets/img/li-pl201812-snowvillage@2x-praah4F0.png",
     "src": "src/assets/listicons/li-pl201812-snowvillage@2x.png"
   },
   "src/assets/listicons/li-pl201812-snowwindow@2x.png": {
-    "file": "assets/img/li-pl201812-snowwindow@2x.png",
+    "file": "assets/img/li-pl201812-snowwindow@2x-DTNo44o9.png",
     "src": "src/assets/listicons/li-pl201812-snowwindow@2x.png"
   },
   "src/assets/listicons/li-pl201813-1312@2x.png": {
-    "file": "assets/img/li-pl201813-1312@2x.png",
+    "file": "assets/img/li-pl201813-1312@2x-DjKEJzwW.png",
     "src": "src/assets/listicons/li-pl201813-1312@2x.png"
   },
   "src/assets/listicons/li-pl201813-pocketlists@2x.png": {
-    "file": "assets/img/li-pl201813-pocketlists@2x.png",
+    "file": "assets/img/li-pl201813-pocketlists@2x-BbqC7VNz.png",
     "src": "src/assets/listicons/li-pl201813-pocketlists@2x.png"
   },
   "src/assets/listicons/li-pl201813-shopscript@2x.png": {
-    "file": "assets/img/li-pl201813-shopscript@2x.png",
+    "file": "assets/img/li-pl201813-shopscript@2x-YXSidTzG.png",
     "src": "src/assets/listicons/li-pl201813-shopscript@2x.png"
   },
   "src/assets/listicons/li-pl201813-webasyst@2x.png": {
-    "file": "assets/img/li-pl201813-webasyst@2x.png",
+    "file": "assets/img/li-pl201813-webasyst@2x-CYvyhxV7.png",
     "src": "src/assets/listicons/li-pl201813-webasyst@2x.png"
   },
   "src/assets/listicons/li-plane@2x.png": {
-    "file": "assets/img/li-plane@2x.png",
+    "file": "assets/img/li-plane@2x-BCRTSvTM.png",
     "src": "src/assets/listicons/li-plane@2x.png"
   },
   "src/assets/listicons/li-plant@2x.png": {
-    "file": "assets/img/li-plant@2x.png",
+    "file": "assets/img/li-plant@2x-3APwA5tJ.png",
     "src": "src/assets/listicons/li-plant@2x.png"
   },
   "src/assets/listicons/li-pointer@2x.png": {
-    "file": "assets/img/li-pointer@2x.png",
+    "file": "assets/img/li-pointer@2x-DCIHsgeE.png",
     "src": "src/assets/listicons/li-pointer@2x.png"
   },
   "src/assets/listicons/li-poop@2x.png": {
-    "file": "assets/img/li-poop@2x.png",
+    "file": "assets/img/li-poop@2x-YZZB59yO.png",
     "src": "src/assets/listicons/li-poop@2x.png"
   },
   "src/assets/listicons/li-post-box@2x.png": {
-    "file": "assets/img/li-post-box@2x.png",
+    "file": "assets/img/li-post-box@2x-DjIzB8pA.png",
     "src": "src/assets/listicons/li-post-box@2x.png"
   },
   "src/assets/listicons/li-power1@2x.png": {
-    "file": "assets/img/li-power1@2x.png",
+    "file": "assets/img/li-power1@2x-CxUAiFxu.png",
     "src": "src/assets/listicons/li-power1@2x.png"
   },
   "src/assets/listicons/li-presentation@2x.png": {
-    "file": "assets/img/li-presentation@2x.png",
+    "file": "assets/img/li-presentation@2x-DczceLj6.png",
     "src": "src/assets/listicons/li-presentation@2x.png"
   },
   "src/assets/listicons/li-puzzle@2x.png": {
-    "file": "assets/img/li-puzzle@2x.png",
+    "file": "assets/img/li-puzzle@2x-BjiT6eNc.png",
     "src": "src/assets/listicons/li-puzzle@2x.png"
   },
   "src/assets/listicons/li-rafting@2x.png": {
-    "file": "assets/img/li-rafting@2x.png",
+    "file": "assets/img/li-rafting@2x-EBA_Ebzi.png",
     "src": "src/assets/listicons/li-rafting@2x.png"
   },
   "src/assets/listicons/li-ramadan@2x.png": {
-    "file": "assets/img/li-ramadan@2x.png",
+    "file": "assets/img/li-ramadan@2x-g11vfeS-.png",
     "src": "src/assets/listicons/li-ramadan@2x.png"
   },
   "src/assets/listicons/li-recipe@2x.png": {
-    "file": "assets/img/li-recipe@2x.png",
+    "file": "assets/img/li-recipe@2x-DSX1eTxi.png",
     "src": "src/assets/listicons/li-recipe@2x.png"
   },
   "src/assets/listicons/li-route@2x.png": {
-    "file": "assets/img/li-route@2x.png",
+    "file": "assets/img/li-route@2x-CxupsqNY.png",
     "src": "src/assets/listicons/li-route@2x.png"
   },
   "src/assets/listicons/li-ruler-pencil@2x.png": {
-    "file": "assets/img/li-ruler-pencil@2x.png",
+    "file": "assets/img/li-ruler-pencil@2x-ComYzaI6.png",
     "src": "src/assets/listicons/li-ruler-pencil@2x.png"
   },
   "src/assets/listicons/li-sale@2x.png": {
-    "file": "assets/img/li-sale@2x.png",
+    "file": "assets/img/li-sale@2x-Bnv9wWEQ.png",
     "src": "src/assets/listicons/li-sale@2x.png"
   },
   "src/assets/listicons/li-scanner@2x.png": {
-    "file": "assets/img/li-scanner@2x.png",
+    "file": "assets/img/li-scanner@2x-UB2M4VOY.png",
     "src": "src/assets/listicons/li-scanner@2x.png"
   },
   "src/assets/listicons/li-school-backpack@2x.png": {
-    "file": "assets/img/li-school-backpack@2x.png",
+    "file": "assets/img/li-school-backpack@2x-DmYt1o3x.png",
     "src": "src/assets/listicons/li-school-backpack@2x.png"
   },
   "src/assets/listicons/li-schoolbus@2x.png": {
-    "file": "assets/img/li-schoolbus@2x.png",
+    "file": "assets/img/li-schoolbus@2x-C3VALhNY.png",
     "src": "src/assets/listicons/li-schoolbus@2x.png"
   },
   "src/assets/listicons/li-search-location@2x.png": {
-    "file": "assets/img/li-search-location@2x.png",
+    "file": "assets/img/li-search-location@2x-C8ZaOqK-.png",
     "src": "src/assets/listicons/li-search-location@2x.png"
   },
   "src/assets/listicons/li-service@2x.png": {
-    "file": "assets/img/li-service@2x.png",
+    "file": "assets/img/li-service@2x-C0xQceZd.png",
     "src": "src/assets/listicons/li-service@2x.png"
   },
   "src/assets/listicons/li-shinto@2x.png": {
-    "file": "assets/img/li-shinto@2x.png",
+    "file": "assets/img/li-shinto@2x-Cpix_ISO.png",
     "src": "src/assets/listicons/li-shinto@2x.png"
   },
   "src/assets/listicons/li-ship@2x.png": {
-    "file": "assets/img/li-ship@2x.png",
+    "file": "assets/img/li-ship@2x-Baftvn80.png",
     "src": "src/assets/listicons/li-ship@2x.png"
   },
   "src/assets/listicons/li-shop@2x.png": {
-    "file": "assets/img/li-shop@2x.png",
+    "file": "assets/img/li-shop@2x-CuRuMZH0.png",
     "src": "src/assets/listicons/li-shop@2x.png"
   },
   "src/assets/listicons/li-shopping2@2x.png": {
-    "file": "assets/img/li-shopping2@2x.png",
+    "file": "assets/img/li-shopping2@2x-CiqC82-c.png",
     "src": "src/assets/listicons/li-shopping2@2x.png"
   },
   "src/assets/listicons/li-shower@2x.png": {
-    "file": "assets/img/li-shower@2x.png",
+    "file": "assets/img/li-shower@2x-ByzdTdf_.png",
     "src": "src/assets/listicons/li-shower@2x.png"
   },
   "src/assets/listicons/li-shrimp@2x.png": {
-    "file": "assets/img/li-shrimp@2x.png",
+    "file": "assets/img/li-shrimp@2x-GbEFJhOS.png",
     "src": "src/assets/listicons/li-shrimp@2x.png"
   },
   "src/assets/listicons/li-shuttlecock@2x.png": {
-    "file": "assets/img/li-shuttlecock@2x.png",
+    "file": "assets/img/li-shuttlecock@2x-DHcRBvT0.png",
     "src": "src/assets/listicons/li-shuttlecock@2x.png"
   },
   "src/assets/listicons/li-signs@2x.png": {
-    "file": "assets/img/li-signs@2x.png",
+    "file": "assets/img/li-signs@2x-BL2frfqK.png",
     "src": "src/assets/listicons/li-signs@2x.png"
   },
   "src/assets/listicons/li-ski@2x.png": {
-    "file": "assets/img/li-ski@2x.png",
+    "file": "assets/img/li-ski@2x-BFrndIRy.png",
     "src": "src/assets/listicons/li-ski@2x.png"
   },
   "src/assets/listicons/li-soska@2x.png": {
-    "file": "assets/img/li-soska@2x.png",
+    "file": "assets/img/li-soska@2x-sWDj_809.png",
     "src": "src/assets/listicons/li-soska@2x.png"
   },
   "src/assets/listicons/li-speedometer@2x.png": {
-    "file": "assets/img/li-speedometer@2x.png",
+    "file": "assets/img/li-speedometer@2x-BSY0dWUK.png",
     "src": "src/assets/listicons/li-speedometer@2x.png"
   },
   "src/assets/listicons/li-star@2x.png": {
-    "file": "assets/img/li-star@2x.png",
+    "file": "assets/img/li-star@2x-D1T-bwOu.png",
     "src": "src/assets/listicons/li-star@2x.png"
   },
   "src/assets/listicons/li-steak@2x.png": {
-    "file": "assets/img/li-steak@2x.png",
+    "file": "assets/img/li-steak@2x-BMxY1Lbq.png",
     "src": "src/assets/listicons/li-steak@2x.png"
   },
   "src/assets/listicons/li-steering-wheel@2x.png": {
-    "file": "assets/img/li-steering-wheel@2x.png",
+    "file": "assets/img/li-steering-wheel@2x-DQ9Z7DhT.png",
     "src": "src/assets/listicons/li-steering-wheel@2x.png"
   },
   "src/assets/listicons/li-stethoscope@2x.png": {
-    "file": "assets/img/li-stethoscope@2x.png",
+    "file": "assets/img/li-stethoscope@2x-0wpUHB2K.png",
     "src": "src/assets/listicons/li-stethoscope@2x.png"
   },
   "src/assets/listicons/li-strawberry@2x.png": {
-    "file": "assets/img/li-strawberry@2x.png",
+    "file": "assets/img/li-strawberry@2x-SgwQN3UD.png",
     "src": "src/assets/listicons/li-strawberry@2x.png"
   },
   "src/assets/listicons/li-strong-heart@2x.png": {
-    "file": "assets/img/li-strong-heart@2x.png",
+    "file": "assets/img/li-strong-heart@2x-AotfiQiM.png",
     "src": "src/assets/listicons/li-strong-heart@2x.png"
   },
   "src/assets/listicons/li-team@2x.png": {
-    "file": "assets/img/li-team@2x.png",
+    "file": "assets/img/li-team@2x-QyBTw6Vp.png",
     "src": "src/assets/listicons/li-team@2x.png"
   },
   "src/assets/listicons/li-telescope@2x.png": {
-    "file": "assets/img/li-telescope@2x.png",
+    "file": "assets/img/li-telescope@2x-iqB3GYvo.png",
     "src": "src/assets/listicons/li-telescope@2x.png"
   },
   "src/assets/listicons/li-tomato@2x.png": {
-    "file": "assets/img/li-tomato@2x.png",
+    "file": "assets/img/li-tomato@2x-DdB914dz.png",
     "src": "src/assets/listicons/li-tomato@2x.png"
   },
+  "src/assets/listicons/li-tools@2x.png": {
+    "file": "assets/img/li-tools@2x-DHgFtQLA.png",
+    "src": "src/assets/listicons/li-tools@2x.png"
+  },
   "src/assets/listicons/li-tooth@2x.png": {
-    "file": "assets/img/li-tooth@2x.png",
+    "file": "assets/img/li-tooth@2x-chLJi2de.png",
     "src": "src/assets/listicons/li-tooth@2x.png"
   },
   "src/assets/listicons/li-toy-bibiaa@2x.png": {
-    "file": "assets/img/li-toy-bibiaa@2x.png",
+    "file": "assets/img/li-toy-bibiaa@2x-CTjHPvmr.png",
     "src": "src/assets/listicons/li-toy-bibiaa@2x.png"
   },
   "src/assets/listicons/li-toy-octopus@2x.png": {
-    "file": "assets/img/li-toy-octopus@2x.png",
+    "file": "assets/img/li-toy-octopus@2x-COu8OYlb.png",
     "src": "src/assets/listicons/li-toy-octopus@2x.png"
   },
   "src/assets/listicons/li-toy-pyramid@2x.png": {
-    "file": "assets/img/li-toy-pyramid@2x.png",
+    "file": "assets/img/li-toy-pyramid@2x-Cc6soDkB.png",
     "src": "src/assets/listicons/li-toy-pyramid@2x.png"
   },
   "src/assets/listicons/li-toy-ship@2x.png": {
-    "file": "assets/img/li-toy-ship@2x.png",
+    "file": "assets/img/li-toy-ship@2x-Dev-o4Ka.png",
     "src": "src/assets/listicons/li-toy-ship@2x.png"
   },
   "src/assets/listicons/li-train-baby@2x.png": {
-    "file": "assets/img/li-train-baby@2x.png",
+    "file": "assets/img/li-train-baby@2x-DLozqMXw.png",
     "src": "src/assets/listicons/li-train-baby@2x.png"
   },
   "src/assets/listicons/li-train@2x.png": {
-    "file": "assets/img/li-train@2x.png",
+    "file": "assets/img/li-train@2x-BUV9mCjz.png",
     "src": "src/assets/listicons/li-train@2x.png"
   },
   "src/assets/listicons/li-translate@2x.png": {
-    "file": "assets/img/li-translate@2x.png",
+    "file": "assets/img/li-translate@2x-bpXRWlUk.png",
     "src": "src/assets/listicons/li-translate@2x.png"
   },
   "src/assets/listicons/li-travel@2x.png": {
-    "file": "assets/img/li-travel@2x.png",
+    "file": "assets/img/li-travel@2x-Bg3-QI2T.png",
     "src": "src/assets/listicons/li-travel@2x.png"
   },
   "src/assets/listicons/li-trekking@2x.png": {
-    "file": "assets/img/li-trekking@2x.png",
+    "file": "assets/img/li-trekking@2x-BQpT8o93.png",
     "src": "src/assets/listicons/li-trekking@2x.png"
   },
+  "src/assets/listicons/li-tshirt@2x.png": {
+    "file": "assets/img/li-tshirt@2x-D2JhYIdO.png",
+    "src": "src/assets/listicons/li-tshirt@2x.png"
+  },
   "src/assets/listicons/li-turtle@2x.png": {
-    "file": "assets/img/li-turtle@2x.png",
+    "file": "assets/img/li-turtle@2x-DGiAYQIX.png",
     "src": "src/assets/listicons/li-turtle@2x.png"
   },
+  "src/assets/listicons/li-twitter@2x.png": {
+    "file": "assets/img/li-twitter@2x-BQUBhVez.png",
+    "src": "src/assets/listicons/li-twitter@2x.png"
+  },
   "src/assets/listicons/li-vacations@2x.png": {
-    "file": "assets/img/li-vacations@2x.png",
+    "file": "assets/img/li-vacations@2x-Cbrn5__T.png",
     "src": "src/assets/listicons/li-vacations@2x.png"
   },
+  "src/assets/listicons/li-video@2x.png": {
+    "file": "assets/img/li-video@2x-C5C_NMTW.png",
+    "src": "src/assets/listicons/li-video@2x.png"
+  },
   "src/assets/listicons/li-water@2x.png": {
-    "file": "assets/img/li-water@2x.png",
+    "file": "assets/img/li-water@2x-D_xTXGaI.png",
     "src": "src/assets/listicons/li-water@2x.png"
   },
   "src/assets/listicons/li-wedding@2x.png": {
-    "file": "assets/img/li-wedding@2x.png",
+    "file": "assets/img/li-wedding@2x-ajWKopbi.png",
     "src": "src/assets/listicons/li-wedding@2x.png"
   },
   "src/assets/listicons/li-work@2x.png": {
-    "file": "assets/img/li-work@2x.png",
+    "file": "assets/img/li-work@2x-BCYN-Wei.png",
     "src": "src/assets/listicons/li-work@2x.png"
   },
+  "src/assets/listicons/li-yeme-becherovka@2x.png": {
+    "file": "assets/img/li-yeme-becherovka@2x-CcGhnw3L.png",
+    "src": "src/assets/listicons/li-yeme-becherovka@2x.png"
+  },
+  "src/assets/listicons/li-yeme-beer@2x.png": {
+    "file": "assets/img/li-yeme-beer@2x-lZH_8g4K.png",
+    "src": "src/assets/listicons/li-yeme-beer@2x.png"
+  },
+  "src/assets/listicons/li-yeme-blue-hawaii@2x.png": {
+    "file": "assets/img/li-yeme-blue-hawaii@2x-R2PVF0sr.png",
+    "src": "src/assets/listicons/li-yeme-blue-hawaii@2x.png"
+  },
+  "src/assets/listicons/li-yeme-cognac@2x.png": {
+    "file": "assets/img/li-yeme-cognac@2x-qVp61HAZ.png",
+    "src": "src/assets/listicons/li-yeme-cognac@2x.png"
+  },
+  "src/assets/listicons/li-yeme-jagermeister@2x.png": {
+    "file": "assets/img/li-yeme-jagermeister@2x-DSYpZEjm.png",
+    "src": "src/assets/listicons/li-yeme-jagermeister@2x.png"
+  },
+  "src/assets/listicons/li-yeme-mojito@2x.png": {
+    "file": "assets/img/li-yeme-mojito@2x-C1CjzKOx.png",
+    "src": "src/assets/listicons/li-yeme-mojito@2x.png"
+  },
+  "src/assets/listicons/li-yeme-redwine@2x.png": {
+    "file": "assets/img/li-yeme-redwine@2x-Dm6BLk0h.png",
+    "src": "src/assets/listicons/li-yeme-redwine@2x.png"
+  },
+  "src/assets/listicons/li-yeme-whisky@2x.png": {
+    "file": "assets/img/li-yeme-whisky@2x-CspmRtpr.png",
+    "src": "src/assets/listicons/li-yeme-whisky@2x.png"
+  },
   "src/components/AlertAuthHeader.vue": {
-    "file": "assets/AlertAuthHeader-DPK_XcSX.js",
+    "file": "assets/AlertAuthHeader-BkxoQLZz.js",
     "name": "AlertAuthHeader",
     "src": "src/components/AlertAuthHeader.vue",
     "isDynamicEntry": true,
     "imports": [
       "_runtime-core.esm-bundler-H60MIBff.js",
-      "_ModalWrapperBody-Fm0TMJOM.js"
+      "_ModalWrapperBody-DMnYpqrJ.js"
     ]
   },
   "src/components/TaskInfo.vue": {
-    "file": "assets/TaskInfo-CFFUBt_D.js",
+    "file": "assets/TaskInfo-CT-4SdZ_.js",
     "name": "TaskInfo",
     "src": "src/components/TaskInfo.vue",
     "isDynamicEntry": true,
     "imports": [
       "_runtime-core.esm-bundler-H60MIBff.js",
-      "_lodash-BuzILMYQ.js",
-      "_core-C7IWAwVW.js",
-      "_priorities-Cq875rpN.js",
-      "_WaDropdown-CR0kMU0g.js",
+      "_lodash-Cee_l_zi.js",
+      "_core-C6MWnVoJ.js",
+      "_priorities-CBcjq3-d.js",
+      "_WaDropdown-B8jMabGE.js",
       "index.html",
-      "_textToHtmlWithLinks-BMrE8t2s.js",
+      "_textToHtmlWithLinks-DZ6dIyVw.js",
       "_ContenteditableBlock-BqLih0rr.js",
-      "_ContenteditableBlockClickable-BzXTk8NX.js"
+      "_ContenteditableBlockClickable-CPYso4IR.js"
     ]
   },
   "src/layouts/SidebarLists.vue": {
-    "file": "assets/SidebarLists-Da45beRe.js",
+    "file": "assets/SidebarLists-BLaYV7C-.js",
     "name": "SidebarLists",
     "src": "src/layouts/SidebarLists.vue",
     "isDynamicEntry": true,
     "imports": [
       "_runtime-core.esm-bundler-H60MIBff.js",
-      "_WaDropdown-CR0kMU0g.js",
-      "_createListEmitter-Ctqg7f91.js"
+      "_WaDropdown-B8jMabGE.js",
+      "_createListEmitter-CBs29TM9.js"
     ]
   },
   "src/layouts/SidebarUser.vue": {
-    "file": "assets/SidebarUser-Clm983wM.js",
+    "file": "assets/SidebarUser-BynpBOto.js",
     "name": "SidebarUser",
     "src": "src/layouts/SidebarUser.vue",
     "isDynamicEntry": true,
     "imports": [
       "_runtime-core.esm-bundler-H60MIBff.js",
-      "_priorities-Cq875rpN.js",
+      "_priorities-CBcjq3-d.js",
       "index.html",
-      "_createListEmitter-Ctqg7f91.js"
+      "_createListEmitter-CBs29TM9.js"
     ]
   },
   "src/pages/BetaView.vue": {
-    "file": "assets/BetaView-CffmmNTx.js",
+    "file": "assets/BetaView-S69VBlBy.js",
     "name": "BetaView",
     "src": "src/pages/BetaView.vue",
     "isDynamicEntry": true,
     "imports": [
       "_rolldown-runtime-XKyaHtl9.js",
       "_runtime-core.esm-bundler-H60MIBff.js",
-      "_lodash-BuzILMYQ.js",
+      "_lodash-Cee_l_zi.js",
       "index.html"
     ]
   },
   "src/pages/CalendarView.vue": {
-    "file": "assets/CalendarView-C1Wo8utu.js",
+    "file": "assets/CalendarView-wAK2TuZM.js",
     "name": "CalendarView",
     "src": "src/pages/CalendarView.vue",
     "isDynamicEntry": true,
     "imports": [
       "_rolldown-runtime-XKyaHtl9.js",
       "_runtime-core.esm-bundler-H60MIBff.js",
-      "_priorities-Cq875rpN.js",
-      "_WaDropdown-CR0kMU0g.js",
-      "_TaskList-BPH5-3p9.js",
+      "_priorities-CBcjq3-d.js",
+      "_WaDropdown-B8jMabGE.js",
+      "_TaskList-CLpT_Rvc.js",
       "index.html"
     ]
   },
   "src/pages/CriteriaView.vue": {
-    "file": "assets/CriteriaView-1rq123Rb.js",
+    "file": "assets/CriteriaView-C0g7CVX-.js",
     "name": "CriteriaView",
     "src": "src/pages/CriteriaView.vue",
     "isDynamicEntry": true,
     "imports": [
       "_runtime-core.esm-bundler-H60MIBff.js",
-      "_WaDropdown-CR0kMU0g.js",
-      "_TaskList-BPH5-3p9.js",
-      "_TaskListLayout-CeoLgacd.js"
+      "_WaDropdown-B8jMabGE.js",
+      "_TaskList-CLpT_Rvc.js",
+      "_TaskListLayout-BIkbh74O.js"
     ]
   },
   "src/pages/DueView.vue": {
-    "file": "assets/DueView-C3RJ4Afm.js",
+    "file": "assets/DueView-BB97vnfj.js",
     "name": "DueView",
     "src": "src/pages/DueView.vue",
     "isDynamicEntry": true,
     "imports": [
       "_runtime-core.esm-bundler-H60MIBff.js",
-      "_priorities-Cq875rpN.js",
-      "_WaDropdown-CR0kMU0g.js",
-      "_TaskList-BPH5-3p9.js",
-      "_TaskListLayout-CeoLgacd.js",
-      "_FilterBricks-CG5l_7fz.js"
+      "_priorities-CBcjq3-d.js",
+      "_WaDropdown-B8jMabGE.js",
+      "_TaskList-CLpT_Rvc.js",
+      "_TaskListLayout-BIkbh74O.js",
+      "_FilterBricks-DMtHcQxv.js"
     ]
   },
   "src/pages/FiltersView.vue": {
@@ -2386,73 +2921,73 @@
     ]
   },
   "src/pages/FiltersViewNearby.vue": {
-    "file": "assets/FiltersViewNearby-CoaVNVNm.js",
+    "file": "assets/FiltersViewNearby-D3e7E4Zd.js",
     "name": "FiltersViewNearby",
     "src": "src/pages/FiltersViewNearby.vue",
     "isDynamicEntry": true,
     "imports": [
       "_runtime-core.esm-bundler-H60MIBff.js",
-      "_priorities-Cq875rpN.js",
-      "_WaDropdown-CR0kMU0g.js",
-      "_TaskList-BPH5-3p9.js",
-      "_TaskListLayout-CeoLgacd.js",
-      "_FilterBricks-CG5l_7fz.js"
+      "_priorities-CBcjq3-d.js",
+      "_WaDropdown-B8jMabGE.js",
+      "_TaskList-CLpT_Rvc.js",
+      "_TaskListLayout-BIkbh74O.js",
+      "_FilterBricks-DMtHcQxv.js"
     ]
   },
   "src/pages/FiltersViewShop.vue": {
-    "file": "assets/FiltersViewShop-8qyMeYep.js",
+    "file": "assets/FiltersViewShop-CZlVZD70.js",
     "name": "FiltersViewShop",
     "src": "src/pages/FiltersViewShop.vue",
     "isDynamicEntry": true,
     "imports": [
       "_runtime-core.esm-bundler-H60MIBff.js",
-      "_priorities-Cq875rpN.js",
-      "_WaDropdown-CR0kMU0g.js",
-      "_TaskList-BPH5-3p9.js",
-      "_TaskListLayout-CeoLgacd.js",
-      "_FilterBricks-CG5l_7fz.js"
+      "_priorities-CBcjq3-d.js",
+      "_WaDropdown-B8jMabGE.js",
+      "_TaskList-CLpT_Rvc.js",
+      "_TaskListLayout-BIkbh74O.js",
+      "_FilterBricks-DMtHcQxv.js"
     ]
   },
   "src/pages/FiltersViewTasks.vue": {
-    "file": "assets/FiltersViewTasks-N9TMf5MP.js",
+    "file": "assets/FiltersViewTasks-CdwqLV9f.js",
     "name": "FiltersViewTasks",
     "src": "src/pages/FiltersViewTasks.vue",
     "isDynamicEntry": true,
     "imports": [
       "_runtime-core.esm-bundler-H60MIBff.js",
-      "_priorities-Cq875rpN.js",
-      "_WaDropdown-CR0kMU0g.js",
-      "_TaskList-BPH5-3p9.js",
-      "_TaskListLayout-CeoLgacd.js",
-      "_FilterBricks-CG5l_7fz.js"
+      "_priorities-CBcjq3-d.js",
+      "_WaDropdown-B8jMabGE.js",
+      "_TaskList-CLpT_Rvc.js",
+      "_TaskListLayout-BIkbh74O.js",
+      "_FilterBricks-DMtHcQxv.js"
     ]
   },
   "src/pages/FiltersViewСompleted.vue": {
-    "file": "assets/FiltersViewСompleted-BEKPFhSK.js",
+    "file": "assets/FiltersViewСompleted-C-iC_2NM.js",
     "name": "FiltersViewСompleted",
     "src": "src/pages/FiltersViewСompleted.vue",
     "isDynamicEntry": true,
     "imports": [
       "_runtime-core.esm-bundler-H60MIBff.js",
-      "_priorities-Cq875rpN.js",
-      "_WaDropdown-CR0kMU0g.js",
-      "_TaskList-BPH5-3p9.js",
-      "_TaskListLayout-CeoLgacd.js",
-      "_FilterBricks-CG5l_7fz.js"
+      "_priorities-CBcjq3-d.js",
+      "_WaDropdown-B8jMabGE.js",
+      "_TaskList-CLpT_Rvc.js",
+      "_TaskListLayout-BIkbh74O.js",
+      "_FilterBricks-DMtHcQxv.js"
     ]
   },
   "src/pages/ListViewUser.vue": {
-    "file": "assets/ListViewUser-ocbM9dN2.js",
+    "file": "assets/ListViewUser-C3sAIBby.js",
     "name": "ListViewUser",
     "src": "src/pages/ListViewUser.vue",
     "isDynamicEntry": true,
     "imports": [
       "_runtime-core.esm-bundler-H60MIBff.js",
-      "_priorities-Cq875rpN.js",
-      "_WaDropdown-CR0kMU0g.js",
-      "_TaskList-BPH5-3p9.js",
-      "_TaskListLayout-CeoLgacd.js",
-      "_ListView-DbIfAeLM.js"
+      "_priorities-CBcjq3-d.js",
+      "_WaDropdown-B8jMabGE.js",
+      "_TaskList-CLpT_Rvc.js",
+      "_TaskListLayout-BIkbh74O.js",
+      "_ListView-BXMA4MaD.js"
     ]
   },
   "src/pages/NotFoundPage.vue": {
@@ -2465,84 +3000,84 @@
     ]
   },
   "src/pages/PriorityView.vue": {
-    "file": "assets/PriorityView-DC4wKI3V.js",
+    "file": "assets/PriorityView-RZDLAbuZ.js",
     "name": "PriorityView",
     "src": "src/pages/PriorityView.vue",
     "isDynamicEntry": true,
     "imports": [
       "_runtime-core.esm-bundler-H60MIBff.js",
-      "_priorities-Cq875rpN.js",
-      "_WaDropdown-CR0kMU0g.js",
-      "_TaskList-BPH5-3p9.js",
-      "_TaskListLayout-CeoLgacd.js",
-      "_FilterBricks-CG5l_7fz.js"
+      "_priorities-CBcjq3-d.js",
+      "_WaDropdown-B8jMabGE.js",
+      "_TaskList-CLpT_Rvc.js",
+      "_TaskListLayout-BIkbh74O.js",
+      "_FilterBricks-DMtHcQxv.js"
     ]
   },
   "src/pages/SearchView.vue": {
-    "file": "assets/SearchView-Bmz9CVAU.js",
+    "file": "assets/SearchView-2UVjjnAu.js",
     "name": "SearchView",
     "src": "src/pages/SearchView.vue",
     "isDynamicEntry": true,
     "imports": [
       "_runtime-core.esm-bundler-H60MIBff.js",
-      "_TaskList-BPH5-3p9.js",
-      "_SearchForm-DguJ8Qfm.js",
-      "_TaskListLayout-CeoLgacd.js"
+      "_TaskList-CLpT_Rvc.js",
+      "_SearchForm-B6-sWVCq.js",
+      "_TaskListLayout-BIkbh74O.js"
     ]
   },
   "src/pages/SingleTask.vue": {
-    "file": "assets/SingleTask-Dw62oseR.js",
+    "file": "assets/SingleTask-Dmdi6tK3.js",
     "name": "SingleTask",
     "src": "src/pages/SingleTask.vue",
     "isDynamicEntry": true,
     "imports": [
       "_runtime-core.esm-bundler-H60MIBff.js",
-      "_WaDropdown-CR0kMU0g.js",
-      "_TaskListItemStoreProvider-Dl2egFRD.js",
-      "_TaskListLayout-CeoLgacd.js"
+      "_WaDropdown-B8jMabGE.js",
+      "_TaskListItemStoreProvider-BzN6SbP_.js",
+      "_TaskListLayout-BIkbh74O.js"
     ]
   },
   "src/pages/UpnextView.vue": {
-    "file": "assets/UpnextView-DAZW1l8_.js",
+    "file": "assets/UpnextView-DARUIfpJ.js",
     "name": "UpnextView",
     "src": "src/pages/UpnextView.vue",
     "isDynamicEntry": true,
     "imports": [
       "_runtime-core.esm-bundler-H60MIBff.js",
-      "_core-C7IWAwVW.js",
-      "_priorities-Cq875rpN.js",
-      "_WaDropdown-CR0kMU0g.js",
-      "_TaskList-BPH5-3p9.js",
+      "_core-C6MWnVoJ.js",
+      "_priorities-CBcjq3-d.js",
+      "_WaDropdown-B8jMabGE.js",
+      "_TaskList-CLpT_Rvc.js",
       "index.html",
-      "_TaskListLayout-CeoLgacd.js",
-      "_FilterBricks-CG5l_7fz.js"
+      "_TaskListLayout-BIkbh74O.js",
+      "_FilterBricks-DMtHcQxv.js"
     ]
   },
   "src/pages/UsersView.vue": {
-    "file": "assets/UsersView-Bbs8pM4L.js",
+    "file": "assets/UsersView-CiiySaMj.js",
     "name": "UsersView",
     "src": "src/pages/UsersView.vue",
     "isDynamicEntry": true,
     "imports": [
       "_runtime-core.esm-bundler-H60MIBff.js",
-      "_priorities-Cq875rpN.js",
+      "_priorities-CBcjq3-d.js",
       "index.html"
     ]
   },
   "src/pages/map/MapView.vue": {
-    "file": "assets/MapView-ApjakqPV.js",
+    "file": "assets/MapView-F-pQfnE-.js",
     "name": "MapView",
     "src": "src/pages/map/MapView.vue",
     "isDynamicEntry": true,
     "imports": [
       "_runtime-core.esm-bundler-H60MIBff.js",
-      "_lodash-BuzILMYQ.js",
-      "_core-C7IWAwVW.js",
-      "_priorities-Cq875rpN.js",
-      "_WaDropdown-CR0kMU0g.js",
-      "_TaskList-BPH5-3p9.js",
+      "_lodash-Cee_l_zi.js",
+      "_core-C6MWnVoJ.js",
+      "_priorities-CBcjq3-d.js",
+      "_WaDropdown-B8jMabGE.js",
+      "_TaskList-CLpT_Rvc.js",
       "index.html",
-      "_textToHtmlWithLinks-BMrE8t2s.js",
+      "_textToHtmlWithLinks-DZ6dIyVw.js",
       "_ContenteditableBlock-BqLih0rr.js"
     ],
     "dynamicImports": [
@@ -2550,43 +3085,43 @@
     ]
   },
   "src/pages/map/MapYandex.vue": {
-    "file": "assets/MapYandex-C3fDBIM9.js",
+    "file": "assets/MapYandex-80luD3Ta.js",
     "name": "MapYandex",
     "src": "src/pages/map/MapYandex.vue",
     "isDynamicEntry": true,
     "imports": [
       "_runtime-core.esm-bundler-H60MIBff.js",
-      "_core-C7IWAwVW.js",
+      "_core-C6MWnVoJ.js",
       "_esm-D2nccjtC.js"
     ]
   },
   "src/widgets/AppWidgetView.vue": {
-    "file": "assets/AppWidgetView-CszEruML.js",
+    "file": "assets/AppWidgetView-B2MKrLUY.js",
     "name": "AppWidgetView",
     "src": "src/widgets/AppWidgetView.vue",
     "isDynamicEntry": true,
     "imports": [
       "_runtime-core.esm-bundler-H60MIBff.js",
-      "_TaskList-BPH5-3p9.js",
-      "_TaskListLayout-CeoLgacd.js",
-      "_iframeWidget--UY_0Z7A.js"
+      "_TaskList-CLpT_Rvc.js",
+      "_TaskListLayout-BIkbh74O.js",
+      "_iframeWidget-DxRyb2sq.js"
     ]
   },
   "src/widgets/DashboardWidgetView.vue": {
-    "file": "assets/DashboardWidgetView-BlaDIL5z.js",
+    "file": "assets/DashboardWidgetView-Co1l2tkm.js",
     "name": "DashboardWidgetView",
     "src": "src/widgets/DashboardWidgetView.vue",
     "isDynamicEntry": true,
     "imports": [
       "_runtime-core.esm-bundler-H60MIBff.js",
-      "_priorities-Cq875rpN.js",
-      "_TaskList-BPH5-3p9.js",
-      "_TaskListLayout-CeoLgacd.js",
-      "_iframeWidget--UY_0Z7A.js"
+      "_priorities-CBcjq3-d.js",
+      "_TaskList-CLpT_Rvc.js",
+      "_TaskListLayout-BIkbh74O.js",
+      "_iframeWidget-DxRyb2sq.js"
     ]
   },
   "style.css": {
-    "file": "assets/style-DDmDxNiH.css",
+    "file": "assets/style-BYJzshA4.css",
     "src": "style.css"
   }
 }
