@@ -1,0 +1,1 @@
+var e=window.appState||{},t=new Date(e.datetime);e.timestamp_diff=isNaN(t.getTime())?0:Date.now()-t.getTime(),e.contact_id=e.user.id;export{e as t};

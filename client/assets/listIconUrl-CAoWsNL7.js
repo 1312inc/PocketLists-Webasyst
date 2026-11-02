@@ -1,0 +1,1 @@
+import{t as e}from"./appState-Si7nJeD6.js";function t(t){let n=t||`li-list@2x.png`;return`${e.base_url}static/listicons/${n}`}export{t};
